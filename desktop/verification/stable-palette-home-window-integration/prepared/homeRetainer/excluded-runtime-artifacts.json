@@ -1,0 +1,1892 @@
+[
+  {
+    "path": "compile-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "ba028630f058f5992e1d85a7cc61eda4ec5679413f0432d8b888f6cc63fd842a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopEyePaint.class",
+    "sha256Bytes": "15ee8400662347f92fc385f553cb19c91982e5798001518a46cc284ae14d60d3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopFeedFilterPlugin.class",
+    "sha256Bytes": "511b260707c08e0c6f178f72b3e39ec9e9749b66d03cbae0d7f03fd835383c42",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPlaybackCdnPlugin.class",
+    "sha256Bytes": "541301327347fbbc7d168e24de07d4013960d852caa6255a7cacc3c3c10b43d0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$1.class",
+    "sha256Bytes": "0d59ef582b91330ee1393b56168c6f755e94c9b828c26a57fe77f7fc0a3adf23",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$2.class",
+    "sha256Bytes": "973de8e7e910eea1c2c2ded4991672750471ff28fa46708a58ef91ac02ca3c9f",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$3.class",
+    "sha256Bytes": "c348e685683c1d12a17d2d615d58962e878b8cb8a967eff25dfd558526d002d2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$5.class",
+    "sha256Bytes": "6e68acdd2d95af18f52c4b7942a47e4a8a9e586bf7dbdbdad8c05189581e9d29",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6$1$emit$1.class",
+    "sha256Bytes": "90f18b75cb97fcbd122420ce9eb25035fcfffebce4855715146a22ac13f90162",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6$1.class",
+    "sha256Bytes": "61135f06348d62241ee62c4d515632b2d7ab380acd2a0c017d46177ed461cd0a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6.class",
+    "sha256Bytes": "949233ffc8c64f9cc22aa6d90c1cd55505f54a24125fb860ac91ca15bb965c61",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$7$1.class",
+    "sha256Bytes": "f4ddabb953cee7c9a058fdc7f5080cdd757f0899db759ec52e75897c000ca845",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$7.class",
+    "sha256Bytes": "56076385ec767e5575e98009c8d82e1acdbdd49a874d12f6d72fcac9016e720d",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$8$1.class",
+    "sha256Bytes": "ce881e5eb3bc01c1d6824a6a1a4f7fe52fbc46de790e32b4b1ec19b6bde23962",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$8.class",
+    "sha256Bytes": "03afd43f01ccafbcbd9194ffe6a76cd409195eccb34e42752c24c548dd8e53a1",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$close$1.class",
+    "sha256Bytes": "3274935c122902180908a2b79c370fa4095a257943aef1f08338efb2901b37bc",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$configurationChange$1.class",
+    "sha256Bytes": "35eef8be146a2e02aec05340cf52af10d2488333e99a2e8606cae319bd3b6720",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$CurrentVideo.class",
+    "sha256Bytes": "9bd939be19bd6137c0c125ecbcc45662456abf96808411e69cd766853af14c50",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$eyePaint$1.class",
+    "sha256Bytes": "6c5356b30c1630784f49b792adb33e5d043e9e1f65b47e1515e81f61aa7fe61e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$eyePaint$2.class",
+    "sha256Bytes": "5a9ad20085337a510441d3dfc685f5d12d7fd38efe866f5cc9ce018c14aef3e4",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonText$1.class",
+    "sha256Bytes": "2eb1e79da15fbc08e117b840dfe21fa77cc80c75fb54fdf80aa55a6c9b64bdfe",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonText$2.class",
+    "sha256Bytes": "e2086aca13af72aec7e6566a6678a10895967de15fd6d937093fdcb9cfba3338",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonUrl$1.class",
+    "sha256Bytes": "272899b894b6e6b90a4edceb8dbf57dee4c0f0d1b6b92eca75946bac7e8a81ef",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonUrl$2.class",
+    "sha256Bytes": "85b459641099c208b8fd57c5a9a6a7a60e2896e0127e8c7f86d5f64815584486",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onPositionUpdate$1.class",
+    "sha256Bytes": "075a2c89a4bdf3bb4398f815e253c21bc40df3a6368833dd881084e33b4423f9",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onSponsorSkipCompleted$1.class",
+    "sha256Bytes": "e04751758925b4e375d6b3501b75b84f062e3dcfbaccda30b1940a4aca40ee56",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onSponsorSkipCompleted$2$1.class",
+    "sha256Bytes": "7d0a4caf6215889a979b58a4bacad87cb3edde42e36891168601506ebeac6237",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onUserSeek$1.class",
+    "sha256Bytes": "58bdaad4e23802b672f3aa1a6b4578e78a121358c8cdf6dd36bea7bbd68ff4af",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onVideoEnd$3.class",
+    "sha256Bytes": "d1f7991d55c8bcc87120b4159c0c5265da2ddc65157cb40ffaea6b3fe5cad5fd",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onVideoLoad$1.class",
+    "sha256Bytes": "fddd3410928324865f5cc06874fdf6bed49debd2a47760731305cb521f30d712",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$previewJsonUrl$1.class",
+    "sha256Bytes": "9e160d0cf0687249457526c3ea346ae1b03c05b14148f136e0107cb4ed5c13a7",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveAdFilterConfiguration$2.class",
+    "sha256Bytes": "0442174bb24c9fa016ee3f9c70f0f956271b1a78e54df97ef860852b3acb4493",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveCdnConfiguration$2.class",
+    "sha256Bytes": "60e959e6e185c80ac8afaa96b225b7b62bf19a098c769b7339249c126bd678ba",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveDanmakuConfiguration$2.class",
+    "sha256Bytes": "def8b41c565b4c43f1d6611d469b59bc09017d0b2193ea75fc24e3999f23185b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveSponsorConfiguration$2.class",
+    "sha256Bytes": "a7ce3415188bdf729bdbcfa15e208b4ec5262a6cbd2e2d425ae2a4b83ed92653",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$setEnabled$1.class",
+    "sha256Bytes": "0aa00c5f207292a9407ab0b9b73f9d9b6b5b5e45647a65b15c47fbe49be28542",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$shutdownForRestore$2.class",
+    "sha256Bytes": "cb63830ac32efe3662c170f08958f03890dbc5a1a6b0c0a7bc6140f5353ed4aa",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$submitSponsorSegment$1.class",
+    "sha256Bytes": "04a9c4c7ccd50a4b51322e7f958e93eeb7270595654454b38742c0010b449b84",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$subscriptions$1.class",
+    "sha256Bytes": "79d38d94ab4cc198c9e2ce4457effe391e1e840de26c67b8a5996f40548c76d3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$voteSponsorSegment$1.class",
+    "sha256Bytes": "2a29dcc02e25cb3b19c0647f6c3954d346fd2108922a74030c86113f098db58c",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime.class",
+    "sha256Bytes": "48a865869c91fee495f70907717246a0da6ed6d28532caedf37e075f53c979a3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopPluginRuntimeKt.class",
+    "sha256Bytes": "065d46d317185a6671db60439e702952e408d286aa40066a5736fa46d78ddd0c",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$accountChanged$1.class",
+    "sha256Bytes": "7881a9d08516400e7fd85712f4f011199f56a1e21fc23d378b5f53897d0a82c8",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$awaitOwner$1.class",
+    "sha256Bytes": "ba0dfefa63190840a15df10dab24198e76e3a20f10081cc538957aca8fb206d2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Binding.class",
+    "sha256Bytes": "06ff971d2dbf02523be30ea77687f3a8c44bbe0d28aee37b72f37ecd5f932f13",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command$Account.class",
+    "sha256Bytes": "91249cd8cf012f6289688b433a985a884e9718fdd33afdf13a8ed06d1d3f1ab2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command$Install.class",
+    "sha256Bytes": "0183dec2ed0ed457af43a84a9796f5f7872e9ca9f0f1df6eae3986595615e178",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command.class",
+    "sha256Bytes": "dfc84086a182a1a7672b20fea49c84d7ad371541b7d0abbe14a45848c0d165c2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$consume$1.class",
+    "sha256Bytes": "ee493f24eb7b4647e83ff0623167d26f3c8fef4d9b733b3e3cee23f33d7edcb0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$installOwner$1.class",
+    "sha256Bytes": "f7b8fd4004631d4877e58ce41be651d4230a5e724d893cefc3b6b97c527a6c84",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$reload$1.class",
+    "sha256Bytes": "d45e710b1cc0598236f5c2d613ef314ee77a7bc6f20d03a75de6757908ae1c99",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$retire$1.class",
+    "sha256Bytes": "dc995cb39196d0f71616c3af2fcab017e3067dc6eaf4034904107fa6b4b37b4f",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$retire$2.class",
+    "sha256Bytes": "47c5a59ac4449e3312798ba30be7d1d0ddb27110597cb442cda1bcff47309938",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$shutdownForRestore$2.class",
+    "sha256Bytes": "fea77b3e89ba6e7cd1b4f6989514c3fd3a0a4725b6bdbfa5e1d6be3de7da6daf",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$1$1.class",
+    "sha256Bytes": "6e1451d8caf6eaefd7758662e6bb8cd6f08c98026a56fb750a493ddf373c02ba",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$1.class",
+    "sha256Bytes": "410a979aebeb1bdc36190c5cf95e8cb1e540af4007c2d3dd5a92dc8e6e4a5607",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$3.class",
+    "sha256Bytes": "7d54edb6799621ac0d44fc4b6a125eab4bbebb8d70a999735395041c3fe36928",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$4.class",
+    "sha256Bytes": "f71b73560b07493139f90979ffc17b087207b90f1650f6bbc1721fbc60fc92ca",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1.class",
+    "sha256Bytes": "79b21159004287c12bc956bcecb5f4df8375a0be7da1c51ab1851f9cfcbda1c0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.class",
+    "sha256Bytes": "719b95969f4e4d321227b5d760de59303d622e84c86369d3623e2218d3cb2a5f",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/plugins/DesktopTodayWatchState.class",
+    "sha256Bytes": "0061d148b8d4d931eee1f55b4c34853696093835f5bd05a1efdded1e22c7346a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRetainedRoot$closeAndJoin$2.class",
+    "sha256Bytes": "d73fe9b06a4f6dd765bef8989625da6cf4a69615d6815c5dc58523e26b566851",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRetainedRoot.class",
+    "sha256Bytes": "6e0f0a5bfac543162b09a3991570783f9ee82cef916576f15cff4dd6104716f7",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$1.class",
+    "sha256Bytes": "d29a7f26410a4d8cd2fd075dee912a96557461624fb6b61490a42441617ecdd5",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$2$1.class",
+    "sha256Bytes": "3af28cff131e6c91dc270ff936447dd2052711c32a8ea7fcb12635861a365910",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$2.class",
+    "sha256Bytes": "7e18ae699ec3eb53296ac3649ecdf07deccb332df4cdd7e9d56644bce1d2bd02",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1.class",
+    "sha256Bytes": "8e934c4e6917013e2a9f25bbef8cea725ade6739c6e93d805264e81ac497ccd7",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$1.class",
+    "sha256Bytes": "f70b2ffacf5e33e5c258248562f46c95b0117e0243131aacceaf24d740c67ce6",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$7.class",
+    "sha256Bytes": "12fd9d97043898c35a979ad8f5c74bb2156393c17122a849c07d6ea10b284b5d",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$analytics$1.class",
+    "sha256Bytes": "43365d44e52b32353764724092b12f2b69477de2f91538b1383cba9150a48e18",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$entry$1$1.class",
+    "sha256Bytes": "970190c1f0aa8bd4403c944459401eef9f7dc8508ad0cddd8cc06e3cb273b3fa",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$2.class",
+    "sha256Bytes": "a91680758238e2f036bc7aebde9316a3cdd0fdb7fc8dca9758fd55c3b001407b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$3.class",
+    "sha256Bytes": "10028ea31f57275d2263f15e33a664329f88f10f88843656a41501a8a2f668d1",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$4.class",
+    "sha256Bytes": "4e93b17395a15481deafa9fc6dcfc13badb0061d9b17738bce962cc2acf91a08",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$lottie$1.class",
+    "sha256Bytes": "0fac95b5aab979779d472edac0bebfad16c319fd1e03e98acf4f6c31563a0a78",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$lottie$2.class",
+    "sha256Bytes": "ebd60aac7a4059d8a0ccb39f8501954251beed601ed5b5c9745eded4c386853b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$mediaOwner$1.class",
+    "sha256Bytes": "ee25df1bc0bc97e882e50fb81058d1fb1c856bf230a7f7cd28ca42595a94b88a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$mediaOwner$2.class",
+    "sha256Bytes": "40903ce76b35dbc158da2a6d18284fef3c5b864dccd8d4cb80c4dcf9a32ca2c0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$returnOwner$1.class",
+    "sha256Bytes": "62135ddab131b0a70c29b8837e06e559b8226b50895b1bcf61820127dfa47c4f",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$returnOwner$2.class",
+    "sha256Bytes": "96988bf24fec2331dff128ca09f0f1c44d31350c4476261c0dcf9c54bd3ad92e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$search$1.class",
+    "sha256Bytes": "d6afb3051cbf3695fccad737ec279df1dada31fbd5e8bebd3631a24b2bb23de2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory.class",
+    "sha256Bytes": "209d7668dca6f9365e7762f27f38563190c5a61c5114e668a8962be978674806",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$closeAndJoin$2.class",
+    "sha256Bytes": "5271e815641dfed467ef91ab7ef2ee5cf58852c6333590f1336b76d57aa14e3e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$1.class",
+    "sha256Bytes": "509383ced9bdee24de902750af73d0aeba5c2325527305eced1fdd7b61a37b72",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$2.class",
+    "sha256Bytes": "1785f42c2033ea9196a5cc90a552d242792e326eb92d5622c053582c9ff93edb",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$owner$1.class",
+    "sha256Bytes": "a86347a68fbe5fe3e97934f39be0c56505c9e7bd831fdb2c140a5327617dbdc3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer.class",
+    "sha256Bytes": "8eba653d69373fd0d27cda5845d3c8450977f4a0b68cdd03e5b23e81546b40ab",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootReturnPorts.class",
+    "sha256Bytes": "39a9e49d6c95ecef2079cd49d0084efbf30ce5a8f9e83eec75dce1d00135aaae",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeRootWindowBindings.class",
+    "sha256Bytes": "a6c53eb8d1685ac333ca2e20ce08440602052fb77a0f85e0e11e5c575c4bcb77",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/candidate.jar",
+    "sha256Bytes": "57a8201178685f9a0e27b78c8eb40e21904677226d87af56ac05232ed8fe01d8",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "ba028630f058f5992e1d85a7cc61eda4ec5679413f0432d8b888f6cc63fd842a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopEyePaint.class",
+    "sha256Bytes": "15ee8400662347f92fc385f553cb19c91982e5798001518a46cc284ae14d60d3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopFeedFilterPlugin.class",
+    "sha256Bytes": "511b260707c08e0c6f178f72b3e39ec9e9749b66d03cbae0d7f03fd835383c42",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPlaybackCdnPlugin.class",
+    "sha256Bytes": "541301327347fbbc7d168e24de07d4013960d852caa6255a7cacc3c3c10b43d0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$1.class",
+    "sha256Bytes": "0d59ef582b91330ee1393b56168c6f755e94c9b828c26a57fe77f7fc0a3adf23",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$2.class",
+    "sha256Bytes": "973de8e7e910eea1c2c2ded4991672750471ff28fa46708a58ef91ac02ca3c9f",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$3.class",
+    "sha256Bytes": "c348e685683c1d12a17d2d615d58962e878b8cb8a967eff25dfd558526d002d2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$5.class",
+    "sha256Bytes": "6e68acdd2d95af18f52c4b7942a47e4a8a9e586bf7dbdbdad8c05189581e9d29",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6$1$emit$1.class",
+    "sha256Bytes": "90f18b75cb97fcbd122420ce9eb25035fcfffebce4855715146a22ac13f90162",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6$1.class",
+    "sha256Bytes": "61135f06348d62241ee62c4d515632b2d7ab380acd2a0c017d46177ed461cd0a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6.class",
+    "sha256Bytes": "949233ffc8c64f9cc22aa6d90c1cd55505f54a24125fb860ac91ca15bb965c61",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$7$1.class",
+    "sha256Bytes": "f4ddabb953cee7c9a058fdc7f5080cdd757f0899db759ec52e75897c000ca845",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$7.class",
+    "sha256Bytes": "56076385ec767e5575e98009c8d82e1acdbdd49a874d12f6d72fcac9016e720d",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$8$1.class",
+    "sha256Bytes": "ce881e5eb3bc01c1d6824a6a1a4f7fe52fbc46de790e32b4b1ec19b6bde23962",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$8.class",
+    "sha256Bytes": "03afd43f01ccafbcbd9194ffe6a76cd409195eccb34e42752c24c548dd8e53a1",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$close$1.class",
+    "sha256Bytes": "3274935c122902180908a2b79c370fa4095a257943aef1f08338efb2901b37bc",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$configurationChange$1.class",
+    "sha256Bytes": "35eef8be146a2e02aec05340cf52af10d2488333e99a2e8606cae319bd3b6720",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$CurrentVideo.class",
+    "sha256Bytes": "9bd939be19bd6137c0c125ecbcc45662456abf96808411e69cd766853af14c50",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$eyePaint$1.class",
+    "sha256Bytes": "6c5356b30c1630784f49b792adb33e5d043e9e1f65b47e1515e81f61aa7fe61e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$eyePaint$2.class",
+    "sha256Bytes": "5a9ad20085337a510441d3dfc685f5d12d7fd38efe866f5cc9ce018c14aef3e4",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonText$1.class",
+    "sha256Bytes": "2eb1e79da15fbc08e117b840dfe21fa77cc80c75fb54fdf80aa55a6c9b64bdfe",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonText$2.class",
+    "sha256Bytes": "e2086aca13af72aec7e6566a6678a10895967de15fd6d937093fdcb9cfba3338",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonUrl$1.class",
+    "sha256Bytes": "272899b894b6e6b90a4edceb8dbf57dee4c0f0d1b6b92eca75946bac7e8a81ef",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonUrl$2.class",
+    "sha256Bytes": "85b459641099c208b8fd57c5a9a6a7a60e2896e0127e8c7f86d5f64815584486",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onPositionUpdate$1.class",
+    "sha256Bytes": "075a2c89a4bdf3bb4398f815e253c21bc40df3a6368833dd881084e33b4423f9",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onSponsorSkipCompleted$1.class",
+    "sha256Bytes": "e04751758925b4e375d6b3501b75b84f062e3dcfbaccda30b1940a4aca40ee56",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onSponsorSkipCompleted$2$1.class",
+    "sha256Bytes": "7d0a4caf6215889a979b58a4bacad87cb3edde42e36891168601506ebeac6237",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onUserSeek$1.class",
+    "sha256Bytes": "58bdaad4e23802b672f3aa1a6b4578e78a121358c8cdf6dd36bea7bbd68ff4af",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onVideoEnd$3.class",
+    "sha256Bytes": "d1f7991d55c8bcc87120b4159c0c5265da2ddc65157cb40ffaea6b3fe5cad5fd",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onVideoLoad$1.class",
+    "sha256Bytes": "fddd3410928324865f5cc06874fdf6bed49debd2a47760731305cb521f30d712",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$previewJsonUrl$1.class",
+    "sha256Bytes": "9e160d0cf0687249457526c3ea346ae1b03c05b14148f136e0107cb4ed5c13a7",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveAdFilterConfiguration$2.class",
+    "sha256Bytes": "0442174bb24c9fa016ee3f9c70f0f956271b1a78e54df97ef860852b3acb4493",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveCdnConfiguration$2.class",
+    "sha256Bytes": "60e959e6e185c80ac8afaa96b225b7b62bf19a098c769b7339249c126bd678ba",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveDanmakuConfiguration$2.class",
+    "sha256Bytes": "def8b41c565b4c43f1d6611d469b59bc09017d0b2193ea75fc24e3999f23185b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveSponsorConfiguration$2.class",
+    "sha256Bytes": "a7ce3415188bdf729bdbcfa15e208b4ec5262a6cbd2e2d425ae2a4b83ed92653",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$setEnabled$1.class",
+    "sha256Bytes": "0aa00c5f207292a9407ab0b9b73f9d9b6b5b5e45647a65b15c47fbe49be28542",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$shutdownForRestore$2.class",
+    "sha256Bytes": "cb63830ac32efe3662c170f08958f03890dbc5a1a6b0c0a7bc6140f5353ed4aa",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$submitSponsorSegment$1.class",
+    "sha256Bytes": "04a9c4c7ccd50a4b51322e7f958e93eeb7270595654454b38742c0010b449b84",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$subscriptions$1.class",
+    "sha256Bytes": "79d38d94ab4cc198c9e2ce4457effe391e1e840de26c67b8a5996f40548c76d3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$voteSponsorSegment$1.class",
+    "sha256Bytes": "2a29dcc02e25cb3b19c0647f6c3954d346fd2108922a74030c86113f098db58c",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime.class",
+    "sha256Bytes": "48a865869c91fee495f70907717246a0da6ed6d28532caedf37e075f53c979a3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopPluginRuntimeKt.class",
+    "sha256Bytes": "065d46d317185a6671db60439e702952e408d286aa40066a5736fa46d78ddd0c",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$awaitOwner$1.class",
+    "sha256Bytes": "267073cad3dc63496867c667c3bea598e79d30a68215ed492394c0ac79d2ef8b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Binding.class",
+    "sha256Bytes": "06ff971d2dbf02523be30ea77687f3a8c44bbe0d28aee37b72f37ecd5f932f13",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command$Account.class",
+    "sha256Bytes": "91249cd8cf012f6289688b433a985a884e9718fdd33afdf13a8ed06d1d3f1ab2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command$Install.class",
+    "sha256Bytes": "0183dec2ed0ed457af43a84a9796f5f7872e9ca9f0f1df6eae3986595615e178",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command.class",
+    "sha256Bytes": "dfc84086a182a1a7672b20fea49c84d7ad371541b7d0abbe14a45848c0d165c2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$consume$1.class",
+    "sha256Bytes": "71a08b805c543ad99f1cf718e10cb8b1a01a989a0ec4209590fe9533fb75ce4a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$reload$1.class",
+    "sha256Bytes": "6c72bb11111d7860bf8dd2ddfe6c11d3839f60799de6699ff7a3d2a54a747961",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$retire$1.class",
+    "sha256Bytes": "ef09cfa763397a5ea4019136911611302b9d7a3f7317666e4b827464bcade113",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$retire$2.class",
+    "sha256Bytes": "bd33ec75a5877db15bddd4e51141932d452e627be8059de29565f689577b52b5",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$shutdownForRestore$2.class",
+    "sha256Bytes": "884c47ec9cc9cfdf212efe42ec98e21f601a0835540f2aac936202372ec597af",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$1$1.class",
+    "sha256Bytes": "bf3398056c9767d3e05345eaa98f24bfd752d3e304998c311898bbb05d4e3c08",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$1.class",
+    "sha256Bytes": "2422f29cc734a3794c2a6718610e41af39bc1ea39d52441821ff2a70a0c789db",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$3.class",
+    "sha256Bytes": "1fc9798142b227714d4ab5764b943a5ccc6caf27cc6c323c90cf362737187b78",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$4.class",
+    "sha256Bytes": "0004cb1414cfe4f853e135af4228c83e0a9fd28fc6338488521c931f9262d6de",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1.class",
+    "sha256Bytes": "ab339554a4a0bc6c5d38c13e9b5ac5fad946b3f8387941265d2ee1bad543c4c5",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.class",
+    "sha256Bytes": "3d086ee0b6c2775c375ead957b0865d403bfbc4410c004663f727a2b7eb99e64",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/plugins/DesktopTodayWatchState.class",
+    "sha256Bytes": "0061d148b8d4d931eee1f55b4c34853696093835f5bd05a1efdded1e22c7346a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRetainedRoot$closeAndJoin$2.class",
+    "sha256Bytes": "d73fe9b06a4f6dd765bef8989625da6cf4a69615d6815c5dc58523e26b566851",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRetainedRoot.class",
+    "sha256Bytes": "6e0f0a5bfac543162b09a3991570783f9ee82cef916576f15cff4dd6104716f7",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$1.class",
+    "sha256Bytes": "d29a7f26410a4d8cd2fd075dee912a96557461624fb6b61490a42441617ecdd5",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$2$1.class",
+    "sha256Bytes": "3af28cff131e6c91dc270ff936447dd2052711c32a8ea7fcb12635861a365910",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$2.class",
+    "sha256Bytes": "7e18ae699ec3eb53296ac3649ecdf07deccb332df4cdd7e9d56644bce1d2bd02",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1.class",
+    "sha256Bytes": "8e934c4e6917013e2a9f25bbef8cea725ade6739c6e93d805264e81ac497ccd7",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$1.class",
+    "sha256Bytes": "f70b2ffacf5e33e5c258248562f46c95b0117e0243131aacceaf24d740c67ce6",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$7.class",
+    "sha256Bytes": "12fd9d97043898c35a979ad8f5c74bb2156393c17122a849c07d6ea10b284b5d",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$analytics$1.class",
+    "sha256Bytes": "43365d44e52b32353764724092b12f2b69477de2f91538b1383cba9150a48e18",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$entry$1$1.class",
+    "sha256Bytes": "970190c1f0aa8bd4403c944459401eef9f7dc8508ad0cddd8cc06e3cb273b3fa",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$2.class",
+    "sha256Bytes": "a91680758238e2f036bc7aebde9316a3cdd0fdb7fc8dca9758fd55c3b001407b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$3.class",
+    "sha256Bytes": "10028ea31f57275d2263f15e33a664329f88f10f88843656a41501a8a2f668d1",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$4.class",
+    "sha256Bytes": "4e93b17395a15481deafa9fc6dcfc13badb0061d9b17738bce962cc2acf91a08",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$lottie$1.class",
+    "sha256Bytes": "0fac95b5aab979779d472edac0bebfad16c319fd1e03e98acf4f6c31563a0a78",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$lottie$2.class",
+    "sha256Bytes": "ebd60aac7a4059d8a0ccb39f8501954251beed601ed5b5c9745eded4c386853b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$mediaOwner$1.class",
+    "sha256Bytes": "ee25df1bc0bc97e882e50fb81058d1fb1c856bf230a7f7cd28ca42595a94b88a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$mediaOwner$2.class",
+    "sha256Bytes": "40903ce76b35dbc158da2a6d18284fef3c5b864dccd8d4cb80c4dcf9a32ca2c0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$returnOwner$1.class",
+    "sha256Bytes": "62135ddab131b0a70c29b8837e06e559b8226b50895b1bcf61820127dfa47c4f",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$returnOwner$2.class",
+    "sha256Bytes": "96988bf24fec2331dff128ca09f0f1c44d31350c4476261c0dcf9c54bd3ad92e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$search$1.class",
+    "sha256Bytes": "d6afb3051cbf3695fccad737ec279df1dada31fbd5e8bebd3631a24b2bb23de2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory.class",
+    "sha256Bytes": "209d7668dca6f9365e7762f27f38563190c5a61c5114e668a8962be978674806",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$closeAndJoin$2.class",
+    "sha256Bytes": "5271e815641dfed467ef91ab7ef2ee5cf58852c6333590f1336b76d57aa14e3e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$1.class",
+    "sha256Bytes": "509383ced9bdee24de902750af73d0aeba5c2325527305eced1fdd7b61a37b72",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$2.class",
+    "sha256Bytes": "1785f42c2033ea9196a5cc90a552d242792e326eb92d5622c053582c9ff93edb",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$owner$1.class",
+    "sha256Bytes": "a86347a68fbe5fe3e97934f39be0c56505c9e7bd831fdb2c140a5327617dbdc3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer.class",
+    "sha256Bytes": "8eba653d69373fd0d27cda5845d3c8450977f4a0b68cdd03e5b23e81546b40ab",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootReturnPorts.class",
+    "sha256Bytes": "39a9e49d6c95ecef2079cd49d0084efbf30ce5a8f9e83eec75dce1d00135aaae",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeRootWindowBindings.class",
+    "sha256Bytes": "a6c53eb8d1685ac333ca2e20ce08440602052fb77a0f85e0e11e5c575c4bcb77",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "3c16ef17770e79b5484742a44bb75982ac386f60443e97ba0d6fa9ffa1ed53ae",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopEyePaint.class",
+    "sha256Bytes": "15ee8400662347f92fc385f553cb19c91982e5798001518a46cc284ae14d60d3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopFeedFilterPlugin.class",
+    "sha256Bytes": "511b260707c08e0c6f178f72b3e39ec9e9749b66d03cbae0d7f03fd835383c42",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPlaybackCdnPlugin.class",
+    "sha256Bytes": "541301327347fbbc7d168e24de07d4013960d852caa6255a7cacc3c3c10b43d0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$1.class",
+    "sha256Bytes": "0d59ef582b91330ee1393b56168c6f755e94c9b828c26a57fe77f7fc0a3adf23",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$2.class",
+    "sha256Bytes": "973de8e7e910eea1c2c2ded4991672750471ff28fa46708a58ef91ac02ca3c9f",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$3.class",
+    "sha256Bytes": "c348e685683c1d12a17d2d615d58962e878b8cb8a967eff25dfd558526d002d2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$5.class",
+    "sha256Bytes": "6e68acdd2d95af18f52c4b7942a47e4a8a9e586bf7dbdbdad8c05189581e9d29",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6$1$emit$1.class",
+    "sha256Bytes": "90f18b75cb97fcbd122420ce9eb25035fcfffebce4855715146a22ac13f90162",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6$1.class",
+    "sha256Bytes": "61135f06348d62241ee62c4d515632b2d7ab380acd2a0c017d46177ed461cd0a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6.class",
+    "sha256Bytes": "949233ffc8c64f9cc22aa6d90c1cd55505f54a24125fb860ac91ca15bb965c61",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$7$1.class",
+    "sha256Bytes": "f4ddabb953cee7c9a058fdc7f5080cdd757f0899db759ec52e75897c000ca845",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$7.class",
+    "sha256Bytes": "56076385ec767e5575e98009c8d82e1acdbdd49a874d12f6d72fcac9016e720d",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$8$1.class",
+    "sha256Bytes": "ce881e5eb3bc01c1d6824a6a1a4f7fe52fbc46de790e32b4b1ec19b6bde23962",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$8.class",
+    "sha256Bytes": "03afd43f01ccafbcbd9194ffe6a76cd409195eccb34e42752c24c548dd8e53a1",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$close$1.class",
+    "sha256Bytes": "3274935c122902180908a2b79c370fa4095a257943aef1f08338efb2901b37bc",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$configurationChange$1.class",
+    "sha256Bytes": "35eef8be146a2e02aec05340cf52af10d2488333e99a2e8606cae319bd3b6720",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$CurrentVideo.class",
+    "sha256Bytes": "9bd939be19bd6137c0c125ecbcc45662456abf96808411e69cd766853af14c50",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$eyePaint$1.class",
+    "sha256Bytes": "6c5356b30c1630784f49b792adb33e5d043e9e1f65b47e1515e81f61aa7fe61e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$eyePaint$2.class",
+    "sha256Bytes": "5a9ad20085337a510441d3dfc685f5d12d7fd38efe866f5cc9ce018c14aef3e4",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonText$1.class",
+    "sha256Bytes": "2eb1e79da15fbc08e117b840dfe21fa77cc80c75fb54fdf80aa55a6c9b64bdfe",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonText$2.class",
+    "sha256Bytes": "e2086aca13af72aec7e6566a6678a10895967de15fd6d937093fdcb9cfba3338",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonUrl$1.class",
+    "sha256Bytes": "272899b894b6e6b90a4edceb8dbf57dee4c0f0d1b6b92eca75946bac7e8a81ef",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonUrl$2.class",
+    "sha256Bytes": "85b459641099c208b8fd57c5a9a6a7a60e2896e0127e8c7f86d5f64815584486",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onPositionUpdate$1.class",
+    "sha256Bytes": "075a2c89a4bdf3bb4398f815e253c21bc40df3a6368833dd881084e33b4423f9",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onSponsorSkipCompleted$1.class",
+    "sha256Bytes": "e04751758925b4e375d6b3501b75b84f062e3dcfbaccda30b1940a4aca40ee56",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onSponsorSkipCompleted$2$1.class",
+    "sha256Bytes": "7d0a4caf6215889a979b58a4bacad87cb3edde42e36891168601506ebeac6237",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onUserSeek$1.class",
+    "sha256Bytes": "58bdaad4e23802b672f3aa1a6b4578e78a121358c8cdf6dd36bea7bbd68ff4af",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onVideoEnd$3.class",
+    "sha256Bytes": "d1f7991d55c8bcc87120b4159c0c5265da2ddc65157cb40ffaea6b3fe5cad5fd",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onVideoLoad$1.class",
+    "sha256Bytes": "fddd3410928324865f5cc06874fdf6bed49debd2a47760731305cb521f30d712",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$previewJsonUrl$1.class",
+    "sha256Bytes": "9e160d0cf0687249457526c3ea346ae1b03c05b14148f136e0107cb4ed5c13a7",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveAdFilterConfiguration$2.class",
+    "sha256Bytes": "0442174bb24c9fa016ee3f9c70f0f956271b1a78e54df97ef860852b3acb4493",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveCdnConfiguration$2.class",
+    "sha256Bytes": "60e959e6e185c80ac8afaa96b225b7b62bf19a098c769b7339249c126bd678ba",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveDanmakuConfiguration$2.class",
+    "sha256Bytes": "def8b41c565b4c43f1d6611d469b59bc09017d0b2193ea75fc24e3999f23185b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveSponsorConfiguration$2.class",
+    "sha256Bytes": "a7ce3415188bdf729bdbcfa15e208b4ec5262a6cbd2e2d425ae2a4b83ed92653",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$setEnabled$1.class",
+    "sha256Bytes": "0aa00c5f207292a9407ab0b9b73f9d9b6b5b5e45647a65b15c47fbe49be28542",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$shutdownForRestore$2.class",
+    "sha256Bytes": "cb63830ac32efe3662c170f08958f03890dbc5a1a6b0c0a7bc6140f5353ed4aa",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$submitSponsorSegment$1.class",
+    "sha256Bytes": "04a9c4c7ccd50a4b51322e7f958e93eeb7270595654454b38742c0010b449b84",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$subscriptions$1.class",
+    "sha256Bytes": "79d38d94ab4cc198c9e2ce4457effe391e1e840de26c67b8a5996f40548c76d3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$voteSponsorSegment$1.class",
+    "sha256Bytes": "2a29dcc02e25cb3b19c0647f6c3954d346fd2108922a74030c86113f098db58c",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime.class",
+    "sha256Bytes": "48a865869c91fee495f70907717246a0da6ed6d28532caedf37e075f53c979a3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopPluginRuntimeKt.class",
+    "sha256Bytes": "065d46d317185a6671db60439e702952e408d286aa40066a5736fa46d78ddd0c",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$awaitOwner$1.class",
+    "sha256Bytes": "267073cad3dc63496867c667c3bea598e79d30a68215ed492394c0ac79d2ef8b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Binding.class",
+    "sha256Bytes": "06ff971d2dbf02523be30ea77687f3a8c44bbe0d28aee37b72f37ecd5f932f13",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command$Account.class",
+    "sha256Bytes": "91249cd8cf012f6289688b433a985a884e9718fdd33afdf13a8ed06d1d3f1ab2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command$Install.class",
+    "sha256Bytes": "0183dec2ed0ed457af43a84a9796f5f7872e9ca9f0f1df6eae3986595615e178",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command.class",
+    "sha256Bytes": "dfc84086a182a1a7672b20fea49c84d7ad371541b7d0abbe14a45848c0d165c2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$consume$1.class",
+    "sha256Bytes": "71a08b805c543ad99f1cf718e10cb8b1a01a989a0ec4209590fe9533fb75ce4a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$reload$1.class",
+    "sha256Bytes": "6c72bb11111d7860bf8dd2ddfe6c11d3839f60799de6699ff7a3d2a54a747961",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$retire$1.class",
+    "sha256Bytes": "ef09cfa763397a5ea4019136911611302b9d7a3f7317666e4b827464bcade113",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$retire$2.class",
+    "sha256Bytes": "bd33ec75a5877db15bddd4e51141932d452e627be8059de29565f689577b52b5",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$shutdownForRestore$2.class",
+    "sha256Bytes": "884c47ec9cc9cfdf212efe42ec98e21f601a0835540f2aac936202372ec597af",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$1$1.class",
+    "sha256Bytes": "bf3398056c9767d3e05345eaa98f24bfd752d3e304998c311898bbb05d4e3c08",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$1.class",
+    "sha256Bytes": "2422f29cc734a3794c2a6718610e41af39bc1ea39d52441821ff2a70a0c789db",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$3.class",
+    "sha256Bytes": "1fc9798142b227714d4ab5764b943a5ccc6caf27cc6c323c90cf362737187b78",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$4.class",
+    "sha256Bytes": "0004cb1414cfe4f853e135af4228c83e0a9fd28fc6338488521c931f9262d6de",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1.class",
+    "sha256Bytes": "ab339554a4a0bc6c5d38c13e9b5ac5fad946b3f8387941265d2ee1bad543c4c5",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.class",
+    "sha256Bytes": "3d086ee0b6c2775c375ead957b0865d403bfbc4410c004663f727a2b7eb99e64",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/plugins/DesktopTodayWatchState.class",
+    "sha256Bytes": "0061d148b8d4d931eee1f55b4c34853696093835f5bd05a1efdded1e22c7346a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRetainedRoot$closeAndJoin$2.class",
+    "sha256Bytes": "d73fe9b06a4f6dd765bef8989625da6cf4a69615d6815c5dc58523e26b566851",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRetainedRoot.class",
+    "sha256Bytes": "6e0f0a5bfac543162b09a3991570783f9ee82cef916576f15cff4dd6104716f7",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$1.class",
+    "sha256Bytes": "d29a7f26410a4d8cd2fd075dee912a96557461624fb6b61490a42441617ecdd5",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$2$1.class",
+    "sha256Bytes": "3af28cff131e6c91dc270ff936447dd2052711c32a8ea7fcb12635861a365910",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$2.class",
+    "sha256Bytes": "d3dedb5239a574220248b58b28958dcfdeae2444e1b473cf9b8b1b79cbfb2b71",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1.class",
+    "sha256Bytes": "82fe318fc726b834885a812168da43de2909d33c3aebaac709f82ca00529d658",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$1.class",
+    "sha256Bytes": "9432bd62807732aa6ad96670526e94a27b20cb1339f78671ae43b1789991e9c0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$7.class",
+    "sha256Bytes": "119f127da369ee3fde9e89a02119afaa771929748dbd1beab31bbab2382dc64a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$entry$1$1.class",
+    "sha256Bytes": "1394de93f6e96c7ee3ff79f9e215cfaa85c16676715ec9a95fc621395e899c77",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$2.class",
+    "sha256Bytes": "1d7a0c12854af4d2b069b847d5f5f9619f25ec557170f0872ce2ad2b850b91a7",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$3.class",
+    "sha256Bytes": "cb67b80142f8f86d93f686fd51bcc59bf04af724c21edebd5890a40bc8614b53",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$4.class",
+    "sha256Bytes": "caca5e6da27f765b10b28321700d3741373dbc11e40c48ee30bbd200ab3d94a0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$lottie$1.class",
+    "sha256Bytes": "21977a749e412303f92f9011ae370e9c6aa9f86499734922a6d778368f47d33b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$lottie$2.class",
+    "sha256Bytes": "4f63f110d2707f1144fb8fda71de2809a475dda0335be9f0a46323fe6251bbfb",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$mediaOwner$1.class",
+    "sha256Bytes": "ae1e852cc4052a5f6385ce5fdc4f38f39719d550d6b4a89c6a5b46190a4c130c",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$mediaOwner$2.class",
+    "sha256Bytes": "ac7338c1920b00b55958f5fc6611fe311e9fb0c0a32b42f3a9a422840db6dd88",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$returnOwner$1.class",
+    "sha256Bytes": "6c2dbe8f5314fd9be23399aec3934d6eab41168acef43c8deebd1b76d8d08076",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$returnOwner$2.class",
+    "sha256Bytes": "81aa83ac6b487dec559a0f615b89daa602ecc2d828a7fda54f9975d4c966b64c",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$search$1.class",
+    "sha256Bytes": "b2aec3c3eddfd5f4f5d0f0d79184cfd542a0da3cf84315d417e0b573f6e30214",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory.class",
+    "sha256Bytes": "464743b66eeb3ce066a9aa55414bb300309a0478146012fb529b8225f94dda7d",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$closeAndJoin$2.class",
+    "sha256Bytes": "5271e815641dfed467ef91ab7ef2ee5cf58852c6333590f1336b76d57aa14e3e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$1.class",
+    "sha256Bytes": "509383ced9bdee24de902750af73d0aeba5c2325527305eced1fdd7b61a37b72",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$2.class",
+    "sha256Bytes": "1785f42c2033ea9196a5cc90a552d242792e326eb92d5622c053582c9ff93edb",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$owner$1.class",
+    "sha256Bytes": "a86347a68fbe5fe3e97934f39be0c56505c9e7bd831fdb2c140a5327617dbdc3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer.class",
+    "sha256Bytes": "8eba653d69373fd0d27cda5845d3c8450977f4a0b68cdd03e5b23e81546b40ab",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootReturnPorts.class",
+    "sha256Bytes": "39a9e49d6c95ecef2079cd49d0084efbf30ce5a8f9e83eec75dce1d00135aaae",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopHomeRootWindowBindings.class",
+    "sha256Bytes": "a6c53eb8d1685ac333ca2e20ce08440602052fb77a0f85e0e11e5c575c4bcb77",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopRetainedHomePageKt.class",
+    "sha256Bytes": "5362fca6646d272c0fc56971df84fb8f6c033d772ed37302b50664d32230018d",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/candidate.jar",
+    "sha256Bytes": "c3c5892bcf78eef16fe7260a728afb8e01c2641521401f060c5bd5019fe3462b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "3c16ef17770e79b5484742a44bb75982ac386f60443e97ba0d6fa9ffa1ed53ae",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopEyePaint.class",
+    "sha256Bytes": "15ee8400662347f92fc385f553cb19c91982e5798001518a46cc284ae14d60d3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopFeedFilterPlugin.class",
+    "sha256Bytes": "511b260707c08e0c6f178f72b3e39ec9e9749b66d03cbae0d7f03fd835383c42",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPlaybackCdnPlugin.class",
+    "sha256Bytes": "541301327347fbbc7d168e24de07d4013960d852caa6255a7cacc3c3c10b43d0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$1.class",
+    "sha256Bytes": "0d59ef582b91330ee1393b56168c6f755e94c9b828c26a57fe77f7fc0a3adf23",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$2.class",
+    "sha256Bytes": "973de8e7e910eea1c2c2ded4991672750471ff28fa46708a58ef91ac02ca3c9f",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$3.class",
+    "sha256Bytes": "c348e685683c1d12a17d2d615d58962e878b8cb8a967eff25dfd558526d002d2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$5.class",
+    "sha256Bytes": "6e68acdd2d95af18f52c4b7942a47e4a8a9e586bf7dbdbdad8c05189581e9d29",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6$1$emit$1.class",
+    "sha256Bytes": "90f18b75cb97fcbd122420ce9eb25035fcfffebce4855715146a22ac13f90162",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6$1.class",
+    "sha256Bytes": "61135f06348d62241ee62c4d515632b2d7ab380acd2a0c017d46177ed461cd0a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$6.class",
+    "sha256Bytes": "949233ffc8c64f9cc22aa6d90c1cd55505f54a24125fb860ac91ca15bb965c61",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$7$1.class",
+    "sha256Bytes": "f4ddabb953cee7c9a058fdc7f5080cdd757f0899db759ec52e75897c000ca845",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$7.class",
+    "sha256Bytes": "56076385ec767e5575e98009c8d82e1acdbdd49a874d12f6d72fcac9016e720d",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$8$1.class",
+    "sha256Bytes": "ce881e5eb3bc01c1d6824a6a1a4f7fe52fbc46de790e32b4b1ec19b6bde23962",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$8.class",
+    "sha256Bytes": "03afd43f01ccafbcbd9194ffe6a76cd409195eccb34e42752c24c548dd8e53a1",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$close$1.class",
+    "sha256Bytes": "3274935c122902180908a2b79c370fa4095a257943aef1f08338efb2901b37bc",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$configurationChange$1.class",
+    "sha256Bytes": "35eef8be146a2e02aec05340cf52af10d2488333e99a2e8606cae319bd3b6720",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$CurrentVideo.class",
+    "sha256Bytes": "9bd939be19bd6137c0c125ecbcc45662456abf96808411e69cd766853af14c50",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$eyePaint$1.class",
+    "sha256Bytes": "6c5356b30c1630784f49b792adb33e5d043e9e1f65b47e1515e81f61aa7fe61e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$eyePaint$2.class",
+    "sha256Bytes": "5a9ad20085337a510441d3dfc685f5d12d7fd38efe866f5cc9ce018c14aef3e4",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonText$1.class",
+    "sha256Bytes": "2eb1e79da15fbc08e117b840dfe21fa77cc80c75fb54fdf80aa55a6c9b64bdfe",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonText$2.class",
+    "sha256Bytes": "e2086aca13af72aec7e6566a6678a10895967de15fd6d937093fdcb9cfba3338",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonUrl$1.class",
+    "sha256Bytes": "272899b894b6e6b90a4edceb8dbf57dee4c0f0d1b6b92eca75946bac7e8a81ef",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$importJsonUrl$2.class",
+    "sha256Bytes": "85b459641099c208b8fd57c5a9a6a7a60e2896e0127e8c7f86d5f64815584486",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onPositionUpdate$1.class",
+    "sha256Bytes": "075a2c89a4bdf3bb4398f815e253c21bc40df3a6368833dd881084e33b4423f9",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onSponsorSkipCompleted$1.class",
+    "sha256Bytes": "e04751758925b4e375d6b3501b75b84f062e3dcfbaccda30b1940a4aca40ee56",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onSponsorSkipCompleted$2$1.class",
+    "sha256Bytes": "7d0a4caf6215889a979b58a4bacad87cb3edde42e36891168601506ebeac6237",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onUserSeek$1.class",
+    "sha256Bytes": "58bdaad4e23802b672f3aa1a6b4578e78a121358c8cdf6dd36bea7bbd68ff4af",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onVideoEnd$3.class",
+    "sha256Bytes": "d1f7991d55c8bcc87120b4159c0c5265da2ddc65157cb40ffaea6b3fe5cad5fd",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$onVideoLoad$1.class",
+    "sha256Bytes": "fddd3410928324865f5cc06874fdf6bed49debd2a47760731305cb521f30d712",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$previewJsonUrl$1.class",
+    "sha256Bytes": "9e160d0cf0687249457526c3ea346ae1b03c05b14148f136e0107cb4ed5c13a7",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveAdFilterConfiguration$2.class",
+    "sha256Bytes": "0442174bb24c9fa016ee3f9c70f0f956271b1a78e54df97ef860852b3acb4493",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveCdnConfiguration$2.class",
+    "sha256Bytes": "60e959e6e185c80ac8afaa96b225b7b62bf19a098c769b7339249c126bd678ba",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveDanmakuConfiguration$2.class",
+    "sha256Bytes": "def8b41c565b4c43f1d6611d469b59bc09017d0b2193ea75fc24e3999f23185b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$saveSponsorConfiguration$2.class",
+    "sha256Bytes": "a7ce3415188bdf729bdbcfa15e208b4ec5262a6cbd2e2d425ae2a4b83ed92653",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$setEnabled$1.class",
+    "sha256Bytes": "0aa00c5f207292a9407ab0b9b73f9d9b6b5b5e45647a65b15c47fbe49be28542",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$shutdownForRestore$2.class",
+    "sha256Bytes": "cb63830ac32efe3662c170f08958f03890dbc5a1a6b0c0a7bc6140f5353ed4aa",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$submitSponsorSegment$1.class",
+    "sha256Bytes": "04a9c4c7ccd50a4b51322e7f958e93eeb7270595654454b38742c0010b449b84",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$subscriptions$1.class",
+    "sha256Bytes": "79d38d94ab4cc198c9e2ce4457effe391e1e840de26c67b8a5996f40548c76d3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime$voteSponsorSegment$1.class",
+    "sha256Bytes": "2a29dcc02e25cb3b19c0647f6c3954d346fd2108922a74030c86113f098db58c",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntime.class",
+    "sha256Bytes": "48a865869c91fee495f70907717246a0da6ed6d28532caedf37e075f53c979a3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopPluginRuntimeKt.class",
+    "sha256Bytes": "065d46d317185a6671db60439e702952e408d286aa40066a5736fa46d78ddd0c",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$awaitOwner$1.class",
+    "sha256Bytes": "8e5f618704910a6a68a279e1f682db83082c67fa108cc270f6a4d34ee3c0fe2b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Binding.class",
+    "sha256Bytes": "06ff971d2dbf02523be30ea77687f3a8c44bbe0d28aee37b72f37ecd5f932f13",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command$Account.class",
+    "sha256Bytes": "91249cd8cf012f6289688b433a985a884e9718fdd33afdf13a8ed06d1d3f1ab2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command$Install.class",
+    "sha256Bytes": "0183dec2ed0ed457af43a84a9796f5f7872e9ca9f0f1df6eae3986595615e178",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Command.class",
+    "sha256Bytes": "dfc84086a182a1a7672b20fea49c84d7ad371541b7d0abbe14a45848c0d165c2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$consume$1.class",
+    "sha256Bytes": "1a8f78bd8917cf049714d4cc62732819a144665c0e1773f9fa49dc02ed366abc",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$reload$1.class",
+    "sha256Bytes": "5326ea43854f8047a9b69efba89e50dbcebcc10ff8aacbac397a47ae9e8062da",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$retire$1.class",
+    "sha256Bytes": "097323bc657ac51d913295559dd42344b036b7ce1a5f6695ff5514073affa06b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$retire$2.class",
+    "sha256Bytes": "c486759d8339202e8330b2c7de323466906c051fab573cb9c4ff6f5b370ee773",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$shutdownForRestore$2.class",
+    "sha256Bytes": "45a7cdd9ffc68c8112db89ca26c221ff7937faa21a8440f4636e0a8b4305feb6",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$1$1.class",
+    "sha256Bytes": "6e1451d8caf6eaefd7758662e6bb8cd6f08c98026a56fb750a493ddf373c02ba",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$1.class",
+    "sha256Bytes": "410a979aebeb1bdc36190c5cf95e8cb1e540af4007c2d3dd5a92dc8e6e4a5607",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$3.class",
+    "sha256Bytes": "7d54edb6799621ac0d44fc4b6a125eab4bbebb8d70a999735395041c3fe36928",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1$4.class",
+    "sha256Bytes": "47833a54781e046d9396eb7fce41ddde6c15d4ea77f8f2f64f5aa26dfb4e501b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$worker$1.class",
+    "sha256Bytes": "65c3980b79b57e6341d4d776b9074ebd9aaaf7f0ccc64a32a91a6ce1ea40966e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.class",
+    "sha256Bytes": "b90b1b5dc9915b336da0c1fb9307a60747aaf9ed560ffe3f85911de321d31eb3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/plugins/DesktopTodayWatchState.class",
+    "sha256Bytes": "0061d148b8d4d931eee1f55b4c34853696093835f5bd05a1efdded1e22c7346a",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRetainedRoot$closeAndJoin$2.class",
+    "sha256Bytes": "5f97e8ee7ee681cf68d59b56b50d618354657ae02d5173451444256a4583ed1f",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRetainedRoot.class",
+    "sha256Bytes": "2bc13e239e1d571bc17398285f8f255ca9a2f78871c122f02df981c40df00be4",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$1.class",
+    "sha256Bytes": "d29a7f26410a4d8cd2fd075dee912a96557461624fb6b61490a42441617ecdd5",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$2$1.class",
+    "sha256Bytes": "3af28cff131e6c91dc270ff936447dd2052711c32a8ea7fcb12635861a365910",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1$2.class",
+    "sha256Bytes": "38851d4f026d7a237a16ce4c47986100b4e1b5451f967a77c26fe2206947fd18",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$$inlined$map$1.class",
+    "sha256Bytes": "27913d501e73200d6c7eb9a2c9fe43b7c6a1f2f78233729a317cfa8374e47805",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$1.class",
+    "sha256Bytes": "717e644cce3baec380d54bf0a060f148e7823f2214168890259b98c1d4200f69",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$7.class",
+    "sha256Bytes": "6bac317b7ca34e76dfaae87c56a09e81ea3597bbdb03aad4b7efa3d1c0327163",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$entry$1$1.class",
+    "sha256Bytes": "efac04bf702cbee730a1cdd6a6d8f4cd1c58e30ab5193a40cef0de6c437ac0c2",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$2.class",
+    "sha256Bytes": "64118c812608c779533154d9289f047be20592851c079d55aaa63e6f9396b60e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$3.class",
+    "sha256Bytes": "0befc74895e9b64def977c0d5e149ca24bc846775f27c6e8e14ef62089f8a8ba",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$environment$4.class",
+    "sha256Bytes": "9f80e4225a9805d037aa1f2ef0e509b75899d67d68ecdb38f2351169c862f4a8",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$lottie$1.class",
+    "sha256Bytes": "74baba0afed593340571a5d3f3ad01e9765a26f2263adebc09eccc9161e2265b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$lottie$2.class",
+    "sha256Bytes": "a48a41769692a7c77eb33ee5b09d400febd643d811cbfb43d179ff0e040b348c",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$mediaOwner$1.class",
+    "sha256Bytes": "7604798dee0be3ce2da36f17e50355fec4595d702d420ad477b716877346fb00",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$mediaOwner$2.class",
+    "sha256Bytes": "a503a53a40eb42d51d1e2f78c9eb93094f5b18aae10e9402f0b72f88a9d0e62b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$returnOwner$1.class",
+    "sha256Bytes": "a2f475a2601e36a7ad2b3c4429840a1d00fe8e10a5da00b2abb2fa07440c1475",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$returnOwner$2.class",
+    "sha256Bytes": "54554d516cf50c418006d1262b8534027e19a6b04bc9afc10b308a42fc7f5450",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory$create$search$1.class",
+    "sha256Bytes": "86d454c2a5bb561eb59076747ae6840d224b97a3582e46593f2dba0deca4e378",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootFactory.class",
+    "sha256Bytes": "493aea70d654b78c2af7d2379eeab4036b6b8eba1734e450ed77a3cfaa890ac4",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$closeAndJoin$2.class",
+    "sha256Bytes": "5271e815641dfed467ef91ab7ef2ee5cf58852c6333590f1336b76d57aa14e3e",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$1.class",
+    "sha256Bytes": "509383ced9bdee24de902750af73d0aeba5c2325527305eced1fdd7b61a37b72",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$2.class",
+    "sha256Bytes": "1785f42c2033ea9196a5cc90a552d242792e326eb92d5622c053582c9ff93edb",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$owner$1.class",
+    "sha256Bytes": "a86347a68fbe5fe3e97934f39be0c56505c9e7bd831fdb2c140a5327617dbdc3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootRetainer.class",
+    "sha256Bytes": "8eba653d69373fd0d27cda5845d3c8450977f4a0b68cdd03e5b23e81546b40ab",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootReturnPorts.class",
+    "sha256Bytes": "39a9e49d6c95ecef2079cd49d0084efbf30ce5a8f9e83eec75dce1d00135aaae",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopHomeRootWindowBindings.class",
+    "sha256Bytes": "a6c53eb8d1685ac333ca2e20ce08440602052fb77a0f85e0e11e5c575c4bcb77",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "compile-04/classes/com/bilipai/desktop/ui/DesktopRetainedHomePageKt.class",
+    "sha256Bytes": "5362fca6646d272c0fc56971df84fb8f6c033d772ed37302b50664d32230018d",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "8af876a1002e20b5c65c814ffcb403efadf2ef5ca491e935b04161582a35bd8b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$2.class",
+    "sha256Bytes": "93f58702e70e51f13386b7d611c8b00a4379e32f71e1d38c783dffba53304746",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$3.class",
+    "sha256Bytes": "0ab6068656f36323ee4d2e65c1db832b053fa60bdba18affdb1f41a69caa1fa3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$4.class",
+    "sha256Bytes": "096b4f0de730ce99133c40505b71f62a63af91e3fd6f8f061ae536aacf202d3d",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$5$1.class",
+    "sha256Bytes": "23c170dfba5a699c355bd0e8c17564232f9cb09016dbd61e24a56a0852343690",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$5.class",
+    "sha256Bytes": "021d207551b674ddfc1d7c1817cf8105408097ff5bede8f21dc00e2237f33679",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$replacement$1$1.class",
+    "sha256Bytes": "b928ad1832ab9d5a57f16afc3b458ef0706a04719c2f95d74a63bc500bde5b53",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$replacement$1.class",
+    "sha256Bytes": "1bd7163dca78a6571dc598b696219858994f982165275061e960489ca49ca8b9",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$startup$1.class",
+    "sha256Bytes": "f810f635ce64673c0383e370127091d0ff3716f483a099e6d40c3fe077ed3f57",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$waitingReload$1.class",
+    "sha256Bytes": "5c0a9fc40efc8656590bfdc0b810a70c7399ff2773feeca9118a210e43bb1ef5",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1.class",
+    "sha256Bytes": "ffb2859f2129ec386d30e5ce3184467c3703645963f0165dc0760c12b31a5f86",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt.class",
+    "sha256Bytes": "a601388ef3482610fd4d06c7b9795bcc8cccbc295317cdf2e2e79201987079c0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-01/classes/com/bilipai/desktop/ui/ScriptedOwner.class",
+    "sha256Bytes": "eade5f713204e78a02a5570a970e6e6484d88b1b58dd36be1a05544f4720392b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "8af876a1002e20b5c65c814ffcb403efadf2ef5ca491e935b04161582a35bd8b",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$2.class",
+    "sha256Bytes": "93f58702e70e51f13386b7d611c8b00a4379e32f71e1d38c783dffba53304746",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$3.class",
+    "sha256Bytes": "0ab6068656f36323ee4d2e65c1db832b053fa60bdba18affdb1f41a69caa1fa3",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$4.class",
+    "sha256Bytes": "096b4f0de730ce99133c40505b71f62a63af91e3fd6f8f061ae536aacf202d3d",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$5$1.class",
+    "sha256Bytes": "23c170dfba5a699c355bd0e8c17564232f9cb09016dbd61e24a56a0852343690",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$5.class",
+    "sha256Bytes": "021d207551b674ddfc1d7c1817cf8105408097ff5bede8f21dc00e2237f33679",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$replacement$1$1.class",
+    "sha256Bytes": "b928ad1832ab9d5a57f16afc3b458ef0706a04719c2f95d74a63bc500bde5b53",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$replacement$1.class",
+    "sha256Bytes": "1bd7163dca78a6571dc598b696219858994f982165275061e960489ca49ca8b9",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$startup$1.class",
+    "sha256Bytes": "f810f635ce64673c0383e370127091d0ff3716f483a099e6d40c3fe077ed3f57",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1$waitingReload$1.class",
+    "sha256Bytes": "5c0a9fc40efc8656590bfdc0b810a70c7399ff2773feeca9118a210e43bb1ef5",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt$main$1.class",
+    "sha256Bytes": "ffb2859f2129ec386d30e5ce3184467c3703645963f0165dc0760c12b31a5f86",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/HomeRetirementFixtureKt.class",
+    "sha256Bytes": "a601388ef3482610fd4d06c7b9795bcc8cccbc295317cdf2e2e79201987079c0",
+    "reason": "task compiled evidence; never install/commit"
+  },
+  {
+    "path": "proof-02/classes/com/bilipai/desktop/ui/ScriptedOwner.class",
+    "sha256Bytes": "eade5f713204e78a02a5570a970e6e6484d88b1b58dd36be1a05544f4720392b",
+    "reason": "task compiled evidence; never install/commit"
+  }
+]

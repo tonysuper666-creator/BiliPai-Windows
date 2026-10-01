@@ -1,0 +1,20 @@
+{
+  "groups": 3,
+  "assertions": 34,
+  "actualSnapshot": 41,
+  "entries": 97,
+  "overrides": 0,
+  "externalHttp": false,
+  "personalWallpaperRead": false,
+  "rootMounted": false,
+  "fixtureJarSha256Bytes": "04cb6b0319a536696131babe9909df3e544f24510e1d54d9834028a586d07464",
+  "candidateJarSha256Bytes": "3ce28d523a46e923b52f627dd2c14b7e0ff0a83ac128568519b35310fdee1fa1",
+  "actual97PinsVerified": true,
+  "localFixture": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-wallpaper-palette-parity\\proof-03\\local-fixture\\known-five-bands.png",
+      "sha256Bytes": "07a45e38858fa1a542e4b6cfe96dfa1e1c2b3d88f3de468f49333302a46e14dc"
+    }
+  ],
+  "sharedGradleRun": false
+}

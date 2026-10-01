@@ -2,7 +2,7 @@
 
 当前目标已更新为正式版 `v0.2.3` / `3d5d19a2f994daccd0e2f8b5f522b6d82f43d589` 的实际能力。已验收的 Main04 源码仍固定在 `v0.2.3-alpha.9` / `fcf84853b287662e8a9129ea0d38576c36522a34`；正式版在隔离候选分支重基，已通过实际整包 `classes09` 和包含投票、下载画质及取消修复的 `classes11` Kotlin/Java 编译，完整界面运行及打包仍待验收。上游 APK 不参与 Windows 运行。用户已确认上一测试版普通视频能播放；该确认不代表其他模块完成。
 
-候选当前固定 926 个源码身份和 213 个资源，原 Android 与库源码树保持正式版原码。原发布界面及 18 张选择、9 图评论流式发送、空间多图预览、原章节条、默认两任务并发及全部暂停/继续和速度、下载画质选择及缓存丢失回退、原投票卡和投票/打分弹幕、原封面采样取色与诊断修复已接入源码。完整原每周必看页面和历史期数弹窗已接入同一路由。实际整包 classes22 编译通过，在完整 BGM、UGC 合集、荣誉声明、创作者团队及共享玻璃 Tab 基础上加入原视频评论线程、搜索、草稿、输入、提及、表情、发送回执与反诈链路；搜索回调按原 rootReply 打开线程。动态、评论、空间与 BGM 文字分享消费同一 Root actor及页面 scope，原 shown-session watcher 清退失效所有者。来源及边界见 `verification/stable-comments-sharing-integration`。自建真实 HWND 证明原生 Show 请求与失效释放、单次注册/注销及零遗留 dispatcher；未观察 DataRequested/provided，未验收实际 Root 按钮、系统面板显示或接收方。游客网络检查推荐/搜索通过，视频详情 HTTP 412，完整网络门槛未通过。收藏原页实际窗口交互、全 Root/PiP/DPI/真实账号交互和打包继续推进，源码数和编译结果不用于换算功能完成率。
+候选当前固定 927 个源码身份和 213 个资源，原 Android 与库源码树保持正式版原码。原发布界面及 18 张选择、9 图评论流式发送、空间多图预览、原章节条、默认两任务并发及全部暂停/继续和速度、下载画质选择及缓存丢失回退、原投票卡和投票/打分弹幕、原封面采样取色与诊断修复已接入源码。完整原每周必看页面和历史期数弹窗已接入同一路由。实际整包 classes22 编译通过，在完整 BGM、UGC 合集、荣誉声明、创作者团队及共享玻璃 Tab 基础上加入原视频评论线程、搜索、草稿、输入、提及、表情、发送回执与反诈链路；搜索回调按原 rootReply 打开线程。动态、评论、空间与 BGM 文字分享消费同一 Root actor及页面 scope，原 shown-session watcher 清退失效所有者。来源及边界见 `verification/stable-comments-sharing-integration`。自建真实 HWND 证明原生 Show 请求与失效释放、单次注册/注销及零遗留 dispatcher；未观察 DataRequested/provided，未验收实际 Root 按钮、系统面板显示或接收方。游客网络检查推荐/搜索通过，视频详情 HTTP 412，完整网络门槛未通过。收藏原页实际窗口交互、全 Root/PiP/DPI/真实账号交互和打包继续推进，源码数和编译结果不用于换算功能完成率。
 
 收藏夹切片见 `verification/stable-favorites-folder-integration`：完整原 CommonList/FavoriteCategory/VM/Repository 与分类、管理、搜索排序源码已编译；原 FavoriteFolderSheet/CreateFolderDialog、原多选状态和一次 dealFavorite 增删差量已接到视频页。简介/隐私、新建后选中重载、按实际窗口高度限高、长按强制抽屉及同全局快捷默认收藏偏好保留。当前按钮是 Windows 绑定，完整原视频 action row 未宣称对齐。云端关系和 raw.stat.favorite 由同 Root 当前视频持有；按不可变 aid、凭据 epoch、页面生命期与原 SessionStore 原子所有者关口拒绝迟到回调。classes17 全构建通过；随后快捷操作同步准入修正通过 classes18，避免 launch 尚未开始时重复点击排队。两项当前控制器测试证明数量在分 P/画质切换后保留，并拒绝不同 aid、epoch 和外来原生源；一项原音乐路由生命周期测试包含 18 个用例，三项 JUnit 全通过。首次测试编译遇到旧 alpha.9 Native BGM 断言，按稳定版完整 Detail 路由修正后重跑，失败日志保留。此处用临时资料及未挂 HWND 的实际播放器 actor，不证明真实账号、在线取流、系统弹窗或 EXE。该阶段的原导航入口与队列续接随后已接入，见下述 Root 切片；实际 Root 界面交互仍待完成，源数量不换算功能完成率。
 
@@ -35,6 +35,8 @@ Windows 首页偏好平台切片见 `verification/stable-home-windows-prefs-inte
 完整个人页、直播子路由和首页四页聚合见 `verification/stable-profile-live-aggregate-integration`：原Profile UI/VM与配套抽屉、原Live四个完整页面、四页保留实例聚合已装入，通过classes41整体编译。actual41/97零产品覆盖；180个个人页已安装类不初始化加载通过，Live3组25断言、页面生命周期4组通过。复用既有Home原生媒体owner，实际libmpv EOF/循环、皮肤STARTED生命周期及GIF裁切像素等27项检查通过，合计26条产品类来源。当前895源码身份、213资源；不等于功能完成率，实际Root栈/窗口、完整授权/分享/调色板与EXE仍待验收。
 
 完整导航宿主与分享/授权界面见 `verification/stable-navigation-share-integration`：原776行Host、778行卡片转场与原返回栈/Entry/深度/预测返回政策，完整分享抽屉/好友发送/更多目标与127行授权UI通过classes42整体编译。actual42/97零产品覆盖，173个已安装导航类加载、Nav4组、Share24断言、实际原生分享actor及同一诊断队列25断言通过；新鲜重建桥接DLL及实际7组文件准备/释放通过。当前926源码身份、213资源，三项Lifecycle仅显式暴露既有运行图模块。Root窗口/全部路由、真实分享目标、Home替换与EXE仍待验收。
+
+原壁纸完整取色、保留首页工厂与实际窗口导航 owner 见 `verification/stable-palette-home-window-integration`：classes43整体通过，927源码身份/213资源/97既有运行项；actual43零产品覆盖，原取色34断言、首页退休4组/86类加载、真实未聚焦窗口17断言通过。旧TodayWatch并行规划器已替换为原Home owner投影桥，Runtime和Shell退出顺序已准备；完整Root MainHost/路由与首页显示仍待挂载，不能将本次编译等同新版EXE验收。
 
 正式版元数据分别核验：发布说明 versionCode 414，固定 tag 源码 415，官方 APK 二进制清单 418。已观察 tag 后六次提交的 main 为 `f2973e9a0649a4d32618d65e8870165a048e0a02`、源码版本 418；版本号相同不能证明 APK 精确构建提交，候选仍固定上述 tag，歌词、听视频、首页撤销/定位提示与评论图标的六文件后续修改单列待复核。历史 Main15 启动首次结果因 Composition 错误被审查否决，第二次失败亦保留；准备实际 JS 资源后的第三次访客窗口启动通过，仅证明启动/关闭，不证明页面交互或新的 EXE 已交付。
 

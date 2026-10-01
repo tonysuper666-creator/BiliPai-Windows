@@ -1,0 +1,3 @@
+ORIGIN com.bilipai.desktop.ui.DesktopRootWindowNavigationOwner file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar
+PASS actual physical-window root owner / 17 assertions
+LIMIT no focused RESUMED/minimize/predictive/Root NavDisplay/account/HTTP acceptance

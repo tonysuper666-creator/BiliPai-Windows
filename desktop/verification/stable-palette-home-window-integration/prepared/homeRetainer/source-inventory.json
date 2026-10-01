@@ -1,0 +1,23 @@
+{
+  "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "newOriginalIdentities": [],
+  "existingOnlyReferences": [
+    "HomeScreen/HomeViewModel/HomeCategoryPage",
+    "original HomeSettings/TopTab/NavigationSettings",
+    "Video/History/Live/Message/Action request selected bodies",
+    "original Dynamic HOME_FOLLOW timeline authority",
+    "original Partition/Bangumi/Live/Subscription VMs+full UI",
+    "BiliPaiReturnSessionState and Home dispatch/source policies",
+    "original Share/consent renderers",
+    "existing actual Gallery/image codec/location actor",
+    "existing original CardSession/emotes",
+    "existing Windows media/Lottie/Window/metrics"
+  ],
+  "referenceAuthority": "immutable actual42 strict97 compiled original/adapter families; no duplicate source producer",
+  "manualFiles": [
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopRetainedHomePage.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt"
+  ]
+}

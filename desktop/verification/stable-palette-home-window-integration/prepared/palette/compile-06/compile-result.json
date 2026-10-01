@@ -1,0 +1,32 @@
+{
+  "actualSnapshot": 41,
+  "actualRuntimeEntries": 97,
+  "sources": 4,
+  "javaSources": 2,
+  "kotlinSources": 2,
+  "classes": 18,
+  "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-wallpaper-palette-parity\\compile-06\\original-wallpaper-palette.jar",
+  "jarSha256Bytes": "3ce28d523a46e923b52f627dd2c14b7e0ff0a83ac128568519b35310fdee1fa1",
+  "overrides": 0,
+  "duplicateFqn": 0,
+  "sourcePins": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-wallpaper-palette-parity\\prepared\\manual-java\\com\\bilipai\\desktop\\palette\\DesktopPaletteTarget.java",
+      "sha256Bytes": "e9d918af69a38175d9fac6ce60b6ef3d59a133a6e78ecb1fc165685687b10384"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-wallpaper-palette-parity\\prepared\\manual-java\\com\\bilipai\\desktop\\palette\\DesktopWallpaperPaletteScoring.java",
+      "sha256Bytes": "fce1b1803e5bc0d4c0dca36cf463052e2b14972afccafad8faf6dc014d1251bc"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-wallpaper-palette-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopWallpaperPalettePlatform.kt",
+      "sha256Bytes": "42f11cff3ca81e3685994c0cc1176a4eda0910051fc98c4db5e0c6a05bed746e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-wallpaper-palette-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\home\\components\\cards\\WallpaperPaletteStore.kt",
+      "sha256Bytes": "be96484050dfea039e5e0cb687712fa00c5a3e5940e0fc707a400749f7f3cf36"
+    }
+  ],
+  "sharedGradleRun": false,
+  "rootMounted": false
+}

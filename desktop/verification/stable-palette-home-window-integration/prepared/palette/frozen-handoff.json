@@ -1,0 +1,215 @@
+{
+  "scope": "Full original WallpaperPaletteStore and AndroidX Target/scoring closure with required sameRoot owned Windows image/system effects",
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalSourceSha256LF": "521e632d1b8f3655e862abbeb3624bfaabf144fd8274f5315a2f9d646adb2219",
+  "actualSnapshot": 41,
+  "actualRuntimeEntries": 97,
+  "actualOrderedClasspathSha256Bytes": "23e35645396f8b5b1d720c9604799bacccb75e3edca551dcf49da54497564abe",
+  "productionSources": 4,
+  "installPayloads": 4,
+  "generatedOriginalSources": 1,
+  "newOriginalRegistryRows": 1,
+  "newDependencies": 0,
+  "secondQuantizer": false,
+  "compile": {
+    "candidateJarSha256Bytes": "3ce28d523a46e923b52f627dd2c14b7e0ff0a83ac128568519b35310fdee1fa1",
+    "classes": 18,
+    "methods": 146,
+    "runtimeOverrides": 0,
+    "classAndTopMethodOverlap": 0,
+    "invalidJvmMethodNames": 0,
+    "loadedWithoutInitialization": 18
+  },
+  "proof": {
+    "groups": 3,
+    "assertions": 34,
+    "sourceChecks": 89,
+    "fullOriginalFilesRecovered": 2,
+    "originalOfficialScoringMethods": 6,
+    "sameActualSingletonImageLoaderLocalDecode": true,
+    "personalWallpaperRead": false
+  },
+  "windowsSystemColorUnsupportedGuard": true,
+  "sameRootBindingRequired": true,
+  "rootMounted": false,
+  "actualWindowsWallpaperAccepted": false,
+  "externalHttpOrAccountsUsed": false,
+  "sharedSourcesModified": false,
+  "sharedGradleRun": false,
+  "deployedExe": false,
+  "installContractSha256Bytes": "546841e8ee857d9eb4d891f3f3c65537c89736ad7d8ef831354738ffc6435e81",
+  "artifacts": [
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "5a1515a351c50d85c9228d1f638e04a5e8f266ca2013102735fecedf3ef2a3b9"
+    },
+    {
+      "path": "WallpaperPaletteFixture.kt",
+      "sha256Bytes": "5d66e3815ea6b7e9cdc1258675c40de5937a40a513b97a1d91b2e2ed1c95b49b"
+    },
+    {
+      "path": "abi-audit.json",
+      "sha256Bytes": "91fe51434b0d419120b6c7eec86ddd6eeca4ab8f997b3dffe23d0830c9270779"
+    },
+    {
+      "path": "audit.py",
+      "sha256Bytes": "6efac89ca0d5a86e5c95a76f5c27044fcd0e73dfddb790465fc4ed52a3082059"
+    },
+    {
+      "path": "classload-proof/PaletteClassLoadProof.java",
+      "sha256Bytes": "488630dd85445b48623986254f76c1fbc4781dad2e7f15700cecfc0b71b5c6aa"
+    },
+    {
+      "path": "classload-proof/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "classload-proof/run.log",
+      "sha256Bytes": "28fa27c38e1112281382d893ebb1ff5e76ad09f4ac4d92a6d3e4495f7f92c62a"
+    },
+    {
+      "path": "compile-06/compile-result.json",
+      "sha256Bytes": "25aa55c82ccc188f154dc584d2d630503b8fdda006e1690a10bee893b77bbfb2"
+    },
+    {
+      "path": "compile-06/java.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-06/kotlin.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-06/original-wallpaper-palette.jar",
+      "sha256Bytes": "3ce28d523a46e923b52f627dd2c14b7e0ff0a83ac128568519b35310fdee1fa1"
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "9ba52283367745449ac0551d2a6e48c9ab801698bd0e150e4610892ba77cdfb8"
+    },
+    {
+      "path": "finish.py",
+      "sha256Bytes": "fecdfba0d1a1aac93046702f257a8e23cf70f6f264652cd8f88ad7e0ccbb5c47"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "6f3708f65aaeb053324c2f2f40a0e682c23187d93edbf742f35f405bb75e7198"
+    },
+    {
+      "path": "gradle-tasks.snippet.kts",
+      "sha256Bytes": "51cbb72c77adc4c9cc64b422777839924318ef81cf412189a9582ac5c71a869a"
+    },
+    {
+      "path": "input-audit.json",
+      "sha256Bytes": "65c4b38380ccca81ffbb83cb9c138ad218adfd6b94b8b8a88cb5fad840610040"
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "546841e8ee857d9eb4d891f3f3c65537c89736ad7d8ef831354738ffc6435e81"
+    },
+    {
+      "path": "official-palette-1.0.0/Palette.java",
+      "sha256Bytes": "d080c301d25f589b957b19a1f11b777dc37045bd3a6e07a4913709a31fcb2b77"
+    },
+    {
+      "path": "official-palette-1.0.0/Target.java",
+      "sha256Bytes": "f3763875ff4adc2c236461980b4cecd797c0ee1356d42beb51871a6acdae2bf8"
+    },
+    {
+      "path": "official-selection-receipt.json",
+      "sha256Bytes": "4a14cdc26c354c77dcb93b12eb2b0ccac9142e5bf7af7b0e3ee0db7fa3aea7ef"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/home/components/cards/WallpaperPaletteStore.kt",
+      "sha256Bytes": "521e632d1b8f3655e862abbeb3624bfaabf144fd8274f5315a2f9d646adb2219"
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "9acb9e7f42ce7ff58db1c2fb905725aff95ae7b8a2f1faa26bdb6bd4f21a099f"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/cards/WallpaperPaletteStore.kt",
+      "sha256Bytes": "be96484050dfea039e5e0cb687712fa00c5a3e5940e0fc707a400749f7f3cf36"
+    },
+    {
+      "path": "prepared/manual-java/com/bilipai/desktop/palette/DesktopPaletteTarget.java",
+      "sha256Bytes": "e9d918af69a38175d9fac6ce60b6ef3d59a133a6e78ecb1fc165685687b10384"
+    },
+    {
+      "path": "prepared/manual-java/com/bilipai/desktop/palette/DesktopWallpaperPaletteScoring.java",
+      "sha256Bytes": "fce1b1803e5bc0d4c0dca36cf463052e2b14972afccafad8faf6dc014d1251bc"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopWallpaperPalettePlatform.kt",
+      "sha256Bytes": "42f11cff3ca81e3685994c0cc1176a4eda0910051fc98c4db5e0c6a05bed746e"
+    },
+    {
+      "path": "prepared/tools/extract-upstream-wallpaper-palette.py",
+      "sha256Bytes": "638a86946ba9cba169e8f5bb1369a20e31263617c6cbfc94185fb780538e8e0a"
+    },
+    {
+      "path": "proof-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-03/local-fixture/known-five-bands.png",
+      "sha256Bytes": "07a45e38858fa1a542e4b6cfe96dfa1e1c2b3d88f3de468f49333302a46e14dc"
+    },
+    {
+      "path": "proof-03/proof-result.json",
+      "sha256Bytes": "c31e9e0c2ad6ecc6cda6c3d51cbbd5c782c784318f2829199941302f9c732db7"
+    },
+    {
+      "path": "proof-03/run.log",
+      "sha256Bytes": "17d60720fb6e992679a0ab05b4356881e8e3526a4be6ff7f391a84a68353567d"
+    },
+    {
+      "path": "proof-03/wallpaper-palette-fixture.jar",
+      "sha256Bytes": "04cb6b0319a536696131babe9909df3e544f24510e1d54d9834028a586d07464"
+    },
+    {
+      "path": "registry-merge-recipe.json",
+      "sha256Bytes": "3d6901dc4975729b9d50a1f2269017c6f3f03b5c7356f915b2ac3d7d7770489f"
+    },
+    {
+      "path": "replay-production.log",
+      "sha256Bytes": "cacaf10812b61e1732a785f9c6948840e18d44d7c4e9a78df995f5c53f847951"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/home/components/cards/WallpaperPaletteStore.kt",
+      "sha256Bytes": "be96484050dfea039e5e0cb687712fa00c5a3e5940e0fc707a400749f7f3cf36"
+    },
+    {
+      "path": "replay-production/wallpaper-palette-selection-proof.json",
+      "sha256Bytes": "5d11394ff43fdfd7f3f0c457a88ed7b1ad5d3cd4303b7467c217cff6f718e910"
+    },
+    {
+      "path": "reverse-adapters/DesktopPaletteTarget.json",
+      "sha256Bytes": "2355b4b7c0863ea7d3796bd9950553ea3ff5c7b05d47877a14648f8431d06565"
+    },
+    {
+      "path": "reverse-adapters/WallpaperPaletteStore.json",
+      "sha256Bytes": "911babbd8fa2571fe6e2b4b8ef98c143d57a03ea4a4964fb61a9424afba5aa8c"
+    },
+    {
+      "path": "run-proof.py",
+      "sha256Bytes": "3d040b4b60cd6a66d37e3d878db68bcdd32a12c5ce1a6535d55a3be7504e9a96"
+    },
+    {
+      "path": "selection-methods.json",
+      "sha256Bytes": "64d7a156c8ba40a1c7ad63caf137e2d313170ea823e671c744dceb600d64bae1"
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "99d80c784eb3e8c6803404c2a5c04607332bc24b7c705b4b77067c7976f867f2"
+    },
+    {
+      "path": "source-pins.json",
+      "sha256Bytes": "5f01e6ba5293a5ab28243adf967745f1341656d22f853b44e27308485dfe72c5"
+    },
+    {
+      "path": "store-methods.template.kt",
+      "sha256Bytes": "7886f1372cd38029c6075b7bea48573a5431d5b1961123931fe730fe936288fd"
+    }
+  ]
+}

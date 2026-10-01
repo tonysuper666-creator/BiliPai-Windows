@@ -1,0 +1,69 @@
+{
+  "passed": true,
+  "actualPhase": 43,
+  "actualRuntimeEntries": 97,
+  "productionOverrides": 0,
+  "productOrigins": 14,
+  "paletteGroups": 3,
+  "paletteAssertions": 34,
+  "homeRetirementGroups": 4,
+  "homeInstalledClasses": 86,
+  "physicalWindowAssertions": 17,
+  "focusedResumedOrMinimize": false,
+  "predictive": false,
+  "RootNavDisplayMounted": false,
+  "fullHomeRootMounted": false,
+  "externalHttp": false,
+  "personalWallpaperRead": false,
+  "realAccountMutation": false,
+  "results": [
+    {
+      "group": "palette",
+      "passed": true,
+      "productOrigins": [
+        "ORIGIN com.android.purebilibili.feature.home.components.cards.WallpaperPaletteStore file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.ui.DesktopOwnedWallpaperPaletteContext file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.ui.DesktopWallpaperPaletteRaster file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.ui.DesktopWallpaperPaletteLru file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.palette.DesktopPaletteTarget file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-java.jar",
+        "ORIGIN com.bilipai.desktop.palette.DesktopWallpaperPaletteScoring file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-java.jar",
+        "ORIGIN com.bilipai.desktop.palette.DesktopPalette file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-java.jar"
+      ]
+    },
+    {
+      "group": "home",
+      "passed": true,
+      "productOrigins": [
+        "ORIGIN com.bilipai.desktop.ui.DesktopHomeRootFactory file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.ui.DesktopHomeRootRetainer file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.plugins.DesktopTodayWatchRepository file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.ui.DesktopHomeRetainedEntry file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar",
+        "ORIGIN originalEntry=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar",
+        "ORIGIN prospectiveBridge=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar"
+      ]
+    },
+    {
+      "group": "window",
+      "passed": true,
+      "productOrigins": [
+        "ORIGIN com.bilipai.desktop.ui.DesktopRootWindowNavigationOwner file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar"
+      ]
+    }
+  ],
+  "fixtureSources": [
+    {
+      "path": "WallpaperPaletteFixture.kt",
+      "sha256Bytes": "91d2419e8a1f227d79a748869521650ff21323bb12f94ea727b96ad1759fd1ea"
+    },
+    {
+      "path": "HomeRetirementFixture.kt",
+      "sha256Bytes": "472a9d7e4ed81365936f01a362822e568839bb229ac2a61356434ef9dcadbc5e"
+    },
+    {
+      "path": "RootWindowNavigationFixture.kt",
+      "sha256Bytes": "56c8f478401803af64d4ff4e3296498237fe13da04ae53a17a56353649759bf4"
+    }
+  ],
+  "snapshotManifestSha256Bytes": "6252d7e16a2f413d48de0265dc7debb315b2eaefca0b58cde0d34d9258feb362",
+  "orderedClasspathSha256Bytes": "0785ee7cbe88b2615d9193882310a1fe36c368c71f9180b2a418a17136ab8440"
+}

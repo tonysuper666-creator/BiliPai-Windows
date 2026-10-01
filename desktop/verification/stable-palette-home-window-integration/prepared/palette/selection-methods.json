@@ -1,0 +1,13 @@
+{
+  "officialSelectedMethods": [
+    "generate",
+    "generateScoredTarget",
+    "getMaxScoredSwatchForTarget",
+    "shouldBeScoredForTarget",
+    "generateScore",
+    "findDominantSwatch"
+  ],
+  "onlyCollectionAndTargetNameSeams": true,
+  "secondQuantizer": false,
+  "sourceOriginalSha256LF": "d080c301d25f589b957b19a1f11b777dc37045bd3a6e07a4913709a31fcb2b77"
+}

@@ -1,0 +1,35 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -212,6 +212,8 @@
+     var preferences by remember { mutableStateOf(preferenceStore.read().let { it.copy(speed = it.preferredSpeed) }) }
+     val latestPreferences by rememberUpdatedState(preferences)
+     val scope = rememberCoroutineScope()
++    // App/window reference, independent of drawing, section and account MID.
++    val homeRootRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<DesktopHomeRootRetainer?>() }
+     val favoritesEntryRef = remember(repository, sessionEpoch) { java.util.concurrent.atomic.AtomicReference<DesktopFavoritesRootEntry?>() }
+     val favoritesQueueRef = remember(repository, sessionEpoch) { java.util.concurrent.atomic.AtomicReference<DesktopFavoriteQueueBridge?>() }
+     val social = remember(repository) { DesktopSocialRepository(repository) }
+@@ -274,6 +276,7 @@
+     val pluginRuntime = remember(pluginStore, diagnosticLifecycle, dynamicCache, imageSaveLifetime) {
+         DesktopPluginRuntime(pluginStore, repository, community, discovery,
+             beforeStoreFreeze = {
++                homeRootRef.getAndSet(null)?.closeAndJoin()
+                 favoritesQueueRef.getAndSet(null)?.close()
+                 favoritesEntryRef.getAndSet(null)?.shutdownForRestore()
+                 imageSaveLifetime.close()
+@@ -481,6 +484,7 @@
+     DisposableEffect(nativeTextShare) { onDispose { nativeTextShare.close() } }
+     val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement, diagnosticLifecycle, nativeTextShare) {
+         DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {
++            homeRootRef.getAndSet(null)?.closeAndJoin()
+             closeDiscoveryStorage()
+             favoritesQueueRef.getAndSet(null)?.close()
+             favoritesEntryRef.getAndSet(null)?.shutdownForRestore()
+@@ -498,6 +502,7 @@
+     SideEffect {
+         registerShutdown?.invoke {
+             withContext(NonCancellable) {
++                homeRootRef.getAndSet(null)?.closeAndJoin()
+                 closeDiscoveryStorage()
+                 favoritesQueueRef.getAndSet(null)?.close()
+                 favoritesEntryRef.getAndSet(null)?.shutdownForRestore()

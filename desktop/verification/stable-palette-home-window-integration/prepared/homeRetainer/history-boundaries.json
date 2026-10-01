@@ -1,0 +1,11 @@
+{
+  "compile01": "actual41, 4inputs initial factory/old families PASS",
+  "compile02": "actual41 actor cancellation/retainer interface 4inputs PASS",
+  "proof01": "actual41 bridge necessary 4groups+86classload PASS; not Root mounted",
+  "compile03": "actual42 plus full Home renderer, 5inputs PASS; before final slow-drain state-clearing/media IO cleanup",
+  "compile04": "final actual42 5inputs PASS; only Runtime/TodayWatch families prospective overrides",
+  "proof02": "final actual42 same necessary4groups+86classload PASS; no product claims beyond adapter scope",
+  "shellPatchPreparation": "two first attempt anchor-count assertions failed because startup failure branch also has closeDiscoveryStorage; no file was written; final patch restricted to DesktopReadyApp body",
+  "fixturesWindowNativeHttp": "never run",
+  "previousProofsNotRetagged": true
+}

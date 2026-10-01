@@ -1,0 +1,8 @@
+ORIGIN com.android.purebilibili.feature.home.components.cards.WallpaperPaletteStore file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar
+ORIGIN com.bilipai.desktop.ui.DesktopOwnedWallpaperPaletteContext file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar
+ORIGIN com.bilipai.desktop.ui.DesktopWallpaperPaletteRaster file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar
+ORIGIN com.bilipai.desktop.ui.DesktopWallpaperPaletteLru file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar
+ORIGIN com.bilipai.desktop.palette.DesktopPaletteTarget file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-java.jar
+ORIGIN com.bilipai.desktop.palette.DesktopWallpaperPaletteScoring file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-java.jar
+ORIGIN com.bilipai.desktop.palette.DesktopPalette file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-java.jar
+WALLPAPER_PALETTE_PROOF {"groups":3,"assertions":34,"actualSnapshot":43,"entries":97,"overrides":0,"externalHttp":false,"personalWallpaperRead":false,"rootMounted":false}

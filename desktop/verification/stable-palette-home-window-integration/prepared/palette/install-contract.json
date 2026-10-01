@@ -1,0 +1,46 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-wallpaper-palette-parity\\prepared\\tools\\extract-upstream-wallpaper-palette.py",
+      "target": "desktop/tools/extract-upstream-wallpaper-palette.py",
+      "sha256Bytes": "638a86946ba9cba169e8f5bb1369a20e31263617c6cbfc94185fb780538e8e0a",
+      "sha256LF": "638a86946ba9cba169e8f5bb1369a20e31263617c6cbfc94185fb780538e8e0a",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-wallpaper-palette-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopWallpaperPalettePlatform.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWallpaperPalettePlatform.kt",
+      "sha256Bytes": "42f11cff3ca81e3685994c0cc1176a4eda0910051fc98c4db5e0c6a05bed746e",
+      "sha256LF": "42f11cff3ca81e3685994c0cc1176a4eda0910051fc98c4db5e0c6a05bed746e",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-wallpaper-palette-parity\\prepared\\manual-java\\com\\bilipai\\desktop\\palette\\DesktopPaletteTarget.java",
+      "target": "desktop/src/main/java/com/bilipai/desktop/palette/DesktopPaletteTarget.java",
+      "sha256Bytes": "e9d918af69a38175d9fac6ce60b6ef3d59a133a6e78ecb1fc165685687b10384",
+      "sha256LF": "e9d918af69a38175d9fac6ce60b6ef3d59a133a6e78ecb1fc165685687b10384",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-wallpaper-palette-parity\\prepared\\manual-java\\com\\bilipai\\desktop\\palette\\DesktopWallpaperPaletteScoring.java",
+      "target": "desktop/src/main/java/com/bilipai/desktop/palette/DesktopWallpaperPaletteScoring.java",
+      "sha256Bytes": "fce1b1803e5bc0d4c0dca36cf463052e2b14972afccafad8faf6dc014d1251bc",
+      "sha256LF": "fce1b1803e5bc0d4c0dca36cf463052e2b14972afccafad8faf6dc014d1251bc",
+      "newSoleDefinition": true
+    }
+  ],
+  "generatedProductionSources": 1,
+  "manualKotlinSources": 1,
+  "manualJavaSources": 2,
+  "generatedPreparedFilesInstall": false,
+  "jarInstall": false,
+  "newDependencies": 0,
+  "secondQuantizer": false,
+  "existingSchemaDirectReused": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt",
+  "rootBindings": "ROOT-INTEGRATION.md",
+  "registryRecipe": "registry-merge-recipe.json",
+  "gradleRecipe": "gradle-tasks.snippet.kts",
+  "sharedSourceHunks": 0,
+  "rootMounted": false
+}

@@ -1,0 +1,61 @@
+{
+  "payloads": [
+    {
+      "target": "desktop/tools/extract-upstream-wallpaper-palette.py",
+      "sha256Bytes": "638a86946ba9cba169e8f5bb1369a20e31263617c6cbfc94185fb780538e8e0a",
+      "new": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWallpaperPalettePlatform.kt",
+      "sha256Bytes": "42f11cff3ca81e3685994c0cc1176a4eda0910051fc98c4db5e0c6a05bed746e",
+      "new": true
+    },
+    {
+      "target": "desktop/src/main/java/com/bilipai/desktop/palette/DesktopPaletteTarget.java",
+      "sha256Bytes": "e9d918af69a38175d9fac6ce60b6ef3d59a133a6e78ecb1fc165685687b10384",
+      "new": true
+    },
+    {
+      "target": "desktop/src/main/java/com/bilipai/desktop/palette/DesktopWallpaperPaletteScoring.java",
+      "sha256Bytes": "fce1b1803e5bc0d4c0dca36cf463052e2b14972afccafad8faf6dc014d1251bc",
+      "new": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "sha256Bytes": "f4bdd68dad6bb26fca39d737625ec0836cbbd427284cede41affcc148697b5d9",
+      "new": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "0e5e00d9afd8fba3049d6fc85ced4cc5fe8776eea9e09ac70172192e6c7ccc12",
+      "new": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopRetainedHomePage.kt",
+      "sha256Bytes": "3a78bc7cbf305f8d65883d38c120e4ff8cf640858646f10e7d4128afa8a9a620",
+      "new": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "2f783f6cfd6be2740658d69e8f9bb6f8b3aa4d20db7796dfc0508e650f95a5e6",
+      "new": false
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "baseLF": "3f33392b1eb7bf14c7e0cbc8c9330890b8991a3b85d5f74859b7159ad6383de3",
+      "desiredLF": "76e804cf841c75c83a7309af71147ba0eb9746739d3fb76c735c5b4f90afbbb6",
+      "semanticHunks": 3
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseLF": "350dc8046540b56876f1432bf62fdd97fbf83d3b729f255b408c17bc1ed6e024",
+      "desiredLF": "0c55221c2901400973e4c96e3f762a7cee52496988a2fb06019350243c84c80c",
+      "semanticHunks": 4
+    }
+  ],
+  "originalCountBefore": 926,
+  "originalCountAfter": 927,
+  "rootMounted": false,
+  "oldPlannerRemoved": true,
+  "newDependencies": 0
+}

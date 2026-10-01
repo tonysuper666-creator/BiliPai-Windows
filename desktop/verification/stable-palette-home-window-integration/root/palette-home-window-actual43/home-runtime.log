@@ -1,0 +1,12 @@
+ORIGIN com.bilipai.desktop.ui.DesktopHomeRootFactory file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar
+ORIGIN com.bilipai.desktop.ui.DesktopHomeRootRetainer file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar
+ORIGIN com.bilipai.desktop.plugins.DesktopTodayWatchRepository file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar
+ORIGIN com.bilipai.desktop.ui.DesktopHomeRetainedEntry file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar
+ORIGIN originalEntry=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar
+ORIGIN prospectiveBridge=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar
+PASS candidate class loading: 86 classes
+PASS startup defers until original owner; same epoch and covered route retain one owner
+PASS same MID epoch retirement drains before successor and rejects late projection
+PASS cancelled admission and shutdown drain original owner
+PASS shutdown cancels unbound startup without constructing a fallback planner
+SCOPE prospective factory/lifecycle only; no mounted UI, Window, MPV, HTTP or account mutation

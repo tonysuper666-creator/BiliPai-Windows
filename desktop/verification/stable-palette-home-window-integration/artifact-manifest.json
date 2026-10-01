@@ -1,0 +1,650 @@
+{
+  "schema": "raw-artifact-manifest-v1",
+  "artifacts": [
+    {
+      "path": "prepared/palette/frozen-handoff.json",
+      "sha256Bytes": "9ac7dea50e721b6a445ed2103c15a9c433782a3c92943d4abd0162cb2e19216f",
+      "sizeBytes": 8165
+    },
+    {
+      "path": "prepared/palette/ROOT-INTEGRATION.md",
+      "sha256Bytes": "5a1515a351c50d85c9228d1f638e04a5e8f266ca2013102735fecedf3ef2a3b9",
+      "sizeBytes": 6681
+    },
+    {
+      "path": "prepared/palette/WallpaperPaletteFixture.kt",
+      "sha256Bytes": "5d66e3815ea6b7e9cdc1258675c40de5937a40a513b97a1d91b2e2ed1c95b49b",
+      "sizeBytes": 10063
+    },
+    {
+      "path": "prepared/palette/abi-audit.json",
+      "sha256Bytes": "91fe51434b0d419120b6c7eec86ddd6eeca4ab8f997b3dffe23d0830c9270779",
+      "sizeBytes": 266
+    },
+    {
+      "path": "prepared/palette/audit.py",
+      "sha256Bytes": "6efac89ca0d5a86e5c95a76f5c27044fcd0e73dfddb790465fc4ed52a3082059",
+      "sizeBytes": 9951
+    },
+    {
+      "path": "prepared/palette/classload-proof/PaletteClassLoadProof.java",
+      "sha256Bytes": "488630dd85445b48623986254f76c1fbc4781dad2e7f15700cecfc0b71b5c6aa",
+      "sizeBytes": 260
+    },
+    {
+      "path": "prepared/palette/classload-proof/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/palette/classload-proof/run.log",
+      "sha256Bytes": "28fa27c38e1112281382d893ebb1ff5e76ad09f4ac4d92a6d3e4495f7f92c62a",
+      "sizeBytes": 26
+    },
+    {
+      "path": "prepared/palette/compile-06/compile-result.json",
+      "sha256Bytes": "25aa55c82ccc188f154dc584d2d630503b8fdda006e1690a10bee893b77bbfb2",
+      "sizeBytes": 2013
+    },
+    {
+      "path": "prepared/palette/compile-06/java.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/palette/compile-06/kotlin.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/palette/compile.py",
+      "sha256Bytes": "9ba52283367745449ac0551d2a6e48c9ab801698bd0e150e4610892ba77cdfb8",
+      "sizeBytes": 3589
+    },
+    {
+      "path": "prepared/palette/finish.py",
+      "sha256Bytes": "fecdfba0d1a1aac93046702f257a8e23cf70f6f264652cd8f88ad7e0ccbb5c47",
+      "sizeBytes": 7440
+    },
+    {
+      "path": "prepared/palette/freeze.py",
+      "sha256Bytes": "6f3708f65aaeb053324c2f2f40a0e682c23187d93edbf742f35f405bb75e7198",
+      "sizeBytes": 4455
+    },
+    {
+      "path": "prepared/palette/gradle-tasks.snippet.kts",
+      "sha256Bytes": "51cbb72c77adc4c9cc64b422777839924318ef81cf412189a9582ac5c71a869a",
+      "sizeBytes": 1128
+    },
+    {
+      "path": "prepared/palette/input-audit.json",
+      "sha256Bytes": "65c4b38380ccca81ffbb83cb9c138ad218adfd6b94b8b8a88cb5fad840610040",
+      "sizeBytes": 37980
+    },
+    {
+      "path": "prepared/palette/install-contract.json",
+      "sha256Bytes": "546841e8ee857d9eb4d891f3f3c65537c89736ad7d8ef831354738ffc6435e81",
+      "sizeBytes": 2839
+    },
+    {
+      "path": "prepared/palette/official-palette-1.0.0/Palette.java",
+      "sha256Bytes": "d080c301d25f589b957b19a1f11b777dc37045bd3a6e07a4913709a31fcb2b77",
+      "sizeBytes": 35273
+    },
+    {
+      "path": "prepared/palette/official-palette-1.0.0/Target.java",
+      "sha256Bytes": "f3763875ff4adc2c236461980b4cecd797c0ee1356d42beb51871a6acdae2bf8",
+      "sizeBytes": 14114
+    },
+    {
+      "path": "prepared/palette/official-selection-receipt.json",
+      "sha256Bytes": "4a14cdc26c354c77dcb93b12eb2b0ccac9142e5bf7af7b0e3ee0db7fa3aea7ef",
+      "sizeBytes": 1021
+    },
+    {
+      "path": "prepared/palette/original-stable/app/src/main/java/com/android/purebilibili/feature/home/components/cards/WallpaperPaletteStore.kt",
+      "sha256Bytes": "521e632d1b8f3655e862abbeb3624bfaabf144fd8274f5315a2f9d646adb2219",
+      "sizeBytes": 6436
+    },
+    {
+      "path": "prepared/palette/prepare.py",
+      "sha256Bytes": "9acb9e7f42ce7ff58db1c2fb905725aff95ae7b8a2f1faa26bdb6bd4f21a099f",
+      "sizeBytes": 7148
+    },
+    {
+      "path": "prepared/palette/prepared/generated/com/android/purebilibili/feature/home/components/cards/WallpaperPaletteStore.kt",
+      "sha256Bytes": "be96484050dfea039e5e0cb687712fa00c5a3e5940e0fc707a400749f7f3cf36",
+      "sizeBytes": 6219
+    },
+    {
+      "path": "prepared/palette/prepared/manual-java/com/bilipai/desktop/palette/DesktopPaletteTarget.java",
+      "sha256Bytes": "e9d918af69a38175d9fac6ce60b6ef3d59a133a6e78ecb1fc165685687b10384",
+      "sizeBytes": 13820
+    },
+    {
+      "path": "prepared/palette/prepared/manual-java/com/bilipai/desktop/palette/DesktopWallpaperPaletteScoring.java",
+      "sha256Bytes": "fce1b1803e5bc0d4c0dca36cf463052e2b14972afccafad8faf6dc014d1251bc",
+      "sizeBytes": 5410
+    },
+    {
+      "path": "prepared/palette/prepared/manual/com/bilipai/desktop/ui/DesktopWallpaperPalettePlatform.kt",
+      "sha256Bytes": "42f11cff3ca81e3685994c0cc1176a4eda0910051fc98c4db5e0c6a05bed746e",
+      "sizeBytes": 6738
+    },
+    {
+      "path": "prepared/palette/prepared/tools/extract-upstream-wallpaper-palette.py",
+      "sha256Bytes": "638a86946ba9cba169e8f5bb1369a20e31263617c6cbfc94185fb780538e8e0a",
+      "sizeBytes": 8058
+    },
+    {
+      "path": "prepared/palette/proof-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/palette/proof-03/local-fixture/known-five-bands.png",
+      "sha256Bytes": "07a45e38858fa1a542e4b6cfe96dfa1e1c2b3d88f3de468f49333302a46e14dc",
+      "sizeBytes": 585
+    },
+    {
+      "path": "prepared/palette/proof-03/proof-result.json",
+      "sha256Bytes": "c31e9e0c2ad6ecc6cda6c3d51cbbd5c782c784318f2829199941302f9c732db7",
+      "sizeBytes": 792
+    },
+    {
+      "path": "prepared/palette/proof-03/run.log",
+      "sha256Bytes": "17d60720fb6e992679a0ab05b4356881e8e3526a4be6ff7f391a84a68353567d",
+      "sizeBytes": 172
+    },
+    {
+      "path": "prepared/palette/registry-merge-recipe.json",
+      "sha256Bytes": "3d6901dc4975729b9d50a1f2269017c6f3f03b5c7356f915b2ac3d7d7770489f",
+      "sizeBytes": 971
+    },
+    {
+      "path": "prepared/palette/replay-production.log",
+      "sha256Bytes": "cacaf10812b61e1732a785f9c6948840e18d44d7c4e9a78df995f5c53f847951",
+      "sizeBytes": 74
+    },
+    {
+      "path": "prepared/palette/replay-production/com/android/purebilibili/feature/home/components/cards/WallpaperPaletteStore.kt",
+      "sha256Bytes": "be96484050dfea039e5e0cb687712fa00c5a3e5940e0fc707a400749f7f3cf36",
+      "sizeBytes": 6219
+    },
+    {
+      "path": "prepared/palette/replay-production/wallpaper-palette-selection-proof.json",
+      "sha256Bytes": "5d11394ff43fdfd7f3f0c457a88ed7b1ad5d3cd4303b7467c217cff6f718e910",
+      "sizeBytes": 498
+    },
+    {
+      "path": "prepared/palette/reverse-adapters/DesktopPaletteTarget.json",
+      "sha256Bytes": "2355b4b7c0863ea7d3796bd9950553ea3ff5c7b05d47877a14648f8431d06565",
+      "sizeBytes": 14474
+    },
+    {
+      "path": "prepared/palette/reverse-adapters/WallpaperPaletteStore.json",
+      "sha256Bytes": "911babbd8fa2571fe6e2b4b8ef98c143d57a03ea4a4964fb61a9424afba5aa8c",
+      "sizeBytes": 10695
+    },
+    {
+      "path": "prepared/palette/run-proof.py",
+      "sha256Bytes": "3d040b4b60cd6a66d37e3d878db68bcdd32a12c5ce1a6535d55a3be7504e9a96",
+      "sizeBytes": 3062
+    },
+    {
+      "path": "prepared/palette/selection-methods.json",
+      "sha256Bytes": "64d7a156c8ba40a1c7ad63caf137e2d313170ea823e671c744dceb600d64bae1",
+      "sizeBytes": 362
+    },
+    {
+      "path": "prepared/palette/source-audit.json",
+      "sha256Bytes": "99d80c784eb3e8c6803404c2a5c04607332bc24b7c705b4b77067c7976f867f2",
+      "sizeBytes": 4599
+    },
+    {
+      "path": "prepared/palette/source-pins.json",
+      "sha256Bytes": "5f01e6ba5293a5ab28243adf967745f1341656d22f853b44e27308485dfe72c5",
+      "sizeBytes": 784
+    },
+    {
+      "path": "prepared/palette/store-methods.template.kt",
+      "sha256Bytes": "7886f1372cd38029c6075b7bea48573a5431d5b1961123931fe730fe936288fd",
+      "sizeBytes": 3992
+    },
+    {
+      "path": "prepared/homeRetainer/frozen-handoff.json",
+      "sha256Bytes": "4540a111a30feda4e34f5b4d1e598554622db22c52a014c6a5ee0f93ffc6dfc1",
+      "sizeBytes": 7976
+    },
+    {
+      "path": "prepared/homeRetainer/ROOT-INTEGRATION.md",
+      "sha256Bytes": "d6d2401569e4dffab5d3cbd5e4daf8d7ab32d37728a15ff4d22edda99e9a5060",
+      "sizeBytes": 11696
+    },
+    {
+      "path": "prepared/homeRetainer/compile-01/class-overlap.json",
+      "sha256Bytes": "24f391350d1518ec2fc8d23bdd587be6d32d3751d4ef946267950cf7eb7838c4",
+      "sizeBytes": 3450
+    },
+    {
+      "path": "prepared/homeRetainer/compile-01/compile.args",
+      "sha256Bytes": "29a91958bd95dc22fc5234b3f212d00d8da074e58a3e6fd551b898efbb711ccf",
+      "sizeBytes": 25486
+    },
+    {
+      "path": "prepared/homeRetainer/compile-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/homeRetainer/compile-01/inputs.json",
+      "sha256Bytes": "8e3891fa0cfc0f04d1f81b795b45e048c80810e9aa064f4a120b112d95ab62c9",
+      "sizeBytes": 1860
+    },
+    {
+      "path": "prepared/homeRetainer/compile-02/class-overlap.json",
+      "sha256Bytes": "1e2b552f1bf65c4ec0be2ae387610aec889845a2eebb32e24d5a50c7e4f9d26f",
+      "sizeBytes": 3363
+    },
+    {
+      "path": "prepared/homeRetainer/compile-02/compile.args",
+      "sha256Bytes": "9c2cf17f9fe080be259eff925e5d7b0546cbd10f9495aeac347b0ade2381f08d",
+      "sizeBytes": 25486
+    },
+    {
+      "path": "prepared/homeRetainer/compile-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/homeRetainer/compile-02/inputs.json",
+      "sha256Bytes": "2b12d1a00d7f4d9d99888c271bc9444e7ef3b31ccde9956eee579bcdf2747770",
+      "sizeBytes": 1860
+    },
+    {
+      "path": "prepared/homeRetainer/compile-03/class-overlap.json",
+      "sha256Bytes": "1e2b552f1bf65c4ec0be2ae387610aec889845a2eebb32e24d5a50c7e4f9d26f",
+      "sizeBytes": 3363
+    },
+    {
+      "path": "prepared/homeRetainer/compile-03/compile.args",
+      "sha256Bytes": "d12cdcfd36d10b893e19135a5fe96b9ac35e9caa3309e7366c1f28d77084841b",
+      "sizeBytes": 25688
+    },
+    {
+      "path": "prepared/homeRetainer/compile-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/homeRetainer/compile-03/inputs.json",
+      "sha256Bytes": "39402d8551bc36c89373ad0bd8a65e88b7540af2ee14421474cdcd8e6757dbe6",
+      "sizeBytes": 2199
+    },
+    {
+      "path": "prepared/homeRetainer/compile-04/class-overlap.json",
+      "sha256Bytes": "1e2b552f1bf65c4ec0be2ae387610aec889845a2eebb32e24d5a50c7e4f9d26f",
+      "sizeBytes": 3363
+    },
+    {
+      "path": "prepared/homeRetainer/compile-04/compile.args",
+      "sha256Bytes": "cd5638efde6c0db0215377976ce04eb6a83d20b50bd2c0db4076e1dfe88c700d",
+      "sizeBytes": 25688
+    },
+    {
+      "path": "prepared/homeRetainer/compile-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/homeRetainer/compile-04/inputs.json",
+      "sha256Bytes": "39c49b34894678e8ef12095004ed24364f53c10c6d68a76e0095b521a40ef548",
+      "sizeBytes": 2199
+    },
+    {
+      "path": "prepared/homeRetainer/compile_candidate.py",
+      "sha256Bytes": "041f58e6cb8f9fc297221cfc890758aef1c62d081d294044ba8a4f802015820e",
+      "sizeBytes": 3648
+    },
+    {
+      "path": "prepared/homeRetainer/excluded-runtime-artifacts.json",
+      "sha256Bytes": "9ab8cfe7481fa2201d8de2632f5783bed15695b37ec428e70bf1b13b8313c8cc",
+      "sizeBytes": 99499
+    },
+    {
+      "path": "prepared/homeRetainer/fixtures/HomeRetirementFixture.kt",
+      "sha256Bytes": "e428f50844fed049bf5daf84b6977d78159fc5304fd1dfd1d6159b871a110c9a",
+      "sizeBytes": 4785
+    },
+    {
+      "path": "prepared/homeRetainer/freeze.py",
+      "sha256Bytes": "92fcb508e37b544258cbc81e741fb69e68a89dfd98b2809893e23a191a566fab",
+      "sizeBytes": 2944
+    },
+    {
+      "path": "prepared/homeRetainer/history-boundaries.json",
+      "sha256Bytes": "2d17e275993efd11934f49272d17a7834ecbc0c9e0689b52a47a6e246bf0860d",
+      "sizeBytes": 871
+    },
+    {
+      "path": "prepared/homeRetainer/install-whitelist.json",
+      "sha256Bytes": "041ebc8a95e7749def9eee7c9bb51640ddf07b51529ed4b18af376172ac9d4a0",
+      "sizeBytes": 1677
+    },
+    {
+      "path": "prepared/homeRetainer/nav-review/REVIEW.md",
+      "sha256Bytes": "ab3f34e50d434280546cb10dcd61f7d94aea51187ecedb954e8f21572e6f81b4",
+      "sizeBytes": 3557
+    },
+    {
+      "path": "prepared/homeRetainer/nav-review/evidence-manifest.json",
+      "sha256Bytes": "5e2368a497a5935964e779d1800dfa926ea8361675ed3a762808f3f46bbe721d",
+      "sizeBytes": 640
+    },
+    {
+      "path": "prepared/homeRetainer/nav-review/nav-map.json",
+      "sha256Bytes": "b353ee1042d4a1112ee5bc8ebec45bf826be2b2203583e56cc2d39cacb55164e",
+      "sizeBytes": 17244
+    },
+    {
+      "path": "prepared/homeRetainer/nav-review/review.py",
+      "sha256Bytes": "f7386d8dfd07cf2f387fee9711fcc677aab423753a92473089e021e19e8813d0",
+      "sizeBytes": 11068
+    },
+    {
+      "path": "prepared/homeRetainer/patches/runtime-base-desired.json",
+      "sha256Bytes": "f0c8926c422158dcd9e876c4b3e49e131d2c784cfed8f5b266f1fa122996bd46",
+      "sizeBytes": 351
+    },
+    {
+      "path": "prepared/homeRetainer/patches/runtime-retirement.patch",
+      "sha256Bytes": "7d851f61566764f2a6cf47935c3d10a57a6383b56bab9e3dd6e3d50258126631",
+      "sizeBytes": 1860
+    },
+    {
+      "path": "prepared/homeRetainer/patches/shell-base-desired.json",
+      "sha256Bytes": "41f2a7e3d7a6bd1732cd7b84abe3aab27fe9b95668dba581431a661490e994b6",
+      "sizeBytes": 361
+    },
+    {
+      "path": "prepared/homeRetainer/patches/shell-lifetime-only.patch",
+      "sha256Bytes": "b18018629b075f6c9cdd0edd8881dc9f71855738ee92fe42a75efa0e22f20d13",
+      "sizeBytes": 2385
+    },
+    {
+      "path": "prepared/homeRetainer/prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "sha256Bytes": "f4bdd68dad6bb26fca39d737625ec0836cbbd427284cede41affcc148697b5d9",
+      "sizeBytes": 10462
+    },
+    {
+      "path": "prepared/homeRetainer/prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "0e5e00d9afd8fba3049d6fc85ced4cc5fe8776eea9e09ac70172192e6c7ccc12",
+      "sizeBytes": 2648
+    },
+    {
+      "path": "prepared/homeRetainer/prepared/manual/com/bilipai/desktop/ui/DesktopRetainedHomePage.kt",
+      "sha256Bytes": "3a78bc7cbf305f8d65883d38c120e4ff8cf640858646f10e7d4128afa8a9a620",
+      "sizeBytes": 2184
+    },
+    {
+      "path": "prepared/homeRetainer/prepared/replacements/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "ad17f3caf809751a089fddcbe79e26ff5cbcddbf736a585b75785669f19cc133",
+      "sizeBytes": 24372
+    },
+    {
+      "path": "prepared/homeRetainer/prepared/replacements/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "2f783f6cfd6be2740658d69e8f9bb6f8b3aa4d20db7796dfc0508e650f95a5e6",
+      "sizeBytes": 9708
+    },
+    {
+      "path": "prepared/homeRetainer/proof-01/compile.args",
+      "sha256Bytes": "9d3231cb9899d6d7f2eed34a03e68af0d82341e3417b5f9453dae8ccf39a9307",
+      "sizeBytes": 24837
+    },
+    {
+      "path": "prepared/homeRetainer/proof-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/homeRetainer/proof-01/run.log",
+      "sha256Bytes": "818800f9ad4b897a4c85d7b5b7120b5aea5dc9ef3cd4356950779558ea89d21d",
+      "sizeBytes": 814
+    },
+    {
+      "path": "prepared/homeRetainer/proof-01/source-binding.json",
+      "sha256Bytes": "f7871066159fd4abc5d4a3524ec161ab891f09cf1523f8c0f5673eb972770290",
+      "sizeBytes": 637
+    },
+    {
+      "path": "prepared/homeRetainer/proof-02/compile.args",
+      "sha256Bytes": "02fbc23bbe4edc6e3a861eb0be76d166ec8a739753b382650a84131daa0e9e7a",
+      "sizeBytes": 24837
+    },
+    {
+      "path": "prepared/homeRetainer/proof-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/homeRetainer/proof-02/run.log",
+      "sha256Bytes": "cd25886302d9affca67a4053f5f09dd75d85a5476f59addc5203cace0c5d2a0f",
+      "sizeBytes": 814
+    },
+    {
+      "path": "prepared/homeRetainer/proof-02/source-binding.json",
+      "sha256Bytes": "f815e9d6a2a6fa4fe74864ca1519770680a4e6d59e27966ac98516159dcef700",
+      "sizeBytes": 637
+    },
+    {
+      "path": "prepared/homeRetainer/prove_candidate.py",
+      "sha256Bytes": "aab2e18695a5227d53a60785177dbba5f163e023d1c37e1775bb2f630caca44a",
+      "sizeBytes": 3258
+    },
+    {
+      "path": "prepared/homeRetainer/source-inventory.json",
+      "sha256Bytes": "321f4d06d04e9e6048326d7bc4ae2083e9078ca613cb63ef3c349162bfb5776d",
+      "sizeBytes": 1177
+    },
+    {
+      "path": "prepared/homeRetainer/verification.json",
+      "sha256Bytes": "6d2f8095fc537578d0f1622529aca2f34d8e575a682e2a925885c0a1aad555b9",
+      "sizeBytes": 687
+    },
+    {
+      "path": "root/palette-home-retainer-install43/baseline/desktop/build.gradle.kts",
+      "sha256Bytes": "0d19943e7b98ce0b2a3ee5fa5b4734ec48b385caeaf185d15158967e67619b2b",
+      "sizeBytes": 105510
+    },
+    {
+      "path": "root/palette-home-retainer-install43/baseline/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "350dc8046540b56876f1432bf62fdd97fbf83d3b729f255b408c17bc1ed6e024",
+      "sizeBytes": 140893
+    },
+    {
+      "path": "root/palette-home-retainer-install43/baseline/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "70ab482dbc4d41a83f6b450774f320d3c98929e00dde1b54878e8cdd2f29605a",
+      "sizeBytes": 24272
+    },
+    {
+      "path": "root/palette-home-retainer-install43/baseline/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "f75fe99edcb7299249da3f0437f3a4a0c4d5b62edc8e4d1103ad0820e6faa490",
+      "sizeBytes": 10794
+    },
+    {
+      "path": "root/palette-home-retainer-install43/baseline/desktop/upstream-sources.json",
+      "sha256Bytes": "d5862f3b9580a969a16353caf7233647cb9e67ffa88785dec728b174de278716",
+      "sizeBytes": 334292
+    },
+    {
+      "path": "root/palette-home-retainer-install43/installed.json",
+      "sha256Bytes": "c614bf9c1b68d79035263f68c3e2b32e89825a39612dae6abbf944bb50047ac1",
+      "sizeBytes": 2525
+    },
+    {
+      "path": "root/root-window-navigation-prepared43/compiler.args",
+      "sha256Bytes": "a10278e6686fa6995954f9cc3c8af5802f4f72a46ec0e988bbfd0be641c6e8ff",
+      "sizeBytes": 25376
+    },
+    {
+      "path": "root/root-window-navigation-prepared43/compiler.log",
+      "sha256Bytes": "4e4eb5db8896aaf93c408e4237fb1815feecdee07464e2f2b8ef4c2cb6916fc1",
+      "sizeBytes": 179
+    },
+    {
+      "path": "root/root-window-navigation-prepared43-02/compiler.args",
+      "sha256Bytes": "9fbfcaa9fe4c9483778a8bcbf1619c761fd9c7b23b337a179b43ecfee5d36e3e",
+      "sizeBytes": 25379
+    },
+    {
+      "path": "root/root-window-navigation-prepared43-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/root-window-navigation-prepared43-02/result.json",
+      "sha256Bytes": "1fd5cd648745c3d1f998b8052d8c75443a9693bee2253a00d7dc67871ac3ca44",
+      "sizeBytes": 1912
+    },
+    {
+      "path": "root/root-window-navigation-prepared43-02/runtime.log",
+      "sha256Bytes": "76b4228fdb4c4ffc5861f9901f54aa8869dba9295e9d4125020ef53fb7a87557",
+      "sizeBytes": 142
+    },
+    {
+      "path": "root/palette-home-window-actual43/HomeRetirementFixture.kt",
+      "sha256Bytes": "472a9d7e4ed81365936f01a362822e568839bb229ac2a61356434ef9dcadbc5e",
+      "sizeBytes": 5334
+    },
+    {
+      "path": "root/palette-home-window-actual43/RootWindowNavigationFixture.kt",
+      "sha256Bytes": "56c8f478401803af64d4ff4e3296498237fe13da04ae53a17a56353649759bf4",
+      "sizeBytes": 3825
+    },
+    {
+      "path": "root/palette-home-window-actual43/WallpaperPaletteFixture.kt",
+      "sha256Bytes": "91d2419e8a1f227d79a748869521650ff21323bb12f94ea727b96ad1759fd1ea",
+      "sizeBytes": 10914
+    },
+    {
+      "path": "root/palette-home-window-actual43/compiler.args",
+      "sha256Bytes": "1560b617cb09493c552437a39eb22792a7f2d5eb224264239c8e3c15afb606af",
+      "sizeBytes": 25219
+    },
+    {
+      "path": "root/palette-home-window-actual43/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/palette-home-window-actual43/generated-five-band-fixture/known-five-bands.png",
+      "sha256Bytes": "07a45e38858fa1a542e4b6cfe96dfa1e1c2b3d88f3de468f49333302a46e14dc",
+      "sizeBytes": 585
+    },
+    {
+      "path": "root/palette-home-window-actual43/home-runtime.log",
+      "sha256Bytes": "d1f58642cae9a7238bf730354f63d3377b1bdd02d32b07f95746e14e52da915c",
+      "sizeBytes": 1639
+    },
+    {
+      "path": "root/palette-home-window-actual43/palette-runtime.log",
+      "sha256Bytes": "6c6bfdec54679d81aeb426396ffdb7b70b4c123bdb01f9fe2e025eb65864feb2",
+      "sizeBytes": 1676
+    },
+    {
+      "path": "root/palette-home-window-actual43/result.json",
+      "sha256Bytes": "a6fe31e5d20483406b8db9136d3986a1a26a43afb3d7f20f774c788e99f11e6a",
+      "sizeBytes": 4563
+    },
+    {
+      "path": "root/palette-home-window-actual43/window-runtime.log",
+      "sha256Bytes": "777a98934f74ec46e4bece4b1da8f7021b7ccc87abd29e127640b9a7b0f19780",
+      "sizeBytes": 358
+    },
+    {
+      "path": "root/install-palette-home-retainer43.py",
+      "sha256Bytes": "d06d0735bb1a1fedd04715422a65e8a0df8646afdedaf33fee5c6a33e2f36920",
+      "sizeBytes": 4709
+    },
+    {
+      "path": "root/RootWindowNavigationFixture.kt",
+      "sha256Bytes": "e34f212d3c066a286f978d8aab05cf18b095b2d15e56ee13f5a9b1abe3d393bd",
+      "sizeBytes": 3541
+    },
+    {
+      "path": "root/prove-root-window-navigation43.py",
+      "sha256Bytes": "c9123169d7b643455548454f2e5ce4f00dff460d928c63c99ee9d00e6b757d52",
+      "sizeBytes": 3195
+    },
+    {
+      "path": "root/prove-palette-home-window43.py",
+      "sha256Bytes": "6db2c4d64e46583b249ad84b5beebcfb066b2d56ee8d5f241abcc7d7ae48c2ba",
+      "sizeBytes": 7234
+    },
+    {
+      "path": "root/freeze-palette-home-window43.py",
+      "sha256Bytes": "314653ebffa26c9a39a0db3c4f10ccc75d240264225c4d19ea272a54821207f3",
+      "sizeBytes": 9198
+    },
+    {
+      "path": "root/jvm-method-name-audit-43.json",
+      "sha256Bytes": "4aa4baebd1b5446d2b5a2df909d6380d3c7f4ef50a9d6e0bf8cf7d3978426df2",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/installed-source/DesktopRootWindowNavigationOwner.kt",
+      "sha256Bytes": "bae800dfc62c2637af08d992348d392f063594531d37b62000f6b3b4224c635c",
+      "sizeBytes": 7079
+    },
+    {
+      "path": "root/installed-source/DesktopNavigationHostEnvironment.kt",
+      "sha256Bytes": "a305a0cfb160198cc64260002d651aaaa3a143216dcd5f4ec4fea840042247c4",
+      "sizeBytes": 2065
+    },
+    {
+      "path": "root/baseline42/DesktopNavigationHostEnvironment.kt",
+      "sha256Bytes": "74c1956020fced0fae3b4bab8bcbf45d0042ea4c23fcbc952597f1ac3fed0d21",
+      "sizeBytes": 1952
+    },
+    {
+      "path": "root/installed-source/DesktopOriginalNavigationHost.kt",
+      "sha256Bytes": "7b819357c4127a5b96685afe36e6cae9e87c169e05a48755033bbf6b054c5156",
+      "sizeBytes": 5326
+    },
+    {
+      "path": "root/baseline42/DesktopOriginalNavigationHost.kt",
+      "sha256Bytes": "88929e54e9269806bc42fee85e017608c5971d686adfe25b0fba27ff68c9d4a0",
+      "sizeBytes": 5175
+    },
+    {
+      "path": "root/root-window-navigation-prepared43/reconstructed-exact-invoked-fixture.kt",
+      "sha256Bytes": "adbba5d996f551e302d09779989300f171e7b2185ef545819402f5b0aeff96ce",
+      "sizeBytes": 3538
+    },
+    {
+      "path": "root/snapshot43/manifest.json",
+      "sha256Bytes": "6252d7e16a2f413d48de0265dc7debb315b2eaefca0b58cde0d34d9258feb362",
+      "sizeBytes": 131023
+    },
+    {
+      "path": "root/snapshot43/ordered-runtime-cp.json",
+      "sha256Bytes": "0785ee7cbe88b2615d9193882310a1fe36c368c71f9180b2a418a17136ab8440",
+      "sizeBytes": 36694
+    },
+    {
+      "path": "root/classes-43.log",
+      "sha256Bytes": "b96c844c18083ff31aa8bd83bbcc8ad5d745330511b14a54a97991fc442e5afa",
+      "sizeBytes": 16101
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "3922d6fe458b2c9c51df0ea77e3bdefd059493adfb86ff59fd05499ab136c30c",
+      "sizeBytes": 1675
+    },
+    {
+      "path": "root/compiled-output-exclusions.json",
+      "sha256Bytes": "c08f8c1f60f1c5c242959f2884123c3f7d614bb6da0fdf97e150def3aeaeeb57",
+      "sizeBytes": 875
+    }
+  ]
+}

@@ -7780,6 +7780,14 @@
       "features": [
         "stable-navigation3-host"
       ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/WallpaperPaletteStore.kt",
+      "sha256": "521e632d1b8f3655e862abbeb3624bfaabf144fd8274f5315a2f9d646adb2219",
+      "mode": "policy-extract",
+      "features": [
+        "home-wallpaper-palette-original"
+      ]
     }
   ],
   "featureCoverage": {

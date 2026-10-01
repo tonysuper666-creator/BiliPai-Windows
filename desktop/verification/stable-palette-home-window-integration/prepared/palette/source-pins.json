@@ -1,0 +1,9 @@
+{
+  "upstreamPath": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/WallpaperPaletteStore.kt",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalSha256LF": "521e632d1b8f3655e862abbeb3624bfaabf144fd8274f5315a2f9d646adb2219",
+  "officialSourcesJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-full-card-parity\\dependencies\\palette-1.0.0-sources.jar",
+  "officialSourcesJarSha256Bytes": "4e7eef704a4ff0613a03f3529a2194ace0c291c78fc4326feb66a27d9efa26e7",
+  "officialTargetSha256LF": "f3763875ff4adc2c236461980b4cecd797c0ee1356d42beb51871a6acdae2bf8",
+  "officialPaletteSha256LF": "d080c301d25f589b957b19a1f11b777dc37045bd3a6e07a4913709a31fcb2b77"
+}

@@ -1,0 +1,24 @@
+{
+  "scope": "read-only Home31/Profile17 required navigation map",
+  "artifacts": [
+    {
+      "path": "nav-map.json",
+      "sha256Bytes": "b353ee1042d4a1112ee5bc8ebec45bf826be2b2203583e56cc2d39cacb55164e",
+      "bytes": 17244
+    },
+    {
+      "path": "REVIEW.md",
+      "sha256Bytes": "ab3f34e50d434280546cb10dcd61f7d94aea51187ecedb954e8f21572e6f81b4",
+      "bytes": 3557
+    },
+    {
+      "path": "review.py",
+      "sha256Bytes": "f7386d8dfd07cf2f387fee9711fcc677aab423753a92473089e021e19e8813d0",
+      "bytes": 11068
+    }
+  ],
+  "MainEdits": false,
+  "compile": false,
+  "GUI": false,
+  "HTTP": false
+}

@@ -1,0 +1,1 @@
+import java.util.*;public class PaletteClassLoadProof {public static void main(String[] args)throws Exception{int n=0;for(String s:args){Class.forName(s,false,PaletteClassLoadProof.class.getClassLoader());n++;}System.out.println("PALETTE_CLASSES_LOADED "+n);}}

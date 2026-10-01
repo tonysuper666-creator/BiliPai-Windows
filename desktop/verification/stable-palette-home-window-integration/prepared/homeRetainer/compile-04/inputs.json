@@ -1,0 +1,32 @@
+{
+  "actualMain": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-42",
+  "manifestSha": "d84593c1a3dc908015f0526ae17375027082d91a9eba12e81b70dadde9779d54",
+  "cpSha": "6fb3e971ee12e0f77c7a7dd6e54a4af64456b3e8bab8446660c1f10947b2d63c",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeRootFactory.kt",
+      "sha256Bytes": "f4bdd68dad6bb26fca39d737625ec0836cbbd427284cede41affcc148697b5d9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "0e5e00d9afd8fba3049d6fc85ced4cc5fe8776eea9e09ac70172192e6c7ccc12"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopRetainedHomePage.kt",
+      "sha256Bytes": "3a78bc7cbf305f8d65883d38c120e4ff8cf640858646f10e7d4128afa8a9a620"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-mount-parity\\prepared\\replacements\\com\\bilipai\\desktop\\plugins\\DesktopPluginRuntime.kt",
+      "sha256Bytes": "ad17f3caf809751a089fddcbe79e26ff5cbcddbf736a585b75785669f19cc133"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-mount-parity\\prepared\\replacements\\com\\bilipai\\desktop\\plugins\\DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "2f783f6cfd6be2740658d69e8f9bb6f8b3aa4d20db7796dfc0508e650f95a5e6"
+    }
+  ],
+  "prospectiveSourceOnly": true,
+  "mainIntegration": false,
+  "productSourceOverrides": 0,
+  "exit": 0
+}

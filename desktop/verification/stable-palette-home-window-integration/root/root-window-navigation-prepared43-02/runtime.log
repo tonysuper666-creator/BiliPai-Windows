@@ -1,0 +1,2 @@
+PASS actual physical-window root owner / 17 assertions
+LIMIT no focused RESUMED/minimize/predictive/Root NavDisplay/account/HTTP acceptance

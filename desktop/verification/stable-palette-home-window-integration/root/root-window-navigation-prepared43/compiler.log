@@ -1,0 +1,3 @@
+desktop\.local\upstream-v023-audit\RootWindowNavigationFixture.kt:31:13: error: 'val' cannot be reassigned.
+            isFocusableWindow = false
+            ^^^^^^^^^^^^^^^^^

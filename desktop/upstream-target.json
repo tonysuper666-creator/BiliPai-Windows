@@ -186,12 +186,12 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 926,
+    "candidateSourceIdentityCount": 927,
     "candidateResourceCount": 213,
     "all907CurrentSourceAndResourcePinsVerified": true,
-    "actualClassesEvidence": "verification/stable-navigation-share-integration/root/classes-42.log",
+    "actualClassesEvidence": "verification/stable-palette-home-window-integration/root/classes-43.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-navigation-share-integration/root/classes-42.log",
+    "latestCandidateClassesLog": "verification/stable-palette-home-window-integration/root/classes-43.log",
     "liveGuestBackendPassed": false,
     "liveGuestBackendFailure": "HTTP 412 at video details after popular/search passed",
     "liveGuestBackendEvidence": "verification/stable-comments-sharing-integration/root/actual-guest-backend/run-01/accepted-evidence.json",
@@ -219,7 +219,7 @@
     "fullDanmakuPanelPointerAccepted": false,
     "fullDanmakuAndroidRendererParityAccepted": false,
     "danmakuSettingsRootEvidence": "verification/stable-danmaku-settings-root-integration/integration-report.json",
-    "latestCandidateClassesPhase": 42,
+    "latestCandidateClassesPhase": 43,
     "danmakuActualProduct27Assertions": 61,
     "danmakuSettingsIsolatedPanelPointerAccepted": true,
     "danmakuSettingsIsolatedPanelUiAssertions": 32,
@@ -309,7 +309,17 @@
     "navigationShareActual42ProductClassOrigins": 14,
     "navigationShareActual42ProductionOverrides": 0,
     "navigationShareIntegrationEvidence": "verification/stable-navigation-share-integration/integration-report.json",
-    "verifiedNativeDiagnosticShareDllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06"
+    "verifiedNativeDiagnosticShareDllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06",
+    "originalWallpaperPaletteStoreCompiled": true,
+    "originalHomeConcreteFactoryCompiled": true,
+    "oldParallelTodayWatchPlannerRemoved": true,
+    "rootWindowNavigationOwnerCompiled": true,
+    "paletteActual43Assertions": 34,
+    "homeRetirementActual43Groups": 4,
+    "rootWindowActual43UnfocusedAssertions": 17,
+    "paletteHomeWindowActual43ProductOrigins": 14,
+    "paletteHomeWindowActual43ProductionOverrides": 0,
+    "paletteHomeWindowIntegrationEvidence": "verification/stable-palette-home-window-integration/integration-report.json"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -340,6 +350,7 @@
     "verification/stable-home-data-pages-integration/integration-report.json",
     "verification/stable-category-return-integration/integration-report.json",
     "verification/stable-profile-live-aggregate-integration/integration-report.json",
-    "verification/stable-navigation-share-integration/integration-report.json"
+    "verification/stable-navigation-share-integration/integration-report.json",
+    "verification/stable-palette-home-window-integration/integration-report.json"
   ]
 }

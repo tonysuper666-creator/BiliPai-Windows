@@ -67,7 +67,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         plugins.value.any { it.plugin.id == SubscriptionFeedPlugin.PLUGIN_ID && it.enabled }
     }
     val packages = DesktopPackageRepository(context)
-    val recommendations = DesktopTodayWatchRepository(this, repository, discovery)
+    val recommendations = DesktopTodayWatchRepository({ repository?.sessionEpoch }, scope)
     val plugins get() = PluginManager.pluginsFlow
     val jsonPlugins get() = JsonPluginManager.plugins
     val jsonFilterStats get() = JsonPluginManager.filterStats
@@ -120,7 +120,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
             store.feedFilterEnabled.collect { enabled -> PluginManager.setEnabled("bilipai_feed_filter", enabled) }
         }
         if (repository != null) scope.launch {
-            repository.account.collect { recommendations.accountChanged(repository.sessionEpoch) }
+            repository.sessionEpochFlow.collect { epoch -> recommendations.accountChanged(epoch) }
         }
     }
 
@@ -347,12 +347,13 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     suspend fun shutdownForRestore(): Unit = withContext(NonCancellable) { shutdownMutex.withLock {
         if (stopped) return@withLock
         closing.set(true)
+        // Retire/join the single original Home owner before its global backing is frozen.
+        recommendations.shutdownForRestore()
         beforeStoreFreeze()
         playerGeneration.incrementAndGet()
         scope.coroutineContext[Job]?.cancelAndJoin()
         jsPlugins.shutdownForRestore()
         subscriptions.shutdownForRestore()
-        recommendations.shutdownForRestore()
         packages.shutdownForRestore()
         DesktopSkinVideoRegistry.shutdownForRestore()
         enhancementConfiguration.flushAndClose()

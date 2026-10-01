@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "actualDependencyCount": 97,
+  "prospectiveProductionSources": 3,
+  "declaredExistingOverrideClasses": [
+    "com/bilipai/desktop/ui/DesktopNavigationEntryViewModelPlatform.class",
+    "com/bilipai/desktop/ui/DesktopNavigationHostEnvironment.class",
+    "com/bilipai/desktop/ui/DesktopNavigationHostEnvironmentKt.class",
+    "com/bilipai/desktop/ui/DesktopOriginalNavigationHostKt.class"
+  ],
+  "physicalUnfocusedWindow": true,
+  "realShownHiddenEvents": true,
+  "actualViewModelSavedStateAndBackInput": true,
+  "focusedResumed": false,
+  "minimize": false,
+  "predictive": false,
+  "RootNavDisplayMounted": false,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopRootWindowNavigationOwner.kt",
+      "sha256Bytes": "bae800dfc62c2637af08d992348d392f063594531d37b62000f6b3b4224c635c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopNavigationHostEnvironment.kt",
+      "sha256Bytes": "a305a0cfb160198cc64260002d651aaaa3a143216dcd5f4ec4fea840042247c4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalNavigationHost.kt",
+      "sha256Bytes": "7b819357c4127a5b96685afe36e6cae9e87c169e05a48755033bbf6b054c5156"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\upstream-v023-audit\\RootWindowNavigationFixture.kt",
+      "sha256Bytes": "e34f212d3c066a286f978d8aab05cf18b095b2d15e56ee13f5a9b1abe3d393bd"
+    }
+  ]
+}

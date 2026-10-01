@@ -1,0 +1,22 @@
+[
+  {
+    "path": "prepared/palette/compile-06/original-wallpaper-palette.jar",
+    "sha256Bytes": "3ce28d523a46e923b52f627dd2c14b7e0ff0a83ac128568519b35310fdee1fa1",
+    "reason": "Rebuildable prepared proof output"
+  },
+  {
+    "path": "prepared/palette/proof-03/wallpaper-palette-fixture.jar",
+    "sha256Bytes": "04cb6b0319a536696131babe9909df3e544f24510e1d54d9834028a586d07464",
+    "reason": "Rebuildable prepared proof output"
+  },
+  {
+    "path": "root/root-window-navigation-prepared43-02/candidate-fixture.jar",
+    "sha256Bytes": "63ff7c64f9e85db1fb03c5c23ad536bd98a9e4a46f43e2e7e3f3fe18a88b0bbb",
+    "reason": "Rebuildable compiler/native output"
+  },
+  {
+    "path": "root/palette-home-window-actual43/fixtures.jar",
+    "sha256Bytes": "de7510009356ceddd1e75a79a06dbaea86363a6800d699c2853b16c3be3d520b",
+    "reason": "Rebuildable compiler/native output"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "actual42ManifestSha": "d84593c1a3dc908015f0526ae17375027082d91a9eba12e81b70dadde9779d54",
+  "cpSha": "6fb3e971ee12e0f77c7a7dd6e54a4af64456b3e8bab8446660c1f10947b2d63c",
+  "cpCount": 97,
+  "allDependencyHashesMatched": true,
+  "finalSourceHashesMatched": true,
+  "finalFixtureMatched": true,
+  "manualInstallFiles": 4,
+  "newOriginalRows": 0,
+  "newDependency": 0,
+  "compiledInputs": 5,
+  "actualOriginalFamilyReused": true,
+  "declaredProductOverrideFamilies": [
+    "DesktopPluginRuntime",
+    "DesktopTodayWatchRepository"
+  ],
+  "RootMainMounted": false,
+  "GUIWindow": false,
+  "nativeLeaseOrHTTP": false,
+  "accountMutation": false,
+  "package": false
+}

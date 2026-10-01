@@ -1,0 +1,617 @@
+{
+  "originalSha256LF": "f3763875ff4adc2c236461980b4cecd797c0ee1356d42beb51871a6acdae2bf8",
+  "preparedSha256LF": "e9d918af69a38175d9fac6ce60b6ef3d59a133a6e78ecb1fc165685687b10384",
+  "changes": [
+    {
+      "tag": "replace",
+      "originalRange": [
+        16,
+        17
+      ],
+      "preparedRange": [
+        16,
+        17
+      ],
+      "before": "package androidx.palette.graphics;\n",
+      "after": "package com.bilipai.desktop.palette;\n"
+    },
+    {
+      "tag": "delete",
+      "originalRange": [
+        18,
+        20
+      ],
+      "preparedRange": [
+        18,
+        18
+      ],
+      "before": "import androidx.annotation.FloatRange;\nimport androidx.annotation.NonNull;\n",
+      "after": ""
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        25,
+        26
+      ],
+      "preparedRange": [
+        23,
+        24
+      ],
+      "before": " * <p>To use the target, use the {@link Palette.Builder#addTarget(Target)} API when building a\n",
+      "after": " * <p>To use the target, use the {@link Palette.Builder#addTarget(DesktopPaletteTarget)} API when building a\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        28,
+        29
+      ],
+      "preparedRange": [
+        26,
+        27
+      ],
+      "before": "public final class Target {\n",
+      "after": "public final class DesktopPaletteTarget {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        61,
+        62
+      ],
+      "preparedRange": [
+        59,
+        60
+      ],
+      "before": "    public static final Target LIGHT_VIBRANT;\n",
+      "after": "    public static final DesktopPaletteTarget LIGHT_VIBRANT;\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        66,
+        67
+      ],
+      "preparedRange": [
+        64,
+        65
+      ],
+      "before": "    public static final Target VIBRANT;\n",
+      "after": "    public static final DesktopPaletteTarget VIBRANT;\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        71,
+        72
+      ],
+      "preparedRange": [
+        69,
+        70
+      ],
+      "before": "    public static final Target DARK_VIBRANT;\n",
+      "after": "    public static final DesktopPaletteTarget DARK_VIBRANT;\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        76,
+        77
+      ],
+      "preparedRange": [
+        74,
+        75
+      ],
+      "before": "    public static final Target LIGHT_MUTED;\n",
+      "after": "    public static final DesktopPaletteTarget LIGHT_MUTED;\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        81,
+        82
+      ],
+      "preparedRange": [
+        79,
+        80
+      ],
+      "before": "    public static final Target MUTED;\n",
+      "after": "    public static final DesktopPaletteTarget MUTED;\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        86,
+        87
+      ],
+      "preparedRange": [
+        84,
+        85
+      ],
+      "before": "    public static final Target DARK_MUTED;\n",
+      "after": "    public static final DesktopPaletteTarget DARK_MUTED;\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        89,
+        90
+      ],
+      "preparedRange": [
+        87,
+        88
+      ],
+      "before": "        LIGHT_VIBRANT = new Target();\n",
+      "after": "        LIGHT_VIBRANT = new DesktopPaletteTarget();\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        93,
+        94
+      ],
+      "preparedRange": [
+        91,
+        92
+      ],
+      "before": "        VIBRANT = new Target();\n",
+      "after": "        VIBRANT = new DesktopPaletteTarget();\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        97,
+        98
+      ],
+      "preparedRange": [
+        95,
+        96
+      ],
+      "before": "        DARK_VIBRANT = new Target();\n",
+      "after": "        DARK_VIBRANT = new DesktopPaletteTarget();\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        101,
+        102
+      ],
+      "preparedRange": [
+        99,
+        100
+      ],
+      "before": "        LIGHT_MUTED = new Target();\n",
+      "after": "        LIGHT_MUTED = new DesktopPaletteTarget();\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        105,
+        106
+      ],
+      "preparedRange": [
+        103,
+        104
+      ],
+      "before": "        MUTED = new Target();\n",
+      "after": "        MUTED = new DesktopPaletteTarget();\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        109,
+        110
+      ],
+      "preparedRange": [
+        107,
+        108
+      ],
+      "before": "        DARK_MUTED = new Target();\n",
+      "after": "        DARK_MUTED = new DesktopPaletteTarget();\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        119,
+        120
+      ],
+      "preparedRange": [
+        117,
+        118
+      ],
+      "before": "    Target() {\n",
+      "after": "    DesktopPaletteTarget() {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        125,
+        126
+      ],
+      "preparedRange": [
+        123,
+        124
+      ],
+      "before": "    Target(@NonNull Target from) {\n",
+      "after": "    DesktopPaletteTarget(DesktopPaletteTarget from) {\n"
+    },
+    {
+      "tag": "delete",
+      "originalRange": [
+        136,
+        137
+      ],
+      "preparedRange": [
+        134,
+        134
+      ],
+      "before": "    @FloatRange(from = 0, to = 1)\n",
+      "after": ""
+    },
+    {
+      "tag": "delete",
+      "originalRange": [
+        144,
+        145
+      ],
+      "preparedRange": [
+        141,
+        141
+      ],
+      "before": "    @FloatRange(from = 0, to = 1)\n",
+      "after": ""
+    },
+    {
+      "tag": "delete",
+      "originalRange": [
+        152,
+        153
+      ],
+      "preparedRange": [
+        148,
+        148
+      ],
+      "before": "    @FloatRange(from = 0, to = 1)\n",
+      "after": ""
+    },
+    {
+      "tag": "delete",
+      "originalRange": [
+        160,
+        161
+      ],
+      "preparedRange": [
+        155,
+        155
+      ],
+      "before": "    @FloatRange(from = 0, to = 1)\n",
+      "after": ""
+    },
+    {
+      "tag": "delete",
+      "originalRange": [
+        168,
+        169
+      ],
+      "preparedRange": [
+        162,
+        162
+      ],
+      "before": "    @FloatRange(from = 0, to = 1)\n",
+      "after": ""
+    },
+    {
+      "tag": "delete",
+      "originalRange": [
+        176,
+        177
+      ],
+      "preparedRange": [
+        169,
+        169
+      ],
+      "before": "    @FloatRange(from = 0, to = 1)\n",
+      "after": ""
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        256,
+        257
+      ],
+      "preparedRange": [
+        248,
+        249
+      ],
+      "before": "    private static void setDefaultDarkLightnessValues(Target target) {\n",
+      "after": "    private static void setDefaultDarkLightnessValues(DesktopPaletteTarget target) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        261,
+        262
+      ],
+      "preparedRange": [
+        253,
+        254
+      ],
+      "before": "    private static void setDefaultNormalLightnessValues(Target target) {\n",
+      "after": "    private static void setDefaultNormalLightnessValues(DesktopPaletteTarget target) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        267,
+        268
+      ],
+      "preparedRange": [
+        259,
+        260
+      ],
+      "before": "    private static void setDefaultLightLightnessValues(Target target) {\n",
+      "after": "    private static void setDefaultLightLightnessValues(DesktopPaletteTarget target) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        272,
+        273
+      ],
+      "preparedRange": [
+        264,
+        265
+      ],
+      "before": "    private static void setDefaultVibrantSaturationValues(Target target) {\n",
+      "after": "    private static void setDefaultVibrantSaturationValues(DesktopPaletteTarget target) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        277,
+        278
+      ],
+      "preparedRange": [
+        269,
+        270
+      ],
+      "before": "    private static void setDefaultMutedSaturationValues(Target target) {\n",
+      "after": "    private static void setDefaultMutedSaturationValues(DesktopPaletteTarget target) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        283,
+        284
+      ],
+      "preparedRange": [
+        275,
+        276
+      ],
+      "before": "     * Builder class for generating custom {@link Target} instances.\n",
+      "after": "     * Builder class for generating custom {@link DesktopPaletteTarget} instances.\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        286,
+        287
+      ],
+      "preparedRange": [
+        278,
+        279
+      ],
+      "before": "        private final Target mTarget;\n",
+      "after": "        private final DesktopPaletteTarget mTarget;\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        289,
+        290
+      ],
+      "preparedRange": [
+        281,
+        282
+      ],
+      "before": "         * Create a new {@link Target} builder from scratch.\n",
+      "after": "         * Create a new {@link DesktopPaletteTarget} builder from scratch.\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        292,
+        293
+      ],
+      "preparedRange": [
+        284,
+        285
+      ],
+      "before": "            mTarget = new Target();\n",
+      "after": "            mTarget = new DesktopPaletteTarget();\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        296,
+        297
+      ],
+      "preparedRange": [
+        288,
+        289
+      ],
+      "before": "         * Create a new builder based on an existing {@link Target}.\n",
+      "after": "         * Create a new builder based on an existing {@link DesktopPaletteTarget}.\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        298,
+        300
+      ],
+      "preparedRange": [
+        290,
+        292
+      ],
+      "before": "        public Builder(@NonNull Target target) {\n            mTarget = new Target(target);\n",
+      "after": "        public Builder(DesktopPaletteTarget target) {\n            mTarget = new DesktopPaletteTarget(target);\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        305,
+        307
+      ],
+      "preparedRange": [
+        297,
+        298
+      ],
+      "before": "        @NonNull\n        public Builder setMinimumSaturation(@FloatRange(from = 0, to = 1) float value) {\n",
+      "after": "        public Builder setMinimumSaturation(float value) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        314,
+        316
+      ],
+      "preparedRange": [
+        305,
+        306
+      ],
+      "before": "        @NonNull\n        public Builder setTargetSaturation(@FloatRange(from = 0, to = 1) float value) {\n",
+      "after": "        public Builder setTargetSaturation(float value) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        323,
+        325
+      ],
+      "preparedRange": [
+        313,
+        314
+      ],
+      "before": "        @NonNull\n        public Builder setMaximumSaturation(@FloatRange(from = 0, to = 1) float value) {\n",
+      "after": "        public Builder setMaximumSaturation(float value) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        332,
+        334
+      ],
+      "preparedRange": [
+        321,
+        322
+      ],
+      "before": "        @NonNull\n        public Builder setMinimumLightness(@FloatRange(from = 0, to = 1) float value) {\n",
+      "after": "        public Builder setMinimumLightness(float value) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        341,
+        343
+      ],
+      "preparedRange": [
+        329,
+        330
+      ],
+      "before": "        @NonNull\n        public Builder setTargetLightness(@FloatRange(from = 0, to = 1) float value) {\n",
+      "after": "        public Builder setTargetLightness(float value) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        350,
+        352
+      ],
+      "preparedRange": [
+        337,
+        338
+      ],
+      "before": "        @NonNull\n        public Builder setMaximumLightness(@FloatRange(from = 0, to = 1) float value) {\n",
+      "after": "        public Builder setMaximumLightness(float value) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        367,
+        369
+      ],
+      "preparedRange": [
+        353,
+        354
+      ],
+      "before": "        @NonNull\n        public Builder setSaturationWeight(@FloatRange(from = 0) float weight) {\n",
+      "after": "        public Builder setSaturationWeight(float weight) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        384,
+        386
+      ],
+      "preparedRange": [
+        369,
+        370
+      ],
+      "before": "        @NonNull\n        public Builder setLightnessWeight(@FloatRange(from = 0) float weight) {\n",
+      "after": "        public Builder setLightnessWeight(float weight) {\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        400,
+        402
+      ],
+      "preparedRange": [
+        384,
+        385
+      ],
+      "before": "        @NonNull\n        public Builder setPopulationWeight(@FloatRange(from = 0) float weight) {\n",
+      "after": "        public Builder setPopulationWeight(float weight) {\n"
+    },
+    {
+      "tag": "delete",
+      "originalRange": [
+        413,
+        414
+      ],
+      "preparedRange": [
+        396,
+        396
+      ],
+      "before": "        @NonNull\n",
+      "after": ""
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        420,
+        421
+      ],
+      "preparedRange": [
+        402,
+        403
+      ],
+      "before": "         * Builds and returns the resulting {@link Target}.\n",
+      "after": "         * Builds and returns the resulting {@link DesktopPaletteTarget}.\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        422,
+        424
+      ],
+      "preparedRange": [
+        404,
+        405
+      ],
+      "before": "        @NonNull\n        public Target build() {\n",
+      "after": "        public DesktopPaletteTarget build() {\n"
+    }
+  ]
+}

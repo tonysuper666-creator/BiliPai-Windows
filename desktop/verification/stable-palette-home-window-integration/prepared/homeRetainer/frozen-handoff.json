@@ -1,0 +1,216 @@
+{
+  "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "scope": {
+    "actual42ManifestSha": "d84593c1a3dc908015f0526ae17375027082d91a9eba12e81b70dadde9779d54",
+    "cpSha": "6fb3e971ee12e0f77c7a7dd6e54a4af64456b3e8bab8446660c1f10947b2d63c",
+    "cpCount": 97,
+    "allDependencyHashesMatched": true,
+    "finalSourceHashesMatched": true,
+    "finalFixtureMatched": true,
+    "manualInstallFiles": 4,
+    "newOriginalRows": 0,
+    "newDependency": 0,
+    "compiledInputs": 5,
+    "actualOriginalFamilyReused": true,
+    "declaredProductOverrideFamilies": [
+      "DesktopPluginRuntime",
+      "DesktopTodayWatchRepository"
+    ],
+    "RootMainMounted": false,
+    "GUIWindow": false,
+    "nativeLeaseOrHTTP": false,
+    "accountMutation": false,
+    "package": false
+  },
+  "artifactCount": 47,
+  "artifacts": [
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "d6d2401569e4dffab5d3cbd5e4daf8d7ab32d37728a15ff4d22edda99e9a5060"
+    },
+    {
+      "path": "compile-01/class-overlap.json",
+      "sha256Bytes": "24f391350d1518ec2fc8d23bdd587be6d32d3751d4ef946267950cf7eb7838c4"
+    },
+    {
+      "path": "compile-01/compile.args",
+      "sha256Bytes": "29a91958bd95dc22fc5234b3f212d00d8da074e58a3e6fd551b898efbb711ccf"
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-01/inputs.json",
+      "sha256Bytes": "8e3891fa0cfc0f04d1f81b795b45e048c80810e9aa064f4a120b112d95ab62c9"
+    },
+    {
+      "path": "compile-02/class-overlap.json",
+      "sha256Bytes": "1e2b552f1bf65c4ec0be2ae387610aec889845a2eebb32e24d5a50c7e4f9d26f"
+    },
+    {
+      "path": "compile-02/compile.args",
+      "sha256Bytes": "9c2cf17f9fe080be259eff925e5d7b0546cbd10f9495aeac347b0ade2381f08d"
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-02/inputs.json",
+      "sha256Bytes": "2b12d1a00d7f4d9d99888c271bc9444e7ef3b31ccde9956eee579bcdf2747770"
+    },
+    {
+      "path": "compile-03/class-overlap.json",
+      "sha256Bytes": "1e2b552f1bf65c4ec0be2ae387610aec889845a2eebb32e24d5a50c7e4f9d26f"
+    },
+    {
+      "path": "compile-03/compile.args",
+      "sha256Bytes": "d12cdcfd36d10b893e19135a5fe96b9ac35e9caa3309e7366c1f28d77084841b"
+    },
+    {
+      "path": "compile-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-03/inputs.json",
+      "sha256Bytes": "39402d8551bc36c89373ad0bd8a65e88b7540af2ee14421474cdcd8e6757dbe6"
+    },
+    {
+      "path": "compile-04/class-overlap.json",
+      "sha256Bytes": "1e2b552f1bf65c4ec0be2ae387610aec889845a2eebb32e24d5a50c7e4f9d26f"
+    },
+    {
+      "path": "compile-04/compile.args",
+      "sha256Bytes": "cd5638efde6c0db0215377976ce04eb6a83d20b50bd2c0db4076e1dfe88c700d"
+    },
+    {
+      "path": "compile-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-04/inputs.json",
+      "sha256Bytes": "39c49b34894678e8ef12095004ed24364f53c10c6d68a76e0095b521a40ef548"
+    },
+    {
+      "path": "compile_candidate.py",
+      "sha256Bytes": "041f58e6cb8f9fc297221cfc890758aef1c62d081d294044ba8a4f802015820e"
+    },
+    {
+      "path": "excluded-runtime-artifacts.json",
+      "sha256Bytes": "9ab8cfe7481fa2201d8de2632f5783bed15695b37ec428e70bf1b13b8313c8cc"
+    },
+    {
+      "path": "fixtures/HomeRetirementFixture.kt",
+      "sha256Bytes": "e428f50844fed049bf5daf84b6977d78159fc5304fd1dfd1d6159b871a110c9a"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "92fcb508e37b544258cbc81e741fb69e68a89dfd98b2809893e23a191a566fab"
+    },
+    {
+      "path": "history-boundaries.json",
+      "sha256Bytes": "2d17e275993efd11934f49272d17a7834ecbc0c9e0689b52a47a6e246bf0860d"
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "041ebc8a95e7749def9eee7c9bb51640ddf07b51529ed4b18af376172ac9d4a0"
+    },
+    {
+      "path": "nav-review/REVIEW.md",
+      "sha256Bytes": "ab3f34e50d434280546cb10dcd61f7d94aea51187ecedb954e8f21572e6f81b4"
+    },
+    {
+      "path": "nav-review/evidence-manifest.json",
+      "sha256Bytes": "5e2368a497a5935964e779d1800dfa926ea8361675ed3a762808f3f46bbe721d"
+    },
+    {
+      "path": "nav-review/nav-map.json",
+      "sha256Bytes": "b353ee1042d4a1112ee5bc8ebec45bf826be2b2203583e56cc2d39cacb55164e"
+    },
+    {
+      "path": "nav-review/review.py",
+      "sha256Bytes": "f7386d8dfd07cf2f387fee9711fcc677aab423753a92473089e021e19e8813d0"
+    },
+    {
+      "path": "patches/runtime-base-desired.json",
+      "sha256Bytes": "f0c8926c422158dcd9e876c4b3e49e131d2c784cfed8f5b266f1fa122996bd46"
+    },
+    {
+      "path": "patches/runtime-retirement.patch",
+      "sha256Bytes": "7d851f61566764f2a6cf47935c3d10a57a6383b56bab9e3dd6e3d50258126631"
+    },
+    {
+      "path": "patches/shell-base-desired.json",
+      "sha256Bytes": "41f2a7e3d7a6bd1732cd7b84abe3aab27fe9b95668dba581431a661490e994b6"
+    },
+    {
+      "path": "patches/shell-lifetime-only.patch",
+      "sha256Bytes": "b18018629b075f6c9cdd0edd8881dc9f71855738ee92fe42a75efa0e22f20d13"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "sha256Bytes": "f4bdd68dad6bb26fca39d737625ec0836cbbd427284cede41affcc148697b5d9"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "0e5e00d9afd8fba3049d6fc85ced4cc5fe8776eea9e09ac70172192e6c7ccc12"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopRetainedHomePage.kt",
+      "sha256Bytes": "3a78bc7cbf305f8d65883d38c120e4ff8cf640858646f10e7d4128afa8a9a620"
+    },
+    {
+      "path": "prepared/replacements/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "ad17f3caf809751a089fddcbe79e26ff5cbcddbf736a585b75785669f19cc133"
+    },
+    {
+      "path": "prepared/replacements/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "2f783f6cfd6be2740658d69e8f9bb6f8b3aa4d20db7796dfc0508e650f95a5e6"
+    },
+    {
+      "path": "proof-01/compile.args",
+      "sha256Bytes": "9d3231cb9899d6d7f2eed34a03e68af0d82341e3417b5f9453dae8ccf39a9307"
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-01/run.log",
+      "sha256Bytes": "818800f9ad4b897a4c85d7b5b7120b5aea5dc9ef3cd4356950779558ea89d21d"
+    },
+    {
+      "path": "proof-01/source-binding.json",
+      "sha256Bytes": "f7871066159fd4abc5d4a3524ec161ab891f09cf1523f8c0f5673eb972770290"
+    },
+    {
+      "path": "proof-02/compile.args",
+      "sha256Bytes": "02fbc23bbe4edc6e3a861eb0be76d166ec8a739753b382650a84131daa0e9e7a"
+    },
+    {
+      "path": "proof-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-02/run.log",
+      "sha256Bytes": "cd25886302d9affca67a4053f5f09dd75d85a5476f59addc5203cace0c5d2a0f"
+    },
+    {
+      "path": "proof-02/source-binding.json",
+      "sha256Bytes": "f815e9d6a2a6fa4fe74864ca1519770680a4e6d59e27966ac98516159dcef700"
+    },
+    {
+      "path": "prove_candidate.py",
+      "sha256Bytes": "aab2e18695a5227d53a60785177dbba5f163e023d1c37e1775bb2f630caca44a"
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "321f4d06d04e9e6048326d7bc4ae2083e9078ca613cb63ef3c349162bfb5776d"
+    },
+    {
+      "path": "verification.json",
+      "sha256Bytes": "6d2f8095fc537578d0f1622529aca2f34d8e575a682e2a925885c0a1aad555b9"
+    }
+  ]
+}

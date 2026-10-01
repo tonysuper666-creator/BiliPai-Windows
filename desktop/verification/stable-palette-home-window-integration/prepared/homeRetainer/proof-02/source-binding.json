@@ -1,0 +1,17 @@
+{
+  "candidateSha": "c3c5892bcf78eef16fe7260a728afb8e01c2641521401f060c5bd5019fe3462b",
+  "actualManifestSha": "d84593c1a3dc908015f0526ae17375027082d91a9eba12e81b70dadde9779d54",
+  "cpSha": "6fb3e971ee12e0f77c7a7dd6e54a4af64456b3e8bab8446660c1f10947b2d63c",
+  "fixtureSha": "e428f50844fed049bf5daf84b6977d78159fc5304fd1dfd1d6159b871a110c9a",
+  "compileExit": 0,
+  "productOverrideCount": 2,
+  "prospectiveInputCount": 1,
+  "allowedProductFamilies": [
+    "DesktopTodayWatchRepository",
+    "DesktopPluginRuntime"
+  ],
+  "mainMounted": false,
+  "nativeWindow": false,
+  "originalBusinessRequest": false,
+  "runExit": 0
+}

@@ -1,0 +1,201 @@
+{
+  "originalSha256LF": "521e632d1b8f3655e862abbeb3624bfaabf144fd8274f5315a2f9d646adb2219",
+  "preparedSha256LF": "be96484050dfea039e5e0cb687712fa00c5a3e5940e0fc707a400749f7f3cf36",
+  "changes": [
+    {
+      "tag": "delete",
+      "originalRange": [
+        2,
+        7
+      ],
+      "preparedRange": [
+        2,
+        2
+      ],
+      "before": "import android.content.Context\nimport android.graphics.Bitmap\nimport android.net.Uri\nimport android.os.Build\nimport android.util.LruCache\n",
+      "after": ""
+    },
+    {
+      "tag": "delete",
+      "originalRange": [
+        8,
+        13
+      ],
+      "preparedRange": [
+        3,
+        3
+      ],
+      "before": "import androidx.palette.graphics.Palette\nimport coil3.imageLoader\nimport coil3.request.ImageRequest\nimport coil3.request.SuccessResult\nimport coil3.request.allowHardware\n",
+      "after": ""
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        19,
+        20
+      ],
+      "preparedRange": [
+        9,
+        13
+      ],
+      "before": "import java.io.File\n",
+      "after": "import kotlinx.coroutines.CoroutineStart\nimport kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        25,
+        28
+      ],
+      "preparedRange": [
+        18,
+        25
+      ],
+      "before": "object WallpaperPaletteStore {\n    private const val MAX_CACHE_SIZE = 8\n    private val paletteCache = LruCache<String, WallpaperPalette>(MAX_CACHE_SIZE)\n",
+      "after": "internal class WallpaperPaletteStore : AutoCloseable {\n    private val MAX_CACHE_SIZE = 8\n    private val requestGate=Any()\n    private var generation=0L\n    private var activeJob:kotlinx.coroutines.Job?=null\n    private var closed=false\n    private val paletteCache = com.bilipai.desktop.ui.DesktopWallpaperPaletteLru<WallpaperPalette>(MAX_CACHE_SIZE)\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        36,
+        45
+      ],
+      "preparedRange": [
+        33,
+        38
+      ],
+      "before": "    fun loadWallpaperPalette(\n        context: Context,\n        uri: String,\n        scope: CoroutineScope\n    ) {\n        if (uri.isBlank()) {\n            val systemPalette = extractSystemWallpaperPalette(context) ?: createDefaultThemePalette()\n            _currentPalette.value = systemPalette\n            return\n",
+      "after": "    fun loadWallpaperPalette(context:com.bilipai.desktop.ui.DesktopWallpaperPaletteContext,uri:String,scope:CoroutineScope) {\n        if(!context.isOwned() || scope.coroutineContext[kotlinx.coroutines.Job]?.isActive==false)return\n        val version=synchronized(requestGate) {\n            if(closed)return\n            generation++;activeJob?.cancel();activeJob=null;generation\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        46,
+        51
+      ],
+      "preparedRange": [
+        39,
+        48
+      ],
+      "before": "\n        val cached = getCachedPalette(uri)\n        if (cached != null) {\n            _currentPalette.value = cached\n            return\n",
+      "after": "        fun publish(palette:WallpaperPalette,cache:Boolean) {\n            context.commitIfOwned {\n                synchronized(requestGate) {\n                    if(!closed && generation==version && scope.coroutineContext[kotlinx.coroutines.Job]?.isActive!=false) {\n                        if(cache)synchronized(paletteCache) {paletteCache.put(uri,palette)}\n                        _currentPalette.value=palette\n                    }\n                }\n            }\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        52,
+        61
+      ],
+      "preparedRange": [
+        49,
+        61
+      ],
+      "before": "\n        scope.launch(Dispatchers.Default) {\n            val palette = extractWallpaperPaletteFromUri(context, uri)\n                ?: extractSystemWallpaperPalette(context)\n                ?: createDefaultThemePalette()\n            synchronized(paletteCache) {\n                paletteCache.put(uri, palette)\n            }\n            _currentPalette.value = palette\n",
+      "after": "        val cached=getCachedPalette(uri)\n        if(cached!=null) {publish(cached,false);return}\n        val job=scope.launch(Dispatchers.Default,start=CoroutineStart.LAZY) {\n            val palette=if(uri.isBlank())extractSystemWallpaperPalette(context) ?: createDefaultThemePalette()\n                else extractWallpaperPaletteFromUri(context,uri) ?: extractSystemWallpaperPalette(context) ?: createDefaultThemePalette()\n            currentCoroutineContext().ensureActive()\n            publish(palette,uri.isNotBlank())\n        }\n        val stillOwned=context.isOwned()\n        synchronized(requestGate) {\n            if(closed || generation!=version || !stillOwned)job.cancel()\n            else {activeJob=job;job.start()}\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        64,
+        83
+      ],
+      "preparedRange": [
+        64,
+        71
+      ],
+      "before": "    private fun extractSystemWallpaperPalette(context: Context): WallpaperPalette? {\n        return runCatching {\n            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {\n                val wallpaperManager = android.app.WallpaperManager.getInstance(context)\n                val colors = wallpaperManager.getWallpaperColors(android.app.WallpaperManager.FLAG_SYSTEM)\n                if (colors != null) {\n                    val primary = Color(colors.primaryColor.toArgb())\n                    val secondary = colors.secondaryColor?.toArgb()?.let { Color(it) } ?: primary\n                    val tertiary = colors.tertiaryColor?.toArgb()?.let { Color(it) } ?: secondary\n                    return@runCatching WallpaperPalette(\n                        topColor = primary,\n                        bottomColor = tertiary,\n                        dominantColor = secondary,\n                        stops = listOf(primary, secondary, tertiary)\n                    )\n                }\n            }\n            null\n        }.getOrNull()\n",
+      "after": "    private suspend fun extractSystemWallpaperPalette(context:com.bilipai.desktop.ui.DesktopWallpaperPaletteContext):WallpaperPalette? {\n        return try {\n            val system=context.systemWallpaper()\n            val image=system.fileUri?.let {extractWallpaperPaletteFromUri(context,it)}\n            image ?: system.desktopArgb?.let {argb ->Color(argb).let {primary ->WallpaperPalette(primary,primary,primary,listOf(primary,primary,primary))}}\n        } catch(cancelled:CancellationException) {throw cancelled}\n        catch(failure:Exception) {currentCoroutineContext().ensureActive();if(!context.isOwned())throw CancellationException(\"Wallpaper owner retired\");null}\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        85,
+        113
+      ],
+      "preparedRange": [
+        73,
+        76
+      ],
+      "before": "    private suspend fun extractWallpaperPaletteFromUri(context: Context, uri: String): WallpaperPalette? {\n        return runCatching {\n            val model: Any = when {\n                uri.startsWith(\"content://\") -> Uri.parse(uri)\n                uri.startsWith(\"file://\") -> {\n                    val path = Uri.parse(uri).path\n                    if (path != null) File(path) else uri\n                }\n                uri.startsWith(\"/\") -> File(uri)\n                else -> uri\n            }\n            val request = ImageRequest.Builder(context)\n                .data(model)\n                .allowHardware(false)\n                .size(256, 512)\n                .build()\n            val result = context.imageLoader.execute(request) as? SuccessResult ?: return@runCatching null\n            val rawBitmap = (result.image as? coil3.BitmapImage)?.bitmap ?: return@runCatching null\n            if (rawBitmap.isRecycled) return@runCatching null\n\n            val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&\n                rawBitmap.config == Bitmap.Config.HARDWARE\n            ) {\n                rawBitmap.copy(Bitmap.Config.ARGB_8888, false) ?: return@runCatching null\n            } else {\n                rawBitmap\n            }\n\n",
+      "after": "    private suspend fun extractWallpaperPaletteFromUri(context:com.bilipai.desktop.ui.DesktopWallpaperPaletteContext,uri:String):WallpaperPalette? {\n        return try {\n            val bitmap=context.readOwnedPixels(uri) ?: return null\n"
+    },
+    {
+      "tag": "insert",
+      "originalRange": [
+        117,
+        117
+      ],
+      "preparedRange": [
+        80,
+        82
+      ],
+      "before": "",
+      "after": "                currentCoroutineContext().ensureActive()\n                if(!context.isOwned())throw CancellationException(\"Wallpaper owner retired\")\n"
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        119,
+        124
+      ],
+      "preparedRange": [
+        84,
+        85
+      ],
+      "before": "                val palette = Palette.from(bitmap)\n                    .setRegion(0, sliceTop, bitmap.width, sliceBottom)\n                    .maximumColorCount(8)\n                    .clearFilters()\n                    .generate()\n",
+      "after": "                val palette = bitmap.paletteForOriginalRegion(sliceTop,sliceBottom)\n"
+    },
+    {
+      "tag": "delete",
+      "originalRange": [
+        132,
+        133
+      ],
+      "preparedRange": [
+        93,
+        93
+      ],
+      "before": "\n",
+      "after": ""
+    },
+    {
+      "tag": "replace",
+      "originalRange": [
+        139,
+        140
+      ],
+      "preparedRange": [
+        99,
+        101
+      ],
+      "before": "        }.getOrNull()\n",
+      "after": "        } catch(cancelled:CancellationException) {throw cancelled}\n        catch(failure:Exception) {currentCoroutineContext().ensureActive();if(!context.isOwned())throw CancellationException(\"Wallpaper owner retired\");null}\n"
+    },
+    {
+      "tag": "insert",
+      "originalRange": [
+        158,
+        158
+      ],
+      "preparedRange": [
+        119,
+        120
+      ],
+      "before": "",
+      "after": "        synchronized(requestGate) { generation++;activeJob?.cancel();activeJob=null }\n"
+    },
+    {
+      "tag": "insert",
+      "originalRange": [
+        162,
+        162
+      ],
+      "preparedRange": [
+        124,
+        126
+      ],
+      "before": "",
+      "after": "\n    override fun close() { synchronized(requestGate) { closed=true };clear() }\n"
+    }
+  ]
+}

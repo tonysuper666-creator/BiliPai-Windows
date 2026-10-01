@@ -1,0 +1,11 @@
+{
+  "actualSnapshot": 41,
+  "strictRuntimeEntries": 97,
+  "candidateClasses": 18,
+  "candidateMethods": 146,
+  "classFqnOverlap": [],
+  "samePackagePublicStaticMethodOverlap": [],
+  "invalidJvmMethodNames": [],
+  "loadedWithoutInitialization": 18,
+  "overrides": 0
+}

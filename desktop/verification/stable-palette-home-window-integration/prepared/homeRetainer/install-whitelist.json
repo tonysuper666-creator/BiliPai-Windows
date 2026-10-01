@@ -1,0 +1,40 @@
+{
+  "installOnly": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "sha256Bytes": "f4bdd68dad6bb26fca39d737625ec0836cbbd427284cede41affcc148697b5d9"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "0e5e00d9afd8fba3049d6fc85ced4cc5fe8776eea9e09ac70172192e6c7ccc12"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopRetainedHomePage.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopRetainedHomePage.kt",
+      "sha256Bytes": "3a78bc7cbf305f8d65883d38c120e4ff8cf640858646f10e7d4128afa8a9a620"
+    },
+    {
+      "source": "prepared/replacements/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "2f783f6cfd6be2740658d69e8f9bb6f8b3aa4d20db7796dfc0508e650f95a5e6"
+    }
+  ],
+  "patchOnly": [
+    "patches/runtime-retirement.patch",
+    "patches/shell-lifetime-only.patch"
+  ],
+  "doNotInstall": [
+    "prepared/replacements/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+    "compile-*/classes",
+    "*.jar",
+    "fixtures/*",
+    "nav-review/*"
+  ],
+  "newUpstreamIdentityCount": 0,
+  "newDependencyCount": 0,
+  "sharedFullFileReplacement": [
+    "DesktopTodayWatchRepository.kt only; old parallel planner retired"
+  ]
+}

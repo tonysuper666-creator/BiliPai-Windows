@@ -1,0 +1,31 @@
+{
+  "artifact": "androidx.palette:palette:1.0.0:sources",
+  "originalSourceJarSha256Bytes": "4e7eef704a4ff0613a03f3529a2194ace0c291c78fc4326feb66a27d9efa26e7",
+  "originalTargetSha256LF": "f3763875ff4adc2c236461980b4cecd797c0ee1356d42beb51871a6acdae2bf8",
+  "originalPaletteSha256LF": "d080c301d25f589b957b19a1f11b777dc37045bd3a6e07a4913709a31fcb2b77",
+  "fullTargetRetained": true,
+  "selectedMethods": [
+    "generate",
+    "generateScoredTarget",
+    "getMaxScoredSwatchForTarget",
+    "shouldBeScoredForTarget",
+    "generateScore",
+    "findDominantSwatch"
+  ],
+  "collectionSeams": [
+    "SparseBooleanArray→HashSet<Integer>",
+    "ArrayMap→HashMap"
+  ],
+  "targetNameSeam": "Target→DesktopPaletteTarget",
+  "defaultTargetOrder": [
+    "LIGHT_VIBRANT",
+    "VIBRANT",
+    "DARK_VIBRANT",
+    "LIGHT_MUTED",
+    "MUTED",
+    "DARK_MUTED"
+  ],
+  "existingDesktopPaletteQuantizer": true,
+  "sourceOnlyNoJarDependency": true,
+  "license": "Apache-2.0; original source headers retained in both manual Java files"
+}

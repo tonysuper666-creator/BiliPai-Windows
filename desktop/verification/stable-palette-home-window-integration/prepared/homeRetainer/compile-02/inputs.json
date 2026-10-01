@@ -1,0 +1,28 @@
+{
+  "actualMain": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-41",
+  "manifestSha": "f63beb92079c82b5318bbb9721d06618639a0d7da83e1dd149e0dadb0dcab779",
+  "cpSha": "23e35645396f8b5b1d720c9604799bacccb75e3edca551dcf49da54497564abe",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeRootFactory.kt",
+      "sha256Bytes": "504745d89e762d5e0cace17fa79b9982598b2dc6dfe254014ccbde1281aa8cb3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "0e5e00d9afd8fba3049d6fc85ced4cc5fe8776eea9e09ac70172192e6c7ccc12"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-mount-parity\\prepared\\replacements\\com\\bilipai\\desktop\\plugins\\DesktopPluginRuntime.kt",
+      "sha256Bytes": "ad17f3caf809751a089fddcbe79e26ff5cbcddbf736a585b75785669f19cc133"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-mount-parity\\prepared\\replacements\\com\\bilipai\\desktop\\plugins\\DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "61c09a46898c48ab98111f4c4ecd45366e9078d54aaa58fc7ff62aa3435b226e"
+    }
+  ],
+  "prospectiveSourceOnly": true,
+  "mainIntegration": false,
+  "productSourceOverrides": 0,
+  "exit": 0
+}

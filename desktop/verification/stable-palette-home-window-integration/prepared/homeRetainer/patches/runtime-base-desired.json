@@ -1,0 +1,7 @@
+{
+  "path": "work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\plugins\\DesktopPluginRuntime.kt",
+  "baseLfSha256": "3f33392b1eb7bf14c7e0cbc8c9330890b8991a3b85d5f74859b7159ad6383de3",
+  "desiredLfSha256": "76e804cf841c75c83a7309af71147ba0eb9746739d3fb76c735c5b4f90afbbb6",
+  "hunks": 3,
+  "removeOldRefillConsumer": true
+}
