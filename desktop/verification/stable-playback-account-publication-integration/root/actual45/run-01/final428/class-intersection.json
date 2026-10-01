@@ -1,0 +1,25 @@
+{
+  "fixtureClasses": [
+    "com/bilipai/desktop/PublicationRaceFixtureKt$callAndCancellationRace$$inlined$-addInterceptor$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$controllerRace$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$controllerRace$12$2.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$controllerRace$backend$1$playback$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$controllerRace$backend$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$controllerRace$local$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$listenCancellationAndReplay$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$listenCancellationAndReplay$memory$1$lyrics$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$listenCancellationAndReplay$memory$1$prepare$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$listenCancellationAndReplay$memory$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$main$1$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$main$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$queuedDownloadRace$$inlined$-addInterceptor$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$queuedDownloadRace$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$queuedDownloadRace$manager$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$queuedDownloadRace$mux$1.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$swing$2.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt$waitFor$2.class",
+    "com/bilipai/desktop/PublicationRaceFixtureKt.class"
+  ],
+  "intersections": [],
+  "productionOverrides": 0
+}

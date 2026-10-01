@@ -1,0 +1,117 @@
+{
+  "status": "FAIL",
+  "exitCode": 1,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\cast\\DesktopCastMediaPublication.kt",
+      "sha256Bytes": "edb66fb67c2a0036b72e9205f89b7941ee904e11bab939c59218bc352ee1fd76"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopPlaybackAuthorization.kt",
+      "sha256Bytes": "f60c2aaebb98aa52073a9ecd56a6e8ff798c899f45d65223d215988ebafb932b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\DesktopPlaybackPublication.kt",
+      "sha256Bytes": "509789fb84577a03eb0b8838fbae51fbb3991c92109b18861bb6383295c224ca"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\cast\\LocalProxyServer.kt",
+      "sha256Bytes": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\download\\ResumableAssetDownloader.kt",
+      "sha256Bytes": "9da3da2c3ae37e495ddc7115847e8bfc15788c18448e6c17f4ce3e7b4bed893b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\DesktopAudioRepository.kt",
+      "sha256Bytes": "fedfe3ce90865fcd00ed2474766623d64432bebeff63eacbfb206dc153c320f9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\ListenAudioSession.kt",
+      "sha256Bytes": "e8f00e3b3dff07bf629c8516dd6922c4d80de279bbfea180ce02afe9dcf040d8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\cast\\DesktopCastController.kt",
+      "sha256Bytes": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\cast\\DesktopCastDialog.kt",
+      "sha256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\cast\\DesktopCastMediaResolver.kt",
+      "sha256Bytes": "e29b7f591ab6970e8f2ad457cd788d93232fdabe5e7cf2e1630460afa717030a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\cast\\DesktopCastPlatform.kt",
+      "sha256Bytes": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\cast\\DesktopCastProxySessions.kt",
+      "sha256Bytes": "ec4d7d41497b2d379dd467574fef1fe6027d8ff4f12dcae7f34c36059c54ef05"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\cast\\DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopRepository.kt",
+      "sha256Bytes": "ba0ea3eaa0a8ff64a74cc52d781dfb66c99aa91dbdb2f13ac1f07602b1ef593e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopPlaybackController.kt",
+      "sha256Bytes": "7bf8cbf18ea762c5f904ee427c7a2cd3923b5e34a1a99f121580305e4d7a96c3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256Bytes": "e373c9206b36b3817ca57307200d6b19db61ecdb432b67bd235b557bd6e6715b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\download\\DesktopDownloadManager.kt",
+      "sha256Bytes": "c347c6e571244d0f4a88bf20b2fc907a82a81077cd4d84c274ec355129911023"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\download\\DesktopDownloadModels.kt",
+      "sha256Bytes": "2e63eed6d04156a06cd51cf7003d9613e47b10d1766c33d5a175d99c66497ada"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecovery.kt",
+      "sha256Bytes": "ddad59a8126a9f9c97fde18d87607251c9a1966a19515fe170168df829b29506"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256Bytes": "0ba7d0dc4307f772157f75fd4a728fdd297592accce5227bf45535f0790ee72a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlaybackSource.kt",
+      "sha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\MediaScreens.kt",
+      "sha256Bytes": "46649fb5f4946bee8db27cdfff4e3267d9f7d7b39584251d31dbad253c439f2f"
+    }
+  ],
+  "runtimeEntries": 97,
+  "snapshotManifest": "d84593c1a3dc908015f0526ae17375027082d91a9eba12e81b70dadde9779d54",
+  "CP": "6fb3e971ee12e0f77c7a7dd6e54a4af64456b3e8bab8446660c1f10947b2d63c",
+  "prospectiveExistingProductionOverrides": true,
+  "actualRuntimeAcceptance": false,
+  "HTTP": false,
+  "HWND": false
+}

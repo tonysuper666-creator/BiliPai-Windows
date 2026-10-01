@@ -1,0 +1,18 @@
+{
+  "mergeOnlySameIdentity": true,
+  "replaceExistingMode": "direct",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt",
+      "sha256": "bffabd9dc119618ad842fee0d16e6e89e10ff813e2d30d2590ba68b47b3a4b5b",
+      "features": [
+        "offline-download",
+        "source-parity"
+      ],
+      "mode": "platform-rewrite"
+    }
+  ],
+  "newOriginalIdentities": 0,
+  "preserveAllExistingFeatures": true,
+  "directSyncRemovesOldCopy": true
+}

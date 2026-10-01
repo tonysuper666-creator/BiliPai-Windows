@@ -1,0 +1,49 @@
+{
+  "status": "FROZEN_PREPARED_SOURCE_ONLY",
+  "existingBackend84MustInstallFirst": true,
+  "newFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackPublication.kt",
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackPublication.kt",
+      "sha256Bytes": "35d8e32aece6fadf98eaf340f1be23d21796902f7bfc0a2d0cb1451feaac74eb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaPublication.kt",
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaPublication.kt",
+      "sha256Bytes": "edb66fb67c2a0036b72e9205f89b7941ee904e11bab939c59218bc352ee1fd76"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastPublication.java",
+      "source": "prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastPublication.java",
+      "sha256Bytes": "12a613267078eb7157868b9ab5595063894fdc2d098907da6e09f5a010e8928f"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "source": "prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256Bytes": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-download-transport.py",
+      "source": "prepared/desktop/tools/extract-upstream-download-transport.py",
+      "sha256Bytes": "d2e2892466c63637b66e9db79b666bab9d9e6f9639ea77bc03e60b3a26cbb7fc"
+    }
+  ],
+  "exactSequentialHunks": "local-hunks.json",
+  "existingManualFamilies": 18,
+  "doNotModifyUpstreamAppRowWithProducerRequired": true,
+  "producerHunks": "producer-hunks.json",
+  "buildRegistrationProposal": "build-registration-hunks.json",
+  "sameIdentityRegistryMerge": "registry-delta.json",
+  "castForkRecordOnlyUpdate": "cast-provenance-hunks.json",
+  "syntheticCallerHunks": "synthetic-migration/local-hunks.json",
+  "nativeSmokeOwnCallerMandatory": true,
+  "existingTestsAssertionsUnchanged": true,
+  "backend84AuthCopyProofOnly": true,
+  "wholeFilesProofOnly": true,
+  "unchangedPlaybackStreamHeadersProofOnly": true,
+  "shellSourceBase": "Root-saved actual42 before Root43 four lifetime hunks; semantic exact-hunk merge mandatory",
+  "RootCompileTestKotlinRequired": true,
+  "prospectiveCompileOnly": true,
+  "productRuntimeAcceptance": false,
+  "newDependencyOrRuntimeArtifact": false
+}

@@ -1,0 +1,23 @@
+desktop\.local\stable-playback-final-publication-parity\runs\compile-01\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopPlaybackPublication.kt:72:5: error: class '<anonymous>' is not abstract and does not implement abstract members:
+fun <T : Any> tag(type: KClass<T>): T?
+fun <T> tag(type: Class<out T>): T?
+fun <T : Any> tag(type: KClass<T>, computeIfAbsent: () -> T): T
+fun <T : Any> tag(type: Class<T>, computeIfAbsent: () -> T): T
+    object : Call {
+    ^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-01\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1773:25: error: overload resolution ambiguity between candidates:
+fun DesktopCastDialog(controller: DesktopCastController, media: suspend () -> DesktopCastMediaPublication?, onDismiss: () -> Unit): Unit
+fun DesktopCastDialog(controller: DesktopCastController, media: suspend () -> CastPluginMediaRequest?, onDismiss: () -> Unit): Unit
+        if (dlnaDialog) DesktopCastDialog(cast, media = { currentCastMedia() }, onDismiss = { dlnaDialog = false })
+                        ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-01\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1773:59: error: suspend function 'suspend fun currentCastMedia(): DesktopCastMediaPublication' can only be called from a coroutine or another suspend function.
+        if (dlnaDialog) DesktopCastDialog(cast, media = { currentCastMedia() }, onDismiss = { dlnaDialog = false })
+                                                          ^^^^^^^^^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-01\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1774:31: error: overload resolution ambiguity between candidates:
+fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: DesktopGoogleCastPlugin, media: suspend () -> DesktopCastMediaPublication?, onDismiss: () -> Unit): Unit
+fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: DesktopGoogleCastPlugin, media: suspend () -> CastPluginMediaRequest?, onDismiss: () -> Unit): Unit
+        if (googleCastDialog) DesktopGoogleCastDialog(pluginRuntime.context, pluginRuntime.googleCast,
+                              ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-01\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1775:23: error: suspend function 'suspend fun currentCastMedia(): DesktopCastMediaPublication' can only be called from a coroutine or another suspend function.
+            media = { currentCastMedia() }, onDismiss = { googleCastDialog = false })
+                      ^^^^^^^^^^^^^^^^

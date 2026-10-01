@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-01T10:02:00.386Z" hostname="TONYSUPER666" time="0.028">
+  <properties/>
+  <testcase name="unchanged original HiRes policy requires an audio renderer and supported error code" classname="com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest" time="0.001"/>
+  <testcase name="native mapper accepts only actual AO init failure and never generic or video decoder evidence" classname="com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest" time="0.001"/>
+  <testcase name="actual original Retrofit fake PlayUrl reply feeds original cached DASH AAC selection" classname="com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest" time="0.007"/>
+  <testcase name="AAC and Dolby selected audio never trigger HiRes fallback" classname="com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest" time="0.0"/>
+  <testcase name="missing cached DASH or absent standard audio is explicitly unavailable" classname="com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest" time="0.001"/>
+  <testcase name="invalid standard URLs cannot be turned into a successful fallback" classname="com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest" time="0.0"/>
+  <testcase name="actual native actor AO end-file becomes typed failure then same-owner AAC reload keeps pause position headers and subtitles" classname="com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest" time="0.009"/>
+  <testcase name="replaced media owner account or failure attempt cannot apply stale premium fallback" classname="com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

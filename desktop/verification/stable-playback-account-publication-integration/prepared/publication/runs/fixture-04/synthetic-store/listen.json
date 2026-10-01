@@ -1,0 +1,21 @@
+{
+    "queue": [
+        {
+            "bvid": "BVmemory",
+            "title": "Memory",
+            "cover": "",
+            "owner": "",
+            "duration": 10
+        }
+    ],
+    "currentIndex": 0,
+    "recent": [
+        {
+            "bvid": "BVmemory",
+            "title": "Memory",
+            "cover": "",
+            "owner": "",
+            "duration": 10
+        }
+    ]
+}

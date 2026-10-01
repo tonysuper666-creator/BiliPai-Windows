@@ -1,0 +1,44 @@
+{
+  "originalCookieJar": {
+    "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+    "sha256LF": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+    "selectedBodySha256LF": "b550b7aa5b350c223079b017e37fcfc0925d038a279eb331ab88ad308ccefd3e",
+    "adaptation": "declaration name/visibility only; full original body"
+  },
+  "newManual": {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackAuthorization.kt",
+    "sha256LF": "f60c2aaebb98aa52073a9ecd56a6e8ff798c899f45d65223d215988ebafb932b"
+  },
+  "existingSourceHunks": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "baseLF": "dfb7ce977a5162793bf86906982fd6fc58a66dd8c50a754caa5690e381663b63",
+      "candidateLF": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseLF": "1fe31dea406890ed26fd59013592dc05a270bae22035b8e8259ed897a2acf545",
+      "candidateLF": "3a7dc67bcfecee3f29b0947d2449dedf5130148eda8d819f1f70b2220d1f9cb1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "baseLF": "da0f2585564de455f8d331b3f6b7a265c5b7f7256b5a09a610219f08cbd4ea98",
+      "candidateLF": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "baseLF": "25185ccb8e13c52be17801c83ad5b4288b6e48f6632dd1e6a9d03c20f512fe4a",
+      "candidateLF": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "baseLF": "4ce499492157c0147365db59f59ab0c633972ba531bb7ffa17a4501c686e67c8",
+      "candidateLF": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae"
+    }
+  ],
+  "newClient": false,
+  "newStore": false,
+  "newAccountList": false,
+  "newCache": false,
+  "preparedOnly": true
+}

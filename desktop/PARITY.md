@@ -40,6 +40,8 @@ Windows 首页偏好平台切片见 `verification/stable-home-windows-prefs-inte
 
 原应用图片加载与个人页Windows平台见 `verification/stable-application-image-profile-platform-integration`：classes44整体通过，931源码身份/213资源/97既有运行项；actual44 fixture-only零产品覆盖证明通过。原图片缓存/解码/HTTP缓存策略、完整壁纸导入、同一主题与图库服务已安装；图片单例已配置到实际窗口，后台缓存收缩与原Profile导航仍待完整Root挂载。本次源码编译不代表新版EXE验收。
 
+同一账号存储的选播账号、播放/听视频/下载/投屏最终提交见 `verification/stable-playback-account-publication-integration`：classes45及compileTestKotlin整体通过，931源码身份/213资源/97既有运行项；actual45零产品覆盖8组86断言、6个定向JUnit类67唯一案例通过。旧测试API桩漏新factory曾发游客fake-BVID请求，改为同既有memory transport后仅失败类重跑通过；失败记录完整保留。独立选播revision不改主账号首页代际，最终提交、恢复、取消及下载/Channel锁外IO均已接；原Profile账号界面与完整Root窗口仍待挂载，未交付新版EXE。
+
 正式版元数据分别核验：发布说明 versionCode 414，固定 tag 源码 415，官方 APK 二进制清单 418。已观察 tag 后六次提交的 main 为 `f2973e9a0649a4d32618d65e8870165a048e0a02`、源码版本 418；版本号相同不能证明 APK 精确构建提交，候选仍固定上述 tag，歌词、听视频、首页撤销/定位提示与评论图标的六文件后续修改单列待复核。历史 Main15 启动首次结果因 Composition 错误被审查否决，第二次失败亦保留；准备实际 JS 资源后的第三次访客窗口启动通过，仅证明启动/关闭，不证明页面交互或新的 EXE 已交付。
 
 本轮窄验证包括原 BGM 后台 12 项/43 断言、评论检测 12 项/40 断言、实际 mpv 投票窗口 8 门和 6 次鼠标点击、隐藏真实 HWND 下载进度 34 断言，以及实际整包 Main14 类的玻璃背景采样 25 断言。后者确认原 Tab 前景不进入背景取样，同时保留正常绘制。原生文字分享的准备/回收和 actor 生命周期通过，系统分享面板及 DataRequested 尚未验收。窄测试、隐藏窗口 API 调用和真实整包页面验收分别记录；已有桌面 EXE 未替换。

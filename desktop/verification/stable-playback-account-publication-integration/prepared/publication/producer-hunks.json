@@ -1,0 +1,14 @@
+[
+  {
+    "path": "desktop/tools/extract-cast-platform.py",
+    "baseLF": "6d6d988e8b39530255cbee501e21d0f0f290fded42fa9dc0161b057311503679",
+    "candidateLF": "d88118db32194f2d8cbb583c6d9106bb5aed4745601df891f1f17d62aaae5e99",
+    "hunks": [
+      {
+        "before": "    write(path, body)\n\n    path = BASE + \"feature/plugin/dlna/DlnaCastPlugin.kt\"",
+        "after": "    body = substitute(body, 'val upstreamResponse = client.newCall(upstreamRequest).execute()', 'val upstreamResponse = (registration?.publication?.calls(client) ?: client).newCall(upstreamRequest).execute()')\n    body = substitute(body, '            manifestStore[key] = manifest', '            val frame = su.litvak.chromecast.api.v2.DesktopCastPublication.current() as? com.bilipai.desktop.cast.DesktopCastPublicationFrame\\n            if (frame == null) manifestStore[key] = manifest else frame.admit { manifestStore[key] = manifest }')\n    write(path, body)\n\n    path = BASE + \"feature/plugin/dlna/DlnaCastPlugin.kt\"",
+        "occurrences": 1
+      }
+    ]
+  }
+]

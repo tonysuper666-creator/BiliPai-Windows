@@ -1,0 +1,10 @@
+{
+  "status": "SOURCE_PATCH_PASS",
+  "controllerHarnessFiles": 7,
+  "listenHarnessFiles": 4,
+  "downloadCalls": 11,
+  "nativeSmokeCalls": 2,
+  "existingTestBusinessAssertionsUnchanged": true,
+  "requiresRootCompileTestKotlin": true,
+  "compiledOrExecutedOldSuite": false
+}

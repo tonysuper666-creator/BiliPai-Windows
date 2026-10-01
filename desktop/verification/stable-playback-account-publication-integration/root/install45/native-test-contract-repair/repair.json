@@ -1,0 +1,33 @@
+{
+  "reason": "Whole test compilation found three older memory-only native fixtures missing the five same-core render interface methods introduced before Playback45",
+  "rows": [
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/MpvStartupProbeTest.kt",
+      "before": "        override fun mpv_free(data: Pointer) = error(\"Unexpected playback call\")",
+      "after": "        override fun mpv_render_context_create(result: com.sun.jna.ptr.PointerByReference, handle: Pointer, params: Pointer): Int = error(\"Unexpected software render call in memory-only native fixture\")\n        override fun mpv_render_context_set_update_callback(context: Pointer, callback: MpvRenderUpdateCallback, data: Pointer?): Unit = error(\"Unexpected software render call in memory-only native fixture\")\n        override fun mpv_render_context_update(context: Pointer): Long = error(\"Unexpected software render call in memory-only native fixture\")\n        override fun mpv_render_context_render(context: Pointer, params: Pointer): Int = error(\"Unexpected software render call in memory-only native fixture\")\n        override fun mpv_render_context_free(context: Pointer): Unit = error(\"Unexpected software render call in memory-only native fixture\")\n        override fun mpv_free(data: Pointer) = error(\"Unexpected playback call\")",
+      "baseSha256LF": "b62d628b786ab3d9b272dc8a2c9ab8b4475c8948a678559f448a50f83c0aff30",
+      "candidateSha256LF": "d6c1a0351debc8727d079dbef58f105cd723c3966330a4af4490aa653436b362",
+      "originalAssertionsUnchanged": true,
+      "unexpectedRenderFailsExplicitly": true
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopAdvancedPlaybackSettingsTest.kt",
+      "before": "    override fun mpv_free(data: Pointer) { memories.remove(data); (data as? Memory)?.close() }",
+      "after": "    override fun mpv_render_context_create(result: com.sun.jna.ptr.PointerByReference, handle: Pointer, params: Pointer): Int = error(\"Unexpected software render call in memory-only native fixture\")\n    override fun mpv_render_context_set_update_callback(context: Pointer, callback: MpvRenderUpdateCallback, data: Pointer?): Unit = error(\"Unexpected software render call in memory-only native fixture\")\n    override fun mpv_render_context_update(context: Pointer): Long = error(\"Unexpected software render call in memory-only native fixture\")\n    override fun mpv_render_context_render(context: Pointer, params: Pointer): Int = error(\"Unexpected software render call in memory-only native fixture\")\n    override fun mpv_render_context_free(context: Pointer): Unit = error(\"Unexpected software render call in memory-only native fixture\")\n    override fun mpv_free(data: Pointer) { memories.remove(data); (data as? Memory)?.close() }",
+      "baseSha256LF": "09e5b67e3edb0523253fca79fe437b794a62ef62c62383e48442aee571c07626",
+      "candidateSha256LF": "676c37ad3e599cffee7cd0d464df3213f4cdf7c5cbce4793668c856284cbb38f",
+      "originalAssertionsUnchanged": true,
+      "unexpectedRenderFailsExplicitly": true
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecoveryTest.kt",
+      "before": "    override fun mpv_free(data: Pointer) { buffers.remove(data); (data as? Memory)?.close() }",
+      "after": "    override fun mpv_render_context_create(result: com.sun.jna.ptr.PointerByReference, handle: Pointer, params: Pointer): Int = error(\"Unexpected software render call in memory-only native fixture\")\n    override fun mpv_render_context_set_update_callback(context: Pointer, callback: MpvRenderUpdateCallback, data: Pointer?): Unit = error(\"Unexpected software render call in memory-only native fixture\")\n    override fun mpv_render_context_update(context: Pointer): Long = error(\"Unexpected software render call in memory-only native fixture\")\n    override fun mpv_render_context_render(context: Pointer, params: Pointer): Int = error(\"Unexpected software render call in memory-only native fixture\")\n    override fun mpv_render_context_free(context: Pointer): Unit = error(\"Unexpected software render call in memory-only native fixture\")\n    override fun mpv_free(data: Pointer) { buffers.remove(data); (data as? Memory)?.close() }",
+      "baseSha256LF": "bc3ce10bc91b66f2049707ffe3e1b2f9f63c1e2d55fcadff82caa72cb8909d4c",
+      "candidateSha256LF": "4f6814fb708db1c20078b9002c319548e65cbbdc0b3c2e5b5da8356533b806e4",
+      "originalAssertionsUnchanged": true,
+      "unexpectedRenderFailsExplicitly": true
+    }
+  ],
+  "productSourcesChanged": false
+}

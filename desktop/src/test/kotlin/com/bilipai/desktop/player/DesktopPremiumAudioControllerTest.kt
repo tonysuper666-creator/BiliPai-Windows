@@ -259,7 +259,11 @@ class DesktopPremiumAudioControllerTest {
         private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing + CoroutineExceptionHandler { _, failure -> failures.add(failure) })
         private val directory = Files.createTempDirectory("bilipai-premium-controller-")
         val controller = DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory) { false }, { preferences }, scope,
-            currentDanmakuSettings = { error("This controller harness has no danmaku overlay") }, dataSource = source, onRememberAudioQuality = { remembered.add(it) })
+            currentDanmakuSettings = { error("This controller harness has no danmaku overlay") }, dataSource = source, onRememberAudioQuality = { remembered.add(it) }, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(
+                { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true },
+                { admitted -> synchronized(scope) {
+                    if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }
+                } }))
         suspend fun open() {
             swing { controller.open(VideoCard("BV-premium", "Fixture", "", "", 0, 120)) }
             await { !controller.state.value.opening && controller.state.value.details != null }

@@ -92,11 +92,15 @@ private class MusicSessionFixture(
     val player = MpvPlayer()
     val store = ListenAudioStore(directory.resolve("listen.json"))
     val repository = DesktopRepository(DesktopSessionStore.temporary())
+    private val publicationGate = Any()
+    private var publicationAlive = true
     lateinit var session: ListenAudioSession
     init {
         store.save(saved)
         onSwing { session = ListenAudioSession(repository, DesktopCommunityRepository(repository), player,
-            preferences, store = store, playbackDataSource = source) }
+            preferences, store = store, playbackDataSource = source, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(
+                    { synchronized(publicationGate) { publicationAlive } },
+                    { admitted -> synchronized(publicationGate) { if (!publicationAlive) false else { admitted(); true } } })) }
     }
     suspend fun await(predicate: (ListenAudioState) -> Boolean) = withTimeout(3_000) { session.state.first(predicate) }
     fun start(sid: Long = 81) = onSwing { session.openNativeMusic(MusicPlaybackSource.AudioSong(sid)) }
@@ -105,7 +109,7 @@ private class MusicSessionFixture(
         val state = MpvPlayer::class.java.getDeclaredField("mutableState").apply { isAccessible = true }.get(player) as MutableStateFlow<PlayerState>
         state.value = change(state.value)
     }
-    override fun close() {
+    override fun close() { synchronized(publicationGate) { publicationAlive = false };
         onSwing { session.close() }; player.close()
         val resolved = directory.toAbsolutePath().normalize()
         check(resolved.startsWith(java.nio.file.Path.of(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()) &&

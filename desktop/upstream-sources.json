@@ -525,9 +525,10 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt",
       "sha256": "bffabd9dc119618ad842fee0d16e6e89e10ff813e2d30d2590ba68b47b3a4b5b",
       "features": [
-        "source-parity"
+        "source-parity",
+        "offline-download"
       ],
-      "mode": "direct"
+      "mode": "platform-rewrite"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",

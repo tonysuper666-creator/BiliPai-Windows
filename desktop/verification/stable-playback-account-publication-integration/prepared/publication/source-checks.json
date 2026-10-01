@@ -1,0 +1,334 @@
+{
+  "status": "PASS",
+  "exactInverseChecks": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "groups": 1,
+      "hunks": 1,
+      "baseLF": "3a7dc67bcfecee3f29b0947d2449dedf5130148eda8d819f1f70b2220d1f9cb1",
+      "candidateLF": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "exactInverse": true,
+      "backend84AppliedFirst": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "groups": 1,
+      "hunks": 1,
+      "baseLF": "ffbba67b3f67b5dad71ebbcfefae9039a2b9a6b817ffc677804f6d1a6e194ff7",
+      "candidateLF": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "groups": 6,
+      "hunks": 27,
+      "baseLF": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf",
+      "candidateLF": "2b043cb3f614a480d955ad59446de05e12589660d9dabded47f5062660af5593",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "groups": 2,
+      "hunks": 2,
+      "baseLF": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf",
+      "candidateLF": "fff510976494af0321ff26de3263d35aa02e53ef9613fc16fa3e7f27f50fb792",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecovery.kt",
+      "groups": 1,
+      "hunks": 2,
+      "baseLF": "772fc023ff8dad88f1285194876d9113e0fbd64930607c7b4fc9aaeebf5b4395",
+      "candidateLF": "ddad59a8126a9f9c97fde18d87607251c9a1966a19515fe170168df829b29506",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopAudioRepository.kt",
+      "groups": 1,
+      "hunks": 2,
+      "baseLF": "c6bdd319faf67f956c4a1dbbb1e5d6d4889f8a8429399f222efe98c6e8e0e5d4",
+      "candidateLF": "fedfe3ce90865fcd00ed2474766623d64432bebeff63eacbfb206dc153c320f9",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "groups": 4,
+      "hunks": 12,
+      "baseLF": "b4fccf961b47f7ee507714414c641450e4a886d2cc3014d1d15c0e91a8e864e0",
+      "candidateLF": "614dc2700a3a5c33b4264e92c4c7ad750f958c25aa555fbc9ffab8f336ba53d0",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "groups": 4,
+      "hunks": 7,
+      "baseLF": "60438ac0c22e426c5ab61fdaf66ab916b8c262cffd531a83463fc8d212c256e8",
+      "candidateLF": "9d02ca0714942908507e9bc3ed63f3afa4c436b97a33fb4b0967416a25603bf3",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadModels.kt",
+      "groups": 1,
+      "hunks": 2,
+      "baseLF": "c6d782f8e14b5c47ec6a4848a3842bd5c463a5cce69c5c409d6fb1e99bffb59e",
+      "candidateLF": "2e63eed6d04156a06cd51cf7003d9613e47b10d1766c33d5a175d99c66497ada",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "groups": 5,
+      "hunks": 19,
+      "baseLF": "7d6fcb4651931f3e6e7dbb5e54cc242b2862f4bdc90f0476bb95dfd14d3dd814",
+      "candidateLF": "625fae9a5e66e7fcb9a27820506fa2788da54f667864dbb3917dc026b7cd78b3",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "groups": 2,
+      "hunks": 6,
+      "baseLF": "350dc8046540b56876f1432bf62fdd97fbf83d3b729f255b408c17bc1ed6e024",
+      "candidateLF": "6c12baae6db721f3d3cfc9c597202fa5b5b6376643f761d767b583fbd123e6f6",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "groups": 1,
+      "hunks": 4,
+      "baseLF": "b62051269356c2c04ce19db59d39ab50ff47fba71dcfa93e1ea84d850e7ae1b9",
+      "candidateLF": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "groups": 1,
+      "hunks": 2,
+      "baseLF": "050022f187f64f6ca1b394052af1fb2c380d79fb6268bbe77a739471bb3c2227",
+      "candidateLF": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "groups": 1,
+      "hunks": 1,
+      "baseLF": "f4b98917bf03cc1a0a6f073eefabd712f2c75a85dea9e213b25d6fd92a4b6509",
+      "candidateLF": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "groups": 2,
+      "hunks": 2,
+      "baseLF": "4a7529e3d589f60c190464c9f353d1804fb140c884e770a87f6d9cc3191da70e",
+      "candidateLF": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "groups": 1,
+      "hunks": 1,
+      "baseLF": "a41d68d4a7c40ff8b05a95fba786859cecff2761a8ac1fd8936de3c7b8dfa00e",
+      "candidateLF": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
+      "groups": 1,
+      "hunks": 2,
+      "baseLF": "5766488fee3ed9e79c82a55c91fd82b7fe47c6f13c48d0e92c5a43178bc5dfa4",
+      "candidateLF": "ec4d7d41497b2d379dd467574fef1fe6027d8ff4f12dcae7f34c36059c54ef05",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaResolver.kt",
+      "groups": 1,
+      "hunks": 1,
+      "baseLF": "54250f61e0580b9d7fda55da285354f22895e9b0b2265b856dc5365df61df861",
+      "candidateLF": "e29b7f591ab6970e8f2ad457cd788d93232fdabe5e7cf2e1630460afa717030a",
+      "exactInverse": true,
+      "backend84AppliedFirst": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt",
+      "originalSourceLF": "bffabd9dc119618ad842fee0d16e6e89e10ff813e2d30d2590ba68b47b3a4b5b",
+      "selectedTransportBodyInverse": true,
+      "wholeOriginalDownloaderRetained": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "originalSourceLF": "4b856ad11976bce136898ab66246e4708520b98e3acfd909d7c1364c04729be6",
+      "selectedTransportBodyInverse": true,
+      "wholeOriginalDownloaderRetained": false
+    }
+  ],
+  "backend84AllArtifactsUnchanged": 84,
+  "producerAuditSHA": "55fe4723576bce6ee280f34dc4b8bfe69292d2c53815827b4bf9dcba96f0046d",
+  "actual43SourceCompatibility": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "actual43InputRawSHA": "11bd36d5f31a5f44256567ab45bb2b3735d54d42ad3513c3d0f347b7c0955169",
+      "baselineLF": "1fe31dea406890ed26fd59013592dc05a270bae22035b8e8259ed897a2acf545",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "actual43InputRawSHA": "ec542ca986d1c06d05dd5889783500b8a3cf3ee08e0f100eb96f0aff16e76d53",
+      "baselineLF": "ffbba67b3f67b5dad71ebbcfefae9039a2b9a6b817ffc677804f6d1a6e194ff7",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "actual43InputRawSHA": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf",
+      "baselineLF": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "actual43InputRawSHA": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf",
+      "baselineLF": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecovery.kt",
+      "actual43InputRawSHA": "fafa52013b6c826dd358040ae6ec7c01d66b603d94a7cfd0e3dc03353c1bf539",
+      "baselineLF": "772fc023ff8dad88f1285194876d9113e0fbd64930607c7b4fc9aaeebf5b4395",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopAudioRepository.kt",
+      "actual43InputRawSHA": "0e29b2f3838aea8e65bcfba4dc4558dc0253acbcbe71cad9a1abcf4df5062607",
+      "baselineLF": "c6bdd319faf67f956c4a1dbbb1e5d6d4889f8a8429399f222efe98c6e8e0e5d4",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "actual43InputRawSHA": "b55e3f13066bb6194c3b0c9b886205cbfafa20fa561667256bdad9a047423cbe",
+      "baselineLF": "b4fccf961b47f7ee507714414c641450e4a886d2cc3014d1d15c0e91a8e864e0",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "actual43InputRawSHA": "60438ac0c22e426c5ab61fdaf66ab916b8c262cffd531a83463fc8d212c256e8",
+      "baselineLF": "60438ac0c22e426c5ab61fdaf66ab916b8c262cffd531a83463fc8d212c256e8",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadModels.kt",
+      "actual43InputRawSHA": "8d6cb7bedc55ece443bf3af7c4c6d530c62ea3808596d44bd09f0e296bf64a72",
+      "baselineLF": "c6d782f8e14b5c47ec6a4848a3842bd5c463a5cce69c5c409d6fb1e99bffb59e",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "actual43InputRawSHA": "08cdca6ed3c357896197b462513cbeca451bae6bca1867d107508d9aa756eda0",
+      "baselineLF": "7d6fcb4651931f3e6e7dbb5e54cc242b2862f4bdc90f0476bb95dfd14d3dd814",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "actual43InputRawSHA": "0c55221c2901400973e4c96e3f762a7cee52496988a2fb06019350243c84c80c",
+      "baselineLF": "350dc8046540b56876f1432bf62fdd97fbf83d3b729f255b408c17bc1ed6e024",
+      "liveRawMatches43Input": false,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": "Shell exact42 pre-retainer baseline; four Root43 lifetime hunks and later Root changes must be retained via semantic hunk merge"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "actual43InputRawSHA": "d18409ed1125cb6750b5e335eb922cfed0f8a6d07c5fff9f83b01dca8976f518",
+      "baselineLF": "b62051269356c2c04ce19db59d39ab50ff47fba71dcfa93e1ea84d850e7ae1b9",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "actual43InputRawSHA": "215d9ecf35eb03978d1352efd839923f2e6ee41fc7d2471d9764b72dcf21ee16",
+      "baselineLF": "050022f187f64f6ca1b394052af1fb2c380d79fb6268bbe77a739471bb3c2227",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "actual43InputRawSHA": "c1fb149514dead75844762d5490e2dff511770c026a57a50d2dc903aa2f8914e",
+      "baselineLF": "f4b98917bf03cc1a0a6f073eefabd712f2c75a85dea9e213b25d6fd92a4b6509",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "actual43InputRawSHA": "5adff24a0076b7beea16147d34275fa651bd4f5b85720fca18c10c055a9a6df7",
+      "baselineLF": "4a7529e3d589f60c190464c9f353d1804fb140c884e770a87f6d9cc3191da70e",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "actual43InputRawSHA": "33e669f56878ceb1207dffeb4de34746b0fd8a58919de0b9e6bc7d5e06324271",
+      "baselineLF": "a41d68d4a7c40ff8b05a95fba786859cecff2761a8ac1fd8936de3c7b8dfa00e",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
+      "actual43InputRawSHA": "fce5a922032031ff16a01308916d4acfb3f973d82535cbdc17e5b2b01bcd3be6",
+      "baselineLF": "5766488fee3ed9e79c82a55c91fd82b7fe47c6f13c48d0e92c5a43178bc5dfa4",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaResolver.kt",
+      "actual43InputRawSHA": "68af9f7688806eb8832fb4d0b7aa6a1e898a09d0f4b47044550b7377bd29cc8f",
+      "baselineLF": "54250f61e0580b9d7fda55da285354f22895e9b0b2265b856dc5365df61df861",
+      "liveRawMatches43Input": true,
+      "LFNormalization": "CRLF to LF only; snapshot source inputs pin raw bytes",
+      "exception": null
+    }
+  ],
+  "newOriginalSchema": false,
+  "newClient": false,
+  "newCache": false,
+  "sharedSourceEdited": false,
+  "HTTP": false,
+  "HWND": false,
+  "Gradle": false
+}

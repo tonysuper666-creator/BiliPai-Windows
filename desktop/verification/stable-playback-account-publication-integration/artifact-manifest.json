@@ -1,0 +1,3101 @@
+{
+  "artifacts": [
+    {
+      "path": "prepared/backend/frozen-handoff.json",
+      "sha256Bytes": "b990563ad4ec9cf4eca8ea495377fe0496073209684df8d8e922cbe8a08322a3",
+      "sizeBytes": 18947
+    },
+    {
+      "path": "prepared/backend/audit.py",
+      "sha256Bytes": "17cd4742156e472c439a0332a8157ec8e3c8cf3b1d05a7c81f67eea9e42c8d63",
+      "sizeBytes": 2711
+    },
+    {
+      "path": "prepared/backend/compile.py",
+      "sha256Bytes": "77611337585ea26f2082b352417e7538fb8f25c6f2b53e6589ce36c0afb31a6d",
+      "sizeBytes": 3741
+    },
+    {
+      "path": "prepared/backend/fixture.py",
+      "sha256Bytes": "4545cfee866e04629520754b8d19c5b66c26bfdaeec86ef69762777af28fe49d",
+      "sizeBytes": 4246
+    },
+    {
+      "path": "prepared/backend/freeze.py",
+      "sha256Bytes": "7d3511848fac01d5f218416aa962a931322b9505774af84efa0ad5803047b46c",
+      "sizeBytes": 3273
+    },
+    {
+      "path": "prepared/backend/local-hunks.json",
+      "sha256Bytes": "fc7e424ce6e2939abfdfdddbae7024cde1f56f78162bc39ceb3917b61a740f01",
+      "sizeBytes": 30720
+    },
+    {
+      "path": "prepared/backend/PlaybackAccountFixture.kt",
+      "sha256Bytes": "b57de265b241c78bdf01363f5f5dd57ca123ec5d0df274701b344c3ea0f615cb",
+      "sizeBytes": 15386
+    },
+    {
+      "path": "prepared/backend/prepare.py",
+      "sha256Bytes": "b211e2a087ee4b64e8f85f3d5fcc36ae62a4cbd0efb6bc6d1f9e43338323a70a",
+      "sizeBytes": 21587
+    },
+    {
+      "path": "prepared/backend/prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackAuthorization.kt",
+      "sha256Bytes": "f60c2aaebb98aa52073a9ecd56a6e8ff798c899f45d65223d215988ebafb932b",
+      "sizeBytes": 1667
+    },
+    {
+      "path": "prepared/backend/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/backend/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/backend/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/backend/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "3a7dc67bcfecee3f29b0947d2449dedf5130148eda8d819f1f70b2220d1f9cb1",
+      "sizeBytes": 45882
+    },
+    {
+      "path": "prepared/backend/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/backend/ROOT-INTEGRATION.md",
+      "sha256Bytes": "0abf31eec7c84ac81ce9c17d1844cddaccf7c12c72aa53e7eaad7432a58c7f0f",
+      "sizeBytes": 8182
+    },
+    {
+      "path": "prepared/backend/runs/compile-01/compile-result.json",
+      "sha256Bytes": "b9c8be2d050d089f1d505801b7f1540dd767c303efca51903c8e1749e5fcd513",
+      "sizeBytes": 2765
+    },
+    {
+      "path": "prepared/backend/runs/compile-01/compiler.args",
+      "sha256Bytes": "ca566a10b5ceb3640dde804ec0cba61634813e194a1f26b0fd9e08b587b1d500",
+      "sizeBytes": 26246
+    },
+    {
+      "path": "prepared/backend/runs/compile-01/compiler.log",
+      "sha256Bytes": "d97f31a4158fe0ade15c312cc0c1e9af61879f5ddd8a516955d79ac0017fe58b",
+      "sizeBytes": 989
+    },
+    {
+      "path": "prepared/backend/runs/compile-01/pins-before.json",
+      "sha256Bytes": "58c2b1daa10ef1f63f4e617c3076496b4dfc38346a0cae7629dcf2c2fdc840d3",
+      "sizeBytes": 43689
+    },
+    {
+      "path": "prepared/backend/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "6cc48ebf971baf93253b6cb8e4ffd8eab3f30706a3bdc35c4e3d17c905076aaa",
+      "sizeBytes": 30435
+    },
+    {
+      "path": "prepared/backend/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/backend/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/backend/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "5e132066b6a89af0e9e2e6110ce797b3f0a8cc88e8382ec72fbfad6fec0160de",
+      "sizeBytes": 44997
+    },
+    {
+      "path": "prepared/backend/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "6d2827c01def7bba4e79f7b1fa3455de906eb9afd9aa902576c6ce058bd2d186",
+      "sizeBytes": 27248
+    },
+    {
+      "path": "prepared/backend/runs/compile-02/compile-result.json",
+      "sha256Bytes": "0c73c821e4b55e06850ded777906aa5fcb36d7af6fa3bc4ac4ee54d47ad60155",
+      "sizeBytes": 17487
+    },
+    {
+      "path": "prepared/backend/runs/compile-02/compiler.args",
+      "sha256Bytes": "5e59652636926954d97e16b14454c8d40fc090d8f4506c41880831c39eff1008",
+      "sizeBytes": 26246
+    },
+    {
+      "path": "prepared/backend/runs/compile-02/compiler.log",
+      "sha256Bytes": "dbafac29428d0d059841ad83d78762ffdbb4b48562f0201e93406525cdf14702",
+      "sizeBytes": 2917
+    },
+    {
+      "path": "prepared/backend/runs/compile-02/pins-after.json",
+      "sha256Bytes": "7e4d496c6169c72d2db655521ce4b412caff0187dc9f2d3496de1d39d248d6db",
+      "sizeBytes": 43689
+    },
+    {
+      "path": "prepared/backend/runs/compile-02/pins-before.json",
+      "sha256Bytes": "7e4d496c6169c72d2db655521ce4b412caff0187dc9f2d3496de1d39d248d6db",
+      "sizeBytes": 43689
+    },
+    {
+      "path": "prepared/backend/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "6cc48ebf971baf93253b6cb8e4ffd8eab3f30706a3bdc35c4e3d17c905076aaa",
+      "sizeBytes": 30435
+    },
+    {
+      "path": "prepared/backend/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/backend/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/backend/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "75a9d1b17362000c7e407cf65c8fc6aa10ba1d0bb762b93823f27799508e37bc",
+      "sizeBytes": 45008
+    },
+    {
+      "path": "prepared/backend/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "6d2827c01def7bba4e79f7b1fa3455de906eb9afd9aa902576c6ce058bd2d186",
+      "sizeBytes": 27248
+    },
+    {
+      "path": "prepared/backend/runs/compile-03/compile-result.json",
+      "sha256Bytes": "e7b024cdeb5b50a8ffb29f4c2b60895a10b2dc13ae586039d8a4e0f4555668bd",
+      "sizeBytes": 17567
+    },
+    {
+      "path": "prepared/backend/runs/compile-03/compiler.args",
+      "sha256Bytes": "a595880e794246290cd741f8115e1f401b8bf8dd577d85bb55e308964f42ef1f",
+      "sizeBytes": 26246
+    },
+    {
+      "path": "prepared/backend/runs/compile-03/compiler.log",
+      "sha256Bytes": "1943697bf562003b5dfc1c60f4ec17b0da33a274a024887ace263b8ef56bf2df",
+      "sizeBytes": 2917
+    },
+    {
+      "path": "prepared/backend/runs/compile-03/pins-after.json",
+      "sha256Bytes": "9a0ffb9730b7cdbf870240ea37d075379c9fed0c6997c2a4d1d8fd52c13f48a2",
+      "sizeBytes": 43689
+    },
+    {
+      "path": "prepared/backend/runs/compile-03/pins-before.json",
+      "sha256Bytes": "9a0ffb9730b7cdbf870240ea37d075379c9fed0c6997c2a4d1d8fd52c13f48a2",
+      "sizeBytes": 43689
+    },
+    {
+      "path": "prepared/backend/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/backend/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/backend/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/backend/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "3a7dc67bcfecee3f29b0947d2449dedf5130148eda8d819f1f70b2220d1f9cb1",
+      "sizeBytes": 45882
+    },
+    {
+      "path": "prepared/backend/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/backend/runs/compile-04/compile-result.json",
+      "sha256Bytes": "f72f70e90a28e0f97a64612e1035fafdc167814a8b23678173c3ef7a081f5b77",
+      "sizeBytes": 17567
+    },
+    {
+      "path": "prepared/backend/runs/compile-04/compiler.args",
+      "sha256Bytes": "d699d5fb997e8d246e2e82b37603339448767697e66db4728d06389c73a41998",
+      "sizeBytes": 26548
+    },
+    {
+      "path": "prepared/backend/runs/compile-04/compiler.log",
+      "sha256Bytes": "479bd096b2409d954615e8551599dbf5f64751b2c82b9134aaa82c8fb51bab6f",
+      "sizeBytes": 2917
+    },
+    {
+      "path": "prepared/backend/runs/compile-04/pins-after.json",
+      "sha256Bytes": "8ef4b55dc1a25d57df10eac5e5ca97252a8c8bdd7089b4d2e7cbb1cab058187e",
+      "sizeBytes": 44115
+    },
+    {
+      "path": "prepared/backend/runs/compile-04/pins-before.json",
+      "sha256Bytes": "8ef4b55dc1a25d57df10eac5e5ca97252a8c8bdd7089b4d2e7cbb1cab058187e",
+      "sizeBytes": 44115
+    },
+    {
+      "path": "prepared/backend/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/backend/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/backend/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/backend/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "3a7dc67bcfecee3f29b0947d2449dedf5130148eda8d819f1f70b2220d1f9cb1",
+      "sizeBytes": 45882
+    },
+    {
+      "path": "prepared/backend/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/backend/runs/fixture-01/compiler.args",
+      "sha256Bytes": "c6b449f923b3b013578942fbdb106faf466998dde0cbcbdae8142af2b09e40d1",
+      "sizeBytes": 24926
+    },
+    {
+      "path": "prepared/backend/runs/fixture-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/backend/runs/fixture-01/failure.json",
+      "sha256Bytes": "466ab8d483d520dbcb294a948380d31f6ffd940be6bd51409c74566fd67b9e95",
+      "sizeBytes": 46
+    },
+    {
+      "path": "prepared/backend/runs/fixture-01/pins-before.json",
+      "sha256Bytes": "c36b30be23411e86c361fc78e28145f49af191207e1ccb58dfc66ba2dffda058",
+      "sizeBytes": 41260
+    },
+    {
+      "path": "prepared/backend/runs/fixture-01/PlaybackAccountFixture.kt",
+      "sha256Bytes": "427b998d69baafa714151f478e48df7055dbef2c92fb15bbd0ff69063ece3329",
+      "sizeBytes": 15345
+    },
+    {
+      "path": "prepared/backend/runs/fixture-01/runtime.log",
+      "sha256Bytes": "19023b1b0e55aa54c393c0a3c2f4cff181de65bf7696a299ad1179421454a680",
+      "sizeBytes": 1608
+    },
+    {
+      "path": "prepared/backend/runs/fixture-02/compiler.args",
+      "sha256Bytes": "55187aa406ff7766d0cbeb259e933e24ea5e119b07a87d29081cac8d4b88d960",
+      "sizeBytes": 24926
+    },
+    {
+      "path": "prepared/backend/runs/fixture-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/backend/runs/fixture-02/failure.json",
+      "sha256Bytes": "466ab8d483d520dbcb294a948380d31f6ffd940be6bd51409c74566fd67b9e95",
+      "sizeBytes": 46
+    },
+    {
+      "path": "prepared/backend/runs/fixture-02/pins-before.json",
+      "sha256Bytes": "bc7648a86e8f50ccb022ffcdcc59a3e8350ffb12ec086dfb781338fa18aec493",
+      "sizeBytes": 41260
+    },
+    {
+      "path": "prepared/backend/runs/fixture-02/PlaybackAccountFixture.kt",
+      "sha256Bytes": "427b998d69baafa714151f478e48df7055dbef2c92fb15bbd0ff69063ece3329",
+      "sizeBytes": 15345
+    },
+    {
+      "path": "prepared/backend/runs/fixture-02/runtime.log",
+      "sha256Bytes": "6b7dab55cb5e333748065b32e9f53117a602c149e74ff98ceaae209f5dcc9f61",
+      "sizeBytes": 1205
+    },
+    {
+      "path": "prepared/backend/runs/fixture-03/accepted.json",
+      "sha256Bytes": "67e5fe9bc630edbcdf3607d8d3c0d5ede47268b596576315693d3a3f22f871ac",
+      "sizeBytes": 4189
+    },
+    {
+      "path": "prepared/backend/runs/fixture-03/compiler.args",
+      "sha256Bytes": "e60bd79efcd8a1110f7ce6bdbb499ff2a339e6e8929d57df47bd65162c543dcf",
+      "sizeBytes": 24926
+    },
+    {
+      "path": "prepared/backend/runs/fixture-03/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/backend/runs/fixture-03/pins-after.json",
+      "sha256Bytes": "25db5a56e335289d3958c299f88e48ebfc79eac7495ab1c697f682ee3701e944",
+      "sizeBytes": 41260
+    },
+    {
+      "path": "prepared/backend/runs/fixture-03/pins-before.json",
+      "sha256Bytes": "25db5a56e335289d3958c299f88e48ebfc79eac7495ab1c697f682ee3701e944",
+      "sizeBytes": 41260
+    },
+    {
+      "path": "prepared/backend/runs/fixture-03/PlaybackAccountFixture.kt",
+      "sha256Bytes": "b57de265b241c78bdf01363f5f5dd57ca123ec5d0df274701b344c3ea0f615cb",
+      "sizeBytes": 15386
+    },
+    {
+      "path": "prepared/backend/runs/fixture-03/runtime.log",
+      "sha256Bytes": "3670c7160992141ca9d2e045e68f6712e3871ff62742c7f0c762da26682516e3",
+      "sizeBytes": 30
+    },
+    {
+      "path": "prepared/backend/runs/fixture-03/synthetic-store/result.json",
+      "sha256Bytes": "afa9e102441fa87aa914907c5cce767eea9ee576bcf0e38ef6143a6ed0413fc7",
+      "sizeBytes": 3261
+    },
+    {
+      "path": "prepared/backend/runs/fixture-03/synthetic-store/synthetic-encrypted-session.json",
+      "sha256Bytes": "7ceae968d7a3e7f9d5dc45bf9119a7655d0ce87540c155f464548b064ef3cf8f",
+      "sizeBytes": 4007
+    },
+    {
+      "path": "prepared/backend/source-checks.json",
+      "sha256Bytes": "a374767205963bf818b7f50ac0e0024bbddb735e460946b87ef324a1fe8558d0",
+      "sizeBytes": 9777
+    },
+    {
+      "path": "prepared/backend/source-contract.json",
+      "sha256Bytes": "f77621caa5dfed3069c94861fb9202cc18949c772abfb174bf11d5e3b6a562e0",
+      "sizeBytes": 9662
+    },
+    {
+      "path": "prepared/backend/source-inventory.json",
+      "sha256Bytes": "68edc4a3c12aab0bd9e203fbe9554d9118e2906aaf0c948d987ce8b0a42d2185",
+      "sizeBytes": 2083
+    },
+    {
+      "path": "prepared/backend/source-review.py",
+      "sha256Bytes": "c1a23f459d8d558561c6123635561b58e5fbc014d70b6a7a81967fad7f82aada",
+      "sizeBytes": 4788
+    },
+    {
+      "path": "prepared/publication/frozen-handoff.json",
+      "sha256Bytes": "3c1f394d055a060a0f8e35a5e51f0f46da3d71f6f2ab6320080aeb306ab3bc5d",
+      "sizeBytes": 96732
+    },
+    {
+      "path": "prepared/publication/build-registration-hunks.json",
+      "sha256Bytes": "b4589401191c7477e8030ebc6925724393f301be5d9d5c291d0bacea8669215e",
+      "sizeBytes": 1515
+    },
+    {
+      "path": "prepared/publication/cast-generated-required.json",
+      "sha256Bytes": "59c8522efde022537ef94ec27069d6eb09afd24658aeccb454b833ad3725d39b",
+      "sizeBytes": 746
+    },
+    {
+      "path": "prepared/publication/cast-provenance-hunks.json",
+      "sha256Bytes": "f20e17a6d02fed477d47258e6e298cd6d715b74085b4de4d3acfd1b637ad415e",
+      "sizeBytes": 1333
+    },
+    {
+      "path": "prepared/publication/compile.py",
+      "sha256Bytes": "f4ee0f7e8f7a0e548495a1f9a17e9fd350e4107e8c34709f44eac690fc10ae0e",
+      "sizeBytes": 4827
+    },
+    {
+      "path": "prepared/publication/fixture.py",
+      "sha256Bytes": "e1ed668b0698716055348adc133fa612012b937f58e54b2091bf816d18d96560",
+      "sizeBytes": 4325
+    },
+    {
+      "path": "prepared/publication/freeze.py",
+      "sha256Bytes": "4bf5bbc7e5106438cc8ee06a1f4d8f0472cd74c3a1e647896e3381efea456694",
+      "sizeBytes": 5959
+    },
+    {
+      "path": "prepared/publication/install-recipe.json",
+      "sha256Bytes": "3503930e399c8a2612e69a039f84688fa8a544a471730291c72baf5559606b27",
+      "sizeBytes": 2467
+    },
+    {
+      "path": "prepared/publication/local-hunks.json",
+      "sha256Bytes": "2286751a9b5fecd1c587a8d069e1abc53fb3850712e5f4044ec9f4095c19b701",
+      "sizeBytes": 89077
+    },
+    {
+      "path": "prepared/publication/original-stable/app/src/main/java/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "4b856ad11976bce136898ab66246e4708520b98e3acfd909d7c1364c04729be6",
+      "sizeBytes": 9871
+    },
+    {
+      "path": "prepared/publication/original-stable/app/src/main/java/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt",
+      "sha256Bytes": "bffabd9dc119618ad842fee0d16e6e89e10ff813e2d30d2590ba68b47b3a4b5b",
+      "sizeBytes": 11491
+    },
+    {
+      "path": "prepared/publication/prepare-cast.py",
+      "sha256Bytes": "4f7c43905eb8c30e93747e60e8d0935cf6011c7b4b22127ea777827fa0bf1d25",
+      "sizeBytes": 13757
+    },
+    {
+      "path": "prepared/publication/prepare-install.py",
+      "sha256Bytes": "802fe48a1c0eede2b5631e3a9cf806d2e2c71044acc7a35274d596ed6b793f36",
+      "sizeBytes": 4697
+    },
+    {
+      "path": "prepared/publication/prepare-synthetic.py",
+      "sha256Bytes": "171a6be46859c2186dc5c42903db96d865f90aa07bdd69da71435f875d2bc3df",
+      "sizeBytes": 5753
+    },
+    {
+      "path": "prepared/publication/prepare.py",
+      "sha256Bytes": "744f40be34e7e87314ba4aa212cdd6b602ae482d9ad5ebf90667ca365c0f5020",
+      "sizeBytes": 43659
+    },
+    {
+      "path": "prepared/publication/prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastPublication.java",
+      "sha256Bytes": "12a613267078eb7157868b9ab5595063894fdc2d098907da6e09f5a010e8928f",
+      "sizeBytes": 568
+    },
+    {
+      "path": "prepared/publication/prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256Bytes": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "sizeBytes": 2816
+    },
+    {
+      "path": "prepared/publication/prepared/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaPublication.kt",
+      "sha256Bytes": "edb66fb67c2a0036b72e9205f89b7941ee904e11bab939c59218bc352ee1fd76",
+      "sizeBytes": 1783
+    },
+    {
+      "path": "prepared/publication/prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackAuthorization.kt",
+      "sha256Bytes": "f60c2aaebb98aa52073a9ecd56a6e8ff798c899f45d65223d215988ebafb932b",
+      "sizeBytes": 1667
+    },
+    {
+      "path": "prepared/publication/prepared/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackPublication.kt",
+      "sha256Bytes": "35d8e32aece6fadf98eaf340f1be23d21796902f7bfc0a2d0cb1451feaac74eb",
+      "sizeBytes": 7364
+    },
+    {
+      "path": "prepared/publication/prepared/desktop/tools/extract-cast-platform.py",
+      "sha256Bytes": "d88118db32194f2d8cbb583c6d9106bb5aed4745601df891f1f17d62aaae5e99",
+      "sizeBytes": 17615
+    },
+    {
+      "path": "prepared/publication/prepared/desktop/tools/extract-upstream-download-transport.py",
+      "sha256Bytes": "d2e2892466c63637b66e9db79b666bab9d9e6f9639ea77bc03e60b3a26cbb7fc",
+      "sizeBytes": 1600
+    },
+    {
+      "path": "prepared/publication/prepared/generated/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "sizeBytes": 12106
+    },
+    {
+      "path": "prepared/publication/prepared/generated/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt",
+      "sha256Bytes": "9da3da2c3ae37e495ddc7115847e8bfc15788c18448e6c17f4ce3e7b4bed893b",
+      "sizeBytes": 11499
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "sizeBytes": 12106
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast/com/android/purebilibili/feature/cast/SsdpCastClient.kt",
+      "sha256Bytes": "e17c800fbc9f2a78e83f4fb501f2b4fbe9bede82e70659b6a0c6fc9d36373b39",
+      "sizeBytes": 22159
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast/com/android/purebilibili/feature/cast/SsdpDevicePresentationPolicy.kt",
+      "sha256Bytes": "85a1febd59680ed36be1fd554486537d828f14186b2bbdc4ea45d07f32ea7d9b",
+      "sizeBytes": 1575
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast/com/android/purebilibili/feature/cast/SsdpDiscovery.kt",
+      "sha256Bytes": "44360371629e91703bdd5a1a7913254c06334a9d67ef8b06da4147984886da4a",
+      "sizeBytes": 2831
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast/com/android/purebilibili/feature/cast/SsdpLocalNetworkPolicy.kt",
+      "sha256Bytes": "a8d257f67d1ed42858a357b1df714552b7f21d96f3bcce8c90038e236bda750a",
+      "sizeBytes": 894
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast/com/android/purebilibili/feature/plugin/dlna/DlnaCastPlugin.kt",
+      "sha256Bytes": "8bde65451e886e0448a0de3c97a9e4bf6ab6483bc9c040a2965b1bf4f7fe70c0",
+      "sizeBytes": 8535
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast-baseline/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "b4e360be5fbea92bde01080b307c82838945f77ad3144b701181e5780726c420",
+      "sizeBytes": 11848
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast-baseline/com/android/purebilibili/feature/cast/SsdpCastClient.kt",
+      "sha256Bytes": "e17c800fbc9f2a78e83f4fb501f2b4fbe9bede82e70659b6a0c6fc9d36373b39",
+      "sizeBytes": 22159
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast-baseline/com/android/purebilibili/feature/cast/SsdpDevicePresentationPolicy.kt",
+      "sha256Bytes": "85a1febd59680ed36be1fd554486537d828f14186b2bbdc4ea45d07f32ea7d9b",
+      "sizeBytes": 1575
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast-baseline/com/android/purebilibili/feature/cast/SsdpDiscovery.kt",
+      "sha256Bytes": "44360371629e91703bdd5a1a7913254c06334a9d67ef8b06da4147984886da4a",
+      "sizeBytes": 2831
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast-baseline/com/android/purebilibili/feature/cast/SsdpLocalNetworkPolicy.kt",
+      "sha256Bytes": "a8d257f67d1ed42858a357b1df714552b7f21d96f3bcce8c90038e236bda750a",
+      "sizeBytes": 894
+    },
+    {
+      "path": "prepared/publication/producer-audit/cast-baseline/com/android/purebilibili/feature/plugin/dlna/DlnaCastPlugin.kt",
+      "sha256Bytes": "8bde65451e886e0448a0de3c97a9e4bf6ab6483bc9c040a2965b1bf4f7fe70c0",
+      "sizeBytes": 8535
+    },
+    {
+      "path": "prepared/publication/producer-audit/download/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt",
+      "sha256Bytes": "9da3da2c3ae37e495ddc7115847e8bfc15788c18448e6c17f4ce3e7b4bed893b",
+      "sizeBytes": 11499
+    },
+    {
+      "path": "prepared/publication/producer-audit/result.json",
+      "sha256Bytes": "55fe4723576bce6ee280f34dc4b8bfe69292d2c53815827b4bf9dcba96f0046d",
+      "sizeBytes": 2030
+    },
+    {
+      "path": "prepared/publication/producer-hunks.json",
+      "sha256Bytes": "ca7be897ca290fb40f118ae0b86d47f83118b932fcd12989ab26bc200a128692",
+      "sizeBytes": 1052
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "sizeBytes": 27030
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopAudioRepository.kt",
+      "sha256Bytes": "fedfe3ce90865fcd00ed2474766623d64432bebeff63eacbfb206dc153c320f9",
+      "sizeBytes": 11876
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "614dc2700a3a5c33b4264e92c4c7ad750f958c25aa555fbc9ffab8f336ba53d0",
+      "sizeBytes": 31432
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a",
+      "sizeBytes": 4492
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "sizeBytes": 5583
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaResolver.kt",
+      "sha256Bytes": "e29b7f591ab6970e8f2ad457cd788d93232fdabe5e7cf2e1630460afa717030a",
+      "sizeBytes": 8448
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711",
+      "sizeBytes": 8764
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
+      "sha256Bytes": "ec4d7d41497b2d379dd467574fef1fe6027d8ff4f12dcae7f34c36059c54ef05",
+      "sizeBytes": 5019
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+      "sizeBytes": 4524
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "sizeBytes": 47569
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "2b043cb3f614a480d955ad59446de05e12589660d9dabded47f5062660af5593",
+      "sizeBytes": 60397
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "6c12baae6db721f3d3cfc9c597202fa5b5b6376643f761d767b583fbd123e6f6",
+      "sizeBytes": 143162
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "sha256Bytes": "625fae9a5e66e7fcb9a27820506fa2788da54f667864dbb3917dc026b7cd78b3",
+      "sizeBytes": 32975
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadModels.kt",
+      "sha256Bytes": "2e63eed6d04156a06cd51cf7003d9613e47b10d1766c33d5a175d99c66497ada",
+      "sizeBytes": 3360
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopControllerNativeSmoke.kt",
+      "sha256Bytes": "e434425894137646f7ffe22415cbc70685169ff62d4c8674998beaddff9d1df5",
+      "sizeBytes": 10654
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecovery.kt",
+      "sha256Bytes": "ddad59a8126a9f9c97fde18d87607251c9a1966a19515fe170168df829b29506",
+      "sizeBytes": 5580
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "fff510976494af0321ff26de3263d35aa02e53ef9613fc16fa3e7f27f50fb792",
+      "sizeBytes": 61709
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "sizeBytes": 6374
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackStreamHeaders.kt",
+      "sha256Bytes": "19647fffb511aafc2d31fbedf0ce7cfad30464f9454ef165f7a7a631c5f75e7b",
+      "sizeBytes": 1914
+    },
+    {
+      "path": "prepared/publication/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "9d02ca0714942908507e9bc3ed63f3afa4c436b97a33fb4b0967416a25603bf3",
+      "sizeBytes": 43084
+    },
+    {
+      "path": "prepared/publication/PublicationRaceFixture.kt",
+      "sha256Bytes": "c7212d90d7781bcc0e9ea701368ca83860a466b1e9baa538b5e5f43aa2cd1ae2",
+      "sizeBytes": 18055
+    },
+    {
+      "path": "prepared/publication/registry-delta.json",
+      "sha256Bytes": "0feb99ba90917e820efccdfd5684fa8a87d60bdb36fb9f36a9810e83bc477b0b",
+      "sizeBytes": 511
+    },
+    {
+      "path": "prepared/publication/ROOT-INTEGRATION.md",
+      "sha256Bytes": "b7768aa4a725668743f18858754dcd59157323fe8a0ecf744ff2d772b5a7cf20",
+      "sizeBytes": 6891
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/compile-result.json",
+      "sha256Bytes": "6324b7bf880481db201574f09d63c2508313840aaec100cdfb1cb87be612acd3",
+      "sizeBytes": 10768
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/compiler.args",
+      "sha256Bytes": "aabc51bd7858b4638fd3b4386462c59c5b812634acb672aa994cd522a2932926",
+      "sizeBytes": 31941
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/compiler.log",
+      "sha256Bytes": "3a04c8c78c67af1ce792baf1b359b8a7eaf7761718e6956b117e9a6df49a4174",
+      "sizeBytes": 2818
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/javac.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/pins-before.json",
+      "sha256Bytes": "3435a54043c129ac0efcc9c006005590f2feece87dad8be2a375736264745526",
+      "sizeBytes": 52372
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256Bytes": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "sizeBytes": 2816
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/prepared/generated/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "sizeBytes": 12106
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "sizeBytes": 27030
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "e8f00e3b3dff07bf629c8516dd6922c4d80de279bbfea180ce02afe9dcf040d8",
+      "sizeBytes": 30646
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a",
+      "sizeBytes": 4492
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "sizeBytes": 5583
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711",
+      "sizeBytes": 8764
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "ba0ea3eaa0a8ff64a74cc52d781dfb66c99aa91dbdb2f13ac1f07602b1ef593e",
+      "sizeBytes": 47190
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "7bf8cbf18ea762c5f904ee427c7a2cd3923b5e34a1a99f121580305e4d7a96c3",
+      "sizeBytes": 59568
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "e373c9206b36b3817ca57307200d6b19db61ecdb432b67bd235b557bd6e6715b",
+      "sizeBytes": 143055
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "0ba7d0dc4307f772157f75fd4a728fdd297592accce5227bf45535f0790ee72a",
+      "sizeBytes": 61250
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "sizeBytes": 6374
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "46649fb5f4946bee8db27cdfff4e3267d9f7d7b39584251d31dbad253c439f2f",
+      "sizeBytes": 42900
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/compile-result.json",
+      "sha256Bytes": "06c68bc8735e28a22024e2e2e1fad515981363b7314cc34ca146e0af287e8878",
+      "sizeBytes": 103384
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/compiler.args",
+      "sha256Bytes": "7664ae73524e94516602f7fc842e7b48b64712aaba3dac3c79a53d4a72685478",
+      "sizeBytes": 31941
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/compiler.log",
+      "sha256Bytes": "930554581fe70d9ccf35ee007bee129ebbba2561091d83afbdb7d5def49112e2",
+      "sizeBytes": 15410
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/javac.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/pins-after.json",
+      "sha256Bytes": "0cb472c7021063a394431a4a87cb16544bd66b0c220f7cfe486ba2a09cc7db93",
+      "sizeBytes": 52372
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/pins-before.json",
+      "sha256Bytes": "0cb472c7021063a394431a4a87cb16544bd66b0c220f7cfe486ba2a09cc7db93",
+      "sizeBytes": 52372
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256Bytes": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "sizeBytes": 2816
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/prepared/generated/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "sizeBytes": 12106
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "sizeBytes": 27030
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "e8f00e3b3dff07bf629c8516dd6922c4d80de279bbfea180ce02afe9dcf040d8",
+      "sizeBytes": 30646
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a",
+      "sizeBytes": 4492
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "sizeBytes": 5583
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711",
+      "sizeBytes": 8764
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "ba0ea3eaa0a8ff64a74cc52d781dfb66c99aa91dbdb2f13ac1f07602b1ef593e",
+      "sizeBytes": 47190
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "7bf8cbf18ea762c5f904ee427c7a2cd3923b5e34a1a99f121580305e4d7a96c3",
+      "sizeBytes": 59568
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "6c12baae6db721f3d3cfc9c597202fa5b5b6376643f761d767b583fbd123e6f6",
+      "sizeBytes": 143162
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "0ba7d0dc4307f772157f75fd4a728fdd297592accce5227bf45535f0790ee72a",
+      "sizeBytes": 61250
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "sizeBytes": 6374
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "46649fb5f4946bee8db27cdfff4e3267d9f7d7b39584251d31dbad253c439f2f",
+      "sizeBytes": 42900
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/compile-result.json",
+      "sha256Bytes": "7de42e8997de2d60995163af38f00de54e9e7bf6f74a616102e0068b47fdbdc0",
+      "sizeBytes": 101784
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/compiler.args",
+      "sha256Bytes": "02ed4d2239e114ca3b86dd8734af514e38c4bb0c526f0f700d1724fc60a2aae8",
+      "sizeBytes": 31941
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/compiler.log",
+      "sha256Bytes": "ae45f4ca77899e77fd880bb64fb001606d10a1329366f835944960a29c5a97fc",
+      "sizeBytes": 15410
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/javac.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/pins-after.json",
+      "sha256Bytes": "41d8fb9cda8b9cb186a55ee0617e817f56fd45790cc4525093cb3c301d94c94e",
+      "sizeBytes": 52372
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/pins-before.json",
+      "sha256Bytes": "41d8fb9cda8b9cb186a55ee0617e817f56fd45790cc4525093cb3c301d94c94e",
+      "sizeBytes": 52372
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256Bytes": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "sizeBytes": 2816
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/prepared/generated/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "sizeBytes": 12106
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "sizeBytes": 27030
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "e8f00e3b3dff07bf629c8516dd6922c4d80de279bbfea180ce02afe9dcf040d8",
+      "sizeBytes": 30646
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a",
+      "sizeBytes": 4492
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "sizeBytes": 5583
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711",
+      "sizeBytes": 8764
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "ba0ea3eaa0a8ff64a74cc52d781dfb66c99aa91dbdb2f13ac1f07602b1ef593e",
+      "sizeBytes": 47190
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "3d95a1b7115bf4269238b589f5e7a085bf68f374b5ce5c196a19bfea3bd585fd",
+      "sizeBytes": 59992
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "6c12baae6db721f3d3cfc9c597202fa5b5b6376643f761d767b583fbd123e6f6",
+      "sizeBytes": 143162
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "0ba7d0dc4307f772157f75fd4a728fdd297592accce5227bf45535f0790ee72a",
+      "sizeBytes": 61250
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "sizeBytes": 6374
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "46649fb5f4946bee8db27cdfff4e3267d9f7d7b39584251d31dbad253c439f2f",
+      "sizeBytes": 42900
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/compile-result.json",
+      "sha256Bytes": "3fa4a5d3479cbb7759049c05eda22aeab4937f9e44631db77cc5b3533cf6c869",
+      "sizeBytes": 102315
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/compiler.args",
+      "sha256Bytes": "a9c07a10d6e7098237d504804a067da11c5bd2684277018c799d2a0c0b48b856",
+      "sizeBytes": 32204
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/compiler.log",
+      "sha256Bytes": "6e72e9c448add50f4b8cb810f61e4b16b0e2db8f332b450cce0abfbda82f4b90",
+      "sizeBytes": 15410
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/javac.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/pins-after.json",
+      "sha256Bytes": "9bc01d35dc06ed2444584bb450143521a377d518702d81e108748d40fca41a57",
+      "sizeBytes": 52775
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/pins-before.json",
+      "sha256Bytes": "9bc01d35dc06ed2444584bb450143521a377d518702d81e108748d40fca41a57",
+      "sizeBytes": 52775
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256Bytes": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "sizeBytes": 2816
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/prepared/generated/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "sizeBytes": 12106
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "sizeBytes": 27030
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "e8f00e3b3dff07bf629c8516dd6922c4d80de279bbfea180ce02afe9dcf040d8",
+      "sizeBytes": 30646
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a",
+      "sizeBytes": 4492
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "sizeBytes": 5583
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711",
+      "sizeBytes": 8764
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "sizeBytes": 47569
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "72de38c76f3d3e648dc90d9e991382f36264769d974a83ba0224a948e8d97baa",
+      "sizeBytes": 60061
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "6c12baae6db721f3d3cfc9c597202fa5b5b6376643f761d767b583fbd123e6f6",
+      "sizeBytes": 143162
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "0ba7d0dc4307f772157f75fd4a728fdd297592accce5227bf45535f0790ee72a",
+      "sizeBytes": 61250
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "sizeBytes": 6374
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "6145ba78dc380daa0527539e56709d353c18ab9bf53daafae9b5b85a38d6aa9b",
+      "sizeBytes": 42888
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/compile-result.json",
+      "sha256Bytes": "55d37767a512509365760b2498fd3d4ab7d37cef355d41be0e0203c0d5c01397",
+      "sizeBytes": 104343
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/compiler.args",
+      "sha256Bytes": "8005b998386b736a80ffbd9f4f73db3e5168da12192f8b2a8e3a26467c040f03",
+      "sizeBytes": 32204
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/compiler.log",
+      "sha256Bytes": "a9c30062b83b58cfe653742af9743dc3904802c954a3a046b220bf64090e4dd4",
+      "sizeBytes": 15785
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/javac.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/pins-after.json",
+      "sha256Bytes": "fd5d0268ad7ed8ae2dfbe47833aff9ebb8748525101758efe6a022e102a8b8b3",
+      "sizeBytes": 54803
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/pins-before.json",
+      "sha256Bytes": "fd5d0268ad7ed8ae2dfbe47833aff9ebb8748525101758efe6a022e102a8b8b3",
+      "sizeBytes": 54803
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256Bytes": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "sizeBytes": 2816
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/prepared/generated/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "sizeBytes": 12106
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "sizeBytes": 27030
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "c78f6acb2deb2d4b8cf7b8cef7cc6505c3f84ab524042455a49a0c0aa65d444d",
+      "sizeBytes": 31386
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a",
+      "sizeBytes": 4492
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "sizeBytes": 5583
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711",
+      "sizeBytes": 8764
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "sizeBytes": 47569
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "51c0e7a78aa6951fc9335858473b52fe113078adfe94ef5bd7deacd100c4560f",
+      "sizeBytes": 60145
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "6c12baae6db721f3d3cfc9c597202fa5b5b6376643f761d767b583fbd123e6f6",
+      "sizeBytes": 143162
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "fff510976494af0321ff26de3263d35aa02e53ef9613fc16fa3e7f27f50fb792",
+      "sizeBytes": 61709
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "sizeBytes": 6374
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "9d02ca0714942908507e9bc3ed63f3afa4c436b97a33fb4b0967416a25603bf3",
+      "sizeBytes": 43084
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/compile-result.json",
+      "sha256Bytes": "427b1b8d227f75894859e6257c2d3662dec4070ce4d0b9009fde37a4a0603d5f",
+      "sizeBytes": 104343
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/compiler.args",
+      "sha256Bytes": "720ee9c30e7d0c4370ff4d1742884d9fcb96ab6d2d3b25774389dcd486a405f1",
+      "sizeBytes": 32204
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/compiler.log",
+      "sha256Bytes": "394f53af14412801b518108014424b60e8a2c1bb2b7e41fa8e4e0013db243690",
+      "sizeBytes": 15785
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/javac.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/pins-after.json",
+      "sha256Bytes": "e1cd572def62fad5bbfb2a07eb9219773d43bdfed78b36c94f24b43cae7b1699",
+      "sizeBytes": 54803
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/pins-before.json",
+      "sha256Bytes": "e1cd572def62fad5bbfb2a07eb9219773d43bdfed78b36c94f24b43cae7b1699",
+      "sizeBytes": 54803
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256Bytes": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "sizeBytes": 2816
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/prepared/generated/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "sizeBytes": 12106
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "sizeBytes": 27030
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "c78f6acb2deb2d4b8cf7b8cef7cc6505c3f84ab524042455a49a0c0aa65d444d",
+      "sizeBytes": 31386
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a",
+      "sizeBytes": 4492
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "sizeBytes": 5583
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711",
+      "sizeBytes": 8764
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "sizeBytes": 47569
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "51c0e7a78aa6951fc9335858473b52fe113078adfe94ef5bd7deacd100c4560f",
+      "sizeBytes": 60145
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "6c12baae6db721f3d3cfc9c597202fa5b5b6376643f761d767b583fbd123e6f6",
+      "sizeBytes": 143162
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "fff510976494af0321ff26de3263d35aa02e53ef9613fc16fa3e7f27f50fb792",
+      "sizeBytes": 61709
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "sizeBytes": 6374
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "9d02ca0714942908507e9bc3ed63f3afa4c436b97a33fb4b0967416a25603bf3",
+      "sizeBytes": 43084
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/compile-result.json",
+      "sha256Bytes": "378ef01bec536c68896b42e34dd3ebeb65914124843dd302f9a5f00213842abe",
+      "sizeBytes": 104343
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/compiler.args",
+      "sha256Bytes": "4a2b11c1b9c3c4d55bb41da007e42cbe21758014cc10b8bfcea42c8b7c9d4d3f",
+      "sizeBytes": 32204
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/compiler.log",
+      "sha256Bytes": "d32b49efddadcf9807cca2c7ed82d8a82de87cb5eda206628a9c4602228f395f",
+      "sizeBytes": 15805
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/javac.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/pins-after.json",
+      "sha256Bytes": "c1cc42b16db95bee308e75540420de8e9ed35d354f8be01cee2e83e69f0ad4ce",
+      "sizeBytes": 54803
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/pins-before.json",
+      "sha256Bytes": "c1cc42b16db95bee308e75540420de8e9ed35d354f8be01cee2e83e69f0ad4ce",
+      "sizeBytes": 54803
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256Bytes": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "sizeBytes": 2816
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/prepared/generated/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "sizeBytes": 12106
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "sizeBytes": 27030
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "614dc2700a3a5c33b4264e92c4c7ad750f958c25aa555fbc9ffab8f336ba53d0",
+      "sizeBytes": 31432
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a",
+      "sizeBytes": 4492
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "sizeBytes": 5583
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711",
+      "sizeBytes": 8764
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "sizeBytes": 47569
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "2b043cb3f614a480d955ad59446de05e12589660d9dabded47f5062660af5593",
+      "sizeBytes": 60397
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "6c12baae6db721f3d3cfc9c597202fa5b5b6376643f761d767b583fbd123e6f6",
+      "sizeBytes": 143162
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "fff510976494af0321ff26de3263d35aa02e53ef9613fc16fa3e7f27f50fb792",
+      "sizeBytes": 61709
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "sizeBytes": 6374
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "9d02ca0714942908507e9bc3ed63f3afa4c436b97a33fb4b0967416a25603bf3",
+      "sizeBytes": 43084
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/compile-result.json",
+      "sha256Bytes": "e8e93f19c23d8b9b08075a5629377c135b5b1b3d5641dc802ef8e58f6ac16c97",
+      "sizeBytes": 105273
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/compiler.args",
+      "sha256Bytes": "8937c15a91a99d52f7d68281fd9222e1815395cc314a8d7cc2eb59efd2b26c93",
+      "sizeBytes": 32474
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/compiler.log",
+      "sha256Bytes": "c3a229862d50b7c772460cbe9995bf8ddc34eea6976a6f52dfaa711badcd4dcc",
+      "sizeBytes": 15805
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/javac.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/pins-after.json",
+      "sha256Bytes": "43c97a11c7cbab7b3725e874994e75c6db28225e3f429870c2770f04e943611b",
+      "sizeBytes": 55241
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/pins-before.json",
+      "sha256Bytes": "43c97a11c7cbab7b3725e874994e75c6db28225e3f429870c2770f04e943611b",
+      "sizeBytes": 55241
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/prepared/desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256Bytes": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "sizeBytes": 2816
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/prepared/generated/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256Bytes": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "sizeBytes": 12106
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "sizeBytes": 27030
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "614dc2700a3a5c33b4264e92c4c7ad750f958c25aa555fbc9ffab8f336ba53d0",
+      "sizeBytes": 31432
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a",
+      "sizeBytes": 4492
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "sizeBytes": 5583
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711",
+      "sizeBytes": 8764
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "sizeBytes": 30666
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae",
+      "sizeBytes": 3148
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "sizeBytes": 47569
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "sizeBytes": 27210
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "2b043cb3f614a480d955ad59446de05e12589660d9dabded47f5062660af5593",
+      "sizeBytes": 60397
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "6c12baae6db721f3d3cfc9c597202fa5b5b6376643f761d767b583fbd123e6f6",
+      "sizeBytes": 143162
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "fff510976494af0321ff26de3263d35aa02e53ef9613fc16fa3e7f27f50fb792",
+      "sizeBytes": 61709
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "sizeBytes": 6374
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "9d02ca0714942908507e9bc3ed63f3afa4c436b97a33fb4b0967416a25603bf3",
+      "sizeBytes": 43084
+    },
+    {
+      "path": "prepared/publication/runs/fixture-01/compiler.args",
+      "sha256Bytes": "dfb4309d65a61907caeb190afca4d2ca9b4a47bf85da415d468503c6a539e158",
+      "sizeBytes": 24950
+    },
+    {
+      "path": "prepared/publication/runs/fixture-01/compiler.log",
+      "sha256Bytes": "c2a46d810e8085c5d47f27eb4f781b179d28fbb74308fa2a30b27498111f3a65",
+      "sizeBytes": 1642
+    },
+    {
+      "path": "prepared/publication/runs/fixture-01/failure.json",
+      "sha256Bytes": "2c866a8169f05ce450fe638a74a0061d75ed08ac68b5e1eff6c1a4081b615edc",
+      "sizeBytes": 50
+    },
+    {
+      "path": "prepared/publication/runs/fixture-01/pins-before.json",
+      "sha256Bytes": "7893375faa6d3059e4ee5e2b9fbee259cc9a67ff3c498ed4e182afa66a0c7d15",
+      "sizeBytes": 41271
+    },
+    {
+      "path": "prepared/publication/runs/fixture-01/PublicationRaceFixture.kt",
+      "sha256Bytes": "3b38c4ab57cd7e420e3778eeabf2787c82d67e94a41950dca7b1edfbcd430689",
+      "sizeBytes": 14745
+    },
+    {
+      "path": "prepared/publication/runs/fixture-02/compiler.args",
+      "sha256Bytes": "919e5323078ac616f41f96656a44cfab711886f8976e59d0ee7913bf0bafac4c",
+      "sizeBytes": 24950
+    },
+    {
+      "path": "prepared/publication/runs/fixture-02/compiler.log",
+      "sha256Bytes": "91b9322afe23ffd92b45be23e9bcb55192bc0325b9610c467361daff280aa0a3",
+      "sizeBytes": 407
+    },
+    {
+      "path": "prepared/publication/runs/fixture-02/failure.json",
+      "sha256Bytes": "466ab8d483d520dbcb294a948380d31f6ffd940be6bd51409c74566fd67b9e95",
+      "sizeBytes": 46
+    },
+    {
+      "path": "prepared/publication/runs/fixture-02/pins-before.json",
+      "sha256Bytes": "d121d94af540a77343ee14bd33161776dc5411b5bc38245c300741f1a9a9a3ca",
+      "sizeBytes": 41271
+    },
+    {
+      "path": "prepared/publication/runs/fixture-02/PublicationRaceFixture.kt",
+      "sha256Bytes": "6bcd2e9c343c96f8e4cdde25a623a7bbe35a9cd9ee3020f610e58310b16a5881",
+      "sizeBytes": 14793
+    },
+    {
+      "path": "prepared/publication/runs/fixture-02/runtime.log",
+      "sha256Bytes": "1e9c1ea24b0605d8182abe99bfb230884151048ec7ee646fe59e759eb3f8884d",
+      "sizeBytes": 3988
+    },
+    {
+      "path": "prepared/publication/runs/fixture-02/synthetic-store/library/library.json",
+      "sha256Bytes": "b9612bf3c467a66557e4178412545ca82f967cfae6d8ab1e81af4400d114d1a4",
+      "sizeBytes": 335
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/accepted.json",
+      "sha256Bytes": "eac50f8773b9cf672946cb5df96b9443188702118c10c2b0d4bb2ffede442237",
+      "sizeBytes": 4615
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/compiler.args",
+      "sha256Bytes": "300c8c3115d494d3b826342ef6b3a2052dd3527fe36e24974799e180fb29007c",
+      "sizeBytes": 24950
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/compiler.log",
+      "sha256Bytes": "76aec98d6bd3adafaf33bca6937a24e8078bbcddd92d6cac57d7c5a708561d7e",
+      "sizeBytes": 407
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/pins-after.json",
+      "sha256Bytes": "942178c4ff8a3138bcfa26d80270e77f38f59c82f501e3c6ccd5eeeaa87569c3",
+      "sizeBytes": 41271
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/pins-before.json",
+      "sha256Bytes": "942178c4ff8a3138bcfa26d80270e77f38f59c82f501e3c6ccd5eeeaa87569c3",
+      "sizeBytes": 41271
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/PublicationRaceFixture.kt",
+      "sha256Bytes": "6bcd2e9c343c96f8e4cdde25a623a7bbe35a9cd9ee3020f610e58310b16a5881",
+      "sizeBytes": 14793
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/runtime.log",
+      "sha256Bytes": "da94f3846be92bcde58de0b0aef0e91b68c4ce8ce6d9a386a78c0de9623a5993",
+      "sizeBytes": 99
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/synthetic-store/downloads/download-0490986fc6529878802bbcda/.bilipai-download",
+      "sha256Bytes": "0490986fc6529878802bbcda33b37fc89a5bafa23872ba7e5937f9d1bcc4a5eb",
+      "sizeBytes": 12
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/synthetic-store/downloads/download-0a71c40b8d857988891d687f/.bilipai-download",
+      "sha256Bytes": "0a71c40b8d857988891d687f6056e43686d37da23275e4642fdedb1f828861ff",
+      "sizeBytes": 12
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/synthetic-store/downloads/download-9459abd97f32e8b37554b416/.bilipai-download",
+      "sha256Bytes": "9459abd97f32e8b37554b41601f1327e26544ae7d22a591aaee29719c8c128d1",
+      "sizeBytes": 12
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/synthetic-store/library/library.json",
+      "sha256Bytes": "79ec5bc09a54da88e8dec6b8b624881572be22c7bc28f00df090938b9fd2457d",
+      "sizeBytes": 335
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/synthetic-store/queue.json",
+      "sha256Bytes": "acedd1bb2f38553c789c014bf07ec6513382f246e825130e1f67c77337c501e7",
+      "sizeBytes": 2989
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/synthetic-store/result.json",
+      "sha256Bytes": "21e57c8ea539804525f7f5e21150bab6d4427283685764accf8a1a53087bff2a",
+      "sizeBytes": 3671
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/accepted.json",
+      "sha256Bytes": "60c7f5244f5d7855d1a8e68a94b2cfe9db10949a3928518679a68fc3b5b5a8a7",
+      "sizeBytes": 5008
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/compiler.args",
+      "sha256Bytes": "955aebab3f4c0f9a9924e824b18a7cf2dea5ef9a11774829be71b1a9a1d4bfc3",
+      "sizeBytes": 24950
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/compiler.log",
+      "sha256Bytes": "711ffeb4ee0a514db0862750ff6c67553c21c98075335b4970d4f3ea9b0a8ee0",
+      "sizeBytes": 420
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/pins-after.json",
+      "sha256Bytes": "355cac53f85911532c5834af18d9c75f349615e593426bff2f3e1436ac4e6ba0",
+      "sizeBytes": 41271
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/pins-before.json",
+      "sha256Bytes": "355cac53f85911532c5834af18d9c75f349615e593426bff2f3e1436ac4e6ba0",
+      "sizeBytes": 41271
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/PublicationRaceFixture.kt",
+      "sha256Bytes": "c7212d90d7781bcc0e9ea701368ca83860a466b1e9baa538b5e5f43aa2cd1ae2",
+      "sizeBytes": 18055
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/runtime.log",
+      "sha256Bytes": "0412627bfbef5f0934332fee19c0a808f1b42f75db3e19dae7a85337c306d9cb",
+      "sizeBytes": 99
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/synthetic-store/downloads/download-0490986fc6529878802bbcda/.bilipai-download",
+      "sha256Bytes": "0490986fc6529878802bbcda33b37fc89a5bafa23872ba7e5937f9d1bcc4a5eb",
+      "sizeBytes": 12
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/synthetic-store/downloads/download-0a71c40b8d857988891d687f/.bilipai-download",
+      "sha256Bytes": "0a71c40b8d857988891d687f6056e43686d37da23275e4642fdedb1f828861ff",
+      "sizeBytes": 12
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/synthetic-store/downloads/download-9459abd97f32e8b37554b416/.bilipai-download",
+      "sha256Bytes": "9459abd97f32e8b37554b41601f1327e26544ae7d22a591aaee29719c8c128d1",
+      "sizeBytes": 12
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/synthetic-store/library/library.json",
+      "sha256Bytes": "6be069ecd2bda3848bbdb4679de1ea5d8c27d9b8e2bd1660273a6672029aee4b",
+      "sizeBytes": 335
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/synthetic-store/listen.json",
+      "sha256Bytes": "303fd8fb4a5685d12b16a35f7622e39a7ac0826838a719599521a191ae157663",
+      "sizeBytes": 390
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/synthetic-store/queue.json",
+      "sha256Bytes": "513eb0ff524dbb5346e88c4e2cf4f3f700f5060b96cf975e63bfa4be5ccb7a2c",
+      "sizeBytes": 2989
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/synthetic-store/result.json",
+      "sha256Bytes": "ba7288fb3eaa53625c203a276651d63a3c0cdb718a2b9f9f398bda3cdb61056b",
+      "sizeBytes": 4030
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/accepted.json",
+      "sha256Bytes": "9cbec83ff43d94685d85a7d0254ac2e1811fa01a72d2a45afa032fcfaebd05c6",
+      "sizeBytes": 5008
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/compiler.args",
+      "sha256Bytes": "1b69b4aa7576679129f90445cd6469f9a6d8b33e8057a313355a5edbd012dc50",
+      "sizeBytes": 24950
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/compiler.log",
+      "sha256Bytes": "0cc4f782789b5886a048648c654ed7ad815cd799dc4ae3b693d1361fe7e3583a",
+      "sizeBytes": 420
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/pins-after.json",
+      "sha256Bytes": "2d3a6a5b7b059a8939c6f4f30e8849121d66eb06d0710ad895664dde6228ef46",
+      "sizeBytes": 41271
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/pins-before.json",
+      "sha256Bytes": "2d3a6a5b7b059a8939c6f4f30e8849121d66eb06d0710ad895664dde6228ef46",
+      "sizeBytes": 41271
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/PublicationRaceFixture.kt",
+      "sha256Bytes": "c7212d90d7781bcc0e9ea701368ca83860a466b1e9baa538b5e5f43aa2cd1ae2",
+      "sizeBytes": 18055
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/runtime.log",
+      "sha256Bytes": "0412627bfbef5f0934332fee19c0a808f1b42f75db3e19dae7a85337c306d9cb",
+      "sizeBytes": 99
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/synthetic-store/downloads/download-0490986fc6529878802bbcda/.bilipai-download",
+      "sha256Bytes": "0490986fc6529878802bbcda33b37fc89a5bafa23872ba7e5937f9d1bcc4a5eb",
+      "sizeBytes": 12
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/synthetic-store/downloads/download-0a71c40b8d857988891d687f/.bilipai-download",
+      "sha256Bytes": "0a71c40b8d857988891d687f6056e43686d37da23275e4642fdedb1f828861ff",
+      "sizeBytes": 12
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/synthetic-store/downloads/download-9459abd97f32e8b37554b416/.bilipai-download",
+      "sha256Bytes": "9459abd97f32e8b37554b41601f1327e26544ae7d22a591aaee29719c8c128d1",
+      "sizeBytes": 12
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/synthetic-store/library/library.json",
+      "sha256Bytes": "ed0ecbed3925eb47f4ee35d5d65e6257bc220728e087b62e5e5f6d9a0cadd3c0",
+      "sizeBytes": 335
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/synthetic-store/listen.json",
+      "sha256Bytes": "303fd8fb4a5685d12b16a35f7622e39a7ac0826838a719599521a191ae157663",
+      "sizeBytes": 390
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/synthetic-store/queue.json",
+      "sha256Bytes": "f809ad0edc4f3fe018a63de8ac4d4259e45c0b77b0803776f8e88b73ebd32eff",
+      "sizeBytes": 2989
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/synthetic-store/result.json",
+      "sha256Bytes": "40349ab9af3b8c94c947d5e342ad6db5a25924589ad672c90830f8c48500932b",
+      "sizeBytes": 4030
+    },
+    {
+      "path": "prepared/publication/source-audit.py",
+      "sha256Bytes": "10bd27cbc3a3bcb76f7c866b1651ff04e9c7ff0e405f5855d95ec7d0aabbe282",
+      "sizeBytes": 9032
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "b62051269356c2c04ce19db59d39ab50ff47fba71dcfa93e1ea84d850e7ae1b9",
+      "sizeBytes": 26794
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopAudioRepository.kt",
+      "sha256Bytes": "c6bdd319faf67f956c4a1dbbb1e5d6d4889f8a8429399f222efe98c6e8e0e5d4",
+      "sizeBytes": 11780
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "b4fccf961b47f7ee507714414c641450e4a886d2cc3014d1d15c0e91a8e864e0",
+      "sizeBytes": 29443
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "050022f187f64f6ca1b394052af1fb2c380d79fb6268bbe77a739471bb3c2227",
+      "sizeBytes": 4309
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "f4b98917bf03cc1a0a6f073eefabd712f2c75a85dea9e213b25d6fd92a4b6509",
+      "sizeBytes": 5578
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaResolver.kt",
+      "sha256Bytes": "54250f61e0580b9d7fda55da285354f22895e9b0b2265b856dc5365df61df861",
+      "sizeBytes": 7895
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "a41d68d4a7c40ff8b05a95fba786859cecff2761a8ac1fd8936de3c7b8dfa00e",
+      "sizeBytes": 8667
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
+      "sha256Bytes": "5766488fee3ed9e79c82a55c91fd82b7fe47c6f13c48d0e92c5a43178bc5dfa4",
+      "sizeBytes": 4771
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "4a7529e3d589f60c190464c9f353d1804fb140c884e770a87f6d9cc3191da70e",
+      "sizeBytes": 4508
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "3a7dc67bcfecee3f29b0947d2449dedf5130148eda8d819f1f70b2220d1f9cb1",
+      "sizeBytes": 45882
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf",
+      "sizeBytes": 57209
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "350dc8046540b56876f1432bf62fdd97fbf83d3b729f255b408c17bc1ed6e024",
+      "sizeBytes": 140893
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "sha256Bytes": "7d6fcb4651931f3e6e7dbb5e54cc242b2862f4bdc90f0476bb95dfd14d3dd814",
+      "sizeBytes": 28740
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadModels.kt",
+      "sha256Bytes": "c6d782f8e14b5c47ec6a4848a3842bd5c463a5cce69c5c409d6fb1e99bffb59e",
+      "sizeBytes": 2556
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecovery.kt",
+      "sha256Bytes": "772fc023ff8dad88f1285194876d9113e0fbd64930607c7b4fc9aaeebf5b4395",
+      "sizeBytes": 5377
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf",
+      "sizeBytes": 60780
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "ffbba67b3f67b5dad71ebbcfefae9039a2b9a6b817ffc677804f6d1a6e194ff7",
+      "sizeBytes": 6162
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "60438ac0c22e426c5ab61fdaf66ab916b8c262cffd531a83463fc8d212c256e8",
+      "sizeBytes": 42137
+    },
+    {
+      "path": "prepared/publication/source-baselines/desktop/third-party/google-cast-v2/SOURCES.json",
+      "sha256Bytes": "0e2048f0e30423366037ee8bcd340ec054b3585f34c356adff78503685c039ec",
+      "sizeBytes": 27889
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "d18409ed1125cb6750b5e335eb922cfed0f8a6d07c5fff9f83b01dca8976f518",
+      "sizeBytes": 27367
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopAudioRepository.kt",
+      "sha256Bytes": "0e29b2f3838aea8e65bcfba4dc4558dc0253acbcbe71cad9a1abcf4df5062607",
+      "sizeBytes": 11972
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "b55e3f13066bb6194c3b0c9b886205cbfafa20fa561667256bdad9a047423cbe",
+      "sizeBytes": 29990
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "215d9ecf35eb03978d1352efd839923f2e6ee41fc7d2471d9764b72dcf21ee16",
+      "sizeBytes": 4388
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "c1fb149514dead75844762d5490e2dff511770c026a57a50d2dc903aa2f8914e",
+      "sizeBytes": 5667
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaResolver.kt",
+      "sha256Bytes": "68af9f7688806eb8832fb4d0b7aa6a1e898a09d0f4b47044550b7377bd29cc8f",
+      "sizeBytes": 8006
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "33e669f56878ceb1207dffeb4de34746b0fd8a58919de0b9e6bc7d5e06324271",
+      "sizeBytes": 8814
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
+      "sha256Bytes": "fce5a922032031ff16a01308916d4acfb3f973d82535cbdc17e5b2b01bcd3be6",
+      "sizeBytes": 4867
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "5adff24a0076b7beea16147d34275fa651bd4f5b85720fca18c10c055a9a6df7",
+      "sizeBytes": 4576
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "11bd36d5f31a5f44256567ab45bb2b3735d54d42ad3513c3d0f347b7c0955169",
+      "sizeBytes": 41487
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf",
+      "sizeBytes": 57209
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "sha256Bytes": "08cdca6ed3c357896197b462513cbeca451bae6bca1867d107508d9aa756eda0",
+      "sizeBytes": 29165
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadModels.kt",
+      "sha256Bytes": "8d6cb7bedc55ece443bf3af7c4c6d530c62ea3808596d44bd09f0e296bf64a72",
+      "sizeBytes": 2625
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecovery.kt",
+      "sha256Bytes": "fafa52013b6c826dd358040ae6ec7c01d66b603d94a7cfd0e3dc03353c1bf539",
+      "sizeBytes": 5454
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf",
+      "sizeBytes": 60780
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "ec542ca986d1c06d05dd5889783500b8a3cf3ee08e0f100eb96f0aff16e76d53",
+      "sizeBytes": 6289
+    },
+    {
+      "path": "prepared/publication/source-baselines-raw/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "60438ac0c22e426c5ab61fdaf66ab916b8c262cffd531a83463fc8d212c256e8",
+      "sizeBytes": 42137
+    },
+    {
+      "path": "prepared/publication/source-checks.json",
+      "sha256Bytes": "bb73986c2488c14dbd24640992cf134b986b1e4f72f87a8fce6abb289a034add",
+      "sizeBytes": 15624
+    },
+    {
+      "path": "prepared/publication/split-download-io.py",
+      "sha256Bytes": "e47956201a1147d62a53abd7cb73061f3693c0fea1f65710cea4a26d7039179a",
+      "sizeBytes": 3361
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/local-hunks.json",
+      "sha256Bytes": "9fd4335d8768d450e199fabef5dc72f1471d0725ddf431bb4c9096b04da3e838",
+      "sizeBytes": 25856
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/prepare-01-failure.json",
+      "sha256Bytes": "fc2ff62a60a587e37570fcd3354789c32d4936d346cf2078e62e27f38012fff8",
+      "sizeBytes": 462
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopControllerNativeSmoke.kt",
+      "sha256Bytes": "e434425894137646f7ffe22415cbc70685169ff62d4c8674998beaddff9d1df5",
+      "sizeBytes": 10654
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/proof-only/desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopMusicRootIntegrationTest.kt",
+      "sha256Bytes": "a517f77bdfca9220b5849cfb4a4db9a48e07f372ba740100bee5e615fd6edd7d",
+      "sizeBytes": 16670
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/proof-only/desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenAudioLifecycleTest.kt",
+      "sha256Bytes": "c62fd55f39d876b955486d4e9eaf1362865de9aa76b9249657adfa29c4b8c807",
+      "sizeBytes": 10495
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/proof-only/desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenWriterBarrierTest.kt",
+      "sha256Bytes": "a4a3939051a5cfced284913565ae4a398d674fadf27f74acddfcfd5d389c92b5",
+      "sizeBytes": 14115
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/proof-only/desktop/src/test/kotlin/com/bilipai/desktop/DesktopCheckpointFailureTest.kt",
+      "sha256Bytes": "2bcd33f51351d31551f74b33a8fc7891acd69dae8d7846cac7a64399e00220c8",
+      "sizeBytes": 7159
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/proof-only/desktop/src/test/kotlin/com/bilipai/desktop/DesktopPlaybackControllerTest.kt",
+      "sha256Bytes": "c0c75352f602d3a864d276ee2340ba447a31ecbe773d461b04029b946e603951",
+      "sizeBytes": 14943
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/proof-only/desktop/src/test/kotlin/com/bilipai/desktop/DesktopPlaybackQueueOwnershipTest.kt",
+      "sha256Bytes": "7605aeca7163b342cd87369854901268909c237e84025cc06491747d93e1246f",
+      "sizeBytes": 11407
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/proof-only/desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadManagerTest.kt",
+      "sha256Bytes": "d1ebc6a552ed394e07ffb98ca91deaf833561f708de778ff5be5b6fdad86f9f7",
+      "sizeBytes": 19743
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/proof-only/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt",
+      "sha256Bytes": "2bec8d118b726713f07bcb77dc7d9838773c486f6fed71781014ece7ecc38bcc",
+      "sizeBytes": 13522
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/proof-only/desktop/src/test/kotlin/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest.kt",
+      "sha256Bytes": "bab1a5b60ffc606e3e5cfe02062d211956821bde45b4f928fcddd40929bc72a1",
+      "sizeBytes": 7416
+    },
+    {
+      "path": "prepared/publication/synthetic-migration/result.json",
+      "sha256Bytes": "3f1f1ad53d183da48d614444b996c76ae55a0fb18a137be314a8dbc2f3b0627d",
+      "sizeBytes": 273
+    },
+    {
+      "path": "root/actual45/frozen-proof.json",
+      "sha256Bytes": "4cfd218c5493bf7b854b4468fc437c34b04c741bcee4bd56a40cad020023e236",
+      "sizeBytes": 6333
+    },
+    {
+      "path": "root/actual45/freeze.py",
+      "sha256Bytes": "1bf2d1bbdaa132df78560250ae64b4ea260d2ef81f0738a8cb8be41d995bdaf3",
+      "sizeBytes": 1838
+    },
+    {
+      "path": "root/actual45/result.json",
+      "sha256Bytes": "24dd2b05fd5ce916a4942038cf299ae18c77dbb09246640552acdce856dade29",
+      "sizeBytes": 9795
+    },
+    {
+      "path": "root/actual45/run-01/backend84/actual-origins.json",
+      "sha256Bytes": "a57268b5ba226987ff707bff046308d99b9fd413b33ab8e2d8ac0e7cc238d56d",
+      "sizeBytes": 5160
+    },
+    {
+      "path": "root/actual45/run-01/backend84/class-intersection.json",
+      "sha256Bytes": "d4cdad833bae0a13e0a51076ee7c6635b9dde39338f05b1296298c352f3cedc3",
+      "sizeBytes": 679
+    },
+    {
+      "path": "root/actual45/run-01/backend84/compiler-stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual45/run-01/backend84/compiler-stdout.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual45/run-01/backend84/compiler.args",
+      "sha256Bytes": "7726f36cdb59e9e4e1a27c69cd1dd0e92d708fd53042eb9a4567a621ed855697",
+      "sizeBytes": 24559
+    },
+    {
+      "path": "root/actual45/run-01/backend84/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual45/run-01/backend84/fixture-source-receipt.json",
+      "sha256Bytes": "c53e06f9a6f963caff621f916ccebbab531f6310c67815c1969afb1390afcec2",
+      "sizeBytes": 644
+    },
+    {
+      "path": "root/actual45/run-01/backend84/PlaybackAccountFixture.kt",
+      "sha256Bytes": "b57de265b241c78bdf01363f5f5dd57ca123ec5d0df274701b344c3ea0f615cb",
+      "sizeBytes": 15386
+    },
+    {
+      "path": "root/actual45/run-01/backend84/result.json",
+      "sha256Bytes": "c98ab919938af33ddb7fa5c51edd0f96f5ad74d765fd116ddb49eec8eff25bd4",
+      "sizeBytes": 3979
+    },
+    {
+      "path": "root/actual45/run-01/backend84/runtime-command.json",
+      "sha256Bytes": "21cd56f338185295596efd0b1821c93d6c0d552e872256b01936a0213e99da10",
+      "sizeBytes": 26217
+    },
+    {
+      "path": "root/actual45/run-01/backend84/runtime-stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual45/run-01/backend84/runtime-stdout.raw.log",
+      "sha256Bytes": "dba34d153e3c7a2396382a0b3a9b951d009ce5c97a38a0ed83fcbff96365a899",
+      "sizeBytes": 31
+    },
+    {
+      "path": "root/actual45/run-01/backend84/runtime.log",
+      "sha256Bytes": "3b9c1d7e209639508a727fe3525a34a37664b6311eda4e839c505a61fa4a9903",
+      "sizeBytes": 32
+    },
+    {
+      "path": "root/actual45/run-01/final428/actual-origins.json",
+      "sha256Bytes": "cc4000f93ca8e8bc6d4887e7f348464413291035201bdd1793f443d3061dc30f",
+      "sizeBytes": 6272
+    },
+    {
+      "path": "root/actual45/run-01/final428/class-intersection.json",
+      "sha256Bytes": "e79199455218a697f4bb120d39d35fd0f00da5322e106d48e302f5649532af53",
+      "sizeBytes": 1694
+    },
+    {
+      "path": "root/actual45/run-01/final428/compiler-stderr.raw.log",
+      "sha256Bytes": "6e09a95bf88873bd004a9f17c8f237c090abaebab417646335356ae627bfd4a9",
+      "sizeBytes": 412
+    },
+    {
+      "path": "root/actual45/run-01/final428/compiler-stdout.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual45/run-01/final428/compiler.args",
+      "sha256Bytes": "e6ae976035b0fd18290c444f44c9dfc63f00d2eb4ae176bb969f0e2b31c2099f",
+      "sizeBytes": 24557
+    },
+    {
+      "path": "root/actual45/run-01/final428/compiler.log",
+      "sha256Bytes": "992cfa7fe7f794347552f55e46d9442cbc945e506a79aa32e87c985e42049c35",
+      "sizeBytes": 415
+    },
+    {
+      "path": "root/actual45/run-01/final428/fixture-source-receipt.json",
+      "sha256Bytes": "35e22931282519c09ed4166ff003c4a01760dbb68d27d74a1f1d55becf038ccf",
+      "sizeBytes": 645
+    },
+    {
+      "path": "root/actual45/run-01/final428/PublicationRaceFixture.kt",
+      "sha256Bytes": "c7212d90d7781bcc0e9ea701368ca83860a466b1e9baa538b5e5f43aa2cd1ae2",
+      "sizeBytes": 18055
+    },
+    {
+      "path": "root/actual45/run-01/final428/result.json",
+      "sha256Bytes": "b23b43e04ea2e0da88d3c6c886b51d9fef9f90f1717805c9dbe6c8b9ce775a76",
+      "sizeBytes": 4492
+    },
+    {
+      "path": "root/actual45/run-01/final428/runtime-command.json",
+      "sha256Bytes": "9444ca77f6e0ff67076cb3232fa14dd2618d04ea749b42bb5bb6cddf72f95a70",
+      "sizeBytes": 26210
+    },
+    {
+      "path": "root/actual45/run-01/final428/runtime-stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual45/run-01/final428/runtime-stdout.raw.log",
+      "sha256Bytes": "3b326f92c224f728949358c1e7bcded4300f7f2fef516a643038a5c8ac68f857",
+      "sizeBytes": 100
+    },
+    {
+      "path": "root/actual45/run-01/final428/runtime.log",
+      "sha256Bytes": "5d156be003ae6e27d53d7c0ef66f17ea9d5cec7e268438ebb5f01d9ec7ae79d0",
+      "sizeBytes": 101
+    },
+    {
+      "path": "root/actual45/run-01/input-manifest.json",
+      "sha256Bytes": "61b8233a766542366bf6a72868434e9effbf2f0c6458ae0f77326168a50f3fec",
+      "sizeBytes": 133916
+    },
+    {
+      "path": "root/actual45/run-01/input-ordered-runtime-cp.json",
+      "sha256Bytes": "946d0f272d696310a60b8814cbc4a0ed6ae30617ba047dbfe10d729583234419",
+      "sizeBytes": 36694
+    },
+    {
+      "path": "root/actual45/run-01/pins-after.json",
+      "sha256Bytes": "b892927575bbc518b187b2ac72bcec2e77fb4b699b15616b3462bba00ea1f7c1",
+      "sizeBytes": 41493
+    },
+    {
+      "path": "root/actual45/run-01/pins-before.json",
+      "sha256Bytes": "b892927575bbc518b187b2ac72bcec2e77fb4b699b15616b3462bba00ea1f7c1",
+      "sizeBytes": 41493
+    },
+    {
+      "path": "root/actual45/run-01/result.json",
+      "sha256Bytes": "24dd2b05fd5ce916a4942038cf299ae18c77dbb09246640552acdce856dade29",
+      "sizeBytes": 9795
+    },
+    {
+      "path": "root/actual45/run.py",
+      "sha256Bytes": "166edaf27db34b0b096b4c57032159a4fc9840dfa2b7bace8e0435398af2c54f",
+      "sizeBytes": 8507
+    },
+    {
+      "path": "root/actual45/excluded-artifacts.json",
+      "sha256Bytes": "5766c4ce7c7bd13c9ba6e548b9a27e2fbf8dde7064ff8b3d2f471b1447968c2f",
+      "sizeBytes": 3076
+    },
+    {
+      "path": "root/install45/baseline/desktop/build.gradle.kts",
+      "sha256Bytes": "55907af9691d4b466b72d364a6ab240b198dce8af3bd333d9b996f7e652260a0",
+      "sizeBytes": 110868
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "d18409ed1125cb6750b5e335eb922cfed0f8a6d07c5fff9f83b01dca8976f518",
+      "sizeBytes": 27367
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf",
+      "sizeBytes": 57209
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "1fa15cdf9c84693e0b18edb9605534ab6bdb9c398acba762be3e61033501f894",
+      "sizeBytes": 141713
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopAudioRepository.kt",
+      "sha256Bytes": "0e29b2f3838aea8e65bcfba4dc4558dc0253acbcbe71cad9a1abcf4df5062607",
+      "sizeBytes": 11972
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "b55e3f13066bb6194c3b0c9b886205cbfafa20fa561667256bdad9a047423cbe",
+      "sizeBytes": 29990
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "215d9ecf35eb03978d1352efd839923f2e6ee41fc7d2471d9764b72dcf21ee16",
+      "sizeBytes": 4388
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "c1fb149514dead75844762d5490e2dff511770c026a57a50d2dc903aa2f8914e",
+      "sizeBytes": 5667
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaResolver.kt",
+      "sha256Bytes": "68af9f7688806eb8832fb4d0b7aa6a1e898a09d0f4b47044550b7377bd29cc8f",
+      "sizeBytes": 8006
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "33e669f56878ceb1207dffeb4de34746b0fd8a58919de0b9e6bc7d5e06324271",
+      "sizeBytes": 8814
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
+      "sha256Bytes": "fce5a922032031ff16a01308916d4acfb3f973d82535cbdc17e5b2b01bcd3be6",
+      "sizeBytes": 4867
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "5adff24a0076b7beea16147d34275fa651bd4f5b85720fca18c10c055a9a6df7",
+      "sizeBytes": 4576
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "6925736b38d81b191b2404b1c2b72430fdb59365fd282a890e5092dedf1d924d",
+      "sizeBytes": 30179
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "fd23e585ed119fe4a58a447cfe7d3072e1531401d5012291c2d2c7bb70060b01",
+      "sizeBytes": 3161
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "46c6f61859d5a8f29d00a21db432a873738062e47cd548e94162c9d1c5d14a63",
+      "sizeBytes": 1599
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "11bd36d5f31a5f44256567ab45bb2b3735d54d42ad3513c3d0f347b7c0955169",
+      "sizeBytes": 41487
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "b4082fe7b556a9851f61efdcee9cb1e49d6b424d07349925dbe78cda088b6df4",
+      "sizeBytes": 21943
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "sha256Bytes": "08cdca6ed3c357896197b462513cbeca451bae6bca1867d107508d9aa756eda0",
+      "sizeBytes": 29165
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadModels.kt",
+      "sha256Bytes": "8d6cb7bedc55ece443bf3af7c4c6d530c62ea3808596d44bd09f0e296bf64a72",
+      "sizeBytes": 2625
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopControllerNativeSmoke.kt",
+      "sha256Bytes": "f3c9937ff7d3a027dca347cd88f129394ffafa1e83eaea3c6470f4bedd485b61",
+      "sizeBytes": 9942
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecovery.kt",
+      "sha256Bytes": "fafa52013b6c826dd358040ae6ec7c01d66b603d94a7cfd0e3dc03353c1bf539",
+      "sizeBytes": 5454
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf",
+      "sizeBytes": 60780
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "ec542ca986d1c06d05dd5889783500b8a3cf3ee08e0f100eb96f0aff16e76d53",
+      "sizeBytes": 6289
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "60438ac0c22e426c5ab61fdaf66ab916b8c262cffd531a83463fc8d212c256e8",
+      "sizeBytes": 42137
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/DesktopCheckpointFailureTest.kt",
+      "sha256Bytes": "7887cc5676220ca03fa76a62ca792c56498f100e1cbe4c0a1f288687d6e7c207",
+      "sizeBytes": 6803
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/DesktopPlaybackControllerTest.kt",
+      "sha256Bytes": "427fa39b59a9742969e2b51dfe544b91ce15c9d5b0f9404e32168b58f0288c8d",
+      "sizeBytes": 14587
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/DesktopPlaybackQueueOwnershipTest.kt",
+      "sha256Bytes": "e6501f967185fc0c005398e744b0484fd006873a8844f5a57c5c2545fd0406d9",
+      "sizeBytes": 11051
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopMusicRootIntegrationTest.kt",
+      "sha256Bytes": "a4cd47c0053a39d194b78cee5e343eb24c126acfb07fa5737602f73fc4c8761c",
+      "sizeBytes": 16491
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicIntegrationTest.kt",
+      "sha256Bytes": "da8a6cb3414aa5a9a4096ffeceecdd188765f103c2d60878d1ba978ec8096745",
+      "sizeBytes": 18295
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenAudioLifecycleTest.kt",
+      "sha256Bytes": "fc91fbe678391af9a8b32ced18857d4b6741ae9d206a5a3d6420d35ff5f29467",
+      "sizeBytes": 10248
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenWriterBarrierTest.kt",
+      "sha256Bytes": "73a658bb630b0ae8242ee20921bd4f4908d7fef5aadf80a2a9d2be6261630f1b",
+      "sizeBytes": 13945
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadManagerTest.kt",
+      "sha256Bytes": "76b876df3dd0ed9fb130eb30a526fba94d4550a5f60a74f8e2720a094c207914",
+      "sizeBytes": 18992
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioControllerTest.kt",
+      "sha256Bytes": "a5ef2e2d86f238d366121f97c3e73f81ec667f37be36cb23bb6eb107d799ec23",
+      "sizeBytes": 18687
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/player/PlaybackSettingsIntegrationFixtures.kt",
+      "sha256Bytes": "2a2f40789c4642dce0af5781b45a4ecd03de9810147ada13f2c4c8984d90da2b",
+      "sizeBytes": 12830
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt",
+      "sha256Bytes": "cadc45aafaa9a6f30e79d2b18b1b14ed87665f827f1c48079567e41e9be78473",
+      "sizeBytes": 13166
+    },
+    {
+      "path": "root/install45/baseline/desktop/src/test/kotlin/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest.kt",
+      "sha256Bytes": "f0a0b0793c7dca8a71b2439252ce0ae41f81bf386e624a493e3b297d3bf1d70f",
+      "sizeBytes": 7060
+    },
+    {
+      "path": "root/install45/baseline/desktop/third-party/google-cast-v2/SOURCES.json",
+      "sha256Bytes": "88aab8c87cdb17fa4ac7c020368d314ecea030224389f158cb6ab0b7a1ec7fa4",
+      "sizeBytes": 28526
+    },
+    {
+      "path": "root/install45/baseline/desktop/tools/extract-cast-platform.py",
+      "sha256Bytes": "b84872061dd1d9af78f502cfd0305b8c21a818342d1cc50b39ab69c09f36529f",
+      "sizeBytes": 17299
+    },
+    {
+      "path": "root/install45/baseline/desktop/upstream-sources.json",
+      "sha256Bytes": "24a61cd13f76f6b8ca3af689db85d904c25a849052d5ac0e9f7d96ab6ab6e803",
+      "sizeBytes": 335835
+    },
+    {
+      "path": "root/install45/cast-record-repair.json",
+      "sha256Bytes": "0e46a4e50ab412087a8c5038c510da3e676f4532c87f49b064fb10d348c4f74f",
+      "sizeBytes": 1264
+    },
+    {
+      "path": "root/install45/installed.json",
+      "sha256Bytes": "12621b634805d63f19b3624e6d3e751aa343b8041bf08eeaa7b69586e4aaaf96",
+      "sizeBytes": 153814
+    },
+    {
+      "path": "root/install45/native-test-contract-repair/DesktopAdvancedPlaybackSettingsTest.kt",
+      "sha256Bytes": "4fbd51b60f4d4791dfd5ac3463a79003c688cdde53db7bf2104877862c558c7d",
+      "sizeBytes": 23440
+    },
+    {
+      "path": "root/install45/native-test-contract-repair/DesktopPremiumAudioRecoveryTest.kt",
+      "sha256Bytes": "8b74b9bf18e9bfddeb8ffac6b915bcd87816e99c2a94c71219a7ab4edcf1b30a",
+      "sizeBytes": 16287
+    },
+    {
+      "path": "root/install45/native-test-contract-repair/MpvStartupProbeTest.kt",
+      "sha256Bytes": "7fc4d08b3be693054f4e5a7b42c80efcc690d3c010db8cc8a7e4a3e27aa21b5b",
+      "sizeBytes": 3811
+    },
+    {
+      "path": "root/install45/native-test-contract-repair/repair.json",
+      "sha256Bytes": "1b661d7c47e025181839b3f1f1c528b46ca2b7d59fb984c28de60a8a1c80c0d5",
+      "sizeBytes": 4644
+    },
+    {
+      "path": "root/install45/settings-fixture-request-repair/PlaybackSettingsIntegrationFixtures.kt",
+      "sha256Bytes": "e0e885d0da158fa50cfaed7bd2eda22685632134e044821131f357da7749874a",
+      "sizeBytes": 13186
+    },
+    {
+      "path": "root/install45/settings-fixture-request-repair/repair.json",
+      "sha256Bytes": "380e6d9fea9ad8617d5d49e8169dd0cc3fd786e2d09da4b5a20d8116b28620fc",
+      "sizeBytes": 870
+    },
+    {
+      "path": "root/unit-tests45/attempt01.log",
+      "sha256Bytes": "7dd6960de08f5741acba3df26029de9d06c1adf2777eb628670b56f30e19653e",
+      "sizeBytes": 8773
+    },
+    {
+      "path": "root/unit-tests45/attempt01/TEST-com.bilipai.desktop.DesktopPlaybackControllerTest.xml",
+      "sha256Bytes": "ef88e3c034bf39d7e762267063ae7d9eced02ef9b2ab40abd83f0e729ce35e59",
+      "sizeBytes": 2367
+    },
+    {
+      "path": "root/unit-tests45/attempt01/TEST-com.bilipai.desktop.audio.ListenAudioLifecycleTest.xml",
+      "sha256Bytes": "99c32c6418cb0184ba3f42f2013bbdca1464a2146b888d39c5743c57eb00ff4d",
+      "sizeBytes": 1436
+    },
+    {
+      "path": "root/unit-tests45/attempt01/TEST-com.bilipai.desktop.download.DesktopDownloadManagerTest.xml",
+      "sha256Bytes": "0dd6cf31314771aaa71f4dc52806bbd2b85e2a784f08c4afdc2f4b64d007fb35",
+      "sizeBytes": 2621
+    },
+    {
+      "path": "root/unit-tests45/attempt01/TEST-com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest.xml",
+      "sha256Bytes": "f5ece0c9cd319686e014262122ca32ad1c52947c7f22198ebb6f754dd6ca8539",
+      "sizeBytes": 6325
+    },
+    {
+      "path": "root/unit-tests45/attempt01/TEST-com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest.xml",
+      "sha256Bytes": "4ffe9162556c4474bc4b59102e0bb86668b5772b69dc7d669a849709d6286300",
+      "sizeBytes": 1862
+    },
+    {
+      "path": "root/unit-tests45/attempt01/TEST-com.bilipai.desktop.player.MpvStartupProbeTest.xml",
+      "sha256Bytes": "b17f182c5542de3ee69a4e1800bc3e11f6271347f5200e8802759ea72211ab7d",
+      "sizeBytes": 999
+    },
+    {
+      "path": "root/unit-tests45/attempt02.log",
+      "sha256Bytes": "592d17aa60769cae15fb9105d3f029ea06ed953895c60e86b4d38a1b4bb8a16d",
+      "sizeBytes": 8233
+    },
+    {
+      "path": "root/unit-tests45/attempt02/TEST-com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest.xml",
+      "sha256Bytes": "4a432026828b5c3db9882b5b5adce66583fe432a83d8d109bc194fc6eecc6b56",
+      "sizeBytes": 5134
+    },
+    {
+      "path": "root/unit-tests45/result.json",
+      "sha256Bytes": "ce3e596b3e8031539d7222792ae71326c101a53a92ea6c8699bb3970da03d9c6",
+      "sizeBytes": 1946
+    },
+    {
+      "path": "root/install-playback-publication45.py",
+      "sha256Bytes": "447865a4e47dfac4481cd74faa4ab0b8890083f86acec77b266ad586b134954f",
+      "sizeBytes": 5152
+    },
+    {
+      "path": "root/repair-native-test-contract45.py",
+      "sha256Bytes": "98b23f58472f376b38a2892a1b164958acc19d960cd576930887d78964f976be",
+      "sizeBytes": 2414
+    },
+    {
+      "path": "root/collect-unit-tests45.py",
+      "sha256Bytes": "6169d02246b36f94f5a9175e7b9571781156a0ee47583a216ce67c5170af1c34",
+      "sizeBytes": 2262
+    },
+    {
+      "path": "root/freeze-playback-publication45.py",
+      "sha256Bytes": "d4168fc3c8ba4bb7147ee9fac3aa3aa3e11f318c826d2f62c342cade9a37d5f9",
+      "sizeBytes": 7834
+    },
+    {
+      "path": "root/jvm-method-name-audit-45.json",
+      "sha256Bytes": "ae100e0b7fcb004d1801a3ab438ec27dcdc96eaf6a56646927ae5658f6971a30",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/snapshot45/manifest.json",
+      "sha256Bytes": "61b8233a766542366bf6a72868434e9effbf2f0c6458ae0f77326168a50f3fec",
+      "sizeBytes": 133916
+    },
+    {
+      "path": "root/snapshot45/ordered-runtime-cp.json",
+      "sha256Bytes": "946d0f272d696310a60b8814cbc4a0ed6ae30617ba047dbfe10d729583234419",
+      "sizeBytes": 36694
+    },
+    {
+      "path": "root/classes-45-attempt01.log",
+      "sha256Bytes": "4867cc5129d4204c8b51bbbf5ad0658527b861455b520f8ff2905ca125a9f6f8",
+      "sizeBytes": 1612
+    },
+    {
+      "path": "root/classes-45-attempt02.log",
+      "sha256Bytes": "a4903ce9c8d65d233946836f48fc80ee484ba8fd81f7ef40c05308d249f9b082",
+      "sizeBytes": 33954
+    },
+    {
+      "path": "root/classes-45.log",
+      "sha256Bytes": "b36b09975b934ddad171f44cb1f2be15eaf75570541a6d346309acc40e8e123b",
+      "sizeBytes": 14319
+    },
+    {
+      "path": "root/export-45.log",
+      "sha256Bytes": "972de0d269202f801c9f6a7cacda26ee94e81b0e459b1926716c1a1db02d2a82",
+      "sizeBytes": 289
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "7df0d5d917c870a19307bd68278a5d8f541a995c9e1906e0848ac62afd45b0e0",
+      "sizeBytes": 13651
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "prepared/backend/runs/compile-02/prepared-playback-account.jar",
+      "sha256Bytes": "00d87ccb9d83c104ce01eb9eb89a875ec07ea7dcd689f99c54c4a64054c02da0",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/backend/runs/compile-03/prepared-playback-account.jar",
+      "sha256Bytes": "227d132ea9627dff164bd524fed7241eb12d8e4d8c8919e53c01508b592750d1",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/backend/runs/compile-04/prepared-playback-account.jar",
+      "sha256Bytes": "8de8b62267ccde72325b1e0ac9886a18200481237f0f521b6f129459e80df302",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/backend/runs/fixture-01/playback-fixture.jar",
+      "sha256Bytes": "3c7e179e514f70ef2efae9cb677f768993c3ee9bb5dd4f11a72b72851c84bc53",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/backend/runs/fixture-02/playback-fixture.jar",
+      "sha256Bytes": "3c7e179e514f70ef2efae9cb677f768993c3ee9bb5dd4f11a72b72851c84bc53",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/backend/runs/fixture-03/playback-fixture.jar",
+      "sha256Bytes": "553b88400ef2fc0dabfb0ad667f30e43272f8654d1c3f58fb736aae8c474820f",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/java-classes/su/litvak/chromecast/api/v2/Channel$PingThread.class",
+      "sha256Bytes": "9e8ba02c3b3e08fd639fc5e7094de60078331d0a6ce6567c365228e2c5bce580",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/java-classes/su/litvak/chromecast/api/v2/Channel$ReadThread.class",
+      "sha256Bytes": "0da6d79335e4134e98fb10bc643f7bcfb80caec08b39a7ce936cb065f8ea2ff4",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/java-classes/su/litvak/chromecast/api/v2/Channel$ResultProcessor.class",
+      "sha256Bytes": "36dd759d51a36fe7c7694e5402e9a13be9f121fd88c1bccc48069ada32332131",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/java-classes/su/litvak/chromecast/api/v2/Channel.class",
+      "sha256Bytes": "45dd8df097fcb9817adf497ec64d6ae88d2d6a5b6e4eb71552ddab3105c2bb7d",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication$Frame.class",
+      "sha256Bytes": "b2a9f7ff2e3d1a9dafd93ca6fa00a8256d2175f2012ab803e0f71417bedc8cda",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication.class",
+      "sha256Bytes": "67b0c15c9edd478f8486a7473d730192325e9f980d0ddff355ab1567c5ce61ed",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter$Write.class",
+      "sha256Bytes": "5e21b8f7a87dd0eec9a0698b02bae5d2d20f693e022d996f8bbe60965433ca07",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-01/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter.class",
+      "sha256Bytes": "4f8af29864eadecce362252116b8fc393e2061024fdb5c192f1a3f1fe60bdeb1",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/java-classes/su/litvak/chromecast/api/v2/Channel$PingThread.class",
+      "sha256Bytes": "9e8ba02c3b3e08fd639fc5e7094de60078331d0a6ce6567c365228e2c5bce580",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/java-classes/su/litvak/chromecast/api/v2/Channel$ReadThread.class",
+      "sha256Bytes": "0da6d79335e4134e98fb10bc643f7bcfb80caec08b39a7ce936cb065f8ea2ff4",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/java-classes/su/litvak/chromecast/api/v2/Channel$ResultProcessor.class",
+      "sha256Bytes": "36dd759d51a36fe7c7694e5402e9a13be9f121fd88c1bccc48069ada32332131",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/java-classes/su/litvak/chromecast/api/v2/Channel.class",
+      "sha256Bytes": "45dd8df097fcb9817adf497ec64d6ae88d2d6a5b6e4eb71552ddab3105c2bb7d",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication$Frame.class",
+      "sha256Bytes": "b2a9f7ff2e3d1a9dafd93ca6fa00a8256d2175f2012ab803e0f71417bedc8cda",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication.class",
+      "sha256Bytes": "67b0c15c9edd478f8486a7473d730192325e9f980d0ddff355ab1567c5ce61ed",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter$Write.class",
+      "sha256Bytes": "5e21b8f7a87dd0eec9a0698b02bae5d2d20f693e022d996f8bbe60965433ca07",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter.class",
+      "sha256Bytes": "4f8af29864eadecce362252116b8fc393e2061024fdb5c192f1a3f1fe60bdeb1",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-02/prepared-playback-final-publication.jar",
+      "sha256Bytes": "76dd72cd1e949eb63e0cc8dc5b11bc1ba4281e74a2c5f3b3f630e6fdf735147a",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/java-classes/su/litvak/chromecast/api/v2/Channel$PingThread.class",
+      "sha256Bytes": "9e8ba02c3b3e08fd639fc5e7094de60078331d0a6ce6567c365228e2c5bce580",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/java-classes/su/litvak/chromecast/api/v2/Channel$ReadThread.class",
+      "sha256Bytes": "0da6d79335e4134e98fb10bc643f7bcfb80caec08b39a7ce936cb065f8ea2ff4",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/java-classes/su/litvak/chromecast/api/v2/Channel$ResultProcessor.class",
+      "sha256Bytes": "36dd759d51a36fe7c7694e5402e9a13be9f121fd88c1bccc48069ada32332131",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/java-classes/su/litvak/chromecast/api/v2/Channel.class",
+      "sha256Bytes": "45dd8df097fcb9817adf497ec64d6ae88d2d6a5b6e4eb71552ddab3105c2bb7d",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication$Frame.class",
+      "sha256Bytes": "b2a9f7ff2e3d1a9dafd93ca6fa00a8256d2175f2012ab803e0f71417bedc8cda",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication.class",
+      "sha256Bytes": "67b0c15c9edd478f8486a7473d730192325e9f980d0ddff355ab1567c5ce61ed",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter$Write.class",
+      "sha256Bytes": "5e21b8f7a87dd0eec9a0698b02bae5d2d20f693e022d996f8bbe60965433ca07",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter.class",
+      "sha256Bytes": "4f8af29864eadecce362252116b8fc393e2061024fdb5c192f1a3f1fe60bdeb1",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-03/prepared-playback-final-publication.jar",
+      "sha256Bytes": "2461fe8e486000794f694b80e5e18e996c27d982163b70f761bd7a664c4c22ba",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/java-classes/su/litvak/chromecast/api/v2/Channel$PingThread.class",
+      "sha256Bytes": "9e8ba02c3b3e08fd639fc5e7094de60078331d0a6ce6567c365228e2c5bce580",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/java-classes/su/litvak/chromecast/api/v2/Channel$ReadThread.class",
+      "sha256Bytes": "0da6d79335e4134e98fb10bc643f7bcfb80caec08b39a7ce936cb065f8ea2ff4",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/java-classes/su/litvak/chromecast/api/v2/Channel$ResultProcessor.class",
+      "sha256Bytes": "36dd759d51a36fe7c7694e5402e9a13be9f121fd88c1bccc48069ada32332131",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/java-classes/su/litvak/chromecast/api/v2/Channel.class",
+      "sha256Bytes": "45dd8df097fcb9817adf497ec64d6ae88d2d6a5b6e4eb71552ddab3105c2bb7d",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication$Frame.class",
+      "sha256Bytes": "b2a9f7ff2e3d1a9dafd93ca6fa00a8256d2175f2012ab803e0f71417bedc8cda",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication.class",
+      "sha256Bytes": "67b0c15c9edd478f8486a7473d730192325e9f980d0ddff355ab1567c5ce61ed",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter$Write.class",
+      "sha256Bytes": "5e21b8f7a87dd0eec9a0698b02bae5d2d20f693e022d996f8bbe60965433ca07",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter.class",
+      "sha256Bytes": "4f8af29864eadecce362252116b8fc393e2061024fdb5c192f1a3f1fe60bdeb1",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-04/prepared-playback-final-publication.jar",
+      "sha256Bytes": "46e24c2cd75bf254ab494a9fd3901b56c9fe8f11fe2e6cd28d7b627c2a7d78f6",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/java-classes/su/litvak/chromecast/api/v2/Channel$PingThread.class",
+      "sha256Bytes": "9e8ba02c3b3e08fd639fc5e7094de60078331d0a6ce6567c365228e2c5bce580",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/java-classes/su/litvak/chromecast/api/v2/Channel$ReadThread.class",
+      "sha256Bytes": "0da6d79335e4134e98fb10bc643f7bcfb80caec08b39a7ce936cb065f8ea2ff4",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/java-classes/su/litvak/chromecast/api/v2/Channel$ResultProcessor.class",
+      "sha256Bytes": "36dd759d51a36fe7c7694e5402e9a13be9f121fd88c1bccc48069ada32332131",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/java-classes/su/litvak/chromecast/api/v2/Channel.class",
+      "sha256Bytes": "45dd8df097fcb9817adf497ec64d6ae88d2d6a5b6e4eb71552ddab3105c2bb7d",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication$Frame.class",
+      "sha256Bytes": "b2a9f7ff2e3d1a9dafd93ca6fa00a8256d2175f2012ab803e0f71417bedc8cda",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication.class",
+      "sha256Bytes": "67b0c15c9edd478f8486a7473d730192325e9f980d0ddff355ab1567c5ce61ed",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter$Write.class",
+      "sha256Bytes": "5e21b8f7a87dd0eec9a0698b02bae5d2d20f693e022d996f8bbe60965433ca07",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter.class",
+      "sha256Bytes": "4f8af29864eadecce362252116b8fc393e2061024fdb5c192f1a3f1fe60bdeb1",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-05/prepared-playback-final-publication.jar",
+      "sha256Bytes": "037917bdc3e071eb1eea0189e0e0aaad318059f9aa60f8604315a6dc6ebfea82",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/java-classes/su/litvak/chromecast/api/v2/Channel$PingThread.class",
+      "sha256Bytes": "9e8ba02c3b3e08fd639fc5e7094de60078331d0a6ce6567c365228e2c5bce580",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/java-classes/su/litvak/chromecast/api/v2/Channel$ReadThread.class",
+      "sha256Bytes": "0da6d79335e4134e98fb10bc643f7bcfb80caec08b39a7ce936cb065f8ea2ff4",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/java-classes/su/litvak/chromecast/api/v2/Channel$ResultProcessor.class",
+      "sha256Bytes": "36dd759d51a36fe7c7694e5402e9a13be9f121fd88c1bccc48069ada32332131",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/java-classes/su/litvak/chromecast/api/v2/Channel.class",
+      "sha256Bytes": "45dd8df097fcb9817adf497ec64d6ae88d2d6a5b6e4eb71552ddab3105c2bb7d",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication$Frame.class",
+      "sha256Bytes": "b2a9f7ff2e3d1a9dafd93ca6fa00a8256d2175f2012ab803e0f71417bedc8cda",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication.class",
+      "sha256Bytes": "67b0c15c9edd478f8486a7473d730192325e9f980d0ddff355ab1567c5ce61ed",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter$Write.class",
+      "sha256Bytes": "5e21b8f7a87dd0eec9a0698b02bae5d2d20f693e022d996f8bbe60965433ca07",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter.class",
+      "sha256Bytes": "4f8af29864eadecce362252116b8fc393e2061024fdb5c192f1a3f1fe60bdeb1",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-06/prepared-playback-final-publication.jar",
+      "sha256Bytes": "e52e639aad5777a6d52ef60518c8c6a6926ec8a601a6d40ae92faa0190063d82",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/java-classes/su/litvak/chromecast/api/v2/Channel$PingThread.class",
+      "sha256Bytes": "9e8ba02c3b3e08fd639fc5e7094de60078331d0a6ce6567c365228e2c5bce580",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/java-classes/su/litvak/chromecast/api/v2/Channel$ReadThread.class",
+      "sha256Bytes": "0da6d79335e4134e98fb10bc643f7bcfb80caec08b39a7ce936cb065f8ea2ff4",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/java-classes/su/litvak/chromecast/api/v2/Channel$ResultProcessor.class",
+      "sha256Bytes": "36dd759d51a36fe7c7694e5402e9a13be9f121fd88c1bccc48069ada32332131",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/java-classes/su/litvak/chromecast/api/v2/Channel.class",
+      "sha256Bytes": "45dd8df097fcb9817adf497ec64d6ae88d2d6a5b6e4eb71552ddab3105c2bb7d",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication$Frame.class",
+      "sha256Bytes": "b2a9f7ff2e3d1a9dafd93ca6fa00a8256d2175f2012ab803e0f71417bedc8cda",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication.class",
+      "sha256Bytes": "67b0c15c9edd478f8486a7473d730192325e9f980d0ddff355ab1567c5ce61ed",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter$Write.class",
+      "sha256Bytes": "5e21b8f7a87dd0eec9a0698b02bae5d2d20f693e022d996f8bbe60965433ca07",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter.class",
+      "sha256Bytes": "4f8af29864eadecce362252116b8fc393e2061024fdb5c192f1a3f1fe60bdeb1",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-07/prepared-playback-final-publication.jar",
+      "sha256Bytes": "cd28311b9d759d88675d1f6a893518ec6dbb43f1ed2b20bad03e24eb706a5c46",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/java-classes/su/litvak/chromecast/api/v2/Channel$PingThread.class",
+      "sha256Bytes": "9e8ba02c3b3e08fd639fc5e7094de60078331d0a6ce6567c365228e2c5bce580",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/java-classes/su/litvak/chromecast/api/v2/Channel$ReadThread.class",
+      "sha256Bytes": "0da6d79335e4134e98fb10bc643f7bcfb80caec08b39a7ce936cb065f8ea2ff4",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/java-classes/su/litvak/chromecast/api/v2/Channel$ResultProcessor.class",
+      "sha256Bytes": "36dd759d51a36fe7c7694e5402e9a13be9f121fd88c1bccc48069ada32332131",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/java-classes/su/litvak/chromecast/api/v2/Channel.class",
+      "sha256Bytes": "45dd8df097fcb9817adf497ec64d6ae88d2d6a5b6e4eb71552ddab3105c2bb7d",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication$Frame.class",
+      "sha256Bytes": "b2a9f7ff2e3d1a9dafd93ca6fa00a8256d2175f2012ab803e0f71417bedc8cda",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/java-classes/su/litvak/chromecast/api/v2/DesktopCastPublication.class",
+      "sha256Bytes": "67b0c15c9edd478f8486a7473d730192325e9f980d0ddff355ab1567c5ce61ed",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter$Write.class",
+      "sha256Bytes": "5e21b8f7a87dd0eec9a0698b02bae5d2d20f693e022d996f8bbe60965433ca07",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/java-classes/su/litvak/chromecast/api/v2/DesktopCastWriter.class",
+      "sha256Bytes": "4f8af29864eadecce362252116b8fc393e2061024fdb5c192f1a3f1fe60bdeb1",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/compile-08/prepared-playback-final-publication.jar",
+      "sha256Bytes": "a74943065725734b2dfa2969e049f937d416c538cf2e2560aa3e6d1bb3390505",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/fixture-02/playback-fixture.jar",
+      "sha256Bytes": "b75b04fc9bea1fed25c662142b83d2d966661601c99128b696d192e042d18ce6",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/fixture-03/playback-fixture.jar",
+      "sha256Bytes": "b75b04fc9bea1fed25c662142b83d2d966661601c99128b696d192e042d18ce6",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/fixture-04/playback-fixture.jar",
+      "sha256Bytes": "1ce840d88f26dd809ce9851e77ef2294950ff2cabe02f4aabb01ff42e6bac7e4",
+      "reason": "Rebuildable output"
+    },
+    {
+      "path": "prepared/publication/runs/fixture-05/playback-fixture.jar",
+      "sha256Bytes": "1ce840d88f26dd809ce9851e77ef2294950ff2cabe02f4aabb01ff42e6bac7e4",
+      "reason": "Rebuildable output"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "path": "desktop/build.gradle.kts",
+    "baseLF": "17e958bf712cefa57b3e3813dd46cfa1d3e79ff6f3681c66d02e23721947f1d0",
+    "candidateLF": "5e6ebc615bccab40f813c7fd15fe233525444fa1983bb621aafcead9e0e159c4",
+    "hunks": [
+      {
+        "before": "tasks.named(\"compileKotlin\") { dependsOn(extractUpstreamStoryTopic, extractPlaybackSettings, extractSubtitleLoadPolicy) }",
+        "after": "tasks.named(\"compileKotlin\") { dependsOn(extractUpstreamStoryTopic, extractPlaybackSettings, extractSubtitleLoadPolicy) }\n\nval extractUpstreamDownloadTransport by tasks.registering(Exec::class) {\n    dependsOn(prepareUpstreamSources)\n    workingDir(projectDir)\n    commandLine(System.getenv(\"PYTHON_EXECUTABLE\") ?: \"python\", \"tools/extract-upstream-download-transport.py\",\n        \"--repo\", repositoryRoot.absolutePath, \"--output\", layout.buildDirectory.dir(\"generated/download-transport\").get().asFile.absolutePath)\n    inputs.file(\"tools/extract-upstream-download-transport.py\")\n    inputs.file(File(repositoryRoot, \"app/src/main/java/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt\"))\n    outputs.dir(layout.buildDirectory.dir(\"generated/download-transport\"))\n}\nsourceSets.named(\"main\") { kotlin.srcDir(layout.buildDirectory.dir(\"generated/download-transport\")) }\ntasks.named(\"compileKotlin\") { dependsOn(extractUpstreamDownloadTransport) }\n",
+        "occurrences": 1
+      }
+    ],
+    "sourceOnlyProposal": true,
+    "GradleExecuted": false
+  }
+]

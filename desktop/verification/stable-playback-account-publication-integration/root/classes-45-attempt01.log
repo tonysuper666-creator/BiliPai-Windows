@@ -1,0 +1,30 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources
+> Task :extractBgmDetail
+> Task :extractCommentFraudProtocol
+> Task :extractFrostedAudioRenderer
+
+> Task :verifyGoogleCastSources FAILED
+Traceback (most recent call last):
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\tools\verify-google-cast-sources.py", line 56, in <module>
+    print(json.dumps(verify(args.desktop)))
+                     ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\tools\verify-google-cast-sources.py", line 28, in verify
+    assert hashlib.sha256(data).hexdigest() == record["sha256"], "Changed vetted Cast source: " + record["path"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Changed vetted Cast source: src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':verifyGoogleCastSources' (registered in build file 'build.gradle.kts').
+> Process 'command 'C:/Users/TONYS/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 11s
+5 actionable tasks: 5 executed

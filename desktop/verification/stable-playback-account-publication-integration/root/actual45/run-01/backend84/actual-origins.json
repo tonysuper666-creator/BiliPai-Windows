@@ -1,0 +1,65 @@
+[
+  {
+    "class": "com.bilipai.desktop.data.DesktopSessionStore",
+    "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+    "classSha256": "0ed93bff5d0e4c15883f0f1142a221f0f406387c7bd617c0a67ac58e5f665fb7",
+    "expectedProductJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-45\\main-kotlin.jar",
+    "actualCodeSourceAndBytesVerified": true
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopRepository",
+    "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+    "classSha256": "2397a469e36e4b8aa79178e22a6f1a458d074a61fb598cab766c21d79330ca69",
+    "expectedProductJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-45\\main-kotlin.jar",
+    "actualCodeSourceAndBytesVerified": true
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopMediaRepository",
+    "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+    "classSha256": "980e3bb2c75e8467403abb8f3a6904254be8742bc69d570d2fb5d2925110c820",
+    "expectedProductJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-45\\main-kotlin.jar",
+    "actualCodeSourceAndBytesVerified": true
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopPlaybackCache",
+    "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+    "classSha256": "9051309aa5f58b979cdc5cb2f808ecb0b326695214774a7308c4979a25da669e",
+    "expectedProductJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-45\\main-kotlin.jar",
+    "actualCodeSourceAndBytesVerified": true
+  },
+  {
+    "class": "com.bilipai.desktop.data.PlaybackSource",
+    "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+    "classSha256": "f836e713d1b71e6d0c48b6419cf2cf380b220ab4dedb7c32c1724713311699f9",
+    "expectedProductJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-45\\main-kotlin.jar",
+    "actualCodeSourceAndBytesVerified": true
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt",
+    "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+    "classSha256": "ef10ef78d77a95c7cbd1f9583ba5ae2086f44dc2297013ccd1a18290183fb3c5",
+    "expectedProductJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-45\\main-kotlin.jar",
+    "actualCodeSourceAndBytesVerified": true
+  },
+  {
+    "class": "com.android.purebilibili.core.store.StoredAccountSession",
+    "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+    "classSha256": "cbc5166764971f1a6ee2d11d790175b65e0109b435453fcb3462f0d3006c95da",
+    "expectedProductJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-45\\main-kotlin.jar",
+    "actualCodeSourceAndBytesVerified": true
+  },
+  {
+    "class": "com.android.purebilibili.core.network.BilibiliApi",
+    "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+    "classSha256": "36e363a5ec59e07eab90fd4b7b71ef3e9e450287499e119bba968cb0190f0124",
+    "expectedProductJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-45\\main-kotlin.jar",
+    "actualCodeSourceAndBytesVerified": true
+  },
+  {
+    "class": "com.android.purebilibili.core.network.BangumiApi",
+    "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+    "classSha256": "042a346eba70e317d805a6cda29860cacce5b3b525cfbb346191fc66e4d24bf9",
+    "expectedProductJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-45\\main-kotlin.jar",
+    "actualCodeSourceAndBytesVerified": true
+  }
+]

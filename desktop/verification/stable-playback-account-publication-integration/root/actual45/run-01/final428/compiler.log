@@ -1,0 +1,3 @@
+desktop\.local\stable-playback-publication-actual45-proof\run-01\final428\PublicationRaceFixture.kt:73:45: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopNativePlaybackPublication'.
+        expect(!old.source.nativePublication!!.admit{nativeCommands++}&&nativeCommands==1,"retired queued native command rejects before body")
+                                            ^^

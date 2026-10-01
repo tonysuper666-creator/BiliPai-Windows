@@ -57,6 +57,8 @@ private class FixtureApi {
         val repo = DesktopRepository(DesktopSessionStore.temporary())
         fun set(name: String, value: Any) { DesktopRepository::class.java.getDeclaredField(name).apply { isAccessible = true }.set(repo, value) }
         set("api", api)
+        // Owner-tagged playback/nav services now derive from this same existing memory-only transport.
+        set("client", client)
         set("visitorInitialized", true); set("visitorGeneration", repo.sessionEpoch)
         set("wbiKeys", "a".repeat(32) to "b".repeat(32)); set("wbiExpiresAt", System.currentTimeMillis() + 3_600_000)
         set("wbiGeneration", repo.sessionEpoch)
@@ -91,7 +93,11 @@ private class ControllerFixture : AutoCloseable {
     val controller = DesktopPlaybackController(repo, player, null, null, DesktopLibrary(dir) { false },
         { preferences }, scope, currentDanmakuSettings = { error("This controller harness has no danmaku overlay") }, dataSource = source, onRememberAudioQuality = {
             remembered.add(it); preferences = preferences.copy(lastSelectedAudioQuality = it)
-        })
+        }, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(
+                { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true },
+                { admitted -> synchronized(scope) {
+                    if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }
+                } }))
     suspend fun open() {
         onSwing { controller.open(VideoCard("BV-settings", "fixture", "", "", 0, 100)) }
         await { !it.opening && it.details != null }

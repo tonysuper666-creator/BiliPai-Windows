@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.player.MpvStartupProbeTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-01T10:02:00.415Z" hostname="TONYSUPER666" time="0.004">
+  <properties/>
+  <testcase name="probe initializes native client without a video surface or sound device()" classname="com.bilipai.desktop.player.MpvStartupProbeTest" time="0.001"/>
+  <testcase name="a rejected option fails health verification and destroys the native handle()" classname="com.bilipai.desktop.player.MpvStartupProbeTest" time="0.001"/>
+  <testcase name="a missing native handle cannot acknowledge startup()" classname="com.bilipai.desktop.player.MpvStartupProbeTest" time="0.0"/>
+  <testcase name="failed initialization fails health verification and destroys the native handle()" classname="com.bilipai.desktop.player.MpvStartupProbeTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

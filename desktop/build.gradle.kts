@@ -1684,3 +1684,15 @@ val extractSubtitleLoadPolicy by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/subtitle-load"))
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamStoryTopic, extractPlaybackSettings, extractSubtitleLoadPolicy) }
+
+val extractUpstreamDownloadTransport by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-download-transport.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/download-transport").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-download-transport.py")
+    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt"))
+    outputs.dir(layout.buildDirectory.dir("generated/download-transport"))
+}
+sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/download-transport")) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamDownloadTransport) }

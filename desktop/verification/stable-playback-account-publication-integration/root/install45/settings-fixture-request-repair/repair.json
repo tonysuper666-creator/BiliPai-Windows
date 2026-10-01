@@ -1,0 +1,10 @@
+{
+  "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlaybackSettingsIntegrationFixtures.kt",
+  "before": "        set(\"api\", api)",
+  "after": "        set(\"api\", api)\n        // Owner-tagged playback/nav services now derive from this same existing memory-only transport.\n        set(\"client\", client)",
+  "baseSha256LF": "e0e885d0da158fa50cfaed7bd2eda22685632134e044821131f357da7749874a",
+  "candidateSha256LF": "a419ff7d4b4741078a135bff1000220c5800c1b719dc7afa249ea32ed499171a",
+  "originalAssertionsUnchanged": true,
+  "productSourcesChanged": false,
+  "firstFailure": "Older fixture replaced only the api field. New owner-tagged services use the repository client factory, so a guest fake-BVID request reached actual HTTP and returned an API error. Bind the fixture existing memory-only client as well; no personal session was used."
+}

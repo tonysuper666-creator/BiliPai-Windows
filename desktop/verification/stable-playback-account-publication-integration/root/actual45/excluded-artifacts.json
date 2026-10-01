@@ -1,0 +1,57 @@
+[
+  {
+    "path": "run-01/backend84/fixture.jar",
+    "sha256Bytes": "553b88400ef2fc0dabfb0ad667f30e43272f8654d1c3f58fb736aae8c474820f",
+    "reason": "Compiled fixture or private synthetic Store/queue; not copied to Root raw evidence"
+  },
+  {
+    "path": "run-01/backend84/private-synthetic-store/result.json",
+    "sha256Bytes": "ff5eaded8e4b34862e69ceed47f45c0d22ca05061a5c5ad00095f78b3f3378ef",
+    "reason": "Compiled fixture or private synthetic Store/queue; not copied to Root raw evidence"
+  },
+  {
+    "path": "run-01/backend84/private-synthetic-store/synthetic-encrypted-session.json",
+    "sha256Bytes": "fddb079a93e044c6ff4ad5cff1bb90698b6e32bf3a27a463c1065c37dd85d275",
+    "reason": "Compiled fixture or private synthetic Store/queue; not copied to Root raw evidence"
+  },
+  {
+    "path": "run-01/final428/fixture.jar",
+    "sha256Bytes": "1ce840d88f26dd809ce9851e77ef2294950ff2cabe02f4aabb01ff42e6bac7e4",
+    "reason": "Compiled fixture or private synthetic Store/queue; not copied to Root raw evidence"
+  },
+  {
+    "path": "run-01/final428/private-synthetic-store/downloads/download-0490986fc6529878802bbcda/.bilipai-download",
+    "sha256Bytes": "0490986fc6529878802bbcda33b37fc89a5bafa23872ba7e5937f9d1bcc4a5eb",
+    "reason": "Compiled fixture or private synthetic Store/queue; not copied to Root raw evidence"
+  },
+  {
+    "path": "run-01/final428/private-synthetic-store/downloads/download-0a71c40b8d857988891d687f/.bilipai-download",
+    "sha256Bytes": "0a71c40b8d857988891d687f6056e43686d37da23275e4642fdedb1f828861ff",
+    "reason": "Compiled fixture or private synthetic Store/queue; not copied to Root raw evidence"
+  },
+  {
+    "path": "run-01/final428/private-synthetic-store/downloads/download-9459abd97f32e8b37554b416/.bilipai-download",
+    "sha256Bytes": "9459abd97f32e8b37554b41601f1327e26544ae7d22a591aaee29719c8c128d1",
+    "reason": "Compiled fixture or private synthetic Store/queue; not copied to Root raw evidence"
+  },
+  {
+    "path": "run-01/final428/private-synthetic-store/library/library.json",
+    "sha256Bytes": "ca018d8ce992d27066f4bcc345da486220741b660ab2d48169acc165919bb5f0",
+    "reason": "Compiled fixture or private synthetic Store/queue; not copied to Root raw evidence"
+  },
+  {
+    "path": "run-01/final428/private-synthetic-store/listen.json",
+    "sha256Bytes": "303fd8fb4a5685d12b16a35f7622e39a7ac0826838a719599521a191ae157663",
+    "reason": "Compiled fixture or private synthetic Store/queue; not copied to Root raw evidence"
+  },
+  {
+    "path": "run-01/final428/private-synthetic-store/queue.json",
+    "sha256Bytes": "cce59cae6cc3e52683445fb99ff099ec3bc9341f363700253f8b6e3f0cd29070",
+    "reason": "Compiled fixture or private synthetic Store/queue; not copied to Root raw evidence"
+  },
+  {
+    "path": "run-01/final428/private-synthetic-store/result.json",
+    "sha256Bytes": "3199bf14b73c35563bf7c7f8cd0a04fd0cb9e9fe71f687b51a4c247e6065598f",
+    "reason": "Compiled fixture or private synthetic Store/queue; not copied to Root raw evidence"
+  }
+]

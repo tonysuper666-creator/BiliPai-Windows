@@ -1,0 +1,167 @@
+{
+  "actualSnapshot": 45,
+  "actualRuntimeEntries": 97,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersection": 0,
+  "cpPrePostByteEqual": true,
+  "groups": 8,
+  "businessAssertions": 86,
+  "originalFixtureBytesAndAssertionsPreserved": true,
+  "actualOriginCounts": {
+    "backend84": 9,
+    "final428": 11
+  },
+  "rootCopyRule": "Only listed raw artifacts, excluding fixture JAR/classes and private Store/queue",
+  "scope": "Same installed Store/repository/receipt/native publication/cast writer/download classes with private synthetic memory transport and explicit local admission",
+  "notClaimed": [
+    "Native DLL execution",
+    "Root account/page mounted end-to-end",
+    "HTTP/socket",
+    "HWND/GUI",
+    "user files or credentials"
+  ],
+  "resultSha256Bytes": "24dd2b05fd5ce916a4942038cf299ae18c77dbb09246640552acdce856dade29",
+  "artifacts": [
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "1bf2d1bbdaa132df78560250ae64b4ea260d2ef81f0738a8cb8be41d995bdaf3"
+    },
+    {
+      "path": "result.json",
+      "sha256Bytes": "24dd2b05fd5ce916a4942038cf299ae18c77dbb09246640552acdce856dade29"
+    },
+    {
+      "path": "run-01/backend84/actual-origins.json",
+      "sha256Bytes": "a57268b5ba226987ff707bff046308d99b9fd413b33ab8e2d8ac0e7cc238d56d"
+    },
+    {
+      "path": "run-01/backend84/class-intersection.json",
+      "sha256Bytes": "d4cdad833bae0a13e0a51076ee7c6635b9dde39338f05b1296298c352f3cedc3"
+    },
+    {
+      "path": "run-01/backend84/compiler-stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/backend84/compiler-stdout.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/backend84/compiler.args",
+      "sha256Bytes": "7726f36cdb59e9e4e1a27c69cd1dd0e92d708fd53042eb9a4567a621ed855697"
+    },
+    {
+      "path": "run-01/backend84/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/backend84/fixture-source-receipt.json",
+      "sha256Bytes": "c53e06f9a6f963caff621f916ccebbab531f6310c67815c1969afb1390afcec2"
+    },
+    {
+      "path": "run-01/backend84/PlaybackAccountFixture.kt",
+      "sha256Bytes": "b57de265b241c78bdf01363f5f5dd57ca123ec5d0df274701b344c3ea0f615cb"
+    },
+    {
+      "path": "run-01/backend84/result.json",
+      "sha256Bytes": "c98ab919938af33ddb7fa5c51edd0f96f5ad74d765fd116ddb49eec8eff25bd4"
+    },
+    {
+      "path": "run-01/backend84/runtime-command.json",
+      "sha256Bytes": "21cd56f338185295596efd0b1821c93d6c0d552e872256b01936a0213e99da10"
+    },
+    {
+      "path": "run-01/backend84/runtime-stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/backend84/runtime-stdout.raw.log",
+      "sha256Bytes": "dba34d153e3c7a2396382a0b3a9b951d009ce5c97a38a0ed83fcbff96365a899"
+    },
+    {
+      "path": "run-01/backend84/runtime.log",
+      "sha256Bytes": "3b9c1d7e209639508a727fe3525a34a37664b6311eda4e839c505a61fa4a9903"
+    },
+    {
+      "path": "run-01/final428/actual-origins.json",
+      "sha256Bytes": "cc4000f93ca8e8bc6d4887e7f348464413291035201bdd1793f443d3061dc30f"
+    },
+    {
+      "path": "run-01/final428/class-intersection.json",
+      "sha256Bytes": "e79199455218a697f4bb120d39d35fd0f00da5322e106d48e302f5649532af53"
+    },
+    {
+      "path": "run-01/final428/compiler-stderr.raw.log",
+      "sha256Bytes": "6e09a95bf88873bd004a9f17c8f237c090abaebab417646335356ae627bfd4a9"
+    },
+    {
+      "path": "run-01/final428/compiler-stdout.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/final428/compiler.args",
+      "sha256Bytes": "e6ae976035b0fd18290c444f44c9dfc63f00d2eb4ae176bb969f0e2b31c2099f"
+    },
+    {
+      "path": "run-01/final428/compiler.log",
+      "sha256Bytes": "992cfa7fe7f794347552f55e46d9442cbc945e506a79aa32e87c985e42049c35"
+    },
+    {
+      "path": "run-01/final428/fixture-source-receipt.json",
+      "sha256Bytes": "35e22931282519c09ed4166ff003c4a01760dbb68d27d74a1f1d55becf038ccf"
+    },
+    {
+      "path": "run-01/final428/PublicationRaceFixture.kt",
+      "sha256Bytes": "c7212d90d7781bcc0e9ea701368ca83860a466b1e9baa538b5e5f43aa2cd1ae2"
+    },
+    {
+      "path": "run-01/final428/result.json",
+      "sha256Bytes": "b23b43e04ea2e0da88d3c6c886b51d9fef9f90f1717805c9dbe6c8b9ce775a76"
+    },
+    {
+      "path": "run-01/final428/runtime-command.json",
+      "sha256Bytes": "9444ca77f6e0ff67076cb3232fa14dd2618d04ea749b42bb5bb6cddf72f95a70"
+    },
+    {
+      "path": "run-01/final428/runtime-stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/final428/runtime-stdout.raw.log",
+      "sha256Bytes": "3b326f92c224f728949358c1e7bcded4300f7f2fef516a643038a5c8ac68f857"
+    },
+    {
+      "path": "run-01/final428/runtime.log",
+      "sha256Bytes": "5d156be003ae6e27d53d7c0ef66f17ea9d5cec7e268438ebb5f01d9ec7ae79d0"
+    },
+    {
+      "path": "run-01/input-manifest.json",
+      "sha256Bytes": "61b8233a766542366bf6a72868434e9effbf2f0c6458ae0f77326168a50f3fec"
+    },
+    {
+      "path": "run-01/input-ordered-runtime-cp.json",
+      "sha256Bytes": "946d0f272d696310a60b8814cbc4a0ed6ae30617ba047dbfe10d729583234419"
+    },
+    {
+      "path": "run-01/pins-after.json",
+      "sha256Bytes": "b892927575bbc518b187b2ac72bcec2e77fb4b699b15616b3462bba00ea1f7c1"
+    },
+    {
+      "path": "run-01/pins-before.json",
+      "sha256Bytes": "b892927575bbc518b187b2ac72bcec2e77fb4b699b15616b3462bba00ea1f7c1"
+    },
+    {
+      "path": "run-01/result.json",
+      "sha256Bytes": "24dd2b05fd5ce916a4942038cf299ae18c77dbb09246640552acdce856dade29"
+    },
+    {
+      "path": "run.py",
+      "sha256Bytes": "166edaf27db34b0b096b4c57032159a4fc9840dfa2b7bace8e0435398af2c54f"
+    },
+    {
+      "path": "excluded-artifacts.json",
+      "sha256Bytes": "5766c4ce7c7bd13c9ba6e548b9a27e2fbf8dde7064ff8b3d2f471b1447968c2f"
+    }
+  ],
+  "excludedArtifacts": 11
+}

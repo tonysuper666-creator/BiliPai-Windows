@@ -1,0 +1,469 @@
+{
+  "status": "FROZEN_PREPARED",
+  "lane": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-account-protocol-parity",
+  "targetStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualBase": "actual39 immutable 97-entry runtime; five explicit existing platform source families overridden in prospective proof",
+  "productSnapshotManifestSHA": "4840845d18a6fd1171c32a03ba397306a0f509b6510ca9544ceac935befe46ae",
+  "orderedRuntimeCpSHA": "e9b8db57c428c214b243e2ea41761d0745c3b48ff386fe8d38901d892760fd8f",
+  "sourceContractSHA": "f77621caa5dfed3069c94861fb9202cc18949c772abfb174bf11d5e3b6a562e0",
+  "sourceInventorySHA": "68edc4a3c12aab0bd9e203fbe9554d9118e2906aaf0c948d987ce8b0a42d2185",
+  "exactLocalHunksSHA": "fc7e424ce6e2939abfdfdddbae7024cde1f56f78162bc39ceb3917b61a740f01",
+  "rootIntegrationSHA": "0abf31eec7c84ac81ce9c17d1844cddaccf7c12c72aa53e7eaad7432a58c7f0f",
+  "sourceChecksSHA": "a374767205963bf818b7f50ac0e0024bbddb735e460946b87ef324a1fe8558d0",
+  "compileResultSHA": "f72f70e90a28e0f97a64612e1035fafdc167814a8b23678173c3ef7a081f5b77",
+  "acceptedFixtureSHA": "67e5fe9bc630edbcdf3607d8d3c0d5ede47268b596576315693d3a3f22f871ac",
+  "candidateJarSHA": "8de8b62267ccde72325b1e0ac9886a18200481237f0f521b6f129459e80df302",
+  "sourceInstall": {
+    "newManualSources": 1,
+    "existingPlatformFileFamilies": 5,
+    "proofWholeFilesNotInstallPayload": true,
+    "mandatoryRootFinalSourceReceiptConsumers": true
+  },
+  "sourceAudit": "Five whole-file exact inverse checks plus full original private isolated CookieJar body; only declaration name/visibility adaptation",
+  "fixture": {
+    "groups": 4,
+    "assertions": 47,
+    "loadedCodeSourceAndClassByteChecks": 9,
+    "transport": "actual Retrofit and WBI with task-only terminating application interceptor; explicit same-Store CookieJar calls; zero sockets"
+  },
+  "pending": [
+    "Root Profile ports and final native/recovery/download/cast/video-audio authorization admission consumers",
+    "Whole product build and actual immutable runtime proof after installation",
+    "Real network Bridge/CookieJar path, native playback/Profile UI/EXE acceptance",
+    "Complete additional original VideoRepository app/TV premium branches are outside this account-only slice"
+  ],
+  "history": [
+    "compile-01 missing explicit Job",
+    "fixture-01 proof compiler omitted Compose plugin/$stable ABI",
+    "fixture-02 incorrect fixture legacy PGC URL expectation"
+  ],
+  "noSharedSourceEdits": true,
+  "noGradle": true,
+  "noExternalHTTP": true,
+  "noUserAccountRead": true,
+  "noGUIOrHWND": true,
+  "actualProductAcceptance": false,
+  "artifacts": [
+    {
+      "path": "audit.py",
+      "bytes": 2711,
+      "sha256Bytes": "17cd4742156e472c439a0332a8157ec8e3c8cf3b1d05a7c81f67eea9e42c8d63"
+    },
+    {
+      "path": "compile.py",
+      "bytes": 3741,
+      "sha256Bytes": "77611337585ea26f2082b352417e7538fb8f25c6f2b53e6589ce36c0afb31a6d"
+    },
+    {
+      "path": "fixture.py",
+      "bytes": 4246,
+      "sha256Bytes": "4545cfee866e04629520754b8d19c5b66c26bfdaeec86ef69762777af28fe49d"
+    },
+    {
+      "path": "freeze.py",
+      "bytes": 3273,
+      "sha256Bytes": "7d3511848fac01d5f218416aa962a931322b9505774af84efa0ad5803047b46c"
+    },
+    {
+      "path": "local-hunks.json",
+      "bytes": 30720,
+      "sha256Bytes": "fc7e424ce6e2939abfdfdddbae7024cde1f56f78162bc39ceb3917b61a740f01"
+    },
+    {
+      "path": "PlaybackAccountFixture.kt",
+      "bytes": 15386,
+      "sha256Bytes": "b57de265b241c78bdf01363f5f5dd57ca123ec5d0df274701b344c3ea0f615cb"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 21587,
+      "sha256Bytes": "b211e2a087ee4b64e8f85f3d5fcc36ae62a4cbd0efb6bc6d1f9e43338323a70a"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackAuthorization.kt",
+      "bytes": 1667,
+      "sha256Bytes": "f60c2aaebb98aa52073a9ecd56a6e8ff798c899f45d65223d215988ebafb932b"
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "bytes": 30666,
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99"
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "bytes": 3148,
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae"
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "bytes": 1659,
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf"
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "bytes": 45882,
+      "sha256Bytes": "3a7dc67bcfecee3f29b0947d2449dedf5130148eda8d819f1f70b2220d1f9cb1"
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "bytes": 27210,
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "bytes": 8182,
+      "sha256Bytes": "0abf31eec7c84ac81ce9c17d1844cddaccf7c12c72aa53e7eaad7432a58c7f0f"
+    },
+    {
+      "path": "runs/compile-01/compile-result.json",
+      "bytes": 2765,
+      "sha256Bytes": "b9c8be2d050d089f1d505801b7f1540dd767c303efca51903c8e1749e5fcd513"
+    },
+    {
+      "path": "runs/compile-01/compiler.args",
+      "bytes": 26246,
+      "sha256Bytes": "ca566a10b5ceb3640dde804ec0cba61634813e194a1f26b0fd9e08b587b1d500"
+    },
+    {
+      "path": "runs/compile-01/compiler.log",
+      "bytes": 989,
+      "sha256Bytes": "d97f31a4158fe0ade15c312cc0c1e9af61879f5ddd8a516955d79ac0017fe58b"
+    },
+    {
+      "path": "runs/compile-01/pins-before.json",
+      "bytes": 43689,
+      "sha256Bytes": "58c2b1daa10ef1f63f4e617c3076496b4dfc38346a0cae7629dcf2c2fdc840d3"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "bytes": 30435,
+      "sha256Bytes": "6cc48ebf971baf93253b6cb8e4ffd8eab3f30706a3bdc35c4e3d17c905076aaa"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "bytes": 3148,
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "bytes": 1659,
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "bytes": 44997,
+      "sha256Bytes": "5e132066b6a89af0e9e2e6110ce797b3f0a8cc88e8382ec72fbfad6fec0160de"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "bytes": 27248,
+      "sha256Bytes": "6d2827c01def7bba4e79f7b1fa3455de906eb9afd9aa902576c6ce058bd2d186"
+    },
+    {
+      "path": "runs/compile-02/compile-result.json",
+      "bytes": 17487,
+      "sha256Bytes": "0c73c821e4b55e06850ded777906aa5fcb36d7af6fa3bc4ac4ee54d47ad60155"
+    },
+    {
+      "path": "runs/compile-02/compiler.args",
+      "bytes": 26246,
+      "sha256Bytes": "5e59652636926954d97e16b14454c8d40fc090d8f4506c41880831c39eff1008"
+    },
+    {
+      "path": "runs/compile-02/compiler.log",
+      "bytes": 2917,
+      "sha256Bytes": "dbafac29428d0d059841ad83d78762ffdbb4b48562f0201e93406525cdf14702"
+    },
+    {
+      "path": "runs/compile-02/pins-after.json",
+      "bytes": 43689,
+      "sha256Bytes": "7e4d496c6169c72d2db655521ce4b412caff0187dc9f2d3496de1d39d248d6db"
+    },
+    {
+      "path": "runs/compile-02/pins-before.json",
+      "bytes": 43689,
+      "sha256Bytes": "7e4d496c6169c72d2db655521ce4b412caff0187dc9f2d3496de1d39d248d6db"
+    },
+    {
+      "path": "runs/compile-02/prepared-playback-account.jar",
+      "bytes": 342972,
+      "sha256Bytes": "00d87ccb9d83c104ce01eb9eb89a875ec07ea7dcd689f99c54c4a64054c02da0"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "bytes": 30435,
+      "sha256Bytes": "6cc48ebf971baf93253b6cb8e4ffd8eab3f30706a3bdc35c4e3d17c905076aaa"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "bytes": 3148,
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "bytes": 1659,
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "bytes": 45008,
+      "sha256Bytes": "75a9d1b17362000c7e407cf65c8fc6aa10ba1d0bb762b93823f27799508e37bc"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "bytes": 27248,
+      "sha256Bytes": "6d2827c01def7bba4e79f7b1fa3455de906eb9afd9aa902576c6ce058bd2d186"
+    },
+    {
+      "path": "runs/compile-03/compile-result.json",
+      "bytes": 17567,
+      "sha256Bytes": "e7b024cdeb5b50a8ffb29f4c2b60895a10b2dc13ae586039d8a4e0f4555668bd"
+    },
+    {
+      "path": "runs/compile-03/compiler.args",
+      "bytes": 26246,
+      "sha256Bytes": "a595880e794246290cd741f8115e1f401b8bf8dd577d85bb55e308964f42ef1f"
+    },
+    {
+      "path": "runs/compile-03/compiler.log",
+      "bytes": 2917,
+      "sha256Bytes": "1943697bf562003b5dfc1c60f4ec17b0da33a274a024887ace263b8ef56bf2df"
+    },
+    {
+      "path": "runs/compile-03/pins-after.json",
+      "bytes": 43689,
+      "sha256Bytes": "9a0ffb9730b7cdbf870240ea37d075379c9fed0c6997c2a4d1d8fd52c13f48a2"
+    },
+    {
+      "path": "runs/compile-03/pins-before.json",
+      "bytes": 43689,
+      "sha256Bytes": "9a0ffb9730b7cdbf870240ea37d075379c9fed0c6997c2a4d1d8fd52c13f48a2"
+    },
+    {
+      "path": "runs/compile-03/prepared-playback-account.jar",
+      "bytes": 345204,
+      "sha256Bytes": "227d132ea9627dff164bd524fed7241eb12d8e4d8c8919e53c01508b592750d1"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "bytes": 30666,
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "bytes": 3148,
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "bytes": 1659,
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "bytes": 45882,
+      "sha256Bytes": "3a7dc67bcfecee3f29b0947d2449dedf5130148eda8d819f1f70b2220d1f9cb1"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "bytes": 27210,
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0"
+    },
+    {
+      "path": "runs/compile-04/compile-result.json",
+      "bytes": 17567,
+      "sha256Bytes": "f72f70e90a28e0f97a64612e1035fafdc167814a8b23678173c3ef7a081f5b77"
+    },
+    {
+      "path": "runs/compile-04/compiler.args",
+      "bytes": 26548,
+      "sha256Bytes": "d699d5fb997e8d246e2e82b37603339448767697e66db4728d06389c73a41998"
+    },
+    {
+      "path": "runs/compile-04/compiler.log",
+      "bytes": 2917,
+      "sha256Bytes": "479bd096b2409d954615e8551599dbf5f64751b2c82b9134aaa82c8fb51bab6f"
+    },
+    {
+      "path": "runs/compile-04/pins-after.json",
+      "bytes": 44115,
+      "sha256Bytes": "8ef4b55dc1a25d57df10eac5e5ca97252a8c8bdd7089b4d2e7cbb1cab058187e"
+    },
+    {
+      "path": "runs/compile-04/pins-before.json",
+      "bytes": 44115,
+      "sha256Bytes": "8ef4b55dc1a25d57df10eac5e5ca97252a8c8bdd7089b4d2e7cbb1cab058187e"
+    },
+    {
+      "path": "runs/compile-04/prepared-playback-account.jar",
+      "bytes": 348940,
+      "sha256Bytes": "8de8b62267ccde72325b1e0ac9886a18200481237f0f521b6f129459e80df302"
+    },
+    {
+      "path": "runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "bytes": 30666,
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99"
+    },
+    {
+      "path": "runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "bytes": 3148,
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae"
+    },
+    {
+      "path": "runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "bytes": 1659,
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf"
+    },
+    {
+      "path": "runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "bytes": 45882,
+      "sha256Bytes": "3a7dc67bcfecee3f29b0947d2449dedf5130148eda8d819f1f70b2220d1f9cb1"
+    },
+    {
+      "path": "runs/compile-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "bytes": 27210,
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0"
+    },
+    {
+      "path": "runs/fixture-01/compiler.args",
+      "bytes": 24926,
+      "sha256Bytes": "c6b449f923b3b013578942fbdb106faf466998dde0cbcbdae8142af2b09e40d1"
+    },
+    {
+      "path": "runs/fixture-01/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/fixture-01/failure.json",
+      "bytes": 46,
+      "sha256Bytes": "466ab8d483d520dbcb294a948380d31f6ffd940be6bd51409c74566fd67b9e95"
+    },
+    {
+      "path": "runs/fixture-01/pins-before.json",
+      "bytes": 41260,
+      "sha256Bytes": "c36b30be23411e86c361fc78e28145f49af191207e1ccb58dfc66ba2dffda058"
+    },
+    {
+      "path": "runs/fixture-01/playback-fixture.jar",
+      "bytes": 32092,
+      "sha256Bytes": "3c7e179e514f70ef2efae9cb677f768993c3ee9bb5dd4f11a72b72851c84bc53"
+    },
+    {
+      "path": "runs/fixture-01/PlaybackAccountFixture.kt",
+      "bytes": 15345,
+      "sha256Bytes": "427b998d69baafa714151f478e48df7055dbef2c92fb15bbd0ff69063ece3329"
+    },
+    {
+      "path": "runs/fixture-01/runtime.log",
+      "bytes": 1608,
+      "sha256Bytes": "19023b1b0e55aa54c393c0a3c2f4cff181de65bf7696a299ad1179421454a680"
+    },
+    {
+      "path": "runs/fixture-02/compiler.args",
+      "bytes": 24926,
+      "sha256Bytes": "55187aa406ff7766d0cbeb259e933e24ea5e119b07a87d29081cac8d4b88d960"
+    },
+    {
+      "path": "runs/fixture-02/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/fixture-02/failure.json",
+      "bytes": 46,
+      "sha256Bytes": "466ab8d483d520dbcb294a948380d31f6ffd940be6bd51409c74566fd67b9e95"
+    },
+    {
+      "path": "runs/fixture-02/pins-before.json",
+      "bytes": 41260,
+      "sha256Bytes": "bc7648a86e8f50ccb022ffcdcc59a3e8350ffb12ec086dfb781338fa18aec493"
+    },
+    {
+      "path": "runs/fixture-02/playback-fixture.jar",
+      "bytes": 32092,
+      "sha256Bytes": "3c7e179e514f70ef2efae9cb677f768993c3ee9bb5dd4f11a72b72851c84bc53"
+    },
+    {
+      "path": "runs/fixture-02/PlaybackAccountFixture.kt",
+      "bytes": 15345,
+      "sha256Bytes": "427b998d69baafa714151f478e48df7055dbef2c92fb15bbd0ff69063ece3329"
+    },
+    {
+      "path": "runs/fixture-02/runtime.log",
+      "bytes": 1205,
+      "sha256Bytes": "6b7dab55cb5e333748065b32e9f53117a602c149e74ff98ceaae209f5dcc9f61"
+    },
+    {
+      "path": "runs/fixture-03/accepted.json",
+      "bytes": 4189,
+      "sha256Bytes": "67e5fe9bc630edbcdf3607d8d3c0d5ede47268b596576315693d3a3f22f871ac"
+    },
+    {
+      "path": "runs/fixture-03/compiler.args",
+      "bytes": 24926,
+      "sha256Bytes": "e60bd79efcd8a1110f7ce6bdbb499ff2a339e6e8929d57df47bd65162c543dcf"
+    },
+    {
+      "path": "runs/fixture-03/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/fixture-03/pins-after.json",
+      "bytes": 41260,
+      "sha256Bytes": "25db5a56e335289d3958c299f88e48ebfc79eac7495ab1c697f682ee3701e944"
+    },
+    {
+      "path": "runs/fixture-03/pins-before.json",
+      "bytes": 41260,
+      "sha256Bytes": "25db5a56e335289d3958c299f88e48ebfc79eac7495ab1c697f682ee3701e944"
+    },
+    {
+      "path": "runs/fixture-03/playback-fixture.jar",
+      "bytes": 32239,
+      "sha256Bytes": "553b88400ef2fc0dabfb0ad667f30e43272f8654d1c3f58fb736aae8c474820f"
+    },
+    {
+      "path": "runs/fixture-03/PlaybackAccountFixture.kt",
+      "bytes": 15386,
+      "sha256Bytes": "b57de265b241c78bdf01363f5f5dd57ca123ec5d0df274701b344c3ea0f615cb"
+    },
+    {
+      "path": "runs/fixture-03/runtime.log",
+      "bytes": 30,
+      "sha256Bytes": "3670c7160992141ca9d2e045e68f6712e3871ff62742c7f0c762da26682516e3"
+    },
+    {
+      "path": "runs/fixture-03/synthetic-store/result.json",
+      "bytes": 3261,
+      "sha256Bytes": "afa9e102441fa87aa914907c5cce767eea9ee576bcf0e38ef6143a6ed0413fc7"
+    },
+    {
+      "path": "runs/fixture-03/synthetic-store/synthetic-encrypted-session.json",
+      "bytes": 4007,
+      "sha256Bytes": "7ceae968d7a3e7f9d5dc45bf9119a7655d0ce87540c155f464548b064ef3cf8f"
+    },
+    {
+      "path": "source-checks.json",
+      "bytes": 9777,
+      "sha256Bytes": "a374767205963bf818b7f50ac0e0024bbddb735e460946b87ef324a1fe8558d0"
+    },
+    {
+      "path": "source-contract.json",
+      "bytes": 9662,
+      "sha256Bytes": "f77621caa5dfed3069c94861fb9202cc18949c772abfb174bf11d5e3b6a562e0"
+    },
+    {
+      "path": "source-inventory.json",
+      "bytes": 2083,
+      "sha256Bytes": "68edc4a3c12aab0bd9e203fbe9554d9118e2906aaf0c948d987ce8b0a42d2185"
+    },
+    {
+      "path": "source-review.py",
+      "bytes": 4788,
+      "sha256Bytes": "c1a23f459d8d558561c6123635561b58e5fbc014d70b6a7a81967fad7f82aada"
+    }
+  ],
+  "artifactCount": 84
+}

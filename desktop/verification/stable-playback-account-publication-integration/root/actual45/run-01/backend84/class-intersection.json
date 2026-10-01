@@ -1,0 +1,14 @@
+{
+  "fixtureClasses": [
+    "com/bilipai/desktop/data/MemoryTransport$special$$inlined$-addInterceptor$1.class",
+    "com/bilipai/desktop/data/MemoryTransport.class",
+    "com/bilipai/desktop/data/PlaybackAccountFixtureKt$fallbackAndRetirement$1.class",
+    "com/bilipai/desktop/data/PlaybackAccountFixtureKt$fallbackAndRetirement$9$1$1.class",
+    "com/bilipai/desktop/data/PlaybackAccountFixtureKt$main$1.class",
+    "com/bilipai/desktop/data/PlaybackAccountFixtureKt$videoTransportAndCache$1.class",
+    "com/bilipai/desktop/data/PlaybackAccountFixtureKt.class",
+    "com/bilipai/desktop/data/Seen.class"
+  ],
+  "intersections": [],
+  "productionOverrides": 0
+}

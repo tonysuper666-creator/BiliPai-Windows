@@ -1,0 +1,15 @@
+{
+  "proxySource": "desktop/build/generated/cast/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+  "hunks": [
+    {
+      "before": "val upstreamResponse = client.newCall(upstreamRequest).execute()",
+      "after": "val upstreamResponse = (registration?.publication?.calls(client) ?: client).newCall(upstreamRequest).execute()",
+      "occurrences": 1
+    },
+    {
+      "before": "            manifestStore[key] = manifest",
+      "after": "            val frame = su.litvak.chromecast.api.v2.DesktopCastPublication.current() as? com.bilipai.desktop.cast.DesktopCastPublicationFrame\n            if (frame == null) manifestStore[key] = manifest else frame.admit { manifestStore[key] = manifest }",
+      "occurrences": 1
+    }
+  ]
+}

@@ -115,6 +115,11 @@ private class ActorNative : MpvNative {
         val bytes = value.toByteArray(Charsets.UTF_8)
         return Memory(bytes.size + 1L).also { it.write(0, bytes, 0, bytes.size); it.setByte(bytes.size.toLong(), 0); memories.add(it) }
     }
+    override fun mpv_render_context_create(result: com.sun.jna.ptr.PointerByReference, handle: Pointer, params: Pointer): Int = error("Unexpected software render call in memory-only native fixture")
+    override fun mpv_render_context_set_update_callback(context: Pointer, callback: MpvRenderUpdateCallback, data: Pointer?): Unit = error("Unexpected software render call in memory-only native fixture")
+    override fun mpv_render_context_update(context: Pointer): Long = error("Unexpected software render call in memory-only native fixture")
+    override fun mpv_render_context_render(context: Pointer, params: Pointer): Int = error("Unexpected software render call in memory-only native fixture")
+    override fun mpv_render_context_free(context: Pointer): Unit = error("Unexpected software render call in memory-only native fixture")
     override fun mpv_free(data: Pointer) { memories.remove(data); (data as? Memory)?.close() }
     override fun mpv_command(handle: Pointer, args: StringArray): Int {
         val command = args.getStringArray(0).toList()

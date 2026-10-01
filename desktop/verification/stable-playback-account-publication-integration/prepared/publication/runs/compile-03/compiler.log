@@ -1,0 +1,108 @@
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\cast\DesktopCastMediaPublication.kt:13:64: warning: expression is unused.
+        currentCoroutineContext().ensureActive();frame.admit { Unit }
+                                                               ^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\cast\DesktopCastMediaPublication.kt:14:43: warning: expression is unused.
+        val media=resolve();frame.admit { Unit };block(media)
+                                          ^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopPlaybackAuthorization.kt:6:48: warning: non-public primary constructor is exposed via the generated 'copy()' method of the 'data' class.
+
+The generated 'copy()' will change its visibility in future releases.
+
+To suppress the warning do one of the following:
+- Annotate the data class with the '@ConsistentCopyVisibility' annotation.
+- Use the '-Xconsistent-data-class-copy-visibility' compiler flag.
+- Annotate the data class with the '@ExposedCopyVisibility' annotation 
+  (Discouraged, but can be used to keep binary compatibility).
+
+To learn more, see the documentation of the '@ConsistentCopyVisibility' and '@ExposedCopyVisibility' annotations.
+
+This will become an error in language version 2.5. See https://youtrack.jetbrains.com/issue/KT-11914.
+data class DesktopPlaybackAuthorizationReceipt internal constructor(val accountEpoch: Long, val revision: Long)
+                                               ^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopPlaybackAuthorization.kt:25:57: warning: the corresponding parameter in the supertype 'CookieJar' is named 'cookies'. This may cause problems when calling this function with named arguments.
+    override fun saveFromResponse(url: okhttp3.HttpUrl, responseCookies: List<okhttp3.Cookie>) {
+                                                        ^^^^^^^^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopPlaybackPublication.kt:61:23: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Result<T (of fun <T> admit)>'.
+        return outcome!!.getOrThrow()
+                      ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopPlaybackPublication.kt:79:30: warning: the corresponding parameter in the supertype 'Call' is named 'responseCallback'. This may cause problems when calling this function with named arguments.
+        override fun enqueue(callback: Callback) {
+                             ^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopPlaybackPublication.kt:94:53: warning: the corresponding parameter in the supertype 'Callback' is named 'response'. This may cause problems when calling this function with named arguments.
+                override fun onResponse(call: Call, value: Response) { response = value; finished.countDown() }
+                                                    ^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:410:44: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+        recordQueueRequest(expected, player?.currentSourceVersion)
+                                           ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:423:36: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+                val latest = player?.state?.value ?: native
+                                   ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:427:27: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+                    player?.recoverSource(active.sourceVersion, publication.ownedSource(source.toNative(latest.positionSeconds, latest.paused),
+                          ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:487:19: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            player?.setMuted(preferences().muted); pluginMuteUntilMs = null; pluginMuteFromMs = null
+                  ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:493:95: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            publication.admit(context.source.toNative(0.0, false), { owns(context) }) { player?.replay() }
+                                                                                              ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:843:54: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            danmaku?.setComments(emptyList()); player?.stopIfSourceVersion(version)
+                                                     ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:865:37: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            suspended = true; player?.setPaused(true)
+                                    ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:878:66: warning: elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+                else if (!item.bvid.isNullOrBlank() || (item.aid ?: 0) > 0) openVideo(VideoCard(item.bvid.orEmpty().ifBlank { "av${item.aid}" },
+                                                                 ^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1060:47: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                title = if (audioTarget) audio!!.current!!.title else if (retainedMedia.current != null) retainedMedia.title else current.details?.title ?: state.sourceTitle,
+                                              ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1061:48: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                artist = if (audioTarget) audio!!.current!!.owner else if (retainedMedia.current != null) "" else current.details?.author.orEmpty(),
+                                               ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1062:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                mediaId = if (audioTarget) audio!!.current!!.bvid else if (retainedMedia.current != null) state.sourceTitle else current.details?.bvid ?: state.sourceTitle,
+                                                ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1064:53: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                hasPrevious = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex > 0 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.previous != null } ?: playback.hasPrevious,
+                                                    ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1065:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.next != null } ?: playback.hasNext,
+                                                ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1222:34: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+        if (audioPlayer != null) SwingPanel(factory = { audioPlayer.surface }, background = Color.Transparent, modifier = Modifier.size(1.dp))
+                                 ^^^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1308:49: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+                                if (!pipActive) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.width(180.dp).fillMaxHeight())
+                                                ^^^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1330:49: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+                                if (!pipActive) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.width(180.dp).fillMaxHeight())
+                                                ^^^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1435:61: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+                                                    ((player?.state?.value?.positionSeconds ?: 0.0) * 1000L).toLong() else 0L
+                                                            ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\cast\DesktopCastMediaResolver.kt:29:30: warning: redundant creation of Json format. Creating instances for each usage can be slow.
+        .addConverterFactory(Json { ignoreUnknownKeys = true; coerceInputValues = true }.asConverterFactory("application/json".toMediaType()))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\cast\DesktopCastPlatform.kt:45:44: warning: the corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+        override fun onFailure(call: Call, error: IOException) { if (continuation.isActive) continuation.resumeWith(Result.failure(error)) }
+                                           ^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopMediaRepository.kt:427:148: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                if (url != null) return PlaybackSource(url, dash.getBestAudio()?.getValidUrl()?.let(::playableUrl), title, referer, quality = video?.id ?: quality)
+                                                                                                                                                   ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:630:32: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                quality = video?.id ?: quality, availableQualities = qualities,
+                               ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:631:42: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                videoAlternatives = video?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
+                                         ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\download\DesktopDownloadManager.kt:442:32: warning: redundant creation of Json format. Creating instances for each usage can be slow.
+                val manifest = Json { ignoreUnknownKeys = true }.decodeFromString(LocalDanmakuManifest.serializer(), Files.readString(Path.of(result.metadataPath)))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopPremiumAudioRecovery.kt:71:35: warning: unnecessary safe call on a non-null receiver of type 'AudioSelectionDecision'.
+        plan.source.audioSelection?.fallbackReason != AudioFallbackReason.DECODER_ERROR) return false
+                                  ^^
+desktop\.local\stable-playback-final-publication-parity\runs\compile-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\ui\MediaScreens.kt:543:33: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            beforeStop(); player?.stopIfSourceVersion(token); callback(false)
+                                ^^

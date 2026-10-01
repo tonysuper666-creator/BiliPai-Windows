@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "uniqueAcceptedCases": 67,
+  "classes": [
+    {
+      "className": "com.bilipai.desktop.audio.ListenAudioLifecycleTest",
+      "cases": 6,
+      "source": "attempt01/TEST-com.bilipai.desktop.audio.ListenAudioLifecycleTest.xml"
+    },
+    {
+      "className": "com.bilipai.desktop.DesktopPlaybackControllerTest",
+      "cases": 11,
+      "source": "attempt01/TEST-com.bilipai.desktop.DesktopPlaybackControllerTest.xml"
+    },
+    {
+      "className": "com.bilipai.desktop.download.DesktopDownloadManagerTest",
+      "cases": 13,
+      "source": "attempt01/TEST-com.bilipai.desktop.download.DesktopDownloadManagerTest.xml"
+    },
+    {
+      "className": "com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest",
+      "cases": 25,
+      "source": "attempt02/TEST-com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest.xml"
+    },
+    {
+      "className": "com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest",
+      "cases": 8,
+      "source": "attempt01/TEST-com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest.xml"
+    },
+    {
+      "className": "com.bilipai.desktop.player.MpvStartupProbeTest",
+      "cases": 4,
+      "source": "attempt01/TEST-com.bilipai.desktop.player.MpvStartupProbeTest.xml"
+    }
+  ],
+  "actualProductClassesUnchangedFromSnapshot45": [
+    {
+      "kind": "kotlin",
+      "entries": 11894,
+      "byteEqualToFrozen45": true
+    },
+    {
+      "kind": "java",
+      "entries": 156,
+      "byteEqualToFrozen45": true
+    },
+    {
+      "kind": "resources",
+      "entries": 73,
+      "byteEqualToFrozen45": true
+    }
+  ],
+  "oneFailedClassReplacedByExactSameCaseRerun": true,
+  "originalBusinessAssertionsUnchanged": true,
+  "fixtureRepairOnly": true,
+  "initialGuestExternalHttpOccurred": true,
+  "initialPersonalSessionsRead": false,
+  "finalFailedCaseMemoryTransport": true,
+  "newRootUiAccepted": false
+}

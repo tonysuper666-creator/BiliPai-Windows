@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "producer": "extract-cast-platform.py",
+      "path": "producer-audit/cast/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "preparedLF": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "generatedLF": "7b470f5c57ecef5f6071d13db7c413b8fda925697b3071806078bdf473fd6861",
+      "equal": true
+    },
+    {
+      "producer": "extract-upstream-download-transport.py",
+      "path": "producer-audit/download/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt",
+      "preparedLF": "9da3da2c3ae37e495ddc7115847e8bfc15788c18448e6c17f4ce3e7b4bed893b",
+      "generatedLF": "9da3da2c3ae37e495ddc7115847e8bfc15788c18448e6c17f4ce3e7b4bed893b",
+      "equal": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/cast/SsdpCastClient.kt",
+      "unchangedExistingCastOutput": true,
+      "LF": "e17c800fbc9f2a78e83f4fb501f2b4fbe9bede82e70659b6a0c6fc9d36373b39"
+    },
+    {
+      "path": "com/android/purebilibili/feature/cast/SsdpDevicePresentationPolicy.kt",
+      "unchangedExistingCastOutput": true,
+      "LF": "85a1febd59680ed36be1fd554486537d828f14186b2bbdc4ea45d07f32ea7d9b"
+    },
+    {
+      "path": "com/android/purebilibili/feature/cast/SsdpDiscovery.kt",
+      "unchangedExistingCastOutput": true,
+      "LF": "44360371629e91703bdd5a1a7913254c06334a9d67ef8b06da4147984886da4a"
+    },
+    {
+      "path": "com/android/purebilibili/feature/cast/SsdpLocalNetworkPolicy.kt",
+      "unchangedExistingCastOutput": true,
+      "LF": "a8d257f67d1ed42858a357b1df714552b7f21d96f3bcce8c90038e236bda750a"
+    },
+    {
+      "path": "com/android/purebilibili/feature/plugin/dlna/DlnaCastPlugin.kt",
+      "unchangedExistingCastOutput": true,
+      "LF": "8bde65451e886e0448a0de3c97a9e4bf6ab6483bc9c040a2965b1bf4f7fe70c0"
+    }
+  ],
+  "newClient": false,
+  "registryAction": "merge same downloader identity as platform-rewrite and remove sole DIRECT emission; retain all existing features",
+  "sharedSourceEdited": false
+}

@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "groups": 4,
+  "assertions": 34,
+  "origins": [
+    {
+      "class": "com.bilipai.desktop.data.DesktopSessionStore",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-playback-final-publication-parity/runs/compile-04/prepared-playback-final-publication.jar",
+      "classSha256": "74d4ef3d93f73a3c65097087eeba8d36c3300e65f37bd3d969e6919578a07ca0"
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopRepository",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-playback-final-publication-parity/runs/compile-04/prepared-playback-final-publication.jar",
+      "classSha256": "ed6cf1fbcda927e4ac4795e8ca5886aa7e263840f5310c266b2bf2388676bd63"
+    },
+    {
+      "class": "com.bilipai.desktop.player.PlaybackSource",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-playback-final-publication-parity/runs/compile-04/prepared-playback-final-publication.jar",
+      "classSha256": "30f9901b49ea8828832fec7a3ca1f3fbf2c4012096beebb0fae4ccf1b760322d"
+    },
+    {
+      "class": "com.bilipai.desktop.DesktopPlaybackController",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-playback-final-publication-parity/runs/compile-04/prepared-playback-final-publication.jar",
+      "classSha256": "8833c745629c0acb7b1a8a771a84bf5d3d6d7911e93a25cf4f21eedf75f8cd80"
+    },
+    {
+      "class": "com.bilipai.desktop.download.DesktopDownloadManager",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-playback-final-publication-parity/runs/compile-04/prepared-playback-final-publication.jar",
+      "classSha256": "e18976d5f4db8fbd1f0a0e035b38d7ad821df4aa3c8f77c165004be78fb23fd7"
+    },
+    {
+      "class": "com.bilipai.desktop.download.DownloadTask",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-playback-final-publication-parity/runs/compile-04/prepared-playback-final-publication.jar",
+      "classSha256": "bbd1cb021e5aeefce0c704d8d6f9f7994ef070518e59e5796aeb36a7992417c0"
+    },
+    {
+      "class": "su.litvak.chromecast.api.v2.DesktopCastWriter",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-playback-final-publication-parity/runs/compile-04/prepared-playback-final-publication.jar",
+      "classSha256": "4f8af29864eadecce362252116b8fc393e2061024fdb5c192f1a3f1fe60bdeb1"
+    },
+    {
+      "class": "com.bilipai.desktop.cast.DesktopCastPublicationFrame",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-playback-final-publication-parity/runs/compile-04/prepared-playback-final-publication.jar",
+      "classSha256": "dcc6659161dd99290d069cae15a11ebd600d5eaba71fe6cb302c2fd4bc4f9f95"
+    },
+    {
+      "class": "com.bilipai.desktop.data.VideoDetails",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-playback-final-publication-parity/runs/compile-04/prepared-playback-final-publication.jar",
+      "classSha256": "8548b952c7423658cc20f3af3c79b6d21810deedb00d15611fbe810ddc70cb53"
+    },
+    {
+      "class": "com.android.purebilibili.feature.download.DownloadTask",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-43/main-kotlin.jar",
+      "classSha256": "758ef6012c78d863c82379531f444386693a33aeaecbfdd8c21abe363adc1811"
+    }
+  ],
+  "nativeDLLExecuted": false,
+  "socket": false,
+  "HTTP": false,
+  "HWND": false,
+  "actualRootAccountAcceptance": false,
+  "fixtureClassIntersections": [],
+  "candidate": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\compile-04\\prepared-playback-final-publication.jar",
+    "sha256Bytes": "46e24c2cd75bf254ab494a9fd3901b56c9fe8f11fe2e6cd28d7b627c2a7d78f6"
+  },
+  "fixtureJarSha256": "b75b04fc9bea1fed25c662142b83d2d966661601c99128b696d192e042d18ce6",
+  "actualRuntimeEntries": 97,
+  "GUI": false,
+  "Gradle": false
+}

@@ -1,0 +1,1097 @@
+{
+  "status": "PREPARED",
+  "backend84FrozenManifest": "b990563ad4ec9cf4eca8ea495377fe0496073209684df8d8e922cbe8a08322a3",
+  "changes": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseLF": "3a7dc67bcfecee3f29b0947d2449dedf5130148eda8d819f1f70b2220d1f9cb1",
+      "candidateLF": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "backend84AppliedFirst": true,
+      "hunks": [
+        {
+          "before": "    internal fun <T> withPlaybackSourceAdmission(source: PlaybackSource, stillOwned: () -> Boolean, block: () -> T): T {",
+          "after": "    internal fun isPlaybackReceiptCurrent(receipt: DesktopPlaybackAuthorizationReceipt): Boolean =\n        sessions.isPlaybackAuthorizationCurrent(receipt)\n    internal fun <T> withPlaybackReceiptAdmission(receipt: DesktopPlaybackAuthorizationReceipt,\n        stillOwned: () -> Boolean, block: () -> T): T = sessions.withPlaybackAuthorizationAdmission(receipt, stillOwned, block)\n    internal fun <T> withPrimaryPlaybackAdmission(epoch: Long, stillOwned: () -> Boolean, block: () -> T): T =\n        sessions.withHomeRequestAdmission(epoch, stillOwned, block)\n    internal fun primaryPlaybackCalls(epoch: Long, stillOwned: () -> Boolean, delegate: okhttp3.Call.Factory): okhttp3.Call.Factory =\n        okhttp3.Call.Factory { request -> sessions.withHomeRequestAdmission(epoch, stillOwned) {\n            delegate.newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java, DesktopSessionEpoch(epoch, stillOwned)).build())\n        } }\n    internal fun playbackReceiptCalls(receipt: DesktopPlaybackAuthorizationReceipt, stillOwned: () -> Boolean, delegate: okhttp3.Call.Factory): okhttp3.Call.Factory {\n        val authorization = sessions.withPlaybackAuthorizationAdmission(receipt, stillOwned) {\n            sessions.capturePlaybackAuthorization(receipt.accountEpoch, stillOwned).also {\n                if (it.receipt != receipt) throw kotlinx.coroutines.CancellationException(\"Playback authorization retired\")\n            }\n        }\n        return okhttp3.Call.Factory { request -> delegate.newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,\n            DesktopSessionEpoch(receipt.accountEpoch, stillOwned, playbackAuthorization = authorization)).build()) }\n    }\n\n    internal fun <T> withPlaybackSourceAdmission(source: PlaybackSource, stillOwned: () -> Boolean, block: () -> T): T {",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            13020
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "baseLF": "ffbba67b3f67b5dad71ebbcfefae9039a2b9a6b817ffc677804f6d1a6e194ff7",
+      "candidateLF": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    val streamHeaders: Map<String, String> = emptyMap(),",
+          "after": "    val streamHeaders: Map<String, String> = emptyMap(),\n    val authorizationReceipt: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt? = null,\n    val primaryAccountEpoch: Long? = null,\n    val nativePublication: DesktopNativePlaybackPublication? = null,",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            932
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "baseLF": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf",
+      "candidateLF": "48b5c29ca48393a084e2f9f66e52bedfe3c8e58b11a0427b96c1a22e0297a5ea",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    private val currentDanmakuSettings: () -> com.bilipai.desktop.danmaku.DanmakuSettings,",
+          "after": "    private val currentDanmakuSettings: () -> com.bilipai.desktop.danmaku.DanmakuSettings,\n    publication: DesktopPlaybackPublication? = null,",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            3330
+          ]
+        },
+        {
+          "before": "    private val communityReports by lazy",
+          "after": "    private val publication = publication ?: if (dataSource == null) DesktopRepositoryPlaybackPublication(repository)\n        else error(\"Injected playback transport requires explicit local-source publication admission\")\n    private val communityReports by lazy",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            3494
+          ]
+        },
+        {
+          "before": "        val version = native.loadVersioned(resolved.toNative(position, paused))",
+          "after": "        val callerJob = currentCoroutineContext()[Job]\n        val retained = publication.ownedSource(resolved.toNative(position, paused), { callerJob?.isCancelled != true &&\n            !closed.get() && expected == generation.get() && playback.sessionEpoch == accountEpoch })\n        val version = publication.admit(retained, { callerJob?.isActive == true && valid(expected, baseline, accountEpoch) }) {\n            native.loadVersioned(retained)\n        }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            20021
+          ]
+        },
+        {
+          "before": "                if (player?.recoverSource(active.sourceVersion, source.toNative(latest.positionSeconds, latest.paused),\n                        latest.positionSeconds, latest.paused) == true) {",
+          "after": "                val callerJob = currentCoroutineContext()[Job]\n                if (publication.admit(source.toNative(latest.positionSeconds, latest.paused),\n                        { callerJob?.isActive == true && owns(active) && expected == generation.get() }) {\n                    player?.recoverSource(active.sourceVersion, source.toNative(latest.positionSeconds, latest.paused),\n                        latest.positionSeconds, latest.paused) == true\n                }) {",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            27173
+          ]
+        },
+        {
+          "before": "                val accepted = player?.recoverSource(context.sourceVersion, source.toNative(latest.positionSeconds, latest.paused),\n                    latest.positionSeconds, latest.paused, forceSoftwareDecoding = software, expectedFailureAttemptId = failure.attemptId) == true",
+          "after": "                val callerJob = currentCoroutineContext()[Job]\n                val accepted = publication.admit(source.toNative(latest.positionSeconds, latest.paused),\n                    { callerJob?.isActive == true && recoverable(context, failure) }) {\n                    player?.recoverSource(context.sourceVersion, source.toNative(latest.positionSeconds, latest.paused),\n                        latest.positionSeconds, latest.paused, forceSoftwareDecoding = software, expectedFailureAttemptId = failure.attemptId) == true\n                }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            38882
+          ]
+        },
+        {
+          "before": "                val accepted = applyDesktopPremiumAudioRecovery(nativePlayer, failure, plan) {\n                    recoverable(context, failure) && context.accountEpoch == playback.sessionEpoch\n                }",
+          "after": "                if (!publication.isCurrent(plan.source.toNative(0.0, true))) return true\n                val accepted = publication.admit(plan.source.toNative(0.0, true),\n                    { recoverable(context, failure) && context.accountEpoch == playback.sessionEpoch }) {\n                    applyDesktopPremiumAudioRecovery(nativePlayer, failure, plan) { recoverable(context, failure) }\n                }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            41068
+          ]
+        },
+        {
+          "before": "        val rewritten = plugins?.rewritePlaybackSource(source) ?: source",
+          "after": "        val mapped = plugins?.rewritePlaybackSource(source)\n        val rewritten = if (mapped == null || mapped === source) source else mapped.copy(authorizationReceipt = source.authorizationReceipt)",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            43259
+          ]
+        },
+        {
+          "before": "        if (nativePlayer.recoverSource(context.sourceVersion, source.toNative(native.positionSeconds, native.paused),\n                native.positionSeconds, native.paused)) {",
+          "after": "        if (!publication.isCurrent(source.toNative(0.0, true))) return\n        if (publication.admit(source.toNative(native.positionSeconds, native.paused), { owns(context) }) {\n            nativePlayer.recoverSource(context.sourceVersion, source.toNative(native.positionSeconds, native.paused),\n                native.positionSeconds, native.paused)\n        }) {",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            46200
+          ]
+        },
+        {
+          "before": "        owns(it) && it.sourceVersion == expectedSourceVersion && it.accountEpoch == playback.sessionEpoch",
+          "after": "        owns(it) && it.sourceVersion == expectedSourceVersion && it.accountEpoch == playback.sessionEpoch &&\n            publication.isCurrent(it.source.toNative(0.0, true))",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            49475
+          ]
+        },
+        {
+          "before": "progressiveSegments = progressiveSegments)",
+          "after": "progressiveSegments = progressiveSegments, authorizationReceipt = authorizationReceipt)",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            58396
+          ]
+        },
+        {
+          "before": "handledEnd = false; player?.replay(); current = context.copy(pluginGeneration = null); beginPlugins(current!!); return",
+          "after": "if (!publication.isCurrent(context.source.toNative(0.0, false))) return\n            publication.admit(context.source.toNative(0.0, false), { owns(context) }) { player?.replay() }\n            handledEnd = false; current = context.copy(pluginGeneration = null); beginPlugins(current!!); return",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            31739
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "baseLF": "48b5c29ca48393a084e2f9f66e52bedfe3c8e58b11a0427b96c1a22e0297a5ea",
+      "candidateLF": "fbfda9bad1ce75ef27206655c9417be75ed267474c9998cfcdf908cb5f8ec7bf",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "            } catch (cancelled: CancellationException) { throw cancelled }\n            catch (failure: Exception) { failRequest(expected, failure, \"无法打开视频\") }",
+          "after": "            } catch (cancelled: CancellationException) { finishCancelledRequest(expected, accountEpoch); throw cancelled }\n            catch (failure: Exception) { failRequest(expected, failure, \"无法打开视频\") }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            17939
+          ]
+        },
+        {
+          "before": "            catch (cancelled: CancellationException) { throw cancelled }\n            catch (failure: Exception) { failRequest(expected, failure, \"播放失败\") }",
+          "after": "            catch (cancelled: CancellationException) { finishCancelledRequest(expected, accountEpoch); throw cancelled }\n            catch (failure: Exception) { failRequest(expected, failure, \"播放失败\") }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            19210
+          ]
+        },
+        {
+          "before": "            } catch (cancelled: CancellationException) { throw cancelled }\n            catch (failure: Exception) { failRequest(expected, failure, \"切换画质失败\") }",
+          "after": "            } catch (cancelled: CancellationException) { finishCancelledRequest(expected, context.accountEpoch); throw cancelled }\n            catch (failure: Exception) { failRequest(expected, failure, \"切换画质失败\") }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            28425
+          ]
+        },
+        {
+          "before": "    private fun recoverable(context: Current, failure: PlayerFailure): Boolean =",
+          "after": "    private fun finishCancelledRequest(expected: Long, accountEpoch: Long) {\n        if (!closed.get() && controllerScope.isActive && expected == generation.get() && accountEpoch == playback.sessionEpoch)\n            mutableState.update { it.copy(opening = false) }\n    }\n    private fun recoverable(context: Current, failure: PlayerFailure): Boolean =",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            49989
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "baseLF": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf",
+      "candidateLF": "0ba7d0dc4307f772157f75fd4a728fdd297592accce5227bf45535f0790ee72a",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "                    is Action.Load -> {\n                        if (!synchronized(lock) { action.version == sourceVersion && action.revision == playbackRevision }) return\n                        activeEntry = null\n                        expectedEntry = null\n                        fileLoaded = false\n                        tracks = emptyList()\n                        activeSourceVersion = action.version\n                        activeRevision = action.revision\n                        softwareTarget?.beginSource(action.version, action.revision)\n                        lastShaderPoll = 0L\n                        activeAttemptId = nextAttemptId.incrementAndGet()\n                        seekTracker.reset()\n                        diagnostics.reset(action.source)\n                        checkResult(native, native.mpv_set_property_string(handle, \"hwdec\", synchronized(lock) { if (softwareTarget == null) resolveMpvHardwareDecoding(hardwareDecodeEnabled, action.softwareDecoding) else \"no\" }), \"hwdec\")\n                        loadedSubtitlePaths.clear()\n                        lastTrackPoll = 0L\n                        MpvNodes().use { nodes ->\n                            // Per-file options prevent old audio tracks or cookies\n                            // from leaking into the next video, even on rapid loads.\n                            val args = nodes.array(listOf(\"loadfile\", action.source.nativeLoadUrl, \"replace\", \"-1\", action.source.mpvFileOptions()))\n                            checkResult(native, native.mpv_command_node(handle, args, null), \"loadfile\")\n                        }\n                        // loadfile synchronously installs the new playlist entry before its asynchronous events.\n                        expectedEntry = property(native, handle, \"playlist/0/id\")?.toLongOrNull()\n                    }\n",
+          "after": "                    is Action.Load -> {\n                        val command = { synchronized(lock) {\n                        if (session !== this || closing.get() || action.version != sourceVersion || action.revision != playbackRevision) return@synchronized\n                        activeEntry = null\n                        expectedEntry = null\n                        fileLoaded = false\n                        tracks = emptyList()\n                        activeSourceVersion = action.version\n                        activeRevision = action.revision\n                        softwareTarget?.beginSource(action.version, action.revision)\n                        lastShaderPoll = 0L\n                        activeAttemptId = nextAttemptId.incrementAndGet()\n                        seekTracker.reset()\n                        diagnostics.reset(action.source)\n                        checkResult(native, native.mpv_set_property_string(handle, \"hwdec\", synchronized(lock) { if (softwareTarget == null) resolveMpvHardwareDecoding(hardwareDecodeEnabled, action.softwareDecoding) else \"no\" }), \"hwdec\")\n                        loadedSubtitlePaths.clear()\n                        lastTrackPoll = 0L\n                        MpvNodes().use { nodes ->\n                            // Per-file options prevent old audio tracks or cookies\n                            // from leaking into the next video, even on rapid loads.\n                            val args = nodes.array(listOf(\"loadfile\", action.source.nativeLoadUrl, \"replace\", \"-1\", action.source.mpvFileOptions()))\n                            checkResult(native, native.mpv_command_node(handle, args, null), \"loadfile\")\n                        }\n                        // loadfile synchronously installs the new playlist entry before its asynchronous events.\n                        expectedEntry = property(native, handle, \"playlist/0/id\")?.toLongOrNull()\n                        } }\n                        val admission = action.source.nativePublication\n                        if (admission != null) admission.admit(command)\n                        else if (action.source.authorizationReceipt == null && action.source.primaryAccountEpoch == null) command()\n                        // Rejection leaves the active native media untouched.\n                    }\n",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            32433
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "baseLF": "fbfda9bad1ce75ef27206655c9417be75ed267474c9998cfcdf908cb5f8ec7bf",
+      "candidateLF": "72de38c76f3d3e648dc90d9e991382f36264769d974a83ba0224a948e8d97baa",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "player?.recoverSource(active.sourceVersion, source.toNative(latest.positionSeconds, latest.paused),",
+          "after": "player?.recoverSource(active.sourceVersion, publication.ownedSource(source.toNative(latest.positionSeconds, latest.paused),\n                            { callerJob?.isCancelled != true && owns(active) && expected == generation.get() }),",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            27553
+          ]
+        },
+        {
+          "before": "player?.recoverSource(context.sourceVersion, source.toNative(latest.positionSeconds, latest.paused),",
+          "after": "player?.recoverSource(context.sourceVersion, publication.ownedSource(source.toNative(latest.positionSeconds, latest.paused),\n                            { callerJob?.isCancelled != true && owns(context) }),",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            39620
+          ]
+        },
+        {
+          "before": "nativePlayer.recoverSource(context.sourceVersion, source.toNative(native.positionSeconds, native.paused),",
+          "after": "nativePlayer.recoverSource(context.sourceVersion, publication.ownedSource(source.toNative(native.positionSeconds, native.paused), { owns(context) }),",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            46958
+          ]
+        },
+        {
+          "before": "applyDesktopPremiumAudioRecovery(nativePlayer, failure, plan) { recoverable(context, failure) }",
+          "after": "applyDesktopPremiumAudioRecovery(nativePlayer, failure, plan,\n                        nativePublication = publication.ownedSource(plan.source.toNative(0.0, true), { owns(context) }).nativePublication) { recoverable(context, failure) }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            41933
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecovery.kt",
+      "baseLF": "772fc023ff8dad88f1285194876d9113e0fbd64930607c7b4fc9aaeebf5b4395",
+      "candidateLF": "ddad59a8126a9f9c97fde18d87607251c9a1966a19515fe170168df829b29506",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    accountIsCurrent: () -> Boolean,",
+          "after": "    nativePublication: DesktopNativePlaybackPublication? = null,\n    accountIsCurrent: () -> Boolean,",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            4586
+          ]
+        },
+        {
+          "before": "val replacement = owned.source.copy(audioUrl = plan.source.audioUrl)",
+          "after": "val replacement = owned.source.copy(audioUrl = plan.source.audioUrl, authorizationReceipt = plan.source.authorizationReceipt,\n        nativePublication = nativePublication ?: owned.source.nativePublication)",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            5181
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopAudioRepository.kt",
+      "baseLF": "c6bdd319faf67f956c4a1dbbb1e5d6d4889f8a8429399f222efe98c6e8e0e5d4",
+      "candidateLF": "fedfe3ce90865fcd00ed2474766623d64432bebeff63eacbfb206dc153c320f9",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "PlaybackSource(address, cookieHeader = cookies, title = actual.title)",
+          "after": "PlaybackSource(address, cookieHeader = cookies, title = actual.title, primaryAccountEpoch = epoch)",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            6799
+          ]
+        },
+        {
+          "before": "progressiveSegments = if (media.audioUrl == null) media.progressiveSegments else emptyList()), details.aid)",
+          "after": "progressiveSegments = if (media.audioUrl == null) media.progressiveSegments else emptyList(),\n                authorizationReceipt = media.authorizationReceipt), details.aid)",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            7895
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "baseLF": "b4fccf961b47f7ee507714414c641450e4a886d2cc3014d1d15c0e91a8e864e0",
+      "candidateLF": "487ba9ad15fe0d151b92bf13b6520e49bec9ac81bdec7e08a5e9ed036c9668c1",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    playbackDataSource: ListenPlaybackDataSource? = null,",
+          "after": "    playbackDataSource: ListenPlaybackDataSource? = null,\n    publication: com.bilipai.desktop.player.DesktopPlaybackPublication? = null,",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            2053
+          ]
+        },
+        {
+          "before": "    private val playback: ListenPlaybackDataSource = playbackDataSource ?: audio",
+          "after": "    private val playback: ListenPlaybackDataSource = playbackDataSource ?: audio\n    private val publication = publication ?: if (playbackDataSource == null)\n        com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository, allowPrimaryAccountSource = true)\n        else error(\"Injected listen transport requires explicit local-source publication admission\")",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            2273
+          ]
+        },
+        {
+          "before": "                ownedSourceVersion = player.loadVersioned(prepared.source.copy(startPositionSeconds = startPosition))",
+          "after": "                val callerJob = currentCoroutineContext()[Job]\n                val retained = publication.ownedSource(prepared.source.copy(startPositionSeconds = startPosition),\n                    { callerJob?.isCancelled != true && generation == playGeneration && sessionIsCurrent() })\n                ownedSourceVersion = publication.admit(retained, { callerJob?.isActive == true && generation == playGeneration &&\n                    sessionIsCurrent() && player.currentSourceVersion == pendingSourceVersion && player.currentSourceSnapshot() == null }) {\n                    player.loadVersioned(retained)\n                }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            9316
+          ]
+        },
+        {
+          "before": "            if (player.state.value.ended) player.replay() else player.setPaused(false)",
+          "after": "            if (player.state.value.ended) {\n                val source = player.currentSourceSnapshot()?.source ?: return\n                if (!publication.isCurrent(source)) return\n                publication.admit(source, { sessionIsCurrent() && ownedPlaybackSourceVersion == expectedSource }) { player.replay() }\n            } else player.setPaused(false)",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            11378
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "baseLF": "60438ac0c22e426c5ab61fdaf66ab916b8c262cffd531a83463fc8d212c256e8",
+      "candidateLF": "7ed14c1d4e65918a34edf8e7f7302ff5b5cee24936b5d4bba4729f46e043b71e",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "        playJob?.cancel(); stopOwned(); opening = true; error = null; notice = null\n        memory.launchRequest {",
+          "after": "        playJob?.cancel(); stopOwned(); opening = true; error = null; notice = null\n        val nativeBaseline = player?.currentSourceVersion\n        memory.launchRequest {",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            16178
+          ]
+        },
+        {
+          "before": "                episode = selected; playback = info; quality = info.source.quality\n                val maskEpoch = repository.sessionEpoch\n                val episodeSourceVersion = initialized.loadVersioned(info.source.toNativePlayback().copy(startPositionSeconds = startPosition))",
+          "after": "                val callerJob = currentCoroutineContext()[Job]\n                val maskEpoch = repository.sessionEpoch\n                val episodeSourceVersion = repository.withPlaybackSourceAdmission(info.source, { callerJob?.isActive == true &&\n                    memory.scope.isActive && memory.playJob === callerJob && season === current && initialized.currentSourceVersion == nativeBaseline }) {\n                    initialized.loadVersioned(info.source.toNativePlayback().copy(startPositionSeconds = startPosition))\n                }\n                episode = selected; playback = info; quality = info.source.quality",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            16614
+          ]
+        },
+        {
+          "before": "progressiveSegments = progressiveSegments)",
+          "after": "progressiveSegments = progressiveSegments, authorizationReceipt = authorizationReceipt)",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            30627
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "baseLF": "487ba9ad15fe0d151b92bf13b6520e49bec9ac81bdec7e08a5e9ed036c9668c1",
+      "candidateLF": "e8f00e3b3dff07bf629c8516dd6922c4d80de279bbfea180ce02afe9dcf040d8",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "import com.bilipai.desktop.player.MpvPlayer",
+          "after": "import com.bilipai.desktop.player.MpvPlayer\nimport com.bilipai.desktop.player.ownedSource",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            311
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "baseLF": "7ed14c1d4e65918a34edf8e7f7302ff5b5cee24936b5d4bba4729f46e043b71e",
+      "candidateLF": "a1c128e17ff5b4f147691761957dce393643edf84cdd452e5b0f32cbb9100db0",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "initialized.loadVersioned(info.source.toNativePlayback().copy(startPositionSeconds = startPosition))",
+          "after": "initialized.loadVersioned(com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository).ownedSource(\n                        info.source.toNativePlayback().copy(startPositionSeconds = startPosition),\n                        { callerJob?.isCancelled != true && memory.scope.isActive && season === current && repository.sessionEpoch == maskEpoch }))",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            17036
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "baseLF": "a1c128e17ff5b4f147691761957dce393643edf84cdd452e5b0f32cbb9100db0",
+      "candidateLF": "6145ba78dc380daa0527539e56709d353c18ab9bf53daafae9b5b85a38d6aa9b",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "import com.bilipai.desktop.player.MpvPlayer",
+          "after": "import com.bilipai.desktop.player.MpvPlayer\nimport com.bilipai.desktop.player.ownedSource",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            1359
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt",
+      "producerRequired": true,
+      "baseLF": "bffabd9dc119618ad842fee0d16e6e89e10ff813e2d30d2590ba68b47b3a4b5b",
+      "candidateLF": "9da3da2c3ae37e495ddc7115847e8bfc15788c18448e6c17f4ce3e7b4bed893b",
+      "hunks": [
+        {
+          "before": "private val client: OkHttpClient",
+          "after": "private val client: okhttp3.Call.Factory",
+          "occurrences": 1
+        }
+      ],
+      "directBodyTypeAdapterOnly": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadModels.kt",
+      "baseLF": "c6d782f8e14b5c47ec6a4848a3842bd5c463a5cce69c5c409d6fb1e99bffb59e",
+      "candidateLF": "2e63eed6d04156a06cd51cf7003d9613e47b10d1766c33d5a175d99c66497ada",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    val progressiveSegments: List<DownloadProgressiveSegment> = emptyList(),",
+          "after": "    val progressiveSegments: List<DownloadProgressiveSegment> = emptyList(),\n    @kotlinx.serialization.Transient val authorizationReceipt: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt? = null,\n    @kotlinx.serialization.Transient val cookieHeader: String = \"\",\n    @kotlinx.serialization.Transient val streamHeaders: Map<String, String> = emptyMap(),",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            737
+          ]
+        },
+        {
+          "before": "    val id: String get() = item.id",
+          "after": "    override fun toString() = \"DownloadTask(id=$id, status=$status, authorization=$authorizationReceipt)\"\n    internal fun playbackSource() = com.bilipai.desktop.player.PlaybackSource(item.videoUrl, item.audioUrl.takeIf { it.isNotBlank() },\n        referer, userAgent, cookieHeader, item.title, progressiveSegments = progressiveSegments.map {\n            com.bilipai.desktop.player.PlaybackSegment(it.url, it.durationSeconds) },\n        streamHeaders = streamHeaders, authorizationReceipt = authorizationReceipt)\n    val id: String get() = item.id",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            1109
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "baseLF": "7d6fcb4651931f3e6e7dbb5e54cc242b2862f4bdc90f0476bb95dfd14d3dd814",
+      "candidateLF": "c347c6e571244d0f4a88bf20b2fc907a82a81077cd4d84c274ec355129911023",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    private val danmakuDownloader: (suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?>)? = null,",
+          "after": "    private val danmakuDownloader: (suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?>)? = null,\n    private val publication: com.bilipai.desktop.player.DesktopPlaybackPublication,",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            1132
+          ]
+        },
+        {
+          "before": "defaultSourceResolver(repository), defaultDanmakuDownloader(repository))",
+          "after": "defaultSourceResolver(repository), defaultDanmakuDownloader(repository), com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository))",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            1507
+          ]
+        },
+        {
+          "before": "    private val downloader = ResumableAssetDownloader(client)\n",
+          "after": "",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            1908
+          ]
+        },
+        {
+          "before": "metadata: DownloadMetadata = DownloadMetadata()): String = synchronized(lock) {",
+          "after": "metadata: DownloadMetadata = DownloadMetadata(), stillOwned: () -> Boolean = { true }): String =\n        publication.admit(source, stillOwned) { enqueueAdmitted(source, destination, metadata) }\n\n    private fun enqueueAdmitted(source: PlaybackSource, destination: Path, metadata: DownloadMetadata): String = synchronized(lock) {",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            2299
+          ]
+        },
+        {
+          "before": "resume(existing.id, source)",
+          "after": "resumeAdmitted(existing.id, source)",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            4449
+          ]
+        },
+        {
+          "before": "metadata.seasonId, metadata.episodeId, metadata.isCourse, segments)",
+          "after": "metadata.seasonId, metadata.episodeId, metadata.isCourse, segments, source.authorizationReceipt, source.cookieHeader,\n            com.bilipai.desktop.player.copyPlaybackStreamHeaders(source.streamHeaders))",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            4663
+          ]
+        },
+        {
+          "before": "    fun resume(id: String, refreshedSource: PlaybackSource? = null) = synchronized(lock) {",
+          "after": "    fun resume(id: String, refreshedSource: PlaybackSource? = null) {\n        if (refreshedSource != null) publication.admit(refreshedSource, { true }) { resumeAdmitted(id, refreshedSource) }\n        else resumeAdmitted(id, null)\n    }\n    private fun resumeAdmitted(id: String, refreshedSource: PlaybackSource?) = synchronized(lock) {",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            5452
+          ]
+        },
+        {
+          "before": "referer = refreshedSource?.referer ?: it.referer, userAgent = refreshedSource?.userAgent ?: it.userAgent,",
+          "after": "referer = refreshedSource?.referer ?: it.referer, userAgent = refreshedSource?.userAgent ?: it.userAgent,\n                authorizationReceipt = refreshedSource?.authorizationReceipt, cookieHeader = refreshedSource?.cookieHeader.orEmpty(),\n                streamHeaders = refreshedSource?.streamHeaders?.let { headers -> com.bilipai.desktop.player.copyPlaybackStreamHeaders(headers) } ?: emptyMap(),",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            6790
+          ]
+        },
+        {
+          "before": "            val task = synchronized(lock) { mutableTasks.value.firstOrNull { it.id == id } } ?: return\n            if (task.status != DownloadStatus.PENDING) return",
+          "after": "            var task = synchronized(lock) { mutableTasks.value.firstOrNull { it.id == id } } ?: return\n            if (task.status != DownloadStatus.PENDING) return\n            val pendingJob = currentCoroutineContext()[Job]\n            val owned = { pendingJob?.isActive == true && synchronized(lock) { !closed && jobs[id] === pendingJob &&\n                mutableTasks.value.any { it.id == id && it.status in setOf(DownloadStatus.PENDING, DownloadStatus.DOWNLOADING) } } }\n            if (publication.requiresAccountReceipt && task.authorizationReceipt == null) {\n                val refreshed = sourceResolver?.invoke(task) ?: throw CancellationException(\"Saved download requires fresh owned authorization\")\n                currentCoroutineContext().ensureActive()\n                publication.admit(refreshed, owned) {\n                    update(id, true) { it.copy(item = it.item.copy(videoUrl = requireMediaUrl(refreshed.videoUrl),\n                        audioUrl = refreshed.audioUrl?.let(::requireMediaUrl).orEmpty()),\n                        referer = refreshed.referer, userAgent = refreshed.userAgent, authorizationReceipt = refreshed.authorizationReceipt,\n                        cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),\n                        progressiveSegments = refreshed.progressiveSegments.map { part -> DownloadProgressiveSegment(requireMediaUrl(part.url), part.durationSeconds) }) }\n                }\n                task = synchronized(lock) { mutableTasks.value.first { it.id == id } }\n            }\n            publication.admit(task.playbackSource(), owned) { Unit }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            12425
+          ]
+        },
+        {
+          "before": "        val headers = mapOf(\"Referer\" to task.referer, \"User-Agent\" to task.userAgent)",
+          "after": "        val source = task.playbackSource()\n        val callerJob = context[Job]\n        val owned = { callerJob?.isActive == true && synchronized(lock) { !closed && jobs[id] === callerJob &&\n            mutableTasks.value.any { it.id == id && it.status == DownloadStatus.DOWNLOADING && it.authorizationReceipt == task.authorizationReceipt } } }\n        publication.admit(source, owned) { Unit }\n        val headers = com.bilipai.desktop.cast.desktopCastStreamHeaders(source)\n        var activeSource = source\n        fun calls() = publication.calls(client, activeSource, owned, callerJob)",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            19896
+          ]
+        },
+        {
+          "before": "suspend fun download(activeUrl: String) = downloader.download(",
+          "after": "suspend fun download(activeUrl: String) = ResumableAssetDownloader(calls()).download(",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            21955
+          ]
+        },
+        {
+          "before": "            context.ensureActive()\n            val refreshed = sourceResolver.invoke(task) ?: throw error",
+          "after": "            context.ensureActive()\n            // A retired choice is cancellation, never a request under the newly selected account.\n            publication.admit(activeSource, owned) { Unit }\n            val refreshed = sourceResolver.invoke(task) ?: throw error\n            context.ensureActive()\n            publication.admit(refreshed, owned) { Unit }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            22662
+          ]
+        },
+        {
+          "before": "            update(id, true) { wrapper -> wrapper.copy(item = wrapper.item.copy(videoUrl = refreshed.videoUrl,\n                audioUrl = refreshed.audioUrl.orEmpty()), progressiveSegments = wrapper.progressiveSegments.zip(refreshed.progressiveSegments).map { (old, part) -> old.copy(url = requireMediaUrl(part.url), durationSeconds = part.durationSeconds) }) }",
+          "after": "            publication.admit(refreshed, owned) {\n                update(id, true) { wrapper -> wrapper.copy(item = wrapper.item.copy(videoUrl = refreshed.videoUrl,\n                    audioUrl = refreshed.audioUrl.orEmpty()), authorizationReceipt = refreshed.authorizationReceipt,\n                    cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),\n                    progressiveSegments = wrapper.progressiveSegments.zip(refreshed.progressiveSegments).map { (old, part) -> old.copy(url = requireMediaUrl(part.url), durationSeconds = part.durationSeconds) }) }\n            }\n            activeSource = refreshed",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            23610
+          ]
+        },
+        {
+          "before": "progressiveSegments = it.progressiveSegments) }",
+          "after": "progressiveSegments = it.progressiveSegments, authorizationReceipt = it.authorizationReceipt) }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            29133
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseLF": "350dc8046540b56876f1432bf62fdd97fbf83d3b729f255b408c17bc1ed6e024",
+      "candidateLF": "ae24dff1f452453a02311d2ed0f0722fb2eb2c11cef32335445f6a811cd5a02e",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "                                        val info = playing.details!!\n                                        val part = info.pages[playing.currentPart]",
+          "after": "                                        val downloadJob = kotlinx.coroutines.currentCoroutineContext()[Job]\n                                        val info = playing.details!!\n                                        val part = info.pages[playing.currentPart]",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            104218
+          ]
+        },
+        {
+          "before": "                                            progressiveSegments = source.progressiveSegments), metadata = DownloadMetadata(",
+          "after": "                                            progressiveSegments = source.progressiveSegments, authorizationReceipt = source.authorizationReceipt), metadata = DownloadMetadata(",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            105105
+          ]
+        },
+        {
+          "before": "includeDanmaku = options.includeDanmaku, episodeLabel = part.title))",
+          "after": "includeDanmaku = options.includeDanmaku, episodeLabel = part.title),\n                                            stillOwned = { !isClosing() && !activatingUpdate && repository.sessionEpoch == expectedEpoch &&\n                                                downloadJob?.isActive == true && playback.state.value.details?.bvid == info.bvid &&\n                                                playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == part.cid })",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            105715
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "baseLF": "72de38c76f3d3e648dc90d9e991382f36264769d974a83ba0224a948e8d97baa",
+      "candidateLF": "51c0e7a78aa6951fc9335858473b52fe113078adfe94ef5bd7deacd100c4560f",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "private fun owns(context: Current): Boolean = !closed.get() &&",
+          "after": "private fun owns(context: Current): Boolean = !closed.get() && controllerScope.isActive &&",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            50923
+          ]
+        },
+        {
+          "before": "private fun valid(expected: Long, baseline: Long?, accountEpoch: Long): Boolean = !closed.get() &&",
+          "after": "private fun valid(expected: Long, baseline: Long?, accountEpoch: Long): Boolean = !closed.get() && controllerScope.isActive &&",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            51233
+          ]
+        },
+        {
+          "before": "!closed.get() && expected == generation.get() && playback.sessionEpoch == accountEpoch })",
+          "after": "!closed.get() && controllerScope.isActive && expected == generation.get() && playback.sessionEpoch == accountEpoch })",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            20304
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "baseLF": "0ba7d0dc4307f772157f75fd4a728fdd297592accce5227bf45535f0790ee72a",
+      "candidateLF": "fff510976494af0321ff26de3263d35aa02e53ef9613fc16fa3e7f27f50fb792",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    /** Reloads the same item for CDN/codec recovery without transferring surface ownership or losing subtitles. */",
+          "after": "    /** Re-admit a retained stream for replay without replacing another owner/source. */\n    internal fun replayAuthorized(expectedSourceVersion: Long, replacement: PlaybackSource): Boolean = synchronized(lock) {\n        if (closed.get() || sourceVersion != expectedSourceVersion || requestedSource == null) return@synchronized false\n        load(replacement.copy(startPositionSeconds = 0.0, startPaused = false), preserveSubtitles = true)\n        true\n    }\n    /** Reloads the same item for CDN/codec recovery without transferring surface ownership or losing subtitles. */",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            7952
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "baseLF": "e8f00e3b3dff07bf629c8516dd6922c4d80de279bbfea180ce02afe9dcf040d8",
+      "candidateLF": "c78f6acb2deb2d4b8cf7b8cef7cc6505c3f84ab524042455a49a0c0aa65d444d",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "private fun sessionIsCurrent() = !closed && repository.sessionEpoch == sessionEpoch",
+          "after": "private fun sessionIsCurrent() = !closed && scope.isActive && repository.sessionEpoch == sessionEpoch",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            4272
+          ]
+        },
+        {
+          "before": "preferences.playbackMode == PlaybackMode.REPEAT_ONE -> player.replay()",
+          "after": "preferences.playbackMode == PlaybackMode.REPEAT_ONE -> replayOwnedSource()",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            4960
+          ]
+        },
+        {
+          "before": "                publication.admit(source, { sessionIsCurrent() && ownedPlaybackSourceVersion == expectedSource }) { player.replay() }",
+          "after": "                replayOwnedSource()",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            11627
+          ]
+        },
+        {
+          "before": "    fun pause() {",
+          "after": "    private fun replayOwnedSource(): Boolean {\n        val expectedSource = ownedPlaybackSourceVersion ?: return false\n        val source = player.currentSourceSnapshot()?.takeIf { it.sourceVersion == expectedSource }?.source ?: return false\n        if (!publication.isCurrent(source)) return false\n        val generation = playGeneration\n        val owned = { sessionIsCurrent() && generation == playGeneration && ownedPlaybackSourceVersion == expectedSource }\n        val retained = publication.ownedSource(source, owned)\n        return publication.admit(retained, owned) { player.replayAuthorized(expectedSource, retained) }\n    }\n\n    fun pause() {",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            11723
+          ]
+        },
+        {
+          "before": "            } catch (failure: Exception) {\n                if (failure is CancellationException) throw failure\n                if (generation == playGeneration && sessionIsCurrent()) mutableState.update { it.copy(loading = false, active = false, error = failure.message ?: \"音频加载失败。\") }",
+          "after": "            } catch (failure: Exception) {\n                if (failure is CancellationException) {\n                    if (generation == playGeneration && sessionIsCurrent()) mutableState.update { it.copy(loading = false, active = false) }\n                    throw failure\n                }\n                if (generation == playGeneration && sessionIsCurrent()) mutableState.update { it.copy(loading = false, active = false, error = failure.message ?: \"音频加载失败。\") }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            10496
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "baseLF": "6145ba78dc380daa0527539e56709d353c18ab9bf53daafae9b5b85a38d6aa9b",
+      "candidateLF": "9d02ca0714942908507e9bc3ed63f3afa4c436b97a33fb4b0967416a25603bf3",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "                                    episodeSortIndex = current.episodes.indexOf(selected) + 1, episodeCount = current.episodes.size,\n                                ))",
+          "after": "                                    episodeSortIndex = current.episodes.indexOf(selected) + 1, episodeCount = current.episodes.size,\n                                ), stillOwned = { memory.scope.isActive && season === current && episode === selected && playback === info })",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            29387
+          ]
+        },
+        {
+          "before": "                            } catch (failure: Exception) { error = failure.message ?: \"添加下载失败\" }",
+          "after": "                            } catch (cancelled: CancellationException) { throw cancelled }\n                            catch (failure: Exception) { error = failure.message ?: \"添加下载失败\" }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            29713
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "baseLF": "c347c6e571244d0f4a88bf20b2fc907a82a81077cd4d84c274ec355129911023",
+      "candidateLF": "afa338f183f024434b80cea8be03cde0e8b1163638b9ef42cb651719e105bd90",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    fun enqueue(source: PlaybackSource, destination: Path = defaultDownloadRoot(), metadata: DownloadMetadata = DownloadMetadata(), stillOwned: () -> Boolean = { true }): String =\n        publication.admit(source, stillOwned) { enqueueAdmitted(source, destination, metadata) }\n\n    private fun enqueueAdmitted(source: PlaybackSource, destination: Path, metadata: DownloadMetadata): String = synchronized(lock) {\n        check(!closed) { \"下载队列已关闭\" }\n        require(metadata.downloadAllowed) { \"此媒体的服务器权限不允许下载\" }\n        val video = requireMediaUrl(source.videoUrl)\n        val audio = source.audioUrl?.let(::requireMediaUrl)\n        val segments = source.progressiveSegments.map { DownloadProgressiveSegment(requireMediaUrl(it.url), it.durationSeconds) }\n        require(segments.isEmpty() || audio == null) { \"多段渐进媒体不能同时含独立音轨\" }\n        require(segments.none { it.url.substringBefore('?').endsWith(\".m3u8\", ignoreCase = true) }) { \"直播 HLS 不适用于视频下载队列\" }\n        require(!video.substringBefore('?').endsWith(\".m3u8\", ignoreCase = true)) { \"直播 HLS 不适用于视频下载队列\" }\n        val item = UpstreamDownloadTask(aid = metadata.aid,\n            bvid = metadata.bvid.ifBlank { \"local-${UUID.randomUUID()}\" }, cid = metadata.cid, title = source.title,\n            episodeLabel = metadata.episodeLabel, cover = metadata.cover, ownerName = metadata.author,\n            ownerFace = \"\", duration = metadata.durationSeconds, quality = metadata.quality,\n            qualityDesc = metadata.qualityLabel, videoUrl = video, audioUrl = audio.orEmpty(), status = DownloadStatus.QUEUED,\n            isAudioOnly = metadata.audioOnly, options = DownloadOptions(includeDanmaku = metadata.includeDanmaku),\n            groupKey = metadata.groupKey, groupTitle = metadata.groupTitle, episodeSortIndex = metadata.episodeSortIndex,\n            episodeCount = metadata.episodeCount, isVerticalVideo = metadata.isVerticalVideo,\n            assets = if (metadata.includeCover) emptyList() else listOf(DownloadAssetState(DownloadAssetKind.COVER, DownloadAssetStatus.SKIPPED)))\n        val existing = mutableTasks.value.firstOrNull { it.id == item.id }\n        if (existing != null) {\n            if (existing.status in setOf(DownloadStatus.FAILED, DownloadStatus.PAUSED)) resumeAdmitted(existing.id, source)\n            return existing.id\n        }\n        val task = DownloadTask(item, destination.toAbsolutePath().normalize().toString(), source.referer, source.userAgent,\n            metadata.seasonId, metadata.episodeId, metadata.isCourse, segments, source.authorizationReceipt, source.cookieHeader,\n            com.bilipai.desktop.player.copyPlaybackStreamHeaders(source.streamHeaders))\n        ensureOwnedDirectory(task)\n        mutableTasks.value = mutableTasks.value.filterNot { it.id == task.id } + task\n        persistLocked(force = true)\n        scheduleLocked()\n        task.id\n    }\n\n",
+          "after": "    fun enqueue(source: PlaybackSource, destination: Path = defaultDownloadRoot(), metadata: DownloadMetadata = DownloadMetadata(), stillOwned: () -> Boolean = { true }): String {\n        publication.admit(source, stillOwned) { Unit }\n        val task = prepareDownloadTask(source, destination, metadata)\n        ensureOwnedDirectory(task) // filesystem work is outside the Store monitor\n        val id = publication.admit(source, stillOwned) { enqueueAdmitted(task, source) }\n        synchronized(lock) { persistLocked(force = true); scheduleLocked() }\n        return id\n    }\n\n    private fun prepareDownloadTask(source: PlaybackSource, destination: Path, metadata: DownloadMetadata): DownloadTask {\n        require(metadata.downloadAllowed) { \"此媒体的服务器权限不允许下载\" }\n        val video = requireMediaUrl(source.videoUrl)\n        val audio = source.audioUrl?.let(::requireMediaUrl)\n        val segments = source.progressiveSegments.map { DownloadProgressiveSegment(requireMediaUrl(it.url), it.durationSeconds) }\n        require(segments.isEmpty() || audio == null) { \"多段渐进媒体不能同时含独立音轨\" }\n        require(segments.none { it.url.substringBefore('?').endsWith(\".m3u8\", ignoreCase = true) }) { \"直播 HLS 不适用于视频下载队列\" }\n        require(!video.substringBefore('?').endsWith(\".m3u8\", ignoreCase = true)) { \"直播 HLS 不适用于视频下载队列\" }\n        val item = UpstreamDownloadTask(aid = metadata.aid,\n            bvid = metadata.bvid.ifBlank { \"local-${UUID.randomUUID()}\" }, cid = metadata.cid, title = source.title,\n            episodeLabel = metadata.episodeLabel, cover = metadata.cover, ownerName = metadata.author,\n            ownerFace = \"\", duration = metadata.durationSeconds, quality = metadata.quality,\n            qualityDesc = metadata.qualityLabel, videoUrl = video, audioUrl = audio.orEmpty(), status = DownloadStatus.QUEUED,\n            isAudioOnly = metadata.audioOnly, options = DownloadOptions(includeDanmaku = metadata.includeDanmaku),\n            groupKey = metadata.groupKey, groupTitle = metadata.groupTitle, episodeSortIndex = metadata.episodeSortIndex,\n            episodeCount = metadata.episodeCount, isVerticalVideo = metadata.isVerticalVideo,\n            assets = if (metadata.includeCover) emptyList() else listOf(DownloadAssetState(DownloadAssetKind.COVER, DownloadAssetStatus.SKIPPED)))\n        val task = DownloadTask(item, destination.toAbsolutePath().normalize().toString(), source.referer, source.userAgent,\n            metadata.seasonId, metadata.episodeId, metadata.isCourse, segments, source.authorizationReceipt, source.cookieHeader,\n            com.bilipai.desktop.player.copyPlaybackStreamHeaders(source.streamHeaders))\n        return task\n    }\n\n    private fun enqueueAdmitted(task: DownloadTask, source: PlaybackSource): String = synchronized(lock) {\n        check(!closed) { \"下载队列已关闭\" }\n        val existing = mutableTasks.value.firstOrNull { it.id == task.id }\n        if (existing != null) {\n            if (existing.status in setOf(DownloadStatus.FAILED, DownloadStatus.PAUSED)) resumeAdmitted(existing.id, source)\n            return existing.id\n        }\n        mutableTasks.value = mutableTasks.value.filterNot { it.id == task.id } + task\n        task.id\n    }\n\n",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            2216
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "baseLF": "afa338f183f024434b80cea8be03cde0e8b1163638b9ef42cb651719e105bd90",
+      "candidateLF": "2c6feb7784e8212f3c735149c655542293a033868aafc7c685a01fc5fca773ab",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    private fun resumeAdmitted(id: String, refreshedSource: PlaybackSource?) = synchronized(lock) {\n        check(!closed) { \"下载队列已关闭\" }\n        val task = mutableTasks.value.firstOrNull { it.id == id } ?: return@synchronized\n        if (task.status !in setOf(DownloadStatus.FAILED, DownloadStatus.PAUSED)) return@synchronized\n        updateLocked(id) {\n            val item = if (refreshedSource == null) it.item else it.item.copy(videoUrl = requireMediaUrl(refreshedSource.videoUrl),\n                audioUrl = refreshedSource.audioUrl?.let(::requireMediaUrl).orEmpty())\n            if (refreshedSource != null) require(mediaIdentity(item.videoUrl) == mediaIdentity(it.item.videoUrl) &&\n                mediaIdentity(item.audioUrl) == mediaIdentity(it.item.audioUrl) &&\n                refreshedSource.progressiveSegments.map { part -> mediaIdentity(part.url) } == it.progressiveSegments.map { part -> mediaIdentity(part.url) }) {\n                \"新的媒体轨道或分段与此任务不同，请移除此任务后重新加入下载\"\n            }\n            it.copy(item = item.copy(status = DownloadStatus.QUEUED, errorMessage = null),\n                referer = refreshedSource?.referer ?: it.referer, userAgent = refreshedSource?.userAgent ?: it.userAgent,\n                authorizationReceipt = refreshedSource?.authorizationReceipt, cookieHeader = refreshedSource?.cookieHeader.orEmpty(),\n                streamHeaders = refreshedSource?.streamHeaders?.let { headers -> com.bilipai.desktop.player.copyPlaybackStreamHeaders(headers) } ?: emptyMap(),\n                progressiveSegments = if (refreshedSource == null) it.progressiveSegments else it.progressiveSegments.zip(refreshedSource.progressiveSegments).map { (old, part) -> old.copy(url = requireMediaUrl(part.url), durationSeconds = part.durationSeconds) })\n        }\n        persistLocked(force = true)\n        scheduleLocked()\n    }\n",
+          "after": "    private fun resumeAdmitted(id: String, refreshedSource: PlaybackSource?) = synchronized(lock) {\n        check(!closed) { \"下载队列已关闭\" }\n        val task = mutableTasks.value.firstOrNull { it.id == id } ?: return@synchronized\n        if (task.status !in setOf(DownloadStatus.FAILED, DownloadStatus.PAUSED)) return@synchronized\n        updateLocked(id) {\n            val item = if (refreshedSource == null) it.item else it.item.copy(videoUrl = requireMediaUrl(refreshedSource.videoUrl),\n                audioUrl = refreshedSource.audioUrl?.let(::requireMediaUrl).orEmpty())\n            if (refreshedSource != null) require(mediaIdentity(item.videoUrl) == mediaIdentity(it.item.videoUrl) &&\n                mediaIdentity(item.audioUrl) == mediaIdentity(it.item.audioUrl) &&\n                refreshedSource.progressiveSegments.map { part -> mediaIdentity(part.url) } == it.progressiveSegments.map { part -> mediaIdentity(part.url) }) {\n                \"新的媒体轨道或分段与此任务不同，请移除此任务后重新加入下载\"\n            }\n            it.copy(item = item.copy(status = DownloadStatus.QUEUED, errorMessage = null),\n                referer = refreshedSource?.referer ?: it.referer, userAgent = refreshedSource?.userAgent ?: it.userAgent,\n                authorizationReceipt = refreshedSource?.authorizationReceipt, cookieHeader = refreshedSource?.cookieHeader.orEmpty(),\n                streamHeaders = refreshedSource?.streamHeaders?.let { headers -> com.bilipai.desktop.player.copyPlaybackStreamHeaders(headers) } ?: emptyMap(),\n                progressiveSegments = if (refreshedSource == null) it.progressiveSegments else it.progressiveSegments.zip(refreshedSource.progressiveSegments).map { (old, part) -> old.copy(url = requireMediaUrl(part.url), durationSeconds = part.durationSeconds) })\n        }\n    }\n",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            6016
+          ]
+        },
+        {
+          "before": "        else resumeAdmitted(id, null)\n    }",
+          "after": "        else resumeAdmitted(id, null)\n        synchronized(lock) { persistLocked(force = true); scheduleLocked() }\n    }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            5972
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "baseLF": "2c6feb7784e8212f3c735149c655542293a033868aafc7c685a01fc5fca773ab",
+      "candidateLF": "7990d841c8c457df3a83439e834e15be112c3fa6eb1cf8b9a37c7293a92bdb1a",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "            if (publication.requiresAccountReceipt && task.authorizationReceipt == null) {\n                val refreshed = sourceResolver?.invoke(task) ?: throw CancellationException(\"Saved download requires fresh owned authorization\")\n                currentCoroutineContext().ensureActive()\n                publication.admit(refreshed, owned) {\n                    update(id, true) { it.copy(item = it.item.copy(videoUrl = requireMediaUrl(refreshed.videoUrl),\n                        audioUrl = refreshed.audioUrl?.let(::requireMediaUrl).orEmpty()),\n                        referer = refreshed.referer, userAgent = refreshed.userAgent, authorizationReceipt = refreshed.authorizationReceipt,\n                        cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),\n                        progressiveSegments = refreshed.progressiveSegments.map { part -> DownloadProgressiveSegment(requireMediaUrl(part.url), part.durationSeconds) }) }\n                }\n                task = synchronized(lock) { mutableTasks.value.first { it.id == id } }\n            }\n",
+          "after": "            if (publication.requiresAccountReceipt && task.authorizationReceipt == null) {\n                val refreshed = sourceResolver?.invoke(task) ?: throw CancellationException(\"Saved download requires fresh owned authorization\")\n                currentCoroutineContext().ensureActive()\n                publication.admit(refreshed, owned) {\n                    synchronized(lock) { updateLocked(id) { it.copy(item = it.item.copy(videoUrl = requireMediaUrl(refreshed.videoUrl),\n                        audioUrl = refreshed.audioUrl?.let(::requireMediaUrl).orEmpty()),\n                        referer = refreshed.referer, userAgent = refreshed.userAgent, authorizationReceipt = refreshed.authorizationReceipt,\n                        cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),\n                        progressiveSegments = refreshed.progressiveSegments.map { part -> DownloadProgressiveSegment(requireMediaUrl(part.url), part.durationSeconds) }) } }\n                }\n                synchronized(lock) { persistLocked(force = true) }\n                task = synchronized(lock) { mutableTasks.value.first { it.id == id } }\n            }\n",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            13244
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "baseLF": "7990d841c8c457df3a83439e834e15be112c3fa6eb1cf8b9a37c7293a92bdb1a",
+      "candidateLF": "625fae9a5e66e7fcb9a27820506fa2788da54f667864dbb3917dc026b7cd78b3",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "            publication.admit(refreshed, owned) {\n                update(id, true) { wrapper -> wrapper.copy(item = wrapper.item.copy(videoUrl = refreshed.videoUrl,\n                    audioUrl = refreshed.audioUrl.orEmpty()), authorizationReceipt = refreshed.authorizationReceipt,\n                    cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),\n                    progressiveSegments = wrapper.progressiveSegments.zip(refreshed.progressiveSegments).map { (old, part) -> old.copy(url = requireMediaUrl(part.url), durationSeconds = part.durationSeconds) }) }\n            }\n",
+          "after": "            publication.admit(refreshed, owned) {\n                synchronized(lock) { updateLocked(id) { wrapper -> wrapper.copy(item = wrapper.item.copy(videoUrl = refreshed.videoUrl,\n                    audioUrl = refreshed.audioUrl.orEmpty()), authorizationReceipt = refreshed.authorizationReceipt,\n                    cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),\n                    progressiveSegments = wrapper.progressiveSegments.zip(refreshed.progressiveSegments).map { (old, part) -> old.copy(url = requireMediaUrl(part.url), durationSeconds = part.durationSeconds) }) } }\n            }\n            synchronized(lock) { persistLocked(force = true) }\n",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            24044
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "baseLF": "51c0e7a78aa6951fc9335858473b52fe113078adfe94ef5bd7deacd100c4560f",
+      "candidateLF": "c3a38902ed19bef308f02a4df61a32234c47affdaabd3ee96795d077eb43d3b6",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "                val accepted = publication.admit(plan.source.toNative(0.0, true),",
+          "after": "                val accepted = publication.tryAdmit(plan.source.toNative(0.0, true),",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            41753
+          ]
+        },
+        {
+          "before": "                } else if (recoverable(context, failure)) {",
+          "after": "                } else if (recoverable(context, failure) && publication.isCurrent(plan.source.toNative(0.0, true))) {",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            43481
+          ]
+        },
+        {
+          "before": "if (publication.admit(source.toNative(native.positionSeconds, native.paused), { owns(context) }) {",
+          "after": "if (publication.tryAdmit(source.toNative(native.positionSeconds, native.paused), { owns(context) }) {",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            47075
+          ]
+        },
+        {
+          "before": "            publication.admit(context.source.toNative(0.0, false), { owns(context) }) { player?.replay() }",
+          "after": "            val retained = publication.ownedSource(context.source.toNative(0.0, false), { owns(context) })\n            if (!publication.tryAdmit(retained, { owns(context) }) { player?.replayAuthorized(context.sourceVersion, retained) == true }) return",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            32128
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "baseLF": "c3a38902ed19bef308f02a4df61a32234c47affdaabd3ee96795d077eb43d3b6",
+      "candidateLF": "2b043cb3f614a480d955ad59446de05e12589660d9dabded47f5062660af5593",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "import com.bilipai.desktop.player.*",
+          "after": "import com.bilipai.desktop.player.*\nimport com.bilipai.desktop.player.tryAdmit",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            809
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "baseLF": "c78f6acb2deb2d4b8cf7b8cef7cc6505c3f84ab524042455a49a0c0aa65d444d",
+      "candidateLF": "614dc2700a3a5c33b4264e92c4c7ad750f958c25aa555fbc9ffab8f336ba53d0",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "return publication.admit(retained, owned) { player.replayAuthorized(expectedSource, retained) }",
+          "after": "return publication.tryAdmit(retained, owned) { player.replayAuthorized(expectedSource, retained) }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            12436
+          ]
+        },
+        {
+          "before": "import com.bilipai.desktop.player.ownedSource",
+          "after": "import com.bilipai.desktop.player.ownedSource\nimport com.bilipai.desktop.player.tryAdmit",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            355
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "baseLF": "b62051269356c2c04ce19db59d39ab50ff47fba71dcfa93e1ea84d850e7ae1b9",
+      "candidateLF": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    private volatile Socket socket;",
+          "after": "    private volatile Socket socket;\n    private final DesktopCastWriter writer = new DesktopCastWriter();",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            2915
+          ]
+        },
+        {
+          "before": "    private synchronized void write(CastChannel.CastMessage message) throws IOException {\n        Socket current = socket;\n        if (current == null || cancelled) throw new IOException(\"Cast operation cancelled\");\n        BoundedCastFrame.write(current, message);\n    }",
+          "after": "    private void write(CastChannel.CastMessage message) throws IOException {\n        writer.write(() -> {\n            Socket current = socket;\n            if (current == null || cancelled) throw new IOException(\"Cast operation cancelled\");\n            BoundedCastFrame.write(current, message);\n        }, () -> !cancelled && socket != null, DesktopCastPublication.current());\n    }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            19243
+          ]
+        },
+        {
+          "before": "        cancelled = true; closed = true;",
+          "after": "        cancelled = true; closed = true;\n        writer.cancelPending();",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            26205
+          ]
+        },
+        {
+          "before": "        pings.shutdownNow(); deadlines.shutdownNow();",
+          "after": "        pings.shutdownNow(); deadlines.shutdownNow();\n        writer.close();",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            24819
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "baseLF": "050022f187f64f6ca1b394052af1fb2c380d79fb6268bbe77a739471bb3c2227",
+      "candidateLF": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    suspend fun cast(route: CastPluginRoute, media: suspend () -> CastPluginMediaRequest?): Result<Unit> = execute {\n        val request = media() ?: error(\"当前媒体没有可投屏的播放地址\")\n        plugin.cast(context, route, request).getOrThrow()\n    }",
+          "after": "    suspend fun cast(route: CastPluginRoute, media: suspend () -> DesktopCastMediaPublication?): Result<Unit> = execute {\n        val publication = media() ?: error(\"当前媒体没有可投屏的播放地址\")\n        publication.use { request -> plugin.cast(context, route, request).getOrThrow() }\n    }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            2017
+          ]
+        },
+        {
+          "before": "    suspend fun cast(route: CastPluginRoute, media: CastPluginMediaRequest): Result<Unit> = cast(route) { media }",
+          "after": "    /** Explicit bare/local compatibility; Root account sources use the required publication wrapper. */\n    suspend fun cast(route: CastPluginRoute, media: CastPluginMediaRequest): Result<Unit> = execute { plugin.cast(context, route, media).getOrThrow() }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            2295
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "baseLF": "f4b98917bf03cc1a0a6f073eefabd712f2c75a85dea9e213b25d6fd92a4b6509",
+      "candidateLF": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "media: suspend () -> CastPluginMediaRequest?",
+          "after": "media: suspend () -> DesktopCastMediaPublication?",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            651
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "baseLF": "4a7529e3d589f60c190464c9f353d1804fb140c884e770a87f6d9cc3191da70e",
+      "candidateLF": "44410a1040cc90c0127d3fbd8353fe8961429500b159170a38de5ba5c4e4b2dd",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "media: suspend () -> CastPluginMediaRequest?",
+          "after": "media: suspend () -> DesktopCastMediaPublication?",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            581
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "baseLF": "44410a1040cc90c0127d3fbd8353fe8961429500b159170a38de5ba5c4e4b2dd",
+      "candidateLF": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "plugin.cast(context, route, request)",
+          "after": "request.use { plugin.cast(context, route, it) }",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            2393
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "baseLF": "a41d68d4a7c40ff8b05a95fba786859cecff2761a8ac1fd8936de3c7b8dfa00e",
+      "candidateLF": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    val call = client.newCall(request)",
+          "after": "    val frame = currentCoroutineContext()[DesktopCastPublicationFrame]\n    val call = (frame?.calls(client) ?: client).newCall(request)",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            1277
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
+      "baseLF": "5766488fee3ed9e79c82a55c91fd82b7fe47c6f13c48d0e92c5a43178bc5dfa4",
+      "candidateLF": "ec4d7d41497b2d379dd467574fef1fe6027d8ff4f12dcae7f34c36059c54ef05",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "internal class DesktopCastProxyTarget(val url: HttpUrl, val headers: Map<String, String>) {",
+          "after": "internal class DesktopCastProxyTarget(val url: HttpUrl, val headers: Map<String, String>, val publication: DesktopCastPublicationFrame?) {",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            710
+          ]
+        },
+        {
+          "before": "        registrations[id] = DesktopCastProxyTarget(url, snapshot)",
+          "after": "        val frame = su.litvak.chromecast.api.v2.DesktopCastPublication.current() as? DesktopCastPublicationFrame\n        val publish = { registrations[id] = DesktopCastProxyTarget(url, snapshot, frame) }\n        if (frame == null) publish() else frame.admit(publish)",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            2748
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaResolver.kt",
+      "baseLF": "54250f61e0580b9d7fda55da285354f22895e9b0b2265b856dc5365df61df861",
+      "candidateLF": "e29b7f591ab6970e8f2ad457cd788d93232fdabe5e7cf2e1630460afa717030a",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "            val response = api.getTvPlayUrl(AppSignUtils.signForTvLogin(params))",
+          "after": "            val receipt = source.authorizationReceipt ?: throw kotlinx.coroutines.CancellationException(\"Missing cast authorization\")\n            val authorization = repository.capturePlaybackAuthorization(receipt.accountEpoch) { repository.isPlaybackSourceCurrent(source) }\n            if (authorization.receipt != receipt) throw kotlinx.coroutines.CancellationException(\"Cast authorization retired\")\n            val ownedApi = repository.ownedPlaybackService(BilibiliApi::class.java, authorization) { repository.isPlaybackSourceCurrent(source) }\n            val response = ownedApi.getTvPlayUrl(AppSignUtils.signForTvLogin(params))",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            2360
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseLF": "ae24dff1f452453a02311d2ed0f0722fb2eb2c11cef32335445f6a811cd5a02e",
+      "candidateLF": "6c12baae6db721f3d3cfc9c597202fa5b5b6376643f761d767b583fbd123e6f6",
+      "backend84AppliedFirst": false,
+      "hunks": [
+        {
+          "before": "    suspend fun currentCastMedia(): com.android.purebilibili.core.plugin.CastPluginMediaRequest {\n        check(!systemTargetAudio) { \"请先打开需要投屏的视频\" }\n        val owner = retainedMedia.current\n        val nativeSource = player?.currentSourceSnapshot()\n        val current = playback.state.value\n        val epoch = repository.sessionEpoch\n        val positionMs = ((player?.state?.value?.positionSeconds ?: 0.0) * 1000).toLong()\n        val media = when (owner) {\n            retainedMedia.external -> {\n                check(retainedMedia.external.authorizationCurrent) { \"插件播放授权已经变化，请重新打开内容\" }\n                val source = nativeSource?.source ?: error(\"请先打开需要投屏的媒体\")\n                val type = retainedMedia.external.request?.streams?.getOrNull(retainedMedia.external.selectedIndex)?.contentType ?: \"video/mp4\"\n                castResolver.nativeSource(source, contentType = type, positionMs = positionMs)\n            }\n            retainedMedia.live -> {\n                val source = nativeSource?.source ?: error(\"请先打开需要投屏的直播\")\n                val type = if (java.net.URI(source.videoUrl).path.orEmpty().endsWith(\".m3u8\", ignoreCase = true)) \"application/vnd.apple.mpegurl\" else \"video/x-flv\"\n                castResolver.nativeSource(source, creator = retainedMedia.live.room?.author.orEmpty(), contentType = type, positionMs = 0)\n            }\n            retainedMedia.bangumi -> {\n                val source = retainedMedia.bangumi.playback?.source ?: error(\"请先打开需要投屏的剧集\")\n                castResolver.existingSource(source, nativeSource?.source ?: error(\"剧集播放源已经变化\"),\n                    durationMs = (retainedMedia.bangumi.episode?.durationSeconds ?: 0) * 1000, positionMs = positionMs)\n            }\n            retainedMedia.offline -> error(\"本地离线文件暂不支持局域网投屏，请打开在线视频\")\n            else -> {\n                val info = current.details ?: error(\"请先打开需要投屏的视频\")\n                val source = if (nativeSource == null) repository.playback(info, current.currentPart, current.quality)\n                    else playback.currentCastSource(nativeSource.sourceVersion) ?: error(\"当前视频播放源已经变化，请重新开始投屏\")\n                castResolver.video(info, current.currentPart, source, positionMs, nativeSource = nativeSource?.source)\n            }\n        }\n        val latestSource = player?.currentSourceSnapshot()\n        check(epoch == repository.sessionEpoch && nativeSource?.sourceVersion == latestSource?.sourceVersion &&\n            nativeSource?.source == latestSource?.source && retainedMedia.current === owner && !systemTargetAudio &&\n            (owner != null || playback.state.value.details?.bvid == current.details?.bvid && playback.state.value.currentPart == current.currentPart) &&\n            (owner !== retainedMedia.external || retainedMedia.external.authorizationCurrent)) {\n            \"当前播放视频已切换，请重新开始投屏\"\n        }\n        return media\n    }\n",
+          "after": "    suspend fun currentCastMedia(): com.bilipai.desktop.cast.DesktopCastMediaPublication {\n        check(!systemTargetAudio) { \"请先打开需要投屏的视频\" }\n        val owner = retainedMedia.current\n        val nativeSource = player?.currentSourceSnapshot()\n        val current = playback.state.value\n        val epoch = repository.sessionEpoch\n        val positionMs = ((player?.state?.value?.positionSeconds ?: 0.0) * 1000).toLong()\n        val callerJob = kotlinx.coroutines.currentCoroutineContext()[Job]\n        val owned = {\n            val latest = player?.currentSourceSnapshot()\n            callerJob?.isCancelled != true && scope.isActive && !isClosing() && !activatingUpdate && epoch == repository.sessionEpoch &&\n                nativeSource?.sourceVersion == latest?.sourceVersion && nativeSource?.source == latest?.source &&\n                retainedMedia.current === owner && !systemTargetAudio &&\n                (owner != null || playback.state.value.details?.bvid == current.details?.bvid && playback.state.value.currentPart == current.currentPart) &&\n                (owner !== retainedMedia.external || retainedMedia.external.authorizationCurrent)\n        }\n        val resolvedVideo = if (owner == null) {\n            val info = current.details ?: error(\"请先打开需要投屏的视频\")\n            if (nativeSource == null) repository.playback(info, current.currentPart, current.quality)\n            else playback.currentCastSource(nativeSource.sourceVersion) ?: error(\"当前视频播放源已经变化，请重新开始投屏\")\n        } else null\n        val admittedSource = when (owner) {\n            retainedMedia.bangumi -> retainedMedia.bangumi.playback?.source?.toNativePlayback() ?: error(\"剧集播放源已经变化\")\n            null -> resolvedVideo!!.toNativePlayback()\n            else -> nativeSource?.source?.copy(primaryAccountEpoch = epoch) ?: error(\"当前播放源已经变化\")\n        }\n        val frame = com.bilipai.desktop.cast.DesktopCastPublicationFrame(\n            com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository, allowPrimaryAccountSource = true), admittedSource, owned, callerJob)\n        return com.bilipai.desktop.cast.DesktopCastMediaPublication(frame) {\n        val media = when (owner) {\n            retainedMedia.external -> {\n                check(retainedMedia.external.authorizationCurrent) { \"插件播放授权已经变化，请重新打开内容\" }\n                val source = nativeSource?.source ?: error(\"请先打开需要投屏的媒体\")\n                val type = retainedMedia.external.request?.streams?.getOrNull(retainedMedia.external.selectedIndex)?.contentType ?: \"video/mp4\"\n                castResolver.nativeSource(source, contentType = type, positionMs = positionMs)\n            }\n            retainedMedia.live -> {\n                val source = nativeSource?.source ?: error(\"请先打开需要投屏的直播\")\n                val type = if (java.net.URI(source.videoUrl).path.orEmpty().endsWith(\".m3u8\", ignoreCase = true)) \"application/vnd.apple.mpegurl\" else \"video/x-flv\"\n                castResolver.nativeSource(source, creator = retainedMedia.live.room?.author.orEmpty(), contentType = type, positionMs = 0)\n            }\n            retainedMedia.bangumi -> {\n                val source = retainedMedia.bangumi.playback?.source ?: error(\"请先打开需要投屏的剧集\")\n                castResolver.existingSource(source, nativeSource?.source ?: error(\"剧集播放源已经变化\"),\n                    durationMs = (retainedMedia.bangumi.episode?.durationSeconds ?: 0) * 1000, positionMs = positionMs)\n            }\n            retainedMedia.offline -> error(\"本地离线文件暂不支持局域网投屏，请打开在线视频\")\n            else -> {\n                val info = current.details ?: error(\"请先打开需要投屏的视频\")\n                val source = resolvedVideo!!\n                castResolver.video(info, current.currentPart, source, positionMs, nativeSource = nativeSource?.source)\n            }\n        }\n        val latestSource = player?.currentSourceSnapshot()\n        check(epoch == repository.sessionEpoch && nativeSource?.sourceVersion == latestSource?.sourceVersion &&\n            nativeSource?.source == latestSource?.source && retainedMedia.current === owner && !systemTargetAudio &&\n            (owner != null || playback.state.value.details?.bvid == current.details?.bvid && playback.state.value.currentPart == current.currentPart) &&\n            (owner !== retainedMedia.external || retainedMedia.external.authorizationCurrent)) {\n            \"当前播放视频已切换，请重新开始投屏\"\n        }\n        media\n        }\n    }\n",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            56378
+          ]
+        },
+        {
+          "before": "    fun prepareUpdate(update: WindowsUpdate, manual: Boolean) {",
+          "after": "    val castMediaFactory: suspend () -> com.bilipai.desktop.cast.DesktopCastMediaPublication? = { currentCastMedia() }\n    fun prepareUpdate(update: WindowsUpdate, manual: Boolean) {",
+          "occurrences": 1,
+          "proofOffsetsBefore": [
+            60752
+          ]
+        },
+        {
+          "before": "media = { currentCastMedia() }",
+          "after": "media = castMediaFactory",
+          "occurrences": 2,
+          "proofOffsetsBefore": [
+            133553,
+            133736
+          ]
+        }
+      ],
+      "proofWholeFileNotInstallPayload": true
+    }
+  ]
+}

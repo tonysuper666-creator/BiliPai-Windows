@@ -1,0 +1,224 @@
+{
+  "scope": "source-only-preparation",
+  "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalSources": {
+    "app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt": {
+      "sha256LF": "c7619b2386b42349693098c28657867cf8b73af3a66e1353d039bdc037a68011",
+      "physicalLines": 224
+    },
+    "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt": {
+      "sha256LF": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "physicalLines": 3460
+    },
+    "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt": {
+      "sha256LF": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "physicalLines": 2391
+    },
+    "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt": {
+      "sha256LF": "358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612",
+      "physicalLines": 833
+    }
+  },
+  "originalMethods": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+      "name": "getAccounts",
+      "bodySha256LF": "241fcf289f9eede1d649513be63d5b8db705763054878c521b0b27e4e74a1e28",
+      "bodyLines": 10,
+      "anchor": 43
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+      "name": "readSnapshot",
+      "bodySha256LF": "aa7f5d8dedff57ebae58db95108ca0248b03a7639b361ac6c13c3a82c4a4360c",
+      "bodyLines": 5,
+      "anchor": 55
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+      "name": "getPlaybackAccountMid",
+      "bodySha256LF": "b424de0ee5a0e9a555ec64b70f402fdb5adf11cb17b37d8c50c5df103338eef4",
+      "bodyLines": 5,
+      "anchor": 71
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+      "name": "getPlaybackAccount",
+      "bodySha256LF": "372dca6caa9a9a5b83f115ef4b353449ddb972c16a721a6cbc7d4019abe39083",
+      "bodyLines": 4,
+      "anchor": 77
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+      "name": "setPlaybackAccountMid",
+      "bodySha256LF": "8d47a6c67674eeb7210be2e25570978c574e7ed64d2673a2c60fbbb6f6f11cf5",
+      "bodyLines": 13,
+      "anchor": 83
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+      "name": "removeAccount",
+      "bodySha256LF": "1051241f46185b6ea05bf995297b4b224bba54baf34d9a507d4e894d0ec79d8f",
+      "bodyLines": 18,
+      "anchor": 105
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "name": "playbackAccount",
+      "bodySha256LF": "61668f419329ffb44957e8a54930a1d1eab4d8dd1123c13ca6ae4156ae922a88",
+      "bodyLines": 2,
+      "anchor": 2907
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "name": "playbackApi",
+      "bodySha256LF": "b4c59ba9657b75ff87e85d322b0e09cc040fcab9d119691444ff9cbbbb453e78",
+      "bodyLines": 9,
+      "anchor": 2916
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "name": "playbackBangumiApi",
+      "bodySha256LF": "1b9c7c492d69c1ca3933b7d7f6d69591622161dda10409691203b6cc4e355ca7",
+      "bodyLines": 9,
+      "anchor": 2927
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "name": "ensurePlaybackAccountClients",
+      "bodySha256LF": "479b462c9bc3bae7812a35eae97ef54520177717c236428914e1aad167e3e18b",
+      "bodyLines": 16,
+      "anchor": 2937
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "name": "playbackAccount",
+      "bodySha256LF": "92daf020070038589deb915ea439d119fedbf7c686f260a838b40a54a7bc1fef",
+      "bodyLines": 1,
+      "anchor": 173
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "name": "isUsingDedicatedPlaybackAccount",
+      "bodySha256LF": "14d2d2b845165908b29ac650b989ed3e527a10a3bf3949274e283b6bce3ff450",
+      "bodyLines": 1,
+      "anchor": 175
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "name": "hasPlaybackSessionCookie",
+      "bodySha256LF": "d472f00b39d337e094e283e5ec17f8b06baaf72ca1f3b4fea7aaed21ebfd8a63",
+      "bodyLines": 2,
+      "anchor": 177
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "name": "playbackAccessToken",
+      "bodySha256LF": "32a76f44c4f79f4a2e4cf4051ed76c6fee75601d5cbf2cf5b7d66a01796d2ad1",
+      "bodyLines": 2,
+      "anchor": 180
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "name": "playbackAccessTokenPlatform",
+      "bodySha256LF": "51f1d165046f3163126b36d3b30c69b9c8f6fd43db1ed919fe84f06e57a014c6",
+      "bodyLines": 2,
+      "anchor": 183
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "name": "isPlaybackVip",
+      "bodySha256LF": "eadc124e73deb6f105c6abc886b16d79cda9236aad3fee60bd0c9b5a11d26cab",
+      "bodyLines": 2,
+      "anchor": 186
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "name": "getPlaybackNavInfo",
+      "bodySha256LF": "b23b2fb19f8d0128ad8c701708a9b7bd73805ca6b7a6b7e328c0b333c065ff2a",
+      "bodyLines": 16,
+      "anchor": 1122
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "name": "getPlayUrlData",
+      "bodySha256LF": "e6fedbe8a067baf9e7cc93d74aa6b6d786862e3d9b4b88fbf480f84ca26b83e1",
+      "bodyLines": 9,
+      "anchor": 1538
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "name": "fetchDashWithFallback",
+      "bodySha256LF": "3f6c8d8926c52d2fd18c6016fa60323c0c208063a2067651365af9b12c4fac48",
+      "bodyLines": 192,
+      "anchor": 1720
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "name": "fetchPlayUrlWithWbiInternal",
+      "bodySha256LF": "1884a94bf48ede6812ac35dbb683cc57e38222db3499be0676b8f1df06df1d6c",
+      "bodyLines": 70,
+      "anchor": 2044
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "name": "fetchPlayUrlWithAccessToken",
+      "bodySha256LF": "b04750cd505a76e5b31e3759e56eb0ea9a3d69cf40b0e10345be0116b01ac940",
+      "bodyLines": 85,
+      "anchor": 2132
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "name": "getBangumiPlayUrl",
+      "bodySha256LF": "c50e5969eb937e61247a39aa6d0092950ad1e0250b0ff838e7e1a97f2b87f8b2",
+      "bodyLines": 110,
+      "anchor": 433
+    }
+  ],
+  "candidateBaseFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256LF": "dfb7ce977a5162793bf86906982fd6fc58a66dd8c50a754caa5690e381663b63",
+      "sha256Bytes": "b4082fe7b556a9851f61efdcee9cb1e49d6b424d07349925dbe78cda088b6df4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256LF": "1fe31dea406890ed26fd59013592dc05a270bae22035b8e8259ed897a2acf545",
+      "sha256Bytes": "11bd36d5f31a5f44256567ab45bb2b3735d54d42ad3513c3d0f347b7c0955169"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256LF": "da0f2585564de455f8d331b3f6b7a265c5b7f7256b5a09a610219f08cbd4ea98",
+      "sha256Bytes": "6925736b38d81b191b2404b1c2b72430fdb59365fd282a890e5092dedf1d924d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256LF": "25185ccb8e13c52be17801c83ad5b4288b6e48f6632dd1e6a9d03c20f512fe4a",
+      "sha256Bytes": "46c6f61859d5a8f29d00a21db432a873738062e47cd548e94162c9d1c5d14a63"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256LF": "4ce499492157c0147365db59f59ab0c633972ba531bb7ffa17a4501c686e67c8",
+      "sha256Bytes": "fd23e585ed119fe4a58a447cfe7d3072e1531401d5012291c2d2c7bb70060b01"
+    }
+  ],
+  "findings": [
+    "Current encrypted SavedSession has no original playback_mid selection",
+    "Native video URL and PUGV/PGC use main-account services",
+    "URL cache key has primary epoch only and requires independent playback authorization revision",
+    "Return-to-native publication requires authorization receipt; pre/post HTTP checks alone leave a late-selection window"
+  ],
+  "required": [
+    "Same encrypted DesktopSessionStore field/get/set/remove and original nullable main fallback; no primary MID switch",
+    "Independent revision in the same Store for selection or effective selected credential changes",
+    "Same Repository Call.Factory/client and epoch tags; original isolated playback CookieJar algorithm as ephemeral selected transport state retained by that same Store",
+    "PUGV/PGC and video services only use the selected transport; other original Profile/Home/account traffic stays primary",
+    "Cache keys and returned source receipt reject old authorization; final Root source publication guarded without native join under Store"
+  ],
+  "noMainEdits": true,
+  "noGradle": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "noAccountRead": true,
+  "notRuntimeAcceptance": true
+}

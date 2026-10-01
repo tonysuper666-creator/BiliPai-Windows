@@ -1,0 +1,282 @@
+[
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopCheckpointFailureTest.kt",
+    "baseLF": "7887cc5676220ca03fa76a62ca792c56498f100e1cbe4c0a1f288687d6e7c207",
+    "candidateLF": "2bcd33f51351d31551f74b33a8fc7891acd69dae8d7846cac7a64399e00220c8",
+    "hunks": [
+      {
+        "before": "DesktopPlaybackController(repository, player, null, null,\n            DesktopLibrary(root, preferences::isPrivacyModeEnabledSync), { PlayerPreferences() }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source)",
+        "after": "DesktopPlaybackController(repository, player, null, null,\n            DesktopLibrary(root, preferences::isPrivacyModeEnabledSync), { PlayerPreferences() }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true },\n                { admitted -> synchronized(scope) {\n                    if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }\n                } }))",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 1,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopPlaybackControllerTest.kt",
+    "baseLF": "427fa39b59a9742969e2b51dfe544b91ce15c9d5b0f9404e32168b58f0288c8d",
+    "candidateLF": "c0c75352f602d3a864d276ee2340ba447a31ecbe773d461b04029b946e603951",
+    "hunks": [
+      {
+        "before": "DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory) { false },\n            { PlayerPreferences(playbackMode = mode) }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source)",
+        "after": "DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory) { false },\n            { PlayerPreferences(playbackMode = mode) }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true },\n                { admitted -> synchronized(scope) {\n                    if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }\n                } }))",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 1,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopPlaybackQueueOwnershipTest.kt",
+    "baseLF": "e6501f967185fc0c005398e744b0484fd006873a8844f5a57c5c2545fd0406d9",
+    "candidateLF": "7605aeca7163b342cd87369854901268909c237e84025cc06491747d93e1246f",
+    "hunks": [
+      {
+        "before": "DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory) { false },\n            { PlayerPreferences(playbackMode = mode) }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source)",
+        "after": "DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory) { false },\n            { PlayerPreferences(playbackMode = mode) }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true },\n                { admitted -> synchronized(scope) {\n                    if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }\n                } }))",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 1,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioControllerTest.kt",
+    "baseLF": "a5ef2e2d86f238d366121f97c3e73f81ec667f37be36cb23bb6eb107d799ec23",
+    "candidateLF": "ea8a0840da3e7f73cfdd761c09b1cb17148df4f9c0e8bcdf89a3e30b78ed49e1",
+    "hunks": [
+      {
+        "before": "DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory) { false }, { preferences }, scope,\n            currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, onRememberAudioQuality = { remembered.add(it) })",
+        "after": "DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory) { false }, { preferences }, scope,\n            currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, onRememberAudioQuality = { remembered.add(it) }, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true },\n                { admitted -> synchronized(scope) {\n                    if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }\n                } }))",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 1,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlaybackSettingsIntegrationFixtures.kt",
+    "baseLF": "2a2f40789c4642dce0af5781b45a4ecd03de9810147ada13f2c4c8984d90da2b",
+    "candidateLF": "e0e885d0da158fa50cfaed7bd2eda22685632134e044821131f357da7749874a",
+    "hunks": [
+      {
+        "before": "DesktopPlaybackController(repo, player, null, null, DesktopLibrary(dir) { false },\n        { preferences }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, onRememberAudioQuality = {\n            remembered.add(it); preferences = preferences.copy(lastSelectedAudioQuality = it)\n        })",
+        "after": "DesktopPlaybackController(repo, player, null, null, DesktopLibrary(dir) { false },\n        { preferences }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, onRememberAudioQuality = {\n            remembered.add(it); preferences = preferences.copy(lastSelectedAudioQuality = it)\n        }, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true },\n                { admitted -> synchronized(scope) {\n                    if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }\n                } }))",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 1,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt",
+    "baseLF": "cadc45aafaa9a6f30e79d2b18b1b14ed87665f827f1c48079567e41e9be78473",
+    "candidateLF": "2bec8d118b726713f07bcb77dc7d9838773c486f6fed71781014ece7ecc38bcc",
+    "hunks": [
+      {
+        "before": "DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory) { false }, { PlayerPreferences() }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source)",
+        "after": "DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory) { false }, { PlayerPreferences() }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true },\n                { admitted -> synchronized(scope) {\n                    if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }\n                } }))",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 1,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest.kt",
+    "baseLF": "f0a0b0793c7dca8a71b2439252ce0ae41f81bf386e624a493e3b297d3bf1d70f",
+    "candidateLF": "bab1a5b60ffc606e3e5cfe02062d211956821bde45b4f928fcddd40929bc72a1",
+    "hunks": [
+      {
+        "before": "DesktopPlaybackController(repository, player, null, null, DesktopLibrary(root) { false },\n            { preferences }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, onRememberAudioQuality = { value ->\n                preferences = preferences.copy(lastSelectedAudioQuality = value).normalized()\n                assertTrue(writer.submit(preferences))\n            })",
+        "after": "DesktopPlaybackController(repository, player, null, null, DesktopLibrary(root) { false },\n            { preferences }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, onRememberAudioQuality = { value ->\n                preferences = preferences.copy(lastSelectedAudioQuality = value).normalized()\n                assertTrue(writer.submit(preferences))\n            }, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true },\n                { admitted -> synchronized(scope) {\n                    if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }\n                } }))",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 1,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopMusicRootIntegrationTest.kt",
+    "baseLF": "fd00b400afe3460291d3405342a74c0feb3892c12416420b6340876c2415cdd8",
+    "candidateLF": "a517f77bdfca9220b5849cfb4a4db9a48e07f372ba740100bee5e615fd6edd7d",
+    "hunks": [
+      {
+        "before": "ListenAudioSession(repository, DesktopCommunityRepository(repository), player,\n            onAcquirePlayback = onAcquire, store = ListenAudioStore(directory.resolve(\"listen.json\")), playbackDataSource = dataSource)",
+        "after": "ListenAudioSession(repository, DesktopCommunityRepository(repository), player,\n            onAcquirePlayback = onAcquire, store = ListenAudioStore(directory.resolve(\"listen.json\")), playbackDataSource = dataSource, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                    { synchronized(publicationGate) { publicationAlive } },\n                    { admitted -> synchronized(publicationGate) { if (!publicationAlive) false else { admitted(); true } } }))",
+        "occurrences": 1
+      },
+      {
+        "before": "    lateinit var session: ListenAudioSession",
+        "after": "    private val publicationGate = Any()\n    private var publicationAlive = true\n    lateinit var session: ListenAudioSession",
+        "occurrences": 1
+      },
+      {
+        "before": "override fun close() {",
+        "after": "override fun close() { synchronized(publicationGate) { publicationAlive = false };",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 1,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicIntegrationTest.kt",
+    "baseLF": "ef55569a21f06a976a7bd0b40ed6339c2e4e07ebb08fe6c911fab8dc68134b3c",
+    "candidateLF": "280c336b59fc65947294262069f3cdf2c6ca3f073ef91ab8b73f6f4f013320d7",
+    "hunks": [
+      {
+        "before": "ListenAudioSession(repository, DesktopCommunityRepository(repository), player,\n            preferences, store = store, playbackDataSource = source)",
+        "after": "ListenAudioSession(repository, DesktopCommunityRepository(repository), player,\n            preferences, store = store, playbackDataSource = source, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                    { synchronized(publicationGate) { publicationAlive } },\n                    { admitted -> synchronized(publicationGate) { if (!publicationAlive) false else { admitted(); true } } }))",
+        "occurrences": 1
+      },
+      {
+        "before": "    lateinit var session: ListenAudioSession",
+        "after": "    private val publicationGate = Any()\n    private var publicationAlive = true\n    lateinit var session: ListenAudioSession",
+        "occurrences": 1
+      },
+      {
+        "before": "override fun close() {",
+        "after": "override fun close() { synchronized(publicationGate) { publicationAlive = false };",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 1,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenAudioLifecycleTest.kt",
+    "baseLF": "7abe70d2cab68357782f1f94c17e3bb9ca6f644d8b8b55022397b6020843faf8",
+    "candidateLF": "c62fd55f39d876b955486d4e9eaf1362865de9aa76b9249657adfa29c4b8c807",
+    "hunks": [
+      {
+        "before": "ListenAudioSession(repository, DesktopCommunityRepository(repository), player,\n                store = store, playbackDataSource = source)",
+        "after": "ListenAudioSession(repository, DesktopCommunityRepository(repository), player,\n                store = store, playbackDataSource = source, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                    { synchronized(publicationGate) { publicationAlive } },\n                    { admitted -> synchronized(publicationGate) { if (!publicationAlive) false else { admitted(); true } } }))",
+        "occurrences": 1
+      },
+      {
+        "before": "    lateinit var session: ListenAudioSession",
+        "after": "    private val publicationGate = Any()\n    private var publicationAlive = true\n    lateinit var session: ListenAudioSession",
+        "occurrences": 1
+      },
+      {
+        "before": "override fun close() {",
+        "after": "override fun close() { synchronized(publicationGate) { publicationAlive = false };",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 1,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenWriterBarrierTest.kt",
+    "baseLF": "38f78d69746db4d0f7a4cc0d89ed369f902d5aa190e3e5a8cd2c5c8c0c68fb86",
+    "candidateLF": "a4a3939051a5cfced284913565ae4a398d674fadf27f74acddfcfd5d389c92b5",
+    "hunks": [
+      {
+        "before": "ListenAudioSession(repository, community, player, store = store, playbackDataSource = source)",
+        "after": "ListenAudioSession(repository, community, player, store = store, playbackDataSource = source, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                    { synchronized(publicationGate) { publicationAlive } },\n                    { admitted -> synchronized(publicationGate) { if (!publicationAlive) false else { admitted(); true } } }))",
+        "occurrences": 1
+      },
+      {
+        "before": "    lateinit var session: ListenAudioSession",
+        "after": "    private val publicationGate = Any()\n    private var publicationAlive = true\n    lateinit var session: ListenAudioSession",
+        "occurrences": 1
+      },
+      {
+        "before": "override fun close() {",
+        "after": "override fun close() { synchronized(publicationGate) { publicationAlive = false };",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 1,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadManagerTest.kt",
+    "baseLF": "76bacf7f28737ff1619c650502ed1cef8d45a839d9fb432ec342015476afccd5",
+    "candidateLF": "d1ebc6a552ed394e07ffb98ca91deaf833561f708de778ff5be5b6fdad86f9f7",
+    "hunks": [
+      {
+        "before": "DesktopDownloadManager(memoryClient(ByteArray(20)), state, muxer)",
+        "after": "DesktopDownloadManager(memoryClient(ByteArray(20)), state, muxer, publication = localDownloadPublication())",
+        "occurrences": 2
+      },
+      {
+        "before": "DesktopDownloadManager(memoryClient(ByteArray(20)), root.resolve(\"state.json\"),\n            DownloadMuxer { _, _, output -> Files.write(output, \"merged\".toByteArray()) },\n            danmakuDownloader = { task, directory, _ ->\n                val paths = (1..3).map { index -> directory.resolve(\"${task.id}_seg_$index.pb\").also {\n                    Files.write(it, byteArrayOf(index.toByte()))\n                }.toString() }\n                val special = directory.resolve(\"${task.id}_special_1.pb\").also { Files.write(it, byteArrayOf(9)) }.toString()\n                val all = paths + special\n                val metadata = directory.resolve(\"manifest.json\")\n                Files.writeString(metadata, Json.encodeToString(LocalDanmakuManifest.serializer(), LocalDanmakuManifest(\n                    bvid = task.item.bvid, cid = task.item.cid, aid = task.item.aid, durationMs = 1_080_000L,\n                    segmentPaths = all, standardSegmentCount = 3, savedAt = 0L)))\n                all to metadata.toString()\n            })",
+        "after": "DesktopDownloadManager(memoryClient(ByteArray(20)), root.resolve(\"state.json\"),\n            DownloadMuxer { _, _, output -> Files.write(output, \"merged\".toByteArray()) },\n            danmakuDownloader = { task, directory, _ ->\n                val paths = (1..3).map { index -> directory.resolve(\"${task.id}_seg_$index.pb\").also {\n                    Files.write(it, byteArrayOf(index.toByte()))\n                }.toString() }\n                val special = directory.resolve(\"${task.id}_special_1.pb\").also { Files.write(it, byteArrayOf(9)) }.toString()\n                val all = paths + special\n                val metadata = directory.resolve(\"manifest.json\")\n                Files.writeString(metadata, Json.encodeToString(LocalDanmakuManifest.serializer(), LocalDanmakuManifest(\n                    bvid = task.item.bvid, cid = task.item.cid, aid = task.item.aid, durationMs = 1_080_000L,\n                    segmentPaths = all, standardSegmentCount = 3, savedAt = 0L)))\n                all to metadata.toString()\n            }, publication = localDownloadPublication())",
+        "occurrences": 1
+      },
+      {
+        "before": "DesktopDownloadManager(client, root.resolve(\"state.json\"), DownloadMuxer { _, _, output -> Files.write(output, \"merged\".toByteArray()) })",
+        "after": "DesktopDownloadManager(client, root.resolve(\"state.json\"), DownloadMuxer { _, _, output -> Files.write(output, \"merged\".toByteArray()) }, publication = localDownloadPublication())",
+        "occurrences": 1
+      },
+      {
+        "before": "DesktopDownloadManager(recording, root.resolve(\"state.json\"), DownloadMuxer { video, audio, output ->\n            assertNull(video)\n            assertNotNull(audio)\n            assertEquals(\"m4a\", output.fileName.toString().substringAfterLast('.'))\n            Files.write(output, \"audio\".toByteArray())\n        })",
+        "after": "DesktopDownloadManager(recording, root.resolve(\"state.json\"), DownloadMuxer { video, audio, output ->\n            assertNull(video)\n            assertNotNull(audio)\n            assertEquals(\"m4a\", output.fileName.toString().substringAfterLast('.'))\n            Files.write(output, \"audio\".toByteArray())\n        }, publication = localDownloadPublication())",
+        "occurrences": 1
+      },
+      {
+        "before": "DesktopDownloadManager(expired, root.resolve(\"state.json\"), DownloadMuxer { video, audio, output ->\n            assertNotNull(video)\n            assertNotNull(audio)\n            assertContentEquals(bytes, Files.readAllBytes(video))\n            assertContentEquals(bytes, Files.readAllBytes(audio))\n            Files.write(output, \"merged\".toByteArray())\n        }, sourceResolver = {\n            refreshes++\n            PlaybackSource(\"https://cdn.example/video?token=current\", \"https://cdn.example/audio?token=current\")\n        })",
+        "after": "DesktopDownloadManager(expired, root.resolve(\"state.json\"), DownloadMuxer { video, audio, output ->\n            assertNotNull(video)\n            assertNotNull(audio)\n            assertContentEquals(bytes, Files.readAllBytes(video))\n            assertContentEquals(bytes, Files.readAllBytes(audio))\n            Files.write(output, \"merged\".toByteArray())\n        }, sourceResolver = {\n            refreshes++\n            PlaybackSource(\"https://cdn.example/video?token=current\", \"https://cdn.example/audio?token=current\")\n        }, publication = localDownloadPublication())",
+        "occurrences": 1
+      },
+      {
+        "before": "DesktopDownloadManager(memoryClient(ByteArray(30)), root.resolve(\"downloads.json\"), muxer)",
+        "after": "DesktopDownloadManager(memoryClient(ByteArray(30)), root.resolve(\"downloads.json\"), muxer, publication = localDownloadPublication())",
+        "occurrences": 1
+      },
+      {
+        "before": "DesktopDownloadManager(memoryClient(bytes), state, muxer)",
+        "after": "DesktopDownloadManager(memoryClient(bytes), state, muxer, publication = localDownloadPublication())",
+        "occurrences": 2
+      },
+      {
+        "before": "DesktopDownloadManager(client, state, muxer)",
+        "after": "DesktopDownloadManager(client, state, muxer, publication = localDownloadPublication())",
+        "occurrences": 2
+      },
+      {
+        "before": ", restored.offlinePlayback(id).startPositionSeconds)\n        } finally { restored.close() }\n    }\n}\n",
+        "after": ", restored.offlinePlayback(id).startPositionSeconds)\n        } finally { restored.close() }\n    }\n}\n\n/** Explicit memory-only fixture lease; never adopts an account receipt. Original assertions stay unchanged. */\nprivate suspend fun localDownloadPublication(): com.bilipai.desktop.player.DesktopPlaybackPublication {\n    val job = kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]\n        ?: error(\"Download fixture requires an actual test Job\")\n    val gate = Any()\n    return com.bilipai.desktop.player.DesktopLocalPlaybackPublication({ job.isActive }, { admitted ->\n        synchronized(gate) { if (!job.isActive) false else { admitted(); true } }\n    })\n}\n",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 11,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopControllerNativeSmoke.kt",
+    "baseLF": "f3c9937ff7d3a027dca347cd88f129394ffafa1e83eaea3c6470f4bedd485b61",
+    "candidateLF": "e434425894137646f7ffe22415cbc70685169ff62d4c8674998beaddff9d1df5",
+    "hunks": [
+      {
+        "before": "DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory) { false },\n                { PlayerPreferences(playbackMode = PlaybackMode.SEQUENTIAL) }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source)",
+        "after": "DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory) { false },\n                { PlayerPreferences(playbackMode = PlaybackMode.SEQUENTIAL) }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true },\n                { admitted -> synchronized(scope) {\n                    if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }\n                } }))",
+        "occurrences": 1
+      },
+      {
+        "before": "DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory) { false },\n            { PlayerPreferences(playbackMode = PlaybackMode.SEQUENTIAL) }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source)",
+        "after": "DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory) { false },\n            { PlayerPreferences(playbackMode = PlaybackMode.SEQUENTIAL) }, scope, currentDanmakuSettings = { error(\"This controller harness has no danmaku overlay\") }, dataSource = source, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(\n                { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true },\n                { admitted -> synchronized(scope) {\n                    if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }\n                } }))",
+        "occurrences": 1
+      }
+    ],
+    "explicitLocalContracts": 2,
+    "originalBusinessAssertionsUnchanged": true,
+    "syntheticAccountOwnerAcceptance": false
+  }
+]

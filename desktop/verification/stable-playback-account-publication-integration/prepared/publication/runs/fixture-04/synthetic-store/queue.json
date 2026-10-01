@@ -1,0 +1,91 @@
+[
+    {
+        "item": {
+            "bvid": "BVblock1",
+            "cid": 1,
+            "title": "block-1",
+            "cover": "",
+            "ownerName": "",
+            "ownerFace": "",
+            "duration": 0,
+            "quality": 0,
+            "qualityDesc": "",
+            "videoUrl": "https://fixture.invalid/block-1.mp4",
+            "audioUrl": "",
+            "status": "PAUSED",
+            "createdAt": 1790846945170,
+            "options": {
+                "includeDanmaku": false
+            },
+            "assets": [
+                {
+                    "kind": "COVER",
+                    "status": "SKIPPED"
+                },
+                {
+                    "kind": "DANMAKU",
+                    "status": "SKIPPED"
+                }
+            ]
+        },
+        "destinationRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\fixture-04\\synthetic-store\\downloads"
+    },
+    {
+        "item": {
+            "bvid": "BVblock2",
+            "cid": 2,
+            "title": "block-2",
+            "cover": "",
+            "ownerName": "",
+            "ownerFace": "",
+            "duration": 0,
+            "quality": 0,
+            "qualityDesc": "",
+            "videoUrl": "https://fixture.invalid/block-2.mp4",
+            "audioUrl": "",
+            "status": "PAUSED",
+            "createdAt": 1790846945183,
+            "options": {
+                "includeDanmaku": false
+            },
+            "assets": [
+                {
+                    "kind": "COVER",
+                    "status": "SKIPPED"
+                },
+                {
+                    "kind": "DANMAKU",
+                    "status": "SKIPPED"
+                }
+            ]
+        },
+        "destinationRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\fixture-04\\synthetic-store\\downloads"
+    },
+    {
+        "item": {
+            "bvid": "BVqueued",
+            "cid": 3,
+            "title": "queued",
+            "cover": "",
+            "ownerName": "",
+            "ownerFace": "",
+            "duration": 0,
+            "quality": 0,
+            "qualityDesc": "",
+            "videoUrl": "https://fixture.invalid/queued.mp4",
+            "audioUrl": "",
+            "status": "PAUSED",
+            "createdAt": 1790846945206,
+            "options": {
+                "includeDanmaku": false
+            },
+            "assets": [
+                {
+                    "kind": "COVER",
+                    "status": "SKIPPED"
+                }
+            ]
+        },
+        "destinationRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-final-publication-parity\\runs\\fixture-04\\synthetic-store\\downloads"
+    }
+]

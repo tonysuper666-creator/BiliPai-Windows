@@ -1,0 +1,15 @@
+desktop\.local\stable-playback-final-publication-parity\runs\fixture-01\PublicationRaceFixture.kt:73:104: error: overload resolution ambiguity between candidates:
+typealias CancellationException = CancellationException
+class CancellationException : IllegalStateException
+    expect(runCatching{local.admit(source(repo,"account"),{true}){error("late")}}.exceptionOrNull() is CancellationException,"local contract never adopts account receipt")
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\fixture-01\PublicationRaceFixture.kt:86:73: error: overload resolution ambiguity between candidates:
+typealias CancellationException = CancellationException
+class CancellationException : IllegalStateException
+        expect(runCatching{call.execute().close()}.exceptionOrNull() is CancellationException&&hits.get()==0,"queued HTTP call rejected at actual enqueue after revision change")
+                                                                        ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-playback-final-publication-parity\runs\fixture-01\PublicationRaceFixture.kt:96:67: error: overload resolution ambiguity between candidates:
+typealias CancellationException = CancellationException
+class CancellationException : IllegalStateException
+        expect(!holder.isAlive&&!waiter.isAlive&&outcome.get() is CancellationException&&hits.get()==0,"only request cancellation while Store is held prevents late enqueue")
+                                                                  ^^^^^^^^^^^^^^^^^^^^^

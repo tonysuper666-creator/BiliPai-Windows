@@ -158,8 +158,18 @@
     },
     {
       "path": "src/main/java/su/litvak/chromecast/api/v2/Channel.java",
-      "sha256": "b62051269356c2c04ce19db59d39ab50ff47fba71dcfa93e1ea84d850e7ae1b9",
-      "bytes": 26794
+      "sha256": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "bytes": 27030
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/DesktopCastPublication.java",
+      "sha256": "12a613267078eb7157868b9ab5595063894fdc2d098907da6e09f5a010e8928f",
+      "bytes": 568
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "bytes": 2816
     },
     {
       "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCast.java",
@@ -308,8 +318,8 @@
     },
     {
       "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
-      "sha256": "4a7529e3d589f60c190464c9f353d1804fb140c884e770a87f6d9cc3191da70e",
-      "bytes": 4508
+      "sha256": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+      "bytes": 4524
     },
     {
       "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastPlugin.kt",
@@ -588,8 +598,8 @@
     },
     {
       "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
-      "sha256": "5766488fee3ed9e79c82a55c91fd82b7fe47c6f13c48d0e92c5a43178bc5dfa4",
-      "bytes": 4771
+      "sha256": "ec4d7d41497b2d379dd467574fef1fe6027d8ff4f12dcae7f34c36059c54ef05",
+      "bytes": 5019
     }
   ],
   "dependencyNotices": [

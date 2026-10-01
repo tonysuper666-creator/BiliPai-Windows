@@ -1,0 +1,7 @@
+{
+  "status": "HISTORICAL_PREPARE_FAILURE",
+  "recordedFromToolOutput": true,
+  "error": "AssertionError: ('desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadManagerTest.kt', 'DesktopDownloadManager')",
+  "cause": "Two original restored constructors have identical source text; the first producer incorrectly required one occurrence. Corrected exact grouped occurrence counts; original assertions stay unchanged.",
+  "runtimeExecuted": false
+}

@@ -1,0 +1,9 @@
+desktop\.local\stable-playback-account-protocol-parity\runs\compile-01\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:413:26: error: cannot infer type for type parameter 'E'. Specify it explicitly.
+        val requestJob = currentCoroutineContext()[Job]
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-playback-account-protocol-parity\runs\compile-01\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:413:52: error: unresolved reference 'Job'.
+        val requestJob = currentCoroutineContext()[Job]
+                                                   ^^^
+desktop\.local\stable-playback-account-protocol-parity\runs\compile-01\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:414:35: error: unresolved reference 'isActive'.
+        val owned = { requestJob?.isActive != false }
+                                  ^^^^^^^^

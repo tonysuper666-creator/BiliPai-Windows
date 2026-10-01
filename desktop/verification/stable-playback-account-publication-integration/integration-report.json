@@ -1,0 +1,263 @@
+{
+  "wholeClassesPhase": 45,
+  "wholeClassesPassed": true,
+  "wholeTestSourcesCompiled": true,
+  "sourceIdentityCount": 931,
+  "resourceCount": 213,
+  "actualRuntimeEntries": 97,
+  "actualKotlinClasses": 11893,
+  "invalidJvmMethodNames": 0,
+  "focusedActual45": {
+    "passed": true,
+    "actualSnapshot": 45,
+    "manifestSha256Bytes": "61b8233a766542366bf6a72868434e9effbf2f0c6458ae0f77326168a50f3fec",
+    "orderedRuntimeCpSha256Bytes": "946d0f272d696310a60b8814cbc4a0ed6ae30617ba047dbfe10d729583234419",
+    "runtimeEntries": 97,
+    "productionOverrides": 0,
+    "cpPrePostByteEqual": true,
+    "businessAssertions": 86,
+    "groups": 8,
+    "fixtures": [
+      {
+        "status": "PASS",
+        "groups": 4,
+        "assertions": 47,
+        "scope": "prospective same-Store/session/tag/API memory transport; no sockets, no primary user credentials",
+        "actualProductAcceptance": false,
+        "nativeOrRootMounted": false,
+        "origins": [
+          {
+            "class": "com.bilipai.desktop.data.DesktopSessionStore",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "0ed93bff5d0e4c15883f0f1142a221f0f406387c7bd617c0a67ac58e5f665fb7"
+          },
+          {
+            "class": "com.bilipai.desktop.data.DesktopRepository",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "2397a469e36e4b8aa79178e22a6f1a458d074a61fb598cab766c21d79330ca69"
+          },
+          {
+            "class": "com.bilipai.desktop.data.DesktopMediaRepository",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "980e3bb2c75e8467403abb8f3a6904254be8742bc69d570d2fb5d2925110c820"
+          },
+          {
+            "class": "com.bilipai.desktop.data.DesktopPlaybackCache",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "9051309aa5f58b979cdc5cb2f808ecb0b326695214774a7308c4979a25da669e"
+          },
+          {
+            "class": "com.bilipai.desktop.data.PlaybackSource",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "f836e713d1b71e6d0c48b6419cf2cf380b220ab4dedb7c32c1724713311699f9"
+          },
+          {
+            "class": "com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "ef10ef78d77a95c7cbd1f9583ba5ae2086f44dc2297013ccd1a18290183fb3c5"
+          },
+          {
+            "class": "com.android.purebilibili.core.store.StoredAccountSession",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "cbc5166764971f1a6ee2d11d790175b65e0109b435453fcb3462f0d3006c95da"
+          },
+          {
+            "class": "com.android.purebilibili.core.network.BilibiliApi",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "36e363a5ec59e07eab90fd4b7b71ef3e9e450287499e119bba968cb0190f0124"
+          },
+          {
+            "class": "com.android.purebilibili.core.network.BangumiApi",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "042a346eba70e317d805a6cda29860cacce5b3b525cfbb346191fc66e4d24bf9"
+          }
+        ],
+        "actualSnapshot": 45,
+        "actualProductClassProof": true,
+        "actualRootAccountAcceptance": false,
+        "productionOverrides": 0,
+        "fixtureClassIntersections": [],
+        "fixtureSourceByteIdentical": true,
+        "fixtureJarSha256Bytes": "553b88400ef2fc0dabfb0ad667f30e43272f8654d1c3f58fb736aae8c474820f",
+        "actualRuntimeEntries": 97,
+        "HTTP": false,
+        "socket": false,
+        "HWND": false,
+        "GUI": false,
+        "Gradle": false,
+        "provenanceNote": "Original fixture business claims and output unchanged; actual installed product origins verified by runner, no candidate JAR present"
+      },
+      {
+        "status": "PASS",
+        "groups": 4,
+        "assertions": 39,
+        "origins": [
+          {
+            "class": "com.bilipai.desktop.data.DesktopSessionStore",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "0ed93bff5d0e4c15883f0f1142a221f0f406387c7bd617c0a67ac58e5f665fb7"
+          },
+          {
+            "class": "com.bilipai.desktop.data.DesktopRepository",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "2397a469e36e4b8aa79178e22a6f1a458d074a61fb598cab766c21d79330ca69"
+          },
+          {
+            "class": "com.bilipai.desktop.player.PlaybackSource",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "e1d50d2f012b093f04b6c6d1671126d82fc52e39ff6808587dd4d0105e4baa70"
+          },
+          {
+            "class": "com.bilipai.desktop.DesktopPlaybackController",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "1254b5465908538d1d87ce27836b1b7c7f1e82a4723280e1446769d0889ebeab"
+          },
+          {
+            "class": "com.bilipai.desktop.download.DesktopDownloadManager",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "e643718f1367e7ea2bf4d38a2bf4481c09fba3d8f90f37e41c047c074290ea78"
+          },
+          {
+            "class": "com.bilipai.desktop.download.DownloadTask",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "261a51e964cd166882e066146095757c144cf56d1e4e165e0ec9a5a0410cd631"
+          },
+          {
+            "class": "su.litvak.chromecast.api.v2.DesktopCastWriter",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-java.jar",
+            "classSha256": "d7715339c7a4319c74b3eef763261b2a49898534bbbf94af7e5027b064f7f4fc"
+          },
+          {
+            "class": "com.bilipai.desktop.cast.DesktopCastPublicationFrame",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "a5d41e6aa4ceaf7d38fc170a9e116d9032ffad2d6af0619a36fa694a4880d8a1"
+          },
+          {
+            "class": "com.bilipai.desktop.audio.ListenAudioSession",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "f2faaec854de316895c40650b1dbfeda54e121c739725e81377f4a16e08716ae"
+          },
+          {
+            "class": "com.bilipai.desktop.data.VideoDetails",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "167042f0bd6206714e217cab4688ecbcacb97e3c92bd08fb48533fab3896dbdb"
+          },
+          {
+            "class": "com.android.purebilibili.feature.download.DownloadTask",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+            "classSha256": "758ef6012c78d863c82379531f444386693a33aeaecbfdd8c21abe363adc1811"
+          }
+        ],
+        "nativeDLLExecuted": false,
+        "socket": false,
+        "HTTP": false,
+        "HWND": false,
+        "actualSnapshot": 45,
+        "actualProductClassProof": true,
+        "actualRootAccountAcceptance": false,
+        "productionOverrides": 0,
+        "fixtureClassIntersections": [],
+        "fixtureSourceByteIdentical": true,
+        "fixtureJarSha256Bytes": "1ce840d88f26dd809ce9851e77ef2294950ff2cabe02f4aabb01ff42e6bac7e4",
+        "actualRuntimeEntries": 97,
+        "GUI": false,
+        "Gradle": false,
+        "provenanceNote": "Original fixture business claims and output unchanged; actual installed product origins verified by runner, no candidate JAR present"
+      }
+    ],
+    "scope": "Same installed Store/repository/receipt/native publication/cast writer/download classes with private synthetic memory transport and explicit local admission",
+    "notClaimed": [
+      "Native DLL execution",
+      "Root account/page mounted end-to-end",
+      "HTTP/socket",
+      "HWND/GUI",
+      "user files or credentials"
+    ]
+  },
+  "actualFocusedAssertions": 86,
+  "actualFocusedGroups": 8,
+  "productionOverrides": 0,
+  "targetedJUnit": {
+    "passed": true,
+    "uniqueAcceptedCases": 67,
+    "classes": [
+      {
+        "className": "com.bilipai.desktop.audio.ListenAudioLifecycleTest",
+        "cases": 6,
+        "source": "attempt01/TEST-com.bilipai.desktop.audio.ListenAudioLifecycleTest.xml"
+      },
+      {
+        "className": "com.bilipai.desktop.DesktopPlaybackControllerTest",
+        "cases": 11,
+        "source": "attempt01/TEST-com.bilipai.desktop.DesktopPlaybackControllerTest.xml"
+      },
+      {
+        "className": "com.bilipai.desktop.download.DesktopDownloadManagerTest",
+        "cases": 13,
+        "source": "attempt01/TEST-com.bilipai.desktop.download.DesktopDownloadManagerTest.xml"
+      },
+      {
+        "className": "com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest",
+        "cases": 25,
+        "source": "attempt02/TEST-com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest.xml"
+      },
+      {
+        "className": "com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest",
+        "cases": 8,
+        "source": "attempt01/TEST-com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest.xml"
+      },
+      {
+        "className": "com.bilipai.desktop.player.MpvStartupProbeTest",
+        "cases": 4,
+        "source": "attempt01/TEST-com.bilipai.desktop.player.MpvStartupProbeTest.xml"
+      }
+    ],
+    "actualProductClassesUnchangedFromSnapshot45": [
+      {
+        "kind": "kotlin",
+        "entries": 11894,
+        "byteEqualToFrozen45": true
+      },
+      {
+        "kind": "java",
+        "entries": 156,
+        "byteEqualToFrozen45": true
+      },
+      {
+        "kind": "resources",
+        "entries": 73,
+        "byteEqualToFrozen45": true
+      }
+    ],
+    "oneFailedClassReplacedByExactSameCaseRerun": true,
+    "originalBusinessAssertionsUnchanged": true,
+    "fixtureRepairOnly": true,
+    "initialGuestExternalHttpOccurred": true,
+    "initialPersonalSessionsRead": false,
+    "finalFailedCaseMemoryTransport": true,
+    "newRootUiAccepted": false
+  },
+  "uniqueJUnitCasesPassed": 67,
+  "selectedPlaybackStoreRevisionIndependent": true,
+  "originalSelectedCookieJarBodyPreserved": true,
+  "finalControllerListenDownloadAndCastPublicationInstalled": true,
+  "sameMpvCoreAndDownloadQueueAndClient": true,
+  "downloadOriginalIdentityModeNowPlatformRewrite": true,
+  "newOriginalIdentities": 0,
+  "newRuntimeArtifacts": 0,
+  "oldSyntheticCallersExplicitlyAdmitted": true,
+  "existingCastVerifierPreserved": true,
+  "profilePlaybackAccountUiMounted": false,
+  "physicalNativeDecodeOrLanReceiverAccepted": false,
+  "newWindowsExeDeployed": false,
+  "failuresRetained": [
+    "Cast provenance omitted two changed existing Kotlin records; corrected only their hashes/lengths",
+    "Three historical native test fixtures lacked five render-interface methods; added explicit unexpected-call failures without changing assertions",
+    "Older settings fixture replaced only api, so one guest fake-BVID request reached actual HTTP; bind the same existing memory-only client. The failed class alone was rerun with exactly the same25 case names"
+  ],
+  "pending": [
+    "Concrete Profile account platform methods and original selection UI",
+    "Actual original MainHost/Home/NavDisplay/typed leaf Window mount",
+    "Native/account/receiver interaction and final desktop EXE"
+  ]
+}

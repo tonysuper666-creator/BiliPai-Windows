@@ -1,0 +1,17 @@
+[
+  {
+    "path": "desktop/third-party/google-cast-v2/SOURCES.json",
+    "baseLF": "0e2048f0e30423366037ee8bcd340ec054b3585f34c356adff78503685c039ec",
+    "candidateLF": "f1355e0993d16c15ede28469a3bc4e53738a5e7d5e56d1d7b2614f88fe92ef1d",
+    "hunks": [
+      {
+        "before": "    {\n      \"path\": \"src/main/java/su/litvak/chromecast/api/v2/Channel.java\",\n      \"sha256\": \"b62051269356c2c04ce19db59d39ab50ff47fba71dcfa93e1ea84d850e7ae1b9\",\n      \"bytes\": 26794\n    }",
+        "after": "    {\n      \"path\": \"src/main/java/su/litvak/chromecast/api/v2/Channel.java\",\n      \"sha256\": \"6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014\",\n      \"bytes\": 27030\n    },\n    {\n      \"path\": \"src/main/java/su/litvak/chromecast/api/v2/DesktopCastPublication.java\",\n      \"sha256\": \"12a613267078eb7157868b9ab5595063894fdc2d098907da6e09f5a010e8928f\",\n      \"bytes\": 568\n    },\n    {\n      \"path\": \"src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java\",\n      \"sha256\": \"3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e\",\n      \"bytes\": 2816\n    }",
+        "occurrences": 1
+      }
+    ],
+    "originalCoordinateArchiveRootsDependenciesUnchanged": true,
+    "modifiedOriginalFilesRemain3": true,
+    "existingSoleForkRecordsOnly": true
+  }
+]

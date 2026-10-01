@@ -899,13 +899,35 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         Regex("BV[0-9A-Za-z]{10}", RegexOption.IGNORE_CASE).find(text)?.value?.let { openVideo(VideoCard(it, "", "", "", 0, 0)); return }
         navigate(DesktopSection.SEARCH) { submitted = text }
     }
-    suspend fun currentCastMedia(): com.android.purebilibili.core.plugin.CastPluginMediaRequest {
+    suspend fun currentCastMedia(): com.bilipai.desktop.cast.DesktopCastMediaPublication {
         check(!systemTargetAudio) { "请先打开需要投屏的视频" }
         val owner = retainedMedia.current
         val nativeSource = player?.currentSourceSnapshot()
         val current = playback.state.value
         val epoch = repository.sessionEpoch
         val positionMs = ((player?.state?.value?.positionSeconds ?: 0.0) * 1000).toLong()
+        val callerJob = kotlinx.coroutines.currentCoroutineContext()[Job]
+        val owned = {
+            val latest = player?.currentSourceSnapshot()
+            callerJob?.isCancelled != true && scope.isActive && !isClosing() && !activatingUpdate && epoch == repository.sessionEpoch &&
+                nativeSource?.sourceVersion == latest?.sourceVersion && nativeSource?.source == latest?.source &&
+                retainedMedia.current === owner && !systemTargetAudio &&
+                (owner != null || playback.state.value.details?.bvid == current.details?.bvid && playback.state.value.currentPart == current.currentPart) &&
+                (owner !== retainedMedia.external || retainedMedia.external.authorizationCurrent)
+        }
+        val resolvedVideo = if (owner == null) {
+            val info = current.details ?: error("请先打开需要投屏的视频")
+            if (nativeSource == null) repository.playback(info, current.currentPart, current.quality)
+            else playback.currentCastSource(nativeSource.sourceVersion) ?: error("当前视频播放源已经变化，请重新开始投屏")
+        } else null
+        val admittedSource = when (owner) {
+            retainedMedia.bangumi -> retainedMedia.bangumi.playback?.source?.toNativePlayback() ?: error("剧集播放源已经变化")
+            null -> resolvedVideo!!.toNativePlayback()
+            else -> nativeSource?.source?.copy(primaryAccountEpoch = epoch) ?: error("当前播放源已经变化")
+        }
+        val frame = com.bilipai.desktop.cast.DesktopCastPublicationFrame(
+            com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository, allowPrimaryAccountSource = true), admittedSource, owned, callerJob)
+        return com.bilipai.desktop.cast.DesktopCastMediaPublication(frame) {
         val media = when (owner) {
             retainedMedia.external -> {
                 check(retainedMedia.external.authorizationCurrent) { "插件播放授权已经变化，请重新打开内容" }
@@ -926,8 +948,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             retainedMedia.offline -> error("本地离线文件暂不支持局域网投屏，请打开在线视频")
             else -> {
                 val info = current.details ?: error("请先打开需要投屏的视频")
-                val source = if (nativeSource == null) repository.playback(info, current.currentPart, current.quality)
-                    else playback.currentCastSource(nativeSource.sourceVersion) ?: error("当前视频播放源已经变化，请重新开始投屏")
+                val source = resolvedVideo!!
                 castResolver.video(info, current.currentPart, source, positionMs, nativeSource = nativeSource?.source)
             }
         }
@@ -938,8 +959,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             (owner !== retainedMedia.external || retainedMedia.external.authorizationCurrent)) {
             "当前播放视频已切换，请重新开始投屏"
         }
-        return media
+        media
+        }
     }
+    val castMediaFactory: suspend () -> com.bilipai.desktop.cast.DesktopCastMediaPublication? = { currentCastMedia() }
     fun prepareUpdate(update: WindowsUpdate, manual: Boolean) {
         if (activatingUpdate || updateJob?.isActive == true) return
         if (manual) manuallyRequested = true
@@ -1481,6 +1504,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     val expectedEpoch = repository.sessionEpoch
                                     scope.launch {
                                     try {
+                                        val downloadJob = kotlinx.coroutines.currentCoroutineContext()[Job]
                                         val info = playing.details!!
                                         val part = info.pages[playing.currentPart]
                                         val source = repository.playback(info, playing.currentPart, requestedQuality)
@@ -1488,11 +1512,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         if (repository.sessionEpoch != expectedEpoch) throw CancellationException("下载账号已切换")
                                         downloads.enqueue(com.bilipai.desktop.player.PlaybackSource(videoUrl = source.videoUrl, audioUrl = source.audioUrl,
                                             referer = source.referer, cookieHeader = source.cookieHeader, title = source.title,
-                                            progressiveSegments = source.progressiveSegments), metadata = DownloadMetadata(
+                                            progressiveSegments = source.progressiveSegments, authorizationReceipt = source.authorizationReceipt), metadata = DownloadMetadata(
                                             aid = info.aid, bvid = info.bvid, cid = part.cid, cover = info.cover, author = info.author,
                                             durationSeconds = part.duration.toInt(), quality = source.quality,
                                             qualityLabel = source.availableQualities.firstOrNull { it.id == source.quality }?.label.orEmpty(),
-                                            includeDanmaku = options.includeDanmaku, episodeLabel = part.title))
+                                            includeDanmaku = options.includeDanmaku, episodeLabel = part.title),
+                                            stillOwned = { !isClosing() && !activatingUpdate && repository.sessionEpoch == expectedEpoch &&
+                                                downloadJob?.isActive == true && playback.state.value.details?.bvid == info.bvid &&
+                                                playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == part.cid })
                                         error = "已加入下载队列"
                                     } catch (cancelled: CancellationException) { throw cancelled } catch (failure: Exception) { error = failure.message ?: "下载失败" }
                                 } })
@@ -1755,9 +1782,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                 } }, modifier = Modifier.fillMaxWidth()) { Text("Google Cast / Chromecast") }
             }
         }, confirmButton = { TextButton(onClick = { castDialog = false }) { Text("关闭") } })
-        if (dlnaDialog) DesktopCastDialog(cast, media = { currentCastMedia() }, onDismiss = { dlnaDialog = false })
+        if (dlnaDialog) DesktopCastDialog(cast, media = castMediaFactory, onDismiss = { dlnaDialog = false })
         if (googleCastDialog) DesktopGoogleCastDialog(pluginRuntime.context, pluginRuntime.googleCast,
-            media = { currentCastMedia() }, onDismiss = { googleCastDialog = false })
+            media = castMediaFactory, onDismiss = { googleCastDialog = false })
         PluginCareReminder(pluginRuntime)
         val subtitleTarget = subtitleDialogTarget
         fun subtitleTargetOwned(target: DesktopSubtitleDialogTarget): Boolean {

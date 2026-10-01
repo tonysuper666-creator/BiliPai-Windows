@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" tests="25" skipped="0" failures="1" errors="0" timestamp="2026-10-01T10:01:58.339Z" hostname="TONYSUPER666" time="2.047">
+  <properties/>
+  <testcase name="old preferences JSON preserves original defaults and user volume" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.002"/>
+  <testcase name="new preferences round-trip with original subtitle enum and normalized codecs" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.001"/>
+  <testcase name="user codec priorities use original selector and remain distinct from recovery override" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.013"/>
+  <testcase name="session-blocked AV1 cannot reappear during ordinary same-source refresh" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.0"/>
+  <testcase name="follow-last audio prefers original HiRes candidate without changing persisted intent" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.0"/>
+  <testcase name="unavailable premium and unsupported Dolby use real AAC fallback and original reason" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.001"/>
+  <testcase name="premium speed threshold falls back temporarily and restores the requested preference" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.0"/>
+  <testcase name="hardware setting reaches actual native actor property" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.012"/>
+  <testcase name="same-owner software recovery defeats hardware intent and next owner respects user preference" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.053"/>
+  <testcase name="queued old hardware request and explicit foreign setting cannot alter replacement source" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.001"/>
+  <testcase name="paired subtitles install both actual native slots and preserve ownership across recovery" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.015"/>
+  <testcase name="a manual subtitle command invalidates a previously queued automatic visibility transaction" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.002"/>
+  <testcase name="original default language and mixed-AI bilingual semantics are retained" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.013"/>
+  <testcase name="AI AUTO mute initializes original mode and same session manual choice survives recovery" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.006"/>
+  <testcase name="noncooperative old metadata cannot bind subtitles into a newer native owner" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.003"/>
+  <testcase name="manual controls during asynchronous import prevent automatic overwrite" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.004"/>
+  <testcase name="manual track selection stays across same-owner recovery and next owner can auto-load" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.003"/>
+  <testcase name="closing cancels pending subtitle query and keeps native-owned files for later reopen" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.004"/>
+  <testcase name="metadata failures cannot leak credential-bearing transport error strings" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.001"/>
+  <testcase name="original Retrofit fake response reaches preference-aware repository and media URL cache" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="1.842">
+    <failure message="com.bilipai.desktop.data.BiliApiException: 请求错误" type="com.bilipai.desktop.data.BiliApiException">com.bilipai.desktop.data.BiliApiException: 请求错误
+	at com.bilipai.desktop.data.DesktopRepository$Companion.checkCode(DesktopRepository.kt:717)
+	at com.bilipai.desktop.data.DesktopRepository$Companion.access$checkCode(DesktopRepository.kt:661)
+	at com.bilipai.desktop.data.DesktopRepository$playback$2.invokeSuspend(DesktopRepository.kt:507)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+</failure>
+  </testcase>
+  <testcase name="preferences store adds settings without resetting existing volume or speed" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.016"/>
+  <testcase name="codec preference reload keeps native source token CID pause progress and Cast accessor" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.018"/>
+  <testcase name="default audio affects next load while explicit current selection persists only after accepted replacement" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.006"/>
+  <testcase name="speed refresh changes only effective premium audio and preserves requested selection" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.006"/>
+  <testcase name="foreign native owner rejects a stale controller preferences mutation" classname="com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

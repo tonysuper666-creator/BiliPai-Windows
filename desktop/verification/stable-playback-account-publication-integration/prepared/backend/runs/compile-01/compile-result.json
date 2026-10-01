@@ -1,0 +1,37 @@
+{
+  "status": "FAIL",
+  "exitCode": 1,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-account-protocol-parity\\runs\\compile-01\\source-inputs\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopPlaybackAuthorization.kt",
+      "sha256Bytes": "f60c2aaebb98aa52073a9ecd56a6e8ff798c899f45d65223d215988ebafb932b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-account-protocol-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopMediaRepository.kt",
+      "sha256Bytes": "6cc48ebf971baf93253b6cb8e4ffd8eab3f30706a3bdc35c4e3d17c905076aaa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-account-protocol-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-account-protocol-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-account-protocol-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopRepository.kt",
+      "sha256Bytes": "5e132066b6a89af0e9e2e6110ce797b3f0a8cc88e8382ec72fbfad6fec0160de"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-playback-account-protocol-parity\\runs\\compile-01\\source-inputs\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopSessionStore.kt",
+      "sha256Bytes": "6d2827c01def7bba4e79f7b1fa3455de906eb9afd9aa902576c6ce058bd2d186"
+    }
+  ],
+  "runtimeEntries": 97,
+  "snapshotManifest": "4840845d18a6fd1171c32a03ba397306a0f509b6510ca9544ceac935befe46ae",
+  "CP": "e9b8db57c428c214b243e2ea41761d0745c3b48ff386fe8d38901d892760fd8f",
+  "prospectiveExistingProductionOverrides": true,
+  "actualRuntimeAcceptance": false,
+  "HTTP": false,
+  "HWND": false
+}
