@@ -1,0 +1,16 @@
+{
+  "exit": 1,
+  "snapshot": 73,
+  "entries": 101,
+  "productionOverrides": 0,
+  "nativeBefore": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\libmpv-2.dll",
+    "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+    "size": 120342528
+  },
+  "nativeAfter": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\libmpv-2.dll",
+    "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+    "size": 120342528
+  }
+}

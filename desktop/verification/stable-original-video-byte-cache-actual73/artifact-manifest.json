@@ -1,0 +1,488 @@
+{
+  "artifacts": [
+    {
+      "path": "proof/acceptance.json",
+      "sha256Bytes": "fb1e3e17b5495574cb5573d41efae9c6e3713466eb15df79e2e272f75d1ec84f",
+      "sizeBytes": 1471
+    },
+    {
+      "path": "proof/contract.md",
+      "sha256Bytes": "cb9a50c455aef33817b069cb28a1f26df36c4db497c0127922c7f82a2b576fe6",
+      "sizeBytes": 2819
+    },
+    {
+      "path": "proof/freeze.py",
+      "sha256Bytes": "9b02ca655a6bc331eba46dcc6890cd6e2b71825721e8d8dee33f1906dbb1530f",
+      "sizeBytes": 6867
+    },
+    {
+      "path": "proof/InstalledCacheConsumerProof.kt",
+      "sha256Bytes": "905924333590e3919aa1ea4621dadb073bc7bea96a5e08c746c45737236dfba2",
+      "sizeBytes": 20266
+    },
+    {
+      "path": "proof/run.py",
+      "sha256Bytes": "5bd2de55b35f29b172962301287229a332d19ed19f10384c61b8672cef7d64cf",
+      "sizeBytes": 6277
+    },
+    {
+      "path": "proof/runs/actual73-01/class-origins.json",
+      "sha256Bytes": "e26317a028e28ed8d6972b05c0f6cd14a5768a2196d9048b162eb6296d90071a",
+      "sizeBytes": 5426
+    },
+    {
+      "path": "proof/runs/actual73-01/compile-result.json",
+      "sha256Bytes": "1a70533016349c5a6dccdfb1319f3e81a17d5b266a0a8253274534ab8770d025",
+      "sizeBytes": 458
+    },
+    {
+      "path": "proof/runs/actual73-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "proof/runs/actual73-01/compiler-command.json",
+      "sha256Bytes": "fd38d132eaaad3a91e148afda987018e579a73b4cec75783ff1b0265f2ece50d",
+      "sizeBytes": 2568
+    },
+    {
+      "path": "proof/runs/actual73-01/compiler.args",
+      "sha256Bytes": "7f63e3f9b020da7bd063daf8bbb44f0c77b9f72d7807ee0841aed4e459986afd",
+      "sizeBytes": 25564
+    },
+    {
+      "path": "proof/runs/actual73-01/inputs/InstalledCacheConsumerProof.kt",
+      "sha256Bytes": "3ae721728f5bb08923b48ed971ff76ea52c870d4b19facfac630437d2dbc8305",
+      "sizeBytes": 19680
+    },
+    {
+      "path": "proof/runs/actual73-01/inputs.json",
+      "sha256Bytes": "03204d303ee4bf63ae28cdf34d19d52a15c3b0e1ec25c42151054101fc79cc5f",
+      "sizeBytes": 2952
+    },
+    {
+      "path": "proof/runs/actual73-01/native-observations.jsonl",
+      "sha256Bytes": "a5f15b01e077a9da587f7ec3fd2f37af25a9ce84141e7ccd20b657cf6411f758",
+      "sizeBytes": 764
+    },
+    {
+      "path": "proof/runs/actual73-01/overlap.json",
+      "sha256Bytes": "258486eb425d08784612131f0b47f4800a4416b4b0eb7a37eab0857537d7432d",
+      "sizeBytes": 77
+    },
+    {
+      "path": "proof/runs/actual73-01/pins-after.json",
+      "sha256Bytes": "e0bb9334200de14f3a16fc0e2059e21a0f9ceb3d17acbccdbd0dcc7b2588aee6",
+      "sizeBytes": 39682
+    },
+    {
+      "path": "proof/runs/actual73-01/pins-before.json",
+      "sha256Bytes": "e0bb9334200de14f3a16fc0e2059e21a0f9ceb3d17acbccdbd0dcc7b2588aee6",
+      "sizeBytes": 39682
+    },
+    {
+      "path": "proof/runs/actual73-01/receipt.json",
+      "sha256Bytes": "348569ebb8b54904dc9b3a4f8042d5391fdf10a9801f23ce7bce82bd2ae35e17",
+      "sizeBytes": 577
+    },
+    {
+      "path": "proof/runs/actual73-01/runtime-command.json",
+      "sha256Bytes": "3f0c16026fd1d8c8b7e0b53d78aa5821757089c4f1cacf20e42e4c45b1ef1de9",
+      "sizeBytes": 27640
+    },
+    {
+      "path": "proof/runs/actual73-01/runtime-result.json",
+      "sha256Bytes": "68b3bf0d9626367a69385ba450024a3b56d019a235d3f7b65c87676cfbaaeeb7",
+      "sizeBytes": 657
+    },
+    {
+      "path": "proof/runs/actual73-01/runtime.log",
+      "sha256Bytes": "468f24b0dd8fc76c4d98c9288b66122ee497d40204c3127ff8d9c369511e4534",
+      "sizeBytes": 3143
+    },
+    {
+      "path": "proof/runs/actual73-02/class-origins.json",
+      "sha256Bytes": "e26317a028e28ed8d6972b05c0f6cd14a5768a2196d9048b162eb6296d90071a",
+      "sizeBytes": 5426
+    },
+    {
+      "path": "proof/runs/actual73-02/compile-result.json",
+      "sha256Bytes": "f695db761de9cc4ce0fd58c0fa0ecb3991ef43f9774a0451cd29bd332eb86432",
+      "sizeBytes": 458
+    },
+    {
+      "path": "proof/runs/actual73-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "proof/runs/actual73-02/compiler-command.json",
+      "sha256Bytes": "98495d7376053933bc5ab063277f120917639e473126b7f3d7e4b7b13463b144",
+      "sizeBytes": 2568
+    },
+    {
+      "path": "proof/runs/actual73-02/compiler.args",
+      "sha256Bytes": "3966e66a484d31394bed90b5b3afedbb0aedfa204de987bcab84aebdc20d1bc2",
+      "sizeBytes": 25564
+    },
+    {
+      "path": "proof/runs/actual73-02/inputs/InstalledCacheConsumerProof.kt",
+      "sha256Bytes": "905924333590e3919aa1ea4621dadb073bc7bea96a5e08c746c45737236dfba2",
+      "sizeBytes": 20266
+    },
+    {
+      "path": "proof/runs/actual73-02/inputs.json",
+      "sha256Bytes": "46f6d9b131cdd65b72e7c799ebc29ca79cf277f37fdba757912297e84366862e",
+      "sizeBytes": 2952
+    },
+    {
+      "path": "proof/runs/actual73-02/native-observations.jsonl",
+      "sha256Bytes": "c98320a295eb3380011ff7b8a14da890ed3104ba395423d17e2b00afe59e9e83",
+      "sizeBytes": 1500
+    },
+    {
+      "path": "proof/runs/actual73-02/overlap.json",
+      "sha256Bytes": "258486eb425d08784612131f0b47f4800a4416b4b0eb7a37eab0857537d7432d",
+      "sizeBytes": 77
+    },
+    {
+      "path": "proof/runs/actual73-02/pins-after.json",
+      "sha256Bytes": "e0bb9334200de14f3a16fc0e2059e21a0f9ceb3d17acbccdbd0dcc7b2588aee6",
+      "sizeBytes": 39682
+    },
+    {
+      "path": "proof/runs/actual73-02/pins-before.json",
+      "sha256Bytes": "e0bb9334200de14f3a16fc0e2059e21a0f9ceb3d17acbccdbd0dcc7b2588aee6",
+      "sizeBytes": 39682
+    },
+    {
+      "path": "proof/runs/actual73-02/receipt.json",
+      "sha256Bytes": "6089f0bf9c4442c81c707d1d36bd7196abb7e116dfb70b023ca11436d5adc37a",
+      "sizeBytes": 577
+    },
+    {
+      "path": "proof/runs/actual73-02/runtime-command.json",
+      "sha256Bytes": "ac87bb1f4163845c3037e85cb234d7b5182ddb821450399987bd8e3c217425b3",
+      "sizeBytes": 27640
+    },
+    {
+      "path": "proof/runs/actual73-02/runtime-result.json",
+      "sha256Bytes": "481ce926a4b674960ba653c1121d09e8d5244b7dad9798f67111f1a9a3a58b12",
+      "sizeBytes": 657
+    },
+    {
+      "path": "proof/runs/actual73-02/runtime.log",
+      "sha256Bytes": "207798b720a2fc7a3948098b018d8e12a054b29dfa4a6254df9decedc9f54f08",
+      "sizeBytes": 2299
+    },
+    {
+      "path": "proof/frozen-handoff.json",
+      "sha256Bytes": "f8544e5f2fd6159ac472d11f395fbe76236cf315ca0eb4a08e27053985d8d116",
+      "sizeBytes": 21883
+    },
+    {
+      "path": "root/snapshot73/manifest.json",
+      "sha256Bytes": "4fe15a56b0a78bda5bf067e52f4e20ceb88244eee943a007db248e6f1bb9e829",
+      "sizeBytes": 155489
+    },
+    {
+      "path": "root/snapshot73/ordered-runtime-cp.json",
+      "sha256Bytes": "f71557c1952176118a9eba16479da2e244cacfb6cc419a65f43dc5501f822d31",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/freeze-native-cache-consumers-actual73.py",
+      "sha256Bytes": "b0168681beababc05c7c615aa6dd4c5f7503144a472c6a1531d1e0e5493c89ac",
+      "sizeBytes": 6833
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "e01d05d2074d9b4b00a9024c7ac50d84a70ebaa3889636d20d98fa1fdf98ed26",
+      "sizeBytes": 989
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$await$1.class",
+      "sha256Bytes": "b1d021f4dba6798f6db6de50216578555696b848441e9617d4679c65c42bedc4",
+      "size": 1670,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$await$2.class",
+      "sha256Bytes": "abb2b5de75435289efe516da578fffff0e8646decfb93cd660b700cf0dcac364",
+      "size": 3570,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$acceptedRequest$admission$1.class",
+      "sha256Bytes": "82c66be7a73d8b674106f3625361281ae9fd0fbb506563a1ce6254cad5ee0e34",
+      "size": 2578,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$acceptedRequest$admission$2.class",
+      "sha256Bytes": "a5404fb8358a486fc44f59d867d4c590482b1e441469d5243c050f922b97c4d0",
+      "size": 2836,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$binding$3.class",
+      "sha256Bytes": "8b49b2a9fde9889beb34c8479c1745fa03296b1a6af6b150a4484f3e45da7687",
+      "size": 2510,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$binding$8.class",
+      "sha256Bytes": "97097d068d89163ceddedb5d304ec516d0bb0d1f5a973356e602d10cf3ae4c00",
+      "size": 3426,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$factory$6.class",
+      "sha256Bytes": "3031fad45f6721223d4b5924db81d106ca1c60836a7022cc3af0f88060873707",
+      "size": 2330,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$failResolver$1.class",
+      "sha256Bytes": "594ea9f375299274174a6d94614b50e0a9c5ab3cab313c0ddde355d067c43225",
+      "size": 13111,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$mpdResolver$1$1$1.class",
+      "sha256Bytes": "5440fb73e343acaac5e6325a7d896e532fd24a7b902a1e18ea27a4df0e84f8c6",
+      "size": 7455,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$mpdResolver$1.class",
+      "sha256Bytes": "5a7d489a7f6ed5935055a09ee703959b6163139e4c86e1be1d5df2eab28833c0",
+      "size": 14292,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$owner$4.class",
+      "sha256Bytes": "bbc3e4d89ec8d08f3c36491f12e62647e850553c9be6ec61144871d59c8fb6e2",
+      "size": 2303,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$owner$6$1.class",
+      "sha256Bytes": "951a5636686b7e9310f4c7dd3f4dcf4e6033f094565570b6d79a36ebf95b3710",
+      "size": 2307,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$ready$1.class",
+      "sha256Bytes": "3ae678f580bdfcc2802960289c20bf9e6645f5816fa9eaac7352986dea573135",
+      "size": 1892,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$ready$2$1.class",
+      "sha256Bytes": "79af62d3387b89063fca49011f23d845788ed9aad8e83c343078504f84046c73",
+      "size": 3633,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$ready$2.class",
+      "sha256Bytes": "8a3d11d771c6e5d976fb1aed7c27dd43f6cac81dd7030374bc05274a0e0faba8",
+      "size": 4380,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$resolver$1$1$1.class",
+      "sha256Bytes": "cb90975b034c94820d475ba179e42e46cec3460f04225cc6d12cbd94523011f1",
+      "size": 7017,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$resolver$1.class",
+      "sha256Bytes": "a5f7b796b3433a05c59e88c5a7602011a5f5d71f224c0a2561dd3b33f25b1686",
+      "size": 15293,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1.class",
+      "sha256Bytes": "322da00bfb8d2ee20ec8cd7d5465d6f1920361da64e95887b44b7acf1dc01c01",
+      "size": 87021,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt.class",
+      "sha256Bytes": "d7824ee697d878be8720ca0cc66f54f90532473019684ea9fdfa33d1e90b7b4e",
+      "size": 5705,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "9c8351cee30965fe9e6ae8d19b65eae3d35b16c7343e14144910b187ec3b02eb",
+      "size": 81,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-01/owned-data/cache/55ed13b9-efd2-4cff-8917-63e917920d3c.span",
+      "sha256Bytes": "3f8d51ca1921b04cb79f70b767d4cec98ccf0f44c2198a8726c3f8d806f4eb84",
+      "size": 39928,
+      "reason": "fixture-owned ephemeral Store/cache bytes; source media/reference hashes retained"
+    },
+    {
+      "path": "runs/actual73-01/owned-data/cache/7475d41c-db65-42c0-b0f8-c67f4450acf8.span",
+      "sha256Bytes": "b6306869246b434f8390c1da8a1f955e38d87c7fb1364aa2ef040b9e1ee21248",
+      "size": 34958,
+      "reason": "fixture-owned ephemeral Store/cache bytes; source media/reference hashes retained"
+    },
+    {
+      "path": "runs/actual73-01/owned-data/cache/e41c65e4-7424-4082-94a5-30eb043a4058.span",
+      "sha256Bytes": "fcd3d47110fd3ced015777378f83c98d61e102fc4daa27f0686e74734b649946",
+      "size": 85178,
+      "reason": "fixture-owned ephemeral Store/cache bytes; source media/reference hashes retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$await$1.class",
+      "sha256Bytes": "b1d021f4dba6798f6db6de50216578555696b848441e9617d4679c65c42bedc4",
+      "size": 1670,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$await$2.class",
+      "sha256Bytes": "abb2b5de75435289efe516da578fffff0e8646decfb93cd660b700cf0dcac364",
+      "size": 3570,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$acceptedRequest$admission$1.class",
+      "sha256Bytes": "463e0f46c76dd8477f14872c8a16e2ab99a4259c505d42edea12ab7fcef7bf63",
+      "size": 2578,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$acceptedRequest$admission$2.class",
+      "sha256Bytes": "7a6324f3cfbe106cfb7e468ee0f41cea073576d5d2d1dde9a240c57aba3f60b5",
+      "size": 2836,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$binding$3.class",
+      "sha256Bytes": "b6a9ea96372043ba900848200a1b8975fb5b0f4662415e9603ee01009ca74ebe",
+      "size": 2510,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$binding$8.class",
+      "sha256Bytes": "3036c36eafaee7a4e3893edcee2713f576374ef6b95d427ebea49bb751ec6325",
+      "size": 3426,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$factory$6.class",
+      "sha256Bytes": "d60a4d75aa8c3f38a83241adc5cb9e308fad70bb0ff7f67a4b0ca16a68715ce1",
+      "size": 2330,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$failResolver$1.class",
+      "sha256Bytes": "32aec1a911cd39cfdb473702ba21149fe64de12abaa1585e431039c404ebf4d6",
+      "size": 14028,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$mpdResolver$1$1$1.class",
+      "sha256Bytes": "af85520cf3235acaa734aee028c3e428e6b2655c952ba0a5dd0b7192b49eff8d",
+      "size": 7455,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$mpdResolver$1.class",
+      "sha256Bytes": "1361ee73704f440b184606b6d49b0b9073169b7463f39da54ee376bd7964d35a",
+      "size": 14292,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$owner$4.class",
+      "sha256Bytes": "d07052abcdb4c4bb3e433a53967bd59279a183206a53be3dd1e2c6274b1c9d3b",
+      "size": 2303,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$owner$6$1.class",
+      "sha256Bytes": "eb0f32faeca44b1285ef25dae184863227f567e3be4a31eb71e32ef594dc4805",
+      "size": 2307,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$ready$1.class",
+      "sha256Bytes": "b57e4b35b98df428bb91cedc9813e314018a69858d0e011d37240c6a7bc0b21c",
+      "size": 1892,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$ready$2$1.class",
+      "sha256Bytes": "ad4280d4b76e7752b276ac5464f52cdd0547f0aec34f254e3a1cdb7c778c62f7",
+      "size": 3633,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$ready$2.class",
+      "sha256Bytes": "df7fdc5fa9ea07286e483af2153eda301b9b1837cbe5ab10e1073800954ac1d0",
+      "size": 4380,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$resolver$1$1$1.class",
+      "sha256Bytes": "57e0c5c0d5492dbbd214f273c98765add49bec6aa14d503d91eb58bf14807b68",
+      "size": 7017,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1$resolver$1.class",
+      "sha256Bytes": "990e7a4917827c2873b8d2504ee8abcc8c5aa2382fc4d95bedc86d3d9c7347c2",
+      "size": 15293,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt$main$1.class",
+      "sha256Bytes": "ec92713ab2dde86baa4c5bac574543d4ca59d6616522ddb4d6f23cceafe13489",
+      "size": 88371,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/com/bilipai/desktop/ui/InstalledCacheConsumerProofKt.class",
+      "sha256Bytes": "bfb02bf9788a95e92edb49c2f6ac2050b1e2e26c1ef20da6568547ca68801ecf",
+      "size": 5705,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "9c8351cee30965fe9e6ae8d19b65eae3d35b16c7343e14144910b187ec3b02eb",
+      "size": 81,
+      "reason": "rebuildable fixture compiler output; exact inputs and commands retained"
+    },
+    {
+      "path": "runs/actual73-02/owned-data/cache/07046caa-9c0b-41db-87be-01424298ca8e.span",
+      "sha256Bytes": "837ed583f848b377fa90ebdf7be2bd7a650d7ea746172330eb0a890b3f83b956",
+      "size": 34958,
+      "reason": "fixture-owned ephemeral Store/cache bytes; source media/reference hashes retained"
+    },
+    {
+      "path": "runs/actual73-02/owned-data/cache/10c49a3f-f1c0-4a19-b820-51f1cbd02e9c.span",
+      "sha256Bytes": "7dfb7b0d6f22414bf09ac24be445a5fe7db7f41fb8623050b0b9734830533351",
+      "size": 39928,
+      "reason": "fixture-owned ephemeral Store/cache bytes; source media/reference hashes retained"
+    },
+    {
+      "path": "runs/actual73-02/owned-data/cache/4994da81-42cf-44e6-a7bf-2e830ba05240.span",
+      "sha256Bytes": "ec11382ec4576b538969cd297d6b01401b25d9b92b793a4955f4b097b66f3b8b",
+      "size": 85178,
+      "reason": "fixture-owned ephemeral Store/cache bytes; source media/reference hashes retained"
+    },
+    {
+      "path": "runs/actual73-02/owned-data/cache/cd624718-6dc6-4844-ab79-5a2d63d0c66c.span",
+      "sha256Bytes": "2482a7b4762b6688c5a625162fd30b9249a1e2a7ea7c81a9cf767a0c8c77b6b3",
+      "size": 85178,
+      "reason": "fixture-owned ephemeral Store/cache bytes; source media/reference hashes retained"
+    }
+  ]
+}

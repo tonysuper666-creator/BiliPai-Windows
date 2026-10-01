@@ -1,0 +1,13 @@
+{
+  "exit": 0,
+  "snapshot": 73,
+  "entries": 101,
+  "productionOverrides": 0,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-actual73-proof\\runs\\actual73-01\\inputs\\InstalledCacheConsumerProof.kt",
+      "sha256Bytes": "3ae721728f5bb08923b48ed971ff76ea52c870d4b19facfac630437d2dbc8305",
+      "size": 19680
+    }
+  ]
+}

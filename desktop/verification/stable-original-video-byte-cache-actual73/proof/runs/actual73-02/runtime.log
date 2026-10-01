@@ -1,0 +1,31 @@
+PASS real native ACK/codecs/readback for source 1
+PASS real cache factory lexical intent reaches NativeOwner publication unchanged
+PASS actual paused native readback retains initial position
+PASS normal resolver completion preserves accepted carrier and real source job
+PASS real native resume advances the accepted source clock
+PASS real native pause readback settles
+PASS identical captured plan reuses exact accepted Bound and carrier
+PASS real native ACK/codecs/readback for source 1
+PASS actual accepted recovery keeps source version while replacing publication
+PASS same Bound native read after recovery has no second origin body range
+PASS real native ACK/codecs/readback for source 2
+PASS new actual factory load retires previous native capability
+PASS identical full MPD and complete tracks reuse actual native carrier
+PASS real native ACK/codecs/readback for source 2
+PASS changed full MPD ranges cannot match installed native plan
+PASS full adaptive consumer retains all representations and original range rows
+PASS same complete MPD native consumer reads warmed spans without another body range
+PASS real invalid cached media is published by MPV with an actual attempt
+PASS native failure came from actual cached invalid-media byte consumption
+PASS actual failed Reader position is valid without a source-position guess
+PASS wrong native failure attempt cannot recover or mutate current source
+PASS real owned native cache-error recovery queues original remote source
+PASS real native ACK/codecs/readback for source 3
+PASS direct native ACK retains source version and exact real Reader intent
+PASS direct native readback preserves actual requested pause and position
+PASS cache-error direct recovery retires old local capability
+PASS direct recovery allocates no cache retry registration
+PASS old failure/source identity cannot start a second recovery
+PASS installed same Repository tag preserves deliberately empty cached origin headers
+PASS entry close retires actual accepted native ownership
+{"snapshot":73,"groups":5,"assertions":30,"productionOverrides":0,"actualCachedFactory":true,"actualLexicalIntent":true,"actualNativeFailureAttempt":true,"actualDirectRecoveryAck":true,"fullMpd":true,"MainShell":false,"realAccount":false,"HTTPExternal":false,"window":false,"OSInput":false}

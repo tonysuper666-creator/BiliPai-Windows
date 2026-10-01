@@ -1,0 +1,3 @@
+{"event":"initialRealAckResolverCompleted","sourceVersion":1,"cacheCarrier":true,"ready":true,"loading":false,"ended":false,"positionSeconds":1.266667,"requestedPause":true,"nativePaused":true,"failureAttemptId":null,"registrations":1,"sourceJobActive":true}
+{"event":"sameBoundRealRecovery","sourceVersion":1,"cacheCarrier":true,"ready":true,"loading":false,"ended":false,"positionSeconds":1.733333,"requestedPause":true,"nativePaused":true,"failureAttemptId":null,"registrations":1,"sourceJobActive":true}
+{"event":"fullMpdSameBoundRealRecovery","sourceVersion":2,"cacheCarrier":true,"ready":true,"loading":false,"ended":false,"positionSeconds":1.018685,"requestedPause":true,"nativePaused":true,"failureAttemptId":null,"registrations":1,"sourceJobActive":true}

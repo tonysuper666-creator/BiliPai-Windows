@@ -1,0 +1,53 @@
+{
+  "fixture": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-actual73-proof\\runs\\actual73-01\\inputs\\InstalledCacheConsumerProof.kt",
+      "sha256Bytes": "3ae721728f5bb08923b48ed971ff76ea52c870d4b19facfac630437d2dbc8305",
+      "size": 19680
+    }
+  ],
+  "snapshotManifest": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-73\\manifest.json",
+    "sha256Bytes": "4fe15a56b0a78bda5bf067e52f4e20ceb88244eee943a007db248e6f1bb9e829",
+    "size": 155489
+  },
+  "orderedCp": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-73\\ordered-runtime-cp.json",
+    "sha256Bytes": "f71557c1952176118a9eba16479da2e244cacfb6cc419a65f43dc5501f822d31",
+    "size": 38191
+  },
+  "native": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\libmpv-2.dll",
+    "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+    "size": 120342528
+  },
+  "media": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\mpd-media\\dash.mpd",
+      "sha256Bytes": "b8a15ae8a3e4c673932041f47b85d5f486ec38a4409587415ae57ffd71597159",
+      "size": 2879
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\mpd-media\\dash-stream0.mp4",
+      "sha256Bytes": "ad8462a35e60b90c7207bb8487535a36930775467b556554a4a226b8f87fbf12",
+      "size": 85091
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\mpd-media\\dash-stream1.mp4",
+      "sha256Bytes": "2e226a2b3ac716f52c2950b849b00e144bdf93a889d5d1ccea10b8fe9878d24e",
+      "size": 39841
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\mpd-media\\dash-stream2.mp4",
+      "sha256Bytes": "8bbb62d3499cfb8109d21ed2eeab7beff17811c9e220602dc33a60e8ab674db8",
+      "size": 34871
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\mpd-media\\generator-receipt.json",
+      "sha256Bytes": "81cdbb067c1ab5296da26d72d04a18f8c1b2f041ab38496e997d84de76616c09",
+      "size": 2141
+    }
+  ],
+  "productionSourceInputs": [],
+  "productionOverrides": 0
+}

@@ -1,0 +1,17 @@
+{
+  "snapshot": 73,
+  "entries": 101,
+  "productionOverrides": 0,
+  "fixtureInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-actual73-proof\\runs\\actual73-02\\inputs\\InstalledCacheConsumerProof.kt",
+      "sha256Bytes": "905924333590e3919aa1ea4621dadb073bc7bea96a5e08c746c45737236dfba2",
+      "size": 20266
+    }
+  ],
+  "compilePASS": true,
+  "runtimeExit": 0,
+  "pinsUnchanged": true,
+  "nativeUnchanged": true,
+  "MainShellAccepted": false
+}

@@ -1,0 +1,43 @@
+{
+  "snapshot": 73,
+  "entries": 101,
+  "productionOverrides": 0,
+  "closedRuns": [
+    "actual73-01",
+    "actual73-02"
+  ],
+  "successfulRun": "actual73-02",
+  "groups": 5,
+  "assertions": 30,
+  "actualCachedFactoryLexicalIntentAndNativePublish": true,
+  "normalResolverCompleted": true,
+  "actualNativePauseResume": true,
+  "exactSameBoundAndCarrierReuse": true,
+  "fullMpdAllRepresentationsAndRanges": true,
+  "actualNativeFailureAttempt": true,
+  "actualFailureScenario": "fixture-owned invalid media bytes, valid206/Content-Range/ETag; actual demux failure",
+  "actualDirectRemoteAck": true,
+  "actualSourceVersionPreserved": true,
+  "actualReaderRecoveryPositionMs": 1375,
+  "actualReaderDesiredPause": true,
+  "actualErrorTimeNativePaused": null,
+  "actualRecoveredNativePaused": true,
+  "actualRecoveredNativePositionSeconds": 1.4,
+  "oldCapabilities410": true,
+  "wrongAttemptAndOldIdentityRejected": true,
+  "noCacheRetryRegistration": true,
+  "pinsAndNativeDllUnchanged": true,
+  "retainedFailure": {
+    "run": "actual73-01",
+    "priorAssertionsPassed": 17,
+    "scenario": "fixture-owned HTTP503 after metadata success",
+    "result": "real NanoHTTPD range IO exception and20s timeout awaiting actual NativeFailure.attemptId; no recovery acceptance",
+    "noFakeStateAttemptOrUri": true
+  },
+  "notAccepted": [
+    "HTTP503/network-buffer recovery",
+    "MainShell fullVM factory/page mount",
+    "real account or CDN",
+    "physical HWND/OS inputs"
+  ]
+}

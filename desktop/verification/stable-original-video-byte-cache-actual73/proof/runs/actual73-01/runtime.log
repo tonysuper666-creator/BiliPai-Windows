@@ -1,0 +1,42 @@
+PASS real native ACK/codecs/readback for source 1
+PASS real cache factory lexical intent reaches NativeOwner publication unchanged
+PASS actual paused native readback retains initial position
+PASS normal resolver completion preserves accepted carrier and real source job
+PASS real native resume advances the accepted source clock
+PASS real native pause readback settles
+PASS identical captured plan reuses exact accepted Bound and carrier
+PASS real native ACK/codecs/readback for source 1
+PASS actual accepted recovery keeps source version while replacing publication
+PASS same Bound native read after recovery has no second origin body range
+PASS real native ACK/codecs/readback for source 2
+PASS new actual factory load retires previous native capability
+PASS identical full MPD and complete tracks reuse actual native carrier
+PASS real native ACK/codecs/readback for source 2
+PASS changed full MPD ranges cannot match installed native plan
+PASS full adaptive consumer retains all representations and original range rows
+PASS same complete MPD native consumer reads warmed spans without another body range
+10�� 01, 2026 10:15:59 ���� fi.iki.elonen.NanoHTTPD$Response send
+����: Could not send response to the client
+java.io.IOException: Origin did not honor media byte range
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.origin(DesktopMediaByteCache.kt:245)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.writeSpanOwned(DesktopMediaByteCache.kt:313)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.writeSpan(DesktopMediaByteCache.kt:306)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.ensureRange(DesktopMediaByteCache.kt:299)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.ensureRange$default(DesktopMediaByteCache.kt:287)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease$stream$1$read$3.invokeSuspend(DesktopMediaByteCache.kt:354)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+
+Exception in thread "main" kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 20000 ms
+	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:189)
+	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:157)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:505)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:105)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
