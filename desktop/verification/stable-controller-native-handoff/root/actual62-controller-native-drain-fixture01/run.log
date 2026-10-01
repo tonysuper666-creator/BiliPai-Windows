@@ -1,0 +1,12 @@
+Exception in thread "main" java.lang.IllegalStateException: Real original raw detail and selected metadata are transferred without reconstruction
+	at com.bilipai.desktop.ControllerNativeDrainFixture$main$1.invokeSuspend$verify(ControllerNativeDrainFixture.kt:27)
+	at com.bilipai.desktop.ControllerNativeDrainFixture$main$1.invokeSuspend(ControllerNativeDrainFixture.kt:138)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ControllerNativeDrainFixture.main(ControllerNativeDrainFixture.kt:25)

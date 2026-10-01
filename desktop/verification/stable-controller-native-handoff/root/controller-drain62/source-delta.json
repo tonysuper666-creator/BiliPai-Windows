@@ -1,0 +1,24 @@
+{
+  "sources": [
+    {
+      "sourcePath": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "baselineBytesSha256": "6e3a3944eb9ba79b971aec11853458df99b1e58ddd487a9ac718c793d746e5c8",
+      "candidateBytesSha256": "bc62a983fc8141a0a9ad472ce08c9c4bc09110bd8a99284392cd830a14e0dbf1",
+      "candidateLFsha256": "b6f3861dc4dcc642e97e193aa3d6c2423e5f86c3572e1cedcd998ea51f43a6ac"
+    },
+    {
+      "sourcePath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "baselineBytesSha256": "19abb18afd3a2e9ce31643378f35751f5ce3762f76011a302d1089d1736b0e29",
+      "candidateBytesSha256": "58ace2305eaf4058cdcca78ac7eb7c87e3105bf61a451e4e396e311c4fe6ee97",
+      "candidateLFsha256": "58ace2305eaf4058cdcca78ac7eb7c87e3105bf61a451e4e396e311c4fe6ee97"
+    },
+    {
+      "sourcePath": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "baselineBytesSha256": "86f9090b7726eb6082116783d6cfe359c3f4704d3de4325c654d0378b9c74d90",
+      "candidateBytesSha256": "064207e06d2aebf9e8093f8284af757ae6a918779bdada500af796ae14ba619f",
+      "candidateLFsha256": "064207e06d2aebf9e8093f8284af757ae6a918779bdada500af796ae14ba619f"
+    }
+  ],
+  "newDependencies": 0,
+  "newPlayers": 0
+}

@@ -1,0 +1,15 @@
+{
+  "draftAcceptedForInstallation": false,
+  "wholeClassesPassed": true,
+  "nativeFixturePassed": false,
+  "nativeFixtureFailure": "Fixture compared Controller's selected resolved copy to injected pre-selection source identity; it must compare the actual Current.source object",
+  "reviewFindings": [
+    "Inherited mute restoration must read current Root user preference",
+    "A real new load must explicitly apply base mute before discarding inherited interval",
+    "Retained command publication must atomically enter the actual entry gate before native command",
+    "Failed or cancelled retirement needs terminal reference cleanup and a retryable producer-quiescence query"
+  ],
+  "supersedingProductPhase": 63,
+  "historicalProductAndRunRemainImmutable": true,
+  "fullOrdinaryRootMounted": false
+}

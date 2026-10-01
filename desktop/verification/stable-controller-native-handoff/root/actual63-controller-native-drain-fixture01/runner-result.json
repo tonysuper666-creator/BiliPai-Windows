@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "compileExitCode": 0,
+  "runExitCode": 0,
+  "actualProductSnapshot": 63,
+  "runtimeEntries": 101,
+  "fixtureClasses": 25,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersections": [],
+  "fixtureJarSha256Bytes": "d1bd478097b955d8d256fc3c452e91213d5190f85f4c29306860e2d4390fa623",
+  "byteVerifiedProductOrigins": [
+    {
+      "class": "com.bilipai.desktop.DesktopPlaybackController",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-63/main-kotlin.jar",
+      "sha256ClassBytes": "b477f25606e03c3eb5be8b8666f2e61ff813d2bfd1649964b8b48f9c981973d8"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalVideoNativeOwner",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-63/main-kotlin.jar",
+      "sha256ClassBytes": "571fbe59976c2cdde6f517c62a3b1283d7e9369f0b0bb7555b6f9de783eec9c2"
+    },
+    {
+      "class": "com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-63/main-kotlin.jar",
+      "sha256ClassBytes": "299c659f580e1babd1612a709db7b89bc6bcc64b5b7efeedb241db4f6f62013c"
+    },
+    {
+      "class": "com.bilipai.desktop.player.MpvPlayer",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-63/main-kotlin.jar",
+      "sha256ClassBytes": "890697fcd761e72630dcce75869092300516a354c42efd7e55efc2716eef8aa1"
+    }
+  ],
+  "fixtureSourceUnchanged": true,
+  "fixtureIsRootOwned": true,
+  "sameSocketFreeChecksReplayed": true,
+  "actualAccountUsed": false,
+  "nativeExecuted": true,
+  "actualLocalNativeClip": true,
+  "actualControllerDrainApiAccepted": true,
+  "fullControllerFacadeSwitchAccepted": false,
+  "independentVisualAcceptance": false,
+  "fullOrdinaryVideoRootMountAccepted": false
+}

@@ -286,7 +286,7 @@ internal class DesktopOriginalVideoNativeOwner(
         if (native.loading || native.error != null || native.failure != null ||
             (!native.ended && native.nativePaused == null) || !native.positionSeconds.isFinite()) return false
         val positionMs = (native.positionSeconds * 1_000.0).toLong()
-        if (!native.ended && positionMs < inherited.interval.untilMs && positionMs >= inherited.interval.fromMs) return false
+        if (positionMs < inherited.interval.untilMs && positionMs >= inherited.interval.fromMs) return false
         return try {
             var restored = false
             publication.admit(lease.nativeSource.source, { owns(lease) }) {

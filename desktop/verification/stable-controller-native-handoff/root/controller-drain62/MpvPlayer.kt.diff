@@ -1,0 +1,52 @@
+--- before/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt
++++ after/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt
+@@ -238,6 +238,15 @@
+         mutableState.update { it.copy(muted = muted) }
+         send(Action.Property("mute", if (muted) "yes" else "no"))
+     }
++    /** Retained-owner restoration must not mutate a replacement native source.
++     * No optimistic state write: the existing native poller provides readback. */
++    internal fun setMutedIfSourceVersion(expectedSourceVersion: Long, muted: Boolean): Boolean = synchronized(lock) {
++        val source = requestedSource ?: return@synchronized false
++        val active = session ?: return@synchronized false
++        if (closed.get() || active.closing.get() || sourceVersion != expectedSourceVersion ||
++            source.nativePublication == null) return@synchronized false
++        active.commands.offer(Action.OwnedMute(sourceVersion, playbackRevision, source, muted))
++    }
+     fun toggleMuted() = setMuted(!state.value.muted)
+     fun setAudioOnly(audioOnly: Boolean) {
+         mutableState.update { it.copy(audioOnly = audioOnly) }
+@@ -487,6 +496,7 @@
+         data class SubtitleConfiguration(val controlVersion: Long, val version: Long, val revision: Long, val visible: Boolean) : Action
+         data class VideoShaders(val version: Long, val configuration: PreparedVideoShaders) : Action
+         data class Property(val name: String, val value: String) : Action
++        data class OwnedMute(val version: Long, val revision: Long, val source: PlaybackSource, val muted: Boolean) : Action
+         data class Command(val args: List<String>) : Action
+         data class Seek(val id: Long, val sourceVersion: Long, val revision: Long, val seconds: Double, val relative: Boolean) : Action
+         data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>) : Action
+@@ -615,7 +625,7 @@
+ 
+         private fun perform(native: MpvNative, handle: Pointer, action: Action) {
+             try {
+-                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier) publishState { it.copy(operationError = null) }
++                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.OwnedMute) publishState { it.copy(operationError = null) }
+                 when (action) {
+                     is Action.Load -> {
+                         val command = { synchronized(lock) {
+@@ -687,6 +697,16 @@
+                         refreshVideoShaders(native, handle)
+                     }
+                     is Action.Property -> checkResult(native, native.mpv_set_property_string(handle, action.name, action.value), action.name)
++                    is Action.OwnedMute -> {
++                        val command = { synchronized(lock) {
++                            if (session === this && !closing.get() && fileLoaded &&
++                                sourceVersion == action.version && playbackRevision == action.revision &&
++                                activeSourceVersion == action.version && activeRevision == action.revision &&
++                                requestedSource?.nativePublication === action.source.nativePublication)
++                                checkResult(native, native.mpv_set_property_string(handle, "mute", if (action.muted) "yes" else "no"), "mute")
++                        } }
++                        action.source.nativePublication?.admit(command)
++                    }
+                     is Action.Command -> {
+                         if (action.args.first() == "stop") { activeEntry = null; expectedEntry = null; fileLoaded = false; seekTracker.reset() }
+                         checkResult(native, native.mpv_command(handle, StringArray(action.args.toTypedArray(), "UTF-8")), action.args.first())

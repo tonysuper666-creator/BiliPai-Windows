@@ -1,0 +1,99 @@
+--- before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt
++++ after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt
+@@ -29,6 +29,16 @@
+     override fun toString() = "DesktopOrdinaryPlaybackQueueHandoff(size=${cards.size}, selectedIndex=$selectedIndex)"
+ }
+ 
++/** The old controller uses native mute, whereas original VM Sponsor actions use
++ * volume. Keep its real interval and restore value explicitly during adoption. */
++internal data class DesktopOrdinaryPluginMuteHandoff(
++    val fromMs: Long,
++    val untilMs: Long,
++    val restoreMuted: Boolean,
++) {
++    init { require(fromMs >= 0L && untilMs >= 0L) }
++}
++
+ /** Snapshot returned only AFTER the old request/recovery/native observers have
+  * drained and the same-source native actor barrier completed OUTSIDE Store/UI
+  * locks. The original raw ViewInfo and selected DASH/audio metadata remain in the
+@@ -47,6 +57,7 @@
+     val queue: DesktopOrdinaryPlaybackQueueHandoff,
+     val playerPluginGeneration: Long?,
+     val suspended: Boolean,
++    val pluginMute: DesktopOrdinaryPluginMuteHandoff?,
+ ) {
+     val request = run {
+         require(selectedPart in details.pages.indices)
+@@ -127,6 +138,9 @@
+ ) : AutoCloseable {
+     private val closed = AtomicBoolean(false)
+     private val accepted = AtomicReference<DesktopOriginalVideoAcceptedPublication?>()
++    private data class InheritedMute(val lease: DesktopOriginalVideoAcceptedPublication,
++        val interval: DesktopOrdinaryPluginMuteHandoff)
++    private val inheritedMute = AtomicReference<InheritedMute?>()
+ 
+     private fun entryCurrent() = !closed.get() && isEntryCurrent()
+     private fun assertEntry() {
+@@ -164,6 +178,7 @@
+                 next = DesktopOriginalVideoAcceptedPublication(request,
+                     checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == version) })
+                 accepted.set(next)
++                inheritedMute.set(null)
+                 result = next
+                 onAccepted(next)
+             }) throw CancellationException("Original playback entry retired")
+@@ -191,6 +206,7 @@
+                     next = DesktopOriginalVideoAcceptedPublication(handoff.request,
+                         checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == before.sourceVersion) })
+                     accepted.set(next)
++                    inheritedMute.set(handoff.pluginMute?.let { InheritedMute(next, it) })
+                     result = next
+                     onAccepted(next)
+                 }
+@@ -233,6 +249,9 @@
+                         next = DesktopOriginalVideoAcceptedPublication(lease.request,
+                             checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == lease.sourceVersion) })
+                         accepted.set(next)
++                        inheritedMute.get()?.takeIf { it.lease === lease }?.let { previous ->
++                            inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))
++                        }
+                         onAccepted(next)
+                     }) throw CancellationException("Accepted ordinary entry retired")
+                 }
+@@ -240,7 +259,33 @@
+         }
+     }
+ 
++    /** Called by the existing full-owner position observer, with no new poller.
++     * Read the actual native clock; clear only after its mute readback matches.
++     * Publication and native version/revision both guard the queued restoration. */
++    fun observeInheritedPluginMute(): Boolean {
++        val inherited = inheritedMute.get() ?: return true
++        val lease = inherited.lease
++        if (!owns(lease)) return false
++        val native = player.state.value
++        if (native.loading || native.ended || native.error != null || native.failure != null ||
++            native.nativePaused == null || !native.positionSeconds.isFinite()) return false
++        val positionMs = (native.positionSeconds * 1_000.0).toLong()
++        if (positionMs < inherited.interval.untilMs && positionMs >= inherited.interval.fromMs) return false
++        return try {
++            var restored = false
++            publication.admit(lease.nativeSource.source, { owns(lease) }) {
++                withEntryAdmission {
++                    if (inheritedMute.get() !== inherited || !owns(lease)) return@withEntryAdmission
++                    if (player.state.value.muted == inherited.interval.restoreMuted) {
++                        restored = inheritedMute.compareAndSet(inherited, null)
++                    } else player.setMutedIfSourceVersion(lease.sourceVersion, inherited.interval.restoreMuted)
++                }
++            }
++            restored
++        } catch (_: CancellationException) { false }
++    }
++
+     /** Admission retirement only; Root cancelAndJoin and optional owned stop are
+      * explicit outside locks. Never stop the shared MPV from this fa莽ade close. */
+-    override fun close() { closed.set(true); accepted.set(null) }
+-}
++    override fun close() { closed.set(true); accepted.set(null); inheritedMute.set(null) }
++}

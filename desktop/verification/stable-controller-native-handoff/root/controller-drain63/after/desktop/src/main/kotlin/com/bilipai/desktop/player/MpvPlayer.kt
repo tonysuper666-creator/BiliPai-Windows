@@ -242,8 +242,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         mutableState.update { it.copy(speed = value) }
         send(Action.Property("speed", value.toString()))
     }
-    fun setMuted(muted: Boolean) = synchronized(lock) {
-        if (requestedLoadMute != null) requestedLoadMute = muted
+    fun setMuted(muted: Boolean) {
         mutableState.update { it.copy(muted = muted) }
         send(Action.Property("mute", if (muted) "yes" else "no"))
     }
@@ -659,7 +658,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                             val args = nodes.array(listOf("loadfile", action.source.nativeLoadUrl, "replace", "-1", action.source.mpvFileOptions()))
                             checkResult(native, native.mpv_command_node(handle, args, null), "loadfile")
                         }
-                        if (action.startMuted != null) requestedLoadMute?.let { muted ->
+                        action.startMuted?.let { muted ->
                             checkResult(native, native.mpv_set_property_string(handle, "mute", if (muted) "yes" else "no"), "mute")
                         }
                         requestedLoadMute = null

@@ -1,0 +1,93 @@
+--- actual61/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt
++++ actual63/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt
+@@ -17,6 +17,9 @@
+ import com.bilipai.desktop.player.*
+ import com.bilipai.desktop.player.tryAdmit
+ import com.bilipai.desktop.plugins.DesktopPluginRuntime
++import com.bilipai.desktop.ui.DesktopOrdinaryPlaybackHandoff
++import com.bilipai.desktop.ui.DesktopOrdinaryPlaybackQueueHandoff
++import com.bilipai.desktop.ui.DesktopOrdinaryPluginMuteHandoff
+ import kotlinx.coroutines.*
+ import kotlinx.coroutines.flow.*
+ import java.util.concurrent.atomic.AtomicBoolean
+@@ -925,6 +928,80 @@
+     }
+     private fun safeError(error: Exception, fallback: String): String = PlayerDiagnostics().apply { reset(current?.source?.toNative(0.0, true)) }
+         .sanitize(error.message ?: fallback)
++
++    /** Root's external entry scope invokes this on the existing UI request lane.
++     * Retire admission, join every old producer, then drain the native actor.
++     * This deliberately never stops/pauses/reloads the shared native source. */
++    internal suspend fun drainForOriginalVideoOwner(expectedEpoch: Long, expectedSourceVersion: Long,
++        expectedBvid: String, expectedCid: Long): DesktopOrdinaryPlaybackHandoff? = withContext(Dispatchers.Main.immediate) {
++        val native = player ?: return@withContext null
++        val context = current?.takeIf(::owns) ?: return@withContext null
++        val initial = native.currentSourceSnapshot() ?: return@withContext null
++        val view = state.value
++        fun sameSource(snapshot: OwnedPlaybackSourceSnapshot): Boolean =
++            snapshot.sourceVersion == expectedSourceVersion &&
++                snapshot.source.nativePublication === initial.source.nativePublication &&
++                snapshot.source == initial.source && publication.isCurrent(snapshot.source) &&
++                snapshot.source.authorizationReceipt?.accountEpoch == expectedEpoch &&
++                context.source.authorizationReceipt == snapshot.source.authorizationReceipt &&
++                snapshot.source.copy(startPositionSeconds = 0.0, startPaused = true, nativePublication = null) == context.source.toNative(0.0, true)
++        fun ready(readback: PlayerState): Boolean = readback.ready && !readback.loading && !readback.ended &&
++            readback.error == null && readback.failure == null && readback.nativePaused != null &&
++            (readback.videoCodec != null || readback.audioCodec != null)
++        if (context.accountEpoch != expectedEpoch || playback.sessionEpoch != expectedEpoch ||
++            context.sourceVersion != expectedSourceVersion || context.details.bvid != expectedBvid ||
++            context.details.pages.getOrNull(context.index)?.cid != expectedCid || context.details.raw == null ||
++            view.opening || view.recovering || !ready(native.state.value) || !sameSource(initial) ||
++            view.queueIndex !in view.queue.indices || view.queue[view.queueIndex].bvid != expectedBvid) return@withContext null
++        val queue = DesktopOrdinaryPlaybackQueueHandoff(view.queue, view.queueIndex,
++            queueOwnership?.takeIf { it.accountEpoch == expectedEpoch && it.requestGeneration == generation.get() }?.owner,
++            shuffle, partShuffle)
++        val mute = pluginMuteUntilMs?.let { until ->
++            val from = pluginMuteFromMs ?: return@withContext null
++            DesktopOrdinaryPluginMuteHandoff(from, until, preferences().muted)
++        }
++        val retainedSuspension = suspended
++        checkpoint()
++        val final = finishHeartbeat(context, submit = false)
++        if (!closed.compareAndSet(false, true)) return@withContext null
++        generation.incrementAndGet()
++        // Unconfirmed Sponsor bookkeeping is discarded without claiming a skip;
++        // already submitted native seeks remain intact and precede the barrier.
++        pendingSponsorSkip = null
++        watchdog.cancel()
++        val controllerJob = requireNotNull(controllerScope.coroutineContext[Job])
++        controllerJob.cancel()
++        automaticSubtitles?.close()
++        heartbeatReporter.close(final)
++        try {
++            if (!joinRetiredProducers() || !native.drainSourceCommands(expectedSourceVersion)) return@withContext null
++            val snapshot = native.currentSourceSnapshot() ?: return@withContext null
++            val readback = native.state.value
++            if (playback.sessionEpoch != expectedEpoch || !sameSource(snapshot) || !ready(readback)) return@withContext null
++            DesktopOrdinaryPlaybackHandoff(native, context.details, context.index, context.source,
++                snapshot, readback, queue, context.pluginGeneration, retainedSuspension, mute)
++        } finally {
++            // A failed/cancelled retirement is terminal too. Root waits for actual
++            // producer quiescence before a fresh load; it never resumes this owner.
++            request = null; recovery = null; pluginLoad = null; current = null; ownedSourceVersion = null
++            queueOwnership = null; pluginMuteFromMs = null; pluginMuteUntilMs = null
++            mutableState.update { DesktopPlaybackState(quality = it.quality) }
++        }
++    }
++
++    private suspend fun joinRetiredProducers(): Boolean = coroutineScope {
++        val controllerJob = requireNotNull(controllerScope.coroutineContext[Job])
++        val controller = async { withTimeoutOrNull(3_000L) { controllerJob.join(); true } ?: false }
++        val subtitles = async { automaticSubtitles?.closeAndJoin() ?: true }
++        val reports = async { heartbeatReporter.closeAndJoin() }
++        awaitAll(controller, subtitles, reports).all { it }
++    }
++
++    /** Root's external scope can retry a bounded join after a failed/cancelled
++     * handoff. False prohibits starting a second reporter/subtitle/request owner. */
++    internal suspend fun awaitRetiredOrdinaryProducers(): Boolean =
++        if (closed.get()) joinRetiredProducers() else false
++
+     override fun close() {
+         if (closed.get()) return
+         checkpoint()

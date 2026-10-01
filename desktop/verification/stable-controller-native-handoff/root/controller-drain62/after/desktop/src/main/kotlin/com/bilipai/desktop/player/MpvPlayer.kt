@@ -40,7 +40,6 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     @Volatile private var session: Session? = null
     private var attachedWindowId: Long? = null
     private var requestedSource: PlaybackSource? = null
-    private var requestedLoadMute: Boolean? = null
     private var sourceVersion = 0L
     private var playbackRevision = 0L
     private val nextAttemptId = AtomicLong()
@@ -133,19 +132,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         load(source)
         sourceVersion
     }
-    /** A real new video starts with the current Root user preference, including
-     * when the previous entry left a temporary plugin native mute behind. */
-    internal fun loadVersionedWithMuted(source: PlaybackSource, muted: Boolean): Long = synchronized(lock) {
-        load(source, preserveSubtitles = false, startMuted = muted)
-        sourceVersion
-    }
 
     fun stopIfSourceVersion(version: Long): Boolean = synchronized(lock) {
         if (closed.get() || requestedSource == null || sourceVersion != version) false
         else { stop(); true }
     }
 
-    private fun load(source: PlaybackSource, preserveSubtitles: Boolean, startMuted: Boolean? = null) {
+    private fun load(source: PlaybackSource, preserveSubtitles: Boolean) {
         synchronized(lock) {
             check(!closed.get()) { "Player is closed" }
             // Validate and freeze caller-owned maps before transferring media ownership.
@@ -156,7 +149,6 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             }
             if (!preserveSubtitles) { externalSubtitles.clear(); subtitleControlVersion++ }
             requestedSource = retainedSource
-            requestedLoadMute = startMuted
             val revision = ++playbackRevision
             softwareTarget?.beginSource(sourceVersion, revision)
             mutableVideoOutput.update { it.copy(sourceVersion = sourceVersion, inputWidth = 0, inputHeight = 0, displayWidth = 0, displayHeight = 0, viewport = null, gamma = null, dolbyVisionProfile = null) }
@@ -170,7 +162,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     .copy(tracks = emptyList(), subtitleText = null, secondarySubtitleText = null)
             }
             val active = session
-            if (active != null) active.commands.offer(Action.Load(retainedSource, sourceVersion, softwareDecodingRequested, revision, startMuted))
+            if (active != null) active.commands.offer(Action.Load(retainedSource, sourceVersion, softwareDecodingRequested, revision))
             else attachedWindowId?.let(::startSession)
         }
     }
@@ -242,8 +234,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         mutableState.update { it.copy(speed = value) }
         send(Action.Property("speed", value.toString()))
     }
-    fun setMuted(muted: Boolean) = synchronized(lock) {
-        if (requestedLoadMute != null) requestedLoadMute = muted
+    fun setMuted(muted: Boolean) {
         mutableState.update { it.copy(muted = muted) }
         send(Action.Property("mute", if (muted) "yes" else "no"))
     }
@@ -467,7 +458,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
 
     private fun startSession(windowId: Long) {
         mutableVideoOutput.value = PlayerVideoOutputState(sourceVersion = sourceVersion)
-        val next = Session(windowId, requestedSource, sourceVersion, playbackRevision, requestedLoadMute)
+        val next = Session(windowId, requestedSource, sourceVersion, playbackRevision)
         session = next
         next.thread.start()
     }
@@ -499,7 +490,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     }
 
     private sealed interface Action {
-        data class Load(val source: PlaybackSource, val version: Long, val softwareDecoding: Boolean, val revision: Long, val startMuted: Boolean? = null) : Action
+        data class Load(val source: PlaybackSource, val version: Long, val softwareDecoding: Boolean, val revision: Long) : Action
         data class Subtitles(val version: Long) : Action
         data class HardwareDecoding(val controlVersion: Long, val version: Long, val revision: Long) : Action
         data class SubtitleConfiguration(val controlVersion: Long, val version: Long, val revision: Long, val visible: Boolean) : Action
@@ -515,7 +506,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private data class ExternalSubtitle(val path: Path, val title: String, val language: String, val selection: Int?, val nativeId: Int? = null)
 
     private inner class Session(private val windowId: Long, private val initialSource: PlaybackSource?, private val initialVersion: Long,
-        private val initialRevision: Long, private val initialMuted: Boolean?) {
+        private val initialRevision: Long) {
         val commands = LinkedBlockingQueue<Action>()
         val closing = AtomicBoolean(false)
         val thread = Thread(::run, "BiliPai-native-player").apply { isDaemon = true }
@@ -587,7 +578,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 synchronized(lock) {
                     if (session === this && !closing.get()) mutableState.update { it.copy(ready = true, error = null, failure = null, nativeVersion = nativeVersion) }
                 }
-                initialSource?.let { perform(native, handle, Action.Load(it, initialVersion, softwareDecodingRequested, initialRevision, initialMuted)) }
+                initialSource?.let { perform(native, handle, Action.Load(it, initialVersion, softwareDecodingRequested, initialRevision)) }
                 var lastPoll = 0L
                 while (!closing.get()) {
                     softwareRenderer?.throwIfFailed()
@@ -659,10 +650,6 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                             val args = nodes.array(listOf("loadfile", action.source.nativeLoadUrl, "replace", "-1", action.source.mpvFileOptions()))
                             checkResult(native, native.mpv_command_node(handle, args, null), "loadfile")
                         }
-                        if (action.startMuted != null) requestedLoadMute?.let { muted ->
-                            checkResult(native, native.mpv_set_property_string(handle, "mute", if (muted) "yes" else "no"), "mute")
-                        }
-                        requestedLoadMute = null
                         // loadfile synchronously installs the new playlist entry before its asynchronous events.
                         expectedEntry = property(native, handle, "playlist/0/id")?.toLongOrNull()
                         if (expectedEntry != null) action.source.nativePublication?.onLoadCommandAccepted()
@@ -712,7 +699,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     is Action.Property -> checkResult(native, native.mpv_set_property_string(handle, action.name, action.value), action.name)
                     is Action.OwnedMute -> {
                         val command = { synchronized(lock) {
-                            if (session === this && !closing.get() &&
+                            if (session === this && !closing.get() && fileLoaded &&
                                 sourceVersion == action.version && playbackRevision == action.revision &&
                                 activeSourceVersion == action.version && activeRevision == action.revision &&
                                 requestedSource?.nativePublication === action.source.nativePublication)

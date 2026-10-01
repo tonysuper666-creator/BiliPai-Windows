@@ -1,0 +1,13 @@
+{
+  "draftAcceptedForInstallation": false,
+  "wholeClassesPassed": true,
+  "nativeFixturePassed": true,
+  "nativeFixtureAssertions": 60,
+  "reviewFindings": [
+    "EOF within inherited mute interval must bypass the normal in-range guard",
+    "Pending new-load base mute must honor user writes before first native attach"
+  ],
+  "supersedingProductPhase": 64,
+  "historicalProductAndRunRemainImmutable": true,
+  "fullOrdinaryRootMounted": false
+}

@@ -1,0 +1,526 @@
+{
+  "artifacts": [
+    {
+      "path": "root/controller-drain62/ControllerNativeDrainFixture.kt",
+      "sha256Bytes": "0578b0fdb0ced0468d3b162a3fa9fac495053abe90031ac4a214b19b9f8b1010",
+      "sizeBytes": 15626
+    },
+    {
+      "path": "root/controller-drain62/DesktopOriginalVideoNativeOwner.kt.diff",
+      "sha256Bytes": "8ce24996f01ec74b94981e4386d5731225a96aed901d1338fbb5500eb2d4ed7a",
+      "sizeBytes": 5149
+    },
+    {
+      "path": "root/controller-drain62/DesktopPlaybackController.kt.diff",
+      "sha256Bytes": "87af177ee4723448cb37cec8ee5f61a36971f5a8ee366447f3ba1a6b0345695f",
+      "sizeBytes": 5723
+    },
+    {
+      "path": "root/controller-drain62/MpvPlayer.kt.diff",
+      "sha256Bytes": "cb21354754b1672f9145e96158c3effea6e7647fe1a94b7a23b0adcd27424ad1",
+      "sizeBytes": 3906
+    },
+    {
+      "path": "root/controller-drain62/after/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "bc62a983fc8141a0a9ad472ce08c9c4bc09110bd8a99284392cd830a14e0dbf1",
+      "sizeBytes": 68433
+    },
+    {
+      "path": "root/controller-drain62/after/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "064207e06d2aebf9e8093f8284af757ae6a918779bdada500af796ae14ba619f",
+      "sizeBytes": 66344
+    },
+    {
+      "path": "root/controller-drain62/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "58ace2305eaf4058cdcca78ac7eb7c87e3105bf61a451e4e396e311c4fe6ee97",
+      "sizeBytes": 16002
+    },
+    {
+      "path": "root/controller-drain62/before/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "6e3a3944eb9ba79b971aec11853458df99b1e58ddd487a9ac718c793d746e5c8",
+      "sizeBytes": 63531
+    },
+    {
+      "path": "root/controller-drain62/before/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "86f9090b7726eb6082116783d6cfe359c3f4704d3de4325c654d0378b9c74d90",
+      "sizeBytes": 64740
+    },
+    {
+      "path": "root/controller-drain62/before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "19abb18afd3a2e9ce31643378f35751f5ce3762f76011a302d1089d1736b0e29",
+      "sizeBytes": 13506
+    },
+    {
+      "path": "root/controller-drain62/review-status.json",
+      "sha256Bytes": "a767f70fd094a850a1ed5e9962207fa15f06d64f3cc2019cc0da41985beaa866",
+      "sizeBytes": 805
+    },
+    {
+      "path": "root/controller-drain62/source-delta.json",
+      "sha256Bytes": "f6aa84bfa766ccbf99c5eb221ea308654cf658679e8fcc4befc5ce2d3c8ffca3",
+      "sizeBytes": 1259
+    },
+    {
+      "path": "root/actual62-controller-native-drain-fixture01/ControllerNativeDrainFixture.kt",
+      "sha256Bytes": "0578b0fdb0ced0468d3b162a3fa9fac495053abe90031ac4a214b19b9f8b1010",
+      "sizeBytes": 15626
+    },
+    {
+      "path": "root/actual62-controller-native-drain-fixture01/compile.args",
+      "sha256Bytes": "95790f9f2bf9c62577be42527c1f4dd7ee80dcf58df4749b4fe7c75cac4ee5ff",
+      "sizeBytes": 25559
+    },
+    {
+      "path": "root/actual62-controller-native-drain-fixture01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual62-controller-native-drain-fixture01/library-adoption/library.json",
+      "sha256Bytes": "180554aac8d919f77704f309b58cc0b11365c0f2d0b67a8aecf767192a7f9114",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual62-controller-native-drain-fixture01/library-adoption/retained.srt",
+      "sha256Bytes": "3b46a07584f573ce5a848c6c99de7496d29ce0239596d41c749dc6f6bf9a3966",
+      "sizeBytes": 56
+    },
+    {
+      "path": "root/actual62-controller-native-drain-fixture01/pins-after.json",
+      "sha256Bytes": "363aaece6ed99a7f1c843d5d4875c08b10d61b5dd72bec1cb8ca9733648f0a85",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual62-controller-native-drain-fixture01/pins-before.json",
+      "sha256Bytes": "363aaece6ed99a7f1c843d5d4875c08b10d61b5dd72bec1cb8ca9733648f0a85",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual62-controller-native-drain-fixture01/run.log",
+      "sha256Bytes": "bcb5d55e2d7d2109e344dc5cd3f0aa12f8f271afe61a17d0c3cf0f62d83c0f6a",
+      "sizeBytes": 1077
+    },
+    {
+      "path": "root/actual62-controller-native-drain-fixture01/runner-result.json",
+      "sha256Bytes": "6cb72c4d05635ead67a28902e88b31ea7c74521061f3467d297d9aeceefce240",
+      "sizeBytes": 718
+    },
+    {
+      "path": "root/snapshot62/manifest.json",
+      "sha256Bytes": "4570296ff7dca1b2fe7d0463c4b1c2cd5016369bf9628f997a801748efab751f",
+      "sizeBytes": 148321
+    },
+    {
+      "path": "root/snapshot62/ordered-runtime-cp.json",
+      "sha256Bytes": "f17120b6b06f53f587a094986581682af0a8dd39f70bfd1f62a769c6fa0a7a3c",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-62.log",
+      "sha256Bytes": "3dc45ab1c57a8be8348a5be43e10119ea22d7c3fa102c7a3b4aad4353dd64401",
+      "sizeBytes": 11093
+    },
+    {
+      "path": "root/classpath-62.log",
+      "sha256Bytes": "7c162df127e6e77117fbaa124774a5dc00a562d0ef4fd8adfca638e66ec2c51d",
+      "sizeBytes": 287
+    },
+    {
+      "path": "root/record-controller-drain62.py",
+      "sha256Bytes": "89cb400645dbc5ab60af33f8e1313dcb72bca997fe8ebc8e3d956960553eaa21",
+      "sizeBytes": 1746
+    },
+    {
+      "path": "root/create-controller-drain-runner62.py",
+      "sha256Bytes": "c70ce6b6520ee62b69e82b3211f3d5a2c92900cd3e8fcc0a880adbb259b7f431",
+      "sizeBytes": 1771
+    },
+    {
+      "path": "root/run-actual62-controller-native-drain-fixture.py",
+      "sha256Bytes": "9b2274f4601ff1b5f16fed7cc1522694e400a5240f68dcb1b4109acedc62f808",
+      "sizeBytes": 5814
+    },
+    {
+      "path": "root/jvm-method-name-audit-62.json",
+      "sha256Bytes": "6457b87e317638090ae13f4a319f3d5e06278c37c6e0d9e94362065d66dfa0f3",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/controller-drain63/ControllerNativeDrainFixture.kt",
+      "sha256Bytes": "c8f0a27686a3e9cd0ed66ad804ca6549e74008f0af3b48e17d5f8190c4e3ea00",
+      "sizeBytes": 19083
+    },
+    {
+      "path": "root/controller-drain63/DesktopOriginalVideoNativeOwner.kt.diff",
+      "sha256Bytes": "725236a955ac2ddb17b90ad4b1f54d7706b87553f3765fdd54c591a295ffdd63",
+      "sizeBytes": 8360
+    },
+    {
+      "path": "root/controller-drain63/DesktopPlaybackController.kt.diff",
+      "sha256Bytes": "8238243a6d6d29d5491c6eade7ff414e9636f89561b7d89d2c3efff1cfcda809",
+      "sizeBytes": 6202
+    },
+    {
+      "path": "root/controller-drain63/MpvPlayer.kt.diff",
+      "sha256Bytes": "87c53859f560a90e2e296f8f21935da0457d601471beed4e4496f1fa91df3516",
+      "sizeBytes": 9414
+    },
+    {
+      "path": "root/controller-drain63/after/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "b12f1bbaa608ab4c2b871668437c68507d54f43bc769dc1475a17e4e75877762",
+      "sizeBytes": 68898
+    },
+    {
+      "path": "root/controller-drain63/after/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "246554680a938c097286e1627a9935fe39e3af3a48e8500f7d40cd3778534555",
+      "sizeBytes": 67196
+    },
+    {
+      "path": "root/controller-drain63/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "8dd3e55ba0556492301ee0e523f777bafbca1d800b7a832d171db19ce28a09d0",
+      "sizeBytes": 16969
+    },
+    {
+      "path": "root/controller-drain63/before/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "6e3a3944eb9ba79b971aec11853458df99b1e58ddd487a9ac718c793d746e5c8",
+      "sizeBytes": 63531
+    },
+    {
+      "path": "root/controller-drain63/before/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "86f9090b7726eb6082116783d6cfe359c3f4704d3de4325c654d0378b9c74d90",
+      "sizeBytes": 64740
+    },
+    {
+      "path": "root/controller-drain63/before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "19abb18afd3a2e9ce31643378f35751f5ce3762f76011a302d1089d1736b0e29",
+      "sizeBytes": 13506
+    },
+    {
+      "path": "root/controller-drain63/review-status.json",
+      "sha256Bytes": "9aadd0337f1189e4931e8e3142fe63393511335b0cc78dfb78b647ab662ad3df",
+      "sizeBytes": 447
+    },
+    {
+      "path": "root/controller-drain63/source-delta.json",
+      "sha256Bytes": "53c5f58023b3b3cfd1f4e5b09db79a44e7d8cd8f49b7555f440a1bfe363024b2",
+      "sizeBytes": 1306
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/ControllerNativeDrainFixture.kt",
+      "sha256Bytes": "c8f0a27686a3e9cd0ed66ad804ca6549e74008f0af3b48e17d5f8190c4e3ea00",
+      "sizeBytes": 19083
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/compile.args",
+      "sha256Bytes": "79693c59aa228389b2f2c62cb47b20a6898b47e8a2985b362a7cf195301c3f09",
+      "sizeBytes": 25559
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/compile.log",
+      "sha256Bytes": "25f8c4b8b7dfe5a650d6c5c69007aa24c126630c796dce3be3ea1c6c5a358ac6",
+      "sizeBytes": 482
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/library-adoption/library.json",
+      "sha256Bytes": "3b2b1c4de9daa86d81e26c5b430a89de343e0fa2052fd2a2a779401fa4cf9880",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/library-adoption/retained.srt",
+      "sha256Bytes": "3b46a07584f573ce5a848c6c99de7496d29ce0239596d41c749dc6f6bf9a3966",
+      "sizeBytes": 56
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/library-epoch/library.json",
+      "sha256Bytes": "2ce767e66273ba0392eb8af0716981cf9b81cdb544baaa58540303d2b2c9af04",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/library-foreign/library.json",
+      "sha256Bytes": "20377eaae14d1dc0a39fff27b23871ea7a4cbf3dba91dd61adb7ed73e9f5e603",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/library-newload/library.json",
+      "sha256Bytes": "d36bff7ef4ba378446030a2cfa926a711d09044976533237e4d1c830649bf501",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/library-settings/library.json",
+      "sha256Bytes": "e748dec26fe53e83dce9b85f1dc45f59a136dbcc0aa8fa0e149f3013850fa6da",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/library-timeout/library.json",
+      "sha256Bytes": "ad2eb8ebbf5b684227f0c90174fbf11b86f88c0ac8ce9b48ec44489ec743bc83",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/pins-after.json",
+      "sha256Bytes": "b17d34a4b3164f32080e5eded5db674d0f1f5ff5f8d3d93d27b22f4899899a32",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/pins-before.json",
+      "sha256Bytes": "b17d34a4b3164f32080e5eded5db674d0f1f5ff5f8d3d93d27b22f4899899a32",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/result.json",
+      "sha256Bytes": "43ce0e028e129bb98f9f3409d66c41e7901ef498ee4a5d56b851cbda7804821d",
+      "sizeBytes": 4931
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/run.log",
+      "sha256Bytes": "1556869cc843b7a3bca45ea95e2d9c03b1e66998d3355d85daaaffff789f328b",
+      "sizeBytes": 54
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/runner-result.json",
+      "sha256Bytes": "3a861ef0ce6d3eadb3a47f98d39298d3f1dedcd98d2c3d319252626607c8efc3",
+      "sizeBytes": 2117
+    },
+    {
+      "path": "root/snapshot63/manifest.json",
+      "sha256Bytes": "fa0240ab78e15a2cbb87ef36ea82a1ee7dec83310817ead0d9422683d6809d7f",
+      "sizeBytes": 148321
+    },
+    {
+      "path": "root/snapshot63/ordered-runtime-cp.json",
+      "sha256Bytes": "499f63dbe5417edf463a90675941e2b4859b7bfd5f6ac5be82dd96314f32448b",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-63.log",
+      "sha256Bytes": "cdd0337e8c6c4217f399aa9b7404359c06d482963c1c35933516ca315bf8393d",
+      "sizeBytes": 11090
+    },
+    {
+      "path": "root/classpath-63.log",
+      "sha256Bytes": "4b89c8a72639c8c96d7f8fd1639156fd91fd3aa928f7280536a26b3f2e50c1e8",
+      "sizeBytes": 290
+    },
+    {
+      "path": "root/record-controller-drain63.py",
+      "sha256Bytes": "c4643b4afd1f8b2f2202225a672b5f1810187965a9ad58220f46276976050d1a",
+      "sizeBytes": 1462
+    },
+    {
+      "path": "root/create-controller-drain-runner63.py",
+      "sha256Bytes": "eed5c54e8aa1b634ed50cdf5f7a4bd92052288014b30fdb53be385089fa0b116",
+      "sizeBytes": 1771
+    },
+    {
+      "path": "root/run-actual63-controller-native-drain-fixture.py",
+      "sha256Bytes": "8211635c6fcf434ce38bda6e28a1f0864ef99cbd2d63d6e5ae70c98ebb6f4e8f",
+      "sizeBytes": 5814
+    },
+    {
+      "path": "root/jvm-method-name-audit-63.json",
+      "sha256Bytes": "58380fff4079cd94c7004680e8f761ec2ba76f3a78915d11c6337bdcb9b31e57",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/controller-drain64/ControllerNativeDrainFixture.kt",
+      "sha256Bytes": "73976953c2132ddd29faf52fa67992a20e30777882f323e3e83e17d22c6d84ae",
+      "sizeBytes": 21911
+    },
+    {
+      "path": "root/controller-drain64/DesktopOriginalVideoNativeOwner.kt.diff",
+      "sha256Bytes": "0983aa27ad691fb6e570fa17f93cce548a7094b631ab332d9383521e5eefc855",
+      "sizeBytes": 8377
+    },
+    {
+      "path": "root/controller-drain64/DesktopPlaybackController.kt.diff",
+      "sha256Bytes": "5b0701e7e7c2ad8a1af3185902cd7bb121259d3ccf4ad4427536a1360cdc302f",
+      "sizeBytes": 6202
+    },
+    {
+      "path": "root/controller-drain64/MpvPlayer.kt.diff",
+      "sha256Bytes": "964afff251eace2296e92739d79b4d17276e1d04fb74bc0fe6c7e2f5e203f849",
+      "sizeBytes": 9689
+    },
+    {
+      "path": "root/controller-drain64/after/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "b12f1bbaa608ab4c2b871668437c68507d54f43bc769dc1475a17e4e75877762",
+      "sizeBytes": 68898
+    },
+    {
+      "path": "root/controller-drain64/after/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "4da608e024ab32c4c155688aa7d149e0529f0b5cf1de6332213104290090b213",
+      "sizeBytes": 67313
+    },
+    {
+      "path": "root/controller-drain64/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "c625313a0d585f6ae546548be74e0137737b95bcde39ddc3c2037b7ccbe29b6b",
+      "sizeBytes": 16986
+    },
+    {
+      "path": "root/controller-drain64/before/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "6e3a3944eb9ba79b971aec11853458df99b1e58ddd487a9ac718c793d746e5c8",
+      "sizeBytes": 63531
+    },
+    {
+      "path": "root/controller-drain64/before/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "86f9090b7726eb6082116783d6cfe359c3f4704d3de4325c654d0378b9c74d90",
+      "sizeBytes": 64740
+    },
+    {
+      "path": "root/controller-drain64/before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "19abb18afd3a2e9ce31643378f35751f5ce3762f76011a302d1089d1736b0e29",
+      "sizeBytes": 13506
+    },
+    {
+      "path": "root/controller-drain64/source-delta.json",
+      "sha256Bytes": "e6a6ad65d73a94cf5bd9325cff474c3b257f2f7d7e0768057a871a2ff0278a5e",
+      "sizeBytes": 1325
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/ControllerNativeDrainFixture.kt",
+      "sha256Bytes": "73976953c2132ddd29faf52fa67992a20e30777882f323e3e83e17d22c6d84ae",
+      "sizeBytes": 21911
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/compile.args",
+      "sha256Bytes": "513e497ee652a3af738d93ad16c05c95b0a03464da0ae45a3f3e36ff2b2e4946",
+      "sizeBytes": 25559
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/compile.log",
+      "sha256Bytes": "67725b03e79ca9bfa0cd49cdee01bf7c7955e6ac940636b21bf48416bb57a06e",
+      "sizeBytes": 482
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/library-adoption/library.json",
+      "sha256Bytes": "22b77023231f0bef4d4598ef38385ef27ba47e4564934844a2c7349a2188a5cc",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/library-adoption/retained.srt",
+      "sha256Bytes": "3b46a07584f573ce5a848c6c99de7496d29ce0239596d41c749dc6f6bf9a3966",
+      "sizeBytes": 56
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/library-eof/library.json",
+      "sha256Bytes": "335f719337ccb6771367cea143e5d60c432aa5e0850aa9cc0faded16eb2b02eb",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/library-epoch/library.json",
+      "sha256Bytes": "2eb5570067ad0c75b36edcc45bb516a6d856c58e8f4ac1b708ed12ac95579b26",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/library-foreign/library.json",
+      "sha256Bytes": "50936106f47907776089a3c7ed9c358ab3baf3d5d1c0400c346974db0dee7367",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/library-newload/library.json",
+      "sha256Bytes": "daf47837cbd5111df2a70c97892b41007749138214d639a2878693a71ea69716",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/library-settings/library.json",
+      "sha256Bytes": "8d94dd9de34b3172405b1bf4d1da8998cbf86b614197f84d0e5977890e957ec3",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/library-timeout/library.json",
+      "sha256Bytes": "9705b6c88b16500e03185bd3234a6c05ad96478d63c0f192789f7685f4981c09",
+      "sizeBytes": 346
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/pins-after.json",
+      "sha256Bytes": "3e00a4c0e94cf2976f1fe5e20a751cfae59f7897db46af1a04feea14c77b3aaf",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/pins-before.json",
+      "sha256Bytes": "3e00a4c0e94cf2976f1fe5e20a751cfae59f7897db46af1a04feea14c77b3aaf",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/result.json",
+      "sha256Bytes": "ac685e6a7dc561d73fa1d9b127983b63a3902e1e56be26b2832a8cc501160ed8",
+      "sizeBytes": 5599
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/run.log",
+      "sha256Bytes": "19d1fcc6ba1506293fda64db015bda18a553fdb7f351fd4e3f95f782c9c19934",
+      "sizeBytes": 54
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/runner-result.json",
+      "sha256Bytes": "9004ba4addd18a1a3fe1ffaa0c68c6dd14162d829655486bd4baaf9daabc7272",
+      "sizeBytes": 2117
+    },
+    {
+      "path": "root/snapshot64/manifest.json",
+      "sha256Bytes": "5f93c921297a6571ef6074f6b3afb364ff1c20ca09a8f3e17db15133dde2bf42",
+      "sizeBytes": 148321
+    },
+    {
+      "path": "root/snapshot64/ordered-runtime-cp.json",
+      "sha256Bytes": "58d593ab155d1a864b3213cc35e7c633fae7b7f6f55b8b8c22f49fcc71613701",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-64.log",
+      "sha256Bytes": "c001f010593d44050e406cf913706dfaaba3be11f362a157ef2b5f05422b6037",
+      "sizeBytes": 8925
+    },
+    {
+      "path": "root/classpath-64.log",
+      "sha256Bytes": "325d8839f1e7b1f7ec83da6becd6d2adf3087ec878e2b7debd4cc636214fcd76",
+      "sizeBytes": 290
+    },
+    {
+      "path": "root/record-controller-drain64.py",
+      "sha256Bytes": "c6f2803d69f3d87aa5c5c203913f9f1116ec8a4959b1b71d167eb4921efc3610",
+      "sizeBytes": 1493
+    },
+    {
+      "path": "root/create-controller-drain-runner64.py",
+      "sha256Bytes": "4e377c3e8a2984f0dae441db5b4fa1c4303b5dbc0991ab872ba29357be420e85",
+      "sizeBytes": 1771
+    },
+    {
+      "path": "root/run-actual64-controller-native-drain-fixture.py",
+      "sha256Bytes": "5ca10714138537e330585ddb75b0c6efba40b8514b3b61d19c1fd2b05c6e4940",
+      "sizeBytes": 5814
+    },
+    {
+      "path": "root/jvm-method-name-audit-64.json",
+      "sha256Bytes": "8efa2502b5541cecd59076793d5c47a3bb819a20f7a62c6e39df1898eea9dd79",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/freeze-controller-drain64.py",
+      "sha256Bytes": "31fd82143bfd44faa8859928fb9b5229e4ca431079d858a9febb635860eac04a",
+      "sizeBytes": 8719
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "118bac142a350e3bd4961453f2a5510456200d9ee09dfcd16cb1ee397265a8b4",
+      "sizeBytes": 3958
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "root/actual62-controller-native-drain-fixture01/fixture.jar",
+      "sha256Bytes": "2a30c919420d1efeaea9cf8cfb283b960a287e9114ee77d246a2283a31aa6f18",
+      "reason": "Rebuildable binary or private rendered output"
+    },
+    {
+      "path": "root/actual63-controller-native-drain-fixture01/fixture.jar",
+      "sha256Bytes": "d1bd478097b955d8d256fc3c452e91213d5190f85f4c29306860e2d4390fa623",
+      "reason": "Rebuildable binary or private rendered output"
+    },
+    {
+      "path": "root/actual64-controller-native-drain-fixture01/fixture.jar",
+      "sha256Bytes": "5cd4865c2f59be56050fc4e07c9c956ef51c67cad9a759e4610de29c5bae03a0",
+      "reason": "Rebuildable binary or private rendered output"
+    }
+  ]
+}

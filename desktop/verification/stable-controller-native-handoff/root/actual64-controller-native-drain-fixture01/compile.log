@@ -1,0 +1,3 @@
+desktop\.local\upstream-v023-audit\actual64-controller-native-drain-fixture01\ControllerNativeDrainFixture.kt:179:96: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopNativePlaybackPublication'.
+                verify(owner.current()==null && !accepted.nativeSource.source.nativePublication!!.admit { error("Retired account command executed") },
+                                                                                               ^^

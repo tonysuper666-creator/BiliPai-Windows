@@ -84,3 +84,4 @@ desktop/verification/stable-native-publication-adoption/** -text
 desktop/verification/stable-producer-drain/** -text
 desktop/verification/stable-native-load-ack/** -text
 desktop/verification/stable-video-tablet-native-integration/** -text
+desktop/verification/stable-controller-native-handoff/** -text

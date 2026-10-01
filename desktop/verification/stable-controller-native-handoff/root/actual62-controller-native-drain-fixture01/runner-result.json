@@ -1,0 +1,22 @@
+{
+  "passed": false,
+  "compileExitCode": 0,
+  "runExitCode": 1,
+  "actualProductSnapshot": 62,
+  "runtimeEntries": 101,
+  "fixtureClasses": 21,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersections": [],
+  "fixtureJarSha256Bytes": "2a30c919420d1efeaea9cf8cfb283b960a287e9114ee77d246a2283a31aa6f18",
+  "byteVerifiedProductOrigins": [],
+  "fixtureSourceUnchanged": true,
+  "fixtureIsRootOwned": true,
+  "sameSocketFreeChecksReplayed": true,
+  "actualAccountUsed": false,
+  "nativeExecuted": true,
+  "actualLocalNativeClip": true,
+  "actualControllerDrainApiAccepted": true,
+  "fullControllerFacadeSwitchAccepted": false,
+  "independentVisualAcceptance": false,
+  "fullOrdinaryVideoRootMountAccepted": false
+}
