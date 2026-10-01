@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "sourceInverse": {
+    "passed": true,
+    "repositoryHunks": 4,
+    "loginHunks": 1,
+    "dependsOnFrozenBridge41": true
+  },
+  "prospectiveSources": 3,
+  "prospectiveClasses": 52,
+  "fixtureAssertions": 25,
+  "fixtureClassOverlap": [],
+  "classByteOriginsVerified": 5,
+  "newManualFiles": 1,
+  "canonicalApiModelProduced": 0
+}

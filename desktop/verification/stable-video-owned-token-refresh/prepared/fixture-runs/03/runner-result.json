@@ -1,0 +1,16 @@
+{
+  "compileExit": 0,
+  "runExit": 0,
+  "fixtureClassProductOverlap": [],
+  "fixtureJarSha256Bytes": "58bb5d4db76bdeaf6d6776d021cdf47d69d9a4a95b8452bc929447bf941e4cf9",
+  "explicitPreparedProductOverrides": [
+    "DesktopRepository",
+    "DesktopLoginRepository",
+    "bridge41 DesktopPlaybackCache dependency"
+  ],
+  "actual50Runtime": 97,
+  "noExternalHTTP": true,
+  "memoryRetrofit": true,
+  "noNative": true,
+  "productAcceptance": false
+}

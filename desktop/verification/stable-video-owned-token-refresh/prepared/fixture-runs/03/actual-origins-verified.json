@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "identities": [
+    {
+      "class": "com.bilipai.desktop.data.DesktopRepository",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-owned-token-refresh-parity/compile-runs/02/candidate.jar",
+      "sha256ClassBytes": "d8ce73aac61874960aaa1e4b853930308c7f6145f045ad93e69d09612663c2a6",
+      "jarClassByteVerified": true
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopLoginRepository",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-owned-token-refresh-parity/compile-runs/02/candidate.jar",
+      "sha256ClassBytes": "f5bf24284f7cefb9231b3fc6a428693dadb3ee0fd77b977f2a55a7e1ffda3be8",
+      "jarClassByteVerified": true
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopSessionStore",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-50/main-kotlin.jar",
+      "sha256ClassBytes": "412d849ea8f43feac60ac01c8d29e369f1922b4b588d83e2c0239f40e4706c49",
+      "jarClassByteVerified": true
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-50/main-kotlin.jar",
+      "sha256ClassBytes": "ef10ef78d77a95c7cbd1f9583ba5ae2086f44dc2297013ccd1a18290183fb3c5",
+      "jarClassByteVerified": true
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalVideoTokenRefreshBinding",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-owned-token-refresh-parity/compile-runs/02/candidate.jar",
+      "sha256ClassBytes": "cd3a5fcf6f094c22a1b45c9dbf8b7bb9776a5f11f184cdabc50c4969e33d99c4",
+      "jarClassByteVerified": true
+    }
+  ]
+}

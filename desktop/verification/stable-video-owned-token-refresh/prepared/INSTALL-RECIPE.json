@@ -1,0 +1,64 @@
+{
+  "preparedOnly": true,
+  "productAcceptance": false,
+  "dependsOnBridge41": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-repository-core-ports-parity\\frozen-handoff.json",
+    "sha256Bytes": "c9128187e1828c0b18a1f1c776d3c3b4f900751bf676f2edbfcbefd628e4437e"
+  },
+  "actual50ManifestSHA": "d9803560314da73036a848cf1be86c5877ff24b3993584379a5e9516165de4eb",
+  "actual50Ordered97CPSHA": "c4615263c430a5b75f86085499bcf3dae27239a005a59e258cdff172bbf75680",
+  "installation": [
+    "Install bridge41 exact Repository/cache hunks first; its raw binding source stays unchanged.",
+    "Apply repository-local-hunks.json four exact local hunks to that Repository base, retaining Root unrelated code.",
+    "Apply login-local-hunks.json one exact body/owned-tail hunk to sole existing DesktopLoginRepository. No extra actor/client/Store.",
+    "Copy one manual DesktopOriginalVideoTokenRefreshBinding source. Never copy proof-only entire Repository/Login or candidate/fixture JAR.",
+    "Root entry factory constructs DesktopOriginalVideoTokenRefreshBinding(existingLogin,entryJob,entryOwns,entryCommit). Pass available and refresh method references to each per-load RawBinding.capture.",
+    "Updated installLogin adds optional requestReceipt/stillOwned/commitIfCurrent tail; existing Kotlin call sites retain legacy no-receipt behavior. Root recompiles whole product so no stale Kotlin default-argument ABI remains.",
+    "No Store/entry gate wraps refresh HTTP, nav validation await, Mutex wait, shared dispatcher cancellation, native join or native close. Successful owned replacement invalidates old receipt without cancelling shared transport/native source.",
+    "Root raw binding assertCurrent after refresh deliberately cancels old load on new revision; original full owner schedules a new generation and captures new authorization. No implicit old-load receipt adoption."
+  ],
+  "signatures": [
+    "DesktopOriginalVideoTokenRefreshBinding(login:DesktopLoginRepository,entryJob:Job,isEntryCurrent:()->Boolean,commitIfEntryCurrent:((()->Unit)->Boolean))",
+    "fun available():Boolean",
+    "suspend fun refresh(receipt:DesktopPlaybackAuthorizationReceipt,requestOwned:()->Boolean):Boolean",
+    "DesktopLoginRepository.refreshTvTokenForOriginalPlayback(receipt,stillOwned,commitIfCurrent):Boolean"
+  ],
+  "hunks": [
+    {
+      "file": "repository-local-hunks.json",
+      "count": 4,
+      "baseLF": "da3e69796b62bbaf9f1e399229ea3a8a99ea4bd4102f140df04ceb611f68b320",
+      "candidateLF": "a2c7a3e148cb3b86d5bc1e30a3e6cccb1dd9cf0da5f25e90ee39f5517b6e2815"
+    },
+    {
+      "file": "login-local-hunks.json",
+      "count": 1,
+      "baseLF": "b33ec9cfbcc70e299fc0f9e0a8a2170bb7aa0036113f1115965c4cd966e41a2a",
+      "candidateLF": "d712a0621b9e4adfcfbed29ef7821296e925a6f133f6b04cf749c2e7a6bd1d34"
+    }
+  ],
+  "manual": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-owned-token-refresh-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoTokenRefreshBinding.kt",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoTokenRefreshBinding.kt",
+    "sha256LF": "f559faaafbecec2cb58257518391debfe7398b80bdafbef1c55cfc0dfa980108"
+  },
+  "sourceIdentityMerge": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/TokenRefreshHelper.kt",
+      "sha256Bytes": "372307d8176e88fe7a0a7a7368d5fa4f2d07d8c9888560f0dbb309bc616cbbe5",
+      "lines": 78,
+      "mode": "policy-extract",
+      "feature": "video-owned-primary-token-refresh",
+      "rule": "Add identity only if absent; otherwise union feature without replacing existing mode, pins or selected declarations"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256Bytes": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "lines": 3460,
+      "mode": "reference",
+      "feature": "video-owned-primary-token-refresh",
+      "rule": "Add identity only if absent; otherwise union feature without replacing existing mode, pins or selected declarations"
+    }
+  ],
+  "scope": "TV policy and existing actor/Store receipt admission only; no fullVM/Root mounted/native acceptance"
+}

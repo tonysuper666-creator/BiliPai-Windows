@@ -204,12 +204,7 @@ class DesktopLoginRepository(private val repository: DesktopRepository) {
                 true
             }
         } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
-        catch (_: Exception) {
-            // Transport may wrap a retired owner in IOException. Cancellation must
-            // not become ordinary false and continue an obsolete fallback request.
-            repository.withPlaybackReceiptAdmission(receipt, alive) { Unit }
-            false // Original TokenRefreshHelper ordinary failure on a CURRENT owner.
-        }
+        catch (_: Exception) { false } // Original TokenRefreshHelper ordinary failure.
     }
 
     private suspend fun refreshTvTokenBody(requestApi: PassportApi, receipt: DesktopPlaybackAuthorizationReceipt? = null,

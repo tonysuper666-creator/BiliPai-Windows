@@ -1,0 +1,15 @@
+{
+  "keptFailures": [
+    {
+      "run": "fixture-runs/01",
+      "failure": "Timed out after assertion failure; initial captured stderr was not saved by old runner. Compiler/pins/args retained; no PASS claim."
+    },
+    {
+      "run": "fixture-runs/02",
+      "failure": "Expected stale receipt cancellation: ordinary exception catch returned false; assertion stack and own-process thread diagnostic retained; exit124 after non-daemon transport cleanup was bypassed by the assertion."
+    }
+  ],
+  "fix": "Ordinary exception branch re-admits original receipt before returning false; stale/retired transport failures now become CancellationException. No fixture business assertion changed.",
+  "acceptedRun": "fixture-runs/03",
+  "assertions": 25
+}

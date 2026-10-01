@@ -145,10 +145,9 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     private val api = retrofit("https://api.bilibili.com/").create(BilibiliApi::class.java)
     private val searchApi = retrofit("https://api.bilibili.com/").create(SearchApi::class.java)
     private val passportApi = retrofit("https://passport.bilibili.com/").create(PassportApi::class.java)
-    private val validationPassportRetrofit = Retrofit.Builder().baseUrl("https://passport.bilibili.com/")
+    private val validationPassportApi = Retrofit.Builder().baseUrl("https://passport.bilibili.com/")
         .client(client.newBuilder().cookieJar(CookieJar.NO_COOKIES).build())
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
-    private val validationPassportApi = validationPassportRetrofit.create(PassportApi::class.java)
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(PassportApi::class.java)
     private val buvidApi = retrofit("https://api.bilibili.com/").create(BuvidApi::class.java)
     private val dynamicApi = retrofit("https://api.bilibili.com/").create(DynamicApi::class.java)
     private val visitorMutex = Mutex()
@@ -397,45 +396,17 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     internal suspend fun installLogin(cookies: Map<String, String>, credentials: DesktopAppCredentials? = null,
         snapshot: DesktopSessionStore.CookieSnapshot? = null, expectedMid: Long? = null,
-        expectedActiveMid: Long? = null, requestReceipt: DesktopPlaybackAuthorizationReceipt? = null,
-        stillOwned: () -> Boolean = { true }, commitIfCurrent: ((() -> Unit) -> Boolean)? = null): AccountSummary = withContext(Dispatchers.IO) {
+        expectedActiveMid: Long? = null): AccountSummary = withContext(Dispatchers.IO) {
         authMutex.withLock {
-            val epoch = requestReceipt?.accountEpoch ?: sessions.generation
-            fun assertRequest() {
-                if (requestReceipt != null) sessions.withPlaybackAuthorizationAdmission(requestReceipt, stillOwned) { Unit }
-                else if (!stillOwned()) throw CancellationException("Login request retired")
-            }
-            currentCoroutineContext().ensureActive(); assertRequest()
+            val epoch = sessions.generation
             if (expectedActiveMid != null && account.value?.mid != expectedActiveMid) throw BiliApiException(-101, "账号已切换，请重新操作")
-            val validationApi = if (requestReceipt == null) validationPassportApi else {
-                // Same existing NO_COOKIES validation transport, tagged before newCall.
-                val current = { stillOwned() && sessions.isPlaybackAuthorizationCurrent(requestReceipt) }
-                validationPassportRetrofit.newBuilder().callFactory(playbackReceiptCalls(requestReceipt, current,
-                    validationPassportRetrofit.callFactory())).build().create(PassportApi::class.java)
-            }
-            val summary = validateCookieHeader(cookies.entries.joinToString("; ") { "${it.key}=${it.value}" }, validationApi)
-            currentCoroutineContext().ensureActive(); assertRequest()
+            val summary = validateCookieHeader(cookies.entries.joinToString("; ") { "${it.key}=${it.value}" })
             if (expectedMid != null) require(summary.mid == expectedMid) { "登录返回的账号与验证结果不一致" }
             if (expectedActiveMid != null && account.value?.mid != expectedActiveMid) throw BiliApiException(-101, "账号已切换，请重新操作")
             if (epoch != sessions.generation) throw BiliApiException(-101, "账号已变化，请重新登录")
-            if (requestReceipt == null) {
-                resetAuthentication()
-                sessions.saveAccount(cookies, summary, imported = true, credentials = credentials, preserveAccessToken = false, snapshot = snapshot)
-            } else {
-                val callerContext = currentCoroutineContext()
-                sessions.withPlaybackAuthorizationAdmission(requestReceipt, stillOwned) {
-                    val commit = requireNotNull(commitIfCurrent) { "Owned token install requires the Root entry gate" }
-                    if (!commit {
-                        callerContext.ensureActive()
-                        if (!stillOwned()) throw CancellationException("Token install entry retired")
-                        // Short synchronous cache/Store commit only. Do not cancel the
-                        // shared dispatcher or stop any already-running native source.
-                        resetAuthenticationCaches()
-                        sessions.saveAccount(cookies, summary, imported = true, credentials = credentials,
-                            preserveAccessToken = false, snapshot = snapshot)
-                    }) throw CancellationException("Token install entry retired")
-                }
-            }
+            currentCoroutineContext().ensureActive()
+            resetAuthentication()
+            sessions.saveAccount(cookies, summary, imported = true, credentials = credentials, preserveAccessToken = false, snapshot = snapshot)
             summary
         }
     }
@@ -461,9 +432,6 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     private fun resetAuthentication() {
         client.dispatcher.cancelAll()
-        resetAuthenticationCaches()
-    }
-    private fun resetAuthenticationCaches() {
         visitorInitialized = false
         synchronized(playbackProtocolMonitor) {
             wbiKeys = null; wbiExpiresAt = 0L; wbiGeneration = -1L
@@ -756,9 +724,9 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         visitorInitialized = true
     }
 
-    private suspend fun validateCookieHeader(header: String, validationApi: PassportApi = validationPassportApi): AccountSummary {
+    private suspend fun validateCookieHeader(header: String): AccountSummary {
         require(!header.contains('\n') && !header.contains('\r')) { "Cookie 格式不正确" }
-        val response = validationApi.validateCookieSession(header)
+        val response = validationPassportApi.validateCookieSession(header)
         checkCode(response.code, "Cookie 已失效，请重新登录")
         val nav = response.data?.takeIf { it.isLogin } ?: throw BiliApiException(-101, "Cookie 已失效，请重新登录")
         return nav.toAccount()

@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "actualProductSnapshot": 56,
+  "actualRuntimeEntries": 101,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersections": [],
+  "fixtureClasses": 1,
+  "isolatedUserData": true,
+  "unchangedProductMain": true,
+  "physicalWindow": true,
+  "externalGuestHttpPossible": true,
+  "realAccountUsed": false,
+  "nativeAssets": {
+    "libmpv-2.dll": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+    "ffmpeg.exe": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea",
+    "ffprobe.exe": "67176fa62f89f94c3bcd379fd05677a25651569a2eb8880ec2194e62c82be412",
+    "bilipai-diagnostic-share.dll": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06"
+  },
+  "fullRouteOrPlayerAcceptance": false,
+  "newExeDeployed": false,
+  "processExitCode": 0,
+  "windowObservation": {
+    "startupHealthAcknowledged": true,
+    "visibleProductWindows": 1,
+    "width": 1360,
+    "height": 900,
+    "normalCloseRequested": true,
+    "imageSource": "owned-Skia-render-backing",
+    "windowClass": "androidx.compose.ui.awt.ComposeWindow"
+  },
+  "actualPackagedResourceVersion": "0.2.415.1",
+  "runtimeAndNativeAssetPinsBeforeAfterEqual": true
+}

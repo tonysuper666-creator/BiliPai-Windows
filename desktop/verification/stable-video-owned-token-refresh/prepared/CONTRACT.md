@@ -1,0 +1,11 @@
+# Owned primary TV refresh (prepared supplement)
+
+Depends on immutable bridge41. Root installation uses Repo four exact local hunks plus sole LoginRepository one exact hunk and one manual adapter. Original TV refresh params/signature/body fields remain selected; original non-TV/no-refresh-token returns false. There is no new credentials store/client/actor and no new canonical DTO/API declaration.
+
+The same existing login Mutex serializes refresh operations. Caller Job is captured before IO/Mutex wait; immutable old receipt and entry lifetime tag the same Repository primary Passport service before Call creation. Existing NO_COOKIES validation Retrofit is named and reused via an owned Call.Factory wrapper; no new OkHttpClient is created for the owned API/validation views. Forced-cookie nav validation semantics remain original.
+
+Network/validation await remains outside Store/entry/monitor. Final replace checks caller coroutine, same receipt and entry gate under Store, performs only cache invalidation + existing synchronous saveAccount, and does not call shared dispatcher.cancelAll or stop MPV. Legacy no-receipt installLogin/refreshTvToken behavior remains. Successful credential replacement is terminal: old raw load is cancelled by its existing post-refresh assertion, then a new load captures fresh authorization. Do not retag old responses.
+
+The failure branch rechecks the old receipt: transport IOException from retirement cannot become ordinary false and execute an old fallback. Current-owner ordinary errors return false as original TokenRefreshHelper. Original helper swallowed cancellation, while Root's explicit job/epoch contract requires cancellation propagation here.
+
+Fixture03: 25 assertions, explicit memory-only interception of existing refresh+validation transports, actual immutable50 Store/receipt. Three prospective sources/52 classes compile; zero fixture production-class overlap, five loaded class-byte origins verified, actual97CP and prepared dependencies pinned before/after. Four focused scenarios cover non-TV, TV successful commit, same-epoch revision during validation, and only caller Job cancelled at final gate while page/Store stay alive. This does not claim real account/HTTP/native or installed Root acceptance. Failure01/02 remain recorded; fixture business assertions identical across retries.

@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "compileExitCode": 0,
+  "runExitCode": 0,
+  "actualProductSnapshot": 56,
+  "runtimeEntries": 101,
+  "fixtureClasses": 4,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersections": [],
+  "fixtureJarSha256Bytes": "58bb5d4db76bdeaf6d6776d021cdf47d69d9a4a95b8452bc929447bf941e4cf9",
+  "byteVerifiedProductOrigins": [
+    {
+      "class": "com.bilipai.desktop.data.DesktopRepository",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-56/main-kotlin.jar",
+      "sha256ClassBytes": "68f8ee5f9f7ead08fa82092f3bc88b4f99ea1242def082fb6c0304cf4a9c4c8e"
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopLoginRepository",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-56/main-kotlin.jar",
+      "sha256ClassBytes": "6e7c7a03931f766e7fe63854c8e7dbb8e4aee4a0585355c179dbdadbfe89a7b5"
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopSessionStore",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-56/main-kotlin.jar",
+      "sha256ClassBytes": "412d849ea8f43feac60ac01c8d29e369f1922b4b588d83e2c0239f40e4706c49"
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-56/main-kotlin.jar",
+      "sha256ClassBytes": "ef10ef78d77a95c7cbd1f9583ba5ae2086f44dc2297013ccd1a18290183fb3c5"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalVideoTokenRefreshBinding",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-56/main-kotlin.jar",
+      "sha256ClassBytes": "7e88849c8d5e626e5f410223443104ac13b3ba2999197a75004351d61f583d3e"
+    }
+  ],
+  "fixtureSourceUnchanged": true,
+  "fixtureHistoricalScopeTextRetained": true,
+  "sameSocketFreeChecksReplayed": true,
+  "actualAccountUsed": false,
+  "nativeExecuted": false,
+  "fullOrdinaryVideoRootMountAccepted": false
+}

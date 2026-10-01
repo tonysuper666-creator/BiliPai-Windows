@@ -175,59 +175,18 @@ class DesktopLoginRepository(private val repository: DesktopRepository) {
         }
     }
 
-    suspend fun refreshTvToken(): AccountSummary = action { refreshTvTokenBody(api) }
-
-    /** Original TokenRefreshHelper availability, projected from the SAME primary Store.
-     * Caller invokes this inside its existing receipt admission. */
-    internal fun originalPlaybackTokenRefreshAvailable(): Boolean = repository.appCredentials()?.let {
-        it.platform == "tv" && it.refreshToken.isNotBlank()
-    } == true
-
-    /** The sole login actor, with caller Job + Root entry + captured authorization.
-     * Success is terminal: the new credentials invalidate the supplied old receipt. */
-    internal suspend fun refreshTvTokenForOriginalPlayback(receipt: DesktopPlaybackAuthorizationReceipt,
-        stillOwned: () -> Boolean, commitIfCurrent: ((() -> Unit) -> Boolean)): Boolean {
-        val requestJob = requireNotNull(kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job])
-        val alive = { requestJob.isActive && stillOwned() }
-        return try {
-            action {
-                repository.withPlaybackReceiptAdmission(receipt, alive) {
-                    val authorization = repository.capturePlaybackAuthorization(receipt.accountEpoch, alive)
-                    if (authorization.playbackAccount != null) throw kotlinx.coroutines.CancellationException("Selected playback account does not refresh primary token")
-                }
-                if (!repository.withPlaybackReceiptAdmission(receipt, alive) { originalPlaybackTokenRefreshAvailable() }) return@action false
-                val current = { alive() && repository.isPlaybackReceiptCurrent(receipt) }
-                val ownedApi = repository.ownedHomeService(PassportApi::class.java, "https://passport.bilibili.com/", receipt.accountEpoch, current)
-                refreshTvTokenBody(ownedApi, receipt, alive, commitIfCurrent)
-                // Do not assert the OLD receipt after successful replacement. The raw
-                // binding will cancel its old load and Root will capture a new one.
-                true
-            }
-        } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
-        catch (_: Exception) {
-            // Transport may wrap a retired owner in IOException. Cancellation must
-            // not become ordinary false and continue an obsolete fallback request.
-            repository.withPlaybackReceiptAdmission(receipt, alive) { Unit }
-            false // Original TokenRefreshHelper ordinary failure on a CURRENT owner.
-        }
-    }
-
-    private suspend fun refreshTvTokenBody(requestApi: PassportApi, receipt: DesktopPlaybackAuthorizationReceipt? = null,
-        stillOwned: () -> Boolean = { true }, commitIfCurrent: ((() -> Unit) -> Boolean)? = null): AccountSummary {
-        val account = if (receipt == null) repository.requireAccount() else repository.withPlaybackReceiptAdmission(receipt, stillOwned) { repository.requireAccount() }
-        val cookies = if (receipt == null) repository.authCookies() else repository.withPlaybackReceiptAdmission(receipt, stillOwned) { repository.authCookies() }
-        val credentials = (if (receipt == null) repository.appCredentials() else repository.withPlaybackReceiptAdmission(receipt, stillOwned) { repository.appCredentials() })
-            ?: throw BiliApiException(-101, "此账号没有 App 授权，请重新扫码")
+    suspend fun refreshTvToken(): AccountSummary = action {
+        val account = repository.requireAccount(); val cookies = repository.authCookies()
+        val credentials = repository.appCredentials() ?: throw BiliApiException(-101, "此账号没有 App 授权，请重新扫码")
         require(credentials.platform == "tv" && credentials.refreshToken.isNotBlank()) { "此授权不支持 TV 刷新，请重新登录" }
         val params = mapOf("access_key" to credentials.accessToken, "refresh_token" to credentials.refreshToken,
             "appkey" to AppSignUtils.TV_APP_KEY, "ts" to AppSignUtils.getTimestamp().toString())
-        val response = requestApi.refreshToken(AppSignUtils.signForTvLogin(params)); check(response.code, response.message)
-        if (receipt != null) repository.withPlaybackReceiptAdmission(receipt, stillOwned) { Unit }
+        val response = api.refreshToken(AppSignUtils.signForTvLogin(params)); check(response.code, response.message)
         val data = response.data ?: throw BiliApiException(-1, "授权刷新结果为空")
         require(data.accessToken.isNotBlank()) { "授权刷新没有返回 token" }
         val updated = cookies + data.cookieInfo?.cookies.orEmpty().associate { it.name to it.value }.filterKeys { it in DesktopSessionStore.PERSISTED_COOKIE_NAMES }
-        return repository.installLogin(updated, DesktopAppCredentials(data.accessToken, data.refreshToken, "tv", expiry(data.expiresIn)),
-            expectedMid = account.mid, expectedActiveMid = account.mid, requestReceipt = receipt, stillOwned = stillOwned, commitIfCurrent = commitIfCurrent)
+        repository.installLogin(updated, DesktopAppCredentials(data.accessToken, data.refreshToken, "tv", expiry(data.expiresIn)),
+            expectedMid = account.mid, expectedActiveMid = account.mid)
     }
 
     private suspend fun webKey(): WebKeyData {

@@ -1,0 +1,16 @@
+{
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "identities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/TokenRefreshHelper.kt",
+      "sha256Bytes": "372307d8176e88fe7a0a7a7368d5fa4f2d07d8c9888560f0dbb309bc616cbbe5",
+      "lines": 78
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256Bytes": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "lines": 3460
+    }
+  ],
+  "ownership": "Original policy/source evidence only. Existing canonical API/DTO/helper FQNs remain sole owners; no duplicate production declaration."
+}

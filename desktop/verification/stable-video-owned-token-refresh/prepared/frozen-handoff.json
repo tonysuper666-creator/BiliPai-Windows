@@ -1,0 +1,319 @@
+{
+  "frozen": true,
+  "preparedOnly": true,
+  "rawArtifacts": [
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLoginRepository.kt",
+      "sha256Bytes": "b33ec9cfbcc70e299fc0f9e0a8a2170bb7aa0036113f1115965c4cd966e41a2a",
+      "bytes": 17679
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "da3e69796b62bbaf9f1e399229ea3a8a99ea4bd4102f140df04ceb611f68b320",
+      "bytes": 55217
+    },
+    {
+      "path": "compile-runs/01/compile.args",
+      "sha256Bytes": "285fba8b1e2566aea26b3961c006c4a7b27ea6209d17f46f4f9d317edaa8d251",
+      "bytes": 26051
+    },
+    {
+      "path": "compile-runs/01/compile.log",
+      "sha256Bytes": "385e894cee8d19af328f6d32ff3171b5b8fc2a82586b73e8b931e1af702a6bb0",
+      "bytes": 1486
+    },
+    {
+      "path": "compile-runs/01/pins-after.json",
+      "sha256Bytes": "f1975c0d0c1aa9a135be84e7cd8eefca427653b8013dd76654d05fc29c3079aa",
+      "bytes": 43051
+    },
+    {
+      "path": "compile-runs/01/pins-before.json",
+      "sha256Bytes": "f1975c0d0c1aa9a135be84e7cd8eefca427653b8013dd76654d05fc29c3079aa",
+      "bytes": 43051
+    },
+    {
+      "path": "compile-runs/01/result.json",
+      "sha256Bytes": "21e043d3ee62b663573335428536c2a4deb38395e6f3f107ce3bb35bede75632",
+      "bytes": 4069
+    },
+    {
+      "path": "compile-runs/01/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoTokenRefreshBinding.kt",
+      "sha256Bytes": "f559faaafbecec2cb58257518391debfe7398b80bdafbef1c55cfc0dfa980108",
+      "bytes": 1675
+    },
+    {
+      "path": "compile-runs/01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLoginRepository.kt",
+      "sha256Bytes": "3197667954f6f5e79e3c85b78a3b0b7a35d41b0479f28c80a0c13b64f3841557",
+      "bytes": 20656
+    },
+    {
+      "path": "compile-runs/01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "a2c7a3e148cb3b86d5bc1e30a3e6cccb1dd9cf0da5f25e90ee39f5517b6e2815",
+      "bytes": 57554
+    },
+    {
+      "path": "compile-runs/02/compile.args",
+      "sha256Bytes": "6a7eac4c181b87868652f12c171d5fd74e10895b1f9501194eb59c7fd3e20c6e",
+      "bytes": 26051
+    },
+    {
+      "path": "compile-runs/02/compile.log",
+      "sha256Bytes": "95674343772828890e3760249af97a5a9ec52970705eca54a4ba15fa9e19c56d",
+      "bytes": 1486
+    },
+    {
+      "path": "compile-runs/02/pins-after.json",
+      "sha256Bytes": "dd70e9ce36d2917ab5703844bec499c2711a554875a7c9eb914f58734036ed72",
+      "bytes": 43051
+    },
+    {
+      "path": "compile-runs/02/pins-before.json",
+      "sha256Bytes": "dd70e9ce36d2917ab5703844bec499c2711a554875a7c9eb914f58734036ed72",
+      "bytes": 43051
+    },
+    {
+      "path": "compile-runs/02/result.json",
+      "sha256Bytes": "5bcc8336adbf6d68e8e2d50184935d34976f8ac9f34c67a104170144c4c7b312",
+      "bytes": 4069
+    },
+    {
+      "path": "compile-runs/02/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoTokenRefreshBinding.kt",
+      "sha256Bytes": "f559faaafbecec2cb58257518391debfe7398b80bdafbef1c55cfc0dfa980108",
+      "bytes": 1675
+    },
+    {
+      "path": "compile-runs/02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLoginRepository.kt",
+      "sha256Bytes": "d712a0621b9e4adfcfbed29ef7821296e925a6f133f6b04cf749c2e7a6bd1d34",
+      "bytes": 20940
+    },
+    {
+      "path": "compile-runs/02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "a2c7a3e148cb3b86d5bc1e30a3e6cccb1dd9cf0da5f25e90ee39f5517b6e2815",
+      "bytes": 57554
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "8414b636e5fdf8bc27d9fa3a3ed2049de41995bd89a990624fb489d8d447c12b",
+      "bytes": 4273
+    },
+    {
+      "path": "CONTRACT.md",
+      "sha256Bytes": "6902f858125d17e107b36679abbaab04bda0443e336f10d32fa84e92337868de",
+      "bytes": 2349
+    },
+    {
+      "path": "finalize.py",
+      "sha256Bytes": "48bf9fbe7b00e94c3cf42bea4cba4893717d38cb04d8bda6044a08119e3cce2d",
+      "bytes": 9399
+    },
+    {
+      "path": "fixture/OwnedTokenRefreshFixture.kt",
+      "sha256Bytes": "60af52e7270e07633184d4e1b6c322a3dcca6cf818ab75288135d6f3b51f1a37",
+      "bytes": 8952
+    },
+    {
+      "path": "fixture-runs/01/compile.args",
+      "sha256Bytes": "2a0a9809537c15b990bddb68aef4cfdb2321a4f2c8f374c3dc9214c3802d2de8",
+      "bytes": 25582
+    },
+    {
+      "path": "fixture-runs/01/compile.log",
+      "sha256Bytes": "faa51da95db9f13b8f3c71450e09023ca29b714b7870705aad14ddbe463051e9",
+      "bytes": 498
+    },
+    {
+      "path": "fixture-runs/01/pins-before.json",
+      "sha256Bytes": "167ce6ac9d90d2b4b2455a7ac16542c33a585e3f58ae1fbba8453ac3e8b27f79",
+      "bytes": 38793
+    },
+    {
+      "path": "fixture-runs/02/compile.args",
+      "sha256Bytes": "1cb4bd0f82d8ede33c3705022a29ea096f309bba8be5d6a070307760be8795a0",
+      "bytes": 25582
+    },
+    {
+      "path": "fixture-runs/02/compile.log",
+      "sha256Bytes": "faa51da95db9f13b8f3c71450e09023ca29b714b7870705aad14ddbe463051e9",
+      "bytes": 498
+    },
+    {
+      "path": "fixture-runs/02/own-process.json",
+      "sha256Bytes": "0ea33ac5bb92c6a2adbf0be1492cdbf653b573250cc026004489cf21c28f495c",
+      "bytes": 58
+    },
+    {
+      "path": "fixture-runs/02/own-thread-diagnostic.log",
+      "sha256Bytes": "9c495def7d8c41927e6b56c56dda4764558a1df2945863825200a2636a903e5b",
+      "bytes": 9966
+    },
+    {
+      "path": "fixture-runs/02/pins-after.json",
+      "sha256Bytes": "167ce6ac9d90d2b4b2455a7ac16542c33a585e3f58ae1fbba8453ac3e8b27f79",
+      "bytes": 38793
+    },
+    {
+      "path": "fixture-runs/02/pins-before.json",
+      "sha256Bytes": "167ce6ac9d90d2b4b2455a7ac16542c33a585e3f58ae1fbba8453ac3e8b27f79",
+      "bytes": 38793
+    },
+    {
+      "path": "fixture-runs/02/run.log",
+      "sha256Bytes": "422b12d3cdb3602d91b8650e6374241502c915a106a2648a7734db1e5a234e1b",
+      "bytes": 897
+    },
+    {
+      "path": "fixture-runs/02/runner-result.json",
+      "sha256Bytes": "a9036738cc3b928ce045576dd91de125673bdcf799d8ee40c764c72a02b883ee",
+      "bytes": 446
+    },
+    {
+      "path": "fixture-runs/03/actual-origins-verified.json",
+      "sha256Bytes": "dedda94f29ddd59d43e4d5786b0a6341d5c353eed7c92f99f8d7e0a45d11526f",
+      "bytes": 2059
+    },
+    {
+      "path": "fixture-runs/03/compile.args",
+      "sha256Bytes": "b2fa8b36a94cc034587c162cf01615060ab9e42acaa37ffe6d512de03c34cac3",
+      "bytes": 25582
+    },
+    {
+      "path": "fixture-runs/03/compile.log",
+      "sha256Bytes": "faa51da95db9f13b8f3c71450e09023ca29b714b7870705aad14ddbe463051e9",
+      "bytes": 498
+    },
+    {
+      "path": "fixture-runs/03/own-process.json",
+      "sha256Bytes": "fa507b6445744d8d89d25b366acee7837dd2c3e944e8505172a0a7240421aebe",
+      "bytes": 57
+    },
+    {
+      "path": "fixture-runs/03/pins-after.json",
+      "sha256Bytes": "6cda6e1fd30d12ea06c1ede8ab3c2a129877387193b9f0b105a0dad5324f0219",
+      "bytes": 38793
+    },
+    {
+      "path": "fixture-runs/03/pins-before.json",
+      "sha256Bytes": "6cda6e1fd30d12ea06c1ede8ab3c2a129877387193b9f0b105a0dad5324f0219",
+      "bytes": 38793
+    },
+    {
+      "path": "fixture-runs/03/result.json",
+      "sha256Bytes": "884fd4b2fddf9050395b201eb235158a45da38c6c605fe80d9f31b82eb17d586",
+      "bytes": 3573
+    },
+    {
+      "path": "fixture-runs/03/run.log",
+      "sha256Bytes": "b5337fb05e3c6dccd5acb485a93ebbd30bd8259b1eee60a9de08ecdf00306777",
+      "bytes": 89
+    },
+    {
+      "path": "fixture-runs/03/runner-result.json",
+      "sha256Bytes": "0ed113a409b2397a699e889668c451151da9a969b4c04edaa28a4f758525bef5",
+      "bytes": 444
+    },
+    {
+      "path": "history.json",
+      "sha256Bytes": "5d0e629171f3bb3d4137272e8039dcc3eeca4973a8bdaf1d7f62a8bf3c804306",
+      "bytes": 750
+    },
+    {
+      "path": "INSTALL-RECIPE.json",
+      "sha256Bytes": "9337f4313f143dd1d609c364e008d97dd7c5a1aaaaf9ac12b1c89e26f1e0eedb",
+      "bytes": 4380
+    },
+    {
+      "path": "login-local-hunks.json",
+      "sha256Bytes": "6df88f8f1b48de9e59e3e655836325018cda2f87d2c82a831920527ffd2c55f9",
+      "bytes": 6376
+    },
+    {
+      "path": "login-local.patch",
+      "sha256Bytes": "360cf23619ddc3b8d1f65426d343e959685e4ae2de2cd59ce679e97d7fecb762",
+      "bytes": 5475
+    },
+    {
+      "path": "original-source-inventory.json",
+      "sha256Bytes": "46227a702494c8e0acc40b13cd7ef11a283d3481adb6218288c1ee28100131db",
+      "bytes": 656
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256Bytes": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "bytes": 148935
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/network/TokenRefreshHelper.kt",
+      "sha256Bytes": "372307d8176e88fe7a0a7a7368d5fa4f2d07d8c9888560f0dbb309bc616cbbe5",
+      "bytes": 2856
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "f4bb50dfcf223819b1ce8e2acbed07e4cb58b639360bf73e402083f443ea2ef6",
+      "bytes": 13549
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoTokenRefreshBinding.kt",
+      "sha256Bytes": "f559faaafbecec2cb58257518391debfe7398b80bdafbef1c55cfc0dfa980108",
+      "bytes": 1675
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLoginRepository.kt",
+      "sha256Bytes": "d712a0621b9e4adfcfbed29ef7821296e925a6f133f6b04cf749c2e7a6bd1d34",
+      "bytes": 20940
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "a2c7a3e148cb3b86d5bc1e30a3e6cccb1dd9cf0da5f25e90ee39f5517b6e2815",
+      "bytes": 57554
+    },
+    {
+      "path": "repository-local-hunks.json",
+      "sha256Bytes": "c1e955ee36b4606efd25d1b979418962c3db4da9813374f080c5d6d51e101e2e",
+      "bytes": 7648
+    },
+    {
+      "path": "repository-local.patch",
+      "sha256Bytes": "0dd5720021dbd5d288ee4d8c7eb7fe48076fe8b9f1818e7156cfbfd551892999",
+      "bytes": 6370
+    },
+    {
+      "path": "run-fixture.py",
+      "sha256Bytes": "40c2bf24e25e8cca5bfe2156a2455d534e35758ab9c631832249aec37faee7ce",
+      "bytes": 3702
+    },
+    {
+      "path": "source-checks.json",
+      "sha256Bytes": "8a4005e8c184caa4e5f48b7e431e6344dc357dbfef4ac9f77e4f9b5d4d52b890",
+      "bytes": 351
+    },
+    {
+      "path": "source-inverse-result.json",
+      "sha256Bytes": "ded207ea96596b4fb79b95a46853bb569f463755e52d354d68212463f4ca60d6",
+      "bytes": 99
+    }
+  ],
+  "excludedArtifacts": [
+    {
+      "path": "compile-runs/01/candidate.jar",
+      "reason": "compiled binary/runtime artifact excluded from source-only handoff"
+    },
+    {
+      "path": "compile-runs/02/candidate.jar",
+      "reason": "compiled binary/runtime artifact excluded from source-only handoff"
+    },
+    {
+      "path": "fixture-runs/01/fixture.jar",
+      "reason": "compiled binary/runtime artifact excluded from source-only handoff"
+    },
+    {
+      "path": "fixture-runs/02/fixture.jar",
+      "reason": "compiled binary/runtime artifact excluded from source-only handoff"
+    },
+    {
+      "path": "fixture-runs/03/fixture.jar",
+      "reason": "compiled binary/runtime artifact excluded from source-only handoff"
+    }
+  ],
+  "scope": "Owned TV refresh supplement, bridge41 unchanged; exact source packet, 3-source compile52 + memory focused25, original failed attempts retained. No installed product/fullVM/native acceptance."
+}

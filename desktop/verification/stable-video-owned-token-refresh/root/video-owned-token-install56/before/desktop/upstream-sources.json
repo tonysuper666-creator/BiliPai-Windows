@@ -151,8 +151,7 @@
         "stable-bgm-native-detail",
         "home-protocol-platform-reference",
         "live-home-list",
-        "profile-main-original",
-        "video-owned-primary-token-refresh"
+        "profile-main-original"
       ],
       "mode": "api-extract"
     },
@@ -8875,14 +8874,6 @@
       "mode": "policy-extract",
       "features": [
         "stable-video-repository-core-ports"
-      ]
-    },
-    {
-      "path": "app/src/main/java/com/android/purebilibili/core/network/TokenRefreshHelper.kt",
-      "sha256": "372307d8176e88fe7a0a7a7368d5fa4f2d07d8c9888560f0dbb309bc616cbbe5",
-      "mode": "policy-extract",
-      "features": [
-        "video-owned-primary-token-refresh"
       ]
     }
   ],
