@@ -1,0 +1,9 @@
+{
+  "oldFrozenManifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-native-owner-parity\\frozen-handoff.json",
+  "oldFrozenManifestSha": "976feadf501877ae39ad74b129ad39cece57af0dad1c12a623364eeca0d57460",
+  "oldSourceSha": "ccc3ea1e8a8604414dfb124c38469b6c8d7ff1f5af08a84f896dd96c738557a7",
+  "oldWasInstalled": false,
+  "oldUnsafeRace": "Queued Load did not check actual request Job cancellation; binding of generation must be one-shot via actual loadfile ACK.",
+  "frozenHistoryLeftUnmodified": true,
+  "newSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-native-owner-cancellation-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNativeOwner.kt"
+}

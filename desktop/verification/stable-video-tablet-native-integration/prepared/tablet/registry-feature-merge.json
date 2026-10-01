@@ -1,0 +1,117 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "stable-video-tablet-original"
+    ],
+    "sha256": "31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoInfoEntrancePolicy.kt",
+    "mode": "direct",
+    "features": [
+      "stable-video-tablet-original"
+    ],
+    "sha256": "1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "mode": "policy-extract",
+    "features": [
+      "appearance-parity",
+      "discovery",
+      "dynamic-detail-reply",
+      "home-full-card",
+      "home-page",
+      "home-protocol-platform-reference",
+      "live-sub-navigation",
+      "settings-dynamic-full-card-parity",
+      "settings-dynamic-tabs-parity",
+      "settings-home-card-parity",
+      "settings-home-dynamic-parity",
+      "settings-image-save-path-parity",
+      "settings-local-diagnostics-parity",
+      "settings-privacy-section-parity",
+      "stable-collection-sheet",
+      "stable-danmaku-list-menu",
+      "stable-danmaku-settings-panel",
+      "stable-download-list-original",
+      "stable-favorites",
+      "stable-frosted-audio-renderer",
+      "stable-linked-dock-search",
+      "stable-navigation3-host",
+      "stable-profile-windows-platform",
+      "stable-shared-liquid-tabs",
+      "stable-video-content-full",
+      "stable-video-detail-full-units",
+      "stable-video-metadata",
+      "stable-video-original-comments",
+      "stable-video-player-full-controls",
+      "stable-video-player-section-full",
+      "stable-video-tablet-original"
+    ],
+    "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "action": "merge-existing-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-video-tablet-original"
+    ],
+    "sha256": "b19f5f30827945f4d295330b39e6441f94be721c59f63fbdb6a123152ccc56c4",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-video-tablet-original"
+    ],
+    "sha256": "49e852e2de272aff089a4fcaf20586e2e03c5fdc988aacbfd8f28a90b3812dbe",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-video-tablet-original"
+    ],
+    "sha256": "a0839c0c7d9b5a3e0e8ceefc85696d6018e75a1bb6bcba5c01f69c3aab3da169",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt",
+    "mode": "policy-extract",
+    "features": [
+      "space",
+      "space-contributions",
+      "space-overview",
+      "stable-video-tablet-original"
+    ],
+    "sha256": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a",
+    "action": "merge-existing-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletOwnerUploadsPane.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-video-tablet-original"
+    ],
+    "sha256": "a2fc7ae37cbd5dab0a9cf36fc75f5bd0803d48df810270f76b3f72807da73d1f",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt",
+    "mode": "selected",
+    "features": [
+      "dynamic-detail-container",
+      "stable-video-tablet-original"
+    ],
+    "sha256": "11bded8eb078551356ee7c392102810f6703552786074e5574a751d1d5b2f4c4",
+    "action": "merge-existing-identity"
+  }
+]

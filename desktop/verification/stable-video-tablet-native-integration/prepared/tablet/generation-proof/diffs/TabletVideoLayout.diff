@@ -1,0 +1,227 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\frozen-tablet-slice-02\generation-proof\com\android\purebilibili\feature\video\screen\TabletVideoLayout.kt
+@@ -6,7 +6,7 @@
+ import com.android.purebilibili.core.ui.components.AppIconButton
+ import com.android.purebilibili.core.ui.components.AppText
+ 
+-import android.content.res.Configuration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowBounds as Configuration
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.pager.HorizontalPager
+ import androidx.compose.foundation.pager.rememberPagerState
+@@ -30,8 +30,8 @@
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.geometry.Rect
+ import androidx.compose.ui.graphics.Color
+-import androidx.compose.ui.platform.LocalConfiguration
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
++import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext
+ import androidx.compose.ui.platform.LocalUriHandler
+ import androidx.compose.foundation.clickable
+ import androidx.compose.ui.unit.dp // Add this back
+@@ -48,7 +48,7 @@
+ import com.android.purebilibili.feature.video.share.VideoSharePayload
+ import com.android.purebilibili.feature.video.share.VideoShareSheetHost
+ import com.android.purebilibili.feature.video.share.buildVideoSharePayload
+-import com.android.purebilibili.core.util.ShareUtils
++import com.bilipai.desktop.ui.LocalDesktopOriginalVideoContentBindings
+ import com.android.purebilibili.core.util.LocalWindowSizeClass
+ import com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo
+ import com.android.purebilibili.data.model.response.BgmInfo
+@@ -58,7 +58,7 @@
+ import com.android.purebilibili.feature.dynamic.components.ImagePreviewDialog
+ import com.android.purebilibili.feature.dynamic.components.ImagePreviewSourceAnchor
+ import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextContent
+-import com.android.purebilibili.feature.video.state.VideoPlayerState
++import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState
+ import com.android.purebilibili.feature.video.ui.components.*
+ import com.android.purebilibili.feature.home.components.BottomBarLiquidSegmentedControl
+ import com.android.purebilibili.data.model.response.AiSummaryData
+@@ -82,9 +82,8 @@
+ import com.android.purebilibili.feature.video.viewmodel.AiSummaryPromptState
+ import com.android.purebilibili.core.store.DanmakuSettings
+ import com.android.purebilibili.core.store.DanmakuSettingsScope
+-import com.android.purebilibili.core.store.SettingsManager
++import com.android.purebilibili.core.store.DesktopOriginalTabletAudioSettings as SettingsManager
+ import com.android.purebilibili.core.ui.LocalAppThemeConfig
+-import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager
+ import com.android.purebilibili.feature.video.usecase.seekPlayerFromUserAction
+ import com.android.purebilibili.feature.video.viewmodel.CommentUiState
+ import com.android.purebilibili.feature.video.viewmodel.SubReplyUiState
+@@ -95,7 +94,7 @@
+ import com.android.purebilibili.core.ui.AdaptiveLoadingIndicator
+ import com.android.purebilibili.core.ui.adaptive.resolveDeviceUiProfile
+ import com.android.purebilibili.core.ui.motion.AppMotionEasing
+-import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion
++import com.bilipai.desktop.ui.rememberDesktopDynamicReduceMotion as rememberSystemReduceMotion
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.outlined.*
+ import kotlinx.coroutines.launch
+@@ -256,7 +255,7 @@
+     currentAudioQuality: Int = -1,
+     onAudioQualityChange: (Int) -> Unit = {},
+     transitionEnabled: Boolean = false, //  卡片过渡动画开关
+-    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
++    onRelatedVideoClick: (String, Long, String?) -> Unit,
+     onBgmClick: (BgmInfo) -> Unit = {},
+     showUpBadge: Boolean = true,
+     onSearchKeywordClick: (String) -> Unit = {},
+@@ -309,10 +308,6 @@
+     val secondaryDefaultTab by SettingsManager
+         .getTabletSecondaryDefaultTab(context)
+         .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.TabletSecondaryDefaultTab.RELATED)
+-    val activity = remember(context) {
+-        (context as? android.app.Activity)
+-            ?: (context as? android.content.ContextWrapper)?.baseContext as? android.app.Activity
+-    }
+     
+     AppSplitLayout(
+         secondaryPaneVisible = !secondaryPaneHidden,
+@@ -605,7 +600,7 @@
+     playbackActions: VideoDetailPlaybackActions,
+     engagementActions: VideoDetailEngagementActions,
+     onBgmClick: (BgmInfo) -> Unit,
+-    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
++    onRelatedVideoClick: (String, Long, String?) -> Unit,
+     onOpenBilibiliLink: ((String) -> Unit)?,
+     danmakuEnabled: Boolean,
+     onDanmakuSendClick: () -> Unit,
+@@ -619,17 +614,16 @@
+ ) {
+     val context = LocalContext.current
+     var confirmDeleteNote by rememberSaveable(success.info.bvid) { mutableStateOf(false) }
++    val platform = LocalDesktopOriginalVideoContentBindings.current
+     val onShareVideoNote: (VideoNoteEditorDocument, Boolean) -> Unit = { document, isDraft ->
+-        ShareUtils.shareText(
+-            context = context,
++        platform.shareText(
+             subject = document.title.ifBlank { success.info.title },
+             text = buildVideoNoteShareText(
+                 videoTitle = success.info.title,
+                 bvid = success.info.bvid,
+                 document = document,
+                 isDraft = isDraft
+-            ),
+-            chooserTitle = "分享视频笔记"
++            )
+         )
+     }
+     val engagementSuccess = success.withEngagementUiState(engagementState)
+@@ -740,7 +734,7 @@
+     onUpClick: (Long) -> Unit,
+     paneMode: TabletSecondaryPaneMode,
+     onPaneModeChange: (TabletSecondaryPaneMode) -> Unit,
+-    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
++    onRelatedVideoClick: (String, Long, String?) -> Unit,
+     showUpBadge: Boolean,
+     showIdentityDecorations: Boolean,
+     onSearchKeywordClick: (String) -> Unit,
+@@ -804,7 +798,7 @@
+     var sourceRect by remember { mutableStateOf<ImagePreviewSourceAnchor?>(null) }
+     var previewTextContent by remember { mutableStateOf<ImagePreviewTextContent?>(null) }
+     
+-    val context = androidx.compose.ui.platform.LocalContext.current
++    val context = LocalContext.current
+     val uriHandler = LocalUriHandler.current
+     val scope = rememberCoroutineScope()
+     val latestOnRequestedTabConsumed by rememberUpdatedState(onRequestedTabConsumed)
+@@ -849,7 +843,7 @@
+ 
+         when (val target = resolveCommentUrlNavigationTarget(url)) {
+             is CommentUrlNavigationTarget.Video -> {
+-                onRelatedVideoClick(target.videoId, null)
++                onRelatedVideoClick(target.videoId, 0L, null)
+                 return@openCommentUrl
+             }
+ 
+@@ -1055,7 +1049,7 @@
+                                 onSortModeChange = { mode ->
+                                     commentActions.setSortMode(mode)
+                                     scope.launch {
+-                                        com.android.purebilibili.core.store.SettingsManager
++                                        SettingsManager
+                                             .setCommentDefaultSortMode(context, mode.apiMode)
+                                     }
+                                 },
+@@ -1087,7 +1081,7 @@
+                                 key = { "reply_${it.rpid}" },
+                                 contentType = { resolveReplyItemContentType(it) }
+                             ) { reply ->
+-                                com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(
++                                com.bilipai.desktop.ui.DesktopReplyDissolvableContainer(
+                                     isDissolving = reply.rpid in commentState.dissolvingIds,
+                                     onDissolveComplete = { commentActions.deleteComment(reply.rpid) },
+                                     cardId = "comment_${reply.rpid}",
+@@ -1279,11 +1273,11 @@
+                                         followingMids = success.followingMids,
+                                         showUpBadge = showUpBadge,
+                                         onVideoClick = { video ->
+-                                            val navOptions = buildVideoNavigationOptions(
++                                            val navOptions = buildDesktopOriginalVideoNavigationOptions(
+                                                 targetCid = video.cid,
+                                                 coverUrl = video.pic,
+-                                            ) ?: android.os.Bundle.EMPTY
+-                                            onRelatedVideoClick(video.bvid, navOptions)
++                                            )
++                                            onRelatedVideoClick(video.bvid, navOptions?.first ?: 0L, navOptions?.second)
+                                         },
+                                         onVideoHidden = { video ->
+                                             hiddenRelatedBvids = hiddenRelatedBvids + video.bvid
+@@ -1302,10 +1296,7 @@
+                             currentBvid = success.info.bvid,
+                             currentCid = success.info.cid,
+                             onEpisodeClick = { episode ->
+-                                onRelatedVideoClick(
+-                                    episode.bvid,
+-                                    buildVideoNavigationOptions(targetCid = episode.cid)
+-                                )
++                                onRelatedVideoClick(episode.bvid, episode.cid.takeIf { it > 0L } ?: 0L, null)
+                             }
+                         )
+                     }
+@@ -1412,7 +1403,7 @@
+     onUpClick: (Long) -> Unit,
+     onDownloadClick: () -> Unit,
+     onWatchLaterClick: () -> Unit,
+-    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
++    onRelatedVideoClick: (String, Long, String?) -> Unit,
+     onSearchKeywordClick: (String) -> Unit = {},
+     onOpenBilibiliLink: ((String) -> Unit)?,
+     sponsorVideoLabel: String = "",
+@@ -1437,7 +1428,7 @@
+     modifier: Modifier = Modifier,
+     ownerTrailingContent: (@Composable RowScope.() -> Unit)? = null,
+ ) {
+-    val context = androidx.compose.ui.platform.LocalContext.current
++    val context = LocalContext.current
+     val windowSizeClass = LocalWindowSizeClass.current
+     val adaptiveInfo = LocalAppWindowAdaptiveInfo.current
+     val systemReduceMotion = rememberSystemReduceMotion()
+@@ -1489,7 +1480,7 @@
+                         bgmInfoList = bgmInfoList
+                     ),
+                     onBgmClick = onBgmClick,
+-                    onRelatedVideoClick = onRelatedVideoClick,
++                    onRelatedVideoClick = { vid, cid -> onRelatedVideoClick(vid, cid, null) },
+                     onDescriptionUrlClick = onOpenBilibiliLink,
+                     onTagClick = onSearchKeywordClick
+                 )
+@@ -1596,15 +1587,8 @@
+                             modifier = Modifier
+                                 .width(160.dp)
+                                 .clickable {
+-                                    val activity = (context as? android.app.Activity) ?: (context as? android.content.ContextWrapper)?.baseContext as? android.app.Activity
+-                                    val options = activity?.let {
+-                                        android.app.ActivityOptions.makeSceneTransitionAnimation(it).toBundle()
+-                                    }
+-                                    val navOptions = android.os.Bundle(options ?: android.os.Bundle.EMPTY)
+-                                    if (video.cid > 0L) {
+-                                        navOptions.putLong(VIDEO_NAV_TARGET_CID_KEY, video.cid)
+-                                    }
+-                                    onRelatedVideoClick(video.bvid, navOptions)
++                                    val navOptions = buildDesktopOriginalVideoNavigationOptions(targetCid = video.cid)
++                                    onRelatedVideoClick(video.bvid, navOptions?.first ?: 0L, navOptions?.second)
+                                 }
+                         ) {
+                             Box(

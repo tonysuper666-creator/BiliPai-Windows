@@ -1,0 +1,11 @@
+{
+  "fixedOriginalSha": "fd76acf9f2b7c4a4a1d98c144c5b700986bdf0789a29b197ad082c163f18503e",
+  "originalBodyInverseEqual": true,
+  "productionReplayEqual": true,
+  "outputSha": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282",
+  "directDuplicate": false,
+  "installSourceProducerCount": 1,
+  "actual59ClassOverlap": 0,
+  "originalParserReused": true,
+  "actualRuntimeOrUiProof": false
+}

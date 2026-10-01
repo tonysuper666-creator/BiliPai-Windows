@@ -1,0 +1,13 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+  "originalSha256LF": "fd76acf9f2b7c4a4a1d98c144c5b700986bdf0789a29b197ad082c163f18503e",
+  "selectedBodySha256LF": "911c09db9222fb439a47a1682d1a905973f5a719f4eacfd5241f0e7de711a32c",
+  "symbols": [
+    "CommentUrlNavigationTarget",
+    "resolveCommentUrlNavigationTarget"
+  ],
+  "outputSha256Bytes": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282",
+  "adaptations": [],
+  "existingIdentity": []
+}

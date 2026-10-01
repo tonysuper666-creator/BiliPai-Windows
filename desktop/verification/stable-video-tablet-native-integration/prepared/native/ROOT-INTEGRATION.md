@@ -1,0 +1,43 @@
+# Actual native publication carrier with one-shot request admission
+
+Install ONLY the one manual in install-whitelist.json. No registry/Gradle/runtime delta. This supersedes the uninstalled historical 11raw ccc3/976f packet; that frozen packet is not a safe install source. All types reference actual60 original models and existing native publication/adoption/barrier. No player/HTTP/cache/Store is constructed in production. Narrow manual + pure fixture compilation against immutable actual60/101 passed (12 total classes, product overlap0), plus 15 task command/admission assertions over actual Repository/temporary SessionStore. No HWND/MPV/full VM acceptance here; Root actual58 native40 and actual60 ACK13 evidence stays separate.
+
+## Root-owned Controller drain ABI
+
+`internal suspend fun DesktopPlaybackController.drainForOriginalVideoOwner(expectedEpoch:Long, expectedSourceVersion:Long, expectedBvid:String, expectedCid:Long):DesktopOrdinaryPlaybackHandoff?`
+
+Use the existing serialized ordinary request/UI lane. Match current account, Controller source owner, BVID/CID and actual MPV snapshot; require existing details.raw and a real ready/nonloading/nonended/error-free codec readback. Capture existing queue cards/index/token, original shuffle and partShuffle, actual current selected ResolvedSource, details/part, plugin generation and suspended flag. No flattening of DASH/audio metadata and no raw DTO reconstruction.
+
+Retire old admission/generation and stop accepting new old Controller operations. Save actual checkpoint/final heartbeat and resolve/cancel any original pending Sponsor seek receipt deliberately. Do NOT call current close()/invalidate(stopNative=true), pause, stop, seek, setSource, clear overlay, clear external subtitle tracks, close global assets, or release Canvas. Do NOT invoke old plugin callbacks after retirement.
+
+Cancel AND JOIN the complete controllerScope (not merely request/recovery/pluginLoad fields; it contains native observer/EOF/pollers/watchdog/report tasks). Join occurs outside Store/entry/UI/native locks. `DesktopHeartbeatReporter.closeAndJoin(final)` and `DesktopAutomaticSubtitles.closeAndJoin()` must complete before the new equivalent producer is constructed; their existing global subtitleAssets/native external files remain alive. A bounded drain failure cannot start a second producer. Then await actual `player.drainSourceCommands(expectedSourceVersion)` outside all admission locks. Re-read exact account/native source after the barrier; return null on timeout/retirement/foreign source and never stop a replacement owner.
+
+Create the handoff from the final actual snapshot/readback AFTER joins/barrier. The old Controller's source publication closes with its scope, so handoff is not an active native authority. The new binding uses the same Repository receipt admission to atomically install its new publication. Null means no valid active-source adoption; Root must not call ordinary open() after a successful adoption or manufacture a playing handoff from incomplete data. A retired old owner is not resurrected on a failure.
+
+## Concrete new owner
+
+`DesktopOriginalVideoNativeOwner(player, publication, currentEpoch, isEntryCurrent, withEntryAdmission, onAccepted)` — all six arguments required, no defaults. `publication` is the existing DesktopRepositoryPlaybackPublication. `withEntryAdmission` is ENTRY ONLY because publication already supplies Store -> entry ordering. Every body is a short synchronous field/native-command publication; no blocking cleanup/disk/join inside it. `onAccepted` must be a short nonthrowing in-memory projection into the same full-owner state/viewport source lease.
+
+`nativeOwner.adopt(handoff)` directly uses actual58 `MpvPlayer.adoptPublication(expectedSourceVersion, expectedSource, replacement)`. Only nativePublication changes. Expected old publication must still be the same object; complete source payload/receipt stays exact. MPV keeps actual position, pause, playback/seek revision, speed, external subtitles and Canvas. Only after adoption succeeds may the full original VM attach the same SectionControl and seed its original state from the existing real raw detail/current stream metadata. This does NOT fetch/reload or mark success by injecting a native state.
+
+Use `nativeOwner.publish(request, alreadyAuthorizedSource, expectedBaselineVersion, requestJob, isRequestCurrent)` for a real original load. Receipt is REQUIRED, epoch checked, request generation guard REQUIRED separately from retained entry lifetime. The REQUIRED requestJob is the actual calling operation Job captured inside Invocation57 launch/coroutine context. Read isCancelled, not isActive: successful completed work may finish its queued Load; cancellation before first command is refused. Root serializes all shared-MPV publication through the existing Store/entry admission. Preparation remains the existing UseCase media port; this class does not choose streams/create manifests/cache credentials.
+
+`nativeOwner.acceptedMedia(requiredPreparation)` supplies Invocation17's context-free acceptedMedia callback. The returned lease revalidates actual sourceVersion, entry, epoch and receipt on every use. Recovery replaces via actual `recoverSource`, retains sourceVersion/position/pause/native subtitle ownership, and changes this entry's accepted lease identity. Completed raw-load Jobs are never kept to authorize this path. `nativeOwner.close()` rejects admission only and never stops global player; Root explicit final owned stop follows producer drain, outside locks.
+
+## One-shot initial native admission
+
+`DesktopOriginalVideoInitialPublication(publication,source,requestJob,isRequestCurrent,ownsAccepted,withEntryAdmission)` implements the actual60 SAM plus JVM default `onLoadCommandAccepted`. Initial native admission re-enters same Store -> entry -> MPV lock order, checking both actual Job cancellation and request generation. Merely returning from an admitted Unit callback does NOT consume this guard: stale native session/version/revision commands return without loadfile. Only actual60 invokes onLoadCommandAccepted after successful loadfile and nonnull playlist-entry readback under the current native lock. The hook is a single AtomicBoolean set, with no callback/IO/join/other locks.
+
+After real ACK, retained replay/Canvas construction checks ONLY same accepted lease + real MPV version + current Store receipt/epoch + live entry. A later generation change or request cancellation cannot revoke accepted media. The task callback fixture proves completed Job, pre-cancel, no-op, thrown command, changed generation, accepted lease retirement, atomic entry rejection, recovery independent of Job and real SessionStore epoch retirement. It models command/ACK callbacks, NOT native playback. Root actual60 separately proved actual stale no-op ACK0, real Load ACK1, rejection0/default SAM/replay using MPV.
+
+Adoption and accepted recovery use the existing long-lived ownedSource publication, never this request-bound initial publication. They are independently guarded by the new accepted lease. Initial publish calls loadVersioned; recovery calls recoverSource; drained adoption calls adoptPublication with exact old publication identity. No second source/cache/playlist authority is created.
+
+## Lifecycle integration must be simultaneous
+
+Switch Favorite/Listen/dashboard queue clients to the one full owner's actual queue/token at the same adoption, preserving CID/selectedIndex/queueOwner/original shuffle history. Do not ordinary-open a route after successful adoption. Retained covered Video/Audio/PiP routes share the one owner; global Window/settings/consent/Assets lifetime is not tied to an individual composable visibility. Account/restore/close rejects old requests before new owner construction.
+
+If original fullVM calls plugins directly rather than the existing Runtime generation, Root must retire the old Runtime generation exactly once and prevent its callbacks before the one original onVideoLoad path begins. The carrier exposes the existing generation to make that choice explicit; it does not create a second plugin instance/record/poll authority. Final heartbeat has one reporter. Current subtitle files live until actual native/source retirement; no second downloader is silently started.
+
+## Explicit remaining work
+
+Whole original 9036-line VM / 5464-line Holder are not yet compiled or mounted. Original domain states/metadata/notes/queue/renderer environment remain in their source lane. This packet is a concrete publication bridge and a drain ABI, not a completed full ordinary-video page. No real account/HTTP/HWND/EXE was touched here.

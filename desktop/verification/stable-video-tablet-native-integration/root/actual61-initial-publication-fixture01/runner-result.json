@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "compileExitCode": 0,
+  "runExitCode": 0,
+  "actualProductSnapshot": 61,
+  "runtimeEntries": 101,
+  "fixtureClasses": 4,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersections": [],
+  "fixtureJarSha256Bytes": "0374607e8c35b325a63b9dbfa77263e001c6092109897f2075e05cb72502f604",
+  "pinnedProductOrigins": [
+    {
+      "class": "com.bilipai.desktop.data.DesktopSessionStore",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-61/main-kotlin.jar",
+      "sha256ClassEntryBytes": "412d849ea8f43feac60ac01c8d29e369f1922b4b588d83e2c0239f40e4706c49"
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopRepository",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-61/main-kotlin.jar",
+      "sha256ClassEntryBytes": "68f8ee5f9f7ead08fa82092f3bc88b4f99ea1242def082fb6c0304cf4a9c4c8e"
+    },
+    {
+      "class": "com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-61/main-kotlin.jar",
+      "sha256ClassEntryBytes": "299c659f580e1babd1612a709db7b89bc6bcc64b5b7efeedb241db4f6f62013c"
+    },
+    {
+      "class": "com.bilipai.desktop.player.DesktopNativePlaybackPublication",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-61/main-kotlin.jar",
+      "sha256ClassEntryBytes": "025e66c95747b7d869b595a2b3f38b28767ee4809ceab458f75a0d66fef6e596"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalVideoInitialPublication",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-61/main-kotlin.jar",
+      "sha256ClassEntryBytes": "b0a79ed4a49e6e9789c32bb354697c44fa4b9cb7266d788d5014a7e404e4cf3f"
+    }
+  ],
+  "fixtureSourceUnchanged": true,
+  "classBytesReportedByFixture": false,
+  "fixtureHistoricalScopeTextRetained": true,
+  "commandAndAckAreSynthetic": true,
+  "actualAccountUsed": false,
+  "nativeExecuted": false,
+  "fullOrdinaryVideoRootMountAccepted": false
+}

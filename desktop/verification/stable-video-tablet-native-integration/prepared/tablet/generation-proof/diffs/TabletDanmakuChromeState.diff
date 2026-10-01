@@ -1,0 +1,45 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\frozen-tablet-slice-02\generation-proof\com\android\purebilibili\feature\video\screen\TabletDanmakuChromeState.kt
+@@ -5,12 +5,10 @@
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.rememberCoroutineScope
+ import androidx.compose.runtime.rememberUpdatedState
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import com.android.purebilibili.core.store.DanmakuSettings
+ import com.android.purebilibili.core.store.DanmakuSettingsScope
+-import com.android.purebilibili.core.store.SettingsManager
+-import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager
+ import kotlinx.coroutines.launch
+ 
+ internal data class TabletDanmakuChromeState(
+@@ -20,12 +18,13 @@
+ 
+ @Composable
+ internal fun rememberTabletDanmakuChromeState(bvid: String): TabletDanmakuChromeState {
+-    val context = LocalContext.current
++    val platform = LocalDesktopOriginalVideoSectionPlatform.current
++    val context = platform.settingsContext
+     val scope = rememberCoroutineScope()
+-    val danmakuManager = rememberDanmakuManager(bvid)
+-    val danmakuSettings by SettingsManager
+-        .getDanmakuSettings(context, DanmakuSettingsScope.PORTRAIT)
+-        .collectAsStateWithLifecycle(initialValue = DanmakuSettings())
++    val danmakuManager = platform.danmaku
++    val danmakuSettings by platform.danmakuPreferences
++        .getDanmakuSettings(DanmakuSettingsScope.PORTRAIT)
++        .collectAsStateWithLifecycle(initialValue = platform.danmakuPreferences.currentSettings(DanmakuSettingsScope.PORTRAIT))
+     val latestEnabled = rememberUpdatedState(danmakuSettings.enabled)
+     val onToggle = remember(danmakuManager, context, scope) {
+         {
+@@ -35,8 +34,7 @@
+                 danmakuManager.clear()
+             }
+             scope.launch {
+-                SettingsManager.setDanmakuEnabled(
+-                    context,
++                platform.danmakuPreferences.setDanmakuEnabled(
+                     newValue,
+                     DanmakuSettingsScope.PORTRAIT,
+                 )

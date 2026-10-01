@@ -1,0 +1,23 @@
+{
+  "preparedOnly": true,
+  "fullVmCompiled": false,
+  "fullHolderCompiled": false,
+  "controllerDrainImplemented": false,
+  "mainMounted": false,
+  "actualNativeInThisPacket": false,
+  "snapshot": "stable-product-snapshot-60",
+  "snapshotManifestSha": "0867887c14dcb09600aa18192ddcc970153498fdfd9ad37a2387ca201d0d7b05",
+  "snapshotCpSha": "b82e3c215374b0be98d2018316487514cb00a747dc589828ea504e053cd0ee8e",
+  "runtimeEntries": 101,
+  "ordinaryHandoffCtor": "DesktopOrdinaryPlaybackHandoff(player,details,selectedPart,resolvedSource,nativeSource,readback,queue,playerPluginGeneration,suspended)",
+  "rootDrainSignature": "internal suspend fun DesktopPlaybackController.drainForOriginalVideoOwner(expectedEpoch:Long,expectedSourceVersion:Long,expectedBvid:String,expectedCid:Long):DesktopOrdinaryPlaybackHandoff?",
+  "nativeOwnerCtor": "DesktopOriginalVideoNativeOwner(player,publication,currentEpoch,isEntryCurrent,withEntryAdmission,onAccepted)",
+  "publishSignature": "publish(request,source,expectedBaselineVersion,requestJob,isRequestCurrent):DesktopOriginalVideoAcceptedPublication",
+  "accountAuthority": "Existing DesktopRepositoryPlaybackPublication / same SessionStore receipt",
+  "runtimeAssertions": 15,
+  "limitations": [
+    "Synthetic command/ACK callbacks, no native actor in this packet",
+    "Whole VM/Holder and simultaneous queue/client retirement pending",
+    "No account/HTTP/HWND/EXE touched"
+  ]
+}

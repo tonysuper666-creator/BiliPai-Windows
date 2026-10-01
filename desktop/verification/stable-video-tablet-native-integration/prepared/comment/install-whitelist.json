@@ -1,0 +1,15 @@
+{
+  "files": [
+    {
+      "source": "prepared/desktop/tools/extract-upstream-video-comment-url.py",
+      "target": "desktop/tools/extract-upstream-video-comment-url.py",
+      "sha256Bytes": "ededd840faa4c067f06bef70d732b970bbeed832ed1b4ef6414bc4bd0b003fc9"
+    }
+  ],
+  "sharedPatches": [],
+  "generatedReferenceOnly": [
+    "generated/com/android/purebilibili/feature/video/screen/DesktopOriginalCommentUrlNavigation.kt"
+  ],
+  "registryDelta": "registry-delta.json",
+  "gradleDelta": "ROOT-INTEGRATION.md"
+}

@@ -1,0 +1,119 @@
+{
+  "preparedOnly": true,
+  "actualMainMounted": false,
+  "installWhitelist": "install-whitelist.json",
+  "files": [
+    {
+      "path": "compile-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "981b675ddc9acd3bf4a9d5c80c10cf12a7384f483d8710dbc4a1edb1a768c67b",
+      "bytes": 112
+    },
+    {
+      "path": "compile-01/compile.args",
+      "sha256Bytes": "4ea26c095093f8f5178b1f6a2d4eea62bb129a09c0e5d8c081b520611fce6153",
+      "bytes": 25868
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-01/result.json",
+      "sha256Bytes": "dd8ddc21c1bcc012a9b88c3d0f525d5211d4724738bcd17d3119d324fdda358c",
+      "bytes": 868
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/video/screen/DesktopOriginalCommentUrlNavigation.kt",
+      "sha256Bytes": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282",
+      "bytes": 1250
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "a627b4e90b60e5faac80347772645de2f1c72c6e0a0c4c769293f27ca2b62675",
+      "bytes": 4266
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/screen/DesktopOriginalCommentUrlNavigation.kt",
+      "sha256Bytes": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282",
+      "bytes": 1250
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "22cb6c8bdc6a263ded59e163ad80085bc6570463f27b807ccd810246c1780850",
+      "bytes": 528
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+      "sha256Bytes": "fd76acf9f2b7c4a4a1d98c144c5b700986bdf0789a29b197ad082c163f18503e",
+      "bytes": 14326
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-video-comment-url.py",
+      "sha256Bytes": "ededd840faa4c067f06bef70d732b970bbeed832ed1b4ef6414bc4bd0b003fc9",
+      "bytes": 1697
+    },
+    {
+      "path": "registry-delta.json",
+      "sha256Bytes": "c062117e215db38d1a9beaa70144cbc1391e42454c980bc300265b7b5ef699b9",
+      "bytes": 484
+    },
+    {
+      "path": "replay/com/android/purebilibili/feature/video/screen/DesktopOriginalCommentUrlNavigation.kt",
+      "sha256Bytes": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282",
+      "bytes": 1250
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "61febdd182ce69a9e16433d42d4c1abac90a94c62addf22dc44225adb53ecb83",
+      "bytes": 1889
+    },
+    {
+      "path": "source-checks.json",
+      "sha256Bytes": "ea495d9cb2454b3661a1ee8acd3af0070860663bfe6468ae70619b88a9e5e2b4",
+      "bytes": 415
+    },
+    {
+      "path": "source-identity.json",
+      "sha256Bytes": "1b48ccb61ebf6be6735d74d06a58ef1314abae9f70ffe422f468e07787e9c21c",
+      "bytes": 609
+    }
+  ],
+  "excludedRuntimeArtifacts": [
+    {
+      "path": "compile-01/candidate.jar",
+      "sha256Bytes": "5eb7dfbc45ce19ff2a5119b0b8f5c93e77b6bb16a9ad1b99fbc6d0436bece2c4",
+      "bytes": 7587
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/feature/video/screen/CommentUrlNavigationTarget$Search.class",
+      "sha256Bytes": "a20346d8e7a27d173261ffe553af9730cf6c01ec9c6d049d02a7272d8f83f549",
+      "bytes": 3098
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/feature/video/screen/CommentUrlNavigationTarget$Space.class",
+      "sha256Bytes": "f14106242c453ea5cbfff09c142c3e5f2446e4ffbe44b676760d4778dd70114f",
+      "bytes": 2760
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/feature/video/screen/CommentUrlNavigationTarget$Video.class",
+      "sha256Bytes": "b14fa119062e9d1ca63b54ddbc1622ee62e975c0e38ecbca334810d0b9301f78",
+      "bytes": 3091
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/feature/video/screen/CommentUrlNavigationTarget.class",
+      "sha256Bytes": "049c3ef3e2f66b1a597812299363987b0a48c0aba9b6f713a06b324e2b899f9e",
+      "bytes": 1151
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/feature/video/screen/DesktopOriginalCommentUrlNavigationKt.class",
+      "sha256Bytes": "fb2e5054251fbd6d760adfc4f48f4fcc8379e75c2c9eff9f1b14a5da3b2947f7",
+      "bytes": 4633
+    },
+    {
+      "path": "prepared/desktop/tools/__pycache__/extract-upstream-video-comment-url.cpython-312.pyc",
+      "sha256Bytes": "cd63d57c62aa7e176495865ba87704f54c8da2f988ac19cfce66c9b7d1505560",
+      "bytes": 3358
+    }
+  ]
+}

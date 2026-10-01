@@ -1,0 +1,13 @@
+{
+  "files": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "19abb18afd3a2e9ce31643378f35751f5ce3762f76011a302d1089d1736b0e29"
+    }
+  ],
+  "sharedPatches": [],
+  "registryDelta": [],
+  "gradleDelta": [],
+  "requiresActualNativeAck60": true
+}

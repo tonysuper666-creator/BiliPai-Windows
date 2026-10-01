@@ -1,0 +1,35 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/screen/TabletOwnerUploadsPane.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\frozen-tablet-slice-02\generation-proof\com\android\purebilibili\feature\video\screen\TabletOwnerUploadsPane.kt
+@@ -15,19 +15,19 @@
+ import androidx.compose.ui.layout.ContentScale
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import androidx.lifecycle.viewmodel.compose.viewModel
+ import com.android.purebilibili.core.ui.AdaptiveLoadingIndicator
+ import com.android.purebilibili.core.ui.AppShapes
+ import com.android.purebilibili.core.ui.ContainerLevel
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.android.purebilibili.feature.space.SpaceUiState
+-import com.android.purebilibili.feature.space.SpaceViewModel
++import com.bilipai.desktop.ui.DesktopOriginalOwnerUploadsPort as SpaceViewModel
++import com.bilipai.desktop.ui.LocalDesktopOriginalTabletAudioPlatform
+ 
+ @Composable
+ internal fun TabletOwnerUploadsPane(
+     mid: Long,
+-    onVideoClick: (String, android.os.Bundle?) -> Unit,
+-    spaceViewModel: SpaceViewModel = viewModel(key = "tablet_owner_uploads_$mid")
++    onVideoClick: (String, Long, String?) -> Unit,
++    spaceViewModel: SpaceViewModel = LocalDesktopOriginalTabletAudioPlatform.current.ownerUploads(mid)
+ ) {
+     val state by spaceViewModel.uiState.collectAsStateWithLifecycle()
+     LaunchedEffect(mid) {
+@@ -52,7 +52,7 @@
+                         .fillMaxWidth()
+                         .clip(AppShapes.container(ContainerLevel.Card))
+                         .background(MaterialTheme.colorScheme.surfaceContainerLow)
+-                        .clickable { onVideoClick(video.bvid, null) }
++                        .clickable { onVideoClick(video.bvid, 0L, null) }
+                         .padding(10.dp),
+                     verticalAlignment = Alignment.CenterVertically
+                 ) {

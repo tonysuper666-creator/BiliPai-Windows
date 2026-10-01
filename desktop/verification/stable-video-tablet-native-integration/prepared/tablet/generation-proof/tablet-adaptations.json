@@ -1,0 +1,366 @@
+{
+  "feature/video/screen/TabletDanmakuChromeState.kt": [
+    {
+      "label": "Explicit Windows source seam",
+      "before": "import androidx.compose.ui.platform.LocalContext",
+      "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+      "after": "",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager\n",
+      "after": "",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "    val context = LocalContext.current",
+      "after": "    val platform = LocalDesktopOriginalVideoSectionPlatform.current\n    val context = platform.settingsContext",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "val danmakuManager = rememberDanmakuManager(bvid)",
+      "after": "val danmakuManager = platform.danmaku",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "SettingsManager\n        .getDanmakuSettings(context, DanmakuSettingsScope.PORTRAIT)",
+      "after": "platform.danmakuPreferences\n        .getDanmakuSettings(DanmakuSettingsScope.PORTRAIT)",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "initialValue = DanmakuSettings()",
+      "after": "initialValue = platform.danmakuPreferences.currentSettings(DanmakuSettingsScope.PORTRAIT)",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "SettingsManager.setDanmakuEnabled(\n                    context,",
+      "after": "platform.danmakuPreferences.setDanmakuEnabled(",
+      "count": 1
+    }
+  ],
+  "feature/video/screen/TabletVideoLayout.kt": [
+    {
+      "label": "Explicit Windows platform/type alias: import android.content.res.Configuration",
+      "before": "import android.content.res.Configuration",
+      "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowBounds as Configuration",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: import androidx.compose.ui.platform.LocalConfiguration",
+      "before": "import androidx.compose.ui.platform.LocalConfiguration",
+      "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: import androidx.compose.ui.platform.LocalContext",
+      "before": "import androidx.compose.ui.platform.LocalContext",
+      "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: import com.android.purebilibili.feature.video.state.VideoPlayerState",
+      "before": "import com.android.purebilibili.feature.video.state.VideoPlayerState",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: import com.android.purebilibili.core.util.ShareUtils\n",
+      "before": "import com.android.purebilibili.core.util.ShareUtils\n",
+      "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalVideoContentBindings\n",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: import com.android.purebilibili.core.store.SettingsManager",
+      "before": "import com.android.purebilibili.core.store.SettingsManager",
+      "after": "import com.android.purebilibili.core.store.DesktopOriginalTabletAudioSettings as SettingsManager",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion",
+      "before": "import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion",
+      "after": "import com.bilipai.desktop.ui.rememberDesktopDynamicReduceMotion as rememberSystemReduceMotion",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: (String, android.os.Bundle?) -> Unit",
+      "before": "(String, android.os.Bundle?) -> Unit",
+      "after": "(String, Long, String?) -> Unit",
+      "count": 4
+    },
+    {
+      "label": "Explicit Windows platform/type alias: androidx.compose.ui.platform.LocalContext.current",
+      "before": "androidx.compose.ui.platform.LocalContext.current",
+      "after": "LocalContext.current",
+      "count": 2
+    },
+    {
+      "label": "Explicit Windows platform/type alias: com.android.purebilibili.core.store.SettingsManager",
+      "before": "com.android.purebilibili.core.store.SettingsManager",
+      "after": "SettingsManager",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(",
+      "before": "com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(",
+      "after": "com.bilipai.desktop.ui.DesktopReplyDissolvableContainer(",
+      "count": 1
+    },
+    {
+      "label": "Reference sole Section danmaku actor",
+      "before": "import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager\n",
+      "after": "",
+      "count": 1
+    },
+    {
+      "label": "Capture sole share actor binding during composition",
+      "before": "    val onShareVideoNote:",
+      "after": "    val platform = LocalDesktopOriginalVideoContentBindings.current\n    val onShareVideoNote:",
+      "count": 1
+    },
+    {
+      "label": "Same owned native text share actor",
+      "before": "ShareUtils.shareText(\n            context = context,",
+      "after": "platform.shareText(",
+      "count": 1
+    },
+    {
+      "label": "Android chooser caption has no separate Windows actor effect",
+      "before": ",\n            chooserTitle = \"分享视频笔记\"",
+      "after": "",
+      "count": 1
+    },
+    {
+      "label": "Android Activity lookup is unused after exact navigation options platform mapping",
+      "before": "    val activity = remember(context) {\n        (context as? android.app.Activity)\n            ?: (context as? android.content.ContextWrapper)?.baseContext as? android.app.Activity\n    }\n",
+      "after": "",
+      "count": 1
+    },
+    {
+      "label": "Original CID-only return card navigation uses same typed original CID policy",
+      "before": "                                    val activity = (context as? android.app.Activity) ?: (context as? android.content.ContextWrapper)?.baseContext as? android.app.Activity\n                                    val options = activity?.let {\n                                        android.app.ActivityOptions.makeSceneTransitionAnimation(it).toBundle()\n                                    }\n                                    val navOptions = android.os.Bundle(options ?: android.os.Bundle.EMPTY)\n                                    if (video.cid > 0L) {\n                                        navOptions.putLong(VIDEO_NAV_TARGET_CID_KEY, video.cid)\n                                    }\n",
+      "after": "                                    val navOptions = buildDesktopOriginalVideoNavigationOptions(targetCid = video.cid)\n",
+      "count": 1
+    },
+    {
+      "label": "Same original CID/cover normalization in existing sole navigation policy",
+      "before": "buildVideoNavigationOptions(",
+      "after": "buildDesktopOriginalVideoNavigationOptions(",
+      "count": 2
+    },
+    {
+      "label": "Nullable original navigation omission is carried by explicit fields",
+      "before": " ?: android.os.Bundle.EMPTY",
+      "after": "",
+      "count": 1
+    },
+    {
+      "label": "Comment video links preserve original unspecified CID",
+      "before": "onRelatedVideoClick(target.videoId, null)",
+      "after": "onRelatedVideoClick(target.videoId, 0L, null)",
+      "count": 1
+    },
+    {
+      "label": "Existing original two-field consumer bridges to required rich route callback",
+      "before": "onRelatedVideoClick(video.bvid, navOptions)",
+      "after": "onRelatedVideoClick(video.bvid, navOptions?.first ?: 0L, navOptions?.second)",
+      "count": 2
+    },
+    {
+      "label": "Existing complete original title renderer carries CID only",
+      "before": "                    onBgmClick = onBgmClick,\n                    onRelatedVideoClick = onRelatedVideoClick,",
+      "after": "                    onBgmClick = onBgmClick,\n                    onRelatedVideoClick = { vid, cid -> onRelatedVideoClick(vid, cid, null) },",
+      "count": 1
+    },
+    {
+      "label": "Original collection CID policy positive value/otherwise omission",
+      "before": "onRelatedVideoClick(\n                                    episode.bvid,\n                                    buildDesktopOriginalVideoNavigationOptions(targetCid = episode.cid)\n                                )",
+      "after": "onRelatedVideoClick(episode.bvid, episode.cid.takeIf { it > 0L } ?: 0L, null)",
+      "count": 1
+    }
+  ],
+  "feature/video/screen/TabletCinemaLayout.kt": [
+    {
+      "label": "Explicit Windows platform/type alias: import android.content.res.Configuration",
+      "before": "import android.content.res.Configuration",
+      "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowBounds as Configuration",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: import androidx.compose.ui.platform.LocalContext",
+      "before": "import androidx.compose.ui.platform.LocalContext",
+      "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: import com.android.purebilibili.feature.video.state.VideoPlayerState",
+      "before": "import com.android.purebilibili.feature.video.state.VideoPlayerState",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: import com.android.purebilibili.core.util.ShareUtils\n",
+      "before": "import com.android.purebilibili.core.util.ShareUtils\n",
+      "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalVideoContentBindings\n",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: import com.android.purebilibili.core.store.SettingsManager",
+      "before": "import com.android.purebilibili.core.store.SettingsManager",
+      "after": "import com.android.purebilibili.core.store.DesktopOriginalTabletAudioSettings as SettingsManager",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows platform/type alias: (String, android.os.Bundle?) -> Unit",
+      "before": "(String, android.os.Bundle?) -> Unit",
+      "after": "(String, Long, String?) -> Unit",
+      "count": 8
+    },
+    {
+      "label": "Capture sole share actor binding during composition",
+      "before": "    val onShareVideoNote:",
+      "after": "    val platform = LocalDesktopOriginalVideoContentBindings.current\n    val onShareVideoNote:",
+      "count": 1
+    },
+    {
+      "label": "Same owned native text share actor",
+      "before": "ShareUtils.shareText(\n            context = context,",
+      "after": "platform.shareText(",
+      "count": 1
+    },
+    {
+      "label": "Android chooser caption has no separate Windows actor effect",
+      "before": ",\n            chooserTitle = \"分享视频笔记\"",
+      "after": "",
+      "count": 1
+    },
+    {
+      "label": "Same original CID/cover normalization in existing sole navigation policy",
+      "before": "buildVideoNavigationOptions(",
+      "after": "buildDesktopOriginalVideoNavigationOptions(",
+      "count": 2
+    },
+    {
+      "label": "Nullable original navigation omission is carried by explicit fields",
+      "before": " ?: android.os.Bundle.EMPTY",
+      "after": "",
+      "count": 1
+    },
+    {
+      "label": "Comment video links preserve original unspecified CID",
+      "before": "onRelatedVideoClick(target.videoId, null)",
+      "after": "onRelatedVideoClick(target.videoId, 0L, null)",
+      "count": 1
+    },
+    {
+      "label": "Existing original two-field consumer bridges to required rich route callback",
+      "before": "onRelatedVideoClick(video.bvid, navOptions)",
+      "after": "onRelatedVideoClick(video.bvid, navOptions?.first ?: 0L, navOptions?.second)",
+      "count": 1
+    },
+    {
+      "label": "Same required global original settings context",
+      "before": "context: android.content.Context",
+      "after": "context: com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext",
+      "count": 4
+    },
+    {
+      "label": "Original optional route callback arity follows explicit typed fields",
+      "before": "onRelatedVideoClick: (String, Long, String?) -> Unit = { _, _ -> }",
+      "after": "onRelatedVideoClick: (String, Long, String?) -> Unit = { _, _, _ -> }",
+      "count": 2
+    },
+    {
+      "label": "Collection episode route carries original normalized CID/cover",
+      "before": "onCollectionEpisodeClick(episode.bvid, navOptions)",
+      "after": "onCollectionEpisodeClick(episode.bvid, navOptions?.first ?: 0L, navOptions?.second)",
+      "count": 1
+    },
+    {
+      "label": "Existing complete original title renderer carries CID only",
+      "before": "                onBgmClick = onBgmClick,\n                onRelatedVideoClick = onRelatedVideoClick,",
+      "after": "                onBgmClick = onBgmClick,\n                onRelatedVideoClick = { vid, cid -> onRelatedVideoClick(vid, cid, null) },",
+      "count": 1
+    }
+  ],
+  "feature/video/screen/TabletOwnerUploadsPane.kt": [
+    {
+      "label": "Explicit Windows source seam",
+      "before": "import androidx.lifecycle.viewmodel.compose.viewModel\n",
+      "after": "",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "import com.android.purebilibili.feature.space.SpaceViewModel",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalOwnerUploadsPort as SpaceViewModel\nimport com.bilipai.desktop.ui.LocalDesktopOriginalTabletAudioPlatform",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "(String, android.os.Bundle?) -> Unit",
+      "after": "(String, Long, String?) -> Unit",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "spaceViewModel: SpaceViewModel = viewModel(key = \"tablet_owner_uploads_$mid\")",
+      "after": "spaceViewModel: SpaceViewModel = LocalDesktopOriginalTabletAudioPlatform.current.ownerUploads(mid)",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "onVideoClick(video.bvid, null)",
+      "after": "onVideoClick(video.bvid, 0L, null)",
+      "count": 1
+    }
+  ],
+  "feature/video/ui/components/BottomInputBar.kt": [
+    {
+      "label": "Reference existing sole dynamic-detail-container original helper: shouldUseFloatingLiquidBottomInputBar",
+      "before": "internal fun shouldUseFloatingLiquidBottomInputBar(\n    androidNativeLiquidGlassEnabled: Boolean\n): Boolean = resolveGlobalLiquidGlassReuseEnabled(androidNativeLiquidGlassEnabled)\n\n/** The comment bar follows the bottom-bar blur preference when liquid glass is not active. */",
+      "after": "",
+      "count": 1
+    },
+    {
+      "label": "Reference existing sole dynamic-detail-container original helper: resolveBottomInputBarContentBottomPadding",
+      "before": "internal fun resolveBottomInputBarContentBottomPadding(\n    showBar: Boolean,\n    floatingLiquidGlass: Boolean,\n    showActionButtonsFallback: Boolean\n): Dp {\n    if (!showBar) {\n        return if (showActionButtonsFallback) 84.dp else 12.dp\n    }\n    return if (floatingLiquidGlass) 112.dp else 96.dp\n}",
+      "after": "",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalVideoContentBindings\n",
+      "count": 1
+    },
+    {
+      "label": "Explicit Windows source seam",
+      "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+      "after": "import com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes\n",
+      "count": 1
+    },
+    {
+      "label": "Read same original Root global settings Flow, with actual current initial values",
+      "before": "    val context = LocalContext.current\n    val homeSettings by SettingsManager\n        .getHomeSettings(context)\n        .collectAsStateWithLifecycle(initialValue = HomeSettings())\n    val appNavigationSettings by SettingsManager\n        .getAppNavigationSettings(context)\n        .collectAsStateWithLifecycle(initialValue = AppNavigationSettings())\n",
+      "after": "    val platform = LocalDesktopOriginalVideoContentBindings.current\n    val homeSettings by platform.homeSettings.homeSettings.collectAsStateWithLifecycle()\n    val appNavigationSettings by platform.homeSettings.navigation.collectAsStateWithLifecycle()\n",
+      "count": 1
+    },
+    {
+      "label": "Reference sole original navigation enum",
+      "before": "SettingsManager.BottomBarVisibilityMode.SCROLL_HIDE",
+      "after": "DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.SCROLL_HIDE",
+      "count": 1
+    }
+  ]
+}

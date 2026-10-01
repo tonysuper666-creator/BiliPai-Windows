@@ -1,0 +1,43 @@
+{
+  "applied": true,
+  "installedPayloadCount": 4,
+  "targets": [
+    {
+      "path": "desktop/tools/extract-upstream-video-comment-url.py",
+      "installedSha256Bytes": "ededd840faa4c067f06bef70d732b970bbeed832ed1b4ef6414bc4bd0b003fc9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "installedSha256Bytes": "19abb18afd3a2e9ce31643378f35751f5ce3762f76011a302d1089d1736b0e29"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-tablet-full.py",
+      "installedSha256Bytes": "1a40f7881fe6ba165d24a1a424e7e0a06fc229311af6fc75941249a0ee648e98"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalTabletAudioPlatform.kt",
+      "installedSha256Bytes": "f78b94415d77f3583c7b6e95812a73c1020c394c75e2219f3cedb552d4a2f878"
+    }
+  ],
+  "newSourceIdentities": [
+    "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoInfoEntrancePolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletOwnerUploadsPane.kt"
+  ],
+  "mergedSourceIdentities": [
+    "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt"
+  ],
+  "sourceIdentityCount": 1064,
+  "newDependencies": 0,
+  "generatedReferencesInstalled": false,
+  "nativeRequestAdmissionUsesActualAck60": true,
+  "currentNativeAuthorityRetired": false,
+  "wholeOrdinaryVideoMounted": false,
+  "wholeCompilationPending": true
+}

@@ -1,0 +1,246 @@
+package com.bilipai.desktop.ui
+
+import com.android.purebilibili.feature.video.playback.loader.PlaybackRequest
+import com.android.purebilibili.feature.video.player.ShuffleProgress
+import com.bilipai.desktop.data.VideoCard
+import com.bilipai.desktop.data.VideoDetails
+import com.bilipai.desktop.data.PlaybackSource as ResolvedSource
+import com.bilipai.desktop.player.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
+
+/** A transient copy of the OLD Controller's real queue, not a playlist authority.
+ * Root must switch existing Favorite/Listen/dashboard clients to the new owner at
+ * the same handoff. A different native source/account cannot reuse this token.
+ */
+internal class DesktopOrdinaryPlaybackQueueHandoff(
+    cards: List<VideoCard>,
+    val selectedIndex: Int,
+    val owner: Any?,
+    shuffle: ShuffleProgress,
+    partShuffle: ShuffleProgress,
+) {
+    val cards = cards.toList()
+    val shuffle = shuffle.copy(history = shuffle.history.toList(), cyclePlayed = shuffle.cyclePlayed.toSet())
+    val partShuffle = partShuffle.copy(history = partShuffle.history.toList(), cyclePlayed = partShuffle.cyclePlayed.toSet())
+    init { require(selectedIndex in this.cards.indices) }
+    override fun toString() = "DesktopOrdinaryPlaybackQueueHandoff(size=${cards.size}, selectedIndex=$selectedIndex)"
+}
+
+/** Snapshot returned only AFTER the old request/recovery/native observers have
+ * drained and the same-source native actor barrier completed OUTSIDE Store/UI
+ * locks. The original raw ViewInfo and selected DASH/audio metadata remain in the
+ * existing details/source models. No URLs/headers/cookies enter diagnostics.
+ *
+ * The shared DesktopSubtitleAssets stays Root-owned. Old automatic-subtitle work
+ * is canceled/joined, but no current MPV external track/files are cleared here.
+ */
+internal class DesktopOrdinaryPlaybackHandoff(
+    val player: MpvPlayer,
+    val details: VideoDetails,
+    val selectedPart: Int,
+    val resolvedSource: ResolvedSource,
+    val nativeSource: OwnedPlaybackSourceSnapshot,
+    val readback: PlayerState,
+    val queue: DesktopOrdinaryPlaybackQueueHandoff,
+    val playerPluginGeneration: Long?,
+    val suspended: Boolean,
+) {
+    val request = run {
+        require(selectedPart in details.pages.indices)
+        PlaybackRequest.create(details.bvid, details.aid, details.pages[selectedPart].cid)
+    }
+    val accountEpoch = checkNotNull(nativeSource.source.authorizationReceipt).accountEpoch
+    init {
+        require(selectedPart in details.pages.indices)
+        requireNotNull(details.raw) { "Original raw video detail is required for handoff" }
+        require(resolvedSource.authorizationReceipt == nativeSource.source.authorizationReceipt)
+        require(nativeSource.sourceVersion > 0L)
+        require(!readback.loading && !readback.ended && readback.error == null)
+        require(readback.videoCodec != null || readback.audioCodec != null)
+    }
+    override fun toString() = "DesktopOrdinaryPlaybackHandoff(sourceVersion=${nativeSource.sourceVersion}, selectedPart=$selectedPart)"
+}
+
+/** Actual publication metadata for this owner. The source is an immutable MPV
+ * snapshot and contains credentials; this object deliberately has safe logging.
+ */
+internal class DesktopOriginalVideoAcceptedPublication(
+    val request: PlaybackRequest,
+    val nativeSource: OwnedPlaybackSourceSnapshot,
+) {
+    val sourceVersion get() = nativeSource.sourceVersion
+    val accountEpoch get() = checkNotNull(nativeSource.source.authorizationReceipt).accountEpoch
+    override fun toString() = "DesktopOriginalVideoAcceptedPublication(sourceVersion=$sourceVersion)"
+}
+
+/** Initial Load has two lifetimes. Before MPV's actual successful loadfile ACK,
+ * the same request Job and generation still own queued native publication. After
+ * ACK only the accepted entry/source lease owns replay/Canvas reconstruction.
+ * MPV calls the default hook only after a real loadfile + playlist entry readback;
+ * an admitted stale/no-op command must NOT consume this first-request guard.
+ * Hook is one atomic flag write: no callback/IO/lock or business projection.
+ */
+internal class DesktopOriginalVideoInitialPublication(
+    private val publication: DesktopPlaybackPublication,
+    private val source: PlaybackSource,
+    private val requestJob: Job,
+    private val isRequestCurrent: () -> Boolean,
+    private val ownsAccepted: () -> Boolean,
+    private val withEntryAdmission: ((() -> Unit) -> Boolean),
+) : DesktopNativePlaybackPublication {
+    private val consumed = AtomicBoolean(false)
+    private fun current(): Boolean = ownsAccepted() &&
+        (consumed.get() || (!requestJob.isCancelled && isRequestCurrent()))
+
+    override fun admit(command: () -> Unit): Boolean = try {
+        publication.admit(source, ::current) {
+            if (!withEntryAdmission {
+                if (!current()) throw CancellationException("Initial ordinary publication retired")
+                command()
+            }) throw CancellationException("Initial ordinary entry retired")
+        }
+        true
+    } catch (_: CancellationException) { false }
+
+    override fun onLoadCommandAccepted() { consumed.set(true) }
+}
+
+/** One retained ordinary-video entry's view of the SAME MPV and existing atomic
+ * Repository publication. This does not instantiate a native actor/HTTP client,
+ * and the AtomicReference is only the entry's accepted-source lease. MPV's real
+ * sourceVersion and the existing authorization receipt remain authoritative.
+ *
+ * withEntryAdmission is entry-only; publication supplies Store -> entry order.
+ * onAccepted is a short in-memory projection, not native cleanup, disk or join.
+ * MPV's actual adoptPublication is used after its native drain barrier.
+ */
+internal class DesktopOriginalVideoNativeOwner(
+    val player: MpvPlayer,
+    private val publication: DesktopPlaybackPublication,
+    private val currentEpoch: () -> Long,
+    private val isEntryCurrent: () -> Boolean,
+    private val withEntryAdmission: ((() -> Unit) -> Boolean),
+    private val onAccepted: (DesktopOriginalVideoAcceptedPublication) -> Unit,
+) : AutoCloseable {
+    private val closed = AtomicBoolean(false)
+    private val accepted = AtomicReference<DesktopOriginalVideoAcceptedPublication?>()
+
+    private fun entryCurrent() = !closed.get() && isEntryCurrent()
+    private fun assertEntry() {
+        if (!entryCurrent()) throw CancellationException("Original video native owner retired")
+    }
+    private fun owns(value: DesktopOriginalVideoAcceptedPublication): Boolean =
+        entryCurrent() && value.accountEpoch == currentEpoch() &&
+            accepted.get() === value && player.ownsSourceVersion(value.sourceVersion) &&
+            publication.isCurrent(value.nativeSource.source)
+
+    fun current(): DesktopOriginalVideoAcceptedPublication? = accepted.get()?.takeIf(::owns)
+
+    /** Initial request acceptance. source MUST already carry that operation's
+     * immutable authorization. A request generation guard is REQUIRED separately
+     * from the long-lived entry guard. The actual request Job is required and only
+     * isCancelled is read, so successful completion can finish the queued Load.
+     * Actual native ACK consumes both transient checks; baseline blocks takeover.
+     */
+    fun publish(request: PlaybackRequest, source: PlaybackSource,
+        expectedBaselineVersion: Long, requestJob: Job, isRequestCurrent: () -> Boolean): DesktopOriginalVideoAcceptedPublication {
+        assertEntry()
+        val receipt = checkNotNull(source.authorizationReceipt) { "Original ordinary playback receipt is required" }
+        if (receipt.accountEpoch != currentEpoch()) throw CancellationException("Original playback account retired")
+        var result: DesktopOriginalVideoAcceptedPublication? = null
+        publication.admit(source, { entryCurrent() && !requestJob.isCancelled && isRequestCurrent() }) {
+            if (!withEntryAdmission {
+                assertEntry()
+                if (requestJob.isCancelled || !isRequestCurrent() || player.currentSourceVersion != expectedBaselineVersion)
+                    throw CancellationException("Original playback request/native baseline retired")
+                lateinit var next: DesktopOriginalVideoAcceptedPublication
+                val initial = DesktopOriginalVideoInitialPublication(publication, source, requestJob,
+                    isRequestCurrent, { owns(next) }, withEntryAdmission)
+                val retained = source.copy(nativePublication = initial)
+                val version = player.loadVersioned(retained)
+                next = DesktopOriginalVideoAcceptedPublication(request,
+                    checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == version) })
+                accepted.set(next)
+                result = next
+                onAccepted(next)
+            }) throw CancellationException("Original playback entry retired")
+        }
+        return checkNotNull(result)
+    }
+
+    /** No seek/load/pause/subtitle command. Root drains old Jobs and the real MPV
+     * command barrier FIRST, outside admission, then invokes this exact transfer.
+     * Old publication identity is checked by the required native ABI as well.
+     */
+    fun adopt(handoff: DesktopOrdinaryPlaybackHandoff): DesktopOriginalVideoAcceptedPublication? {
+        assertEntry()
+        require(handoff.player === player)
+        if (handoff.accountEpoch != currentEpoch()) return null
+        val before = handoff.nativeSource
+        var result: DesktopOriginalVideoAcceptedPublication? = null
+        try {
+            publication.admit(before.source, ::entryCurrent) {
+                withEntryAdmission {
+                    assertEntry()
+                    lateinit var next: DesktopOriginalVideoAcceptedPublication
+                    val replacement = publication.ownedSource(before.source) { owns(next) }
+                    if (!player.adoptPublication(before.sourceVersion, before.source, replacement)) return@withEntryAdmission
+                    next = DesktopOriginalVideoAcceptedPublication(handoff.request,
+                        checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == before.sourceVersion) })
+                    accepted.set(next)
+                    result = next
+                    onAccepted(next)
+                }
+            }
+        } catch (_: CancellationException) { return null }
+        return result
+    }
+
+    /** Context-free CDN/recovery replacements use a live accepted-source lease,
+     * never a completed request Job. prepare is REQUIRED same-authority native
+     * source preparation carrying the accepted receipt and headers.
+     */
+    fun acceptedMedia(prepare: (DesktopOriginalVideoAcceptedPublication) -> DesktopOriginalVideoMediaPort): DesktopOriginalVideoMediaPort {
+        val lease = current() ?: throw CancellationException("No owned accepted ordinary source")
+        val delegate = prepare(lease)
+        fun checkCurrent() { if (!owns(lease)) throw CancellationException("Accepted ordinary source retired") }
+        return object : DesktopOriginalVideoMediaPort {
+            override fun prepareLegacyDash(videoUrl:String,audioUrl:String?,cdnCacheKeysByUrl:Map<String,String>):PlaybackSource {
+                checkCurrent(); return delegate.prepareLegacyDash(videoUrl,audioUrl,cdnCacheKeysByUrl)
+            }
+            override fun prepareAdaptiveDash(source:com.android.purebilibili.feature.video.playback.dash.AdaptiveDashPlaybackSource,
+                cdnCacheKeysByUrl:Map<String,String>):PlaybackSource? {
+                checkCurrent(); return delegate.prepareAdaptiveDash(source,cdnCacheKeysByUrl)
+            }
+            override fun prepareProgressive(url:String):PlaybackSource {
+                checkCurrent(); return delegate.prepareProgressive(url)
+            }
+            override fun accept(source:PlaybackSource) {
+                checkCurrent()
+                if (source.authorizationReceipt != lease.nativeSource.source.authorizationReceipt)
+                    throw CancellationException("Accepted recovery receipt changed")
+                publication.admit(source, { owns(lease) }) {
+                    if (!withEntryAdmission {
+                        checkCurrent()
+                        lateinit var next: DesktopOriginalVideoAcceptedPublication
+                        val retained = publication.ownedSource(source) { owns(next) }
+                        if (!player.recoverSource(lease.sourceVersion,retained,
+                                positionSeconds = source.startPositionSeconds,paused = source.startPaused))
+                            throw CancellationException("Accepted ordinary recovery retired")
+                        next = DesktopOriginalVideoAcceptedPublication(lease.request,
+                            checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == lease.sourceVersion) })
+                        accepted.set(next)
+                        onAccepted(next)
+                    }) throw CancellationException("Accepted ordinary entry retired")
+                }
+            }
+        }
+    }
+
+    /** Admission retirement only; Root cancelAndJoin and optional owned stop are
+     * explicit outside locks. Never stop the shared MPV from this fa莽ade close. */
+    override fun close() { closed.set(true); accepted.set(null) }
+}

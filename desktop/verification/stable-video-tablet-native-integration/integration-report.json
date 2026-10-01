@@ -1,0 +1,108 @@
+{
+  "phase": 61,
+  "sourceIdentityCount": 1064,
+  "resourceRegistryCount": 213,
+  "runtimeEntries": 101,
+  "wholeClassesPassed": true,
+  "wholeTestSourcesCompiled": true,
+  "illegalJvmMethodNames": 0,
+  "commentUrlHasOneSourceProducer": true,
+  "tabletCompleteRendererBodiesGenerated": true,
+  "tabletProductionBodiesExactlyMatchFrozenReferences": [
+    {
+      "relativePath": "com/android/purebilibili/core/store/DesktopOriginalTabletAudioSettings.kt",
+      "sha256Bytes": "cf72804cd8d36b35f4c9b8a75420078d3c4353313802465ad4aae797bff15251"
+    },
+    {
+      "relativePath": "com/android/purebilibili/core/store/DesktopOriginalTabletSecondaryDefaultTab.kt",
+      "sha256Bytes": "357812c4ef4faf3773e7799bd775cd2505b23159b468ef27fcc90ee3f0956479"
+    },
+    {
+      "relativePath": "com/android/purebilibili/feature/space/DesktopOriginalSpaceUiState.kt",
+      "sha256Bytes": "cd56738a2052d6da64b8d9541993d09c2cdb9bd3be3b39b877da8245a83fc645"
+    },
+    {
+      "relativePath": "com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt",
+      "sha256Bytes": "0c05fe73cd9265e5869a8f011fa550700a2f2ff93b1e7d073a504d53b99247ce"
+    },
+    {
+      "relativePath": "com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt",
+      "sha256Bytes": "ad8ba9dd5d4548b0ecf879df937284ecd3a54ddcf50106586a7d6fc52cab49b7"
+    },
+    {
+      "relativePath": "com/android/purebilibili/feature/video/screen/TabletOwnerUploadsPane.kt",
+      "sha256Bytes": "77192f0b2d146960ebcc6611830f3b50d8feda13f024905ce300d83d33966366"
+    },
+    {
+      "relativePath": "com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt",
+      "sha256Bytes": "7bc69cabd5b933e170476a8a73c2c3084e9fc03b3c58542a4989e47087003d7b"
+    },
+    {
+      "relativePath": "com/android/purebilibili/feature/video/ui/components/DesktopOriginalBottomInputBar.kt",
+      "sha256Bytes": "b04e86784e7a6f7adcd3f20468bb71944c8bbd7b077b921d4f22de6fa673c793"
+    }
+  ],
+  "tabletDirectFilesSyncOnly": true,
+  "existingIdentityFeaturesMergedWithoutModeReplacement": true,
+  "newSourceIdentities": 7,
+  "newDependencies": 0,
+  "correctedNativeOwnerInstalled": true,
+  "initialAdmissionHasRequiredCallingJobAndGeneration": true,
+  "transientChecksConsumedOnlyByActualNativeAck60": true,
+  "installedProductFixture": {
+    "passed": true,
+    "compileExitCode": 0,
+    "runExitCode": 0,
+    "actualProductSnapshot": 61,
+    "runtimeEntries": 101,
+    "fixtureClasses": 4,
+    "productionOverrides": 0,
+    "fixtureProductClassIntersections": [],
+    "fixtureJarSha256Bytes": "0374607e8c35b325a63b9dbfa77263e001c6092109897f2075e05cb72502f604",
+    "pinnedProductOrigins": [
+      {
+        "class": "com.bilipai.desktop.data.DesktopSessionStore",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-61/main-kotlin.jar",
+        "sha256ClassEntryBytes": "412d849ea8f43feac60ac01c8d29e369f1922b4b588d83e2c0239f40e4706c49"
+      },
+      {
+        "class": "com.bilipai.desktop.data.DesktopRepository",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-61/main-kotlin.jar",
+        "sha256ClassEntryBytes": "68f8ee5f9f7ead08fa82092f3bc88b4f99ea1242def082fb6c0304cf4a9c4c8e"
+      },
+      {
+        "class": "com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-61/main-kotlin.jar",
+        "sha256ClassEntryBytes": "299c659f580e1babd1612a709db7b89bc6bcc64b5b7efeedb241db4f6f62013c"
+      },
+      {
+        "class": "com.bilipai.desktop.player.DesktopNativePlaybackPublication",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-61/main-kotlin.jar",
+        "sha256ClassEntryBytes": "025e66c95747b7d869b595a2b3f38b28767ee4809ceab458f75a0d66fef6e596"
+      },
+      {
+        "class": "com.bilipai.desktop.ui.DesktopOriginalVideoInitialPublication",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-61/main-kotlin.jar",
+        "sha256ClassEntryBytes": "b0a79ed4a49e6e9789c32bb354697c44fa4b9cb7266d788d5014a7e404e4cf3f"
+      }
+    ],
+    "fixtureSourceUnchanged": true,
+    "classBytesReportedByFixture": false,
+    "fixtureHistoricalScopeTextRetained": true,
+    "commandAndAckAreSynthetic": true,
+    "actualAccountUsed": false,
+    "nativeExecuted": false,
+    "fullOrdinaryVideoRootMountAccepted": false
+  },
+  "fixtureAssertions": 15,
+  "fixtureCommandsAndAckAreSynthetic": true,
+  "nativeFixtureRerun": false,
+  "actualMainRerun": false,
+  "lastActualMainStartupPhase": 57,
+  "fullOrdinaryVideoRootMounted": false,
+  "tabletPageMounted": false,
+  "fullControllerDrainAccepted": false,
+  "realAccountUsed": false,
+  "newExeDeployed": false,
+  "sourceInventoryIsNotFunctionalOrReusePercentage": true
+}

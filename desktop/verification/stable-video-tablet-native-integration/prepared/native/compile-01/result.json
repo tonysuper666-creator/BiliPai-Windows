@@ -1,0 +1,23 @@
+{
+  "preparedOnly": true,
+  "fullVmMounted": false,
+  "snapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-60",
+  "manifestSha": "0867887c14dcb09600aa18192ddcc970153498fdfd9ad37a2387ca201d0d7b05",
+  "cpSha": "b82e3c215374b0be98d2018316487514cb00a747dc589828ea504e053cd0ee8e",
+  "runtimeEntries": 101,
+  "compileExit": 0,
+  "inputSources": 2,
+  "classes": 12,
+  "productOverlaps": [],
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-native-owner-cancellation-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "19abb18afd3a2e9ce31643378f35751f5ce3762f76011a302d1089d1736b0e29"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-native-owner-cancellation-parity\\fixture\\InitialNativePublicationFixture.kt",
+      "sha256Bytes": "360a545b5cdd83acb1c29bc511fa8718f0aede1d2bffa18218fc4817613b26ae"
+    }
+  ],
+  "runtimeExit": 0
+}

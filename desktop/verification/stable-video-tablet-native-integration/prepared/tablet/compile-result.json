@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "actualSnapshot": 54,
+  "entries": 101,
+  "productionOverrides": 0,
+  "sourceCount": 12,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\video\\screen\\DesktopOriginalCommentUrlNavigation.kt",
+      "sha256LF": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalTabletAudioSettings.kt",
+      "sha256LF": "cf72804cd8d36b35f4c9b8a75420078d3c4353313802465ad4aae797bff15251"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalTabletSecondaryDefaultTab.kt",
+      "sha256LF": "357812c4ef4faf3773e7799bd775cd2505b23159b468ef27fcc90ee3f0956479"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\space\\DesktopOriginalSpaceUiState.kt",
+      "sha256LF": "cd56738a2052d6da64b8d9541993d09c2cdb9bd3be3b39b877da8245a83fc645"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletCinemaLayout.kt",
+      "sha256LF": "0c05fe73cd9265e5869a8f011fa550700a2f2ff93b1e7d073a504d53b99247ce"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletDanmakuChromeState.kt",
+      "sha256LF": "ad8ba9dd5d4548b0ecf879df937284ecd3a54ddcf50106586a7d6fc52cab49b7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletOwnerUploadsPane.kt",
+      "sha256LF": "77192f0b2d146960ebcc6611830f3b50d8feda13f024905ce300d83d33966366"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoInfoEntrancePolicy.kt",
+      "sha256LF": "1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayout.kt",
+      "sha256LF": "7bc69cabd5b933e170476a8a73c2c3084e9fc03b3c58542a4989e47087003d7b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayoutPolicy.kt",
+      "sha256LF": "31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalBottomInputBar.kt",
+      "sha256LF": "b04e86784e7a6f7adcd3f20468bb71944c8bbd7b077b921d4f22de6fa673c793"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalTabletAudioPlatform.kt",
+      "sha256LF": "f78b94415d77f3583c7b6e95812a73c1020c394c75e2219f3cedb552d4a2f878"
+    }
+  ],
+  "candidateJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-03\\tablet-audio-candidate.jar",
+    "sha256Bytes": "e6b91ee1d3ef727a0d0724d862e97cef38ab031ab52800679c53c58d7f7cb904"
+  },
+  "classOverlap": []
+}

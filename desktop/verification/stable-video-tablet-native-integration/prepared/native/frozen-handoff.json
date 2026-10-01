@@ -1,0 +1,149 @@
+{
+  "preparedOnly": true,
+  "installWhitelist": "install-whitelist.json",
+  "scope": "scope.json",
+  "files": [
+    {
+      "path": "compile-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "06d262cf732152000d8cb1453e8dc1209b37fa4411e5c4d202265ff0d18ec16d",
+      "bytes": 24
+    },
+    {
+      "path": "compile-01/compile.args",
+      "sha256Bytes": "b7dbe3f4bcbf6a5dcf02e2b010900f248547626ee1caed0ab89e227bf97e3f59",
+      "bytes": 26069
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-01/fixture-result.json",
+      "sha256Bytes": "25e0db936369ee5390e6daaf1cf7cde942e7ab8fd33383e0dc5a94767733ddec",
+      "bytes": 2356
+    },
+    {
+      "path": "compile-01/result.json",
+      "sha256Bytes": "3832e772b3e2ea1dac43555dbd1731421c80195d5e80ae637a6d250e7e62e1e2",
+      "bytes": 1204
+    },
+    {
+      "path": "compile-01/runtime.log",
+      "sha256Bytes": "1e7c56bac70f1024b02ef2bcce84eb9667203fedacb2ff7134edd4eb8a00e165",
+      "bytes": 49
+    },
+    {
+      "path": "compile-01/source-inputs/fixture/InitialNativePublicationFixture.kt",
+      "sha256Bytes": "360a545b5cdd83acb1c29bc511fa8718f0aede1d2bffa18218fc4817613b26ae",
+      "bytes": 5356
+    },
+    {
+      "path": "compile-01/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "19abb18afd3a2e9ce31643378f35751f5ce3762f76011a302d1089d1736b0e29",
+      "bytes": 13506
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "7216a8f9f392e63a0e83fe7cb80898563f70a95a23e4cabf037e4e9fe1722944",
+      "bytes": 4257
+    },
+    {
+      "path": "fixture/InitialNativePublicationFixture.kt",
+      "sha256Bytes": "360a545b5cdd83acb1c29bc511fa8718f0aede1d2bffa18218fc4817613b26ae",
+      "bytes": 5356
+    },
+    {
+      "path": "historical-superseded.json",
+      "sha256Bytes": "0bdbb35cf331b579f46aace30da5bb5577dd16df4783163a3f2a9d1fb0135340",
+      "bytes": 857
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "07aabf4ba76cbbb231d1e97678b5d34565201c98272937541a233663bc8285cb",
+      "bytes": 432
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "19abb18afd3a2e9ce31643378f35751f5ce3762f76011a302d1089d1736b0e29",
+      "bytes": 13506
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "3aaf8378cba8026b59ac3e90798c932ad3708b97e35555bd379912a0168ce01c",
+      "bytes": 8676
+    },
+    {
+      "path": "scope.json",
+      "sha256Bytes": "e028b899fbbe00c0ac8c6e80198d2e38e815f61b2a7a42ad2abc928b16cf8e93",
+      "bytes": 1445
+    }
+  ],
+  "excludedRuntimeArtifacts": [
+    {
+      "path": "compile-01/candidate.jar",
+      "sha256Bytes": "6e132280e0d64bfcb1c4ac11cbaca16d838ccc7c29ebdca99a221e1c3a3bfc7b",
+      "bytes": 31525
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOrdinaryPlaybackHandoff.class",
+      "sha256Bytes": "9e7263878bc122120f56b0f18107be76e9ad4ba5e492570aff77e827d2884a5b",
+      "bytes": 8350
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOrdinaryPlaybackQueueHandoff.class",
+      "sha256Bytes": "e05f097809e228d6aad8354e48da9c121e6eeaffcabe36b6cf61d1fea968bd8d",
+      "bytes": 4314
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalVideoAcceptedPublication.class",
+      "sha256Bytes": "40e0f1633d46a3efb47bb36039697afca44bc1f3625de03afa37015c303c8720",
+      "bytes": 3315
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalVideoInitialPublication$admit$1.class",
+      "sha256Bytes": "89352fe412bf352469fbdbf7c844ef68062bc878bc31e61e547ddcc9b9f9396b",
+      "bytes": 1422
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalVideoInitialPublication.class",
+      "sha256Bytes": "2db1695aece31470245d61a2022c58f82a8b85f46e51e8d30bc06363e9ae3d7c",
+      "bytes": 5805
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner$acceptedMedia$1.class",
+      "sha256Bytes": "d0769ae6aebfa929b9046bd350ed74f7c0c6d4fd47132272133706b5333dce81",
+      "bytes": 9803
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner$adopt$1.class",
+      "sha256Bytes": "201d32e8d68e473f0cf92d74b42ff3368c0244b9122e514b20b1994213835c35",
+      "bytes": 1495
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.class",
+      "sha256Bytes": "33697ee80b07876da0239dcf528c7167c34189783d0e32941ece27a9fa7fbdfe",
+      "bytes": 19340
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/InitialNativePublicationFixture$main$initial$1.class",
+      "sha256Bytes": "1d780c7e759ec92b920a6bb1c1945c4124d2b7e913248f5e883a3090cdd2f76d",
+      "bytes": 1845
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/InitialNativePublicationFixture$main$initial$2.class",
+      "sha256Bytes": "5a01002ff853fc47847bbdc9227b9bf2cce9375805bc0da40f6644e46cf03068",
+      "bytes": 1845
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/InitialNativePublicationFixture$main$recovery$1.class",
+      "sha256Bytes": "411eca7e68d5fcb18d917869a8e0ced770ce76fe45ab1b32cc4bfebec25bce14",
+      "bytes": 1362
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/InitialNativePublicationFixture.class",
+      "sha256Bytes": "1ad33d8f3aa79e9c26ff5de08c49e10074a5f8b3be6d35501e30387dc8350fb2",
+      "bytes": 18442
+    }
+  ]
+}

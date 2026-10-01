@@ -1,0 +1,318 @@
+{
+  "status": "FROZEN_SOURCE_ONLY_READY",
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualSnapshot": 54,
+  "entries": 101,
+  "wholeCandidateOrRootMounted": false,
+  "rawArtifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\compile-result.json",
+      "sha256Bytes": "5277b8afe45a2379b9b06f1a258ec799db36b51dba20b440459a10793befb04d",
+      "size": 4827
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\exact-source-adaptations.json",
+      "sha256Bytes": "0680d06011fcd37e020d1eae52827d4acde7994e266d72a36ed5cd2abf409758",
+      "size": 17550
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\com\\android\\purebilibili\\core\\store\\DesktopOriginalTabletAudioSettings.kt",
+      "sha256Bytes": "cf72804cd8d36b35f4c9b8a75420078d3c4353313802465ad4aae797bff15251",
+      "size": 1592
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\com\\android\\purebilibili\\core\\store\\DesktopOriginalTabletSecondaryDefaultTab.kt",
+      "sha256Bytes": "357812c4ef4faf3773e7799bd775cd2505b23159b468ef27fcc90ee3f0956479",
+      "size": 325
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\com\\android\\purebilibili\\feature\\space\\DesktopOriginalSpaceUiState.kt",
+      "sha256Bytes": "cd56738a2052d6da64b8d9541993d09c2cdb9bd3be3b39b877da8245a83fc645",
+      "size": 4507
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\com\\android\\purebilibili\\feature\\video\\screen\\TabletCinemaLayout.kt",
+      "sha256Bytes": "0c05fe73cd9265e5869a8f011fa550700a2f2ff93b1e7d073a504d53b99247ce",
+      "size": 76893
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\com\\android\\purebilibili\\feature\\video\\screen\\TabletDanmakuChromeState.kt",
+      "sha256Bytes": "ad8ba9dd5d4548b0ecf879df937284ecd3a54ddcf50106586a7d6fc52cab49b7",
+      "size": 1892
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\com\\android\\purebilibili\\feature\\video\\screen\\TabletOwnerUploadsPane.kt",
+      "sha256Bytes": "77192f0b2d146960ebcc6611830f3b50d8feda13f024905ce300d83d33966366",
+      "size": 4021
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoInfoEntrancePolicy.kt",
+      "sha256Bytes": "1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40",
+      "size": 1219
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayout.kt",
+      "sha256Bytes": "7bc69cabd5b933e170476a8a73c2c3084e9fc03b3c58542a4989e47087003d7b",
+      "size": 83985
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayoutPolicy.kt",
+      "sha256Bytes": "31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f",
+      "size": 9373
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalBottomInputBar.kt",
+      "sha256Bytes": "b04e86784e7a6f7adcd3f20468bb71944c8bbd7b077b921d4f22de6fa673c793",
+      "size": 23903
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\diffs\\DesktopOriginalBottomInputBar.diff",
+      "sha256Bytes": "d43deed79ba55035d90efe2014400fca27c01157937034402a51a0db4484ac56",
+      "size": 3461
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\diffs\\DesktopOriginalSpaceUiState.diff",
+      "sha256Bytes": "99f1ed298dd78a52a800b4cf2fd67eafd7eb296d91a04a02306303b2ba409a4c",
+      "size": 107789
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\diffs\\DesktopOriginalTabletAudioSettings.diff",
+      "sha256Bytes": "461732e881fd7627ae41e70b6e05abfb9cc4f7070b5bca49f9f000b566b89748",
+      "size": 404614
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\diffs\\DesktopOriginalTabletSecondaryDefaultTab.diff",
+      "sha256Bytes": "fc82eedfdd70a3aa0099575f9b87c4f2731f4107c771c143b32ad769da904e35",
+      "size": 404781
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\diffs\\TabletCinemaLayout.diff",
+      "sha256Bytes": "c8f7ed3b01efdb51f50d2886a5af35524102f5c5cafb1f80048c95f49128ba02",
+      "size": 9733
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\diffs\\TabletDanmakuChromeState.diff",
+      "sha256Bytes": "6bba1a7b21547f083589f0a3df95e0e9c989a62d417435989db4daeda71e73be",
+      "size": 2392
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\diffs\\TabletOwnerUploadsPane.diff",
+      "sha256Bytes": "e840bb3454ef1528e844dd8f8c11c868daa8a05851b232306c8bde5d564e5bbb",
+      "size": 2036
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\diffs\\TabletVideoInfoEntrancePolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\diffs\\TabletVideoLayout.diff",
+      "sha256Bytes": "1df657180189b0cae4a129bd67c261ff3b3eee0830f557bbced196727ddec1c2",
+      "size": 12647
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\diffs\\TabletVideoLayoutPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt.txt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "size": 396158
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\space\\SpaceViewModel.kt.txt",
+      "sha256Bytes": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a",
+      "size": 109285
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletCinemaLayout.kt.txt",
+      "sha256Bytes": "a0839c0c7d9b5a3e0e8ceefc85696d6018e75a1bb6bcba5c01f69c3aab3da169",
+      "size": 76547
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletDanmakuChromeState.kt.txt",
+      "sha256Bytes": "b19f5f30827945f4d295330b39e6441f94be721c59f63fbdb6a123152ccc56c4",
+      "size": 1903
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletOwnerUploadsPane.kt.txt",
+      "sha256Bytes": "a2fc7ae37cbd5dab0a9cf36fc75f5bd0803d48df810270f76b3f72807da73d1f",
+      "size": 3966
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoInfoEntrancePolicy.kt.txt",
+      "sha256Bytes": "1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40",
+      "size": 1219
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayout.kt.txt",
+      "sha256Bytes": "49e852e2de272aff089a4fcaf20586e2e03c5fdc988aacbfd8f28a90b3812dbe",
+      "size": 84791
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayoutPolicy.kt.txt",
+      "sha256Bytes": "31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f",
+      "size": 9373
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\components\\BottomInputBar.kt.txt",
+      "sha256Bytes": "11bded8eb078551356ee7c392102810f6703552786074e5574a751d1d5b2f4c4",
+      "size": 24539
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\source-pins.json",
+      "sha256Bytes": "8d4526edff0c37e4c46ea1fbb899b3831a5838466bc3bc9b2a18df771f744580",
+      "size": 2167
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\tablet-adaptations.json",
+      "sha256Bytes": "0680d06011fcd37e020d1eae52827d4acde7994e266d72a36ed5cd2abf409758",
+      "size": 17550
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-proof\\tablet-outputs.json",
+      "sha256Bytes": "2a575d290341ab715b896d89061860a243ca93f4bf006d8c601fcb144ac46494",
+      "size": 4815
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation-receipt.json",
+      "sha256Bytes": "379b458f0ead847655c3e667698babb8d65ef32b16705a89dcd1bc7be34b859e",
+      "size": 3230
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\generation.log",
+      "sha256Bytes": "65be7689b544d8524bc78da4ab24776b127e805fae30aa41d6971993516cc332",
+      "size": 45
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt.txt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "size": 396158
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\space\\SpaceViewModel.kt.txt",
+      "sha256Bytes": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a",
+      "size": 109285
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletCinemaLayout.kt.txt",
+      "sha256Bytes": "a0839c0c7d9b5a3e0e8ceefc85696d6018e75a1bb6bcba5c01f69c3aab3da169",
+      "size": 76547
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletDanmakuChromeState.kt.txt",
+      "sha256Bytes": "b19f5f30827945f4d295330b39e6441f94be721c59f63fbdb6a123152ccc56c4",
+      "size": 1903
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletOwnerUploadsPane.kt.txt",
+      "sha256Bytes": "a2fc7ae37cbd5dab0a9cf36fc75f5bd0803d48df810270f76b3f72807da73d1f",
+      "size": 3966
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoInfoEntrancePolicy.kt.txt",
+      "sha256Bytes": "1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40",
+      "size": 1219
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayout.kt.txt",
+      "sha256Bytes": "49e852e2de272aff089a4fcaf20586e2e03c5fdc988aacbfd8f28a90b3812dbe",
+      "size": 84791
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayoutPolicy.kt.txt",
+      "sha256Bytes": "31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f",
+      "size": 9373
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\components\\BottomInputBar.kt.txt",
+      "sha256Bytes": "11bded8eb078551356ee7c392102810f6703552786074e5574a751d1d5b2f4c4",
+      "size": 24539
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalTabletAudioPlatform.kt",
+      "sha256Bytes": "f78b94415d77f3583c7b6e95812a73c1020c394c75e2219f3cedb552d4a2f878",
+      "size": 983
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\prepared\\desktop\\tools\\extract-upstream-video-tablet-full.py",
+      "sha256Bytes": "1a40f7881fe6ba165d24a1a424e7e0a06fc229311af6fc75941249a0ee648e98",
+      "size": 16199
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\registry-feature-merge.json",
+      "sha256Bytes": "65916906a8889c5cf6cd5cff459e83cecf9a09f89d0022b30c69a15c8549aeec",
+      "size": 4015
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\ROOT-INTEGRATION.md",
+      "sha256Bytes": "8efa796f7b0fbd81a382501ba10be54db3fc69fcbffec1a5e7138f0f6b0e391f",
+      "size": 2748
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\selected\\com\\android\\purebilibili\\core\\store\\DesktopOriginalTabletAudioSettings.kt",
+      "sha256Bytes": "cf72804cd8d36b35f4c9b8a75420078d3c4353313802465ad4aae797bff15251",
+      "size": 1592
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\selected\\com\\android\\purebilibili\\core\\store\\DesktopOriginalTabletSecondaryDefaultTab.kt",
+      "sha256Bytes": "357812c4ef4faf3773e7799bd775cd2505b23159b468ef27fcc90ee3f0956479",
+      "size": 325
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\selected\\com\\android\\purebilibili\\feature\\space\\DesktopOriginalSpaceUiState.kt",
+      "sha256Bytes": "cd56738a2052d6da64b8d9541993d09c2cdb9bd3be3b39b877da8245a83fc645",
+      "size": 4507
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\selected\\com\\android\\purebilibili\\feature\\video\\screen\\TabletCinemaLayout.kt",
+      "sha256Bytes": "0c05fe73cd9265e5869a8f011fa550700a2f2ff93b1e7d073a504d53b99247ce",
+      "size": 76893
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\selected\\com\\android\\purebilibili\\feature\\video\\screen\\TabletDanmakuChromeState.kt",
+      "sha256Bytes": "ad8ba9dd5d4548b0ecf879df937284ecd3a54ddcf50106586a7d6fc52cab49b7",
+      "size": 1892
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\selected\\com\\android\\purebilibili\\feature\\video\\screen\\TabletOwnerUploadsPane.kt",
+      "sha256Bytes": "77192f0b2d146960ebcc6611830f3b50d8feda13f024905ce300d83d33966366",
+      "size": 4021
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\selected\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoInfoEntrancePolicy.kt",
+      "sha256Bytes": "1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40",
+      "size": 1219
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\selected\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayout.kt",
+      "sha256Bytes": "7bc69cabd5b933e170476a8a73c2c3084e9fc03b3c58542a4989e47087003d7b",
+      "size": 83985
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\selected\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayoutPolicy.kt",
+      "sha256Bytes": "31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f",
+      "size": 9373
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\selected\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalBottomInputBar.kt",
+      "sha256Bytes": "b04e86784e7a6f7adcd3f20468bb71944c8bbd7b077b921d4f22de6fa673c793",
+      "size": 23903
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-tablet-slice-02\\source-pins.json",
+      "sha256Bytes": "8d4526edff0c37e4c46ea1fbb899b3831a5838466bc3bc9b2a18df771f744580",
+      "size": 2167
+    }
+  ],
+  "rawCount": 61,
+  "installPayloadCount": 2,
+  "originalOutputCount": 10,
+  "dependenciesAdded": 0
+}

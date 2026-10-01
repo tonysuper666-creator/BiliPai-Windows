@@ -1,0 +1,38 @@
+{
+  "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicy.kt": {
+    "sha256LF": "31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f",
+    "gitBlob": "6227d6ebee10196bbe3cf3ba2cf74b63fde5593b"
+  },
+  "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoInfoEntrancePolicy.kt": {
+    "sha256LF": "1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40",
+    "gitBlob": "93ef25f973ea749e0c196c3e44017f3e0d1fdd66"
+  },
+  "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt": {
+    "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "gitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35"
+  },
+  "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt": {
+    "sha256LF": "b19f5f30827945f4d295330b39e6441f94be721c59f63fbdb6a123152ccc56c4",
+    "gitBlob": "c8a0b76ee6e62ab1a6bd0f4741649430d9e5fe47"
+  },
+  "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt": {
+    "sha256LF": "49e852e2de272aff089a4fcaf20586e2e03c5fdc988aacbfd8f28a90b3812dbe",
+    "gitBlob": "08a9741165c7249af17d7cf986dfbe47d47b5f0f"
+  },
+  "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt": {
+    "sha256LF": "a0839c0c7d9b5a3e0e8ceefc85696d6018e75a1bb6bcba5c01f69c3aab3da169",
+    "gitBlob": "78a8d1894daa4296df52009830fe6e02466dd83f"
+  },
+  "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt": {
+    "sha256LF": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a",
+    "gitBlob": "aea49e1e391f18e44f566c54fcbc4454f7f18fb2"
+  },
+  "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletOwnerUploadsPane.kt": {
+    "sha256LF": "a2fc7ae37cbd5dab0a9cf36fc75f5bd0803d48df810270f76b3f72807da73d1f",
+    "gitBlob": "a1ea77c9cda33ddb5bd83c8463e8ce426d0d8a48"
+  },
+  "app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt": {
+    "sha256LF": "11bded8eb078551356ee7c392102810f6703552786074e5574a751d1d5b2f4c4",
+    "gitBlob": "af110162d01f8fa600ca9f7ff62f5ed7e2b9a5a4"
+  }
+}

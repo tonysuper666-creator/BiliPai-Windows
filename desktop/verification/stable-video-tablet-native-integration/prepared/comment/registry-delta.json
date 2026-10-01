@@ -1,0 +1,17 @@
+{
+  "wholeRegistryReplacementForbidden": true,
+  "newIdentityCount": 1,
+  "rows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+      "sha256": "fd76acf9f2b7c4a4a1d98c144c5b700986bdf0789a29b197ad082c163f18503e",
+      "features": [
+        "video-comment-url",
+        "video-tablet",
+        "video-full-owner"
+      ],
+      "mode": "policy-extract"
+    }
+  ],
+  "preserveExistingMode": true
+}

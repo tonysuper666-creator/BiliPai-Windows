@@ -1,0 +1,13 @@
+Complete fixed-tag Tablet/Cinema source-only slice. No Root owner or runtime acceptance is claimed.
+
+Install only two payloads: prepared/desktop/tools/extract-upstream-video-tablet-full.py and prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalTabletAudioPlatform.kt. Merge registry-feature-merge.json by original path; never duplicate an original identity. Register the one producer after syncUpstreamSources, output build/generated/video-tablet-full. Its production mode skips two DIRECT pure files (Sync owns their one copy); --standalone is proof-only.
+
+The producer preserves complete TabletVideoLayout, TabletCinemaLayout, TabletDanmakuChromeState, TabletOwnerUploadsPane and BottomInputBar; selected settings retain original canonical tablet_secondary_default_tab and comment_default_sort_mode. It reuses full original VideoPlaybackUiState/MPV Section, the existing generic comments, content/AI/note/share/danmaku/settings/background providers and same Root global preferences. BottomInputBar excludes exactly two existing dynamic-detail-container helpers. SpaceUiState is the complete original schema selected from the existing original SpaceViewModel identity.
+
+Parent owns CommentUrlNavigationTarget/resolveCommentUrlNavigationTarget. Compile03 used his exact 818b source as an explicit prospective reference; do not install this packet's compile JAR or that parent reference from this lane.
+
+Required Root provider: LocalDesktopOriginalTabletAudioPlatform supplies ownerUploads(mid): DesktopOriginalOwnerUploadsPort with uiState: StateFlow<original SpaceUiState> and loadSpaceInfo(mid). Cache that view under the same full-video entry child scope, captured account epoch and MID. Original SpaceInfo/header/contribution request/raw state mapping must be actual; do not bind the old flat Desktop DTO or fabricate Success. Retire/commit follow the existing Store -> entry gate and cancellation; no second Store/HTTP/VM is created by this renderer port.
+
+Both original layouts require Root's actual rich navigation callbacks (bvid,cid,cover), current original engagement/supplement/comment/Content/Section owners and native Surface. CID/cover omission is preserved through existing buildDesktopOriginalVideoNavigationOptions; comment links omit CID. Full original optional callback defaults are retained as source API defaults, but Root's mount must supply reachable actions.
+
+Compile03: actual54 immutable 101-entry runtime, 12 sources = 10 selected/generated + one required platform source + one explicitly referenced parent source; 0 existing-class overlap and 0 product overrides. No window fixture, fake account/network or actual Main page mounting is claimed. Music/Audio follow-on is independent and not included.

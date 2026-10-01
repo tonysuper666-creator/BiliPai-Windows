@@ -1,0 +1,71 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\frozen-tablet-slice-02\generation-proof\com\android\purebilibili\feature\video\ui\components\DesktopOriginalBottomInputBar.kt
+@@ -47,7 +47,7 @@
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.luminance
+ import androidx.compose.ui.graphics.vector.ImageVector
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopOriginalVideoContentBindings
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.semantics.Role
+ import androidx.compose.ui.unit.Dp
+@@ -56,7 +56,7 @@
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import com.android.purebilibili.core.store.AppNavigationSettings
+ import com.android.purebilibili.core.store.HomeSettings
+-import com.android.purebilibili.core.store.SettingsManager
++import com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes
+ import com.android.purebilibili.core.store.resolveGlobalLiquidGlassReuseEnabled
+ import com.android.purebilibili.core.theme.calculateContrastRatio
+ import com.android.purebilibili.core.ui.rememberAppBookmarkIcon
+@@ -97,11 +97,7 @@
+  * Floating liquid-glass chrome for the detail comment/action bar is gated only by the
+  * global "安卓原生液态玻璃" reuse master switch (option 1).
+  */
+-internal fun shouldUseFloatingLiquidBottomInputBar(
+-    androidNativeLiquidGlassEnabled: Boolean
+-): Boolean = resolveGlobalLiquidGlassReuseEnabled(androidNativeLiquidGlassEnabled)
+-
+-/** The comment bar follows the bottom-bar blur preference when liquid glass is not active. */
++
+ internal fun shouldUseFrostedBottomInputBar(
+     bottomBarBlurEnabled: Boolean,
+     floatingLiquidGlass: Boolean,
+@@ -111,16 +107,7 @@
+         !floatingLiquidGlass &&
+         hasHazeState
+ 
+-internal fun resolveBottomInputBarContentBottomPadding(
+-    showBar: Boolean,
+-    floatingLiquidGlass: Boolean,
+-    showActionButtonsFallback: Boolean
+-): Dp {
+-    if (!showBar) {
+-        return if (showActionButtonsFallback) 84.dp else 12.dp
+-    }
+-    return if (floatingLiquidGlass) 112.dp else 96.dp
+-}
++
+ 
+ internal const val BOTTOM_INPUT_BAR_ACTIONS_MIN_WIDTH_DP = 380
+ 
+@@ -147,15 +134,11 @@
+     scrollPositionProvider: () -> Pair<Int, Int>? = { null },
+     showActionButtons: Boolean = true,
+ ) {
+-    val context = LocalContext.current
+-    val homeSettings by SettingsManager
+-        .getHomeSettings(context)
+-        .collectAsStateWithLifecycle(initialValue = HomeSettings())
+-    val appNavigationSettings by SettingsManager
+-        .getAppNavigationSettings(context)
+-        .collectAsStateWithLifecycle(initialValue = AppNavigationSettings())
++    val platform = LocalDesktopOriginalVideoContentBindings.current
++    val homeSettings by platform.homeSettings.homeSettings.collectAsStateWithLifecycle()
++    val appNavigationSettings by platform.homeSettings.navigation.collectAsStateWithLifecycle()
+     val autoHideOnScroll = appNavigationSettings.bottomBarVisibilityMode ==
+-        SettingsManager.BottomBarVisibilityMode.SCROLL_HIDE
++        DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.SCROLL_HIDE
+     var isVisible by remember { mutableStateOf(true) }
+     val currentScrollPositionProvider by rememberUpdatedState(scrollPositionProvider)
+ 

@@ -1,0 +1,194 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\frozen-tablet-slice-02\generation-proof\com\android\purebilibili\feature\video\screen\TabletCinemaLayout.kt
+@@ -2,7 +2,7 @@
+ 
+ import com.android.purebilibili.navigation.animatePagerSelection
+ 
+-import android.content.res.Configuration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowBounds as Configuration
+ import androidx.compose.animation.AnimatedContent
+ import androidx.compose.animation.ExperimentalSharedTransitionApi
+ import androidx.compose.animation.SizeTransform
+@@ -81,7 +81,7 @@
+ import androidx.compose.ui.graphics.Brush
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.luminance
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext
+ import androidx.compose.ui.unit.Dp
+ import com.android.purebilibili.feature.video.usecase.seekPlayerFromUserAction
+ import androidx.compose.ui.unit.dp
+@@ -91,7 +91,7 @@
+ import com.android.purebilibili.core.ui.LocalAnimatedVisibilityScope
+ import com.android.purebilibili.core.ui.LocalSharedTransitionScope
+ import com.android.purebilibili.core.ui.transition.LocalVideoCardSharedElementSourceRoute
+-import com.android.purebilibili.core.store.SettingsManager
++import com.android.purebilibili.core.store.DesktopOriginalTabletAudioSettings as SettingsManager
+ import top.yukonga.miuix.kmp.blur.layerBackdrop
+ import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
+ import com.android.purebilibili.core.store.TabletCommentPanelWidthPreset
+@@ -103,14 +103,14 @@
+ import com.android.purebilibili.feature.video.share.VideoSharePayload
+ import com.android.purebilibili.feature.video.share.VideoShareSheetHost
+ import com.android.purebilibili.feature.video.share.buildVideoSharePayload
+-import com.android.purebilibili.core.util.ShareUtils
++import com.bilipai.desktop.ui.LocalDesktopOriginalVideoContentBindings
+ import com.android.purebilibili.data.model.response.BgmInfo
+ import com.android.purebilibili.data.model.response.ViewPoint
+ import com.android.purebilibili.feature.common.resolveIndexedVideoLazyKey
+ import com.android.purebilibili.feature.dynamic.components.ImagePreviewDialog
+ import com.android.purebilibili.feature.dynamic.components.ImagePreviewSourceAnchor
+ import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextContent
+-import com.android.purebilibili.feature.video.state.VideoPlayerState
++import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState
+ import com.android.purebilibili.feature.video.note.VideoNoteEditorDocument
+ import com.android.purebilibili.feature.video.note.buildVideoNoteShareText
+ import com.android.purebilibili.feature.video.progress.PbpProgressData
+@@ -195,7 +195,7 @@
+     onAudioQualityChange: (Int) -> Unit = {},
+     transitionEnabled: Boolean = false,
+     danmakuHostActive: Boolean = true,
+-    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
++    onRelatedVideoClick: (String, Long, String?) -> Unit,
+     showUpBadge: Boolean = true,
+     onSearchKeywordClick: (String) -> Unit = {},
+     onOpenBilibiliLink: ((String) -> Unit)? = null,
+@@ -470,7 +470,7 @@
+     danmakuHostActive: Boolean,
+     currentPlayMode: com.android.purebilibili.feature.video.player.PlayMode,
+     onPlayModeClick: () -> Unit,
+-    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
++    onRelatedVideoClick: (String, Long, String?) -> Unit,
+     playerMaxWidth: Dp,
+     forceCoverOnlyOnReturn: Boolean,
+     predictiveBackCancelRecoveryGeneration: Int,
+@@ -643,11 +643,11 @@
+     onDownloadClick: () -> Unit,
+     onWatchLaterClick: () -> Unit,
+     onOpenComments: () -> Unit,
+-    onCollectionEpisodeClick: (String, android.os.Bundle?) -> Unit,
++    onCollectionEpisodeClick: (String, Long, String?) -> Unit,
+     onPageSelect: (Int) -> Unit,
+     onOpenBilibiliLink: ((String) -> Unit)?,
+     onBgmClick: (BgmInfo) -> Unit = {},
+-    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit = { _, _ -> },
++    onRelatedVideoClick: (String, Long, String?) -> Unit = { _, _, _ -> },
+     onSearchKeywordClick: (String) -> Unit = {},
+     onRetryAiSummary: () -> Unit,
+     onCreateNoteDraftFromAiSummary: () -> Unit,
+@@ -668,17 +668,16 @@
+     }
+     var showCollectionSheet by rememberSaveable(success.info.bvid) { mutableStateOf(false) }
+     var confirmDeleteNote by rememberSaveable(success.info.bvid) { mutableStateOf(false) }
++    val platform = LocalDesktopOriginalVideoContentBindings.current
+     val onShareVideoNote: (VideoNoteEditorDocument, Boolean) -> Unit = { document, isDraft ->
+-        ShareUtils.shareText(
+-            context = context,
++        platform.shareText(
+             subject = document.title.ifBlank { success.info.title },
+             text = buildVideoNoteShareText(
+                 videoTitle = success.info.title,
+                 bvid = success.info.bvid,
+                 document = document,
+                 isDraft = isDraft
+-            ),
+-            chooserTitle = "分享视频笔记"
++            )
+         )
+     }
+ 
+@@ -691,8 +690,8 @@
+                 onDismiss = { showCollectionSheet = false },
+                 onEpisodeClick = { episode ->
+                     showCollectionSheet = false
+-                    val navOptions = buildVideoNavigationOptions(targetCid = episode.cid)
+-                    onCollectionEpisodeClick(episode.bvid, navOptions)
++                    val navOptions = buildDesktopOriginalVideoNavigationOptions(targetCid = episode.cid)
++                    onCollectionEpisodeClick(episode.bvid, navOptions?.first ?: 0L, navOptions?.second)
+                 }
+             )
+         }
+@@ -899,7 +898,7 @@
+     success: VideoPlaybackUiState.Success,
+     engagement: VideoEngagementUiState,
+     downloadProgress: Float,
+-    context: android.content.Context,
++    context: com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext,
+     onFavoriteClick: () -> Unit,
+     onFavoriteLongClick: () -> Unit = {},
+     onLikeClick: () -> Unit,
+@@ -972,7 +971,7 @@
+     videoNoteDefaultCollapsed: Boolean,
+     onBgmClick: (BgmInfo) -> Unit = {},
+     onOpenBilibiliLink: ((String) -> Unit)? = null,
+-    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit = { _, _ -> },
++    onRelatedVideoClick: (String, Long, String?) -> Unit = { _, _, _ -> },
+     onSearchKeywordClick: (String) -> Unit = {},
+     onRetryAiSummary: () -> Unit = {},
+     onCreateNoteDraftFromAiSummary: () -> Unit = {},
+@@ -1017,7 +1016,7 @@
+                     bgmInfoList = success.bgmInfoList
+                 ),
+                 onBgmClick = onBgmClick,
+-                onRelatedVideoClick = onRelatedVideoClick,
++                onRelatedVideoClick = { vid, cid -> onRelatedVideoClick(vid, cid, null) },
+                 onTagClick = onSearchKeywordClick
+             )
+         }
+@@ -1070,8 +1069,8 @@
+     commentActions: VideoDetailCommentActions,
+     playerState: VideoPlayerState,
+     onUpClick: (Long) -> Unit,
+-    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
+-    context: android.content.Context,
++    onRelatedVideoClick: (String, Long, String?) -> Unit,
++    context: com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext,
+     showUpBadge: Boolean,
+     showIdentityDecorations: Boolean,
+     onSearchKeywordClick: (String) -> Unit,
+@@ -1246,8 +1245,8 @@
+     commentActions: VideoDetailCommentActions,
+     playerState: VideoPlayerState,
+     onUpClick: (Long) -> Unit,
+-    context: android.content.Context,
+-    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
++    context: com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext,
++    onRelatedVideoClick: (String, Long, String?) -> Unit,
+     showIdentityDecorations: Boolean,
+     onSearchKeywordClick: (String) -> Unit,
+     onOpenBilibiliLink: ((String) -> Unit)?,
+@@ -1266,7 +1265,7 @@
+         }
+         when (val target = resolveCommentUrlNavigationTarget(url)) {
+             is CommentUrlNavigationTarget.Video -> {
+-                onRelatedVideoClick(target.videoId, null)
++                onRelatedVideoClick(target.videoId, 0L, null)
+                 return@openCommentUrl
+             }
+ 
+@@ -1509,8 +1508,8 @@
+ @Composable
+ private fun CinemaRelatedPane(
+     success: VideoPlaybackUiState.Success,
+-    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
+-    context: android.content.Context,
++    onRelatedVideoClick: (String, Long, String?) -> Unit,
++    context: com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext,
+     showUpBadge: Boolean
+ ) {
+     var hiddenRelatedBvids by remember(success.info.bvid) { mutableStateOf(emptySet<String>()) }
+@@ -1559,11 +1558,11 @@
+                         followingMids = success.followingMids,
+                         showUpBadge = showUpBadge,
+                         onVideoClick = { video ->
+-                            val navOptions = buildVideoNavigationOptions(
++                            val navOptions = buildDesktopOriginalVideoNavigationOptions(
+                                 targetCid = video.cid,
+                                 coverUrl = video.pic,
+-                            ) ?: android.os.Bundle.EMPTY
+-                            onRelatedVideoClick(video.bvid, navOptions)
++                            )
++                            onRelatedVideoClick(video.bvid, navOptions?.first ?: 0L, navOptions?.second)
+                         },
+                         onVideoHidden = { video ->
+                             hiddenRelatedBvids = hiddenRelatedBvids + video.bvid

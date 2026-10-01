@@ -1,0 +1,9 @@
+# Comment URL standalone install
+
+Only copy the one producer in install-whitelist.json. Current actual59 registry has no VideoDetailSessionPolicy.kt row; union registry-delta.json adds one policy-extract identity with exact fixed v0.2.3 SHA. If Root has already added that identity, merge features and preserve its existing mode; never overwrite the whole registry or source tree.
+
+Register a normal selected-source Exec task `prepareUpstreamVideoCommentUrl`, Python `desktop/tools/extract-upstream-video-comment-url.py --repo <Candidate-root> --output <build/generated/upstream-video-comment-url>`. Inputs are that tool and original VideoDetailSessionPolicy.kt; outputDir is the generated directory. Add its com directory to Kotlin main sourceDirs and make compileKotlin depend on the task, using the existing core/section task idiom. No runtime dependency or manual class installation.
+
+The generator emits only CommentUrlNavigationTarget and resolveCommentUrlNavigationTarget, byte-for-byte original declarations into DesktopOriginalCommentUrlNavigation.kt. Existing BilibiliNavigationTargetParser is the sole parser authority. The complete VideoDetailSessionPolicy file is NOT direct-copied because it has Android and other source-owner declarations. The full VM/Holder producer must REFERENCE these declarations rather than emit them again. Tablet frozen -02 explicitly compiled this same 818b body; remove that compile-only reference when using Root Main containing this producer.
+
+actual59 strict101 one-source compilation PASS, 5 new classes, existing product overlap0. Original block byte equality and fresh production replay PASS. No actual links/navigation/UI/MPV were exercised; original parser logic is unchanged. No Main/Candidate/shared Gradle/HTTP/account/HWND edits. Historical full-owner lane helper remains uninstalled and is no longer a second proposed install source.

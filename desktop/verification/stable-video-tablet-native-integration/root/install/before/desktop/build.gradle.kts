@@ -1919,33 +1919,3 @@ val extractOriginalVideoPlayerSectionFull by tasks.registering(Exec::class) {
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-player-section-full")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalVideoPlayerSectionFull) }
-
-
-val prepareUpstreamVideoCommentUrl by tasks.registering(Exec::class) {
-    dependsOn(prepareUpstreamSources)
-    workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-comment-url.py",
-        "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/upstream-video-comment-url").get().asFile.absolutePath)
-    inputs.files("tools/extract-upstream-video-comment-url.py",
-        File(repositoryRoot, "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt"))
-    outputs.dir(layout.buildDirectory.dir("generated/upstream-video-comment-url"))
-}
-kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/upstream-video-comment-url/com")) }
-tasks.named("compileKotlin") { dependsOn(prepareUpstreamVideoCommentUrl) }
-
-val extractOriginalVideoTabletFull by tasks.registering(Exec::class) {
-    dependsOn(prepareUpstreamSources, prepareUpstreamVideoCommentUrl, extractOriginalVideoStateCore,
-        extractOriginalVideoPlayerSectionFull, extractOriginalVideoContentFull)
-    workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-tablet-full.py",
-        "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/video-tablet-full").get().asFile.absolutePath)
-    inputs.files("tools/extract-upstream-video-tablet-full.py", "tools/sync-upstream.py",
-        "tools/extract-appearance-platform.py", "tools/extract-upstream-video-player-section-full.py", sourceManifest)
-    inputs.files(sources.filter { "stable-video-tablet-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
-    outputs.dir(layout.buildDirectory.dir("generated/video-tablet-full"))
-}
-kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/video-tablet-full/com")) }
-tasks.named("compileKotlin") { dependsOn(extractOriginalVideoTabletFull) }
