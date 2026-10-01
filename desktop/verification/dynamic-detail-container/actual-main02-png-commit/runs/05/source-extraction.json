@@ -1,0 +1,35 @@
+{
+  "actualMainManifestSha256Bytes": "f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17",
+  "actualOrdered89CpSha256Bytes": "be8a62821f74e73653ed2354afbb1de3d6ec8236db68f056328a482a5e0f4d9d",
+  "actualSourcePins": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Lf": "635a092a3a13f70a04154dea72a41785d862155c36cc2af9a36ce7945e9f0a24",
+      "rawCopySha256Bytes": "635a092a3a13f70a04154dea72a41785d862155c36cc2af9a36ce7945e9f0a24"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentImageCanvas.kt",
+      "sha256Lf": "b52c13ed6d11c70dae98a35ac45548e793c47425790f1db3f04ba9ac3ebf1d73",
+      "rawCopySha256Bytes": "b52c13ed6d11c70dae98a35ac45548e793c47425790f1db3f04ba9ac3ebf1d73"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Lf": "50a6b04b1b1b289ab7ca3ac584dbde1e8f71226badb603e1f82e8c48a8a9ad6a",
+      "rawCopySha256Bytes": "326c506c1cbb721b6e7e6a0aa40faec6505d78c2af15a9527940e1b2e59b04fc"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Lf": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "rawCopySha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a"
+    }
+  ],
+  "extractedOwnershipExpression": "alive.get()&&exportOwner.epoch==capturedEpoch&&cardSession.isOwned()&&repository.sessionEpoch==capturedEpoch",
+  "extractedFinalGateExpression": "exportGuard.withCurrentDynamicCacheOwner(exportOwner){\n                    synchronized(exportOwnerLock){\n                        if(!owned())throw CancellationException(\"Reply export page retired\")\n                        commit()\n                    }\n                }",
+  "extractedDisposeExpression": "synchronized(exportOwnerLock){alive.set(false)};replySession.close();pageScope.cancel()",
+  "extractionNoBodyChanges": true,
+  "RootScreenOrRememberExecuted": false,
+  "newCaptureExpressionSourceVerified": true,
+  "oldCaptureExpressionProbeDeclared": true,
+  "extractedSourceSha256Bytes": "469c7c85c70edf0ef5306a24ccbac5711c9b2c411b31c92db3b8bcd0af687309",
+  "fixtureSha256Bytes": "a42beea7db99b2eb64251851c9e6b58980e777730483fe7b37315b72ce0c560f"
+}

@@ -1,0 +1,23 @@
+{
+  "originalSourceIdentities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt",
+      "sha256": "3208a12aa98ecc40dfd560dc444bbfadab982cc3c33f6eb8cc18adec3467e2b1",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt",
+      "sha256": "ce1aa9c7f2575c5fe0e0dfeaafab59b61ef5f5f15d11b9eb7269f50b36d99ddf",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/UrlDecodeCompat.kt",
+      "sha256": "f375442bdfd8dfb25ddd738e4a7079a1e33a0f6a24df4196a0f6b32ac07f324a",
+      "mode": "direct"
+    }
+  ],
+  "newIdentities": 1,
+  "existingIdentitiesMerged": 2,
+  "registryCount": 621,
+  "actualMainCompile": false
+}

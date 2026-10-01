@@ -1,0 +1,47 @@
+
+> Task :compileKotlin
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/core/ui/CommentWindowNavigation.kt:8:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/core/ui/CommentWindowNavigation.kt:16:30 Unresolved reference 'LocalNavigationEventDispatcherOwner'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt:46:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt:47:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt:48:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt:49:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt:204:25 Unresolved reference 'rememberNavigationEventState'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt:204:54 Unresolved reference 'NavigationEventInfo'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt:205:9 Unresolved reference 'NavigationBackHandler'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt:16:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt:17:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt:18:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt:19:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt:58:25 Unresolved reference 'rememberNavigationEventState'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt:58:54 Unresolved reference 'NavigationEventInfo'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt:59:56 Unresolved reference 'NavigationEventTransitionState'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt:61:39 Unresolved reference 'latestEvent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt:93:17 Unresolved reference 'NavigationBackHandler'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt:11:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt:12:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt:13:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt:14:17 Unresolved reference 'navigationevent'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt:18:49 Unresolved reference 'NavigationEventDispatcherOwner'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt:19:46 Unresolved reference 'NavigationEventDispatcher'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt:20:17 Unresolved reference 'DirectNavigationEventInput'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt:44:9 Unresolved reference 'LocalNavigationEventDispatcherOwner'.
+
+> Task :compileKotlin FAILED
+
+
+[Incubating] Problems report is available at: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/reports/problems/problems-report.html
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileKotlin' (registered by plugin 'org.jetbrains.kotlin.jvm').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+68 actionable tasks: 12 executed, 56 up-to-dateBUILD FAILED in 39s

@@ -8,6 +8,7 @@ import com.android.purebilibili.data.model.response.DynamicDetailData
 internal fun mergeDesktopDynamicDetailReadback(
     incoming: DynamicDetailData, current: DynamicDetailData?,
     likeChanged: Boolean, forwardChanged: Boolean, foldChanged: Boolean, removed: Boolean,
+    commentChanged: Boolean = false,
 ): DynamicDetailData {
     if (removed) return incoming.copy(item = null)
     val fresh = incoming.item ?: return incoming
@@ -17,7 +18,8 @@ internal fun mergeDesktopDynamicDetailReadback(
     val stat = if (newStat != null && oldStat != null) newStat.copy(
         like = if (likeChanged) newStat.like.copy(count = oldStat.like.count, status = oldStat.like.status) else newStat.like,
         forward = if (forwardChanged) newStat.forward.copy(count = oldStat.forward.count) else newStat.forward,
-    ) else if (likeChanged || forwardChanged) oldStat ?: newStat else newStat
+        comment = if (commentChanged) newStat.comment.copy(count = oldStat.comment.count) else newStat.comment,
+    ) else if (likeChanged || forwardChanged || commentChanged) oldStat ?: newStat else newStat
     val updated: DynamicItem = fresh.copy(modules = fresh.modules.copy(
         module_stat = stat,
         module_fold = if (foldChanged) existing.modules.module_fold else fresh.modules.module_fold,

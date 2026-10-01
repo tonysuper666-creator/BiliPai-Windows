@@ -1,0 +1,22 @@
+{
+  "actualMainSnapshot02ManifestSha256Bytes": "f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17",
+  "currentCommunitySourceLfPin": "635a092a3a13f70a04154dea72a41785d862155c36cc2af9a36ce7945e9f0a24",
+  "oldExpression": "checkNotNull(exportGuard.dynamicCacheOwner()).also{check(it.epoch==capturedEpoch)}",
+  "interleaving": [
+    "actual cardSession.matches(repository,E) is true",
+    "actual same-MID Store saveAccount changes epoch E+1",
+    "old owner capture gets E+1 and throws IllegalStateException"
+  ],
+  "oldExpressionReproducedAgainstActualStoreAndCardSession": true,
+  "fixedCapture": "checkNotNull(exportGuard.dynamicCacheOwner())",
+  "fixedOwnedExpression": "alive.get()&&exportOwner.epoch==capturedEpoch&&cardSession.isOwned()&&repository.sessionEpoch==capturedEpoch",
+  "newExpressionRejectsStaleOwnerWithoutThrow": true,
+  "currentSourceMatchesActualSnapshot02": true,
+  "CommunityCompositionExecuted": false,
+  "finalGateBodySha256Utf8": "302a1a3c77b8b7157f4124781fb37fd5c41620da8f6a9f67431db50b64c8d621",
+  "disposeBodySha256Utf8": "f78d23c6137c124b37e20f2d6d3f4f3b6fbbe1f862d31b565926a6b08cd9a6ec",
+  "writerFinalCommitAccepted": true,
+  "longRouteQRDecoded": false,
+  "QRCodeLimitationIsInheritedSourceLayout": true,
+  "MainModifiedByThisLane": false
+}

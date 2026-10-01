@@ -1,0 +1,48 @@
+{
+  "artifacts": [
+    {
+      "path": "dependency-report.json",
+      "sha256Bytes": "580646fc4ff0ce4db12b3da46956520eca52b98ccf356713977de024a0eb1a0d"
+    },
+    {
+      "path": "design-system-build-original.kts",
+      "sha256Bytes": "a0e71a3e0b38c544fbbd5fa5866f68fce070f4bd661606cd2ead9cc0d495dcc5"
+    },
+    {
+      "path": "licenses/navigationevent-compose-desktop-1.1.0.jar-META-INF_androidx_navigationevent_navigationevent-compose_LICENSE.txt",
+      "sha256Bytes": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+    },
+    {
+      "path": "licenses/navigationevent-compose-desktop-1.1.2.jar-META-INF_androidx_navigationevent_navigationevent-compose_LICENSE.txt",
+      "sha256Bytes": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+    },
+    {
+      "path": "licenses/navigationevent-desktop-1.1.2.jar-META-INF_androidx_navigationevent_navigationevent_LICENSE.txt",
+      "sha256Bytes": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+    },
+    {
+      "path": "metadata/navigationevent-compose-desktop-1.1.0.module",
+      "sha256Bytes": "4d193565640141c716eaabe347625f7d27a96af30268e3da34d2f668a10004bb"
+    },
+    {
+      "path": "metadata/navigationevent-compose-desktop-1.1.0.pom",
+      "sha256Bytes": "6f20273d595b0c5609e9ce0249a17d7a86b1c8684bb1cfda21ad1a7c95329115"
+    },
+    {
+      "path": "metadata/navigationevent-compose-desktop-1.1.2.module",
+      "sha256Bytes": "b4472a1efec47663dcce7cee65469910781eb54129e10aac8ed161a2721ff411"
+    },
+    {
+      "path": "metadata/navigationevent-compose-desktop-1.1.2.pom",
+      "sha256Bytes": "8240c5b98f74067d4426254530879886efc9bbdd733c33ba96bb128b1177265e"
+    },
+    {
+      "path": "metadata/navigationevent-desktop-1.1.2.module",
+      "sha256Bytes": "66a28aad0f2f2a88650bc8a373e912375509e07eeabd23849f0beb9bfbf8d036"
+    },
+    {
+      "path": "metadata/navigationevent-desktop-1.1.2.pom",
+      "sha256Bytes": "06cdd8520ae97fb476a83199d758e3e5e44395d512161dd1f42e1fd6071d4452"
+    }
+  ]
+}

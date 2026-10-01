@@ -31,6 +31,19 @@ class DesktopTopicRoutingTest {
         assertTrue(topics.isEmpty()); assertEquals(listOf("video:BV1234567890", "user:23", "dynamic:789", "article:31", "live:57"), other)
     }
 
+    @Test fun `original message aliases preserve dynamic root and secondary reply navigation`() {
+        val routes=mutableListOf<DesktopDynamicDetailRoute>()
+        val navigation=CommunityNavigation({},{},{},{},{},{},{},onDynamicRoute={routes+=it})
+        navigateCommunityUrl("https://t.bilibili.com/123?comment_root_id=701&comment_secondary_id=703",navigation)
+        navigateCommunityUrl("https://www.bilibili.com/opus/123#reply701",navigation)
+        navigateCommunityUrl("bilibili://comment/detail/17/123/701?reply_id=703",navigation)
+        navigateCommunityUrl("bilibili://browser/?url=https%3A%2F%2Ft.bilibili.com%2F123%3Froot_reply_id%3D701%26target_id%3D703",navigation)
+        navigateCommunityUrl("https://www.bilibili.com/h5/comment/sub?oid=123&pageType=17&root=701&comment_id=703",navigation)
+        assertEquals(listOf(DesktopDynamicDetailRoute("123",701,703),DesktopDynamicDetailRoute("123",701,0),
+            DesktopDynamicDetailRoute("123",701,703),DesktopDynamicDetailRoute("123",701,703),
+            DesktopDynamicDetailRoute("123",701,703)),routes)
+    }
+
     @OptIn(ExperimentalComposeUiApi::class, androidx.compose.ui.InternalComposeUiApi::class)
     @Test fun `real rich topic pointer prefers original RID while mention still routes to UP`() {
         for (style in AppUiStyle.entries) {

@@ -1,0 +1,23 @@
+--- a/desktop/tools/extract-upstream-dynamic-detail.py
++++ b/desktop/tools/extract-upstream-dynamic-detail.py
+@@ -107,6 +107,20 @@
+         assert block.count(marker)==1
+         block=block.replace(marker,'\n        }\n        mutationJob.invokeOnCompletion { replyMutationHolders.remove(rpid, mutationHolder) }\n    }',1)
+         body=body[:start]+block+body[end:]
++    # Windows coroutine dispatch may queue this task after the original composer
++    # synchronously clears its reply UI. Capture the immutable original target at
++    # admission, preserving Android Main.immediate request parameters.
++    post_start = body.index('    fun postComment(')
++    post_end = body.index('    fun likeComment(', post_start)
++    post = body[post_start:post_end]
++    assert post.count('        launchOwned {') == 1
++    assert post.count('                val replyTarget = _commentReplyTarget.value\n') == 1
++    post = post.replace('        launchOwned {',
++                        '        if (!isOwned()) return\n'
++                        '        val replyTarget = _commentReplyTarget.value\n'
++                        '        launchOwned {', 1)
++    post = post.replace('                val replyTarget = _commentReplyTarget.value\n', '', 1)
++    body = body[:post_start] + post + body[post_end:]
+     # Capture a new original request id before admission; close cancels owned
+     # child jobs, while sorting/refreshing keep the same subject session.
+     video=read(repo,VIDEO_VM)

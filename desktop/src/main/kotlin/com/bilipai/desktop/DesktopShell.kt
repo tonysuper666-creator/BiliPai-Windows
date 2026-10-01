@@ -428,10 +428,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var dlnaDialog by remember { mutableStateOf(false) }
     var googleCastDialog by remember { mutableStateOf(false) }
     var userId by remember { mutableLongStateOf(0) }
-    var dynamicId by remember { mutableStateOf<String?>(null) }
+    var dynamicRoute by remember { mutableStateOf<DesktopDynamicDetailRoute?>(null) }
     var topicId by remember { mutableLongStateOf(0) }
     var topicReturnSection by remember { mutableStateOf(DesktopSection.DYNAMIC) }
-    var topicReturnDynamicId by remember { mutableStateOf<String?>(null) }
+    var topicReturnDynamicRoute by remember { mutableStateOf<DesktopDynamicDetailRoute?>(null) }
     var topicStack by remember { mutableStateOf(emptyList<Long>()) }
     var storySeed by remember { mutableStateOf(DesktopStorySeed()) }
     var storyReturnSection by remember { mutableStateOf(DesktopSection.HOME) }
@@ -513,7 +513,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     fun navigate(target: DesktopSection, commit: () -> Unit = {}): Boolean {
         if (activatingUpdate || !checkpointForNavigation()) return false
         if (target != DesktopSection.STORY) storyHost.retire()
-        if (target == DesktopSection.DYNAMIC) dynamicId = null
+        if (target == DesktopSection.DYNAMIC) dynamicRoute = null
         commit()
         if ((section == DesktopSection.SETTINGS || jsSettingsOrigin) &&
             target !in listOf(DesktopSection.SETTINGS, DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA)) {
@@ -537,12 +537,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         showVideo = true; mediaActive = false; playback.openQueue(videos, index)
     }
     fun openUser(id: Long) { navigate(DesktopSection.USER) { userId = id } }
-    fun openDynamic(id: String) { navigate(DesktopSection.DYNAMIC) { dynamicId = id } }
+    fun openDynamicRoute(route: DesktopDynamicDetailRoute) { navigate(DesktopSection.DYNAMIC) { dynamicRoute = route } }
+    fun openDynamic(id: String) { openDynamicRoute(DesktopDynamicDetailRoute(id)) }
     fun openTopic(id: Long) {
         if (activatingUpdate || id <= 0) return
         navigate(DesktopSection.TOPIC) {
             if (section != DesktopSection.TOPIC) {
-                topicReturnSection = section; topicReturnDynamicId = dynamicId; topicStack = listOf(id)
+                topicReturnSection = section; topicReturnDynamicRoute = dynamicRoute; topicStack = listOf(id)
             } else if (topicStack.lastOrNull() != id) topicStack = topicStack + id
             topicId = id
         }
@@ -876,6 +877,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         LocalDesktopDynamicCache provides dynamicCache,
         LocalDesktopDynamicCardRepository provides repository,
         LocalDesktopDynamicCardSession provides dynamicCardSession,
+        LocalDesktopDetailForeground provides (hostDisplayable && hostVisible),
         LocalDesktopDynamicEditorActions provides dynamicEditor.actions,
         LocalDesktopDynamicCardStateRegistry provides dynamicCardRegistry,
         LocalDesktopDynamicCardMutations provides dynamicCardRegistry.bindings,
@@ -1181,13 +1183,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     else if (player == null) Text(playerError ?: "播放器未能初始化")
                                 } })
                             section == DesktopSection.TOPIC -> DesktopTopicDetailScreen(topicId, storyTopic, community,
-                                CommunityNavigation(::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword),
+                                CommunityNavigation(::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword,
+                                    onDynamicRoute=::openDynamicRoute),
                                 onBack = {
                                     if (topicStack.size > 1) {
                                         if (checkpointForNavigation()) { topicStack = topicStack.dropLast(1); topicId = topicStack.last() }
                                     } else navigate(topicReturnSection) {
                                         topicStack = emptyList()
-                                        if (topicReturnSection == DesktopSection.DYNAMIC) dynamicId = topicReturnDynamicId
+                                        if (topicReturnSection == DesktopSection.DYNAMIC) dynamicRoute = topicReturnDynamicRoute
                                     }
                                 }, onTopic = ::openTopic)
                             section == DesktopSection.USER -> {
@@ -1217,8 +1220,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     else -> CommunitySection.NOTES
                                 }, repository, social, community, submitted, userId, articleId, noteVideo,
                                     ::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, runtime = pluginRuntime,
-                                    initialDynamicId = dynamicId.takeIf { section == DesktopSection.DYNAMIC }, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword,
-                                    defaultSearchHintEnabled = defaultSearchHintEnabled)
+                                    initialDynamicId = dynamicRoute?.dynamicId.takeIf { section == DesktopSection.DYNAMIC }, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword,
+                                    defaultSearchHintEnabled = defaultSearchHintEnabled,
+                                    initialCommentRootRpid=dynamicRoute?.rootReplyId?:0L,initialCommentTargetRpid=dynamicRoute?.targetReplyId?:0L)
                             else -> Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                                     Text(section.localizedLabel(strings), Modifier.weight(1f), style = MaterialTheme.typography.titleLarge)

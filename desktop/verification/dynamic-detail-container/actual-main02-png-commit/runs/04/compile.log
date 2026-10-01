@@ -1,0 +1,12 @@
+desktop\.local\comment-png-owner-main-proof\runs\04\PngOwnerFixture.kt:111:44: error: no type arguments expected for 'class Result : Any'.
+    lateinit var epochWrite:Deferred<Result<Boolean>>
+                                           ^^^^^^^^^
+desktop\.local\comment-png-owner-main-proof\runs\04\PngOwnerFixture.kt:117:30: error: unresolved reference 'exceptionOrNull'.
+    prove(epochWrite.await().exceptionOrNull() is kotlinx.coroutines.CancellationException,"actual same MID epoch rotation rejects final commit")
+                             ^^^^^^^^^^^^^^^
+desktop\.local\comment-png-owner-main-proof\runs\04\PngOwnerFixture.kt:122:43: error: no type arguments expected for 'class Result : Any'.
+    lateinit var pageWrite:Deferred<Result<Boolean>>
+                                          ^^^^^^^^^
+desktop\.local\comment-png-owner-main-proof\runs\04\PngOwnerFixture.kt:128:20: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+    val pageResult=runCatching { pageWrite.await() }
+                   ^^^^^^^^^^^

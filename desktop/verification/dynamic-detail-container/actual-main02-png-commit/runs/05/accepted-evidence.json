@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "assertions": 29,
+  "cases": 9,
+  "actualMainSpecRendererWriterStore": true,
+  "productionOverrides": false,
+  "extractedRootCommitAndDisposeBody": true,
+  "RootScreenExecuted": false,
+  "actualSameMIDRetirement": true,
+  "guestMID0": true,
+  "actualPNGQRReadback": false,
+  "longRouteQrDecodeFailedInheritedLayout": true,
+  "actualTargetConfirmation": true,
+  "cancelAndPageClosePreserveTarget": true,
+  "oldCaptureRaceSourceExpressionReproduced": true,
+  "newCaptureRejectsWithoutThrow": true,
+  "HTTP": false,
+  "HWND": false,
+  "actualPicker": false,
+  "systemSHARE": false,
+  "actualMainManifestSha256Bytes": "f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17",
+  "actualOrdered89CpSha256Bytes": "be8a62821f74e73653ed2354afbb1de3d6ec8236db68f056328a482a5e0f4d9d",
+  "fixtureJarSha256Bytes": "f117c180a3ea2db82dd7861e27ef6792b747d5dd3ff17b3b216474e2673053c9",
+  "productionClassOverlap": [],
+  "independentPillowPngReadback": [
+    {
+      "path": "chosen-comment.png",
+      "width": 1080,
+      "height": 520,
+      "sha256Bytes": "08d0b309a626b1e17760e04514ebd3024470af0b838af72eb469aea904f8e854"
+    },
+    {
+      "path": "guest-comment.png",
+      "width": 1080,
+      "height": 554,
+      "sha256Bytes": "8663548571b7f4b30a0e16aa9ead4537a9a8014146d88475de1d3eb8e164715f"
+    }
+  ],
+  "taskPrivateRuntimeHome": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-png-main-usbt8djt",
+  "actualCompleteRootScreenExecuted": false,
+  "actualNativeChooser": false,
+  "sourceExtractionReceiptSha256Bytes": "514d4c4e7e1769998555f6ebd384cd3572b5514e5db038daee4059bd2585880b"
+}

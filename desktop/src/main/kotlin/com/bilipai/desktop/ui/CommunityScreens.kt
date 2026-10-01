@@ -7,6 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bilipai.desktop.data.*
 import com.bilipai.desktop.plugins.DesktopPluginRuntime
+import com.android.purebilibili.navigation.MessageLinkNavigationAction
+import com.android.purebilibili.navigation.resolveMessageLinkNavigationAction
 import java.awt.Desktop
 import java.net.URI
 
@@ -17,29 +19,33 @@ enum class CommunitySection(val title: String) {
 internal class CommunityNavigation(val onVideo: (VideoCard) -> Unit, val onUser: (Long) -> Unit,
     val onArticle: (Long) -> Unit, val onLogin: () -> Unit, val onLive: (Long) -> Unit,
     val onBangumi: (Long) -> Unit, val onDynamic: (String) -> Unit, val onTopic: (Long) -> Unit = {},
-    val onTopicKeyword: (String) -> Unit = {}, val onDynamicBack: () -> Unit = {})
+    val onTopicKeyword: (String) -> Unit = {}, val onDynamicBack: () -> Unit = {},
+    val onDynamicRoute: (DesktopDynamicDetailRoute) -> Unit = { onDynamic(it.dynamicId) })
 
 @Composable
 fun CommunityContentScreen(section: CommunitySection, repository: DesktopRepository, social: DesktopSocialRepository,
     community: DesktopCommunityRepository, query: String = "", userId: Long = 0, articleId: Long = 0,
     noteVideo: VideoDetails? = null, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit, onArticle: (Long) -> Unit,
     onLogin: () -> Unit, onLive: (Long) -> Unit = {}, onBangumi: (Long) -> Unit = {}, runtime: DesktopPluginRuntime? = null,
-    initialDynamicId: String? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {}, defaultSearchHintEnabled: Boolean = true) {
+    initialDynamicId: String? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {}, defaultSearchHintEnabled: Boolean = true,
+    initialCommentRootRpid: Long = 0L, initialCommentTargetRpid: Long = 0L) {
     val account by repository.account.collectAsState()
     val inherited = LocalDesktopBrowseMemory.current
     val fallback = remember(account?.mid) { DesktopBrowseMemory() }
     val browseMemory = inherited ?: fallback
-    var dynamicDetail by remember(browseMemory, section, userId, query, initialDynamicId) {
-        browseMemory.screen(listOf("community-dynamic-detail", section, userId, query, initialDynamicId)) { mutableStateOf(initialDynamicId) }
+    val initialRoute=initialDynamicId?.let{DesktopDynamicDetailRoute(it,initialCommentRootRpid,initialCommentTargetRpid)}
+    var dynamicDetail by remember(browseMemory, section, userId, query, initialRoute) {
+        browseMemory.screen(listOf("community-dynamic-detail", section, userId, query, initialRoute)) { mutableStateOf(initialRoute) }
     }
     val feedMemory = browseMemory.feeds
-    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, { dynamicDetail = it }, onTopic, onTopicKeyword, onDynamicBack={dynamicDetail=null})
+    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi,
+        { dynamicDetail = DesktopDynamicDetailRoute(it) }, onTopic, onTopicKeyword,
+        onDynamicBack={dynamicDetail=null},onDynamicRoute={dynamicDetail=it})
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalCommunityFeedMemory provides feedMemory,
         LocalCommunityFeedNamespace provides listOf(section, userId, articleId, noteVideo?.aid)) {
     Column(Modifier.fillMaxSize()) {
-        Row(Modifier.fillMaxWidth().padding(20.dp, 14.dp), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            if (dynamicDetail != null) TextButton(onClick = { dynamicDetail = null }) { Text("‹ 返回") }
-            Text(if (dynamicDetail != null) "动态详情" else section.title, style = MaterialTheme.typography.headlineSmall)
+        if(dynamicDetail==null)Row(Modifier.fillMaxWidth().padding(20.dp, 14.dp), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            Text(section.title, style = MaterialTheme.typography.headlineSmall)
         }
         val detail = dynamicDetail
         if (detail != null) CommunityDynamicDetail(detail, community, navigation)
@@ -59,6 +65,16 @@ fun CommunityContentScreen(section: CommunitySection, repository: DesktopReposit
 
 internal fun navigateCommunityUrl(raw: String, navigation: CommunityNavigation) {
     val url = imageUrl(raw.trim())
+    // Keep the original message-link aliases, nested browser URI and fragment
+    // resolution. Root carries both reply identifiers to the original layout.
+    val dynamicRoute = when (val action = resolveMessageLinkNavigationAction(url)) {
+        is MessageLinkNavigationAction.Dynamic -> DesktopDynamicDetailRoute(action.dynamicId)
+        is MessageLinkNavigationAction.DynamicComment -> DesktopDynamicDetailRoute(action.dynamicId,action.rootReplyId,action.targetReplyId)
+        is MessageLinkNavigationAction.CommentDetail -> if(action.businessId==17)
+            DesktopDynamicDetailRoute(action.oid.toString(),action.rootReplyId,action.targetReplyId) else null
+        else -> null
+    }
+    if(dynamicRoute!=null){navigation.onDynamicRoute(dynamicRoute);return}
     val uri = runCatching { URI(url) }.getOrNull() ?: return
     if (uri.scheme !in setOf("https", "http")) return
     val host = uri.host?.lowercase().orEmpty()

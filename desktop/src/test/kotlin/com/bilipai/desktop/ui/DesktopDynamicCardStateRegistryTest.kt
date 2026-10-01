@@ -199,5 +199,24 @@ class DesktopDynamicCardStateRegistryTest {
         assertEquals(fresh.modules.module_stat!!.forward, result.modules.module_stat!!.forward)
         assertNull(mergeDesktopDynamicDetailReadback(DynamicDetailData(fresh), null, false, false, false, true).item)
         assertEquals(fresh, mergeDesktopDynamicDetailReadback(DynamicDetailData(fresh), DynamicDetailData(updated), false, false, false, false).item)
+        // A publish/delete count confirmed after either detail request starts
+        // survives its late response; unrelated server fields remain fresh.
+        for(count in listOf(1,7)) {
+            val confirmed=updated.copy(modules=updated.modules.copy(module_stat=updated.modules.module_stat!!.let{
+                it.copy(comment=it.comment.copy(count=count))}))
+            val stale=fresh.copy(modules=fresh.modules.copy(module_stat=fresh.modules.module_stat!!.let{
+                it.copy(comment=it.comment.copy(count=500))}))
+            val merged=mergeDesktopDynamicDetailReadback(DynamicDetailData(stale),DynamicDetailData(confirmed),
+                false,false,false,false,commentChanged=true).item!!
+            assertEquals(count,merged.modules.module_stat!!.comment.count)
+            assertEquals(stale.modules.module_stat!!.like,merged.modules.module_stat!!.like)
+            assertEquals(stale.modules.module_stat!!.forward,merged.modules.module_stat!!.forward)
+            assertEquals("Richer opus content",merged.modules.module_dynamic!!.desc!!.text)
+            assertEquals(stale,mergeDesktopDynamicDetailReadback(DynamicDetailData(stale),DynamicDetailData(confirmed),
+                false,false,false,false).item)
+            val other=stale.copy(id_str="124")
+            assertEquals(other,mergeDesktopDynamicDetailReadback(DynamicDetailData(other),DynamicDetailData(confirmed),
+                false,false,false,false,commentChanged=true).item)
+        }
     }
 }

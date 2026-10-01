@@ -1,0 +1,3 @@
+desktop\.local\dynamic-detail-reply-parity\detail-container-next\generated\com\android\purebilibili\core\ui\DesktopOriginalDetailAdaptiveChrome.kt:395:44: warning: 'fun largeTopAppBarColors(containerColor: Color = ..., scrolledContainerColor: Color = ..., navigationIconContentColor: Color = ..., titleContentColor: Color = ..., actionIconContentColor: Color = ...): TopAppBarColors' is deprecated. Use topAppBarColors instead.
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                                           ^^^^^^^^^^^^^^^^^^^^

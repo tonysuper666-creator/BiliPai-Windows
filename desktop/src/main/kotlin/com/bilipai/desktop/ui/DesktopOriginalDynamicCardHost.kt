@@ -44,6 +44,7 @@ internal val LocalDesktopDynamicCardRepository=staticCompositionLocalOf<DesktopR
     onLikeConfirmed:((String,Boolean)->Unit)?=null,
     onRepostConfirmed:((String)->Unit)?=null,
     openExternalLink:((String)->Unit)?=null,
+    detailImageLayoutOverride:DesktopDynamicCardSettings.DynamicDetailImageLayout?=null,
 ) {
     val preferences=checkNotNull(LocalDesktopDynamicTimelinePreferences.current){"Root global dynamic preferences are not mounted"}
     val epoch by community.accountEpoch.collectAsState()
@@ -184,7 +185,8 @@ internal val LocalDesktopDynamicCardRepository=staticCompositionLocalOf<DesktopR
     val uriHandler=remember(platform){object:UriHandler{override fun openUri(uri:String)=platform.openLink(uri)}}
     key(alive){CompositionLocalProvider(LocalDesktopDynamicCardBindings provides platform,LocalDynamicImagePreviewTextVisible provides previewText,LocalUriHandler provides uriHandler){
         DynamicCardV2(shown,SingletonImageLoader.get(LocalPlatformContext.current),DynamicCardActions(routes,interaction),
-            DynamicCardPresentation(isDetail=isDetail,currentUserMid=capturedMid,likeOverride=likeOverride,detailImageLayout=detailLayout))
+            DynamicCardPresentation(isDetail=isDetail,currentUserMid=capturedMid,likeOverride=likeOverride,
+                detailImageLayout=detailImageLayoutOverride?:detailLayout))
         if(repost)RepostDialog(onDismiss={repost=false},onRepost={text,alsoComment,complete->
             if(owned())scope.launch{
                 try{

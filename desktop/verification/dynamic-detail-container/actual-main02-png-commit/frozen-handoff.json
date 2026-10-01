@@ -1,0 +1,414 @@
+{
+  "frozen": true,
+  "phase": "actual Main original PNG renderer and final file commit focused proof",
+  "acceptedCohort": "runs/05",
+  "assertions": 29,
+  "cases": 9,
+  "actualMainManifestSha256Bytes": "f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17",
+  "actualOrdered89CpSha256Bytes": "be8a62821f74e73653ed2354afbb1de3d6ec8236db68f056328a482a5e0f4d9d",
+  "productionOverrides": false,
+  "originalPNGWriterFinalCommitAccepted": true,
+  "longRouteQrDecodeFailedInheritedLayout": true,
+  "QRCodeAccepted": false,
+  "RootScreenExecuted": false,
+  "RootGateExtractionNoBodyChanges": true,
+  "HTTP": false,
+  "HWND": false,
+  "actualNativePicker": false,
+  "systemSHARE": false,
+  "historyRetained": [
+    "runs/01",
+    "runs/02",
+    "runs/03",
+    "runs/04"
+  ],
+  "files": [
+    {
+      "path": "PngOwnerFixture.kt",
+      "sha256Bytes": "a42beea7db99b2eb64251851c9e6b58980e777730483fe7b37315b72ce0c560f",
+      "size": 13653
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "38c6683f0c0d50bc0666475344328e94cf7e7352203586645649098f0b199a8b",
+      "size": 4001
+    },
+    {
+      "path": "ROOT-RECEIPT.txt",
+      "sha256Bytes": "f8ac696bd1797043190977052072bd6adc38843dca2b3f482d521b18f0f81a01",
+      "size": 1905
+    },
+    {
+      "path": "binary-artifact-inventory.json",
+      "sha256Bytes": "768317f07a9a334e7c7ce8896a199b13335f7ce7097e33a3fe9bef46e5391c99",
+      "size": 538
+    },
+    {
+      "path": "capture-race-review.json",
+      "sha256Bytes": "3513e84350620d9d8e338ed283d0e8319bbd069c33f81c9025f6ede7e3d6ae01",
+      "size": 1289
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "b6ecac3995b4e4f193f9f5872971a7dac5e06742ebf224d872b29cbabeeec95c",
+      "size": 3882
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "9a1d719e43bd0b155b4408c2707817c60550aa51543b71eb4489905625d7708f",
+      "size": 7744
+    },
+    {
+      "path": "runs/01/actual-source-pins/CommunityDynamicScreens.kt",
+      "sha256Bytes": "635a092a3a13f70a04154dea72a41785d862155c36cc2af9a36ce7945e9f0a24",
+      "size": 19113
+    },
+    {
+      "path": "runs/01/actual-source-pins/DesktopCommentImageCanvas.kt",
+      "sha256Bytes": "b52c13ed6d11c70dae98a35ac45548e793c47425790f1db3f04ba9ac3ebf1d73",
+      "size": 5525
+    },
+    {
+      "path": "runs/01/actual-source-pins/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "size": 2955
+    },
+    {
+      "path": "runs/01/actual-source-pins/DesktopSessionStore.kt",
+      "sha256Bytes": "326c506c1cbb721b6e7e6a0aa40faec6505d78c2af15a9527940e1b2e59b04fc",
+      "size": 19172
+    },
+    {
+      "path": "runs/01/observer-failure.json",
+      "sha256Bytes": "95b40ef2cae261a0a411d168e385f9cb4fab77a1bc49f6b6f7b828899c6ef8f1",
+      "size": 406
+    },
+    {
+      "path": "runs/02/PngOwnerFixture.kt",
+      "sha256Bytes": "871a061dc3fb7a97cbe3cf29ac06cd49b06f48976839b038f6c54e8148c74b24",
+      "size": 11649
+    },
+    {
+      "path": "runs/02/RootGateExtracted.kt",
+      "sha256Bytes": "469c7c85c70edf0ef5306a24ccbac5711c9b2c411b31c92db3b8bcd0af687309",
+      "size": 815
+    },
+    {
+      "path": "runs/02/actual-source-pins/CommunityDynamicScreens.kt",
+      "sha256Bytes": "635a092a3a13f70a04154dea72a41785d862155c36cc2af9a36ce7945e9f0a24",
+      "size": 19113
+    },
+    {
+      "path": "runs/02/actual-source-pins/DesktopCommentImageCanvas.kt",
+      "sha256Bytes": "b52c13ed6d11c70dae98a35ac45548e793c47425790f1db3f04ba9ac3ebf1d73",
+      "size": 5525
+    },
+    {
+      "path": "runs/02/actual-source-pins/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "size": 2955
+    },
+    {
+      "path": "runs/02/actual-source-pins/DesktopSessionStore.kt",
+      "sha256Bytes": "326c506c1cbb721b6e7e6a0aa40faec6505d78c2af15a9527940e1b2e59b04fc",
+      "size": 19172
+    },
+    {
+      "path": "runs/02/compile-evidence.json",
+      "sha256Bytes": "bd1ae64f7d12d32af2c250871d18248a7a840ec9e3b27d2f320578a51b3c1f7c",
+      "size": 35406
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "runs/02/compiler.args",
+      "sha256Bytes": "e712b3e5f84f8428653e73ff32a06909ab6119550302cbe72c9f1530285d5608",
+      "size": 22719
+    },
+    {
+      "path": "runs/02/failure.json",
+      "sha256Bytes": "b7fffc4a9c9940332581d9cfaa7e7329b95d005f36d5818d4aaa22060694996c",
+      "size": 113
+    },
+    {
+      "path": "runs/02/proof/chosen-comment.png",
+      "sha256Bytes": "af9499fa166ca9083067f7fd4af1d205c5199507f0473691f1b5730766f5fdea",
+      "size": 146711
+    },
+    {
+      "path": "runs/02/run.args",
+      "sha256Bytes": "5a4b9d081d1b3af6937fd640733ecb6d9efd9b9894cb47ed3eba38fbcdb8ded0",
+      "size": 22673
+    },
+    {
+      "path": "runs/02/run.log",
+      "sha256Bytes": "c21fca0fa6b832361d823ee2ebb57385e0612926077875545ca81d00bf01507a",
+      "size": 62
+    },
+    {
+      "path": "runs/02/source-extraction.json",
+      "sha256Bytes": "ffd4984748a859ddd60446da4e917274ffedfd09f3d08aa7a9bdb6cdaacdb3a8",
+      "size": 2322
+    },
+    {
+      "path": "runs/03/PngOwnerFixture.kt",
+      "sha256Bytes": "fb5bfd8fb1150611dcc2634293fbeeec4258097bdb3f65309cd61972ff0852e3",
+      "size": 12151
+    },
+    {
+      "path": "runs/03/RootGateExtracted.kt",
+      "sha256Bytes": "469c7c85c70edf0ef5306a24ccbac5711c9b2c411b31c92db3b8bcd0af687309",
+      "size": 815
+    },
+    {
+      "path": "runs/03/accepted-evidence.json",
+      "sha256Bytes": "a018bfbb8984f35acbcae3d79e8fbd5b20c14e68d7c27a000993596ea0c5a432",
+      "size": 1608
+    },
+    {
+      "path": "runs/03/actual-source-pins/CommunityDynamicScreens.kt",
+      "sha256Bytes": "635a092a3a13f70a04154dea72a41785d862155c36cc2af9a36ce7945e9f0a24",
+      "size": 19113
+    },
+    {
+      "path": "runs/03/actual-source-pins/DesktopCommentImageCanvas.kt",
+      "sha256Bytes": "b52c13ed6d11c70dae98a35ac45548e793c47425790f1db3f04ba9ac3ebf1d73",
+      "size": 5525
+    },
+    {
+      "path": "runs/03/actual-source-pins/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "size": 2955
+    },
+    {
+      "path": "runs/03/actual-source-pins/DesktopSessionStore.kt",
+      "sha256Bytes": "326c506c1cbb721b6e7e6a0aa40faec6505d78c2af15a9527940e1b2e59b04fc",
+      "size": 19172
+    },
+    {
+      "path": "runs/03/compile-evidence.json",
+      "sha256Bytes": "f69f183139ea5991850b42d7917074d6ad858189abe7c68921d43d505fb70a6f",
+      "size": 35406
+    },
+    {
+      "path": "runs/03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "runs/03/compiler.args",
+      "sha256Bytes": "6d53150323a91e1d6e0f386dab006a45caafb10fbe680ae59970ca8729acc127",
+      "size": 22719
+    },
+    {
+      "path": "runs/03/proof/canceled-target.png",
+      "sha256Bytes": "73907589101a7e8ab83178e7db2997aab7272cd02d364e8e3ecc2beccda4b631",
+      "size": 2
+    },
+    {
+      "path": "runs/03/proof/chosen-comment.png",
+      "sha256Bytes": "08d0b309a626b1e17760e04514ebd3024470af0b838af72eb469aea904f8e854",
+      "size": 41676
+    },
+    {
+      "path": "runs/03/proof/closed-page-target.png",
+      "sha256Bytes": "3774fed6f81e6d77fb664109f8ac3e35088e89722c6c8747166afe631cfcf43a",
+      "size": 3
+    },
+    {
+      "path": "runs/03/proof/guest-comment.png",
+      "sha256Bytes": "8663548571b7f4b30a0e16aa9ead4537a9a8014146d88475de1d3eb8e164715f",
+      "size": 46851
+    },
+    {
+      "path": "runs/03/proof/old-epoch-target.png",
+      "sha256Bytes": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+      "size": 4
+    },
+    {
+      "path": "runs/03/proof/rendered-long-route.png",
+      "sha256Bytes": "af9499fa166ca9083067f7fd4af1d205c5199507f0473691f1b5730766f5fdea",
+      "size": 146711
+    },
+    {
+      "path": "runs/03/proof/result.json",
+      "sha256Bytes": "4325b0ec8f7efb8568837ab2a017d201205893600dddd82d979971b6459983b5",
+      "size": 524
+    },
+    {
+      "path": "runs/03/run.args",
+      "sha256Bytes": "1aad330728147ff2be4d8c18aecf457abe84b8a3b43888b395e4972c9b47b386",
+      "size": 22673
+    },
+    {
+      "path": "runs/03/run.log",
+      "sha256Bytes": "81e8c0b0d9f84376614fc02d6c81a4ba14bbb9cccdba0f2baa474137be9872e2",
+      "size": 170
+    },
+    {
+      "path": "runs/03/source-extraction.json",
+      "sha256Bytes": "eaaae76d171f3303501b699f2ba4beb25795754fc92c94f729925271c45325c8",
+      "size": 2322
+    },
+    {
+      "path": "runs/04/PngOwnerFixture.kt",
+      "sha256Bytes": "84e5c7c72633ec1060a19b7b49b9154be5d19e670c280f2f4c05e18f19a5b262",
+      "size": 13602
+    },
+    {
+      "path": "runs/04/RootGateExtracted.kt",
+      "sha256Bytes": "469c7c85c70edf0ef5306a24ccbac5711c9b2c411b31c92db3b8bcd0af687309",
+      "size": 815
+    },
+    {
+      "path": "runs/04/actual-source-pins/CommunityDynamicScreens.kt",
+      "sha256Bytes": "635a092a3a13f70a04154dea72a41785d862155c36cc2af9a36ce7945e9f0a24",
+      "size": 19113
+    },
+    {
+      "path": "runs/04/actual-source-pins/DesktopCommentImageCanvas.kt",
+      "sha256Bytes": "b52c13ed6d11c70dae98a35ac45548e793c47425790f1db3f04ba9ac3ebf1d73",
+      "size": 5525
+    },
+    {
+      "path": "runs/04/actual-source-pins/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "size": 2955
+    },
+    {
+      "path": "runs/04/actual-source-pins/DesktopSessionStore.kt",
+      "sha256Bytes": "326c506c1cbb721b6e7e6a0aa40faec6505d78c2af15a9527940e1b2e59b04fc",
+      "size": 19172
+    },
+    {
+      "path": "runs/04/compile.log",
+      "sha256Bytes": "67bdda954f9279090c1ee8d0a448923e066c4b9aec12b2507af5a5effa395d45",
+      "size": 1042
+    },
+    {
+      "path": "runs/04/compiler.args",
+      "sha256Bytes": "f3d8b1b756e944fe468f8c5c1d99b15d522d99e7429cbb82c6183c7dc506d170",
+      "size": 22719
+    },
+    {
+      "path": "runs/04/failure.json",
+      "sha256Bytes": "42d091cc4af9bb00f183068e6f8dc3811cba703b805d85b11ced3b0f2ef61bc2",
+      "size": 68
+    },
+    {
+      "path": "runs/04/source-extraction.json",
+      "sha256Bytes": "dd1ce4334aef1b11864c3913e496139cad2fedb18ebb3b33f59085a428656d00",
+      "size": 2322
+    },
+    {
+      "path": "runs/05/PngOwnerFixture.kt",
+      "sha256Bytes": "a42beea7db99b2eb64251851c9e6b58980e777730483fe7b37315b72ce0c560f",
+      "size": 13653
+    },
+    {
+      "path": "runs/05/RootGateExtracted.kt",
+      "sha256Bytes": "469c7c85c70edf0ef5306a24ccbac5711c9b2c411b31c92db3b8bcd0af687309",
+      "size": 815
+    },
+    {
+      "path": "runs/05/accepted-evidence.json",
+      "sha256Bytes": "5f565c56de1b60cd14c247174a97002ff86ca8db73dcce7dbacbeb1519b14107",
+      "size": 1608
+    },
+    {
+      "path": "runs/05/actual-source-pins/CommunityDynamicScreens.kt",
+      "sha256Bytes": "635a092a3a13f70a04154dea72a41785d862155c36cc2af9a36ce7945e9f0a24",
+      "size": 19113
+    },
+    {
+      "path": "runs/05/actual-source-pins/DesktopCommentImageCanvas.kt",
+      "sha256Bytes": "b52c13ed6d11c70dae98a35ac45548e793c47425790f1db3f04ba9ac3ebf1d73",
+      "size": 5525
+    },
+    {
+      "path": "runs/05/actual-source-pins/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "size": 2955
+    },
+    {
+      "path": "runs/05/actual-source-pins/DesktopSessionStore.kt",
+      "sha256Bytes": "326c506c1cbb721b6e7e6a0aa40faec6505d78c2af15a9527940e1b2e59b04fc",
+      "size": 19172
+    },
+    {
+      "path": "runs/05/compile-evidence.json",
+      "sha256Bytes": "9ce80d11315b1e89fef7e94d882996bb2eeb4da0b0cadd715556ee66426a8b01",
+      "size": 35463
+    },
+    {
+      "path": "runs/05/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "runs/05/compiler.args",
+      "sha256Bytes": "75234d6c3a665cfd7d665dff1fa2e51651a490c22f70180b78e6e5f3f51361f2",
+      "size": 22719
+    },
+    {
+      "path": "runs/05/proof/canceled-target.png",
+      "sha256Bytes": "73907589101a7e8ab83178e7db2997aab7272cd02d364e8e3ecc2beccda4b631",
+      "size": 2
+    },
+    {
+      "path": "runs/05/proof/chosen-comment.png",
+      "sha256Bytes": "08d0b309a626b1e17760e04514ebd3024470af0b838af72eb469aea904f8e854",
+      "size": 41676
+    },
+    {
+      "path": "runs/05/proof/closed-page-target.png",
+      "sha256Bytes": "3774fed6f81e6d77fb664109f8ac3e35088e89722c6c8747166afe631cfcf43a",
+      "size": 3
+    },
+    {
+      "path": "runs/05/proof/guest-comment.png",
+      "sha256Bytes": "8663548571b7f4b30a0e16aa9ead4537a9a8014146d88475de1d3eb8e164715f",
+      "size": 46851
+    },
+    {
+      "path": "runs/05/proof/old-epoch-target.png",
+      "sha256Bytes": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+      "size": 4
+    },
+    {
+      "path": "runs/05/proof/queued-canceled-target.png",
+      "sha256Bytes": "bea0b72e71bfe7f15a88c25305bf96a9681e34d3aabe0c9a1b7093cb32d8ff05",
+      "size": 2
+    },
+    {
+      "path": "runs/05/proof/rendered-long-route.png",
+      "sha256Bytes": "af9499fa166ca9083067f7fd4af1d205c5199507f0473691f1b5730766f5fdea",
+      "size": 146711
+    },
+    {
+      "path": "runs/05/proof/result.json",
+      "sha256Bytes": "1abde3e3f1a5c03bb9b9671a506ba0c88c09f18ce32d76ccae4d8dd81224f1c2",
+      "size": 524
+    },
+    {
+      "path": "runs/05/run.args",
+      "sha256Bytes": "e855e1ac523c12550033bec11a5f47fe99c5975a856a7d0fb2e01db9159d7a57",
+      "size": 22673
+    },
+    {
+      "path": "runs/05/run.log",
+      "sha256Bytes": "77a2c153cf4c018e7257c37ab129daed2a09f131f983ecbcdb5b43db956d0174",
+      "size": 170
+    },
+    {
+      "path": "runs/05/source-extraction.json",
+      "sha256Bytes": "514d4c4e7e1769998555f6ebd384cd3572b5514e5db038daee4059bd2585880b",
+      "size": 2322
+    }
+  ],
+  "fileCount": 77,
+  "totalRawBytes": 1219112
+}

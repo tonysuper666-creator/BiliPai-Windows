@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "path": "runs/02/fixture-only.jar",
+      "sha256Bytes": "5d7d46f33ac8a31b5eda95e6cd7af7107235a02b05f692f0b3c8b7ceefbba758",
+      "size": 37625
+    },
+    {
+      "path": "runs/03/fixture-only.jar",
+      "sha256Bytes": "c17e056f6fffbd9d8d51444d4a22b0e5e269840bf4874c63f08e80f5f8d07b99",
+      "size": 38299
+    },
+    {
+      "path": "runs/05/fixture-only.jar",
+      "sha256Bytes": "f117c180a3ea2db82dd7861e27ef6792b747d5dd3ff17b3b216474e2673053c9",
+      "size": 41621
+    }
+  ],
+  "notCopiedAsRaw": true
+}

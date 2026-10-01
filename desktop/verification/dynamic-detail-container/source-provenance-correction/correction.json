@@ -1,0 +1,40 @@
+{
+  "correction": "The frozen73 source-inventory counted against live working620; it is not the immutable828 Main602 registry. Frozen73 retained unmodified.",
+  "immutableMainSnapshotSha256Bytes": "8286563186e5d5be2495a598e1e32fb15091b7a459a5bbbc3d7e65243557e290",
+  "immutable602Commit": "ce9ac0aefca42c5e3058f82b3e55652a3a9da150",
+  "immutable602RegistrySha256Bytes": "5a8221af94abf64c9c026dd59e03c0610d9e9028c5823531f6dfedeec4183a0b",
+  "working620RegistrySha256Bytes": "b78333540239a983113352c7edd8308c4dda5db85a6323b7414d222ee89f1e2d",
+  "uniqueOriginalSources": 23,
+  "existingAgainst602": [
+    "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveChrome.kt",
+    "app/src/main/java/com/android/purebilibili/core/util/WindowSizeUtils.kt",
+    "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicLayoutPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt"
+  ],
+  "newAgainst602": [
+    "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveScaffoldPolicy.kt",
+    "design-system/src/main/java/com/android/purebilibili/core/ui/TopReadabilityChromePolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/util/HingeLayoutPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/util/FoldableDisplayPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/SplitLayout.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentThreadDrag.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt",
+    "design-system/src/main/java/com/android/purebilibili/core/ui/blur/ProgressiveFade.kt",
+    "app/src/main/java/com/android/purebilibili/feature/home/components/ProgressiveTopChrome.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/ImmersiveAppScaffold.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt",
+    "app/src/main/java/com/android/purebilibili/core/store/HomeSettingsUiPresetPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/transition/PredictiveBackBackgroundPolicy.kt",
+    "design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt",
+    "design-system/src/main/java/com/android/purebilibili/core/ui/InteractiveOverlayProgressPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/CommentWindowNavigation.kt",
+    "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt"
+  ],
+  "mergeExistingAgainst602": 5,
+  "appendAgainst602": 18,
+  "directNewAgainst602": 7,
+  "currentWorking620AlreadyHasAll23": true,
+  "MainConsumerAcceptance": false
+}

@@ -1,0 +1,97 @@
+This is a prepared layout/thread handoff, not Main consumer or native HWND acceptance.
+
+BASE: actual Reply25 Main snapshot 8286563186e5d5be2495a598e1e32fb15091b7a459a5bbbc3d7e65243557e290;
+ordered actual89 CP 06316248361f2fae9d8eb53976ba1dc6936c5bd6416f98d2b6026c207ef9a217.
+Compile17 uses ONLY these actual 3 Main jars +86 external +1 test-only kotlin-test.
+No raw17 product classpath overlay. ReplySessionFixture.kt is a pure helper source.
+Class-load logs assert DesktopOriginalDynamicReplySession loads from this actual main-kotlin.jar.
+All NEXT product declarations are new source-selected/adapted UI, explicitly prepared.
+
+INSTALL: installation-payloads.json has 1 producer +4 platform Kotlin sources only.
+extract-upstream-dynamic-detail-container.generate(repo,output,standalone=False).
+Production emits17 selected/adapted outputs; register/copy DIRECT7 once, never twice.
+--standalone emits24 outputs, all bytes match prepared. Existing source identities must
+merge features, not duplicate source registry entries. WindowSizeUtils has TWO selected
+outputs under one identity and reuses Main WindowWidthSizeClass/width resolver.
+No new dependencies/assets or account/items/cache/store models.
+
+ENTRY (internal @Composable): DesktopOriginalDynamicDetailLayout(
+ dynamicId:String, uiState:DesktopOriginalDynamicDetailUiState,
+ session:DesktopOriginalDynamicReplySession,
+ defaultDetailImageLayout:DesktopDynamicCardSettings.DynamicDetailImageLayout,
+ liquidGlassEnabled:Boolean, currentMid:Long?,
+ openCommentRootRpid:Long=0, openCommentTargetRpid:Long=0,
+ onBack:()->Unit,onRetry:()->Unit,onUserClick:(Long)->Unit,
+ card:@Composable(DynamicDetailImageLayout,onCommentClick:()->Unit)->Unit).
+Original private UiState is selected and made internal with only name adaptation:
+Loading / Success(item:original DynamicItem) / Error(message:String).
+Use DesktopDetailWindow { ... } inside the actual bounded page viewport, existing Main
+theme, LocalDesktopCommentBindings=real owner platform, and required
+LocalDesktopDetailForeground=actual window visible/background state. The latter default
+throws; no fabricated SDK/device or Haze foreground state. Desktop keyboard/pointer
+connected flags and no Android hinge are explicit platform input boundaries.
+
+Root remains sole current full DynamicDetailData.item authority. Construct Reply Session
+per id+captured immutable epoch with same account/ops/parentScope; seedItem returns current
+Root raw item. Close on route/epoch owner retirement. Session exposes comment flows and
+PRIVATE _selectedDynamic only for original target lookup/fallback/post reload; it has NO
+public uiState/item. Do not spread its fallback whole item into Root/cache/registry.
+Root may independently expose existing _selectedCommentTarget.asStateFlow() read-only.
+Count projection only when current raw id/session/epoch/isOwned + target!=null +!loading;
+update module_stat.comment.count ONLY, increment Root commentVersion. Capture beforeComment
+alongside existing like/forward/fold/removed versions for late primary/opus readbacks,
+retaining only confirmed comment field on changed version. No second full item authority.
+
+The card lambda calls the existing complete Main CardHost using THIS current Root item.
+Add only optional detailImageLayoutOverride tail parameter to that host; choose override
+over global default for detail presentation. Never persist per-detail toggle globally.
+Parent layout supplies onCommentClick which scrolls the ACTUAL active list to comments.
+Root original mutation registry/reducers/editor callbacks and late readback merge stay.
+Do not overwrite current whole Community/Shell/Host; there is intentionally no stale full
+consumer replacement patch. Existing article fallback route remains Root-owned.
+
+EVIDENCE: layout3 cells (M3 500/1100 +Miuix1100), image-layout/back9 pointer pairs,
+initial20 unscrolled rows NO page2, actual wheel at active list bottom EXACTLY ONE original
+page/cursor request, other split primary lane NO request. Routed pending old target/id2
+cells prove late non-cancellable old data cannot open old thread or request another page;
+new route measured20 starts top and requires actual wheel before its page2.
+Thread3 cells18 pointer pairs+3 AWT->official Compose bridge Escape input events prove
+original row opens actual separate modal, Close/Escape preserve underlying detail,
+real header drag moves actual modal, replacing root cancels old dismiss spring.
+Root replacement itself is explicitly deterministic Session injection, not claimed as
+a user click. Original AppModalBottomSheet deliberately uses neutral M3 host BOTHstyles;
+it is not a fabricated Miuix substitute. Actual desktop input is completed Escape only,
+not claimed OS predictive swipe. Entire root subtree is keyed to retire offset/scope/input.
+Chrome source actual layer recording publishes readiness; elapsed time alone does not;
+warm source cannot bypass loading gate; still-ready external source cannot render active
+top effect while backgrounded; foreground restores same source. Actual Compose effect
+support true was observed, but no HWND/GPU window behavior is claimed.
+
+HISTORY: initial actual layout06 failed because new20 raw rows met old skeleton/header
+slot count before Lazy remeasure. Log/evidence preserved. Minimal Windows admission only
+requires actual item-slot count >= raw reply count+original header/card slots BEFORE
+unchanged original shouldLoadMore policy. No page/cursor/end/threshold algorithm changed.
+Historical symbol15 review (127class/75methods/3fields) had zero product intersections
+with actual478+prepared raw17. That independent frozen manifest is retained; its hashes
+are NOT asserted for new17. Between15/17 only one product body adds actual foreground
+admission for external progressive source, signatures unchanged. Core Main Reply25
+source outputs were byte-equal to raw445 by Root's independent integration receipt.
+
+NOT COMPLETE: liquid dock/composer is pending separate frozen renderer+composer source
+and actual pointer/IME acceptance. Pass liquidGlassEnabled=false for this normal-input
+slice; do not claim the liquid setting is consumed yet. Full existing CardHost is a
+synthetic seam in THESE layout fixtures, not repeated full-card visual proof. Native
+HWND/window DPI/OS predictive gestures/real clipboard/SHARE/account HTTP mutations are
+not tested here. Original DynamicDetailScreen loading CutePerson alias is equivalent
+to its original AdaptiveLoadingIndicator default forwarding; it is replaced directly
+without fetching unrelated Lottie assets. MotionPhoto/export/native images and all
+other known project parity gaps remain separate. This does not assert all-user parity.
+
+ROOT RAW PROTOCOL RECIPE correction: ReplyProtocolTransportFixture also requires pure
+protocol/RawReplyParserFixture.kt helper, in addition to ReplySessionFixture.kt,
+ReplyLifecycleFixture.kt and DynamicDetailProtocolFixture.kt. Never run old prepared
+generators to call the actual Main proof. Compile tests-only +actual Main CP/friend path.
+
+Git/install boundaries: task compiled classes/jars/test stores are verification artifacts
+only; do not install or stage them. task-class-identities.json hashes existing class bytes
+without copying them into this source-only handoff. All immutable older evidence remains.

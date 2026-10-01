@@ -1,0 +1,2 @@
+DIAGNOSTIC original footer URL overlaps QR: NotFoundException
+PASS 29 assertions / 9 cases: actual Main original renderer + actual writer/Store, extracted Root gate only

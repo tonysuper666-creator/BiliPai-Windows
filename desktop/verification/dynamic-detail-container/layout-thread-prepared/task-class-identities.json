@@ -1,0 +1,810 @@
+{
+  "scope": "Task verification only; these binaries are neither installer payload nor Git source submission",
+  "classes": [
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\store\\DesktopOriginalDetailLiquidReusePolicyKt.class",
+      "sha256Bytes": "8f6f2416c63bdfc85ea5b8738a3b67316d51995d22cd06e57927ed5b038d8cd4",
+      "bytes": 616
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AdaptiveBottomSheetMotionSpec.class",
+      "sha256Bytes": "04913919cd0051910c6a881536c58e2d38f74097f13c6fe7533bc2762315ffb6",
+      "bytes": 3708
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AdaptiveBottomSheetVisualSpec.class",
+      "sha256Bytes": "05f0de1e80ac1a7e835270498060c4a1fc68ac45fae9b14c671f2692d6e0d71b",
+      "bytes": 2954
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AdaptiveScaffoldPolicyKt$WhenMappings.class",
+      "sha256Bytes": "3ea82cb6b9198b29958e62240eed09062b7b5793edf13ca7824be4994dca05f3",
+      "bytes": 875
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AdaptiveScaffoldPolicyKt.class",
+      "sha256Bytes": "d8ba03c84a4904fd178641b56f064dccce546bd375eb9618d3d7061f7e46b8b2",
+      "bytes": 1815
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AdaptiveScaffoldRenderer.class",
+      "sha256Bytes": "0debe9ecb10d716ba92bd8dcbc101af2974b237634f639caf77eb88651b87040",
+      "bytes": 2026
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AdaptiveTopAppBarChromeSpec.class",
+      "sha256Bytes": "6af19ada6690c201baa5c6643aaba10c04c06772bbce7f1dbc5c061f51ff410a",
+      "bytes": 3709
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AdaptiveTopAppBarStyle.class",
+      "sha256Bytes": "ccb6e016f2f441a349762491bbb6f9b5a78e95a98a20dc65e48008c197d33cfc",
+      "bytes": 2049
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppAdaptiveSceneLayout.class",
+      "sha256Bytes": "092521c45d3ca6c1195880280faec023dc60489d66a061c1e000722a33cdceb7",
+      "bytes": 2223
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppBottomSheetMotion.class",
+      "sha256Bytes": "08b8d7553c8d775a850f25defcb2b3d61004d713eea95675c97bbb8967a79300",
+      "bytes": 6451
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppHingeSplitGeometry.class",
+      "sha256Bytes": "b5d06f706878e5a6756d0eac605f10fb361dd85f8dde96b3399b2af5c60f54bc",
+      "bytes": 2848
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppModalLayoutSpec.class",
+      "sha256Bytes": "4af501af33423d22eefb30569c36a6289c5fcf213b47ffa10178999e3a66e360",
+      "bytes": 3848
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppModalPresentation.class",
+      "sha256Bytes": "8cc3bedcf164a41ecb01f817c1bed7c4ca7f13f661990796e89c8aae0803d8de",
+      "bytes": 1992
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppSplitLayoutState$Companion.class",
+      "sha256Bytes": "6dc702612c4039f618f14fb38f36c9910372bb4e7f7c307fbb1115c855a1fbbf",
+      "bytes": 2951
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppSplitLayoutState.class",
+      "sha256Bytes": "485602748f50c183fd78b623211f8b15364547258687fb846db3bee0f063b2a0",
+      "bytes": 9997
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppSplitPane.class",
+      "sha256Bytes": "6abb0f1927654e8b9932f3a5c340df7d2a81eba5cff0a15f21e061f54670d57b",
+      "bytes": 1961
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppTopBarCollapseBehavior.class",
+      "sha256Bytes": "21e24d0d22419c844a1ed1de1ef19b8cff39399be26b88238ac6a5dd9b94bd24",
+      "bytes": 1426
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppTopBarStyle.class",
+      "sha256Bytes": "7adb9c213b0260a7320c7f47196be0e1a0b7a342d9a53c58d07499214f9fa316",
+      "bytes": 1993
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppTopChromePolicy.class",
+      "sha256Bytes": "2d1d069d38c8346ed0ec1e13b15b65220f4076bd00742f30b74aa5be2a8d5b32",
+      "bytes": 6136
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\AppTopTabPresentation.class",
+      "sha256Bytes": "4d2e23f1bc2f9b0ca7e747f6da669e30c4abee69b852c473c831b0d37101bbf9",
+      "bytes": 2069
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\BottomSheetHost.class",
+      "sha256Bytes": "4e4ee9cbb2f92c5138ab64c9071b5036f0391c155031a1e2503943411ff8adfa",
+      "bytes": 1954
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\CommentWindowNavigationKt.class",
+      "sha256Bytes": "bb37bcb37df5c3a97303037d53f566fd54619f2aee542ec3de87ac5630824a5a",
+      "bytes": 6016
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\ComposableSingletons$DesktopOriginalDetailAdaptiveChromeKt.class",
+      "sha256Bytes": "60e340598e7e5cdc28487a24961057551131a9157b5c7eba358dd3a8f866f831",
+      "bytes": 11909
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\ComposableSingletons$DesktopOriginalDetailAppSheetComponentsKt.class",
+      "sha256Bytes": "c44d4026e85c1f6e2eed09f9ebf983255334d3bc86c1c6c85cfc88bca30eb366",
+      "bytes": 4607
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\ComposableSingletons$ImmersiveAppScaffoldKt.class",
+      "sha256Bytes": "07678d7c93f048806e4eaf88f959fa8c73167c1682da5d15dc7e79129f16fe8f",
+      "bytes": 4025
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChromeKt$WhenMappings.class",
+      "sha256Bytes": "6a1c89c9a33b625a73958aa5bab0b7f171b0c7c22b89230f814ac321ac15d218",
+      "bytes": 2026
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChromeKt.class",
+      "sha256Bytes": "59a94560c03c336bed343b2810bf158bf1df3f398eabdc60a5181572589e57c1",
+      "bytes": 53465
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAppSheetComponentsKt$WhenMappings.class",
+      "sha256Bytes": "6893a9b2888b32a3837ab942e2a28f82bab0b256c67f1e393634f8d44cb5a48f",
+      "bytes": 926
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAppSheetComponentsKt.class",
+      "sha256Bytes": "b19f2a1b3d29db01accc86dea51c639babbb011335bfc6773f063d5b4a1f0991",
+      "bytes": 52148
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\ImmersiveAppScaffoldKt.class",
+      "sha256Bytes": "9782dbfc9cf4f825cdb743e602f4a1c85e5bbb2cf4a6c87f7245a864e9802d2a",
+      "bytes": 26441
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\InteractiveOverlayProgressPolicyKt$WhenMappings.class",
+      "sha256Bytes": "12d6b52706754f6540d9f65929617788243d1cd0fa03650d2aa7e994fa489fa7",
+      "bytes": 1003
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\InteractiveOverlayProgressPolicyKt.class",
+      "sha256Bytes": "bb02e0926be263ef3299fe30afad3c4d0fdc000adbaaf693dc27cb4fa9901bdb",
+      "bytes": 2143
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\InteractiveOverlayProgressVisual.class",
+      "sha256Bytes": "c71838144e7cde7aedeea94146409568a817e95f3d440142fcf5a01f48cb80c8",
+      "bytes": 3689
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\InteractiveOverlaySurfaceType.class",
+      "sha256Bytes": "09058cd971962c40faca8c90920c632ea614a20588a499f498ab5d05a2baba6c",
+      "bytes": 2101
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\SplitLayoutKt$AppSplitLayout$1$1.class",
+      "sha256Bytes": "8e900636f6ea5432d6b9944d46ce8cb904a5fcca080eb1de4fd6bd808e72a1de",
+      "bytes": 3881
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\SplitLayoutKt$WhenMappings.class",
+      "sha256Bytes": "1ceab2f70f493e436c1c430730cbeb97963d43a2d6cb300fca93e88b456e4b82",
+      "bytes": 2500
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\SplitLayoutKt.class",
+      "sha256Bytes": "c933314cc6f9fcc252371d4aef333195d5b888f9f0348ab9aac7166e01647ded",
+      "bytes": 30680
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\TopChromeRenderMode.class",
+      "sha256Bytes": "54dd7c0d14244ddad4ff5c3e4f77fb16b0912743c003a8b0c477cf2b48d1d256",
+      "bytes": 2021
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\TopReadabilityChromePolicyKt.class",
+      "sha256Bytes": "5fceeaf5a45f9881475bf50fa48b532761fc9827d7c3fc544126f8609d6a8c76",
+      "bytes": 2415
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\TopReadabilityChromeSpec.class",
+      "sha256Bytes": "ab1e51d291cde4de89aeb63555dce48b8e10807bd5e7e591b29601d6cc84b16b",
+      "bytes": 4872
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\AppDisplayContext.class",
+      "sha256Bytes": "f97ce2bd7fae1fd5d0bac584a0c8ae97c54c5253375b38c26b7c763a6f38028c",
+      "bytes": 9896
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\AppDisplayNaturalOrientation.class",
+      "sha256Bytes": "85aab2bcbeaf8c2e380764cd69aebc3e8579bdda002be9e2b6389f0d59daa6f4",
+      "bytes": 2109
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\AppFoldableDetectionBasis.class",
+      "sha256Bytes": "762179f766e69b74bcc325c578575384ad33850a0e4563560482e1281c45db99",
+      "bytes": 2180
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\AppFoldableDisplayRole.class",
+      "sha256Bytes": "6f9a528ef197a1b743d6f36e7814349f3ab1d7b119939f13b86dd724a6850f4c",
+      "bytes": 2130
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\AppFoldingFeatureInfo.class",
+      "sha256Bytes": "ad4177268485d8d1fe3e2dacb1d9ade6f8fb05c9ec89965798ebdda8caacda80",
+      "bytes": 8816
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\AppFoldPosture.class",
+      "sha256Bytes": "cb876ceee921c26bf0ee91e2a13746c724814f8cc6fb0d876a1f031b64191dda",
+      "bytes": 2061
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\AppHingeFeature.class",
+      "sha256Bytes": "88b1ef38c41e456e3df2c545e69987a4fd26fe163bc8e2a0133bd59af0ad4790",
+      "bytes": 4714
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\AppHingeOrientation.class",
+      "sha256Bytes": "7bbf30075d60231cfa2060c6bf8decb6cb1876b703aa3deff64007dbb049a06f",
+      "bytes": 2044
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\AppWindowAdaptiveInfo.class",
+      "sha256Bytes": "81e1fc4888fdf7b867e3f4edb277bc85d12069a418ce6e639c9811b01683e5f4",
+      "bytes": 7331
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailResponsiveWidthKt.class",
+      "sha256Bytes": "45692bc1708a26f6ac3b8a0e723db895c35991cf255fdde4ba142d9b945e623e",
+      "bytes": 3387
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailWindowModelsKt.class",
+      "sha256Bytes": "3f17890debdb0b75ab991bbd617b094f728bde21f29869df06cf35101f20c4ba",
+      "bytes": 5365
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\WindowHeightSizeClass.class",
+      "sha256Bytes": "0489dfc3f961b32a337a01bcd887f0d44b47b8beb9a5eb86ee7fc950d4bf9d37",
+      "bytes": 2057
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\util\\WindowSizeClass.class",
+      "sha256Bytes": "010b8b85185d67bf7bd10553465c3a2ed60e12f853a3bd7650528555e62662a3",
+      "bytes": 7962
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\blur\\ChromeBackdropSource.class",
+      "sha256Bytes": "26ce248a9fa691257d399f895ea4eec25b04adeaffb681b5ee2c034c56fd2808",
+      "bytes": 2306
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\blur\\ChromeBackdropSourceKt$rememberChromeBackdropSource$1$1.class",
+      "sha256Bytes": "50bb82a8a05f8e36f8c5f3eabb69a6fce8d0ae6224eba36361b5aa86042c5308",
+      "bytes": 4062
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\blur\\ChromeBackdropSourceKt.class",
+      "sha256Bytes": "56f66fc36b696333825f75d6c3b1b4d9402d4384d2698ae0d49e9417ccbbfa33",
+      "bytes": 9896
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\blur\\ProgressiveFadeDefaults.class",
+      "sha256Bytes": "baf8ffea5f49b12d016281f7ee779c0ebefccbe278a9bc615b4931b99e18ec15",
+      "bytes": 4721
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\blur\\ProgressiveFadeKt.class",
+      "sha256Bytes": "c9f2a7c8a15912a9ff1cd0432f3d3e67df2e82713ab9c9c45846bd6af08c3135",
+      "bytes": 12030
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\transition\\DesktopOriginalDetailPredictiveBlurPolicyKt.class",
+      "sha256Bytes": "3d2861c2772d4db61acba60c76db2cb64d771c71c236ed4407e2404c6a431193",
+      "bytes": 3084
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\core\\ui\\transition\\PredictiveBackBlurFrame.class",
+      "sha256Bytes": "650ac73812fd48e0ff43d265bc92610350c2cc29092deef68b6ce06c458ef014",
+      "bytes": 3531
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\dynamic\\DynamicLayoutPolicyKt.class",
+      "sha256Bytes": "f74518234bedd64ed7d59c59c35928934e022d7c5e9bbea1a2e371a29f4ce530",
+      "bytes": 1458
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\dynamic\\components\\DynamicSubReplyPreviewHostKt$DynamicSubReplyPreviewHost$2$1.class",
+      "sha256Bytes": "5cdc01acc6870711c1ee5f86d9ca30bff6b46846edc8c95c893852bec23bb538",
+      "bytes": 5017
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\dynamic\\components\\DynamicSubReplyPreviewHostKt.class",
+      "sha256Bytes": "8bb0d5a84cae971ddf5c42fd4f794efdfa9fe771c9540af766e1c2d0f987a8a3",
+      "bytes": 29947
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChromeKt.class",
+      "sha256Bytes": "19155d6040c85c209b5184c394f19eeb21393aa3b0fc7825582ad47358491196",
+      "bytes": 31234
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentThreadDrag.class",
+      "sha256Bytes": "96c51ced675bea00ac6f3f1ce6fc0874da8f0870df1f285b9f5311723ff923a6",
+      "bytes": 2892
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentThreadDragKt$rememberCommentThreadDrag$connection$1$1.class",
+      "sha256Bytes": "d2b2d07ccc45e0bd4d6a6fa97058eba9089be6a01cc897883abe314e106545ae",
+      "bytes": 10159
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentThreadDragKt$rememberCommentThreadDrag$dragBy$1$1$1.class",
+      "sha256Bytes": "61b42ff681c11d759eb133ad0fab35b2974d1904cbbd90004ec1a31480939fbb",
+      "bytes": 4052
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentThreadDragKt$rememberCommentThreadDrag$header$2$1.class",
+      "sha256Bytes": "91cda1fefdc4dc16af65b243bc0119840db2f2844814d856aa970efb507434ad",
+      "bytes": 3770
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentThreadDragKt$rememberCommentThreadDrag$latestSettleWithVelocity$2$1.class",
+      "sha256Bytes": "e76bfb7a3a08b72ec29b248a62edf72db4a2e20b99df6c8b3c419c9f2f973e93",
+      "bytes": 4023
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentThreadDragKt$rememberCommentThreadDrag$settleWithVelocity$1.class",
+      "sha256Bytes": "b3c66be611fb8ace89cfc0472cd53b681929578bdf364d10068644d58d3c83b6",
+      "bytes": 4215
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentThreadDragKt$rememberCommentThreadDrag$settleWithVelocity$2.class",
+      "sha256Bytes": "eb0ed611fbf2b12cd3a3d99ac7901b26048343e908ce3515a71ba4e15216378d",
+      "bytes": 6430
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentThreadDragKt.class",
+      "sha256Bytes": "c77a4894aacd2757ecb050342c4debab599d48881779c238d214f393700e076a",
+      "bytes": 25872
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDetailInputPaddingKt.class",
+      "sha256Bytes": "eb0e42faef801fac6017e1d3e8e5c6bfda5eb450829d9d6db2956542d164c0bd",
+      "bytes": 2384
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDetailThreadPoliciesKt.class",
+      "sha256Bytes": "c6197b188b0a86a91c2dbda3339ef45360fa3e4c36a8d70e0288c8cbe8f9bdb0",
+      "bytes": 900
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\SubReplySheetKt$SubReplySheet$lambda$2$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "6955c62e15d2998990fabbd698c608ff9f46e7771243b218d53faca48fcbb9e0",
+      "bytes": 2861
+    },
+    {
+      "path": "classes-17\\com\\android\\purebilibili\\feature\\video\\ui\\components\\SubReplySheetKt.class",
+      "sha256Bytes": "7dce01027180e2c3acb82fd1aca8f30cbec5a9901a692f39cd778dd89207605c",
+      "bytes": 32705
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ChromeReadinessFixtureKt$main$1.class",
+      "sha256Bytes": "9a12aee63ac7ef77f16f8e39a42af88483adf50a35c0ce8f856eb74e6f11da22",
+      "bytes": 30976
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ChromeReadinessFixtureKt.class",
+      "sha256Bytes": "e8e5c1673530713fe10d78f7a342e101ede61aed68fae5ab8f874cd9c9e774d9",
+      "bytes": 1288
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ComposableSingletons$ChromeReadinessFixtureKt.class",
+      "sha256Bytes": "9e1d0c69fd7c1428f51362ad184f20933b59299f6430b2ef5d14814f1f9bff42",
+      "bytes": 3457
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ComposableSingletons$ThreadWindowUiFixtureKt.class",
+      "sha256Bytes": "644412eadef57dd673d3b4f043e6892cf3dad0aa72ea923bbc25dce80335b870",
+      "bytes": 6207
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopCommentDialogNavigation.class",
+      "sha256Bytes": "306cf16addfe4b84cd51438a16570ee68f670256f3e76160bfa844b1754b953b",
+      "bytes": 3454
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopCommentDialogNavigationKt$DesktopCommentDialogNavigationHost$2$1.class",
+      "sha256Bytes": "a71a0cee28b5ff003282066c075029a3d34d459bcdbdfd3b51eeecaafabe6a80",
+      "bytes": 3491
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopCommentDialogNavigationKt$DesktopCommentDialogNavigationHost$3$1$1.class",
+      "sha256Bytes": "32e0c6a2e5e0a3dd38e3cd07594a9cc8fa24aee00c202f3d4822eb1ef300582d",
+      "bytes": 1911
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopCommentDialogNavigationKt$DesktopCommentDialogNavigationHost$lambda$2$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "bdf40c52cbf092a897e5964cd078e20b24a212012c54ceb030e025ec55100dfa",
+      "bytes": 2286
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopCommentDialogNavigationKt.class",
+      "sha256Bytes": "ec5d57593e55faae9d807ba588c1a5d1b0ecbacf4124de2f9419eddfb90a003a",
+      "bytes": 17636
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopDetailEffectsKt.class",
+      "sha256Bytes": "dc65b243dfe7a2418d37db86e18f2e581f8a45150577c5cee8bcfe82f3f1a8e7",
+      "bytes": 6058
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopDetailWindowKt.class",
+      "sha256Bytes": "b12ea27a8c77662df5802ef225418e67441431b69c5658f3e26ed9f27c20666a",
+      "bytes": 11070
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopDynamicCommentLayoutAdmissionKt.class",
+      "sha256Bytes": "999db650bef874f5dd4947e62ede826b7ed1071236561a227c569888d814cc99",
+      "bytes": 771
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$3$1.class",
+      "sha256Bytes": "c17f6c2b4f619076817d206919bebef108fc021541cf492cde87ee3886351827",
+      "bytes": 4840
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$4$1$3.class",
+      "sha256Bytes": "aba286270ca278fe9ffbfdf9cb49ebf11db3435af4c9f381cd965afd04709f66",
+      "bytes": 1872
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$4$1$invokeSuspend$$inlined$filter$1$1.class",
+      "sha256Bytes": "0d00d14345653d2778f0816d74cc8d4bafb5b61943e58b49e228dc0c8e0f10df",
+      "bytes": 2065
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$4$1$invokeSuspend$$inlined$filter$1$2$1.class",
+      "sha256Bytes": "7b790766d4d7d7f1ca8957e880d58854e8a95f560903e86c96018b43813a8bcc",
+      "bytes": 2063
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$4$1$invokeSuspend$$inlined$filter$1$2.class",
+      "sha256Bytes": "25fc20c227113f69087a0ad72731a419d5a5ed648f6250a880d27da4e36a5135",
+      "bytes": 4130
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$4$1$invokeSuspend$$inlined$filter$1.class",
+      "sha256Bytes": "874ccef195ac4695f48557d6055f38894b5cd492df5805fbab4f9c5c4a6b3cb6",
+      "bytes": 4246
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$4$1.class",
+      "sha256Bytes": "0fa8c3529c176acb0b17b5ab13b0b3544f31cf4e82a9a256ee48fe2b4ef67124",
+      "bytes": 10607
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$7$1.class",
+      "sha256Bytes": "615c9315b23b3ffbf4619c5f92e132db45aabcf544cc67cf497450091eae8f97",
+      "bytes": 2076
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$8$1.class",
+      "sha256Bytes": "ce8d7cd1bdfcbd92c49d73023bb08cfa981f7eb7f17000471d36bd0ea977f033",
+      "bytes": 2086
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$9$1.class",
+      "sha256Bytes": "4d43ff13f03c4ae2f9492bc84178ea34a01c694cef14c7c2039456716f1884ce",
+      "bytes": 2604
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$cardContent$1$1$1$1$1$1.class",
+      "sha256Bytes": "6085fa184b520c8b67fb90f634a65ee66e04e15fd5a3f7322a573bff2c38a09f",
+      "bytes": 4623
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$commentComposer$1$2$1.class",
+      "sha256Bytes": "6b128c14cffecd1582fca9eb6afbc5ace2bd28e267021d48f2511efc17a991bf",
+      "bytes": 2132
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt$DesktopOriginalDynamicDetailLayout$3$commentContent$1$1$1$1$1.class",
+      "sha256Bytes": "1d211db0c149a36ace1cfe01eab2a8c61a1dff0ffec768c6a38dc2e250136423",
+      "bytes": 2653
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailLayoutKt.class",
+      "sha256Bytes": "bd33ea253454e9c18e17f6c695ef49381a2da07e48652869266ea39bf0598867",
+      "bytes": 133337
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailUiState$Error.class",
+      "sha256Bytes": "afe768baa941c354ae7249f59ae5e970b8b030f0b218f41ebb6838fdbd0fd81a",
+      "bytes": 2992
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailUiState$Loading.class",
+      "sha256Bytes": "cc593cdd3bfbf5abc4d08515d0711b7aa1a9b58c9926c852b9e45ae9c7e4ec73",
+      "bytes": 1667
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailUiState$Success.class",
+      "sha256Bytes": "6cf797d3fe2f3e38847d3492f8b1b33191bceb2c538e0a9bace7332bdd031c5a",
+      "bytes": 3331
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicDetailUiState.class",
+      "sha256Bytes": "6bd207074397958011a1b185b55480e0940831c7bc800434389bfa2b023e98fb",
+      "bytes": 1047
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DetailLayoutUiFixtureKt$main$1$1.class",
+      "sha256Bytes": "239ed718f21ce8d4ac733a2c8d74be340d6620e21af009a53a4668831337cd50",
+      "bytes": 7737
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DetailLayoutUiFixtureKt$main$1$requestBinding$1.class",
+      "sha256Bytes": "3cf329442dbc0199a1feffb0db4d2c448966acc98ca3e18c3a4fc82f9fa29d0c",
+      "bytes": 6512
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DetailLayoutUiFixtureKt$main$1.class",
+      "sha256Bytes": "e3a32e4c8dafe0a54cae81e208aa1865b960c7e46964c6f7d04e395b65e80a03",
+      "bytes": 52022
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DetailLayoutUiFixtureKt.class",
+      "sha256Bytes": "03333b5ba43f8fad00117ea82d6bf9bd624c92868516ee621ca9d444eef56faa",
+      "bytes": 1187
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DetailRoutePagingUiFixtureKt$main$1$newBinding$1.class",
+      "sha256Bytes": "42bf17bd1c640163c72ec47bbf394556dd2fbfb35075835aa6e871e5a45cc933",
+      "bytes": 6527
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DetailRoutePagingUiFixtureKt$main$1$newRequests$1$1.class",
+      "sha256Bytes": "920487c201ad9331c338e963a3f7c7aaf20a53992cc67d220100f1f92bfa12b9",
+      "bytes": 3458
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DetailRoutePagingUiFixtureKt$main$1$oldBinding$1.class",
+      "sha256Bytes": "284e1b317215a77096ab7de18971400727c494b025176e139a6cd21c2a10361b",
+      "bytes": 6527
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DetailRoutePagingUiFixtureKt$main$1$oldRequests$1$1$1.class",
+      "sha256Bytes": "7dc44f8248ec168ace057e244a19b21563feaf199a13defc4e5b67fc5fd00778",
+      "bytes": 3738
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DetailRoutePagingUiFixtureKt$main$1$oldRequests$1$1.class",
+      "sha256Bytes": "4c43bc6311d2483c593e314a373333449ca1b22255b9f8d1f9c112985b58c06c",
+      "bytes": 4231
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DetailRoutePagingUiFixtureKt$main$1.class",
+      "sha256Bytes": "b131dee56083fd831067a2e7dd4e88915bacfed098581a255608551ee9986bfc",
+      "bytes": 52374
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\DetailRoutePagingUiFixtureKt.class",
+      "sha256Bytes": "0d5d244e8e7896ddf4cf9f1325735eb967c45237d823bca004f18d11f47685aa",
+      "bytes": 1502
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\FixtureReplyRequests$addCommentForSubject$1.class",
+      "sha256Bytes": "a6f3c901a4d71491b8523f9087fc02d11b066be053b391a7989bb51b11c57e78",
+      "bytes": 2201
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\FixtureReplyRequests$deleteCommentForSubject$1.class",
+      "sha256Bytes": "0a260c2e19b54f9892fdc4df2e6855da3dd6760289a7610f7ec7ce7405b0eda6",
+      "bytes": 2127
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\FixtureReplyRequests$getCommentsForSubject$1.class",
+      "sha256Bytes": "46af62667d5d60289015d354a87464464639a6a71f9df8804f45356e4f46a87a",
+      "bytes": 2299
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\FixtureReplyRequests$getSortedSubCommentsForSubject$1.class",
+      "sha256Bytes": "8c8bc1d5a11f1c030c458749fec62f9ae6c3b95c0817a0b10343ba9fd4a02b78",
+      "bytes": 2291
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\FixtureReplyRequests$hateCommentForSubject$1.class",
+      "sha256Bytes": "553970fbb88a832aae82e809a3911e92fbaff967bc7c8ad6f2bfd79033370696",
+      "bytes": 2231
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\FixtureReplyRequests$likeCommentForSubject$1.class",
+      "sha256Bytes": "ac2301bca9d8156098d3aa6bdf2b6b9f6abc138f84ddd7328b2b3aeda1e49fe5",
+      "bytes": 2231
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\FixtureReplyRequests$main$1.class",
+      "sha256Bytes": "27a33469fd593874856d9b827b9f6ad907d48b0e0c32d18d40eafa3fd8e7c4ef",
+      "bytes": 3738
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\FixtureReplyRequests$mutation$1.class",
+      "sha256Bytes": "4d86cb5a513c989b09696d1d5ce0bb20ae6c3988fdf5da1872473331e51b3753",
+      "bytes": 2792
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\FixtureReplyRequests$sub$1.class",
+      "sha256Bytes": "cc2c6c2733d27d0586f35b016e8dc682d857d81256799ce25283a3834dd37c8d",
+      "bytes": 3394
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\FixtureReplyRequests.class",
+      "sha256Bytes": "f2bd4f1e85ba0c7cd3fb896bab9763e730991c95ab7d58d39f729f0879bcc91f",
+      "bytes": 17405
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\LayoutPlatform$emotes$1.class",
+      "sha256Bytes": "782c8752e945a0b6966dfa323380abc127e6191b3316ce9eadf6fedd7aad871f",
+      "bytes": 1668
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\LayoutPlatform.class",
+      "sha256Bytes": "4b949b95cb6a2e02a4aab96db6c18533c389bc3d1b8dce886242b7f77c7200d4",
+      "bytes": 7945
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\LayoutScene$await$1.class",
+      "sha256Bytes": "1070322ce708e3ef768874a40695ec1e0bf3283b39cdc26ad884fb70a427966c",
+      "bytes": 1834
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\LayoutScene$await$2.class",
+      "sha256Bytes": "5b09ad64a79d282554352d9aeb1e5ff0ccc22dbc6ecc61ed14525dde6fab1afd",
+      "bytes": 3602
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\LayoutScene$press$1.class",
+      "sha256Bytes": "ac842894157a50c7c4ba6f3569108b28148825a5caf81a90ed5756d9442faab6",
+      "bytes": 1801
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\LayoutScene$scroll$1.class",
+      "sha256Bytes": "e8cca9473b5ead6f09087ff0f374e8da523d956caa4a73b3d773ba8a7076892a",
+      "bytes": 1776
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\LayoutScene.class",
+      "sha256Bytes": "370bdf3b83eea5aaf870d69fd82f0e0607a7d05efbda2da3b1b0c30cafaec65f",
+      "bytes": 18088
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$10.class",
+      "sha256Bytes": "55df9e03ec24f89f679005be358cc19028d04d4e67b252af3e0ac0d1b3cfd501",
+      "bytes": 3673
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$12.class",
+      "sha256Bytes": "31487f8b2acddd5fe69ebe43153442afa74f971456bf4d9f53f0dcdcd8965c25",
+      "bytes": 3673
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$15.class",
+      "sha256Bytes": "f050766871b63d6d3a7be3f94136d3bfe7d93f79b8e077c85625978049bfbd69",
+      "bytes": 3419
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$16.class",
+      "sha256Bytes": "32b01d1dd43f77be2cd6beb0f6e88118ce0fd30cb8fca2567479b19c3e5cc308",
+      "bytes": 3673
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$18.class",
+      "sha256Bytes": "9fb1064674f644d2640d4b5f253ba5f27b54db2ec73d82686b4ea089d65e19b4",
+      "bytes": 3426
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$19.class",
+      "sha256Bytes": "ba0d2313c28c7e80018eb3514be861947f8aa445c170a841e59a028f232b6275",
+      "bytes": 3610
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$2.class",
+      "sha256Bytes": "08b2cd1766437515f9ade218f70bc02a723dc45268da5c1e42422e7476a53423",
+      "bytes": 3631
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$20.class",
+      "sha256Bytes": "b2f1e94da3bca3bf77688aec73ce26b66d0ce30265d83f0a4cd2a94beae4b49e",
+      "bytes": 3780
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$21.class",
+      "sha256Bytes": "ec2293dc89c3e147be079dfefcb04f0242cc7be995c484c350904009d8743599",
+      "bytes": 2797
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$23.class",
+      "sha256Bytes": "e7043c6fd3ee34654c36761681130fa78f43813fcf1a94aed128a8d8cca6ab12",
+      "bytes": 3343
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$25.class",
+      "sha256Bytes": "db3ff5fc9bc88373ab1e66541be9f129f78d3822d948b92e12deb3a449537369",
+      "bytes": 3345
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$27.class",
+      "sha256Bytes": "f8a4d69df1f7997e81e7395f80a98f75f682f0b75bf345dd04e0ca1f3d54f601",
+      "bytes": 3345
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$30.class",
+      "sha256Bytes": "740dd56f2c86c6d78f322c453d5b3cc8520ff59b3ba71a7eb763f9ca575b01c7",
+      "bytes": 3346
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$31$1.class",
+      "sha256Bytes": "3a7dd62db739f056689de3fd70cc8fae9b676879af371864f933c75e189411c6",
+      "bytes": 3624
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$31.class",
+      "sha256Bytes": "8488e56466164eb4c985ced977e7d4394c05aa8f7e1d58a07b3b3e631d4cb193",
+      "bytes": 3723
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$6.class",
+      "sha256Bytes": "0b6b1972a6ee875cd3190929031e02120641738ff8db7e921283ed55873a3ed8",
+      "bytes": 3669
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$8.class",
+      "sha256Bytes": "ffcea8e9941688214715e31662c18db2af280f328cd6cf8a984410f724f3ac0e",
+      "bytes": 3669
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$invokeSuspend$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "31f77ed0d02365e22ccf8c61469d150829013b7e46587d51f6a98be800cea634",
+      "bytes": 2895
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1$ready$2.class",
+      "sha256Bytes": "3c2aa0456f625f4ffa408d66cb104ff8f4448e8308a719d568b21c7ba215ae84",
+      "bytes": 3898
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt$main$1.class",
+      "sha256Bytes": "1f73060e922b2015331a2407a6a59758d9076063cb720458fb390a1073a34fbe",
+      "bytes": 36590
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ReplySessionFixtureKt.class",
+      "sha256Bytes": "8ce0d10f86800f25c3342d2cb69f4fcbdd62c8378d5375f4b6ab80679521d66a",
+      "bytes": 7769
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ThreadWindowUiFixtureKt$main$1$1.class",
+      "sha256Bytes": "8b4927eaa7a7a3903fd839a57deb9ea905b0e01eef0fd6038d62c074e9020325",
+      "bytes": 6767
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ThreadWindowUiFixtureKt$main$1$2.class",
+      "sha256Bytes": "21e9d97ac6f855fabc722520f5db2312b0b2110107f256b4d24aa3f8000c7359",
+      "bytes": 5866
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ThreadWindowUiFixtureKt$main$1$binding$1.class",
+      "sha256Bytes": "5621efde99a7b3bf92155ade88093ef368f94e7d0f8f43263c1c0bd7e35656a5",
+      "bytes": 9952
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ThreadWindowUiFixtureKt$main$1$open$1.class",
+      "sha256Bytes": "127fdb1cff3e39aabb5642d5899cf6e45a5ccfed90db25de4dce4ef12a8f526b",
+      "bytes": 1799
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ThreadWindowUiFixtureKt$main$1.class",
+      "sha256Bytes": "327439045c15ec6002538ab36333f7fa8b2269f8cd2fc85b4404713e291fed79",
+      "bytes": 55861
+    },
+    {
+      "path": "classes-17\\com\\bilipai\\desktop\\ui\\ThreadWindowUiFixtureKt.class",
+      "sha256Bytes": "eefde909a5aa958d3819ddf048a6624ed6cd53036500135667003f7013fb3a6e",
+      "bytes": 1187
+    }
+  ]
+}

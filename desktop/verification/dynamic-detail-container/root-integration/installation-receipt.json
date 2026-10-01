@@ -1,0 +1,32 @@
+{
+  "installed": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail-container.py",
+      "sha256Bytes": "aa81541c070d3662bc1c187735d4335b5af2795de3e46107272b64069d0e8ed8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDetailWindow.kt",
+      "sha256Bytes": "f52b7be19ca2b9040ac4b31685ce8e6a9fef89999c55f3008afa2827f935e918"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDetailEffects.kt",
+      "sha256Bytes": "0d8da436f9e2a455eeec672e1b9b9c18cbd622a40d2bbc57f3424cbf42b71af5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentLayoutAdmission.kt",
+      "sha256Bytes": "8d55feb4df663a243bb9274a1b462aa97306b54e80ffaff33c27765e252a7043"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt",
+      "sha256Bytes": "a8a29f6e13040da29a919bc5b8404acc1e5600502ae1bff06261e8cbf6354837"
+    }
+  ],
+  "originalIdentities": 23,
+  "newIdentities": 18,
+  "existingIdentitiesMerged": 5,
+  "directSources": 7,
+  "selectedGeneratedSources": 17,
+  "registryCount": 620,
+  "actualMainCompile": false,
+  "actualMainConsumer": false
+}

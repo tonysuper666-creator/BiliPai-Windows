@@ -1,0 +1,16 @@
+{
+  "artifacts": [
+    {
+      "path": "correction.json",
+      "sha256Bytes": "ef592416d7f3e15cc3b5d5358ab4e8fc6eeada922af42a05c6af21223ca43159"
+    },
+    {
+      "path": "prior-ce9ac0-source-registry.json",
+      "sha256Bytes": "5a8221af94abf64c9c026dd59e03c0610d9e9028c5823531f6dfedeec4183a0b"
+    },
+    {
+      "path": "working-620-source-registry.json",
+      "sha256Bytes": "b78333540239a983113352c7edd8308c4dda5db85a6323b7414d222ee89f1e2d"
+    }
+  ]
+}

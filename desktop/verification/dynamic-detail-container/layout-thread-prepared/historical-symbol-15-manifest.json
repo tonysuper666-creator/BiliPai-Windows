@@ -1,0 +1,204 @@
+{
+  "acceptedPhase": "15",
+  "readOnlyProductReview": true,
+  "passed": true,
+  "actualSnapshotSha256Bytes": "4780b40c15bd0de96f01fe5f60086bd2e67684764d075d8af8f437a27b0887c5",
+  "productMethods": 75,
+  "baseSamePackageMethods": 943,
+  "classes": 127,
+  "fixtureEntrypointCollisionExplicitlyExcluded": true,
+  "phase16ByteVerification": false,
+  "artifactCount": 38,
+  "artifacts": [
+    {
+      "path": "audit-parent-symbols.py",
+      "length": 9283,
+      "sha256Bytes": "d6674d9773dc65e1cfe023445de4bb9aa9ea1e429c17cbf5d54f2b465981f1b8"
+    },
+    {
+      "path": "base-methods-15.txt",
+      "length": 1889290,
+      "sha256Bytes": "31f23d3686e111b624201bfc67586b6834ec76f2b7f34735d9ee66e910b1c265"
+    },
+    {
+      "path": "candidate-methods-15.txt",
+      "length": 110511,
+      "sha256Bytes": "79e171f5e14e0e2aaa245d33084b293516c1a48ef6a3e65f938f3f6043a112c6"
+    },
+    {
+      "path": "compile-evidence-15-retained.json",
+      "length": 45910,
+      "sha256Bytes": "a30ca4b17c26f7199e686727c0bce65dd2ddf57f512da2dbdea4d2a980c0695e"
+    },
+    {
+      "path": "first-observed-15-result.json",
+      "length": 52569,
+      "sha256Bytes": "a8c852ccbdb0c002daa87a107180e884450a19adcf40f47cfa92a6cc8874ab7b"
+    },
+    {
+      "path": "result-15.json",
+      "length": 64263,
+      "sha256Bytes": "5a70ff2c00757aa5274396f9e5b0f8719e3cea8ef2feb70306ea6f458cad9eca"
+    },
+    {
+      "path": "review.txt",
+      "length": 2852,
+      "sha256Bytes": "ef65787f1cb43e56e3894401d6473b2ca881aaa4b2c7652afe27e5c7b7f23175"
+    },
+    {
+      "path": "reviewed-parent-classes-15.jar",
+      "length": 1084009,
+      "sha256Bytes": "1f9ee50dadeac249a1225c16e8d8b70f547ec43491d3b22e83ef700c0607ad5f"
+    },
+    {
+      "path": "sources/DetailLayoutUiFixture.kt",
+      "length": 10090,
+      "sha256Bytes": "55620fa77dd50e5b45538a82e800556a7d83eb814bc529ec334a7b5969d6aec3"
+    },
+    {
+      "path": "sources/DetailRoutePagingUiFixture.kt",
+      "length": 6223,
+      "sha256Bytes": "460c5d41100cfea0695f6a47a6bf21a5721b4a1f9ec74dc3e4c1f450826d4970"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/store/DesktopOriginalDetailLiquidReusePolicy.kt",
+      "length": 368,
+      "sha256Bytes": "8a419b10edb90d8cada2fa79ca3211ba534e7beda9773b71338af603b813e157"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/ui/AdaptiveScaffoldPolicy.kt",
+      "length": 834,
+      "sha256Bytes": "e1664df7f427f25c38e8d550eb47881de006c77a89e44b2edeaaccd83bf18373"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt",
+      "length": 2836,
+      "sha256Bytes": "3aab501243a4abc00b75764da6ef46e99904463bb759f83e9aefaadad841d4e7"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/ui/blur/ProgressiveFade.kt",
+      "length": 4626,
+      "sha256Bytes": "9490b90cae37ae89482909fa9c4a37f9a01e00ea946b8b4127c57137f0f43ab1"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/ui/CommentWindowNavigation.kt",
+      "length": 879,
+      "sha256Bytes": "47f3601acf14409111ffbefee9119303e031c3fef85a650bc8a642d227a64b53"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/ui/DesktopOriginalDetailAdaptiveChrome.kt",
+      "length": 19609,
+      "sha256Bytes": "e272db226b385ea51bbc76573b2ea7430ea03ff57a0f10eaf216b00e62c5761c"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt",
+      "length": 16146,
+      "sha256Bytes": "fa8fee9ae67a8945182f3be06c40adc3a2dcf8aab1449a40200ee7d090aa3d51"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/ui/InteractiveOverlayProgressPolicy.kt",
+      "length": 1411,
+      "sha256Bytes": "29bf8a21bdce64916cae43f27cff33ab6992f4c92bbd0ca665d47da4a6df99dd"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/ui/SplitLayout.kt",
+      "length": 10374,
+      "sha256Bytes": "9386b0733944d3a0981da6972fbf83271267489e7c51c4cbde318912ee6de9aa"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/ui/TopReadabilityChromePolicy.kt",
+      "length": 2052,
+      "sha256Bytes": "0eb9efb64f029bc31b1fbdd0503029760e64ba9685b2af51111e01796ea06d93"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/ui/transition/DesktopOriginalDetailPredictiveBlurPolicy.kt",
+      "length": 2546,
+      "sha256Bytes": "96383b8c4eebee6e6d022accdcde2d028de3a0c60a789aa89e7f3a28947fd711"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/util/DesktopOriginalDetailDisplayModel.kt",
+      "length": 1533,
+      "sha256Bytes": "496e7576dffa0f1308af7f7d5ff8bf1a5cd62ca4e56d8a80d991fa15c891b823"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/util/DesktopOriginalDetailHingeModel.kt",
+      "length": 439,
+      "sha256Bytes": "adfc26a5d60cfa977ca19181f4e2a3bea55a706da5935e62ca46553656f4e6ac"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/util/DesktopOriginalDetailResponsiveWidth.kt",
+      "length": 1271,
+      "sha256Bytes": "2494e4a248c6c771002a50e32ba1b64c07acb4a100738f5276e81cb4869df925"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/core/util/DesktopOriginalDetailWindowModels.kt",
+      "length": 4425,
+      "sha256Bytes": "dfe006b44f8adc8dea5f8895ce1ebb7978bf55d02e2a685199b9ce3ef4107f78"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt",
+      "length": 3833,
+      "sha256Bytes": "5b366817459536ad8a27ebf5d4ee579843bc81a77003359ce14c89f081f5fc6c"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicDetailLayout.kt",
+      "length": 26950,
+      "sha256Bytes": "032511786d613fed0d77a0df62a1ee03e02b81d69226d91fa6e4e647c0c83790"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/feature/dynamic/DynamicLayoutPolicy.kt",
+      "length": 319,
+      "sha256Bytes": "53e3f48200e01071801d4d483f1c35530e2e5b051ba324289814fe8931671f96"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/feature/home/components/ProgressiveTopChrome.kt",
+      "length": 9782,
+      "sha256Bytes": "db870f318316e824f996ffb26e4ae0e04962764d65a1a66c0ae1e53422c712e6"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/feature/video/ui/components/CommentThreadDrag.kt",
+      "length": 6942,
+      "sha256Bytes": "c81b681f31e0c357e3ff29ec25aaf7668d9fbdc32bbd9a59569eb9c1cda4b343"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDetailInputPadding.kt",
+      "length": 944,
+      "sha256Bytes": "57c4c445287af562ee752ecfe623c07716cc75c7f6052f21718cfdffe67e07fe"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDetailThreadPolicies.kt",
+      "length": 599,
+      "sha256Bytes": "dabea13c4e763b2faa3a3c59fa6e53f0caea13b889487fa29604414088afecc5"
+    },
+    {
+      "path": "sources/generated/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt",
+      "length": 6163,
+      "sha256Bytes": "ad4dab5e895a4eacebefec7db35b211fa18e1687b85fee356fefa55fdb833c4b"
+    },
+    {
+      "path": "sources/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt",
+      "length": 2170,
+      "sha256Bytes": "a8a29f6e13040da29a919bc5b8404acc1e5600502ae1bff06261e8cbf6354837"
+    },
+    {
+      "path": "sources/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDetailEffects.kt",
+      "length": 918,
+      "sha256Bytes": "0d8da436f9e2a455eeec672e1b9b9c18cbd622a40d2bbc57f3424cbf42b71af5"
+    },
+    {
+      "path": "sources/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDetailWindow.kt",
+      "length": 2026,
+      "sha256Bytes": "f52b7be19ca2b9040ac4b31685ce8e6a9fef89999c55f3008afa2827f935e918"
+    },
+    {
+      "path": "sources/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentLayoutAdmission.kt",
+      "length": 534,
+      "sha256Bytes": "8d55feb4df663a243bb9274a1b462aa97306b54e80ffaff33c27765e252a7043"
+    },
+    {
+      "path": "sources/ThreadWindowUiFixture.kt",
+      "length": 8846,
+      "sha256Bytes": "82279bbd3d0af2457e9fdaea33d7fc95f6e2d26e0348a90416d7fc782760a2be"
+    }
+  ]
+}

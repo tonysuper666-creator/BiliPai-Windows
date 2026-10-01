@@ -1,0 +1,7 @@
+{
+  "phase": "precompile source extraction observer",
+  "failure": "Exact ownership expression assertion expected conjunctions in a different order from Root source; no product compilation or run occurred.",
+  "productBug": false,
+  "productionOverrides": false,
+  "nextAttemptChange": "Extract and compile the exact actual ownership expression, and select onDispose only within CommunityDynamicDetail."
+}

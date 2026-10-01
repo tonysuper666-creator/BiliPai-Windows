@@ -1,0 +1,1 @@
+{"passed":true,"proofs":["capture-before-clear","close-queued","pre-cancel","account-retired","generation-retired","close-in-flight"],"dispatchQueueActuallyDelayed":true,"originalPostingGateAbsentNoNewGate":true,"onlyOneSessionProductOverride":true,"MainConsumerAcceptance":false,"HTTP":false,"HWND":false}

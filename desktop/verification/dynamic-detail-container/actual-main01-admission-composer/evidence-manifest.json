@@ -1,0 +1,108 @@
+{
+  "artifactCount": 20,
+  "actualMain": true,
+  "productOverrides": [],
+  "MainConsumerAcceptance": false,
+  "artifacts": [
+    {
+      "path": "compile-02.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-evidence-02.json",
+      "sha256Bytes": "b6fff1fdd66e97a9e3f5aefa9eca29542526fd8784d50ea19b52b508b915e086",
+      "bytes": 36445
+    },
+    {
+      "path": "compile-main-fixtures.py",
+      "sha256Bytes": "84b0b30597c9e3533a77d18d3788a1283ecc3b44486d7bc44832a893a6c61891",
+      "bytes": 3189
+    },
+    {
+      "path": "compiler-02.args",
+      "sha256Bytes": "7a1d4784077ecb9ada12bb55e439614743924637a60c518fceb57b372f49eec0",
+      "bytes": 23739
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "f4f72b8ecdcea9c88a306ac8e1caf0b4df439e9a6eae36b8108812e2d88360ce",
+      "bytes": 33776
+    },
+    {
+      "path": "main-composer-result-02-classload.log",
+      "sha256Bytes": "126fdedda4ececfc3d273304a4f18a2c599f65e3fb158a21ca9c4fdb6cf68fcd",
+      "bytes": 1993999
+    },
+    {
+      "path": "main-composer-result-02.json",
+      "sha256Bytes": "82b8a66153e57f888eef492baca06e6a4f0748a9986c6e7a074c7164d7bed772",
+      "bytes": 737
+    },
+    {
+      "path": "main-composer-result-02.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main-post-admission-result-02-classload.log",
+      "sha256Bytes": "79ad431151facee8b6878d15ed6c5289fd580878f5e4a338db05f98d63e0e823",
+      "bytes": 375522
+    },
+    {
+      "path": "main-post-admission-result-02.json",
+      "sha256Bytes": "6dec383f922b17b6938e74a9da91b4a96a752343fc0461faffe8a532228a7d1e",
+      "bytes": 526
+    },
+    {
+      "path": "main-post-admission-result-02.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "run-main-fixture.py",
+      "sha256Bytes": "1348ec11b8476190488e7277a75fec19867502d7fd6e7b5f920d539e2a8a8170",
+      "bytes": 1602
+    },
+    {
+      "path": "same-owner-main-normal-layout.png",
+      "sha256Bytes": "db931bc0a0d3abe833cf172d916a7435dc13af5084158bc09625906c2202c425",
+      "bytes": 26187
+    },
+    {
+      "path": "SCOPE.txt",
+      "sha256Bytes": "432cab9b99e376451c5cece94ed16d35062e15c37653b97e30a93b62873818ec",
+      "bytes": 1095
+    },
+    {
+      "path": "fixtures/ComposerHelpersFixture.kt",
+      "sha256Bytes": "7c44b1478f10cd660bbe0e1cc833d8c58bb5da153fd6504683caba52dc98b0ea",
+      "bytes": 3256
+    },
+    {
+      "path": "fixtures/ComposerSessionUiFixture.kt",
+      "sha256Bytes": "8a17200d06184cc650a417a7d8db7cd65cb88fd0dc3ca8d0d6c875ff8cf73187",
+      "bytes": 5116
+    },
+    {
+      "path": "fixtures/LayoutHelpersFixture.kt",
+      "sha256Bytes": "f407ccec7814655c6f50b2e2d86897e0c13881c5182de9df53bdb13a4b28810b",
+      "bytes": 4214
+    },
+    {
+      "path": "fixtures/PostAdmissionFixture.kt",
+      "sha256Bytes": "552058436bba074b7eaf9267b09a0742ebab2bc847759c1e0beb88a18f8c68e0",
+      "bytes": 3731
+    },
+    {
+      "path": "fixtures/ReplySessionFixture.kt",
+      "sha256Bytes": "0e84448573e77259cfbda80a4f68448fadad291c425990a321a6dd9cec688311",
+      "bytes": 10068
+    },
+    {
+      "path": "history/first-main-post-result-inaccurate-old-override-label.json",
+      "sha256Bytes": "d60fc3909ae22ce01d754d246e758c8d3984d52d5cb9f42f5ad85b130bf15861",
+      "bytes": 306
+    }
+  ]
+}

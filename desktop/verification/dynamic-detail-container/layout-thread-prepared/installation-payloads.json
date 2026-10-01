@@ -1,0 +1,47 @@
+{
+  "sourceOnly": true,
+  "payloads": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt",
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt",
+      "sha256Bytes": "a8a29f6e13040da29a919bc5b8404acc1e5600502ae1bff06261e8cbf6354837",
+      "bytes": 2170,
+      "operation": "newSourceFile"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDetailEffects.kt",
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDetailEffects.kt",
+      "sha256Bytes": "0d8da436f9e2a455eeec672e1b9b9c18cbd622a40d2bbc57f3424cbf42b71af5",
+      "bytes": 918,
+      "operation": "newSourceFile"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDetailWindow.kt",
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDetailWindow.kt",
+      "sha256Bytes": "f52b7be19ca2b9040ac4b31685ce8e6a9fef89999c55f3008afa2827f935e918",
+      "bytes": 2026,
+      "operation": "newSourceFile"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentLayoutAdmission.kt",
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentLayoutAdmission.kt",
+      "sha256Bytes": "8d55feb4df663a243bb9274a1b462aa97306b54e80ffaff33c27765e252a7043",
+      "bytes": 534,
+      "operation": "newSourceFile"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-dynamic-detail-container.py",
+      "source": "prepared/desktop/tools/extract-upstream-dynamic-detail-container.py",
+      "sha256Bytes": "aa81541c070d3662bc1c187735d4335b5af2795de3e46107272b64069d0e8ed8",
+      "bytes": 22979,
+      "operation": "newSourceFile"
+    }
+  ],
+  "RootFilesNotOverwritten": [
+    "DesktopShell.kt",
+    "CommunityDynamicScreens.kt",
+    "DesktopOriginalDynamicCardHost.kt",
+    "build.gradle.kts",
+    "upstream-sources.json"
+  ]
+}

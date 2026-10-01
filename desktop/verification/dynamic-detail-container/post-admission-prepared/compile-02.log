@@ -1,0 +1,12 @@
+desktop\.local\dynamic-detail-reply-parity\detail-container-next\liquid-ui-proof\generated\com\android\purebilibili\core\ui\DesktopOriginalDetailAdaptiveChrome.kt:395:44: warning: 'fun largeTopAppBarColors(containerColor: Color = ..., scrolledContainerColor: Color = ..., navigationIconContentColor: Color = ..., titleContentColor: Color = ..., actionIconContentColor: Color = ...): TopAppBarColors' is deprecated. Use topAppBarColors instead.
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                                           ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-detail-reply-parity\detail-container-next\liquid-ui-proof\generated\com\android\purebilibili\core\ui\DesktopOriginalDetailAppSheetComponents.kt:229:30: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+    sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-detail-reply-parity\detail-container-next\liquid-ui-proof\post-admission-delta\patched-generated\com\android\purebilibili\feature\dynamic\DesktopOriginalDynamicReplySession.kt:548:49: warning: unnecessary safe call on a non-null receiver of type 'DynamicCommentTarget'.
+                    target?.oid != oid || target?.type != type || current.sortMode != sortMode
+                                                ^^
+desktop\.local\dynamic-detail-reply-parity\detail-container-next\liquid-ui-proof\post-admission-delta\patched-generated\com\android\purebilibili\feature\dynamic\DesktopOriginalDynamicReplySession.kt:579:49: warning: unnecessary safe call on a non-null receiver of type 'DynamicCommentTarget'.
+                    target?.oid != oid || target?.type != type
+                                                ^^

@@ -1,0 +1,194 @@
+[
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveChrome.kt",
+    "sha256": "0f74b73b447149b3ad44011ad55ba0bf3ac6338b08392ba7f858459e132f1ecb",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChrome.kt",
+    "note": "Reuse the two existing Main locals; Android configuration width is measured desktop width."
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveScaffoldPolicy.kt",
+    "sha256": "520d1a4ec22d77c9a7460cd647a37e35603eb85980c21bf63ddb9cb433a5769f",
+    "mode": "direct",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\ui\\AdaptiveScaffoldPolicy.kt",
+    "note": ""
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/TopReadabilityChromePolicy.kt",
+    "sha256": "21687f91a4d37f999584d0390f40c19a8e321a98700f7a5ddf727a80a9ce655d",
+    "mode": "direct",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\ui\\TopReadabilityChromePolicy.kt",
+    "note": ""
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/WindowSizeUtils.kt",
+    "sha256": "cda5b8ae2ba18958739f2d51648683ed33150cec4c1db70b5c232005bd140c62",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailWindowModels.kt",
+    "note": "WindowWidthSizeClass and width resolver are reused from Main. Actual host always provides measured width/height; no Android device/posture query."
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/HingeLayoutPolicy.kt",
+    "sha256": "8d1ab46276cf63d495ec59fbe95ebe8b80133429fdc61df8b76a586dbeb490b0",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailHingeModel.kt",
+    "note": ""
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/FoldableDisplayPolicy.kt",
+    "sha256": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailDisplayModel.kt",
+    "note": ""
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/SplitLayout.kt",
+    "sha256": "2924e5780b81121ac7b1f29185592ea1993942ba66b1fd04ae5a42868dc7b5fc",
+    "mode": "direct",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\ui\\SplitLayout.kt",
+    "note": "Reuse sole Main AppAdaptiveSplitLayout low-level renderer."
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentThreadDrag.kt",
+    "sha256": "3b17ce78c1b7152bc71356fa7a4a700821da360ad6f08a69d265092f8dac76e0",
+    "mode": "direct",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentThreadDrag.kt",
+    "note": ""
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+    "sha256": "2e3005bb927f08d2cb6c07a32efb7ee11fa6eda69f926bf29cd6cca1e9eea614",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDetailThreadPolicies.kt",
+    "note": ""
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt",
+    "sha256": "17a23b65ab40c3bf5f53616f71d6f49fa8aa3adf58d72d7568767eb220aaaa97",
+    "mode": "direct",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\ui\\blur\\ChromeBackdropSource.kt",
+    "note": ""
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/blur/ProgressiveFade.kt",
+    "sha256": "e24dd56d3dca6ab9380cf7a8534c55d02bd777cb6b1a11d5c7b1b609c7ad3d9b",
+    "mode": "direct",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\ui\\blur\\ProgressiveFade.kt",
+    "note": ""
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/ProgressiveTopChrome.kt",
+    "sha256": "1606d3bdd5cc7929a48f20503e34cd5a34549519df9b67406b27f337ebcfdc4d",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChrome.kt",
+    "note": "Android SDK gate is replaced by actual Compose RenderEffect.isSupported; the original shader/shape/fade body is unchanged. HWND/GPU is not proved by this gate."
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/ImmersiveAppScaffold.kt",
+    "sha256": "c31adedd26627ea3ac60a0d551dbcd69d18b7e1ac0aa593f66b2dea244b47e71",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\ui\\ImmersiveAppScaffold.kt",
+    "note": "Android BackgroundManager/API recreation becomes required actual desktop foreground binding. Original readiness/priorities/background/sample separation are retained."
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/WindowSizeUtils.kt",
+    "sha256": "cda5b8ae2ba18958739f2d51648683ed33150cec4c1db70b5c232005bd140c62",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailResponsiveWidth.kt",
+    "note": ""
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicLayoutPolicy.kt",
+    "sha256": "220eebe0235247bef47940cb6192652edeb19031ff89503c6bc72465d96f80f9",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\feature\\dynamic\\DynamicLayoutPolicy.kt",
+    "note": ""
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt",
+    "sha256": "11bded8eb078551356ee7c392102810f6703552786074e5574a751d1d5b2f4c4",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDetailInputPadding.kt",
+    "note": ""
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/HomeSettingsUiPresetPolicy.kt",
+    "sha256": "7cba90be328190cd3965923b19836c7e6c9ce241678f0b19ffef5308f3e7e4ec",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalDetailLiquidReusePolicy.kt",
+    "note": ""
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/PredictiveBackBackgroundPolicy.kt",
+    "sha256": "91e865c640c91c5c4d83d0e033fac3a42cda407bdae6a83821e6df9049f3f632",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\ui\\transition\\DesktopOriginalDetailPredictiveBlurPolicy.kt",
+    "note": "Original quantum/radius/math; Android API gate becomes actual Compose support check."
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+    "sha256": "eb0eefcbfb12d5ee5e06d312095797fcf67cbf7264fb32040cd4391f38d1d0cf",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicDetailLayout.kt",
+    "note": "Original screen success layout/top bar. Card action ownership remains the existing Main host. Modal and liquid material are separately declared closure dependencies."
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt",
+    "sha256": "1fba4ec1e5765b3c27672cf9e2bb34fcc2b44efe44431afef96290891a13df53",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAppSheetComponents.kt",
+    "note": "Original two-style neutral M3 host/body/layout/motion. Android LocalView is a fresh task-owned desktop dialog navigation input; actual measured window metrics are used."
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/InteractiveOverlayProgressPolicy.kt",
+    "sha256": "1c606f24c69be1dada917e8875a8580f1829764457bfb2849dc85dcb92ef1065",
+    "mode": "direct",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\ui\\InteractiveOverlayProgressPolicy.kt",
+    "note": ""
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/CommentWindowNavigation.kt",
+    "sha256": "31d4d3ca4c3f9e2bb35b70cc4f4cf03b542c92e3e62ca785a1f8a2cb4ec15a1b",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\core\\ui\\CommentWindowNavigation.kt",
+    "note": "Same owner is provided only within the modal input host, never the underlying route dispatcher."
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt",
+    "sha256": "67d3e57c804671f100f3294048296e87aafd287035294aa455df5e6eca9934bc",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\SubReplySheet.kt",
+    "note": "Entire source subtree is keyed by real root rpid to retire the old rememberCoroutineScope and derived offsets together."
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt",
+    "sha256": "0fe88ebb6855f0eab997c334eb2e75e8a10423d948259fed50d38acc2d69acad",
+    "mode": "selected-platform-adapt",
+    "feature": "dynamic-detail-container",
+    "output": "generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DynamicSubReplyPreviewHost.kt",
+    "note": "Reuses the same existing card/session emote catalog, with cancellation and post-await owner validation."
+  }
+]

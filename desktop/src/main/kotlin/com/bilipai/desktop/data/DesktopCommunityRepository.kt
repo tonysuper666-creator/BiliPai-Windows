@@ -34,6 +34,9 @@ class DesktopCommunityRepository(private val repository: DesktopRepository,
     private val heartbeatReporter by lazy { DesktopPlaybackHeartbeatReporter(repository, searchPreferences) }
     private val articleHistoryReporter by lazy { DesktopArticleHistoryReporter(repository, searchPreferences) }
 
+    internal suspend fun reportDynamicArticleView(articleId: Long, expectedEpoch: Long, expectedMid: Long?): Boolean =
+        articleHistoryReporter.report(articleId, expectedEpoch, expectedMid)
+
     suspend fun reportPlayHeartbeat(bvid: String, cid: Long, playedTimeSec: Long = 0,
         realPlayedTimeSec: Long = playedTimeSec, startTsSec: Long = System.currentTimeMillis() / 1000,
         aid: Long = 0, epid: Long = 0, sid: Long = 0, videoType: Int = 3, subType: Int? = null,

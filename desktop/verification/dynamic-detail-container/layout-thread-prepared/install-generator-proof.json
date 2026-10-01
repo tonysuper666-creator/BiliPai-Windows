@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "sourceOnlyProducer": "prepared\\desktop\\tools\\extract-upstream-dynamic-detail-container.py",
+  "producerSha256Bytes": "aa81541c070d3662bc1c187735d4335b5af2795de3e46107272b64069d0e8ed8",
+  "generatedStandalone": 24,
+  "generatedProduction": 17,
+  "directCopiedOnceByRegistry": 7,
+  "standaloneOutputBytesEqualPrepared": true,
+  "MainWritten": false,
+  "sharedGradle": false
+}

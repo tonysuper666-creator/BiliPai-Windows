@@ -1,0 +1,29 @@
+Focused result: actual Main PNG final target commit PASS; long-route QR not accepted.
+
+Accepted run: runs/05 (29 assertions / 9 cases).
+Real Main snapshot: desktop/.local/dynamic-detail-container-main-integration/main-product-snapshot-02.
+Manifest: f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17.
+89 ordered CP: be8a62821f74e73653ed2354afbb1de3d6ec8236db68f056328a482a5e0f4d9d.
+Source body extraction receipt: runs/05/source-extraction.json.
+No production classes in fixture jar overlap any of the actual 89 CP entries.
+
+Actual original spec/render, actual writer/ImageIO/Files movement, actual Store
+and CardSession run. Root owner/gate/dispose expressions are byte-preserving
+test-only extraction with task fields. Real CommunityDynamicDetail composition,
+remember and native chooser are not executed. Snapshot02 capture fix is pin-checked.
+
+Lock order: Store monitor -> page exportOwnerLock -> actual writer's final move.
+Dispose takes only page lock to alive=false, releases it, then closes original
+reply Session and cancels page scope. No opposite Store acquisition is introduced.
+Cancellation is rechecked by actual writer owned() in its final commit callback.
+File scope evidence verifies real monitor waiting before epoch replacement and
+same-owner job cancellation, as well as page lock waiting before original disposal.
+
+Boundary: original footer URL can corrupt the QR for the declared oid123/rpid621
+route. Keep accepted file-commit result distinct from actualPNGQRReadback=false.
+Do not change pinned renderer just to make this evidence pass. Review an explicit
+original-layout platform adaptation later if Root chooses to resolve it.
+
+No artifact from this lane should be installed as production. Raw verification
+and task fixtures may be committed as evidence; compiled fixture jars/private
+runtime homes are excluded from the raw freeze. No real Cookie or account used.

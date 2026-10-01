@@ -1,0 +1,459 @@
+{
+  "actualMainSnapshotSha256Bytes": "8286563186e5d5be2495a598e1e32fb15091b7a459a5bbbc3d7e65243557e290",
+  "actualOrderedCpSha256Bytes": "06316248361f2fae9d8eb53976ba1dc6936c5bd6416f98d2b6026c207ef9a217",
+  "originalAndroidDeclared": "androidx.navigationevent:navigationevent-compose:1.0.2",
+  "originalBuildLfSha256": "0f53a2c85495bffe2edffb52415fa6756fa9da6e90cb625215c6add8a1048a84",
+  "actual89ContainsThese3WithoutTaskExtraCp": true,
+  "records": [
+    {
+      "jarPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.navigationevent\\navigationevent-desktop\\1.1.2\\10a65e605d90c6dc98f3de9d32ae32824a7d0a1f\\navigationevent-desktop-1.1.2.jar",
+      "jarSha256Bytes": "4c92508d4bd3b9cafb2785e8211057d39ed8465b529660223864a19625cedb5b",
+      "jarBytes": 45586,
+      "metadata": [
+        {
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.navigationevent\\navigationevent-desktop\\1.1.2\\e6d37638107ffa8a9406327ed7b0bde3e41ae78e\\navigationevent-desktop-1.1.2.pom",
+          "retained": "metadata\\navigationevent-desktop-1.1.2.pom",
+          "sha256Bytes": "06cdd8520ae97fb476a83199d758e3e5e44395d512161dd1f42e1fd6071d4452",
+          "licenseDeclarations": [
+            {
+              "name": "The Apache Software License, Version 2.0",
+              "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+          ],
+          "dependencies": [
+            {
+              "groupId": "androidx.annotation",
+              "artifactId": "annotation-jvm",
+              "version": "1.9.1",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.kotlin",
+              "artifactId": "kotlin-stdlib",
+              "version": "2.1.20",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.kotlinx",
+              "artifactId": "kotlinx-coroutines-core",
+              "version": "1.9.0",
+              "scope": "runtime"
+            },
+            {
+              "groupId": "androidx.collection",
+              "artifactId": "collection-jvm",
+              "version": "1.5.0",
+              "scope": "runtime"
+            },
+            {
+              "groupId": "androidx.compose.runtime",
+              "artifactId": "runtime-annotation-jvm",
+              "version": "1.9.0",
+              "scope": "compile"
+            }
+          ]
+        },
+        {
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.navigationevent\\navigationevent-desktop\\1.1.2\\f041ef435677dbf923f24a7a1d8b0c67225b0e14\\navigationevent-desktop-1.1.2.module",
+          "retained": "metadata\\navigationevent-desktop-1.1.2.module",
+          "sha256Bytes": "66a28aad0f2f2a88650bc8a373e912375509e07eeabd23849f0beb9bfbf8d036",
+          "variants": [
+            {
+              "name": "desktopApiElements-published",
+              "attributes": {
+                "org.gradle.category": "library",
+                "org.gradle.jvm.environment": "standard-jvm",
+                "org.gradle.libraryelements": "jar",
+                "org.gradle.usage": "java-api",
+                "org.jetbrains.kotlin.platform.type": "jvm"
+              },
+              "dependencies": [
+                {
+                  "group": "androidx.annotation",
+                  "module": "annotation",
+                  "version": {
+                    "requires": "1.9.1"
+                  }
+                },
+                {
+                  "group": "androidx.compose.runtime",
+                  "module": "runtime-annotation",
+                  "version": {
+                    "requires": "1.9.0"
+                  }
+                },
+                {
+                  "group": "org.jetbrains.kotlin",
+                  "module": "kotlin-stdlib",
+                  "version": {
+                    "requires": "2.1.20"
+                  }
+                }
+              ],
+              "availableAt": null
+            },
+            {
+              "name": "desktopRuntimeElements-published",
+              "attributes": {
+                "org.gradle.category": "library",
+                "org.gradle.jvm.environment": "standard-jvm",
+                "org.gradle.libraryelements": "jar",
+                "org.gradle.usage": "java-runtime",
+                "org.jetbrains.kotlin.platform.type": "jvm"
+              },
+              "dependencies": [
+                {
+                  "group": "androidx.annotation",
+                  "module": "annotation",
+                  "version": {
+                    "requires": "1.9.1"
+                  }
+                },
+                {
+                  "group": "androidx.collection",
+                  "module": "collection",
+                  "version": {
+                    "requires": "1.5.0"
+                  }
+                },
+                {
+                  "group": "androidx.compose.runtime",
+                  "module": "runtime-annotation",
+                  "version": {
+                    "requires": "1.9.0"
+                  }
+                },
+                {
+                  "group": "org.jetbrains.kotlin",
+                  "module": "kotlin-stdlib",
+                  "version": {
+                    "requires": "2.1.20"
+                  }
+                },
+                {
+                  "group": "org.jetbrains.kotlinx",
+                  "module": "kotlinx-coroutines-core",
+                  "version": {
+                    "requires": "1.9.0"
+                  }
+                }
+              ],
+              "availableAt": null
+            },
+            {
+              "name": "desktopSourcesElements-published",
+              "attributes": {
+                "org.gradle.category": "documentation",
+                "org.gradle.dependency.bundling": "external",
+                "org.gradle.docstype": "sources",
+                "org.gradle.jvm.environment": "standard-jvm",
+                "org.gradle.libraryelements": "jar",
+                "org.gradle.usage": "java-runtime",
+                "org.jetbrains.kotlin.platform.type": "jvm"
+              },
+              "dependencies": null,
+              "availableAt": null
+            }
+          ]
+        }
+      ],
+      "embeddedLicensesAndNotices": [
+        {
+          "jarEntry": "META-INF/androidx/navigationevent/navigationevent/LICENSE.txt",
+          "retained": "licenses\\navigationevent-desktop-1.1.2.jar-META-INF_androidx_navigationevent_navigationevent_LICENSE.txt",
+          "sha256Bytes": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+        }
+      ],
+      "jarCopied": false
+    },
+    {
+      "jarPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.navigationevent\\navigationevent-compose-desktop\\1.1.0\\d4c4408fbc6ac4dbddaef91d82013f435c02a9c5\\navigationevent-compose-desktop-1.1.0.jar",
+      "jarSha256Bytes": "0514f5d5c14de3b422c48a4eaf1d9dd2ce265041339e4c51ce30db8da1690874",
+      "jarBytes": 4677,
+      "metadata": [
+        {
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.navigationevent\\navigationevent-compose-desktop\\1.1.0\\d40eff50633f7c3f63f2c26684b48b75224923e3\\navigationevent-compose-desktop-1.1.0.pom",
+          "retained": "metadata\\navigationevent-compose-desktop-1.1.0.pom",
+          "sha256Bytes": "6f20273d595b0c5609e9ce0249a17d7a86b1c8684bb1cfda21ad1a7c95329115",
+          "licenseDeclarations": [
+            {
+              "name": "The Apache Software License, Version 2.0",
+              "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+          ],
+          "dependencies": [
+            {
+              "groupId": "androidx.navigationevent",
+              "artifactId": "navigationevent-compose-desktop",
+              "version": "1.1.1",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.compose.runtime",
+              "artifactId": "runtime-desktop",
+              "version": "1.11.0",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.kotlin",
+              "artifactId": "kotlin-stdlib",
+              "version": "2.2.20",
+              "scope": "compile"
+            }
+          ]
+        },
+        {
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.navigationevent\\navigationevent-compose-desktop\\1.1.0\\dbfa952d2ec137e8225a48d20e46300c4183e41d\\navigationevent-compose-desktop-1.1.0.module",
+          "retained": "metadata\\navigationevent-compose-desktop-1.1.0.module",
+          "sha256Bytes": "4d193565640141c716eaabe347625f7d27a96af30268e3da34d2f668a10004bb",
+          "variants": [
+            {
+              "name": "desktopApiElements-published",
+              "attributes": {
+                "org.gradle.category": "library",
+                "org.gradle.jvm.environment": "standard-jvm",
+                "org.gradle.libraryelements": "jar",
+                "org.gradle.usage": "java-api",
+                "org.jetbrains.kotlin.platform.type": "jvm"
+              },
+              "dependencies": [
+                {
+                  "group": "androidx.navigationevent",
+                  "module": "navigationevent-compose",
+                  "version": {
+                    "requires": "1.1.1"
+                  }
+                },
+                {
+                  "group": "org.jetbrains.compose.runtime",
+                  "module": "runtime",
+                  "version": {
+                    "requires": "1.11.0"
+                  }
+                },
+                {
+                  "group": "org.jetbrains.kotlin",
+                  "module": "kotlin-stdlib",
+                  "version": {
+                    "requires": "2.2.20"
+                  }
+                }
+              ],
+              "availableAt": null
+            },
+            {
+              "name": "desktopRuntimeElements-published",
+              "attributes": {
+                "org.gradle.category": "library",
+                "org.gradle.jvm.environment": "standard-jvm",
+                "org.gradle.libraryelements": "jar",
+                "org.gradle.usage": "java-runtime",
+                "org.jetbrains.kotlin.platform.type": "jvm"
+              },
+              "dependencies": [
+                {
+                  "group": "androidx.navigationevent",
+                  "module": "navigationevent-compose",
+                  "version": {
+                    "requires": "1.1.1"
+                  }
+                },
+                {
+                  "group": "org.jetbrains.compose.runtime",
+                  "module": "runtime",
+                  "version": {
+                    "requires": "1.11.0"
+                  }
+                },
+                {
+                  "group": "org.jetbrains.kotlin",
+                  "module": "kotlin-stdlib",
+                  "version": {
+                    "requires": "2.2.20"
+                  }
+                }
+              ],
+              "availableAt": null
+            },
+            {
+              "name": "desktopSourcesElements-published",
+              "attributes": {
+                "org.gradle.category": "documentation",
+                "org.gradle.dependency.bundling": "external",
+                "org.gradle.docstype": "sources",
+                "org.gradle.jvm.environment": "standard-jvm",
+                "org.gradle.libraryelements": "jar",
+                "org.gradle.usage": "java-runtime",
+                "org.jetbrains.kotlin.platform.type": "jvm"
+              },
+              "dependencies": null,
+              "availableAt": null
+            }
+          ]
+        }
+      ],
+      "embeddedLicensesAndNotices": [
+        {
+          "jarEntry": "META-INF/androidx/navigationevent/navigationevent-compose/LICENSE.txt",
+          "retained": "licenses\\navigationevent-compose-desktop-1.1.0.jar-META-INF_androidx_navigationevent_navigationevent-compose_LICENSE.txt",
+          "sha256Bytes": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+        }
+      ],
+      "jarCopied": false
+    },
+    {
+      "jarPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.navigationevent\\navigationevent-compose-desktop\\1.1.2\\ef8d1270c6439178474691b1886e2c3dc97f9ce\\navigationevent-compose-desktop-1.1.2.jar",
+      "jarSha256Bytes": "1d7d20d7826a2cc63ace9862cddd8a7085a11a3ea2cff258c28b3d58e57f143b",
+      "jarBytes": 31752,
+      "metadata": [
+        {
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.navigationevent\\navigationevent-compose-desktop\\1.1.2\\1461eba71ab26ff88c5f0d83a130e014c1921262\\navigationevent-compose-desktop-1.1.2.pom",
+          "retained": "metadata\\navigationevent-compose-desktop-1.1.2.pom",
+          "sha256Bytes": "8240c5b98f74067d4426254530879886efc9bbdd733c33ba96bb128b1177265e",
+          "licenseDeclarations": [
+            {
+              "name": "The Apache Software License, Version 2.0",
+              "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+          ],
+          "dependencies": [
+            {
+              "groupId": "androidx.compose.runtime",
+              "artifactId": "runtime-desktop",
+              "version": "1.11.2",
+              "scope": "compile"
+            },
+            {
+              "groupId": "androidx.navigationevent",
+              "artifactId": "navigationevent-desktop",
+              "version": "[1.1.2]",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.kotlin",
+              "artifactId": "kotlin-stdlib",
+              "version": "2.1.20",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.kotlinx",
+              "artifactId": "kotlinx-coroutines-core",
+              "version": "1.9.0",
+              "scope": "runtime"
+            }
+          ]
+        },
+        {
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.navigationevent\\navigationevent-compose-desktop\\1.1.2\\1ed8e6a1f134e1997f6d2c2acf22ed834d80af4a\\navigationevent-compose-desktop-1.1.2.module",
+          "retained": "metadata\\navigationevent-compose-desktop-1.1.2.module",
+          "sha256Bytes": "b4472a1efec47663dcce7cee65469910781eb54129e10aac8ed161a2721ff411",
+          "variants": [
+            {
+              "name": "desktopApiElements-published",
+              "attributes": {
+                "org.gradle.category": "library",
+                "org.gradle.jvm.environment": "standard-jvm",
+                "org.gradle.libraryelements": "jar",
+                "org.gradle.usage": "java-api",
+                "org.jetbrains.kotlin.platform.type": "jvm"
+              },
+              "dependencies": [
+                {
+                  "group": "androidx.compose.runtime",
+                  "module": "runtime",
+                  "version": {
+                    "requires": "1.11.2"
+                  }
+                },
+                {
+                  "group": "androidx.navigationevent",
+                  "module": "navigationevent",
+                  "version": {
+                    "requires": "1.1.2"
+                  }
+                },
+                {
+                  "group": "org.jetbrains.kotlin",
+                  "module": "kotlin-stdlib",
+                  "version": {
+                    "requires": "2.1.20"
+                  }
+                }
+              ],
+              "availableAt": null
+            },
+            {
+              "name": "desktopRuntimeElements-published",
+              "attributes": {
+                "org.gradle.category": "library",
+                "org.gradle.jvm.environment": "standard-jvm",
+                "org.gradle.libraryelements": "jar",
+                "org.gradle.usage": "java-runtime",
+                "org.jetbrains.kotlin.platform.type": "jvm"
+              },
+              "dependencies": [
+                {
+                  "group": "androidx.compose.runtime",
+                  "module": "runtime",
+                  "version": {
+                    "requires": "1.11.2"
+                  }
+                },
+                {
+                  "group": "androidx.navigationevent",
+                  "module": "navigationevent",
+                  "version": {
+                    "requires": "1.1.2"
+                  }
+                },
+                {
+                  "group": "org.jetbrains.kotlin",
+                  "module": "kotlin-stdlib",
+                  "version": {
+                    "requires": "2.1.20"
+                  }
+                },
+                {
+                  "group": "org.jetbrains.kotlinx",
+                  "module": "kotlinx-coroutines-core",
+                  "version": {
+                    "requires": "1.9.0"
+                  }
+                }
+              ],
+              "availableAt": null
+            },
+            {
+              "name": "desktopSourcesElements-published",
+              "attributes": {
+                "org.gradle.category": "documentation",
+                "org.gradle.dependency.bundling": "external",
+                "org.gradle.docstype": "sources",
+                "org.gradle.jvm.environment": "standard-jvm",
+                "org.gradle.libraryelements": "jar",
+                "org.gradle.usage": "java-runtime",
+                "org.jetbrains.kotlin.platform.type": "jvm"
+              },
+              "dependencies": null,
+              "availableAt": null
+            }
+          ]
+        }
+      ],
+      "embeddedLicensesAndNotices": [
+        {
+          "jarEntry": "META-INF/androidx/navigationevent/navigationevent-compose/LICENSE.txt",
+          "retained": "licenses\\navigationevent-compose-desktop-1.1.2.jar-META-INF_androidx_navigationevent_navigationevent-compose_LICENSE.txt",
+          "sha256Bytes": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+        }
+      ],
+      "jarCopied": false
+    }
+  ],
+  "minimumNormalMainDependency": "implementation(\"androidx.navigationevent:navigationevent-compose:1.1.2\")",
+  "reason": "Direct nav API used by Main sources requires compile exposure; earlier isolated compiler used actual runtimeCP already containing nav3 through M3 runtime graph.",
+  "licenseScope": "Official cached POM Apache-2.0 declaration; any embedded license separately captured. No fetched license text claim.",
+  "MainEdits": false,
+  "sharedGradle": false,
+  "newFixtureRuns": false
+}

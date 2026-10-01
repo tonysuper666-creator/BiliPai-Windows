@@ -1,0 +1,16 @@
+{
+  "baseSha256Bytes": "b4fb708e2ca2e8fd13795ed72bca444fa2bbb1a3cd85857ab4b7a6bdc765ec73",
+  "desiredSha256Bytes": "f93d88d47e87a418b41cc3217a759210a0a2d94cbe33325c3d713e9724e04004",
+  "originalPostHasPostingStateOrAdmissionGate": false,
+  "existingMainProductOverrides": [
+    {
+      "path": "patched-generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicReplySession.kt",
+      "sha256Bytes": "6121926c5f3bbc259a527cdd14542266cd84128b7319bd8219bac17e4785bba4",
+      "reason": "Only immutable original replyTarget admission plus isOwned; readonly selectedCommentTarget current Root getter retained"
+    }
+  ],
+  "otherGeneratedBodiesUnchanged": true,
+  "originalComposerOrderUnchanged": true,
+  "originalRequestAlgorithmAndSubjectResolutionUnchanged": true,
+  "MainWrites": false
+}

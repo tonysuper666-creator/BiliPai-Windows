@@ -1,0 +1,12 @@
+desktop\.local\dynamic-detail-reply-parity\detail-container-next\ChromeReadinessFixture.kt:46:76: warning: unnecessary safe call on a non-null receiver of type 'ChromeBackdropSource'.
+        ui.await("actual graphics-layer record publishes readiness"){source?.isReady==true}
+                                                                           ^^
+desktop\.local\dynamic-detail-reply-parity\detail-container-next\ChromeReadinessFixture.kt:54:21: warning: unnecessary safe call on a non-null receiver of type 'ChromeBackdropSource'.
+        check(source?.isReady==true){"Fixture changed the recorded source instead of testing foreground admission"}
+                    ^^
+desktop\.local\dynamic-detail-reply-parity\detail-container-next\generated\com\android\purebilibili\core\ui\DesktopOriginalDetailAdaptiveChrome.kt:395:44: warning: 'fun largeTopAppBarColors(containerColor: Color = ..., scrolledContainerColor: Color = ..., navigationIconContentColor: Color = ..., titleContentColor: Color = ..., actionIconContentColor: Color = ...): TopAppBarColors' is deprecated. Use topAppBarColors instead.
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                                           ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-detail-reply-parity\detail-container-next\generated\com\android\purebilibili\core\ui\DesktopOriginalDetailAppSheetComponents.kt:229:30: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+    sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -33,3 +33,4 @@ desktop/verification/dynamic-resource-navigation/** -text
 
 desktop/verification/dynamic-follow/** -text
 desktop/verification/dynamic-detail-reply/** -text
+desktop/verification/dynamic-detail-container/** -text

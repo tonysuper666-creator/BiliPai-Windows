@@ -1,0 +1,130 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../navigationevent-compose/1.1.0/navigationevent-compose-1.1.0.module",
+    "group": "org.jetbrains.androidx.navigationevent",
+    "module": "navigationevent-compose",
+    "version": "1.1.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.4.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "desktopApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.navigationevent",
+          "module": "navigationevent-compose",
+          "version": {
+            "requires": "1.1.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.11.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "navigationevent-compose-desktop-1.1.0.jar",
+          "url": "navigationevent-compose-desktop-1.1.0.jar",
+          "size": 4677,
+          "sha512": "3f1c05ad00dc8a2df872bd3fd1b20ce84164d8abf692ee5c27515e2c2e68bc38ad4cb04d47951db942664f08b10a63605c6eac73cfc8ffb1ddf3e659bff29ec3",
+          "sha256": "0514f5d5c14de3b422c48a4eaf1d9dd2ce265041339e4c51ce30db8da1690874",
+          "sha1": "d4c4408fbc6ac4dbddaef91d82013f435c02a9c5",
+          "md5": "6370d5c46488f619be7b5e63333545d2"
+        }
+      ]
+    },
+    {
+      "name": "desktopRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.navigationevent",
+          "module": "navigationevent-compose",
+          "version": {
+            "requires": "1.1.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.11.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "navigationevent-compose-desktop-1.1.0.jar",
+          "url": "navigationevent-compose-desktop-1.1.0.jar",
+          "size": 4677,
+          "sha512": "3f1c05ad00dc8a2df872bd3fd1b20ce84164d8abf692ee5c27515e2c2e68bc38ad4cb04d47951db942664f08b10a63605c6eac73cfc8ffb1ddf3e659bff29ec3",
+          "sha256": "0514f5d5c14de3b422c48a4eaf1d9dd2ce265041339e4c51ce30db8da1690874",
+          "sha1": "d4c4408fbc6ac4dbddaef91d82013f435c02a9c5",
+          "md5": "6370d5c46488f619be7b5e63333545d2"
+        }
+      ]
+    },
+    {
+      "name": "desktopSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "navigationevent-compose-desktop-1.1.0-sources.jar",
+          "url": "navigationevent-compose-desktop-1.1.0-sources.jar",
+          "size": 5371,
+          "sha512": "1d7f659e5091c5cce12880da45e7be5574218822d3180a1f83ef353349f300aa368edf45047ae1e9dd43f58ccd6d178c8afbae6d576defce3021a66f0af53645",
+          "sha256": "025b645bc83f18a699e005e04804121ce44a39a3837620b76795bc2ddb4e54e8",
+          "sha1": "fdaa3885e02a18e8fdb6a3c0bcc2d39ed03e272f",
+          "md5": "9ed29e4431f93bdbd1e55fb49dc550c7"
+        }
+      ]
+    }
+  ]
+}

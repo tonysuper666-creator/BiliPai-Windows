@@ -19,6 +19,9 @@ def generate(repo,output):
     appearance=load(repo,'reply_vm_declarations','desktop/tools/extract-appearance-platform.py')
     original=read(repo,VM)
     fields=original[original.index('    private val _selectedDynamic ='):original.index('    // 点赞状态缓存')]
+    # Expose the existing target owner for Root's guarded count projection.
+    # The private selected detail fallback remains private and is never a page/cache authority.
+    fields += '    internal val selectedCommentTarget: StateFlow<DynamicCommentTarget?> = _selectedCommentTarget.asStateFlow()\n'
     begin=original.index('    private fun findDynamicById')
     end=original.index('    fun likeDynamic(',begin)
     body=original[begin:end]
@@ -104,6 +107,20 @@ def generate(repo,output):
         assert block.count(marker)==1
         block=block.replace(marker,'\n        }\n        mutationJob.invokeOnCompletion { replyMutationHolders.remove(rpid, mutationHolder) }\n    }',1)
         body=body[:start]+block+body[end:]
+    # Windows dispatch can queue the request after the original composer clears
+    # its reply UI. Capture the original immutable target at admission, matching
+    # the request parameters read synchronously by Android Main.immediate.
+    post_start = body.index('    fun postComment(')
+    post_end = body.index('    fun likeComment(', post_start)
+    post = body[post_start:post_end]
+    assert post.count('        launchOwned {') == 1
+    assert post.count('                val replyTarget = _commentReplyTarget.value\n') == 1
+    post = post.replace('        launchOwned {',
+                        '        if (!isOwned()) return\n'
+                        '        val replyTarget = _commentReplyTarget.value\n'
+                        '        launchOwned {', 1)
+    post = post.replace('                val replyTarget = _commentReplyTarget.value\n', '', 1)
+    body = body[:post_start] + post + body[post_end:]
     # Capture a new original request id before admission; close cancels owned
     # child jobs, while sorting/refreshing keep the same subject session.
     video=read(repo,VIDEO_VM)

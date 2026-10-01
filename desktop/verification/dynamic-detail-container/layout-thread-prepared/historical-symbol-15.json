@@ -1,0 +1,914 @@
+{
+  "passed": true,
+  "scope": "All classes-15 class FQNs; product public static top-level methods and fields in emitted top-level Kt wrappers. Three explicitly identified task-only fixture wrappers excluded from product declaration intersections. Raw17 remains only a prepared overlay. No body or semantic audit.",
+  "methodIdentity": "same Kotlin package + JVM name + parameter descriptor; return descriptor ignored; access$ and $default synthetic functions excluded",
+  "fieldIdentity": "same Kotlin package + public static field name",
+  "actualSnapshot": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-resource-navigation\\main-product-snapshot-01\\manifest.json",
+    "sha256Bytes": "4780b40c15bd0de96f01fe5f60086bd2e67684764d075d8af8f437a27b0887c5"
+  },
+  "actualOrderedRuntimeCp": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-resource-navigation\\main-product-snapshot-01\\ordered-runtime-cp.json",
+    "sha256Bytes": "c2f31a97c207af9d501d669897deebfee51f4edf9a12b1280df59b542ec4b6ab"
+  },
+  "actualRuntimeCpCount": 89,
+  "raw17": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\liquid-next\\dependencies\\raw-17.jar",
+    "sha256Bytes": "a6246ab3b39b4d9c11b27e833ccfe66fcbac83d228747b9a841f576672cf1760",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\classes-ui-17",
+    "retainedCopy": true
+  },
+  "compileEvidence": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\compile-evidence-15.json",
+    "sha256Bytes": "a30ca4b17c26f7199e686727c0bce65dd2ddf57f512da2dbdea4d2a980c0695e"
+  },
+  "reviewedCandidateJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\reviewed-parent-classes-15.jar",
+    "sha256Bytes": "1f9ee50dadeac249a1225c16e8d8b70f547ec43491d3b22e83ef700c0607ad5f"
+  },
+  "historicalFirstObservedSourceProof": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\first-observed-15-result.json",
+    "sha256Bytes": "a8c852ccbdb0c002daa87a107180e884450a19adcf40f47cfa92a6cc8874ab7b"
+  },
+  "sources15": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalDetailLiquidReusePolicy.kt",
+      "sha256Bytes": "8a419b10edb90d8cada2fa79ca3211ba534e7beda9773b71338af603b813e157",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalDetailLiquidReusePolicy.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\AdaptiveScaffoldPolicy.kt",
+      "sha256Bytes": "e1664df7f427f25c38e8d550eb47881de006c77a89e44b2edeaaccd83bf18373",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\ui\\AdaptiveScaffoldPolicy.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\CommentWindowNavigation.kt",
+      "sha256Bytes": "47f3601acf14409111ffbefee9119303e031c3fef85a650bc8a642d227a64b53",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\ui\\CommentWindowNavigation.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChrome.kt",
+      "sha256Bytes": "e272db226b385ea51bbc76573b2ea7430ea03ff57a0f10eaf216b00e62c5761c",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChrome.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAppSheetComponents.kt",
+      "sha256Bytes": "fa8fee9ae67a8945182f3be06c40adc3a2dcf8aab1449a40200ee7d090aa3d51",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAppSheetComponents.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\ImmersiveAppScaffold.kt",
+      "sha256Bytes": "4934e150407e9e1357a1074faf760a77e4d1bb1a91aadf81ee1f6aceffe7e88e",
+      "currentMatches15": false,
+      "retainedReviewPath": null
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\InteractiveOverlayProgressPolicy.kt",
+      "sha256Bytes": "29bf8a21bdce64916cae43f27cff33ab6992f4c92bbd0ca665d47da4a6df99dd",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\ui\\InteractiveOverlayProgressPolicy.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\SplitLayout.kt",
+      "sha256Bytes": "9386b0733944d3a0981da6972fbf83271267489e7c51c4cbde318912ee6de9aa",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\ui\\SplitLayout.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\TopReadabilityChromePolicy.kt",
+      "sha256Bytes": "0eb9efb64f029bc31b1fbdd0503029760e64ba9685b2af51111e01796ea06d93",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\ui\\TopReadabilityChromePolicy.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailDisplayModel.kt",
+      "sha256Bytes": "496e7576dffa0f1308af7f7d5ff8bf1a5cd62ca4e56d8a80d991fa15c891b823",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailDisplayModel.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailHingeModel.kt",
+      "sha256Bytes": "adfc26a5d60cfa977ca19181f4e2a3bea55a706da5935e62ca46553656f4e6ac",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailHingeModel.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailResponsiveWidth.kt",
+      "sha256Bytes": "2494e4a248c6c771002a50e32ba1b64c07acb4a100738f5276e81cb4869df925",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailResponsiveWidth.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailWindowModels.kt",
+      "sha256Bytes": "dfe006b44f8adc8dea5f8895ce1ebb7978bf55d02e2a685199b9ce3ef4107f78",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailWindowModels.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\blur\\ChromeBackdropSource.kt",
+      "sha256Bytes": "3aab501243a4abc00b75764da6ef46e99904463bb759f83e9aefaadad841d4e7",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\ui\\blur\\ChromeBackdropSource.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\blur\\ProgressiveFade.kt",
+      "sha256Bytes": "9490b90cae37ae89482909fa9c4a37f9a01e00ea946b8b4127c57137f0f43ab1",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\ui\\blur\\ProgressiveFade.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\transition\\DesktopOriginalDetailPredictiveBlurPolicy.kt",
+      "sha256Bytes": "96383b8c4eebee6e6d022accdcde2d028de3a0c60a789aa89e7f3a28947fd711",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\core\\ui\\transition\\DesktopOriginalDetailPredictiveBlurPolicy.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicDetailLayout.kt",
+      "sha256Bytes": "032511786d613fed0d77a0df62a1ee03e02b81d69226d91fa6e4e647c0c83790",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicDetailLayout.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DynamicLayoutPolicy.kt",
+      "sha256Bytes": "53e3f48200e01071801d4d483f1c35530e2e5b051ba324289814fe8931671f96",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DynamicLayoutPolicy.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DynamicSubReplyPreviewHost.kt",
+      "sha256Bytes": "5b366817459536ad8a27ebf5d4ee579843bc81a77003359ce14c89f081f5fc6c",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DynamicSubReplyPreviewHost.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChrome.kt",
+      "sha256Bytes": "db870f318316e824f996ffb26e4ae0e04962764d65a1a66c0ae1e53422c712e6",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChrome.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentThreadDrag.kt",
+      "sha256Bytes": "c81b681f31e0c357e3ff29ec25aaf7668d9fbdc32bbd9a59569eb9c1cda4b343",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentThreadDrag.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDetailInputPadding.kt",
+      "sha256Bytes": "57c4c445287af562ee752ecfe623c07716cc75c7f6052f21718cfdffe67e07fe",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDetailInputPadding.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDetailThreadPolicies.kt",
+      "sha256Bytes": "dabea13c4e763b2faa3a3c59fa6e53f0caea13b889487fa29604414088afecc5",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDetailThreadPolicies.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\SubReplySheet.kt",
+      "sha256Bytes": "ad4dab5e895a4eacebefec7db35b211fa18e1687b85fee356fefa55fdb833c4b",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\SubReplySheet.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCommentDialogNavigation.kt",
+      "sha256Bytes": "a8a29f6e13040da29a919bc5b8404acc1e5600502ae1bff06261e8cbf6354837",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCommentDialogNavigation.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDetailEffects.kt",
+      "sha256Bytes": "0d8da436f9e2a455eeec672e1b9b9c18cbd622a40d2bbc57f3424cbf42b71af5",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDetailEffects.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDetailWindow.kt",
+      "sha256Bytes": "f52b7be19ca2b9040ac4b31685ce8e6a9fef89999c55f3008afa2827f935e918",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDetailWindow.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicCommentLayoutAdmission.kt",
+      "sha256Bytes": "8d55feb4df663a243bb9274a1b462aa97306b54e80ffaff33c27765e252a7043",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicCommentLayoutAdmission.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\DetailLayoutUiFixture.kt",
+      "sha256Bytes": "55620fa77dd50e5b45538a82e800556a7d83eb814bc529ec334a7b5969d6aec3",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\DetailLayoutUiFixture.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\DetailRoutePagingUiFixture.kt",
+      "sha256Bytes": "460c5d41100cfea0695f6a47a6bf21a5721b4a1f9ec74dc3e4c1f450826d4970",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\DetailRoutePagingUiFixture.kt"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\ThreadWindowUiFixture.kt",
+      "sha256Bytes": "82279bbd3d0af2457e9fdaea33d7fc95f6e2d26e0348a90416d7fc782760a2be",
+      "currentMatches15": true,
+      "retainedReviewPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\parent-symbol-review\\sources\\ThreadWindowUiFixture.kt"
+    }
+  ],
+  "changedSinceFirstObservedReview": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\generated\\com\\android\\purebilibili\\core\\ui\\ImmersiveAppScaffold.kt",
+      "sha256Bytes": "4934e150407e9e1357a1074faf760a77e4d1bb1a91aadf81ee1f6aceffe7e88e",
+      "currentSha256Bytes": "862a938eff9840f419d50f21fdefcf18c7dc0ee5ced87d14165aadf6c58c8650"
+    }
+  ],
+  "candidateClassCount": 127,
+  "candidateTopLevelWrapperCount": 29,
+  "baseSamePackageWrapperCount": 209,
+  "candidateMethodCount": 78,
+  "baseSamePackageMethodCount": 943,
+  "candidatePublicStaticFieldCount": 3,
+  "baseSamePackagePublicStaticFieldCount": 88,
+  "productMethodCount": 75,
+  "productPublicStaticFieldCount": 3,
+  "excludedTaskOnlyFixtureOwners": [
+    "com.bilipai.desktop.ui.DetailLayoutUiFixtureKt",
+    "com.bilipai.desktop.ui.DetailRoutePagingUiFixtureKt",
+    "com.bilipai.desktop.ui.ThreadWindowUiFixtureKt"
+  ],
+  "allIncludingFixturesMethodConflicts": [
+    {
+      "key": [
+        "com.bilipai.desktop.ui",
+        "main",
+        "([Ljava/lang/String;)"
+      ],
+      "candidate": [
+        {
+          "owner": "com.bilipai.desktop.ui.DetailLayoutUiFixtureKt",
+          "package": "com.bilipai.desktop.ui",
+          "name": "main",
+          "descriptor": "([Ljava/lang/String;)V",
+          "parameterDescriptor": "([Ljava/lang/String;)"
+        },
+        {
+          "owner": "com.bilipai.desktop.ui.DetailRoutePagingUiFixtureKt",
+          "package": "com.bilipai.desktop.ui",
+          "name": "main",
+          "descriptor": "([Ljava/lang/String;)V",
+          "parameterDescriptor": "([Ljava/lang/String;)"
+        },
+        {
+          "owner": "com.bilipai.desktop.ui.ThreadWindowUiFixtureKt",
+          "package": "com.bilipai.desktop.ui",
+          "name": "main",
+          "descriptor": "([Ljava/lang/String;)V",
+          "parameterDescriptor": "([Ljava/lang/String;)"
+        }
+      ],
+      "base": [
+        {
+          "owner": "com.bilipai.desktop.ui.ReplyImageFixtureKt",
+          "package": "com.bilipai.desktop.ui",
+          "name": "main",
+          "descriptor": "([Ljava/lang/String;)V",
+          "parameterDescriptor": "([Ljava/lang/String;)"
+        },
+        {
+          "owner": "com.bilipai.desktop.ui.ReplyLifecycleFixtureKt",
+          "package": "com.bilipai.desktop.ui",
+          "name": "main",
+          "descriptor": "([Ljava/lang/String;)V",
+          "parameterDescriptor": "([Ljava/lang/String;)"
+        },
+        {
+          "owner": "com.bilipai.desktop.ui.ReplySessionFixtureKt",
+          "package": "com.bilipai.desktop.ui",
+          "name": "main",
+          "descriptor": "([Ljava/lang/String;)V",
+          "parameterDescriptor": "([Ljava/lang/String;)"
+        },
+        {
+          "owner": "com.bilipai.desktop.ui.ReplyUiFixtureKt",
+          "package": "com.bilipai.desktop.ui",
+          "name": "main",
+          "descriptor": "([Ljava/lang/String;)V",
+          "parameterDescriptor": "([Ljava/lang/String;)"
+        }
+      ]
+    }
+  ],
+  "allIncludingFixturesSelfMethodConflicts": [
+    {
+      "key": [
+        "com.bilipai.desktop.ui",
+        "main",
+        "([Ljava/lang/String;)"
+      ],
+      "owners": [
+        {
+          "owner": "com.bilipai.desktop.ui.DetailLayoutUiFixtureKt",
+          "package": "com.bilipai.desktop.ui",
+          "name": "main",
+          "descriptor": "([Ljava/lang/String;)V",
+          "parameterDescriptor": "([Ljava/lang/String;)"
+        },
+        {
+          "owner": "com.bilipai.desktop.ui.DetailRoutePagingUiFixtureKt",
+          "package": "com.bilipai.desktop.ui",
+          "name": "main",
+          "descriptor": "([Ljava/lang/String;)V",
+          "parameterDescriptor": "([Ljava/lang/String;)"
+        },
+        {
+          "owner": "com.bilipai.desktop.ui.ThreadWindowUiFixtureKt",
+          "package": "com.bilipai.desktop.ui",
+          "name": "main",
+          "descriptor": "([Ljava/lang/String;)V",
+          "parameterDescriptor": "([Ljava/lang/String;)"
+        }
+      ]
+    }
+  ],
+  "classFqnConflicts": [],
+  "methodConflicts": [],
+  "fieldConflicts": [],
+  "candidateSelfMethodConflicts": [],
+  "candidateSelfFieldConflicts": [],
+  "reviewedCandidateMethods": [
+    {
+      "owner": "com.android.purebilibili.core.store.DesktopOriginalDetailLiquidReusePolicyKt",
+      "package": "com.android.purebilibili.core.store",
+      "name": "resolveGlobalLiquidGlassReuseEnabled",
+      "descriptor": "(Z)Z",
+      "parameterDescriptor": "(Z)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.AdaptiveScaffoldPolicyKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveAdaptiveScaffoldRenderer",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)Lcom/android/purebilibili/core/ui/AdaptiveScaffoldRenderer;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.AdaptiveScaffoldPolicyKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "shouldMountMiuixPopupHostOnAdaptiveScaffold",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)Z",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.CommentWindowNavigationKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "CommentWindowNavigation",
+      "descriptor": "(Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V",
+      "parameterDescriptor": "(Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "isNativeMiuixEnabled",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)Z",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "rememberIsNativeMiuixEnabled",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)Z",
+      "parameterDescriptor": "(Landroidx/compose/runtime/Composer;I)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "rememberAppTopBarCollapseBehavior",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)Lcom/android/purebilibili/core/ui/AppTopBarCollapseBehavior;",
+      "parameterDescriptor": "(Landroidx/compose/runtime/Composer;I)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "appTopBarNestedScroll",
+      "descriptor": "(Landroidx/compose/ui/Modifier;Lcom/android/purebilibili/core/ui/AppTopBarCollapseBehavior;)Landroidx/compose/ui/Modifier;",
+      "parameterDescriptor": "(Landroidx/compose/ui/Modifier;Lcom/android/purebilibili/core/ui/AppTopBarCollapseBehavior;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveGlobalWallpaperProtectiveColor-ek8zF_U",
+      "descriptor": "(JFF)J",
+      "parameterDescriptor": "(JFF)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveAdaptiveTopAppBarChromeSpec",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)Lcom/android/purebilibili/core/ui/AdaptiveTopAppBarChromeSpec;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveAdaptiveScaffoldContainerColor-jxsXWHM",
+      "descriptor": "(JJZ)J",
+      "parameterDescriptor": "(JJZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveGlobalWallpaperChromeColor-qwTeutE",
+      "descriptor": "(JJJZ)J",
+      "parameterDescriptor": "(JJJZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "globalWallpaperAwareChromeColor-ek8zF_U",
+      "descriptor": "(JLandroidx/compose/runtime/Composer;I)J",
+      "parameterDescriptor": "(JLandroidx/compose/runtime/Composer;I)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "globalWallpaperAwareBackground-iJQMabo",
+      "descriptor": "(Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;",
+      "parameterDescriptor": "(Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "AdaptiveScaffold-1YH7lEI",
+      "descriptor": "(Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;JLandroidx/compose/foundation/layout/WindowInsets;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V",
+      "parameterDescriptor": "(Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;JLandroidx/compose/foundation/layout/WindowInsets;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "AdaptiveTopAppBar",
+      "descriptor": "(Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/material3/TopAppBarColors;Lcom/android/purebilibili/core/ui/AdaptiveTopAppBarStyle;Landroidx/compose/material3/TopAppBarScrollBehavior;Lcom/android/purebilibili/core/ui/AppTopBarCollapseBehavior;Landroidx/compose/runtime/Composer;II)V",
+      "parameterDescriptor": "(Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/material3/TopAppBarColors;Lcom/android/purebilibili/core/ui/AdaptiveTopAppBarStyle;Landroidx/compose/material3/TopAppBarScrollBehavior;Lcom/android/purebilibili/core/ui/AppTopBarCollapseBehavior;Landroidx/compose/runtime/Composer;II)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveAppTopChromePolicy",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;Lcom/android/purebilibili/core/ui/AppIconStyle;)Lcom/android/purebilibili/core/ui/AppTopChromePolicy;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;Lcom/android/purebilibili/core/ui/AppIconStyle;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "rememberAppTopChromePolicy",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)Lcom/android/purebilibili/core/ui/AppTopChromePolicy;",
+      "parameterDescriptor": "(Landroidx/compose/runtime/Composer;I)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "AppScaffold-1YH7lEI",
+      "descriptor": "(Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;JLandroidx/compose/foundation/layout/WindowInsets;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V",
+      "parameterDescriptor": "(Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;JLandroidx/compose/foundation/layout/WindowInsets;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAdaptiveChromeKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "AppTopBar",
+      "descriptor": "(Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/material3/TopAppBarColors;Lcom/android/purebilibili/core/ui/AppTopBarStyle;Landroidx/compose/material3/TopAppBarScrollBehavior;Lcom/android/purebilibili/core/ui/AppTopBarCollapseBehavior;Landroidx/compose/runtime/Composer;II)V",
+      "parameterDescriptor": "(Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/material3/TopAppBarColors;Lcom/android/purebilibili/core/ui/AppTopBarStyle;Landroidx/compose/material3/TopAppBarScrollBehavior;Lcom/android/purebilibili/core/ui/AppTopBarCollapseBehavior;Landroidx/compose/runtime/Composer;II)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveAppModalLayoutSpec",
+      "descriptor": "(IZ)Lcom/android/purebilibili/core/ui/AppModalLayoutSpec;",
+      "parameterDescriptor": "(IZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveAdaptiveBottomSheetVisualSpec",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;Z)Lcom/android/purebilibili/core/ui/AdaptiveBottomSheetVisualSpec;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;Z)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveAdaptiveBottomSheetMotionSpec",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)Lcom/android/purebilibili/core/ui/AdaptiveBottomSheetMotionSpec;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveBottomSheetHost",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)Lcom/android/purebilibili/core/ui/BottomSheetHost;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "bottomSheetScrimEnterTransition",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)Landroidx/compose/animation/EnterTransition;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "bottomSheetScrimExitTransition",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)Landroidx/compose/animation/ExitTransition;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "bottomSheetContentEnterTransition",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)Landroidx/compose/animation/EnterTransition;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "bottomSheetContentExitTransition",
+      "descriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)Landroidx/compose/animation/ExitTransition;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/theme/AppUiStyle;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "AppModalBottomSheet-lSt3HUI",
+      "descriptor": "(Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/material3/SheetState;Landroidx/compose/ui/graphics/Shape;JJFJFZLkotlin/jvm/functions/Function2;Landroidx/compose/foundation/layout/WindowInsets;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V",
+      "parameterDescriptor": "(Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/material3/SheetState;Landroidx/compose/ui/graphics/Shape;JJFJFZLkotlin/jvm/functions/Function2;Landroidx/compose/foundation/layout/WindowInsets;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "rememberAppBottomSheetMotion",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)Lcom/android/purebilibili/core/ui/AppBottomSheetMotion;",
+      "parameterDescriptor": "(Landroidx/compose/runtime/Composer;I)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "AppBottomSheetDragHandle",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)V",
+      "parameterDescriptor": "(Landroidx/compose/runtime/Composer;I)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.ImmersiveAppScaffoldKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "ImmersiveAppScaffold-uhEuKqE",
+      "descriptor": "(Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;JJLandroidx/compose/foundation/layout/WindowInsets;ZLcom/android/purebilibili/core/ui/blur/ChromeBackdropSource;Ldev/chrisbanes/haze/HazeState;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V",
+      "parameterDescriptor": "(Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;JJLandroidx/compose/foundation/layout/WindowInsets;ZLcom/android/purebilibili/core/ui/blur/ChromeBackdropSource;Ldev/chrisbanes/haze/HazeState;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.InteractiveOverlayProgressPolicyKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveInteractiveOverlayProgressVisual",
+      "descriptor": "(FLcom/android/purebilibili/core/ui/InteractiveOverlaySurfaceType;ZF)Lcom/android/purebilibili/core/ui/InteractiveOverlayProgressVisual;",
+      "parameterDescriptor": "(FLcom/android/purebilibili/core/ui/InteractiveOverlaySurfaceType;ZF)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.SplitLayoutKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveAppHingeSplitGeometry",
+      "descriptor": "(FFFFF)Lcom/android/purebilibili/core/ui/AppHingeSplitGeometry;",
+      "parameterDescriptor": "(FFFFF)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.SplitLayoutKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "rememberAppSplitLayoutState",
+      "descriptor": "(Lcom/android/purebilibili/core/ui/AppSplitPane;Landroidx/compose/runtime/Composer;II)Lcom/android/purebilibili/core/ui/AppSplitLayoutState;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/ui/AppSplitPane;Landroidx/compose/runtime/Composer;II)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.SplitLayoutKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveAppAdaptiveSceneLayout",
+      "descriptor": "(Lcom/android/purebilibili/core/util/AppWindowAdaptiveInfo;)Lcom/android/purebilibili/core/ui/AppAdaptiveSceneLayout;",
+      "parameterDescriptor": "(Lcom/android/purebilibili/core/util/AppWindowAdaptiveInfo;)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.SplitLayoutKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "AppSplitLayout",
+      "descriptor": "(Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;FZLcom/android/purebilibili/core/ui/AppSplitLayoutState;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V",
+      "parameterDescriptor": "(Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;FZLcom/android/purebilibili/core/ui/AppSplitLayoutState;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.TopReadabilityChromePolicyKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveTopChromeRenderMode",
+      "descriptor": "(ZZZZ)Lcom/android/purebilibili/core/ui/TopChromeRenderMode;",
+      "parameterDescriptor": "(ZZZZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.TopReadabilityChromePolicyKt",
+      "package": "com.android.purebilibili.core.ui",
+      "name": "resolveTopReadabilityChromeSpec-3IgeMak",
+      "descriptor": "(IJFZZZ)Lcom/android/purebilibili/core/ui/TopReadabilityChromeSpec;",
+      "parameterDescriptor": "(IJFZZZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.blur.ChromeBackdropSourceKt",
+      "package": "com.android.purebilibili.core.ui.blur",
+      "name": "rememberChromeBackdropSource",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)Lcom/android/purebilibili/core/ui/blur/ChromeBackdropSource;",
+      "parameterDescriptor": "(Landroidx/compose/runtime/Composer;I)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.blur.ProgressiveFadeKt",
+      "package": "com.android.purebilibili.core.ui.blur",
+      "name": "topSolidProgressiveFade-jG9AyaU",
+      "descriptor": "(Landroidx/compose/ui/Modifier;JFZ)Landroidx/compose/ui/Modifier;",
+      "parameterDescriptor": "(Landroidx/compose/ui/Modifier;JFZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.blur.ProgressiveFadeKt",
+      "package": "com.android.purebilibili.core.ui.blur",
+      "name": "TopSolidProgressiveFadeOverlay-YJYuY3k",
+      "descriptor": "(JLandroidx/compose/ui/Modifier;FZLandroidx/compose/runtime/Composer;II)V",
+      "parameterDescriptor": "(JLandroidx/compose/ui/Modifier;FZLandroidx/compose/runtime/Composer;II)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.transition.DesktopOriginalDetailPredictiveBlurPolicyKt",
+      "package": "com.android.purebilibili.core.ui.transition",
+      "name": "resolvePredictiveBackMaxBlurRadiusPx",
+      "descriptor": "(Z)F",
+      "parameterDescriptor": "(Z)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.transition.DesktopOriginalDetailPredictiveBlurPolicyKt",
+      "package": "com.android.purebilibili.core.ui.transition",
+      "name": "resolvePredictiveBackSeparationTintAlpha",
+      "descriptor": "(FZ)F",
+      "parameterDescriptor": "(FZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.ui.transition.DesktopOriginalDetailPredictiveBlurPolicyKt",
+      "package": "com.android.purebilibili.core.ui.transition",
+      "name": "resolvePredictiveBackBlurFrame",
+      "descriptor": "(FLcom/android/purebilibili/core/ui/adaptive/MotionTier;Z)Lcom/android/purebilibili/core/ui/transition/PredictiveBackBlurFrame;",
+      "parameterDescriptor": "(FLcom/android/purebilibili/core/ui/adaptive/MotionTier;Z)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.util.DesktopOriginalDetailResponsiveWidthKt",
+      "package": "com.android.purebilibili.core.util",
+      "name": "responsiveContentWidth-lG28NQ4",
+      "descriptor": "(Landroidx/compose/ui/Modifier;FZ)Landroidx/compose/ui/Modifier;",
+      "parameterDescriptor": "(Landroidx/compose/ui/Modifier;FZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.util.DesktopOriginalDetailWindowModelsKt",
+      "package": "com.android.purebilibili.core.util",
+      "name": "resolveWindowHeightSizeClass-0680j_4",
+      "descriptor": "(F)Lcom/android/purebilibili/core/util/WindowHeightSizeClass;",
+      "parameterDescriptor": "(F)"
+    },
+    {
+      "owner": "com.android.purebilibili.core.util.DesktopOriginalDetailWindowModelsKt",
+      "package": "com.android.purebilibili.core.util",
+      "name": "getLocalWindowSizeClass",
+      "descriptor": "()Landroidx/compose/runtime/ProvidableCompositionLocal;",
+      "parameterDescriptor": "()"
+    },
+    {
+      "owner": "com.android.purebilibili.core.util.DesktopOriginalDetailWindowModelsKt",
+      "package": "com.android.purebilibili.core.util",
+      "name": "getLocalAppWindowAdaptiveInfo",
+      "descriptor": "()Landroidx/compose/runtime/ProvidableCompositionLocal;",
+      "parameterDescriptor": "()"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.dynamic.DynamicLayoutPolicyKt",
+      "package": "com.android.purebilibili.feature.dynamic",
+      "name": "resolveDynamicFeedMaxWidth",
+      "descriptor": "()F",
+      "parameterDescriptor": "()"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.dynamic.components.DynamicSubReplyPreviewHostKt",
+      "package": "com.android.purebilibili.feature.dynamic.components",
+      "name": "DynamicSubReplyPreviewHost",
+      "descriptor": "(Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;JLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V",
+      "parameterDescriptor": "(Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;JLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+      "package": "com.android.purebilibili.feature.home.components",
+      "name": "getBILIPAI_PROGRESSIVE_TOP_BLUR_DEFAULT_GRADIENT",
+      "descriptor": "()Ltop/yukonga/miuix/kmp/blur/ProgressiveBlur;",
+      "parameterDescriptor": "()"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+      "package": "com.android.purebilibili.feature.home.components",
+      "name": "shouldUseBiliPaiProgressiveTopBlur",
+      "descriptor": "(ZZ)Z",
+      "parameterDescriptor": "(ZZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+      "package": "com.android.purebilibili.feature.home.components",
+      "name": "shouldUseOpaqueTopChromeBackground",
+      "descriptor": "(ZZZ)Z",
+      "parameterDescriptor": "(ZZZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+      "package": "com.android.purebilibili.feature.home.components",
+      "name": "resolveProgressiveTopBlurBottomExtension",
+      "descriptor": "(ZF)F",
+      "parameterDescriptor": "(ZF)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+      "package": "com.android.purebilibili.feature.home.components",
+      "name": "shouldExtendProgressiveTopBlurBelowTabs",
+      "descriptor": "(ZZ)Z",
+      "parameterDescriptor": "(ZZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+      "package": "com.android.purebilibili.feature.home.components",
+      "name": "biliPaiProgressiveTopBlur",
+      "descriptor": "(Landroidx/compose/ui/Modifier;Ltop/yukonga/miuix/kmp/blur/Backdrop;ZLandroidx/compose/ui/graphics/Shape;FLtop/yukonga/miuix/kmp/blur/ProgressiveBlur;Ltop/yukonga/miuix/kmp/blur/BlurColors;)Landroidx/compose/ui/Modifier;",
+      "parameterDescriptor": "(Landroidx/compose/ui/Modifier;Ltop/yukonga/miuix/kmp/blur/Backdrop;ZLandroidx/compose/ui/graphics/Shape;FLtop/yukonga/miuix/kmp/blur/ProgressiveBlur;Ltop/yukonga/miuix/kmp/blur/BlurColors;)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+      "package": "com.android.purebilibili.feature.home.components",
+      "name": "biliPaiProgressiveTopBlur-ww6aTOc",
+      "descriptor": "(Landroidx/compose/ui/Modifier;Ltop/yukonga/miuix/kmp/blur/Backdrop;ZJLandroidx/compose/ui/graphics/Shape;FLtop/yukonga/miuix/kmp/blur/ProgressiveBlur;)Landroidx/compose/ui/Modifier;",
+      "parameterDescriptor": "(Landroidx/compose/ui/Modifier;Ltop/yukonga/miuix/kmp/blur/Backdrop;ZJLandroidx/compose/ui/graphics/Shape;FLtop/yukonga/miuix/kmp/blur/ProgressiveBlur;)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+      "package": "com.android.purebilibili.feature.home.components",
+      "name": "BiliPaiImmersiveTopBar-Yod850M",
+      "descriptor": "(Ltop/yukonga/miuix/kmp/blur/Backdrop;ZZZLandroidx/compose/ui/Modifier;JLjava/lang/Boolean;ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V",
+      "parameterDescriptor": "(Ltop/yukonga/miuix/kmp/blur/Backdrop;ZZZLandroidx/compose/ui/Modifier;JLjava/lang/Boolean;ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.video.ui.components.CommentThreadDragKt",
+      "package": "com.android.purebilibili.feature.video.ui.components",
+      "name": "shouldDismissCommentThreadByDrag",
+      "descriptor": "(FF)Z",
+      "parameterDescriptor": "(FF)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.video.ui.components.CommentThreadDragKt",
+      "package": "com.android.purebilibili.feature.video.ui.components",
+      "name": "consumeCommentThreadReverseDrag",
+      "descriptor": "(FF)F",
+      "parameterDescriptor": "(FF)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.video.ui.components.CommentThreadDragKt",
+      "package": "com.android.purebilibili.feature.video.ui.components",
+      "name": "rememberCommentThreadDrag",
+      "descriptor": "(ZLjava/lang/Long;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)Lcom/android/purebilibili/feature/video/ui/components/CommentThreadDrag;",
+      "parameterDescriptor": "(ZLjava/lang/Long;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.video.ui.components.DesktopOriginalDetailInputPaddingKt",
+      "package": "com.android.purebilibili.feature.video.ui.components",
+      "name": "shouldUseFloatingLiquidBottomInputBar",
+      "descriptor": "(Z)Z",
+      "parameterDescriptor": "(Z)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.video.ui.components.DesktopOriginalDetailInputPaddingKt",
+      "package": "com.android.purebilibili.feature.video.ui.components",
+      "name": "resolveBottomInputBarContentBottomPadding",
+      "descriptor": "(ZZZ)F",
+      "parameterDescriptor": "(ZZZ)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.video.ui.components.DesktopOriginalDetailThreadPoliciesKt",
+      "package": "com.android.purebilibili.feature.video.ui.components",
+      "name": "resolveCommentThreadPredictiveBackOffsetY",
+      "descriptor": "(FF)F",
+      "parameterDescriptor": "(FF)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.video.ui.components.DesktopOriginalDetailThreadPoliciesKt",
+      "package": "com.android.purebilibili.feature.video.ui.components",
+      "name": "resolveCommentThreadCoveredBlurProgress",
+      "descriptor": "(F)F",
+      "parameterDescriptor": "(F)"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.video.ui.components.SubReplySheetKt",
+      "package": "com.android.purebilibili.feature.video.ui.components",
+      "name": "SubReplySheet",
+      "descriptor": "(Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;ZLjava/util/Map;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;FFLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function1;JLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Ljava/util/Set;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;IIII)V",
+      "parameterDescriptor": "(Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;ZLjava/util/Map;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;FFLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function1;JLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Ljava/util/Set;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;IIII)"
+    },
+    {
+      "owner": "com.bilipai.desktop.ui.DesktopCommentDialogNavigationKt",
+      "package": "com.bilipai.desktop.ui",
+      "name": "getLocalDesktopCommentDialogOwner",
+      "descriptor": "()Landroidx/compose/runtime/ProvidableCompositionLocal;",
+      "parameterDescriptor": "()"
+    },
+    {
+      "owner": "com.bilipai.desktop.ui.DesktopCommentDialogNavigationKt",
+      "package": "com.bilipai.desktop.ui",
+      "name": "DesktopCommentDialogNavigationHost",
+      "descriptor": "(Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V",
+      "parameterDescriptor": "(Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)"
+    },
+    {
+      "owner": "com.bilipai.desktop.ui.DesktopDetailEffectsKt",
+      "package": "com.bilipai.desktop.ui",
+      "name": "getLocalDesktopDetailForeground",
+      "descriptor": "()Landroidx/compose/runtime/ProvidableCompositionLocal;",
+      "parameterDescriptor": "()"
+    },
+    {
+      "owner": "com.bilipai.desktop.ui.DesktopDetailEffectsKt",
+      "package": "com.bilipai.desktop.ui",
+      "name": "desktopDetailRenderEffectsSupported",
+      "descriptor": "()Z",
+      "parameterDescriptor": "()"
+    },
+    {
+      "owner": "com.bilipai.desktop.ui.DesktopDetailEffectsKt",
+      "package": "com.bilipai.desktop.ui",
+      "name": "rememberDesktopDetailHazeState",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)Ldev/chrisbanes/haze/HazeState;",
+      "parameterDescriptor": "(Landroidx/compose/runtime/Composer;I)"
+    },
+    {
+      "owner": "com.bilipai.desktop.ui.DesktopDetailWindowKt",
+      "package": "com.bilipai.desktop.ui",
+      "name": "DesktopDetailWindow",
+      "descriptor": "(Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V",
+      "parameterDescriptor": "(Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)"
+    },
+    {
+      "owner": "com.bilipai.desktop.ui.DesktopDynamicCommentLayoutAdmissionKt",
+      "package": "com.bilipai.desktop.ui",
+      "name": "desktopDynamicCommentSlotsMeasured",
+      "descriptor": "(IIZ)Z",
+      "parameterDescriptor": "(IIZ)"
+    },
+    {
+      "owner": "com.bilipai.desktop.ui.DesktopOriginalDynamicDetailLayoutKt",
+      "package": "com.bilipai.desktop.ui",
+      "name": "DesktopOriginalDynamicDetailLayout",
+      "descriptor": "(Ljava/lang/String;Lcom/bilipai/desktop/ui/DesktopOriginalDynamicDetailUiState;Lcom/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession;Lcom/android/purebilibili/core/store/DesktopDynamicCardSettings$DynamicDetailImageLayout;ZLjava/lang/Long;JJLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;III)V",
+      "parameterDescriptor": "(Ljava/lang/String;Lcom/bilipai/desktop/ui/DesktopOriginalDynamicDetailUiState;Lcom/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession;Lcom/android/purebilibili/core/store/DesktopDynamicCardSettings$DynamicDetailImageLayout;ZLjava/lang/Long;JJLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;III)"
+    },
+    {
+      "owner": "com.bilipai.desktop.ui.DetailLayoutUiFixtureKt",
+      "package": "com.bilipai.desktop.ui",
+      "name": "main",
+      "descriptor": "([Ljava/lang/String;)V",
+      "parameterDescriptor": "([Ljava/lang/String;)"
+    },
+    {
+      "owner": "com.bilipai.desktop.ui.DetailRoutePagingUiFixtureKt",
+      "package": "com.bilipai.desktop.ui",
+      "name": "main",
+      "descriptor": "([Ljava/lang/String;)V",
+      "parameterDescriptor": "([Ljava/lang/String;)"
+    },
+    {
+      "owner": "com.bilipai.desktop.ui.ThreadWindowUiFixtureKt",
+      "package": "com.bilipai.desktop.ui",
+      "name": "main",
+      "descriptor": "([Ljava/lang/String;)V",
+      "parameterDescriptor": "([Ljava/lang/String;)"
+    }
+  ],
+  "reviewedCandidateFields": [
+    {
+      "owner": "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+      "package": "com.android.purebilibili.feature.home.components",
+      "name": "BILIPAI_PROGRESSIVE_TOP_BLUR_RADIUS_DP",
+      "descriptor": "F"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+      "package": "com.android.purebilibili.feature.home.components",
+      "name": "BILIPAI_PROGRESSIVE_TOP_BLUR_START_FRACTION",
+      "descriptor": "F"
+    },
+    {
+      "owner": "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+      "package": "com.android.purebilibili.feature.home.components",
+      "name": "BILIPAI_PROGRESSIVE_TOP_BLUR_FALLOFF_CURVE",
+      "descriptor": "F"
+    }
+  ],
+  "MainEdited": false,
+  "SharedGradle": false,
+  "ProductSourcesEdited": false,
+  "HWND": false,
+  "HTTP": false
+}

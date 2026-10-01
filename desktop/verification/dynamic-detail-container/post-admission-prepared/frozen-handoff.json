@@ -1,0 +1,390 @@
+{
+  "artifactCount": 75,
+  "scope": "One prepared existing Session admission override; source-only install, actual UI and queued synthetic terminal proof; not Main consumer acceptance",
+  "MainConsumerAcceptance": false,
+  "installPayloads": [
+    {
+      "source": "desired/extract-upstream-dynamic-detail.py",
+      "target": "desktop/tools/extract-upstream-dynamic-detail.py",
+      "baseSha256Bytes": "b4fb708e2ca2e8fd13795ed72bca444fa2bbb1a3cd85857ab4b7a6bdc765ec73",
+      "desiredSha256Bytes": "f93d88d47e87a418b41cc3217a759210a0a2d94cbe33325c3d713e9724e04004"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "INSTALL.txt",
+      "sha256Bytes": "87adbe59307fb9ac4a797c48a81209a6d313525680cba920935fc620af2c3a2a",
+      "bytes": 2030
+    },
+    {
+      "path": "PostAdmissionFixture.kt",
+      "sha256Bytes": "fec5dca3a5aa0711d4ce981c51bca87560c133dd950da7a212a011a72bb7f67a",
+      "bytes": 3487
+    },
+    {
+      "path": "base/extract-upstream-dynamic-detail.py",
+      "sha256Bytes": "b4fb708e2ca2e8fd13795ed72bca444fa2bbb1a3cd85857ab4b7a6bdc765ec73",
+      "bytes": 13576
+    },
+    {
+      "path": "compile-02.log",
+      "sha256Bytes": "a768f5bd489c84d606be5f4567d8c1dc5075d311d74fc8dcecb2945c7fab9a53",
+      "bytes": 1960
+    },
+    {
+      "path": "compile-delta.py",
+      "sha256Bytes": "76441e6f3c205659cdce0801a25131a2d2e021bafc826753dee656c0b1aa6b65",
+      "bytes": 4119
+    },
+    {
+      "path": "compile-evidence-02.json",
+      "sha256Bytes": "5cd48762ae91345fa2185c3d12ecb7304715e474eab7ae05f6a1eeca7bef898b",
+      "bytes": 54628
+    },
+    {
+      "path": "compiler-02.args",
+      "sha256Bytes": "47fef17b0f3f8789371fa941374ee69fcbfea04f18f887e48b4f7d1e09d504e6",
+      "bytes": 35372
+    },
+    {
+      "path": "composer-session-result-02-classload.log",
+      "sha256Bytes": "5819397b0dfaeaab9c4cf7d1d3ceb2045556af40ffcdf27e8cc2f0d3d4e3f113",
+      "bytes": 2036947
+    },
+    {
+      "path": "composer-session-result-02.json",
+      "sha256Bytes": "12d2f0a9c974c85c5e5854fef0f417630fa4680a40f412e950722fb9004541b7",
+      "bytes": 718
+    },
+    {
+      "path": "composer-session-result-02.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "delta-identity.json",
+      "sha256Bytes": "1d148f5ada936ad251fb18b4e4c85c369e7e12575749e82d9eece22c041f9e9b",
+      "bytes": 810
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "4d3cd4f9819731af3b832a945322642b2e19f62848a3aefbed0b0b3a8a63fabb",
+      "bytes": 33764
+    },
+    {
+      "path": "desired/extract-upstream-dynamic-detail.py",
+      "sha256Bytes": "f93d88d47e87a418b41cc3217a759210a0a2d94cbe33325c3d713e9724e04004",
+      "bytes": 14495
+    },
+    {
+      "path": "freeze-delta.py",
+      "sha256Bytes": "82f38e07553afbe81712175d968a08dd5836967ca6547db7670836204a909477",
+      "bytes": 5149
+    },
+    {
+      "path": "history/compile-03.log",
+      "sha256Bytes": "0c05d5cdfb892f3ef294617ef199841b65eb8ffc864af4f377f66b8d6efc4005",
+      "bytes": 1114
+    },
+    {
+      "path": "history/compile-evidence-03.json",
+      "sha256Bytes": "aa2281b47284bf5e7d395f05c94320720d6c19725c315c464e84ce614cc94f9c",
+      "bytes": 53493
+    },
+    {
+      "path": "history/composer-session-result-01-inaccurate-rawMain-label.json",
+      "sha256Bytes": "f9a6ea07486a40e0cfb28c67c806bdcb8aed592efc5823c82504ca7041e115fb",
+      "bytes": 404
+    },
+    {
+      "path": "history/composer-session-result-01.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "history/composer-session-result-03-classload.log",
+      "sha256Bytes": "e393c82982aec837464a5ddac1c4ad736d06ac3cb415106d2b9e6908632b3b64",
+      "bytes": 2029826
+    },
+    {
+      "path": "history/composer-session-result-03.log",
+      "sha256Bytes": "0fa0f2fc324745d2e0f821978f71e38f23a83ba06ead935279335f397bce9999",
+      "bytes": 1589
+    },
+    {
+      "path": "integration.patch",
+      "sha256Bytes": "bc5c15fc2a7bc5a1515f68ce48cfd0d672356e52a400be338448e6b2d73f1802",
+      "bytes": 1486
+    },
+    {
+      "path": "post-admission-result-02-classload.log",
+      "sha256Bytes": "d36b19828e4daf8bdfe43123789ce51c7b1c3cd4008ea4b33cd72a43ac1a0e5a",
+      "bytes": 375806
+    },
+    {
+      "path": "post-admission-result-02.json",
+      "sha256Bytes": "d60fc3909ae22ce01d754d246e758c8d3984d52d5cb9f42f5ad85b130bf15861",
+      "bytes": 306
+    },
+    {
+      "path": "post-admission-result-02.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-sources/00-DesktopOriginalDetailLiquidPreferenceTypes.kt",
+      "sha256Bytes": "10c0ba3ecf9cece448ca1990aea5100624918f1f822b2bceb4c187313b7e78c6",
+      "bytes": 3035
+    },
+    {
+      "path": "proof-sources/01-DesktopOriginalDetailLiquidReadability.kt",
+      "sha256Bytes": "a292ab71428eaa270d3ed4a194339a4d5d0551ed1c224a714bce00d1aac370fa",
+      "bytes": 529
+    },
+    {
+      "path": "proof-sources/02-DesktopOriginalDetailLiquidReusePolicy.kt",
+      "sha256Bytes": "8a419b10edb90d8cada2fa79ca3211ba534e7beda9773b71338af603b813e157",
+      "bytes": 368
+    },
+    {
+      "path": "proof-sources/03-AdaptiveScaffoldPolicy.kt",
+      "sha256Bytes": "e1664df7f427f25c38e8d550eb47881de006c77a89e44b2edeaaccd83bf18373",
+      "bytes": 834
+    },
+    {
+      "path": "proof-sources/04-CommentWindowNavigation.kt",
+      "sha256Bytes": "47f3601acf14409111ffbefee9119303e031c3fef85a650bc8a642d227a64b53",
+      "bytes": 879
+    },
+    {
+      "path": "proof-sources/05-DesktopOriginalDetailAdaptiveChrome.kt",
+      "sha256Bytes": "e272db226b385ea51bbc76573b2ea7430ea03ff57a0f10eaf216b00e62c5761c",
+      "bytes": 19609
+    },
+    {
+      "path": "proof-sources/06-DesktopOriginalDetailAppSheetComponents.kt",
+      "sha256Bytes": "fa8fee9ae67a8945182f3be06c40adc3a2dcf8aab1449a40200ee7d090aa3d51",
+      "bytes": 16146
+    },
+    {
+      "path": "proof-sources/07-DesktopOriginalDetailOpticalContrastPalette.kt",
+      "sha256Bytes": "e34474420a449cb7cf2b9b0b88b5ded39fba5df65888f94e571b96779823f2b3",
+      "bytes": 454
+    },
+    {
+      "path": "proof-sources/08-ImmersiveAppScaffold.kt",
+      "sha256Bytes": "862a938eff9840f419d50f21fdefcf18c7dc0ee5ced87d14165aadf6c58c8650",
+      "bytes": 7130
+    },
+    {
+      "path": "proof-sources/09-InteractiveOverlayProgressPolicy.kt",
+      "sha256Bytes": "29bf8a21bdce64916cae43f27cff33ab6992f4c92bbd0ca665d47da4a6df99dd",
+      "bytes": 1411
+    },
+    {
+      "path": "proof-sources/10-SplitLayout.kt",
+      "sha256Bytes": "9386b0733944d3a0981da6972fbf83271267489e7c51c4cbde318912ee6de9aa",
+      "bytes": 10374
+    },
+    {
+      "path": "proof-sources/11-TopReadabilityChromePolicy.kt",
+      "sha256Bytes": "0eb9efb64f029bc31b1fbdd0503029760e64ba9685b2af51111e01796ea06d93",
+      "bytes": 2052
+    },
+    {
+      "path": "proof-sources/12-DesktopOriginalDetailDisplayModel.kt",
+      "sha256Bytes": "496e7576dffa0f1308af7f7d5ff8bf1a5cd62ca4e56d8a80d991fa15c891b823",
+      "bytes": 1533
+    },
+    {
+      "path": "proof-sources/13-DesktopOriginalDetailHingeModel.kt",
+      "sha256Bytes": "adfc26a5d60cfa977ca19181f4e2a3bea55a706da5935e62ca46553656f4e6ac",
+      "bytes": 439
+    },
+    {
+      "path": "proof-sources/14-DesktopOriginalDetailResponsiveWidth.kt",
+      "sha256Bytes": "2494e4a248c6c771002a50e32ba1b64c07acb4a100738f5276e81cb4869df925",
+      "bytes": 1271
+    },
+    {
+      "path": "proof-sources/15-DesktopOriginalDetailWindowModels.kt",
+      "sha256Bytes": "dfe006b44f8adc8dea5f8895ce1ebb7978bf55d02e2a685199b9ce3ef4107f78",
+      "bytes": 4425
+    },
+    {
+      "path": "proof-sources/16-ChromeBackdropSource.kt",
+      "sha256Bytes": "3aab501243a4abc00b75764da6ef46e99904463bb759f83e9aefaadad841d4e7",
+      "bytes": 2836
+    },
+    {
+      "path": "proof-sources/17-ProgressiveFade.kt",
+      "sha256Bytes": "9490b90cae37ae89482909fa9c4a37f9a01e00ea946b8b4127c57137f0f43ab1",
+      "bytes": 4626
+    },
+    {
+      "path": "proof-sources/18-DesktopOriginalDetailPredictiveBlurPolicy.kt",
+      "sha256Bytes": "96383b8c4eebee6e6d022accdcde2d028de3a0c60a789aa89e7f3a28947fd711",
+      "bytes": 2546
+    },
+    {
+      "path": "proof-sources/19-DesktopOriginalDynamicDetailLayout.kt",
+      "sha256Bytes": "c2d48893534c9298ba2ed4d926f4d151ca1d7956bb776f4a7e8ba1de68f1467c",
+      "bytes": 26958
+    },
+    {
+      "path": "proof-sources/20-DynamicLayoutPolicy.kt",
+      "sha256Bytes": "53e3f48200e01071801d4d483f1c35530e2e5b051ba324289814fe8931671f96",
+      "bytes": 319
+    },
+    {
+      "path": "proof-sources/21-DesktopOriginalDetailHomeVisualPalette.kt",
+      "sha256Bytes": "140127788fa747eda9615364abe130068d88fb287670bd6703af97352b3b4d04",
+      "bytes": 850
+    },
+    {
+      "path": "proof-sources/22-DesktopOriginalDynamicDetailComposer.kt",
+      "sha256Bytes": "5878757cbe2e8b257e7e1580c2e6c9015d0743d9a2f60655932667207cc62dc8",
+      "bytes": 9521
+    },
+    {
+      "path": "proof-sources/23-DynamicSubReplyPreviewHost.kt",
+      "sha256Bytes": "5b366817459536ad8a27ebf5d4ee579843bc81a77003359ce14c89f081f5fc6c",
+      "bytes": 3833
+    },
+    {
+      "path": "proof-sources/24-DesktopOriginalDetailLiquidDockSurface.kt",
+      "sha256Bytes": "14806f951a35d318430c809c768b070e1ed46d801043a4c87d5fe917b0eb3c33",
+      "bytes": 17719
+    },
+    {
+      "path": "proof-sources/25-DesktopOriginalDetailLiquidGeometry.kt",
+      "sha256Bytes": "d381062e39a0589a9673d7b8bffe7632ca23deca2fbad199355619ac2de89a16",
+      "bytes": 809
+    },
+    {
+      "path": "proof-sources/26-DesktopOriginalDetailLiquidGravityHighlight.kt",
+      "sha256Bytes": "63d51fb13c40f7756cc0258e9e411e40b20f85ea7ffd4c857efd62600600c1d8",
+      "bytes": 3421
+    },
+    {
+      "path": "proof-sources/27-DesktopOriginalDetailLiquidMaterial.kt",
+      "sha256Bytes": "ad0103908197414150f947b54ce8f08d1431b20d409678f65ec5fb21fc80bedb",
+      "bytes": 5037
+    },
+    {
+      "path": "proof-sources/28-DesktopOriginalDetailLiquidTuning.kt",
+      "sha256Bytes": "8a9c704029285abac1cbddea32c67c693ea3920d2446236ab89cd41997b8c2ff",
+      "bytes": 7667
+    },
+    {
+      "path": "proof-sources/29-DesktopOriginalDetailReusableLiquidDock.kt",
+      "sha256Bytes": "22ce49d7453aef2a3d8405b673c95ba23d546875866dec6e139555802e255916",
+      "bytes": 12942
+    },
+    {
+      "path": "proof-sources/30-ProgressiveTopChrome.kt",
+      "sha256Bytes": "db870f318316e824f996ffb26e4ae0e04962764d65a1a66c0ae1e53422c712e6",
+      "bytes": 9782
+    },
+    {
+      "path": "proof-sources/31-DesktopOriginalDetailLiquidCombinedBackdrop.kt",
+      "sha256Bytes": "d0a66b14f38576393211de99fd4faac8b9cf1e11704e2d7655907f0f1a3a3c87",
+      "bytes": 1668
+    },
+    {
+      "path": "proof-sources/32-DesktopOriginalDetailLiquidInnerShadow.kt",
+      "sha256Bytes": "3e22a0e0ba15bef8a966deeef5595be0a219f18fc5189f7bba592b0be4e3c98d",
+      "bytes": 5358
+    },
+    {
+      "path": "proof-sources/33-DesktopOriginalDetailLiquidLens.kt",
+      "sha256Bytes": "85435fee6f6bdd1517bd4073953da6a6d28259474d1d6528548776efcf693f44",
+      "bytes": 7682
+    },
+    {
+      "path": "proof-sources/34-DesktopOriginalDetailLiquidVibrancy.kt",
+      "sha256Bytes": "aaed1ec9ef615bc4a0adeed119aee9d1e8065de2bb46a02336adada9283eba9e",
+      "bytes": 545
+    },
+    {
+      "path": "proof-sources/35-CommentThreadDrag.kt",
+      "sha256Bytes": "c81b681f31e0c357e3ff29ec25aaf7668d9fbdc32bbd9a59569eb9c1cda4b343",
+      "bytes": 6942
+    },
+    {
+      "path": "proof-sources/36-DesktopOriginalDetailInputPadding.kt",
+      "sha256Bytes": "57c4c445287af562ee752ecfe623c07716cc75c7f6052f21718cfdffe67e07fe",
+      "bytes": 944
+    },
+    {
+      "path": "proof-sources/37-DesktopOriginalDetailThreadPolicies.kt",
+      "sha256Bytes": "dabea13c4e763b2faa3a3c59fa6e53f0caea13b889487fa29604414088afecc5",
+      "bytes": 599
+    },
+    {
+      "path": "proof-sources/38-SubReplySheet.kt",
+      "sha256Bytes": "ad4dab5e895a4eacebefec7db35b211fa18e1687b85fee356fefa55fdb833c4b",
+      "bytes": 6163
+    },
+    {
+      "path": "proof-sources/39-DesktopCommentDialogNavigation.kt",
+      "sha256Bytes": "a8a29f6e13040da29a919bc5b8404acc1e5600502ae1bff06261e8cbf6354837",
+      "bytes": 2170
+    },
+    {
+      "path": "proof-sources/40-DesktopDetailEffects.kt",
+      "sha256Bytes": "0d8da436f9e2a455eeec672e1b9b9c18cbd622a40d2bbc57f3424cbf42b71af5",
+      "bytes": 918
+    },
+    {
+      "path": "proof-sources/41-DesktopDetailWindow.kt",
+      "sha256Bytes": "f52b7be19ca2b9040ac4b31685ce8e6a9fef89999c55f3008afa2827f935e918",
+      "bytes": 2026
+    },
+    {
+      "path": "proof-sources/42-DesktopDynamicCommentLayoutAdmission.kt",
+      "sha256Bytes": "8d55feb4df663a243bb9274a1b462aa97306b54e80ffaff33c27765e252a7043",
+      "bytes": 534
+    },
+    {
+      "path": "proof-sources/43-ComposerSessionUiFixture.kt",
+      "sha256Bytes": "56f5def4908d3d512f3216bd63ea59efb5401099c173fa9d3f32819da00f35c0",
+      "bytes": 5137
+    },
+    {
+      "path": "proof-sources/44-ComposerUiFixture.kt",
+      "sha256Bytes": "d373f2938917f6e6542888c2c949ed4645d9d6f4041185191bfed132d5b6e227",
+      "bytes": 8828
+    },
+    {
+      "path": "proof-sources/45-LayoutHelpersFixture.kt",
+      "sha256Bytes": "f407ccec7814655c6f50b2e2d86897e0c13881c5182de9df53bdb13a4b28810b",
+      "bytes": 4214
+    },
+    {
+      "path": "proof-sources/46-ReplySessionFixture.kt",
+      "sha256Bytes": "0e84448573e77259cfbda80a4f68448fadad291c425990a321a6dd9cec688311",
+      "bytes": 10068
+    },
+    {
+      "path": "proof-sources/47-PostAdmissionFixture.kt",
+      "sha256Bytes": "fec5dca3a5aa0711d4ce981c51bca87560c133dd950da7a212a011a72bb7f67a",
+      "bytes": 3487
+    },
+    {
+      "path": "proof-sources/48-DesktopOriginalDynamicReplySession.kt",
+      "sha256Bytes": "6121926c5f3bbc259a527cdd14542266cd84128b7319bd8219bac17e4785bba4",
+      "bytes": 36408
+    },
+    {
+      "path": "run-delta.py",
+      "sha256Bytes": "5bbfc6fa54b831fecf1a44ffe542507b9fde7b5f5ce67066ee1bdac1a41062fd",
+      "bytes": 1505
+    },
+    {
+      "path": "same-owner-full-liquid-layout.png",
+      "sha256Bytes": "2cc8777a0d873d3bad6ee22a0edef72ce4dd1e102087e7905090937e8e1d5bf4",
+      "bytes": 26910
+    }
+  ]
+}

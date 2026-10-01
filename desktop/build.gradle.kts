@@ -552,6 +552,19 @@ val extractUpstreamDynamicDetail by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail"))
 }
 
+val extractUpstreamDynamicDetailContainer by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-detail-container.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/dynamic-detail-container").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-dynamic-detail-container.py", "tools/extract-appearance-platform.py",
+        "tools/sync-upstream.py")
+    inputs.files(sources.filter { "dynamic-detail-container" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail-container"))
+}
+
 val extractUpstreamDynamicReplyProtocol by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -842,6 +855,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-editor"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-reply"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-detail"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-detail-container"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-reply-protocol/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-detail-protocol/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-follow"))
@@ -863,6 +877,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicFullCard) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicEditor, verifyUpstreamDynamicEditorProtocol) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicReply, extractUpstreamDynamicDetail,
     extractUpstreamDynamicReplyProtocol, extractUpstreamDynamicDetailProtocol, verifyUpstreamDynamicDetailReplyProtocol) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicDetailContainer) }
 
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicFollow) }
 tasks.named("compileKotlin") { dependsOn(prepareNativeDiagnosticShare) }
@@ -913,6 +928,9 @@ tasks.withType<JavaExec>().configureEach {
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation("org.jetbrains.compose.material3:material3:1.12.0-alpha03")
+    // Original comment sheets use this API directly; Material3 only brings its
+    // desktop implementation onto runtimeClasspath transitively.
+    implementation("androidx.navigationevent:navigationevent-compose:1.1.2")
     implementation(project(":miuix5157"))
     implementation("com.materialkolor:material-kolor:4.1.1")
     implementation("com.materialkolor:material-color-utilities:5.0.1")

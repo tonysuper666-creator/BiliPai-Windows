@@ -134,7 +134,7 @@ internal class DesktopDynamicImageAssets(
     private companion object { const val MAX_IMAGE_BYTES = 32 * 1024 * 1024; const val MAX_VIDEO_BYTES = 200 * 1024 * 1024 }
 }
 internal data class DesktopDynamicSaveTarget(val path: Path, val replaceExisting: Boolean)
-private suspend fun selectDynamicSaveTarget(name: String, mime: String): DesktopDynamicSaveTarget? = withContext(Dispatchers.IO) {
+internal suspend fun selectDynamicSaveTarget(name: String, mime: String): DesktopDynamicSaveTarget? = withContext(Dispatchers.IO) {
     var selected: DesktopDynamicSaveTarget? = null
     SwingUtilities.invokeAndWait {
         val chooser = JFileChooser().apply { dialogTitle = "保存图片 / 实况视频"; selectedFile = java.io.File(name) }

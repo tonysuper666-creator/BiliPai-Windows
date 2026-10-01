@@ -1,0 +1,78 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "sourceWindowsVersion": "0.2.406.9",
+  "deployedWindowsVersion": "0.2.406.5",
+  "packaged": false,
+  "previousMainCommit": "ce9ac0aefca42c5e3058f82b3e55652a3a9da150",
+  "registryCount": 621,
+  "previousRegistryCount": 602,
+  "sourceAdditions": {
+    "layoutUniqueIdentities": 23,
+    "layoutNew": 18,
+    "layoutMerged": 5,
+    "messagePolicyNew": 1,
+    "messageClosureMerged": 2,
+    "totalNew": 19
+  },
+  "mainSnapshotManifestSha256Bytes": "f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17",
+  "actualRuntimeCpSha256Bytes": "be8a62821f74e73653ed2354afbb1de3d6ec8236db68f056328a482a5e0f4d9d",
+  "runtimeEntries": 89,
+  "tests": {
+    "actualMain01JUnit": [
+      {
+        "className": "DesktopDynamicCardStateRegistryTest",
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "className": "DesktopTopicRoutingTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "total": 15,
+    "ownershipCaptureFixThenMain02CompilePassed": true
+  },
+  "actualMain01Admission": {
+    "cases": 6,
+    "productOverrides": 0,
+    "normalComposerStrictRootParent": "701/701",
+    "correctedMetadataAndFailedHistoryRetained": true
+  },
+  "actualMain02PngCommit": {
+    "assertions": 29,
+    "cases": 9,
+    "productOverrides": 0,
+    "rootGateAndDisposeBodyExtractedIntoFixture": true,
+    "actualRootScreenExecuted": false,
+    "nativePickerExecuted": false,
+    "existingTargetPreservedOnEpochRotationPageCloseAndStoreLockQueuedJobCancellation": true,
+    "windowsLongRouteFooterQrOverlapObserved": true,
+    "qrDecodingAccepted": false
+  },
+  "whitespace": {
+    "frozenContainerProducerHasOneTrailingBlankLine": true,
+    "producerBytesRetainedForSourceProvenance": true
+  },
+  "scope": {
+    "fullLayoutThreadSourceMounted": true,
+    "completeCommunityConsumerRuntimeAccepted": false,
+    "completeDesktopShellAccepted": false,
+    "systemShareAccepted": false,
+    "nativePickerAccepted": false,
+    "liquidGlassEnabled": false,
+    "fullDetailParity": false
+  },
+  "changes": [
+    "Original detail layout and modal thread container consume one captured original reply session and existing raw Root item.",
+    "Original message-link policy preserves dynamic root/target identifiers.",
+    "Late detail reads retain comment counts confirmed during their request without changing unrelated fresh fields.",
+    "Post admission captures the immutable original reply target before desktop coroutine dispatch.",
+    "PNG final move can use the real session monitor then page export lock; captured epoch mismatches retire work without throwing during composition."
+  ]
+}
