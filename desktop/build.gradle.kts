@@ -1786,3 +1786,60 @@ val extractOriginalPersonalLists by tasks.registering(Exec::class) {
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-personal-lists")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalPersonalLists) }
+
+// Beside extractOriginalPersonalLists; existing tools/dependencies only.
+val extractOriginalWatchLater by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalFavorites)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-watchlater.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-watchlater").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-watchlater.py", "tools/extract-upstream-favorites.py",
+        "tools/extract-upstream-dynamic-reply-protocol.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-personal-watchlater" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-watchlater"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-watchlater")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalWatchLater) }
+
+val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalOfflinePlayer)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-player-full-controls.py",
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-player-full-controls").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-video-player-full-controls.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
+    inputs.files(sources.filter { "stable-video-player-full-controls" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-video-player-full-controls"))
+}
+val verifyOriginalPlayerFullControls by tasks.registering(Exec::class) {
+    dependsOn(extractOriginalPlayerFullControls)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-video-player-full-controls.py",
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-player-full-controls").get().asFile.absolutePath,
+        layout.buildDirectory.file("generated/original-video-player-controls-verification.json").get().asFile.absolutePath)
+    inputs.files("tools/verify-upstream-video-player-full-controls.py", "tools/extract-upstream-video-player-full-controls.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
+    inputs.dir(layout.buildDirectory.dir("generated/original-video-player-full-controls"))
+    outputs.file(layout.buildDirectory.file("generated/original-video-player-controls-verification.json"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-player-full-controls")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalPlayerFullControls, verifyOriginalPlayerFullControls) }
+
+// After extractOriginalWatchLater; same compiler/dependencies and one source graph.
+val extractOriginalFollowing by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalFavorites, extractOriginalWatchLater)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-following.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-following").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-following.py", "tools/extract-upstream-favorites.py",
+        "tools/extract-upstream-dynamic-reply-protocol.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-personal-following" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-following"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-following")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalFollowing) }

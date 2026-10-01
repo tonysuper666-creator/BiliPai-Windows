@@ -1,0 +1,85 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        42,
+        43
+      ],
+      "generatedLineRange": [
+        42,
+        43
+      ],
+      "before": [
+        "import androidx.compose.ui.platform.LocalConfiguration\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        45,
+        46
+      ],
+      "generatedLineRange": [
+        45,
+        45
+      ],
+      "before": [
+        "import androidx.compose.ui.semantics.testTagsAsResourceId\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        87,
+        88
+      ],
+      "generatedLineRange": [
+        86,
+        87
+      ],
+      "before": [
+        "import com.android.purebilibili.core.plugin.skin.UiSkinAnimatedAsset\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopOriginalPlayerSkinAsset as UiSkinAnimatedAsset\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        734,
+        735
+      ],
+      "generatedLineRange": [
+        733,
+        734
+      ],
+      "before": [
+        "                .semantics { testTagsAsResourceId = true }\n"
+      ],
+      "after": [
+        "                .semantics { }\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1283,
+        1284
+      ],
+      "generatedLineRange": [
+        1282,
+        1282
+      ],
+      "before": [
+        "            decorFitsSystemWindows = false\n"
+      ],
+      "after": []
+    }
+  ],
+  "sourceSha256LF": "6e3e37310f124e1b1dd0538bbee7cbb9a01e6160676f50a0850ac470974b0383",
+  "generatedSha256LF": "1c2e7ec8c966349e4247bb51812bb997edf70b7aa0c79ff9e9c3eb62f8be4c9d",
+  "reverseExact": true
+}

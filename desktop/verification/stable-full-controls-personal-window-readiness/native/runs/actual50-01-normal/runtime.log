@@ -1,0 +1,10 @@
+PASS Unchanged full original renderer owns exact local task and actual native first frame
+PASS Actual original landscape entry applies real fixture Window fullscreen placement
+WAITING_ROOT_SKY step=1 control=退出全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof\runs\actual50-01-normal\fixture-owned-runtime\external-input-1.done
+Exception in thread "main" java.lang.IllegalStateException: Root sky click acknowledgement missing for step 1
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.waitFor(OfflineNativeFixture.kt:81)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.access$waitFor(OfflineNativeFixture.kt:1)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.clickOriginal(OfflineNativeFixture.kt:334)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.clickOriginal$default(OfflineNativeFixture.kt:286)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.run(OfflineNativeFixture.kt:432)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.main(OfflineNativeFixture.kt:532)

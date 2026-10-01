@@ -1,0 +1,460 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources
+> Task :extractBgmDetail
+> Task :extractCommentFraudProtocol
+> Task :extractFrostedAudioRenderer
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 95}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform
+
+> Task :extractImageSaveSettingsUi
+Generated 2
+
+> Task :extractLinkedDock
+> Task :extractNativeMusicRoot
+> Task :extractNavigation3Host
+
+> Task :extractOriginalApplicationImageLoader
+Complete original application ImageLoader body and original cache/trim policies generated
+
+> Task :extractOriginalDanmakuListMenu
+> Task :extractOriginalDanmakuSettings
+
+> Task :extractOriginalDownloadList
+Generated 3 original download list sources
+
+> Task :extractOriginalFavoriteFolder
+generated original favorite drawer, policy, protocol and session closure
+
+> Task :extractOriginalFavorites
+
+> Task :extractOriginalWatchLater
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+      "sha256LfUtf8": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+      "mode": "direct"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+      "sha256LfUtf8": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+      "mode": "direct"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/WatchLaterRepository.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "5062a5c6ddaf1f4d5ed58a6423545fd6ccf0a7f736f5362ef3aaf12d62ed4266",
+    "output": {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalWatchLaterRepository.kt",
+      "sha256LfUtf8": "1b5751403741cfd2554ace8bd6392038f16d1ddf3d06cb5066a4d0c4f37087db",
+      "mode": "selected"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "266e5f40e13147e8ffafc06537966174dcf0f492eac8cde455070a45885b6f84",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "sha256LfUtf8": "c64257dffde90fba2881588c3b80bb7de676ad1003acdb2d269fe04b72933ebb",
+      "mode": "selected"
+    }
+  }
+]
+
+> Task :extractOriginalFollowing
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "6d6ce126d9df0a90db5104be0151980006cf3300be55db9e25dae15289674ce1",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+      "mode": "direct",
+      "sha256LfUtf8": "6d6ce126d9df0a90db5104be0151980006cf3300be55db9e25dae15289674ce1"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingLayoutPolicy.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingLayoutPolicy.kt",
+      "mode": "direct",
+      "sha256LfUtf8": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingUserPresentationPolicy.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingUserPresentationPolicy.kt",
+      "mode": "direct",
+      "sha256LfUtf8": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/FollowingCacheStore.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "217da212735a1397d9a367343c76b6ed8e2668dccb62a048bdaa8e6def6afa7a",
+    "output": {
+      "path": "com/android/purebilibili/core/store/FollowingCacheStore.kt",
+      "mode": "selected",
+      "sha256LfUtf8": "661222fd4ebfdb29e3aafde94563c6096685cf6ef376529d597e93cb2108160f"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingListScreen.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "973c52505a2abe39e1ed0f8ae1ad51199076fd8482f50dbe50c2b1725f8412c8",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingListScreen.kt",
+      "mode": "selected",
+      "sha256LfUtf8": "b3c099bd0f545ecfa9aed4f7aea5246de39681b6757d6f105a95a4ac68313264"
+    }
+  }
+]
+
+> Task :extractOriginalHomeBangumiPage
+Complete original Home Bangumi Hub emitted
+
+> Task :extractOriginalHomePage
+57 source outputs
+original settings keys 82
+original Home outputs 71
+
+> Task :extractOriginalHomePartition
+Complete original Partition Screen/Content/VM and shared media skeleton produced
+
+> Task :extractOriginalHomeProtocols
+{"productionOutputs": 6, "standaloneOutputs": 7, "declarations": 32, "sourcePins": {"app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496", "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt": "4081b04ee97b4edab58507811d43b637afb78a04fd1b6f94ffa6697f72905c4a", "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt": "28748c0fd10125e603a8c0f28fff63781f87d3350e1446cc355622f447f8f86d", "app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt": "405e952ef30ec06f14a155599a92641d533e73f28ea198f0aebfda90960a4bc8", "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f", "app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt": "67deacd84bee9f8803b2190e079d5486d2593bf26bc29d1a114ae259273fe87d"}, "directOnly": "app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt"}
+
+> Task :extractOriginalHomeViewModel
+{"pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589", "vmOriginalSha256LF": "63ffd0eadd3080e2b304612c9c1e672f5f2370ca9c9db4f8040a52e85cbc15aa", "vmDesiredSha256LF": "99c153734949c53656bea05b51344e3765b731637157c339e37ed543e3a4755c", "preparedBaseVmDesiredSha256LF": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc", "solePlanConverterVisibilityAdaptation": true, "adaptationOperations": 102, "productionOutputs": 3, "standaloneOnlyDirect": ["app/src/main/java/com/android/purebilibili/core/util/EasterEggs.kt", "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt", "app/src/main/java/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt"]}
+
+> Task :extractOriginalLiveList
+> Task :extractOriginalLiveNavigation
+
+> Task :extractOriginalOfflinePlayer
+Generated 3 full original offline selected sources
+
+> Task :extractOriginalPersonalLists
+DesktopOriginalHistoryNavigation.kt
+DesktopOriginalHistoryArticlePolicy.kt
+
+> Task :extractOriginalVideoDetailUnits
+{"sources": 24, "outputs": 26}
+
+> Task :extractOriginalPlayerFullControls
+> Task :extractOriginalProfileMain
+> Task :extractOriginalRootHomeNavigation
+
+> Task :extractOriginalSubscriptionPage
+Original Subscription UI outputs 1
+
+> Task :extractOriginalVideoShareConsent
+
+> Task :extractOriginalWallpaperPalette
+Generated full original WallpaperPaletteStore with owned Windows services
+
+> Task :extractPlaybackSettings
+> Task :extractPlaybackWatchdogs
+> Task :extractSharedLiquidTabs
+> Task :extractStableCollectionSheet
+> Task :extractStableVideoMetadata
+> Task :extractStableWeeklySeries
+> Task :extractSubtitleLoadPolicy
+
+> Task :extractUpstreamApi
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\api\com\android\purebilibili\core\network\DesktopUpstreamApi.kt
+
+> Task :extractUpstreamAppearance
+
+> Task :extractUpstreamAudio
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\audio\com\android\purebilibili\feature\audio\viewmodel\MusicUiState.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\audio\com\android\purebilibili\feature\video\player\DesktopPlaylistPolicies.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\audio\com\android\purebilibili\feature\audio\library\DesktopListenVideoLibraryLoader.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\audio\com\android\purebilibili\data\repository\DesktopFavoriteRequestException.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\audio\com\android\purebilibili\feature\list\DesktopFavoriteRiskPolicy.kt
+
+> Task :extractUpstreamDiscovery
+
+> Task :extractUpstreamBlockedUp
+Generated 3
+
+> Task :extractUpstreamSettingsSearch
+Generated 8
+
+> Task :extractUpstreamSettingsCategories
+Generated 3
+
+> Task :extractUpstreamBlockedListUi
+Generated 5
+
+> Task :extractUpstreamCast
+
+> Task :extractUpstreamComponents
+Generated 4 original component files
+
+> Task :extractUpstreamCrashPrompt
+
+> Task :extractUpstreamDanmaku
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\danmaku\com\android\purebilibili\feature\video\danmaku\AdvancedDanmakuData.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\danmaku\com\android\purebilibili\feature\video\danmaku\DesktopAdvancedDanmakuParser.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\danmaku\com\android\purebilibili\data\repository\DesktopDanmakuSegmentPolicy.kt
+
+> Task :extractUpstreamDiagnostics
+8
+
+> Task :extractUpstreamDownloadTransport
+> Task :extractUpstreamDynamicDetail
+> Task :extractUpstreamDynamicDetailContainer
+> Task :extractUpstreamDynamicDetailProtocol
+> Task :extractUpstreamDynamicEditor
+
+> Task :extractUpstreamSettingsHome
+Generated 2
+
+> Task :extractUpstreamDynamicSettings
+Generated 8
+
+> Task :extractUpstreamDynamicTabs
+Generated 15
+
+> Task :extractUpstreamDynamicFollow
+{"generated": 2, "files": ["C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\dynamic-follow\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalFollowStateChange.kt", "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\dynamic-follow\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicFollowStatePolicy.kt"]}
+
+> Task :extractUpstreamDynamicFullCard
+> Task :extractUpstreamDynamicReply
+> Task :extractUpstreamDynamicReplyProtocol
+
+> Task :extractUpstreamDynamicStaticImageCodec
+{"generated": ["desktopOriginalStaticGalleryKeepBytes", "desktopOriginalStaticGalleryExtension", "desktopOriginalStaticGalleryMimeType", "desktopOriginalStaticGalleryFileName"]}
+
+> Task :extractUpstreamHomeCards
+Generated 5
+
+> Task :extractUpstreamHomeFullCard
+57 source outputs
+original settings keys 82
+57 source outputs
+original settings keys 82
+
+> Task :extractUpstreamJs
+Generated 6 original JS policy/store files; JS VM not included
+
+> Task :extractUpstreamLogin
+
+> Task :extractUpstreamMedia
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\data\repository\DesktopMediaPgcPolicies.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\data\repository\DesktopDownloadDanmakuRepository.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\feature\video\danmaku\DesktopDanmakuMetadataParser.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\feature\download\DesktopOfflinePositionPolicy.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\data\repository\DesktopLiveHosts.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\core\network\socket\LiveDanmakuClient.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\data\repository\DesktopLivePolicies.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\feature\live\DesktopLiveDanmakuItem.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\feature\bangumi\DesktopFollowPolicies.kt
+
+> Task :extractUpstreamNetworkProxy
+Generated 4
+
+> Task :extractUpstreamPackages
+Generated 8 original package source files
+
+> Task :extractUpstreamPlayback
+
+> Task :extractUpstreamPlugins
+Generated 34 original plugin source files
+
+> Task :extractUpstreamPreferences
+Generated 5 original preference/navigation files
+
+> Task :extractUpstreamProfileWallpaperImport
+Generated whole original WallpaperImageImport with required owned Windows IO
+
+> Task :extractUpstreamSearch
+> Task :extractUpstreamSettings
+
+> Task :extractUpstreamSettingsEntries
+Generated 2
+
+> Task :extractUpstreamSettingsPrivacy
+Generated 5
+
+> Task :extractUpstreamSettingsStorageEntries
+Generated 1
+
+> Task :extractUpstreamSpace
+> Task :extractUpstreamSpaceContributions
+> Task :extractUpstreamSpaceImagePreviews
+> Task :extractUpstreamSpaceOverview
+
+> Task :extractUpstreamStoryTopic
+Generated 5 original Story/Topic files
+
+> Task :extractVideoCommentUi
+> Task :convertXmlValueResourcesForMain NO-SOURCE
+> Task :copyNonXmlValueResourcesForMain NO-SOURCE
+> Task :prepareComposeResourcesTaskForMain NO-SOURCE
+> Task :generateResourceAccessorsForMain SKIPPED
+> Task :generateActualResourceCollectorsForMain SKIPPED
+> Task :generateComposeResClass SKIPPED
+
+> Task :fetchJsWorkerJdk
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.gradle\js-worker-cache\fixed-jdk
+
+> Task :prepareJsWorker
+{
+  "reused": true,
+  "classpathCount": 13,
+  "resourceCount": 137,
+  "catalogSha256": "0ff5200c111677e78ed303bb8a514aa00ce9c537362848d3079861a98e6258f5"
+}
+
+> Task :prepareNativeDiagnosticShare
+{"passed": true, "headers": 369, "searchedLibraries": 11, "compilerFiles": 64, "dllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06"}
+{"passed": true, "freshBuild": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\8054249a-752b-43b3-b7b4-4e2d9016ce1c", "approvedSourceManifestSha256Bytes": "e13c4d6775a942343039d5602d52ee02bd92fe3f83155f80f67da67160dd62b1", "sourceSha256Bytes": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92", "compilerDriverSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861", "expectedDllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06", "stagedDllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06", "actualBuildGraph": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\8054249a-752b-43b3-b7b4-4e2d9016ce1c\\producer-input-graph.json", "actualBuildGraphSha256Bytes": "23baa6dc94bd761857f9553fdbdaa3392c96ac27c1f7ac0272b2df11fef4453d", "cachedOutputTrusted": false, "freshCompilationOnEveryInvocation": true, "resolvedGraphMatchesReviewedBuild": true, "publicReleaseAuthorizationVerified": false}
+
+> Task :prepareOriginalCategoryPage
+Original Category outputs 1
+
+> Task :prepareOriginalHomeReturnNavigation
+
+> Task :verifyAppearanceDependencies
+Verified eight fixed appearance runtime dependencies and six source notices.
+
+> Task :verifyCoilCacheControlSources
+Verified three unchanged Coil3.5.0 cache-control sources and two Apache notices.
+
+> Task :verifyDynamicMediaDependencies
+Verified three approved image metadata runtime dependencies and six Apache notices.
+
+> Task :verifyOriginalPlayerFullControls
+> Task :verifyOriginalVideoDetailMembers
+
+> Task :verifySettingsSearchDependencies
+Verified original pinyin4j runtime and all five source/license files; POM/source license conflict retained.
+
+> Task :extractStableVideoVotes
+
+> Task :verifyUpstreamDynamicDetailReplyProtocol
+PASS five exact original-source request families in the existing Operations class
+
+> Task :verifyUpstreamDynamicEditorProtocol
+PASS original-source editor request members in the existing Operations class
+
+> Task :extractUpstreamDynamicGalleryMotionPhoto
+PASS original packing with approved three-line XMP attribute fix and unchanged gallery policy; generated 2 Kotlin sources
+
+> Task :verifyUpstreamDynamicMedia
+
+> Task :miuix5157:verifyPinnedSource
+Exact Miuix5c91 pinned source PASS: 225 files; 195 compiled source files
+
+> Task :miuix5157:bakeSquircleSdf UP-TO-DATE
+> Task :miuix5157:kmpPartiallyResolvedDependenciesChecker
+> Task :miuix5157:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :miuix5157:compileKotlinJvm UP-TO-DATE
+> Task :miuix5157:compileJvmMainJava NO-SOURCE
+> Task :miuix5157:jvmProcessResources NO-SOURCE
+> Task :miuix5157:processJvmMainResources SKIPPED
+> Task :miuix5157:jvmMainClasses UP-TO-DATE
+> Task :miuix5157:jvmJar UP-TO-DATE
+> Task :assembleMainResources UP-TO-DATE
+> Task :prepareOriginalPluginResources
+> Task :processResources
+> Task :convertXmlValueResourcesForTest NO-SOURCE
+> Task :copyNonXmlValueResourcesForTest NO-SOURCE
+> Task :prepareComposeResourcesTaskForTest NO-SOURCE
+> Task :generateResourceAccessorsForTest SKIPPED
+> Task :compileKotlin
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/PagesSelector.kt:266:26 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt:310:22 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt:1767:48 'val Icons.Outlined.ViewList: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.ViewList.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt:100:30 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt:333:43 'val Icons.Outlined.Comment: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.Comment.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-watchlater/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt:875:52 Condition is always 'true'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:206:55 Condition is always 'true'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:444:44 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:457:36 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:461:27 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:521:19 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:528:76 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:879:54 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:901:37 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:918:66 Elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1105:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1106:48 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1107:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1109:53 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1110:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1267:34 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1270:13 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1373:119 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1485:61 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1494:80 No cast needed.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1495:82 No cast needed.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1496:76 No cast needed.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1497:105 Condition is always 'true'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1576:37 Condition is always 'false'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt:687:32 Unnecessary safe call on a non-null receiver of type 'DashVideo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt:688:42 Unnecessary safe call on a non-null receiver of type 'DashVideo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt:46:9 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/PagesSelector.kt:266:26 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt:310:22 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt:1767:48 'val Icons.Outlined.ViewList: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.ViewList.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt:100:30 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt:333:43 'val Icons.Outlined.Comment: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.Comment.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-watchlater/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt:875:52 Condition is always 'true'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:206:55 Condition is always 'true'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:444:44 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:457:36 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:461:27 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:521:19 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:528:76 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:879:54 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:901:37 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:918:66 Elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1105:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1106:48 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1107:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1109:53 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1110:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1267:34 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1270:13 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1373:119 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1485:61 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1494:80 No cast needed.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1495:82 No cast needed.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1496:76 No cast needed.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1497:105 Condition is always 'true'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1576:37 Condition is always 'false'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt:687:32 Unnecessary safe call on a non-null receiver of type 'DashVideo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt:688:42 Unnecessary safe call on a non-null receiver of type 'DashVideo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt:46:9 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+
+> Task :compileJava UP-TO-DATE
+> Task :classes
+> Task :jar
+> Task :compileTestKotlin
+
+[Incubating] Problems report is available at: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 4m 6s
+117 actionable tasks: 112 executed, 5 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html

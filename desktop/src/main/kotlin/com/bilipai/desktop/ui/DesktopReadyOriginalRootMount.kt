@@ -123,7 +123,7 @@ internal class DesktopReadyOriginalRootHandle(
     services: DesktopReadyOriginalRootServices,
     handleReference: AtomicReference<DesktopReadyOriginalRootHandle?>,
     modifier: Modifier,
-    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean, DesktopPersonalListsRoot) -> Unit,
+    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean, DesktopPersonalListsRoot, DesktopHomeSettingsPort) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val applicationImages = LocalDesktopApplicationImageLoader.current
@@ -340,7 +340,7 @@ internal class DesktopReadyOriginalRootHandle(
             { query -> routes.push(BiliPaiNavKey.Search(query)) },
             { target -> dispatchDesktopReadyNativeTarget(root, routes, target) },
             { searchLaunch = 0 }, { scope.launch { prefs.setTabletUseSidebar(!prefs.navigation.value.tabletUseSidebar) } },
-            personalLists.historySearchChannel, services.favoriteSearch, services.watchLaterSearch)
+            personalLists.historySearchChannel, services.favoriteSearch, personalLists.watchLaterSearchChannel)
         val chromeBindings = DesktopOriginalRootChromeBindings(owner, navPreferences, scope, actions, audio,
             services.nowPlayingVisibility, audioNavigation, { 0.dp }, { dynamicUnreadCount }, { searchLaunch },
             { prefs.homeSettings.value.cardTransitionEnabled }, sidebarAccountSwitcher, { sourceReady = it })
@@ -380,7 +380,7 @@ internal class DesktopReadyOriginalRootHandle(
                         clock.settleState == VideoCardTransitionSettleState.InteractiveSeek,
                         clock.settleState == VideoCardTransitionSettleState.CancelRestore || clock.gestureRestoreInProgress)) },
                 Modifier.fillMaxSize(), chromeBindings, { active -> activeDestination = active; services.activeDestinationChanged(active) }, saveable,
-                { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists) })
+                { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings) })
         }
         }
     }

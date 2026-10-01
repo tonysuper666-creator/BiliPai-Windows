@@ -1,0 +1,106 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        27,
+        27
+      ],
+      "generatedLineRange": [
+        27,
+        28
+      ],
+      "before": [],
+      "after": [
+        "import androidx.compose.runtime.DisposableEffect\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        34,
+        35
+      ],
+      "generatedLineRange": [
+        35,
+        36
+      ],
+      "before": [
+        "import androidx.compose.ui.graphics.asImageBitmap\n"
+      ],
+      "after": [
+        "import androidx.compose.ui.graphics.toComposeImageBitmap\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        36,
+        38
+      ],
+      "generatedLineRange": [
+        37,
+        39
+      ],
+      "before": [
+        "import androidx.compose.ui.platform.LocalConfiguration\n",
+        "import androidx.compose.ui.platform.LocalContext\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration\n",
+        "import coil3.compose.LocalPlatformContext as LocalContext\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        500,
+        500
+      ],
+      "generatedLineRange": [
+        501,
+        504
+      ],
+      "before": [],
+      "after": [
+        "            val bitmap = (painterState.result.image as? coil3.BitmapImage)?.bitmap\n",
+        "            val spriteImage = remember(bitmap) { bitmap?.let(org.jetbrains.skia.Image::makeFromBitmap) }\n",
+        "            DisposableEffect(spriteImage) { onDispose { spriteImage?.close() } }\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        501,
+        502
+      ],
+      "generatedLineRange": [
+        505,
+        507
+      ],
+      "before": [
+        "                val bitmap = (painterState.result.image as? coil3.BitmapImage)?.bitmap ?: return@Canvas\n"
+      ],
+      "after": [
+        "                val bitmap = bitmap ?: return@Canvas\n",
+        "                val spriteImage = spriteImage ?: return@Canvas\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        532,
+        533
+      ],
+      "generatedLineRange": [
+        537,
+        538
+      ],
+      "before": [
+        "                    image = bitmap.asImageBitmap(),\n"
+      ],
+      "after": [
+        "                    image = spriteImage.toComposeImageBitmap(),\n"
+      ]
+    }
+  ],
+  "sourceSha256LF": "fa02b7e87634c56e67fa7027de72a5216f54aee96d8a158d1bf70ad61d63be75",
+  "generatedSha256LF": "63b9e370c9f7729cee78c13e67fb5fc6829f9b5d1ec884aba08134a0e8df17c6",
+  "reverseExact": true
+}

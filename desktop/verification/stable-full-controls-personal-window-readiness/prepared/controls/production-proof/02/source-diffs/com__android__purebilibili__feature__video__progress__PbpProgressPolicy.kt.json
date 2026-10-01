@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt",
+  "output": "com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt",
+  "edits": [],
+  "sourceSha256LF": "16a4c6fc54f31d25f0c9bc1dba59556bf2f2dbc4431da13f576bc0fb3a032e85",
+  "generatedSha256LF": "16a4c6fc54f31d25f0c9bc1dba59556bf2f2dbc4431da13f576bc0fb3a032e85",
+  "reverseExact": true
+}

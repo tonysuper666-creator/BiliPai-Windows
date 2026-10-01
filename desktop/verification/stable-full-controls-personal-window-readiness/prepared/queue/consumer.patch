@@ -1,0 +1,65 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt
+@@ -219,8 +219,9 @@
+         if (!closed.get()) openQueueWithRouteResume(listOf(card), 0, null, resumePositionMs.coerceAtLeast(0L))
+     }
+ 
+-    fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0, owner: Any? = null) =
+-        openQueueWithRouteResume(cards, selectedIndex, owner, null)
++    fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0, owner: Any? = null,
++        resumePositionMs: Long? = null) =
++        openQueueWithRouteResume(cards, selectedIndex, owner, resumePositionMs?.coerceAtLeast(0L))
+ 
+     private fun openQueueWithRouteResume(cards: List<VideoCard>, selectedIndex: Int, owner: Any?, routeResumePositionMs: Long?) {
+         if (closed.get()) return
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt
+@@ -131,8 +131,9 @@
+         startQueue(items, index, positionSeconds, null)
+ 
+     /** Same native actor as ordinary Listen playback; no fabricated parallel session. */
+-    internal fun playQueueForOwner(owner: Any, items: List<PlaylistItem>, index: Int = 0): Boolean {
+-        startQueue(items, index, 0.0, owner)
++    internal fun playQueueForOwner(owner: Any, items: List<PlaylistItem>, index: Int = 0,
++        positionSeconds: Double? = null): Boolean {
++        startQueue(items, index, positionSeconds?.takeIf { it.isFinite() && it >= 0.0 } ?: 0.0, owner)
+         return ownsQueue(owner)
+     }
+ 
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteQueueBridge.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteQueueBridge.kt
+@@ -21,15 +21,16 @@
+     private var active: Lease? = null
+     private var reveal: Reveal? = null
+ 
+-    fun openQueue(items: List<PlaylistItem>, index: Int, audio: Boolean): DesktopFavoriteQueueToken? {
++    fun openQueue(items: List<PlaylistItem>, index: Int, audio: Boolean,
++        resumePositionMs: Long? = null): DesktopFavoriteQueueToken? {
+         if (!stillOwned() || index !in items.indices || !beforeOpen(audio) || !stillOwned()) return null
+         val selected = items[index]
+         val lease = Lease(audio)
+         active = lease; reveal = null
+         if (audio) {
+-            if (listen?.playQueueForOwner(lease, items, index) != true) { active = null; return null }
++            if (listen?.playQueueForOwner(lease, items, index, resumePositionMs?.coerceAtLeast(0L)?.div(1000.0)) != true) { active = null; return null }
+         } else {
+-            playback.openQueue(items.map(::favoriteQueueVideoCard), index, lease)
++            playback.openQueue(items.map(::favoriteQueueVideoCard), index, lease, resumePositionMs)
+             if (!playback.ownsQueue(lease)) { active = null; return null }
+         }
+         if (!owns(lease)) { active = null; return null }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -1663,7 +1663,11 @@
+                                 val bindings = remember(entry, queue, rootTextShareBindings) {
+                                     DesktopFavoriteBindings(prefs.showOnlineCount, prefs.homeSettings, prefs.initialHomeSettings(),
+                                         prefs.navigationSettings, prefs.initialNavigationSettings(), entry.categories,
+-                                        queue::openQueue, queue::appendQueue,
++                                        { items,index,audio ->
++                                            desktopOriginalPersonalQueueStart(entry.viewModel,items,index)?.let { start ->
++                                                queue.openQueue(start.first,index,audio,start.second)
++                                            }
++                                        }, queue::appendQueue,
+                                         { subject, text, _ -> requestDesktopTextShare(rootTextShareBindings, entry.scope,
+                                             subject, text, entry::owns, { error = it }) }, prefs.homeFeedCardStyle,
+                                         desktopDetailRenderEffectsSupported(), prefs.backToTopEnabled, prefs.initialBackToTopEnabled(),

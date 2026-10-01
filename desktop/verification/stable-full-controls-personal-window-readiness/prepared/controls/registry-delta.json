@@ -1,0 +1,626 @@
+{
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "identities": 48,
+  "mergeExistingIdentityFeatureUnion": true,
+  "doNotReplaceRegistry": true,
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt",
+      "sha256": "6e3e37310f124e1b1dd0538bbee7cbb9a01e6160676f50a0850ac470974b0383",
+      "gitBlob": "3a2baf50dc40fb47fcdca849ca215385fa9c72ca",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+      "sha256": "9a85c36745eb9304f8fcdffa6fd373f4c05f234bcb26a94d6cddf6b0b4ba782b",
+      "gitBlob": "dce70ec07d4e1fcd75b2d681725abdb88f38efd7",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt",
+      "sha256": "428261701dd1bae0a4afd328885f87e359ccba4b3f47717d29e595277828ebac",
+      "gitBlob": "a2f8e08c9ff75ce9686835fbcbac7dc8d65fec96",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+      "sha256": "caa69fb20cad28f3d923902edf640ce8fccd3a68846685980a6f7b783fdfe6d6",
+      "gitBlob": "d68abaa895ab25c98bc2aa8ac8aa9376af6e98b1",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/SubtitleControlModel.kt",
+      "sha256": "44b3f6ff1010e7d4dc9c7d6e206b9991e542db5e946fcb0715203e1b7afcbb0d",
+      "gitBlob": "bb6e232d783e39606da1af8b6a6454f83837d747",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/SubtitleControlModel.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt",
+      "sha256": "293fbe38900fa4b3bf1e36be3bec8a0b3a2f8a8383420f4654e2fa79ae244067",
+      "gitBlob": "3015d6f28ba72c9a65a4174135582b687abc1fdd",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "reference",
+      "existingMode": "direct",
+      "outputs": [],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt",
+      "sha256": "16a4c6fc54f31d25f0c9bc1dba59556bf2f2dbc4431da13f576bc0fb3a032e85",
+      "gitBlob": "8c8554b7c27c31ac5e504ce77dae0bcfbc67ae83",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KConfig.kt",
+      "sha256": "2bdfd821d4f0d03f1a7dad1c06779df254d7cfc5763c36e917ea981f7dd712b7",
+      "gitBlob": "30f1e6cabb93271e829cc300df7ae8a8834b0833",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "reference",
+      "existingMode": "direct",
+      "outputs": [],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt",
+      "sha256": "5e8bbd80589ccd4a14f42824846c58a7490ba113e39f9f5dc1df84dda74de219",
+      "gitBlob": "46ac759237b231566b091deaaf06d4daebcd2ece",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "gitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": "policy-extract",
+      "outputs": [
+        "com/android/purebilibili/core/store/DesktopOriginalPlayerProgressPlacement.kt",
+        "com/android/purebilibili/core/store/DesktopOriginalPlayerProgressBehaviorModels.kt",
+        "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoAspectRatio.kt",
+      "sha256": "e33c633370a8b856e0e1dda058f02c73ec1debd973353a384fba78ed686f1f3e",
+      "gitBlob": "e0453569d9d489d56832358df4651415cbf7a76e",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/VideoAspectRatio.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
+      "sha256": "fa02b7e87634c56e67fa7027de72a5216f54aee96d8a158d1bf70ad61d63be75",
+      "gitBlob": "0cc8524926ff814d3d929c90c1568de26e0ac6d1",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KDisplayPolicy.kt",
+      "sha256": "d07d85ceeb8185773f58f7dd2721c4299f12ae3bacd021b7db6e2d5ca29ec666",
+      "gitBlob": "6c76df45756d29fce100fbd4122cf53defa748ec",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "reference",
+      "existingMode": "direct",
+      "outputs": [],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt",
+      "sha256": "ecf93e20d5f2a197ef9b4f27a8e443f2ae890b2d4d88cd1f270306cfcbd15e34",
+      "gitBlob": "33ebaa6e81261bc7757cb20e834f9eb13d7bb081",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt",
+      "sha256": "a22de4a8ee797a7d707ea60c42962f0635ca9799ce5047d3f23de83d6fd819db",
+      "gitBlob": "140380e37adc3c3142b34e4294b035e00ec21c56",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuComposerPolicy.kt",
+      "sha256": "7cd122dc036b1a7a5102c1bc78ee8c90ac68eed4a16636cde0cc23c0ee83d923",
+      "gitBlob": "d516aeebfe224e719c8697020560d7923d633742",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/DanmakuComposerPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt",
+      "sha256": "b07b54a20a0f382fc1832a59b3aee209232623bfd590b2bfb48a8dd754016f8a",
+      "gitBlob": "4f0a5d441d1b76ad96c82acfdd3d52c3dc96682d",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackTransitionPolicy.kt",
+      "sha256": "12174fba9f6f82d0652241e4565d6f6f65d8ecaf59bf7deae272f9a968a20829",
+      "gitBlob": "d27ff4c0820380c13d50d8107d1cac2c6b1d6dda",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/playback/policy/PlaybackTransitionPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
+      "sha256": "21a5b543af28d39668e2728af84ddf2779f4ffc5bfa469d385b096cedb80db21",
+      "gitBlob": "40027f14dadd19a232b21d8366015630b00fef69",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+      "sha256": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed",
+      "gitBlob": "4b2178864251903c79e5d70b98e2f0a4e10dddac",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": "extracted",
+      "outputs": [
+        "com/android/purebilibili/core/store/player/DesktopOriginalVideoPlayerSettings.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SpeedSelectionPanel.kt",
+      "sha256": "c1d3395d19f6a4f6ffd6c76cd7aabebd62a2b6a3399b348935235e0a7360b16a",
+      "gitBlob": "983f97e7219bb7193481730a96cf04c4e8a537b5",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/SpeedSelectionPanel.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt",
+      "sha256": "90fa563eb0c9d8b4359cc7d36199277f7529312089717a5a8bf55cf49247b61c",
+      "gitBlob": "99496ac6359f18223e0841bd82bc7df09ada14d9",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+      "sha256": "c22cba7b4b953312f7e0cc6f2dafa7f02626b3ca874efa16a253cf94508b61ec",
+      "gitBlob": "575911102e9e3609edb85e99438056159dc108cf",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt",
+      "sha256": "9a73e4ade99ef5b8842c1e4110cb7afb0b6c8d8afa643951b559e6ce1a5025bc",
+      "gitBlob": "02e1491b4e176daf4ab500e0f43087381ce90c33",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/TwoFingerSpeedGesturePolicy.kt",
+      "sha256": "fd6ca13d1430fa5fbee2520e1f0f007cc70fa3ad68586df0130d543fdabb07e2",
+      "gitBlob": "89468057774c215b11fb5618f74d150bf7946b9b",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/gesture/TwoFingerSpeedGesturePolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanelActionPolicy.kt",
+      "sha256": "fec3bc4195fe564506ff096efab8f0af701ee4ac1f8e996c4a351b3de828c279",
+      "gitBlob": "f62f121cbbbbe714c0bdfcb2622e2b0b4450ddb6",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/VideoSettingsPanelActionPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ModalChildScroll.kt",
+      "sha256": "5b70062a25596822ddb0d4144582b0fed424eb195b74a7648252b837d75f4f26",
+      "gitBlob": "3b706be5f60995c2a6bd8bcefa7967442fa8c35b",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/ModalChildScroll.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/QualityMenu.kt",
+      "sha256": "22387369f318804f37c873e15c63fff710a09a7df4557592b63d496eac586885",
+      "gitBlob": "e21941e7922de36ff3ea53da819ebff9e3006273",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/QualityMenu.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt",
+      "sha256": "b3c9ee8d9ab75a4ee06cdd7de83c183f1dda9ac8c8d42264c4d6caad761f71de",
+      "gitBlob": "9369b748f37a4432ab50e4bf224ec9c48c90e4ab",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelector.kt",
+      "sha256": "266983619e98b538c4daad21f30314f74be76a67231bc49c072e387af3c21eec",
+      "gitBlob": "18bb7912d85bbe1dff2904f75b003d47a1b35de6",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/PagesSelector.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/PlaybackSpeedPreferenceControl.kt",
+      "sha256": "3f8db9bfa5dd44d269b59c46917bd2fc437690bb49df391875501f1117e08d84",
+      "gitBlob": "a5b12dca89c583c5fdd23bf71c09aabf69f266b1",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/core/ui/components/PlaybackSpeedPreferenceControl.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt",
+      "sha256": "97f53347fdc8089128a2c62f582cae699b48bda3e1390f9041a456d7ac561f25",
+      "gitBlob": "fbe043740d807b03926dd859941be31cc350452f",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LandscapeEndDrawerLayoutPolicy.kt",
+      "sha256": "71d09f67f61c962f9831243e5b1e9b100a3fe3e2615d986cd17f02ab38f57bab",
+      "gitBlob": "f846c1b2c7d78b5bd9bca710cd7201ff447b5357",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/LandscapeEndDrawerLayoutPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderDisplayPolicy.kt",
+      "sha256": "97d7a1c9d776cc753161b379cf6b3623db2c341cac757fe5faab6b262277626a",
+      "gitBlob": "dbb238dbd4d5b5e9b14a3d0627fe7254872297a5",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderDisplayPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+      "sha256": "6e631e94ec5b1233439428ba63284720f47ec45d181e8528446e7ef0857a49ad",
+      "gitBlob": "8f6d95257cca37564e9056f3e7b2ef0a302dc84a",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+      "sha256": "ddcf357f97f2765f503f57007f279c88bd5dcc719307f5457cc3a952d6bd3884",
+      "gitBlob": "0585ae0652912207ed17a81f0bb3d43da8a90499",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitTopBarLayoutPolicy.kt",
+      "sha256": "92e7034534fa02b26fd93dc1c3af26232f55e8e57fca53d5f7c47653d4b70e08",
+      "gitBlob": "d25e96bb94506624457c76faa22918e6b8eeff27",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/PortraitTopBarLayoutPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt",
+      "sha256": "b6d0ff92ec86ea261173c32b8dd704615f5732a141f40184ffef926af852f3cd",
+      "gitBlob": "3da5b94d22a6ebc333cd26d368bab278f53b9966",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+      "sha256": "6ad6ecece75468f4e11cd257710c1b8df78e3b695cca2eb26d0e485a5ea41e62",
+      "gitBlob": "0fb0999aaa522107ab2af9bcf21a4775b7f0dc19",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/PlaybackCompletionBehaviorSyncPolicy.kt",
+      "sha256": "8d42f7cdd80255a46b07399725f103a6e224cdfc86cd11d326ef41d35f2f51cb",
+      "gitBlob": "25a8fc45b449f00648fa320691d46831daa988a4",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "direct",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/core/store/PlaybackCompletionBehaviorSyncPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
+      "sha256": "3b3823b94bfc7e27e5d86f9b1dc0e0b114cc154d6491aeef287e3381fcb6c14f",
+      "gitBlob": "5e6b2515d10aa66761842666390564161eb0484d",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt",
+      "sha256": "55cc05b770fd580a3ca483cf16cb8c18bddc441241b70c71ca7a1f48a3291d45",
+      "gitBlob": "c39ded1ceb5bce1bdb267b8d6d9f87309d5fb64e",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/performance/PanelFrameRateOverridePolicy.kt",
+      "sha256": "fe1ec4e0e6ad0988d91f59d1dc90cfc36bd17d76a1d8e85ad6ca638fb6311dfd",
+      "gitBlob": "c6a9fd1dc0f14029ca27a22ddce2a113ab349c01",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/core/ui/performance/DesktopOriginalPlayerPanelFrameRate.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt",
+      "sha256": "b1a7ed25eedc54760015f1e7684541a3bcfb060302bda1def480c8e5fa4c1c40",
+      "gitBlob": "781efc738b220ab6814a2fdc155f5209741d8358",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoPlaybackUseCase.kt",
+      "sha256": "518cac4c89acb92aa97c3945b16fe5662f678bff6dcd67a5803f70165e5ae63f",
+      "gitBlob": "852a4a33e731bf57b8a2f17641f663cdf9cb223f",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/usecase/DesktopOriginalOverlayPlaybackActions.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/player/PlaybackMediaCache.kt",
+      "sha256": "7194fa15b896c882df5b8e2424632ddaadc2ffb8c26e8b5484a96e0566368f6c",
+      "gitBlob": "05209683d4b6a720a86d02ce06090779aa5120d1",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "reference",
+      "existingMode": null,
+      "outputs": [],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+      "sha256": "73ccef84e24a91e6b907dcd617e1a7f87d7698d5042ccedb1437e7859d02ae10",
+      "gitBlob": "4ea4a4c51d5b32a74271d921228a781db06aac86",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformPolicy.kt",
+      "sha256": "5ca410207169a557e926c0772b4caac49f9f956774404ba549505935f321b5d5",
+      "gitBlob": "b234ce316c6d5fe155e61b18614fa87dc9d8a620",
+      "feature": "stable-video-player-full-controls",
+      "proposedMode": "policy-extract",
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/DesktopOriginalPlayerSystemBarInsetPolicy.kt"
+      ],
+      "mergeOnly": true,
+      "modeOwnerDecisionRequired": false
+    }
+  ]
+}

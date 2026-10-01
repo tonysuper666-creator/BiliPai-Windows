@@ -1,0 +1,56 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-49",
+  "manifestSha": "7db2b7bc2816c9b7f10521c1ad1678196f4446a8bcde5cc5a837d678ac675a35",
+  "orderedCpSha": "569b953e5def0dcaba76d9a6a6d96fea9f3572ad910e6edf13f23b88d91ee821",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\manual\\com\\android\\purebilibili\\feature\\following\\DesktopFollowingEnvironment.kt",
+      "sha256Bytes": "0988680e3bb0f077094f34fc4866049ccb18e4fdcc6e9c4a09a0dbbab61ae1a9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalFollowingHost.kt",
+      "sha256Bytes": "f4b5d910f0811971984106053b1a7e1e866880ea22288d6c276c00042cfed47a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\selected\\com\\android\\purebilibili\\core\\store\\FollowingCacheStore.kt",
+      "sha256Bytes": "661222fd4ebfdb29e3aafde94563c6096685cf6ef376529d597e93cb2108160f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\following\\FollowingGroupPolicy.kt",
+      "sha256Bytes": "6d6ce126d9df0a90db5104be0151980006cf3300be55db9e25dae15289674ce1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\following\\FollowingLayoutPolicy.kt",
+      "sha256Bytes": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\following\\FollowingListScreen.kt",
+      "sha256Bytes": "b3c099bd0f545ecfa9aed4f7aea5246de39681b6757d6f105a95a4ac68313264"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\following\\FollowingUserPresentationPolicy.kt",
+      "sha256Bytes": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\actions\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalFavoriteActions.kt",
+      "sha256Bytes": "09a8c36291d80bc815d6328418927a8fedfcb25f4e7ba6b367c27066ad26891e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopPersonalListsRoot.kt",
+      "sha256Bytes": "6ff150322ff5d53b2a57263ddf39c4a506c137687dcf592e56795fbad87b074d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\android\\purebilibili\\feature\\list\\DesktopFavoriteEnvironment.kt",
+      "sha256Bytes": "faf98a140db3f4028a6712ee2b36439e42cc9db9689801129738602d9efead81"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256Bytes": "02257c011bc80d99708b87600bfc7cc73713270018ca13d8109b9fe2f369dd1e"
+    }
+  ],
+  "prepared": true,
+  "mainIntegration": false,
+  "productOverrides": "explicit sole FavoriteActions family, PersonalListsRoot, optional Shell plus frozen WatchLater and queue source candidate dependencies",
+  "exit": 0
+}

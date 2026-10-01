@@ -1,0 +1,52 @@
+{
+  "newSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+      "sha256": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+      "mode": "direct",
+      "features": [
+        "stable-personal-watchlater"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/WatchLaterRepository.kt",
+      "sha256": "5062a5c6ddaf1f4d5ed58a6423545fd6ccf0a7f736f5362ef3aaf12d62ed4266",
+      "mode": "selected",
+      "features": [
+        "stable-personal-watchlater"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "sha256": "266e5f40e13147e8ffafc06537966174dcf0f492eac8cde455070a45885b6f84",
+      "mode": "selected",
+      "features": [
+        "stable-personal-watchlater"
+      ]
+    }
+  ],
+  "mergeFeatures": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+      "requiredExistingSha256": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+      "preserveExistingMode": true,
+      "addFeatures": [
+        "stable-personal-watchlater"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "requiredExistingSha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "preserveExistingMode": true,
+      "addFeatures": [
+        "stable-personal-watchlater"
+      ]
+    }
+  ],
+  "referenceOnly": [
+    "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+    "app/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt",
+    "app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt"
+  ],
+  "noWholeManifestReplacement": true
+}

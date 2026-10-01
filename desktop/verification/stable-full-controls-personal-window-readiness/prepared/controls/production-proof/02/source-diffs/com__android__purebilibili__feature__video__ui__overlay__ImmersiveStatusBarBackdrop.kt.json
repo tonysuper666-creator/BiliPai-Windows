@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt",
+  "edits": [],
+  "sourceSha256LF": "b6d0ff92ec86ea261173c32b8dd704615f5732a141f40184ffef926af852f3cd",
+  "generatedSha256LF": "b6d0ff92ec86ea261173c32b8dd704615f5732a141f40184ffef926af852f3cd",
+  "reverseExact": true
+}

@@ -1,0 +1,48 @@
+{
+  "copies": [
+    {
+      "source": "prepared/manual/com/android/purebilibili/feature/watchlater/DesktopWatchLaterEnvironment.kt",
+      "target": "desktop/src/main/kotlin/com/android/purebilibili/feature/watchlater/DesktopWatchLaterEnvironment.kt",
+      "sha256Bytes": "273c7d3942da1875e1f11fdeaec65a913935d065f905250bd79f25b830982399",
+      "sha256LfUtf8": "273c7d3942da1875e1f11fdeaec65a913935d065f905250bd79f25b830982399"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalWatchLaterHost.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalWatchLaterHost.kt",
+      "sha256Bytes": "5af22bda667c092b89c93ce46f50f7e4c788450c66d2db7fe2d89cfc66ec1852",
+      "sha256LfUtf8": "5af22bda667c092b89c93ce46f50f7e4c788450c66d2db7fe2d89cfc66ec1852"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopWatchLaterBindings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWatchLaterBindings.kt",
+      "sha256Bytes": "c6d703ba2670115bf0f55a86bd799947daed0d05487aabfe3f56b19b76a55ce3",
+      "sha256LfUtf8": "c6d703ba2670115bf0f55a86bd799947daed0d05487aabfe3f56b19b76a55ce3"
+    },
+    {
+      "source": "prepared/tools/extract-upstream-watchlater.py",
+      "target": "desktop/tools/extract-upstream-watchlater.py",
+      "sha256Bytes": "edb7b9acd9e510f1451d1992eab24bd04b1585ee83c22d751648e3581b6a33fb",
+      "sha256LfUtf8": "edb7b9acd9e510f1451d1992eab24bd04b1585ee83c22d751648e3581b6a33fb"
+    }
+  ],
+  "patches": [
+    {
+      "path": "consumer.patch",
+      "sha256Bytes": "efee7ec87730e1b791539cbbfe5738197fc671a53084ac016ff9da35152d3cf7",
+      "bases": "consumer-bases.json"
+    }
+  ],
+  "registryUnion": "registry-delta.json",
+  "gradleSnippet": "gradle-snippet.kts",
+  "requiredPriorPacket": {
+    "lane": "stable-personal-queue-start-parity",
+    "manifestSha256": "4db0037aa5066bf15bece6588681c91fdf66d9061b835f8585aadff19feed1f9"
+  },
+  "notInstall": [
+    "prepared/existing",
+    "prepared/selected",
+    "audit-01",
+    "audit-02",
+    "task classes/jars"
+  ]
+}

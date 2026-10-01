@@ -1,0 +1,73 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        4,
+        5
+      ],
+      "generatedLineRange": [
+        4,
+        5
+      ],
+      "before": [
+        "import com.android.purebilibili.core.store.player.PlayerSettingsStore\n"
+      ],
+      "after": [
+        "import com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings as PlayerSettingsStore\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        340,
+        341
+      ],
+      "generatedLineRange": [
+        340,
+        341
+      ],
+      "before": [
+        "    if (playbackState == androidx.media3.common.Player.STATE_BUFFERING &&\n"
+      ],
+      "after": [
+        "    if (playbackState == com.bilipai.desktop.ui.DesktopOriginalPlaybackStates.STATE_BUFFERING &&\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        350,
+        351
+      ],
+      "generatedLineRange": [
+        350,
+        351
+      ],
+      "before": [
+        "    if (playbackState == androidx.media3.common.Player.STATE_READY &&\n"
+      ],
+      "after": [
+        "    if (playbackState == com.bilipai.desktop.ui.DesktopOriginalPlaybackStates.STATE_READY &&\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        452,
+        453
+      ],
+      "generatedLineRange": [
+        452,
+        453
+      ],
+      "before": [
+        "        runCatching { return Color(android.graphics.Color.parseColor(hex)) }\n"
+      ],
+      "after": [
+        "        runCatching { return Color(com.bilipai.desktop.plugins.DesktopPluginColor.parseColor(hex)) }\n"
+      ]
+    }
+  ],
+  "sourceSha256LF": "21a5b543af28d39668e2728af84ddf2779f4ffc5bfa469d385b096cedb80db21",
+  "generatedSha256LF": "1b78a3407306c33d790712e05d950c75b5eedff853556e61358132378ce75b9b",
+  "reverseExact": true
+}

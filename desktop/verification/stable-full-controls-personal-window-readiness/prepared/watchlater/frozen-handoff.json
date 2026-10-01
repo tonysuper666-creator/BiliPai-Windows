@@ -1,0 +1,394 @@
+{
+  "scope": "full original WatchLater UI/VM/repository prepared with current same Root owner",
+  "MainIntegrated": false,
+  "HTTPsocket": false,
+  "HWND": false,
+  "sourceTarget": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "compile": "compile-04",
+  "proof": "proof-05",
+  "assertions": 14,
+  "groups": 1,
+  "pointerPairs": 1,
+  "sourceAudit": "audit-02",
+  "sourceChecks": 22,
+  "installPayloads": 4,
+  "registryNew": 3,
+  "registryExistingMerge": 2,
+  "artifacts": [
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "71466e41a9cb089c81d63bd498a424ef29e6b5896c367e8b6a4b840bbf08b03a",
+      "bytes": 5198
+    },
+    {
+      "path": "audit-01/failure.json",
+      "sha256Bytes": "e2e302c0a66bd8b1eda5b11fc13d1c75904cd663aa8e7f7ed822e3883771d3ba",
+      "bytes": 297
+    },
+    {
+      "path": "audit-01/production/com/android/purebilibili/data/repository/DesktopOriginalWatchLaterRepository.kt",
+      "sha256Bytes": "1b5751403741cfd2554ace8bd6392038f16d1ddf3d06cb5066a4d0c4f37087db",
+      "bytes": 5351
+    },
+    {
+      "path": "audit-01/production/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "sha256Bytes": "c64257dffde90fba2881588c3b80bb7de676ad1003acdb2d269fe04b72933ebb",
+      "bytes": 77568
+    },
+    {
+      "path": "audit-01/standalone/com/android/purebilibili/data/repository/DesktopOriginalWatchLaterRepository.kt",
+      "sha256Bytes": "1b5751403741cfd2554ace8bd6392038f16d1ddf3d06cb5066a4d0c4f37087db",
+      "bytes": 5351
+    },
+    {
+      "path": "audit-01/standalone/com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+      "sha256Bytes": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+      "bytes": 390
+    },
+    {
+      "path": "audit-01/standalone/com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+      "sha256Bytes": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+      "bytes": 4220
+    },
+    {
+      "path": "audit-01/standalone/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "sha256Bytes": "c64257dffde90fba2881588c3b80bb7de676ad1003acdb2d269fe04b72933ebb",
+      "bytes": 77568
+    },
+    {
+      "path": "audit-02/patch-check.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "audit-02/production/com/android/purebilibili/data/repository/DesktopOriginalWatchLaterRepository.kt",
+      "sha256Bytes": "1b5751403741cfd2554ace8bd6392038f16d1ddf3d06cb5066a4d0c4f37087db",
+      "bytes": 5351
+    },
+    {
+      "path": "audit-02/production/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "sha256Bytes": "c64257dffde90fba2881588c3b80bb7de676ad1003acdb2d269fe04b72933ebb",
+      "bytes": 77568
+    },
+    {
+      "path": "audit-02/result.json",
+      "sha256Bytes": "47e38c96f526acb537b33f11d974a5647bc7469124bf285733931d2b02443fb9",
+      "bytes": 23666
+    },
+    {
+      "path": "audit-02/standalone/com/android/purebilibili/data/repository/DesktopOriginalWatchLaterRepository.kt",
+      "sha256Bytes": "1b5751403741cfd2554ace8bd6392038f16d1ddf3d06cb5066a4d0c4f37087db",
+      "bytes": 5351
+    },
+    {
+      "path": "audit-02/standalone/com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+      "sha256Bytes": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+      "bytes": 390
+    },
+    {
+      "path": "audit-02/standalone/com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+      "sha256Bytes": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+      "bytes": 4220
+    },
+    {
+      "path": "audit-02/standalone/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "sha256Bytes": "c64257dffde90fba2881588c3b80bb7de676ad1003acdb2d269fe04b72933ebb",
+      "bytes": 77568
+    },
+    {
+      "path": "audit.py",
+      "sha256Bytes": "8873a62f6902355df79cdeecdf1e5bdc87bc816c1d0350d82ce790e476ad5eee",
+      "bytes": 5989
+    },
+    {
+      "path": "compile-01/compile.args",
+      "sha256Bytes": "d2925af449625be43d013474a59eae277aff6d42af3d31aa770acd0c4e47d6c1",
+      "bytes": 26011
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "7afe0d95e0d65aecdb513b35f127a64e5ea3318d4b56c4309f414b017906adce",
+      "bytes": 966
+    },
+    {
+      "path": "compile-01/inputs.json",
+      "sha256Bytes": "27654f5c49cf26b27092035d73cf3058ac5986d8441dcd772c30cd7ef7d4f2b6",
+      "bytes": 2664
+    },
+    {
+      "path": "compile-02/classes/META-INF/desktop_watchlater_candidate.kotlin_module",
+      "sha256Bytes": "6ddbbaa546e9ccadbd6ec2fe28eea5ddcd5dd1e7713b4fd4f4f242b0d094bc8c",
+      "bytes": 283
+    },
+    {
+      "path": "compile-02/compile.args",
+      "sha256Bytes": "cf10086df16f5642a37329bbdf7cf29337aa26a59fa73827af89eb9e4f8ec9c8",
+      "bytes": 26011
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "fc9ff05eaed467e33f893db8aff9861f8bc9c40eb14c22e9c357ec33da332038",
+      "bytes": 333
+    },
+    {
+      "path": "compile-02/inputs.json",
+      "sha256Bytes": "bfdba3502d8609c4e963ee2c0239ee2e2ebb5478d4b21e56b78c230867cd24c9",
+      "bytes": 2664
+    },
+    {
+      "path": "compile-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "d132aec74b1b1f30eb002594585f78da0134a5a9ab2c2294a706a01b63cd4c01",
+      "bytes": 388
+    },
+    {
+      "path": "compile-03/compile.args",
+      "sha256Bytes": "921c076b265b24afdd0eb0f837c431c767d3f593edd8ca6f432bbbbe34ea8a3b",
+      "bytes": 27788
+    },
+    {
+      "path": "compile-03/compile.log",
+      "sha256Bytes": "45a090d8cb5a7ea80a462611afb0dabdc8fa6d8294a774c33d18359949119572",
+      "bytes": 8241
+    },
+    {
+      "path": "compile-03/inputs.json",
+      "sha256Bytes": "29ba0561310890a0e1939efa04b5725406fcbf1e5e2eeb2f049263c9ae52cf57",
+      "bytes": 4603
+    },
+    {
+      "path": "compile-04/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "ffbc29a327a7c2f0ea6eacd9645c94f5457ca785854e6bf471c4026f4965b6a9",
+      "bytes": 360
+    },
+    {
+      "path": "compile-04/compile.args",
+      "sha256Bytes": "d4d6286ffe321c7e074cd0c569dcc2b3289bcb21b227f5d6e9e4523103e49c96",
+      "bytes": 27558
+    },
+    {
+      "path": "compile-04/compile.log",
+      "sha256Bytes": "45a090d8cb5a7ea80a462611afb0dabdc8fa6d8294a774c33d18359949119572",
+      "bytes": 8241
+    },
+    {
+      "path": "compile-04/inputs.json",
+      "sha256Bytes": "4ed599adfaa462d71ea212d3035636247c9c0609d87173b18147102468b25097",
+      "bytes": 4235
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "411dadd70d334d81cd287b42acfac6cccb6a8ac15628a44e593c837b8c59862c",
+      "bytes": 3287
+    },
+    {
+      "path": "consumer-bases.json",
+      "sha256Bytes": "ba72e8ce12be53b8ef5c5e78dc3460feb8b8b37c18749b2c1371d36003a89b06",
+      "bytes": 1150
+    },
+    {
+      "path": "consumer.patch",
+      "sha256Bytes": "efee7ec87730e1b791539cbbfe5738197fc671a53084ac016ff9da35152d3cf7",
+      "bytes": 15134
+    },
+    {
+      "path": "evidence/original-watchlater-filter-material3.png",
+      "sha256Bytes": "15ef423b3f4b96b6add78ff98f4b3f586234fbe758231425e647139adfb6028f",
+      "bytes": 21139
+    },
+    {
+      "path": "excluded-runtime-artifacts.json",
+      "sha256Bytes": "4fcd9781af2566c47d7186df69642b231694e06ecec2f3026d93be8ac90d3d8d",
+      "bytes": 275453
+    },
+    {
+      "path": "fixtures/WatchLaterFixture.kt",
+      "sha256Bytes": "97f1642678790c2674c31828970efb877115943b3f24cb91a5766c26f966c70d",
+      "bytes": 13094
+    },
+    {
+      "path": "gradle-snippet.kts",
+      "sha256Bytes": "7587c16a16c1426686c616c6c4341540544caefdc714f756232f6bed3022b826",
+      "bytes": 1131
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "4905c1b421706738067eedad83e9d0120a3a597fa9211dcf5ca5f4e940229bfc",
+      "bytes": 2137
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "5dee7ecbe9db86f7603138111c4e7d14c35518a9a508180a4b3d09e5f59fd6b8",
+      "bytes": 7433
+    },
+    {
+      "path": "prepared/manual/com/android/purebilibili/feature/watchlater/DesktopWatchLaterEnvironment.kt",
+      "sha256Bytes": "273c7d3942da1875e1f11fdeaec65a913935d065f905250bd79f25b830982399",
+      "bytes": 1724
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalWatchLaterHost.kt",
+      "sha256Bytes": "5af22bda667c092b89c93ce46f50f7e4c788450c66d2db7fe2d89cfc66ec1852",
+      "bytes": 3870
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopWatchLaterBindings.kt",
+      "sha256Bytes": "c6d703ba2670115bf0f55a86bd799947daed0d05487aabfe3f56b19b76a55ce3",
+      "bytes": 2611
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/data/repository/DesktopOriginalWatchLaterRepository.kt",
+      "sha256Bytes": "1b5751403741cfd2554ace8bd6392038f16d1ddf3d06cb5066a4d0c4f37087db",
+      "bytes": 5351
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+      "sha256Bytes": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+      "bytes": 390
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+      "sha256Bytes": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+      "bytes": 4220
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "sha256Bytes": "c64257dffde90fba2881588c3b80bb7de676ad1003acdb2d269fe04b72933ebb",
+      "bytes": 77568
+    },
+    {
+      "path": "prepared/tools/extract-upstream-watchlater.py",
+      "sha256Bytes": "edb7b9acd9e510f1451d1992eab24bd04b1585ee83c22d751648e3581b6a33fb",
+      "bytes": 7926
+    },
+    {
+      "path": "proof-01/compile.args",
+      "sha256Bytes": "7dd4554fbe2ff26651649e819a7e0e435defd44a6388483e2f95f27faef8264b",
+      "bytes": 25478
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "df56f8870c209b86697b765d9a5d52efbbb42d909d99296ab66075acc123ccd6",
+      "bytes": 507
+    },
+    {
+      "path": "proof-01/proof.json",
+      "sha256Bytes": "3d6cc915bde81bafbc67c792a87da9a6a43debead1afb6f012d8d2355c8ec8cd",
+      "bytes": 943
+    },
+    {
+      "path": "proof-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "c84a2f770fe1c2bc798ac714b45765a7690a670aaf88556a37ef47df8f6145d4",
+      "bytes": 71
+    },
+    {
+      "path": "proof-02/compile.args",
+      "sha256Bytes": "34fb1e1804b06bbec889fa626614c8c5887e1cceb959e05b8fbf83d7315f3ef1",
+      "bytes": 25478
+    },
+    {
+      "path": "proof-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-02/proof.json",
+      "sha256Bytes": "3c4f790a3b75c7662d4b13c1c28a03a708524f6ab50d744f88bd859379760b85",
+      "bytes": 960
+    },
+    {
+      "path": "proof-02/run.log",
+      "sha256Bytes": "804e628c7002eb42c02553d13a0aab8ef3a11d15a86ee11d95a3d4d96d2743bc",
+      "bytes": 17344
+    },
+    {
+      "path": "proof-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "c84a2f770fe1c2bc798ac714b45765a7690a670aaf88556a37ef47df8f6145d4",
+      "bytes": 71
+    },
+    {
+      "path": "proof-03/compile.args",
+      "sha256Bytes": "c4dd4110f23eeea867a752dd2ee1eb176cafb1e2962628aa3168a28a9b789576",
+      "bytes": 25478
+    },
+    {
+      "path": "proof-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-03/proof.json",
+      "sha256Bytes": "2d513963b16423dbcd6b2ca3ed48204993a96318fa4fec0b6fda7171db1ceb42",
+      "bytes": 960
+    },
+    {
+      "path": "proof-03/run.log",
+      "sha256Bytes": "3dea0e000b24c9a197f436ba15639303cbd0511805a459d867b8efdde51abfd9",
+      "bytes": 1527
+    },
+    {
+      "path": "proof-04/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "c84a2f770fe1c2bc798ac714b45765a7690a670aaf88556a37ef47df8f6145d4",
+      "bytes": 71
+    },
+    {
+      "path": "proof-04/compile.args",
+      "sha256Bytes": "0a736deadfc4ec455b9503048d68108488bc2ad17557c8cee6f6ad5725f521a2",
+      "bytes": 25478
+    },
+    {
+      "path": "proof-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-04/proof.json",
+      "sha256Bytes": "18fa4e413d2a93bf86a86aeb6e5c22dff58e91d242c87785214ea2d858f6269f",
+      "bytes": 960
+    },
+    {
+      "path": "proof-04/run.log",
+      "sha256Bytes": "93c4d18fec8115b45305bd10a5f4f1a993df976b9c5acc38115f3aaf28050a61",
+      "bytes": 1632
+    },
+    {
+      "path": "proof-05/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "c84a2f770fe1c2bc798ac714b45765a7690a670aaf88556a37ef47df8f6145d4",
+      "bytes": 71
+    },
+    {
+      "path": "proof-05/compile.args",
+      "sha256Bytes": "a96dade0e9b487abed39cef0e255c71489f0fe22828f4c1f279f77d27248b13f",
+      "bytes": 25478
+    },
+    {
+      "path": "proof-05/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-05/proof.json",
+      "sha256Bytes": "205712c589aa2c383be867739f40e033f035639d352e979fc04daa6289f10709",
+      "bytes": 960
+    },
+    {
+      "path": "proof-05/run.log",
+      "sha256Bytes": "587a11c0c2cc14ba524516a4cffaa77a8d2d02c7af3fe29948814f5300302f9f",
+      "bytes": 1632
+    },
+    {
+      "path": "prove.py",
+      "sha256Bytes": "cb92c711dbbe1a504556a888f901f29e52b353be78b5e20c5a55669c4a0fe372",
+      "bytes": 3272
+    },
+    {
+      "path": "registry-delta.json",
+      "sha256Bytes": "3ec41bb299b69212ae21926f2040ecc2d81e17c620dcc39b290b5a331d8a2bc8",
+      "bytes": 1911
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "8bf7182caa987e0a8dee736f569b17b90fd5c4db3f9dd3da9db0a87e474b5db0",
+      "bytes": 1966
+    }
+  ]
+}

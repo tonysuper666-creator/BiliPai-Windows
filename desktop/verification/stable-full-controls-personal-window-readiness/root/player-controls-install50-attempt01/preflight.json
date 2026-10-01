@@ -1,0 +1,5 @@
+{
+  "applied": false,
+  "reason": "Unregistered original PlaybackMediaCache source is an explicit reference-only identity; recipe uses reference shorthand, canonical registry mode must be reference-only",
+  "CandidateWrites": 0
+}

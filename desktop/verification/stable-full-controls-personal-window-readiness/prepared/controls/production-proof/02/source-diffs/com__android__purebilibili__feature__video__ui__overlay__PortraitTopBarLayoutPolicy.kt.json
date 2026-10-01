@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitTopBarLayoutPolicy.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/PortraitTopBarLayoutPolicy.kt",
+  "edits": [],
+  "sourceSha256LF": "92e7034534fa02b26fd93dc1c3af26232f55e8e57fca53d5f7c47653d4b70e08",
+  "generatedSha256LF": "92e7034534fa02b26fd93dc1c3af26232f55e8e57fca53d5f7c47653d4b70e08",
+  "reverseExact": true
+}

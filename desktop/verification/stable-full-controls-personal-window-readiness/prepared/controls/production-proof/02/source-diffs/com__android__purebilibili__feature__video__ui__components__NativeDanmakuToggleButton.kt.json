@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt",
+  "edits": [],
+  "sourceSha256LF": "5e8bbd80589ccd4a14f42824846c58a7490ba113e39f9f5dc1df84dda74de219",
+  "generatedSha256LF": "5e8bbd80589ccd4a14f42824846c58a7490ba113e39f9f5dc1df84dda74de219",
+  "reverseExact": true
+}

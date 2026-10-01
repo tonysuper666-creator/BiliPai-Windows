@@ -1,0 +1,146 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoAspectRatio.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/VideoAspectRatio.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        16,
+        17
+      ],
+      "generatedLineRange": [
+        16,
+        17
+      ],
+      "before": [
+        "import androidx.media3.ui.AspectRatioFrameLayout\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopOriginalMediaResizeModes as AspectRatioFrameLayout\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        30,
+        31
+      ],
+      "generatedLineRange": [
+        30,
+        30
+      ],
+      "before": [
+        "@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        127,
+        128
+      ],
+      "generatedLineRange": [
+        126,
+        126
+      ],
+      "before": [
+        "@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        139,
+        140
+      ],
+      "generatedLineRange": [
+        137,
+        137
+      ],
+      "before": [
+        "@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        141,
+        142
+      ],
+      "generatedLineRange": [
+        138,
+        139
+      ],
+      "before": [
+        "    playerView: androidx.media3.ui.PlayerView,\n"
+      ],
+      "after": [
+        "    playerView: com.bilipai.desktop.ui.DesktopOriginalPlayerViewportPort,\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        153,
+        155
+      ],
+      "generatedLineRange": [
+        150,
+        151
+      ],
+      "before": [
+        "    playerView.findViewById<android.view.View>(androidx.media3.ui.R.id.exo_content_frame)\n",
+        "        ?.requestLayout()\n"
+      ],
+      "after": [
+        "    playerView.requestContentLayout()\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        171,
+        172
+      ],
+      "generatedLineRange": [
+        167,
+        167
+      ],
+      "before": [
+        "@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        173,
+        174
+      ],
+      "generatedLineRange": [
+        168,
+        169
+      ],
+      "before": [
+        "    playerView: androidx.media3.ui.PlayerView,\n"
+      ],
+      "after": [
+        "    playerView: com.bilipai.desktop.ui.DesktopOriginalPlayerViewportPort,\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        189,
+        190
+      ],
+      "generatedLineRange": [
+        184,
+        185
+      ],
+      "before": [
+        "        playerView.postOnAnimation {\n"
+      ],
+      "after": [
+        "        playerView.postOnFrame {\n"
+      ]
+    }
+  ],
+  "sourceSha256LF": "e33c633370a8b856e0e1dda058f02c73ec1debd973353a384fba78ed686f1f3e",
+  "generatedSha256LF": "2d8c39ad8274a31e3b29a1c2c06baa6d9445a23e71934ef7d7d47c72ec14fe49",
+  "reverseExact": true
+}

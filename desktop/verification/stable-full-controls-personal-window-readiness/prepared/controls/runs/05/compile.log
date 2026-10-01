@@ -1,0 +1,99 @@
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\core\ui\components\PlaybackSpeedPreferenceControl.kt:90:55: error: unresolved reference 'formatPlaybackSpeed'.
+                    contentDescription = "输入长按倍速，当前 ${formatPlaybackSpeed(sliderValue)}"
+                                                      ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\core\ui\components\PlaybackSpeedPreferenceControl.kt:99:32: error: unresolved reference 'formatPlaybackSpeed'.
+                        text = formatPlaybackSpeed(sliderValue),
+                               ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\core\ui\components\PlaybackSpeedPreferenceControl.kt:151:36: error: unresolved reference 'formatPlaybackSpeed'.
+                            text = formatPlaybackSpeed(preset),
+                                   ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\core\ui\components\PlaybackSpeedPreferenceControl.kt:172:35: error: unresolved reference 'formatPlaybackSpeed'.
+                    placeholder = formatPlaybackSpeed(sliderValue),
+                                  ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\core\ui\components\PlaybackSpeedPreferenceControl.kt:239:36: error: unresolved reference 'formatPlaybackSpeed'.
+                            text = formatPlaybackSpeed(currentSpeed),
+                                   ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\core\ui\components\PlaybackSpeedPreferenceControl.kt:263:32: error: unresolved reference 'formatPlaybackSpeed'.
+                        text = formatPlaybackSpeed(speed),
+                               ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\core\ui\components\PlaybackSpeedPreferenceControl.kt:309:36: error: unresolved reference 'formatPlaybackSpeed'.
+                            text = formatPlaybackSpeed(speed) + roleSuffix,
+                                   ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\core\ui\components\PlaybackSpeedPreferenceControl.kt:321:60: error: unresolved reference 'formatPlaybackSpeed'.
+                                contentDescription = "删除 ${formatPlaybackSpeed(speed)} 倍速"
+                                                           ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\PagesSelector.kt:103:46: error: unresolved reference 'orientation'.
+    val isLandscape = remember(configuration.orientation, configuration.screenWidthDp, configuration.screenHeightDp) {
+                                             ^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\PagesSelector.kt:104:23: error: unresolved reference 'orientation'.
+        configuration.orientation == 2 ||
+                      ^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\PagesSelector.kt:438:34: error: unresolved reference 'rememberModalChildScrollConnection'.
+    val nestedScrollConnection = rememberModalChildScrollConnection()
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\SpeedSelectionPanel.kt:13:52: error: unresolved reference 'formatPlaybackSpeed'.
+import com.android.purebilibili.core.ui.components.formatPlaybackSpeed
+                                                   ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\SpeedSelectionPanel.kt:23:36: error: unresolved reference 'formatPlaybackSpeed'.
+        if (speed == 1f) "倍速" else formatPlaybackSpeed(speed)
+                                   ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\SpeedSelectionPanel.kt:26:36: error: unresolved reference 'formatPlaybackSpeed'.
+        if (speed == 1f) "正常" else formatPlaybackSpeed(speed)
+                                   ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:59:52: error: unresolved reference 'formatPlaybackSpeed'.
+import com.android.purebilibili.core.ui.components.formatPlaybackSpeed
+                                                   ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:331:54: error: unresolved reference 'LocalConfiguration'.
+    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+                                                     ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:332:24: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val actionPolicy = remember(configuration.screenWidthDp) {
+                       ^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:333:9: error: unresolved reference 'resolveVideoSettingsPanelActionPolicy'.
+        resolveVideoSettingsPanelActionPolicy(widthDp = configuration.screenWidthDp)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:564:83: error: unresolved reference 'rowItemSpacingDp'.
+                        horizontalArrangement = Arrangement.spacedBy(actionPolicy.rowItemSpacingDp.dp)
+                                                                                  ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:608:79: error: unresolved reference 'rowItemSpacingDp'.
+                    horizontalArrangement = Arrangement.spacedBy(actionPolicy.rowItemSpacingDp.dp)
+                                                                              ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1185:37: error: unresolved reference 'formatPlaybackSpeed'.
+                            "当前默认 ${formatPlaybackSpeed(defaultPlaybackSpeed)}"
+                                    ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1621:13: error: unresolved reference 'VideoSettingsPanelActionPolicy'.
+    policy: VideoSettingsPanelActionPolicy
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1626:43: error: unresolved reference 'pillHeightDp'.
+        shape = RoundedCornerShape(policy.pillHeightDp.dp),
+                                          ^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1630:28: error: unresolved reference 'pillHeightDp'.
+            .height(policy.pillHeightDp.dp)
+                           ^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1631:47: error: unresolved reference 'pillMinWidthDp'.
+            .defaultMinSize(minWidth = policy.pillMinWidthDp.dp)
+                                              ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1636:46: error: unresolved reference 'pillHorizontalPaddingDp'.
+                .padding(horizontal = policy.pillHorizontalPaddingDp.dp),
+                                             ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1647:49: error: unresolved reference 'pillIconSizeDp'.
+                modifier = Modifier.size(policy.pillIconSizeDp.dp)
+                                                ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1669:13: error: unresolved reference 'VideoSettingsPanelActionPolicy'.
+    policy: VideoSettingsPanelActionPolicy
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1676:43: error: unresolved reference 'pillHeightDp'.
+        shape = RoundedCornerShape(policy.pillHeightDp.dp),
+                                          ^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1683:28: error: unresolved reference 'pillHeightDp'.
+            .height(policy.pillHeightDp.dp)
+                           ^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1684:47: error: unresolved reference 'pillMinWidthDp'.
+            .defaultMinSize(minWidth = policy.pillMinWidthDp.dp)
+                                              ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1689:46: error: unresolved reference 'pillHorizontalPaddingDp'.
+                .padding(horizontal = policy.pillHorizontalPaddingDp.dp),
+                                             ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:1697:49: error: unresolved reference 'pillIconSizeDp'.
+                modifier = Modifier.size(policy.pillIconSizeDp.dp)
+                                                ^^^^^^^^^^^^^^

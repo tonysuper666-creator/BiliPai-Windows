@@ -1,0 +1,104 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt
+@@ -105,12 +105,40 @@
+ 
+ /** AWT owns/releases the native region backing Window.shape. Transparent empty content keeps
+  * the original composition alive, including an already-open DynamicVoteDialog. */
+-private class DesktopCommandPopupWindow(private val owner: Window, private val anchorComponent: Component) : AutoCloseable {
++private class DesktopCommandPopupWindow(
++    private val owner: Window,
++    private val anchorComponent: Component,
++    private val onWindowAvailability: (Any, Boolean) -> Unit,
++) : AutoCloseable {
+     private var closed = false
+     private var requested = IntSize.Zero
+     private var rectangles = emptyList<Rect>()
+     private var popup: ComposeDialog? = null
+     private var modal = false
++    private val windowIdentity = Any()
++    private var windowReady = false
++    private fun publishWindowAvailability(ready: Boolean) {
++        if (windowReady != ready) {
++            windowReady = ready
++            onWindowAvailability(windowIdentity, ready)
++        }
++    }
++    private val popupVisibilityListener = object : ComponentAdapter() {
++        override fun componentShown(event: ComponentEvent) {
++            val shown = popup ?: return
++            // Skiko applies this dialog's non-fullscreen mode during componentShown.
++            // Deliver the original owner's pending mode only after those listeners finish.
++            SwingUtilities.invokeLater {
++                if (!closed && popup === shown && shown.isShowing && owner.isShowing &&
++                    anchorComponent.isShowing && SwingUtilities.getWindowAncestor(anchorComponent) === owner) {
++                    publishWindowAvailability(true)
++                }
++            }
++        }
++        override fun componentHidden(event: ComponentEvent) {
++            if (!closed && event.component === popup) publishWindowAvailability(false)
++        }
++    }
+     val regions = DesktopCommandHitRegions { cards, modalVisible ->
+         rectangles = cards
+         val wasModal = modal
+@@ -148,6 +176,7 @@
+             // Actual AWT anchor gives valid geometry independently of occluded Compose layout.
+             // Start with no input region, while keeping the composition mounted.
+             shape = Area()
++            addComponentListener(popupVisibilityListener)
+             compositionLocalContext = context
+             setContent { CompositionLocalProvider(LocalDesktopCommandHitRegions provides regions) { content() } }
+         }
+@@ -171,7 +200,7 @@
+         val showing = owner.isShowing && (owner !is Frame || owner.extendedState and Frame.ICONIFIED == 0) &&
+             anchorComponent.isShowing && SwingUtilities.getWindowAncestor(anchorComponent) === owner &&
+             requested.width > 0 && requested.height > 0 && anchorComponent.width > 0 && anchorComponent.height > 0
+-        if (!showing) { window.isVisible = false; return }
++        if (!showing) { publishWindowAvailability(false); window.isVisible = false; return }
+         val location = anchorComponent.locationOnScreen
+         // AWT component geometry is already in logical screen units, including DPI conversion.
+         val rectangle = Rectangle(location.x, location.y, anchorComponent.width, anchorComponent.height)
+@@ -203,12 +232,14 @@
+         check(SwingUtilities.isEventDispatchThread())
+         if (closed) return
+         closed = true
++        publishWindowAvailability(false)
+         owner.removeComponentListener(moveListener)
+         owner.removeWindowListener(windowListener)
+         anchorComponent.removeComponentListener(moveListener)
+         anchorComponent.removeHierarchyListener(hierarchyListener)
+         anchorComponent.removeHierarchyBoundsListener(hierarchyBoundsListener)
+         regions.close()
++        popup?.removeComponentListener(popupVisibilityListener)
+         popup?.dispose()
+         popup = null
+     }
+@@ -217,13 +248,26 @@
+ /** Anchored native window above mpv. No active-command gate unmounts content. */
+ @Composable
+ internal fun DesktopShapedVideoCommandPopup(surfaceSize: IntSize, anchorComponent: Component, content: @Composable () -> Unit) {
++    DesktopShapedVideoCommandPopup(surfaceSize, anchorComponent, null, content)
++}
++
++@Composable
++internal fun DesktopShapedVideoCommandPopup(
++    surfaceSize: IntSize,
++    anchorComponent: Component,
++    onWindowAvailability: ((Any, Boolean) -> Unit)?,
++    content: @Composable () -> Unit,
++) {
+     if (surfaceSize.width <= 0 || surfaceSize.height <= 0) return
+     val owner = LocalAwtWindow.current ?: return
+     val context = currentCompositionLocalContext
+     val latestContent by rememberUpdatedState(content)
++    val latestWindowAvailability by rememberUpdatedState(onWindowAvailability)
+     val density = LocalDensity.current
+     val latestDensity by rememberUpdatedState(density)
+-    val host = remember(owner, anchorComponent) { DesktopCommandPopupWindow(owner, anchorComponent) }
++    val host = remember(owner, anchorComponent) {
++        DesktopCommandPopupWindow(owner, anchorComponent) { identity, ready -> latestWindowAvailability?.invoke(identity, ready) }
++    }
+     DisposableEffect(host) {
+         host.create(context) {
+             CompositionLocalProvider(LocalDensity provides latestDensity) {

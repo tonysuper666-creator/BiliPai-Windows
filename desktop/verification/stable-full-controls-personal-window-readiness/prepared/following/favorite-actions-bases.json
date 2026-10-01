@@ -1,0 +1,7 @@
+{
+  "path": "desktop/tools/extract-upstream-favorites.py",
+  "baseSha256LfUtf8": "bc040c78d91da0a58c8a38d3eb6f456492f3940c437c61f5d9584a18c980f71c",
+  "desiredSha256LfUtf8": "f006041c627cc22c7cd2aaae57a482c3bce48ce5a6345de89720494360013c13",
+  "changedOutput": "com/android/purebilibili/data/repository/DesktopOriginalFavoriteActions.kt",
+  "allOtherOutputsByteEqual": true
+}

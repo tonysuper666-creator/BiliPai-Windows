@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "sourceSha256LF": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed",
+  "completeObjectBodyReverseExact": true,
+  "onlyMemberReplacement": "getLongPressSpeed delegates sole Offline producer",
+  "wrapperNewlines": 2,
+  "mathKeysDefaultsMigrationUnchanged": true
+}

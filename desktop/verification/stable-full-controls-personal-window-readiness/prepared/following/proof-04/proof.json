@@ -1,0 +1,17 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-49",
+  "manifestSha": "7db2b7bc2816c9b7f10521c1ad1678196f4446a8bcde5cc5a837d678ac675a35",
+  "orderedCpSha": "569b953e5def0dcaba76d9a6a6d96fea9f3572ad910e6edf13f23b88d91ee821",
+  "preparedOnly": true,
+  "coreJarSha": "778178469f71df4f617c9eb1f494c19b43b192a645c639d875d3f4afee3bd1e0",
+  "declaredProductFamilyOverrides": "new Following full closure + sole FavoriteActions family, PersonalListsRoot/Shell; explicit frozen WatchLater and queue dependencies",
+  "coreNewClasses": 333,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\fixtures\\FollowingFixture.kt",
+      "sha": "011d6047aed7f1303d8ec67c575c8c007f0c4e8b469224528446bbb8f5b9cb9d"
+    }
+  ],
+  "compileExit": 0,
+  "runExit": 0
+}

@@ -1,0 +1,40 @@
+{
+  "copies": [
+    {
+      "source": "prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopPersonalQueueStart.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalQueueStart.kt",
+      "sha256Bytes": "ebf1de83141b4034def07d1cebfb724dc1be264db5d7cd945ca0605a26c80530",
+      "sha256LfUtf8": "ebf1de83141b4034def07d1cebfb724dc1be264db5d7cd945ca0605a26c80530"
+    }
+  ],
+  "patches": [
+    {
+      "path": "consumer.patch",
+      "sha256Bytes": "a21c1fecfc75481ca353ddc745ce0d9592eb746c72cce36ddada19958980e06a",
+      "targets": [
+        {
+          "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+          "baseSha256LfUtf8": "f9cbf2e781b3cce2802ba9a813c61128069468362504b4c8042d05d92932342b",
+          "desiredSha256LfUtf8": "a69073f38d9f8b96d6c80a92b0c070cf293b812d65689dc48f6920fcd9923225"
+        },
+        {
+          "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+          "baseSha256LfUtf8": "614dc2700a3a5c33b4264e92c4c7ad750f958c25aa555fbc9ffab8f336ba53d0",
+          "desiredSha256LfUtf8": "4f4ec3ad0dfc0aa1eb5ba5147b9632f3619d0f79961bbb783755ff853ab96523"
+        },
+        {
+          "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteQueueBridge.kt",
+          "baseSha256LfUtf8": "e9c504a6032be32d84ed0ec5f2f10b2eda4829b1c30d6ecae60c1cee133fd386",
+          "desiredSha256LfUtf8": "1ca11e61906f6a98da809612a3068c0ea303191ad6762c93bfb0c43695f256fb"
+        },
+        {
+          "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+          "baseSha256LfUtf8": "1da75d8abb6a43180eb5a187809374f82a809ad3673fd9430b4a9c81a9913b6c",
+          "desiredSha256LfUtf8": "c0197dad7c87c532ff8afec6b6af41f9da753531a940e27c8f0fa3952f03f9ba"
+        }
+      ]
+    }
+  ],
+  "sourceRegistryDelta": [],
+  "gradleDelta": []
+}

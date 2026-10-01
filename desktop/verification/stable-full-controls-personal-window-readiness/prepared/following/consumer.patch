@@ -1,0 +1,136 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt
+@@ -19,7 +19,7 @@
+ internal class DesktopPersonalListsRoot(
+     val gate: DesktopHomeRetainedGate,
+     private val repository: DesktopRepository,
+-    globalStore: DesktopPluginStore,
++    private val globalStore: DesktopPluginStore,
+     library: DesktopLibrary,
+     privacyModeEnabled: () -> Boolean,
+     feedback: (String) -> Unit,
+@@ -36,6 +36,7 @@
+     private val histories = linkedMapOf<BiliPaiNavKey, DesktopPersonalListEntry>()
+     private val liked = linkedMapOf<BiliPaiNavKey.LikedVideos, DesktopPersonalListEntry>()
+     private val watchLater = linkedMapOf<BiliPaiNavKey, DesktopWatchLaterEntry>()
++    private val following = linkedMapOf<BiliPaiNavKey.Following,DesktopFollowingEntry>()
+     private val entriesLock = Any()
+ 
+     fun owns(): Boolean = !closed.get() && job.isActive && gate.owns()
+@@ -56,6 +57,9 @@
+         check: () -> Unit, commit: ((() -> Unit) -> Boolean)): DesktopFavoriteEnvironment {
+         fun <T> service(type: Class<T>): T = repository.ownedHomeService(type,
+             "https://api.bilibili.com/", gate.epoch, owned)
++        val capturedFollowOwner=repository.dynamicCacheSessionGuard.dynamicCacheOwner()?.takeIf {
++            it.epoch==gate.epoch && it.mid==(gate.mid ?: 0L)
++        } ?: throw CancellationException("Personal account owner retired")
+         return DesktopFavoriteEnvironment(entryScope, service(BilibiliApi::class.java),
+             service(SpaceApi::class.java), service(DynamicApi::class.java), service(BangumiApi::class.java),
+             owned, { repository.ownedHomeCookie("bili_jct", gate.epoch, owned) },
+@@ -63,7 +67,8 @@
+             HistoryRefreshBus.changes.map { DesktopHomeClock.elapsedRealtime() },
+             cachedPosition, { check(); privacy() }, WatchLaterRefreshBus::notifyChanged,
+             { repository.ownedHomeAccessToken(gate.epoch, owned) },
+-            { repository.withPrimaryPlaybackAdmission(gate.epoch, owned) { repository.accessTokenCredentials().second } })
++            { repository.withPrimaryPlaybackAdmission(gate.epoch, owned) { repository.accessTokenCredentials().second } },
++            { change -> check(); repository.followStateEvents.confirm(capturedFollowOwner,change) })
+     }
+ 
+     fun watchLater(key: BiliPaiNavKey): DesktopWatchLaterEntry {
+@@ -80,6 +85,19 @@
+         val selected = synchronized(entriesLock) { if(!owns()) null else watchLater.getOrPut(key) {created} }
+         if(selected !== created) created.close()
+         return selected ?: throw CancellationException("Personal root retired during WatchLater creation")
++    }
++
++    fun following(key: BiliPaiNavKey.Following): DesktopFollowingEntry {
++        assertOwned()
++        synchronized(entriesLock) {following[key]}?.let {return it}
++        val created=DesktopFollowingEntry(this,key).also {entry ->
++            val favorites=environment(entry.scope,entry::owns,entry::assertOwned,entry::commit)
++            val cache=com.android.purebilibili.feature.following.DesktopFollowingCacheContext(globalStore,entry::owns,entry::commit)
++            entry.install(com.android.purebilibili.feature.following.DesktopFollowingEnvironment(favorites,cache))
++        }
++        val selected=synchronized(entriesLock) {if(!owns())null else following.getOrPut(key) {created}}
++        if(selected !== created)created.close()
++        return selected ?: throw CancellationException("Personal root retired during Following creation")
+     }
+ 
+     fun history(key: BiliPaiNavKey): DesktopPersonalListEntry {
+@@ -119,6 +137,8 @@
+             watchLater.keys.filter {it != BiliPaiNavKey.WatchLater && it !in keep}.mapNotNull(watchLater::remove)
+         }
+         oldWatch.forEach(DesktopWatchLaterEntry::close)
++        val oldFollowing=synchronized(entriesLock) {following.keys.filterNot(keep::contains).mapNotNull(following::remove)}
++        oldFollowing.forEach(DesktopFollowingEntry::close)
+     }
+     override fun close() {
+         if (!closed.compareAndSet(false, true)) return
+@@ -129,7 +149,9 @@
+         }
+         old.forEach(DesktopPersonalListEntry::close)
+         val oldWatch = synchronized(entriesLock) { watchLater.values.toList().also {watchLater.clear()} }
+-        oldWatch.forEach(DesktopWatchLaterEntry::close); job.cancel()
++        oldWatch.forEach(DesktopWatchLaterEntry::close)
++        val oldFollowing=synchronized(entriesLock) {following.values.toList().also {following.clear()}}
++        oldFollowing.forEach(DesktopFollowingEntry::close); job.cancel()
+     }
+     suspend fun closeAndJoin() = withContext(NonCancellable) { close(); job.join() }
+ }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -1629,6 +1629,13 @@
+                                     }
+                                 }
+                             }
++                            entryKey is BiliPaiNavKey.Following -> {
++                                val entry=remember(personalLists,entryKey) {personalLists.following(entryKey)}
++                                DesktopDetailWindow {
++                                    DesktopOriginalFollowingHost(entry,onBack={commands.back()},
++                                        onUserClick={mid->openUser(mid)},isCurrentPage=active && !activatingUpdate)
++                                }
++                            }
+                             entryKey == BiliPaiNavKey.WatchLater || entryKey is BiliPaiNavKey.WatchLaterSearch -> {
+                                 val entry = personalLists.watchLater(entryKey)
+                                 val queue = entry.queueBridge {
+@@ -1738,13 +1745,6 @@
+                                         isCurrentPage = active && !activatingUpdate)
+                                 }
+                             }
+-                            section == DesktopSection.FOLLOWINGS ->
+-                                PersonalContentScreen(when(section) {
+-                                    DesktopSection.CLOUD_HISTORY -> PersonalSection.HISTORY
+-                                    DesktopSection.WATCH_LATER -> PersonalSection.WATCH_LATER
+-                                    DesktopSection.LIKED -> PersonalSection.LIKED
+-                                    else -> PersonalSection.FOLLOWINGS
+-                                }, repository, social, community, ::openVideo, ::openUser, { loginDialog = true }, ::openResource, ::openCollection)
+                             section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { loginDialog = true },
+                                 space = space, onResource = ::openResource, initialTitle = collectionTitle)
+                             section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin)
+--- a/desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt
++++ b/desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt
+@@ -13,7 +13,7 @@
+ import kotlin.coroutines.intrinsics.COROUTINE_SUSPENDED
+ 
+ /** A page-owned view of Root's existing API/identity. It owns no transport, cookie or data store. */
+-class DesktopFavoriteEnvironment(
++class DesktopFavoriteEnvironment @JvmOverloads constructor(
+     val scope: CoroutineScope,
+     api: BilibiliApi,
+     spaceApi: SpaceApi?,
+@@ -29,11 +29,15 @@
+     watchLaterChanged: (() -> Unit)?,
+     private val readAccessToken: (() -> String?)?,
+     private val readAccessTokenPlatform: (() -> String)?,
++    private val followStateChanged: ((FollowStateChange) -> Unit)? = null,
+ ) {
+     fun isOwned(): Boolean = stillOwned() && scope.isActive
+     fun assertOwned() { if (!isOwned()) throw CancellationException("Favorites owner retired") }
+     fun csrf(): String? { assertOwned(); return readCsrf() }
+     fun currentMid(): Long? { assertOwned(); return readMid() }
++    fun confirmFollow(change:FollowStateChange) {
++        assertOwned(); requireNotNull(followStateChanged) { "Follow action notification is not mounted for this owner" }(change)
++    }
+     fun showFeedback(message: String) { assertOwned(); feedback(message) }
+     val api: BilibiliApi = ownedApi(api, BilibiliApi::class.java)
+     private val space = spaceApi?.let { ownedApi(it, SpaceApi::class.java) }

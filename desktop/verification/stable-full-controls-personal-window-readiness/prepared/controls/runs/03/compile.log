@@ -1,0 +1,22 @@
+desktop\.local\stable-video-player-full-controls-parity\runs\03\source-inputs\generated\com\android\purebilibili\core\store\player\DesktopOriginalVideoPlayerSettings.kt:27:61: error: none of the following candidates is applicable:
+
+fun <T : Comparable<T>, R : ClosedRange<T>, Iterable<T>> R.contains(element: T?): Boolean:
+  Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun <T : Comparable<T>, R : ClosedRange<T>, Iterable<T>> R.contains(element: T?): Boolean
+
+fun <T : Comparable<T>, R : OpenEndRange<T>, Iterable<T>> R.contains(element: T?): Boolean:
+  Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun <T : Comparable<T>, R : OpenEndRange<T>, Iterable<T>> R.contains(element: T?): Boolean
+                legacyPreferencePresent = legacyPreferences.contains(legacyShowStatsKey),
+                                                            ^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\03\source-inputs\generated\com\android\purebilibili\core\store\player\DesktopOriginalVideoPlayerSettings.kt:47:51: error: none of the following candidates is applicable:
+
+fun <T : Comparable<T>, R : ClosedRange<T>, Iterable<T>> R.contains(element: T?): Boolean:
+  Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun <T : Comparable<T>, R : ClosedRange<T>, Iterable<T>> R.contains(element: T?): Boolean
+
+fun <T : Comparable<T>, R : OpenEndRange<T>, Iterable<T>> R.contains(element: T?): Boolean:
+  Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun <T : Comparable<T>, R : OpenEndRange<T>, Iterable<T>> R.contains(element: T?): Boolean
+            legacyPreferencePresent = preferences.contains(legacyShowStatsKey),
+                                                  ^^^^^^^^

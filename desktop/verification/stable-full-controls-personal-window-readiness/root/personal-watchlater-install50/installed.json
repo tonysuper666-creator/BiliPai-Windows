@@ -1,0 +1,10 @@
+{
+  "applied": true,
+  "kind": "watchlater",
+  "copies": 4,
+  "exactPatchTargets": 4,
+  "newOriginalIdentities": 3,
+  "wholeCompilationPending": true,
+  "actualRootRuntimePending": true,
+  "newExeDeployed": false
+}

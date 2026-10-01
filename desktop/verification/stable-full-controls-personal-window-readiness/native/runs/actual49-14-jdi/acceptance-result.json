@@ -1,0 +1,21 @@
+{
+  "status": "DIAGNOSTIC_COMPLETED_NOT_ACCEPTANCE",
+  "diagnosticOnly": true,
+  "JDWPReadOnlyRootWatcher": true,
+  "fullRequestedScopeAccepted": false,
+  "actualSnapshot": 49,
+  "runtimeEntries": 97,
+  "productionOverrides": 0,
+  "nativeProofSha256": "6d8a0b9167b3faf750c90c6591ec440f274c1f9c9aa34c26de93f8601dffffc0",
+  "assertions": 5,
+  "pointerPairs": 0,
+  "all97PinsBeforeAfter": true,
+  "classOriginsAllActualMainKotlin": true,
+  "unchangedFullProductRendererCohort": true,
+  "actualMainShellAccepted": false,
+  "hardwareMouseAccepted": false,
+  "realAccountAccepted": false,
+  "OSSMTCButtonEventAccepted": false,
+  "ownedSkiaBackingOnly": true,
+  "sharedGradle": false
+}

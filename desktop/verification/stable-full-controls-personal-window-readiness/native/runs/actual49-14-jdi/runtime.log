@@ -1,0 +1,7 @@
+Listening for transport dt_socket at address: 5009
+PASS Blank fixture Window platform fullscreen baseline
+PASS Same MPV SwingPanel fullscreen baseline
+PASS Sole actual Surface empty foreground fullscreen baseline
+PASS Unchanged full original renderer owns exact local task and actual native first frame
+FAIL_OBSERVED Actual original landscape entry applies real fixture Window fullscreen placement
+OFFLINE_NATIVE_OBSERVATIONS_COMPLETED

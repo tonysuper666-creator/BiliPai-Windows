@@ -1,0 +1,67 @@
+package com.bilipai.desktop.ui
+
+import com.bilipai.desktop.player.MpvPlayer
+import com.bilipai.desktop.player.PlayerState
+import com.android.purebilibili.feature.video.ui.overlay.PlaybackUserActionType
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.CancellationException
+
+/** Real MPV readback and the existing Controller command admission. Not a Media3 player/decoder.
+ * Root binds a fixed BVID/CID + page/epoch owner and a live accepted sourceVersion getter.
+ */
+class DesktopOriginalMpvOverlayControl internal constructor(
+    val nativePlayer: MpvPlayer,
+    private val sourceVersion: () -> Long?,
+    private val isCurrent: () -> Boolean,
+    private val commitIfCurrent: ((() -> Unit) -> Boolean),
+    private val diagnosticLoggingEnabledPort: () -> Boolean,
+    private val ensurePreparedSource: () -> Unit,
+    private val resumeEndedSource: () -> Unit,
+    private val logSeekDiagnostic: (Long, Long, Long, Long) -> Unit,
+) {
+    companion object {
+        const val STATE_IDLE = 1
+        const val STATE_BUFFERING = 2
+        const val STATE_READY = 3
+        const val STATE_ENDED = 4
+    }
+    val diagnosticLoggingEnabled get() = diagnosticLoggingEnabledPort()
+    val state: StateFlow<PlayerState> get() = nativePlayer.state
+    fun isOwned(): Boolean = isCurrent() && sourceVersion()?.let(nativePlayer::ownsSourceVersion) == true
+    private fun snapshot(): PlayerState = state.value.also { if (!isOwned()) throw CancellationException("Original player source retired") }
+    val currentPosition: Long get() = (snapshot().positionSeconds.coerceAtLeast(0.0) * 1000.0).toLong()
+    val duration: Long get() = (snapshot().durationSeconds.coerceAtLeast(0.0) * 1000.0).toLong()
+    val bufferedPosition: Long get() = snapshot().let {
+        val buffered = it.positionSeconds.coerceAtLeast(0.0) + (it.bufferedForwardSeconds?.takeIf { value -> value.isFinite() && value >= 0.0 } ?: 0.0)
+        (if (it.durationSeconds > 0.0) buffered.coerceAtMost(it.durationSeconds) else buffered).times(1000.0).toLong()
+    }
+    val playbackSpeed: Float get() = snapshot().speed.toFloat()
+    val playbackState: Int get() = snapshot().let { when {
+        it.ended -> DesktopOriginalPlaybackStates.STATE_ENDED
+        it.error != null -> DesktopOriginalPlaybackStates.STATE_IDLE
+        it.loading || it.pausedForCache -> DesktopOriginalPlaybackStates.STATE_BUFFERING
+        it.firstVideoFrameReady || it.videoCodec != null || it.audioCodec != null -> DesktopOriginalPlaybackStates.STATE_READY
+        else -> DesktopOriginalPlaybackStates.STATE_IDLE
+    } }
+    val isPlaying: Boolean get() = snapshot().let {
+        !(it.nativePaused ?: it.paused) && !it.ended && it.error == null && !it.loading && !it.pausedForCache &&
+            (it.firstVideoFrameReady || it.videoCodec != null || it.audioCodec != null)
+    }
+    var playWhenReady: Boolean
+        get() = !snapshot().paused
+        set(value) { write { nativePlayer.setPaused(!value) } }
+    val playerErrorMessage: String? get() = snapshot().error
+    val mediaItemCount: Int get() = if (isOwned()) 1 else 0
+    private fun write(block: () -> Unit) {
+        if (!isOwned()) return
+        commitIfCurrent { if (isOwned()) block() }
+    }
+    fun prepare() = write(ensurePreparedSource)
+    fun play() = write { if (state.value.ended) resumeEndedSource() else nativePlayer.setPaused(false) }
+    fun pause() = write { nativePlayer.setPaused(true) }
+    fun seekTo(positionMs: Long) = write { nativePlayer.seekTo(positionMs.coerceAtLeast(0L) / 1000.0) }
+    fun setPlaybackSpeed(value: Float) = write { nativePlayer.setSpeed(value.toDouble()) }
+    fun logSeek(targetPositionMs: Long, currentPositionMs: Long, bufferedPositionMs: Long, durationMs: Long) {
+        if (isOwned()) logSeekDiagnostic(targetPositionMs, currentPositionMs, bufferedPositionMs, durationMs)
+    }
+}

@@ -1,0 +1,23 @@
+--- a/desktop/tools/extract-upstream-favorites.py
++++ b/desktop/tools/extract-upstream-favorites.py
+@@ -90,13 +90,19 @@
+   output('data/repository/DesktopOriginal'+name,s,'entire original repository; shared API/identity constructor only, original protocol/parser/management bodies retained')
+  # Original selected action + PGC repository methods, exact request body/fields.
+  s=source('data/repository/ActionRepository');members=[]
+- for name in ['createFavFolder','favoriteVideo','getDefaultFolderId','toggleWatchLater']:
++ for name in ['createFavFolder','favoriteVideo','getDefaultFolderId','toggleWatchLater',
++     'normalizeRelationTagIds','normalizeRelationTags','chunkFollowGroupTargetMids',
++     'isFollowGroupRetryableError','addUsersToRelationTagsWithRetry','followUser',
++     'getFollowGroupTags','getUserFollowGroupIds','getFollowGroupMemberMids',
++     'getAllFollowGroupUsers','getFollowGroupUsers','overwriteFollowGroupIds']:
+   a,b=parser.fun_span(s,name);members.append(s[a:b])
++ members.insert(0, 'private companion object {\n'+'\n'.join(l for l in s.splitlines() if l.strip().startswith('private const val ') and any(k in l for k in ['FOLLOW_GROUP_', 'SPECIAL_FOLLOW_TAG_ID', 'ALL_FOLLOW_TAG_ID']))+'\n}')
+  imports='\n'.join(l for l in s.splitlines() if l.startswith('import ') and 'NetworkModule'not in l and 'TokenManager'not in l)
+  body='package com.android.purebilibili.data.repository\n'+imports+'\nclass DesktopOriginalFavoriteActions(private val environment: com.android.purebilibili.feature.list.DesktopFavoriteEnvironment) {\n'+ '\n'.join(members)+'\n}\n'
+  body=body.replace('NetworkModule.api.','environment.api.').replace('TokenManager.csrfCache','environment.csrf()').replace('WatchLaterRefreshBus.notifyChanged()','environment.watchLaterChanged()').replace('import com.android.purebilibili.core.refresh.WatchLaterRefreshBus\n','').replace(' {\n    suspend fun createFavFolder',' {\n    private val api=environment.api\n    suspend fun createFavFolder')
+  body=body.replace('val response = api.','val response = environment.api.').replace('                    api.','                    environment.api.')
+  body=body.replace('TokenManager.midCache','environment.currentMid()').replace('val response = api.','val response = environment.api.')
++ body=body.replace('_followStateChanges.tryEmit(FollowStateChange(mid = mid, isFollowing = follow))','environment.confirmFollow(FollowStateChange(mid = mid, isFollowing = follow))')
+  body=drop_logs(body);output('data/repository/DesktopOriginalFavoriteActions',body,'selected complete original create-folder/quick-save/default-folder/watchlater members; latter is compile-only auxiliary history dependency')
+  s=source('data/repository/BangumiRepository');members=[]
+  for name in ['getMyFollowBangumi','unfollowBangumi','updateBangumiFollowStatus']:

@@ -1,0 +1,24 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt
++++ com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt
+@@ -26,11 +26,10 @@
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+-import android.content.res.Configuration
+ import androidx.compose.foundation.layout.WindowInsets
+ import com.android.purebilibili.core.store.PlaybackCompletionBehavior
+ import com.android.purebilibili.core.ui.AppModalBottomSheet
+@@ -80,7 +79,7 @@
+     return
+ 
+     val configuration = LocalConfiguration.current
+-    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
++    val isLandscape = (if (configuration.screenWidthDp > configuration.screenHeightDp) 2 else 1) == 2
+     val layoutSpec = remember(isLandscape, isFullscreen) {
+         resolvePlaybackOrderSheetLayoutSpec(
+             isLandscape = isLandscape,

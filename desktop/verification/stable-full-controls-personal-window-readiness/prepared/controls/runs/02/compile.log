@@ -1,0 +1,29 @@
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\SeekPreviewBubble.kt:533:36: error: none of the following candidates is applicable:
+
+fun BufferedImage.toComposeImageBitmap(): ImageBitmap:
+  Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun BufferedImage.toComposeImageBitmap(): ImageBitmap
+
+fun Image.toComposeImageBitmap(): ImageBitmap:
+  Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun Image.toComposeImageBitmap(): ImageBitmap
+                    image = bitmap.toComposeImageBitmap(),
+                                   ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlayerOverlayModels.kt:5:51: error: unresolved reference 'PlayerSettingsStore'.
+import com.android.purebilibili.core.store.player.PlayerSettingsStore
+                                                  ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlayerOverlayModels.kt:210:11: error: unresolved reference 'PlayerSettingsStore'.
+    mode: PlayerSettingsStore.PlayerInsightMode,
+          ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlayerOverlayModels.kt:216:17: error: unresolved reference 'PlayerSettingsStore'.
+    if (mode == PlayerSettingsStore.PlayerInsightMode.OFF ||
+                ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlayerOverlayModels.kt:223:17: error: unresolved reference 'PlayerSettingsStore'.
+        mode == PlayerSettingsStore.PlayerInsightMode.ALWAYS ||
+                ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlayerOverlayModels.kt:341:35: error: unresolved reference 'media3'.
+    if (playbackState == androidx.media3.common.Player.STATE_BUFFERING &&
+                                  ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlayerOverlayModels.kt:351:35: error: unresolved reference 'media3'.
+    if (playbackState == androidx.media3.common.Player.STATE_READY &&
+                                  ^^^^^^

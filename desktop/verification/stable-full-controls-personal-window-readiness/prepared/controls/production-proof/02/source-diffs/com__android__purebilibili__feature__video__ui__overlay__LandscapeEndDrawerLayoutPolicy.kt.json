@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LandscapeEndDrawerLayoutPolicy.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/LandscapeEndDrawerLayoutPolicy.kt",
+  "edits": [],
+  "sourceSha256LF": "71d09f67f61c962f9831243e5b1e9b100a3fe3e2615d986cd17f02ab38f57bab",
+  "generatedSha256LF": "71d09f67f61c962f9831243e5b1e9b100a3fe3e2615d986cd17f02ab38f57bab",
+  "reverseExact": true
+}

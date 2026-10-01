@@ -1,0 +1,41 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/QualityMenu.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/QualityMenu.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        7,
+        8
+      ],
+      "generatedLineRange": [
+        7,
+        8
+      ],
+      "before": [
+        "import androidx.compose.ui.platform.LocalContext\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        9,
+        10
+      ],
+      "generatedLineRange": [
+        9,
+        10
+      ],
+      "before": [
+        "import com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings as SettingsManager\n"
+      ]
+    }
+  ],
+  "sourceSha256LF": "22387369f318804f37c873e15c63fff710a09a7df4557592b63d496eac586885",
+  "generatedSha256LF": "47e8921ca539a06603f43017df0f772f3288a2864d4c0950bbbad8bb50c257c3",
+  "reverseExact": true
+}

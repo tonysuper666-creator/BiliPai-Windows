@@ -1,0 +1,29 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelector.kt
++++ com/android/purebilibili/feature/video/ui/components/PagesSelector.kt
+@@ -1,6 +1,5 @@
+ package com.android.purebilibili.feature.video.ui.components
+ 
+-import android.content.res.Configuration
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.Arrangement
+@@ -52,7 +51,7 @@
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.input.nestedscroll.nestedScroll
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+@@ -101,8 +100,8 @@
+     }
+ 
+     val configuration = LocalConfiguration.current
+-    val isLandscape = remember(configuration.orientation, configuration.screenWidthDp, configuration.screenHeightDp) {
+-        configuration.orientation == Configuration.ORIENTATION_LANDSCAPE ||
++    val isLandscape = remember((if (configuration.screenWidthDp > configuration.screenHeightDp) 2 else 1), configuration.screenWidthDp, configuration.screenHeightDp) {
++        (if (configuration.screenWidthDp > configuration.screenHeightDp) 2 else 1) == 2 ||
+             configuration.screenWidthDp > configuration.screenHeightDp
+     }
+     val layoutPolicy = remember(

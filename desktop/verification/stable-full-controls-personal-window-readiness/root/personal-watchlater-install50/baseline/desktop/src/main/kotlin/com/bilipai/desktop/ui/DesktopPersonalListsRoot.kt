@@ -1,0 +1,134 @@
+package com.bilipai.desktop.ui
+
+import com.android.purebilibili.core.network.*
+import com.android.purebilibili.core.refresh.HistoryRefreshBus
+import com.android.purebilibili.core.refresh.WatchLaterRefreshBus
+import com.android.purebilibili.feature.list.*
+import com.android.purebilibili.navigation3.BiliPaiNavKey
+import com.bilipai.desktop.DesktopLibrary
+import com.bilipai.desktop.data.DesktopRepository
+import com.bilipai.desktop.plugins.DesktopPluginStore
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.map
+import java.util.concurrent.atomic.AtomicBoolean
+
+/** Navigation-entry scope, not another account/items/cache. Full original History/Liked
+ * ViewModels and repositories are already the sole installed Favorites producer outputs.
+ * Root retains this with its Home gate while Video/audio covers the list. */
+internal class DesktopPersonalListsRoot(
+    val gate: DesktopHomeRetainedGate,
+    private val repository: DesktopRepository,
+    globalStore: DesktopPluginStore,
+    library: DesktopLibrary,
+    privacyModeEnabled: () -> Boolean,
+    feedback: (String) -> Unit,
+    val globalHazeState: dev.chrisbanes.haze.HazeState,
+) : AutoCloseable {
+    private val closed = AtomicBoolean(false)
+    private val job = SupervisorJob(gate.scope.coroutineContext[Job])
+    val scope = CoroutineScope(gate.scope.coroutineContext + job)
+    val preferences = DesktopFavoritePreferences(globalStore)
+    val historySearchChannel = Channel<String>(Channel.CONFLATED)
+    val historyScrollToTopChannel = Channel<Unit>(Channel.CONFLATED)
+    private val histories = linkedMapOf<BiliPaiNavKey, DesktopPersonalListEntry>()
+    private val liked = linkedMapOf<BiliPaiNavKey.LikedVideos, DesktopPersonalListEntry>()
+    private val entriesLock = Any()
+
+    fun owns(): Boolean = !closed.get() && job.isActive && gate.owns()
+    private fun assertOwned() { if (!owns()) throw CancellationException("Personal list owner retired") }
+    private fun <T> api(type: Class<T>, entry: DesktopPersonalListEntry): T =
+        repository.ownedHomeService(type, "https://api.bilibili.com/", gate.epoch, entry::owns)
+
+    private val cachedPosition: (String, Long) -> Long = { bvid, cid ->
+        assertOwned()
+        library.resumeCard(bvid)?.takeIf { it.preferredCid == cid }?.progressSeconds
+            ?.coerceAtLeast(0)?.toLong()?.times(1000L) ?: 0L
+    }
+    private val privacy = privacyModeEnabled
+    private val onFeedback = feedback
+    private fun environment(entry: DesktopPersonalListEntry): DesktopFavoriteEnvironment {
+        val owned = entry::owns
+        return DesktopFavoriteEnvironment(entry.scope, api(BilibiliApi::class.java, entry),
+            api(SpaceApi::class.java, entry), api(DynamicApi::class.java, entry), api(BangumiApi::class.java, entry),
+            owned, { repository.ownedHomeCookie("bili_jct", gate.epoch, owned) },
+            { entry.assertOwned(); gate.mid },
+            { message -> entry.commit { onFeedback(message) } },
+            // Original VM ignores the emission value. This is the actual notification bus
+            // projected to its already-installed Flow<Long> platform ABI, not a new counter.
+            HistoryRefreshBus.changes.map { DesktopHomeClock.elapsedRealtime() },
+            cachedPosition, { entry.assertOwned(); privacy() }, WatchLaterRefreshBus::notifyChanged,
+            { repository.ownedHomeAccessToken(gate.epoch, owned) },
+            { repository.withPrimaryPlaybackAdmission(gate.epoch, owned) { repository.accessTokenCredentials().second } })
+    }
+
+    fun history(key: BiliPaiNavKey): DesktopPersonalListEntry {
+        require(key == BiliPaiNavKey.History || key is BiliPaiNavKey.HistorySearch)
+        assertOwned()
+        synchronized(entriesLock) { histories[key] }?.let { return it }
+        val created = DesktopPersonalListEntry(this, key).also { entry ->
+            val env = environment(entry)
+            entry.install(env, HistoryViewModel(env), FavoriteCategoryViewModel(env))
+        }
+        val selected = synchronized(entriesLock) { if (!owns()) null else histories.getOrPut(key) { created } }
+        if (selected !== created) created.close()
+        return selected ?: throw CancellationException("Personal root retired during History creation")
+    }
+    fun liked(key: BiliPaiNavKey.LikedVideos): DesktopPersonalListEntry {
+        assertOwned()
+        synchronized(entriesLock) { liked[key] }?.let { return it }
+        val created = DesktopPersonalListEntry(this, key).also { entry ->
+            val env = environment(entry)
+            entry.install(env, LikedVideosViewModel(env, key.mid.takeIf { it > 0 },
+                key.ownerName.takeIf { it.isNotBlank() }, key.isCoinArchive), FavoriteCategoryViewModel(env))
+        }
+        val selected = synchronized(entriesLock) { if (!owns()) null else liked.getOrPut(key) { created } }
+        if (selected !== created) created.close()
+        return selected ?: throw CancellationException("Personal root retired during Liked creation")
+    }
+    /** Root calls after actual stack changes. Root History is a MainHost destination and
+     * retained even if another pager tab is selected; popped search/liked entries retire. */
+    fun prune(actualStack: List<BiliPaiNavKey>) {
+        val keep = actualStack.toSet()
+        val retired = synchronized(entriesLock) {
+            histories.keys.filter { it != BiliPaiNavKey.History && it !in keep }
+                .mapNotNull(histories::remove) + liked.keys.filterNot(keep::contains).mapNotNull(liked::remove)
+        }
+        retired.forEach(DesktopPersonalListEntry::close)
+    }
+    override fun close() {
+        if (!closed.compareAndSet(false, true)) return
+        historySearchChannel.close(); historyScrollToTopChannel.close()
+        val old = synchronized(entriesLock) {
+            (histories.values.toList() + liked.values.toList()).also { histories.clear(); liked.clear() }
+        }
+        old.forEach(DesktopPersonalListEntry::close); job.cancel()
+    }
+    suspend fun closeAndJoin() = withContext(NonCancellable) { close(); job.join() }
+}
+
+internal class DesktopPersonalListEntry(
+    private val root: DesktopPersonalListsRoot,
+    val key: BiliPaiNavKey,
+) : AutoCloseable {
+    private val closed = AtomicBoolean(false)
+    private val job = SupervisorJob(root.scope.coroutineContext[Job])
+    val scope = CoroutineScope(root.scope.coroutineContext + job)
+    lateinit var environment: DesktopFavoriteEnvironment; private set
+    lateinit var viewModel: BaseListViewModel; private set
+    lateinit var categories: FavoriteCategoryViewModel; private set
+    private var queue: DesktopFavoriteQueueBridge? = null
+    val saveableKey: String = java.util.UUID.randomUUID().toString()
+    fun owns(): Boolean = !closed.get() && job.isActive && root.owns()
+    fun assertOwned() { if (!owns()) throw CancellationException("Personal list entry retired") }
+    fun commit(block: () -> Unit): Boolean = root.gate.commit { if (owns()) block() } && owns()
+    fun install(environment: DesktopFavoriteEnvironment, viewModel: BaseListViewModel, categories: FavoriteCategoryViewModel) {
+        check(!this::viewModel.isInitialized); assertOwned()
+        this.environment = environment; this.viewModel = viewModel; this.categories = categories
+    }
+    fun queueBridge(factory: () -> DesktopFavoriteQueueBridge): DesktopFavoriteQueueBridge {
+        assertOwned()
+        return queue ?: factory().also { queue = it }
+    }
+    override fun close() { if (closed.compareAndSet(false, true)) { queue?.close(); job.cancel() } }
+}

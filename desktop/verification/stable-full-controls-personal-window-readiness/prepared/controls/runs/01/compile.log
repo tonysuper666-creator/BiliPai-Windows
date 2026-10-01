@@ -1,0 +1,215 @@
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\SeekPreviewBubble.kt:533:36: error: none of the following candidates is applicable:
+
+fun Bitmap.asImageBitmap(): ImageBitmap
+fun Image.asImageBitmap(): ImageBitmap
+                    image = bitmap.asImageBitmap(),
+                                   ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\SeekPreviewBubble.kt:533:36: error: unresolved reference 'asImageBitmap'.
+                    image = bitmap.asImageBitmap(),
+                                   ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:139:26: error: unresolved reference 'media3'.
+    playerView: androidx.media3.ui.PlayerView,
+                         ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:143:30: error: unresolved reference 'resizeMode'.
+    val current = playerView.resizeMode
+                             ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:145:20: error: unresolved reference 'resizeMode'.
+        playerView.resizeMode = resizeMode
+                   ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:147:20: error: unresolved reference 'resizeMode'.
+        playerView.resizeMode = resolveForcedPlayerResizeModePivot(resizeMode)
+                   ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:148:20: error: unresolved reference 'resizeMode'.
+        playerView.resizeMode = resizeMode
+                   ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:150:16: error: unresolved reference 'requestLayout'.
+    playerView.requestLayout()
+               ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:151:16: error: unresolved reference 'findViewById'.
+    playerView.findViewById<android.view.View>(androidx.media3.ui.R.id.exo_content_frame)
+               ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:151:37: error: unresolved reference 'view'.
+    playerView.findViewById<android.view.View>(androidx.media3.ui.R.id.exo_content_frame)
+                                    ^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:151:57: error: unresolved reference 'media3'.
+    playerView.findViewById<android.view.View>(androidx.media3.ui.R.id.exo_content_frame)
+                                                        ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:153:16: error: unresolved reference 'invalidate'.
+    playerView.invalidate()
+               ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:170:26: error: unresolved reference 'media3'.
+    playerView: androidx.media3.ui.PlayerView,
+                         ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:180:16: error: unresolved reference 'post'.
+    playerView.post {
+               ^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:186:20: error: unresolved reference 'postOnAnimation'.
+        playerView.postOnAnimation {
+                   ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:190:37: error: argument type mismatch: actual type is 'Float', but 'Int' was expected.
+                    measuredWidth = playerView.width,
+                                    ^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:190:48: error: function invocation 'width()' expected.
+                    measuredWidth = playerView.width,
+                                               ^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:191:38: error: argument type mismatch: actual type is 'Float', but 'Int' was expected.
+                    measuredHeight = playerView.height
+                                     ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:191:49: error: function invocation 'height()' expected.
+                    measuredHeight = playerView.height
+                                                ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:228:5: error: unresolved reference 'PlayerMiuixListPopup'.
+    PlayerMiuixListPopup(
+    ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:232:21: error: unresolved reference 'PlayerListPopupPlacement'.
+        placement = PlayerListPopupPlacement.END,
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoAspectRatio.kt:237:13: error: @Composable invocations can only happen from the context of a @Composable function
+            DropdownImpl(
+            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:68:61: error: unresolved reference 'DolbyBadge'.
+import com.android.purebilibili.feature.video.ui.components.DolbyBadge
+                                                            ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:69:61: error: unresolved reference 'HiResBadge'.
+import com.android.purebilibili.feature.video.ui.components.HiResBadge
+                                                            ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:76:63: error: unresolved reference 'resolveDisplayedPlaybackTransitionPosition'.
+import com.android.purebilibili.feature.video.playback.policy.resolveDisplayedPlaybackTransitionPosition
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:87:50: error: unresolved reference 'UiSkinAnimatedAsset'.
+import com.android.purebilibili.core.plugin.skin.UiSkinAnimatedAsset
+                                                 ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:132:23: error: unresolved reference 'resolveDisplayedPlaybackTransitionPosition'.
+    val heldCurrent = resolveDisplayedPlaybackTransitionPosition(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:296:67: error: unresolved reference 'shouldShowDanmakuInputInControlBar'.
+): Boolean = com.android.purebilibili.feature.video.ui.components.shouldShowDanmakuInputInControlBar(
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:590:34: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val showCompactDanmakuSend = remember(isFullscreen, uiLayoutWidthDp) {
+                                 ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:591:62: error: unresolved reference 'shouldShowCompactDanmakuSendAction'.
+        com.android.purebilibili.feature.video.ui.components.shouldShowCompactDanmakuSendAction(
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:596:35: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val danmakuInputPlaceholder = remember(isLoggedIn) {
+                                  ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:597:62: error: unresolved reference 'resolveDanmakuInputPlaceholder'.
+        com.android.purebilibili.feature.video.ui.components.resolveDanmakuInputPlaceholder(isLoggedIn)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:734:30: error: unresolved reference 'testTagsAsResourceId'.
+                .semantics { testTagsAsResourceId = true }
+                             ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:776:13: error: unresolved reference 'OverlayPlaybackButton'.
+            OverlayPlaybackButton(
+            ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:827:34: error: unresolved reference 'shouldDrawDanmakuInputCapsule'.
+                                .shouldDrawDanmakuInputCapsule(availableWidthDp)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:934:29: error: unresolved reference 'HiResBadge'.
+                            HiResBadge()
+                            ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:937:29: error: unresolved reference 'DolbyBadge'.
+                            DolbyBadge()
+                            ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1062:90: error: unresolved reference 'shouldShowDanmakuSendInMoreActions'.
+                                    com.android.purebilibili.feature.video.ui.components.shouldShowDanmakuSendInMoreActions(
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1283:13: error: no parameter with name 'decorFitsSystemWindows' found.
+            decorFitsSystemWindows = false
+            ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1608:34: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val resolvedSponsorMarkers = remember(duration, sponsorMarkers) {
+                                 ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1609:9: error: unresolved reference 'resolveSponsorProgressBarMarkers'.
+        resolveSponsorProgressBarMarkers(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1830:81: error: cannot infer type for value parameter 'marker'. Specify it explicitly.
+                                val sponsorLines = resolvedSponsorMarkers.map { marker ->
+                                                                                ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1831:37: error: cannot infer type for type parameter 'C'. Specify it explicitly.
+                                    Triple(Offset(size.width * marker.startFraction, centerY),
+                                    ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1831:71: error: unresolved reference 'startFraction'.
+                                    Triple(Offset(size.width * marker.startFraction, centerY),
+                                                                      ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1832:68: error: unresolved reference 'endFraction'.
+                                        Offset(size.width * marker.endFraction, centerY), marker.color)
+                                                                   ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1832:98: error: unresolved reference 'color'.
+                                        Offset(size.width * marker.endFraction, centerY), marker.color)
+                                                                                                 ^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1856:60: error: cannot infer type for implicit value parameter 'it'. Specify it explicitly.
+                                    sponsorLines.forEach { (start, end, color) ->
+                                                           ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1856:60: error: operator call 'component1()' is ambiguous for destructuring of type '??? (Unknown type for value parameter <destruct>)'. Applicable candidates:
+fun <T> Array<out T>.component1(): T
+fun ByteArray.component1(): Byte
+fun ShortArray.component1(): Short
+fun IntArray.component1(): Int
+fun LongArray.component1(): Long
+fun FloatArray.component1(): Float
+fun DoubleArray.component1(): Double
+fun BooleanArray.component1(): Boolean
+fun CharArray.component1(): Char
+fun <T> List<T>.component1(): T
+fun <K, V> Map.Entry<K, V>.component1(): K
+fun UIntArray.component1(): UInt
+fun ULongArray.component1(): ULong
+fun UByteArray.component1(): UByte
+fun UShortArray.component1(): UShort
+                                    sponsorLines.forEach { (start, end, color) ->
+                                                           ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1856:60: error: operator call 'component2()' is ambiguous for destructuring of type '??? (Unknown type for value parameter <destruct>)'. Applicable candidates:
+fun <T> Array<out T>.component2(): T
+fun ByteArray.component2(): Byte
+fun ShortArray.component2(): Short
+fun IntArray.component2(): Int
+fun LongArray.component2(): Long
+fun FloatArray.component2(): Float
+fun DoubleArray.component2(): Double
+fun BooleanArray.component2(): Boolean
+fun CharArray.component2(): Char
+fun <T> List<T>.component2(): T
+fun <K, V> Map.Entry<K, V>.component2(): V
+fun UIntArray.component2(): UInt
+fun ULongArray.component2(): ULong
+fun UByteArray.component2(): UByte
+fun UShortArray.component2(): UShort
+                                    sponsorLines.forEach { (start, end, color) ->
+                                                           ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1856:60: error: operator call 'component3()' is ambiguous for destructuring of type '??? (Unknown type for value parameter <destruct>)'. Applicable candidates:
+fun <T> Array<out T>.component3(): T
+fun ByteArray.component3(): Byte
+fun ShortArray.component3(): Short
+fun IntArray.component3(): Int
+fun LongArray.component3(): Long
+fun FloatArray.component3(): Float
+fun DoubleArray.component3(): Double
+fun BooleanArray.component3(): Boolean
+fun CharArray.component3(): Char
+fun <T> List<T>.component3(): T
+fun UIntArray.component3(): UInt
+fun ULongArray.component3(): ULong
+fun UByteArray.component3(): UByte
+fun UShortArray.component3(): UShort
+                                    sponsorLines.forEach { (start, end, color) ->
+                                                           ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1875:29: error: unresolved reference 'UiSkinAnimatedAsset'.
+                            UiSkinAnimatedAsset(
+                            ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\TopControlBar.kt:65:6: error: unresolved reference 'shouldApplyStatusBarPaddingToVideoPlayerChrome'.
+    .shouldApplyStatusBarPaddingToVideoPlayerChrome(statusBarVisible = statusBarVisible)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalPlayerControlsWindows.kt:3:20: error: unresolved reference 'platform'.
+import com.sun.jna.platform.win32.Kernel32
+                   ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalPlayerControlsWindows.kt:4:20: error: unresolved reference 'platform'.
+import com.sun.jna.platform.win32.WinBase
+                   ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalPlayerControlsWindows.kt:14:26: error: unresolved reference 'WinBase'.
+            val status = WinBase.SYSTEM_POWER_STATUS()
+                         ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-full-controls-parity\runs\01\source-inputs\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalPlayerControlsWindows.kt:15:19: error: unresolved reference 'Kernel32'.
+            check(Kernel32.INSTANCE.GetSystemPowerStatus(status)) { "Windows GetSystemPowerStatus failed" }
+                  ^^^^^^^^

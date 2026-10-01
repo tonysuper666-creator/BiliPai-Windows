@@ -238,10 +238,10 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     /** Reads the existing WBI cache, with its existing expiry and owner-bound nav API. */
     internal suspend fun homeWbiKeys(expectedEpoch: Long, stillOwned: () -> Boolean,
-        ownedApi: BilibiliApi): Result<Pair<String, String>> {
+        ownedApi: BilibiliApi, forceRefresh: Boolean = false): Result<Pair<String, String>> {
         return try {
             if (expectedEpoch != sessions.generation || !stillOwned()) throw kotlinx.coroutines.CancellationException("Home epoch retired")
-            sign(emptyMap(), requestApi = ownedApi, expectedEpoch = expectedEpoch, stillOwned = stillOwned)
+            sign(emptyMap(), forceRefresh = forceRefresh, requestApi = ownedApi, expectedEpoch = expectedEpoch, stillOwned = stillOwned)
             val keys = wbiMutex.withLock {
                 if (expectedEpoch != sessions.generation || wbiGeneration != expectedEpoch || !stillOwned())
                     throw kotlinx.coroutines.CancellationException("Home WBI epoch retired")

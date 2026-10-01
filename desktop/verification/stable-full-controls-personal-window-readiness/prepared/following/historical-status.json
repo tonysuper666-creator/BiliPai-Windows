@@ -1,0 +1,16 @@
+{
+  "compile01": "failed: object const declarations needed class companion; prerequisite queue-start jar also missing from task CP",
+  "compile02": "failed: constants rewrite had not applied; task friend paths lacked the frozen queue-start jar",
+  "compile03": "passed: original UI/VM plus temporary shared event declaration, before publication/bus audit",
+  "compile04": "passed: per-task cache publication guard, before removing existing shared type overlap",
+  "compile05": "passed: existing shared event type referenced, before mapping original notification to sole Root event bus",
+  "compile06": "passed final",
+  "proof01": "failed test-only compilation: wildcard CancellationException ambiguity/local function syntax",
+  "proof02": "passed14 pre-final source",
+  "proof03": "passed15 pre-final source",
+  "proof04": "passed16 final source",
+  "audit01": "detected pre-final duplicate FollowStateChange source ownership",
+  "audit03": "detected unchanged FavoriteScopedOwner class from the explicitly replaced FavoriteEnvironment source family missing in overlap declaration",
+  "audit04": "passed42 final source",
+  "MainFailuresClaimed": false
+}

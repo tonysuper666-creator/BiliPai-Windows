@@ -1,0 +1,39 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        35,
+        36
+      ],
+      "generatedLineRange": [
+        35,
+        36
+      ],
+      "before": [
+        "import androidx.compose.ui.platform.LocalConfiguration\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        218,
+        219
+      ],
+      "generatedLineRange": [
+        218,
+        218
+      ],
+      "before": [
+        "                decorFitsSystemWindows = false\n"
+      ],
+      "after": []
+    }
+  ],
+  "sourceSha256LF": "55cc05b770fd580a3ca483cf16cb8c18bddc441241b70c71ca7a1f48a3291d45",
+  "generatedSha256LF": "c7d3269eadfa06cdcefebd995bd43345e6e00b3ca2201feaa4cc5b7ceadafe70",
+  "reverseExact": true
+}

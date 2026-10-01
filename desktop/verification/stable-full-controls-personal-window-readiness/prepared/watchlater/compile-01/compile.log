@@ -1,0 +1,9 @@
+work\BiliPai\desktop\.local\stable-personal-watchlater-parity\prepared\selected\com\android\purebilibili\data\repository\DesktopOriginalWatchLaterRepository.kt:33:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val PAGE_SIZE = 20
+            ^^^^^
+work\BiliPai\desktop\.local\stable-personal-watchlater-parity\prepared\selected\com\android\purebilibili\feature\watchlater\WatchLaterScreen.kt:675:28: error: argument type mismatch: actual type is 'HomeSettings', but 'DesktopFavoriteHomeAppearance' was expected.
+            homeSettings = homeSettings,
+                           ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-personal-watchlater-parity\prepared\selected\com\android\purebilibili\feature\watchlater\WatchLaterScreen.kt:854:14: error: unresolved reference 'activity'.
+    androidx.activity.compose.BackHandler(enabled = isBatchMode) {
+             ^^^^^^^^

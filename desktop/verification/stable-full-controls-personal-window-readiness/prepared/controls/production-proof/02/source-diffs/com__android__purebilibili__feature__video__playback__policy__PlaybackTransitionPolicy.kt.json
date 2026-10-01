@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackTransitionPolicy.kt",
+  "output": "com/android/purebilibili/feature/video/playback/policy/PlaybackTransitionPolicy.kt",
+  "edits": [],
+  "sourceSha256LF": "12174fba9f6f82d0652241e4565d6f6f65d8ecaf59bf7deae272f9a968a20829",
+  "generatedSha256LF": "12174fba9f6f82d0652241e4565d6f6f65d8ecaf59bf7deae272f9a968a20829",
+  "reverseExact": true
+}

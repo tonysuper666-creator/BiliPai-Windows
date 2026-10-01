@@ -1,0 +1,10 @@
+{
+  "applied": true,
+  "newOriginalIdentities": 5,
+  "sourceRegistryCount": 1007,
+  "copies": 3,
+  "exactPatchTargets": 4,
+  "wholeCompilationPending": true,
+  "actualRootRuntimePending": true,
+  "newExeDeployed": false
+}

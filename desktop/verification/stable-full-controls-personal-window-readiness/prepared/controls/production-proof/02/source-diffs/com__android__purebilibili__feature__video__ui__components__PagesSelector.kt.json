@@ -1,0 +1,57 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelector.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/PagesSelector.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        2,
+        3
+      ],
+      "generatedLineRange": [
+        2,
+        2
+      ],
+      "before": [
+        "import android.content.res.Configuration\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        54,
+        55
+      ],
+      "generatedLineRange": [
+        53,
+        54
+      ],
+      "before": [
+        "import androidx.compose.ui.platform.LocalConfiguration\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        103,
+        105
+      ],
+      "generatedLineRange": [
+        102,
+        104
+      ],
+      "before": [
+        "    val isLandscape = remember(configuration.orientation, configuration.screenWidthDp, configuration.screenHeightDp) {\n",
+        "        configuration.orientation == Configuration.ORIENTATION_LANDSCAPE ||\n"
+      ],
+      "after": [
+        "    val isLandscape = remember((if (configuration.screenWidthDp > configuration.screenHeightDp) 2 else 1), configuration.screenWidthDp, configuration.screenHeightDp) {\n",
+        "        (if (configuration.screenWidthDp > configuration.screenHeightDp) 2 else 1) == 2 ||\n"
+      ]
+    }
+  ],
+  "sourceSha256LF": "266983619e98b538c4daad21f30314f74be76a67231bc49c072e387af3c21eec",
+  "generatedSha256LF": "2c4d55a9c38de966992eeeb4e035af8909fa50979290d9764bfe60c8f7a9b6f8",
+  "reverseExact": true
+}

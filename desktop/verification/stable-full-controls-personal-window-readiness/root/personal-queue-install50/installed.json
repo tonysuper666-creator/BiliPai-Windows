@@ -1,0 +1,10 @@
+{
+  "applied": true,
+  "kind": "queue",
+  "copies": 1,
+  "exactPatchTargets": 4,
+  "newOriginalIdentities": 0,
+  "wholeCompilationPending": true,
+  "actualRootRuntimePending": true,
+  "newExeDeployed": false
+}

@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ModalChildScroll.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/ModalChildScroll.kt",
+  "edits": [],
+  "sourceSha256LF": "5b70062a25596822ddb0d4144582b0fed424eb195b74a7648252b837d75f4f26",
+  "generatedSha256LF": "5b70062a25596822ddb0d4144582b0fed424eb195b74a7648252b837d75f4f26",
+  "reverseExact": true
+}

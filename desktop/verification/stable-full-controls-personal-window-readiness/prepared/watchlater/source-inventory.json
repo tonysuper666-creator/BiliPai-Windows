@@ -1,0 +1,42 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+      "sha256LfUtf8": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+      "mode": "direct"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+      "sha256LfUtf8": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+      "mode": "direct"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/WatchLaterRepository.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "5062a5c6ddaf1f4d5ed58a6423545fd6ccf0a7f736f5362ef3aaf12d62ed4266",
+    "output": {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalWatchLaterRepository.kt",
+      "sha256LfUtf8": "1b5751403741cfd2554ace8bd6392038f16d1ddf3d06cb5066a4d0c4f37087db",
+      "mode": "selected"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "266e5f40e13147e8ffafc06537966174dcf0f492eac8cde455070a45885b6f84",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "sha256LfUtf8": "c64257dffde90fba2881588c3b80bb7de676ad1003acdb2d269fe04b72933ebb",
+      "mode": "selected"
+    }
+  }
+]

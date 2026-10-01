@@ -1,0 +1,33 @@
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:27:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val SPECIAL_FOLLOW_TAG_ID = -10L
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:28:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val ALL_FOLLOW_TAG_ID = -20L
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:29:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_BATCH_SIZE = 20
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:30:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_MAX_RETRIES = 3
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:31:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_REQUEST_INTERVAL_MS = 220L
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:32:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_RETRY_BASE_DELAY_MS = 900L
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:33:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_QUERY_MAX_RETRIES = 3
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:34:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_QUERY_RETRY_BASE_DELAY_MS = 600L
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:35:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_TAG_MEMBERS_PAGE_SIZE = 100
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:36:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_TAG_MEMBERS_MAX_PAGES = 120
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1667:106: error: too many arguments for 'fun openQueue(items: List<PlaylistItem>, index: Int, audio: Boolean): DesktopFavoriteQueueToken?'.
+                                        {items,index,audio,position -> queue.openQueue(items,index,audio,position)})
+                                                                                                         ^^^^^^^^

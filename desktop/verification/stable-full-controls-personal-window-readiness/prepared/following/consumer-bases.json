@@ -1,0 +1,17 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
+    "base": "a2f53aa36ca1b840c87a95c694b8bac0aa2a48f2d3c7e5c2d235559837a1e10a",
+    "desired": "6ff150322ff5d53b2a57263ddf39c4a506c137687dcf592e56795fbad87b074d"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "base": "97e4487a967700896e0d3388e5ed31c300f00bc52b141dcb0cc7b6ded1e1ef32",
+    "desired": "02257c011bc80d99708b87600bfc7cc73713270018ca13d8109b9fe2f369dd1e"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt",
+    "base": "122e661942bfbf3fa74f5760a42bf6ed0442046ebe490bf6b065e12cd487fe80",
+    "desired": "faf98a140db3f4028a6712ee2b36439e42cc9db9689801129738602d9efead81"
+  }
+]

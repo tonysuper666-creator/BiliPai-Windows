@@ -1,0 +1,30 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt
+@@ -25,6 +25,18 @@
+     modifier: Modifier,
+     foreground: @Composable () -> Unit,
+ ) {
++    DesktopOriginalPlayerSurface(player, sourceVersion, isOwned, modifier, foreground, null)
++}
++
++@Composable
++internal fun DesktopOriginalPlayerSurface(
++    player: MpvPlayer,
++    sourceVersion: Long?,
++    isOwned: () -> Boolean,
++    modifier: Modifier,
++    foreground: @Composable () -> Unit,
++    onWindowAvailability: ((Any, Boolean) -> Unit)?,
++) {
+     val latestOwned by rememberUpdatedState(isOwned)
+     val latestSourceVersion by rememberUpdatedState(sourceVersion)
+     val latestForeground by rememberUpdatedState(foreground)
+@@ -32,7 +44,7 @@
+     if (!isOwned()) return
+     Box(modifier.background(Color.Black).onSizeChanged { size = it }) {
+         SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
+-        DesktopShapedVideoCommandPopup(size, player.surface) {
++        DesktopShapedVideoCommandPopup(size, player.surface, onWindowAvailability = onWindowAvailability) {
+             val version = latestSourceVersion
+             // Null is an explicit entry-loading cover/control presentation, never native write permission.
+             // Every control supplied by the caller must reject native writes until it owns a non-null version.

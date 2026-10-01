@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/core/store/PlaybackCompletionBehaviorSyncPolicy.kt",
+  "output": "com/android/purebilibili/core/store/PlaybackCompletionBehaviorSyncPolicy.kt",
+  "edits": [],
+  "sourceSha256LF": "8d42f7cdd80255a46b07399725f103a6e224cdfc86cd11d326ef41d35f2f51cb",
+  "generatedSha256LF": "8d42f7cdd80255a46b07399725f103a6e224cdfc86cd11d326ef41d35f2f51cb",
+  "reverseExact": true
+}

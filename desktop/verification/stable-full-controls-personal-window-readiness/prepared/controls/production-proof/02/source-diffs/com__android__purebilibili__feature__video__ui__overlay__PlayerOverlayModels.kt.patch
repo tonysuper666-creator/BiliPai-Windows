@@ -1,0 +1,38 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt
++++ com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt
+@@ -2,7 +2,7 @@
+ 
+ import androidx.compose.ui.graphics.Color
+ import com.android.purebilibili.core.util.FormatUtils
+-import com.android.purebilibili.core.store.player.PlayerSettingsStore
++import com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings as PlayerSettingsStore
+ import com.android.purebilibili.data.model.response.SponsorCategory
+ import com.android.purebilibili.data.model.response.SponsorProgressMarker
+ import java.text.SimpleDateFormat
+@@ -338,7 +338,7 @@
+ ): PlaybackIssueSignal? {
+     if (!playWhenReady) return null
+ 
+-    if (playbackState == androidx.media3.common.Player.STATE_BUFFERING &&
++    if (playbackState == com.bilipai.desktop.ui.DesktopOriginalPlaybackStates.STATE_BUFFERING &&
+         bufferingDurationMs >= PLAYBACK_STUTTER_THRESHOLD_MS
+     ) {
+         return PlaybackIssueSignal(
+@@ -348,7 +348,7 @@
+         )
+     }
+ 
+-    if (playbackState == androidx.media3.common.Player.STATE_READY &&
++    if (playbackState == com.bilipai.desktop.ui.DesktopOriginalPlaybackStates.STATE_READY &&
+         !firstFrameRendered &&
+         waitingFirstFrameDurationMs >= PLAYBACK_BLACK_SCREEN_THRESHOLD_MS
+     ) {
+@@ -450,7 +450,7 @@
+ 
+ private fun resolveSponsorProgressMarkerColor(category: String, colorHex: String?): Color {
+     colorHex?.let { hex ->
+-        runCatching { return Color(android.graphics.Color.parseColor(hex)) }
++        runCatching { return Color(com.bilipai.desktop.plugins.DesktopPluginColor.parseColor(hex)) }
+     }
+     return if (category == SponsorCategory.SPONSOR) {
+         Color(0xFFFF8A65)

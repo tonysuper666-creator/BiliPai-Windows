@@ -1,0 +1,17 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-49",
+  "manifestSha": "7db2b7bc2816c9b7f10521c1ad1678196f4446a8bcde5cc5a837d678ac675a35",
+  "orderedCpSha": "569b953e5def0dcaba76d9a6a6d96fea9f3572ad910e6edf13f23b88d91ee821",
+  "preparedOnly": true,
+  "coreJarSha": "def9b7e8b62f3042f57e483a1cf27579b94caa5919d919402aabd5c26e575b0a",
+  "declaredProductFamilyOverrides": "PersonalListsRoot/Repository/RootMount/Shell plus explicit frozen queue-start candidate",
+  "coreNewClasses": 363,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\fixtures\\WatchLaterFixture.kt",
+      "sha": "97f1642678790c2674c31828970efb877115943b3f24cb91a5766c26f966c70d"
+    }
+  ],
+  "compileExit": 0,
+  "runExit": 0
+}

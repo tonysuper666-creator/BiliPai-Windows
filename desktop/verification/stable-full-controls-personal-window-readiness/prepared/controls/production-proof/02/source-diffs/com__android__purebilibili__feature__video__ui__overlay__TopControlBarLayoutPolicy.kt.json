@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+  "edits": [],
+  "sourceSha256LF": "caa69fb20cad28f3d923902edf640ce8fccd3a68846685980a6f7b783fdfe6d6",
+  "generatedSha256LF": "caa69fb20cad28f3d923902edf640ce8fccd3a68846685980a6f7b783fdfe6d6",
+  "reverseExact": true
+}

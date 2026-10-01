@@ -1,0 +1,5 @@
+{
+  "applied": false,
+  "CandidateWrites": 0,
+  "reason": "Producer base receipt is a single target object, while consumer base receipt is a list; parser must preserve both explicit schemas"
+}

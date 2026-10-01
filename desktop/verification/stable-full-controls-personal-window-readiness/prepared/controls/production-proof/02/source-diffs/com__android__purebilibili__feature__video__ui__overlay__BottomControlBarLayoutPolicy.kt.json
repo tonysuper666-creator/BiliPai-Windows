@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt",
+  "edits": [],
+  "sourceSha256LF": "428261701dd1bae0a4afd328885f87e359ccba4b3f47717d29e595277828ebac",
+  "generatedSha256LF": "428261701dd1bae0a4afd328885f87e359ccba4b3f47717d29e595277828ebac",
+  "reverseExact": true
+}

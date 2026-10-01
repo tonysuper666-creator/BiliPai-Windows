@@ -1,0 +1,17 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-49",
+  "manifestSha": "7db2b7bc2816c9b7f10521c1ad1678196f4446a8bcde5cc5a837d678ac675a35",
+  "orderedCpSha": "569b953e5def0dcaba76d9a6a6d96fea9f3572ad910e6edf13f23b88d91ee821",
+  "preparedOnly": true,
+  "coreJarSha": "2399e82cc66429487681f071b3525ba4621cb14d1093b7cde329fbc5fdfe2ab0",
+  "declaredProductFamilyOverrides": 4,
+  "coreNewClasses": 284,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-queue-start-parity\\fixtures\\QueueStartFixture.kt",
+      "sha": "58af9a23e539ceadc82000498329cf95fd6faafc31c3efd6f90d1dfc0fb22e9d"
+    }
+  ],
+  "compileExit": 0,
+  "runExit": 1
+}

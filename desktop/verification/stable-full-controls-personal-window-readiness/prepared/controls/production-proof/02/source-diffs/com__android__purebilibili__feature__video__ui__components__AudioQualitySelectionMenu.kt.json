@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt",
+  "edits": [],
+  "sourceSha256LF": "a22de4a8ee797a7d707ea60c42962f0635ca9799ce5047d3f23de83d6fd819db",
+  "generatedSha256LF": "a22de4a8ee797a7d707ea60c42962f0635ca9799ce5047d3f23de83d6fd819db",
+  "reverseExact": true
+}

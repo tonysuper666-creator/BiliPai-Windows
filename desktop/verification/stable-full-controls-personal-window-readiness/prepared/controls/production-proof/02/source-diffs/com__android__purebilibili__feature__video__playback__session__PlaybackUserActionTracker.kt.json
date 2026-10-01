@@ -1,0 +1,58 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt",
+  "output": "com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        2,
+        4
+      ],
+      "generatedLineRange": [
+        2,
+        3
+      ],
+      "before": [
+        "import androidx.media3.common.Player\n",
+        "import com.android.purebilibili.core.store.PlayerSettingsCache\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        56,
+        57
+      ],
+      "generatedLineRange": [
+        55,
+        56
+      ],
+      "before": [
+        "        if (!PlayerSettingsCache.isPlayerDiagnosticLoggingEnabled()) {\n"
+      ],
+      "after": [
+        "        if (!player.diagnosticLoggingEnabled) {\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        86,
+        87
+      ],
+      "generatedLineRange": [
+        85,
+        86
+      ],
+      "before": [
+        "        if (!PlayerSettingsCache.isPlayerDiagnosticLoggingEnabled()) {\n"
+      ],
+      "after": [
+        "        if (!player.diagnosticLoggingEnabled) {\n"
+      ]
+    }
+  ],
+  "sourceSha256LF": "b1a7ed25eedc54760015f1e7684541a3bcfb060302bda1def480c8e5fa4c1c40",
+  "generatedSha256LF": "700eee9c2e8d4ca1543d70a08af2317a53f3981c0d6d142f19b8b04cf9a49585",
+  "reverseExact": true
+}

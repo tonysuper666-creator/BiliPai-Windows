@@ -1,0 +1,8 @@
+{
+  "historicalFailuresPreserved": true,
+  "compile07": "Prepare generation failed, but shell launched a compile on partial old sources; its PASS is not final46-output proof.",
+  "productionAudit01": "Generation completed; character-based inverse diff audit was terminated as unnecessarily quadratic before any result. Partial artifacts retained; audit02 uses line patches and reverse-exact byte restoration.",
+  "finalCompile": "11",
+  "finalProductionAudit": "02",
+  "productRuntimeAccepted": false
+}

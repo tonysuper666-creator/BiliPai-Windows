@@ -1,0 +1,22 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+    "baseSha256LfUtf8": "4c070d707650b57e2688df25ee4beb7ceb53d8d74adee032f6aa5cd244be65dc",
+    "desiredSha256LfUtf8": "28ab5854b9367d372448d4beba5f511715f3f4ecf1a810c96465d1407c888446"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "baseSha256LfUtf8": "1da75d8abb6a43180eb5a187809374f82a809ad3673fd9430b4a9c81a9913b6c",
+    "desiredSha256LfUtf8": "97e4487a967700896e0d3388e5ed31c300f00bc52b141dcb0cc7b6ded1e1ef32"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
+    "baseSha256LfUtf8": "b4de393a9632c14e83966d44b1c41830bf99c57159c7113489a9bc6e799db188",
+    "desiredSha256LfUtf8": "a2f53aa36ca1b840c87a95c694b8bac0aa2a48f2d3c7e5c2d235559837a1e10a"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+    "baseSha256LfUtf8": "248c96ab9549a686bd46fb54a499d3a93d8dae03112b4bf5b6fcc9a92c9a5eec",
+    "desiredSha256LfUtf8": "4321dbe0fc4e9fe94571510ea8835081324563cd3d83e504608b9f5c1f34a9b9"
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "path": "desktop/tools/extract-upstream-watchlater.py",
+  "beforeLfSha256": "edb7b9acd9e510f1451d1992eab24bd04b1585ee83c22d751648e3581b6a33fb",
+  "afterLfSha256": "b5e51acd453f4fff2f4eb96c3764928d6a71e855295e975ba8894c88a00bbea1",
+  "pythonAstUnchanged": true,
+  "reason": "Remove one trailing-space-only blank line found by staged whitespace check"
+}

@@ -1,0 +1,55 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        28,
+        29
+      ],
+      "generatedLineRange": [
+        28,
+        29
+      ],
+      "before": [
+        "import androidx.compose.ui.platform.LocalConfiguration\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        32,
+        33
+      ],
+      "generatedLineRange": [
+        32,
+        32
+      ],
+      "before": [
+        "import android.content.res.Configuration\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        82,
+        83
+      ],
+      "generatedLineRange": [
+        81,
+        82
+      ],
+      "before": [
+        "    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE\n"
+      ],
+      "after": [
+        "    val isLandscape = (if (configuration.screenWidthDp > configuration.screenHeightDp) 2 else 1) == 2\n"
+      ]
+    }
+  ],
+  "sourceSha256LF": "3b3823b94bfc7e27e5d86f9b1dc0e0b114cc154d6491aeef287e3381fcb6c14f",
+  "generatedSha256LF": "165d5efd89e0634a819e8e326211a76d2b6d5e1d498bdfdf09a1db5f7959190c",
+  "reverseExact": true
+}

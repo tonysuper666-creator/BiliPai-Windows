@@ -1,0 +1,55 @@
+{
+  "copies": [
+    {
+      "source": "prepared/manual/com/android/purebilibili/feature/following/DesktopFollowingEnvironment.kt",
+      "target": "desktop/src/main/kotlin/com/android/purebilibili/feature/following/DesktopFollowingEnvironment.kt",
+      "sha256Bytes": "0988680e3bb0f077094f34fc4866049ccb18e4fdcc6e9c4a09a0dbbab61ae1a9",
+      "sha256LfUtf8": "0988680e3bb0f077094f34fc4866049ccb18e4fdcc6e9c4a09a0dbbab61ae1a9"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
+      "sha256Bytes": "f4b5d910f0811971984106053b1a7e1e866880ea22288d6c276c00042cfed47a",
+      "sha256LfUtf8": "f4b5d910f0811971984106053b1a7e1e866880ea22288d6c276c00042cfed47a"
+    },
+    {
+      "source": "prepared/tools/extract-upstream-following.py",
+      "target": "desktop/tools/extract-upstream-following.py",
+      "sha256Bytes": "83304d9ed33966785ecfd16ea192051416450fe138f25728bcd01cc67265e334",
+      "sha256LfUtf8": "83304d9ed33966785ecfd16ea192051416450fe138f25728bcd01cc67265e334"
+    }
+  ],
+  "patches": [
+    {
+      "path": "favorite-actions-producer.patch",
+      "sha256Bytes": "746f7f86c81753cce4747a1f7aa8b2639bc9d3663d60af2dbc727291bdebea05",
+      "bases": "favorite-actions-bases.json"
+    },
+    {
+      "path": "consumer.patch",
+      "sha256Bytes": "135826704aa0474dc634ef86b4fc6836f9c0577f5221324692b5ccdece6cdaa5",
+      "bases": "consumer-bases.json"
+    }
+  ],
+  "registryUnion": "registry-delta.json",
+  "gradleSnippet": "gradle-snippet.kts",
+  "requiredPriorPackets": [
+    {
+      "lane": "stable-personal-queue-start-parity",
+      "manifest": "4db0037aa5066bf15bece6588681c91fdf66d9061b835f8585aadff19feed1f9"
+    },
+    {
+      "lane": "stable-personal-watchlater-parity",
+      "manifest": "2d5d6ba3e5830dc07e9716b6b21833c07f4153608a4d0c34c55f1a1182e891ac"
+    }
+  ],
+  "notInstall": [
+    "prepared/existing whole files",
+    "prepared/selected",
+    "prepared/actions",
+    "auxiliary-favorites-output",
+    "task compiled classes/jars",
+    "temporary Stores/caches",
+    "audit replays"
+  ]
+}

@@ -1,0 +1,166 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt
++++ com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt
+@@ -327,48 +327,48 @@
+     val usesTonalContainerTreatment = rememberAppPlayerChromeProfile()
+         .effects
+         .usesTonalContainerTreatment
+-    val context = androidx.compose.ui.platform.LocalContext.current
+-    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
++    val context = com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext.current
++    val configuration = com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics.current
+     val actionPolicy = remember(configuration.screenWidthDp) {
+         resolveVideoSettingsPanelActionPolicy(widthDp = configuration.screenWidthDp)
+     }
+     val scope = rememberCoroutineScope()
+-    val seekForwardSeconds by com.android.purebilibili.core.store.SettingsManager
++    val seekForwardSeconds by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+         .getSeekForwardSeconds(context)
+         .collectAsStateWithLifecycle(initialValue = 10
+         )
+-    val seekBackwardSeconds by com.android.purebilibili.core.store.SettingsManager
++    val seekBackwardSeconds by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+         .getSeekBackwardSeconds(context)
+         .collectAsStateWithLifecycle(initialValue = 10
+         )
+-    val longPressSpeed by com.android.purebilibili.core.store.SettingsManager
++    val longPressSpeed by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+         .getLongPressSpeed(context)
+         .collectAsStateWithLifecycle(initialValue = 2.0f
+         )
+-    val playbackSpeedOptions by com.android.purebilibili.core.store.SettingsManager
++    val playbackSpeedOptions by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+         .getPlaybackSpeedOptions(context)
+         .collectAsStateWithLifecycle(initialValue = emptyList())
+-    val longPressSpeedLockEnabled by com.android.purebilibili.core.store.SettingsManager
++    val longPressSpeedLockEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+         .getLongPressSpeedLockEnabled(context)
+         .collectAsStateWithLifecycle(initialValue = false
+         )
+-    val twoFingerVerticalSpeedEnabled by com.android.purebilibili.core.store.SettingsManager
++    val twoFingerVerticalSpeedEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+         .getTwoFingerVerticalSpeedEnabled(context)
+         .collectAsStateWithLifecycle(initialValue = false
+         )
+-    val twoFingerHorizontalSpeedEnabled by com.android.purebilibili.core.store.SettingsManager
++    val twoFingerHorizontalSpeedEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+         .getTwoFingerHorizontalSpeedEnabled(context)
+         .collectAsStateWithLifecycle(initialValue = false
+         )
+-    val defaultPlaybackSpeed by com.android.purebilibili.core.store.SettingsManager
++    val defaultPlaybackSpeed by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+         .getDefaultPlaybackSpeed(context)
+         .collectAsStateWithLifecycle(initialValue = 1.0f
+         )
+-    val rememberLastPlaybackSpeed by com.android.purebilibili.core.store.SettingsManager
++    val rememberLastPlaybackSpeed by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+         .getRememberLastPlaybackSpeed(context)
+         .collectAsStateWithLifecycle(initialValue = false
+         )
+-    val progressPeakDanmakuEnabled by com.android.purebilibili.core.store.SettingsManager
++    val progressPeakDanmakuEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+         .getProgressPeakDanmakuEnabled(context)
+         .collectAsStateWithLifecycle(initialValue = false
+         )
+@@ -1187,7 +1187,7 @@
+                         checked = rememberLastPlaybackSpeed,
+                         onCheckedChange = { checked ->
+                             scope.launch {
+-                                com.android.purebilibili.core.store.SettingsManager
++                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+                                     .setRememberLastPlaybackSpeed(context, checked)
+                             }
+                         }
+@@ -1203,7 +1203,7 @@
+                         },
+                         onSpeedChange = { speed ->
+                             scope.launch {
+-                                com.android.purebilibili.core.store.SettingsManager
++                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+                                     .setDefaultPlaybackSpeed(context, speed)
+                             }
+                         },
+@@ -1220,7 +1220,7 @@
+             //  [新增] 双击跳转秒数设置 (带开关)
+             item {
+                 Column(modifier = Modifier.fillMaxWidth()) {
+-                    val doubleTapSeekEnabled by com.android.purebilibili.core.store.SettingsManager
++                    val doubleTapSeekEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+                         .getDoubleTapSeekEnabled(context)
+                         .collectAsStateWithLifecycle(initialValue = false)
+ 
+@@ -1235,7 +1235,7 @@
+                         checked = doubleTapSeekEnabled,
+                         onCheckedChange = { checked ->
+                             scope.launch {
+-                                com.android.purebilibili.core.store.SettingsManager
++                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+                                     .setDoubleTapSeekEnabled(context, checked)
+                             }
+                         }
+@@ -1262,7 +1262,7 @@
+                                 currentSeconds = seekForwardSeconds,
+                                 onSelect = { seconds ->
+                                     scope.launch {
+-                                        com.android.purebilibili.core.store.SettingsManager.setSeekForwardSeconds(context, seconds)
++                                        com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setSeekForwardSeconds(context, seconds)
+                                     }
+                                 }
+                             )
+@@ -1281,7 +1281,7 @@
+                                 currentSeconds = seekBackwardSeconds,
+                                 onSelect = { seconds ->
+                                     scope.launch {
+-                                        com.android.purebilibili.core.store.SettingsManager.setSeekBackwardSeconds(context, seconds)
++                                        com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setSeekBackwardSeconds(context, seconds)
+                                     }
+                                 }
+                             )
+@@ -1330,7 +1330,7 @@
+                         currentSpeed = longPressSpeed,
+                         onSpeedChange = { speed ->
+                             scope.launch {
+-                                com.android.purebilibili.core.store.SettingsManager.setLongPressSpeed(context, speed)
++                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setLongPressSpeed(context, speed)
+                             }
+                         },
+                         title = null,
+@@ -1348,10 +1348,10 @@
+                     checked = longPressSpeedLockEnabled,
+                     onCheckedChange = { checked ->
+                         scope.launch {
+-                            com.android.purebilibili.core.store.SettingsManager
++                            com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+                                 .setLongPressSpeedLockEnabled(context, checked)
+                             if (checked) {
+-                                com.android.purebilibili.core.store.SettingsManager
++                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+                                     .setLongPressSpeedLockHintShown(context, true)
+                             }
+                         }
+@@ -1369,7 +1369,7 @@
+                         checked = twoFingerVerticalSpeedEnabled,
+                         onCheckedChange = { checked ->
+                             scope.launch {
+-                                com.android.purebilibili.core.store.SettingsManager
++                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+                                     .setTwoFingerVerticalSpeedEnabled(context, checked)
+                             }
+                         }
+@@ -1382,7 +1382,7 @@
+                         checked = twoFingerHorizontalSpeedEnabled,
+                         onCheckedChange = { checked ->
+                             scope.launch {
+-                                com.android.purebilibili.core.store.SettingsManager
++                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+                                     .setTwoFingerHorizontalSpeedEnabled(context, checked)
+                             }
+                         }
+@@ -1399,7 +1399,7 @@
+                     checked = progressPeakDanmakuEnabled,
+                     onCheckedChange = { checked ->
+                         scope.launch {
+-                            com.android.purebilibili.core.store.SettingsManager
++                            com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+                                 .setProgressPeakDanmakuEnabled(context, checked)
+                         }
+                     }

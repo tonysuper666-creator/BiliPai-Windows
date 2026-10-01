@@ -1,0 +1,40 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt
++++ com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt
+@@ -40,10 +40,9 @@
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.layout.onSizeChanged
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.semantics.semantics
+-import androidx.compose.ui.semantics.testTagsAsResourceId
+ import androidx.compose.ui.platform.testTag
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.unit.IntOffset
+@@ -85,7 +84,7 @@
+ import com.android.purebilibili.core.ui.AppShapes
+ import com.android.purebilibili.core.ui.ContainerLevel
+ import com.android.purebilibili.core.plugin.skin.LocalUiSkinState
+-import com.android.purebilibili.core.plugin.skin.UiSkinAnimatedAsset
++import com.bilipai.desktop.ui.DesktopOriginalPlayerSkinAsset as UiSkinAnimatedAsset
+ import com.android.purebilibili.core.plugin.skin.UiSkinSurface
+ import com.android.purebilibili.core.plugin.skin.assetPath
+ import com.android.purebilibili.core.plugin.skin.parseUiSkinColor
+@@ -732,7 +731,7 @@
+             onChapterClick = onChapterClick,
+             modifier = Modifier
+                 .padding(horizontal = if (isFullscreen) 48.dp else 0.dp)
+-                .semantics { testTagsAsResourceId = true }
++                .semantics { }
+                 .testTag("player_progress")
+         )
+     }
+@@ -1281,7 +1280,6 @@
+             dismissOnBackPress = true,
+             dismissOnClickOutside = false,
+             usePlatformDefaultWidth = false,
+-            decorFitsSystemWindows = false
+         )
+     ) {
+         Box(

@@ -1,0 +1,72 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineRootHost.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineRootHost.kt
+@@ -15,7 +15,34 @@
+ import com.bilipai.desktop.plugins.DesktopPluginContext
+ import com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences
+ import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.isActive
+ import java.awt.Window
++
++/** Defers the original request until this exact control window has finished showing. */
++private class DesktopOfflineFullscreenAdmission(
++    private val isOwned: () -> Boolean,
++    private val currentFullscreen: () -> Boolean,
++    private val setFullscreen: (Boolean) -> Unit,
++    private val restoreChrome: () -> Unit,
++) : DesktopOfflineWindowEffects {
++    private var requested: Boolean? = null
++    private var readyWindow: Any? = null
++    fun windowAvailability(identity: Any, ready: Boolean) {
++        if (ready) readyWindow = identity
++        else if (readyWindow === identity) readyWindow = null
++        if (ready) deliverRequest()
++    }
++    override fun applyFullscreen(fullscreen: Boolean) {
++        requested = fullscreen
++        deliverRequest()
++    }
++    private fun deliverRequest() {
++        val fullscreen = requested ?: return
++        if (!isOwned() || (fullscreen && readyWindow == null)) return
++        if (currentFullscreen() != fullscreen) setFullscreen(fullscreen)
++    }
++    override fun restoreCurrentRootChrome() { restoreChrome() }
++}
+ 
+ /** Uses the existing Root media actors and the sole full original foreground carrier. */
+ @Composable
+@@ -42,7 +69,13 @@
+     val currentFullscreen by rememberUpdatedState(isFullscreen)
+     val setActualFullscreen by rememberUpdatedState(setFullscreen)
+     val restoreChrome by rememberUpdatedState(restoreCurrentRootChrome)
+-    val surface = remember(backend, pictureInPicture, window) {
++    val windowEffects = remember(backend, entryScope) {
++        DesktopOfflineFullscreenAdmission(
++            { backend.isOwned() && entryScope.isActive && foregroundActive },
++            { currentFullscreen() }, { setActualFullscreen(it) }, { restoreChrome() },
++        )
++    }
++    val surface = remember(backend, pictureInPicture, window, windowEffects) {
+         object : DesktopOriginalOfflineSurface {
+             @Composable
+             override fun Render(player: DesktopOfflineMpvControl, modifier: Modifier, foreground: @Composable () -> Unit) {
+@@ -71,17 +104,10 @@
+                     if (player.isForegroundOwned() && foregroundActive) Box(modifier.background(Color.Black)) { controls() }
+                 } else {
+                     DesktopOriginalPlayerSurface(player.nativePlayer, player.sourceVersion,
+-                        { player.isForegroundOwned() && foregroundActive }, modifier, controls)
++                        { player.isForegroundOwned() && foregroundActive }, modifier, controls,
++                        onWindowAvailability = windowEffects::windowAvailability)
+                 }
+             }
+-        }
+-    }
+-    val windowEffects = remember(backend) {
+-        object : DesktopOfflineWindowEffects {
+-            override fun applyFullscreen(fullscreen: Boolean) {
+-                if (backend.isOwned() && currentFullscreen() != fullscreen) setActualFullscreen(fullscreen)
+-            }
+-            override fun restoreCurrentRootChrome() { restoreChrome() }
+         }
+     }
+     val media = remember(systemMedia, pictureInPicture, backend) {

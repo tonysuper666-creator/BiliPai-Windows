@@ -1,0 +1,379 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        329,
+        331
+      ],
+      "generatedLineRange": [
+        329,
+        331
+      ],
+      "before": [
+        "    val context = androidx.compose.ui.platform.LocalContext.current\n",
+        "    val configuration = androidx.compose.ui.platform.LocalConfiguration.current\n"
+      ],
+      "after": [
+        "    val context = com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext.current\n",
+        "    val configuration = com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics.current\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        335,
+        336
+      ],
+      "generatedLineRange": [
+        335,
+        336
+      ],
+      "before": [
+        "    val seekForwardSeconds by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "    val seekForwardSeconds by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        339,
+        340
+      ],
+      "generatedLineRange": [
+        339,
+        340
+      ],
+      "before": [
+        "    val seekBackwardSeconds by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "    val seekBackwardSeconds by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        343,
+        344
+      ],
+      "generatedLineRange": [
+        343,
+        344
+      ],
+      "before": [
+        "    val longPressSpeed by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "    val longPressSpeed by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        347,
+        348
+      ],
+      "generatedLineRange": [
+        347,
+        348
+      ],
+      "before": [
+        "    val playbackSpeedOptions by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "    val playbackSpeedOptions by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        350,
+        351
+      ],
+      "generatedLineRange": [
+        350,
+        351
+      ],
+      "before": [
+        "    val longPressSpeedLockEnabled by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "    val longPressSpeedLockEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        354,
+        355
+      ],
+      "generatedLineRange": [
+        354,
+        355
+      ],
+      "before": [
+        "    val twoFingerVerticalSpeedEnabled by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "    val twoFingerVerticalSpeedEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        358,
+        359
+      ],
+      "generatedLineRange": [
+        358,
+        359
+      ],
+      "before": [
+        "    val twoFingerHorizontalSpeedEnabled by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "    val twoFingerHorizontalSpeedEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        362,
+        363
+      ],
+      "generatedLineRange": [
+        362,
+        363
+      ],
+      "before": [
+        "    val defaultPlaybackSpeed by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "    val defaultPlaybackSpeed by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        366,
+        367
+      ],
+      "generatedLineRange": [
+        366,
+        367
+      ],
+      "before": [
+        "    val rememberLastPlaybackSpeed by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "    val rememberLastPlaybackSpeed by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        370,
+        371
+      ],
+      "generatedLineRange": [
+        370,
+        371
+      ],
+      "before": [
+        "    val progressPeakDanmakuEnabled by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "    val progressPeakDanmakuEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1189,
+        1190
+      ],
+      "generatedLineRange": [
+        1189,
+        1190
+      ],
+      "before": [
+        "                                com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1205,
+        1206
+      ],
+      "generatedLineRange": [
+        1205,
+        1206
+      ],
+      "before": [
+        "                                com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1222,
+        1223
+      ],
+      "generatedLineRange": [
+        1222,
+        1223
+      ],
+      "before": [
+        "                    val doubleTapSeekEnabled by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "                    val doubleTapSeekEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1237,
+        1238
+      ],
+      "generatedLineRange": [
+        1237,
+        1238
+      ],
+      "before": [
+        "                                com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1264,
+        1265
+      ],
+      "generatedLineRange": [
+        1264,
+        1265
+      ],
+      "before": [
+        "                                        com.android.purebilibili.core.store.SettingsManager.setSeekForwardSeconds(context, seconds)\n"
+      ],
+      "after": [
+        "                                        com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setSeekForwardSeconds(context, seconds)\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1283,
+        1284
+      ],
+      "generatedLineRange": [
+        1283,
+        1284
+      ],
+      "before": [
+        "                                        com.android.purebilibili.core.store.SettingsManager.setSeekBackwardSeconds(context, seconds)\n"
+      ],
+      "after": [
+        "                                        com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setSeekBackwardSeconds(context, seconds)\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1332,
+        1333
+      ],
+      "generatedLineRange": [
+        1332,
+        1333
+      ],
+      "before": [
+        "                                com.android.purebilibili.core.store.SettingsManager.setLongPressSpeed(context, speed)\n"
+      ],
+      "after": [
+        "                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setLongPressSpeed(context, speed)\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1350,
+        1351
+      ],
+      "generatedLineRange": [
+        1350,
+        1351
+      ],
+      "before": [
+        "                            com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "                            com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1353,
+        1354
+      ],
+      "generatedLineRange": [
+        1353,
+        1354
+      ],
+      "before": [
+        "                                com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1371,
+        1372
+      ],
+      "generatedLineRange": [
+        1371,
+        1372
+      ],
+      "before": [
+        "                                com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1384,
+        1385
+      ],
+      "generatedLineRange": [
+        1384,
+        1385
+      ],
+      "before": [
+        "                                com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "                                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1401,
+        1402
+      ],
+      "generatedLineRange": [
+        1401,
+        1402
+      ],
+      "before": [
+        "                            com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "                            com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n"
+      ]
+    }
+  ],
+  "sourceSha256LF": "b3c9ee8d9ab75a4ee06cdd7de83c183f1dda9ac8c8d42264c4d6caad761f71de",
+  "generatedSha256LF": "f0e2ac3ed4971b04d827d6e95a05be327d428e8097e867782f51bcb01f246835",
+  "reverseExact": true
+}

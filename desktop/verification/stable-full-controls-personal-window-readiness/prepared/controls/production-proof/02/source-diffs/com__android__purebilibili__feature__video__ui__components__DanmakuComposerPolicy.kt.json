@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuComposerPolicy.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/DanmakuComposerPolicy.kt",
+  "edits": [],
+  "sourceSha256LF": "7cd122dc036b1a7a5102c1bc78ee8c90ac68eed4a16636cde0cc23c0ee83d923",
+  "generatedSha256LF": "7cd122dc036b1a7a5102c1bc78ee8c90ac68eed4a16636cde0cc23c0ee83d923",
+  "reverseExact": true
+}

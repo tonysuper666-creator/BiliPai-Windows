@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "sources": 55,
+  "exitCode": 0,
+  "actual47RuntimeEntries": 97,
+  "productAcceptance": false,
+  "explicitProspectiveFoundationJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-full-ui-parity\\runs\\12\\candidate.jar",
+  "candidateJarSha256Bytes": "87ba0992e4932a473c2be003b441802f0b9e6df0f236c3802be873a5916576f3"
+}

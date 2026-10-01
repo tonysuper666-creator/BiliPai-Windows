@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/SubtitleControlModel.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/SubtitleControlModel.kt",
+  "edits": [],
+  "sourceSha256LF": "44b3f6ff1010e7d4dc9c7d6e206b9991e542db5e946fcb0715203e1b7afcbb0d",
+  "generatedSha256LF": "44b3f6ff1010e7d4dc9c7d6e206b9991e542db5e946fcb0715203e1b7afcbb0d",
+  "reverseExact": true
+}

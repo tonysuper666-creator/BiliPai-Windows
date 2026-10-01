@@ -1,0 +1,15 @@
+desktop\.local\stable-video-player-full-controls-parity\runs\11\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\PagesSelector.kt:266:26: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+            sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\11\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\VideoSettingsPanel.kt:310:22: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\11\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\BottomControlBar.kt:1767:48: warning: 'val Icons.Outlined.ViewList: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.ViewList.
+                                Icons.Outlined.ViewList,
+                                               ^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\11\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:100:30: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\11\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\TopControlBar.kt:333:43: warning: 'val Icons.Outlined.Comment: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.Comment.
+                    icon = Icons.Outlined.Comment,
+                                          ^^^^^^^

@@ -1,0 +1,1 @@
+{"passed":false,"reason":"Existing actual49 DIRECT WatchLaterPlaybackPolicy class overlap discovered; compile03/proof04 retained exact same original body prospective overlap. Final compiler must reference actual49 policy instead of compile it, registry row must merge existing direct identity."}

@@ -1,0 +1,18 @@
+PASS whole original initial and automatic remaining pages use exact MID/pn/ps
+PASS original off-main merge deduplicates raw users by MID
+PASS original special/default groups and actual tag member mapping are retained
+PASS original 2000-user payload uses same global namespace without overwriting Home keys
+PASS complete original group chip pointer filters actual users with original group policy
+PASS original mixed group selection is not presented as one shared selection
+PASS original group overwrite resets to default then applies normalized tags in 20-user chunks
+PASS original batch unfollow retries risk failures and keeps partial outcome
+PASS original successful unfollow updates raw users/count and cache
+PASS same MID delayed old refresh actually entered terminal
+PASS same epoch force refresh retires old first-page job and prevents stale cache/UI overwrite
+PASS latest request alone publishes the original persistent payload after old terminal returns
+PASS same MID credential epoch rejects former global cache writer
+PASS Root disposal retires original following VM/page/background jobs
+PASS synthetic credentials remain only in actual in-memory SessionStore
+ORIGIN originalUI=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-personal-following-parity/compile-04/candidate.jar
+ORIGIN actualDTO=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-49/main-kotlin.jar
+RESULT assertions=15 groups=1 pointerPairs=1 prepared=true Main=false sockets=false HWND=false

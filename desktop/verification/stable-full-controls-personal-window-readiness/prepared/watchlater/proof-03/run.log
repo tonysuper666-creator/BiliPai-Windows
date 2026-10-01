@@ -1,0 +1,16 @@
+PASS whole original signed paged protocol consumes exact pn/ps/viewed/key/asc/split/location and WBI
+PASS whole original continuation appends and deduplicates by real aid
+PASS required force refresh uses same existing WBI cache and owned nav graph
+PASS actual complete original filter pointer changes original request and visible rows
+PASS raw original DTO mapping preserves CID/progress and every charging/cooperation/course badge
+PASS sole original refresh bus reaches retained same entry while video can cover it
+PASS whole original copy/move uses distinct exact API fields and same admitted CSRF/MID
+PASS original clear invalid/viewed/all preserves nullable clean_type semantics
+PASS whole original optimistic deletion retries original risk code then commits success
+PASS original search request actually reached delayed terminal
+PASS same MID credential epoch retires owner and rejects late original rows
+PASS root disposal cancels the original VM and background batch scope
+PASS only actual in-memory SessionStore received synthetic credentials
+ORIGIN originalWatchUI=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-personal-watchlater-parity/compile-03/candidate.jar
+ORIGIN existingDTO=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-49/main-kotlin.jar
+RESULT assertions=13 groups=1 pointerPairs=1 prepared=true Main=false HTTPsocket=false HWND=false

@@ -1,0 +1,704 @@
+{
+  "passed": true,
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceIdentities": 48,
+  "standaloneOutputs": 46,
+  "selectedOutputs": 20,
+  "directOutputs": 26,
+  "selected": [
+    "com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+    "com/android/purebilibili/core/store/DesktopOriginalPlayerProgressPlacement.kt",
+    "com/android/purebilibili/core/store/DesktopOriginalPlayerProgressBehaviorModels.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoAspectRatio.kt",
+    "com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
+    "com/android/purebilibili/core/store/player/DesktopOriginalVideoPlayerSettings.kt",
+    "com/android/purebilibili/feature/video/ui/components/QualityMenu.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt",
+    "com/android/purebilibili/feature/video/ui/components/PagesSelector.kt",
+    "com/android/purebilibili/core/ui/components/PlaybackSpeedPreferenceControl.kt",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt",
+    "com/android/purebilibili/core/ui/performance/DesktopOriginalPlayerPanelFrameRate.kt",
+    "com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt",
+    "com/android/purebilibili/feature/video/usecase/DesktopOriginalOverlayPlaybackActions.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+    "com/android/purebilibili/feature/video/screen/DesktopOriginalPlayerSystemBarInsetPolicy.kt"
+  ],
+  "directSkipped": [
+    "com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/SubtitleControlModel.kt",
+    "com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt",
+    "com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuComposerPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt",
+    "com/android/purebilibili/feature/video/playback/policy/PlaybackTransitionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/SpeedSelectionPanel.kt",
+    "com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt",
+    "com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+    "com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/gesture/TwoFingerSpeedGesturePolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoSettingsPanelActionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/ModalChildScroll.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/LandscapeEndDrawerLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderDisplayPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PortraitTopBarLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+    "com/android/purebilibili/core/store/PlaybackCompletionBehaviorSyncPolicy.kt"
+  ],
+  "checks": [
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt",
+      "mode": "complete-original-bottom-controls-and-menus-platform-adapt",
+      "sha256LF": "1c2e7ec8c966349e4247bb51812bb997edf70b7aa0c79ff9e9c3eb62f8be4c9d",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+      "mode": "complete-original-top-controls-status-platform-adapt",
+      "sha256LF": "9e68bbf8cc9135240992410e22ad212320384d43b2411aec66235c53d7a572e3",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "428261701dd1bae0a4afd328885f87e359ccba4b3f47717d29e595277828ebac",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "caa69fb20cad28f3d923902edf640ce8fccd3a68846685980a6f7b783fdfe6d6",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/SubtitleControlModel.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "44b3f6ff1010e7d4dc9c7d6e206b9991e542db5e946fcb0715203e1b7afcbb0d",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "16a4c6fc54f31d25f0c9bc1dba59556bf2f2dbc4431da13f576bc0fb3a032e85",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "5e8bbd80589ccd4a14f42824846c58a7490ba113e39f9f5dc1df84dda74de219",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalPlayerProgressPlacement.kt",
+      "mode": "complete-original-enum",
+      "sha256LF": "7e35a2c6f666a610a1376df1e28a6260cbbb68450358c0c47c1cfc3e9ac1d6e5",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalPlayerProgressBehaviorModels.kt",
+      "mode": "complete-original-progress-completion-enums",
+      "sha256LF": "4d608c26705378f1af354c77964baa62bb5f94543adaef48351f35de16fb3a50",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/VideoAspectRatio.kt",
+      "mode": "complete-original-aspect-and-menu-platform-integer-adapt",
+      "sha256LF": "2d8c39ad8274a31e3b29a1c2c06baa6d9445a23e71934ef7d7d47c72ec14fe49",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
+      "mode": "complete-original-seek-preview-platform-context-adapt",
+      "sha256LF": "63b9e370c9f7729cee78c13e67fb5fc6829f9b5d1ec884aba08134a0e8df17c6",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "ecf93e20d5f2a197ef9b4f27a8e443f2ae890b2d4d88cd1f270306cfcbd15e34",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "a22de4a8ee797a7d707ea60c42962f0635ca9799ce5047d3f23de83d6fd819db",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/DanmakuComposerPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "7cd122dc036b1a7a5102c1bc78ee8c90ac68eed4a16636cde0cc23c0ee83d923",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "b07b54a20a0f382fc1832a59b3aee209232623bfd590b2bfb48a8dd754016f8a",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/policy/PlaybackTransitionPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "12174fba9f6f82d0652241e4565d6f6f65d8ecaf59bf7deae272f9a968a20829",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
+      "mode": "complete-original-overlay-display-models-platform-color",
+      "sha256LF": "1b78a3407306c33d790712e05d950c75b5eedff853556e61358132378ce75b9b",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/core/store/player/DesktopOriginalVideoPlayerSettings.kt",
+      "mode": "complete-original-player-settings-object-canonical-longpress-reference-owned-global-context",
+      "sha256LF": "0f499ca62ec00a754e7d76b0512e3ddfcefcdfe3a0b9be71276034fb1aa98b22",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/SpeedSelectionPanel.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "c1d3395d19f6a4f6ffd6c76cd7aabebd62a2b6a3399b348935235e0a7360b16a",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "90fa563eb0c9d8b4359cc7d36199277f7529312089717a5a8bf55cf49247b61c",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "c22cba7b4b953312f7e0cc6f2dafa7f02626b3ca874efa16a253cf94508b61ec",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "9a73e4ade99ef5b8842c1e4110cb7afb0b6c8d8afa643951b559e6ce1a5025bc",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/gesture/TwoFingerSpeedGesturePolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "fd6ca13d1430fa5fbee2520e1f0f007cc70fa3ad68586df0130d543fdabb07e2",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/VideoSettingsPanelActionPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "fec3bc4195fe564506ff096efab8f0af701ee4ac1f8e996c4a351b3de828c279",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/ModalChildScroll.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "5b70062a25596822ddb0d4144582b0fed424eb195b74a7648252b837d75f4f26",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/QualityMenu.kt",
+      "mode": "complete-original-menu-sheet-global-context-adapt",
+      "sha256LF": "47e8921ca539a06603f43017df0f772f3288a2864d4c0950bbbad8bb50c257c3",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt",
+      "mode": "complete-original-menu-sheet-global-context-adapt",
+      "sha256LF": "f0e2ac3ed4971b04d827d6e95a05be327d428e8097e867782f51bcb01f246835",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/PagesSelector.kt",
+      "mode": "complete-original-menu-sheet-global-context-adapt",
+      "sha256LF": "2c4d55a9c38de966992eeeb4e035af8909fa50979290d9764bfe60c8f7a9b6f8",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/components/PlaybackSpeedPreferenceControl.kt",
+      "mode": "complete-original-speed-preference-controls-reference-existing-format",
+      "sha256LF": "3f8db9bfa5dd44d269b59c46917bd2fc437690bb49df391875501f1117e08d84",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings.kt",
+      "mode": "original-complete-control-settings-getters-setters-keys-same-global",
+      "sha256LF": "75e2c210e2e72975b561d68c90332869ac41a79c4f156efe65d307b7f91f258f",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "97f53347fdc8089128a2c62f582cae699b48bda3e1390f9041a456d7ac561f25",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/LandscapeEndDrawerLayoutPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "71d09f67f61c962f9831243e5b1e9b100a3fe3e2615d986cd17f02ab38f57bab",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderDisplayPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "97d7a1c9d776cc753161b379cf6b3623db2c341cac757fe5faab6b262277626a",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "6e631e94ec5b1233439428ba63284720f47ec45d181e8528446e7ef0857a49ad",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "ddcf357f97f2765f503f57007f279c88bd5dcc719307f5457cc3a952d6bd3884",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PortraitTopBarLayoutPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "92e7034534fa02b26fd93dc1c3af26232f55e8e57fca53d5f7c47653d4b70e08",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "b6d0ff92ec86ea261173c32b8dd704615f5732a141f40184ffef926af852f3cd",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "6ad6ecece75468f4e11cd257710c1b8df78e3b695cca2eb26d0e485a5ea41e62",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/core/store/PlaybackCompletionBehaviorSyncPolicy.kt",
+      "mode": "direct-complete-original",
+      "sha256LF": "8d42f7cdd80255a46b07399725f103a6e224cdfc86cd11d326ef41d35f2f51cb",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": false,
+      "defaultSkipped": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
+      "mode": "complete-original-sheet-input-color-ui-window-config-adapt",
+      "sha256LF": "165d5efd89e0634a819e8e326211a76d2b6d5e1d498bdfdf09a1db5f7959190c",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt",
+      "mode": "complete-original-sheet-input-color-ui-window-config-adapt",
+      "sha256LF": "c7d3269eadfa06cdcefebd995bd43345e6e00b3ca2201feaa4cc5b7ceadafe70",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/performance/DesktopOriginalPlayerPanelFrameRate.kt",
+      "mode": "original-label-and-500ms-composition-sampler-required-actual-host-monitor-read",
+      "sha256LF": "9da1545af1d7dec1854ed59dc964d15071fe027e9317bc55b83635cd58c8e6ce",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt",
+      "mode": "complete-original-pending-user-action-model-tracker-real-mpv-facade",
+      "sha256LF": "700eee9c2e8d4ca1543d70a08af2317a53f3981c0d6d142f19b8b04cf9a49585",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/usecase/DesktopOriginalOverlayPlaybackActions.kt",
+      "mode": "complete-original-explicit-user-play-pause-seek-actions-mpv-facade",
+      "sha256LF": "1ddc94e0977e2a4c1d64ea2464e46ed978f8fd4a60377979adc0c9e3551961e4",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+      "mode": "complete-original-overlay-all-menus-cast-reload-diagnostic-drawer-real-mpv-platform-adapt",
+      "sha256LF": "c163057d6ad5124624f3ed6c5194192fdb1ecc0dcd96312c514620c3c749c2bd",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/screen/DesktopOriginalPlayerSystemBarInsetPolicy.kt",
+      "mode": "complete-original-inset-policy",
+      "sha256LF": "e52b5d0bdb495e860eeca50c0bf2af9e836d3057a403541a7e7a17b9b3ea53fa",
+      "standaloneByteEqual": true,
+      "defaultByteEqual": true,
+      "defaultSkipped": false
+    }
+  ],
+  "fullSourceReversibleDiffs": [
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt",
+      "edits": 5,
+      "reverseExact": true,
+      "direct": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+      "edits": 6,
+      "reverseExact": true,
+      "direct": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/SubtitleControlModel.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/SubtitleControlModel.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/VideoAspectRatio.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoAspectRatio.kt",
+      "edits": 9,
+      "reverseExact": true,
+      "direct": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
+      "edits": 6,
+      "reverseExact": true,
+      "direct": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/DanmakuComposerPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuComposerPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/policy/PlaybackTransitionPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackTransitionPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
+      "edits": 4,
+      "reverseExact": true,
+      "direct": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/SpeedSelectionPanel.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SpeedSelectionPanel.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/gesture/TwoFingerSpeedGesturePolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/TwoFingerSpeedGesturePolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/VideoSettingsPanelActionPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanelActionPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/ModalChildScroll.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ModalChildScroll.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/QualityMenu.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/QualityMenu.kt",
+      "edits": 2,
+      "reverseExact": true,
+      "direct": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt",
+      "edits": 23,
+      "reverseExact": true,
+      "direct": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/PagesSelector.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelector.kt",
+      "edits": 3,
+      "reverseExact": true,
+      "direct": false
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/components/PlaybackSpeedPreferenceControl.kt",
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/components/PlaybackSpeedPreferenceControl.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/LandscapeEndDrawerLayoutPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LandscapeEndDrawerLayoutPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderDisplayPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderDisplayPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PortraitTopBarLayoutPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitTopBarLayoutPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/core/store/PlaybackCompletionBehaviorSyncPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/core/store/PlaybackCompletionBehaviorSyncPolicy.kt",
+      "edits": 0,
+      "reverseExact": true,
+      "direct": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
+      "edits": 3,
+      "reverseExact": true,
+      "direct": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt",
+      "edits": 2,
+      "reverseExact": true,
+      "direct": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt",
+      "edits": 3,
+      "reverseExact": true,
+      "direct": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+      "edits": 49,
+      "reverseExact": true,
+      "direct": false
+    }
+  ],
+  "scope": "source-byte and explicit inverse-delta proof only; platform adapters are included in generated outputs, no GUI/runtime acceptance"
+}

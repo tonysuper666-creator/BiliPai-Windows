@@ -21,15 +21,16 @@ internal class DesktopFavoriteQueueBridge(
     private var active: Lease? = null
     private var reveal: Reveal? = null
 
-    fun openQueue(items: List<PlaylistItem>, index: Int, audio: Boolean): DesktopFavoriteQueueToken? {
+    fun openQueue(items: List<PlaylistItem>, index: Int, audio: Boolean,
+        resumePositionMs: Long? = null): DesktopFavoriteQueueToken? {
         if (!stillOwned() || index !in items.indices || !beforeOpen(audio) || !stillOwned()) return null
         val selected = items[index]
         val lease = Lease(audio)
         active = lease; reveal = null
         if (audio) {
-            if (listen?.playQueueForOwner(lease, items, index) != true) { active = null; return null }
+            if (listen?.playQueueForOwner(lease, items, index, resumePositionMs?.coerceAtLeast(0L)?.div(1000.0)) != true) { active = null; return null }
         } else {
-            playback.openQueue(items.map(::favoriteQueueVideoCard), index, lease)
+            playback.openQueue(items.map(::favoriteQueueVideoCard), index, lease, resumePositionMs)
             if (!playback.ownsQueue(lease)) { active = null; return null }
         }
         if (!owns(lease)) { active = null; return null }

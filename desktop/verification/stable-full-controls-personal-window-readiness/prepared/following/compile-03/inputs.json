@@ -1,0 +1,52 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-49",
+  "manifestSha": "7db2b7bc2816c9b7f10521c1ad1678196f4446a8bcde5cc5a837d678ac675a35",
+  "orderedCpSha": "569b953e5def0dcaba76d9a6a6d96fea9f3572ad910e6edf13f23b88d91ee821",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\manual\\com\\android\\purebilibili\\feature\\following\\DesktopFollowingEnvironment.kt",
+      "sha256Bytes": "79a388146525f03d0fa9c442697c30529f50bcb2ea881df47cb0054eeda212ed"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalFollowingHost.kt",
+      "sha256Bytes": "084d4fcc55ff15d1776de21932bf4417284fa1f2d82dd07f8a3456711994fd36"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\selected\\com\\android\\purebilibili\\core\\store\\FollowingCacheStore.kt",
+      "sha256Bytes": "661222fd4ebfdb29e3aafde94563c6096685cf6ef376529d597e93cb2108160f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\following\\FollowingGroupPolicy.kt",
+      "sha256Bytes": "6d6ce126d9df0a90db5104be0151980006cf3300be55db9e25dae15289674ce1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\following\\FollowingLayoutPolicy.kt",
+      "sha256Bytes": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\following\\FollowingListScreen.kt",
+      "sha256Bytes": "99877f3efbcec3e585613887e7e35abe8048ad4893263adb340d371d822a878b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\following\\FollowingUserPresentationPolicy.kt",
+      "sha256Bytes": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\actions\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalFavoriteActions.kt",
+      "sha256Bytes": "bdc9db7e70aa36f9734be0da3da814a8d7e5c28caa4894c9ed722ea2443ed238"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopPersonalListsRoot.kt",
+      "sha256Bytes": "dfecf3ce38d885b25f3858ebfb469f9e7c3bf0c61f0e8398e4e1d3300a1dc4ef"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-following-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256Bytes": "29000fa3dc43448abbe2477ba2451bb5b414773442d6e383e2e0a69d2059d830"
+    }
+  ],
+  "prepared": true,
+  "mainIntegration": false,
+  "productOverrides": "explicit sole FavoriteActions family, PersonalListsRoot, optional Shell plus frozen WatchLater and queue source candidate dependencies",
+  "exit": 0
+}

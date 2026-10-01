@@ -1,0 +1,56 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-49",
+  "manifestSha": "7db2b7bc2816c9b7f10521c1ad1678196f4446a8bcde5cc5a837d678ac675a35",
+  "orderedCpSha": "569b953e5def0dcaba76d9a6a6d96fea9f3572ad910e6edf13f23b88d91ee821",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\manual\\com\\android\\purebilibili\\feature\\watchlater\\DesktopWatchLaterEnvironment.kt",
+      "sha256Bytes": "273c7d3942da1875e1f11fdeaec65a913935d065f905250bd79f25b830982399"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalWatchLaterHost.kt",
+      "sha256Bytes": "5af22bda667c092b89c93ce46f50f7e4c788450c66d2db7fe2d89cfc66ec1852"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopWatchLaterBindings.kt",
+      "sha256Bytes": "c6d703ba2670115bf0f55a86bd799947daed0d05487aabfe3f56b19b76a55ce3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\selected\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalWatchLaterRepository.kt",
+      "sha256Bytes": "1b5751403741cfd2554ace8bd6392038f16d1ddf3d06cb5066a4d0c4f37087db"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\watchlater\\WatchLaterLayoutPolicy.kt",
+      "sha256Bytes": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\watchlater\\WatchLaterPlaybackPolicy.kt",
+      "sha256Bytes": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\watchlater\\WatchLaterScreen.kt",
+      "sha256Bytes": "c64257dffde90fba2881588c3b80bb7de676ad1003acdb2d269fe04b72933ebb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256Bytes": "97e4487a967700896e0d3388e5ed31c300f00bc52b141dcb0cc7b6ded1e1ef32"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopRepository.kt",
+      "sha256Bytes": "28ab5854b9367d372448d4beba5f511715f3f4ecf1a810c96465d1407c888446"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopPersonalListsRoot.kt",
+      "sha256Bytes": "a2f53aa36ca1b840c87a95c694b8bac0aa2a48f2d3c7e5c2d235559837a1e10a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "4321dbe0fc4e9fe94571510ea8835081324563cd3d83e504608b9f5c1f34a9b9"
+    }
+  ],
+  "prepared": true,
+  "mainIntegration": false,
+  "productOverrides": "explicit PersonalListsRoot/Repository/RootMount/Shell source families plus frozen queue-start candidate dependency",
+  "exit": 0
+}

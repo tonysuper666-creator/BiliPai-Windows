@@ -1,0 +1,29 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt
++++ com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt
+@@ -1,7 +1,6 @@
+ package com.android.purebilibili.feature.video.playback.session
+ 
+-import androidx.media3.common.Player
+-import com.android.purebilibili.core.store.PlayerSettingsCache
++import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player
+ import com.android.purebilibili.feature.video.ui.overlay.PlaybackUserActionType
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.StateFlow
+@@ -54,7 +53,7 @@
+         type: PlaybackUserActionType,
+         nowMs: Long = System.currentTimeMillis()
+     ) {
+-        if (!PlayerSettingsCache.isPlayerDiagnosticLoggingEnabled()) {
++        if (!player.diagnosticLoggingEnabled) {
+             synchronized(lock) {
+                 pendingActions[player]?.value = null
+             }
+@@ -84,7 +83,7 @@
+         isPlaying: Boolean,
+         currentPositionMs: Long
+     ) {
+-        if (!PlayerSettingsCache.isPlayerDiagnosticLoggingEnabled()) {
++        if (!player.diagnosticLoggingEnabled) {
+             synchronized(lock) {
+                 pendingActions[player]?.value = null
+             }

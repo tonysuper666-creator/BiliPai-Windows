@@ -1,0 +1,342 @@
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:27:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val SPECIAL_FOLLOW_TAG_ID = -10L
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:28:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val ALL_FOLLOW_TAG_ID = -20L
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:29:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_BATCH_SIZE = 20
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:30:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_MAX_RETRIES = 3
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:31:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_REQUEST_INTERVAL_MS = 220L
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:32:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_RETRY_BASE_DELAY_MS = 900L
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:33:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_QUERY_MAX_RETRIES = 3
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:34:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_QUERY_RETRY_BASE_DELAY_MS = 600L
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:35:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_TAG_MEMBERS_PAGE_SIZE = 100
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\actions\com\android\purebilibili\data\repository\DesktopOriginalFavoriteActions.kt:36:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val FOLLOW_GROUP_TAG_MEMBERS_MAX_PAGES = 120
+            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:56:34: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+import com.bilipai.desktop.audio.ListenAudioSession
+                                 ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:57:34: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+import com.bilipai.desktop.audio.ListenAudioState
+                                 ^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:58:34: error: cannot access 'class ListenAudioStore : Any': it is internal in file.
+import com.bilipai.desktop.audio.ListenAudioStore
+                                 ^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:226:110: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+    val favoritesQueueRef = remember(repository, sessionEpoch) { java.util.concurrent.atomic.AtomicReference<DesktopFavoriteQueueBridge?>() }
+                                                                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:289:52: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                favoritesQueueRef.getAndSet(null)?.close()
+                                                   ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:352:9: error: cannot access 'constructor(repository: DesktopRepository, player: MpvPlayer?, playerError: String?, danmaku: DanmakuOverlay?, library: DesktopLibrary, preferences: () -> PlayerPreferences, scope: CoroutineScope, plugins: DesktopPluginRuntime? = ..., dataSource: DesktopPlaybackDataSource? = ..., community: DesktopCommunityRepository? = ..., automaticSubtitles: DesktopAutomaticSubtitles? = ..., onRememberAudioQuality: (Int) -> Unit = ..., currentDanmakuSettings: () -> DanmakuSettings, publication: DesktopPlaybackPublication? = ...): DesktopPlaybackController': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+        DesktopPlaybackController(repository, player, playerError, danmaku, library, { latestPreferences }, scope,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:376:28: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+        audioPlayer?.let { ListenAudioSession(repository, community, it, preferences, onAcquirePlayback = { beforeListenAcquire.get().invoke(); systemTargetAudio = true; playback.pause(); player?.setPaused(true) },
+                           ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:377:21: error: cannot access 'class ListenAudioStore : Any': it is internal in file.
+            store = ListenAudioStore(DesktopLibrary.directoryForAccount(account?.mid).resolve("listen-state.json"))) }
+                    ^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:379:56: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+    val emptyListenState = remember { MutableStateFlow(ListenAudioState()) }
+                                                       ^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:380:31: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+    val listening by (listen?.state ?: emptyListenState).collectAsState()
+                              ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:421:44: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+        favoritesQueueRef.getAndSet(null)?.close()
+                                           ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:461:106: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+        DesktopRetainedMedia(scope, player) { storyHost.retire(); pip?.close(); playback.stop(); listen?.pause(); systemTargetAudio = false }
+                                                                                                         ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:465:18: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+        playback.currentCastSource(enhancementSourceVersion) != null -> playing.details?.bvid
+                 ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:475:78: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+        beforeStoryAcquire.set { pip?.close(); retainedMedia.stop(); listen?.pause(); systemTargetAudio = false }
+                                                                             ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:509:48: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+            favoritesQueueRef.getAndSet(null)?.close()
+                                               ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:514:130: error: cannot access 'suspend fun shutdownForRestore(): Unit': it is internal in 'com.bilipai.desktop.audio.ListenAudioSession'.
+            withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.shutdownForRestore() }
+                                                                                                                                 ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:528:52: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                favoritesQueueRef.getAndSet(null)?.close()
+                                                   ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:533:134: error: cannot access 'suspend fun shutdownForRestore(): Unit': it is internal in 'com.bilipai.desktop.audio.ListenAudioSession'.
+                withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.shutdownForRestore() }
+                                                                                                                                     ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:661:89: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                WindowsMediaCommand.PLAY -> if (systemTargetAudio) listen?.let { if (it.player.state.value.paused || !it.state.value.active) it.togglePause() }
+                                                                                        ^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:661:122: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                WindowsMediaCommand.PLAY -> if (systemTargetAudio) listen?.let { if (it.player.state.value.paused || !it.state.value.active) it.togglePause() }
+                                                                                                                         ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:661:134: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                WindowsMediaCommand.PLAY -> if (systemTargetAudio) listen?.let { if (it.player.state.value.paused || !it.state.value.active) it.togglePause() }
+                                                                                                                                     ^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:661:145: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                WindowsMediaCommand.PLAY -> if (systemTargetAudio) listen?.let { if (it.player.state.value.paused || !it.state.value.active) it.togglePause() }
+                                                                                                                                                ^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:663:77: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                WindowsMediaCommand.PAUSE -> if (systemTargetAudio) listen?.pause() else target?.setPaused(true)
+                                                                            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:664:76: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                WindowsMediaCommand.STOP -> if (systemTargetAudio) listen?.pause() else { pip?.close(); retainedMedia.stop(); playback.stop(); target?.stop() }
+                                                                           ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:665:76: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                WindowsMediaCommand.NEXT -> if (systemTargetAudio) listen?.next() else { val owner = retainedMedia.current; if (owner != null) owner.next?.invoke() else playback.next() }
+                                                                           ^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:666:80: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                WindowsMediaCommand.PREVIOUS -> if (systemTargetAudio) listen?.previous() else { val owner = retainedMedia.current; if (owner != null) owner.previous?.invoke() else playback.previous() }
+                                                                               ^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:678:17: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+        listen?.updatePreferences(preferences)
+                ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:705:44: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+        favoritesQueueRef.getAndSet(null)?.close()
+                                           ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:720:21: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+        val queue = DesktopFavoriteQueueBridge(playback, listen, entry::isOwned,
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:728:36: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                    else { listen?.pause(); systemTargetAudio = false }
+                                   ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:738:36: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                val item = listen?.state?.value?.current
+                                   ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:738:50: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                val item = listen?.state?.value?.current
+                                                 ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:740:30: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                    ((listen.player.state.value.positionSeconds) * 1000L).toLong())) }
+                             ^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:798:59: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+        storyHost.retire(); retainedMedia.stop(); listen?.pause(); systemTargetAudio = false
+                                                          ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:849:20: error: cannot access 'fun playStartingAt(items: List<PlaylistItem>, index: Int = ..., positionSeconds: Double = ...): Unit': it is internal in 'com.bilipai.desktop.audio.ListenAudioSession'.
+            listen.playStartingAt(items, index, progress)
+                   ^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:950:27: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+            else playback.currentCastSource(nativeSource.sourceVersion) ?: error("��ǰ��Ƶ����Դ�Ѿ��仯�������¿�ʼͶ��")
+                          ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1015:52: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+    DisposableEffect(listen) { onDispose { listen?.close() } }
+                                                   ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1031:30: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+    LaunchedEffect(listening.current?.bvid,listening.current?.cid,sessionEpoch) { rootNowPlayingDismissed=false }
+                             ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1031:54: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+    LaunchedEffect(listening.current?.bvid,listening.current?.cid,sessionEpoch) { rootNowPlayingDismissed=false }
+                                                     ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1057:103: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+    LaunchedEffect(anyCasting) { if (anyCasting) { playback.pause(); player?.setPaused(true); listen?.pause() } }
+                                                                                                      ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1082:21: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+            listen?.pause(); systemTargetAudio = false
+                    ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1096:33: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+            val audio = listen?.state?.value
+                                ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1097:59: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+            val audioTarget = systemTargetAudio && audio?.current != null
+                                                          ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1105:50: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                title = if (audioTarget) audio!!.current!!.title else offlinePayload?.title ?: if (retainedOwner != null) retainedMedia.title else current.details?.title ?: state.sourceTitle,
+                                                 ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1106:51: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                artist = if (audioTarget) audio!!.current!!.owner else offlinePayload?.owner ?: if (retainedOwner != null) "" else current.details?.author.orEmpty(),
+                                                  ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1107:52: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                mediaId = if (audioTarget) audio!!.current!!.bvid else offlinePayload?.bvid ?: if (retainedOwner != null) state.sourceTitle else current.details?.bvid ?: state.sourceTitle,
+                                                   ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1109:56: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                hasPrevious = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex > 0 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.previous != null } ?: playback.hasPrevious,
+                                                       ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1109:81: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                hasPrevious = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex > 0 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.previous != null } ?: playback.hasPrevious,
+                                                                                ^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1110:52: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.next != null } ?: playback.hasNext,
+                                                   ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1110:77: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.next != null } ?: playback.hasNext,
+                                                                            ^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1110:98: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.next != null } ?: playback.hasNext,
+                                                                                                 ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1128:127: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, activatingUpdate, updateJob) {
+                                                                                                                              ^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1132:161: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive) {
+                                                                                                                                                                ^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1299:77: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                                if (info != null && cid != null && playback.currentCastSource(owner) != null) {
+                                                                            ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1305:55: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                            audioSelection = playback.currentCastSource(initialized.currentSourceVersion)?.audioSelection,
+                                                      ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1313:55: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                            viewPoints = if (playback.currentCastSource(initialized.currentSourceVersion) != null)
+                                                      ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1318:42: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                                playback.currentCastSource(commandVersion) != null && rendererDanmakuSettings.enabled) ({
+                                         ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1331:54: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                                            playback.currentCastSource(capturedVersion) != null
+                                                     ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1350:61: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                SideEffect { musicOverlay.value = listening.current != null && !rootNowPlayingDismissed }
+                                                            ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1360:77: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                            storyHost.retire();retainedMedia.stop();listen?.pause();systemTargetAudio=false
+                                                                            ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1378:60: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                    { rootNowPlayingDismissed=true;listen?.pause() },
+                                                           ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1379:69: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                    { DesktopOriginalNowPlayingVisibility(listening.current!=null&&!rootNowPlayingDismissed,
+                                                                    ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1391:34: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                        playback.currentCastSource(player?.currentSourceVersion ?: 0L)!=null)
+                                 ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1404:48: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                            val current=listen.state.value.current
+                                               ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1404:60: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                            val current=listen.state.value.current
+                                                           ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1409:44: error: cannot access 'fun playStartingAt(items: List<PlaylistItem>, index: Int = ..., positionSeconds: Double = ...): Unit': it is internal in 'com.bilipai.desktop.audio.ListenAudioSession'.
+                                    listen.playStartingAt(listOf(com.android.purebilibili.feature.video.player.PlaylistItem(
+                                           ^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1466:50: error: cannot access 'fun updateFavoriteCountForOwner(aid: Long, expectedEpoch: Long, count: Int): Boolean': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                                        playback.updateFavoriteCountForOwner(favoriteVideoAid, favoriteVideoEpoch, count)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1490:62: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                                                    playback.currentCastSource(commentSourceVersion) != null)
+                                                             ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1504:70: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                                                            playback.currentCastSource(commentSourceVersion) != null
+                                                                     ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1523:54: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                                            playback.currentCastSource(captured.sourceVersion) != null },
+                                                     ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1584:52: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                                            queue::openQueue, queue::appendQueue,
+                                                   ^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1584:70: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                                            queue::openQueue, queue::appendQueue,
+                                                                     ^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1601:79: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                                                if (entry.isOwned() && !queue.revealIfOwned(bvid, cid, false))
+                                                                              ^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1613:79: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                                                if (entry.isOwned() && !queue.revealIfOwned(bvid, cid, true)) {
+                                                                              ^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1615:63: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                                                    if (queue.openQueue(listOf(fallback), 0, true) != null) queue.revealIfOwned(bvid, cid, true)
+                                                              ^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1615:115: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                                                    if (queue.openQueue(listOf(fallback), 0, true) != null) queue.revealIfOwned(bvid, cid, true)
+                                                                                                                  ^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1642:37: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                                    DesktopFavoriteQueueBridge(playback,listen,entry::owns,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1650:63: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                                                else {listen?.pause();systemTargetAudio=false}
+                                                              ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1659:53: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                                            listen?.state?.value?.current?.let {item -> if(entry.owns()) commands.push(
+                                                    ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1659:67: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                                            listen?.state?.value?.current?.let {item -> if(entry.owns()) commands.push(
+                                                                  ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1661:61: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                                                    (listen.player.state.value.positionSeconds*1000L).toLong()))}
+                                                            ^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1667:78: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                                        {items,index,audio,position -> queue.openQueue(items,index,audio,position)})
+                                                                             ^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1679:60: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                                        revealQueue=queue::revealIfOwned,
+                                                           ^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1690:37: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+                                    DesktopFavoriteQueueBridge(playback, listen, entry::owns,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1699:64: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                                                else { listen?.pause(); systemTargetAudio = false }
+                                                               ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1711:53: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                                            listen?.state?.value?.current?.let { item -> if (entry.owns()) commands.push(
+                                                    ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1711:67: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                                            listen?.state?.value?.current?.let { item -> if (entry.owns()) commands.push(
+                                                                  ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1713:62: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                                                    ((listen.player.state.value.positionSeconds) * 1000L).toLong())) }
+                                                             ^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1720:48: error: unresolved reference 'openQueue'.
+                                        queue::openQueue, queue::appendQueue,
+                                               ^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1720:66: error: unresolved reference 'appendQueue'.
+                                        queue::openQueue, queue::appendQueue,
+                                                                 ^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1740:62: error: unresolved reference 'revealIfOwned'.
+                                        revealQueue = queue::revealIfOwned,
+                                                             ^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1741:75: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+                                        onPlayAllAudio = { bvid,cid -> if(!queue.revealIfOwned(bvid,cid,true)) error="��Ƶ��������ǰ������" },
+                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1741:82: error: unresolved reference 'revealIfOwned'.
+                                        onPlayAllAudio = { bvid,cid -> if(!queue.revealIfOwned(bvid,cid,true)) error="��Ƶ��������ǰ������" },
+                                                                                 ^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1800:150: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                            section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku, retainedMedia)
+                                                                                                                                                     ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1801:156: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                            section == DesktopSection.BANGUMI -> BangumiBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, downloads, onToggleFullscreen, playerContent, seasonId, danmaku,
+                                                                                                                                                           ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1836:75: error: cannot access 'class ListenAudioSession : AutoCloseable': it is internal in file.
+                                    nowPlayingBarOverlayVisible = listen?.state?.value?.current != null,
+                                                                          ^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1836:89: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+                                    nowPlayingBarOverlayVisible = listen?.state?.value?.current != null,
+                                                                                        ^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1864:93: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                                        nativePlayer.ownsSourceVersion(version) && playback.currentCastSource(version) != null && performPlayerKey(action)
+                                                                                            ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1951:81: error: cannot access 'fun currentCastSource(expectedSourceVersion: Long): PlaybackSource?': it is internal in 'com.bilipai.desktop.DesktopPlaybackController'.
+                player?.currentSourceVersion, repository.sessionEpoch, playback.currentCastSource(target.sourceVersion) != null)
+                                                                                ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1966:84: error: cannot access 'data class ListenAudioState : Any': it is internal in file.
+            playing.details != null || playing.opening || mediaActive || listening.active || anyCasting || anyCastBusy || pipActive,
+                                                                                   ^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopPersonalListsRoot.kt:165:24: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+    private var queue: DesktopFavoriteQueueBridge? = null
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopPersonalListsRoot.kt:174:36: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+    fun queueBridge(factory: () -> DesktopFavoriteQueueBridge): DesktopFavoriteQueueBridge {
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopPersonalListsRoot.kt:174:65: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+    fun queueBridge(factory: () -> DesktopFavoriteQueueBridge): DesktopFavoriteQueueBridge {
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopPersonalListsRoot.kt:178:76: error: cannot access 'class DesktopFavoriteQueueBridge : AutoCloseable': it is internal in file.
+    override fun close() { if (closed.compareAndSet(false, true)) { queue?.close(); job.cancel() } }
+                                                                           ^^^^^

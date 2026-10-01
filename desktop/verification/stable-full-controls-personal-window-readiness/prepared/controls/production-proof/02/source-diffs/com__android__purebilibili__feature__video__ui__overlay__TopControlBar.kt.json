@@ -1,0 +1,112 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        4,
+        4
+      ],
+      "generatedLineRange": [
+        4,
+        6
+      ],
+      "before": [],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopOriginalPlayerControlsPlatform\n",
+        "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerControlsPlatform\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        5,
+        9
+      ],
+      "generatedLineRange": [
+        7,
+        7
+      ],
+      "before": [
+        "import android.content.Context\n",
+        "import android.content.Intent\n",
+        "import android.content.IntentFilter\n",
+        "import android.os.BatteryManager\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        26,
+        28
+      ],
+      "generatedLineRange": [
+        24,
+        25
+      ],
+      "before": [
+        "import androidx.compose.ui.platform.LocalConfiguration\n",
+        "import androidx.compose.ui.platform.LocalContext\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        164,
+        165
+      ],
+      "generatedLineRange": [
+        161,
+        162
+      ],
+      "before": [
+        "    val context = LocalContext.current\n"
+      ],
+      "after": [
+        "    val context = LocalDesktopOriginalPlayerControlsPlatform.current\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        420,
+        428
+      ],
+      "generatedLineRange": [
+        417,
+        419
+      ],
+      "before": [
+        "private fun resolveBatteryLevelPercent(context: Context): Int? {\n",
+        "    return runCatching {\n",
+        "        val intent = context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))\n",
+        "        val level = intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1\n",
+        "        val scale = intent?.getIntExtra(BatteryManager.EXTRA_SCALE, -1) ?: -1\n",
+        "        if (level < 0 || scale <= 0) return@runCatching null\n",
+        "        (level * 100f / scale).toInt().coerceIn(0, 100)\n",
+        "    }.getOrNull()\n"
+      ],
+      "after": [
+        "private fun resolveBatteryLevelPercent(context: DesktopOriginalPlayerControlsPlatform): Int? {\n",
+        "    return context.readBatteryPercent()\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        501,
+        501
+      ],
+      "generatedLineRange": [
+        492,
+        493
+      ],
+      "before": [],
+      "after": [
+        "\n"
+      ]
+    }
+  ],
+  "sourceSha256LF": "9a85c36745eb9304f8fcdffa6fd373f4c05f234bcb26a94d6cddf6b0b4ba782b",
+  "generatedSha256LF": "9e68bbf8cc9135240992410e22ad212320384d43b2411aec66235c53d7a572e3",
+  "reverseExact": true
+}

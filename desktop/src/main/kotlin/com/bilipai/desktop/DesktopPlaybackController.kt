@@ -219,8 +219,9 @@ class DesktopPlaybackController internal constructor(
         if (!closed.get()) openQueueWithRouteResume(listOf(card), 0, null, resumePositionMs.coerceAtLeast(0L))
     }
 
-    fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0, owner: Any? = null) =
-        openQueueWithRouteResume(cards, selectedIndex, owner, null)
+    fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0, owner: Any? = null,
+        resumePositionMs: Long? = null) =
+        openQueueWithRouteResume(cards, selectedIndex, owner, resumePositionMs?.coerceAtLeast(0L))
 
     private fun openQueueWithRouteResume(cards: List<VideoCard>, selectedIndex: Int, owner: Any?, routeResumePositionMs: Long?) {
         if (closed.get()) return

@@ -1,0 +1,27 @@
+{
+  "applied": true,
+  "threeExistingFamilies": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+      "baseLfSha256": "227271fda734b660c0087d97983d3a71c9868d2d89bba1fc6ec290802a77d10f",
+      "installedLfSha256": "94f544ae098d3bb89290197534c4aab17400ada9e7231d27c96afa4c1f3f3412"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt",
+      "baseLfSha256": "332bc71f6a56647e7c913e92c52478dd34f127bda8ccc593598ae3795eedc79b",
+      "installedLfSha256": "52de6e2a34dda17b7e8198761b16029a61bdea15e3f5a74eb31468c166476fc2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineRootHost.kt",
+      "baseLfSha256": "f1f760a63f61366e9547d4fa41d0ca4e156fa67cc98dedd8a3f76fe70c2aea49",
+      "installedLfSha256": "d59d088b6b6396c61deb7c8156d37899d41f9023b80d9578e1acb7e3ff47722f"
+    }
+  ],
+  "originalOfflineAlgorithmChanged": false,
+  "newFullscreenAuthority": false,
+  "modeRequestOwner": "same Main setter",
+  "lifecycle": "per-popup identity; after componentShown listeners; closed/owner/anchor/entry-scope/foreground guard",
+  "wholeCompilationPending": true,
+  "nativeAcceptancePending": true,
+  "rootCauseReceiptSha256": "94c20fa25892c8d74214b5a5ee6b4df27b3826fd76040f0a53bf1e0177084f35"
+}

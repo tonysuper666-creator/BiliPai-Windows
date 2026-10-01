@@ -1,0 +1,19 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt
++++ com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt
+@@ -33,7 +33,7 @@
+ import androidx.compose.ui.graphics.Brush
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.SolidColor
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+ import androidx.compose.ui.platform.testTag
+@@ -216,7 +216,6 @@
+                 dismissOnBackPress = true,
+                 dismissOnClickOutside = true,
+                 usePlatformDefaultWidth = false,
+-                decorFitsSystemWindows = false
+             )
+         ) {
+             Column(

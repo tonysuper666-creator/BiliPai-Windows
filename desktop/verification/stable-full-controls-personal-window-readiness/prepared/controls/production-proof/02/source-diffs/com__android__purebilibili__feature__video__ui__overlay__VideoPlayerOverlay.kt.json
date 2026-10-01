@@ -1,0 +1,819 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+  "edits": [
+    {
+      "originalLineRange": [
+        10,
+        13
+      ],
+      "generatedLineRange": [
+        10,
+        10
+      ],
+      "before": [
+        "import android.content.ClipData\n",
+        "import android.content.Context\n",
+        "import android.os.Build\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        47,
+        48
+      ],
+      "generatedLineRange": [
+        44,
+        45
+      ],
+      "before": [
+        "import androidx.media3.common.Player\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        54,
+        55
+      ],
+      "generatedLineRange": [
+        51,
+        51
+      ],
+      "before": [
+        "import com.android.purebilibili.core.ui.blur.shouldAllowRuntimeShaderBackedHazeEffect\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        75,
+        76
+      ],
+      "generatedLineRange": [
+        71,
+        71
+      ],
+      "before": [
+        "import com.android.purebilibili.data.repository.VideoRepository\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        88,
+        89
+      ],
+      "generatedLineRange": [
+        83,
+        84
+      ],
+      "before": [
+        "import com.android.purebilibili.core.plugin.skin.UiSkinAnimatedAsset\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopOriginalPlayerSkinAsset as UiSkinAnimatedAsset\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        103,
+        103
+      ],
+      "generatedLineRange": [
+        98,
+        99
+      ],
+      "before": [],
+      "after": [
+        "import kotlinx.coroutines.ensureActive\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        104,
+        105
+      ],
+      "generatedLineRange": [
+        100,
+        102
+      ],
+      "before": [
+        "import androidx.compose.ui.platform.LocalContext\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext\n",
+        "import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        107,
+        108
+      ],
+      "generatedLineRange": [
+        104,
+        105
+      ],
+      "before": [
+        "import com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "after": [
+        "import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings as SettingsManager\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        109,
+        110
+      ],
+      "generatedLineRange": [
+        106,
+        107
+      ],
+      "before": [
+        "import com.android.purebilibili.core.store.player.PlayerSettingsStore\n"
+      ],
+      "after": [
+        "import com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings as PlayerSettingsStore\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        114,
+        115
+      ],
+      "generatedLineRange": [
+        111,
+        112
+      ],
+      "before": [
+        "import com.android.purebilibili.feature.video.share.VideoShareSheetHost\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopOriginalPlayerVideoShareSheetHost as VideoShareSheetHost\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        118,
+        119
+      ],
+      "generatedLineRange": [
+        115,
+        115
+      ],
+      "before": [
+        "import com.android.purebilibili.core.util.NetworkUtils\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        132,
+        133
+      ],
+      "generatedLineRange": [
+        128,
+        129
+      ],
+      "before": [
+        "import androidx.compose.ui.platform.LocalConfiguration\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        144,
+        145
+      ],
+      "generatedLineRange": [
+        140,
+        141
+      ],
+      "before": [
+        "import com.android.purebilibili.feature.cast.DeviceListDialog\n"
+      ],
+      "after": [
+        "import com.bilipai.desktop.ui.DesktopOriginalPlayerDeviceListDialog as DeviceListDialog\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        149,
+        150
+      ],
+      "generatedLineRange": [
+        145,
+        145
+      ],
+      "before": [
+        "import com.android.purebilibili.feature.cast.LocalProxyServer\n"
+      ],
+      "after": []
+    },
+    {
+      "originalLineRange": [
+        266,
+        266
+      ],
+      "generatedLineRange": [
+        261,
+        263
+      ],
+      "before": [],
+      "after": [
+        "    kotlinx.coroutines.currentCoroutineContext().ensureActive()\n",
+        "    context.requireCurrent()\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        267,
+        269
+      ],
+      "generatedLineRange": [
+        264,
+        266
+      ],
+      "before": [
+        "        VideoRepository.getTvCastPlayData(aid = currentAid, cid = cid, qn = currentQuality)\n",
+        "    }.getOrNull()\n"
+      ],
+      "after": [
+        "        context.videoOverlay.getTvCastPlayData(aid = currentAid, cid = cid, qn = currentQuality)\n",
+        "    }.onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }.getOrNull()\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        270,
+        270
+      ],
+      "generatedLineRange": [
+        267,
+        269
+      ],
+      "before": [],
+      "after": [
+        "    kotlinx.coroutines.currentCoroutineContext().ensureActive()\n",
+        "    context.requireCurrent()\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        285,
+        286
+      ],
+      "generatedLineRange": [
+        284,
+        285
+      ],
+      "before": [
+        "                    baseUrl = LocalProxyServer.getProxyUrl(context, selectedVideo.getValidUrl()),\n"
+      ],
+      "after": [
+        "                    baseUrl = context.videoOverlay.castProxyUrl(selectedVideo.getValidUrl()),\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        289,
+        290
+      ],
+      "generatedLineRange": [
+        288,
+        289
+      ],
+      "before": [
+        "                    baseUrl = LocalProxyServer.getProxyUrl(context, selectedAudio.getValidUrl()),\n"
+      ],
+      "after": [
+        "                    baseUrl = context.videoOverlay.castProxyUrl(selectedAudio.getValidUrl()),\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        300,
+        302
+      ],
+      "generatedLineRange": [
+        299,
+        301
+      ],
+      "before": [
+        "                val manifestUrl = LocalProxyServer.registerDashManifest(context, manifest)\n",
+        "                return@withContext CastMediaResolution(url = manifestUrl, contentType = LocalProxyServer.DASH_CONTENT_TYPE)\n"
+      ],
+      "after": [
+        "                val manifestUrl = context.videoOverlay.registerCastDashManifest(manifest)\n",
+        "                return@withContext CastMediaResolution(url = manifestUrl, contentType = context.videoOverlay.dashContentType)\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        308,
+        309
+      ],
+      "generatedLineRange": [
+        307,
+        308
+      ],
+      "before": [
+        "        LocalProxyServer.ensureStarted()\n"
+      ],
+      "after": [
+        "        context.videoOverlay.ensureCastProxyStarted()\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        310,
+        311
+      ],
+      "generatedLineRange": [
+        309,
+        310
+      ],
+      "before": [
+        "            url = LocalProxyServer.getProxyUrl(context, currentVideoUrl),\n"
+      ],
+      "after": [
+        "            url = context.videoOverlay.castProxyUrl(currentVideoUrl),\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        313,
+        314
+      ],
+      "generatedLineRange": [
+        312,
+        313
+      ],
+      "before": [
+        "    }.getOrNull()\n"
+      ],
+      "after": [
+        "    }.onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }.getOrNull()\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        724,
+        725
+      ],
+      "generatedLineRange": [
+        723,
+        724
+      ],
+      "before": [
+        "    onDrawerVideoClick: (String, android.os.Bundle?) -> Unit = { _, _ -> },\n"
+      ],
+      "after": [
+        "    onDrawerVideoClick: (String, Long) -> Unit = { _, _ -> },\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        782,
+        783
+      ],
+      "generatedLineRange": [
+        781,
+        782
+      ],
+      "before": [
+        "    var currentSpeed by remember(player) { mutableFloatStateOf(player.playbackParameters.speed) }\n"
+      ],
+      "after": [
+        "    var currentSpeed by remember(player) { mutableFloatStateOf(player.playbackSpeed) }\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        823,
+        824
+      ],
+      "generatedLineRange": [
+        822,
+        823
+      ],
+      "before": [
+        "        player.playerError\n"
+      ],
+      "after": [
+        "        player.playerErrorMessage\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        829,
+        830
+      ],
+      "generatedLineRange": [
+        828,
+        829
+      ],
+      "before": [
+        "        val cdnHost = runCatching { android.net.Uri.parse(currentVideoUrl).host.orEmpty() }\n"
+      ],
+      "after": [
+        "        val cdnHost = runCatching { java.net.URI(currentVideoUrl).host.orEmpty() }\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        836,
+        837
+      ],
+      "generatedLineRange": [
+        835,
+        836
+      ],
+      "before": [
+        "            networkType = NetworkUtils.getNetworkTypeLabel(context),\n"
+      ],
+      "after": [
+        "            networkType = context.videoOverlay.networkTypeLabel(),\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        838,
+        843
+      ],
+      "generatedLineRange": [
+        837,
+        838
+      ],
+      "before": [
+        "            lastLoadError = player.playerError?.let { error ->\n",
+        "                listOf(error.errorCodeName, error.message.orEmpty())\n",
+        "                    .filter { it.isNotBlank() }\n",
+        "                    .joinToString(\": \")\n",
+        "            } ?: debugInfo.lastLoadError\n"
+      ],
+      "after": [
+        "            lastLoadError = player.playerErrorMessage ?: debugInfo.lastLoadError\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        883,
+        884
+      ],
+      "generatedLineRange": [
+        878,
+        879
+      ],
+      "before": [
+        "                networkType = NetworkUtils.getNetworkTypeLabel(context),\n"
+      ],
+      "after": [
+        "                networkType = context.videoOverlay.networkTypeLabel(),\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        885,
+        890
+      ],
+      "generatedLineRange": [
+        880,
+        881
+      ],
+      "before": [
+        "                lastLoadError = player.playerError?.let { error ->\n",
+        "                    listOf(error.errorCodeName, error.message.orEmpty())\n",
+        "                        .filter { it.isNotBlank() }\n",
+        "                        .joinToString(\": \")\n",
+        "                } ?: effectiveDebugInfo.lastLoadError\n"
+      ],
+      "after": [
+        "                lastLoadError = player.playerErrorMessage ?: effectiveDebugInfo.lastLoadError\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1098,
+        1107
+      ],
+      "generatedLineRange": [
+        1089,
+        1091
+      ],
+      "before": [
+        "    DisposableEffect(player) {\n",
+        "        currentSpeed = player.playbackParameters.speed\n",
+        "        val speedListener = object : Player.Listener {\n",
+        "            override fun onPlaybackParametersChanged(playbackParameters: androidx.media3.common.PlaybackParameters) {\n",
+        "                currentSpeed = playbackParameters.speed\n",
+        "            }\n",
+        "        }\n",
+        "        player.addListener(speedListener)\n",
+        "        onDispose { player.removeListener(speedListener) }\n"
+      ],
+      "after": [
+        "    LaunchedEffect(player) {\n",
+        "        player.state.collect { if (player.isOwned()) currentSpeed = player.playbackSpeed }\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1568,
+        1569
+      ],
+      "generatedLineRange": [
+        1552,
+        1553
+      ],
+      "before": [
+        "                            !target?.nextBvid.isNullOrBlank() -> onDrawerVideoClick(target.nextBvid, null)\n"
+      ],
+      "after": [
+        "                            !target?.nextBvid.isNullOrBlank() -> onDrawerVideoClick(target.nextBvid, 0L)\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1774,
+        1783
+      ],
+      "generatedLineRange": [
+        1758,
+        1760
+      ],
+      "before": [
+        "                        val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE)\n",
+        "                            as android.content.ClipboardManager\n",
+        "                        clipboard.setPrimaryClip(\n",
+        "                            ClipData.newPlainText(\n",
+        "                                \"BiliPai Player Diagnostics\",\n",
+        "                                exportDiagnosticReport(null)\n",
+        "                            )\n",
+        "                        )\n",
+        "                        android.widget.Toast.makeText(\n"
+      ],
+      "after": [
+        "                        context.videoOverlay.copyText(\"BiliPai Player Diagnostics\", exportDiagnosticReport(null))\n",
+        "                        com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1785,
+        1786
+      ],
+      "generatedLineRange": [
+        1762,
+        1763
+      ],
+      "before": [
+        "                            android.widget.Toast.LENGTH_SHORT\n"
+      ],
+      "after": [
+        "                            com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1837,
+        1842
+      ],
+      "generatedLineRange": [
+        1814,
+        1816
+      ],
+      "before": [
+        "                                val savedPath = Logger.exportPlayerDiagnostic(\n",
+        "                                    context = context,\n",
+        "                                    content = exportDiagnosticReport(signal)\n",
+        "                                )\n",
+        "                                android.widget.Toast.makeText(\n"
+      ],
+      "after": [
+        "                                val savedPath = context.videoOverlay.exportPlayerDiagnostic(exportDiagnosticReport(signal))\n",
+        "                                com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1845,
+        1846
+      ],
+      "generatedLineRange": [
+        1819,
+        1820
+      ],
+      "before": [
+        "                                        android.widget.Toast.LENGTH_LONG\n"
+      ],
+      "after": [
+        "                                        com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_LONG\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        1847,
+        1848
+      ],
+      "generatedLineRange": [
+        1821,
+        1822
+      ],
+      "before": [
+        "                                        android.widget.Toast.LENGTH_SHORT\n"
+      ],
+      "after": [
+        "                                        com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        2380,
+        2381
+      ],
+      "generatedLineRange": [
+        2354,
+        2355
+      ],
+      "before": [
+        "                            android.widget.Toast.makeText(context, \"投屏地址解析失败\", android.widget.Toast.LENGTH_SHORT).show()\n"
+      ],
+      "after": [
+        "                            com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(context, \"投屏地址解析失败\", com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT).show()\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        2390,
+        2391
+      ],
+      "generatedLineRange": [
+        2364,
+        2365
+      ],
+      "before": [
+        "                        val result = plugin.cast(context, route, mediaRequest)\n"
+      ],
+      "after": [
+        "                        val result = plugin.cast(context.pluginContext, route, mediaRequest)\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        2412,
+        2413
+      ],
+      "generatedLineRange": [
+        2386,
+        2387
+      ],
+      "before": [
+        "                        android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()\n"
+      ],
+      "after": [
+        "                        com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(context, message, com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT).show()\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        2434,
+        2435
+      ],
+      "generatedLineRange": [
+        2408,
+        2409
+      ],
+      "before": [
+        "                android.widget.Toast.makeText(context, \"投屏地址解析失败\", android.widget.Toast.LENGTH_SHORT).show()\n"
+      ],
+      "after": [
+        "                com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(context, \"投屏地址解析失败\", com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT).show()\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        2452,
+        2453
+      ],
+      "generatedLineRange": [
+        2426,
+        2427
+      ],
+      "before": [
+        "            val result = plugin.cast(context, route, request)\n"
+      ],
+      "after": [
+        "            val result = plugin.cast(context.pluginContext, route, request)\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        2457,
+        2458
+      ],
+      "generatedLineRange": [
+        2431,
+        2432
+      ],
+      "before": [
+        "                android.widget.Toast.makeText(\n"
+      ],
+      "after": [
+        "                com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        2460,
+        2461
+      ],
+      "generatedLineRange": [
+        2434,
+        2435
+      ],
+      "before": [
+        "                    android.widget.Toast.LENGTH_SHORT\n"
+      ],
+      "after": [
+        "                    com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        2701,
+        2702
+      ],
+      "generatedLineRange": [
+        2675,
+        2676
+      ],
+      "before": [
+        "        shouldAllowRuntimeShaderBackedHazeEffect(Build.VERSION.SDK_INT)\n"
+      ],
+      "after": [
+        "        com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        2836,
+        2837
+      ],
+      "generatedLineRange": [
+        2810,
+        2811
+      ],
+      "before": [
+        "    onVideoClick: (String, android.os.Bundle?) -> Unit,\n"
+      ],
+      "after": [
+        "    onVideoClick: (String, Long) -> Unit,\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        3052,
+        3053
+      ],
+      "generatedLineRange": [
+        3026,
+        3027
+      ],
+      "before": [
+        "                                        onClick = { onVideoClick(video.bvid, null) }\n"
+      ],
+      "after": [
+        "                                        onClick = { onVideoClick(video.bvid, video.cid) }\n"
+      ]
+    },
+    {
+      "originalLineRange": [
+        3101,
+        3104
+      ],
+      "generatedLineRange": [
+        3075,
+        3076
+      ],
+      "before": [
+        "                                                    com.android.purebilibili.feature.video.screen.buildVideoNavigationOptions(\n",
+        "                                                        targetCid = episode.cid\n",
+        "                                                    )\n"
+      ],
+      "after": [
+        "                                                    episode.cid\n"
+      ]
+    }
+  ],
+  "sourceSha256LF": "73ccef84e24a91e6b907dcd617e1a7f87d7698d5042ccedb1437e7859d02ae10",
+  "generatedSha256LF": "c163057d6ad5124624f3ed6c5194192fdb1ecc0dcd96312c514620c3c749c2bd",
+  "reverseExact": true
+}

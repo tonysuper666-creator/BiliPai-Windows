@@ -1,0 +1,68 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoAspectRatio.kt
++++ com/android/purebilibili/feature/video/ui/components/VideoAspectRatio.kt
+@@ -14,7 +14,7 @@
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+-import androidx.media3.ui.AspectRatioFrameLayout
++import com.bilipai.desktop.ui.DesktopOriginalMediaResizeModes as AspectRatioFrameLayout
+ import com.android.purebilibili.core.ui.components.AppSurface
+ import com.android.purebilibili.feature.anime4k.gl.Anime4KDisplayScaleMode
+ import kotlin.math.roundToInt
+@@ -28,7 +28,6 @@
+  * 视频比例枚举
+  * `resizeMode` 保留给旧偏好映射，真实渲染使用 `playerResizeMode`。
+  */
+-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+ enum class VideoAspectRatio(
+     val displayName: String,
+     val resizeMode: Int,
+@@ -125,7 +124,6 @@
+  *
+  * @return 实际应写入的 resizeMode（便于测试断言强制刷新策略）
+  */
+-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+ internal fun resolveForcedPlayerResizeModePivot(targetResizeMode: Int): Int {
+     return if (targetResizeMode == AspectRatioFrameLayout.RESIZE_MODE_FIT) {
+         AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+@@ -137,9 +135,8 @@
+ /**
+  * 将 [resizeMode] 应用到 PlayerView，并在需要时通过 mode 切换强制 remeasure。
+  */
+-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+ internal fun applyPlayerViewResizeMode(
+-    playerView: androidx.media3.ui.PlayerView,
++    playerView: com.bilipai.desktop.ui.DesktopOriginalPlayerViewportPort,
+     resizeMode: Int,
+     forceRelayout: Boolean,
+ ) {
+@@ -151,8 +148,7 @@
+         playerView.resizeMode = resizeMode
+     }
+     playerView.requestLayout()
+-    playerView.findViewById<android.view.View>(androidx.media3.ui.R.id.exo_content_frame)
+-        ?.requestLayout()
++    playerView.requestContentLayout()
+     playerView.invalidate()
+ }
+ 
+@@ -169,9 +165,8 @@
+ /**
+  * 同步 + 下一帧再刷一次，覆盖上滑全屏首帧约束/ surface attach 竞态。
+  */
+-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+ internal fun schedulePlayerViewViewportRefresh(
+-    playerView: androidx.media3.ui.PlayerView,
++    playerView: com.bilipai.desktop.ui.DesktopOriginalPlayerViewportPort,
+     resizeMode: Int,
+     expectedWidth: Int = 0,
+     expectedHeight: Int = 0,
+@@ -187,7 +182,7 @@
+             resizeMode = resizeMode,
+             forceRelayout = true,
+         )
+-        playerView.postOnAnimation {
++        playerView.postOnFrame {
+             if (shouldRefreshMeasuredPlayerViewport(
+                     expectedWidth = expectedWidth,
+                     expectedHeight = expectedHeight,

@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+  "edits": [],
+  "sourceSha256LF": "ddcf357f97f2765f503f57007f279c88bd5dcc719307f5457cc3a952d6bd3884",
+  "generatedSha256LF": "ddcf357f97f2765f503f57007f279c88bd5dcc719307f5457cc3a952d6bd3884",
+  "reverseExact": true
+}

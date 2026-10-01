@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-personal-watchlater-parity\prepared\selected\com\android\purebilibili\feature\watchlater\WatchLaterScreen.kt:875:52: warning: condition is always 'true'.
+                    } else if (headerBlurActive && hazeState != null) {
+                                                   ^^^^^^^^^^^^^^^^^

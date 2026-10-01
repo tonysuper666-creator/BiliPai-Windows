@@ -1,0 +1,148 @@
+{
+  "scope": "prepared source-only History/queue CID and resume adapter",
+  "MainIntegrated": false,
+  "HTTP": false,
+  "HWND": false,
+  "nativeDevice": false,
+  "compile": "compile-02",
+  "proof": "proof-02",
+  "assertions": 11,
+  "groups": 1,
+  "artifacts": [
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "e4fe916a61c6c272b6215f4aa20526779f19cc8e28d1e183edc962b4ea68797f",
+      "bytes": 2802
+    },
+    {
+      "path": "compile-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "f41202a2ae52ca5932b35d40e67a13c578481235f7ea5be1b5f7a3505911103a",
+      "bytes": 228
+    },
+    {
+      "path": "compile-01/compile.args",
+      "sha256Bytes": "aec328c665ef89caac836a24a84fe53bb23370b6465a84a812788e1eb92efec7",
+      "bytes": 25788
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "941936863afc1e9a542a298be6896b03bd60e594f1a2ec21088b20a07d1304a2",
+      "bytes": 10197
+    },
+    {
+      "path": "compile-01/inputs.json",
+      "sha256Bytes": "a2d2d98203b76eff6f2c19140b08cdbe92ca3436b088869df04fa9d0cde48277",
+      "bytes": 2348
+    },
+    {
+      "path": "compile-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "f41202a2ae52ca5932b35d40e67a13c578481235f7ea5be1b5f7a3505911103a",
+      "bytes": 228
+    },
+    {
+      "path": "compile-02/compile.args",
+      "sha256Bytes": "950cf666ec5fa3b718e24597ac6ebc5a4a402d3b92460bdc413d18d909684699",
+      "bytes": 26103
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "941936863afc1e9a542a298be6896b03bd60e594f1a2ec21088b20a07d1304a2",
+      "bytes": 10197
+    },
+    {
+      "path": "compile-02/inputs.json",
+      "sha256Bytes": "37bb184978ded398f49cf94d33c2755133403c9f17e11a7595e3e314a32de63e",
+      "bytes": 2829
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "aeea3322af86ba735ed8fb11adb7d9cf40a276806ace61a9049a6c257d035e7f",
+      "bytes": 3053
+    },
+    {
+      "path": "consumer-bases.json",
+      "sha256Bytes": "4be91f1234add3347850aa7d47bd09b8140651f36dcf1f75b50a425099e80a6f",
+      "bytes": 1147
+    },
+    {
+      "path": "consumer.patch",
+      "sha256Bytes": "a21c1fecfc75481ca353ddc745ce0d9592eb746c72cce36ddada19958980e06a",
+      "bytes": 4339
+    },
+    {
+      "path": "excluded-runtime-artifacts.json",
+      "sha256Bytes": "cbdc7be7ee0ed3b5be84b48d826d909e9a26c1da7b3179704a64a3875bc2b1da",
+      "bytes": 188133
+    },
+    {
+      "path": "fixtures/QueueStartFixture.kt",
+      "sha256Bytes": "58af9a23e539ceadc82000498329cf95fd6faafc31c3efd6f90d1dfc0fb22e9d",
+      "bytes": 8011
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "3f648f037098124f4eaabb28d1d26c2a68656007063769420c687877ed697598",
+      "bytes": 1911
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopPersonalQueueStart.kt",
+      "sha256Bytes": "ebf1de83141b4034def07d1cebfb724dc1be264db5d7cd945ca0605a26c80530",
+      "bytes": 1183
+    },
+    {
+      "path": "proof-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "deed46dcd2bdb4e1e6e6bacf075dd2bfa2418546203c3af43fd869968543d22c",
+      "bytes": 71
+    },
+    {
+      "path": "proof-01/compile.args",
+      "sha256Bytes": "afa1c61557c3836ee02a26b1979e6971407031fa32f2e8dd033369817e2c9f0b",
+      "bytes": 25156
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-01/proof.json",
+      "sha256Bytes": "fcc43bf9ce5fedd9525eb58d5b3b278b4b90120bd8847ce9b49adc6ecd9bfbca",
+      "bytes": 873
+    },
+    {
+      "path": "proof-01/run.log",
+      "sha256Bytes": "540819657dfe0bacab2bfa77d1810b3e81d91e01301e931b4fcfb12492029ae3",
+      "bytes": 1070
+    },
+    {
+      "path": "proof-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "deed46dcd2bdb4e1e6e6bacf075dd2bfa2418546203c3af43fd869968543d22c",
+      "bytes": 71
+    },
+    {
+      "path": "proof-02/compile.args",
+      "sha256Bytes": "aa50755a1003783e99e4f41f37ce0317ff03d35f2de72bb0e9a196330025437d",
+      "bytes": 25156
+    },
+    {
+      "path": "proof-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-02/proof.json",
+      "sha256Bytes": "17fd03a2cc909cf540d2694fb2771db56236d865ded479571382b062039bfd7d",
+      "bytes": 873
+    },
+    {
+      "path": "proof-02/run.log",
+      "sha256Bytes": "3644c384cddb725111c4ca338649a95f3a3cccb6f5b314b8510e02796e237003",
+      "bytes": 1442
+    },
+    {
+      "path": "prove.py",
+      "sha256Bytes": "c98f5a3007d133c595453167d3887a40fda24f0bce4a99d8e023666eca62c0c6",
+      "bytes": 3068
+    }
+  ]
+}

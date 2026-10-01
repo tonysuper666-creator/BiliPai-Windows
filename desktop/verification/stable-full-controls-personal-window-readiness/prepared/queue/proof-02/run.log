@@ -1,0 +1,15 @@
+PASS original VM current cached History resolves real CID and 45000 ms before queue admission
+PASS same Controller initial source consumes exact cached History part and seconds
+PASS actual same Library checkpoint records selected CID and initial 45 seconds
+PASS original callback reveals the loaded current queue without ordinary open
+PASS reveal preserves queue token and native source version
+PASS same Listen owner consumes original milliseconds and exact part
+PASS audio callback reveals current owned Listen queue
+PASS same Listen store preserves real CID and 45-second progress
+PASS retired reveal ticket cannot claim a foreign audio source
+PASS foreign source remains untouched by stale queue callback
+PASS all credentials exist only in actual ephemeral SessionStore
+ORIGIN originalHistory=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-49/main-kotlin.jar
+ORIGIN preparedController=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-personal-queue-start-parity/compile-02/candidate.jar
+ORIGIN preparedListen=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-personal-queue-start-parity/compile-02/candidate.jar
+RESULT assertions=11 groups=1 MainIntegrated=false HTTP=false HWND=false nativeDevice=false

@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanelActionPolicy.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/VideoSettingsPanelActionPolicy.kt",
+  "edits": [],
+  "sourceSha256LF": "fec3bc4195fe564506ff096efab8f0af701ee4ac1f8e996c4a351b3de828c279",
+  "generatedSha256LF": "fec3bc4195fe564506ff096efab8f0af701ee4ac1f8e996c4a351b3de828c279",
+  "reverseExact": true
+}

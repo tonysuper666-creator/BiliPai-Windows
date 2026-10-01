@@ -131,8 +131,9 @@ internal class ListenAudioSession(
         startQueue(items, index, positionSeconds, null)
 
     /** Same native actor as ordinary Listen playback; no fabricated parallel session. */
-    internal fun playQueueForOwner(owner: Any, items: List<PlaylistItem>, index: Int = 0): Boolean {
-        startQueue(items, index, 0.0, owner)
+    internal fun playQueueForOwner(owner: Any, items: List<PlaylistItem>, index: Int = 0,
+        positionSeconds: Double? = null): Boolean {
+        startQueue(items, index, positionSeconds?.takeIf { it.isFinite() && it >= 0.0 } ?: 0.0, owner)
         return ownsQueue(owner)
     }
 

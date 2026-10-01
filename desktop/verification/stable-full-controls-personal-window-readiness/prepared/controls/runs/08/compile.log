@@ -1,0 +1,339 @@
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:86:63: error: unresolved reference 'PlaybackCompletionBehavior'.
+    fun getPlaybackCompletionBehavior(context: Context): Flow<PlaybackCompletionBehavior> =
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:88:14: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+            .map { preferences ->
+             ^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:90:24: error: unresolved reference 'PlaybackCompletionBehavior'.
+                    ?: PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC.value
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:91:17: error: unresolved reference 'PlaybackCompletionBehavior'.
+                PlaybackCompletionBehavior.fromValue(value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:93:14: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            .onEach { behavior ->
+             ^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:93:23: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            .onEach { behavior ->
+                      ^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:98:14: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            .distinctUntilChanged()
+             ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:103:19: error: unresolved reference 'PlaybackCompletionBehavior'.
+        behavior: PlaybackCompletionBehavior
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:107:70: error: unresolved reference 'value'.
+            preferences[KEY_PLAYBACK_COMPLETION_BEHAVIOR] = behavior.value
+                                                                     ^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:113:62: error: unresolved reference 'PlaybackCompletionBehavior'.
+    private fun rememberPlaybackCompletionBehavior(behavior: PlaybackCompletionBehavior) {
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:114:58: error: unresolved reference 'value'.
+        playbackCompletionBehaviorMemoryCache = behavior.value
+                                                         ^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:120:19: error: unresolved reference 'PlaybackCompletionBehavior'.
+        behavior: PlaybackCompletionBehavior,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:126:17: error: unresolved reference 'PlaybackCompletionBehavior'.
+                PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC.value
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:131:14: error: unresolved reference 'shouldHealPlaybackCompletionSharedPreferences'.
+        if (!shouldHealPlaybackCompletionSharedPreferences(behavior.value, current)) {
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:131:69: error: unresolved reference 'value'.
+        if (!shouldHealPlaybackCompletionSharedPreferences(behavior.value, current)) {
+                                                                    ^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:135:70: error: unresolved reference 'value'.
+            .putInt(CACHE_KEY_PLAYBACK_COMPLETION_BEHAVIOR, behavior.value)
+                                                                     ^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:335:59: error: unresolved reference 'BottomProgressBehavior'.
+    fun getBottomProgressBehavior(context: Context): Flow<BottomProgressBehavior> =
+                                                          ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:336:40: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+        context.settingsDataStore.data.map { preferences ->
+                                       ^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:337:13: error: unresolved reference 'BottomProgressBehavior'.
+            BottomProgressBehavior.fromValue(
+            ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoControlSettings.kt:339:24: error: unresolved reference 'BottomProgressBehavior'.
+                    ?: BottomProgressBehavior.ALWAYS_HIDE.value
+                       ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\LandscapeDanmakuComposer.kt:118:25: error: unresolved reference 'resolveDanmakuSendSelectionState'.
+        val selection = resolveDanmakuSendSelectionState(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\LandscapeDanmakuComposer.kt:471:9: error: unresolved reference 'DanmakuCustomColorPickerDialog'.
+        DanmakuCustomColorPickerDialog(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\components\LandscapeDanmakuComposer.kt:473:27: error: cannot infer type for value parameter 'picked'. Specify it explicitly.
+            onConfirm = { picked ->
+                          ^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderDisplayPolicy.kt:3:44: error: unresolved reference 'PlaybackCompletionBehavior'.
+import com.android.purebilibili.core.store.PlaybackCompletionBehavior
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderDisplayPolicy.kt:6:15: error: unresolved reference 'PlaybackCompletionBehavior'.
+    behavior: PlaybackCompletionBehavior,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderDisplayPolicy.kt:9:35: error: unresolved reference 'label'.
+    if (!compact) return behavior.label
+                                  ^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderDisplayPolicy.kt:10:12: error: 'when' expression must be exhaustive. Add an 'else' branch.
+    return when (behavior) {
+           ^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderDisplayPolicy.kt:11:9: error: unresolved reference 'PlaybackCompletionBehavior'.
+        PlaybackCompletionBehavior.STOP_AFTER_CURRENT -> "ÔÝÍ£"
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderDisplayPolicy.kt:12:9: error: unresolved reference 'PlaybackCompletionBehavior'.
+        PlaybackCompletionBehavior.PLAY_IN_ORDER -> "Ë³²¥"
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderDisplayPolicy.kt:13:9: error: unresolved reference 'PlaybackCompletionBehavior'.
+        PlaybackCompletionBehavior.REPEAT_ONE -> "µ¥Ñ­"
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderDisplayPolicy.kt:14:9: error: unresolved reference 'PlaybackCompletionBehavior'.
+        PlaybackCompletionBehavior.LOOP_PLAYLIST -> "ÁÐÑ­"
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderDisplayPolicy.kt:15:9: error: unresolved reference 'PlaybackCompletionBehavior'.
+        PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC -> "Á¬²¥"
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:29:37: error: unresolved reference 'LocalConfiguration'.
+import androidx.compose.ui.platform.LocalConfiguration
+                                    ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:33:16: error: unresolved reference 'content'.
+import android.content.res.Configuration
+               ^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:35:44: error: unresolved reference 'PlaybackCompletionBehavior'.
+import com.android.purebilibili.core.store.PlaybackCompletionBehavior
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:51:22: error: unresolved reference 'PlaybackCompletionBehavior'.
+    currentBehavior: PlaybackCompletionBehavior,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:52:16: error: unresolved reference 'PlaybackCompletionBehavior'.
+    onSelect: (PlaybackCompletionBehavior) -> Unit,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:56:25: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val nativeOptions = listOf(
+                        ^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:57:9: error: unresolved reference 'PlaybackCompletionBehavior'.
+        PlaybackCompletionBehavior.STOP_AFTER_CURRENT,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:58:9: error: unresolved reference 'PlaybackCompletionBehavior'.
+        PlaybackCompletionBehavior.PLAY_IN_ORDER,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:59:9: error: unresolved reference 'PlaybackCompletionBehavior'.
+        PlaybackCompletionBehavior.REPEAT_ONE,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:60:9: error: unresolved reference 'PlaybackCompletionBehavior'.
+        PlaybackCompletionBehavior.LOOP_PLAYLIST,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:61:9: error: unresolved reference 'PlaybackCompletionBehavior'.
+        PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:68:23: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        nativeOptions.forEachIndexed { index, behavior ->
+                      ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:68:47: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        nativeOptions.forEachIndexed { index, behavior ->
+                                              ^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:71:53: error: unresolved reference 'label'.
+                item = DropdownItem(text = behavior.label),
+                                                    ^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:82:25: error: unresolved reference 'LocalConfiguration'.
+    val configuration = LocalConfiguration.current
+                        ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:83:52: error: unresolved reference 'Configuration'.
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+                                                   ^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:122:22: error: unresolved reference 'PlaybackCompletionBehavior'.
+    currentBehavior: PlaybackCompletionBehavior,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:123:16: error: unresolved reference 'PlaybackCompletionBehavior'.
+    onSelect: (PlaybackCompletionBehavior) -> Unit,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:162:22: error: unresolved reference 'PlaybackCompletionBehavior'.
+    currentBehavior: PlaybackCompletionBehavior,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:163:16: error: unresolved reference 'PlaybackCompletionBehavior'.
+    onSelect: (PlaybackCompletionBehavior) -> Unit,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:185:23: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val options = listOf(
+                      ^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:186:13: error: unresolved reference 'PlaybackCompletionBehavior'.
+            PlaybackCompletionBehavior.STOP_AFTER_CURRENT,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:187:13: error: unresolved reference 'PlaybackCompletionBehavior'.
+            PlaybackCompletionBehavior.PLAY_IN_ORDER,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:188:13: error: unresolved reference 'PlaybackCompletionBehavior'.
+            PlaybackCompletionBehavior.REPEAT_ONE,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:189:13: error: unresolved reference 'PlaybackCompletionBehavior'.
+            PlaybackCompletionBehavior.LOOP_PLAYLIST,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:190:13: error: unresolved reference 'PlaybackCompletionBehavior'.
+            PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:193:17: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        options.forEachIndexed { index, behavior ->
+                ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:193:41: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        options.forEachIndexed { index, behavior ->
+                                        ^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:202:37: error: unresolved reference 'label'.
+                    text = behavior.label,
+                                    ^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\PlaybackOrderSelectionSheet.kt:218:33: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            if (index < options.lastIndex) {
+                                ^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:9:53: error: unresolved reference 'rememberPanelFrameRateLabel'.
+import com.android.purebilibili.core.ui.performance.rememberPanelFrameRateLabel
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:52:46: error: unresolved reference 'shouldAllowRuntimeShaderBackedHazeEffect'.
+import com.android.purebilibili.core.ui.blur.shouldAllowRuntimeShaderBackedHazeEffect
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:103:44: error: unresolved reference 'BottomProgressBehavior'.
+import com.android.purebilibili.core.store.BottomProgressBehavior
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:104:44: error: unresolved reference 'PlaybackCompletionBehavior'.
+import com.android.purebilibili.core.store.PlaybackCompletionBehavior
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:106:54: error: unresolved reference 'resolveVideoDetailSystemBarsVisibilityPolicy'.
+import com.android.purebilibili.feature.video.screen.resolveVideoDetailSystemBarsVisibilityPolicy
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:415:15: error: unresolved reference 'BottomProgressBehavior'.
+    behavior: BottomProgressBehavior
+              ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:418:12: error: 'when' expression must be exhaustive. Add an 'else' branch.
+    return when (behavior) {
+           ^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:419:9: error: unresolved reference 'BottomProgressBehavior'.
+        BottomProgressBehavior.ALWAYS_SHOW -> true
+        ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:420:9: error: unresolved reference 'BottomProgressBehavior'.
+        BottomProgressBehavior.ALWAYS_HIDE -> false
+        ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:421:9: error: unresolved reference 'BottomProgressBehavior'.
+        BottomProgressBehavior.ONLY_SHOW_FULLSCREEN -> isFullscreen
+        ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:422:9: error: unresolved reference 'BottomProgressBehavior'.
+        BottomProgressBehavior.ONLY_HIDE_FULLSCREEN -> !isFullscreen
+        ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:837:31: error: unresolved reference 'rememberPanelFrameRateLabel'.
+    val panelFrameRateLabel = rememberPanelFrameRateLabel()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:1013:53: error: unresolved reference 'BottomProgressBehavior'.
+        .collectAsStateWithLifecycle(initialValue = BottomProgressBehavior.ALWAYS_HIDE
+                                                    ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:1061:53: error: unresolved reference 'PlaybackCompletionBehavior'.
+        .collectAsStateWithLifecycle(initialValue = PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:1069:41: error: unresolved reference 'resolveVideoDetailSystemBarsVisibilityPolicy'.
+    val playerChromeStatusBarVisible = !resolveVideoDetailSystemBarsVisibilityPolicy(
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:1346:13: error: unresolved reference 'ImmersiveStatusBarBackdrop'.
+            ImmersiveStatusBarBackdrop(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:1423:13: error: unresolved reference 'PersistentBottomProgressBar'.
+            PersistentBottomProgressBar(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:1449:44: error: argument type mismatch: actual type is 'WideNavigationRailValue', but 'Boolean' was expected.
+                        statusBarVisible = playerChromeStatusBarVisible,
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:1497:44: error: argument type mismatch: actual type is 'WideNavigationRailValue', but 'Boolean' was expected.
+                        statusBarVisible = playerChromeStatusBarVisible,
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:1549:102: error: null cannot be a value of a non-null type 'Long'.
+                            !target?.nextBvid.isNullOrBlank() -> onDrawerVideoClick(target.nextBvid, null)
+                                                                                                     ^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:1811:56: error: unresolved reference 'exportPlayerDiagnostic'.
+                                val savedPath = Logger.exportPlayerDiagnostic(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:1819:94: error: unresolved reference 'LENGTH_LONG'.
+                                        com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_LONG
+                                                                                             ^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:1963:23: error: argument type mismatch: actual type is 'VideoSharePayload?', but 'VideoSharePayload' was expected.
+            payload = pendingVideoShare,
+                      ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2225:30: error: unresolved reference 'PlaybackCompletionBehavior'.
+                onSelect = { behavior ->
+                             ^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2476:24: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val layoutPolicy = remember(uiLayoutWidthDp, compactPlayerChrome) {
+                       ^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2477:9: error: unresolved reference 'resolvePortraitTopBarLayoutPolicy'.
+        resolvePortraitTopBarLayoutPolicy(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2487:21: error: unresolved reference 'shouldApplyStatusBarPaddingToPortraitTopBar'.
+                if (shouldApplyStatusBarPaddingToPortraitTopBar(statusBarVisible = statusBarVisible)) {
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2494:43: error: unresolved reference 'horizontalPaddingDp'.
+                horizontal = layoutPolicy.horizontalPaddingDp.dp,
+                                          ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2495:41: error: unresolved reference 'verticalPaddingDp'.
+                vertical = layoutPolicy.verticalPaddingDp.dp
+                                        ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2503:71: error: unresolved reference 'leftSectionSpacingDp'.
+            horizontalArrangement = Arrangement.spacedBy(layoutPolicy.leftSectionSpacingDp.dp)
+                                                                      ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2508:55: error: unresolved reference 'buttonSizeDp'.
+                modifier = Modifier.size(layoutPolicy.buttonSizeDp.dp)
+                                                      ^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2514:59: error: unresolved reference 'iconSizeDp'.
+                    modifier = Modifier.size(layoutPolicy.iconSizeDp.dp)
+                                                          ^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2520:55: error: unresolved reference 'buttonSizeDp'.
+                modifier = Modifier.size(layoutPolicy.buttonSizeDp.dp)
+                                                      ^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2526:59: error: unresolved reference 'iconSizeDp'.
+                    modifier = Modifier.size(layoutPolicy.iconSizeDp.dp)
+                                                          ^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2535:45: error: unresolved reference 'onlineCountFontSp'.
+                    fontSize = layoutPolicy.onlineCountFontSp.sp,
+                                            ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2543:71: error: unresolved reference 'rightSectionSpacingDp'.
+            horizontalArrangement = Arrangement.spacedBy(layoutPolicy.rightSectionSpacingDp.dp)
+                                                                      ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2548:28: error: argument type mismatch: actual type is 'Comparator<uninferred T (of fun <T> Comparator<T>.then)>', but 'Modifier' was expected.
+                modifier = Modifier
+                           ^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2549:40: error: unresolved reference 'buttonSizeDp'.
+                    .size(layoutPolicy.buttonSizeDp.dp)
+                                       ^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2550:22: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                    .then(
+                     ^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2551:25: error: argument type mismatch: actual type is 'Modifier', but 'Comparator<in uninferred T (of fun <T> Comparator<T>.then)>' was expected.
+                        if (isAudioOnly) Modifier.background(MaterialTheme.colorScheme.primary, CircleShape)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2559:59: error: unresolved reference 'iconSizeDp'.
+                    modifier = Modifier.size(layoutPolicy.iconSizeDp.dp)
+                                                          ^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2566:59: error: unresolved reference 'buttonSizeDp'.
+                    modifier = Modifier.size(layoutPolicy.buttonSizeDp.dp)
+                                                          ^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2572:63: error: unresolved reference 'iconSizeDp'.
+                        modifier = Modifier.size(layoutPolicy.iconSizeDp.dp)
+                                                              ^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2580:55: error: unresolved reference 'buttonSizeDp'.
+                modifier = Modifier.size(layoutPolicy.buttonSizeDp.dp)
+                                                      ^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2586:59: error: unresolved reference 'iconSizeDp'.
+                    modifier = Modifier.size(layoutPolicy.iconSizeDp.dp)
+                                                          ^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2650:59: error: unresolved reference 'buttonSizeDp'.
+                    modifier = Modifier.size(layoutPolicy.buttonSizeDp.dp)
+                                                          ^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2656:63: error: unresolved reference 'iconSizeDp'.
+                        modifier = Modifier.size(layoutPolicy.iconSizeDp.dp)
+                                                              ^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2675:9: error: unresolved reference 'shouldAllowRuntimeShaderBackedHazeEffect'.
+        shouldAllowRuntimeShaderBackedHazeEffect(Build.VERSION.SDK_INT)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\ui\overlay\VideoPlayerOverlay.kt:2675:50: error: unresolved reference 'Build'.
+        shouldAllowRuntimeShaderBackedHazeEffect(Build.VERSION.SDK_INT)
+                                                 ^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\usecase\DesktopOriginalOverlayPlaybackActions.kt:90:5: error: unresolved reference 'PlaybackMediaCache'.
+    PlaybackMediaCache.logSeek(
+    ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-full-controls-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\usecase\DesktopOriginalOverlayPlaybackActions.kt:125:9: error: unresolved reference 'shouldPauseForPlaybackToggle'.
+        shouldPauseForPlaybackToggle(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

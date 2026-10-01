@@ -1,0 +1,13 @@
+{
+  "observer": "Root using computer-use sky on the unique fixture-owned window",
+  "actualSnapshot": 50,
+  "productionOverrides": 0,
+  "normalWindowLayout": "FAIL",
+  "layoutAccepted": false,
+  "observation": "After the real original exit-fullscreen control, Main screenshot was about 588x407 while the original controls popup was about 886x584 and extended over the desktop outside Main. Native video occupied the upper-left part. This persisted in normal window mode; fullscreen controls were observed at 2560x1440.",
+  "screenshotUnits": "Sky returned screenshot dimensions; these are not assumed to be raw HWND or AWT units.",
+  "realSkySteps": ["exit fullscreen", "enter fullscreen", "exit fullscreen", "next episode"],
+  "fixtureFailure": "After next episode disposed the original clicked popup, the evidence collector attempted Native.getWindowPointer on that disposed old popup. The actual task/native source had changed to BVfixture_2_80/source3 and was ready.",
+  "actualMainShellAccepted": false,
+  "hardwareMouseAccepted": false
+}

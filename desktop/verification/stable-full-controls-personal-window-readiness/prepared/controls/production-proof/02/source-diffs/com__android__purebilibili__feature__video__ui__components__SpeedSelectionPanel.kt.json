@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SpeedSelectionPanel.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/SpeedSelectionPanel.kt",
+  "edits": [],
+  "sourceSha256LF": "c1d3395d19f6a4f6ffd6c76cd7aabebd62a2b6a3399b348935235e0a7360b16a",
+  "generatedSha256LF": "c1d3395d19f6a4f6ffd6c76cd7aabebd62a2b6a3399b348935235e0a7360b16a",
+  "reverseExact": true
+}

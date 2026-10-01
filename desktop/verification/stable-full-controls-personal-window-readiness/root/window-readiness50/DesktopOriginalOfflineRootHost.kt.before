@@ -1,0 +1,100 @@
+package com.bilipai.desktop.ui
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.android.purebilibili.core.ui.components.AppText
+import com.android.purebilibili.core.ui.components.AppTextButton
+import com.android.purebilibili.feature.download.resolveOfflineMiniPlayerPayload
+import com.bilipai.desktop.player.PictureInPictureController
+import com.bilipai.desktop.player.WindowsMediaSession
+import com.bilipai.desktop.plugins.DesktopPluginContext
+import com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences
+import kotlinx.coroutines.CoroutineScope
+import java.awt.Window
+
+/** Uses the existing Root media actors and the sole full original foreground carrier. */
+@Composable
+internal fun DesktopOriginalOfflineRootHost(
+    taskId: String,
+    backend: DesktopOfflineTaskPlayerBinding,
+    entryScope: CoroutineScope,
+    context: DesktopPluginContext,
+    preferences: DesktopOriginalDanmakuPreferences,
+    presentation: DesktopDanmakuPresentationBinding,
+    systemMedia: WindowsMediaSession?,
+    pictureInPicture: PictureInPictureController?,
+    pipActive: Boolean,
+    window: Window?,
+    isFullscreen: () -> Boolean,
+    setFullscreen: (Boolean) -> Unit,
+    restoreCurrentRootChrome: () -> Unit,
+    onBack: () -> Unit,
+    feedback: (String) -> Unit,
+) {
+    val actualPipActive by rememberUpdatedState(pipActive)
+    val foregroundActive by rememberUpdatedState(LocalDesktopDetailForeground.current)
+    val currentFeedback by rememberUpdatedState(feedback)
+    val currentFullscreen by rememberUpdatedState(isFullscreen)
+    val setActualFullscreen by rememberUpdatedState(setFullscreen)
+    val restoreChrome by rememberUpdatedState(restoreCurrentRootChrome)
+    val surface = remember(backend, pictureInPicture, window) {
+        object : DesktopOriginalOfflineSurface {
+            @Composable
+            override fun Render(player: DesktopOfflineMpvControl, modifier: Modifier, foreground: @Composable () -> Unit) {
+                val controls: @Composable () -> Unit = {
+                    Box(Modifier.fillMaxSize()) {
+                        foreground()
+                        if (player.isOwned() && foregroundActive && pictureInPicture != null && window != null &&
+                            !player.nativePlayer.state.value.audioOnly) {
+                            AppTextButton(
+                                modifier = Modifier.align(Alignment.TopEnd).padding(top = 58.dp, end = 20.dp),
+                                onClick = {
+                                    if (player.isOwned() && foregroundActive) {
+                                        if (actualPipActive) pictureInPicture.restore()
+                                        else backend.selectedTask(player.taskId)?.let { task ->
+                                            if (!task.item.isAudioOnly) pictureInPicture.open(window, resolveOfflineMiniPlayerPayload(task.item).title)
+                                        }
+                                    }
+                                },
+                            ) { AppText(if (actualPipActive) "返回主窗口" else "浮窗") }
+                        }
+                        if (actualPipActive) AppText("正在浮窗播放", modifier = Modifier.align(Alignment.Center))
+                    }
+                }
+                if (actualPipActive) {
+                    // PiP currently owns this exact Canvas. No second Canvas or command popup is mounted.
+                    if (player.isForegroundOwned() && foregroundActive) Box(modifier.background(Color.Black)) { controls() }
+                } else {
+                    DesktopOriginalPlayerSurface(player.nativePlayer, player.sourceVersion,
+                        { player.isForegroundOwned() && foregroundActive }, modifier, controls)
+                }
+            }
+        }
+    }
+    val windowEffects = remember(backend) {
+        object : DesktopOfflineWindowEffects {
+            override fun applyFullscreen(fullscreen: Boolean) {
+                if (backend.isOwned() && currentFullscreen() != fullscreen) setActualFullscreen(fullscreen)
+            }
+            override fun restoreCurrentRootChrome() { restoreChrome() }
+        }
+    }
+    val media = remember(systemMedia, pictureInPicture, backend) {
+        DesktopOfflineRootMediaEffects(systemMedia, pictureInPicture, backend) { currentFeedback(it) }
+    }
+    val bindings = remember(backend, entryScope, context, preferences, presentation, surface, windowEffects, media) {
+        DesktopOriginalOfflinePlayerBindings(context, backend, entryScope, preferences, presentation,
+            windowEffects, surface, media) { currentFeedback(it) }
+    }
+    DesktopOriginalOfflinePlayerHost(taskId, bindings) {
+        if (backend.isOwned()) {
+            if (backend.ownsAcceptedSource()) pictureInPicture?.close()
+            onBack()
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-49",
+  "manifestSha": "7db2b7bc2816c9b7f10521c1ad1678196f4446a8bcde5cc5a837d678ac675a35",
+  "orderedCpSha": "569b953e5def0dcaba76d9a6a6d96fea9f3572ad910e6edf13f23b88d91ee821",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-queue-start-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopPersonalQueueStart.kt",
+      "sha256Bytes": "ebf1de83141b4034def07d1cebfb724dc1be264db5d7cd945ca0605a26c80530"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-queue-start-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopPlaybackController.kt",
+      "sha256Bytes": "a69073f38d9f8b96d6c80a92b0c070cf293b812d65689dc48f6920fcd9923225"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-queue-start-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256Bytes": "c0197dad7c87c532ff8afec6b6af41f9da753531a940e27c8f0fa3952f03f9ba"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-queue-start-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\ListenAudioSession.kt",
+      "sha256Bytes": "4f4ec3ad0dfc0aa1eb5ba5147b9632f3619d0f79961bbb783755ff853ab96523"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-queue-start-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopFavoriteQueueBridge.kt",
+      "sha256Bytes": "1ca11e61906f6a98da809612a3068c0ea303191ad6762c93bfb0c43695f256fb"
+    }
+  ],
+  "prepared": true,
+  "mainIntegration": false,
+  "productOverrides": "explicit four Controller/Listen/Bridge/Shell existing source families",
+  "serializationCompiler": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-serialization-compiler-plugin-embeddable\\2.4.0\\9c09aa2727d9ade95c1b0a00458e74feced83908\\kotlin-serialization-compiler-plugin-embeddable-2.4.0.jar",
+    "sha256Bytes": "272d419cb12e9a8aba4e6fa7a76bfc486f97dc0f79a32ef1397b1f175bc35c50"
+  },
+  "exit": 0
+}

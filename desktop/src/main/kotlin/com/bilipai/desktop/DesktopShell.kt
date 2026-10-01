@@ -1380,7 +1380,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                         physicalDestination is BiliPaiNavKey.AudioMode,pipActive,true,false,
                         physicalDestination is BiliPaiNavKey.VideoDetail,actualWindow.width>actualWindow.height,
                         physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe,library)
-                DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists ->
+                DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences ->
                     CompositionLocalProvider(LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable)) {
 
                 val section = desktopReadySection(entryKey)
@@ -1629,6 +1629,60 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     }
                                 }
                             }
+                            entryKey is BiliPaiNavKey.Following -> {
+                                val entry=remember(personalLists,entryKey) {personalLists.following(entryKey)}
+                                DesktopDetailWindow {
+                                    DesktopOriginalFollowingHost(entry,onBack={commands.back()},
+                                        onUserClick={mid->openUser(mid)},isCurrentPage=active && !activatingUpdate)
+                                }
+                            }
+                            entryKey == BiliPaiNavKey.WatchLater || entryKey is BiliPaiNavKey.WatchLaterSearch -> {
+                                val entry = personalLists.watchLater(entryKey)
+                                val queue = entry.queueBridge {
+                                    DesktopFavoriteQueueBridge(playback,listen,entry::owns,
+                                        {audio -> systemTargetAudio == audio}, beforeOpen = {audio ->
+                                            if(!entry.owns() || isClosing() || activatingUpdate ||
+                                                !checkpointForNavigation() || (audio && listen == null)) false
+                                            else {
+                                                changePreferences(preferences.copy(playbackMode = com.bilipai.desktop.player.PlaybackMode.SEQUENTIAL))
+                                                storyHost.retire();retainedMedia.stop()
+                                                if(audio) {playback.pause();systemTargetAudio=true}
+                                                else {listen?.pause();systemTargetAudio=false}
+                                                true
+                                            }
+                                        }, revealVideo = {
+                                            playback.state.value.queue.getOrNull(playback.state.value.queueIndex)?.let {card ->
+                                                if(entry.owns()) commands.video(BiliPaiNavKey.VideoDetail(card.bvid,
+                                                    card.preferredCid,card.cover,sourceRoute=entry.key.toLegacyRoute()))
+                                            }
+                                        }, revealAudio = {
+                                            listen?.state?.value?.current?.let {item -> if(entry.owns()) commands.push(
+                                                BiliPaiNavKey.AudioMode(item.bvid,item.cid,
+                                                    (listen.player.state.value.positionSeconds*1000L).toLong()))}
+                                        })
+                                }
+                                val bindings = remember(entry,queue,originalHomePreferences) {
+                                    DesktopWatchLaterBindings(originalHomePreferences.homeSettings,
+                                        originalHomePreferences.navigation,desktopDetailRenderEffectsSupported(),
+                                        {items,index,audio,position -> queue.openQueue(items,index,audio,position)})
+                                }
+                                val navigation = remember(entry,commands) {
+                                    val article=DesktopPersonalArticleResolver(repository.ownedHomeCallFactory(
+                                        personalLists.gate.epoch,entry::owns),entry::owns)
+                                    DesktopPersonalListNavigation({key -> if(entry.owns()) commands.push(key)},
+                                        {route -> if(entry.owns()) commands.push(com.android.purebilibili.navigation3.legacyRouteToBiliPaiNavKey(route))},
+                                        article::resolve,{key -> if(entry.owns()) commands.video(key)})
+                                }
+                                DesktopDetailWindow {
+                                    DesktopOriginalWatchLaterHost(entry,bindings,navigation,
+                                        onBack={commands.back()},onOpenSearch={commands.push(BiliPaiNavKey.WatchLaterSearch(it))},
+                                        revealQueue=queue::revealIfOwned,
+                                        onPlayAllAudio={_,_,_ -> error="音频播放器当前不可用"},
+                                        searchChannel=personalLists.watchLaterSearchChannel,
+                                        scrollToTopChannel=personalLists.watchLaterScrollToTopChannel,
+                                        globalHazeState=personalLists.globalHazeState,isCurrentPage=active && !activatingUpdate)
+                                }
+                            }
                             entryKey == BiliPaiNavKey.History || entryKey is BiliPaiNavKey.HistorySearch || entryKey is BiliPaiNavKey.LikedVideos -> {
                                 val entry = if (entryKey is BiliPaiNavKey.LikedVideos) personalLists.liked(entryKey)
                                     else personalLists.history(entryKey)
@@ -1663,7 +1717,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 val bindings = remember(entry, queue, rootTextShareBindings) {
                                     DesktopFavoriteBindings(prefs.showOnlineCount, prefs.homeSettings, prefs.initialHomeSettings(),
                                         prefs.navigationSettings, prefs.initialNavigationSettings(), entry.categories,
-                                        queue::openQueue, queue::appendQueue,
+                                        { items,index,audio ->
+                                            desktopOriginalPersonalQueueStart(entry.viewModel,items,index)?.let { start ->
+                                                queue.openQueue(start.first,index,audio,start.second)
+                                            }
+                                        }, queue::appendQueue,
                                         { subject, text, _ -> requestDesktopTextShare(rootTextShareBindings, entry.scope,
                                             subject, text, entry::owns, { error = it }) }, prefs.homeFeedCardStyle,
                                         desktopDetailRenderEffectsSupported(), prefs.backToTopEnabled, prefs.initialBackToTopEnabled(),
@@ -1691,13 +1749,6 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         isCurrentPage = active && !activatingUpdate)
                                 }
                             }
-                            section in listOf(DesktopSection.WATCH_LATER, DesktopSection.FOLLOWINGS) ->
-                                PersonalContentScreen(when(section) {
-                                    DesktopSection.CLOUD_HISTORY -> PersonalSection.HISTORY
-                                    DesktopSection.WATCH_LATER -> PersonalSection.WATCH_LATER
-                                    DesktopSection.LIKED -> PersonalSection.LIKED
-                                    else -> PersonalSection.FOLLOWINGS
-                                }, repository, social, community, ::openVideo, ::openUser, { loginDialog = true }, ::openResource, ::openCollection)
                             section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { loginDialog = true },
                                 space = space, onResource = ::openResource, initialTitle = collectionTitle)
                             section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin)

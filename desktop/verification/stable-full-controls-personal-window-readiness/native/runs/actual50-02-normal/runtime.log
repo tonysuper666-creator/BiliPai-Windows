@@ -1,0 +1,37 @@
+PASS Unchanged full original renderer owns exact local task and actual native first frame
+PASS Actual original landscape entry applies real fixture Window fullscreen placement
+WAITING_ROOT_SKY step=1 control=退出全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof\runs\actual50-02-normal\fixture-owned-runtime\external-input-1.done
+PASS Original exit fullscreen control receives real HWND messages and changes original local state
+WAITING_ROOT_SKY step=2 control=全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof\runs\actual50-02-normal\fixture-owned-runtime\external-input-2.done
+PASS Stable original native fullscreen control applies actual placement
+WAITING_ROOT_SKY step=3 control=退出全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof\runs\actual50-02-normal\fixture-owned-runtime\external-input-3.done
+WAITING_ROOT_SKY step=4 control=下一集 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof\runs\actual50-02-normal\fixture-owned-runtime\external-input-4.done
+Exception in thread "main" java.util.concurrent.ExecutionException: java.lang.IllegalStateException: Component must be displayable
+	at java.base/java.util.concurrent.FutureTask.report(FutureTask.java:122)
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:191)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.edt(OfflineNativeFixture.kt:76)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.access$edt(OfflineNativeFixture.kt:1)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.clickOriginal(OfflineNativeFixture.kt:339)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.clickOriginal$default(OfflineNativeFixture.kt:286)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.run(OfflineNativeFixture.kt:442)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.main(OfflineNativeFixture.kt:532)
+Caused by: java.lang.IllegalStateException: Component must be displayable
+	at com.sun.jna.Native$AWT.getComponentID(Native.java:2442)
+	at com.sun.jna.Native$AWT.getWindowID(Native.java:2429)
+	at com.sun.jna.Native.getWindowPointer(Native.java:362)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.clickOriginal$lambda$11$0(OfflineNativeFixture.kt:339)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.edt$lambda$0(OfflineNativeFixture.kt:76)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:308)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:714)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:742)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)

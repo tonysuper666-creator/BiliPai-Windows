@@ -1,0 +1,19 @@
+{
+  "status": "PASS_FIXTURE_ONLY",
+  "actualSnapshot": 50,
+  "entries": 97,
+  "productionOverrides": 0,
+  "fixtureSource": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\OfflineNativeFixture.kt",
+    "sha256Bytes": "a6ec46fc36a83ec94645d831f8229143ef4b875872159148715c3e9659261ee6"
+  },
+  "fixtureJarSha256": "95a914c87cc090aaf2dc09a78e0552c79418b041cf914888096d6ab1fc6c40f3",
+  "allOriginalRendererAndPlatformFamiliesFromActualProduct": [
+    "com/bilipai/desktop/ui/DesktopOriginalOfflineRootHostKt.class",
+    "com/android/purebilibili/feature/download/OfflineVideoPlayerScreenKt.class",
+    "com/bilipai/desktop/ui/DesktopOriginalOfflinePlayerBindings.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSurfaceKt.class",
+    "com/bilipai/desktop/ui/DesktopOfflineMpvControl.class"
+  ],
+  "sharedGradle": false
+}

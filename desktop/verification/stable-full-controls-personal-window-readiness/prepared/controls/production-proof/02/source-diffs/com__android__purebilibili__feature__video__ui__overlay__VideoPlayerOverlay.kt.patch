@@ -1,0 +1,385 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt
++++ com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt
+@@ -8,9 +8,6 @@
+ import com.android.purebilibili.core.ui.isMiuixNonGlassEnabled
+ import com.android.purebilibili.core.ui.performance.rememberPanelFrameRateLabel
+ 
+-import android.content.ClipData
+-import android.content.Context
+-import android.os.Build
+ import androidx.compose.animation.*
+ import androidx.compose.animation.core.tween
+ import androidx.compose.foundation.BorderStroke
+@@ -45,14 +42,13 @@
+ import androidx.compose.ui.unit.IntSize
+ import androidx.compose.ui.unit.IntOffset
+ import com.android.purebilibili.core.ui.motion.AppMotionEasing
+-import androidx.media3.common.Player
++import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player
+ import com.android.purebilibili.core.store.DanmakuSettingsScope
+ import com.android.purebilibili.core.store.DanmakuPanelWidthMode
+ import com.android.purebilibili.core.store.PortraitDanmakuDisplayAreaMode
+ 
+ import com.android.purebilibili.core.ui.blur.unifiedBlur
+ import com.android.purebilibili.core.ui.blur.BlurSurfaceType
+-import com.android.purebilibili.core.ui.blur.shouldAllowRuntimeShaderBackedHazeEffect
+ import com.android.purebilibili.core.util.FormatUtils
+ import com.android.purebilibili.feature.video.danmaku.DanmakuCloudSyncUiState
+ // Import reusable components from standalone files
+@@ -73,7 +69,6 @@
+ import com.android.purebilibili.feature.video.ui.components.LandscapeSidePanelEdge
+ import com.android.purebilibili.data.model.response.SponsorProgressMarker
+ import com.android.purebilibili.data.model.response.ViewPoint
+-import com.android.purebilibili.data.repository.VideoRepository
+ import com.android.purebilibili.data.repository.isCastDashManifestAvailable
+ import com.android.purebilibili.data.repository.selectCastDashAudio
+ import com.android.purebilibili.data.repository.selectCastDashVideo
+@@ -86,7 +81,7 @@
+ import com.android.purebilibili.feature.anime4k.VideoEnhancementAlgorithm
+ import com.android.purebilibili.core.ui.AdaptiveLoadingIndicator
+ import com.android.purebilibili.core.plugin.skin.LocalUiSkinState
+-import com.android.purebilibili.core.plugin.skin.UiSkinAnimatedAsset
++import com.bilipai.desktop.ui.DesktopOriginalPlayerSkinAsset as UiSkinAnimatedAsset
+ import com.android.purebilibili.core.plugin.skin.UiSkinSurface
+ import com.android.purebilibili.core.plugin.skin.assetPath
+ import com.android.purebilibili.core.ui.components.AppButton
+@@ -101,22 +96,23 @@
+ import kotlinx.coroutines.launch
+ import kotlinx.coroutines.withContext
+ import kotlinx.coroutines.Dispatchers
+-
+-import androidx.compose.ui.platform.LocalContext
++import kotlinx.coroutines.ensureActive
++
++import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext
++import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context
+ import com.android.purebilibili.core.store.BottomProgressBehavior
+ import com.android.purebilibili.core.store.PlaybackCompletionBehavior
+-import com.android.purebilibili.core.store.SettingsManager
++import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings as SettingsManager
+ import com.android.purebilibili.feature.video.screen.resolveVideoDetailSystemBarsVisibilityPolicy
+-import com.android.purebilibili.core.store.player.PlayerSettingsStore
++import com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings as PlayerSettingsStore
+ import com.android.purebilibili.core.ui.adaptive.MotionTier
+ import com.android.purebilibili.core.ui.adaptive.resolveDeviceUiProfile
+ import com.android.purebilibili.core.ui.adaptive.resolveEffectiveMotionTier
+ import com.android.purebilibili.feature.video.share.VideoSharePayload
+-import com.android.purebilibili.feature.video.share.VideoShareSheetHost
++import com.bilipai.desktop.ui.DesktopOriginalPlayerVideoShareSheetHost as VideoShareSheetHost
+ import com.android.purebilibili.feature.video.share.buildVideoSharePayload
+ import com.android.purebilibili.core.util.WindowWidthSizeClass
+ import com.android.purebilibili.core.util.Logger
+-import com.android.purebilibili.core.util.NetworkUtils
+ import com.android.purebilibili.feature.anime4k.Anime4KBypassReason
+ import com.android.purebilibili.feature.anime4k.Anime4KPreset
+ import com.android.purebilibili.feature.anime4k.DEFAULT_FSR_SHARPNESS
+@@ -130,7 +126,7 @@
+ import androidx.compose.ui.graphics.vector.ImageVector
+ import androidx.compose.ui.layout.ContentScale
+ import androidx.compose.ui.layout.onSizeChanged
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
+ import com.android.purebilibili.core.ui.rememberAppBookmarkIcon
+ import com.android.purebilibili.core.ui.rememberAppCoinIcon
+ import com.android.purebilibili.core.ui.rememberAppLikeFilledIcon
+@@ -142,12 +138,11 @@
+ import com.android.purebilibili.feature.video.usecase.applyPlaybackButtonUserAction
+ import com.android.purebilibili.feature.video.usecase.playPlayerFromUserAction
+ import com.android.purebilibili.feature.video.usecase.seekPlayerFromUserAction
+-import com.android.purebilibili.feature.cast.DeviceListDialog
++import com.bilipai.desktop.ui.DesktopOriginalPlayerDeviceListDialog as DeviceListDialog
+ import com.android.purebilibili.core.plugin.CastPluginApi
+ import com.android.purebilibili.core.plugin.CastPluginMediaRequest
+ import com.android.purebilibili.core.plugin.CastPluginRoute
+ import com.android.purebilibili.core.plugin.CastPluginPlaybackState
+-import com.android.purebilibili.feature.cast.LocalProxyServer
+ import androidx.compose.animation.core.LinearEasing
+ import androidx.compose.animation.core.animateFloatAsState
+ import androidx.compose.foundation.Canvas
+@@ -264,10 +259,14 @@
+     currentQuality: Int,
+     currentVideoUrl: String
+ ): CastMediaResolution? = withContext(Dispatchers.IO) {
++    kotlinx.coroutines.currentCoroutineContext().ensureActive()
++    context.requireCurrent()
+     val tvData = runCatching {
+-        VideoRepository.getTvCastPlayData(aid = currentAid, cid = cid, qn = currentQuality)
+-    }.getOrNull()
+-
++        context.videoOverlay.getTvCastPlayData(aid = currentAid, cid = cid, qn = currentQuality)
++    }.onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }.getOrNull()
++
++    kotlinx.coroutines.currentCoroutineContext().ensureActive()
++    context.requireCurrent()
+     if (tvData != null) {
+         val durlUrl = tvData.durl.orEmpty().firstOrNull { it.url.isNotBlank() }?.url
+             ?: tvData.durl.orEmpty().firstNotNullOfOrNull { segment ->
+@@ -283,11 +282,11 @@
+             val selectedAudio = selectCastDashAudio(dash.audio.orEmpty(), dash.dolby, dash.flac)
+             if (selectedVideo != null && selectedAudio != null) {
+                 val proxyVideo = selectedVideo.copy(
+-                    baseUrl = LocalProxyServer.getProxyUrl(context, selectedVideo.getValidUrl()),
++                    baseUrl = context.videoOverlay.castProxyUrl(selectedVideo.getValidUrl()),
+                     backupUrl = null
+                 )
+                 val proxyAudio = selectedAudio.copy(
+-                    baseUrl = LocalProxyServer.getProxyUrl(context, selectedAudio.getValidUrl()),
++                    baseUrl = context.videoOverlay.castProxyUrl(selectedAudio.getValidUrl()),
+                     backupUrl = null
+                 )
+                 val durationMs = resolveCastDashDurationMs(tvData.timelength, dash.duration)
+@@ -298,20 +297,20 @@
+                     videoTracks = listOf(proxyVideo),
+                     audioTracks = listOf(proxyAudio)
+                 )
+-                val manifestUrl = LocalProxyServer.registerDashManifest(context, manifest)
+-                return@withContext CastMediaResolution(url = manifestUrl, contentType = LocalProxyServer.DASH_CONTENT_TYPE)
++                val manifestUrl = context.videoOverlay.registerCastDashManifest(manifest)
++                return@withContext CastMediaResolution(url = manifestUrl, contentType = context.videoOverlay.dashContentType)
+             }
+         }
+     }
+ 
+     runCatching {
+         if (currentVideoUrl.isBlank()) return@runCatching null
+-        LocalProxyServer.ensureStarted()
++        context.videoOverlay.ensureCastProxyStarted()
+         CastMediaResolution(
+-            url = LocalProxyServer.getProxyUrl(context, currentVideoUrl),
++            url = context.videoOverlay.castProxyUrl(currentVideoUrl),
+             contentType = "video/mp4"
+         )
+-    }.getOrNull()
++    }.onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }.getOrNull()
+ }
+ 
+ internal fun shouldPollInlineVideoOverlayProgress(
+@@ -722,7 +721,7 @@
+     onCoin: () -> Unit = {},
+     onToggleFavorite: () -> Unit = {},
+     // 复用 onRelatedVideoClick 或 onVideoClick
+-    onDrawerVideoClick: (String, android.os.Bundle?) -> Unit = { _, _ -> },
++    onDrawerVideoClick: (String, Long) -> Unit = { _, _ -> },
+     // 分P
+     pages: List<com.android.purebilibili.data.model.response.Page> = emptyList(),
+     currentPageIndex: Int = 0,
+@@ -780,7 +779,7 @@
+         showPlaybackOrderSheet = false
+         showCastDialog = false
+     }
+-    var currentSpeed by remember(player) { mutableFloatStateOf(player.playbackParameters.speed) }
++    var currentSpeed by remember(player) { mutableFloatStateOf(player.playbackSpeed) }
+     //  使用传入的比例状态
+     var isPlaying by remember(player) {
+         mutableStateOf(
+@@ -821,26 +820,22 @@
+         player.playbackState,
+         player.currentPosition,
+         player.bufferedPosition,
+-        player.playerError
++        player.playerErrorMessage
+     ) {
+         val viewport = playerViewportSize
+             .takeIf { it.width > 0 && it.height > 0 }
+             ?.let { "${it.width} x ${it.height}" }
+             .orEmpty()
+-        val cdnHost = runCatching { android.net.Uri.parse(currentVideoUrl).host.orEmpty() }
++        val cdnHost = runCatching { java.net.URI(currentVideoUrl).host.orEmpty() }
+             .getOrDefault("")
+         debugInfo.copy(
+             resolution = debugInfo.resolution.ifBlank { realResolution },
+             playerViewport = viewport,
+             cdnHost = cdnHost,
+             cdnIndex = "${currentCdnIndex + 1}/${cdnCount.coerceAtLeast(1)}",
+-            networkType = NetworkUtils.getNetworkTypeLabel(context),
++            networkType = context.videoOverlay.networkTypeLabel(),
+             forwardBuffer = "${(player.bufferedPosition - player.currentPosition).coerceAtLeast(0L)} ms",
+-            lastLoadError = player.playerError?.let { error ->
+-                listOf(error.errorCodeName, error.message.orEmpty())
+-                    .filter { it.isNotBlank() }
+-                    .joinToString(": ")
+-            } ?: debugInfo.lastLoadError
++            lastLoadError = player.playerErrorMessage ?: debugInfo.lastLoadError
+         )
+     }
+     val panelFrameRateLabel = rememberPanelFrameRateLabel()
+@@ -881,13 +876,9 @@
+     ) {
+         { issue ->
+             val liveDebugInfo = effectiveDebugInfo.copy(
+-                networkType = NetworkUtils.getNetworkTypeLabel(context),
++                networkType = context.videoOverlay.networkTypeLabel(),
+                 forwardBuffer = "${(player.bufferedPosition - player.currentPosition).coerceAtLeast(0L)} ms",
+-                lastLoadError = player.playerError?.let { error ->
+-                    listOf(error.errorCodeName, error.message.orEmpty())
+-                        .filter { it.isNotBlank() }
+-                        .joinToString(": ")
+-                } ?: effectiveDebugInfo.lastLoadError
++                lastLoadError = player.playerErrorMessage ?: effectiveDebugInfo.lastLoadError
+             )
+             buildPlaybackDiagnosticReport(
+                 title = videoTitle.ifBlank { title },
+@@ -1096,15 +1087,8 @@
+         )
+     }
+ 
+-    DisposableEffect(player) {
+-        currentSpeed = player.playbackParameters.speed
+-        val speedListener = object : Player.Listener {
+-            override fun onPlaybackParametersChanged(playbackParameters: androidx.media3.common.PlaybackParameters) {
+-                currentSpeed = playbackParameters.speed
+-            }
+-        }
+-        player.addListener(speedListener)
+-        onDispose { player.removeListener(speedListener) }
++    LaunchedEffect(player) {
++        player.state.collect { if (player.isOwned()) currentSpeed = player.playbackSpeed }
+     }
+     
+ 
+@@ -1566,7 +1550,7 @@
+                         val target = nextEpisodeTarget
+                         when {
+                             target?.nextPageIndex != null -> onPageSelect(target.nextPageIndex)
+-                            !target?.nextBvid.isNullOrBlank() -> onDrawerVideoClick(target.nextBvid, null)
++                            !target?.nextBvid.isNullOrBlank() -> onDrawerVideoClick(target.nextBvid, 0L)
+                         }
+                     },
+                     hasNextEpisode = nextEpisodeTarget != null,
+@@ -1772,18 +1756,11 @@
+                 diagnosticEvents = diagnosticEvents,
+                 onCopyReport = if (playerDiagnosticLoggingEnabled) {
+                     {
+-                        val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE)
+-                            as android.content.ClipboardManager
+-                        clipboard.setPrimaryClip(
+-                            ClipData.newPlainText(
+-                                "BiliPai Player Diagnostics",
+-                                exportDiagnosticReport(null)
+-                            )
+-                        )
+-                        android.widget.Toast.makeText(
++                        context.videoOverlay.copyText("BiliPai Player Diagnostics", exportDiagnosticReport(null))
++                        com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(
+                             context,
+                             "播放器诊断已复制",
+-                            android.widget.Toast.LENGTH_SHORT
++                            com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT
+                         ).show()
+                     }
+                 } else {
+@@ -1835,17 +1812,14 @@
+                         }
+                         AppTextButton(
+                             onClick = {
+-                                val savedPath = Logger.exportPlayerDiagnostic(
+-                                    context = context,
+-                                    content = exportDiagnosticReport(signal)
+-                                )
+-                                android.widget.Toast.makeText(
++                                val savedPath = context.videoOverlay.exportPlayerDiagnostic(exportDiagnosticReport(signal))
++                                com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(
+                                     context,
+                                     if (savedPath != null) "已导出到: $savedPath" else "导出失败，请稍后重试",
+                                     if (savedPath != null) {
+-                                        android.widget.Toast.LENGTH_LONG
++                                        com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_LONG
+                                     } else {
+-                                        android.widget.Toast.LENGTH_SHORT
++                                        com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT
+                                     }
+                                 ).show()
+                                 dismissedPlaybackIssueTypes = dismissedPlaybackIssueTypes + signal.type
+@@ -2378,7 +2352,7 @@
+                         val resolution = resolveCastPlayUrl(context, currentAid, cid, currentQuality, currentVideoUrl)
+                         if (resolution == null) {
+                             showCastDialog = false
+-                            android.widget.Toast.makeText(context, "投屏地址解析失败", android.widget.Toast.LENGTH_SHORT).show()
++                            com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(context, "投屏地址解析失败", com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT).show()
+                             return@launch
+                         }
+                         val pluginCastUrl = resolution.url
+@@ -2388,7 +2362,7 @@
+                             creator = videoOwnerName,
+                             contentType = resolution.contentType
+                         )
+-                        val result = plugin.cast(context, route, mediaRequest)
++                        val result = plugin.cast(context.pluginContext, route, mediaRequest)
+                         showCastDialog = false
+                         if (result.isSuccess) {
+                             val state = plugin.playbackState.value
+@@ -2410,7 +2384,7 @@
+                         } else {
+                             "投屏失败：${result.exceptionOrNull()?.message ?: "未知错误"}"
+                         }
+-                        android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
++                        com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(context, message, com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT).show()
+                     }
+                 }
+             )
+@@ -2432,7 +2406,7 @@
+ 
+             val resolution = resolveCastPlayUrl(context, currentAid, cid, currentQuality, currentVideoUrl)
+             if (resolution == null) {
+-                android.widget.Toast.makeText(context, "投屏地址解析失败", android.widget.Toast.LENGTH_SHORT).show()
++                com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(context, "投屏地址解析失败", com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT).show()
+                 return@LaunchedEffect
+             }
+ 
+@@ -2450,15 +2424,15 @@
+                 autoplay = pluginPlaybackState.isPlaying
+             )
+ 
+-            val result = plugin.cast(context, route, request)
++            val result = plugin.cast(context.pluginContext, route, request)
+             if (result.isSuccess) {
+                 lastCastMediaSignature = currentCastSignature
+                 lastCastMediaUrl = resolution.url
+             } else {
+-                android.widget.Toast.makeText(
++                com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(
+                     context,
+                     "投屏画质切换失败：${result.exceptionOrNull()?.message ?: "未知错误"}",
+-                    android.widget.Toast.LENGTH_SHORT
++                    com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.LENGTH_SHORT
+                 ).show()
+             }
+         }
+@@ -2699,7 +2673,7 @@
+ ) {
+     val panelShape = AppShapes.container(ContainerLevel.Floating)
+     val realtimeHazeState = hazeState?.takeIf {
+-        shouldAllowRuntimeShaderBackedHazeEffect(Build.VERSION.SDK_INT)
++        com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()
+     }
+     AppSurface(
+         modifier = modifier.then(
+@@ -2834,7 +2808,7 @@
+     isFollowed: Boolean,
+     // Callbacks
+     onToggleFollow: () -> Unit,
+-    onVideoClick: (String, android.os.Bundle?) -> Unit,
++    onVideoClick: (String, Long) -> Unit,
+     hazeState: HazeState? = null,
+     modifier: Modifier = Modifier
+ ) {
+@@ -3050,7 +3024,7 @@
+                                         screenWidthDp = configuration.screenWidthDp,
+                                         motionTier = overlayMotionTier,
+                                         isCurrent = video.bvid == currentBvid,
+-                                        onClick = { onVideoClick(video.bvid, null) }
++                                        onClick = { onVideoClick(video.bvid, video.cid) }
+                                     )
+                                 }
+                             }
+@@ -3099,9 +3073,7 @@
+                                             onClick = {
+                                                 onVideoClick(
+                                                     episode.bvid,
+-                                                    com.android.purebilibili.feature.video.screen.buildVideoNavigationOptions(
+-                                                        targetCid = episode.cid
+-                                                    )
++                                                    episode.cid
+                                                 )
+                                             }
+                                         )

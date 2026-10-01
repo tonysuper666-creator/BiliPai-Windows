@@ -1,0 +1,61 @@
+{
+  "newSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+      "sha256": "6d6ce126d9df0a90db5104be0151980006cf3300be55db9e25dae15289674ce1",
+      "mode": "direct",
+      "features": [
+        "stable-personal-following"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingLayoutPolicy.kt",
+      "sha256": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b",
+      "mode": "direct",
+      "features": [
+        "stable-personal-following"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingUserPresentationPolicy.kt",
+      "sha256": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9",
+      "mode": "direct",
+      "features": [
+        "stable-personal-following"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/FollowingCacheStore.kt",
+      "sha256": "217da212735a1397d9a367343c76b6ed8e2668dccb62a048bdaa8e6def6afa7a",
+      "mode": "selected",
+      "features": [
+        "stable-personal-following"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingListScreen.kt",
+      "sha256": "973c52505a2abe39e1ed0f8ae1ad51199076fd8482f50dbe50c2b1725f8412c8",
+      "mode": "selected",
+      "features": [
+        "stable-personal-following"
+      ]
+    }
+  ],
+  "mergeFeatures": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "requiredExistingSha256": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+      "preserveExistingMode": true,
+      "addFeatures": [
+        "stable-personal-following"
+      ]
+    }
+  ],
+  "references": [
+    "core/network/ApiClient.kt",
+    "data/model/response/ListModels.kt",
+    "core/util/PinyinUtils.kt",
+    "navigation3/BiliPaiNavKey.kt"
+  ],
+  "noWholeRegistryReplacement": true
+}

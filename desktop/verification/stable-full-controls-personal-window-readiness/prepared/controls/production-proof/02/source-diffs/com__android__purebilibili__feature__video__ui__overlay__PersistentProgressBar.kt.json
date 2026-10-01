@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+  "edits": [],
+  "sourceSha256LF": "6ad6ecece75468f4e11cd257710c1b8df78e3b695cca2eb26d0e485a5ea41e62",
+  "generatedSha256LF": "6ad6ecece75468f4e11cd257710c1b8df78e3b695cca2eb26d0e485a5ea41e62",
+  "reverseExact": true
+}

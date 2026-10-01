@@ -1,0 +1,31 @@
+{
+  "status": "FAIL",
+  "snapshot": 50,
+  "runtimeEntries": 97,
+  "productionOverrides": 0,
+  "diagnosticBaselinesMounted": false,
+  "originalEntryFullscreenAccepted": true,
+  "stableOriginalControlFullscreenAccepted": false,
+  "realSkyMousePairs": 0,
+  "assertions": 2,
+  "requestedScopeFullyAccepted": false,
+  "layoutAccepted": false,
+  "actualMainShellAccepted": false,
+  "hardwareMouseAccepted": false,
+  "realAccountAccepted": false,
+  "OSSMTCButtonAccepted": false,
+  "externalF11Accepted": false,
+  "arbitraryRouteDisposalPlacementRestorationAccepted": false,
+  "checks": [
+    {
+      "name": "Unchanged full original renderer owns exact local task and actual native first frame",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual original landscape entry applies real fixture Window fullscreen placement",
+      "passed": true,
+      "requiredForIndependentControls": false
+    }
+  ]
+}

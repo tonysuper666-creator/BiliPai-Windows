@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt",
+  "edits": [],
+  "sourceSha256LF": "9a73e4ade99ef5b8842c1e4110cb7afb0b6c8d8afa643951b559e6ce1a5025bc",
+  "generatedSha256LF": "9a73e4ade99ef5b8842c1e4110cb7afb0b6c8d8afa643951b559e6ce1a5025bc",
+  "reverseExact": true
+}

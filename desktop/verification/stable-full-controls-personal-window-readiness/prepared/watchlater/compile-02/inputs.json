@@ -1,0 +1,36 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-48",
+  "manifestSha": "298fd01851352c496f011fef69f9091652c6ba41ea0223a418ee298762cab89d",
+  "orderedCpSha": "2ae45d9e07b65c705807c27ace118cb0f9cdb320a54793b144e80e760f8ed7a1",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\manual\\com\\android\\purebilibili\\feature\\watchlater\\DesktopWatchLaterEnvironment.kt",
+      "sha256Bytes": "273c7d3942da1875e1f11fdeaec65a913935d065f905250bd79f25b830982399"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopWatchLaterBindings.kt",
+      "sha256Bytes": "085c5950f6598bf35e0dd244560c21df9a3e8b283178b05a569f5863ba469975"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\selected\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalWatchLaterRepository.kt",
+      "sha256Bytes": "1b5751403741cfd2554ace8bd6392038f16d1ddf3d06cb5066a4d0c4f37087db"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\watchlater\\WatchLaterLayoutPolicy.kt",
+      "sha256Bytes": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\watchlater\\WatchLaterPlaybackPolicy.kt",
+      "sha256Bytes": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-watchlater-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\watchlater\\WatchLaterScreen.kt",
+      "sha256Bytes": "3557dfd05214ffa51a758f8bd98db34466f13bda47145e5343b3f7b5bf01054b"
+    }
+  ],
+  "prepared": true,
+  "mainIntegration": false,
+  "productOverrides": "none",
+  "exit": 0
+}

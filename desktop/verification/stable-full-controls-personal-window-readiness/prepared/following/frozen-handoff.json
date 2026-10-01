@@ -1,0 +1,435 @@
+{
+  "scope": "prepared full original Following source/UI/VM/cache/actions integration",
+  "mainIntegration": false,
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualBase": {
+    "manifest": "7db2b7bc2816c9b7f10521c1ad1678196f4446a8bcde5cc5a837d678ac675a35",
+    "orderedCp": "569b953e5def0dcaba76d9a6a6d96fea9f3572ad910e6edf13f23b88d91ee821",
+    "entries": 97
+  },
+  "gates": {
+    "compile": "compile-06",
+    "proof": "proof-04",
+    "assertions": 16,
+    "groups": 1,
+    "pointerPairs": 1,
+    "audit": "audit-04",
+    "sourceChecks": 42
+  },
+  "installWhitelistSha": "add19df9af061ac329354fbc472088916d5c2731458ca5067d345ffd887a14bb",
+  "recipeSha": "fe2e5ded15dd14b756b436b3147f01e0e18272c861770370da4ccc19573dd04a",
+  "artifacts": [
+    {
+      "path": "audit-01/source-inventory.json",
+      "sha256Bytes": "8079848a291e192775169eccf062cf00cb5626ead0b17ee78b332957cdddd6c6",
+      "sizeBytes": 37730
+    },
+    {
+      "path": "audit-02/consumer-patch.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "audit-02/producer-patch.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "audit-02/result.json",
+      "sha256Bytes": "a3cd368850936cf6219358d3837e065e934c42fe6bfeb7f90328cbb7881e9af4",
+      "sizeBytes": 21112
+    },
+    {
+      "path": "audit-02/source-inventory.json",
+      "sha256Bytes": "b9f6bbf333384f40a73e7f6cfec936e4d4ac1ca5a4d2165f92194fa52e341f9a",
+      "sizeBytes": 37730
+    },
+    {
+      "path": "audit-03/source-inventory.json",
+      "sha256Bytes": "7caacbb80bd77d73870bd2fe448468a09245926e1b889042ce142add6e8cc3ad",
+      "sizeBytes": 37730
+    },
+    {
+      "path": "audit-04/consumer-patch.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "audit-04/producer-patch.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "audit-04/result.json",
+      "sha256Bytes": "8c9be9ca0ddd44da96809b9f1555142d7650ab18577e7efd64cd324604cc3a78",
+      "sizeBytes": 21525
+    },
+    {
+      "path": "audit-04/source-inventory.json",
+      "sha256Bytes": "7caacbb80bd77d73870bd2fe448468a09245926e1b889042ce142add6e8cc3ad",
+      "sizeBytes": 37730
+    },
+    {
+      "path": "audit.py",
+      "sha256Bytes": "3d7fd705ed43d962ea13f7d9af98b80bc091db9cdf62432bc769c6b8431c6b3d",
+      "sizeBytes": 8531
+    },
+    {
+      "path": "compile-01/compile.args",
+      "sha256Bytes": "f11d0118a9de34116def643a2a47b295a97ccff3ebbb71ff0478cb1cfbb6e4ce",
+      "sizeBytes": 27540
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "388e71e60090d866807cdd5d593af84a180830f4c947a1ebf30c1b1ac47bdb76",
+      "sizeBytes": 3845
+    },
+    {
+      "path": "compile-01/inputs.json",
+      "sha256Bytes": "6f4408d8d9e712823d242f1b5b0cc5d286d30d4a1dbc65e303be22bbab014661",
+      "sizeBytes": 4235
+    },
+    {
+      "path": "compile-02/compile.args",
+      "sha256Bytes": "ef1e8c86ccc2f5766520b08adeaaa8e064a05bbfa75216b1a67bdd2ce4cee111",
+      "sizeBytes": 27703
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "bdd69629b588b6c5977ec4b7d6ee29f987c763443564867ef4db518572ff2888",
+      "sizeBytes": 49225
+    },
+    {
+      "path": "compile-02/inputs.json",
+      "sha256Bytes": "6f4408d8d9e712823d242f1b5b0cc5d286d30d4a1dbc65e303be22bbab014661",
+      "sizeBytes": 4235
+    },
+    {
+      "path": "compile-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "3346a06da7f9ec53e8c102d3d7418ee0db3c643a21a4a12df302afcab8574fc0",
+      "sizeBytes": 275
+    },
+    {
+      "path": "compile-03/compile.args",
+      "sha256Bytes": "cc1586ad4c9e15f02e2cdb9508d303c83096fedc6778051eb6b9c882f14223a0",
+      "sizeBytes": 27866
+    },
+    {
+      "path": "compile-03/compile.log",
+      "sha256Bytes": "0e220887b190145306e7f0cd746b69916c9d29dd4ebb1485777e0b2ced63dd5a",
+      "sizeBytes": 6957
+    },
+    {
+      "path": "compile-03/inputs.json",
+      "sha256Bytes": "90a51016b17fdc4fe03b476fdd0ae77a312a629750b4f452714f51aac7a869a8",
+      "sizeBytes": 4235
+    },
+    {
+      "path": "compile-04/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "3346a06da7f9ec53e8c102d3d7418ee0db3c643a21a4a12df302afcab8574fc0",
+      "sizeBytes": 275
+    },
+    {
+      "path": "compile-04/compile.args",
+      "sha256Bytes": "635ebdee8e362d60fc3f385c6ab3e29e3447fa9aad3dd5eff69290d99982c411",
+      "sizeBytes": 27866
+    },
+    {
+      "path": "compile-04/compile.log",
+      "sha256Bytes": "0e220887b190145306e7f0cd746b69916c9d29dd4ebb1485777e0b2ced63dd5a",
+      "sizeBytes": 6957
+    },
+    {
+      "path": "compile-04/inputs.json",
+      "sha256Bytes": "e642c0ba472c6b4d10a765680ff0145a5982a315dd2654eb2e719ffa33b57e77",
+      "sizeBytes": 4235
+    },
+    {
+      "path": "compile-05/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "3346a06da7f9ec53e8c102d3d7418ee0db3c643a21a4a12df302afcab8574fc0",
+      "sizeBytes": 275
+    },
+    {
+      "path": "compile-05/compile.args",
+      "sha256Bytes": "ad91fb54864c84100f060e693fac8197c239e1d7273e118dad5961baed95f4c2",
+      "sizeBytes": 27866
+    },
+    {
+      "path": "compile-05/compile.log",
+      "sha256Bytes": "0e220887b190145306e7f0cd746b69916c9d29dd4ebb1485777e0b2ced63dd5a",
+      "sizeBytes": 6957
+    },
+    {
+      "path": "compile-05/inputs.json",
+      "sha256Bytes": "8a2f4bee1eda984cfa3f9240f417244c464d0aacc608090ab5232551bd0448c0",
+      "sizeBytes": 4235
+    },
+    {
+      "path": "compile-06/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "3346a06da7f9ec53e8c102d3d7418ee0db3c643a21a4a12df302afcab8574fc0",
+      "sizeBytes": 275
+    },
+    {
+      "path": "compile-06/compile.args",
+      "sha256Bytes": "abbaac227f3df1d74fb668518589264e0c4008ef1767753ce47bbfc1b5168b43",
+      "sizeBytes": 28115
+    },
+    {
+      "path": "compile-06/compile.log",
+      "sha256Bytes": "0e220887b190145306e7f0cd746b69916c9d29dd4ebb1485777e0b2ced63dd5a",
+      "sizeBytes": 6957
+    },
+    {
+      "path": "compile-06/inputs.json",
+      "sha256Bytes": "2b842811f5d4bd091c7cd2aa2ff90cb389ee71c8f01ef258ecbae80e83363b47",
+      "sizeBytes": 4626
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "fd3a041d658c35953cf23ba1d009519c227c40f41d0b473e0efb282e557c5c9e",
+      "sizeBytes": 3671
+    },
+    {
+      "path": "consumer-bases.json",
+      "sha256Bytes": "eeb70cb05957a4ba832c5cea8017623e8cc387427defbe9370e5f93be4518cdc",
+      "sizeBytes": 788
+    },
+    {
+      "path": "consumer.patch",
+      "sha256Bytes": "135826704aa0474dc634ef86b4fc6836f9c0577f5221324692b5ccdece6cdaa5",
+      "sizeBytes": 8531
+    },
+    {
+      "path": "evidence/original-following-special-group.png",
+      "sha256Bytes": "6c0999ce882148c811a90b61ac8a1cfffa45dcea89c1ab294de33b34f028961e",
+      "sizeBytes": 35150
+    },
+    {
+      "path": "excluded-runtime-artifacts.json",
+      "sha256Bytes": "88f298112067524d5d435efd0590a617bdd0bf86883c6cf1e261d16b20573e20",
+      "sizeBytes": 328994
+    },
+    {
+      "path": "favorite-actions-bases.json",
+      "sha256Bytes": "c3acf8628bbd72a7374b476449959fe820db1953045ebd92b57e43cd5960adb7",
+      "sizeBytes": 383
+    },
+    {
+      "path": "favorite-actions-producer.patch",
+      "sha256Bytes": "746f7f86c81753cce4747a1f7aa8b2639bc9d3663d60af2dbc727291bdebea05",
+      "sizeBytes": 2831
+    },
+    {
+      "path": "fixtures/FollowingFixture.kt",
+      "sha256Bytes": "011d6047aed7f1303d8ec67c575c8c007f0c4e8b469224528446bbb8f5b9cb9d",
+      "sizeBytes": 11914
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "7c6feb65b48a9b2709a400d8078808459d47960f4aab3dd7f5944f94978f995a",
+      "sizeBytes": 3942
+    },
+    {
+      "path": "gradle-snippet.kts",
+      "sha256Bytes": "c465118b400a93a9e8b3ba8cc74827665b120912a99dffd75743c6148eef9289",
+      "sizeBytes": 1145
+    },
+    {
+      "path": "historical-status.json",
+      "sha256Bytes": "fc3c2e048e5a0d042702fd8a428cc76501c70951fec803fac156920a3fa7cbb2",
+      "sizeBytes": 1171
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "add19df9af061ac329354fbc472088916d5c2731458ca5067d345ffd887a14bb",
+      "sizeBytes": 2218
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "2de093da4469da0e468e52b7d45b56a3f8ecd01e2b95813c4994f3bc3dc5d59c",
+      "sizeBytes": 9479
+    },
+    {
+      "path": "prepared/actions/com/android/purebilibili/data/repository/DesktopOriginalFavoriteActions.kt",
+      "sha256Bytes": "09a8c36291d80bc815d6328418927a8fedfcb25f4e7ba6b367c27066ad26891e",
+      "sizeBytes": 17104
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt",
+      "sha256Bytes": "faf98a140db3f4028a6712ee2b36439e42cc9db9689801129738602d9efead81",
+      "sizeBytes": 6191
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "02257c011bc80d99708b87600bfc7cc73713270018ca13d8109b9fe2f369dd1e",
+      "sizeBytes": 161242
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
+      "sha256Bytes": "6ff150322ff5d53b2a57263ddf39c4a506c137687dcf592e56795fbad87b074d",
+      "sizeBytes": 11169
+    },
+    {
+      "path": "prepared/existing/desktop/tools/extract-upstream-favorites.py",
+      "sha256Bytes": "f006041c627cc22c7cd2aaae57a482c3bce48ce5a6345de89720494360013c13",
+      "sizeBytes": 32583
+    },
+    {
+      "path": "prepared/manual/com/android/purebilibili/feature/following/DesktopFollowingEnvironment.kt",
+      "sha256Bytes": "0988680e3bb0f077094f34fc4866049ccb18e4fdcc6e9c4a09a0dbbab61ae1a9",
+      "sizeBytes": 3574
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
+      "sha256Bytes": "f4b5d910f0811971984106053b1a7e1e866880ea22288d6c276c00042cfed47a",
+      "sizeBytes": 1677
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/core/store/FollowingCacheStore.kt",
+      "sha256Bytes": "661222fd4ebfdb29e3aafde94563c6096685cf6ef376529d597e93cb2108160f",
+      "sizeBytes": 3496
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+      "sha256Bytes": "6d6ce126d9df0a90db5104be0151980006cf3300be55db9e25dae15289674ce1",
+      "sizeBytes": 2244
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/feature/following/FollowingLayoutPolicy.kt",
+      "sha256Bytes": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b",
+      "sizeBytes": 251
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/feature/following/FollowingListScreen.kt",
+      "sha256Bytes": "b3c099bd0f545ecfa9aed4f7aea5246de39681b6757d6f105a95a4ac68313264",
+      "sizeBytes": 65282
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/feature/following/FollowingUserPresentationPolicy.kt",
+      "sha256Bytes": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9",
+      "sizeBytes": 1183
+    },
+    {
+      "path": "prepared/tools/extract-upstream-following.py",
+      "sha256Bytes": "83304d9ed33966785ecfd16ea192051416450fe138f25728bcd01cc67265e334",
+      "sizeBytes": 6926
+    },
+    {
+      "path": "proof-01/compile.args",
+      "sha256Bytes": "f8050992ef83c99e74c61e63e9f77938f0bf162b3431e2c5b27c03891fe8614d",
+      "sizeBytes": 25797
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "b75136fc5bbd0a692fe7ca8e68a7dec48b17d851611accfc25dd871c58e0bdf0",
+      "sizeBytes": 933
+    },
+    {
+      "path": "proof-01/proof.json",
+      "sha256Bytes": "3eb66c1a769acce89a35cfc52acf2d61564e4f15f63ddad748490eb9dd758302",
+      "sizeBytes": 986
+    },
+    {
+      "path": "proof-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "9fe417916a1103090745f4b910cc5dceb3b67b56054884ae4288ec37e6ec264b",
+      "sizeBytes": 70
+    },
+    {
+      "path": "proof-02/compile.args",
+      "sha256Bytes": "ad7da12581c638ae64073ee9e7abdf5ffaec527d9f56e4b012c403d327452249",
+      "sizeBytes": 25797
+    },
+    {
+      "path": "proof-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "proof-02/proof.json",
+      "sha256Bytes": "d2886bb65315690bc95311589c1daa9346aae166e995d4b58521d370eb0e8dab",
+      "sizeBytes": 1003
+    },
+    {
+      "path": "proof-02/run.log",
+      "sha256Bytes": "9443c54fb7dabb1fdbe31e3520c293af3f651f874fd66ff468ece43fa4e58eca",
+      "sizeBytes": 1542
+    },
+    {
+      "path": "proof-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "9fe417916a1103090745f4b910cc5dceb3b67b56054884ae4288ec37e6ec264b",
+      "sizeBytes": 70
+    },
+    {
+      "path": "proof-03/compile.args",
+      "sha256Bytes": "c6c9c111f54ef9ad3bc8df7e130fa4f80664983427ba1f4c8f474aea164f4826",
+      "sizeBytes": 25797
+    },
+    {
+      "path": "proof-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "proof-03/proof.json",
+      "sha256Bytes": "2f373ee06459705d6c789c8bc6a25c7ea33a2283530993d7735ebaeb063fe894",
+      "sizeBytes": 1003
+    },
+    {
+      "path": "proof-03/run.log",
+      "sha256Bytes": "2b4a047dbb1d07e6ef59c0d51e57472815fb4b83ab33efcb570d17343e13e0c3",
+      "sizeBytes": 1638
+    },
+    {
+      "path": "proof-04/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "9fe417916a1103090745f4b910cc5dceb3b67b56054884ae4288ec37e6ec264b",
+      "sizeBytes": 70
+    },
+    {
+      "path": "proof-04/compile.args",
+      "sha256Bytes": "1ad3226e45bf1d4f090077ceee4c001e2013b6d3e9d1bb4d1ef795efece6d565",
+      "sizeBytes": 25797
+    },
+    {
+      "path": "proof-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "proof-04/proof.json",
+      "sha256Bytes": "efe2ecfa495ed92faf7cdf3f2fe997826ce5e80e2fceb2cbf532a88c66d5b25a",
+      "sizeBytes": 1003
+    },
+    {
+      "path": "proof-04/run.log",
+      "sha256Bytes": "dc8a9b6692bda22e56c5d161a1439db8e855ae7091988e73bb2cc848479d8237",
+      "sizeBytes": 1725
+    },
+    {
+      "path": "prove.py",
+      "sha256Bytes": "fef0011b561f4cca52716a2ca328b5591b34169d7706a424d1bac84ff4b951b1",
+      "sizeBytes": 3429
+    },
+    {
+      "path": "registry-delta.json",
+      "sha256Bytes": "eda568abf45cbf4aa7871579116cccbe727f29b3f183aba6d23d4055f1d4dec3",
+      "sizeBytes": 2067
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "fe2e5ded15dd14b756b436b3147f01e0e18272c861770370da4ccc19573dd04a",
+      "sizeBytes": 6460
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "00ae65f1f90988288944e5ca3462ef631cc6c6b8fd0f570f2367eaadf9caf451",
+      "sizeBytes": 2423
+    }
+  ],
+  "artifactsCount": 81,
+  "outsideScope": [
+    "Main/EXE acceptance",
+    "real account mutation/HTTP",
+    "Root physical route/native popup/HWND",
+    "remaining personal pages"
+  ]
+}

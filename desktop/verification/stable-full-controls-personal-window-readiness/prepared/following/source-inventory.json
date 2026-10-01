@@ -1,0 +1,52 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "6d6ce126d9df0a90db5104be0151980006cf3300be55db9e25dae15289674ce1",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+      "mode": "direct",
+      "sha256LfUtf8": "6d6ce126d9df0a90db5104be0151980006cf3300be55db9e25dae15289674ce1"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingLayoutPolicy.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingLayoutPolicy.kt",
+      "mode": "direct",
+      "sha256LfUtf8": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingUserPresentationPolicy.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingUserPresentationPolicy.kt",
+      "mode": "direct",
+      "sha256LfUtf8": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/FollowingCacheStore.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "217da212735a1397d9a367343c76b6ed8e2668dccb62a048bdaa8e6def6afa7a",
+    "output": {
+      "path": "com/android/purebilibili/core/store/FollowingCacheStore.kt",
+      "mode": "selected",
+      "sha256LfUtf8": "661222fd4ebfdb29e3aafde94563c6096685cf6ef376529d597e93cb2108160f"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingListScreen.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "973c52505a2abe39e1ed0f8ae1ad51199076fd8482f50dbe50c2b1725f8412c8",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingListScreen.kt",
+      "mode": "selected",
+      "sha256LfUtf8": "b3c099bd0f545ecfa9aed4f7aea5246de39681b6757d6f105a95a4ac68313264"
+    }
+  }
+]

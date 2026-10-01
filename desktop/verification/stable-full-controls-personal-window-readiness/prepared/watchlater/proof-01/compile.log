@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-personal-watchlater-parity\fixtures\WatchLaterFixture.kt:114:119: error: syntax error: Unexpected tokens (use ';' to separate expressions on the same line).
+ fun nodes():List<SemanticsNode> {fun walk(n:SemanticsNode):List<SemanticsNode> =listOf(n)+n.children.flatMap(::walk);return scene.semanticsOwners.flatMap{walk(it.unmergedRootSemanticsNode)}}
+                                                                                                                      ^

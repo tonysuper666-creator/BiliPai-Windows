@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt",
+  "output": "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt",
+  "edits": [],
+  "sourceSha256LF": "97f53347fdc8089128a2c62f582cae699b48bda3e1390f9041a456d7ac561f25",
+  "generatedSha256LF": "97f53347fdc8089128a2c62f582cae699b48bda3e1390f9041a456d7ac561f25",
+  "reverseExact": true
+}

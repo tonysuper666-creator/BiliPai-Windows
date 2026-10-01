@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+  "output": "com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+  "edits": [],
+  "sourceSha256LF": "c22cba7b4b953312f7e0cc6f2dafa7f02626b3ca874efa16a253cf94508b61ec",
+  "generatedSha256LF": "c22cba7b4b953312f7e0cc6f2dafa7f02626b3ca874efa16a253cf94508b61ec",
+  "reverseExact": true
+}

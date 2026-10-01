@@ -1,0 +1,405 @@
+{
+  "status": "DIAGNOSTIC_COMPLETED_NOT_ACCEPTANCE",
+  "actualSnapshot": 49,
+  "runtimeEntries": 97,
+  "productionOverrides": 0,
+  "diagnosticOnly": true,
+  "JDWPHost": "127.0.0.1",
+  "JDWPPort": 5009,
+  "JDIReadOnly": true,
+  "inputInjected": false,
+  "requestedScopeAccepted": false,
+  "all97PinsBeforeAfter": true,
+  "classOriginsAllActualMainKotlin": true,
+  "componentShownClearCalls": [
+    {
+      "elapsedMs": 2261,
+      "thread": "AWT-EventQueue-0",
+      "method": "sun.awt.Win32GraphicsDevice.setFullScreenWindow",
+      "receiver": "sun.java2d.d3d.D3DGraphicsDevice#4713",
+      "arguments": [
+        "null"
+      ],
+      "frames": [
+        "sun.awt.Win32GraphicsDevice.setFullScreenWindow:378",
+        "org.jetbrains.skiko.PlatformOperationsKt$platformOperations$2$2.setFullscreen:96",
+        "org.jetbrains.skiko.HardwareLayer.setFullscreen:49",
+        "org.jetbrains.skiko.FullscreenAdapter.componentShown:41",
+        "java.awt.AWTEventMulticaster.componentShown:190",
+        "java.awt.AWTEventMulticaster.componentShown:189",
+        "java.awt.Component.processComponentEvent:6453",
+        "java.awt.Component.processEvent:6401",
+        "java.awt.Container.processEvent:2266",
+        "java.awt.Window.processEvent:2056",
+        "java.awt.Component.dispatchEventImpl:4996",
+        "java.awt.Container.dispatchEventImpl:2324",
+        "java.awt.Window.dispatchEventImpl:2780",
+        "java.awt.Component.dispatchEvent:4828",
+        "java.awt.EventQueue.dispatchEventImpl:775",
+        "java.awt.EventQueue$4.run:720",
+        "java.awt.EventQueue$4.run:714",
+        "java.security.AccessController.executePrivileged:778",
+        "java.security.AccessController.doPrivileged:400",
+        "java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege:87",
+        "java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege:98",
+        "java.awt.EventQueue$5.run:747",
+        "java.awt.EventQueue$5.run:745",
+        "java.security.AccessController.executePrivileged:778",
+        "java.security.AccessController.doPrivileged:400",
+        "java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege:87",
+        "java.awt.EventQueue.dispatchEvent:744",
+        "java.awt.EventDispatchThread.pumpOneEventForFilters:203",
+        "java.awt.EventDispatchThread.pumpEventsForFilter:124",
+        "java.awt.EventDispatchThread.pumpEventsForHierarchy:113",
+        "java.awt.EventDispatchThread.pumpEvents:109",
+        "java.awt.EventDispatchThread.pumpEvents:101",
+        "java.awt.EventDispatchThread.run:90"
+      ]
+    },
+    {
+      "elapsedMs": 9080,
+      "thread": "AWT-EventQueue-0",
+      "method": "sun.awt.Win32GraphicsDevice.setFullScreenWindow",
+      "receiver": "sun.java2d.d3d.D3DGraphicsDevice#4713",
+      "arguments": [
+        "null"
+      ],
+      "frames": [
+        "sun.awt.Win32GraphicsDevice.setFullScreenWindow:378",
+        "org.jetbrains.skiko.PlatformOperationsKt$platformOperations$2$2.setFullscreen:96",
+        "org.jetbrains.skiko.HardwareLayer.setFullscreen:49",
+        "org.jetbrains.skiko.FullscreenAdapter.componentShown:41",
+        "java.awt.AWTEventMulticaster.componentShown:190",
+        "java.awt.Component.processComponentEvent:6453",
+        "java.awt.Component.processEvent:6401",
+        "java.awt.Container.processEvent:2266",
+        "java.awt.Window.processEvent:2056",
+        "java.awt.Component.dispatchEventImpl:4996",
+        "java.awt.Container.dispatchEventImpl:2324",
+        "java.awt.Window.dispatchEventImpl:2780",
+        "java.awt.Component.dispatchEvent:4828",
+        "java.awt.EventQueue.dispatchEventImpl:775",
+        "java.awt.EventQueue$4.run:720",
+        "java.awt.EventQueue$4.run:714",
+        "java.security.AccessController.executePrivileged:778",
+        "java.security.AccessController.doPrivileged:400",
+        "java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege:87",
+        "java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege:98",
+        "java.awt.EventQueue$5.run:747",
+        "java.awt.EventQueue$5.run:745",
+        "java.security.AccessController.executePrivileged:778",
+        "java.security.AccessController.doPrivileged:400",
+        "java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege:87",
+        "java.awt.EventQueue.dispatchEvent:744",
+        "java.awt.EventDispatchThread.pumpOneEventForFilters:203",
+        "java.awt.EventDispatchThread.pumpEventsForFilter:124",
+        "java.awt.EventDispatchThread.pumpEventsForHierarchy:113",
+        "java.awt.EventDispatchThread.pumpEvents:109",
+        "java.awt.EventDispatchThread.pumpEvents:101",
+        "java.awt.EventDispatchThread.run:90"
+      ]
+    },
+    {
+      "elapsedMs": 13577,
+      "thread": "AWT-EventQueue-0",
+      "method": "sun.awt.Win32GraphicsDevice.setFullScreenWindow",
+      "receiver": "sun.java2d.d3d.D3DGraphicsDevice#4713",
+      "arguments": [
+        "null"
+      ],
+      "frames": [
+        "sun.awt.Win32GraphicsDevice.setFullScreenWindow:378",
+        "org.jetbrains.skiko.PlatformOperationsKt$platformOperations$2$2.setFullscreen:96",
+        "org.jetbrains.skiko.HardwareLayer.setFullscreen:49",
+        "org.jetbrains.skiko.FullscreenAdapter.componentShown:41",
+        "java.awt.AWTEventMulticaster.componentShown:190",
+        "java.awt.Component.processComponentEvent:6453",
+        "java.awt.Component.processEvent:6401",
+        "java.awt.Container.processEvent:2266",
+        "java.awt.Window.processEvent:2056",
+        "java.awt.Component.dispatchEventImpl:4996",
+        "java.awt.Container.dispatchEventImpl:2324",
+        "java.awt.Window.dispatchEventImpl:2780",
+        "java.awt.Component.dispatchEvent:4828",
+        "java.awt.EventQueue.dispatchEventImpl:775",
+        "java.awt.EventQueue$4.run:720",
+        "java.awt.EventQueue$4.run:714",
+        "java.security.AccessController.executePrivileged:778",
+        "java.security.AccessController.doPrivileged:400",
+        "java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege:87",
+        "java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege:98",
+        "java.awt.EventQueue$5.run:747",
+        "java.awt.EventQueue$5.run:745",
+        "java.security.AccessController.executePrivileged:778",
+        "java.security.AccessController.doPrivileged:400",
+        "java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege:87",
+        "java.awt.EventQueue.dispatchEvent:744",
+        "java.awt.EventDispatchThread.pumpOneEventForFilters:203",
+        "java.awt.EventDispatchThread.pumpEventsForFilter:124",
+        "java.awt.EventDispatchThread.pumpEventsForHierarchy:113",
+        "java.awt.EventDispatchThread.pumpEvents:109",
+        "java.awt.EventDispatchThread.pumpEvents:101",
+        "java.awt.EventDispatchThread.run:90"
+      ]
+    }
+  ],
+  "geometryAccepted": false,
+  "futureProductFixIncluded": false,
+  "closed01To13Receipt": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\closed01-13\\frozen-handoff.json",
+    "sha256Bytes": "c1478b0574ec48bc0d072f1a13f4b90afc61fb37bcd3c33cfafa6cd39f7a1966",
+    "size": 158070
+  },
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\acceptance-result.json",
+      "sha256Bytes": "a1eab47eb45dc9e2e4b4ed15b50864dc18d1e150837c8c9c790bd86e438b60c0",
+      "size": 679
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\compile-result.json",
+      "sha256Bytes": "852774703393a758a219d3887b62831810f7e4c5768c15d0eeead27a9c5d5e52",
+      "size": 945
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\compiler.args",
+      "sha256Bytes": "52f7a8943abb0ceee2dab1ae48dd6415bad9cc10f4bf2950b8810d1e5bf82242",
+      "size": 24821
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\fixture-owned-runtime\\fullscreen-jdi.jsonl",
+      "sha256Bytes": "ba18a14656a6847518bde39a21c2c017e44968926b87c853f3a1e062c1a72aef",
+      "size": 60157
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\fixture-owned-runtime\\native-proof.json",
+      "sha256Bytes": "6d8a0b9167b3faf750c90c6591ec440f274c1f9c9aa34c26de93f8601dffffc0",
+      "size": 31096
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\fixture-owned-runtime\\owned-geometry-after-entry.json",
+      "sha256Bytes": "ab319ee8eec48de238ec8c6f5a23253ef040764512ffa74bda5016258b92d569",
+      "size": 2553
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\fixture-owned-runtime\\owned-geometry-before-mount.json",
+      "sha256Bytes": "bae126a974c8c87d18f25ecc9c69a5b6b21110ff4565529cdf6916d9aeaadfb1",
+      "size": 668
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\OfflineNativeFixture.kt",
+      "sha256Bytes": "a0ccebb5b84e6fb3dcbcb013515959cd1b478ed15991624a44f68daf2d600ea6",
+      "size": 43379
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\pins-after.json",
+      "sha256Bytes": "18f3f521f7c8002be4bfa27a89af33c0fdddcf57705818796609d39f735bb33f",
+      "size": 38573
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\pins-before.json",
+      "sha256Bytes": "18f3f521f7c8002be4bfa27a89af33c0fdddcf57705818796609d39f735bb33f",
+      "size": 38573
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\runtime-command.json",
+      "sha256Bytes": "2946da877df5bb9794c32ab5f6f7f2122923b943410a01cdcf3e290e7126dc77",
+      "size": 26734
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\runtime.log",
+      "sha256Bytes": "77ef344b8411a8ef265739f5dfa2a85d4f83091d548c2e5f9e5d60837a1f7712",
+      "size": 436
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic14\\diagnostic-summary.md",
+      "sha256Bytes": "08141149dd451b71fecafc0b71719dd87878d220fc46b6655af2129499209ec1",
+      "size": 1724
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic14\\freeze_diagnostic.py",
+      "sha256Bytes": "582b9a6be890595547a930fe0ea78a2de1739f725213fb03ecba192490386232",
+      "size": 5688
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic14\\FullscreenTrace.java",
+      "sha256Bytes": "e4e0ca116dbbc5f250d7102ec7350ff1e1dbb0a973e26079111f6f001c410400",
+      "size": 5528
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic14\\run.py",
+      "sha256Bytes": "399812413c00dff8b3942681cd38834f8140dfbf00a6b74c51d5e499d254b9b2",
+      "size": 7871
+    }
+  ],
+  "excludedWithHashAndReason": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\ComposableSingletons$OfflineNativeFixtureKt.class",
+      "sha256Bytes": "f33c9613eccd67156f2b5fa5b2245823e57b53f16b85dd8a4e0d19ff1e8b9531",
+      "size": 2917,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$2.class",
+      "sha256Bytes": "18df61de7ddbc02e7323c59fef27c8d396d9208b2214585923cabbba9703f3b9",
+      "size": 1737,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$3.class",
+      "sha256Bytes": "aa228b88f9d89239633f39a6295211e7ceeeefd9a963850fe831cd64195fbb1f",
+      "size": 3333,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$clickOriginal$observer$1.class",
+      "sha256Bytes": "47ecb027ec018c89a4e417d040f0f20b394d3780f53a9ab245d52a082e6e6874",
+      "size": 2295,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$1.class",
+      "sha256Bytes": "d6d6864607d4cfe03fe64ce8a68b046ba025715506c5aef6690ab6c994cf3ed8",
+      "size": 3433,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$10.class",
+      "sha256Bytes": "868973b98169667285d6373f32c3a4eb18496b1018aa7470fc356fb900274c77",
+      "size": 3967,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$4.class",
+      "sha256Bytes": "f977bf7dd64476ebab4d565a4a030b85b8a6fe33134d9422119e5dc9390875d1",
+      "size": 3395,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$5$1.class",
+      "sha256Bytes": "3777667fbde50db24b0ac21d31953be633b283dda81541890f2254687bd59d19",
+      "size": 1661,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$6$2.class",
+      "sha256Bytes": "d18eb081d27df0f749c4df43854915435a43072e3959bc06ac8aaaa87bda1d0e",
+      "size": 2001,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$6.class",
+      "sha256Bytes": "72ef99d251c0a07d6547399a2eb27b75bf1bb764de32e3a7aa353ff909be1397",
+      "size": 4619,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$8.class",
+      "sha256Bytes": "b4e369e358e8d6c3fa01f2dc11fb2d99406d7e918f476a65bc079751fa0dcb7f",
+      "size": 3804,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1.class",
+      "sha256Bytes": "a94a6597c94660dc94e59519ea017d8dc0aebc437d652d7679d741f2d7d15426",
+      "size": 23007,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$5$1$5$1.class",
+      "sha256Bytes": "6acd4212689edef28a30e1ed8f02676e01ed9e44914a914948b8897c78208b03",
+      "size": 1464,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$special$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "54869ba48eead6da230310bfeddb677a1ebcefd78179b9aaf2595a4628fbde37",
+      "size": 2360,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$WhenMappings.class",
+      "sha256Bytes": "be3b286b4a5b312fb48f7a6a313f44d6f594a2a67968de7ef29ba668b9780154",
+      "size": 1086,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture.class",
+      "sha256Bytes": "446036722c69e4dc10009b34a837c2f187ebef20e11b8ff7df23b063c311a89f",
+      "size": 128284,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\FixtureMessages.class",
+      "sha256Bytes": "379bbb12cacb93038c02dd8bd3e006ae3d52f911f8536f9a0352922fd40bc328",
+      "size": 1243,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\FixtureRect.class",
+      "sha256Bytes": "8eed3efb8edb89b9a016f75273172ff1d80db60e7e55b078d30558427dd7e51b",
+      "size": 1320,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\OfflineNativeFixtureKt.class",
+      "sha256Bytes": "3c9c27e7d894d74d5247b71a8df8ba31e7ad985bc39a44519d67d95dbf491c0c",
+      "size": 7761,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\classes\\META-INF\\offline_native_fixture.kotlin_module",
+      "sha256Bytes": "a07008cdeaca800fd61be819ea327892b473e6829f6eabb4ebbc3fa6420a5f54",
+      "size": 92,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\fixture-owned-runtime\\fixture-downloads\\download-38640b2a8844e8730c4717c3\\.bilipai-download",
+      "sha256Bytes": "38640b2a8844e8730c4717c3bc122528307fbbeb44328a63bceb88ec9c9f1031",
+      "size": 14,
+      "reason": "Disposable synthetic fixture task/Store/media data, not user or private-account data."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\fixture-owned-runtime\\fixture-downloads\\download-38640b2a8844e8730c4717c3\\video.mp4",
+      "sha256Bytes": "0e09ab9a6a9af00cee99508e4a3ff41e9436f7d1850e4b31c6ceb0c22d8c4656",
+      "size": 273705,
+      "reason": "Disposable synthetic fixture task/Store/media data, not user or private-account data."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\fixture-owned-runtime\\fixture-downloads\\download-918fb1252169401802bd8f1f\\.bilipai-download",
+      "sha256Bytes": "918fb1252169401802bd8f1fb6178f47d133ab730e24f5bad73741c11fb542e3",
+      "size": 14,
+      "reason": "Disposable synthetic fixture task/Store/media data, not user or private-account data."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\fixture-owned-runtime\\fixture-downloads\\download-918fb1252169401802bd8f1f\\video.mp4",
+      "sha256Bytes": "0e09ab9a6a9af00cee99508e4a3ff41e9436f7d1850e4b31c6ceb0c22d8c4656",
+      "size": 273705,
+      "reason": "Disposable synthetic fixture task/Store/media data, not user or private-account data."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\fixture-owned-runtime\\fixture-queue.json",
+      "sha256Bytes": "a518786630127abdded0d4ef528a686f1066d06e0e3cdf0325a7881ea2a5b597",
+      "size": 2292,
+      "reason": "Disposable synthetic fixture task/Store/media data, not user or private-account data."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual49-14-jdi\\offline-native-fixture.jar",
+      "sha256Bytes": "60408f5648b303818372fde07efdc8bc309bad746170485167b3c1bc4d446700",
+      "size": 79889,
+      "reason": "Rebuildable fixture compiler output; source/compiler arguments and output hashes retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\jdi\\classes\\FullscreenTrace.class",
+      "sha256Bytes": "fbfdfae5fec751ea73b8e1551f34c37fc6353dc17f2beb7444fda766ccea6deb",
+      "size": 9749,
+      "reason": "Rebuildable Root JDI watcher class; full Java source retained."
+    }
+  ],
+  "sharedGradle": false
+}

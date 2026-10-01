@@ -1,0 +1,45 @@
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:918:66: warning: elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+                else if (!item.bvid.isNullOrBlank() || (item.aid ?: 0) > 0) openVideo(VideoCard(item.bvid.orEmpty().ifBlank { "av${item.aid}" },
+                                                                 ^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1105:47: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                title = if (audioTarget) audio!!.current!!.title else offlinePayload?.title ?: if (retainedOwner != null) retainedMedia.title else current.details?.title ?: state.sourceTitle,
+                                              ^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1106:48: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                artist = if (audioTarget) audio!!.current!!.owner else offlinePayload?.owner ?: if (retainedOwner != null) "" else current.details?.author.orEmpty(),
+                                               ^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1107:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                mediaId = if (audioTarget) audio!!.current!!.bvid else offlinePayload?.bvid ?: if (retainedOwner != null) state.sourceTitle else current.details?.bvid ?: state.sourceTitle,
+                                                ^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1109:53: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                hasPrevious = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex > 0 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.previous != null } ?: playback.hasPrevious,
+                                                    ^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1110:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.next != null } ?: playback.hasNext,
+                                                ^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1267:34: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+        if (audioPlayer != null) SwingPanel(factory = { audioPlayer.surface }, background = Color.Transparent, modifier = Modifier.size(1.dp))
+                                 ^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1270:13: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+            SwingPanel(factory={player.surface},background=Color.Transparent,modifier=Modifier.size(1.dp))
+            ^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1373:119: warning: expression is unused.
+                    { expectedEpoch,expectedMid -> authenticationInvalidations.trySend(expectedEpoch to expectedMid); Unit },
+                                                                                                                      ^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1485:61: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+                                                    ((player?.state?.value?.positionSeconds ?: 0.0) * 1000L).toLong() else 0L
+                                                            ^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1494:80: warning: no cast needed.
+                                            initialCommentRootRpid = (entryKey as? BiliPaiNavKey.VideoDetail)?.commentRootRpid ?: 0L,
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1495:82: warning: no cast needed.
+                                            initialCommentTargetRpid = (entryKey as? BiliPaiNavKey.VideoDetail)?.commentTargetRpid ?: 0L,
+                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1496:76: warning: no cast needed.
+                                            commentRouteOpenId = (entryKey as? BiliPaiNavKey.VideoDetail)?.openId ?: 0L,
+                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1497:105: warning: condition is always 'true'.
+                                            auxiliaryContent = if (player != null && danmaku != null && hostWindow != null && commentCid > 0L) ({ owner ->
+                                                                                                        ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-personal-following-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1576:37: warning: condition is always 'false'.
+                                if (entry == null || queue == null || !entry.isOwned()) {
+                                    ^^^^^^^^^^^^^
