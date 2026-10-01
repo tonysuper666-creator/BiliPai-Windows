@@ -1,0 +1,13 @@
+{
+  "productManifestSha": "ba49995574a32aabb30a07578dcfef7e4ae65ccf2882940ffb8d29272ea0695c",
+  "preparedVmDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\classes-vm-06",
+  "candidateClassCount": 143,
+  "actualMainRuntime": false,
+  "overlap": [
+    "com/bilipai/desktop/plugins/DesktopTodayWatchRepository$accountChanged$1.class",
+    "com/bilipai/desktop/plugins/DesktopTodayWatchRepository$consume$1.class",
+    "com/bilipai/desktop/plugins/DesktopTodayWatchRepository.class",
+    "com/bilipai/desktop/plugins/DesktopTodayWatchState.class"
+  ],
+  "expectedReplacement": "DesktopTodayWatchRepository and same DesktopTodayWatchState ONLY; old planner class retired, never merge actors"
+}

@@ -1,0 +1,45 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "preparedOnly": true,
+  "actualProductSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-26",
+  "snapshotManifestSha256Bytes": "ba49995574a32aabb30a07578dcfef7e4ae65ccf2882940ffb8d29272ea0695c",
+  "classpathEntries": 92,
+  "allClasspathBytesVerified": true,
+  "selectedProductionOutputs": 3,
+  "standaloneOutputs": 6,
+  "directSoleCopyCount": 3,
+  "vmExportedFunctions": [
+    "trimIncrementalRefreshVideosToEvenCount",
+    "selectHomeFeedIncomingVideos",
+    "toFeedKind",
+    "shouldAdvanceRecommendFeedRequestIndex",
+    "buildHomeRefreshUndoSnapshot",
+    "shouldExposeHomeRefreshUndo",
+    "shouldRefreshHomeUserInfoAfterFeedLoad",
+    "shouldKeepHomeCategoryAutoPagingAfterFailure",
+    "applyHomeRefreshUndoSnapshot"
+  ],
+  "additionalPackageFunctionConflicts": [],
+  "privateConversionNames": [
+    "toTodayWatchMode",
+    "toTodayWatchPlan",
+    "toTodayUpRanks"
+  ],
+  "privateConversionsRemainFileLocal": true,
+  "soleExistingGlobalSelector": "resolveRecommendFeedRequestIndex",
+  "runtimePatchCheck": true,
+  "elevenCompiledSourceBytesStillCurrent": true,
+  "intentionalClassReplacements": {
+    "productManifestSha": "ba49995574a32aabb30a07578dcfef7e4ae65ccf2882940ffb8d29272ea0695c",
+    "preparedVmDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\classes-vm-06",
+    "candidateClassCount": 143,
+    "actualMainRuntime": false,
+    "overlap": [
+      "com/bilipai/desktop/plugins/DesktopTodayWatchRepository$accountChanged$1.class",
+      "com/bilipai/desktop/plugins/DesktopTodayWatchRepository$consume$1.class",
+      "com/bilipai/desktop/plugins/DesktopTodayWatchRepository.class",
+      "com/bilipai/desktop/plugins/DesktopTodayWatchState.class"
+    ],
+    "expectedReplacement": "DesktopTodayWatchRepository and same DesktopTodayWatchState ONLY; old planner class retired, never merge actors"
+  }
+}

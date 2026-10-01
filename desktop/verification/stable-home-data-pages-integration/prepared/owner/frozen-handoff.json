@@ -1,0 +1,2758 @@
+{
+  "schemaVersion": 1,
+  "scope": "source-only prepared real Root retained Home owner/factory/navigation prerequisite. Narrow compile and5 temporary-store admission groups only; no full Main override-free acceptance, no HTTP/account/window/EXE/mounted Home/Firebase. Four real embedded pages are mandatory, with Root phase1/source installation and phase2/full real mount+old planner retirement separated.",
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualMainBasis": {
+    "manifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-33\\manifest.json",
+    "sha256Bytes": "a94cf303442cc285a81650237f0cc1a3910c47e4f3b1a43e42a23e36e0c63883",
+    "orderedCp": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-33\\ordered-runtime-cp.json",
+    "orderedCpSha256Bytes": "e76eb70649106c7acc0d446c539e6b971fcf578daaca68221a5897fda2fdb09d",
+    "entries": 97,
+    "prospectiveOverrides": "VM287 classes-vm-06 + raw694 classes-ports-05 + explicit original DynamicTimeline getter/Blocked optional-owner delta"
+  },
+  "acceptedCompile": "compile-owner-09.log",
+  "acceptedNarrowRun": "gate-04/run.log",
+  "inputSourceCount": 9,
+  "manualInstallCount": 6,
+  "upstreamNewIdentityCount": 1,
+  "dependenciesAdded": 0,
+  "resourcesAdded": 0,
+  "history": "compile02 type failure, compile05 duplicate route incorrect-owner correction, inventory script corrections and earlier scopes preserved; never install history/reference/classes",
+  "artifacts": [
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "dd449af6da1a172a058a72feb689dcd656812af263e2e8fa4337544d8c7066d0",
+      "bytes": 14548
+    },
+    {
+      "path": "audit-build-corrections.json",
+      "sha256Bytes": "eeaf1f92cc7a1df65c8670b4744f558452957cf69243d6f641c93829adf1582c",
+      "bytes": 802
+    },
+    {
+      "path": "blocked-delta-pins.json",
+      "sha256Bytes": "4857b1993d5e438cd2cf3cb011b4afa8150551a3438ea29ffdb4b24cdb6f6cf0",
+      "bytes": 386
+    },
+    {
+      "path": "class-owner-audit.json",
+      "sha256Bytes": "06f722817d8480f030bfd79ab9b89383194a139716134d1071622fb9587cb519",
+      "bytes": 2818
+    },
+    {
+      "path": "compile-owner-01-sources.json",
+      "sha256Bytes": "f7ec459cb43e6ce9b8126c61df3bec8eba04e100315f7d37943e3eca212e137b",
+      "bytes": 692
+    },
+    {
+      "path": "compile-owner-01.args",
+      "sha256Bytes": "8901a5c7519828585fbcf4df2e340576610d87fb0976e7d57c3d65dd08e04e92",
+      "bytes": 25390
+    },
+    {
+      "path": "compile-owner-01.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-owner-02-sources.json",
+      "sha256Bytes": "74bbbd6128b6d98e4d97f57acc26e38cc86660ab75a7b0208badc5e84dcf0e20",
+      "bytes": 1030
+    },
+    {
+      "path": "compile-owner-02.args",
+      "sha256Bytes": "2bf5ed95ab02ab11deb14c3a78a991fd7cc7eeae7bbb71f863af20c44db58ba0",
+      "bytes": 25599
+    },
+    {
+      "path": "compile-owner-02.log",
+      "sha256Bytes": "0ad699a594e7ae4efc3ed08e8d61e7159da9611aa9920f053dbcc31b87e429ad",
+      "bytes": 1525
+    },
+    {
+      "path": "compile-owner-03-sources.json",
+      "sha256Bytes": "d4d93f6ea520c293f13e8226a4e6f932faaaf76c32e95fe23ac276d9e58bc7e6",
+      "bytes": 1409
+    },
+    {
+      "path": "compile-owner-03.args",
+      "sha256Bytes": "956c1c151a0b0c91e1f90725a734cfd61561b40b688de9c4bee52d0b95ce0893",
+      "bytes": 25845
+    },
+    {
+      "path": "compile-owner-03.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-owner-04-sources.json",
+      "sha256Bytes": "48cc288668be857ee4302deed5bbdfb8d619e485ff01e4f8ec1e1f10edb47cd1",
+      "bytes": 1409
+    },
+    {
+      "path": "compile-owner-04.args",
+      "sha256Bytes": "34aea274267f61531e0b009a84b4ac3606a69964420218647325bf318c00b253",
+      "bytes": 25845
+    },
+    {
+      "path": "compile-owner-04.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-owner-05-sources.json",
+      "sha256Bytes": "e0fb36cc5e000995fdd21f1523459159a3286c897960cff72ebef4a875fff4ff",
+      "bytes": 2459
+    },
+    {
+      "path": "compile-owner-05.args",
+      "sha256Bytes": "e90d38fb52c6df9795bbdec064980ec175237237935220f27497473afe5f271e",
+      "bytes": 26508
+    },
+    {
+      "path": "compile-owner-05.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-owner-06-sources.json",
+      "sha256Bytes": "c1b6b0d3f64c5e965451e5990abb1b319f43a2707565aae55b41a901dc231e5e",
+      "bytes": 2106
+    },
+    {
+      "path": "compile-owner-06.args",
+      "sha256Bytes": "bbf8a0bf5b39a1c8981b37f4931060b0417f46be3d9392d94d3ebf6d96a4160d",
+      "bytes": 26284
+    },
+    {
+      "path": "compile-owner-06.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-owner-07-sources.json",
+      "sha256Bytes": "8c461704f3eb36ab3989269fec97cebb7fc967f6ca0cc70ed120fc91052a29d3",
+      "bytes": 2445
+    },
+    {
+      "path": "compile-owner-07.args",
+      "sha256Bytes": "cee3cbce976c6a7062dda295978e1ea2e051dfd93b54083c75ee5a83e2ba3b6d",
+      "bytes": 26494
+    },
+    {
+      "path": "compile-owner-07.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-owner-08-sources.json",
+      "sha256Bytes": "e77c795f8a1843257a87c76a4c3e0b153a1d710517bc501b52437ebfee1bdb24",
+      "bytes": 2786
+    },
+    {
+      "path": "compile-owner-08.args",
+      "sha256Bytes": "fa3c0b58d03f0ef7d1ffe454d882af2068b56885528cfe01e92bb0980f4e080a",
+      "bytes": 26706
+    },
+    {
+      "path": "compile-owner-08.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-owner-09-sources.json",
+      "sha256Bytes": "104119397663a42d61ace94a2950c41e80b8f000c494d3d6599b77c07eeb3f3a",
+      "bytes": 3134
+    },
+    {
+      "path": "compile-owner-09.args",
+      "sha256Bytes": "23b1c254844471e3b18a42b79b802a037fcb2b4762f24a53a18654ef9423b62c",
+      "bytes": 26925
+    },
+    {
+      "path": "compile-owner-09.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile_owner.py",
+      "sha256Bytes": "863d6ebffd3637feed549651232eb339b85c78e420f91ff5da23e163e80e276e",
+      "bytes": 3601
+    },
+    {
+      "path": "compiled-class-identities.json",
+      "sha256Bytes": "0b2701188cbe59fe5d6a6bd7aa4c980126dbdb2428752dfb8fa1c48cfa7abb52",
+      "bytes": 22818
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "adadafdcae30cb1dd0c60ac07669dd1f867062e62c8c6e7d3ddc1de53b94812f",
+      "bytes": 37092
+    },
+    {
+      "path": "fixtures/RetainedHomeGateFixture.kt",
+      "sha256Bytes": "3ce3c6793a90edb5a3cbd3988f980bd3b248ed6c290be4b297a7a7461d1b653a",
+      "bytes": 5692
+    },
+    {
+      "path": "gate-01/compile.args",
+      "sha256Bytes": "6ec363b752dd512e9ac95a17de598bc305e457e65c1e72982a5b6eda5796382b",
+      "bytes": 25452
+    },
+    {
+      "path": "gate-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "gate-01/run.log",
+      "sha256Bytes": "96625b5a5d727357f7973b841ec056cc978c66dbbdded3dedc11e8a925ec9c87",
+      "bytes": 459
+    },
+    {
+      "path": "gate-01/scope.json",
+      "sha256Bytes": "764acec0c834443d27b8afa511fde486d2f1affb3381e7fec03efae767253274",
+      "bytes": 1139
+    },
+    {
+      "path": "gate-02/compile.args",
+      "sha256Bytes": "f97d6d14d53c2aba09ce903e8a17bdf7683322735d762c4c118213980bca92bd",
+      "bytes": 25452
+    },
+    {
+      "path": "gate-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "gate-02/run.log",
+      "sha256Bytes": "ee86d0ac7ac6f990d7bc806912ef237ddaeda6a75681d86d3e567551ccddb6ad",
+      "bytes": 573
+    },
+    {
+      "path": "gate-02/scope.json",
+      "sha256Bytes": "9a79c9ff79823fe0fb8e45d0c9d6abc6a1f8e062b0bafb99c214b3841ef4b480",
+      "bytes": 1139
+    },
+    {
+      "path": "gate-03/compile.args",
+      "sha256Bytes": "71f12305691ef3132438246aeb72fa23f8259fc246a6732e6693ad8a25c82972",
+      "bytes": 25452
+    },
+    {
+      "path": "gate-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "gate-03/run.log",
+      "sha256Bytes": "ee86d0ac7ac6f990d7bc806912ef237ddaeda6a75681d86d3e567551ccddb6ad",
+      "bytes": 573
+    },
+    {
+      "path": "gate-03/scope.json",
+      "sha256Bytes": "796043455e5b17228c3341e7df32f438a6b0a37329d2b0a8e226497e231cc90e",
+      "bytes": 1139
+    },
+    {
+      "path": "gate-04/compile.args",
+      "sha256Bytes": "6dd5f8f96928dc81d1bf8089038f091a74658bfa9330dbe22f8811acb0ffbaf0",
+      "bytes": 25452
+    },
+    {
+      "path": "gate-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "gate-04/run.log",
+      "sha256Bytes": "ee86d0ac7ac6f990d7bc806912ef237ddaeda6a75681d86d3e567551ccddb6ad",
+      "bytes": 573
+    },
+    {
+      "path": "gate-04/scope.json",
+      "sha256Bytes": "e8b75b19932cdc0c8442bea7510f19dc05431300e76862256ce6cf3b760a698d",
+      "bytes": 1139
+    },
+    {
+      "path": "history/compile05-duplicate-route/DesktopHomeVideoRoute.kt",
+      "sha256Bytes": "497765da828e8e4ff0c6abc852824a19780f14be315b073e381190cafe248159",
+      "bytes": 1211
+    },
+    {
+      "path": "history/compile05-duplicate-route/class-owner-audit.json",
+      "sha256Bytes": "9b5ea95f0793fbbc5afb1c0239bbee47dd410ea6f8e6a267a2a1831968959e6d",
+      "bytes": 2571
+    },
+    {
+      "path": "history/compile05-duplicate-route/correction.json",
+      "sha256Bytes": "275eb551d5566e01c59e32ae6eec299ddae80545da0698108409148b51b37eec",
+      "bytes": 489
+    },
+    {
+      "path": "history/compile05-duplicate-route/extract-upstream-home-root-navigation.py",
+      "sha256Bytes": "c7a54a98d0b4df34ac169b3669e8b5c0256917d23d0f5d3cd82205cb1c31ff5e",
+      "bytes": 2272
+    },
+    {
+      "path": "home-blocked-owner.patch",
+      "sha256Bytes": "e562bcd0771ea374eefd49150da04b59509012bb666b5de83207271b4807a641",
+      "bytes": 3921
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "e6aceca219c17a94ae12d0a402dc9d80218bc8a4b3e5c7fcffc932f433490822",
+      "bytes": 3314
+    },
+    {
+      "path": "phase-install-plan.json",
+      "sha256Bytes": "9e56a9725ab6796d01a48103950aba60f523df2de3b78afff8b1d0f07e6b3bb9",
+      "bytes": 5380
+    },
+    {
+      "path": "prepare_blocked_delta.py",
+      "sha256Bytes": "b827cfcbc4e266c008f8313995d2f9df4588d329a0688cbffba12f77c19e197d",
+      "bytes": 4660
+    },
+    {
+      "path": "prepared/blocked-delta/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+      "sha256Bytes": "fd1ede2e75ba505be3b45a52052d146730cfea0ee27caf84eee32687cf7ebbfe",
+      "bytes": 12723
+    },
+    {
+      "path": "prepared/follow-getters-reference/DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "7e00020ec1db5ffb5d5d5768de97c5a97419f763920c5c716367798d88917fc2",
+      "bytes": 14671
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt",
+      "sha256Bytes": "8fc80b9b38349b0ea582535110b35719b440962fe0e3f17f280c4f20848465d2",
+      "bytes": 2742
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeBlockedPort.kt",
+      "sha256Bytes": "ef3cda156722265454e5429a0172f114eee26caeacedeab98cdd3dc10c24f049",
+      "bytes": 3083
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeEmbeddedRetainedOwner.kt",
+      "sha256Bytes": "94bfdbb6b929ea87200b17915888acdcec43adb8f0380823119b341dd708ace7",
+      "bytes": 716
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt",
+      "sha256Bytes": "981b50e08be45ae2f9f6dd2b56b6c672704e1aacb485b066e74d0404190273a6",
+      "bytes": 8974
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.kt",
+      "sha256Bytes": "c22cd94ca423d85a2099180485cec615d0775b1bc38be34a9f4babfe9dbb3283",
+      "bytes": 2788
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootNavigation.kt",
+      "sha256Bytes": "c60906c4b59ff3c617c8f24e8fba433cb998c537829f6e7029ba6911c5a763d4",
+      "bytes": 1533
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "fbf546f62dc00c4e2e9e754e942ee026c7bfaac002c73cb0395710c3fb9956c7",
+      "bytes": 3274
+    },
+    {
+      "path": "required-packet-bindings.json",
+      "sha256Bytes": "3a321a1b4cd6a031996565d082bb214bd934bb1563ac26c66643e201a76de4d8",
+      "bytes": 1592
+    },
+    {
+      "path": "root-api-prerequisites.patch",
+      "sha256Bytes": "db472709b3e63b3ca609138dca2f88a1929b73a39339dcee2205116a7f159598",
+      "bytes": 1311
+    },
+    {
+      "path": "root-baselines.json",
+      "sha256Bytes": "d53ce998eb239fcd45277eb14535bb7a049bae17445a818ca542f25b662e4773",
+      "bytes": 1680
+    },
+    {
+      "path": "run_gate.py",
+      "sha256Bytes": "f4e0ca97e2ed5c687145f5c91eeb4595a21dff632da8a73d1812764e6f7dbdcb",
+      "bytes": 2578
+    },
+    {
+      "path": "upstream-source-delta.json",
+      "sha256Bytes": "ad6fc6b0ea1abdb12987bec7fb1d95f29073f9617c27ac9116bfc63343a595c2",
+      "bytes": 879
+    }
+  ],
+  "excludedTaskBinaries": [
+    {
+      "path": "classes-owner-01/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "4ea3e1f448eb9c64b9234c85d6c1e6920e18712effb3e4b166add8ff63ccb35b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$fetchDynamicFeedPageWithRetry$1.class",
+      "sha256Bytes": "e2e9ce19df315db65d3bac5ef6fc34add46e4ba9b8c8bd5b73c75053dc05b167",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$1.class",
+      "sha256Bytes": "0282e3b5cda883ee9c4fabba0c9facfafebc2fce8868e995b665c3bfac3899c9",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2$response$1.class",
+      "sha256Bytes": "9ea11dd71f53fdf0ddae7076d0610317560bea322812e9b231b716efac77efc7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2.class",
+      "sha256Bytes": "c82112279597a4b594e6be79151d43780c8efec6f233bd0a683c2080ffed414b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getPage$1.class",
+      "sha256Bytes": "42c5eb99e4509b673c2959744ff92287faecfaf25af9b78d9e8d0e4eebe817f8",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.class",
+      "sha256Bytes": "8e55163969e49f1d5492764b39a6a1cda95a3efdec85b35150f0dfaf5fe0d196",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepositoryKt.class",
+      "sha256Bytes": "b09783f763712113fa5ac24cc523b5e78f7f0f120e4fbe6f230e8fc4fd603b60",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DynamicFeedFetchResult.class",
+      "sha256Bytes": "922096f7c2ec6af2dc245a9bfb7800b3441c421a19b59ea31d12fdbfc6fe4640",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DynamicFeedPaginationKey.class",
+      "sha256Bytes": "c71a3fa5063b6b770236bdb925c439d85582f6daefce8e6180d5f10bcd1b39a0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DynamicFeedPaginationRegistry.class",
+      "sha256Bytes": "ffc545b9b5c36f09df16205d5422e1c3504c3f306199c35f608140adc2a8a18f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DynamicFeedScope.class",
+      "sha256Bytes": "85588c5beca1924c745db6201e32f52a4fc7d0a63f3089c751d31102b6099b20",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/android/purebilibili/data/repository/DynamicPaginationState.class",
+      "sha256Bytes": "e7111b445e10e5de84a1ce03270a0c54271c00503687244cd6537ba23c04965b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$closeAndJoin$2.class",
+      "sha256Bytes": "cc5553462fc8940f0515a0915552968c8d5ebb0e97dd8cbdb9e0ab22d2420c24",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$1.class",
+      "sha256Bytes": "159db3f85f4456d9c412b9a2249bb510740f0145bce7a5af07e5bc0f623bebe7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2$1.class",
+      "sha256Bytes": "ef4a509cb1d3716668c441a99309b949074f83bc623f188adee8ad2f49ca13de",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2.class",
+      "sha256Bytes": "51efecb61caa109a37468edfd67e4de0819134bcd545660245eb106bd90a8418",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1.class",
+      "sha256Bytes": "c84e53c033c79b65786719c69c4ba35fe0d7ef9b4b2d7e6c98034fbe7b5d5046",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$1.class",
+      "sha256Bytes": "4a797b532e647db0182eaf16fa601f5da5ec5f370578e9eee910b5bf53cab4a1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$2.class",
+      "sha256Bytes": "54b5f1277c27476374d3e9db17f86450c63ccc5a698da9b437d998418f53e273",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$5.class",
+      "sha256Bytes": "52d3ccb5e1e933bd7772945e244c6b8574b15f322b931e12fc86a2ab2a229eb2",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1$getDynamicFeed$1.class",
+      "sha256Bytes": "9539d42202908f225ce8fabf6e3381b347ca5258ee30f05b9ea0bb5b6f01fecf",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1.class",
+      "sha256Bytes": "51b234834e67954e728bae32a305d04a56ded5bb6c77522ba4cf422f286c4c96",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$1.class",
+      "sha256Bytes": "a504f61e8462d3ffe796941aba67b934e7cfe45aee7e705942b6a9b956d447a2",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$2.class",
+      "sha256Bytes": "7141a46631fdaf0a2abead837ab9813f4769e4962a4370b439a973390c8fe25f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$ownedDynamic$1.class",
+      "sha256Bytes": "360d79f10d6b0149987beb83fd894e3192d48051c4a5d37b1b82154f2d3b7d16",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$1.class",
+      "sha256Bytes": "f63e32b9aef3589c855e6e8ddbf0af2406d2efbee80c6555f0d6ccf7048cf49e",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$2.class",
+      "sha256Bytes": "5d93c084c247afe1fa2c969143ddc7ad80486a38248ea5d40636f2259fca07d3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion.class",
+      "sha256Bytes": "ea3e9b80a0f8f0fdbe98679051e08ff9af0a30cb588b267e1c712b5cdc3f2f0f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.class",
+      "sha256Bytes": "e776e8ac502bbcae7a3f105aeb00159c7d3f7586799ca92963acd4b82d873947",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-01/com/bilipai/desktop/ui/DesktopHomeRetainedGate.class",
+      "sha256Bytes": "1d4ff351921f4effc5f3f82e3580a4763b50bc28f373393dec920f02b4b2bf7d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "8dc39348d9d56582a69e9b679537bd64f40e052c8906a7aab1488cd8242e65e9",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$fetchDynamicFeedPageWithRetry$1.class",
+      "sha256Bytes": "e2e9ce19df315db65d3bac5ef6fc34add46e4ba9b8c8bd5b73c75053dc05b167",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$1.class",
+      "sha256Bytes": "0282e3b5cda883ee9c4fabba0c9facfafebc2fce8868e995b665c3bfac3899c9",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2$response$1.class",
+      "sha256Bytes": "9ea11dd71f53fdf0ddae7076d0610317560bea322812e9b231b716efac77efc7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2.class",
+      "sha256Bytes": "c82112279597a4b594e6be79151d43780c8efec6f233bd0a683c2080ffed414b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getPage$1.class",
+      "sha256Bytes": "42c5eb99e4509b673c2959744ff92287faecfaf25af9b78d9e8d0e4eebe817f8",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.class",
+      "sha256Bytes": "8e55163969e49f1d5492764b39a6a1cda95a3efdec85b35150f0dfaf5fe0d196",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepositoryKt.class",
+      "sha256Bytes": "b09783f763712113fa5ac24cc523b5e78f7f0f120e4fbe6f230e8fc4fd603b60",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DynamicFeedFetchResult.class",
+      "sha256Bytes": "922096f7c2ec6af2dc245a9bfb7800b3441c421a19b59ea31d12fdbfc6fe4640",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DynamicFeedPaginationKey.class",
+      "sha256Bytes": "c71a3fa5063b6b770236bdb925c439d85582f6daefce8e6180d5f10bcd1b39a0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DynamicFeedPaginationRegistry.class",
+      "sha256Bytes": "ffc545b9b5c36f09df16205d5422e1c3504c3f306199c35f608140adc2a8a18f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DynamicFeedScope.class",
+      "sha256Bytes": "85588c5beca1924c745db6201e32f52a4fc7d0a63f3089c751d31102b6099b20",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/android/purebilibili/data/repository/DynamicPaginationState.class",
+      "sha256Bytes": "e7111b445e10e5de84a1ce03270a0c54271c00503687244cd6537ba23c04965b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$1.class",
+      "sha256Bytes": "ca1923e8db0a469c9eff77a227856efac6cc2f8885409039f361927ea727aa5b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$2.class",
+      "sha256Bytes": "56c8d583e42d1535538e6f1a0e765f19e66e3d58287f3eaa3043273ee9eecd84",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "ed431052a1a6b9fa3374d377f15f5dfaaa3d7874c8cb7f5c032615ead974948c",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$guarded$1$once$1.class",
+      "sha256Bytes": "4c777c2d75c69e3c88f4f0dcb71d58edf8f8dfd0e88519db0d03e524f7dd84f3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "2fc947d2a5a2ca897728c1fc25187e2ef044d32c0caf63ca8a979d5f57616bfd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$1.class",
+      "sha256Bytes": "39f396a24967540062b3d8e8204c7ab97f96dd5f63b7a1d215b76260a9b92d1d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$2.class",
+      "sha256Bytes": "28b3c6f42abbedc0b50039019cf8f3116dea959bfe28b98951d270d5c55eb511",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion.class",
+      "sha256Bytes": "2c2386b51afed92e50fe7f4a7453a085b192cb69295dec15504960af85bee5cc",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$importBlockedUps$2.class",
+      "sha256Bytes": "ae938b3a79a11494f6dea7ca4f9a625ff94ac16150158e35131feb3bb181c575",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$1.class",
+      "sha256Bytes": "e12b2743adb6e1f6beff1cb1910d360d97170824a2e27373da394679f3824ad3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$2.class",
+      "sha256Bytes": "8ddae8ca0ec8ef5180a4f1a0022e1c789df50aba9900842cea0415997d9a82ee",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$refreshBlockedUpProfiles$2.class",
+      "sha256Bytes": "baf1b3f304fe8bac817d73a1f8bed3934d8b12e61bb577f147e364feef6452d3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$sync$1.class",
+      "sha256Bytes": "8d0f0788a9a5f7c3787529e388edc0ef2962aadc93272d4590e5ea3a4e90596a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository$unblockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "088d98c6b4799333fce2d3a2777f80e0e60747fe9ce0ff0b211f53bd3c011e52",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/data/DesktopBlockedUpRepository.class",
+      "sha256Bytes": "377b00b7735bd5a6c6ea79c0652c4711fc7a924bd2e86f30425634b51ba51083",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "a513e4ccf8c021fa5ee9da6d0d55e7fbb1a4e6f3f4cae7690faa4b7eb236a496",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "4215ae6a32ba5d55c6f4b5fa20f7748bd32c37dba2d175d7731ca6712a64a22d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1.class",
+      "sha256Bytes": "ea59224ebd64090a76fd0eef80ca17abcf7e46188f8108778d4f9488028cc1c2",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt.class",
+      "sha256Bytes": "1ddc6ddf2247317090e407a01e141a65c52ce63b6d8a58b9d3c98eba3096a80a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$closeAndJoin$2.class",
+      "sha256Bytes": "cc5553462fc8940f0515a0915552968c8d5ebb0e97dd8cbdb9e0ab22d2420c24",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$1.class",
+      "sha256Bytes": "159db3f85f4456d9c412b9a2249bb510740f0145bce7a5af07e5bc0f623bebe7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2$1.class",
+      "sha256Bytes": "ef4a509cb1d3716668c441a99309b949074f83bc623f188adee8ad2f49ca13de",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2.class",
+      "sha256Bytes": "5e4957328e1e8e11076d0fde3cfdd3f2e646d784d492f488993aa24986ad60ce",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1.class",
+      "sha256Bytes": "6d5c3eaf6f2ec7b79ab682f31a210f9170cd979d76584190736ac25f92ab9db5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$1.class",
+      "sha256Bytes": "02140d7fb8b7001150dde8393580bd0cbd9c9f4dd5715ba860135d5d6e058fe3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$2.class",
+      "sha256Bytes": "ed0a112eb8e895f791d3c75c3ecd73a1eaf45c0754d7c980b329adeaf8cc6bf4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$5.class",
+      "sha256Bytes": "93d94829ff517bb30644a315489a0317c26a81aa755cb5d785288cb2d748ccec",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1$getDynamicFeed$1.class",
+      "sha256Bytes": "8c729b94f53121737401682e41758a49b611312fa8c12719688e8c9f8e2b9fcf",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1.class",
+      "sha256Bytes": "8a6f59f40e0c605df04c5d2e773dbb6663fde935e18da8259150b5ae370231b0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$1.class",
+      "sha256Bytes": "1bed968093c9ed16c3e9a5b9b9f73e4e498703b70d824cbc4e7615fd0de9ba86",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$2.class",
+      "sha256Bytes": "bc8845b4a1b11009b02d6e463cc43a137f03aa2892a69024b23e61ce2932ccc0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$ownedDynamic$1.class",
+      "sha256Bytes": "32e7958580e44964436be15fdfda03e0c70a9e9f392b74f766782d18dbceb1fd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$1.class",
+      "sha256Bytes": "b572ce707d34f0ef8ae6e1a73ccd5985d53205224e49d1af11f395b9d111eeb0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$2.class",
+      "sha256Bytes": "7f7c4c6fca40baca3c7292797660c783696e4d63102979890303b2aed433552a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion.class",
+      "sha256Bytes": "dcb001466bc1cc2f14416cb652d6ab85d1b0873e0a39e0f77707e56a0bee4377",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.class",
+      "sha256Bytes": "e776e8ac502bbcae7a3f105aeb00159c7d3f7586799ca92963acd4b82d873947",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-03/com/bilipai/desktop/ui/DesktopHomeRetainedGate.class",
+      "sha256Bytes": "e8fdc7c4eca8c01e7e1073d9a3ca96c42a459b02cb757f22b64f968fd5bb5c99",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "8dc39348d9d56582a69e9b679537bd64f40e052c8906a7aab1488cd8242e65e9",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$fetchDynamicFeedPageWithRetry$1.class",
+      "sha256Bytes": "e2e9ce19df315db65d3bac5ef6fc34add46e4ba9b8c8bd5b73c75053dc05b167",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$1.class",
+      "sha256Bytes": "0282e3b5cda883ee9c4fabba0c9facfafebc2fce8868e995b665c3bfac3899c9",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2$response$1.class",
+      "sha256Bytes": "9ea11dd71f53fdf0ddae7076d0610317560bea322812e9b231b716efac77efc7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2.class",
+      "sha256Bytes": "c82112279597a4b594e6be79151d43780c8efec6f233bd0a683c2080ffed414b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getPage$1.class",
+      "sha256Bytes": "42c5eb99e4509b673c2959744ff92287faecfaf25af9b78d9e8d0e4eebe817f8",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.class",
+      "sha256Bytes": "8e55163969e49f1d5492764b39a6a1cda95a3efdec85b35150f0dfaf5fe0d196",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepositoryKt.class",
+      "sha256Bytes": "b09783f763712113fa5ac24cc523b5e78f7f0f120e4fbe6f230e8fc4fd603b60",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DynamicFeedFetchResult.class",
+      "sha256Bytes": "922096f7c2ec6af2dc245a9bfb7800b3441c421a19b59ea31d12fdbfc6fe4640",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DynamicFeedPaginationKey.class",
+      "sha256Bytes": "c71a3fa5063b6b770236bdb925c439d85582f6daefce8e6180d5f10bcd1b39a0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DynamicFeedPaginationRegistry.class",
+      "sha256Bytes": "ffc545b9b5c36f09df16205d5422e1c3504c3f306199c35f608140adc2a8a18f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DynamicFeedScope.class",
+      "sha256Bytes": "85588c5beca1924c745db6201e32f52a4fc7d0a63f3089c751d31102b6099b20",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/android/purebilibili/data/repository/DynamicPaginationState.class",
+      "sha256Bytes": "e7111b445e10e5de84a1ce03270a0c54271c00503687244cd6537ba23c04965b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$1.class",
+      "sha256Bytes": "ca1923e8db0a469c9eff77a227856efac6cc2f8885409039f361927ea727aa5b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$2.class",
+      "sha256Bytes": "56c8d583e42d1535538e6f1a0e765f19e66e3d58287f3eaa3043273ee9eecd84",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "ed431052a1a6b9fa3374d377f15f5dfaaa3d7874c8cb7f5c032615ead974948c",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$guarded$1$once$1.class",
+      "sha256Bytes": "4c777c2d75c69e3c88f4f0dcb71d58edf8f8dfd0e88519db0d03e524f7dd84f3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "2fc947d2a5a2ca897728c1fc25187e2ef044d32c0caf63ca8a979d5f57616bfd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$1.class",
+      "sha256Bytes": "39f396a24967540062b3d8e8204c7ab97f96dd5f63b7a1d215b76260a9b92d1d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$2.class",
+      "sha256Bytes": "28b3c6f42abbedc0b50039019cf8f3116dea959bfe28b98951d270d5c55eb511",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion.class",
+      "sha256Bytes": "2c2386b51afed92e50fe7f4a7453a085b192cb69295dec15504960af85bee5cc",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$importBlockedUps$2.class",
+      "sha256Bytes": "ae938b3a79a11494f6dea7ca4f9a625ff94ac16150158e35131feb3bb181c575",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$1.class",
+      "sha256Bytes": "e12b2743adb6e1f6beff1cb1910d360d97170824a2e27373da394679f3824ad3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$2.class",
+      "sha256Bytes": "8ddae8ca0ec8ef5180a4f1a0022e1c789df50aba9900842cea0415997d9a82ee",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$refreshBlockedUpProfiles$2.class",
+      "sha256Bytes": "baf1b3f304fe8bac817d73a1f8bed3934d8b12e61bb577f147e364feef6452d3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$sync$1.class",
+      "sha256Bytes": "8d0f0788a9a5f7c3787529e388edc0ef2962aadc93272d4590e5ea3a4e90596a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository$unblockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "088d98c6b4799333fce2d3a2777f80e0e60747fe9ce0ff0b211f53bd3c011e52",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/data/DesktopBlockedUpRepository.class",
+      "sha256Bytes": "377b00b7735bd5a6c6ea79c0652c4711fc7a924bd2e86f30425634b51ba51083",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "8ef909ce19e6bbfe742f1ce30b778f94a20d21d8ae11378ed272f13b0408c5c4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "34f65587e88188f344fcd48542266875f5979053594f4a4c510a585b08796765",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1.class",
+      "sha256Bytes": "4c70a08914421b845e76f6ee05a2264f394f884164725bf6b437ea2faef6752d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$mutationApi$1$once$1.class",
+      "sha256Bytes": "2680268438321262a4dbcdb2fcbf2d6900188ffda73a867c93fd4f4d43dfb98d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$tagged$1.class",
+      "sha256Bytes": "95deec0ffacdca8fbcf873c914b1ccfcd0aac0913ab3efe927bab6ebcfe0efd6",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt.class",
+      "sha256Bytes": "2587872f0240f9ddc0fd7e6dc7bad69ca4e1d1a79fb305c49e355b5f21c16851",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$closeAndJoin$2.class",
+      "sha256Bytes": "cc5553462fc8940f0515a0915552968c8d5ebb0e97dd8cbdb9e0ab22d2420c24",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$1.class",
+      "sha256Bytes": "159db3f85f4456d9c412b9a2249bb510740f0145bce7a5af07e5bc0f623bebe7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2$1.class",
+      "sha256Bytes": "ef4a509cb1d3716668c441a99309b949074f83bc623f188adee8ad2f49ca13de",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2.class",
+      "sha256Bytes": "5e4957328e1e8e11076d0fde3cfdd3f2e646d784d492f488993aa24986ad60ce",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1.class",
+      "sha256Bytes": "6d5c3eaf6f2ec7b79ab682f31a210f9170cd979d76584190736ac25f92ab9db5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$1.class",
+      "sha256Bytes": "02140d7fb8b7001150dde8393580bd0cbd9c9f4dd5715ba860135d5d6e058fe3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$2.class",
+      "sha256Bytes": "ed0a112eb8e895f791d3c75c3ecd73a1eaf45c0754d7c980b329adeaf8cc6bf4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$5.class",
+      "sha256Bytes": "93d94829ff517bb30644a315489a0317c26a81aa755cb5d785288cb2d748ccec",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1$getDynamicFeed$1.class",
+      "sha256Bytes": "8c729b94f53121737401682e41758a49b611312fa8c12719688e8c9f8e2b9fcf",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1.class",
+      "sha256Bytes": "8a6f59f40e0c605df04c5d2e773dbb6663fde935e18da8259150b5ae370231b0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$1.class",
+      "sha256Bytes": "1bed968093c9ed16c3e9a5b9b9f73e4e498703b70d824cbc4e7615fd0de9ba86",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$2.class",
+      "sha256Bytes": "bc8845b4a1b11009b02d6e463cc43a137f03aa2892a69024b23e61ce2932ccc0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$ownedDynamic$1.class",
+      "sha256Bytes": "32e7958580e44964436be15fdfda03e0c70a9e9f392b74f766782d18dbceb1fd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$1.class",
+      "sha256Bytes": "b572ce707d34f0ef8ae6e1a73ccd5985d53205224e49d1af11f395b9d111eeb0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$2.class",
+      "sha256Bytes": "7f7c4c6fca40baca3c7292797660c783696e4d63102979890303b2aed433552a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion.class",
+      "sha256Bytes": "aa0365947d1b68c992ca8dd2c3b8ce34130522a29966fc910368ddb2409a612f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.class",
+      "sha256Bytes": "e776e8ac502bbcae7a3f105aeb00159c7d3f7586799ca92963acd4b82d873947",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-04/com/bilipai/desktop/ui/DesktopHomeRetainedGate.class",
+      "sha256Bytes": "e8fdc7c4eca8c01e7e1073d9a3ca96c42a459b02cb757f22b64f968fd5bb5c99",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "d8ce844d4183ac7157a94fa69c111a139a2dcf23e664d33ee86ee7b933a7bbd7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/navigation/HomeNavigationTarget$DynamicDetail.class",
+      "sha256Bytes": "5b8a98020556759ab14edb51b100a8a77554bc2b4493d920231536df3297fcf4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/navigation/HomeNavigationTarget$Video.class",
+      "sha256Bytes": "c49b3117f082ca8f066c4b9b38c06c05f3d7902feab3ed4f5020c795232d782e",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/navigation/HomeNavigationTarget.class",
+      "sha256Bytes": "859011e305320c4cf873d8023d7fe6f71b35e8cdbd4adbf2ee1720178a54f5ae",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/navigation/HomeVideoNavigationIntent.class",
+      "sha256Bytes": "38705a9011e590fb5ccb2a3d19e0fd6b4d6f07f72b53519272d9eb6f2f3020c5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/navigation/HomeVideoNavigationPolicyKt.class",
+      "sha256Bytes": "2b70fdd3ff5b9b39046afe2fe297443b7bcecea7912e580cceb9a8c2d1e7c482",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/navigation/VideoRoute.class",
+      "sha256Bytes": "47943212e12b957e3649305c9fd90a7467f4a3a552f7fda4960062804e9de787",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$fetchDynamicFeedPageWithRetry$1.class",
+      "sha256Bytes": "e2e9ce19df315db65d3bac5ef6fc34add46e4ba9b8c8bd5b73c75053dc05b167",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$1.class",
+      "sha256Bytes": "0282e3b5cda883ee9c4fabba0c9facfafebc2fce8868e995b665c3bfac3899c9",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2$response$1.class",
+      "sha256Bytes": "9ea11dd71f53fdf0ddae7076d0610317560bea322812e9b231b716efac77efc7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2.class",
+      "sha256Bytes": "c82112279597a4b594e6be79151d43780c8efec6f233bd0a683c2080ffed414b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getPage$1.class",
+      "sha256Bytes": "42c5eb99e4509b673c2959744ff92287faecfaf25af9b78d9e8d0e4eebe817f8",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.class",
+      "sha256Bytes": "8e55163969e49f1d5492764b39a6a1cda95a3efdec85b35150f0dfaf5fe0d196",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepositoryKt.class",
+      "sha256Bytes": "b09783f763712113fa5ac24cc523b5e78f7f0f120e4fbe6f230e8fc4fd603b60",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DynamicFeedFetchResult.class",
+      "sha256Bytes": "922096f7c2ec6af2dc245a9bfb7800b3441c421a19b59ea31d12fdbfc6fe4640",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DynamicFeedPaginationKey.class",
+      "sha256Bytes": "c71a3fa5063b6b770236bdb925c439d85582f6daefce8e6180d5f10bcd1b39a0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DynamicFeedPaginationRegistry.class",
+      "sha256Bytes": "ffc545b9b5c36f09df16205d5422e1c3504c3f306199c35f608140adc2a8a18f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DynamicFeedScope.class",
+      "sha256Bytes": "85588c5beca1924c745db6201e32f52a4fc7d0a63f3089c751d31102b6099b20",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/android/purebilibili/data/repository/DynamicPaginationState.class",
+      "sha256Bytes": "e7111b445e10e5de84a1ce03270a0c54271c00503687244cd6537ba23c04965b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$1.class",
+      "sha256Bytes": "ca1923e8db0a469c9eff77a227856efac6cc2f8885409039f361927ea727aa5b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$2.class",
+      "sha256Bytes": "56c8d583e42d1535538e6f1a0e765f19e66e3d58287f3eaa3043273ee9eecd84",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "ed431052a1a6b9fa3374d377f15f5dfaaa3d7874c8cb7f5c032615ead974948c",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$guarded$1$once$1.class",
+      "sha256Bytes": "4c777c2d75c69e3c88f4f0dcb71d58edf8f8dfd0e88519db0d03e524f7dd84f3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "2fc947d2a5a2ca897728c1fc25187e2ef044d32c0caf63ca8a979d5f57616bfd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$1.class",
+      "sha256Bytes": "39f396a24967540062b3d8e8204c7ab97f96dd5f63b7a1d215b76260a9b92d1d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$2.class",
+      "sha256Bytes": "28b3c6f42abbedc0b50039019cf8f3116dea959bfe28b98951d270d5c55eb511",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion.class",
+      "sha256Bytes": "2c2386b51afed92e50fe7f4a7453a085b192cb69295dec15504960af85bee5cc",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$importBlockedUps$2.class",
+      "sha256Bytes": "ae938b3a79a11494f6dea7ca4f9a625ff94ac16150158e35131feb3bb181c575",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$1.class",
+      "sha256Bytes": "e12b2743adb6e1f6beff1cb1910d360d97170824a2e27373da394679f3824ad3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$2.class",
+      "sha256Bytes": "8ddae8ca0ec8ef5180a4f1a0022e1c789df50aba9900842cea0415997d9a82ee",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$refreshBlockedUpProfiles$2.class",
+      "sha256Bytes": "baf1b3f304fe8bac817d73a1f8bed3934d8b12e61bb577f147e364feef6452d3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$sync$1.class",
+      "sha256Bytes": "8d0f0788a9a5f7c3787529e388edc0ef2962aadc93272d4590e5ea3a4e90596a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository$unblockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "088d98c6b4799333fce2d3a2777f80e0e60747fe9ce0ff0b211f53bd3c011e52",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/data/DesktopBlockedUpRepository.class",
+      "sha256Bytes": "377b00b7735bd5a6c6ea79c0652c4711fc7a924bd2e86f30425634b51ba51083",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "8ef909ce19e6bbfe742f1ce30b778f94a20d21d8ae11378ed272f13b0408c5c4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "34f65587e88188f344fcd48542266875f5979053594f4a4c510a585b08796765",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1.class",
+      "sha256Bytes": "4c70a08914421b845e76f6ee05a2264f394f884164725bf6b437ea2faef6752d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$mutationApi$1$once$1.class",
+      "sha256Bytes": "2680268438321262a4dbcdb2fcbf2d6900188ffda73a867c93fd4f4d43dfb98d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$tagged$1.class",
+      "sha256Bytes": "95deec0ffacdca8fbcf873c914b1ccfcd0aac0913ab3efe927bab6ebcfe0efd6",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt.class",
+      "sha256Bytes": "2587872f0240f9ddc0fd7e6dc7bad69ca4e1d1a79fb305c49e355b5f21c16851",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$closeAndJoin$2.class",
+      "sha256Bytes": "cc5553462fc8940f0515a0915552968c8d5ebb0e97dd8cbdb9e0ab22d2420c24",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$1.class",
+      "sha256Bytes": "159db3f85f4456d9c412b9a2249bb510740f0145bce7a5af07e5bc0f623bebe7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2$1.class",
+      "sha256Bytes": "ef4a509cb1d3716668c441a99309b949074f83bc623f188adee8ad2f49ca13de",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2.class",
+      "sha256Bytes": "5e4957328e1e8e11076d0fde3cfdd3f2e646d784d492f488993aa24986ad60ce",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1.class",
+      "sha256Bytes": "6d5c3eaf6f2ec7b79ab682f31a210f9170cd979d76584190736ac25f92ab9db5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$1.class",
+      "sha256Bytes": "02140d7fb8b7001150dde8393580bd0cbd9c9f4dd5715ba860135d5d6e058fe3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$2.class",
+      "sha256Bytes": "ed0a112eb8e895f791d3c75c3ecd73a1eaf45c0754d7c980b329adeaf8cc6bf4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$5.class",
+      "sha256Bytes": "93d94829ff517bb30644a315489a0317c26a81aa755cb5d785288cb2d748ccec",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1$getDynamicFeed$1.class",
+      "sha256Bytes": "8c729b94f53121737401682e41758a49b611312fa8c12719688e8c9f8e2b9fcf",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1.class",
+      "sha256Bytes": "8a6f59f40e0c605df04c5d2e773dbb6663fde935e18da8259150b5ae370231b0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$1.class",
+      "sha256Bytes": "1bed968093c9ed16c3e9a5b9b9f73e4e498703b70d824cbc4e7615fd0de9ba86",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$2.class",
+      "sha256Bytes": "bc8845b4a1b11009b02d6e463cc43a137f03aa2892a69024b23e61ce2932ccc0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$ownedDynamic$1.class",
+      "sha256Bytes": "32e7958580e44964436be15fdfda03e0c70a9e9f392b74f766782d18dbceb1fd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$1.class",
+      "sha256Bytes": "b572ce707d34f0ef8ae6e1a73ccd5985d53205224e49d1af11f395b9d111eeb0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$2.class",
+      "sha256Bytes": "7f7c4c6fca40baca3c7292797660c783696e4d63102979890303b2aed433552a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion.class",
+      "sha256Bytes": "aa0365947d1b68c992ca8dd2c3b8ce34130522a29966fc910368ddb2409a612f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.class",
+      "sha256Bytes": "e776e8ac502bbcae7a3f105aeb00159c7d3f7586799ca92963acd4b82d873947",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRetainedGate.class",
+      "sha256Bytes": "e8fdc7c4eca8c01e7e1073d9a3ca96c42a459b02cb757f22b64f968fd5bb5c99",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-05/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.class",
+      "sha256Bytes": "c6b705b50a846109525a2367b8167c418322448e5eb18b372b1437c718e8b42d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "d8ce844d4183ac7157a94fa69c111a139a2dcf23e664d33ee86ee7b933a7bbd7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/navigation/HomeNavigationTarget$DynamicDetail.class",
+      "sha256Bytes": "5b8a98020556759ab14edb51b100a8a77554bc2b4493d920231536df3297fcf4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/navigation/HomeNavigationTarget$Video.class",
+      "sha256Bytes": "c49b3117f082ca8f066c4b9b38c06c05f3d7902feab3ed4f5020c795232d782e",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/navigation/HomeNavigationTarget.class",
+      "sha256Bytes": "859011e305320c4cf873d8023d7fe6f71b35e8cdbd4adbf2ee1720178a54f5ae",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/navigation/HomeVideoNavigationIntent.class",
+      "sha256Bytes": "38705a9011e590fb5ccb2a3d19e0fd6b4d6f07f72b53519272d9eb6f2f3020c5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/navigation/HomeVideoNavigationPolicyKt.class",
+      "sha256Bytes": "2b70fdd3ff5b9b39046afe2fe297443b7bcecea7912e580cceb9a8c2d1e7c482",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$fetchDynamicFeedPageWithRetry$1.class",
+      "sha256Bytes": "e2e9ce19df315db65d3bac5ef6fc34add46e4ba9b8c8bd5b73c75053dc05b167",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$1.class",
+      "sha256Bytes": "0282e3b5cda883ee9c4fabba0c9facfafebc2fce8868e995b665c3bfac3899c9",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2$response$1.class",
+      "sha256Bytes": "9ea11dd71f53fdf0ddae7076d0610317560bea322812e9b231b716efac77efc7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2.class",
+      "sha256Bytes": "c82112279597a4b594e6be79151d43780c8efec6f233bd0a683c2080ffed414b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getPage$1.class",
+      "sha256Bytes": "42c5eb99e4509b673c2959744ff92287faecfaf25af9b78d9e8d0e4eebe817f8",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.class",
+      "sha256Bytes": "8e55163969e49f1d5492764b39a6a1cda95a3efdec85b35150f0dfaf5fe0d196",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepositoryKt.class",
+      "sha256Bytes": "b09783f763712113fa5ac24cc523b5e78f7f0f120e4fbe6f230e8fc4fd603b60",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DynamicFeedFetchResult.class",
+      "sha256Bytes": "922096f7c2ec6af2dc245a9bfb7800b3441c421a19b59ea31d12fdbfc6fe4640",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DynamicFeedPaginationKey.class",
+      "sha256Bytes": "c71a3fa5063b6b770236bdb925c439d85582f6daefce8e6180d5f10bcd1b39a0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DynamicFeedPaginationRegistry.class",
+      "sha256Bytes": "ffc545b9b5c36f09df16205d5422e1c3504c3f306199c35f608140adc2a8a18f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DynamicFeedScope.class",
+      "sha256Bytes": "85588c5beca1924c745db6201e32f52a4fc7d0a63f3089c751d31102b6099b20",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/android/purebilibili/data/repository/DynamicPaginationState.class",
+      "sha256Bytes": "e7111b445e10e5de84a1ce03270a0c54271c00503687244cd6537ba23c04965b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$1.class",
+      "sha256Bytes": "ca1923e8db0a469c9eff77a227856efac6cc2f8885409039f361927ea727aa5b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$2.class",
+      "sha256Bytes": "56c8d583e42d1535538e6f1a0e765f19e66e3d58287f3eaa3043273ee9eecd84",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "ed431052a1a6b9fa3374d377f15f5dfaaa3d7874c8cb7f5c032615ead974948c",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$guarded$1$once$1.class",
+      "sha256Bytes": "4c777c2d75c69e3c88f4f0dcb71d58edf8f8dfd0e88519db0d03e524f7dd84f3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "2fc947d2a5a2ca897728c1fc25187e2ef044d32c0caf63ca8a979d5f57616bfd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$1.class",
+      "sha256Bytes": "39f396a24967540062b3d8e8204c7ab97f96dd5f63b7a1d215b76260a9b92d1d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$2.class",
+      "sha256Bytes": "28b3c6f42abbedc0b50039019cf8f3116dea959bfe28b98951d270d5c55eb511",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion.class",
+      "sha256Bytes": "2c2386b51afed92e50fe7f4a7453a085b192cb69295dec15504960af85bee5cc",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$importBlockedUps$2.class",
+      "sha256Bytes": "ae938b3a79a11494f6dea7ca4f9a625ff94ac16150158e35131feb3bb181c575",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$1.class",
+      "sha256Bytes": "e12b2743adb6e1f6beff1cb1910d360d97170824a2e27373da394679f3824ad3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$2.class",
+      "sha256Bytes": "8ddae8ca0ec8ef5180a4f1a0022e1c789df50aba9900842cea0415997d9a82ee",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$refreshBlockedUpProfiles$2.class",
+      "sha256Bytes": "baf1b3f304fe8bac817d73a1f8bed3934d8b12e61bb577f147e364feef6452d3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$sync$1.class",
+      "sha256Bytes": "8d0f0788a9a5f7c3787529e388edc0ef2962aadc93272d4590e5ea3a4e90596a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository$unblockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "088d98c6b4799333fce2d3a2777f80e0e60747fe9ce0ff0b211f53bd3c011e52",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/data/DesktopBlockedUpRepository.class",
+      "sha256Bytes": "377b00b7735bd5a6c6ea79c0652c4711fc7a924bd2e86f30425634b51ba51083",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "8ef909ce19e6bbfe742f1ce30b778f94a20d21d8ae11378ed272f13b0408c5c4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "34f65587e88188f344fcd48542266875f5979053594f4a4c510a585b08796765",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1.class",
+      "sha256Bytes": "4c70a08914421b845e76f6ee05a2264f394f884164725bf6b437ea2faef6752d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$mutationApi$1$once$1.class",
+      "sha256Bytes": "2680268438321262a4dbcdb2fcbf2d6900188ffda73a867c93fd4f4d43dfb98d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$tagged$1.class",
+      "sha256Bytes": "95deec0ffacdca8fbcf873c914b1ccfcd0aac0913ab3efe927bab6ebcfe0efd6",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt.class",
+      "sha256Bytes": "2587872f0240f9ddc0fd7e6dc7bad69ca4e1d1a79fb305c49e355b5f21c16851",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$closeAndJoin$2.class",
+      "sha256Bytes": "cc5553462fc8940f0515a0915552968c8d5ebb0e97dd8cbdb9e0ab22d2420c24",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$1.class",
+      "sha256Bytes": "159db3f85f4456d9c412b9a2249bb510740f0145bce7a5af07e5bc0f623bebe7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2$1.class",
+      "sha256Bytes": "ef4a509cb1d3716668c441a99309b949074f83bc623f188adee8ad2f49ca13de",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2.class",
+      "sha256Bytes": "5e4957328e1e8e11076d0fde3cfdd3f2e646d784d492f488993aa24986ad60ce",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1.class",
+      "sha256Bytes": "6d5c3eaf6f2ec7b79ab682f31a210f9170cd979d76584190736ac25f92ab9db5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$1.class",
+      "sha256Bytes": "02140d7fb8b7001150dde8393580bd0cbd9c9f4dd5715ba860135d5d6e058fe3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$2.class",
+      "sha256Bytes": "ed0a112eb8e895f791d3c75c3ecd73a1eaf45c0754d7c980b329adeaf8cc6bf4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$5.class",
+      "sha256Bytes": "93d94829ff517bb30644a315489a0317c26a81aa755cb5d785288cb2d748ccec",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1$getDynamicFeed$1.class",
+      "sha256Bytes": "8c729b94f53121737401682e41758a49b611312fa8c12719688e8c9f8e2b9fcf",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1.class",
+      "sha256Bytes": "8a6f59f40e0c605df04c5d2e773dbb6663fde935e18da8259150b5ae370231b0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$1.class",
+      "sha256Bytes": "1bed968093c9ed16c3e9a5b9b9f73e4e498703b70d824cbc4e7615fd0de9ba86",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$2.class",
+      "sha256Bytes": "bc8845b4a1b11009b02d6e463cc43a137f03aa2892a69024b23e61ce2932ccc0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$ownedDynamic$1.class",
+      "sha256Bytes": "32e7958580e44964436be15fdfda03e0c70a9e9f392b74f766782d18dbceb1fd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$1.class",
+      "sha256Bytes": "b572ce707d34f0ef8ae6e1a73ccd5985d53205224e49d1af11f395b9d111eeb0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$2.class",
+      "sha256Bytes": "7f7c4c6fca40baca3c7292797660c783696e4d63102979890303b2aed433552a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion.class",
+      "sha256Bytes": "aa0365947d1b68c992ca8dd2c3b8ce34130522a29966fc910368ddb2409a612f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.class",
+      "sha256Bytes": "e776e8ac502bbcae7a3f105aeb00159c7d3f7586799ca92963acd4b82d873947",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRetainedGate.class",
+      "sha256Bytes": "e8fdc7c4eca8c01e7e1073d9a3ca96c42a459b02cb757f22b64f968fd5bb5c99",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-06/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.class",
+      "sha256Bytes": "c6b705b50a846109525a2367b8167c418322448e5eb18b372b1437c718e8b42d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "d8ce844d4183ac7157a94fa69c111a139a2dcf23e664d33ee86ee7b933a7bbd7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/navigation/HomeNavigationTarget$DynamicDetail.class",
+      "sha256Bytes": "5b8a98020556759ab14edb51b100a8a77554bc2b4493d920231536df3297fcf4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/navigation/HomeNavigationTarget$Video.class",
+      "sha256Bytes": "c49b3117f082ca8f066c4b9b38c06c05f3d7902feab3ed4f5020c795232d782e",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/navigation/HomeNavigationTarget.class",
+      "sha256Bytes": "859011e305320c4cf873d8023d7fe6f71b35e8cdbd4adbf2ee1720178a54f5ae",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/navigation/HomeVideoNavigationIntent.class",
+      "sha256Bytes": "38705a9011e590fb5ccb2a3d19e0fd6b4d6f07f72b53519272d9eb6f2f3020c5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/navigation/HomeVideoNavigationPolicyKt.class",
+      "sha256Bytes": "2b70fdd3ff5b9b39046afe2fe297443b7bcecea7912e580cceb9a8c2d1e7c482",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$fetchDynamicFeedPageWithRetry$1.class",
+      "sha256Bytes": "e2e9ce19df315db65d3bac5ef6fc34add46e4ba9b8c8bd5b73c75053dc05b167",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$1.class",
+      "sha256Bytes": "0282e3b5cda883ee9c4fabba0c9facfafebc2fce8868e995b665c3bfac3899c9",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2$response$1.class",
+      "sha256Bytes": "9ea11dd71f53fdf0ddae7076d0610317560bea322812e9b231b716efac77efc7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2.class",
+      "sha256Bytes": "c82112279597a4b594e6be79151d43780c8efec6f233bd0a683c2080ffed414b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getPage$1.class",
+      "sha256Bytes": "42c5eb99e4509b673c2959744ff92287faecfaf25af9b78d9e8d0e4eebe817f8",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.class",
+      "sha256Bytes": "8e55163969e49f1d5492764b39a6a1cda95a3efdec85b35150f0dfaf5fe0d196",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepositoryKt.class",
+      "sha256Bytes": "b09783f763712113fa5ac24cc523b5e78f7f0f120e4fbe6f230e8fc4fd603b60",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DynamicFeedFetchResult.class",
+      "sha256Bytes": "922096f7c2ec6af2dc245a9bfb7800b3441c421a19b59ea31d12fdbfc6fe4640",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DynamicFeedPaginationKey.class",
+      "sha256Bytes": "c71a3fa5063b6b770236bdb925c439d85582f6daefce8e6180d5f10bcd1b39a0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DynamicFeedPaginationRegistry.class",
+      "sha256Bytes": "ffc545b9b5c36f09df16205d5422e1c3504c3f306199c35f608140adc2a8a18f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DynamicFeedScope.class",
+      "sha256Bytes": "85588c5beca1924c745db6201e32f52a4fc7d0a63f3089c751d31102b6099b20",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/android/purebilibili/data/repository/DynamicPaginationState.class",
+      "sha256Bytes": "e7111b445e10e5de84a1ce03270a0c54271c00503687244cd6537ba23c04965b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$1.class",
+      "sha256Bytes": "ca1923e8db0a469c9eff77a227856efac6cc2f8885409039f361927ea727aa5b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$2.class",
+      "sha256Bytes": "56c8d583e42d1535538e6f1a0e765f19e66e3d58287f3eaa3043273ee9eecd84",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "ed431052a1a6b9fa3374d377f15f5dfaaa3d7874c8cb7f5c032615ead974948c",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$guarded$1$once$1.class",
+      "sha256Bytes": "4c777c2d75c69e3c88f4f0dcb71d58edf8f8dfd0e88519db0d03e524f7dd84f3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "2fc947d2a5a2ca897728c1fc25187e2ef044d32c0caf63ca8a979d5f57616bfd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$1.class",
+      "sha256Bytes": "39f396a24967540062b3d8e8204c7ab97f96dd5f63b7a1d215b76260a9b92d1d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$2.class",
+      "sha256Bytes": "28b3c6f42abbedc0b50039019cf8f3116dea959bfe28b98951d270d5c55eb511",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion.class",
+      "sha256Bytes": "2c2386b51afed92e50fe7f4a7453a085b192cb69295dec15504960af85bee5cc",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$importBlockedUps$2.class",
+      "sha256Bytes": "ae938b3a79a11494f6dea7ca4f9a625ff94ac16150158e35131feb3bb181c575",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$1.class",
+      "sha256Bytes": "e12b2743adb6e1f6beff1cb1910d360d97170824a2e27373da394679f3824ad3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$2.class",
+      "sha256Bytes": "8ddae8ca0ec8ef5180a4f1a0022e1c789df50aba9900842cea0415997d9a82ee",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$refreshBlockedUpProfiles$2.class",
+      "sha256Bytes": "baf1b3f304fe8bac817d73a1f8bed3934d8b12e61bb577f147e364feef6452d3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$sync$1.class",
+      "sha256Bytes": "8d0f0788a9a5f7c3787529e388edc0ef2962aadc93272d4590e5ea3a4e90596a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository$unblockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "088d98c6b4799333fce2d3a2777f80e0e60747fe9ce0ff0b211f53bd3c011e52",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/data/DesktopBlockedUpRepository.class",
+      "sha256Bytes": "377b00b7735bd5a6c6ea79c0652c4711fc7a924bd2e86f30425634b51ba51083",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "8ef909ce19e6bbfe742f1ce30b778f94a20d21d8ae11378ed272f13b0408c5c4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "34f65587e88188f344fcd48542266875f5979053594f4a4c510a585b08796765",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1.class",
+      "sha256Bytes": "4c70a08914421b845e76f6ee05a2264f394f884164725bf6b437ea2faef6752d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$mutationApi$1$once$1.class",
+      "sha256Bytes": "2680268438321262a4dbcdb2fcbf2d6900188ffda73a867c93fd4f4d43dfb98d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$tagged$1.class",
+      "sha256Bytes": "95deec0ffacdca8fbcf873c914b1ccfcd0aac0913ab3efe927bab6ebcfe0efd6",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt.class",
+      "sha256Bytes": "2587872f0240f9ddc0fd7e6dc7bad69ca4e1d1a79fb305c49e355b5f21c16851",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$closeAndJoin$2.class",
+      "sha256Bytes": "cc5553462fc8940f0515a0915552968c8d5ebb0e97dd8cbdb9e0ab22d2420c24",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$1.class",
+      "sha256Bytes": "159db3f85f4456d9c412b9a2249bb510740f0145bce7a5af07e5bc0f623bebe7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2$1.class",
+      "sha256Bytes": "ef4a509cb1d3716668c441a99309b949074f83bc623f188adee8ad2f49ca13de",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2.class",
+      "sha256Bytes": "5e4957328e1e8e11076d0fde3cfdd3f2e646d784d492f488993aa24986ad60ce",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1.class",
+      "sha256Bytes": "6d5c3eaf6f2ec7b79ab682f31a210f9170cd979d76584190736ac25f92ab9db5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$1.class",
+      "sha256Bytes": "02140d7fb8b7001150dde8393580bd0cbd9c9f4dd5715ba860135d5d6e058fe3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$2.class",
+      "sha256Bytes": "ed0a112eb8e895f791d3c75c3ecd73a1eaf45c0754d7c980b329adeaf8cc6bf4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$5.class",
+      "sha256Bytes": "93d94829ff517bb30644a315489a0317c26a81aa755cb5d785288cb2d748ccec",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1$getDynamicFeed$1.class",
+      "sha256Bytes": "8c729b94f53121737401682e41758a49b611312fa8c12719688e8c9f8e2b9fcf",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1.class",
+      "sha256Bytes": "8a6f59f40e0c605df04c5d2e773dbb6663fde935e18da8259150b5ae370231b0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$1.class",
+      "sha256Bytes": "1bed968093c9ed16c3e9a5b9b9f73e4e498703b70d824cbc4e7615fd0de9ba86",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$2.class",
+      "sha256Bytes": "bc8845b4a1b11009b02d6e463cc43a137f03aa2892a69024b23e61ce2932ccc0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$ownedDynamic$1.class",
+      "sha256Bytes": "32e7958580e44964436be15fdfda03e0c70a9e9f392b74f766782d18dbceb1fd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$1.class",
+      "sha256Bytes": "b572ce707d34f0ef8ae6e1a73ccd5985d53205224e49d1af11f395b9d111eeb0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$2.class",
+      "sha256Bytes": "7f7c4c6fca40baca3c7292797660c783696e4d63102979890303b2aed433552a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion.class",
+      "sha256Bytes": "aa0365947d1b68c992ca8dd2c3b8ce34130522a29966fc910368ddb2409a612f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.class",
+      "sha256Bytes": "e776e8ac502bbcae7a3f105aeb00159c7d3f7586799ca92963acd4b82d873947",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRetainedGate.class",
+      "sha256Bytes": "e8fdc7c4eca8c01e7e1073d9a3ca96c42a459b02cb757f22b64f968fd5bb5c99",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.class",
+      "sha256Bytes": "c6b705b50a846109525a2367b8167c418322448e5eb18b372b1437c718e8b42d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRootRetainer$closeAndJoin$2.class",
+      "sha256Bytes": "7ad69ccdae1ac8ee99d87c559101bb8d04e19e8239a8c5dd5e834fab87062885",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$1.class",
+      "sha256Bytes": "25eed23661e4b55eb08ae591d37fadc8710c479ae86903128946a01ff705ec05",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-07/com/bilipai/desktop/ui/DesktopHomeRootRetainer.class",
+      "sha256Bytes": "7898055f3d022f7309bfe4e0d093cc0c82c1722cc13dbf62ff4bfc9f1bb3a880",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "e757e34746b11b96ecd7f0e860a59913747969b1cacc8a280be4f574e1f5a547",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/navigation/HomeNavigationTarget$DynamicDetail.class",
+      "sha256Bytes": "5b8a98020556759ab14edb51b100a8a77554bc2b4493d920231536df3297fcf4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/navigation/HomeNavigationTarget$Video.class",
+      "sha256Bytes": "c49b3117f082ca8f066c4b9b38c06c05f3d7902feab3ed4f5020c795232d782e",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/navigation/HomeNavigationTarget.class",
+      "sha256Bytes": "859011e305320c4cf873d8023d7fe6f71b35e8cdbd4adbf2ee1720178a54f5ae",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/navigation/HomeVideoNavigationIntent.class",
+      "sha256Bytes": "38705a9011e590fb5ccb2a3d19e0fd6b4d6f07f72b53519272d9eb6f2f3020c5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/navigation/HomeVideoNavigationPolicyKt.class",
+      "sha256Bytes": "2b70fdd3ff5b9b39046afe2fe297443b7bcecea7912e580cceb9a8c2d1e7c482",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$fetchDynamicFeedPageWithRetry$1.class",
+      "sha256Bytes": "e2e9ce19df315db65d3bac5ef6fc34add46e4ba9b8c8bd5b73c75053dc05b167",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$1.class",
+      "sha256Bytes": "0282e3b5cda883ee9c4fabba0c9facfafebc2fce8868e995b665c3bfac3899c9",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2$response$1.class",
+      "sha256Bytes": "9ea11dd71f53fdf0ddae7076d0610317560bea322812e9b231b716efac77efc7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2.class",
+      "sha256Bytes": "c82112279597a4b594e6be79151d43780c8efec6f233bd0a683c2080ffed414b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getPage$1.class",
+      "sha256Bytes": "42c5eb99e4509b673c2959744ff92287faecfaf25af9b78d9e8d0e4eebe817f8",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.class",
+      "sha256Bytes": "8e55163969e49f1d5492764b39a6a1cda95a3efdec85b35150f0dfaf5fe0d196",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepositoryKt.class",
+      "sha256Bytes": "b09783f763712113fa5ac24cc523b5e78f7f0f120e4fbe6f230e8fc4fd603b60",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DynamicFeedFetchResult.class",
+      "sha256Bytes": "922096f7c2ec6af2dc245a9bfb7800b3441c421a19b59ea31d12fdbfc6fe4640",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DynamicFeedPaginationKey.class",
+      "sha256Bytes": "c71a3fa5063b6b770236bdb925c439d85582f6daefce8e6180d5f10bcd1b39a0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DynamicFeedPaginationRegistry.class",
+      "sha256Bytes": "ffc545b9b5c36f09df16205d5422e1c3504c3f306199c35f608140adc2a8a18f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DynamicFeedScope.class",
+      "sha256Bytes": "85588c5beca1924c745db6201e32f52a4fc7d0a63f3089c751d31102b6099b20",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/android/purebilibili/data/repository/DynamicPaginationState.class",
+      "sha256Bytes": "e7111b445e10e5de84a1ce03270a0c54271c00503687244cd6537ba23c04965b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$1.class",
+      "sha256Bytes": "ca1923e8db0a469c9eff77a227856efac6cc2f8885409039f361927ea727aa5b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$2.class",
+      "sha256Bytes": "56c8d583e42d1535538e6f1a0e765f19e66e3d58287f3eaa3043273ee9eecd84",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "ed431052a1a6b9fa3374d377f15f5dfaaa3d7874c8cb7f5c032615ead974948c",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$guarded$1$once$1.class",
+      "sha256Bytes": "4c777c2d75c69e3c88f4f0dcb71d58edf8f8dfd0e88519db0d03e524f7dd84f3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "2fc947d2a5a2ca897728c1fc25187e2ef044d32c0caf63ca8a979d5f57616bfd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$1.class",
+      "sha256Bytes": "39f396a24967540062b3d8e8204c7ab97f96dd5f63b7a1d215b76260a9b92d1d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$2.class",
+      "sha256Bytes": "28b3c6f42abbedc0b50039019cf8f3116dea959bfe28b98951d270d5c55eb511",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion.class",
+      "sha256Bytes": "2c2386b51afed92e50fe7f4a7453a085b192cb69295dec15504960af85bee5cc",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$importBlockedUps$2.class",
+      "sha256Bytes": "ae938b3a79a11494f6dea7ca4f9a625ff94ac16150158e35131feb3bb181c575",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$1.class",
+      "sha256Bytes": "e12b2743adb6e1f6beff1cb1910d360d97170824a2e27373da394679f3824ad3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$2.class",
+      "sha256Bytes": "8ddae8ca0ec8ef5180a4f1a0022e1c789df50aba9900842cea0415997d9a82ee",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$refreshBlockedUpProfiles$2.class",
+      "sha256Bytes": "baf1b3f304fe8bac817d73a1f8bed3934d8b12e61bb577f147e364feef6452d3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$sync$1.class",
+      "sha256Bytes": "8d0f0788a9a5f7c3787529e388edc0ef2962aadc93272d4590e5ea3a4e90596a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository$unblockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "088d98c6b4799333fce2d3a2777f80e0e60747fe9ce0ff0b211f53bd3c011e52",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/data/DesktopBlockedUpRepository.class",
+      "sha256Bytes": "377b00b7735bd5a6c6ea79c0652c4711fc7a924bd2e86f30425634b51ba51083",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "8ef909ce19e6bbfe742f1ce30b778f94a20d21d8ae11378ed272f13b0408c5c4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "34f65587e88188f344fcd48542266875f5979053594f4a4c510a585b08796765",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1.class",
+      "sha256Bytes": "4c70a08914421b845e76f6ee05a2264f394f884164725bf6b437ea2faef6752d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$mutationApi$1$once$1.class",
+      "sha256Bytes": "2680268438321262a4dbcdb2fcbf2d6900188ffda73a867c93fd4f4d43dfb98d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$tagged$1.class",
+      "sha256Bytes": "95deec0ffacdca8fbcf873c914b1ccfcd0aac0913ab3efe927bab6ebcfe0efd6",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt.class",
+      "sha256Bytes": "2587872f0240f9ddc0fd7e6dc7bad69ca4e1d1a79fb305c49e355b5f21c16851",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$closeAndJoin$2.class",
+      "sha256Bytes": "cc5553462fc8940f0515a0915552968c8d5ebb0e97dd8cbdb9e0ab22d2420c24",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$1.class",
+      "sha256Bytes": "159db3f85f4456d9c412b9a2249bb510740f0145bce7a5af07e5bc0f623bebe7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2$1.class",
+      "sha256Bytes": "ef4a509cb1d3716668c441a99309b949074f83bc623f188adee8ad2f49ca13de",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2.class",
+      "sha256Bytes": "5e4957328e1e8e11076d0fde3cfdd3f2e646d784d492f488993aa24986ad60ce",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1.class",
+      "sha256Bytes": "6d5c3eaf6f2ec7b79ab682f31a210f9170cd979d76584190736ac25f92ab9db5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$1.class",
+      "sha256Bytes": "02140d7fb8b7001150dde8393580bd0cbd9c9f4dd5715ba860135d5d6e058fe3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$2.class",
+      "sha256Bytes": "ed0a112eb8e895f791d3c75c3ecd73a1eaf45c0754d7c980b329adeaf8cc6bf4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$5.class",
+      "sha256Bytes": "93d94829ff517bb30644a315489a0317c26a81aa755cb5d785288cb2d748ccec",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1$getDynamicFeed$1.class",
+      "sha256Bytes": "8c729b94f53121737401682e41758a49b611312fa8c12719688e8c9f8e2b9fcf",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1.class",
+      "sha256Bytes": "8a6f59f40e0c605df04c5d2e773dbb6663fde935e18da8259150b5ae370231b0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$1.class",
+      "sha256Bytes": "1bed968093c9ed16c3e9a5b9b9f73e4e498703b70d824cbc4e7615fd0de9ba86",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$2.class",
+      "sha256Bytes": "bc8845b4a1b11009b02d6e463cc43a137f03aa2892a69024b23e61ce2932ccc0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$ownedDynamic$1.class",
+      "sha256Bytes": "32e7958580e44964436be15fdfda03e0c70a9e9f392b74f766782d18dbceb1fd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$1.class",
+      "sha256Bytes": "b572ce707d34f0ef8ae6e1a73ccd5985d53205224e49d1af11f395b9d111eeb0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$2.class",
+      "sha256Bytes": "7f7c4c6fca40baca3c7292797660c783696e4d63102979890303b2aed433552a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion.class",
+      "sha256Bytes": "9033bf54c45777e352b14eab47325c4ce72a85e109076f997f5c4a458745f802",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.class",
+      "sha256Bytes": "e776e8ac502bbcae7a3f105aeb00159c7d3f7586799ca92963acd4b82d873947",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRetainedGate.class",
+      "sha256Bytes": "e8fdc7c4eca8c01e7e1073d9a3ca96c42a459b02cb757f22b64f968fd5bb5c99",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.class",
+      "sha256Bytes": "c6b705b50a846109525a2367b8167c418322448e5eb18b372b1437c718e8b42d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRootNavigationKt.class",
+      "sha256Bytes": "ff0b670aec29fb75df41a1ce9b703cb88ad838c81bf275aab00825dbe4b48a97",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRootRetainer$closeAndJoin$2.class",
+      "sha256Bytes": "7ad69ccdae1ac8ee99d87c559101bb8d04e19e8239a8c5dd5e834fab87062885",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$1.class",
+      "sha256Bytes": "25eed23661e4b55eb08ae591d37fadc8710c479ae86903128946a01ff705ec05",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-08/com/bilipai/desktop/ui/DesktopHomeRootRetainer.class",
+      "sha256Bytes": "7898055f3d022f7309bfe4e0d093cc0c82c1722cc13dbf62ff4bfc9f1bb3a880",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "e757e34746b11b96ecd7f0e860a59913747969b1cacc8a280be4f574e1f5a547",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/navigation/HomeNavigationTarget$DynamicDetail.class",
+      "sha256Bytes": "5b8a98020556759ab14edb51b100a8a77554bc2b4493d920231536df3297fcf4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/navigation/HomeNavigationTarget$Video.class",
+      "sha256Bytes": "c49b3117f082ca8f066c4b9b38c06c05f3d7902feab3ed4f5020c795232d782e",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/navigation/HomeNavigationTarget.class",
+      "sha256Bytes": "859011e305320c4cf873d8023d7fe6f71b35e8cdbd4adbf2ee1720178a54f5ae",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/navigation/HomeVideoNavigationIntent.class",
+      "sha256Bytes": "38705a9011e590fb5ccb2a3d19e0fd6b4d6f07f72b53519272d9eb6f2f3020c5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/navigation/HomeVideoNavigationPolicyKt.class",
+      "sha256Bytes": "2b70fdd3ff5b9b39046afe2fe297443b7bcecea7912e580cceb9a8c2d1e7c482",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$fetchDynamicFeedPageWithRetry$1.class",
+      "sha256Bytes": "e2e9ce19df315db65d3bac5ef6fc34add46e4ba9b8c8bd5b73c75053dc05b167",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$1.class",
+      "sha256Bytes": "0282e3b5cda883ee9c4fabba0c9facfafebc2fce8868e995b665c3bfac3899c9",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2$response$1.class",
+      "sha256Bytes": "9ea11dd71f53fdf0ddae7076d0610317560bea322812e9b231b716efac77efc7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2.class",
+      "sha256Bytes": "c82112279597a4b594e6be79151d43780c8efec6f233bd0a683c2080ffed414b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository$getPage$1.class",
+      "sha256Bytes": "42c5eb99e4509b673c2959744ff92287faecfaf25af9b78d9e8d0e4eebe817f8",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.class",
+      "sha256Bytes": "8e55163969e49f1d5492764b39a6a1cda95a3efdec85b35150f0dfaf5fe0d196",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepositoryKt.class",
+      "sha256Bytes": "b09783f763712113fa5ac24cc523b5e78f7f0f120e4fbe6f230e8fc4fd603b60",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DynamicFeedFetchResult.class",
+      "sha256Bytes": "922096f7c2ec6af2dc245a9bfb7800b3441c421a19b59ea31d12fdbfc6fe4640",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DynamicFeedPaginationKey.class",
+      "sha256Bytes": "c71a3fa5063b6b770236bdb925c439d85582f6daefce8e6180d5f10bcd1b39a0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DynamicFeedPaginationRegistry.class",
+      "sha256Bytes": "ffc545b9b5c36f09df16205d5422e1c3504c3f306199c35f608140adc2a8a18f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DynamicFeedScope.class",
+      "sha256Bytes": "85588c5beca1924c745db6201e32f52a4fc7d0a63f3089c751d31102b6099b20",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/android/purebilibili/data/repository/DynamicPaginationState.class",
+      "sha256Bytes": "e7111b445e10e5de84a1ce03270a0c54271c00503687244cd6537ba23c04965b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$1.class",
+      "sha256Bytes": "ca1923e8db0a469c9eff77a227856efac6cc2f8885409039f361927ea727aa5b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$2.class",
+      "sha256Bytes": "56c8d583e42d1535538e6f1a0e765f19e66e3d58287f3eaa3043273ee9eecd84",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "ed431052a1a6b9fa3374d377f15f5dfaaa3d7874c8cb7f5c032615ead974948c",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$api$guarded$1$once$1.class",
+      "sha256Bytes": "4c777c2d75c69e3c88f4f0dcb71d58edf8f8dfd0e88519db0d03e524f7dd84f3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "2fc947d2a5a2ca897728c1fc25187e2ef044d32c0caf63ca8a979d5f57616bfd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$1.class",
+      "sha256Bytes": "39f396a24967540062b3d8e8204c7ab97f96dd5f63b7a1d215b76260a9b92d1d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion$forTests$2.class",
+      "sha256Bytes": "28b3c6f42abbedc0b50039019cf8f3116dea959bfe28b98951d270d5c55eb511",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$Companion.class",
+      "sha256Bytes": "2c2386b51afed92e50fe7f4a7453a085b192cb69295dec15504960af85bee5cc",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$importBlockedUps$2.class",
+      "sha256Bytes": "ae938b3a79a11494f6dea7ca4f9a625ff94ac16150158e35131feb3bb181c575",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$1.class",
+      "sha256Bytes": "e12b2743adb6e1f6beff1cb1910d360d97170824a2e27373da394679f3824ad3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$importFromBilibili$2.class",
+      "sha256Bytes": "8ddae8ca0ec8ef5180a4f1a0022e1c789df50aba9900842cea0415997d9a82ee",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$refreshBlockedUpProfiles$2.class",
+      "sha256Bytes": "baf1b3f304fe8bac817d73a1f8bed3934d8b12e61bb577f147e364feef6452d3",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$sync$1.class",
+      "sha256Bytes": "8d0f0788a9a5f7c3787529e388edc0ef2962aadc93272d4590e5ea3a4e90596a",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository$unblockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "088d98c6b4799333fce2d3a2777f80e0e60747fe9ce0ff0b211f53bd3c011e52",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/data/DesktopBlockedUpRepository.class",
+      "sha256Bytes": "377b00b7735bd5a6c6ea79c0652c4711fc7a924bd2e86f30425634b51ba51083",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$2.class",
+      "sha256Bytes": "8ef909ce19e6bbfe742f1ce30b778f94a20d21d8ae11378ed272f13b0408c5c4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$3.class",
+      "sha256Bytes": "34f65587e88188f344fcd48542266875f5979053594f4a4c510a585b08796765",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1.class",
+      "sha256Bytes": "4c70a08914421b845e76f6ee05a2264f394f884164725bf6b437ea2faef6752d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$mutationApi$1$once$1.class",
+      "sha256Bytes": "2680268438321262a4dbcdb2fcbf2d6900188ffda73a867c93fd4f4d43dfb98d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt$desktopHomeBlockedPort$tagged$1.class",
+      "sha256Bytes": "95deec0ffacdca8fbcf873c914b1ccfcd0aac0913ab3efe927bab6ebcfe0efd6",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeBlockedPortKt.class",
+      "sha256Bytes": "2587872f0240f9ddc0fd7e6dc7bad69ca4e1d1a79fb305c49e355b5f21c16851",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeEmbeddedRetainedOwner.class",
+      "sha256Bytes": "6bdcd139f403e0425307ba10e883fd8bd6d35f8fe0a5ddcbca60282bbe225110",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$closeAndJoin$2.class",
+      "sha256Bytes": "0edcb4be13bce1c888b7829aa8a2044aa436f8ef8acd0f7eebaf07ba28baf3d5",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$1.class",
+      "sha256Bytes": "159db3f85f4456d9c412b9a2249bb510740f0145bce7a5af07e5bc0f623bebe7",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2$1.class",
+      "sha256Bytes": "ef4a509cb1d3716668c441a99309b949074f83bc623f188adee8ad2f49ca13de",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2.class",
+      "sha256Bytes": "c1bf20d6d069f1659748939bcde4fe5153ad9b3a9e758e5c51665f913cdaa158",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$$inlined$map$1.class",
+      "sha256Bytes": "8e989eae3c896af0bcf25dda3d69e0f6ae81d795df5be2dba4f4e59579dd45bd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$1.class",
+      "sha256Bytes": "b586e5411649e240842e1ccc7c6b8720d0c3fda110574641e6a2fa07a8ba0283",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$2.class",
+      "sha256Bytes": "b49b560b50cdf7629c51fdb6bbb222ec58d8c7d1c378a15c36d2e52d9e739d22",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$environment$5.class",
+      "sha256Bytes": "8c228cc4738459df1d6a9da955efd3c49e7ed213d1d4387a61619dc3b428e89e",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1$getDynamicFeed$1.class",
+      "sha256Bytes": "f67c6a933a671a8be409b6ee6b939524cf8f3976488549009d73ff4197b2ca57",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$follow$1.class",
+      "sha256Bytes": "f19c09530004494e97d63b783640733bd81e261d0fe9c533334ca47f1fa1c356",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$1.class",
+      "sha256Bytes": "fc9bc6ca3c6276b6096c9357099ad1149fd10e60956a10b1c89f5a8ed4dce603",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$originalFollow$2.class",
+      "sha256Bytes": "01a72f1f201b524c3a593b65ad1286bd47e49b54d9739336327eb26bedfe4970",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$ownedDynamic$1.class",
+      "sha256Bytes": "919de50df3193be27dfde306a191b89e8cda4b636a8ce29d3b54c52d581a72c0",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$1.class",
+      "sha256Bytes": "6e82e3b77a1d0209c0d8ff7ceea4a260892135a0894ede9cc5d2d7438303c7dc",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion$create$requests$2.class",
+      "sha256Bytes": "2509d62fbac9166c4d2188dc372c11f9c1d5898ac515c73009d0522b2e5239de",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry$Companion.class",
+      "sha256Bytes": "a4d24f35cd8275ec137a9012e336260f42479bd8c19d0e80d5e8bffe32f6fdb2",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.class",
+      "sha256Bytes": "9da072f11c636080e748b30e76aae1c180b13a66a775ab5854b20fbc4ac9cb9f",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRetainedGate.class",
+      "sha256Bytes": "a22a8cb8986e75aa511e6b867d837ec01580694097ee57a48a4c2d16f9ba6eb1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.class",
+      "sha256Bytes": "c6b705b50a846109525a2367b8167c418322448e5eb18b372b1437c718e8b42d",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRootNavigationKt.class",
+      "sha256Bytes": "ff0b670aec29fb75df41a1ce9b703cb88ad838c81bf275aab00825dbe4b48a97",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRootRetainer$closeAndJoin$2.class",
+      "sha256Bytes": "7ad69ccdae1ac8ee99d87c559101bb8d04e19e8239a8c5dd5e834fab87062885",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRootRetainer$install$1.class",
+      "sha256Bytes": "25eed23661e4b55eb08ae591d37fadc8710c479ae86903128946a01ff705ec05",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "classes-owner-09/com/bilipai/desktop/ui/DesktopHomeRootRetainer.class",
+      "sha256Bytes": "7898055f3d022f7309bfe4e0d093cc0c82c1722cc13dbf62ff4bfc9f1bb3a880",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "2ff6253b134e6ab1707fc9f8135d8e703c0fd12b0b78a2d3bf97c13ec9291ff1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-01/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$child$1.class",
+      "sha256Bytes": "817ebdab32d8578909384d74051e92567f756b124fb5502302752c8843a40f87",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-01/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1.class",
+      "sha256Bytes": "5b4c1be58481cb14222d6657cd670ca3b57852fc2dd5caa3fd56ceb402b3575b",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-01/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt.class",
+      "sha256Bytes": "c1cbf5a3583f61d3532f9fa363eb6465fd359fcb368fb604da3c83eac3087b90",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "2ff6253b134e6ab1707fc9f8135d8e703c0fd12b0b78a2d3bf97c13ec9291ff1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-02/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$child$1.class",
+      "sha256Bytes": "a0d1c41c60541b0c01301b92a728e6759143838854ba0991e4c2a8ed47700fbb",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-02/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$failedRemote$1.class",
+      "sha256Bytes": "863ca758d0199861386e8753b4bcece5ed0d031927aa475e6c0085053df505d4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-02/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$failedRemote$2.class",
+      "sha256Bytes": "6492a25d94c65f3cb5387a25ef99f17c477f12352fb52712cc5d6f61edb54741",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-02/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$failedRemote$4.class",
+      "sha256Bytes": "3c2397bdff7ef26541acc7f5037613e94b2507b16624d6a0eccab1ba8be0f0b8",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-02/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$rejected$1$1.class",
+      "sha256Bytes": "90f1d8c7cb13f60d458b07ff5a8b21ce7b348371230430cbe1cbe3786a1ce9e1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-02/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$rejected$1$2.class",
+      "sha256Bytes": "d7275ef60d6d5916c947e7c5192a19842ca9b06ffd66b76811458cfa3e43dd29",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-02/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$rejected$1$4.class",
+      "sha256Bytes": "8b6d06353c9c7aae1a55a906b4dc0a8ba204cc14ea61511f9b23eee226d845e1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-02/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1.class",
+      "sha256Bytes": "08df5056adb77146baf388bc8b6c2161a1e0d742ebd5576394ed31c9185799af",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-02/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt.class",
+      "sha256Bytes": "11c93d4562ea6f0b093e74ff5179d28dfb50ec62784afda62404153731bccbfd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "2ff6253b134e6ab1707fc9f8135d8e703c0fd12b0b78a2d3bf97c13ec9291ff1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-03/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$child$1.class",
+      "sha256Bytes": "a0d1c41c60541b0c01301b92a728e6759143838854ba0991e4c2a8ed47700fbb",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-03/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$failedRemote$1.class",
+      "sha256Bytes": "863ca758d0199861386e8753b4bcece5ed0d031927aa475e6c0085053df505d4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-03/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$failedRemote$2.class",
+      "sha256Bytes": "6492a25d94c65f3cb5387a25ef99f17c477f12352fb52712cc5d6f61edb54741",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-03/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$failedRemote$4.class",
+      "sha256Bytes": "3c2397bdff7ef26541acc7f5037613e94b2507b16624d6a0eccab1ba8be0f0b8",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-03/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$rejected$1$1.class",
+      "sha256Bytes": "90f1d8c7cb13f60d458b07ff5a8b21ce7b348371230430cbe1cbe3786a1ce9e1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-03/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$rejected$1$2.class",
+      "sha256Bytes": "d7275ef60d6d5916c947e7c5192a19842ca9b06ffd66b76811458cfa3e43dd29",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-03/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$rejected$1$4.class",
+      "sha256Bytes": "8b6d06353c9c7aae1a55a906b4dc0a8ba204cc14ea61511f9b23eee226d845e1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-03/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1.class",
+      "sha256Bytes": "08df5056adb77146baf388bc8b6c2161a1e0d742ebd5576394ed31c9185799af",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-03/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt.class",
+      "sha256Bytes": "11c93d4562ea6f0b093e74ff5179d28dfb50ec62784afda62404153731bccbfd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-04/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "2ff6253b134e6ab1707fc9f8135d8e703c0fd12b0b78a2d3bf97c13ec9291ff1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-04/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$child$1.class",
+      "sha256Bytes": "a0d1c41c60541b0c01301b92a728e6759143838854ba0991e4c2a8ed47700fbb",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-04/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$failedRemote$1.class",
+      "sha256Bytes": "863ca758d0199861386e8753b4bcece5ed0d031927aa475e6c0085053df505d4",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-04/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$failedRemote$2.class",
+      "sha256Bytes": "6492a25d94c65f3cb5387a25ef99f17c477f12352fb52712cc5d6f61edb54741",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-04/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$failedRemote$4.class",
+      "sha256Bytes": "3c2397bdff7ef26541acc7f5037613e94b2507b16624d6a0eccab1ba8be0f0b8",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-04/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$rejected$1$1.class",
+      "sha256Bytes": "90f1d8c7cb13f60d458b07ff5a8b21ce7b348371230430cbe1cbe3786a1ce9e1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-04/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$rejected$1$2.class",
+      "sha256Bytes": "d7275ef60d6d5916c947e7c5192a19842ca9b06ffd66b76811458cfa3e43dd29",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-04/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1$rejected$1$4.class",
+      "sha256Bytes": "8b6d06353c9c7aae1a55a906b4dc0a8ba204cc14ea61511f9b23eee226d845e1",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-04/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt$main$1.class",
+      "sha256Bytes": "08df5056adb77146baf388bc8b6c2161a1e0d742ebd5576394ed31c9185799af",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    },
+    {
+      "path": "gate-04/classes/com/bilipai/desktop/ui/RetainedHomeGateFixtureKt.class",
+      "sha256Bytes": "11c93d4562ea6f0b093e74ff5179d28dfb50ec62784afda62404153731bccbfd",
+      "reason": "compiled task artifact: referenced only, no install/archive"
+    }
+  ],
+  "installWhitelist": {
+    "path": "install-whitelist.json",
+    "sha256Bytes": "e6aceca219c17a94ae12d0a402dc9d80218bc8a4b3e5c7fcffc932f433490822"
+  },
+  "phaseInstallPlan": {
+    "path": "phase-install-plan.json",
+    "sha256Bytes": "9e56a9725ab6796d01a48103950aba60f523df2de3b78afff8b1d0f07e6b3bb9"
+  },
+  "rootRecipe": {
+    "path": "ROOT-INTEGRATION.md",
+    "sha256Bytes": "dd449af6da1a172a058a72feb689dcd656812af263e2e8fa4337544d8c7066d0"
+  },
+  "pending": [
+    "Root whole source install/build",
+    "real four-page aggregate + RootScope/Shell lifecycle factory",
+    "source-driven Profile/category/live subroutes and video geometry/return state; no fixed false/empty callback",
+    "actual global prefs/native WinRT data query and full original Home runtime acceptance"
+  ]
+}

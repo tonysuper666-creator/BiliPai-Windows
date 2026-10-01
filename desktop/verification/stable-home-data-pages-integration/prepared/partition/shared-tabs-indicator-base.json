@@ -1,0 +1,6 @@
+{
+  "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
+  "baselineSha256LF": "434523b12b0a218a0f1f0383dbfff64b782092b00d0c25d987844416adad0f89",
+  "desiredSha256LF": "4218ce6b3060c92f3d6db928ad51a60f31b0c22851887f8ca4f3119400facf8e",
+  "installGeneratedReference": false
+}

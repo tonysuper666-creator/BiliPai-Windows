@@ -1,0 +1,318 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "pins": {
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt": "40489c068b77bac5136d31209f1d6f25952d34831760ccf7b1feda9c56a52b98",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt": "5d6b6d24c41e7072b5f1e7107c65c632db7926fbf7da1cc35c61551bdf2a2045",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt": "de00b9fc1ba0910d4b778c8d76e1f72237c74042fffb6ef14a3dadf2711604b3",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt": "b9eef7947aa323c64188aaaf3cec36cafe840e3ad6753227739858acef6ec7f7",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicy.kt": "ee8ac2498ab5de0f46aa01b81ab8f2bae11e7775ebea5b04b6220388206bfe8c",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiHubPolicy.kt": "c136016b778e72104b097752ef8d0e5ad29ec59d27b2af20a551f088230cd5b5",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/MyFollowPolicy.kt": "a3d3f01fd4d82bfdee083ccf6dbe89006d29791d3c4ffd61654bd944c9892e90",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt": "7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/list/BangumiListComponents.kt": "cb81ae57da657c0281db32f8765fd73d63c0827fd3bf361fe3e0c34d1f5c0f74",
+    "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt": "358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612"
+  },
+  "emitted": [
+    {
+      "origin": "app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt",
+      "path": "com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt",
+      "sha256LF": "77401085738b8d749d31c4d327213035905e5e0a29c5e3729234e2f9b3cc8656",
+      "adaptations": [
+        {
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopHomeEnvironment as LocalContext",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.core.store.SettingsManager",
+          "after": "// Windows: use the same original persisted Home settings projection",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.feature.download.DownloadManager",
+          "after": "// Windows: existing Root owned image-save consumer",
+          "count": 1
+        },
+        {
+          "before": "fun HomeBangumiTabPage(",
+          "after": "internal fun HomeBangumiTabPage(",
+          "count": 1
+        },
+        {
+          "before": "viewModel: BangumiHubViewModel = viewModel(),",
+          "after": "viewModel: BangumiHubViewModel = com.bilipai.desktop.ui.LocalDesktopBangumiHubViewModel.current,",
+          "count": 1
+        },
+        {
+          "before": "SettingsManager.getShowPgcTimeline(context)",
+          "after": "context.settings.homeSettings.map { it.showPgcTimeline }",
+          "count": 1
+        },
+        {
+          "before": "DownloadManager.saveImageToGallery(context, url, title)",
+          "after": "context.saveCover(url, title)",
+          "count": 1
+        },
+        {
+          "before": "import kotlinx.coroutines.launch",
+          "after": "import kotlinx.coroutines.launch\nimport kotlinx.coroutines.flow.map",
+          "count": 1
+        }
+      ],
+      "selected": null
+    },
+    {
+      "origin": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt",
+      "path": "com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt",
+      "sha256LF": "c18de13582f242d50dbbae8b0730f6c725f32a24b7a28ac17dcc5d111a70fea4",
+      "adaptations": [
+        {
+          "before": "import androidx.lifecycle.viewModelScope",
+          "after": "// Windows: supplied captured-entry scope",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.data.repository.BangumiRepository",
+          "after": "// Windows: full selected original raw repository methods on the shared owned APIs",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.core.store.TokenManager",
+          "after": "// Windows: the existing actual SessionStore identity gate",
+          "count": 1
+        },
+        {
+          "before": "class BangumiHubViewModel : ViewModel() {",
+          "after": "internal class BangumiHubViewModel(private val desktopEnvironment: com.bilipai.desktop.ui.DesktopBangumiHubEnvironment) : ViewModel() {",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow(BangumiHubUiState())",
+          "after": "com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(BangumiHubUiState(), desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "!TokenManager.sessDataCache.isNullOrBlank()",
+          "after": "desktopEnvironment.isLoggedIn()",
+          "count": 1
+        },
+        {
+          "before": "viewModelScope",
+          "after": "desktopEnvironment.scope",
+          "count": 11
+        },
+        {
+          "before": "BangumiRepository.",
+          "after": "desktopEnvironment.repository.",
+          "count": 12
+        }
+      ],
+      "selected": null
+    },
+    {
+      "origin": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt",
+      "path": "com/android/purebilibili/feature/bangumi/BangumiHubContent.kt",
+      "sha256LF": "de00b9fc1ba0910d4b778c8d76e1f72237c74042fffb6ef14a3dadf2711604b3",
+      "adaptations": [],
+      "selected": null
+    },
+    {
+      "origin": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt",
+      "path": "com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt",
+      "sha256LF": "b9eef7947aa323c64188aaaf3cec36cafe840e3ad6753227739858acef6ec7f7",
+      "adaptations": [],
+      "selected": null
+    },
+    {
+      "origin": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicy.kt",
+      "path": "com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicy.kt",
+      "sha256LF": "ee8ac2498ab5de0f46aa01b81ab8f2bae11e7775ebea5b04b6220388206bfe8c",
+      "adaptations": [],
+      "selected": null
+    },
+    {
+      "origin": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiHubPolicy.kt",
+      "path": "com/android/purebilibili/feature/bangumi/BangumiHubPolicy.kt",
+      "sha256LF": "c136016b778e72104b097752ef8d0e5ad29ec59d27b2af20a551f088230cd5b5",
+      "adaptations": [],
+      "selected": null
+    },
+    {
+      "origin": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/MyFollowPolicy.kt",
+      "path": "com/android/purebilibili/feature/bangumi/MyFollowPolicy.kt",
+      "sha256LF": "a3d3f01fd4d82bfdee083ccf6dbe89006d29791d3c4ffd61654bd944c9892e90",
+      "adaptations": [],
+      "selected": null
+    },
+    {
+      "origin": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+      "path": "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiBadgePolicy.kt",
+      "sha256LF": "69ea13c17502e2d4245b9b34f721c5ae5cbe8c05bec24614c9256a921c8b98c6",
+      "adaptations": [],
+      "selected": [
+        "resolveBangumiCoverBadgeColors"
+      ]
+    },
+    {
+      "origin": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/list/BangumiListComponents.kt",
+      "path": "com/android/purebilibili/feature/bangumi/ui/list/DesktopOriginalBangumiBadge.kt",
+      "sha256LF": "5d54789b48c01b67cc653e51660bd00e053ef39caeae5f3b0c96c2333e77229c",
+      "adaptations": [],
+      "selected": [
+        "BangumiBadge"
+      ]
+    },
+    {
+      "origin": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalBangumiHubRepository.kt",
+      "sha256LF": "77ab1a17bd9ae4c2f4bdaebc5dd63b25d3b32a94460d8f7eb0047fc54cb720e1",
+      "adaptations": [
+        {
+          "method": "getTimeline",
+          "originalSha256LF": "09f2d3cf485f247b5a3e9542ca5c8b322abbb7843be0e622ba677bd6e32776ef",
+          "adaptedSha256LF": "a20ab9ac72c41cc9e7c809013607a198a0b66bb28566c5a82d77b8c564709454",
+          "adaptations": [
+            {
+              "before": "            android.util.Log.e(\"BangumiRepo\", \"getTimeline error: ${e.message}\")",
+              "after": "            // Existing optional protocol failure is returned through Result; no credential-bearing platform log.",
+              "count": 1
+            }
+          ],
+          "inverseByteEqual": true
+        },
+        {
+          "method": "unfollowBangumi",
+          "originalSha256LF": "84967a971ac3486ec8459ddf944fee0449e3dad6f3e5a095bee4a20e33cc3fd8",
+          "adaptedSha256LF": "813563a4f7d0f046c3d3e5ae9806bd6c6445ea4d3737e092d6d6e37f6e6d208d",
+          "adaptations": [
+            {
+              "before": "TokenManager.csrfCache",
+              "after": "csrf()",
+              "count": 1
+            },
+            {
+              "before": "            android.util.Log.e(\"BangumiRepo\", \"unfollowBangumi error: ${e.message}\")",
+              "after": "            // Existing optional protocol failure is returned through Result; no credential-bearing platform log.",
+              "count": 1
+            }
+          ],
+          "inverseByteEqual": true
+        },
+        {
+          "method": "updateBangumiFollowStatus",
+          "originalSha256LF": "0337c57bf7461874c79c319e0453ec8cd41d6eb167808f9429ea4d6cf3bebcd3",
+          "adaptedSha256LF": "d8a86c899bed0d38f7329b5443ec51f6b553fafced7c1f66d2e49e8f2b3d9a66",
+          "adaptations": [
+            {
+              "before": "TokenManager.csrfCache",
+              "after": "csrf()",
+              "count": 1
+            },
+            {
+              "before": "            android.util.Log.e(\"BangumiRepo\", \"updateBangumiFollowStatus error: ${e.message}\")",
+              "after": "            // Existing optional protocol failure is returned through Result; no credential-bearing platform log.",
+              "count": 1
+            }
+          ],
+          "inverseByteEqual": true
+        },
+        {
+          "method": "updateBangumiFollowStatuses",
+          "originalSha256LF": "763d3605d9424ef84e62da8c8cf2e4e015b37e47e8196e2179dd892dfb43ba8c",
+          "adaptedSha256LF": "e7921702f9726f952d2662fa6d779a0d4c4729a3b3d694715c803e5c9fc14c29",
+          "adaptations": [
+            {
+              "before": "TokenManager.csrfCache",
+              "after": "csrf()",
+              "count": 1
+            },
+            {
+              "before": "            android.util.Log.e(\"BangumiRepo\", \"updateBangumiFollowStatuses error: ${e.message}\")",
+              "after": "            // Existing optional protocol failure is returned through Result; no credential-bearing platform log.",
+              "count": 1
+            }
+          ],
+          "inverseByteEqual": true
+        },
+        {
+          "method": "getBangumiIndexConditions",
+          "originalSha256LF": "b738949a0cd952f24324bbfe58763a60ef1d0a16bafae8b8ace5dad61e70a6ec",
+          "adaptedSha256LF": "d5a817843411b8542418ac9e404f8c6b32f3ec333449836d30ba5323ee6df340",
+          "adaptations": [
+            {
+              "before": "            android.util.Log.e(\"BangumiRepo\", \"getBangumiIndexConditions error: ${e.message}\")",
+              "after": "            // Existing optional protocol failure is returned through Result; no credential-bearing platform log.",
+              "count": 1
+            }
+          ],
+          "inverseByteEqual": true
+        },
+        {
+          "method": "getBangumiIndexPage",
+          "originalSha256LF": "994834570dbec302156d2a6fdd19e564712a282d659fcb970cb4d8e164ef2d18",
+          "adaptedSha256LF": "b57b154f4a0cd00aec4fed843491d1d1068e3c7afeaca0d72feae1d8a73ef1c4",
+          "adaptations": [
+            {
+              "before": "            android.util.Log.e(\"BangumiRepo\", \"getBangumiIndexPage error: ${e.message}\")",
+              "after": "            // Existing optional protocol failure is returned through Result; no credential-bearing platform log.",
+              "count": 1
+            }
+          ],
+          "inverseByteEqual": true
+        },
+        {
+          "method": "searchBangumi",
+          "originalSha256LF": "f0df76cb209c20f04e42d75d41fe80d2994faedec6934951acc17676df3c971a",
+          "adaptedSha256LF": "af87294b07a77ced036a1b637fdabfe1583934555aac28b4bd9561e973e7fec0",
+          "adaptations": [
+            {
+              "before": "val navApi = NetworkModule.api",
+              "after": "val navApi = ownedNavApi",
+              "count": 1
+            },
+            {
+              "before": "val searchApi = NetworkModule.searchApi",
+              "after": "val searchApi = ownedSearchApi",
+              "count": 1
+            },
+            {
+              "before": "            android.util.Log.e(\"BangumiRepo\", \"searchBangumi error: ${e.message}\")",
+              "after": "            // Existing optional protocol failure is returned through Result; no credential-bearing platform log.",
+              "count": 1
+            }
+          ],
+          "inverseByteEqual": true
+        },
+        {
+          "method": "getMyFollowBangumi",
+          "originalSha256LF": "8be408f02e20f68982042a5c47dcb74b31f10fca52920c922326f4f55d3ad00d",
+          "adaptedSha256LF": "cc5d9986f9f6db91ddac3dfc8f97677f148a4cf8525a44060c73a985dd88dbee",
+          "adaptations": [
+            {
+              "before": "TokenManager.midCache",
+              "after": "mid()",
+              "count": 1
+            },
+            {
+              "before": "            android.util.Log.e(\"BangumiRepo\", \"getMyFollowBangumi error: ${e.message}\")",
+              "after": "            // Existing optional protocol failure is returned through Result; no credential-bearing platform log.",
+              "count": 1
+            }
+          ],
+          "inverseByteEqual": true
+        }
+      ],
+      "selected": [
+        "getTimeline",
+        "unfollowBangumi",
+        "updateBangumiFollowStatus",
+        "updateBangumiFollowStatuses",
+        "getBangumiIndexConditions",
+        "getBangumiIndexPage",
+        "searchBangumi",
+        "getMyFollowBangumi"
+      ]
+    }
+  ],
+  "originalInverseTransformsVerified": true
+}

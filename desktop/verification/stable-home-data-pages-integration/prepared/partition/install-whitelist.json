@@ -1,0 +1,28 @@
+{
+  "newSources": [
+    {
+      "prepared": "prepared/tools/extract-upstream-home-partition.py",
+      "destination": "desktop/tools/extract-upstream-home-partition.py"
+    },
+    {
+      "prepared": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPartitionRoot.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPartitionRoot.kt"
+    }
+  ],
+  "localPatches": [
+    {
+      "patch": "shared-tabs-indicator.patch",
+      "baseline": "shared-tabs-indicator-base.json"
+    }
+  ],
+  "doNotInstall": [
+    "generated/**",
+    "reference-only/**",
+    "compile-*/**",
+    "proof-*/**"
+  ],
+  "sourceDir": "generated/home-partition",
+  "taskName": "extractOriginalHomePartition",
+  "dependency": "prepareUpstreamSources",
+  "runtimeOwnerRequired": true
+}

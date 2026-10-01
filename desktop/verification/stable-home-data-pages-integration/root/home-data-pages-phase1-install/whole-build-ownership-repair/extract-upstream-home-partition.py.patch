@@ -1,0 +1,24 @@
+--- a/desktop/tools/extract-upstream-home-partition.py
++++ b/desktop/tools/extract-upstream-home-partition.py
+@@ -45,9 +45,11 @@
+  adapt('import android.os.Build','// Windows: actual current renderer capability via required Root platform')
+  adapt('import androidx.compose.ui.platform.LocalContext','import com.bilipai.desktop.ui.LocalDesktopHomeEnvironment as LocalContext')
+  adapt('import androidx.lifecycle.viewModelScope','// Windows: the retained captured-owner scope supplies VM lifetime')
++ adapt('import androidx.lifecycle.ViewModel','// Windows: entry lifetime owns this original transient VM')
++ adapt('import androidx.lifecycle.viewmodel.compose.viewModel','// Windows: required retained local supplies the original VM')
+  adapt('import com.android.purebilibili.core.store.SettingsManager','// Windows: the same original persisted Home/card-settings projection')
+  adapt('import com.android.purebilibili.data.repository.VideoRepository','// Windows: original raw Video request ports on the existing shared owner')
+- adapt('class PartitionFeedViewModel : ViewModel() {','internal class PartitionFeedViewModel(private val desktopEnvironment: com.bilipai.desktop.ui.DesktopPartitionEnvironment) : ViewModel() {')
++ adapt('class PartitionFeedViewModel : ViewModel() {','internal class PartitionFeedViewModel(private val desktopEnvironment: com.bilipai.desktop.ui.DesktopPartitionEnvironment) {')
+  adapt('MutableStateFlow(PartitionFeedUiState())','com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(PartitionFeedUiState(), desktopEnvironment.commitIfCurrent)')
+  adapt('viewModelScope.launch {','desktopEnvironment.scope.launch {')
+  adapt('VideoRepository.getPopularVideos','desktopEnvironment.video.getPopularVideos')
+@@ -70,7 +72,7 @@
+  origin=BASE+'core/util/FeedRefreshPaging.kt';emit('com/android/purebilibili/core/util/FeedRefreshPaging.kt',raw[origin],origin,[])
+  origin=BASE+'core/ui/skeleton/ContentLoadingSkeletons.kt';original=raw[origin]
+  header=original[:original.index('/**')]
+- bodies=[fn(original,n)for n in ('MediaListRowSkeleton','UserListRowSkeleton','ContentMediaListSkeleton','ContentVideoGridSkeleton','ContentVideoGridItemSkeleton')]
++ bodies=[fn(original,n)for n in ('MediaListRowSkeleton','UserListRowSkeleton','ContentMediaListSkeleton','ContentVideoGridSkeleton')]
+  emit('com/android/purebilibili/core/ui/skeleton/DesktopOriginalMediaListSkeleton.kt',header+'\n\n'.join(bodies)+'\n',origin,[])
+  origin=BASE+'feature/common/VideoLazyKeyPolicy.kt';emit('com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt',raw[origin],origin,[])
+  (out/'partition-producer-inventory.json').write_text(json.dumps(dict(upstreamCommit='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589',pins=PINS,emitted=rows,completePartitionInverseByteEqual=True,sharedSkeletonPulseHasOneExistingProducer=True),indent=2)+'\n',encoding='utf-8')

@@ -1,0 +1,41 @@
+{
+  "payloads": [
+    {
+      "path": "desktop/tools/extract-upstream-subscription-page.py",
+      "sha256Bytes": "c2bfa5f63dbedbc96af2f45a1e28a09cbc6717adcc8a7e9631be2cd1e40c97ff"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+      "sha256Bytes": "c6997bc14ed7800c57a923e7b7b039ab1beb1dd3e56237e0a4cfcbf19c9776f0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "sha256Bytes": "5c4b1c680f34cf201d37147f224a6f9999b49b8653237b1b6906c76374ec46d4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "sha256Bytes": "40df69f4b0d9f54d8343e668573fff6c8d8f698f8cbe4e89fce645eea4f89258"
+    }
+  ],
+  "existingSourcesNarrowHunks": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+      "changes": 27,
+      "sha256LF": "0f8503b71f18049d8a47ebeaf38d929b21e35fcb8e3d16b572440dcab82cbb0b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "changes": 1,
+      "sha256LF": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "changes": 1,
+      "sha256LF": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c"
+    }
+  ],
+  "newOriginalIdentities": 1,
+  "sourceCount": 864,
+  "sameRuntimeSubscriptionParserIoOwner": true,
+  "originalRootMounted": false
+}

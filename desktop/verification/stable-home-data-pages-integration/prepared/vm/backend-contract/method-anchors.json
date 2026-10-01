@@ -1,0 +1,290 @@
+[
+  {
+    "name": "trimIncrementalRefreshVideosToEvenCount",
+    "line": 65
+  },
+  {
+    "name": "selectHomeFeedIncomingVideos",
+    "line": 71
+  },
+  {
+    "name": "prepareHomeFeedVideos",
+    "line": 96
+  },
+  {
+    "name": "resolveRecommendFeedRequestIndex",
+    "line": 114
+  },
+  {
+    "name": "HomeCategory.toFeedKind",
+    "line": 130
+  },
+  {
+    "name": "shouldAdvanceRecommendFeedRequestIndex",
+    "line": 140
+  },
+  {
+    "name": "buildHomeRefreshUndoSnapshot",
+    "line": 157
+  },
+  {
+    "name": "shouldExposeHomeRefreshUndo",
+    "line": 175
+  },
+  {
+    "name": "shouldRefreshHomeUserInfoAfterFeedLoad",
+    "line": 182
+  },
+  {
+    "name": "shouldKeepHomeCategoryAutoPagingAfterFailure",
+    "line": 186
+  },
+  {
+    "name": "applyHomeRefreshUndoSnapshot",
+    "line": 190
+  },
+  {
+    "name": "TodayWatchPluginMode.toUiMode",
+    "line": 206
+  },
+  {
+    "name": "TodayWatchMode.toPluginMode",
+    "line": 213
+  },
+  {
+    "name": "TodayWatchMode.toRecommendationMode",
+    "line": 220
+  },
+  {
+    "name": "RecommendationMode.toTodayWatchMode",
+    "line": 227
+  },
+  {
+    "name": "RecommendationResult.toTodayWatchPlan",
+    "line": 234
+  },
+  {
+    "name": "getCategoryState",
+    "line": 320
+  },
+  {
+    "name": "getPopularCategoryState",
+    "line": 322
+  },
+  {
+    "name": "getPreloadVideosSnapshot",
+    "line": 325
+  },
+  {
+    "name": "homeStateFlow",
+    "line": 340
+  },
+  {
+    "name": "reFilterAllContent",
+    "line": 458
+  },
+  {
+    "name": "resolveTodayWatchRuntimeConfig",
+    "line": 497
+  },
+  {
+    "name": "syncTodayWatchPluginState",
+    "line": 519
+  },
+  {
+    "name": "switchTodayWatchMode",
+    "line": 554
+  },
+  {
+    "name": "setTodayWatchCollapsed",
+    "line": 566
+  },
+  {
+    "name": "refreshTodayWatchOnly",
+    "line": 592
+  },
+  {
+    "name": "rebuildTodayWatchPlan",
+    "line": 605
+  },
+  {
+    "name": "cancelTodayWatchPlanRebuild",
+    "line": 619
+  },
+  {
+    "name": "performTodayWatchPlanRebuild",
+    "line": 626
+  },
+  {
+    "name": "buildResult",
+    "line": 680
+  },
+  {
+    "name": "filterTodayWatchExpandedCandidates",
+    "line": 761
+  },
+  {
+    "name": "loadHistorySample",
+    "line": 774
+  },
+  {
+    "name": "getRecommendCandidates",
+    "line": 828
+  },
+  {
+    "name": "switchCategory",
+    "line": 842
+  },
+  {
+    "name": "updateDisplayedTabIndex",
+    "line": 912
+  },
+  {
+    "name": "startVideoDissolve",
+    "line": 918
+  },
+  {
+    "name": "completeVideoDissolve",
+    "line": 926
+  },
+  {
+    "name": "markTodayWatchVideoOpened",
+    "line": 959
+  },
+  {
+    "name": "switchLiveSubCategory",
+    "line": 983
+  },
+  {
+    "name": "switchPopularSubCategory",
+    "line": 997
+  },
+  {
+    "name": "addToWatchLater",
+    "line": 1026
+  },
+  {
+    "name": "markNotInterested",
+    "line": 1036
+  },
+  {
+    "name": "blockCreator",
+    "line": 1098
+  },
+  {
+    "name": "recordTodayWatchNegativeFeedback",
+    "line": 1122
+  },
+  {
+    "name": "syncTodayWatchFeedbackFromStore",
+    "line": 1146
+  },
+  {
+    "name": "filterHomeFeedbackVideos",
+    "line": 1156
+  },
+  {
+    "name": "persistTodayWatchFeedback",
+    "line": 1165
+  },
+  {
+    "name": "loadData",
+    "line": 1178
+  },
+  {
+    "name": "refresh",
+    "line": 1195
+  },
+  {
+    "name": "syncCurrentCategoryForRefresh",
+    "line": 1267
+  },
+  {
+    "name": "markRefreshNewItemsHandled",
+    "line": 1282
+  },
+  {
+    "name": "markRecommendOldContentDividerRevealed",
+    "line": 1289
+  },
+  {
+    "name": "undoRefresh",
+    "line": 1300
+  },
+  {
+    "name": "dismissUndo",
+    "line": 1317
+  },
+  {
+    "name": "scheduleUndoDismiss",
+    "line": 1324
+  },
+  {
+    "name": "cancelUndoDismiss",
+    "line": 1332
+  },
+  {
+    "name": "loadMore",
+    "line": 1337
+  },
+  {
+    "name": "refreshUserInfoInBackground",
+    "line": 1363
+  },
+  {
+    "name": "refreshMessageUnreadInBackground",
+    "line": 1370
+  },
+  {
+    "name": "refreshMessageUnreadCount",
+    "line": 1377
+  },
+  {
+    "name": "fetchData",
+    "line": 1395
+  },
+  {
+    "name": "updatePopularCategoryState",
+    "line": 1638
+  },
+  {
+    "name": "updateCategoryState",
+    "line": 1666
+  },
+  {
+    "name": "fetchFollowFeed",
+    "line": 1693
+  },
+  {
+    "name": "mapHomeFollowDynamicItemsToVideos",
+    "line": 1835
+  },
+  {
+    "name": "videoItemKey",
+    "line": 1871
+  },
+  {
+    "name": "parseDurationText",
+    "line": 1881
+  },
+  {
+    "name": "parseStatText",
+    "line": 1893
+  },
+  {
+    "name": "fetchLiveRooms",
+    "line": 1906
+  },
+  {
+    "name": "fetchUserInfo",
+    "line": 1992
+  },
+  {
+    "name": "fetchFollowingList",
+    "line": 2047
+  },
+  {
+    "name": "getPreviewVideoUrl",
+    "line": 2111
+  }
+]

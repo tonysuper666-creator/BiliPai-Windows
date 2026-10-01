@@ -1,0 +1,14 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+  "baseSha256Bytes": "dc71e802b410b1ed1affdd1e98b15c743a079db96c945fa66eafb4c9260ba8f9",
+  "baseSha256LF": "770128c34fde1e7b00a8650e2f8dac79bb906aed131fa162e3893fde7515b9ba",
+  "candidateSha256LF": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c",
+  "changes": [
+    {
+      "before": "            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }",
+      "after": "            DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()\n            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }"
+    }
+  ],
+  "inverseOriginalEqual": true,
+  "installWholeFile": false
+}

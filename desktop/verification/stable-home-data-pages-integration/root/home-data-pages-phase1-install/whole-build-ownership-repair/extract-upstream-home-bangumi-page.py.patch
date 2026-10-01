@@ -1,0 +1,22 @@
+--- a/desktop/tools/extract-upstream-home-bangumi-page.py
++++ b/desktop/tools/extract-upstream-home-bangumi-page.py
+@@ -47,6 +47,7 @@
+    assert s.count(before)==count,(origin,before,s.count(before),count);s=s.replace(before,after);changes.append(dict(before=before,after=after,count=count))
+   if origin.endswith('HomeBangumiTabPage.kt'):
+    adapt('import androidx.compose.ui.platform.LocalContext','import com.bilipai.desktop.ui.LocalDesktopHomeEnvironment as LocalContext')
++   adapt('import androidx.lifecycle.viewmodel.compose.viewModel','// Windows: required retained local supplies the original Hub VM')
+    adapt('import com.android.purebilibili.core.store.SettingsManager','// Windows: use the same original persisted Home settings projection')
+    adapt('import com.android.purebilibili.feature.download.DownloadManager','// Windows: existing Root owned image-save consumer')
+    adapt('fun HomeBangumiTabPage(','internal fun HomeBangumiTabPage(')
+@@ -56,9 +57,10 @@
+    adapt('import kotlinx.coroutines.launch','import kotlinx.coroutines.launch\nimport kotlinx.coroutines.flow.map')
+   if origin.endswith('BangumiHubViewModel.kt'):
+    adapt('import androidx.lifecycle.viewModelScope','// Windows: supplied captured-entry scope')
++   adapt('import androidx.lifecycle.ViewModel','// Windows: entry lifetime owns this original transient VM')
+    adapt('import com.android.purebilibili.data.repository.BangumiRepository','// Windows: full selected original raw repository methods on the shared owned APIs')
+    adapt('import com.android.purebilibili.core.store.TokenManager','// Windows: the existing actual SessionStore identity gate')
+-   adapt('class BangumiHubViewModel : ViewModel() {','internal class BangumiHubViewModel(private val desktopEnvironment: com.bilipai.desktop.ui.DesktopBangumiHubEnvironment) : ViewModel() {')
++   adapt('class BangumiHubViewModel : ViewModel() {','internal class BangumiHubViewModel(private val desktopEnvironment: com.bilipai.desktop.ui.DesktopBangumiHubEnvironment) {')
+    adapt('MutableStateFlow(BangumiHubUiState())','com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(BangumiHubUiState(), desktopEnvironment.commitIfCurrent)')
+    adapt('!TokenManager.sessDataCache.isNullOrBlank()','desktopEnvironment.isLoggedIn()')
+    adapt('viewModelScope','desktopEnvironment.scope',s.count('viewModelScope'))

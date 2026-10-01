@@ -1,0 +1,139 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "pins": {
+    "app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt": "04ba7fe22888802cb1da9e4d91ef97df318c49b2a9aea37672a00f4b10504010",
+    "app/src/main/java/com/android/purebilibili/core/util/FeedRefreshPaging.kt": "7ed91d88e7198729fd2503db6317a0abe15c92efaed7c670bce122bd37c7ae98",
+    "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2",
+    "app/src/main/java/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt": "628f76935eba485f1adf9b81774643fc3b33a791970e5144de032bdad4463312",
+    "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt": "a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad"
+  },
+  "emitted": [
+    {
+      "path": "com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreen.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt",
+      "sha256LF": "ee8e65d7b83dcdb15abe29f8a8c88426feb0b153b6395bcbd6038dbffbad719f",
+      "adaptations": [
+        {
+          "before": "import android.os.Build",
+          "after": "// Windows: actual current renderer capability via required Root platform",
+          "count": 1
+        },
+        {
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopHomeEnvironment as LocalContext",
+          "count": 1
+        },
+        {
+          "before": "import androidx.lifecycle.viewModelScope",
+          "after": "// Windows: the retained captured-owner scope supplies VM lifetime",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.core.store.SettingsManager",
+          "after": "// Windows: the same original persisted Home/card-settings projection",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.data.repository.VideoRepository",
+          "after": "// Windows: original raw Video request ports on the existing shared owner",
+          "count": 1
+        },
+        {
+          "before": "class PartitionFeedViewModel : ViewModel() {",
+          "after": "internal class PartitionFeedViewModel(private val desktopEnvironment: com.bilipai.desktop.ui.DesktopPartitionEnvironment) : ViewModel() {",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow(PartitionFeedUiState())",
+          "after": "com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(PartitionFeedUiState(), desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "viewModelScope.launch {",
+          "after": "desktopEnvironment.scope.launch {",
+          "count": 1
+        },
+        {
+          "before": "VideoRepository.getPopularVideos",
+          "after": "desktopEnvironment.video.getPopularVideos",
+          "count": 1
+        },
+        {
+          "before": "VideoRepository.getRegionVideos",
+          "after": "desktopEnvironment.video.getRegionVideos",
+          "count": 1
+        },
+        {
+          "before": "fun PartitionScreen(",
+          "after": "internal fun PartitionScreen(",
+          "count": 1
+        },
+        {
+          "before": "fun PartitionContent(",
+          "after": "internal fun PartitionContent(",
+          "count": 1
+        },
+        {
+          "before": "viewModel: PartitionFeedViewModel = viewModel()",
+          "after": "viewModel: PartitionFeedViewModel = com.bilipai.desktop.ui.LocalDesktopPartitionViewModel.current",
+          "count": 1
+        },
+        {
+          "before": "com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT)",
+          "after": "com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.supportsRenderEffectBackedHaze",
+          "count": 1
+        },
+        {
+          "before": "Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU",
+          "after": "com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.supportsDirectHazeLiquidGlassFallback",
+          "count": 1
+        },
+        {
+          "before": "SettingsManager.getHomeSettings(context)",
+          "after": "context.settings.homeSettings",
+          "count": 1
+        },
+        {
+          "before": "SettingsManager\n        .getHomeFeedCardStyle(context)",
+          "after": "context.settings.homeFeedCardStyle",
+          "count": 1
+        },
+        {
+          "before": "SettingsManager\n        .getHomeUpBadgesVisible(context)",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalHomeCardVisualSettings\n        .getSettings(context.pluginContext).map { it.showHomeUpBadges }",
+          "count": 1
+        },
+        {
+          "before": "SettingsManager\n        .getHomeDurationStyle(context)",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalHomeCardVisualSettings\n        .getSettings(context.pluginContext).map { it.homeDurationStyle }",
+          "count": 1
+        },
+        {
+          "before": "SettingsManager\n        .getHomePublishTimeVisible(context)",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalHomeCardVisualSettings\n        .getSettings(context.pluginContext).map { it.showHomePublishTime }",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "com/android/purebilibili/core/util/FeedRefreshPaging.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/core/util/FeedRefreshPaging.kt",
+      "sha256LF": "7ed91d88e7198729fd2503db6317a0abe15c92efaed7c670bce122bd37c7ae98",
+      "adaptations": []
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/skeleton/DesktopOriginalMediaListSkeleton.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "sha256LF": "74cf5692e009481cd005bb74c4ac8bb8a5061e9f4cc8ef93e3e45c2a6d27e49e",
+      "adaptations": []
+    },
+    {
+      "path": "com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt",
+      "sha256LF": "628f76935eba485f1adf9b81774643fc3b33a791970e5144de032bdad4463312",
+      "adaptations": []
+    }
+  ],
+  "completePartitionInverseByteEqual": true,
+  "sharedSkeletonPulseHasOneExistingProducer": true
+}

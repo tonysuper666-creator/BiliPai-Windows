@@ -1,0 +1,2045 @@
+{
+  "scope": "prepared stable full original HomeVM and sole TodayWatch owner bridge",
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualMainRuntime": false,
+  "sharedSourceModified": false,
+  "actualNativeWindow": false,
+  "actualHttp": false,
+  "actualUserAccount": false,
+  "fullHomeMounted": false,
+  "firebaseTransportAvailable": false,
+  "requiredActualRequestPortsPending": true,
+  "productSnapshot": {
+    "manifestSha256Bytes": "ba49995574a32aabb30a07578dcfef7e4ae65ccf2882940ffb8d29272ea0695c",
+    "orderedClasspathSha256Bytes": "8d2f4b6242c30ef4edae74ef4c33ce876a6b1fa6508cd6eadccd321b9451ce94",
+    "entries": 92
+  },
+  "compileProof": "compile-vm-06.log",
+  "scriptedOriginalDtoGates": 7,
+  "fixtureProof": "fixture-06/task-store/results.json",
+  "installWhitelist": [
+    "prepared/tools/extract-upstream-home-viewmodel.py",
+    "prepared/tools/extract-upstream-home-viewmodel-adaptations.json",
+    "prepared/manual/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+    "prepared/manual/com/bilipai/desktop/ui/DesktopHomeFollowingCache.kt",
+    "prepared/manual/com/bilipai/desktop/ui/DesktopHomeOwnedMutableStateFlow.kt",
+    "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalTodayWatchOwner.kt",
+    "prepared/replacements/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt"
+  ],
+  "runtimePatch": "runtime-retirement.patch",
+  "soleExistingTimelineGetterPatch": "backend-contract/follow-getter-and-planner-retirement-delta/sole-producer-two-getters.patch",
+  "registryDeltaOnly": "source-inventory.json",
+  "artifactCount": 287,
+  "artifacts": [
+    {
+      "path": "backend-contract/algorithm-partitions.json",
+      "sha256Bytes": "b73c17dde6491b0319a6bb4a6463e5b06b26080de272713f271d03d4397995ed",
+      "sizeBytes": 5063,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "backend-contract/audit.py",
+      "sha256Bytes": "338c7e1bf16a3524455eb06fa5e3f78fd9ebf7f4d9b0d293e3052fd313f51a79",
+      "sizeBytes": 19488,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "backend-contract/backend-contract.json",
+      "sha256Bytes": "4856ff5ae9a8e5d68129488073db32f39f33d22663e497068853794fb87d9557",
+      "sizeBytes": 34018,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "backend-contract/evidence-manifest.json",
+      "sha256Bytes": "d4ecdc8fac348b351ce85adaeab14af3927dc029da1ae69e0b9b49dde770a525",
+      "sizeBytes": 1106,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "backend-contract/follow-getter-and-planner-retirement-delta/evidence-manifest.json",
+      "sha256Bytes": "239474aa08959ff99298901c48faf283a7d2ea94573f8d631b144807fc69d205",
+      "sizeBytes": 1057,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "backend-contract/follow-getter-and-planner-retirement-delta/original-follow-getters.memberfragment.kt",
+      "sha256Bytes": "42eede0b475639c13f76029d88a7bf244b0c24f407673e4436f89287b57a483f",
+      "sizeBytes": 338,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "backend-contract/follow-getter-and-planner-retirement-delta/planner-retirement-contract.json",
+      "sha256Bytes": "2604cf7c1e7a93871b20ea8b7b9d56bb92211cf19f47f326d7a925b08e8305f3",
+      "sizeBytes": 5417,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "backend-contract/follow-getter-and-planner-retirement-delta/prepare-supplement.py",
+      "sha256Bytes": "9c1dfcde0f38ab058db9d0b120a0e22b3ab7bbef8db3cdcc2e609fe64d9471c0",
+      "sizeBytes": 9822,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "backend-contract/follow-getter-and-planner-retirement-delta/sole-producer-two-getters.patch",
+      "sha256Bytes": "44edc8170066f4ca10f552102f1cb5e7655a03cfee5bf62fa42a7b9c871a58d0",
+      "sizeBytes": 1295,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "backend-contract/follow-getter-and-planner-retirement-delta/source-checks.json",
+      "sha256Bytes": "621f94e7158d3c95d780bf6f39dddaaf6759a349e265e5493d4fc930a5dcc3af",
+      "sizeBytes": 1780,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "backend-contract/method-anchors.json",
+      "sha256Bytes": "e1b1ad74c34e33e14087b2463125f490862ee1fbde1f75abd046e0c7c931309e",
+      "sizeBytes": 4632,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "backend-contract/source-pins.json",
+      "sha256Bytes": "d042e4beca8dd0494c2ffde126e6ddd4c2444a3b9efdc1bf90ee3c71642fac91",
+      "sizeBytes": 11232,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "class-overlap.json",
+      "sha256Bytes": "6623065b5e1618e99746bc4608d5fdd7b4908f5d9ce6baf324aff5b0f067950c",
+      "sizeBytes": 811,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "classes-vm-03/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "aeeef19ff4c0aedfa1880a34a8b9fac1c53f87788ac972bc1d7c05b62023b14a",
+      "sizeBytes": 301,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "classes-vm-04/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "aeeef19ff4c0aedfa1880a34a8b9fac1c53f87788ac972bc1d7c05b62023b14a",
+      "sizeBytes": 301,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "classes-vm-05/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "aeeef19ff4c0aedfa1880a34a8b9fac1c53f87788ac972bc1d7c05b62023b14a",
+      "sizeBytes": 301,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/core/util/EasterEggs.class",
+      "sha256Bytes": "4de554e11451f71f89b5f2b3a2767a32a67aba9d3bcca3482db73bb43af9a8a6",
+      "sizeBytes": 14135,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$1$1.class",
+      "sha256Bytes": "22689949afed52bb45a0aa9be9e35d72c6391d2394802b9e95e9534bcfcd38aa",
+      "sizeBytes": 1863,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$1.class",
+      "sha256Bytes": "e2a739517aebc9b5e0808988170d253e412484fb6ca3fa81812fbfac4105e82a",
+      "sizeBytes": 4140,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$2$1.class",
+      "sha256Bytes": "209410105703d421c5ccee1af407a6bec11d87d84a7ae2945652661019f2d51d",
+      "sizeBytes": 1851,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$2.class",
+      "sha256Bytes": "1f2956355ff8e2695bbb8990e26db0a3a44701648a0c8b857c66c429cf291d59",
+      "sizeBytes": 4135,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$3$1.class",
+      "sha256Bytes": "25454fd5fb0af92bf221946c79fa1175fcc34da1bf8c56db5f2979b48adcaa85",
+      "sizeBytes": 4329,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$3.class",
+      "sha256Bytes": "6f897e2804f08d3604c786dfa2469586e8e69794cc6fab9b19f8459c79310051",
+      "sizeBytes": 4067,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$4.class",
+      "sha256Bytes": "0a33e13118fd286d84a5f86da1ee18d59cb7d2ccef9b711880a5c9cdc7ffcd92",
+      "sizeBytes": 3841,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$5$1$1$1.class",
+      "sha256Bytes": "dca200a3946658aa8b00f7ddd9e970293110d36cbee76f47567a6ec825a2c89e",
+      "sizeBytes": 3384,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$5$1$1.class",
+      "sha256Bytes": "4b5156a1611bbcd0b99a8d41e00babe8da83f950bc826bafdf9f3ea0abbdd207",
+      "sizeBytes": 4400,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$5$1.class",
+      "sha256Bytes": "dba72cca25e412137d42ec6465d81703a9738f1a2073f62a4456a37942b9f7e4",
+      "sizeBytes": 6360,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$5.class",
+      "sha256Bytes": "cc0f0ccb50d9f225829294ae8cd267153c038431ee7ab20dffcb8597f3a831dd",
+      "sizeBytes": 4027,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$_isRefreshing$1.class",
+      "sha256Bytes": "d5e9b543f282b673efd17c96f7e27d740c1cbd5f4a38378542671b2079326a2b",
+      "sizeBytes": 1946,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$_uiState$3.class",
+      "sha256Bytes": "9b2066638d5c5d5e8420e4642e6036682a30815415c0e564eab44c06497d44bd",
+      "sizeBytes": 1936,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$ActionRepository$1$toggleWatchLater$1.class",
+      "sha256Bytes": "6160d00c729bcf3cd7a9a999ca0bafa7a16e39b6fd866e5364b1f2e3a16798c7",
+      "sizeBytes": 2257,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$ActionRepository$1$toggleWatchLater$2.class",
+      "sha256Bytes": "3b77f1f2d7ea1e5b827f6326c827457796936a91645ccb46cb6cb1f9ee5813e1",
+      "sizeBytes": 3943,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$ActionRepository$1.class",
+      "sha256Bytes": "d65b5635874e9da02b07a3d5b1992bc44a3f1112d7ed639e0bb38da9873801ae",
+      "sizeBytes": 7216,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$addToWatchLater$1.class",
+      "sha256Bytes": "d25c8464e829eeb037bd9b030f0f6d3fb947e2e4f56e0e10baff307d202e7910",
+      "sizeBytes": 5170,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$blockCreator$1.class",
+      "sha256Bytes": "98691c64e0d9e0edb0f9c70a6a6a653ec137dc61a604d587734ed3af4787ea63",
+      "sizeBytes": 5396,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$completeVideoDissolve$2.class",
+      "sha256Bytes": "9fb4b07eb10ec98f75bb7780526f37c749078f7911b94e6346d9bea40e12fcda",
+      "sizeBytes": 4423,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$consumeTodayWatchBvid$2.class",
+      "sha256Bytes": "aa0f97ba08b6ceac14c6d16f070e466ffbb5399e7a0b311097225156a599b522",
+      "sizeBytes": 3862,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$consumeTodayWatchBvidOnOwner$1.class",
+      "sha256Bytes": "63ac77ca008565be67f8990b10b18ac25a6e722172da676f1dd1f1255d2a5bb2",
+      "sizeBytes": 3646,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchData$1.class",
+      "sha256Bytes": "80093c0f2867e04b090a95b1a31ae18ef7448e71d877ee4c4676b3f0ff029a3e",
+      "sizeBytes": 3570,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchData$5$1.class",
+      "sha256Bytes": "ce1a98d5363e51c266758b3911978f6021bf63f76e6989499efbd0864baf9d4a",
+      "sizeBytes": 4649,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchData$preparedHomeFeed$1$1$1.class",
+      "sha256Bytes": "98a8dbede7057a299f1e320bf4382b67711475edde00a3312de0a384b3dfe0f9",
+      "sizeBytes": 2130,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchData$preparedHomeFeed$1$1.class",
+      "sha256Bytes": "89507414ff3a42ee3792b549fc95aff768e89b687a7fa466c713860e5e115e16",
+      "sizeBytes": 5116,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchFollowFeed$1.class",
+      "sha256Bytes": "e8083e1a42ce8cf4bd7c6f52652d6fcf81edb835f1534c51035064c2499640ff",
+      "sizeBytes": 2682,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchFollowFeed$3$3$mergedVideos$1.class",
+      "sha256Bytes": "684cebc132bd34326850f6969e8c8583f4736c287bf34d85b759a567a29889e8",
+      "sizeBytes": 2015,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchFollowFeed$3$3$mergedVideos$2.class",
+      "sha256Bytes": "8ed6bfbad804c71f10cbfa8877ecc07d47127d0121269eb3c35eb452581ad13d",
+      "sizeBytes": 2015,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchFollowingList$1.class",
+      "sha256Bytes": "28bc85671d1c96d09825b9e9efe6c09dbfd92ab0c601ac8f6088a89e1bb7aadc",
+      "sizeBytes": 2362,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchFollowingList$2$result$1.class",
+      "sha256Bytes": "89a63197ab88b4378dad4f7ad878cb37da7d85d3bb965c39e502f75685fbb4e8",
+      "sizeBytes": 4093,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchFollowingList$2.class",
+      "sha256Bytes": "285611c140e0ef5a2357a06602b4798b2253a8555a0c670c0687c82473c9732e",
+      "sizeBytes": 7949,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchLiveRooms$1.class",
+      "sha256Bytes": "c8fd0db7a2f8fc93078309406ca889e0015ccb03a695346aa5cc295461b8c3a6",
+      "sizeBytes": 2388,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$fetchUserInfo$1.class",
+      "sha256Bytes": "438cbb1f6fbc726fc8079c9de525694fe7a66a60900abe8cb55d8d9179ae5456",
+      "sizeBytes": 2219,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$FollowRepository$1$getDynamicFeed$1.class",
+      "sha256Bytes": "b4f9300134e48277b54095c162b07eb1e4aa55ddc480bd472afff1434f4056ee",
+      "sizeBytes": 2404,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$FollowRepository$1$getDynamicFeed$2.class",
+      "sha256Bytes": "3c60724c3955c5eece14f9fe655931a66255fe5165f3b77664ff6322f70662e2",
+      "sizeBytes": 4518,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$FollowRepository$1.class",
+      "sha256Bytes": "735925e58fb1bdd0e8f97a6ca6fdf0cf0ffdb3eeba4e6258764aa27d142ec496",
+      "sizeBytes": 6645,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$getPreviewVideoUrl$1.class",
+      "sha256Bytes": "0a3d4a4116d705ae9e1b44a1ddf916b6f0f45ef19e475937d8eec253b4a01591",
+      "sizeBytes": 2038,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$HistoryRepository$1$getHistoryList$1.class",
+      "sha256Bytes": "90368b997e20b6de2ea7af8136fb5b1ffcea281ae3eb6331ce5997558da41a27",
+      "sizeBytes": 2339,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$HistoryRepository$1$getHistoryList$2.class",
+      "sha256Bytes": "360935a792fc4f0d128e38d8e519b8405056162982fa941123863762cf678a82",
+      "sizeBytes": 4248,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$HistoryRepository$1.class",
+      "sha256Bytes": "71837a5f82ed221e358ebfab0d6e3ffb1962bdab468ec43a8e31d887dad67393",
+      "sizeBytes": 5155,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$homeStateFlow$$inlined$map$1$1.class",
+      "sha256Bytes": "6c835b5f3f3e1832cdb591112ed28d6136db1992c712492a9188d721f81fed76",
+      "sizeBytes": 1837,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$homeStateFlow$$inlined$map$1$2$1.class",
+      "sha256Bytes": "eb136110e3cd65db55585e54d9da228e77832c8dc73736f4f4ece5195f403e82",
+      "sizeBytes": 1832,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$homeStateFlow$$inlined$map$1$2.class",
+      "sha256Bytes": "3752fa00cf67c093bbafa88e590467e430e92785be8f46b73f6648a097d174fe",
+      "sizeBytes": 3930,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$homeStateFlow$$inlined$map$1.class",
+      "sha256Bytes": "a3bd824cae5a6a1cb59fae3dd82f5075818ac2dfc6f6dccca7f3c9d2d1da385c",
+      "sizeBytes": 4221,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$LiveRepository$1$getFollowedLive$1.class",
+      "sha256Bytes": "260b6d7de012e4aede01417b6e66349a59842c27c2fcb83aa7cf170b8b3153da",
+      "sizeBytes": 2199,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$LiveRepository$1$getFollowedLive$2.class",
+      "sha256Bytes": "a78f7184a6b9edd48b45ca39fbdbca86fc45eaf926c044e70ff4a92160aa3a1e",
+      "sizeBytes": 4042,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$LiveRepository$1$getLiveRooms$1.class",
+      "sha256Bytes": "b6780703769b492bed2f1f001e31c110aae7a17bd3914d0907e66060dd351da5",
+      "sizeBytes": 2187,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$LiveRepository$1$getLiveRooms$2.class",
+      "sha256Bytes": "a9d399d7bc5824d7d037e9244cbc0b850e048219efcc4ae045c6cca0d0137dfd",
+      "sizeBytes": 4027,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$LiveRepository$1.class",
+      "sha256Bytes": "09015ea57d6c4d3534beb0758f6378ea21ba43a029f868079b1f6540384c41c7",
+      "sizeBytes": 5731,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$loadData$1.class",
+      "sha256Bytes": "bd8675e21260c2604567953578cfd82faee7f517eaba4a0c218bdf857676c785",
+      "sizeBytes": 6751,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$loadHistorySample$1.class",
+      "sha256Bytes": "d9ac9db9287fff04d10a2c5573a590763e590fc566268e8d79c11899072168e4",
+      "sizeBytes": 2479,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$loadMore$1.class",
+      "sha256Bytes": "ffdc1f83fd1ad31fbec66a731310bff825010c0c08db796d46c5fb18fcf957a1",
+      "sizeBytes": 3699,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$markNotInterested$1$1.class",
+      "sha256Bytes": "321cf724573e7823ff8548104f91e22c80e97ea58ac50b6a0200ee93a21935c3",
+      "sizeBytes": 4769,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$markNotInterested$1$2.class",
+      "sha256Bytes": "40142a86c107e7f6948719efaf5af7fa7547b44e509fbb2f8cd621a452b90cc4",
+      "sizeBytes": 7241,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$markNotInterested$1.class",
+      "sha256Bytes": "f56f2e93dfd58ca16f5dc93f8a6861e168dbdb26a7a752b5504e35b954136ef4",
+      "sizeBytes": 11036,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$MessageRepository$1$getFeedUnread$1.class",
+      "sha256Bytes": "6abf30e2d4599deaf983caf0418f0042c99d3d675b72efefcfa590e0c60718bd",
+      "sizeBytes": 2183,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$MessageRepository$1$getFeedUnread$2.class",
+      "sha256Bytes": "d48753bafec7e5de026972a31ae11efc0d4f9c8a5ce24bfda15c56ac19b4c9fc",
+      "sizeBytes": 3935,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$MessageRepository$1$getUnreadCount$1.class",
+      "sha256Bytes": "5cc1bce63f266d2156db9cbff80d6b2454f8eacba83f819a00593830cbb6bfd1",
+      "sizeBytes": 2187,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$MessageRepository$1$getUnreadCount$2.class",
+      "sha256Bytes": "5350755403f441bb7ed8ced988f5bd69cb29a837a88969e6f28f0f1c2396a7ea",
+      "sizeBytes": 3928,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$MessageRepository$1.class",
+      "sha256Bytes": "917d22832f22b849aa32772a42c4707e8bc990809d8ec3fea033fe3e5571c765",
+      "sizeBytes": 5865,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$ownedRead$1.class",
+      "sha256Bytes": "73d1cbab2a313f03c4ad1afe15d7d10a0a70dd01cff8c260d1ceb691002cf6f6",
+      "sizeBytes": 2243,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$performTodayWatchPlanRebuild$1.class",
+      "sha256Bytes": "92bde6572492b6d8d821811427ab459be6a2d1599b0ecc19de034301cf4429b2",
+      "sizeBytes": 2697,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$rebuildTodayWatchPlan$1.class",
+      "sha256Bytes": "da171a0d37e560dc064d18cdaf104a205bc80eecc2cd0f94bdbea2af9f1cc8ca",
+      "sizeBytes": 3849,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$reFilterAllContent$1.class",
+      "sha256Bytes": "07eec33a3d1f16fdcdc749a39a69966bcb20654b2d97556ab695bce7d09a4da2",
+      "sizeBytes": 4599,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$refresh$1.class",
+      "sha256Bytes": "82b1923d21f9323b860ac75b209a70c88bb6158648aada9822c69fd79b75ad93",
+      "sizeBytes": 10642,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$refreshMessageUnreadCount$1.class",
+      "sha256Bytes": "9b531f76c66774239d64c44fd66bd73e0a3617aaf4d408acd97a9f1a15da6e88",
+      "sizeBytes": 2199,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$refreshMessageUnreadInBackground$1.class",
+      "sha256Bytes": "9ad04e10b3f85bbab82d14b9d0e159579ee4760c0647e08f6a496d95a4e52a38",
+      "sizeBytes": 3755,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$refreshTodayWatchOnly$1.class",
+      "sha256Bytes": "e74daa491b87a7891d9ee478126d6e94a5aa0d786d03c5eee9be21dd283fb96f",
+      "sizeBytes": 3571,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$refreshUserInfoInBackground$1.class",
+      "sha256Bytes": "803a379cefadb300b86fbc075722bbe96dbe84663a41d19bafd9722217b4f11d",
+      "sizeBytes": 3718,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$reloadTodayWatch$2.class",
+      "sha256Bytes": "35aa434f1f55cc7330f13c0de2a2fb2a0c1a411f509af2dcd6cbd35cdcc2f6dd",
+      "sizeBytes": 4025,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$scheduleUndoDismiss$1.class",
+      "sha256Bytes": "37d2fa0852c1cc1c7e354756e212841fd40009ea12d1390de54107075ca79baa",
+      "sizeBytes": 3671,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$setTodayWatchCollapsed$2.class",
+      "sha256Bytes": "735a37f7e7a6a473203e0b3427b17b5c36c32e8def19151b9be028dfd9e8d990",
+      "sizeBytes": 4620,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$special$$inlined$map$1$1.class",
+      "sha256Bytes": "c1aedb4764da41b85f6fbbfc4455f341c14709264118b5c623c7adc0c3ca7539",
+      "sizeBytes": 1801,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$special$$inlined$map$1$2$1.class",
+      "sha256Bytes": "449e8d15f462acacbf65b1b1eaa5ab614674b41a8a55ffd6bb716e8e3e56801c",
+      "sizeBytes": 1796,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$special$$inlined$map$1$2.class",
+      "sha256Bytes": "eda61f3d8df69bebbee2b75d5e5a847a95784c2ac6bda6459076a267f6c9b3dd",
+      "sizeBytes": 4173,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$special$$inlined$map$1.class",
+      "sha256Bytes": "00ac4d70edb10f563b23b5031ffea26205428a7276f0676ff9a6dca134b179bd",
+      "sizeBytes": 4065,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$switchCategory$1.class",
+      "sha256Bytes": "8d8214827f16f6c50f6d2f362e85d5d4a6529882d4bfa566ad11dc9c36d9838f",
+      "sizeBytes": 10686,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$switchLiveSubCategory$1.class",
+      "sha256Bytes": "3aff6eea21e160155c8a4882a5efd4e877418e183c64d3812bbc60504642345d",
+      "sizeBytes": 5878,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$switchPopularSubCategory$1.class",
+      "sha256Bytes": "96ea6bb9c34328f611f6ca73335532356b7f4ce00427e566d1a3d5aad103775b",
+      "sizeBytes": 3837,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$switchTodayWatchMode$1.class",
+      "sha256Bytes": "d42837675f057ce2450bb2600f7129724ffd6362f0e93cd696ccdac59f5af944",
+      "sizeBytes": 3642,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getHomeVideos$1.class",
+      "sha256Bytes": "5e169559e8bbcf6ac932f74bf91b500be484cb229b5964c84b1c5e378411fe28",
+      "sizeBytes": 2198,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getHomeVideos$2.class",
+      "sha256Bytes": "ca76ae290b98cf618cfb5b12b3d9486c84beb7fc5387412b0037fd3e8a2515e9",
+      "sizeBytes": 4042,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getNavInfo$1.class",
+      "sha256Bytes": "f9d117a75ec3e51be564fc46166b937da5a78da25eeb183627e70c5466b84d78",
+      "sizeBytes": 2155,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getNavInfo$2.class",
+      "sha256Bytes": "b5adb3385c55cab568ad43252ed5e45ba5a62192da0c09394bd6f8ee325c3097",
+      "sizeBytes": 3861,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getPopularVideos$1.class",
+      "sha256Bytes": "3d492b1186138782d1c6320ead248748d7b4fe81432897b8b19fb275f756573f",
+      "sizeBytes": 2211,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getPopularVideos$2.class",
+      "sha256Bytes": "ec8d4bc81e65cd47b62c065f5d58ba3563e69dcc8aa6dc9aa8e8d3440da6b78d",
+      "sizeBytes": 4058,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getPreciousVideos$1.class",
+      "sha256Bytes": "43765f1cfc45e53322f5717bfcf414c448d49cfaa4494c3fe012cd28fdf977a9",
+      "sizeBytes": 2183,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getPreciousVideos$2.class",
+      "sha256Bytes": "47e88da52f70a64919e61f954c20caee75618594042ed3786b57a378c4030fff",
+      "sizeBytes": 3956,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getPreviewVideoUrl$2.class",
+      "sha256Bytes": "734f0fde4166f629cdec5a801ddbf2e98c49497c263eb4f36a11d237368593ae",
+      "sizeBytes": 3828,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getRankingVideos$1.class",
+      "sha256Bytes": "42ffcea3c14ee08fae4b4f8af02e88fb1544d5eaf43c892511c1f9f88d702955",
+      "sizeBytes": 2259,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getRankingVideos$2.class",
+      "sha256Bytes": "3988ff3fe852ca3e72f679bf58c38e906af83ed06c41fb506d98f9de5d9ffce2",
+      "sizeBytes": 4182,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getRegionVideos$1.class",
+      "sha256Bytes": "7991e8caa46540e0430bd9677018e4fdc1262cb341dae9cda37eabc5307e17d0",
+      "sizeBytes": 2238,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1$getRegionVideos$2.class",
+      "sha256Bytes": "2c8397bc2819108103e59697a4190968a3a42653e8c62631cb22a71a4ba707ae",
+      "sizeBytes": 4105,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$VideoRepository$1.class",
+      "sha256Bytes": "3748f117f876c58ea71ec6ac4fe910b14c0839e1a68e3182c82e6f9101c52851",
+      "sizeBytes": 13227,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel$WhenMappings.class",
+      "sha256Bytes": "70f08c4cbf587e7647602130fa47e096b1432e6e45f5a49950370690793a0646",
+      "sizeBytes": 1361,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel.class",
+      "sha256Bytes": "73565b0998f9b5ef531224188198180f7796c41baf640fddde3fb11a63edc5f1",
+      "sizeBytes": 157759,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModelKt$WhenMappings.class",
+      "sha256Bytes": "57be3d127c4fd169a9da62c08d162bd6350957bb00f550da1894b7eeb26980aa",
+      "sizeBytes": 2215,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModelKt.class",
+      "sha256Bytes": "01d5aecabd82c39ed14a3d7ffcfaf2b8c048359ce18e63e0953876fe3848e2e1",
+      "sizeBytes": 24435,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicyKt.class",
+      "sha256Bytes": "c0b6320f2a918c36988a2e01fe63cb4dae1e7e69b5fce7675b11b952576e3d00",
+      "sizeBytes": 2151,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/HomeRefreshUndoSnapshot.class",
+      "sha256Bytes": "ff1c5b09fe57b370bf89f68d564dc8e7acc75d0268e67b37a077e31588cb691f",
+      "sizeBytes": 3891,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/PreparedHomeFeedVideos.class",
+      "sha256Bytes": "7074c4b0e00b73aa3a151f0cedbdd67231c837971fda40676ec623e009003be7",
+      "sizeBytes": 3552,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/TodayWatchRefreshPolicyKt.class",
+      "sha256Bytes": "e03bd4377541ceb25718f75e7d44e37793481a998947688a5846bee127f929ae",
+      "sizeBytes": 5008,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/home/TodayWatchRuntimeConfig.class",
+      "sha256Bytes": "b593d2ad47e0a21ea12f68241b1198e73f9d6e679250b11d91f42505d9ec0ce7",
+      "sizeBytes": 8638,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/message/DesktopHomeTotalUnreadCountKt.class",
+      "sha256Bytes": "a67607c52707c0603a6c81a54317c8283c0cea425b6e4e2b92119566eaadfc18",
+      "sizeBytes": 1695,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/android/purebilibili/feature/plugin/DesktopHomeFeedFilterIdKt.class",
+      "sha256Bytes": "1dfc1e0d525f51cb6d91ca1207d6c1249528db412d1ea9c85238df3d2b939f0c",
+      "sizeBytes": 588,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$accountChanged$1.class",
+      "sha256Bytes": "31e4ca964fa1d7bda7c17199c1633df1fb85d6f322c9b0cfa2f8b350c614b8ec",
+      "sizeBytes": 2015,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$awaitOwner$1.class",
+      "sha256Bytes": "ca31d887a217b9f21a62ee64ecab796019ef1b5c4f42eee3a5b97cf128170be6",
+      "sizeBytes": 2257,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$Binding.class",
+      "sha256Bytes": "4c716efefb6bdbbe0624b8d095cdd58c50629051b7dcda8e36e6cb70b1c50dcb",
+      "sizeBytes": 3317,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$bindOwner$1.class",
+      "sha256Bytes": "fefca12161ca7d292e5841e816954abbc7f531083e8495de3ad1c6bfb671a3ed",
+      "sizeBytes": 2045,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$consume$1.class",
+      "sha256Bytes": "4a8aa86c3ef9813615b67e9a8c2ff298887aca78b8fd3e982375ec1ada24456b",
+      "sizeBytes": 1985,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$ensureCurrent$1.class",
+      "sha256Bytes": "2909d9515153a9a1364d8e63c6056126a95a1ad117bb0b99ac1a7540fde43dd2",
+      "sizeBytes": 2291,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$installOwner$1.class",
+      "sha256Bytes": "f0100b3296ddab978e9e9e6a44290ccdacec27e69f44c55e33d68da2afbe5733",
+      "sizeBytes": 2241,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$installOwner$2$4.class",
+      "sha256Bytes": "bb20852a8b3b15b283ef09ae17d293a7572d677091831244becec4977c13c340",
+      "sizeBytes": 3531,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$publishLocked$1.class",
+      "sha256Bytes": "525a2f72e0b7d282700c37c59790dd94e21fac4f096701531a24a0cd6cc9067b",
+      "sizeBytes": 2196,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$publishLocked$4$1$emit$1.class",
+      "sha256Bytes": "e845980bdc5314ddf3614704b5b660b57c6ebfe7126dba24da58dd0454e0e82d",
+      "sizeBytes": 2152,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$publishLocked$4$1.class",
+      "sha256Bytes": "c734fdff4770b0d67c8985d2b1b908551b1dc23b9178d12c0f0c1c1bb7c0e814",
+      "sizeBytes": 5937,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$publishLocked$4.class",
+      "sha256Bytes": "9b1c0e6805cfe91a00f0a215f79b0588a7350d0db7ce7a6378174475474c0af2",
+      "sizeBytes": 4631,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$reload$1.class",
+      "sha256Bytes": "7204810a786c428b7e2fb3f329efff1eb2b6768600984b8fc8aa1f113f7a96c1",
+      "sizeBytes": 1949,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$retireLocked$2.class",
+      "sha256Bytes": "7c90822c4ef73ac8dc86f0bd60a74d7a65e5012d96b3e28b28800c977715d5d1",
+      "sizeBytes": 3598,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository$shutdownForRestore$2.class",
+      "sha256Bytes": "4c4f8da369b270a32d20f41c116920a646c90fd0459f77d1fcd90ad03c8ec844",
+      "sizeBytes": 7122,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.class",
+      "sha256Bytes": "542e8bca86dbe20ff5ec03d9826b921c1b6ab1489699ee23208fff0dddc45011",
+      "sizeBytes": 28403,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/plugins/DesktopTodayWatchState.class",
+      "sha256Bytes": "31521b15350df7afeb1585061e30cacb692324175e0f7ccc402c1c641cca23f0",
+      "sizeBytes": 4478,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeActionRequests.class",
+      "sha256Bytes": "121e0b3f92128f4365608ef5b958654fc04397ed708653775187ab9d43eafc26",
+      "sizeBytes": 1790,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeBlockedRequests.class",
+      "sha256Bytes": "4d450c3b447e38ed1eebc8b5498e78478abbdb8b85f382700cf514c13fd71bd5",
+      "sizeBytes": 1666,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.class",
+      "sha256Bytes": "5b826bbea770e6955c850c14a55434ec5f992e9df0354b0bb4f5844b1f58db14",
+      "sizeBytes": 10003,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeFollowingCache$Editor.class",
+      "sha256Bytes": "3a547635a70a35747c1f5320840a7667c1a79391ecb0a9fc2fa35fb3df5f1ba4",
+      "sizeBytes": 6578,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeFollowingCache.class",
+      "sha256Bytes": "75d0636e9794696100630df7e6e2103c60285f38ebaa3bd9ff0dbbe09f7a6cdf",
+      "sizeBytes": 5900,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeFollowingRequests.class",
+      "sha256Bytes": "3872962673c415b3a8b2dfa58a9895398247b6c71f60557c811b8c5dc52ac78a",
+      "sizeBytes": 1028,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeFollowRequests.class",
+      "sha256Bytes": "4c67d7a03d4dd48c298258c74520f93c39f558e3f99660f944bac397b5471061",
+      "sizeBytes": 1961,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeHistoryRequests.class",
+      "sha256Bytes": "a50662f6448aa2883087240312dd0136b6bf410dc8a72079483a0842509b2055",
+      "sizeBytes": 1156,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeIdentityAnalytics.class",
+      "sha256Bytes": "bfd8853dccec371a390b243aa6bcd545588a6dc5e0c6e5472fd3a19008407809",
+      "sizeBytes": 711,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeLiveRequests.class",
+      "sha256Bytes": "1fd0c3c1fe33b8d46c93ab1214ea4881065d512812a072a3af35179d33d6e11f",
+      "sizeBytes": 1181,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeMessageRequests.class",
+      "sha256Bytes": "086550153fe8d104d606d75b1dee3ac245f75d9dc294756e21fc8d68062b4b94",
+      "sizeBytes": 1350,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeOwnedMutableStateFlow.class",
+      "sha256Bytes": "fa50902d987a8400f072ef610931b88beb2d53b60c8b2baecbc9fd21bd5a3176",
+      "sizeBytes": 6403,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopHomeVideoRequests.class",
+      "sha256Bytes": "d56c52a20ae5bf73cff15b6443460eed9f6562770d502f7859383d2db2376d07",
+      "sizeBytes": 3078,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/com/bilipai/desktop/ui/DesktopOriginalTodayWatchOwner.class",
+      "sha256Bytes": "cf161e2f4aa90ceb38ca0a79afb9e103f1c8accc3eb1582e1a9353cf4efd235e",
+      "sizeBytes": 1852,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "classes-vm-06/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "aeeef19ff4c0aedfa1880a34a8b9fac1c53f87788ac972bc1d7c05b62023b14a",
+      "sizeBytes": 301,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-01.args",
+      "sha256Bytes": "0a63a2bc83e1c69535cceb74d6be250e4975ad3932c3b0f3c375e8b9064941f4",
+      "sizeBytes": 24271,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-01.log",
+      "sha256Bytes": "5da79683fdc450671e669c7a493e6b684aa282e451c02a47c03bb7a3f587396c",
+      "sizeBytes": 7024,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-02.args",
+      "sha256Bytes": "c8ddfd97b9b535aabaa9308850d8f766198cbd3212609a03a5084b815e696385",
+      "sizeBytes": 24271,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-02.log",
+      "sha256Bytes": "5da79683fdc450671e669c7a493e6b684aa282e451c02a47c03bb7a3f587396c",
+      "sizeBytes": 7024,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-03.args",
+      "sha256Bytes": "0da6ddcc26b268b4025df1a3d6e1970fe8735c0ee52ed56a93cd3a621fda1eed",
+      "sizeBytes": 25160,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-03.log",
+      "sha256Bytes": "bec8511e23e74416a580a2c2413193e5046f26b85f98411753fc3cc3ddc487ba",
+      "sizeBytes": 498,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-04.args",
+      "sha256Bytes": "48a62f445b1d9151685b963dc203e7f70c3c4353a933d78ae905cdc449c457c5",
+      "sizeBytes": 25584,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-04.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-05.args",
+      "sha256Bytes": "19ed5fa701a29d5dae7d947e1e0883cb91dfbcec6cf66c6d01d31e4669dd7e50",
+      "sizeBytes": 25584,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-05.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-06-source-identities.json",
+      "sha256Bytes": "2ecde7a34eb0754d39ef75119bdc844470f51a1c3f487c23f7f629c69f90537b",
+      "sizeBytes": 3787,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-06.args",
+      "sha256Bytes": "1e4943b1a12c2011989fc87eb259b13d04fd25a04c728df3a26364903d4e3354",
+      "sizeBytes": 25584,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile-vm-06.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "compile_vm.py",
+      "sha256Bytes": "dad826b2d8aa3cac27e0ec82984506085560fe3c76a730e85005ea69658c72f8",
+      "sizeBytes": 2503,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-01/compile.args",
+      "sha256Bytes": "bec14657ff5d4c6b767d1b34ef7a982880df6ad17b093cb8ff7adb811d7f1612",
+      "sizeBytes": 23685,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-01/compile.log",
+      "sha256Bytes": "c1f750fe4e2e3683f2072ad5aa627491ff67dd336ff4c212b67dfd1bf1522450",
+      "sizeBytes": 12128,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-02/compile.args",
+      "sha256Bytes": "69d029670760900fd69f557c207853fb1f850a962d240e1d08ae4d4a00d29fd8",
+      "sizeBytes": 23685,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-02/compile.log",
+      "sha256Bytes": "3f4c532718365cb35ac3fb44740f33f5fd8dfbff70c6fbd04fa0727a38e9e34f",
+      "sizeBytes": 429,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "b55b2cd3a3272d9a90cc48d59f6ef07796bcb914f0f34711d8189b6481d688c7",
+      "sizeBytes": 67,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-03/compile.args",
+      "sha256Bytes": "7b2f2bde294f96ff393bc29a433b80376c0aacbd6fa4540a267e3e186e499aa9",
+      "sizeBytes": 23685,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-03/run.log",
+      "sha256Bytes": "26a7149bd69144802aba566c8d7c315086686729b7c88cc547950816565a5f75",
+      "sizeBytes": 1134,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-03/sourcebinding.json",
+      "sha256Bytes": "05ac764298c2696e9bedcb52d2f73609a2f934bc045163e6c807856fd4997938",
+      "sizeBytes": 25955,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-03/task-store/follow/plugin-settings.json",
+      "sha256Bytes": "16a9707543a91f056f3ade62c9bdc8e0edba558911da8f0bf2fb42cb71644ce7",
+      "sizeBytes": 112,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-03/task-store/planner/plugin-settings.json",
+      "sha256Bytes": "8ae8a323efd1389d7710a64c34e07073cf7030fa627f4755d26dc7b7ee60d8a1",
+      "sizeBytes": 74,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-04/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "b55b2cd3a3272d9a90cc48d59f6ef07796bcb914f0f34711d8189b6481d688c7",
+      "sizeBytes": 67,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-04/compile.args",
+      "sha256Bytes": "9f125f7314ca37cf36b66bb0f90c2537343e06944b6e95b4bbe5085c8f5b3c0b",
+      "sizeBytes": 23685,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-04/run.log",
+      "sha256Bytes": "b7d85909f8034349d5be1c108dfb5f14939dd083a3457344f6d5bda75834cfa8",
+      "sizeBytes": 500,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-04/sourcebinding.json",
+      "sha256Bytes": "84428a3f1d6d0dee80037356962601bbd44d5a9436e469cd2fd4b5da27d9c6cd",
+      "sizeBytes": 25955,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-04/task-store/follow/plugin-settings.json",
+      "sha256Bytes": "a2e05ea0b309ba0e7fa452c2c1bd9d6052a318e4e7e38370e62b41bd90af382b",
+      "sizeBytes": 112,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-04/task-store/planner/plugin-settings.json",
+      "sha256Bytes": "8ae8a323efd1389d7710a64c34e07073cf7030fa627f4755d26dc7b7ee60d8a1",
+      "sizeBytes": 74,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-04/task-store/results.json",
+      "sha256Bytes": "5d5dc203d5cd5cc7ed84c88345964138a9a45f13927c5c254865dadf959bf4a0",
+      "sizeBytes": 571,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-05/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "b55b2cd3a3272d9a90cc48d59f6ef07796bcb914f0f34711d8189b6481d688c7",
+      "sizeBytes": 67,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-05/compile.args",
+      "sha256Bytes": "03735fedd91432edcbd245f1ce28eaa3afe658ecba5c21be15b3b932b75765a6",
+      "sizeBytes": 23685,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-05/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-05/run.log",
+      "sha256Bytes": "da9228d21c8836ea46e8269a3b33f197ee7328f084c9d7b2ba1ee25be326b6ab",
+      "sizeBytes": 578,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-05/sourcebinding.json",
+      "sha256Bytes": "5ed8c93a1534a76d93ab70fe87df3714654090c76d45cae0108ea916ef6fd557",
+      "sizeBytes": 25955,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-05/task-store/class-origins.json",
+      "sha256Bytes": "47355b3c2fd269d6c3eb43ec0417c157ba9ec439d3dca43fe41c5a5f79305382",
+      "sizeBytes": 1479,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-05/task-store/follow/plugin-settings.json",
+      "sha256Bytes": "df267c3b3622bab51690355fc8867c83364eea81bcf8ef820f8a002a7cb3d1b7",
+      "sizeBytes": 112,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-05/task-store/planner/plugin-settings.json",
+      "sha256Bytes": "8ae8a323efd1389d7710a64c34e07073cf7030fa627f4755d26dc7b7ee60d8a1",
+      "sizeBytes": 74,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-05/task-store/results.json",
+      "sha256Bytes": "306b338152a735ba16892f2cc760111f5bc5e5963388f3a8d40be5c1428fa959",
+      "sizeBytes": 645,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$1$1.class",
+      "sha256Bytes": "994b06b3f17c2ec3b901f4bb0665ab942b78df5e5709b15361fa2091f02e95c3",
+      "sizeBytes": 4791,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$1.class",
+      "sha256Bytes": "f19d76faadc6defcccd51a1db0416280bbe80c90a790bd4868f223fae896f604",
+      "sizeBytes": 11034,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$2.class",
+      "sha256Bytes": "e00a3f7abc0cb89328db7fba69f832fcf987de613460bfb4b698f6b840c085d4",
+      "sizeBytes": 13714,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$3.class",
+      "sha256Bytes": "1a2db4d225dc841a1e511c9c3e7bd028c604c279caf3acd5230be5971d031adb",
+      "sizeBytes": 10149,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$4$1.class",
+      "sha256Bytes": "694fba6c66c5e4032733260df705e937f8329ac7f2ff2c8996a9e056ee6d0247",
+      "sizeBytes": 4015,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$4$2.class",
+      "sha256Bytes": "b88b6eb37627fd09ad338309b24d0a0cadb0e80354d41b334ec6486b83466bd3",
+      "sizeBytes": 3714,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$4$3.class",
+      "sha256Bytes": "d4a326f10ae28cb4f7b845187ce662d38e60b48505521064a0090271a5124f36",
+      "sizeBytes": 4019,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$4.class",
+      "sha256Bytes": "a6c72adb7a89fbaa588d9facf466f501a70a580a91f3a42385c6279f813b5a53",
+      "sizeBytes": 12214,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$5$1.class",
+      "sha256Bytes": "31c2bafed9297275af09d429abb08e0cc14b12e3ff522225726aee1f9f284b2c",
+      "sizeBytes": 6022,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$5$2.class",
+      "sha256Bytes": "c37f3db59bcda79be59edba3900c23ff5632356ca33c16dcd5ba538b185cdd60",
+      "sizeBytes": 5205,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$5.class",
+      "sha256Bytes": "ddec6c0b232cf25e7df44dc766bc66d504b8ff87959833f350a501c86163e4b6",
+      "sizeBytes": 15326,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$6$1.class",
+      "sha256Bytes": "7845e403187b23309afda0ca99f6b819c78efebb9fea8c9dbfb7b7a83e0109df",
+      "sizeBytes": 6027,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$6$3.class",
+      "sha256Bytes": "265f50ad4e04d62f09c95dc851d91a366f9a58a99f37a2e3981ae6ee520397e5",
+      "sizeBytes": 6028,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$6$pending$1.class",
+      "sha256Bytes": "411efd7360d7b45d3a786645810be02301b6d07c62e396f8cc85a7b53e157115",
+      "sizeBytes": 3375,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$6.class",
+      "sha256Bytes": "fce443fc41e59d3479e468affb5c0cbfb2bb2e8fc330c704e50aa75544bc1a3e",
+      "sizeBytes": 22052,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$7$request$1.class",
+      "sha256Bytes": "667f43a96139b68f91e5c0757ab5d24dd0ea85250fcb3c7d837356ec5cae04b5",
+      "sizeBytes": 3461,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$7.class",
+      "sha256Bytes": "d1cf5955eb5834c7498d9f6413ec6fbf5d8634c494137e2c0990e2d03f906618",
+      "sizeBytes": 6553,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1$gate$1.class",
+      "sha256Bytes": "6c8738521873f6741f67a7151c7d1db11d37e12c50ca259ed47d7659e5803ae9",
+      "sizeBytes": 1529,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$main$1.class",
+      "sha256Bytes": "633b7bb45532e308d07b422df3c68615a5c8402df8016ad0d2d3b847f120b084",
+      "sizeBytes": 14493,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$until$1.class",
+      "sha256Bytes": "227332ac30bb50bdba6365fc0e020ea5f3ec3ef5ea7d49b85228e665d5aab990",
+      "sizeBytes": 1586,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt$until$2.class",
+      "sha256Bytes": "2700dc6bd0aa98dae1c3650185b4c5c5e2ca982f9c3d9f5be3f11af43d785eba",
+      "sizeBytes": 3486,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/HomeVmFixtureKt.class",
+      "sha256Bytes": "73114d038953b128491c46aac419f8f4e4a6f5edb86f3187f9955a6a2c3189c1",
+      "sizeBytes": 7200,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$call$2.class",
+      "sha256Bytes": "fc69bb51af71ded7ddb5827afd189bc21cc670d2c35f23c13d3a2afaccb2a609",
+      "sizeBytes": 3569,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$1.class",
+      "sha256Bytes": "6fbc9307212da51009ccc809cba1a2808fcbfd8b55baecc39df05f80677291b4",
+      "sizeBytes": 1327,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$10.class",
+      "sha256Bytes": "ebd9107639f816d2f4418871b752eba3394f0d923cc30ead0dd075d5a9978ae1",
+      "sizeBytes": 2704,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$11.class",
+      "sha256Bytes": "362e99efcb001601e326d908c2edde673bc26221fd14b82691533aa94491bdb5",
+      "sizeBytes": 2277,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$12.class",
+      "sha256Bytes": "864d9d374dbab7b9efed750281976697996b4e8e11a0206bd6dcd5cb3b5edd9d",
+      "sizeBytes": 3388,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$13.class",
+      "sha256Bytes": "e76b2937fc9541f5ccc74d412328945b11a89b9c87c273d2b9fcd97dc5b11dd8",
+      "sizeBytes": 5105,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$14.class",
+      "sha256Bytes": "edf912ef88455a9574e73ff2b0db74f36f4ee94d993d69f40c32a3d4c04cc84b",
+      "sizeBytes": 3390,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$15.class",
+      "sha256Bytes": "e30342e1f23fd7e4d084791fc9cc8fe2015f5da4de9fe913faf952a7ed15e2cf",
+      "sizeBytes": 1959,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$2.class",
+      "sha256Bytes": "8b9c0632488cbba765ef4e2425c84ca839b30915c812e897e50fe2a11b6dac99",
+      "sizeBytes": 1793,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$6.class",
+      "sha256Bytes": "9795fcc4fdee9310d52814dab935ed67d3b6205ada2b09313645096d04bdb801",
+      "sizeBytes": 1770,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$7.class",
+      "sha256Bytes": "35e30f1c7110e0cd3567c55d9a2710bb8e476d0c2d77320da201cf5703689b19",
+      "sizeBytes": 1793,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$8$getHomeVideos$1.class",
+      "sha256Bytes": "0a720c8ba028ac6682b9f2121a7e07dac2804b4f3c167a49a36cc0a6d4f0fc5d",
+      "sizeBytes": 1903,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$8$getNavInfo$1.class",
+      "sha256Bytes": "9b3ad758b1003ae713a599d47074bdb9787dce7fe293b5152a3457d39d87bd7c",
+      "sizeBytes": 1860,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$8$getRegionVideos$1.class",
+      "sha256Bytes": "ff4ddcddbf2688e7226bf19fa2bb3ec82516a7695f23602b9aaf521992dc7dcc",
+      "sizeBytes": 1943,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$8.class",
+      "sha256Bytes": "e24114f98ef7bd4ea693d90a23a0c377496171babf98ff92d303bf991dc79249",
+      "sizeBytes": 7523,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$9$getHistoryList$1.class",
+      "sha256Bytes": "5dda9c289699e4e47297e5620d57397854f2b435863b6e210ac0b6b4937ce6e1",
+      "sizeBytes": 2028,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$environment$9.class",
+      "sha256Bytes": "cd41ffcd78f801024c9cfdba0768a68c0553d43d0ce894932d71d48c83d4b94e",
+      "sizeBytes": 3281,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$finish$1.class",
+      "sha256Bytes": "ea5ad943e682543d7bd720e8ce2879264b4e625f4d787cc7ac78a9576fe84c31",
+      "sizeBytes": 1649,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$following$1.class",
+      "sha256Bytes": "2aaa0a837eea3b7416aadfd8b11f71b0a9d6c8c1ebab777a7baf10704f68f9bf",
+      "sizeBytes": 4036,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$history$1.class",
+      "sha256Bytes": "915dd157be16326af8ea8d4ff68c775d77863f62f8cd864049dce7e50eaa51c3",
+      "sizeBytes": 4594,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$home$1.class",
+      "sha256Bytes": "ea0102a384e9bb65dade6e0024a4d3d2380b0e921151de25222aff835a206305",
+      "sizeBytes": 4454,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$install$3.class",
+      "sha256Bytes": "83426086c74c4676c1240ee4740898b09c84c1b998dfde4c42a807e4de3320f2",
+      "sizeBytes": 5409,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$nav$1.class",
+      "sha256Bytes": "62ed73dff9c9d66ac6889c0984ff723f614630b76a4cb763e3e6b4d6d3f27c90",
+      "sizeBytes": 3691,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$region$1.class",
+      "sha256Bytes": "cc7509171e948ba4394013e9e2f4b2b63bf16adbefba7cfd676d4a8528d97d76",
+      "sizeBytes": 4232,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$special$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "aaf9e598c3f53fc8eff31da12bd55bbe1d631ce9853920f6c04af96d73b074d5",
+      "sizeBytes": 3271,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome$start$2.class",
+      "sha256Bytes": "2a5ef2cc87471e37f078770b2bc62dbe85f0de08ac242313612ca7c195a271ca",
+      "sizeBytes": 3368,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/com/bilipai/desktop/ui/ScriptedHome.class",
+      "sha256Bytes": "a51b8e2c903e0ade3a43240ebc6e2edcd2a7fd7b19ffeacf0606d15d9b75e063",
+      "sizeBytes": 26711,
+      "installationPayload": false,
+      "evidenceOnlyBinary": true
+    },
+    {
+      "path": "fixture-06/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "b55b2cd3a3272d9a90cc48d59f6ef07796bcb914f0f34711d8189b6481d688c7",
+      "sizeBytes": 67,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-06/compile.args",
+      "sha256Bytes": "fc28992fd67835a03423c7d5f724a008e6515124a35b2066594e2fbcbb8b7bb6",
+      "sizeBytes": 23685,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-06/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-06/run.log",
+      "sha256Bytes": "da9228d21c8836ea46e8269a3b33f197ee7328f084c9d7b2ba1ee25be326b6ab",
+      "sizeBytes": 578,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-06/sourcebinding.json",
+      "sha256Bytes": "9194eb68a9fca56e714f59f635bb0a542e51cc7741337adcdf2281294a49e5d6",
+      "sizeBytes": 25955,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-06/task-store/class-origins.json",
+      "sha256Bytes": "a96c6e849ab212980dfb1db5f69a55ec66c8aa694dbafcf5e1d08736cd7f4bfd",
+      "sizeBytes": 1479,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-06/task-store/follow/plugin-settings.json",
+      "sha256Bytes": "fef5b0710e1956d00a90ae8872043d94d0cebdff5fa2d47695eff8054467b19b",
+      "sizeBytes": 112,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-06/task-store/planner/plugin-settings.json",
+      "sha256Bytes": "8ae8a323efd1389d7710a64c34e07073cf7030fa627f4755d26dc7b7ee60d8a1",
+      "sizeBytes": 74,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixture-06/task-store/results.json",
+      "sha256Bytes": "306b338152a735ba16892f2cc760111f5bc5e5963388f3a8d40be5c1428fa959",
+      "sizeBytes": 645,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "fixtures/HomeVmFixture.kt",
+      "sha256Bytes": "c2722d0405b050be0a5da6fd37be8a97d99ca502ff9d5b82beb21b1896f72ccb",
+      "sizeBytes": 18797,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/util/EasterEggs.kt",
+      "sha256Bytes": "b12c38b3b69474dddc7dbbe2502df72ee5e780c7dc3adde7527d6781ef8262d5",
+      "sizeBytes": 12018,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel.kt",
+      "sha256Bytes": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc",
+      "sizeBytes": 101393,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt",
+      "sha256Bytes": "70900dd4c3ed1f19cc95c3687ac6d7c757a12455da037158a761521cafe2717a",
+      "sizeBytes": 359,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt",
+      "sha256Bytes": "0a30ad8228d57eec324734cd33a69a33c446bcbb8ae8f3ae607da52d7e5dfe9c",
+      "sizeBytes": 737,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/message/DesktopHomeTotalUnreadCount.kt",
+      "sha256Bytes": "9a1695d1a46c5cc074c148b03c633c00702fb80efa437aa7f797dcf1de2fb8ae",
+      "sizeBytes": 717,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/plugin/DesktopHomeFeedFilterId.kt",
+      "sha256Bytes": "458cd2aabe5428c2ed83a98e94b3ff7be70a7a265f134d9cd0f4d60585e70950",
+      "sizeBytes": 123,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+      "sha256Bytes": "a6f4ba7834ddc5bee8bc0e258b5d38c190d98a8de956d6bd1c4b8facdac20e53",
+      "sizeBytes": 3858,
+      "installationPayload": true,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeFollowingCache.kt",
+      "sha256Bytes": "0645b926003f24702211863c9bdc6e0950255a5d946fcbf4bda078ecbb22ba9a",
+      "sizeBytes": 1070,
+      "installationPayload": true,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeOwnedMutableStateFlow.kt",
+      "sha256Bytes": "5b5308d75689cdeac2c810067617ecbe6bcc8fb2232577332158c6d81e46b480",
+      "sizeBytes": 1134,
+      "installationPayload": true,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalTodayWatchOwner.kt",
+      "sha256Bytes": "0e090cadc6ac4b2f3422be8b2a06c77d20953f6e3beec56b7dbd83df03f09407",
+      "sizeBytes": 558,
+      "installationPayload": true,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/replacements/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "b32c09a4df17ea723a3c41e77153b87426130c7c539996778efef6ed31808a00",
+      "sizeBytes": 7164,
+      "installationPayload": true,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/tools/extract-upstream-home-viewmodel-adaptations.json",
+      "sha256Bytes": "e91b36f5945fc3614c8f9113ed9c9b0cf0e093e8bbd1e67327f1d46152c2ea6d",
+      "sizeBytes": 52370,
+      "installationPayload": true,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "prepared/tools/extract-upstream-home-viewmodel.py",
+      "sha256Bytes": "2b7c9db6e1f7987b69c3db87df1fd6e048918edb1d8cee68e561511b49d21e52",
+      "sizeBytes": 4339,
+      "installationPayload": true,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "producer-replay-proof-01-byte-expectation-failure.json",
+      "sha256Bytes": "736a6310dae40101e6d11f02acf17c20be853cfb80d6b663cb12e722fbfc21be",
+      "sizeBytes": 2042,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "producer-replay-proof-02.json",
+      "sha256Bytes": "6d913fa922ab7c73dfc4baaae2317d39bcaa1718d8ccfe15c4b9995339090bcb",
+      "sizeBytes": 3499,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "producer-replay-proof.json",
+      "sha256Bytes": "736a6310dae40101e6d11f02acf17c20be853cfb80d6b663cb12e722fbfc21be",
+      "sizeBytes": 2042,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "production-generated/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel.kt",
+      "sha256Bytes": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc",
+      "sizeBytes": 101393,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "production-generated/com/android/purebilibili/feature/message/DesktopHomeTotalUnreadCount.kt",
+      "sha256Bytes": "67c52b5bd405395d5a9507f59e1059114ebea20c7541a71c994a98fb0741f77a",
+      "sizeBytes": 695,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "production-generated/com/android/purebilibili/feature/plugin/DesktopHomeFeedFilterId.kt",
+      "sha256Bytes": "713d3756806dbc12aff21a625aea3fbc3c210f201f40592fb50cfddee4cb730f",
+      "sizeBytes": 121,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "replayed-generated/com/android/purebilibili/core/util/EasterEggs.kt",
+      "sha256Bytes": "1a4758cc65806db893da7942433a4ba44fd2b91c1396bf1653dbdcd59dc6827f",
+      "sizeBytes": 11742,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "replayed-generated/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel.kt",
+      "sha256Bytes": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc",
+      "sizeBytes": 101393,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "replayed-generated/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt",
+      "sha256Bytes": "45dc3e2eb12e82a5dc2d0fec4bf82a03154444fd4519f6b2256c98f19ab2d630",
+      "sizeBytes": 345,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "replayed-generated/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt",
+      "sha256Bytes": "14aed865e65aa2a8f79db3760abd9931b36c5b719676eb577241601cd90be454",
+      "sizeBytes": 714,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "replayed-generated/com/android/purebilibili/feature/message/DesktopHomeTotalUnreadCount.kt",
+      "sha256Bytes": "67c52b5bd405395d5a9507f59e1059114ebea20c7541a71c994a98fb0741f77a",
+      "sizeBytes": 695,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "replayed-generated/com/android/purebilibili/feature/plugin/DesktopHomeFeedFilterId.kt",
+      "sha256Bytes": "713d3756806dbc12aff21a625aea3fbc3c210f201f40592fb50cfddee4cb730f",
+      "sizeBytes": 121,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "32227601dd380f8474e920fc3a426fedce0536cb23fc435072c8f1a2ad1a4b69",
+      "sizeBytes": 9162,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "root-shell-retained-owner.snippet.kt",
+      "sha256Bytes": "26210d38da82e84aa6f142306c4eeb7e0af68383741e86cf95135a09dab993db",
+      "sizeBytes": 2689,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "run_fixture.py",
+      "sha256Bytes": "ba3c44e16025fe956121f0b1b8c183b5088d9fa6742fcb4572e67ae509efb9e7",
+      "sizeBytes": 2978,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "runtime-retirement-base.json",
+      "sha256Bytes": "4f10d618f1b64a836100c0793f1288ca0a427b329acf5cfc982de7535e48d3b2",
+      "sizeBytes": 757,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "runtime-retirement.patch",
+      "sha256Bytes": "988ac7a3f0d2d5c4f923f64f7a16f3b3677ca2c4a7e16c2ce8cb0a70ed34c93f",
+      "sizeBytes": 1733,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "dfdd988b10f8f5ac13ebc8d850361139f1dbeb57116494721910a74cc0d2f644",
+      "sizeBytes": 3949,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    },
+    {
+      "path": "source-owner-audit.json",
+      "sha256Bytes": "b239a91402f978710683af9983f4ee628ba86f78a24d574e6481a95d8fbd581e",
+      "sizeBytes": 2136,
+      "installationPayload": false,
+      "evidenceOnlyBinary": false
+    }
+  ],
+  "histories": "Earlier failure logs and fixtures preserved. CRLF/LF assertion correction is separate. Nonfinal historical classes are omitted from manifest; final class binaries are evidence-only and never installation payloads."
+}

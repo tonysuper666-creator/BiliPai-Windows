@@ -1,0 +1,15 @@
+--- a/desktop/tools/extract-upstream-dynamic-settings.py
++++ b/desktop/tools/extract-upstream-dynamic-settings.py
+@@ -108,6 +108,12 @@
+  emit(path,body,'DesktopOriginalDynamicTimelineLayout.kt')
+  path=BASE+'data/repository/DynamicRepository.kt';source=read(repo,path)
+  methods=[media.function(source,name,parser) for name in ['getDynamicFeed','syncPaginationAfterRefresh','fetchDynamicFeedPageWithRetry']]
++ # Both getters read the existing sole feedPagination registry, including HOME_FOLLOW/video.
++ baselineStart='    fun currentUpdateBaseline('
++ baselineEnd='    ): String = feedPagination.updateBaseline(scope, type)'
++ assert source.count(baselineStart)==source.count(baselineEnd)==1
++ begin=source.index(baselineStart);end=source.index(baselineEnd,begin)+len(baselineEnd)
++ methods.extend([textwrap.dedent(source[begin:end]),media.function(source,'hasMoreData',parser)])
+  methods[0]=host.substitute(methods[0],'NetworkModule.dynamicApi.getDynamicFeed(','getPage(')
+  methods[0]=host.substitute(methods[0],'        e.printStackTrace()','        // Windows boundary never logs raw response/URL exception details.')
+  methods=[method.replace('catch (e: Exception) {','catch (cancelled: kotlinx.coroutines.CancellationException) {\n        throw cancelled\n    } catch (e: Exception) {')

@@ -1,0 +1,12 @@
+desktop\.local\stable-home-partition-parity\generated\com\android\purebilibili\feature\partition\DesktopOriginalPartitionScreen.kt:123:41: error: unresolved reference 'common'.
+import com.android.purebilibili.feature.common.resolveIndexedVideoLazyKey
+                                        ^^^^^^
+desktop\.local\stable-home-partition-parity\generated\com\android\purebilibili\feature\partition\DesktopOriginalPartitionScreen.kt:128:57: error: unresolved reference 'BottomBarMatchedLiquidIndicator'.
+import com.android.purebilibili.feature.home.components.BottomBarMatchedLiquidIndicator
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-partition-parity\generated\com\android\purebilibili\feature\partition\DesktopOriginalPartitionScreen.kt:964:13: error: unresolved reference 'BottomBarMatchedLiquidIndicator'.
+            BottomBarMatchedLiquidIndicator(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-partition-parity\generated\com\android\purebilibili\feature\partition\DesktopOriginalPartitionScreen.kt:1206:25: error: unresolved reference 'resolveIndexedVideoLazyKey'.
+                        resolveIndexedVideoLazyKey(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^

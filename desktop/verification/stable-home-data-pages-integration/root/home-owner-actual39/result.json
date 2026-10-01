@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "actualFrozenProduct39": true,
+  "productionOverrides": 0,
+  "runtimeEntries": 97,
+  "productClassOrigins": 5,
+  "actualTemporaryDiskSessionAndPluginStores": true,
+  "retainedOwnerGates": 5,
+  "fixtureOriginalSha256LF": "3ce3c6793a90edb5a3cbd3988f980bd3b248ed6c290be4b297a7a7461d1b653a",
+  "fixtureAdaptationOnly": "rename main and add actual product origin checks; original prepared scope string preserved as history, this receipt supersedes runtime scope",
+  "userCredentialStoreAccessed": false,
+  "realHttpOrAccountWrites": false,
+  "actualRootMounted": false
+}

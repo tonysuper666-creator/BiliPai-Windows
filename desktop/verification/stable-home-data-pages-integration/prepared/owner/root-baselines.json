@@ -1,0 +1,29 @@
+{
+  "candidateBase": "stable target 3d5d19a2f994daccd0e2f8b5f522b6d82f43d589, current source-only Root working bytes",
+  "shell": {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "sha256LF": "350dc8046540b56876f1432bf62fdd97fbf83d3b729f255b408c17bc1ed6e024",
+    "requiredCurrentHunk": "BangumiBrowserScreen trailing community = community at current line1609"
+  },
+  "prerequisites": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "baselineLF": "5e67b909a6a29178205fd76bf874a5f492bf07c0c193691b11049d64574a0d40",
+      "desiredLF": "b2bf139ed92d8b7378d92d2d69ff2295b74f9e2bde478d61efc97ec6ca916e86",
+      "kind": "narrow hunk, not whole file replacement"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBrowseMemory.kt",
+      "baselineLF": "842839ca4fba9d43a1fe7797f605aef1cd31bd90ad3b253c684bdd433f5ecf00",
+      "desiredLF": "4d91a39c4ca1c184d3870575b9b48c0b72f55af2f712cf8ef8069d2b5bec8e97",
+      "kind": "narrow hunk, not whole file replacement"
+    }
+  ],
+  "blocked": {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+    "baseLF": "ccce6dfea52a7306918f20817c61f31ca431fe6f9a6025c48223cc0eff09fe98",
+    "desiredLF": "fd1ede2e75ba505be3b45a52052d146730cfea0ee27caf84eee32687cf7ebbfe",
+    "scope": "optional owner-bound admission only; same local-first algorithm/default PROFILE/remote result/error mapping"
+  },
+  "runtimeRetirementPatch": "immutable VM287/runtime-retirement.patch; still applicable anchors recommendations ctor, account observer, shutdown order"
+}

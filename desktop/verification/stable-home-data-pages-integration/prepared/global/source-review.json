@@ -1,0 +1,320 @@
+{
+  "status": "SOURCE_ONLY_REVIEW_AND_COMPILE_PASS",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualCompileGraph": {
+    "manifest": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-33\\manifest.json",
+      "sha256Bytes": "a94cf303442cc285a81650237f0cc1a3910c47e4f3b1a43e42a23e36e0c63883",
+      "sha256LF": "a94cf303442cc285a81650237f0cc1a3910c47e4f3b1a43e42a23e36e0c63883"
+    },
+    "orderedCp": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-33\\ordered-runtime-cp.json",
+      "sha256Bytes": "e76eb70649106c7acc0d446c539e6b971fcf578daaca68221a5897fda2fdb09d",
+      "sha256LF": "e76eb70649106c7acc0d446c539e6b971fcf578daaca68221a5897fda2fdb09d"
+    },
+    "runtimeEntries": 97
+  },
+  "originalSources": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+      "gitCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Bytes": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728",
+      "sha256LF": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728",
+      "copiedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-global-platform-parity\\original-source\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\LottieComponents.kt",
+      "functions": [
+        {
+          "name": "LottieAnimation",
+          "line": 40,
+          "bodySha256LF": "4185d7ce3e45a9783e3381fc6bca8aec3b35f85904dad71a53f1d5b67a61bb7e"
+        },
+        {
+          "name": "ErrorState",
+          "line": 209,
+          "bodySha256LF": "57bc76b5c3cf82f1146398f903a764923a9df888858081d76ed81ba2e224bc4f"
+        }
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+      "gitCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Bytes": "e37ef5012d302af1f8a02d5c7e4932c0a7644f06ae1d5907947602ee672b430e",
+      "sha256LF": "e37ef5012d302af1f8a02d5c7e4932c0a7644f06ae1d5907947602ee672b430e",
+      "copiedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-global-platform-parity\\original-source\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\blur\\RecoverableVisualEffects.kt",
+      "functions": [
+        {
+          "name": "rememberRecoverableHazeState",
+          "line": 83,
+          "bodySha256LF": "908482c1ab1380f4e7c7d5f5f2224267418ff3fbc077cbc57ddb9af04fdd3415"
+        },
+        {
+          "name": "shouldEnableRecoverableHeavyVisualEffects",
+          "line": 38,
+          "bodySha256LF": "0ef5cab63750ac405e4b9abe30b9ce3308664c0557b736dbae2f7d3f0063ec50"
+        }
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+      "gitCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Bytes": "e7ee5766b05d05a39e81f0a81774c0870eb340879493df4397f94864b9d386f8",
+      "sha256LF": "e7ee5766b05d05a39e81f0a81774c0870eb340879493df4397f94864b9d386f8",
+      "copiedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-global-platform-parity\\original-source\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionBackgroundPolicy.kt",
+      "functions": [
+        {
+          "name": "videoCardTransitionLiveBackgroundEffect",
+          "line": 674,
+          "bodySha256LF": "3bb3b9073e96cbc69188bd418c9bfe8e5e1fa71583c64cd81a7366dffba23dcf"
+        },
+        {
+          "name": "videoCardTransitionBackgroundEffect",
+          "line": 1135,
+          "bodySha256LF": "785b048f386cf517a9aad50d91fb755ab6c18460cd4aea5a5e9c45d80846027d"
+        }
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt",
+      "gitCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Bytes": "b7024240db5a025573b2c00689001b7d9b2adcb9e83e4132744d242127a5ca83",
+      "sha256LF": "b7024240db5a025573b2c00689001b7d9b2adcb9e83e4132744d242127a5ca83",
+      "copiedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-global-platform-parity\\original-source\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionClock.kt",
+      "functions": [
+        {
+          "name": "rememberVideoCardTransitionClock",
+          "line": 515,
+          "bodySha256LF": "bb815a1e5b8cbbb8465c438a5bea8e31f7489324a51e34ca0e238d2ec2cbe195"
+        }
+      ]
+    }
+  ],
+  "currentSourceSeams": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\Main.kt",
+      "sha256Bytes": "914897f017c79d3ed46bbda59be80802a36de25ce69ba489ec4ba2746aa51d25",
+      "sha256LF": "914897f017c79d3ed46bbda59be80802a36de25ce69ba489ec4ba2746aa51d25",
+      "snapshot33InputPin": "914897f017c79d3ed46bbda59be80802a36de25ce69ba489ec4ba2746aa51d25",
+      "currentBytesMatchSnapshot33": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256Bytes": "350dc8046540b56876f1432bf62fdd97fbf83d3b729f255b408c17bc1ed6e024",
+      "sha256LF": "350dc8046540b56876f1432bf62fdd97fbf83d3b729f255b408c17bc1ed6e024",
+      "snapshot33InputPin": "ae4aa9a55b7729cae2449ad3cd6fb90f299224c41d8ba61caff9e8110bf99909",
+      "currentBytesMatchSnapshot33": false
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeWindowPlatform.kt",
+      "sha256Bytes": "bf209f05e434369053f39c0b8a5d0e254b6504447235729a3b62adb48adb04e8",
+      "sha256LF": "bf209f05e434369053f39c0b8a5d0e254b6504447235729a3b62adb48adb04e8",
+      "snapshot33InputPin": "bf209f05e434369053f39c0b8a5d0e254b6504447235729a3b62adb48adb04e8",
+      "currentBytesMatchSnapshot33": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeMediaPorts.kt",
+      "sha256Bytes": "60b6595cc8d309ae50f5e4661249dc7c183c81eab4cd87525b61d3151569d263",
+      "sha256LF": "e13c26c150ece8552ddd976f33892b53b46e9727d2258da75298e618402fc5be",
+      "snapshot33InputPin": "60b6595cc8d309ae50f5e4661249dc7c183c81eab4cd87525b61d3151569d263",
+      "currentBytesMatchSnapshot33": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeEnvironment.kt",
+      "sha256Bytes": "4c75e770aa9d19fd617824a07c581d444183124a76562a1af96ba11d3b002695",
+      "sha256LF": "a907694bf33d3cafd696e44e4654da377fe391e5bce026c51f8953d63bc9ebe9",
+      "snapshot33InputPin": "4c75e770aa9d19fd617824a07c581d444183124a76562a1af96ba11d3b002695",
+      "currentBytesMatchSnapshot33": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalHomeRoot.kt",
+      "sha256Bytes": "34871cd5e2c7dc92e1704c64a3e53b08a0715fceb036f90d37803b3b497f7984",
+      "sha256LF": "34871cd5e2c7dc92e1704c64a3e53b08a0715fceb036f90d37803b3b497f7984",
+      "snapshot33InputPin": "34871cd5e2c7dc92e1704c64a3e53b08a0715fceb036f90d37803b3b497f7984",
+      "currentBytesMatchSnapshot33": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeOwnedMedia.kt",
+      "sha256Bytes": "da89ab5b4193a9ec8a1c5a2645a1320514e44fc7798c77254aedd82092beda41",
+      "sha256LF": "da89ab5b4193a9ec8a1c5a2645a1320514e44fc7798c77254aedd82092beda41",
+      "snapshot33InputPin": "da89ab5b4193a9ec8a1c5a2645a1320514e44fc7798c77254aedd82092beda41",
+      "currentBytesMatchSnapshot33": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopLiquidReadabilityPlatform.kt",
+      "sha256Bytes": "7cbdeca7fa83fd43c38c7fdfa75d5fcbf2b3c69cd3ffb06df8d4793222af9a0d",
+      "sha256LF": "7cbdeca7fa83fd43c38c7fdfa75d5fcbf2b3c69cd3ffb06df8d4793222af9a0d",
+      "snapshot33InputPin": "7cbdeca7fa83fd43c38c7fdfa75d5fcbf2b3c69cd3ffb06df8d4793222af9a0d",
+      "currentBytesMatchSnapshot33": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "sha256LF": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "snapshot33InputPin": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "currentBytesMatchSnapshot33": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\UiSkinAssets.kt",
+      "sha256Bytes": "2644549cf8bdd6c5d13ed430da35dd9cd49775324cf9223a74131cc3b12ead24",
+      "sha256LF": "666e6f97e249a88c1cd042f153064e72dee82146c34f705c5dc295300a8d2970",
+      "snapshot33InputPin": "2644549cf8bdd6c5d13ed430da35dd9cd49775324cf9223a74131cc3b12ead24",
+      "currentBytesMatchSnapshot33": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\plugins\\DesktopLottieAsset.kt",
+      "sha256Bytes": "6950fc6ab37c00feb37ac0f9f9d5eba73067cc2ee27407fb54f545817def7ab8",
+      "sha256LF": "2c0366f1eda86a09d0c1bb9071245650bb043ba54374bc0d01cf52eec60a1ecf",
+      "snapshot33InputPin": "6950fc6ab37c00feb37ac0f9f9d5eba73067cc2ee27407fb54f545817def7ab8",
+      "currentBytesMatchSnapshot33": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\plugins\\DesktopPluginRuntime.kt",
+      "sha256Bytes": "70ab482dbc4d41a83f6b450774f320d3c98929e00dde1b54878e8cdd2f29605a",
+      "sha256LF": "3f33392b1eb7bf14c7e0cbc8c9330890b8991a3b85d5f74859b7159ad6383de3",
+      "snapshot33InputPin": "70ab482dbc4d41a83f6b450774f320d3c98929e00dde1b54878e8cdd2f29605a",
+      "currentBytesMatchSnapshot33": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopRepository.kt",
+      "sha256Bytes": "299a98c5b1e80b04820178654c0388fc0fb112cb5d7fa8b4fca73d3290018e6f",
+      "sha256LF": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "snapshot33InputPin": "299a98c5b1e80b04820178654c0388fc0fb112cb5d7fa8b4fca73d3290018e6f",
+      "currentBytesMatchSnapshot33": true
+    }
+  ],
+  "currentGeneratedAndManualReferences": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalHomeRoot.kt",
+      "sha256Bytes": "34871cd5e2c7dc92e1704c64a3e53b08a0715fceb036f90d37803b3b497f7984",
+      "sha256LF": "34871cd5e2c7dc92e1704c64a3e53b08a0715fceb036f90d37803b3b497f7984",
+      "references": [
+        {
+          "line": 75,
+          "text": "LocalDesktopHomePlatform provides platform,"
+        },
+        {
+          "line": 77,
+          "text": "LocalDesktopHomeErrorAnimation provides errorAnimation,"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\ui\\blur\\RecoverableVisualEffects.kt",
+      "sha256Bytes": "679b3373964a1db626c176cffe4c13da6b87ea04015c76b4281064fc79013ded",
+      "sha256LF": "679b3373964a1db626c176cffe4c13da6b87ea04015c76b4281064fc79013ded",
+      "references": [
+        {
+          "line": 45,
+          "text": "platform: com.bilipai.desktop.ui.DesktopHomePlatform = LocalDesktopHomePlatform.current"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionBackgroundPolicy.kt",
+      "sha256Bytes": "12aea23040a0336772d9c0c7b9a41425bb28bf9d00da3e065606104a380dc3f1",
+      "sha256LF": "12aea23040a0336772d9c0c7b9a41425bb28bf9d00da3e065606104a380dc3f1",
+      "references": [
+        {
+          "line": 668,
+          "text": "internal fun Modifier.videoCardTransitionLiveBackgroundEffect("
+        },
+        {
+          "line": 679,
+          "text": "val windowPlatform = com.bilipai.desktop.ui.LocalDesktopHomePlatform.current"
+        },
+        {
+          "line": 1139,
+          "text": "internal fun Modifier.videoCardTransitionBackgroundEffect("
+        },
+        {
+          "line": 1157,
+          "text": "val windowPlatform = com.bilipai.desktop.ui.LocalDesktopHomePlatform.current"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\home-page\\com\\android\\purebilibili\\core\\ui\\DesktopHomeOriginalErrorState.kt",
+      "sha256Bytes": "6558638e9cad982779616c590651024e38a79ab37674f8e376c0f331276ad826",
+      "sha256LF": "6558638e9cad982779616c590651024e38a79ab37674f8e376c0f331276ad826",
+      "references": [
+        {
+          "line": 61,
+          "text": "com.bilipai.desktop.ui.LocalDesktopHomeErrorAnimation.current(LottieUrls.ERROR,120.dp,1)"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\home-page\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionLiveBlurHitchLogger.kt",
+      "sha256Bytes": "226942292e393c1513a43e348b41c3068e46f29e941d45a3eadca09c23d9ebcc",
+      "sha256LF": "226942292e393c1513a43e348b41c3068e46f29e941d45a3eadca09c23d9ebcc",
+      "references": [
+        {
+          "line": 26,
+          "text": "if (!com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.debugFrameMetricsEnabled) return"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\home-page\\com\\android\\purebilibili\\feature\\home\\components\\HomeHeader.kt",
+      "sha256Bytes": "5618096958296c24c115f7553df26b6329e1d21c772177117e7ddc077044b667",
+      "sha256LF": "5618096958296c24c115f7553df26b6329e1d21c772177117e7ddc077044b667",
+      "references": [
+        {
+          "line": 1590,
+          "text": "val isGlassSupported = com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.supportsHomeChromeLiquidGlass"
+        },
+        {
+          "line": 1591,
+          "text": "val allowHazeLiquidGlassFallback = com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.supportsDirectHazeLiquidGlassFallback"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\home-page\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeScreen.kt",
+      "sha256Bytes": "d93992980a72109e5ee04a73c41177de8a2c57cd9dd16254886386dc20e2d14d",
+      "sha256LF": "d93992980a72109e5ee04a73c41177de8a2c57cd9dd16254886386dc20e2d14d",
+      "references": [
+        {
+          "line": 1061,
+          "text": "com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.supportsRenderEffectBackedHaze &&"
+        },
+        {
+          "line": 1605,
+          "text": "val legacyTopChromeSafetyGap = if (com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.legacyTopChromeSafetyGapRequired) {"
+        },
+        {
+          "line": 1848,
+          "text": "Modifier.videoCardTransitionBackgroundEffect("
+        }
+      ]
+    }
+  ],
+  "referenceScanExcludesUncompiledRetainedSourceArchives": true,
+  "payload": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-global-platform-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeErrorAnimation.kt",
+      "sha256Bytes": "5833901a8147de7b64d4fb094bb7aa92a9603e574e13380ed695368b40f9503a",
+      "sha256LF": "5833901a8147de7b64d4fb094bb7aa92a9603e574e13380ed695368b40f9503a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-global-platform-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeWindowGlobals.kt",
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc",
+      "sha256LF": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc"
+    }
+  ],
+  "compileResult": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-global-platform-parity\\runs\\compile-02\\compile-result.json",
+    "sha256Bytes": "616c2bda60dd53009b05d053e8d83615a7e098fdc4240f6fe9cf33630e83b20e",
+    "sha256LF": "616c2bda60dd53009b05d053e8d83615a7e098fdc4240f6fe9cf33630e83b20e"
+  },
+  "findings": [
+    "Current Shell top-level provider supplies liquid/readability/dynamic bindings but not HomePlatform/Metric/ErrorAnimation. HomeRoot alone provides those locals.",
+    "Generated general transition modifier definitions read HomePlatform; current actual calls found only under HomeScreen. No direct Dynamic/Favorites/Tab/Dock HomePlatform read was found. Their use of recoverableBlurEnabled alone does not demand HomePlatform.",
+    "Window resources belong above all Root routes and must be the same objects passed into HomeRoot. No section/MID binding is introduced.",
+    "ErrorState has a required URL animation callback but no actual URL consumer; UiSkinAssets only loads validated local paths. Prepared adapter uses the existing actual Repository HTTP client and existing DesktopLottieAsset.",
+    "Native media join, Lottie asset close and decoded-resource disposal occur outside SessionStore/app admission and local registration gates.",
+    "Shared transition clock/navigation driver is not installed by this window adapter; Root must drive the existing original clock/state from its actual nav owner, not supply zero/default progress."
+  ],
+  "runtimeAnimationOrWindowExecuted": false,
+  "HTTP": false,
+  "accountRead": false,
+  "MainOrSharedProducerModified": false
+}

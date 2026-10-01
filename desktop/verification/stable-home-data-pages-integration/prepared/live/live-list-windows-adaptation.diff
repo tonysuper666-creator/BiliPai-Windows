@@ -1,0 +1,205 @@
+--- app/src/main/java/com/android/purebilibili/feature/live/LiveListScreen.kt
++++ Windows full original LiveListScreen
+@@ -1,6 +1,5 @@
+ package com.android.purebilibili.feature.live
+ 
+-import android.app.Application
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.*
+@@ -21,7 +20,6 @@
+ import androidx.compose.material.icons.outlined.SportsEsports
+ import androidx.compose.material.icons.outlined.Widgets
+ import androidx.compose.runtime.LaunchedEffect
+-import android.widget.Toast
+ import com.android.purebilibili.core.ui.components.AppBadge
+ import com.android.purebilibili.core.ui.components.AppIcon
+ import androidx.compose.material3.MaterialTheme
+@@ -40,18 +38,13 @@
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.semantics.semantics
+ import androidx.compose.ui.semantics.contentDescription
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextAlign
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+-import androidx.lifecycle.AndroidViewModel
+-import androidx.lifecycle.viewModelScope
+-import androidx.lifecycle.viewmodel.compose.viewModel
+ import coil3.compose.AsyncImage
+-import com.android.purebilibili.core.network.NetworkModule
+ import com.android.purebilibili.core.ui.AdaptivePullToRefreshBox
+ import com.android.purebilibili.core.ui.AppShapes
+ import com.android.purebilibili.core.ui.AppSpacingTokens
+@@ -68,11 +61,16 @@
+ import com.android.purebilibili.core.util.animateScrollToTop
+ import com.android.purebilibili.core.util.responsiveContentWidth
+ import com.android.purebilibili.data.model.response.LiveAreaParent
+-import com.android.purebilibili.data.repository.LiveRepository
+ import dev.chrisbanes.haze.HazeState
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.launch
++import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.CancellationException
++import com.bilipai.desktop.ui.DesktopLiveListOwner
++import com.bilipai.desktop.ui.DesktopOwnedLiveListState
++import com.bilipai.desktop.ui.DesktopOriginalLiveListRequests
++import com.bilipai.desktop.ui.DesktopLiveListPlatform
+ 
+ data class LiveRoomItem(
+     val roomId: Long,
+@@ -114,8 +112,12 @@
+     val livingCount: Int = 0,
+ )
+ 
+-class LiveListViewModel(application: Application) : AndroidViewModel(application) {
+-    private val _uiState = MutableStateFlow(LiveListUiState(isLoading = true))
++class LiveListViewModel(
++    private val viewModelScope: CoroutineScope,
++    private val requests: DesktopOriginalLiveListRequests,
++    private val owner: DesktopLiveListOwner,
++) {
++    private val _uiState = DesktopOwnedLiveListState(LiveListUiState(isLoading = true), owner)
+     val uiState = _uiState.asStateFlow()
+ 
+     init {
+@@ -123,6 +125,7 @@
+     }
+ 
+     fun refresh() {
++        if (!owner.isCurrent()) return
+         viewModelScope.launch {
+             val state = _uiState.value
+             _uiState.value = state.copy(isLoading = true, error = null, page = 1, hasMore = true)
+@@ -135,17 +138,19 @@
+             }
+             // 分区详情子标签仍用 web area list 兜底
+             if (_uiState.value.areaList.isEmpty()) {
+-                runCatching {
+-                    val response = NetworkModule.api.getLiveAreaList()
++                try {
++                    val response = requests.getLiveAreaList()
+                     if (response.code == 0 && response.data != null) {
+                         _uiState.value = _uiState.value.copy(areaList = response.data)
+                     }
+-                }
++                } catch (cancelled: CancellationException) { throw cancelled
++                } catch (_: Exception) { /* Original optional area-list fallback ignores failure. */ }
+             }
+         }
+     }
+ 
+     fun loadMore() {
++        if (!owner.isCurrent()) return
+         val state = _uiState.value
+         if (state.isLoading || state.isLoadingMore || !state.hasMore) return
+         viewModelScope.launch {
+@@ -162,6 +167,7 @@
+     }
+ 
+     fun selectHomeArea(index: Int) {
++        if (!owner.isCurrent()) return
+         val state = _uiState.value
+         if (index == state.selectedAreaIndex) return
+         if (index <= LIVE_HOME_RECOMMEND_INDEX) {
+@@ -213,6 +219,7 @@
+     }
+ 
+     fun selectSortTag(sortType: String?) {
++        if (!owner.isCurrent()) return
+         val state = _uiState.value
+         if (state.selectedAreaIndex <= LIVE_HOME_FOLLOWED_INDEX) return
+         if (state.selectedSortType == sortType) return
+@@ -227,11 +234,12 @@
+     }
+ 
+     fun toggleShowFirstFrame() {
++        if (!owner.isCurrent()) return
+         _uiState.value = _uiState.value.copy(showFirstFrame = !_uiState.value.showFirstFrame)
+     }
+ 
+     private suspend fun loadRecommendPage(page: Int, append: Boolean) {
+-        LiveRepository.getLiveFeedHome(page = page).fold(
++        requests.getLiveFeedHome(page = page).fold(
+             onSuccess = { snapshot ->
+                 val mapped = snapshot.rooms.map { it.toLiveRoomItem() }
+                 val followMapped = snapshot.followRooms.map { it.toLiveRoomItem() }
+@@ -277,7 +285,7 @@
+     }
+ 
+     private suspend fun loadFollowedPage(page: Int, append: Boolean) {
+-        LiveRepository.getFollowedLivePage(page = page).fold(
++        requests.getFollowedLivePage(page = page).fold(
+             onSuccess = { snapshot ->
+                 val mapped = snapshot.items.map { it.toLiveRoomItem() }
+                 val current = _uiState.value
+@@ -321,7 +329,7 @@
+             )
+             return
+         }
+-        LiveRepository.getLiveSecondHome(
++        requests.getLiveSecondHome(
+             parentAreaId = query.parentAreaId,
+             areaId = query.areaId,
+             page = page,
+@@ -376,7 +384,7 @@
+     onAreaListClick: () -> Unit,
+     onFollowingClick: () -> Unit,
+     onAreaDetailClick: (Int, Int, String) -> Unit,
+-    onMatchClick: () -> Unit = {},
++    onMatchClick: () -> Unit,
+     /** 底栏主入口时隐藏返回，更接近 BiliPai 主 tab 形态。 */
+     showNavigationBack: Boolean = true,
+     /** 首页顶栏独立页：去掉自有顶栏和状态栏垫高，避免和首页搜索/标签叠两层。 */
+@@ -384,11 +392,11 @@
+     contentTopPadding: androidx.compose.ui.unit.Dp = AppSpacingTokens.None,
+     scrollToTopRequestId: Int = 0,
+     scrollToTopChannel: Channel<Unit>? = null,
+-    viewModel: LiveListViewModel = viewModel(),
++    viewModel: LiveListViewModel,
++    platform: DesktopLiveListPlatform,
+     globalHazeState: HazeState? = null
+ ) {
+     val state by viewModel.uiState.collectAsStateWithLifecycle()
+-    val context = LocalContext.current
+     val palette = rememberLiveChromePalette()
+     val coroutineScope = rememberCoroutineScope()
+ 
+@@ -498,17 +506,11 @@
+                             onMatchClick = onMatchClick,
+                             onLongPressCard = { card ->
+                                 coroutineScope.launch {
+-                                    val success = com.android.purebilibili.feature.download.DownloadManager
+-                                        .saveImageToGallery(
+-                                            context = context,
+-                                            url = card.coverUrl,
+-                                            title = card.title
+-                                        )
+-                                    Toast.makeText(
+-                                        context,
+-                                        if (success) "封面已保存到相册" else "封面保存失败，请稍后重试",
+-                                        Toast.LENGTH_SHORT
+-                                    ).show()
++                                    if (!platform.isCurrent()) return@launch
++                                    val success = platform.saveCover(card.coverUrl, card.title)
++                                    if (platform.isCurrent()) platform.feedback(
++                                        if (success) "封面已保存到相册" else "封面保存失败，请稍后重试"
++                                    )
+                                 }
+                             }
+                         )
+@@ -546,8 +548,8 @@
+     onAreaDetailClick: (Int, Int, String) -> Unit,
+     onAreaListClick: () -> Unit,
+     onFollowingClick: () -> Unit,
+-    onMatchClick: () -> Unit = {},
+-    onLongPressCard: (LiveRoomCardUiModel) -> Unit = {}
++    onMatchClick: () -> Unit,
++    onLongPressCard: (LiveRoomCardUiModel) -> Unit
+ ) {
+     val selectedParent = areaList.firstOrNull { it.id == selectedParentAreaId }
+         ?: areaList.firstOrNull {

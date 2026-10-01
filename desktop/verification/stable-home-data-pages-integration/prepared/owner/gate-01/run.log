@@ -1,0 +1,2 @@
+RESULT retained entry does not depend on current drawing; close rejects future global commit | same-MID credential replacement rejects old owner before commit | accepted Store-to-entry commit completes atomically before retirement; queued old writes rejected | close-and-join drains owned child tasks before replacement construction
+SCOPE source-only prepared gate; actual temp SessionStore/global PluginStore; no Shell mount, API, account or native window

@@ -1,0 +1,395 @@
+{
+  "frozen": true,
+  "formatVersion": 1,
+  "scope": "Prepared complete stable Subscription source closure; no actual-product/UI acceptance",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "snapshotManifestSha256Bytes": "a94cf303442cc285a81650237f0cc1a3910c47e4f3b1a43e42a23e36e0c63883",
+  "orderedRuntimeCpSha256Bytes": "e76eb70649106c7acc0d446c539e6b971fcf578daaca68221a5897fda2fdb09d",
+  "runtimeEntries": 97,
+  "artifactCount": 73,
+  "artifacts": [
+    {
+      "path": "audit.py",
+      "bytes": 7941,
+      "sha256Bytes": "616dda5c7865fd6c834058ccb0c328d572a1b0be8a17cb875e06dbd41b5315ce"
+    },
+    {
+      "path": "compile.py",
+      "bytes": 4024,
+      "sha256Bytes": "5be80096031b9524bbebe36aeaf76cceb64b2bec98f9d1743e34f80e97794244"
+    },
+    {
+      "path": "existing-source-hunks.json",
+      "bytes": 17399,
+      "sha256Bytes": "20800ea8864e51c570fff737a6219122ee5699e52739b42b5d7474f2fc1d13f3"
+    },
+    {
+      "path": "freeze.py",
+      "bytes": 2176,
+      "sha256Bytes": "09b3a3c62c5774551abbfb3524a06828129368d74ed852ffefc267ac20df6cc2"
+    },
+    {
+      "path": "hunks/DesktopPluginServices.json",
+      "bytes": 1105,
+      "sha256Bytes": "6a28be847ea21853f16db8732f7b55542222c5c4589b9fb5249470569b59b566"
+    },
+    {
+      "path": "hunks/DesktopPluginStore.json",
+      "bytes": 814,
+      "sha256Bytes": "fea5cdd5dd79d4f29a13d24e6837148fe218ddfb1f423de08b8350dc5851ad9f"
+    },
+    {
+      "path": "hunks/DesktopSubscriptionRepository.json",
+      "bytes": 15178,
+      "sha256Bytes": "f84795e21bd973ca31b43a5b5918d62e75572815846c81d31a8256fea71de343"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedArticleExtractor.kt",
+      "bytes": 4008,
+      "sha256Bytes": "86a312780455a57c143e3deed1acb772c19ed49a415b9615f6b567c896960081"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedConditionalStore.kt",
+      "bytes": 2331,
+      "sha256Bytes": "b1258797c1a69a32c40cf194113af80df3d9983ea12446ae589a80b60d145daf"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+      "bytes": 8305,
+      "sha256Bytes": "1ebb33f5f2f67c6659ddc1d4f2cf3a833f28ae69e933ef2c3892f9ff7448f2fd"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedHtmlParser.kt",
+      "bytes": 9649,
+      "sha256Bytes": "a92c0a3e72478e15c30d170aad90a7d8ea83975acc0e037aa66e157c6f5a5015"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedLayoutAllocation.kt",
+      "bytes": 1236,
+      "sha256Bytes": "005bacf925078fec59524a78bd23bd717c21e682f1a9df867149dc3c97447630"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedModels.kt",
+      "bytes": 1635,
+      "sha256Bytes": "3276d1a66b8682508a2b17a03d3063368d4a8f94e730e679d8e4728002521b5f"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+      "bytes": 3547,
+      "sha256Bytes": "b4b65ab198829186889637e4eaa3f89f825f0634df262bbda3f2777895bcb050"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedSourceCatalog.kt",
+      "bytes": 3921,
+      "sha256Bytes": "36477d508db469e5556dd12a6712fb64675e60343ecec05cc18d607978571f36"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "bytes": 396158,
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "bytes": 44821,
+      "sha256Bytes": "c3430358427744da0b3627f73561bfbe3d6519c86b96fcc49734035db5672707"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 21019,
+      "sha256Bytes": "f364be5fc0c295f53830f377e674cdfffb91adcad1c8d669d9d25767b1d211b3"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+      "bytes": 3149,
+      "sha256Bytes": "c6997bc14ed7800c57a923e7b7b039ab1beb1dd3e56237e0a4cfcbf19c9776f0"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "bytes": 5228,
+      "sha256Bytes": "5c4b1c680f34cf201d37147f224a6f9999b49b8653237b1b6906c76374ec46d4"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "bytes": 2194,
+      "sha256Bytes": "40df69f4b0d9f54d8343e668573fff6c8d8f698f8cbe4e89fce645eea4f89258"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-subscription-page.py",
+      "bytes": 9342,
+      "sha256Bytes": "c2bfa5f63dbedbc96af2f45a1e28a09cbc6717adcc8a7e9631be2cd1e40c97ff"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "bytes": 43719,
+      "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2"
+    },
+    {
+      "path": "proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "bytes": 6346,
+      "sha256Bytes": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291"
+    },
+    {
+      "path": "proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "bytes": 10725,
+      "sha256Bytes": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c"
+    },
+    {
+      "path": "proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+      "bytes": 9232,
+      "sha256Bytes": "0f8503b71f18049d8a47ebeaf38d929b21e35fcb8e3d16b572440dcab82cbb0b"
+    },
+    {
+      "path": "registry-recipe.json",
+      "bytes": 1273,
+      "sha256Bytes": "24e615efee0a02e36c0f28253a2400d03960ee82f0dbb9875bfa910f7d478e90"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "bytes": 8564,
+      "sha256Bytes": "2dfa4f17d2f7c08408aca3369f7165617fdbb12177c205822a85a92dc0c91761"
+    },
+    {
+      "path": "runs/compile-01/compiler.args",
+      "bytes": 26533,
+      "sha256Bytes": "aa8e3e50b0c3d376f26fc5c56a78b1bc4de73cadc6a9bfd5f58a58b3c0c01ca9"
+    },
+    {
+      "path": "runs/compile-01/compiler.log",
+      "bytes": 727,
+      "sha256Bytes": "2d2001ceeec456d373f2b7c246084774137f82373ece35c1d1eb880ba6ea410b"
+    },
+    {
+      "path": "runs/compile-01/dependency-pins-before.json",
+      "bytes": 44130,
+      "sha256Bytes": "dd3c13fd07457e744dafd3b51de47760f3a435139e2ec5291e9c674c1e62b6f6"
+    },
+    {
+      "path": "runs/compile-01/prepared-subscription-page.jar",
+      "bytes": 307887,
+      "sha256Bytes": "eb116fce926fa950172b61a38d7814eb939037287dbe1516cd38417eda28f087"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+      "bytes": 2454,
+      "sha256Bytes": "bb242457662ecc36f07990319edbfa8009da83581725c23368ce800f072dbe5e"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "bytes": 4072,
+      "sha256Bytes": "d10434f09ca7ef1aef8357673316a666c88f75518c5c77a78ed0a7db693504c4"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "bytes": 2171,
+      "sha256Bytes": "0de20a7ad5bd07c7b3b10c50a1d7c1f1d2b38ce4fe7d451b55ab7af1e0b5cafa"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/prepared/generated/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "bytes": 43770,
+      "sha256Bytes": "c233279d02773ef227562e2dcf986fa943689f0ca931765683f97c721431b834"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "bytes": 6346,
+      "sha256Bytes": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "bytes": 10725,
+      "sha256Bytes": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+      "bytes": 8450,
+      "sha256Bytes": "b59669a85b324eb6c0d65781320aad66ddff820a8231ea31d8a985ec85422d0c"
+    },
+    {
+      "path": "runs/compile-02/compile-result.json",
+      "bytes": 16603,
+      "sha256Bytes": "2f6a6d1363dca618db5c9a69efbcdbccb11d3ee0e04cb8059102e1303c1138ea"
+    },
+    {
+      "path": "runs/compile-02/compiler.args",
+      "bytes": 26514,
+      "sha256Bytes": "8434cb57bc14dec061bac7688823cbd2479e0b22c71be07baf0494feac0b8b48"
+    },
+    {
+      "path": "runs/compile-02/compiler.log",
+      "bytes": 727,
+      "sha256Bytes": "6077d195ee520c28aa54d3ddbf0e2c5173a8f346e2b1298e3f5c7fc110732449"
+    },
+    {
+      "path": "runs/compile-02/dependency-pins-after.json",
+      "bytes": 44130,
+      "sha256Bytes": "4e3368bc9ee2b0e0a392369f80f66e38d9801eecc4a5080d2820dbc6b3664414"
+    },
+    {
+      "path": "runs/compile-02/dependency-pins-before.json",
+      "bytes": 44130,
+      "sha256Bytes": "4e3368bc9ee2b0e0a392369f80f66e38d9801eecc4a5080d2820dbc6b3664414"
+    },
+    {
+      "path": "runs/compile-02/prepared-subscription-page.jar",
+      "bytes": 316582,
+      "sha256Bytes": "8aaa1edf86484aa0539718be94dd7fcea918a7bd251493d9258db2da6c7c0207"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+      "bytes": 3149,
+      "sha256Bytes": "c6997bc14ed7800c57a923e7b7b039ab1beb1dd3e56237e0a4cfcbf19c9776f0"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "bytes": 4072,
+      "sha256Bytes": "d10434f09ca7ef1aef8357673316a666c88f75518c5c77a78ed0a7db693504c4"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "bytes": 2171,
+      "sha256Bytes": "0de20a7ad5bd07c7b3b10c50a1d7c1f1d2b38ce4fe7d451b55ab7af1e0b5cafa"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/prepared/generated/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "bytes": 43705,
+      "sha256Bytes": "d15640bab17d6901e55fbb7e3f988b663a554f1ebaccf2f2cc51783c893773f7"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "bytes": 6346,
+      "sha256Bytes": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "bytes": 10725,
+      "sha256Bytes": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+      "bytes": 9232,
+      "sha256Bytes": "0f8503b71f18049d8a47ebeaf38d929b21e35fcb8e3d16b572440dcab82cbb0b"
+    },
+    {
+      "path": "runs/compile-03/compile-result.json",
+      "bytes": 16823,
+      "sha256Bytes": "6bea21b20415c1d11ae664266b0bb24e4f88469e7b53045558d132a720c63dfb"
+    },
+    {
+      "path": "runs/compile-03/compiler.args",
+      "bytes": 26514,
+      "sha256Bytes": "8d603bfaaa57b647f158a8cd2f988da4f33b96f68001d12877f041937699a792"
+    },
+    {
+      "path": "runs/compile-03/compiler.log",
+      "bytes": 727,
+      "sha256Bytes": "839e22a1ac8bc1ee8d6306980bb10e8e8f84b4f463950f973403b3d9f9ffe585"
+    },
+    {
+      "path": "runs/compile-03/dependency-pins-after.json",
+      "bytes": 44130,
+      "sha256Bytes": "b582c7dae0d1f413850be3165139af6aa3b535a3fc3c7a7d7c3724a61c59abb2"
+    },
+    {
+      "path": "runs/compile-03/dependency-pins-before.json",
+      "bytes": 44130,
+      "sha256Bytes": "b582c7dae0d1f413850be3165139af6aa3b535a3fc3c7a7d7c3724a61c59abb2"
+    },
+    {
+      "path": "runs/compile-03/prepared-subscription-page.jar",
+      "bytes": 324135,
+      "sha256Bytes": "3f191cd0419ef7a1358ecb04099a6e6563e745dec4d4d8bf8379a0a27c2d721d"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+      "bytes": 3149,
+      "sha256Bytes": "c6997bc14ed7800c57a923e7b7b039ab1beb1dd3e56237e0a4cfcbf19c9776f0"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "bytes": 5228,
+      "sha256Bytes": "5c4b1c680f34cf201d37147f224a6f9999b49b8653237b1b6906c76374ec46d4"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "bytes": 2194,
+      "sha256Bytes": "40df69f4b0d9f54d8343e668573fff6c8d8f698f8cbe4e89fce645eea4f89258"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/prepared/generated/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "bytes": 43719,
+      "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "bytes": 6346,
+      "sha256Bytes": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "bytes": 10725,
+      "sha256Bytes": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c"
+    },
+    {
+      "path": "runs/compile-03/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+      "bytes": 9232,
+      "sha256Bytes": "0f8503b71f18049d8a47ebeaf38d929b21e35fcb8e3d16b572440dcab82cbb0b"
+    },
+    {
+      "path": "source-audit/production/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "bytes": 43719,
+      "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2"
+    },
+    {
+      "path": "source-audit/production/subscription-page-producer-inventory.json",
+      "bytes": 9132,
+      "sha256Bytes": "9e49d7820fa06717f84f4a36a2f2a361b938916607f744bb00b8432dc45831d5"
+    },
+    {
+      "path": "source-audit/production-generated/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "bytes": 43719,
+      "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2"
+    },
+    {
+      "path": "source-audit/production-generated/subscription-page-producer-inventory.json",
+      "bytes": 9132,
+      "sha256Bytes": "9e49d7820fa06717f84f4a36a2f2a361b938916607f744bb00b8432dc45831d5"
+    },
+    {
+      "path": "source-audit/standalone/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "bytes": 43719,
+      "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2"
+    },
+    {
+      "path": "source-audit/standalone/subscription-page-producer-inventory.json",
+      "bytes": 9132,
+      "sha256Bytes": "9e49d7820fa06717f84f4a36a2f2a361b938916607f744bb00b8432dc45831d5"
+    },
+    {
+      "path": "source-checks.json",
+      "bytes": 10464,
+      "sha256Bytes": "668e4d476bb2ed038e2c5d4ee1cde405249da2c805984b3ae46b868474bd11ca"
+    },
+    {
+      "path": "source-inventory.json",
+      "bytes": 8878,
+      "sha256Bytes": "51ad3e76e01b0732a329af08251557d82e163c0571080ef7de7a9a04f5d2c01d"
+    }
+  ],
+  "installSources": [
+    "prepared/desktop/tools/extract-upstream-subscription-page.py",
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt"
+  ],
+  "exactExistingHunks": [
+    "hunks/DesktopSubscriptionRepository.json",
+    "hunks/DesktopPluginServices.json",
+    "hunks/DesktopPluginStore.json"
+  ],
+  "sourceContract": "ROOT-INTEGRATION.md",
+  "registryMerge": "registry-recipe.json",
+  "actualProductRuntimeAccepted": false,
+  "HTTP": false,
+  "GUI": false,
+  "HWND": false,
+  "Gradle": false
+}

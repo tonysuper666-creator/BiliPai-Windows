@@ -1,0 +1,20 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt
+@@ -28,6 +28,7 @@
+         .addConverterFactory(Json { ignoreUnknownKeys = true; coerceInputValues = true }.asConverterFactory("application/json".toMediaType()))
+         .build().create(BilibiliApi::class.java)
+     private val mutationMutex = Mutex()
++    internal val homePreferences: DesktopDiscoveryPreferences get() = preferences
+     val feedMode: StateFlow<DesktopRecommendationMode> get() = preferences.feedMode
+     val refreshCount: StateFlow<Int> get() = preferences.refreshCount
+     suspend fun setFeedMode(value: DesktopRecommendationMode) = preferences.setFeedMode(value)
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBrowseMemory.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBrowseMemory.kt
+@@ -7,6 +7,7 @@
+     internal val feeds = CommunityFeedMemory()
+     private val screens = linkedMapOf<Any?, Any>()
+     fun invalidateCloudHistory() = feeds.invalidate(PersonalSection.HISTORY)
++    fun invalidateWatchLater() = feeds.invalidate(PersonalSection.WATCH_LATER)
+ 
+     @Suppress("UNCHECKED_CAST")
+     internal fun <T : Any> screen(key: Any?, create: () -> T): T = screens.getOrPut(key) {

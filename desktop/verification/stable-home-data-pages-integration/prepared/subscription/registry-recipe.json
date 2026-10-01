@@ -1,0 +1,24 @@
+{
+  "overwriteRegistry": false,
+  "existingIdentity": [],
+  "source": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+    "sha256": "c3430358427744da0b3627f73561bfbe3d6519c86b96fcc49734035db5672707",
+    "features": [
+      "home-subscription-page"
+    ],
+    "mode": "extracted"
+  },
+  "merge": "Merge features for existing exact identity; do not duplicate/overwrite current modes or unrelated identities",
+  "referencesOnly": [
+    "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedModels.kt",
+    "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+    "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedConditionalStore.kt",
+    "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+    "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedArticleExtractor.kt",
+    "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedLayoutAllocation.kt",
+    "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedHtmlParser.kt",
+    "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedSourceCatalog.kt",
+    "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
+  ]
+}

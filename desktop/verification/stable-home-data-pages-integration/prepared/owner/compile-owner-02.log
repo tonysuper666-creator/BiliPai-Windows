@@ -1,0 +1,15 @@
+work\BiliPai\desktop\.local\stable-home-root-retained-integration\prepared\manual\com\bilipai\desktop\ui\DesktopHomeBlockedPort.kt:24:13: error: no parameter with name 'stillOwned' found.
+            stillOwned = gate::owns, commitLocal = gate::commit,
+            ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-retained-integration\prepared\manual\com\bilipai\desktop\ui\DesktopHomeBlockedPort.kt:24:38: error: no parameter with name 'commitLocal' found.
+            stillOwned = gate::owns, commitLocal = gate::commit,
+                                     ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-retained-integration\prepared\manual\com\bilipai\desktop\ui\DesktopHomeBlockedPort.kt:25:13: error: no parameter with name 'ownedApi' found.
+            ownedApi = requests.environment.api, ownedCsrf = requests.environment.csrf,
+            ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-retained-integration\prepared\manual\com\bilipai\desktop\ui\DesktopHomeBlockedPort.kt:25:50: error: no parameter with name 'ownedCsrf' found.
+            ownedApi = requests.environment.api, ownedCsrf = requests.environment.csrf,
+                                                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-retained-integration\prepared\manual\com\bilipai\desktop\ui\DesktopHomeBlockedPort.kt:26:13: error: no parameter with name 'ensureOwnedSession' found.
+            ensureOwnedSession = requests.environment.ensureBuvid3FromSpi)
+            ^^^^^^^^^^^^^^^^^^

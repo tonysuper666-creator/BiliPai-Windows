@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-home-global-platform-parity\runs\compile-01\source-inputs\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopHomeErrorAnimation.kt:51:52: warning: the corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+                override fun onFailure(call: Call, error: IOException) { finished.complete(Result.failure(error)) }
+                                                   ^^^^^
+work\BiliPai\desktop\.local\stable-home-global-platform-parity\runs\compile-01\source-inputs\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopHomeErrorAnimation.kt:192:37: warning: 'val Canvas.nativeCanvas: Canvas' is deprecated. Naming alignment to avoid ambiguity: use [Canvas.skiaCanvas] extension instead.
+                animation.render(it.nativeCanvas, this.size.width, this.size.height, elapsed, iterations)
+                                    ^^^^^^^^^^^^

@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-home-request-ports-parity\prepared\transport-delta\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:551:32: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                quality = video?.id ?: quality, availableQualities = qualities,
+                               ^^
+work\BiliPai\desktop\.local\stable-home-request-ports-parity\prepared\transport-delta\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:552:42: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                videoAlternatives = video?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
+                                         ^^

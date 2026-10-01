@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\manual\com\bilipai\desktop\ui\DesktopHomeOwnedMutableStateFlow.kt:9:3: warning: this class or interface requires opt-in to be implemented: Inheriting from this kotlinx.coroutines API is unstable. Either new methods may be added in the future, which would break the inheritance, or correctly inheriting from it requires fulfilling contracts that may change in the future.
+):MutableStateFlow<T> by delegate {
+  ^^^^^^^^^^^^^^^^^^^

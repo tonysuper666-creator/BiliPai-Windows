@@ -1,0 +1,127 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+    "sha256LF": "c3430358427744da0b3627f73561bfbe3d6519c86b96fcc49734035db5672707",
+    "generated": "SubscriptionFeedPage.kt",
+    "mode": "extracted",
+    "fullFileSelected": true,
+    "topLevelDeclarations": 13,
+    "feedBlockBranches": 8,
+    "changes": [
+      {
+        "before": "import androidx.activity.compose.PredictiveBackHandler",
+        "after": "import com.bilipai.desktop.ui.DesktopSubscriptionPredictiveBackHandler as PredictiveBackHandler\nimport com.bilipai.desktop.ui.LocalDesktopSubscriptionBindings\nimport kotlinx.coroutines.flow.collectLatest"
+      },
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext\n",
+        "after": ""
+      },
+      {
+        "before": "    val context = LocalContext.current",
+        "after": "    val platform = LocalDesktopSubscriptionBindings.current\n    val context = platform.context"
+      },
+      {
+        "before": "    val subscriptionRevision by SubscriptionFeedStore.revision.collectAsStateWithLifecycle()",
+        "after": "    val repositorySnapshot by platform.state.collectAsStateWithLifecycle()"
+      },
+      {
+        "before": "lastFraction = event.progress.coerceIn(0f, 1f)",
+        "after": "lastFraction = event.coerceIn(0f, 1f)"
+      },
+      {
+        "before": "onArticleOpenChanged(isArticleOpen)",
+        "after": "platform.articleOpenChanged(isArticleOpen, onArticleOpenChanged)"
+      },
+      {
+        "before": "onDispose { onArticleOpenChanged(false) }",
+        "after": "onDispose { platform.articleOpenChanged(false, onArticleOpenChanged) }"
+      },
+      {
+        "before": "    LaunchedEffect(reloadToken, subscriptionRevision) {\n        loading = true\n        loadErrors = emptyList()\n        val loadedSources = withContext(Dispatchers.IO) { loadEnabledFeedSources(context) }\n        sources = loadedSources\n        if (selectedSourceId != null && loadedSources.none { it.id == selectedSourceId }) {\n            selectedSourceId = null\n        }\n        val cache = FeedReadingStore.load(context)\n        readKeys = cache.readKeys.toSet()\n        cachedBodies = cache.fullBodies\n        val enabledIds = loadedSources.map { it.id }.toSet()\n        items = mergeCachedFeedItems(cache.items, emptyList(), enabledIds)\n        val snapshot = loadFeedSources(loadedSources, FeedConditionalStore.load(context)) { update ->\n            val preserveOrder = listState.firstVisibleItemIndex > 0 ||\n                listState.firstVisibleItemScrollOffset > 0\n            val merged = mergeCachedFeedItems(cache.items, update.items, enabledIds)\n            items = stabilizeFeedOrder(items, merged, preserveOrder)\n            loadErrors = update.errors\n        }\n        val merged = mergeCachedFeedItems(cache.items, snapshot.items, enabledIds)\n        val preserveOrder = listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0\n        items = stabilizeFeedOrder(items, merged, preserveOrder)\n        loadErrors = snapshot.errors\n        runCatching { FeedReadingStore.saveItems(context, merged) }\n            .onFailure { loadErrors = loadErrors + \"本地缓存保存失败\" }\n        if (snapshot.validators.isNotEmpty()) {\n            runCatching { FeedConditionalStore.update(context, snapshot.validators) }\n                .onFailure { loadErrors = loadErrors + \"刷新状态保存失败\" }\n        }\n        loading = false\n    }\n",
+        "after": "    // UI projection only; the runtime repository remains the sole feed/reading IO authority.\n    LaunchedEffect(platform, repositorySnapshot) {\n        platform.commitUi {\n            sources = repositorySnapshot.activeSources\n            if (selectedSourceId != null && sources.none { it.id == selectedSourceId }) selectedSourceId = null\n            readKeys = repositorySnapshot.reading.readKeys.toSet()\n            cachedBodies = repositorySnapshot.reading.fullBodies\n            val preserveOrder = listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0\n            items = stabilizeFeedOrder(items, repositorySnapshot.reading.items, preserveOrder)\n            loadErrors = repositorySnapshot.errors\n            loading = repositorySnapshot.loading\n        }\n    }\n    LaunchedEffect(platform, reloadToken) {\n        platform.changes.collectLatest {\n            try { platform.reload() }\n            catch (error: Throwable) {\n                platform.reportFailure(error) { loadErrors = loadErrors + (error.message ?: \"订阅刷新失败\") }\n            }\n        }\n    }\n"
+      },
+      {
+        "before": "FeedReadingStore.setRead(context, key, read)",
+        "after": "platform.setRead(article, read)"
+      },
+      {
+        "before": "FeedReadingStore.setRead(context, key, true)",
+        "after": "platform.setRead(item, true)"
+      },
+      {
+        "before": "FeedReadingStore.saveFullBody(context, key, body)",
+        "after": "platform.saveFullBody(article, body)"
+      },
+      {
+        "before": "    onFullBody: (String) -> Unit,",
+        "after": "    onFullBody: suspend (String) -> Unit,"
+      },
+      {
+        "before": "                        scope.launch {\n                            runCatching { platform.saveFullBody(article, body) }\n                                .onFailure { loadErrors = loadErrors + \"正文缓存保存失败\" }\n                        }",
+        "after": "                        runCatching { platform.saveFullBody(article, body) }\n                            .onFailure { error -> platform.reportFailure(error) { loadErrors = loadErrors + \"正文缓存保存失败\" } }"
+      },
+      {
+        "before": ".onFailure { loadErrors = loadErrors + \"阅读状态保存失败\" }",
+        "after": ".onFailure { error -> platform.reportFailure(error) { loadErrors = loadErrors + \"阅读状态保存失败\" } }"
+      },
+      {
+        "before": "    if (webUrl != null) {\n        com.android.purebilibili.feature.web.WebViewScreen(\n            url = webUrl.orEmpty(),\n            title = \"原文\",\n            onBack = { webUrl = null },\n        )\n    }",
+        "after": "    // Android embedded WebView is an explicit Windows external-browser boundary.\n    LaunchedEffect(platform, webUrl) {\n        webUrl?.let { platform.openExternalUrl(it); webUrl = null }\n    }"
+      },
+      {
+        "before": "com.android.purebilibili.core.store.SettingsManager\n            .getSubscriptionArticleFontScale(context).first()",
+        "after": "platform.articleFontScale.first()"
+      },
+      {
+        "before": "com.android.purebilibili.core.store.SettingsManager\n                                        .setSubscriptionArticleFontScale(context, fontScale)",
+        "after": "platform.setArticleFontScale(fontScale)"
+      },
+      {
+        "before": "fetchArticleHtml(item.link)",
+        "after": "platform.fetchArticleBody(item)"
+      },
+      {
+        "before": ".onFailure { bodyError = it.message ?: \"暂时无法读取原文\" }",
+        "after": ".onFailure { error -> platform.reportFailure(error) { bodyError = error.message ?: \"暂时无法读取原文\" } }"
+      },
+      {
+        "before": "copyFeedText(context, feedBlocksPlainText(blocks).ifBlank { item.title })",
+        "after": "copyFeedText(platform, feedBlocksPlainText(blocks).ifBlank { item.title })"
+      },
+      {
+        "before": "private fun copyFeedText(context: android.content.Context, text: String) {\n    val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager\n    clipboard.setPrimaryClip(android.content.ClipData.newPlainText(\"订阅正文\", text))\n    android.widget.Toast.makeText(context, \"已复制正文\", android.widget.Toast.LENGTH_SHORT).show()\n}",
+        "after": "private fun copyFeedText(platform: com.bilipai.desktop.ui.DesktopSubscriptionPageBindings, text: String) {\n    platform.copyText(text)\n}"
+      },
+      {
+        "before": "import com.android.purebilibili.core.plugin.feed.FeedReadingStore\n",
+        "after": ""
+      },
+      {
+        "before": "import com.android.purebilibili.core.plugin.feed.FeedConditionalStore\n",
+        "after": ""
+      },
+      {
+        "before": "import com.android.purebilibili.core.plugin.feed.SubscriptionFeedStore\n",
+        "after": ""
+      },
+      {
+        "before": "import com.android.purebilibili.core.plugin.feed.mergeCachedFeedItems\n",
+        "after": ""
+      },
+      {
+        "before": "import com.android.purebilibili.core.plugin.feed.fetchArticleHtml\n",
+        "after": ""
+      },
+      {
+        "before": "import com.android.purebilibili.core.plugin.feed.loadEnabledFeedSources\n",
+        "after": ""
+      },
+      {
+        "before": "import com.android.purebilibili.core.plugin.feed.loadFeedSources\n",
+        "after": ""
+      }
+    ],
+    "inverseNormalizedOriginalEqual": true,
+    "generatedSha256LF": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2"
+  }
+]

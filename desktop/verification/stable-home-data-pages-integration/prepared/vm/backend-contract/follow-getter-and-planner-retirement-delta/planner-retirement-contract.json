@@ -1,0 +1,104 @@
+{
+  "status": "READ_ONLY_SOURCE_CONTRACT_NOT_INSTALLED_OR_COMPILED",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourcePins": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "70ab482dbc4d41a83f6b450774f320d3c98929e00dde1b54878e8cdd2f29605a",
+      "sha256LF": "3f33392b1eb7bf14c7e0cbc8c9330890b8991a3b85d5f74859b7159ad6383de3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginProviderScreens.kt",
+      "sha256Bytes": "d3dc55015643af8d229cfa774ec978c2da426413e2a83a29d22f2f06499daff4",
+      "sha256LF": "15e0ad913d4dc50267ccdfce7b87bc589fbe970369637b160c1219790a8a4ddc"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "f1bd64ca7c4b50c6fe5f58dadd8e248794fddeb6b4e366e3d9244759cc32b513",
+      "sha256LF": "f1bd64ca7c4b50c6fe5f58dadd8e248794fddeb6b4e366e3d9244759cc32b513"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "f75fe99edcb7299249da3f0437f3a4a0c4d5b62edc8e4d1103ad0820e6faa490",
+      "sha256LF": "1d07e32e4b89c8596ca2c98147c8a60d900099eaa8339e2822c788b745b46f55"
+    }
+  ],
+  "callSites": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "line": 70,
+      "exactCurrentSource": "val recommendations = DesktopTodayWatchRepository(this, repository, discovery)",
+      "action": "Replace this constructor with the sole HomeVM delegate. Do not instantiate the old planner/refill coordinator alongside HomeVM."
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "line": 123,
+      "exactCurrentSource": "repository.account.collect { recommendations.accountChanged(repository.sessionEpoch) }",
+      "action": "Delegate epoch replacement to retirement/recreation of the same HomeVM owner. Observe actual sessionEpochFlow, so same-MID credential replacement also retires work; account-value-only Flow is insufficient."
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "line": 355,
+      "exactCurrentSource": "recommendations.shutdownForRestore()",
+      "action": "Retain an awaited retirement point before the shared Store freezes. Reject admission and cancel/join owned VM/rebuild/refill work; do not leave a constructor-owned old coordinator running."
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginProviderScreens.kt",
+      "line": 171,
+      "exactCurrentSource": "val state by runtime.recommendations.state.collectAsState()",
+      "action": "Map original HomeUiState.todayWatchPlan/loading/error through a read-only derived StateFlow. No second plan/cache/consumed set."
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginProviderScreens.kt",
+      "line": 174,
+      "exactCurrentSource": "LaunchedEffect(runtime, config.refreshTriggerToken, config.currentMode, config.recommendationStrategy, config.candidatePoolMode) { runtime.recommendations.reload() }",
+      "action": "Delegate to one original VM refresh/rebuild queue using its current Home feed snapshot, refreshIdx, caches and generation."
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginProviderScreens.kt",
+      "line": 179,
+      "exactCurrentSource": "scope.launch { runtime.recommendations.reload(forceHistory = true) }",
+      "action": "Expose a typed original VM bridge for explicit history invalidation and original rebuild; do not invoke another repository actor."
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "line": 171,
+      "exactCurrentSource": "if (owns(context) && context.accountEpoch == playback.sessionEpoch) plugins.recommendations.consume(context.details.bvid)",
+      "action": "Keep native READY and immutable playback ownership checks plus recommendationConsumed once flag. Resolve this BVID to the actual same-epoch original VM plan VideoItem, then call original markTodayWatchVideoOpened; no global/current replacement item fallback."
+    }
+  ],
+  "oldPlannerAuthorities": [
+    "generation",
+    "mutation/rebuilding Mutex",
+    "consumed",
+    "accountEpoch",
+    "historyCache/historyLoadedAt/historyExhausted",
+    "expandedCache",
+    "baseCandidates",
+    "DesktopTodayWatchRefillCoordinator",
+    "_state"
+  ],
+  "originalVmAnchors": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+      "line": 605,
+      "name": "rebuildTodayWatchPlan"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+      "line": 626,
+      "name": "performTodayWatchPlanRebuild"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+      "line": 959,
+      "name": "markTodayWatchVideoOpened"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+      "line": 1693,
+      "name": "fetchFollowFeed HOME_FOLLOW/video"
+    }
+  ],
+  "boundary": "Exact read-only current sibling source anchors and proposed delegation. No VM/actor, production generator or shared source written; no Gradle/HTTP/HWND."
+}

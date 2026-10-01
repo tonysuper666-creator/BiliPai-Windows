@@ -1,0 +1,202 @@
+{
+  "stage": "SOURCE_CLOSURE_ONLY_NO_FACTORY_MOUNT_OR_PLANNER_RETIREMENT",
+  "payloads": [
+    {
+      "target": "desktop/tools/extract-upstream-home-viewmodel.py",
+      "sha256Bytes": "2b7c9db6e1f7987b69c3db87df1fd6e048918edb1d8cee68e561511b49d21e52"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-home-viewmodel-adaptations.json",
+      "sha256Bytes": "e91b36f5945fc3614c8f9113ed9c9b0cf0e093e8bbd1e67327f1d46152c2ea6d"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+      "sha256Bytes": "a6f4ba7834ddc5bee8bc0e258b5d38c190d98a8de956d6bd1c4b8facdac20e53"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeFollowingCache.kt",
+      "sha256Bytes": "0645b926003f24702211863c9bdc6e0950255a5d946fcbf4bda078ecbb22ba9a"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMutableStateFlow.kt",
+      "sha256Bytes": "5b5308d75689cdeac2c810067617ecbe6bcc8fb2232577332158c6d81e46b480"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalTodayWatchOwner.kt",
+      "sha256Bytes": "0e090cadc6ac4b2f3422be8b2a06c77d20953f6e3beec56b7dbd83df03f09407"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-home-protocols.py",
+      "sha256Bytes": "ac9f13b5c84b824e57215caacbd527f01e1e6b26738b854569dc6c5877dca5ed"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeLocalIdentityAnalytics.kt",
+      "sha256Bytes": "42b56c755720466a7de39fd4d4c739bf5272a58a09cc12a8200558ddd7c194f0"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeProtocolEnvironment.kt",
+      "sha256Bytes": "bab988706006e029cfa5fc59298dec7a772ff4f64c4786abaa91f922c06f1edd"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRequestPorts.kt",
+      "sha256Bytes": "4be042dd1a85af5e0b9db3f2f7cbf5b499fda4d333cb409f6053d589477f468e"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRequestBinding.kt",
+      "sha256Bytes": "66a42d7df260d936e6b998a21ea470b7ebc2bf7335f6d852e6a9ec317e4d5a2e"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeBlockedPort.kt",
+      "sha256Bytes": "ef3cda156722265454e5429a0172f114eee26caeacedeab98cdd3dc10c24f049"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEmbeddedRetainedOwner.kt",
+      "sha256Bytes": "94bfdbb6b929ea87200b17915888acdcec43adb8f0380823119b341dd708ace7"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt",
+      "sha256Bytes": "981b50e08be45ae2f9f6dd2b56b6c672704e1aacb485b066e74d0404190273a6"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.kt",
+      "sha256Bytes": "c22cd94ca423d85a2099180485cec615d0775b1bc38be34a9f4babfe9dbb3283"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootNavigation.kt",
+      "sha256Bytes": "c60906c4b59ff3c617c8f24e8fba433cb998c537829f6e7029ba6911c5a763d4"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-home-partition.py",
+      "sha256Bytes": "166c371b03e0ed398b99fa4097db94868ddcf5e16a157348581921152e526efc"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPartitionRoot.kt",
+      "sha256Bytes": "43975346ea194c568449a816e069ec8b88dedab9657df2338ebae83b0e34c355"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-home-bangumi-page.py",
+      "sha256Bytes": "0ef389f2a398878ffa1425b6bba445a0a79eec310df83c1f70d332652ac7adf2"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiHubRoot.kt",
+      "sha256Bytes": "c2edd98f193c6da1098a7d93d2dc632540e8bfd53c2160376bee157d933f2e56"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-live-list.py",
+      "sha256Bytes": "13a041d3833af04827723915c26703aba6986bbf495fd1c06d996599eeca8442"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveListBindings.kt",
+      "sha256Bytes": "97993d0091a4bb7496f72cede57a19ff32ae0997451acecd895a0e8937c59826"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowGlobals.kt",
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt",
+      "sha256Bytes": "5833901a8147de7b64d4fb094bb7aa92a9603e574e13380ed695368b40f9503a"
+    }
+  ],
+  "patches": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\shared-http-owner-admission.patch",
+      "sha256Bytes": "0ea1670d36c3c0f27bd912ac93e36084a6629136dae2fffc2069677067a9398b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\home-preview-subject.patch",
+      "sha256Bytes": "2964d9b38035b8ed6b8a20385bda732b797248ace1f95e1f769c21521da8b804"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\backend-contract\\follow-getter-and-planner-retirement-delta\\sole-producer-two-getters.patch",
+      "sha256Bytes": "44edc8170066f4ca10f552102f1cb5e7655a03cfee5bf62fa42a7b9c871a58d0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\home-blocked-owner.patch",
+      "sha256Bytes": "e562bcd0771ea374eefd49150da04b59509012bb666b5de83207271b4807a641"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\root-api-prerequisites.patch",
+      "sha256Bytes": "db472709b3e63b3ca609138dca2f88a1929b73a39339dcee2205116a7f159598"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-partition-parity\\shared-tabs-indicator.patch",
+      "sha256Bytes": "f9c24bca363e80f9ab30ddabc7fcb3e3fb836a6289a88a8cf1451d3d316b0f9a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-bangumi-page-parity\\shared-skeleton-grid.patch",
+      "sha256Bytes": "9b79d22b1228bbe04572bd182a3d458712c10fc612f07693898d2bc0289b36d6"
+    }
+  ],
+  "originalSourceIdentitiesBefore": 833,
+  "originalSourceIdentitiesAfter": 863,
+  "newOriginalIdentities": [
+    "app/src/main/java/com/android/purebilibili/core/util/EasterEggs.kt",
+    "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/message/MessageCenterPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt",
+    "app/src/main/java/com/android/purebilibili/core/util/AnalyticsHelper.kt",
+    "app/src/main/java/com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/util/FeedRefreshPaging.kt",
+    "app/src/main/java/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiHubPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/MyFollowPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/list/BangumiListComponents.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveListScreen.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveRoomCard.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveChromePalette.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeSelectableChip.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeCategoryIndicatorPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveRoomLayoutPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/LiveFeedParsePolicy.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/LiveAreaRoomsPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/util/ResultExtensions.kt"
+  ],
+  "featureMerges": [
+    "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+    "app/src/main/java/com/android/purebilibili/feature/plugin/BiliPaiFeedFilterPlugin.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+    "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+    "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+    "app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+    "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/transition/BiliPaiSharedElementKey.kt",
+    "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+    "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+    "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt"
+  ],
+  "oldTodayWatchRepositoryPreserved": true,
+  "runtimeRetirementApplied": false,
+  "homeRetainerInstalled": false,
+  "originalSubscriptionPayloadInstalled": false,
+  "actualFullRootMounted": false,
+  "windowsExeChanged": false,
+  "preparedManifests": {
+    "vm": "ac33081aa67a40a3f807e20426de7f7fc12d1ea6d3128f50e3a0f951e9587a37",
+    "raw": "4824a6984eead54af5ac2c045cb9a21d600488d6be4ed3cbea2ad5e6eabdf5f3",
+    "owner": "be83c2c2215a88f879e63f98852746098f381ee0c35d909fecf345c612504e8a",
+    "partition": "d059904f107df7a650dd60816030828663cec950ae3250c23f89da81d5d28faf",
+    "bangumi": "d7e62ffd35be7b302f7952d3ca4668910f73cc88a5d734bb91a529ffaf7ddcac",
+    "live": "44b3f5508fc43b24bf9f3feb9a9258239321eecdce43e185b4ac4670c1a8aee5",
+    "global": "1c27e730135c171c5f73edac04fe432334a756747b300c15d6e524971d5b49d5"
+  }
+}

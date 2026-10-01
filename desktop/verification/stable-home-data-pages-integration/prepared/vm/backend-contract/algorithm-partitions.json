@@ -1,0 +1,86 @@
+[
+  {
+    "startLine": 1,
+    "endLine": 278,
+    "title": "Pure conversion/filter/refresh helpers",
+    "contract": "FeedKind, distinct-by-key, recommendation->TodayWatch conversion, valid/blocked/feedback/builtin/JSON filter ordering, recommend idx and undo snapshot policies.",
+    "partitionSha256LF": "b2ff53ec5e447cf43d7907fe6135f63e9c257966eec1820d3557c855a4cb0b40"
+  },
+  {
+    "startLine": 279,
+    "endLine": 383,
+    "title": "Sole state and jobs",
+    "contract": "One HomeUiState, category/popular caches and selectors; refreshIdx, livePage/hasMore, undo/initial/user/unread jobs, TodayWatch history/expanded/buildGeneration/consumed/negative feedback sets and feedback Channel.",
+    "partitionSha256LF": "121a97c70844034acc5dbab658193c3f06a94d0fc64fcbb8f045052835b6f9b3"
+  },
+  {
+    "startLine": 384,
+    "endLine": 457,
+    "title": "Startup observers",
+    "contract": "Collect real incrementalTimelineRefresh/homeRefreshTipVisible, shared blocked-UP list, await both AD and feed plugin readiness; replace per-instance TodayWatch config observer, rebuild only when eligible; start category load.",
+    "partitionSha256LF": "07e24fd65ae64b64d9a088432e16e66a0edc273ddb6dc33335a218321645ed27"
+  },
+  {
+    "startLine": 458,
+    "endLine": 554,
+    "title": "Refilter and runtime configuration",
+    "contract": "Refilter category caches and live UID lists, synchronize current legacy projections; real plugin enabled/config->full card config, disabled cancels rebuild and clears plan/cache.",
+    "partitionSha256LF": "42efbef1ddd313e146f765cba45bd4ef608e958911629c9859169db1d6ffe84a"
+  },
+  {
+    "startLine": 555,
+    "endLine": 841,
+    "title": "Complete TodayWatch planner",
+    "contract": "Mode/collapse/only-refresh, generation replacement, current recommendations as base, cursor history, creator profile and eye-care signals, original RecommendationPluginApi request, local then expanded result/cache, cancellation and stale-generation rejection.",
+    "partitionSha256LF": "8e2f14bbfa45c278b787e4e4aad56458cc15d51a21cac5c4fe60cebf9e6ac47a"
+  },
+  {
+    "startLine": 842,
+    "endLine": 1025,
+    "title": "Category/selection/dissolve/consume",
+    "contract": "Cancel previous initial category job; restore per-category/popular cache, guest LIVE chooses POPULAR, original dissolve/current-category removal and pending refilter, TodayWatch consume and refill, independent live/popular selection.",
+    "partitionSha256LF": "d7ab0e84887729032c8aebfef46c7f55283e1dfaf8a67142b1cee61ea34f32dd"
+  },
+  {
+    "startLine": 1026,
+    "endLine": 1178,
+    "title": "Watch-later and feedback mutations",
+    "contract": "Original local feedback first, block-local then visual transition, async blocked remote / recommendation server feedback; preserve Channel success/failure copy. BlockCreator result updates one blocked authority.",
+    "partitionSha256LF": "29376cb9ddb67c06061d15db629d91603b4989ef2fe67d1e54abab92d547651a"
+  },
+  {
+    "startLine": 1179,
+    "endLine": 1395,
+    "title": "Initial/manual refresh/undo/loadmore/unread",
+    "contract": "Loading cleanup for category cancellation; manual category sync and recommend snapshot, post-fetch refresh key/boundary/anchor, 5s undo timeout, category loading/hasMore guards; deduplicated user/unread jobs and sum of two original unread responses.",
+    "partitionSha256LF": "f7e255e65c7a9dfd582997817ef92b81b63b952ac4aa17858dd1aeb29372a5d5"
+  },
+  {
+    "startLine": 1396,
+    "endLine": 1692,
+    "title": "Ordinary feeds and state reducers",
+    "contract": "Distinct RECOMMEND idx/POPULAR four branches/region tid; manual paged-feed policy; after-await cancellation; Default filter stage; incoming duplicate/odd-count handling; append/prepend/replace, keep-old bound, page/hasMore policy, active-category legacy projection.",
+    "partitionSha256LF": "f64b05b0b83eb102f914783295c15033a2e72a5a2fcf991ddaef3d3f4de3ef42"
+  },
+  {
+    "startLine": 1693,
+    "endLine": 1905,
+    "title": "FOLLOW scope/merge and raw mapping",
+    "contract": "HOME_FOLLOW/video, baseline probe and optional second full replacement; DynamicFeedFetchResult updateNum/usedBaseline/nextOffset/hasMore, raw archive-only mapper preserves dynamicId and original key/duration/stat parsing.",
+    "partitionSha256LF": "1d2c8004ac4beb3a79541da4ae59c190b763dc9ec39fa59d2e115ef698e8f232"
+  },
+  {
+    "startLine": 1906,
+    "endLine": 1991,
+    "title": "LIVE",
+    "contract": "Initial NAV and authenticated followed rooms plus popular rooms; loadmore only popular, roomid dedup and blocked UID; original error/empty/hasMore outcomes.",
+    "partitionSha256LF": "767bf96678ad8297fa3b1d0381ccf074f2a16e71681e38a220995d5b126c55a3"
+  },
+  {
+    "startLine": 1992,
+    "endLine": 2119,
+    "title": "NAV/following-cache/preview",
+    "contract": "Original NAV UserState and account context/unread/following flow; one-hour MID-keyed following_cache, unbounded pages ps50 until empty/short/error; owned preview URL result.",
+    "partitionSha256LF": "eb496de79466f64be0f40f4976bed89136f8275f9227826922613b60cd058c69"
+  }
+]

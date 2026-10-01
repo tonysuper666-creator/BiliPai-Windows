@@ -1,0 +1,250 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDynamicTimelineRepository$fetchDynamicFeedPageWithRetry$1.class",
+    "sha256Bytes": "e2e9ce19df315db65d3bac5ef6fc34add46e4ba9b8c8bd5b73c75053dc05b167"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDynamicTimelineRepository$getDynamicFeed$1.class",
+    "sha256Bytes": "0282e3b5cda883ee9c4fabba0c9facfafebc2fce8868e995b665c3bfac3899c9"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2$response$1.class",
+    "sha256Bytes": "9ea11dd71f53fdf0ddae7076d0610317560bea322812e9b231b716efac77efc7"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDynamicTimelineRepository$getDynamicFeed$2.class",
+    "sha256Bytes": "c82112279597a4b594e6be79151d43780c8efec6f233bd0a683c2080ffed414b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDynamicTimelineRepository$getPage$1.class",
+    "sha256Bytes": "42c5eb99e4509b673c2959744ff92287faecfaf25af9b78d9e8d0e4eebe817f8"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDynamicTimelineRepository.class",
+    "sha256Bytes": "8e55163969e49f1d5492764b39a6a1cda95a3efdec85b35150f0dfaf5fe0d196"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDynamicTimelineRepositoryKt.class",
+    "sha256Bytes": "b09783f763712113fa5ac24cc523b5e78f7f0f120e4fbe6f230e8fc4fd603b60"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DynamicFeedFetchResult.class",
+    "sha256Bytes": "922096f7c2ec6af2dc245a9bfb7800b3441c421a19b59ea31d12fdbfc6fe4640"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DynamicFeedPaginationKey.class",
+    "sha256Bytes": "c71a3fa5063b6b770236bdb925c439d85582f6daefce8e6180d5f10bcd1b39a0"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DynamicFeedPaginationRegistry.class",
+    "sha256Bytes": "ffc545b9b5c36f09df16205d5422e1c3504c3f306199c35f608140adc2a8a18f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DynamicFeedScope.class",
+    "sha256Bytes": "85588c5beca1924c745db6201e32f52a4fc7d0a63f3089c751d31102b6099b20"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\data\\repository\\DynamicPaginationState.class",
+    "sha256Bytes": "e7111b445e10e5de84a1ce03270a0c54271c00503687244cd6537ba23c04965b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\navigation\\HomeNavigationTarget$DynamicDetail.class",
+    "sha256Bytes": "5b8a98020556759ab14edb51b100a8a77554bc2b4493d920231536df3297fcf4"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\navigation\\HomeNavigationTarget$Video.class",
+    "sha256Bytes": "c49b3117f082ca8f066c4b9b38c06c05f3d7902feab3ed4f5020c795232d782e"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\navigation\\HomeNavigationTarget.class",
+    "sha256Bytes": "859011e305320c4cf873d8023d7fe6f71b35e8cdbd4adbf2ee1720178a54f5ae"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\navigation\\HomeVideoNavigationIntent.class",
+    "sha256Bytes": "38705a9011e590fb5ccb2a3d19e0fd6b4d6f07f72b53519272d9eb6f2f3020c5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\android\\purebilibili\\navigation\\HomeVideoNavigationPolicyKt.class",
+    "sha256Bytes": "2b70fdd3ff5b9b39046afe2fe297443b7bcecea7912e580cceb9a8c2d1e7c482"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$1.class",
+    "sha256Bytes": "ca1923e8db0a469c9eff77a227856efac6cc2f8885409039f361927ea727aa5b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$2.class",
+    "sha256Bytes": "56c8d583e42d1535538e6f1a0e765f19e66e3d58287f3eaa3043273ee9eecd84"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$api$$inlined$-addInterceptor$1.class",
+    "sha256Bytes": "ed431052a1a6b9fa3374d377f15f5dfaaa3d7874c8cb7f5c032615ead974948c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$api$guarded$1$once$1.class",
+    "sha256Bytes": "4c777c2d75c69e3c88f4f0dcb71d58edf8f8dfd0e88519db0d03e524f7dd84f3"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$blockUpWithBilibiliSync$3.class",
+    "sha256Bytes": "2fc947d2a5a2ca897728c1fc25187e2ef044d32c0caf63ca8a979d5f57616bfd"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$Companion$forTests$1.class",
+    "sha256Bytes": "39f396a24967540062b3d8e8204c7ab97f96dd5f63b7a1d215b76260a9b92d1d"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$Companion$forTests$2.class",
+    "sha256Bytes": "28b3c6f42abbedc0b50039019cf8f3116dea959bfe28b98951d270d5c55eb511"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$Companion.class",
+    "sha256Bytes": "2c2386b51afed92e50fe7f4a7453a085b192cb69295dec15504960af85bee5cc"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$importBlockedUps$2.class",
+    "sha256Bytes": "ae938b3a79a11494f6dea7ca4f9a625ff94ac16150158e35131feb3bb181c575"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$importFromBilibili$1.class",
+    "sha256Bytes": "e12b2743adb6e1f6beff1cb1910d360d97170824a2e27373da394679f3824ad3"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$importFromBilibili$2.class",
+    "sha256Bytes": "8ddae8ca0ec8ef5180a4f1a0022e1c789df50aba9900842cea0415997d9a82ee"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$refreshBlockedUpProfiles$2.class",
+    "sha256Bytes": "baf1b3f304fe8bac817d73a1f8bed3934d8b12e61bb577f147e364feef6452d3"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$sync$1.class",
+    "sha256Bytes": "8d0f0788a9a5f7c3787529e388edc0ef2962aadc93272d4590e5ea3a4e90596a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository$unblockUpWithBilibiliSync$2.class",
+    "sha256Bytes": "088d98c6b4799333fce2d3a2777f80e0e60747fe9ce0ff0b211f53bd3c011e52"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\data\\DesktopBlockedUpRepository.class",
+    "sha256Bytes": "377b00b7735bd5a6c6ea79c0652c4711fc7a924bd2e86f30425634b51ba51083"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$2.class",
+    "sha256Bytes": "8ef909ce19e6bbfe742f1ce30b778f94a20d21d8ae11378ed272f13b0408c5c4"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1$blockUpWithBilibiliSync$3.class",
+    "sha256Bytes": "34f65587e88188f344fcd48542266875f5979053594f4a4c510a585b08796765"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeBlockedPortKt$desktopHomeBlockedPort$1.class",
+    "sha256Bytes": "4c70a08914421b845e76f6ee05a2264f394f884164725bf6b437ea2faef6752d"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeBlockedPortKt$desktopHomeBlockedPort$mutationApi$1$once$1.class",
+    "sha256Bytes": "2680268438321262a4dbcdb2fcbf2d6900188ffda73a867c93fd4f4d43dfb98d"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeBlockedPortKt$desktopHomeBlockedPort$tagged$1.class",
+    "sha256Bytes": "95deec0ffacdca8fbcf873c914b1ccfcd0aac0913ab3efe927bab6ebcfe0efd6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeBlockedPortKt.class",
+    "sha256Bytes": "2587872f0240f9ddc0fd7e6dc7bad69ca4e1d1a79fb305c49e355b5f21c16851"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeEmbeddedRetainedOwner.class",
+    "sha256Bytes": "6bdcd139f403e0425307ba10e883fd8bd6d35f8fe0a5ddcbca60282bbe225110"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$closeAndJoin$2.class",
+    "sha256Bytes": "0edcb4be13bce1c888b7829aa8a2044aa436f8ef8acd0f7eebaf07ba28baf3d5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$1.class",
+    "sha256Bytes": "159db3f85f4456d9c412b9a2249bb510740f0145bce7a5af07e5bc0f623bebe7"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2$1.class",
+    "sha256Bytes": "ef4a509cb1d3716668c441a99309b949074f83bc623f188adee8ad2f49ca13de"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$$inlined$map$1$2.class",
+    "sha256Bytes": "c1bf20d6d069f1659748939bcde4fe5153ad9b3a9e758e5c51665f913cdaa158"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$$inlined$map$1.class",
+    "sha256Bytes": "8e989eae3c896af0bcf25dda3d69e0f6ae81d795df5be2dba4f4e59579dd45bd"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$environment$1.class",
+    "sha256Bytes": "b586e5411649e240842e1ccc7c6b8720d0c3fda110574641e6a2fa07a8ba0283"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$environment$2.class",
+    "sha256Bytes": "b49b560b50cdf7629c51fdb6bbb222ec58d8c7d1c378a15c36d2e52d9e739d22"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$environment$5.class",
+    "sha256Bytes": "8c228cc4738459df1d6a9da955efd3c49e7ed213d1d4387a61619dc3b428e89e"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$follow$1$getDynamicFeed$1.class",
+    "sha256Bytes": "f67c6a933a671a8be409b6ee6b939524cf8f3976488549009d73ff4197b2ca57"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$follow$1.class",
+    "sha256Bytes": "f19c09530004494e97d63b783640733bd81e261d0fe9c533334ca47f1fa1c356"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$originalFollow$1.class",
+    "sha256Bytes": "fc9bc6ca3c6276b6096c9357099ad1149fd10e60956a10b1c89f5a8ed4dce603"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$originalFollow$2.class",
+    "sha256Bytes": "01a72f1f201b524c3a593b65ad1286bd47e49b54d9739336327eb26bedfe4970"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$ownedDynamic$1.class",
+    "sha256Bytes": "919de50df3193be27dfde306a191b89e8cda4b636a8ce29d3b54c52d581a72c0"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$requests$1.class",
+    "sha256Bytes": "6e82e3b77a1d0209c0d8ff7ceea4a260892135a0894ede9cc5d2d7438303c7dc"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion$create$requests$2.class",
+    "sha256Bytes": "2509d62fbac9166c4d2188dc372c11f9c1d5898ac515c73009d0522b2e5239de"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry$Companion.class",
+    "sha256Bytes": "a4d24f35cd8275ec137a9012e336260f42479bd8c19d0e80d5e8bffe32f6fdb2"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry.class",
+    "sha256Bytes": "9da072f11c636080e748b30e76aae1c180b13a66a775ab5854b20fbc4ac9cb9f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedGate.class",
+    "sha256Bytes": "a22a8cb8986e75aa511e6b867d837ec01580694097ee57a48a4c2d16f9ba6eb1"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRootAnalytics.class",
+    "sha256Bytes": "c6b705b50a846109525a2367b8167c418322448e5eb18b372b1437c718e8b42d"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRootNavigationKt.class",
+    "sha256Bytes": "ff0b670aec29fb75df41a1ce9b703cb88ad838c81bf275aab00825dbe4b48a97"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRootRetainer$closeAndJoin$2.class",
+    "sha256Bytes": "7ad69ccdae1ac8ee99d87c559101bb8d04e19e8239a8c5dd5e834fab87062885"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRootRetainer$install$1.class",
+    "sha256Bytes": "25eed23661e4b55eb08ae591d37fadc8710c479ae86903128946a01ff705ec05"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-09\\com\\bilipai\\desktop\\ui\\DesktopHomeRootRetainer.class",
+    "sha256Bytes": "7898055f3d022f7309bfe4e0d093cc0c82c1722cc13dbf62ff4bfc9f1bb3a880"
+  }
+]

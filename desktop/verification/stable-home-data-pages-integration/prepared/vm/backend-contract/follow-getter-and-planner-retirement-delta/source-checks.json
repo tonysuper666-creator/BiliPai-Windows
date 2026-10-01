@@ -1,0 +1,35 @@
+{
+  "status": "SOURCE_ONLY_PASS",
+  "original": {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LF": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b",
+    "rawBlobSha256": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b"
+  },
+  "producer": {
+    "path": "desktop/tools/extract-upstream-dynamic-settings.py",
+    "baseSha256Bytes": "417df58f016c473c4380f4f4c4d1fddb4fc473a5eda8cc10c2f2246fd4e202fe",
+    "baseSha256LF": "181b7253d78443fed4351dffdf287f461ee62196ae7c0f8dd842a6e05381e66a",
+    "candidateSha256LF": "0fe430645c2002c854ce25f5fc91c3dc4b7b3a621ce226cd54961e4bd9936dca"
+  },
+  "selectedOriginalGetters": [
+    {
+      "name": "currentUpdateBaseline",
+      "line": 199,
+      "sha256SelectedLF": "5586f80e2deb93538135aecdd2fdcfe40bde966c16d76b3c36c8ed72879782e9",
+      "body": "feedPagination.updateBaseline(scope, type)",
+      "selector": "Exact original expression declaration; existing media.function cannot select this expression body."
+    },
+    {
+      "name": "hasMoreData",
+      "line": 426,
+      "sha256SelectedLF": "1d0e1ba577e5910ba824a8cecaea2e0f2a6b31b6a0916fa1e21d5655e6f05115",
+      "body": "return feedPagination.hasMore(scope, type)",
+      "selector": "Existing media.function block selector."
+    }
+  ],
+  "effect": "Two members appended to the existing DesktopOriginalDynamicTimelineRepository class; reuse its sole private feedPagination. No new cursor/cache/account/API authority.",
+  "classMemberVisibility": "Original public signatures/default scope/type retained; HOME_FOLLOW with type=video supplied by HomeVM.",
+  "productionMutation": false,
+  "compilerOrRuntimeAcceptance": false
+}

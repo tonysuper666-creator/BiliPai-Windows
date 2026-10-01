@@ -1,0 +1,87 @@
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubContent.kt:297:52: error: unresolved reference 'resolveMyFollowItemLazyKey'.
+                            key = { index, item -> resolveMyFollowItemLazyKey(index, item) },
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubContent.kt:345:53: error: unresolved reference 'resolveBangumiIndexItemLazyKey'.
+                key = { index, item -> "recommend_${resolveBangumiIndexItemLazyKey(index, item)}" },
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubContent.kt:454:59: error: unresolved reference 'resolveTimelineEpisodeLazyKey'.
+                                key = { index, episode -> resolveTimelineEpisodeLazyKey(index, episode) },
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubContent.kt:554:40: error: unresolved reference 'resolveBangumiIndexItemLazyKey'.
+                key = { index, item -> resolveBangumiIndexItemLazyKey(index, item) },
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubContent.kt:726:52: error: unresolved reference 'resolveMyFollowItemLazyKey'.
+                            key = { index, item -> resolveMyFollowItemLazyKey(index, item) },
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubContent.kt:900:63: error: unresolved reference 'ContentVideoGridSkeleton'.
+                    com.android.purebilibili.core.ui.skeleton.ContentVideoGridSkeleton(
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubContent.kt:932:48: error: unresolved reference 'resolveBangumiSearchItemLazyKey'.
+                        key = { index, item -> resolveBangumiSearchItemLazyKey(index, item) },
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubPolicy.kt:10:13: error: unresolved reference 'MY_FOLLOW_TYPE_BANGUMI'.
+    BANGUMI(MY_FOLLOW_TYPE_BANGUMI, "����"),
+            ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubPolicy.kt:11:12: error: unresolved reference 'MY_FOLLOW_TYPE_CINEMA'.
+    CINEMA(MY_FOLLOW_TYPE_CINEMA, "Ӱ��"),
+           ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:389:39: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+                                    ).distinctBy(::resolveBangumiSearchItemBusinessKey),
+                                      ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:389:52: error: unresolved reference 'resolveBangumiSearchItemBusinessKey'.
+                                    ).distinctBy(::resolveBangumiSearchItemBusinessKey),
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:431:45: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+                                    items = mergeBangumiPagedItems(
+                                            ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:438:51: error: unresolved reference 'resolveBangumiSearchItemBusinessKey'.
+                                        keyOf = ::resolveBangumiSearchItemBusinessKey,
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:516:41: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+                                items = mergeBangumiPagedItems(previous, data.list.orEmpty(), reset = false) {
+                                        ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:517:37: error: unresolved reference 'resolveBangumiIndexItemBusinessKey'.
+                                    resolveBangumiIndexItemBusinessKey(it)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:567:41: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+                                items = mergeBangumiPagedItems(previous, data.list.orEmpty(), reset = false) {
+                                        ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:568:37: error: unresolved reference 'resolveMyFollowItemBusinessKey'.
+                                    resolveMyFollowItemBusinessKey(it)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:728:41: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+                                items = mergeBangumiPagedItems(previous, data.list.orEmpty(), reset = false) {
+                                        ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:729:37: error: unresolved reference 'resolveBangumiIndexItemBusinessKey'.
+                                    resolveBangumiIndexItemBusinessKey(it)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:791:41: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+                                items = mergeBangumiPagedItems(previous, data.list.orEmpty(), reset = false) {
+                                        ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiHubViewModel.kt:792:37: error: unresolved reference 'resolveMyFollowItemBusinessKey'.
+                                    resolveMyFollowItemBusinessKey(it)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiUiPolicy.kt:3:16: error: unresolved reference 'content'.
+import android.content.pm.ActivityInfo
+               ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiUiPolicy.kt:77:9: error: unresolved reference 'ActivityInfo'.
+        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\BangumiUiPolicy.kt:79:9: error: unresolved reference 'ActivityInfo'.
+        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\ui\list\DesktopOriginalBangumiBadge.kt:43:5: error: unresolved reference 'AppSurface'.
+    AppSurface(
+    ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\ui\list\DesktopOriginalBangumiBadge.kt:48:9: error: @Composable invocations can only happen from the context of a @Composable function
+        AppText(
+        ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\ui\list\DesktopOriginalBangumiBadge.kt:50:56: error: unresolved reference 'dp'.
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                                       ^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\ui\list\DesktopOriginalBangumiBadge.kt:50:73: error: unresolved reference 'dp'.
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                                                        ^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\generated\com\android\purebilibili\feature\bangumi\ui\list\DesktopOriginalBangumiBadge.kt:52:35: error: @Composable invocations can only happen from the context of a @Composable function
+            style = MaterialTheme.typography.labelSmall
+                                  ^^^^^^^^^^

@@ -1,0 +1,6 @@
+{
+  "historicalCompile": "compile-owner-05.log",
+  "incorrectExtraClass": "com/android/purebilibili/navigation/VideoRoute.class",
+  "actualOwner": "desktop/tools/extract-upstream-home-full-card.py (existing sole full VideoRoute)",
+  "correction": "Do not emit partial VideoRoute. Only install exact new HomeVideoNavigationPolicy.kt as direct upstream registry row. Compile05 is a historical successful compilation with unintended duplicate class, not accepted source owner graph."
+}

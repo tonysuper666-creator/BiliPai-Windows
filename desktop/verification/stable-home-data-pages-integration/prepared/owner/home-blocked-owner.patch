@@ -1,0 +1,59 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt
+@@ -30,13 +30,21 @@
+ 
+     suspend fun blockUpWithBilibiliSync(mid: Long, name: String, face: String,
+         relationSource: BlockedUpRelationSource = BlockedUpRelationSource.PROFILE,
+-        expectedSessionEpoch: Long = repository.sessionEpoch): BlockedUpWriteResult = withContext(Dispatchers.IO) {
++        expectedSessionEpoch: Long = repository.sessionEpoch,
++        stillOwned: () -> Boolean = { true },
++        commitLocal: ((() -> Unit) -> Boolean)? = null,
++        ownedApi: BilibiliApi? = null,
++        ownedCsrf: (() -> String?)? = null,
++        ensureOwnedSession: (suspend () -> Unit)? = null): BlockedUpWriteResult = withContext(Dispatchers.IO) {
+         require(mid > 0)
+         mutationMutex.withLock {
+             ensureEpoch(expectedSessionEpoch)
+             currentCoroutineContext().ensureActive()
+-            store.upsert(BlockedUp(mid = mid, name = name, face = face))
+-            sync(mid, true, relationSource, expectedSessionEpoch)
++            if (!stillOwned()) throw CancellationException("Home block owner retired")
++            val insert = { store.upsert(BlockedUp(mid = mid, name = name, face = face)) }
++            if (commitLocal == null) insert()
++            else if (!commitLocal(insert)) throw CancellationException("Home local block owner retired")
++            sync(mid, true, relationSource, expectedSessionEpoch, stillOwned, ownedApi, ownedCsrf, ensureOwnedSession)
+         }
+     }
+ 
+@@ -126,20 +134,27 @@
+             BlockedUpMetadataRefreshResult(updated, deleted, failed, buildBlockedUpMetadataRefreshMessage(updated, deleted, failed))
+         }
+ 
+-    private suspend fun sync(mid: Long, blocked: Boolean, source: BlockedUpRelationSource, epoch: Long): BlockedUpWriteResult {
++    private suspend fun sync(mid: Long, blocked: Boolean, source: BlockedUpRelationSource, epoch: Long,
++        stillOwned: () -> Boolean = { true }, ownedApi: BilibiliApi? = null,
++        ownedCsrf: (() -> String?)? = null, ensureOwnedSession: (suspend () -> Unit)? = null): BlockedUpWriteResult {
+         ensureEpoch(epoch)
+-        val csrf = try { repository.requireCsrf() } catch (_: BiliApiException) { null }
++        if (!stillOwned()) throw CancellationException("Home block owner retired")
++        val csrf = if (ownedCsrf != null) ownedCsrf() else try { repository.requireCsrf() } catch (_: BiliApiException) { null }
+         if (csrf.isNullOrBlank()) return result(blocked, BilibiliBlockedListRemoteStatus.SKIPPED_NOT_LOGGED_IN)
+         return try {
+-            ensureSession(); ensureEpoch(epoch)
++            if (ensureOwnedSession != null) ensureOwnedSession() else ensureSession()
++            ensureEpoch(epoch)
++            if (!stillOwned()) throw CancellationException("Home block owner retired")
+             val (act, reSrc) = desktopBlockedRelationArguments(blocked, source)
+-            val response = api(epoch).modifyRelation(mid, act, csrf, reSrc)
++            val response = (ownedApi ?: api(epoch)).modifyRelation(mid, act, csrf, reSrc)
+             currentCoroutineContext().ensureActive(); ensureEpoch(epoch)
++            if (!stillOwned()) throw CancellationException("Home block owner retired")
+             if (response.code == 0) result(blocked, BilibiliBlockedListRemoteStatus.SUCCESS)
+             else result(blocked, BilibiliBlockedListRemoteStatus.FAILED, response.message.ifBlank { "接口返回 ${response.code}" })
+         } catch (cancelled: CancellationException) { throw cancelled
+         } catch (error: Exception) {
+             ensureEpoch(epoch)
++            if (!stillOwned()) throw CancellationException("Home block owner retired")
+             result(blocked, BilibiliBlockedListRemoteStatus.FAILED, safeReadError(error).message)
+         }
+     }

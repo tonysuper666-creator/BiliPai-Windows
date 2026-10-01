@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "sourceOnly": true,
+  "actualRuntimeAcceptance": false,
+  "nativeOrAnimationExecuted": false,
+  "HTTP": false,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-global-platform-parity\\runs\\compile-01\\source-inputs\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeErrorAnimation.kt",
+      "sha256Bytes": "000709e167cf4d66949b36c9804bc1f84a5527749fdd8e7bfd8b1c224006eb81"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-global-platform-parity\\runs\\compile-01\\source-inputs\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeWindowGlobals.kt",
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc"
+    }
+  ],
+  "snapshotManifestSha256Bytes": "a94cf303442cc285a81650237f0cc1a3910c47e4f3b1a43e42a23e36e0c63883",
+  "orderedCpSha256Bytes": "e76eb70649106c7acc0d446c539e6b971fcf578daaca68221a5897fda2fdb09d",
+  "runtimeEntries": 97,
+  "candidateJarSha256Bytes": "1bba37cebaceb0adabc8e2efe503f2a9bf187486324ad2bc1bc424fe34710d6b",
+  "classCount": 17,
+  "productionClassIntersection": [],
+  "classes": [
+    "com/bilipai/desktop/ui/DesktopHomeActualWindowResources.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt$DesktopHomeActualErrorAnimation$1$1$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt$DesktopHomeActualErrorAnimation$1$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt$DesktopHomeActualErrorAnimation$3$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt$DesktopHomeActualErrorAnimation_6a0pyJM$lambda$7$0$$inlined$onDispose$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$Companion.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$load$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$read$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$read$2.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$read$3.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$read$bytes$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieLease.class",
+    "com/bilipai/desktop/ui/DesktopHomeWindowGlobalsKt$rememberDesktopHomeActualWindowResources$2$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeWindowGlobalsKt$rememberDesktopHomeActualWindowResources$lambda$3$0$$inlined$onDispose$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeWindowGlobalsKt.class"
+  ]
+}

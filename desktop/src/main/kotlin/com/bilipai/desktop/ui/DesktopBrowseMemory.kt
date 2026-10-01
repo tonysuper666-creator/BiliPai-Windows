@@ -7,6 +7,7 @@ class DesktopBrowseMemory {
     internal val feeds = CommunityFeedMemory()
     private val screens = linkedMapOf<Any?, Any>()
     fun invalidateCloudHistory() = feeds.invalidate(PersonalSection.HISTORY)
+    fun invalidateWatchLater() = feeds.invalidate(PersonalSection.WATCH_LATER)
 
     @Suppress("UNCHECKED_CAST")
     internal fun <T : Any> screen(key: Any?, create: () -> T): T = screens.getOrPut(key) {

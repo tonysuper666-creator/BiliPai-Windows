@@ -1,0 +1,187 @@
+{
+  "status": "PASS",
+  "scope": "Prepared source-only complete original Subscription page closure",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originals": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "sha256LF": "c3430358427744da0b3627f73561bfbe3d6519c86b96fcc49734035db5672707",
+      "artifact": {
+        "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+        "sha256Bytes": "c3430358427744da0b3627f73561bfbe3d6519c86b96fcc49734035db5672707"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedModels.kt",
+      "sha256LF": "3276d1a66b8682508a2b17a03d3063368d4a8f94e730e679d8e4728002521b5f",
+      "artifact": {
+        "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedModels.kt",
+        "sha256Bytes": "3276d1a66b8682508a2b17a03d3063368d4a8f94e730e679d8e4728002521b5f"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+      "sha256LF": "b4b65ab198829186889637e4eaa3f89f825f0634df262bbda3f2777895bcb050",
+      "artifact": {
+        "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+        "sha256Bytes": "b4b65ab198829186889637e4eaa3f89f825f0634df262bbda3f2777895bcb050"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedConditionalStore.kt",
+      "sha256LF": "b1258797c1a69a32c40cf194113af80df3d9983ea12446ae589a80b60d145daf",
+      "artifact": {
+        "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedConditionalStore.kt",
+        "sha256Bytes": "b1258797c1a69a32c40cf194113af80df3d9983ea12446ae589a80b60d145daf"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+      "sha256LF": "1ebb33f5f2f67c6659ddc1d4f2cf3a833f28ae69e933ef2c3892f9ff7448f2fd",
+      "artifact": {
+        "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+        "sha256Bytes": "1ebb33f5f2f67c6659ddc1d4f2cf3a833f28ae69e933ef2c3892f9ff7448f2fd"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedArticleExtractor.kt",
+      "sha256LF": "86a312780455a57c143e3deed1acb772c19ed49a415b9615f6b567c896960081",
+      "artifact": {
+        "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedArticleExtractor.kt",
+        "sha256Bytes": "86a312780455a57c143e3deed1acb772c19ed49a415b9615f6b567c896960081"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedLayoutAllocation.kt",
+      "sha256LF": "005bacf925078fec59524a78bd23bd717c21e682f1a9df867149dc3c97447630",
+      "artifact": {
+        "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedLayoutAllocation.kt",
+        "sha256Bytes": "005bacf925078fec59524a78bd23bd717c21e682f1a9df867149dc3c97447630"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedHtmlParser.kt",
+      "sha256LF": "a92c0a3e72478e15c30d170aad90a7d8ea83975acc0e037aa66e157c6f5a5015",
+      "artifact": {
+        "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedHtmlParser.kt",
+        "sha256Bytes": "a92c0a3e72478e15c30d170aad90a7d8ea83975acc0e037aa66e157c6f5a5015"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedSourceCatalog.kt",
+      "sha256LF": "36477d508db469e5556dd12a6712fb64675e60343ecec05cc18d607978571f36",
+      "artifact": {
+        "path": "original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedSourceCatalog.kt",
+        "sha256Bytes": "36477d508db469e5556dd12a6712fb64675e60343ecec05cc18d607978571f36"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "artifact": {
+        "path": "original-source/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+        "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+      }
+    }
+  ],
+  "generated": {
+    "path": "prepared/generated/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+    "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2"
+  },
+  "inverseNormalizedExecutableBodiesEqual": true,
+  "all13TopLevelDeclarationsRetained": true,
+  "all8FeedBlockBranchesRetained": true,
+  "productionStandalonePreparedByteEqual": true,
+  "producerOutputs": {
+    "production": [
+      {
+        "path": "source-audit/production/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+        "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2"
+      }
+    ],
+    "standalone": [
+      {
+        "path": "source-audit/standalone/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+        "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2"
+      }
+    ]
+  },
+  "originalArticleLongerPlainTextComparisonRetained": true,
+  "fullBodySaveUsesOriginalArticleFetchJob": true,
+  "soleRuntimeRepository": true,
+  "soleReadingStore": true,
+  "soleFeedTransport": true,
+  "solePluginSettings": true,
+  "ownerAdmission": "Captured caller Job + retained Root commitIfCurrent; original no-scope operations unchanged",
+  "lockOrder": "Root Store -> retained entry admission; existing AtomicFile monitor reaches this gate but retirement must not wait for repository/file mutexes while holding Root Store. Settings outer Root gate -> plugin backing, final check never reacquires Root.",
+  "busyCleanup": "Same Root owner only, request generation rechecked inside commit; cancelled request cannot clear replacement loading",
+  "progressMetadata": "Latest sole state readKeys/fullBodies survive in-flight refresh progress",
+  "backBoundary": "Existing NavigationEvent owner; article-only Escape completed event, no invented predictive samples; native edge gesture not claimed",
+  "externalUrlBoundary": "Root Windows external browser, Android embedded WebView not claimed",
+  "classCount": 109,
+  "declaredExistingClassOverrides": [
+    "com/bilipai/desktop/plugins/DesktopPluginApplicationScope.class",
+    "com/bilipai/desktop/plugins/DesktopPluginAtomicFile.class",
+    "com/bilipai/desktop/plugins/DesktopPluginContext$Companion.class",
+    "com/bilipai/desktop/plugins/DesktopPluginContext.class",
+    "com/bilipai/desktop/plugins/DesktopPluginDataStore$edit$2.class",
+    "com/bilipai/desktop/plugins/DesktopPluginDataStore.class",
+    "com/bilipai/desktop/plugins/DesktopPluginPreferences$Editor.class",
+    "com/bilipai/desktop/plugins/DesktopPluginPreferences.class",
+    "com/bilipai/desktop/plugins/DesktopPluginRepositoryBinding$Binding.class",
+    "com/bilipai/desktop/plugins/DesktopPluginRepositoryBinding$searchUp$1.class",
+    "com/bilipai/desktop/plugins/DesktopPluginRepositoryBinding.class",
+    "com/bilipai/desktop/plugins/DesktopPluginResource.class",
+    "com/bilipai/desktop/plugins/DesktopPluginScopeRegistry$shutdown$1.class",
+    "com/bilipai/desktop/plugins/DesktopPluginScopeRegistry.class",
+    "com/bilipai/desktop/plugins/DesktopPluginStore$Backing.class",
+    "com/bilipai/desktop/plugins/DesktopPluginStore$Companion.class",
+    "com/bilipai/desktop/plugins/DesktopPluginStore$setFeedFilterConfig$2.class",
+    "com/bilipai/desktop/plugins/DesktopPluginStore$setFeedFilterEnabled$2.class",
+    "com/bilipai/desktop/plugins/DesktopPluginStore.class",
+    "com/bilipai/desktop/plugins/DesktopPluginStoreKt.class",
+    "com/bilipai/desktop/plugins/DesktopPreferenceEditor.class",
+    "com/bilipai/desktop/plugins/DesktopPreferenceKey.class",
+    "com/bilipai/desktop/plugins/DesktopPreferenceSnapshot.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionExtraSources.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$1.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$add$2.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$exportOpml$2.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$importOpml$2.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$loadCached$2.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$loadFullArticle$1.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$mutate$2.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$refresh$2.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$remove$2.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$setEnabled$2.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$setRead$1.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository$shutdownForRestore$1.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionRepository.class",
+    "com/bilipai/desktop/plugins/DesktopSubscriptionState.class"
+  ],
+  "newClassCount": 71,
+  "newTopLevelPublicStaticMethods": 6,
+  "actualTopLevelPublicStaticMethods": 28899,
+  "matchingRule": "Same package + JVM name + JVM parameter descriptor, excluding file-private/access bridges and explicitly replaced whole proof-source families",
+  "newTopLevelIntersections": [],
+  "newClassIntersections": [],
+  "compileEvidence": {
+    "path": "runs/compile-03/compile-result.json",
+    "sha256Bytes": "6bea21b20415c1d11ae664266b0bb24e4f88469e7b53045558d132a720c63dfb"
+  },
+  "candidateJar": {
+    "path": "runs/compile-03/prepared-subscription-page.jar",
+    "sha256Bytes": "3f191cd0419ef7a1358ecb04099a6e6563e745dec4d4d8bf8379a0a27c2d721d"
+  },
+  "actualProductRuntimeAcceptance": false,
+  "HTTP": false,
+  "GUI": false,
+  "HWND": false,
+  "Gradle": false,
+  "pending": [
+    "Root installation and actual retained Home owner/gallery wiring",
+    "Actual mounted UI/pointer/back/preview/save proof",
+    "Root admission lock-order integration must retire outside Store while awaiting plugin IO",
+    "No external feed/article fetch performed"
+  ]
+}

@@ -1,0 +1,352 @@
+{
+  "scope": "complete original stable Live home list closure; required retained parent Root ports",
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualRootRuntime": false,
+  "actualRootComposeWindow": false,
+  "actualHttpOrAccount": false,
+  "sharedSourcesOrGradleModified": false,
+  "deployedExe": false,
+  "actualProductSnapshot36": {
+    "manifestSha256Bytes": "a445ed0f4944ba6ac581b06401576aec23638ef242aa1da442a6baead60b637d",
+    "orderedClasspathSha256Bytes": "2fa3092ec985e32bf6b1b046266e6b84994adeeb023615549a9422eddb0aa493",
+    "entries": 97
+  },
+  "declaredProspectiveRaw694Jar": {
+    "sha256Bytes": "e4eef32e65a89dd85bda7558efcdf08c4276d34df9a611f2deb5c51bd8e9eda3",
+    "actualProduct": false,
+    "existingSameSourceOverrideFamilies": [
+      "com/bilipai/desktop/data/DesktopRepository",
+      "com/bilipai/desktop/data/DesktopSessionStore",
+      "com/bilipai/desktop/data/DesktopSessionEpoch"
+    ]
+  },
+  "compile": {
+    "sources": 14,
+    "classes": 103,
+    "methods": 804,
+    "jarSha256Bytes": "f865e9e0d4123f032c409120b8bd8b742d949a16daaed581a4d3f0444e1be2e7",
+    "classAndTopMethodOverlap": 0,
+    "invalidJvmMethodNames": 0
+  },
+  "proof": {
+    "sourceChecks": 155,
+    "fixtureGroups": 10,
+    "fixtureAssertions": 28,
+    "jvmLoadedCandidateClasses": 103
+  },
+  "installationContractSha256Bytes": "63e6fbcef7f580995be40586159d95d8855a04922c0ea0b19f52afcd90755add",
+  "artifacts": [
+    {
+      "path": "LiveListFixture.kt",
+      "sha256Bytes": "4b8ea133373b6fe6bbd55585214b623ac321593c13c8d0f045a0c1e98cac23d9"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "36bf7721d331d9e10744fb99ab95acc1da3cb872b6007ef94d6d3544e1c41c97"
+    },
+    {
+      "path": "abi-audit.json",
+      "sha256Bytes": "e819e02a2eb08f3d0535fd305cee1311d319fa2aee9b2ecfbe762e0e34cc65ab"
+    },
+    {
+      "path": "audit_abi.py",
+      "sha256Bytes": "81c8a0e46e1bdc4a2a45227465ef91b02966e14d0307f2f6eabf52b17c0488c7"
+    },
+    {
+      "path": "audit_inputs.py",
+      "sha256Bytes": "06fde54715207ccf8ac2b64c6b7d0c1ac5fbd522251c72a312603ee08d37906f"
+    },
+    {
+      "path": "audit_source.py",
+      "sha256Bytes": "06e57212d258078339e91094534a49dd40d69f2082e3d062807bf3872ffddb03"
+    },
+    {
+      "path": "compile-02/compile-result.json",
+      "sha256Bytes": "5f407052a3c4311899fad4eb07827172c9dbc2d2fdafc0034ffadb4aa86f2925"
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-02/original-live-list.jar",
+      "sha256Bytes": "f865e9e0d4123f032c409120b8bd8b742d949a16daaed581a4d3f0444e1be2e7"
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "bbe2723efda7739d76a75cb6215153f101e03a37c2499353debdc7a48252ebe5"
+    },
+    {
+      "path": "fixture-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fixture-01/results/result.json",
+      "sha256Bytes": "22f656b38e447ba88f0e74853f9fb8261e2dc725decf6240a2d8e005f8df3a3b"
+    },
+    {
+      "path": "fixture-01/run.log",
+      "sha256Bytes": "24f83fa70fa472abdb25b091a1c239018c4a9abd68f8a4a06ddd47ccd3b656c9"
+    },
+    {
+      "path": "fixture.py",
+      "sha256Bytes": "ada7b0cb29a1f05c89ef57e74cd9f084e428e1045ff6596a142ee49a48231d3b"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "466f82a7fe4ecfc4cd157af95093fe9c04f9bab1f85743c137f65a077d8ee7dd"
+    },
+    {
+      "path": "gradle-tasks.snippet.kts",
+      "sha256Bytes": "2823f24b9122f182ef96bb144c1441c06411f1436bb0983c5cbbde19b19c60cd"
+    },
+    {
+      "path": "input-audit.json",
+      "sha256Bytes": "5c02a93d452454ad4d5013805ecf3e0edc5653446ca955d217792081ed9b79dd"
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "63e6fbcef7f580995be40586159d95d8855a04922c0ea0b19f52afcd90755add"
+    },
+    {
+      "path": "live-list-windows-adaptation.diff",
+      "sha256Bytes": "8332a1e3a936b29128ab2bc1a53c05470e7e866ae39b701396c37c530ffe1c3d"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256Bytes": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/ui/transition/BiliPaiSharedElementKey.kt",
+      "sha256Bytes": "b6cf5d21f74dbe9a7d44b7af4c2847ee1764c5d0526b6f4cb881d20dda659448"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/util/ResultExtensions.kt",
+      "sha256Bytes": "8a95f76412bcdbd6975cedecff9d8f3f07a814f4f23312011ae9fa4e6e376116"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/LiveAreaRoomsPolicy.kt",
+      "sha256Bytes": "b1472fdd261492b8d777f85f263ec23bd628e89f29b1c52e2b2b3531ae7d4c02"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/LiveFeedParsePolicy.kt",
+      "sha256Bytes": "83e53199389f2b8aeaf9241257cea31b940066d30a5b87a671ff83ee717eb7d7"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "sha256Bytes": "28748c0fd10125e603a8c0f28fff63781f87d3350e1446cc355622f447f8f86d"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "sha256Bytes": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt",
+      "sha256Bytes": "c3251089682757da236fca48d4bdd453b931bfd47e176c3f73e01f1e31bc36e1"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveChromePalette.kt",
+      "sha256Bytes": "f2d304269a3f795a70358cf6cf9e85c2b6433639ef9d48e3f93a2d488c49c10e"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt",
+      "sha256Bytes": "9552dbe8bb68a612bb5cf5b35318a6bd0888e45edc234ccc2245be844b43c194"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveHomeCategoryIndicatorPolicy.kt",
+      "sha256Bytes": "22cd451faefa183a118a3cb65e0c61623cd310a54b7e8e68a4c04053310e5f42"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveHomeSelectableChip.kt",
+      "sha256Bytes": "8ebee65136586c62439c3acbb169991303a0526c111ee683156042c6cddf3f81"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "sha256Bytes": "a88f86fefe56e06d941438270ba0c32b3f35b739068cadf3ef4b838903ee49d8"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt",
+      "sha256Bytes": "16f08c3a5b6dd8a3c0613a7ef2439fe55be7ad12769c68f99055f9c4bed9778a"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveRoomCard.kt",
+      "sha256Bytes": "9ffd472531ddfbeab17237e32acf5c03a9ae4c604de64ad46710ea02ee206db0"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveRoomLayoutPolicy.kt",
+      "sha256Bytes": "fe011d262fb3dd955f3bceb339ca9e399638e3a59d272cef6acebb29e995d542"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256Bytes": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59"
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "4699f2635036e2691f03397d48499b2cdc59d9e1b9c3e9b0d7bc8c0cf234c25e"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/util/DesktopOriginalLiveApiErrors.kt",
+      "sha256Bytes": "85d5d212d7b6ef34d109c650dfd8d737535ed9d9c4ad20605637827c61d9eedc"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/data/repository/DesktopOriginalLiveListProtocol.kt",
+      "sha256Bytes": "3c892bededf177f16bd396d3232ac86977587dc091c0e24924e3e6e352d7367c"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/data/repository/LiveAreaRoomsPolicy.kt",
+      "sha256Bytes": "b1472fdd261492b8d777f85f263ec23bd628e89f29b1c52e2b2b3531ae7d4c02"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/data/repository/LiveFeedParsePolicy.kt",
+      "sha256Bytes": "83e53199389f2b8aeaf9241257cea31b940066d30a5b87a671ff83ee717eb7d7"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/live/DesktopLiveViewerCount.kt",
+      "sha256Bytes": "8bc359ade9062adfdb67a19df9e878518ad7b273a9ad6856f66e4a559aabde18"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt",
+      "sha256Bytes": "c3251089682757da236fca48d4bdd453b931bfd47e176c3f73e01f1e31bc36e1"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/live/LiveChromePalette.kt",
+      "sha256Bytes": "f2d304269a3f795a70358cf6cf9e85c2b6433639ef9d48e3f93a2d488c49c10e"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt",
+      "sha256Bytes": "9552dbe8bb68a612bb5cf5b35318a6bd0888e45edc234ccc2245be844b43c194"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/live/LiveHomeCategoryIndicatorPolicy.kt",
+      "sha256Bytes": "22cd451faefa183a118a3cb65e0c61623cd310a54b7e8e68a4c04053310e5f42"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/live/LiveHomeSelectableChip.kt",
+      "sha256Bytes": "8ebee65136586c62439c3acbb169991303a0526c111ee683156042c6cddf3f81"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "sha256Bytes": "caecaf23ef07a537a599fc6120c01932654f50f61a81b573ff5242a6bde5faad"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt",
+      "sha256Bytes": "16f08c3a5b6dd8a3c0613a7ef2439fe55be7ad12769c68f99055f9c4bed9778a"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/live/LiveRoomCard.kt",
+      "sha256Bytes": "9ffd472531ddfbeab17237e32acf5c03a9ae4c604de64ad46710ea02ee206db0"
+    },
+    {
+      "path": "prepared/generated/live-list-selection-proof.json",
+      "sha256Bytes": "64ab817f325e7d51499bde784bc7a5330c47cf055d1fadba11b72a858f493627"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopLiveListBindings.kt",
+      "sha256Bytes": "97993d0091a4bb7496f72cede57a19ff32ae0997451acecd895a0e8937c59826"
+    },
+    {
+      "path": "prepared/tools/extract-upstream-live-list.py",
+      "sha256Bytes": "13a041d3833af04827723915c26703aba6986bbf495fd1c06d996599eeca8442"
+    },
+    {
+      "path": "registry-merge-recipe.json",
+      "sha256Bytes": "2eb6988301268f23b3d9b840bebcae18f8b7320076124460f814b0277ec8ccca"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/core/util/DesktopOriginalLiveApiErrors.kt",
+      "sha256Bytes": "85d5d212d7b6ef34d109c650dfd8d737535ed9d9c4ad20605637827c61d9eedc"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/data/repository/DesktopOriginalLiveListProtocol.kt",
+      "sha256Bytes": "3c892bededf177f16bd396d3232ac86977587dc091c0e24924e3e6e352d7367c"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/live/DesktopLiveViewerCount.kt",
+      "sha256Bytes": "8bc359ade9062adfdb67a19df9e878518ad7b273a9ad6856f66e4a559aabde18"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "sha256Bytes": "caecaf23ef07a537a599fc6120c01932654f50f61a81b573ff5242a6bde5faad"
+    },
+    {
+      "path": "replay-production/live-list-selection-proof.json",
+      "sha256Bytes": "80f766afeec6d7875fbe50466bf9ebb52a558ac488d4c5cf588dff1aef5ed9dc"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/core/util/DesktopOriginalLiveApiErrors.kt",
+      "sha256Bytes": "85d5d212d7b6ef34d109c650dfd8d737535ed9d9c4ad20605637827c61d9eedc"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/data/repository/DesktopOriginalLiveListProtocol.kt",
+      "sha256Bytes": "3c892bededf177f16bd396d3232ac86977587dc091c0e24924e3e6e352d7367c"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/data/repository/LiveAreaRoomsPolicy.kt",
+      "sha256Bytes": "b1472fdd261492b8d777f85f263ec23bd628e89f29b1c52e2b2b3531ae7d4c02"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/data/repository/LiveFeedParsePolicy.kt",
+      "sha256Bytes": "83e53199389f2b8aeaf9241257cea31b940066d30a5b87a671ff83ee717eb7d7"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/live/DesktopLiveViewerCount.kt",
+      "sha256Bytes": "8bc359ade9062adfdb67a19df9e878518ad7b273a9ad6856f66e4a559aabde18"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt",
+      "sha256Bytes": "c3251089682757da236fca48d4bdd453b931bfd47e176c3f73e01f1e31bc36e1"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/live/LiveChromePalette.kt",
+      "sha256Bytes": "f2d304269a3f795a70358cf6cf9e85c2b6433639ef9d48e3f93a2d488c49c10e"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt",
+      "sha256Bytes": "9552dbe8bb68a612bb5cf5b35318a6bd0888e45edc234ccc2245be844b43c194"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/live/LiveHomeCategoryIndicatorPolicy.kt",
+      "sha256Bytes": "22cd451faefa183a118a3cb65e0c61623cd310a54b7e8e68a4c04053310e5f42"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/live/LiveHomeSelectableChip.kt",
+      "sha256Bytes": "8ebee65136586c62439c3acbb169991303a0526c111ee683156042c6cddf3f81"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "sha256Bytes": "caecaf23ef07a537a599fc6120c01932654f50f61a81b573ff5242a6bde5faad"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt",
+      "sha256Bytes": "16f08c3a5b6dd8a3c0613a7ef2439fe55be7ad12769c68f99055f9c4bed9778a"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/live/LiveRoomCard.kt",
+      "sha256Bytes": "9ffd472531ddfbeab17237e32acf5c03a9ae4c604de64ad46710ea02ee206db0"
+    },
+    {
+      "path": "replay-standalone/live-list-selection-proof.json",
+      "sha256Bytes": "64ab817f325e7d51499bde784bc7a5330c47cf055d1fadba11b72a858f493627"
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "74e80ebfde8209973f6aede83d3d26fa35a33e18d38c56a4fb6c50790cc50bfe"
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "2e13de27d9a37c43ea950ee8697a13953ea6abb2b2a729435e896067063abfe9"
+    },
+    {
+      "path": "stable-home-request-ports-parity-declared-prospective.jar",
+      "sha256Bytes": "e4eef32e65a89dd85bda7558efcdf08c4276d34df9a611f2deb5c51bd8e9eda3"
+    },
+    {
+      "path": "stable-home-viewmodel-parity-declared-prospective.jar",
+      "sha256Bytes": "66eea5f591bc3e35b3dfb118b6dd83bfbf36e0979f3fa90ca9525ae312e8c42e"
+    },
+    {
+      "path": "ui-exact-reverse-patches.json",
+      "sha256Bytes": "5cd2673287b8725a7737476d27d64126aeaf92ac9d9e2851198974b1abe045ed"
+    }
+  ]
+}

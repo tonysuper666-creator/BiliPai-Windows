@@ -1,0 +1,6 @@
+{
+  "scope": "Task-only inventory helper corrections, not product defects",
+  "prefixRelativeTo": "Audit script initially compared extended-prefix paths with non-prefixed root. Corrected by removing only Windows extended prefix before relative matching; final exact overlap assertion26 passed. No missing class claimed verified.",
+  "phasePath": "Initial plan typo home-viewmodel-adaptations.json corrected to actual extract-upstream-home-viewmodel-adaptations.json and all six phase1 VM source paths verified.",
+  "historyCompile05": "Successful compiler run contained an unintended already-owned VideoRoute class. It is preserved as incorrect owner graph, removed from current source inputs/whitelist and final audit; actual full VideoRoute always supplied by existing home-full-card owner."
+}

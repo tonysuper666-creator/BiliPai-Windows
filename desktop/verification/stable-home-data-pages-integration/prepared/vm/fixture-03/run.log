@@ -1,0 +1,15 @@
+PASS recommend idx incremental even merge divider and original undo
+PASS independent region pages and four original popular branch caches
+PASS HOME_FOLLOW baseline probe then replacement uses original scope and type
+PASS same MID epoch retirement rejects late feed and following disk writes
+Exception in thread "main" java.lang.IllegalStateException: Check failed.
+	at com.bilipai.desktop.ui.HomeVmFixtureKt$main$1$5.invokeSuspend(HomeVmFixture.kt:187)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.HomeVmFixtureKt.main(HomeVmFixture.kt:98)

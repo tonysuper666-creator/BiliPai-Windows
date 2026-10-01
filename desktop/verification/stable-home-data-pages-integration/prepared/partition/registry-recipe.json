@@ -1,0 +1,43 @@
+{
+  "newRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/FeedRefreshPaging.kt",
+      "sha256": "7ed91d88e7198729fd2503db6317a0abe15c92efaed7c670bce122bd37c7ae98",
+      "mode": "extracted",
+      "features": [
+        "home-partition"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt",
+      "sha256": "628f76935eba485f1adf9b81774643fc3b33a791970e5144de032bdad4463312",
+      "mode": "extracted",
+      "features": [
+        "home-partition"
+      ]
+    }
+  ],
+  "mergeOnly": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt",
+      "addFeatures": [
+        "home-partition"
+      ],
+      "preserveModeAndExistingFeatures": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "addFeatures": [
+        "home-partition"
+      ],
+      "preserveModeAndExistingFeatures": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "addFeatures": [
+        "home-partition"
+      ],
+      "preserveModeAndExistingFeatures": true
+    }
+  ]
+}

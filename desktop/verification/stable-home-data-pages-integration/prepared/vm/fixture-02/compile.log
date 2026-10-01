@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:158:36: error: no value passed for parameter 'name'.
+        val before=h.store.snapshot()
+                                   ^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:161:31: error: no value passed for parameter 'name'.
+        check(h.store.snapshot()==before)
+                              ^^

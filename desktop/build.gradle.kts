@@ -486,6 +486,105 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalHomePage) }
 
+// Insert after the already-installed extractOriginalHomePage. Merge, do not replace build.gradle.
+val extractOriginalHomeViewModel by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-viewmodel.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/home-viewmodel").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-home-viewmodel.py", "tools/extract-upstream-home-viewmodel-adaptations.json",
+        "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "home-viewmodel" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/home-viewmodel"))
+}
+val extractOriginalHomeProtocols by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-protocols.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/home-protocols").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-home-protocols.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "home-protocols" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/home-protocols"))
+}
+// Add to the existing kotlin.sourceSets.named("main") block.
+kotlin.sourceSets.named("main") {
+    kotlin.srcDir(layout.buildDirectory.dir("generated/home-viewmodel"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/home-protocols"))
+}
+tasks.named("compileKotlin") { dependsOn(extractOriginalHomeViewModel, extractOriginalHomeProtocols) }
+// Existing full-card expansion calls the sole Home-page producer for two wallpaper outputs.
+// Root already registered that dependency with UI524; keep it, and keep the full-card feature input.
+// Never use --standalone in production: DIRECT3 VM policies and DIRECT1 WatchLater bus are copied
+// once by prepareUpstreamSources. There are no new dependencies or binary installation payloads.
+
+// Merge after the parent's sole raw694 protocol task; do not replace shared Gradle.
+val extractOriginalLiveList by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalHomeProtocols)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-live-list.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/live-home-list").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-live-list.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "live-home-list" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/live-home-list"))
+}
+kotlin.sourceSets.named("main") {
+    kotlin.srcDir(layout.buildDirectory.dir("generated/live-home-list"))
+}
+tasks.named("compileKotlin") { dependsOn(extractOriginalLiveList) }
+// Production intentionally omits --standalone; DIRECT9 have one producer, prepareUpstreamSources.
+
+val extractOriginalHomePartition by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-partition.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/home-partition").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-home-partition.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "home-partition" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/home-partition"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-partition")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalHomePartition) }
+
+val extractOriginalHomeBangumiPage by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-bangumi-page.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/home-bangumi-page").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-home-bangumi-page.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "home-bangumi-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/home-bangumi-page"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-bangumi-page")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalHomeBangumiPage) }
+
+val extractOriginalSubscriptionPage by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-subscription-page.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/home-subscription-page").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-subscription-page.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "home-subscription-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/home-subscription-page"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-subscription-page")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalSubscriptionPage) }
+
 val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories, extractUpstreamHomeCards, extractOriginalHomePage)
     workingDir(projectDir)

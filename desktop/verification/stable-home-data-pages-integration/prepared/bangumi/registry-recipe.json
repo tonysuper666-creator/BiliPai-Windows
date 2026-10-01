@@ -1,0 +1,85 @@
+{
+  "newRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt",
+      "sha256": "40489c068b77bac5136d31209f1d6f25952d34831760ccf7b1feda9c56a52b98",
+      "mode": "extracted",
+      "features": [
+        "home-bangumi-page"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt",
+      "sha256": "5d6b6d24c41e7072b5f1e7107c65c632db7926fbf7da1cc35c61551bdf2a2045",
+      "mode": "extracted",
+      "features": [
+        "home-bangumi-page"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt",
+      "sha256": "de00b9fc1ba0910d4b778c8d76e1f72237c74042fffb6ef14a3dadf2711604b3",
+      "mode": "extracted",
+      "features": [
+        "home-bangumi-page"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt",
+      "sha256": "b9eef7947aa323c64188aaaf3cec36cafe840e3ad6753227739858acef6ec7f7",
+      "mode": "extracted",
+      "features": [
+        "home-bangumi-page"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicy.kt",
+      "sha256": "ee8ac2498ab5de0f46aa01b81ab8f2bae11e7775ebea5b04b6220388206bfe8c",
+      "mode": "extracted",
+      "features": [
+        "home-bangumi-page"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiHubPolicy.kt",
+      "sha256": "c136016b778e72104b097752ef8d0e5ad29ec59d27b2af20a551f088230cd5b5",
+      "mode": "extracted",
+      "features": [
+        "home-bangumi-page"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/MyFollowPolicy.kt",
+      "sha256": "a3d3f01fd4d82bfdee083ccf6dbe89006d29791d3c4ffd61654bd944c9892e90",
+      "mode": "extracted",
+      "features": [
+        "home-bangumi-page"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+      "sha256": "7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285",
+      "mode": "extracted",
+      "features": [
+        "home-bangumi-page"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/list/BangumiListComponents.kt",
+      "sha256": "cb81ae57da657c0281db32f8765fd73d63c0827fd3bf361fe3e0c34d1f5c0f74",
+      "mode": "extracted",
+      "features": [
+        "home-bangumi-page"
+      ]
+    }
+  ],
+  "mergeOnly": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "addFeatures": [
+        "home-bangumi-page"
+      ],
+      "preserveModeAndExistingFeatures": true
+    }
+  ]
+}

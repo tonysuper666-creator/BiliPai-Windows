@@ -1,0 +1,33 @@
+{
+  "status": "FROZEN_SOURCE_ONLY_SUPPLEMENT",
+  "artifactRows": [
+    {
+      "relativePath": "original-follow-getters.memberfragment.kt",
+      "sha256Bytes": "42eede0b475639c13f76029d88a7bf244b0c24f407673e4436f89287b57a483f",
+      "bytes": 338
+    },
+    {
+      "relativePath": "planner-retirement-contract.json",
+      "sha256Bytes": "2604cf7c1e7a93871b20ea8b7b9d56bb92211cf19f47f326d7a925b08e8305f3",
+      "bytes": 5417
+    },
+    {
+      "relativePath": "prepare-supplement.py",
+      "sha256Bytes": "9c1dfcde0f38ab058db9d0b120a0e22b3ab7bbef8db3cdcc2e609fe64d9471c0",
+      "bytes": 9822
+    },
+    {
+      "relativePath": "sole-producer-two-getters.patch",
+      "sha256Bytes": "44edc8170066f4ca10f552102f1cb5e7655a03cfee5bf62fa42a7b9c871a58d0",
+      "bytes": 1295
+    },
+    {
+      "relativePath": "source-checks.json",
+      "sha256Bytes": "621f94e7158d3c95d780bf6f39dddaaf6759a349e265e5493d4fc930a5dcc3af",
+      "bytes": 1780
+    }
+  ],
+  "artifactCount": 5,
+  "productionWrites": 0,
+  "parentReportUntouched": "../evidence-manifest.json"
+}

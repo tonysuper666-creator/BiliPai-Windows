@@ -1,0 +1,98 @@
+{
+  "phase1": {
+    "scope": "source closure only, no HomeVM construction/mount, old TodayWatch/runtime kept",
+    "thisManualSources": [
+      {
+        "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeBlockedPort.kt",
+        "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeBlockedPort.kt",
+        "sha256Bytes": "ef3cda156722265454e5429a0172f114eee26caeacedeab98cdd3dc10c24f049",
+        "sha256LF": "ef3cda156722265454e5429a0172f114eee26caeacedeab98cdd3dc10c24f049"
+      },
+      {
+        "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeEmbeddedRetainedOwner.kt",
+        "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEmbeddedRetainedOwner.kt",
+        "sha256Bytes": "94bfdbb6b929ea87200b17915888acdcec43adb8f0380823119b341dd708ace7",
+        "sha256LF": "94bfdbb6b929ea87200b17915888acdcec43adb8f0380823119b341dd708ace7"
+      },
+      {
+        "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt",
+        "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt",
+        "sha256Bytes": "981b50e08be45ae2f9f6dd2b56b6c672704e1aacb485b066e74d0404190273a6",
+        "sha256LF": "981b50e08be45ae2f9f6dd2b56b6c672704e1aacb485b066e74d0404190273a6"
+      },
+      {
+        "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.kt",
+        "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.kt",
+        "sha256Bytes": "c22cd94ca423d85a2099180485cec615d0775b1bc38be34a9f4babfe9dbb3283",
+        "sha256LF": "c22cd94ca423d85a2099180485cec615d0775b1bc38be34a9f4babfe9dbb3283"
+      },
+      {
+        "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootNavigation.kt",
+        "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootNavigation.kt",
+        "sha256Bytes": "c60906c4b59ff3c617c8f24e8fba433cb998c537829f6e7029ba6911c5a763d4",
+        "sha256LF": "c60906c4b59ff3c617c8f24e8fba433cb998c537829f6e7029ba6911c5a763d4"
+      }
+    ],
+    "thisPatches": [
+      {
+        "path": "home-blocked-owner.patch",
+        "sha256Bytes": "e562bcd0771ea374eefd49150da04b59509012bb666b5de83207271b4807a641"
+      },
+      {
+        "path": "root-api-prerequisites.patch",
+        "sha256Bytes": "db472709b3e63b3ca609138dca2f88a1929b73a39339dcee2205116a7f159598"
+      }
+    ],
+    "thisRegistryDelta": {
+      "path": "upstream-source-delta.json",
+      "sha256Bytes": "ad6fc6b0ea1abdb12987bec7fb1d95f29073f9617c27ac9116bfc63343a595c2"
+    },
+    "VM287Include": [
+      "prepared/tools/extract-upstream-home-viewmodel.py",
+      "prepared/tools/extract-upstream-home-viewmodel-adaptations.json",
+      "prepared/manual/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+      "prepared/manual/com/bilipai/desktop/ui/DesktopHomeFollowingCache.kt",
+      "prepared/manual/com/bilipai/desktop/ui/DesktopHomeOwnedMutableStateFlow.kt",
+      "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalTodayWatchOwner.kt"
+    ],
+    "VM287Exclude": [
+      "prepared/replacements/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "runtime-retirement.patch"
+    ],
+    "raw694": "exact frozen5 source payloads and shared-http-owner-admission.patch + preview sole hunk; no bound factory starts yet",
+    "fourPages": "Partition45 + Bangumi61 + Live78 + child Subscription final closed payloads; complete original consumers only"
+  },
+  "phase2": {
+    "scope": "real Window-retained owner, complete navigation/return/globalWindow ports, simultaneous mount+old planner retirement",
+    "thisAddManual": [
+      {
+        "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+        "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+        "sha256Bytes": "fbf546f62dc00c4e2e9e754e942ee026c7bfaac002c73cb0395710c3fb9956c7",
+        "sha256LF": "fbf546f62dc00c4e2e9e754e942ee026c7bfaac002c73cb0395710c3fb9956c7"
+      }
+    ],
+    "VM287Add": [
+      "prepared/replacements/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "runtime-retirement.patch"
+    ],
+    "RootShellRecipe": "ROOT-INTEGRATION.md",
+    "requiredBeforeMount": [
+      "four actual original pages in entry.embeddedPages",
+      "required global Window/prefs monitor/WWAN actual consumer",
+      "genuine navigation routes/profile and original return owner/geometry",
+      "same epoch Store/API/Runtime/factory, no fixed false/empty callback"
+    ]
+  },
+  "sourceBindings": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\frozen-handoff.json",
+      "sha256Bytes": "ac33081aa67a40a3f807e20426de7f7fc12d1ea6d3128f50e3a0f951e9587a37"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\frozen-handoff.json",
+      "sha256Bytes": "4824a6984eead54af5ac2c045cb9a21d600488d6be4ed3cbea2ad5e6eabdf5f3"
+    }
+  ],
+  "correction": "VM287 has FOUR manual source payloads, plus generator/adaptations and bridge replacement. Earlier chat count5 was imprecise; use exact paths above."
+}

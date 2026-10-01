@@ -1,0 +1,30 @@
+{
+  "newSources": [
+    {
+      "prepared": "prepared/tools/extract-upstream-home-bangumi-page.py",
+      "destination": "desktop/tools/extract-upstream-home-bangumi-page.py"
+    },
+    {
+      "prepared": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalBangumiHubRoot.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiHubRoot.kt"
+    }
+  ],
+  "localPatches": [
+    {
+      "patch": "shared-skeleton-grid.patch",
+      "baseline": "shared-skeleton-base.json",
+      "requiresInstalledPartitionLane": true
+    }
+  ],
+  "doNotInstall": [
+    "generated/**",
+    "reference-only/**",
+    "shared-reference-only/**",
+    "compile-*/**",
+    "proof-*/**"
+  ],
+  "sourceDir": "generated/home-bangumi-page",
+  "taskName": "extractOriginalHomeBangumiPage",
+  "dependency": "prepareUpstreamSources",
+  "runtimeOwnerRequired": true
+}

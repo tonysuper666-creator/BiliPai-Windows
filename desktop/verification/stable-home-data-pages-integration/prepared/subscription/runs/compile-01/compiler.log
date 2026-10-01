@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-home-subscription-page-parity\runs\compile-01\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopSubscriptionPageBindings.kt:32:64: warning: expression is unused.
+        runtime.jsPlugins.host.executionRevision) { _, _, _ -> Unit }
+                                                               ^^^^
+work\BiliPai\desktop\.local\stable-home-subscription-page-parity\runs\compile-01\source-inputs\prepared\generated\com\android\purebilibili\feature\home\subscription\SubscriptionFeedPage.kt:357:46: warning: no cast needed.
+                (MaterialTheme.shapes.medium as? CornerBasedShape)?.topStart
+                                             ^^^^^^^^^^^^^^^^^^^^

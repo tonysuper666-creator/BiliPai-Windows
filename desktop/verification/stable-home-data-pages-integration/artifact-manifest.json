@@ -1,0 +1,2975 @@
+{
+  "schema": "raw-artifact-manifest-v1",
+  "artifacts": [
+    {
+      "path": "prepared/vm/frozen-handoff.json",
+      "sha256Bytes": "ac33081aa67a40a3f807e20426de7f7fc12d1ea6d3128f50e3a0f951e9587a37",
+      "sizeBytes": 87564
+    },
+    {
+      "path": "prepared/vm/backend-contract/algorithm-partitions.json",
+      "sha256Bytes": "b73c17dde6491b0319a6bb4a6463e5b06b26080de272713f271d03d4397995ed",
+      "sizeBytes": 5063
+    },
+    {
+      "path": "prepared/vm/backend-contract/audit.py",
+      "sha256Bytes": "338c7e1bf16a3524455eb06fa5e3f78fd9ebf7f4d9b0d293e3052fd313f51a79",
+      "sizeBytes": 19488
+    },
+    {
+      "path": "prepared/vm/backend-contract/backend-contract.json",
+      "sha256Bytes": "4856ff5ae9a8e5d68129488073db32f39f33d22663e497068853794fb87d9557",
+      "sizeBytes": 34018
+    },
+    {
+      "path": "prepared/vm/backend-contract/evidence-manifest.json",
+      "sha256Bytes": "d4ecdc8fac348b351ce85adaeab14af3927dc029da1ae69e0b9b49dde770a525",
+      "sizeBytes": 1106
+    },
+    {
+      "path": "prepared/vm/backend-contract/follow-getter-and-planner-retirement-delta/evidence-manifest.json",
+      "sha256Bytes": "239474aa08959ff99298901c48faf283a7d2ea94573f8d631b144807fc69d205",
+      "sizeBytes": 1057
+    },
+    {
+      "path": "prepared/vm/backend-contract/follow-getter-and-planner-retirement-delta/original-follow-getters.memberfragment.kt",
+      "sha256Bytes": "42eede0b475639c13f76029d88a7bf244b0c24f407673e4436f89287b57a483f",
+      "sizeBytes": 338
+    },
+    {
+      "path": "prepared/vm/backend-contract/follow-getter-and-planner-retirement-delta/planner-retirement-contract.json",
+      "sha256Bytes": "2604cf7c1e7a93871b20ea8b7b9d56bb92211cf19f47f326d7a925b08e8305f3",
+      "sizeBytes": 5417
+    },
+    {
+      "path": "prepared/vm/backend-contract/follow-getter-and-planner-retirement-delta/prepare-supplement.py",
+      "sha256Bytes": "9c1dfcde0f38ab058db9d0b120a0e22b3ab7bbef8db3cdcc2e609fe64d9471c0",
+      "sizeBytes": 9822
+    },
+    {
+      "path": "prepared/vm/backend-contract/follow-getter-and-planner-retirement-delta/sole-producer-two-getters.patch",
+      "sha256Bytes": "44edc8170066f4ca10f552102f1cb5e7655a03cfee5bf62fa42a7b9c871a58d0",
+      "sizeBytes": 1295
+    },
+    {
+      "path": "prepared/vm/backend-contract/follow-getter-and-planner-retirement-delta/source-checks.json",
+      "sha256Bytes": "621f94e7158d3c95d780bf6f39dddaaf6759a349e265e5493d4fc930a5dcc3af",
+      "sizeBytes": 1780
+    },
+    {
+      "path": "prepared/vm/backend-contract/method-anchors.json",
+      "sha256Bytes": "e1b1ad74c34e33e14087b2463125f490862ee1fbde1f75abd046e0c7c931309e",
+      "sizeBytes": 4632
+    },
+    {
+      "path": "prepared/vm/backend-contract/source-pins.json",
+      "sha256Bytes": "d042e4beca8dd0494c2ffde126e6ddd4c2444a3b9efdc1bf90ee3c71642fac91",
+      "sizeBytes": 11232
+    },
+    {
+      "path": "prepared/vm/class-overlap.json",
+      "sha256Bytes": "6623065b5e1618e99746bc4608d5fdd7b4908f5d9ce6baf324aff5b0f067950c",
+      "sizeBytes": 811
+    },
+    {
+      "path": "prepared/vm/compile-vm-01.args",
+      "sha256Bytes": "0a63a2bc83e1c69535cceb74d6be250e4975ad3932c3b0f3c375e8b9064941f4",
+      "sizeBytes": 24271
+    },
+    {
+      "path": "prepared/vm/compile-vm-01.log",
+      "sha256Bytes": "5da79683fdc450671e669c7a493e6b684aa282e451c02a47c03bb7a3f587396c",
+      "sizeBytes": 7024
+    },
+    {
+      "path": "prepared/vm/compile-vm-02.args",
+      "sha256Bytes": "c8ddfd97b9b535aabaa9308850d8f766198cbd3212609a03a5084b815e696385",
+      "sizeBytes": 24271
+    },
+    {
+      "path": "prepared/vm/compile-vm-02.log",
+      "sha256Bytes": "5da79683fdc450671e669c7a493e6b684aa282e451c02a47c03bb7a3f587396c",
+      "sizeBytes": 7024
+    },
+    {
+      "path": "prepared/vm/compile-vm-03.args",
+      "sha256Bytes": "0da6ddcc26b268b4025df1a3d6e1970fe8735c0ee52ed56a93cd3a621fda1eed",
+      "sizeBytes": 25160
+    },
+    {
+      "path": "prepared/vm/compile-vm-03.log",
+      "sha256Bytes": "bec8511e23e74416a580a2c2413193e5046f26b85f98411753fc3cc3ddc487ba",
+      "sizeBytes": 498
+    },
+    {
+      "path": "prepared/vm/compile-vm-04.args",
+      "sha256Bytes": "48a62f445b1d9151685b963dc203e7f70c3c4353a933d78ae905cdc449c457c5",
+      "sizeBytes": 25584
+    },
+    {
+      "path": "prepared/vm/compile-vm-04.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/vm/compile-vm-05.args",
+      "sha256Bytes": "19ed5fa701a29d5dae7d947e1e0883cb91dfbcec6cf66c6d01d31e4669dd7e50",
+      "sizeBytes": 25584
+    },
+    {
+      "path": "prepared/vm/compile-vm-05.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/vm/compile-vm-06-source-identities.json",
+      "sha256Bytes": "2ecde7a34eb0754d39ef75119bdc844470f51a1c3f487c23f7f629c69f90537b",
+      "sizeBytes": 3787
+    },
+    {
+      "path": "prepared/vm/compile-vm-06.args",
+      "sha256Bytes": "1e4943b1a12c2011989fc87eb259b13d04fd25a04c728df3a26364903d4e3354",
+      "sizeBytes": 25584
+    },
+    {
+      "path": "prepared/vm/compile-vm-06.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/vm/compile_vm.py",
+      "sha256Bytes": "dad826b2d8aa3cac27e0ec82984506085560fe3c76a730e85005ea69658c72f8",
+      "sizeBytes": 2503
+    },
+    {
+      "path": "prepared/vm/fixture-01/compile.args",
+      "sha256Bytes": "bec14657ff5d4c6b767d1b34ef7a982880df6ad17b093cb8ff7adb811d7f1612",
+      "sizeBytes": 23685
+    },
+    {
+      "path": "prepared/vm/fixture-01/compile.log",
+      "sha256Bytes": "c1f750fe4e2e3683f2072ad5aa627491ff67dd336ff4c212b67dfd1bf1522450",
+      "sizeBytes": 12128
+    },
+    {
+      "path": "prepared/vm/fixture-02/compile.args",
+      "sha256Bytes": "69d029670760900fd69f557c207853fb1f850a962d240e1d08ae4d4a00d29fd8",
+      "sizeBytes": 23685
+    },
+    {
+      "path": "prepared/vm/fixture-02/compile.log",
+      "sha256Bytes": "3f4c532718365cb35ac3fb44740f33f5fd8dfbff70c6fbd04fa0727a38e9e34f",
+      "sizeBytes": 429
+    },
+    {
+      "path": "prepared/vm/fixture-03/compile.args",
+      "sha256Bytes": "7b2f2bde294f96ff393bc29a433b80376c0aacbd6fa4540a267e3e186e499aa9",
+      "sizeBytes": 23685
+    },
+    {
+      "path": "prepared/vm/fixture-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/vm/fixture-03/run.log",
+      "sha256Bytes": "26a7149bd69144802aba566c8d7c315086686729b7c88cc547950816565a5f75",
+      "sizeBytes": 1134
+    },
+    {
+      "path": "prepared/vm/fixture-03/sourcebinding.json",
+      "sha256Bytes": "05ac764298c2696e9bedcb52d2f73609a2f934bc045163e6c807856fd4997938",
+      "sizeBytes": 25955
+    },
+    {
+      "path": "prepared/vm/fixture-03/task-store/follow/plugin-settings.json",
+      "sha256Bytes": "16a9707543a91f056f3ade62c9bdc8e0edba558911da8f0bf2fb42cb71644ce7",
+      "sizeBytes": 112
+    },
+    {
+      "path": "prepared/vm/fixture-03/task-store/planner/plugin-settings.json",
+      "sha256Bytes": "8ae8a323efd1389d7710a64c34e07073cf7030fa627f4755d26dc7b7ee60d8a1",
+      "sizeBytes": 74
+    },
+    {
+      "path": "prepared/vm/fixture-04/compile.args",
+      "sha256Bytes": "9f125f7314ca37cf36b66bb0f90c2537343e06944b6e95b4bbe5085c8f5b3c0b",
+      "sizeBytes": 23685
+    },
+    {
+      "path": "prepared/vm/fixture-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/vm/fixture-04/run.log",
+      "sha256Bytes": "b7d85909f8034349d5be1c108dfb5f14939dd083a3457344f6d5bda75834cfa8",
+      "sizeBytes": 500
+    },
+    {
+      "path": "prepared/vm/fixture-04/sourcebinding.json",
+      "sha256Bytes": "84428a3f1d6d0dee80037356962601bbd44d5a9436e469cd2fd4b5da27d9c6cd",
+      "sizeBytes": 25955
+    },
+    {
+      "path": "prepared/vm/fixture-04/task-store/follow/plugin-settings.json",
+      "sha256Bytes": "a2e05ea0b309ba0e7fa452c2c1bd9d6052a318e4e7e38370e62b41bd90af382b",
+      "sizeBytes": 112
+    },
+    {
+      "path": "prepared/vm/fixture-04/task-store/planner/plugin-settings.json",
+      "sha256Bytes": "8ae8a323efd1389d7710a64c34e07073cf7030fa627f4755d26dc7b7ee60d8a1",
+      "sizeBytes": 74
+    },
+    {
+      "path": "prepared/vm/fixture-04/task-store/results.json",
+      "sha256Bytes": "5d5dc203d5cd5cc7ed84c88345964138a9a45f13927c5c254865dadf959bf4a0",
+      "sizeBytes": 571
+    },
+    {
+      "path": "prepared/vm/fixture-05/compile.args",
+      "sha256Bytes": "03735fedd91432edcbd245f1ce28eaa3afe658ecba5c21be15b3b932b75765a6",
+      "sizeBytes": 23685
+    },
+    {
+      "path": "prepared/vm/fixture-05/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/vm/fixture-05/run.log",
+      "sha256Bytes": "da9228d21c8836ea46e8269a3b33f197ee7328f084c9d7b2ba1ee25be326b6ab",
+      "sizeBytes": 578
+    },
+    {
+      "path": "prepared/vm/fixture-05/sourcebinding.json",
+      "sha256Bytes": "5ed8c93a1534a76d93ab70fe87df3714654090c76d45cae0108ea916ef6fd557",
+      "sizeBytes": 25955
+    },
+    {
+      "path": "prepared/vm/fixture-05/task-store/class-origins.json",
+      "sha256Bytes": "47355b3c2fd269d6c3eb43ec0417c157ba9ec439d3dca43fe41c5a5f79305382",
+      "sizeBytes": 1479
+    },
+    {
+      "path": "prepared/vm/fixture-05/task-store/follow/plugin-settings.json",
+      "sha256Bytes": "df267c3b3622bab51690355fc8867c83364eea81bcf8ef820f8a002a7cb3d1b7",
+      "sizeBytes": 112
+    },
+    {
+      "path": "prepared/vm/fixture-05/task-store/planner/plugin-settings.json",
+      "sha256Bytes": "8ae8a323efd1389d7710a64c34e07073cf7030fa627f4755d26dc7b7ee60d8a1",
+      "sizeBytes": 74
+    },
+    {
+      "path": "prepared/vm/fixture-05/task-store/results.json",
+      "sha256Bytes": "306b338152a735ba16892f2cc760111f5bc5e5963388f3a8d40be5c1428fa959",
+      "sizeBytes": 645
+    },
+    {
+      "path": "prepared/vm/fixture-06/compile.args",
+      "sha256Bytes": "fc28992fd67835a03423c7d5f724a008e6515124a35b2066594e2fbcbb8b7bb6",
+      "sizeBytes": 23685
+    },
+    {
+      "path": "prepared/vm/fixture-06/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/vm/fixture-06/run.log",
+      "sha256Bytes": "da9228d21c8836ea46e8269a3b33f197ee7328f084c9d7b2ba1ee25be326b6ab",
+      "sizeBytes": 578
+    },
+    {
+      "path": "prepared/vm/fixture-06/sourcebinding.json",
+      "sha256Bytes": "9194eb68a9fca56e714f59f635bb0a542e51cc7741337adcdf2281294a49e5d6",
+      "sizeBytes": 25955
+    },
+    {
+      "path": "prepared/vm/fixture-06/task-store/class-origins.json",
+      "sha256Bytes": "a96c6e849ab212980dfb1db5f69a55ec66c8aa694dbafcf5e1d08736cd7f4bfd",
+      "sizeBytes": 1479
+    },
+    {
+      "path": "prepared/vm/fixture-06/task-store/follow/plugin-settings.json",
+      "sha256Bytes": "fef5b0710e1956d00a90ae8872043d94d0cebdff5fa2d47695eff8054467b19b",
+      "sizeBytes": 112
+    },
+    {
+      "path": "prepared/vm/fixture-06/task-store/planner/plugin-settings.json",
+      "sha256Bytes": "8ae8a323efd1389d7710a64c34e07073cf7030fa627f4755d26dc7b7ee60d8a1",
+      "sizeBytes": 74
+    },
+    {
+      "path": "prepared/vm/fixture-06/task-store/results.json",
+      "sha256Bytes": "306b338152a735ba16892f2cc760111f5bc5e5963388f3a8d40be5c1428fa959",
+      "sizeBytes": 645
+    },
+    {
+      "path": "prepared/vm/fixtures/HomeVmFixture.kt",
+      "sha256Bytes": "c2722d0405b050be0a5da6fd37be8a97d99ca502ff9d5b82beb21b1896f72ccb",
+      "sizeBytes": 18797
+    },
+    {
+      "path": "prepared/vm/prepared/generated/com/android/purebilibili/core/util/EasterEggs.kt",
+      "sha256Bytes": "b12c38b3b69474dddc7dbbe2502df72ee5e780c7dc3adde7527d6781ef8262d5",
+      "sizeBytes": 12018
+    },
+    {
+      "path": "prepared/vm/prepared/generated/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel.kt",
+      "sha256Bytes": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc",
+      "sizeBytes": 101393
+    },
+    {
+      "path": "prepared/vm/prepared/generated/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt",
+      "sha256Bytes": "70900dd4c3ed1f19cc95c3687ac6d7c757a12455da037158a761521cafe2717a",
+      "sizeBytes": 359
+    },
+    {
+      "path": "prepared/vm/prepared/generated/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt",
+      "sha256Bytes": "0a30ad8228d57eec324734cd33a69a33c446bcbb8ae8f3ae607da52d7e5dfe9c",
+      "sizeBytes": 737
+    },
+    {
+      "path": "prepared/vm/prepared/generated/com/android/purebilibili/feature/message/DesktopHomeTotalUnreadCount.kt",
+      "sha256Bytes": "9a1695d1a46c5cc074c148b03c633c00702fb80efa437aa7f797dcf1de2fb8ae",
+      "sizeBytes": 717
+    },
+    {
+      "path": "prepared/vm/prepared/generated/com/android/purebilibili/feature/plugin/DesktopHomeFeedFilterId.kt",
+      "sha256Bytes": "458cd2aabe5428c2ed83a98e94b3ff7be70a7a265f134d9cd0f4d60585e70950",
+      "sizeBytes": 123
+    },
+    {
+      "path": "prepared/vm/prepared/manual/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+      "sha256Bytes": "a6f4ba7834ddc5bee8bc0e258b5d38c190d98a8de956d6bd1c4b8facdac20e53",
+      "sizeBytes": 3858
+    },
+    {
+      "path": "prepared/vm/prepared/manual/com/bilipai/desktop/ui/DesktopHomeFollowingCache.kt",
+      "sha256Bytes": "0645b926003f24702211863c9bdc6e0950255a5d946fcbf4bda078ecbb22ba9a",
+      "sizeBytes": 1070
+    },
+    {
+      "path": "prepared/vm/prepared/manual/com/bilipai/desktop/ui/DesktopHomeOwnedMutableStateFlow.kt",
+      "sha256Bytes": "5b5308d75689cdeac2c810067617ecbe6bcc8fb2232577332158c6d81e46b480",
+      "sizeBytes": 1134
+    },
+    {
+      "path": "prepared/vm/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalTodayWatchOwner.kt",
+      "sha256Bytes": "0e090cadc6ac4b2f3422be8b2a06c77d20953f6e3beec56b7dbd83df03f09407",
+      "sizeBytes": 558
+    },
+    {
+      "path": "prepared/vm/prepared/replacements/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "b32c09a4df17ea723a3c41e77153b87426130c7c539996778efef6ed31808a00",
+      "sizeBytes": 7164
+    },
+    {
+      "path": "prepared/vm/prepared/tools/extract-upstream-home-viewmodel-adaptations.json",
+      "sha256Bytes": "e91b36f5945fc3614c8f9113ed9c9b0cf0e093e8bbd1e67327f1d46152c2ea6d",
+      "sizeBytes": 52370
+    },
+    {
+      "path": "prepared/vm/prepared/tools/extract-upstream-home-viewmodel.py",
+      "sha256Bytes": "2b7c9db6e1f7987b69c3db87df1fd6e048918edb1d8cee68e561511b49d21e52",
+      "sizeBytes": 4339
+    },
+    {
+      "path": "prepared/vm/producer-replay-proof-01-byte-expectation-failure.json",
+      "sha256Bytes": "736a6310dae40101e6d11f02acf17c20be853cfb80d6b663cb12e722fbfc21be",
+      "sizeBytes": 2042
+    },
+    {
+      "path": "prepared/vm/producer-replay-proof-02.json",
+      "sha256Bytes": "6d913fa922ab7c73dfc4baaae2317d39bcaa1718d8ccfe15c4b9995339090bcb",
+      "sizeBytes": 3499
+    },
+    {
+      "path": "prepared/vm/producer-replay-proof.json",
+      "sha256Bytes": "736a6310dae40101e6d11f02acf17c20be853cfb80d6b663cb12e722fbfc21be",
+      "sizeBytes": 2042
+    },
+    {
+      "path": "prepared/vm/production-generated/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel.kt",
+      "sha256Bytes": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc",
+      "sizeBytes": 101393
+    },
+    {
+      "path": "prepared/vm/production-generated/com/android/purebilibili/feature/message/DesktopHomeTotalUnreadCount.kt",
+      "sha256Bytes": "67c52b5bd405395d5a9507f59e1059114ebea20c7541a71c994a98fb0741f77a",
+      "sizeBytes": 695
+    },
+    {
+      "path": "prepared/vm/production-generated/com/android/purebilibili/feature/plugin/DesktopHomeFeedFilterId.kt",
+      "sha256Bytes": "713d3756806dbc12aff21a625aea3fbc3c210f201f40592fb50cfddee4cb730f",
+      "sizeBytes": 121
+    },
+    {
+      "path": "prepared/vm/replayed-generated/com/android/purebilibili/core/util/EasterEggs.kt",
+      "sha256Bytes": "1a4758cc65806db893da7942433a4ba44fd2b91c1396bf1653dbdcd59dc6827f",
+      "sizeBytes": 11742
+    },
+    {
+      "path": "prepared/vm/replayed-generated/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel.kt",
+      "sha256Bytes": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc",
+      "sizeBytes": 101393
+    },
+    {
+      "path": "prepared/vm/replayed-generated/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt",
+      "sha256Bytes": "45dc3e2eb12e82a5dc2d0fec4bf82a03154444fd4519f6b2256c98f19ab2d630",
+      "sizeBytes": 345
+    },
+    {
+      "path": "prepared/vm/replayed-generated/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt",
+      "sha256Bytes": "14aed865e65aa2a8f79db3760abd9931b36c5b719676eb577241601cd90be454",
+      "sizeBytes": 714
+    },
+    {
+      "path": "prepared/vm/replayed-generated/com/android/purebilibili/feature/message/DesktopHomeTotalUnreadCount.kt",
+      "sha256Bytes": "67c52b5bd405395d5a9507f59e1059114ebea20c7541a71c994a98fb0741f77a",
+      "sizeBytes": 695
+    },
+    {
+      "path": "prepared/vm/replayed-generated/com/android/purebilibili/feature/plugin/DesktopHomeFeedFilterId.kt",
+      "sha256Bytes": "713d3756806dbc12aff21a625aea3fbc3c210f201f40592fb50cfddee4cb730f",
+      "sizeBytes": 121
+    },
+    {
+      "path": "prepared/vm/ROOT-INTEGRATION.md",
+      "sha256Bytes": "32227601dd380f8474e920fc3a426fedce0536cb23fc435072c8f1a2ad1a4b69",
+      "sizeBytes": 9162
+    },
+    {
+      "path": "prepared/vm/root-shell-retained-owner.snippet.kt",
+      "sha256Bytes": "26210d38da82e84aa6f142306c4eeb7e0af68383741e86cf95135a09dab993db",
+      "sizeBytes": 2689
+    },
+    {
+      "path": "prepared/vm/run_fixture.py",
+      "sha256Bytes": "ba3c44e16025fe956121f0b1b8c183b5088d9fa6742fcb4572e67ae509efb9e7",
+      "sizeBytes": 2978
+    },
+    {
+      "path": "prepared/vm/runtime-retirement-base.json",
+      "sha256Bytes": "4f10d618f1b64a836100c0793f1288ca0a427b329acf5cfc982de7535e48d3b2",
+      "sizeBytes": 757
+    },
+    {
+      "path": "prepared/vm/runtime-retirement.patch",
+      "sha256Bytes": "988ac7a3f0d2d5c4f923f64f7a16f3b3677ca2c4a7e16c2ce8cb0a70ed34c93f",
+      "sizeBytes": 1733
+    },
+    {
+      "path": "prepared/vm/source-inventory.json",
+      "sha256Bytes": "dfdd988b10f8f5ac13ebc8d850361139f1dbeb57116494721910a74cc0d2f644",
+      "sizeBytes": 3949
+    },
+    {
+      "path": "prepared/vm/source-owner-audit.json",
+      "sha256Bytes": "b239a91402f978710683af9983f4ee628ba86f78a24d574e6481a95d8fbd581e",
+      "sizeBytes": 2136
+    },
+    {
+      "path": "prepared/raw/frozen-handoff.json",
+      "sha256Bytes": "4824a6984eead54af5ac2c045cb9a21d600488d6be4ed3cbea2ad5e6eabdf5f3",
+      "sizeBytes": 163927
+    },
+    {
+      "path": "prepared/raw/analytics-01/compile.args",
+      "sha256Bytes": "34f7dd74855453dced20576d1fb6bd89ad863a1039ebb803af68df650d0e35db",
+      "sizeBytes": 24004
+    },
+    {
+      "path": "prepared/raw/analytics-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/raw/analytics-01/run.log",
+      "sha256Bytes": "107dfaa8ea459ae07ed3904ba62277c4f3dd0b456bb0a3c2d486081b82866e1a",
+      "sizeBytes": 40
+    },
+    {
+      "path": "prepared/raw/analytics-01/sourcebinding.json",
+      "sha256Bytes": "1b1b87f2702a96dd7cb37a54cb1b3b1fd411f083aea1211842227778bf5a5799",
+      "sizeBytes": 266675
+    },
+    {
+      "path": "prepared/raw/class-owner-audit.json",
+      "sha256Bytes": "27dc66eb3129b136a4b9a89557bddd9e7c28390c306bb38f82eab95a97a58c40",
+      "sizeBytes": 3231
+    },
+    {
+      "path": "prepared/raw/compile-ports-01-sources.json",
+      "sha256Bytes": "fa75aa50554b196723a9d38fa109507087efeeae19b27109c2265a2576205a8b",
+      "sizeBytes": 2866
+    },
+    {
+      "path": "prepared/raw/compile-ports-01.args",
+      "sha256Bytes": "5c48217aa68cc0059d02fe2fb5fdc866d123332efa0932ac6348d140048f13a7",
+      "sizeBytes": 25349
+    },
+    {
+      "path": "prepared/raw/compile-ports-01.log",
+      "sha256Bytes": "1df6cb92c6f3a6290b49745145e5248fb5098a8f0e9fc21607f50481858ba542",
+      "sizeBytes": 651
+    },
+    {
+      "path": "prepared/raw/compile-ports-02-sources.json",
+      "sha256Bytes": "18c07334cfea02142bbcadf80926b7a7ba0b47523b2b3248e25ed87cf5d45a80",
+      "sizeBytes": 3216
+    },
+    {
+      "path": "prepared/raw/compile-ports-02.args",
+      "sha256Bytes": "70792a116dc7dc9f4a760f5cfdc510800c8bc8104b7769e307c1863ccb7bb5d9",
+      "sizeBytes": 25569
+    },
+    {
+      "path": "prepared/raw/compile-ports-02.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/raw/compile-ports-03-sources.json",
+      "sha256Bytes": "7a972b48fd6b772fc7c483f45f1132fe34512f74c6e4e803d3d4d26edbb37daa",
+      "sizeBytes": 3952
+    },
+    {
+      "path": "prepared/raw/compile-ports-03.args",
+      "sha256Bytes": "6891c1b63ed5d2948a080a03e167e81ceec598fc1daa827334644c03e96d7040",
+      "sizeBytes": 26354
+    },
+    {
+      "path": "prepared/raw/compile-ports-03.log",
+      "sha256Bytes": "918f0866c867fee339188ee42bb73aae2f0d302cc4e137fe862427d2427b6f6a",
+      "sizeBytes": 727
+    },
+    {
+      "path": "prepared/raw/compile-ports-04-sources.json",
+      "sha256Bytes": "890f17eebfa49f4539371bb7e890c75f61fb5176ebd7a048e6a1052554ab779a",
+      "sizeBytes": 3952
+    },
+    {
+      "path": "prepared/raw/compile-ports-04.args",
+      "sha256Bytes": "706d975052b76dc3566d367af26bf1542fdbecceb35e66571c992d178bf1f831",
+      "sizeBytes": 26354
+    },
+    {
+      "path": "prepared/raw/compile-ports-04.log",
+      "sha256Bytes": "c5687639ee9723182f4bed09a2e9c7b51b81ebbf1b27de933fa959a71208f535",
+      "sizeBytes": 753
+    },
+    {
+      "path": "prepared/raw/compile-ports-05-sources.json",
+      "sha256Bytes": "c3f4839aebb9199c342b93e5442f10a935c7d162df66b5bb24a7cb68c4594032",
+      "sizeBytes": 4636
+    },
+    {
+      "path": "prepared/raw/compile-ports-05.args",
+      "sha256Bytes": "c32cc8a89ed59126c9b6e3b756e6546892b4311b9304ce33fb46898d737ff739",
+      "sizeBytes": 26780
+    },
+    {
+      "path": "prepared/raw/compile-ports-05.log",
+      "sha256Bytes": "0bad3111b9daaf569a1b1e6a2495fc87973879ec51fa2d3cc526dcc27e458dd4",
+      "sizeBytes": 753
+    },
+    {
+      "path": "prepared/raw/compile_ports.py",
+      "sha256Bytes": "4101fbaaf5a4134f891ca20146b780d3470dac2ec124acdcc5746c2a40414a2f",
+      "sizeBytes": 2566
+    },
+    {
+      "path": "prepared/raw/compile_preview.py",
+      "sha256Bytes": "76040b7b23fd078485fa1e6f015c9289e871369c9f8a103cfde251c3b7cb8dca",
+      "sizeBytes": 2231
+    },
+    {
+      "path": "prepared/raw/finalize_protocol_generator.py",
+      "sha256Bytes": "948bbd341909d6f0df34d0e1ceff079b6d10a61f2335c59ba5bdf4adc2b3149b",
+      "sizeBytes": 2504
+    },
+    {
+      "path": "prepared/raw/fixtures/AnalyticsFixture.kt",
+      "sha256Bytes": "78cbc88daf798f737abbbc9686d1b0a33ad7a20f77737cbbf4cf0a64f510d2a4",
+      "sizeBytes": 2140
+    },
+    {
+      "path": "prepared/raw/fixtures/ProtocolFixture.kt",
+      "sha256Bytes": "6c0e38efb671726a0627f28601788a664d6138d695d8bd139001bcca748401b5",
+      "sizeBytes": 8725
+    },
+    {
+      "path": "prepared/raw/fixtures/TransportFixture.kt",
+      "sha256Bytes": "ae315a4894f0191ee8d2523f072264fec111c8233d89d16315d3f50ca895493f",
+      "sizeBytes": 10031
+    },
+    {
+      "path": "prepared/raw/freeze_handoff.py",
+      "sha256Bytes": "9c351dfe76220ec13c4af1efb55ec547f68f6ca3ca2233a99c179b1c246f4bb2",
+      "sizeBytes": 5450
+    },
+    {
+      "path": "prepared/raw/gradle-tasks.snippet.kts",
+      "sha256Bytes": "cf9af2ed285ba3a282d4556cc179e995000c6ea52f3d426762aa89a9736e7f1e",
+      "sizeBytes": 2412
+    },
+    {
+      "path": "prepared/raw/history-boundary.json",
+      "sha256Bytes": "60a634e493096fdd48a17e81d25a7d176a65911d0aeb898a21af523226e45114",
+      "sizeBytes": 775
+    },
+    {
+      "path": "prepared/raw/home-preview-subject-base.json",
+      "sha256Bytes": "832d86ed73ae38d70edd87e70e59bf54b271c37e1e77a89a138ec247a39d1127",
+      "sizeBytes": 398
+    },
+    {
+      "path": "prepared/raw/home-preview-subject.patch",
+      "sha256Bytes": "2964d9b38035b8ed6b8a20385bda732b797248ace1f95e1f769c21521da8b804",
+      "sizeBytes": 2306
+    },
+    {
+      "path": "prepared/raw/install-whitelist.json",
+      "sha256Bytes": "050d7438797e6197e0f832c1234150f68aee042d46092037ef16df8053e62f39",
+      "sizeBytes": 1922
+    },
+    {
+      "path": "prepared/raw/patch-check.json",
+      "sha256Bytes": "d6e38747e5e5c71b2dcff887e18b674a8aed1bab28e25265bfa915bd709d2636",
+      "sizeBytes": 581
+    },
+    {
+      "path": "prepared/raw/prepare_handoff.py",
+      "sha256Bytes": "a441287e9e1c972cf7229a3a761ee5227334b8277f81ebb1343df653423400be",
+      "sizeBytes": 5564
+    },
+    {
+      "path": "prepared/raw/prepare_protocols.py",
+      "sha256Bytes": "eac4d847132dff66e4fd9197fa7cb1228d2cb5b778a9956335179b5581efc61a",
+      "sizeBytes": 8109
+    },
+    {
+      "path": "prepared/raw/prepare_transport_delta.py",
+      "sha256Bytes": "fafc6fe3028502528390e91feef55fdd865376a6c5e74ebf7facca67f533f8df",
+      "sizeBytes": 15922
+    },
+    {
+      "path": "prepared/raw/prepared/generated/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt",
+      "sha256Bytes": "67deacd84bee9f8803b2190e079d5486d2593bf26bc29d1a114ae259273fe87d",
+      "sizeBytes": 550
+    },
+    {
+      "path": "prepared/raw/prepared/generated/com/android/purebilibili/data/repository/DesktopHomePreloadPolicy.kt",
+      "sha256Bytes": "d3fdea57a97b0b94aaa66b414792239d3137fbb777e3c4f6ee62b625338c5583",
+      "sizeBytes": 1479
+    },
+    {
+      "path": "prepared/raw/prepared/generated/com/android/purebilibili/data/repository/DesktopOriginalHomeActionProtocol.kt",
+      "sha256Bytes": "c8390780e95e622490af5c33e6cd7034095cee730a5bd35fc5d125efe3d35497",
+      "sizeBytes": 2996
+    },
+    {
+      "path": "prepared/raw/prepared/generated/com/android/purebilibili/data/repository/DesktopOriginalHomeHistoryProtocol.kt",
+      "sha256Bytes": "22ede1697b91e0ac938509901a5d11cac5cc1408f81d06f7ceddfc3e02afcf4e",
+      "sizeBytes": 2565
+    },
+    {
+      "path": "prepared/raw/prepared/generated/com/android/purebilibili/data/repository/DesktopOriginalHomeLiveProtocol.kt",
+      "sha256Bytes": "828cf230f131134a20b19ab712c61f5a7cd3b5b68e6986b104b955744b1bd296",
+      "sizeBytes": 2716
+    },
+    {
+      "path": "prepared/raw/prepared/generated/com/android/purebilibili/data/repository/DesktopOriginalHomeMessageProtocol.kt",
+      "sha256Bytes": "5a5f74105a991314296f0e35c5d566c51b6f96a369f158c4da60f0d8d568f2c1",
+      "sizeBytes": 1856
+    },
+    {
+      "path": "prepared/raw/prepared/generated/com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt",
+      "sha256Bytes": "40ffcf0957890b82c0cbc60e5df74e7812b20a9f7ac4505dfdd60c28c9c60c50",
+      "sizeBytes": 24875
+    },
+    {
+      "path": "prepared/raw/prepared/manual/com/bilipai/desktop/ui/DesktopHomeLocalIdentityAnalytics.kt",
+      "sha256Bytes": "42b56c755720466a7de39fd4d4c739bf5272a58a09cc12a8200558ddd7c194f0",
+      "sizeBytes": 1412
+    },
+    {
+      "path": "prepared/raw/prepared/manual/com/bilipai/desktop/ui/DesktopHomeProtocolEnvironment.kt",
+      "sha256Bytes": "bab988706006e029cfa5fc59298dec7a772ff4f64c4786abaa91f922c06f1edd",
+      "sizeBytes": 1160
+    },
+    {
+      "path": "prepared/raw/prepared/manual/com/bilipai/desktop/ui/DesktopHomeRequestPorts.kt",
+      "sha256Bytes": "4be042dd1a85af5e0b9db3f2f7cbf5b499fda4d333cb409f6053d589477f468e",
+      "sizeBytes": 4172
+    },
+    {
+      "path": "prepared/raw/prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootRequestBinding.kt",
+      "sha256Bytes": "66a42d7df260d936e6b998a21ea470b7ebc2bf7335f6d852e6a9ec317e4d5a2e",
+      "sizeBytes": 2836
+    },
+    {
+      "path": "prepared/raw/prepared/preview-delta/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt",
+      "sha256Bytes": "e093bc60616fe2f9b1eed4bdc6e6a451334b635fda75b0f048ed6ddbc11a32a0",
+      "sizeBytes": 168311
+    },
+    {
+      "path": "prepared/raw/prepared/sole-producer-delta/extract-upstream-home-page.py",
+      "sha256Bytes": "d0b3c42a3102042c6fb464ae0a60390d2004b1c9dbe4b1ca1e50bf6ea447957d",
+      "sizeBytes": 67399
+    },
+    {
+      "path": "prepared/raw/prepared/tools/extract-upstream-home-protocols.py",
+      "sha256Bytes": "ac9f13b5c84b824e57215caacbd527f01e1e6b26738b854569dc6c5877dca5ed",
+      "sizeBytes": 9906
+    },
+    {
+      "path": "prepared/raw/prepared/transport-delta/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "1fe31dea406890ed26fd59013592dc05a270bae22035b8e8259ed897a2acf545",
+      "sizeBytes": 40838
+    },
+    {
+      "path": "prepared/raw/prepared/transport-delta/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "dfb7ce977a5162793bf86906982fd6fc58a66dd8c50a754caa5690e381663b63",
+      "sizeBytes": 21595
+    },
+    {
+      "path": "prepared/raw/preview-compile-01/compile.args",
+      "sha256Bytes": "83e847fdf824d1609c613b5ee403c163ca16c8a3d100ae10aeb11cd6917b739e",
+      "sizeBytes": 23776
+    },
+    {
+      "path": "prepared/raw/preview-compile-01/compile.log",
+      "sha256Bytes": "f8727971c4822dab1c75c20befb0bdc056454cf92b021e19a151455c18488e29",
+      "sizeBytes": 295
+    },
+    {
+      "path": "prepared/raw/preview-compile-01/sourcebinding.json",
+      "sha256Bytes": "aca80523b445c0559210b8b248fdcf1bad3001c8c1681b21de9e4a47fdd1e3a3",
+      "sizeBytes": 864
+    },
+    {
+      "path": "prepared/raw/producer-replay/default/com/android/purebilibili/data/repository/DesktopHomePreloadPolicy.kt",
+      "sha256Bytes": "d3fdea57a97b0b94aaa66b414792239d3137fbb777e3c4f6ee62b625338c5583",
+      "sizeBytes": 1479
+    },
+    {
+      "path": "prepared/raw/producer-replay/default/com/android/purebilibili/data/repository/DesktopOriginalHomeActionProtocol.kt",
+      "sha256Bytes": "c8390780e95e622490af5c33e6cd7034095cee730a5bd35fc5d125efe3d35497",
+      "sizeBytes": 2996
+    },
+    {
+      "path": "prepared/raw/producer-replay/default/com/android/purebilibili/data/repository/DesktopOriginalHomeHistoryProtocol.kt",
+      "sha256Bytes": "22ede1697b91e0ac938509901a5d11cac5cc1408f81d06f7ceddfc3e02afcf4e",
+      "sizeBytes": 2565
+    },
+    {
+      "path": "prepared/raw/producer-replay/default/com/android/purebilibili/data/repository/DesktopOriginalHomeLiveProtocol.kt",
+      "sha256Bytes": "828cf230f131134a20b19ab712c61f5a7cd3b5b68e6986b104b955744b1bd296",
+      "sizeBytes": 2716
+    },
+    {
+      "path": "prepared/raw/producer-replay/default/com/android/purebilibili/data/repository/DesktopOriginalHomeMessageProtocol.kt",
+      "sha256Bytes": "5a5f74105a991314296f0e35c5d566c51b6f96a369f158c4da60f0d8d568f2c1",
+      "sizeBytes": 1856
+    },
+    {
+      "path": "prepared/raw/producer-replay/default/com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt",
+      "sha256Bytes": "40ffcf0957890b82c0cbc60e5df74e7812b20a9f7ac4505dfdd60c28c9c60c50",
+      "sizeBytes": 24875
+    },
+    {
+      "path": "prepared/raw/producer-replay/default/home-protocol-identities.json",
+      "sha256Bytes": "6761534a8499224707e33bc7436c3e18446b1b82592841a02158cc46247d648c",
+      "sizeBytes": 12307
+    },
+    {
+      "path": "prepared/raw/producer-replay/standalone/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt",
+      "sha256Bytes": "67deacd84bee9f8803b2190e079d5486d2593bf26bc29d1a114ae259273fe87d",
+      "sizeBytes": 550
+    },
+    {
+      "path": "prepared/raw/producer-replay/standalone/com/android/purebilibili/data/repository/DesktopHomePreloadPolicy.kt",
+      "sha256Bytes": "d3fdea57a97b0b94aaa66b414792239d3137fbb777e3c4f6ee62b625338c5583",
+      "sizeBytes": 1479
+    },
+    {
+      "path": "prepared/raw/producer-replay/standalone/com/android/purebilibili/data/repository/DesktopOriginalHomeActionProtocol.kt",
+      "sha256Bytes": "c8390780e95e622490af5c33e6cd7034095cee730a5bd35fc5d125efe3d35497",
+      "sizeBytes": 2996
+    },
+    {
+      "path": "prepared/raw/producer-replay/standalone/com/android/purebilibili/data/repository/DesktopOriginalHomeHistoryProtocol.kt",
+      "sha256Bytes": "22ede1697b91e0ac938509901a5d11cac5cc1408f81d06f7ceddfc3e02afcf4e",
+      "sizeBytes": 2565
+    },
+    {
+      "path": "prepared/raw/producer-replay/standalone/com/android/purebilibili/data/repository/DesktopOriginalHomeLiveProtocol.kt",
+      "sha256Bytes": "828cf230f131134a20b19ab712c61f5a7cd3b5b68e6986b104b955744b1bd296",
+      "sizeBytes": 2716
+    },
+    {
+      "path": "prepared/raw/producer-replay/standalone/com/android/purebilibili/data/repository/DesktopOriginalHomeMessageProtocol.kt",
+      "sha256Bytes": "5a5f74105a991314296f0e35c5d566c51b6f96a369f158c4da60f0d8d568f2c1",
+      "sizeBytes": 1856
+    },
+    {
+      "path": "prepared/raw/producer-replay/standalone/com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt",
+      "sha256Bytes": "40ffcf0957890b82c0cbc60e5df74e7812b20a9f7ac4505dfdd60c28c9c60c50",
+      "sizeBytes": 24875
+    },
+    {
+      "path": "prepared/raw/producer-replay/standalone/home-protocol-identities.json",
+      "sha256Bytes": "6761534a8499224707e33bc7436c3e18446b1b82592841a02158cc46247d648c",
+      "sizeBytes": 12307
+    },
+    {
+      "path": "prepared/raw/producer-replay-proof.json",
+      "sha256Bytes": "2abf2da8c47ec9c15627e140f7ead4fdd8078323173451693506d96c03f052e0",
+      "sizeBytes": 1790
+    },
+    {
+      "path": "prepared/raw/protocol-01/compile.args",
+      "sha256Bytes": "cf67c3fdb3609061f6016a36103ee2adc305d19c01c4c51e03a1246ce1dfe313",
+      "sizeBytes": 24002
+    },
+    {
+      "path": "prepared/raw/protocol-01/compile.log",
+      "sha256Bytes": "b6ed6d4e75c74ac42f8f849a2779898e89c9a2a1060c547b7ea49e6f036c51ed",
+      "sizeBytes": 522
+    },
+    {
+      "path": "prepared/raw/protocol-01/sourcebinding.json",
+      "sha256Bytes": "2eee3073cabaaee197d6c85060272bb9558dedb23a8258a102d1404ba7c06fce",
+      "sizeBytes": 261945
+    },
+    {
+      "path": "prepared/raw/protocol-02/compile.args",
+      "sha256Bytes": "370fc74328ad3bdb81a483d280881a04cdd087d34177ee9d6f549dd953404a3a",
+      "sizeBytes": 24002
+    },
+    {
+      "path": "prepared/raw/protocol-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/raw/protocol-02/run.log",
+      "sha256Bytes": "0fa51447e850b466e3de957206ae037f39cd0027052476a190a39367a582ac51",
+      "sizeBytes": 844
+    },
+    {
+      "path": "prepared/raw/protocol-02/sourcebinding.json",
+      "sha256Bytes": "1cb88bd83347517253955a02f8adb0b402db1ee78d229b140fa211206aea94bf",
+      "sizeBytes": 261945
+    },
+    {
+      "path": "prepared/raw/protocol-03/compile.args",
+      "sha256Bytes": "6f35baa2248d4921f45a0cda833b60a19638640862f604e7259c237ff9f40c27",
+      "sizeBytes": 24002
+    },
+    {
+      "path": "prepared/raw/protocol-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/raw/protocol-03/run.log",
+      "sha256Bytes": "fa242fb56c40b8d6bb75b479a023f537a0fce950e5fe3e52ead7cf121dcf0fb3",
+      "sizeBytes": 844
+    },
+    {
+      "path": "prepared/raw/protocol-03/sourcebinding.json",
+      "sha256Bytes": "0663cecfdfce4bd8b1faf22361e7450bb11d5769a09fcf991a51c18641f40e08",
+      "sizeBytes": 261945
+    },
+    {
+      "path": "prepared/raw/protocol-04/compile.args",
+      "sha256Bytes": "05785ca5bbc950e73b47cbb926eee621bcd248466def651ccd183493bff83d12",
+      "sizeBytes": 24002
+    },
+    {
+      "path": "prepared/raw/protocol-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/raw/protocol-04/run.log",
+      "sha256Bytes": "221000f187f2fb19cd85374865c6fc73396266c312050cdd52c1e2d1d850f076",
+      "sizeBytes": 844
+    },
+    {
+      "path": "prepared/raw/protocol-04/sourcebinding.json",
+      "sha256Bytes": "2c5dd4d58e7207723fbffce6c808cd363a4f0e168717809e791d9b3e93fe6182",
+      "sizeBytes": 261945
+    },
+    {
+      "path": "prepared/raw/protocol-05/compile.args",
+      "sha256Bytes": "3601ff924bbdf6415bbf410bcd481a185e868840500ae36dda9f913f87cf6380",
+      "sizeBytes": 24002
+    },
+    {
+      "path": "prepared/raw/protocol-05/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/raw/protocol-05/run.log",
+      "sha256Bytes": "e9f1f77943a7a3384bf7b8a4039cf59455fa32e86b3b3dbb22d90bbca375e206",
+      "sizeBytes": 32
+    },
+    {
+      "path": "prepared/raw/protocol-05/sourcebinding.json",
+      "sha256Bytes": "f931c98df945560e1d5a573b325cb353aeea798ce9e8aba2a02353ec7f00b0db",
+      "sizeBytes": 261945
+    },
+    {
+      "path": "prepared/raw/protocol-class-continuity.json",
+      "sha256Bytes": "9f8dccbf14cf703af1b13e484a05b8dcbaac2dd295bb58917dcd7d0f80f10ab5",
+      "sizeBytes": 12889
+    },
+    {
+      "path": "prepared/raw/ROOT-INTEGRATION.md",
+      "sha256Bytes": "7ade1e9b1f90771f272fd8e0934306afa3e711a64992dd1aa34762e7a776b0f8",
+      "sizeBytes": 9672
+    },
+    {
+      "path": "prepared/raw/run_preferences_actual33.py",
+      "sha256Bytes": "2b4681ac21522c745e4ed9e82d567af3ae137503e2f08340eb0ae5468cf6dcf0",
+      "sizeBytes": 3132
+    },
+    {
+      "path": "prepared/raw/run_transport.py",
+      "sha256Bytes": "6220639e1f86fe2e92961f862f4aad013d065f44984942d51c681cbc4fc26c86",
+      "sizeBytes": 3464
+    },
+    {
+      "path": "prepared/raw/selected-declaration-identities.json",
+      "sha256Bytes": "6761534a8499224707e33bc7436c3e18446b1b82592841a02158cc46247d648c",
+      "sizeBytes": 12307
+    },
+    {
+      "path": "prepared/raw/shared-http-owner-admission-base.json",
+      "sha256Bytes": "536af43f62fdf9f90275bc6e16879230624ac032a6e796bf993410ea3c984ab2",
+      "sizeBytes": 883
+    },
+    {
+      "path": "prepared/raw/shared-http-owner-admission.patch",
+      "sha256Bytes": "0ea1670d36c3c0f27bd912ac93e36084a6629136dae2fffc2069677067a9398b",
+      "sizeBytes": 18796
+    },
+    {
+      "path": "prepared/raw/source-inventory.json",
+      "sha256Bytes": "2c4b91d3220c6ed13a009da0a26639bda616096f3a357391f5f23185e731d91c",
+      "sizeBytes": 4350
+    },
+    {
+      "path": "prepared/raw/transport-01/compile.args",
+      "sha256Bytes": "2839f020c5407edbd391b6955818592a7cf58c48eae31267f5a652de0cdad781",
+      "sizeBytes": 24004
+    },
+    {
+      "path": "prepared/raw/transport-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/raw/transport-01/run.log",
+      "sha256Bytes": "9ee85a8bb2d9925de7a97eb4743ac8b0cee2ae9af0846e875fd29682752239ab",
+      "sizeBytes": 24
+    },
+    {
+      "path": "prepared/raw/transport-01/sourcebinding.json",
+      "sha256Bytes": "3c8c67a1b2341da66aa12e36c0a0c08fda392028d9d12268f4e637d105fda001",
+      "sizeBytes": 261946
+    },
+    {
+      "path": "prepared/raw/transport-02/compile.args",
+      "sha256Bytes": "f7c2d4a7d3a0d5d536f3744a4447682b3461f0b442cc05314b84c0d251b78dbc",
+      "sizeBytes": 24004
+    },
+    {
+      "path": "prepared/raw/transport-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/raw/transport-02/run.log",
+      "sha256Bytes": "6525fa97d4de6db3cb7ee48500489020627db5a6307dda2711482fc69fb4256c",
+      "sizeBytes": 24
+    },
+    {
+      "path": "prepared/raw/transport-02/sourcebinding.json",
+      "sha256Bytes": "d17536740685f49b73a1ab1017964a0f6768ca7fec2412a6d20358564f691f13",
+      "sizeBytes": 266675
+    },
+    {
+      "path": "prepared/owner/frozen-handoff.json",
+      "sha256Bytes": "be83c2c2215a88f879e63f98852746098f381ee0c35d909fecf345c612504e8a",
+      "sizeBytes": 155386
+    },
+    {
+      "path": "prepared/owner/ROOT-INTEGRATION.md",
+      "sha256Bytes": "dd449af6da1a172a058a72feb689dcd656812af263e2e8fa4337544d8c7066d0",
+      "sizeBytes": 14548
+    },
+    {
+      "path": "prepared/owner/audit-build-corrections.json",
+      "sha256Bytes": "eeaf1f92cc7a1df65c8670b4744f558452957cf69243d6f641c93829adf1582c",
+      "sizeBytes": 802
+    },
+    {
+      "path": "prepared/owner/blocked-delta-pins.json",
+      "sha256Bytes": "4857b1993d5e438cd2cf3cb011b4afa8150551a3438ea29ffdb4b24cdb6f6cf0",
+      "sizeBytes": 386
+    },
+    {
+      "path": "prepared/owner/class-owner-audit.json",
+      "sha256Bytes": "06f722817d8480f030bfd79ab9b89383194a139716134d1071622fb9587cb519",
+      "sizeBytes": 2818
+    },
+    {
+      "path": "prepared/owner/compile-owner-01-sources.json",
+      "sha256Bytes": "f7ec459cb43e6ce9b8126c61df3bec8eba04e100315f7d37943e3eca212e137b",
+      "sizeBytes": 692
+    },
+    {
+      "path": "prepared/owner/compile-owner-01.args",
+      "sha256Bytes": "8901a5c7519828585fbcf4df2e340576610d87fb0976e7d57c3d65dd08e04e92",
+      "sizeBytes": 25390
+    },
+    {
+      "path": "prepared/owner/compile-owner-01.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/compile-owner-02-sources.json",
+      "sha256Bytes": "74bbbd6128b6d98e4d97f57acc26e38cc86660ab75a7b0208badc5e84dcf0e20",
+      "sizeBytes": 1030
+    },
+    {
+      "path": "prepared/owner/compile-owner-02.args",
+      "sha256Bytes": "2bf5ed95ab02ab11deb14c3a78a991fd7cc7eeae7bbb71f863af20c44db58ba0",
+      "sizeBytes": 25599
+    },
+    {
+      "path": "prepared/owner/compile-owner-02.log",
+      "sha256Bytes": "0ad699a594e7ae4efc3ed08e8d61e7159da9611aa9920f053dbcc31b87e429ad",
+      "sizeBytes": 1525
+    },
+    {
+      "path": "prepared/owner/compile-owner-03-sources.json",
+      "sha256Bytes": "d4d93f6ea520c293f13e8226a4e6f932faaaf76c32e95fe23ac276d9e58bc7e6",
+      "sizeBytes": 1409
+    },
+    {
+      "path": "prepared/owner/compile-owner-03.args",
+      "sha256Bytes": "956c1c151a0b0c91e1f90725a734cfd61561b40b688de9c4bee52d0b95ce0893",
+      "sizeBytes": 25845
+    },
+    {
+      "path": "prepared/owner/compile-owner-03.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/compile-owner-04-sources.json",
+      "sha256Bytes": "48cc288668be857ee4302deed5bbdfb8d619e485ff01e4f8ec1e1f10edb47cd1",
+      "sizeBytes": 1409
+    },
+    {
+      "path": "prepared/owner/compile-owner-04.args",
+      "sha256Bytes": "34aea274267f61531e0b009a84b4ac3606a69964420218647325bf318c00b253",
+      "sizeBytes": 25845
+    },
+    {
+      "path": "prepared/owner/compile-owner-04.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/compile-owner-05-sources.json",
+      "sha256Bytes": "e0fb36cc5e000995fdd21f1523459159a3286c897960cff72ebef4a875fff4ff",
+      "sizeBytes": 2459
+    },
+    {
+      "path": "prepared/owner/compile-owner-05.args",
+      "sha256Bytes": "e90d38fb52c6df9795bbdec064980ec175237237935220f27497473afe5f271e",
+      "sizeBytes": 26508
+    },
+    {
+      "path": "prepared/owner/compile-owner-05.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/compile-owner-06-sources.json",
+      "sha256Bytes": "c1b6b0d3f64c5e965451e5990abb1b319f43a2707565aae55b41a901dc231e5e",
+      "sizeBytes": 2106
+    },
+    {
+      "path": "prepared/owner/compile-owner-06.args",
+      "sha256Bytes": "bbf8a0bf5b39a1c8981b37f4931060b0417f46be3d9392d94d3ebf6d96a4160d",
+      "sizeBytes": 26284
+    },
+    {
+      "path": "prepared/owner/compile-owner-06.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/compile-owner-07-sources.json",
+      "sha256Bytes": "8c461704f3eb36ab3989269fec97cebb7fc967f6ca0cc70ed120fc91052a29d3",
+      "sizeBytes": 2445
+    },
+    {
+      "path": "prepared/owner/compile-owner-07.args",
+      "sha256Bytes": "cee3cbce976c6a7062dda295978e1ea2e051dfd93b54083c75ee5a83e2ba3b6d",
+      "sizeBytes": 26494
+    },
+    {
+      "path": "prepared/owner/compile-owner-07.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/compile-owner-08-sources.json",
+      "sha256Bytes": "e77c795f8a1843257a87c76a4c3e0b153a1d710517bc501b52437ebfee1bdb24",
+      "sizeBytes": 2786
+    },
+    {
+      "path": "prepared/owner/compile-owner-08.args",
+      "sha256Bytes": "fa3c0b58d03f0ef7d1ffe454d882af2068b56885528cfe01e92bb0980f4e080a",
+      "sizeBytes": 26706
+    },
+    {
+      "path": "prepared/owner/compile-owner-08.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/compile-owner-09-sources.json",
+      "sha256Bytes": "104119397663a42d61ace94a2950c41e80b8f000c494d3d6599b77c07eeb3f3a",
+      "sizeBytes": 3134
+    },
+    {
+      "path": "prepared/owner/compile-owner-09.args",
+      "sha256Bytes": "23b1c254844471e3b18a42b79b802a037fcb2b4762f24a53a18654ef9423b62c",
+      "sizeBytes": 26925
+    },
+    {
+      "path": "prepared/owner/compile-owner-09.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/compile_owner.py",
+      "sha256Bytes": "863d6ebffd3637feed549651232eb339b85c78e420f91ff5da23e163e80e276e",
+      "sizeBytes": 3601
+    },
+    {
+      "path": "prepared/owner/compiled-class-identities.json",
+      "sha256Bytes": "0b2701188cbe59fe5d6a6bd7aa4c980126dbdb2428752dfb8fa1c48cfa7abb52",
+      "sizeBytes": 22818
+    },
+    {
+      "path": "prepared/owner/dependency-identities.json",
+      "sha256Bytes": "adadafdcae30cb1dd0c60ac07669dd1f867062e62c8c6e7d3ddc1de53b94812f",
+      "sizeBytes": 37092
+    },
+    {
+      "path": "prepared/owner/fixtures/RetainedHomeGateFixture.kt",
+      "sha256Bytes": "3ce3c6793a90edb5a3cbd3988f980bd3b248ed6c290be4b297a7a7461d1b653a",
+      "sizeBytes": 5692
+    },
+    {
+      "path": "prepared/owner/gate-01/compile.args",
+      "sha256Bytes": "6ec363b752dd512e9ac95a17de598bc305e457e65c1e72982a5b6eda5796382b",
+      "sizeBytes": 25452
+    },
+    {
+      "path": "prepared/owner/gate-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/gate-01/run.log",
+      "sha256Bytes": "96625b5a5d727357f7973b841ec056cc978c66dbbdded3dedc11e8a925ec9c87",
+      "sizeBytes": 459
+    },
+    {
+      "path": "prepared/owner/gate-01/scope.json",
+      "sha256Bytes": "764acec0c834443d27b8afa511fde486d2f1affb3381e7fec03efae767253274",
+      "sizeBytes": 1139
+    },
+    {
+      "path": "prepared/owner/gate-02/compile.args",
+      "sha256Bytes": "f97d6d14d53c2aba09ce903e8a17bdf7683322735d762c4c118213980bca92bd",
+      "sizeBytes": 25452
+    },
+    {
+      "path": "prepared/owner/gate-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/gate-02/run.log",
+      "sha256Bytes": "ee86d0ac7ac6f990d7bc806912ef237ddaeda6a75681d86d3e567551ccddb6ad",
+      "sizeBytes": 573
+    },
+    {
+      "path": "prepared/owner/gate-02/scope.json",
+      "sha256Bytes": "9a79c9ff79823fe0fb8e45d0c9d6abc6a1f8e062b0bafb99c214b3841ef4b480",
+      "sizeBytes": 1139
+    },
+    {
+      "path": "prepared/owner/gate-03/compile.args",
+      "sha256Bytes": "71f12305691ef3132438246aeb72fa23f8259fc246a6732e6693ad8a25c82972",
+      "sizeBytes": 25452
+    },
+    {
+      "path": "prepared/owner/gate-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/gate-03/run.log",
+      "sha256Bytes": "ee86d0ac7ac6f990d7bc806912ef237ddaeda6a75681d86d3e567551ccddb6ad",
+      "sizeBytes": 573
+    },
+    {
+      "path": "prepared/owner/gate-03/scope.json",
+      "sha256Bytes": "796043455e5b17228c3341e7df32f438a6b0a37329d2b0a8e226497e231cc90e",
+      "sizeBytes": 1139
+    },
+    {
+      "path": "prepared/owner/gate-04/compile.args",
+      "sha256Bytes": "6dd5f8f96928dc81d1bf8089038f091a74658bfa9330dbe22f8811acb0ffbaf0",
+      "sizeBytes": 25452
+    },
+    {
+      "path": "prepared/owner/gate-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/owner/gate-04/run.log",
+      "sha256Bytes": "ee86d0ac7ac6f990d7bc806912ef237ddaeda6a75681d86d3e567551ccddb6ad",
+      "sizeBytes": 573
+    },
+    {
+      "path": "prepared/owner/gate-04/scope.json",
+      "sha256Bytes": "e8b75b19932cdc0c8442bea7510f19dc05431300e76862256ce6cf3b760a698d",
+      "sizeBytes": 1139
+    },
+    {
+      "path": "prepared/owner/history/compile05-duplicate-route/DesktopHomeVideoRoute.kt",
+      "sha256Bytes": "497765da828e8e4ff0c6abc852824a19780f14be315b073e381190cafe248159",
+      "sizeBytes": 1211
+    },
+    {
+      "path": "prepared/owner/history/compile05-duplicate-route/class-owner-audit.json",
+      "sha256Bytes": "9b5ea95f0793fbbc5afb1c0239bbee47dd410ea6f8e6a267a2a1831968959e6d",
+      "sizeBytes": 2571
+    },
+    {
+      "path": "prepared/owner/history/compile05-duplicate-route/correction.json",
+      "sha256Bytes": "275eb551d5566e01c59e32ae6eec299ddae80545da0698108409148b51b37eec",
+      "sizeBytes": 489
+    },
+    {
+      "path": "prepared/owner/history/compile05-duplicate-route/extract-upstream-home-root-navigation.py",
+      "sha256Bytes": "c7a54a98d0b4df34ac169b3669e8b5c0256917d23d0f5d3cd82205cb1c31ff5e",
+      "sizeBytes": 2272
+    },
+    {
+      "path": "prepared/owner/home-blocked-owner.patch",
+      "sha256Bytes": "e562bcd0771ea374eefd49150da04b59509012bb666b5de83207271b4807a641",
+      "sizeBytes": 3921
+    },
+    {
+      "path": "prepared/owner/install-whitelist.json",
+      "sha256Bytes": "e6aceca219c17a94ae12d0a402dc9d80218bc8a4b3e5c7fcffc932f433490822",
+      "sizeBytes": 3314
+    },
+    {
+      "path": "prepared/owner/phase-install-plan.json",
+      "sha256Bytes": "9e56a9725ab6796d01a48103950aba60f523df2de3b78afff8b1d0f07e6b3bb9",
+      "sizeBytes": 5380
+    },
+    {
+      "path": "prepared/owner/prepare_blocked_delta.py",
+      "sha256Bytes": "b827cfcbc4e266c008f8313995d2f9df4588d329a0688cbffba12f77c19e197d",
+      "sizeBytes": 4660
+    },
+    {
+      "path": "prepared/owner/prepared/blocked-delta/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+      "sha256Bytes": "fd1ede2e75ba505be3b45a52052d146730cfea0ee27caf84eee32687cf7ebbfe",
+      "sizeBytes": 12723
+    },
+    {
+      "path": "prepared/owner/prepared/follow-getters-reference/DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "7e00020ec1db5ffb5d5d5768de97c5a97419f763920c5c716367798d88917fc2",
+      "sizeBytes": 14671
+    },
+    {
+      "path": "prepared/owner/prepared/generated/com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt",
+      "sha256Bytes": "8fc80b9b38349b0ea582535110b35719b440962fe0e3f17f280c4f20848465d2",
+      "sizeBytes": 2742
+    },
+    {
+      "path": "prepared/owner/prepared/manual/com/bilipai/desktop/ui/DesktopHomeBlockedPort.kt",
+      "sha256Bytes": "ef3cda156722265454e5429a0172f114eee26caeacedeab98cdd3dc10c24f049",
+      "sizeBytes": 3083
+    },
+    {
+      "path": "prepared/owner/prepared/manual/com/bilipai/desktop/ui/DesktopHomeEmbeddedRetainedOwner.kt",
+      "sha256Bytes": "94bfdbb6b929ea87200b17915888acdcec43adb8f0380823119b341dd708ace7",
+      "sizeBytes": 716
+    },
+    {
+      "path": "prepared/owner/prepared/manual/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt",
+      "sha256Bytes": "981b50e08be45ae2f9f6dd2b56b6c672704e1aacb485b066e74d0404190273a6",
+      "sizeBytes": 8974
+    },
+    {
+      "path": "prepared/owner/prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.kt",
+      "sha256Bytes": "c22cd94ca423d85a2099180485cec615d0775b1bc38be34a9f4babfe9dbb3283",
+      "sizeBytes": 2788
+    },
+    {
+      "path": "prepared/owner/prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootNavigation.kt",
+      "sha256Bytes": "c60906c4b59ff3c617c8f24e8fba433cb998c537829f6e7029ba6911c5a763d4",
+      "sizeBytes": 1533
+    },
+    {
+      "path": "prepared/owner/prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "fbf546f62dc00c4e2e9e754e942ee026c7bfaac002c73cb0395710c3fb9956c7",
+      "sizeBytes": 3274
+    },
+    {
+      "path": "prepared/owner/required-packet-bindings.json",
+      "sha256Bytes": "3a321a1b4cd6a031996565d082bb214bd934bb1563ac26c66643e201a76de4d8",
+      "sizeBytes": 1592
+    },
+    {
+      "path": "prepared/owner/root-api-prerequisites.patch",
+      "sha256Bytes": "db472709b3e63b3ca609138dca2f88a1929b73a39339dcee2205116a7f159598",
+      "sizeBytes": 1311
+    },
+    {
+      "path": "prepared/owner/root-baselines.json",
+      "sha256Bytes": "d53ce998eb239fcd45277eb14535bb7a049bae17445a818ca542f25b662e4773",
+      "sizeBytes": 1680
+    },
+    {
+      "path": "prepared/owner/run_gate.py",
+      "sha256Bytes": "f4e0ca97e2ed5c687145f5c91eeb4595a21dff632da8a73d1812764e6f7dbdcb",
+      "sizeBytes": 2578
+    },
+    {
+      "path": "prepared/owner/upstream-source-delta.json",
+      "sha256Bytes": "ad6fc6b0ea1abdb12987bec7fb1d95f29073f9617c27ac9116bfc63343a595c2",
+      "sizeBytes": 879
+    },
+    {
+      "path": "prepared/partition/frozen-handoff.json",
+      "sha256Bytes": "d059904f107df7a650dd60816030828663cec950ae3250c23f89da81d5d28faf",
+      "sizeBytes": 27793
+    },
+    {
+      "path": "prepared/partition/PartitionOwnerFixture.kt",
+      "sha256Bytes": "3991cc9d4aff797d1850dbbf941e793029f1052122e618d4996c16af6b3c7299",
+      "sizeBytes": 4843
+    },
+    {
+      "path": "prepared/partition/ROOT-INTEGRATION.md",
+      "sha256Bytes": "3df0ab0925b5a6316aa17ddf5faf0dd1c902ed4d49b978aa5976cdc20f281cc3",
+      "sizeBytes": 3519
+    },
+    {
+      "path": "prepared/partition/compile-01/compiler.args",
+      "sha256Bytes": "7c887e60fdcc2c7b1f0bcc57f5bc516f79f9480165bb940bc332c488dd453c52",
+      "sizeBytes": 25782
+    },
+    {
+      "path": "prepared/partition/compile-01/compiler.log",
+      "sha256Bytes": "578ec443e2c5fb2ad3106b5482b7578dc08857bbb169978e8f5d1e7018760cf7",
+      "sizeBytes": 1280
+    },
+    {
+      "path": "prepared/partition/compile-01/result.json",
+      "sha256Bytes": "a002c566597673c5772ce2b4222f982dbf9d7eab8890105a15255c58edb23f5e",
+      "sizeBytes": 142
+    },
+    {
+      "path": "prepared/partition/compile-02/compiler.args",
+      "sha256Bytes": "c096a734a663abc7b9845aa3e0a870d30e7b8dd35790416f34a64e88716d7b73",
+      "sizeBytes": 26177
+    },
+    {
+      "path": "prepared/partition/compile-02/compiler.log",
+      "sha256Bytes": "12e2744a892f58dacac7c7d84ff8c0bf502f6dc98343fc408434813c6d3f1e37",
+      "sizeBytes": 900
+    },
+    {
+      "path": "prepared/partition/compile-02/result.json",
+      "sha256Bytes": "f562ad864334ccb1813886ab33bf24f0c713a7184a22015d16cb015dec922cee",
+      "sizeBytes": 142
+    },
+    {
+      "path": "prepared/partition/compile-03/compiler.args",
+      "sha256Bytes": "47d1cdc1fdb2583f9758ee31561a4711d00627e64128eab841a55e7116a4a980",
+      "sizeBytes": 26177
+    },
+    {
+      "path": "prepared/partition/compile-03/compiler.log",
+      "sha256Bytes": "12e2744a892f58dacac7c7d84ff8c0bf502f6dc98343fc408434813c6d3f1e37",
+      "sizeBytes": 900
+    },
+    {
+      "path": "prepared/partition/compile-03/result.json",
+      "sha256Bytes": "f562ad864334ccb1813886ab33bf24f0c713a7184a22015d16cb015dec922cee",
+      "sizeBytes": 142
+    },
+    {
+      "path": "prepared/partition/compile.py",
+      "sha256Bytes": "644141cff839e062bf0682dd77422e9c8054d79e2631c22d4cd46ca420fc13da",
+      "sizeBytes": 1884
+    },
+    {
+      "path": "prepared/partition/freeze.py",
+      "sha256Bytes": "1f7288a7a1815c03edb7a9baacdad04f8dde2ac357cb3c8d75cc31c6b7c5ea52",
+      "sizeBytes": 6923
+    },
+    {
+      "path": "prepared/partition/generated/com/android/purebilibili/core/ui/skeleton/DesktopOriginalMediaListSkeleton.kt",
+      "sha256Bytes": "a057901c4d6f6155e62a368c663db39053cf04b229a12bcb8337f0bd592e45e7",
+      "sizeBytes": 6405
+    },
+    {
+      "path": "prepared/partition/generated/com/android/purebilibili/core/util/FeedRefreshPaging.kt",
+      "sha256Bytes": "7ed91d88e7198729fd2503db6317a0abe15c92efaed7c670bce122bd37c7ae98",
+      "sizeBytes": 380
+    },
+    {
+      "path": "prepared/partition/generated/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt",
+      "sha256Bytes": "628f76935eba485f1adf9b81774643fc3b33a791970e5144de032bdad4463312",
+      "sizeBytes": 580
+    },
+    {
+      "path": "prepared/partition/generated/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreen.kt",
+      "sha256Bytes": "ee8e65d7b83dcdb15abe29f8a8c88426feb0b153b6395bcbd6038dbffbad719f",
+      "sizeBytes": 55161
+    },
+    {
+      "path": "prepared/partition/generated/partition-producer-inventory.json",
+      "sha256Bytes": "826cd212697b50f0c22a96406bba2ee46c71fcef3dcc3679726bf8a6c53c646d",
+      "sizeBytes": 6620
+    },
+    {
+      "path": "prepared/partition/install-whitelist.json",
+      "sha256Bytes": "36cbaac4f6e39fa1e7771cdfd3d486ec5f6cd9aafd3992e2519e220b010ff708",
+      "sizeBytes": 821
+    },
+    {
+      "path": "prepared/partition/original-source/app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "sha256Bytes": "82d560bf7d4e062c4b2351c126c0c14038706e6db87b14e661496b910be0f531",
+      "sizeBytes": 21837
+    },
+    {
+      "path": "prepared/partition/original-source/app/src/main/java/com/android/purebilibili/core/util/FeedRefreshPaging.kt",
+      "sha256Bytes": "b6254cc64b4bdb9b3e1db9f98bed29cc0b5d7bb46b62a32f8cb3c16a96fb10cb",
+      "sizeBytes": 393
+    },
+    {
+      "path": "prepared/partition/original-source/app/src/main/java/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt",
+      "sha256Bytes": "203267dcdef5556502f9c3d918dd78448c742c112d66b2c4308aa1c41376a665",
+      "sizeBytes": 600
+    },
+    {
+      "path": "prepared/partition/original-source/app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "sha256Bytes": "54de85d1d9c252c76fdb751633a6bc2a222f490942bbaf44075c548e14fc4e31",
+      "sizeBytes": 23765
+    },
+    {
+      "path": "prepared/partition/original-source/app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt",
+      "sha256Bytes": "ba7e937abb7921d672631a2abc0e79c45e53b28e2c8342d882d15a44ef25ac8c",
+      "sizeBytes": 55718
+    },
+    {
+      "path": "prepared/partition/prepare.py",
+      "sha256Bytes": "586e940ec4d539279f54ef4f955612b4236947eb561ce41eadeb6d4548c6be8f",
+      "sizeBytes": 8857
+    },
+    {
+      "path": "prepared/partition/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPartitionRoot.kt",
+      "sha256Bytes": "43975346ea194c568449a816e069ec8b88dedab9657df2338ebae83b0e34c355",
+      "sizeBytes": 2094
+    },
+    {
+      "path": "prepared/partition/prepared/tools/extract-upstream-home-partition.py",
+      "sha256Bytes": "166c371b03e0ed398b99fa4097db94868ddcf5e16a157348581921152e526efc",
+      "sizeBytes": 6613
+    },
+    {
+      "path": "prepared/partition/proof-01/OriginalPartitionPolicyFixture.kt",
+      "sha256Bytes": "12771e6ab9dd7060f3207b2b7b0cff451625b79736c6675c2310085489ec0755",
+      "sizeBytes": 16078
+    },
+    {
+      "path": "prepared/partition/proof-01/compiler.args",
+      "sha256Bytes": "b8eaba9a853ef06bcc6ae257c080c1a63aa5c50fcb7559538a1b004c1712baed",
+      "sizeBytes": 25264
+    },
+    {
+      "path": "prepared/partition/proof-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/partition/proof-01/original-test.kt",
+      "sha256Bytes": "d357e47236e04ed24562363d7b3e08dbd8f14f794175cfbcb8b150e7a646246f",
+      "sizeBytes": 14315
+    },
+    {
+      "path": "prepared/partition/proof-01/result.json",
+      "sha256Bytes": "2b32c38eeca1a6342cacf1d290aec41059e3fc5ccc55b55f0253db81268540df",
+      "sizeBytes": 216
+    },
+    {
+      "path": "prepared/partition/proof-01/runtime.log",
+      "sha256Bytes": "a664359b33bc83a8b05f7bbc1a3044a1b51f9e7bbfa4789e41517669db7041d2",
+      "sizeBytes": 1509
+    },
+    {
+      "path": "prepared/partition/proof-02/OriginalPartitionPolicyFixture.kt",
+      "sha256Bytes": "fad1f1b50799710096571e4337742738b0755212ecd5d91016e9e274f5e68079",
+      "sizeBytes": 16175
+    },
+    {
+      "path": "prepared/partition/proof-02/compiler.args",
+      "sha256Bytes": "d5730e5336dab1ba0d793756b51399f4a501eda3dbefa4f00b73a1a0e9f1b405",
+      "sizeBytes": 25264
+    },
+    {
+      "path": "prepared/partition/proof-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/partition/proof-02/fixture-expectation-correction.json",
+      "sha256Bytes": "070ef0f0a9484215b295563e47fc9b95a3c1039efa6172c5ba52ed7d2f525b01",
+      "sizeBytes": 267
+    },
+    {
+      "path": "prepared/partition/proof-02/original-test.kt",
+      "sha256Bytes": "d357e47236e04ed24562363d7b3e08dbd8f14f794175cfbcb8b150e7a646246f",
+      "sizeBytes": 14315
+    },
+    {
+      "path": "prepared/partition/proof-02/result.json",
+      "sha256Bytes": "275754857665cee3956f13cc083ef7a2ac678e1bc23b5cf9cf0f775d5d5fb909",
+      "sizeBytes": 216
+    },
+    {
+      "path": "prepared/partition/proof-02/runtime.log",
+      "sha256Bytes": "af74796f9d56ae660cc328567533ff9fb9bfce850a052e63e7119a629a0aff96",
+      "sizeBytes": 139
+    },
+    {
+      "path": "prepared/partition/prove.py",
+      "sha256Bytes": "a17cc099ddef1ca8e5b4021619ad717c18928f3b341207097258f16dca6bda9e",
+      "sizeBytes": 4515
+    },
+    {
+      "path": "prepared/partition/reference-only/DesktopPartitionIndicatorReference.kt",
+      "sha256Bytes": "457f42b4745fc1d36cbc6e334f2e185a946781e3c388663f514331bd75759749",
+      "sizeBytes": 5709
+    },
+    {
+      "path": "prepared/partition/registry-recipe.json",
+      "sha256Bytes": "a976479dbdca51158fadb405faf656c32985a1658c002c192a3e0be48abfa58b",
+      "sizeBytes": 1293
+    },
+    {
+      "path": "prepared/partition/shared-tabs-indicator-base.json",
+      "sha256Bytes": "d819fcb231639235408cef5e4af1387fbe33a5b6e54afd5e1e74f7819c466324",
+      "sizeBytes": 292
+    },
+    {
+      "path": "prepared/partition/shared-tabs-indicator.patch",
+      "sha256Bytes": "f9c24bca363e80f9ab30ddabc7fcb3e3fb836a6289a88a8cf1451d3d316b0f9a",
+      "sizeBytes": 809
+    },
+    {
+      "path": "prepared/bangumi/frozen-handoff.json",
+      "sha256Bytes": "d7e62ffd35be7b302f7952d3ca4668910f73cc88a5d734bb91a529ffaf7ddcac",
+      "sizeBytes": 42837
+    },
+    {
+      "path": "prepared/bangumi/ROOT-INTEGRATION.md",
+      "sha256Bytes": "7ddce38d96b3c6483ca27de585e528cf812dcc32978ffaf5431387b169ceba46",
+      "sizeBytes": 3103
+    },
+    {
+      "path": "prepared/bangumi/compile-01/compiler.args",
+      "sha256Bytes": "a28b2f43d2f7256f3c5c11e27dabbb1c11d2c688cd1de9d36fa13392bbb36658",
+      "sizeBytes": 27076
+    },
+    {
+      "path": "prepared/bangumi/compile-01/compiler.log",
+      "sha256Bytes": "43f9976c7be05de5186ccfdc7b5a2c18627ee21273da9a98210b66656c4d4dad",
+      "sizeBytes": 9948
+    },
+    {
+      "path": "prepared/bangumi/compile-01/result.json",
+      "sha256Bytes": "f30c494ae699b342a8279f94894ae1d6a00e04097b868d2a442db61163899976",
+      "sizeBytes": 143
+    },
+    {
+      "path": "prepared/bangumi/compile-02/compiler.args",
+      "sha256Bytes": "cdca56908bbe18f82cacce5b4e63548fa082922db79658e4b2c3fb67191b7a2e",
+      "sizeBytes": 27490
+    },
+    {
+      "path": "prepared/bangumi/compile-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/bangumi/compile-02/result.json",
+      "sha256Bytes": "5d2f71c2d2a75406f4369750d72c387390a049d297ff1cecabfe7342b18da43d",
+      "sizeBytes": 143
+    },
+    {
+      "path": "prepared/bangumi/compile.py",
+      "sha256Bytes": "d4bee716a1ec2eeb330238a834bf79bc4a63914744cd828a6ea3d801c3b2c788",
+      "sizeBytes": 1888
+    },
+    {
+      "path": "prepared/bangumi/freeze.py",
+      "sha256Bytes": "bba77af13213a6ecf15f295eef13209a4dcb7e0be21dc8be1a38c37e009e4f55",
+      "sizeBytes": 6411
+    },
+    {
+      "path": "prepared/bangumi/generated/bangumi-page-producer-inventory.json",
+      "sha256Bytes": "4cab7e0f56dc27fa9e6d01255747b74ced40391a9f200f79c04c4ad6924a53c6",
+      "sizeBytes": 14894
+    },
+    {
+      "path": "prepared/bangumi/generated/com/android/purebilibili/data/repository/DesktopOriginalBangumiHubRepository.kt",
+      "sha256Bytes": "77ab1a17bd9ae4c2f4bdaebc5dd63b25d3b32a94460d8f7eb0047fc54cb720e1",
+      "sizeBytes": 9521
+    },
+    {
+      "path": "prepared/bangumi/generated/com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicy.kt",
+      "sha256Bytes": "ee8ac2498ab5de0f46aa01b81ab8f2bae11e7775ebea5b04b6220388206bfe8c",
+      "sizeBytes": 1161
+    },
+    {
+      "path": "prepared/bangumi/generated/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt",
+      "sha256Bytes": "de00b9fc1ba0910d4b778c8d76e1f72237c74042fffb6ef14a3dadf2711604b3",
+      "sizeBytes": 53620
+    },
+    {
+      "path": "prepared/bangumi/generated/com/android/purebilibili/feature/bangumi/BangumiHubPolicy.kt",
+      "sha256Bytes": "c136016b778e72104b097752ef8d0e5ad29ec59d27b2af20a551f088230cd5b5",
+      "sizeBytes": 10167
+    },
+    {
+      "path": "prepared/bangumi/generated/com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt",
+      "sha256Bytes": "b9eef7947aa323c64188aaaf3cec36cafe840e3ad6753227739858acef6ec7f7",
+      "sizeBytes": 8590
+    },
+    {
+      "path": "prepared/bangumi/generated/com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt",
+      "sha256Bytes": "c18de13582f242d50dbbae8b0730f6c725f32a24b7a28ac17dcc5d111a70fea4",
+      "sizeBytes": 37465
+    },
+    {
+      "path": "prepared/bangumi/generated/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiBadgePolicy.kt",
+      "sha256Bytes": "69ea13c17502e2d4245b9b34f721c5ae5cbe8c05bec24614c9256a921c8b98c6",
+      "sizeBytes": 864
+    },
+    {
+      "path": "prepared/bangumi/generated/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt",
+      "sha256Bytes": "77401085738b8d749d31c4d327213035905e5e0a29c5e3729234e2f9b3cc8656",
+      "sizeBytes": 8383
+    },
+    {
+      "path": "prepared/bangumi/generated/com/android/purebilibili/feature/bangumi/MyFollowPolicy.kt",
+      "sha256Bytes": "a3d3f01fd4d82bfdee083ccf6dbe89006d29791d3c4ffd61654bd944c9892e90",
+      "sizeBytes": 3261
+    },
+    {
+      "path": "prepared/bangumi/generated/com/android/purebilibili/feature/bangumi/ui/list/DesktopOriginalBangumiBadge.kt",
+      "sha256Bytes": "5d54789b48c01b67cc653e51660bd00e053ef39caeae5f3b0c96c2333e77229c",
+      "sizeBytes": 1958
+    },
+    {
+      "path": "prepared/bangumi/install-whitelist.json",
+      "sha256Bytes": "1a3e0a8218130900aa4e0eb949b08678cf9f5bd2b5321deafe8e3978e63e9918",
+      "sizeBytes": 907
+    },
+    {
+      "path": "prepared/bangumi/original-source/app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "sha256Bytes": "ba2792fc781fd37a8b54f59df729bdff5eea5530dd8d8a6ab0dd31c4e09d6bba",
+      "sizeBytes": 34973
+    },
+    {
+      "path": "prepared/bangumi/original-source/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicy.kt",
+      "sha256Bytes": "a1671e2e8988fcff617dd9cc968da801158c016dd230a63c1d4f29343c66f3a9",
+      "sizeBytes": 1183
+    },
+    {
+      "path": "prepared/bangumi/original-source/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt",
+      "sha256Bytes": "1238e6530a1cd90bc09273b083d5ba6a78c55ff5cd476b84b79b732618b030e7",
+      "sizeBytes": 54869
+    },
+    {
+      "path": "prepared/bangumi/original-source/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt",
+      "sha256Bytes": "d00aeda4ee8a996133c6108fb53ce444ee12f47cd5142832b12746c673dfc1f1",
+      "sizeBytes": 8814
+    },
+    {
+      "path": "prepared/bangumi/original-source/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt",
+      "sha256Bytes": "fd39bc53bfd329dcdab24479b9e881e7b63012034919818f7d76f0ac40f7af2d",
+      "sizeBytes": 37946
+    },
+    {
+      "path": "prepared/bangumi/original-source/app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt",
+      "sha256Bytes": "099a588774344e1f6a514dcd79ca5b7f78dc9ab4d6c519301b2ba837f582a739",
+      "sizeBytes": 8451
+    },
+    {
+      "path": "prepared/bangumi/original-source/app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiHubPolicy.kt",
+      "sha256Bytes": "636f06abb392e3606bdf75bb0b78d4b8cc6f92fa23f2d2f0eff652bd11f74e29",
+      "sizeBytes": 10472
+    },
+    {
+      "path": "prepared/bangumi/original-source/app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+      "sha256Bytes": "5c1e158e6370773eb035b8bc77a5911e7cf081cd5f459f16ee5d1a245bc831c3",
+      "sizeBytes": 4398
+    },
+    {
+      "path": "prepared/bangumi/original-source/app/src/main/java/com/android/purebilibili/feature/bangumi/policy/MyFollowPolicy.kt",
+      "sha256Bytes": "79bb27be6d0056ea0bc779697d7cd9bd95354a419c7a41f234c3b8b37f1934d4",
+      "sizeBytes": 3346
+    },
+    {
+      "path": "prepared/bangumi/original-source/app/src/main/java/com/android/purebilibili/feature/bangumi/ui/list/BangumiListComponents.kt",
+      "sha256Bytes": "c40ad677735ef00befc55c17224141dbc16cbc20cf4394ddf46f38277afa01e0",
+      "sizeBytes": 14333
+    },
+    {
+      "path": "prepared/bangumi/prepare.py",
+      "sha256Bytes": "b227d6613220b9fda1759f0757a24553609ccf4257a43b8e8045c60773125570",
+      "sizeBytes": 8960
+    },
+    {
+      "path": "prepared/bangumi/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalBangumiHubRoot.kt",
+      "sha256Bytes": "c2edd98f193c6da1098a7d93d2dc632540e8bfd53c2160376bee157d933f2e56",
+      "sizeBytes": 1938
+    },
+    {
+      "path": "prepared/bangumi/prepared/tools/extract-upstream-home-bangumi-page.py",
+      "sha256Bytes": "0ef389f2a398878ffa1425b6bba445a0a79eec310df83c1f70d332652ac7adf2",
+      "sizeBytes": 9093
+    },
+    {
+      "path": "prepared/bangumi/proof-01/BangumiHubBlurPolicyTest.kt",
+      "sha256Bytes": "64ce19d764a1d976b18fce686c15f0f70c6d00b3df7b947065239f9f7bc54765",
+      "sizeBytes": 2138
+    },
+    {
+      "path": "prepared/bangumi/proof-01/BangumiHubPolicyTest.kt",
+      "sha256Bytes": "d2a0881133b11a2d0698e3df92c86b350503e002190a399ed6ab9a280399f016",
+      "sizeBytes": 8928
+    },
+    {
+      "path": "prepared/bangumi/proof-01/MyFollowPolicyTest.kt",
+      "sha256Bytes": "50f10f5d3fb2f678866249b464233248395b309e638d396f7fed089da7029f34",
+      "sizeBytes": 4948
+    },
+    {
+      "path": "prepared/bangumi/proof-01/OriginalBangumiHubFixture.kt",
+      "sha256Bytes": "f64dfd35092774f051a603678b9dd13ba071d5056af0a219517a9013e32eedbb",
+      "sizeBytes": 3282
+    },
+    {
+      "path": "prepared/bangumi/proof-01/compiler.args",
+      "sha256Bytes": "9c57ed04071d724d52cff6a4260440583ae3e1436e43207b9c67271d5af35033",
+      "sizeBytes": 25628
+    },
+    {
+      "path": "prepared/bangumi/proof-01/compiler.log",
+      "sha256Bytes": "38f5d7b68a9756f5f58c4ead1b3f8da77f5cc42337d1beb6c60e3a2c9dcf17a8",
+      "sizeBytes": 841
+    },
+    {
+      "path": "prepared/bangumi/proof-01/result.json",
+      "sha256Bytes": "c7328acb08988eb50529c5297bbc651c6260b3d5f1b51526a95f935f98b84fda",
+      "sizeBytes": 1089
+    },
+    {
+      "path": "prepared/bangumi/proof-02/BangumiHubBlurPolicyTest.kt",
+      "sha256Bytes": "64ce19d764a1d976b18fce686c15f0f70c6d00b3df7b947065239f9f7bc54765",
+      "sizeBytes": 2138
+    },
+    {
+      "path": "prepared/bangumi/proof-02/BangumiHubPolicyTest.kt",
+      "sha256Bytes": "d2a0881133b11a2d0698e3df92c86b350503e002190a399ed6ab9a280399f016",
+      "sizeBytes": 8928
+    },
+    {
+      "path": "prepared/bangumi/proof-02/MyFollowPolicyTest.kt",
+      "sha256Bytes": "50f10f5d3fb2f678866249b464233248395b309e638d396f7fed089da7029f34",
+      "sizeBytes": 4948
+    },
+    {
+      "path": "prepared/bangumi/proof-02/OriginalBangumiHubFixture.kt",
+      "sha256Bytes": "5df11dae85be3e1b28a0bc0bf8d902fa7b49d03097b258309be76072de509915",
+      "sizeBytes": 3380
+    },
+    {
+      "path": "prepared/bangumi/proof-02/compiler.args",
+      "sha256Bytes": "1c75d53ad8c8d7c554283d3700285bd3f62cd7f57c9145a033f6f9d21dc829ed",
+      "sizeBytes": 25628
+    },
+    {
+      "path": "prepared/bangumi/proof-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/bangumi/proof-02/result.json",
+      "sha256Bytes": "407faf5ab0b1d7c25606e61d73c3f37233cb90f3e31ae2e74a6e0591cc2d1ebe",
+      "sizeBytes": 1089
+    },
+    {
+      "path": "prepared/bangumi/proof-02/runtime.log",
+      "sha256Bytes": "23600a5931a57683f36ece9cf3e00c51946e84aebe8e232c9c1d7f1447d49e52",
+      "sizeBytes": 115
+    },
+    {
+      "path": "prepared/bangumi/prove.py",
+      "sha256Bytes": "fee0ce400f564d31f5c2bcf3f99ffc7860fe4a9b1d95b13dc415d65fb5101c6a",
+      "sizeBytes": 4176
+    },
+    {
+      "path": "prepared/bangumi/reference-only/DesktopOriginalMediaListSkeleton.kt",
+      "sha256Bytes": "74cf5692e009481cd005bb74c4ac8bb8a5061e9f4cc8ef93e3e45c2a6d27e49e",
+      "sizeBytes": 8549
+    },
+    {
+      "path": "prepared/bangumi/registry-recipe.json",
+      "sha256Bytes": "e6037e57217edd5a4d22d672ac8f5a28d2054cfd8b7c775907111a73cc2d7ec3",
+      "sizeBytes": 2872
+    },
+    {
+      "path": "prepared/bangumi/shared-reference-only/extract-upstream-home-partition.py",
+      "sha256Bytes": "e65633d64bb428a6e1812158db4bb1feb6ba6ff1699e31bebde044421d7a0070",
+      "sizeBytes": 6671
+    },
+    {
+      "path": "prepared/bangumi/shared-reference-only/generated/com/android/purebilibili/core/ui/skeleton/DesktopOriginalMediaListSkeleton.kt",
+      "sha256Bytes": "74cf5692e009481cd005bb74c4ac8bb8a5061e9f4cc8ef93e3e45c2a6d27e49e",
+      "sizeBytes": 8549
+    },
+    {
+      "path": "prepared/bangumi/shared-reference-only/generated/com/android/purebilibili/core/util/FeedRefreshPaging.kt",
+      "sha256Bytes": "7ed91d88e7198729fd2503db6317a0abe15c92efaed7c670bce122bd37c7ae98",
+      "sizeBytes": 380
+    },
+    {
+      "path": "prepared/bangumi/shared-reference-only/generated/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt",
+      "sha256Bytes": "628f76935eba485f1adf9b81774643fc3b33a791970e5144de032bdad4463312",
+      "sizeBytes": 580
+    },
+    {
+      "path": "prepared/bangumi/shared-reference-only/generated/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreen.kt",
+      "sha256Bytes": "ee8e65d7b83dcdb15abe29f8a8c88426feb0b153b6395bcbd6038dbffbad719f",
+      "sizeBytes": 55161
+    },
+    {
+      "path": "prepared/bangumi/shared-reference-only/generated/partition-producer-inventory.json",
+      "sha256Bytes": "aeb0ea69c4e7c00a40873de21c30882f32911335a2bdea38121996e7f07e90b1",
+      "sizeBytes": 6620
+    },
+    {
+      "path": "prepared/bangumi/shared-skeleton-base.json",
+      "sha256Bytes": "cd33f2fac59f411a58a04cb8a0965ea18e7b870e2a30882e41495908fbf23433",
+      "sizeBytes": 655
+    },
+    {
+      "path": "prepared/bangumi/shared-skeleton-grid.patch",
+      "sha256Bytes": "9b79d22b1228bbe04572bd182a3d458712c10fc612f07693898d2bc0289b36d6",
+      "sizeBytes": 1205
+    },
+    {
+      "path": "prepared/bangumi/shared-skeleton.py",
+      "sha256Bytes": "e883c524be0b91cfeb5dca7160d65c46ac46db7ca53d77efb6bcc058c5501886",
+      "sizeBytes": 2287
+    },
+    {
+      "path": "prepared/global/frozen-handoff.json",
+      "sha256Bytes": "1c27e730135c171c5f73edac04fe432334a756747b300c15d6e524971d5b49d5",
+      "sizeBytes": 7437
+    },
+    {
+      "path": "prepared/global/audit-prefs-ports.py",
+      "sha256Bytes": "a70b7e94e8ca6d4b288f90dca33d1418f3d9fd9a8429b9cb9e74eca030ca7c3f",
+      "sizeBytes": 2996
+    },
+    {
+      "path": "prepared/global/audit-source.py",
+      "sha256Bytes": "06bfe35b262cd8f4c065ad0cba7bac93d3caf462daa536889f7bac7f21160fe5",
+      "sizeBytes": 7307
+    },
+    {
+      "path": "prepared/global/compile.py",
+      "sha256Bytes": "399fc163ca604135f28d57052f65a2a1148c1617403c859e77b66c2bb9f913ad",
+      "sizeBytes": 3799
+    },
+    {
+      "path": "prepared/global/freeze.py",
+      "sha256Bytes": "84fa006130a3caaf23906b108c7ba9c87cd18ebdded3e110d654c666ba4270cf",
+      "sizeBytes": 1542
+    },
+    {
+      "path": "prepared/global/original-prefs-source/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "sizeBytes": 396158
+    },
+    {
+      "path": "prepared/global/original-prefs-source/app/src/main/java/com/android/purebilibili/core/util/FoldableDisplayPolicy.kt",
+      "sha256Bytes": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5",
+      "sizeBytes": 9316
+    },
+    {
+      "path": "prepared/global/original-prefs-source/app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt",
+      "sha256Bytes": "306e82c59477a5b8801a86f85d0d0c856c31fc5801d52dd626af3765afc4530e",
+      "sizeBytes": 5026
+    },
+    {
+      "path": "prepared/global/original-source/app/src/main/java/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+      "sha256Bytes": "e37ef5012d302af1f8a02d5c7e4932c0a7644f06ae1d5907947602ee672b430e",
+      "sizeBytes": 4058
+    },
+    {
+      "path": "prepared/global/original-source/app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+      "sha256Bytes": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728",
+      "sizeBytes": 10062
+    },
+    {
+      "path": "prepared/global/original-source/app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+      "sha256Bytes": "e7ee5766b05d05a39e81f0a81774c0870eb340879493df4397f94864b9d386f8",
+      "sizeBytes": 64881
+    },
+    {
+      "path": "prepared/global/original-source/app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt",
+      "sha256Bytes": "b7024240db5a025573b2c00689001b7d9b2adcb9e83e4132744d242127a5ca83",
+      "sizeBytes": 20028
+    },
+    {
+      "path": "prepared/global/prefs-platform-port-review.json",
+      "sha256Bytes": "2b5e42ab61a917db9271b7038a2b4053873565c41e866a3244fb7950b5dacbfe",
+      "sizeBytes": 5646
+    },
+    {
+      "path": "prepared/global/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt",
+      "sha256Bytes": "5833901a8147de7b64d4fb094bb7aa92a9603e574e13380ed695368b40f9503a",
+      "sizeBytes": 10342
+    },
+    {
+      "path": "prepared/global/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowGlobals.kt",
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc",
+      "sizeBytes": 2826
+    },
+    {
+      "path": "prepared/global/ROOT-INTEGRATION.md",
+      "sha256Bytes": "cc07f410268f4476ab2a1da9b78f17c611000632ce6d10e58a92b2a818b4fbf2",
+      "sizeBytes": 10077
+    },
+    {
+      "path": "prepared/global/runs/compile-01/compile-result.json",
+      "sha256Bytes": "7338cc75465ee3722a4a4bb5fdf73a278f5295ebf73814a8006cfc662e6b7b48",
+      "sizeBytes": 2753
+    },
+    {
+      "path": "prepared/global/runs/compile-01/compiler.args",
+      "sha256Bytes": "42ec7e949b8298615aa3cf89b76c36c9bdb776c9fccb7c07261a16b1dbe2d723",
+      "sizeBytes": 25163
+    },
+    {
+      "path": "prepared/global/runs/compile-01/compiler.log",
+      "sha256Bytes": "602ca2c179175fe0333275f94a315f061bd8a27c488ae54a9a601c08f322ab70",
+      "sizeBytes": 971
+    },
+    {
+      "path": "prepared/global/runs/compile-01/dependency-pins-after.json",
+      "sha256Bytes": "6aa75fadbfbb1192f455ac81e5337da05eb500ef38f60670d974fa4b6cdef990",
+      "sizeBytes": 42059
+    },
+    {
+      "path": "prepared/global/runs/compile-01/dependency-pins-before.json",
+      "sha256Bytes": "6aa75fadbfbb1192f455ac81e5337da05eb500ef38f60670d974fa4b6cdef990",
+      "sizeBytes": 42059
+    },
+    {
+      "path": "prepared/global/runs/compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt",
+      "sha256Bytes": "000709e167cf4d66949b36c9804bc1f84a5527749fdd8e7bfd8b1c224006eb81",
+      "sizeBytes": 9805
+    },
+    {
+      "path": "prepared/global/runs/compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowGlobals.kt",
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc",
+      "sizeBytes": 2826
+    },
+    {
+      "path": "prepared/global/runs/compile-02/compile-result.json",
+      "sha256Bytes": "616c2bda60dd53009b05d053e8d83615a7e098fdc4240f6fe9cf33630e83b20e",
+      "sizeBytes": 3001
+    },
+    {
+      "path": "prepared/global/runs/compile-02/compiler.args",
+      "sha256Bytes": "e7750a8efeb6b58f172356bfbf817e8180fb15edd0cf2c8313354f65a96fe32e",
+      "sizeBytes": 25163
+    },
+    {
+      "path": "prepared/global/runs/compile-02/compiler.log",
+      "sha256Bytes": "bd0b96ae2381135ed5afadb5a835d124999ca2e6e7816cf2e88c7d837e00db12",
+      "sizeBytes": 971
+    },
+    {
+      "path": "prepared/global/runs/compile-02/dependency-pins-after.json",
+      "sha256Bytes": "13e4113e5d9043f9a70b95c23d955f01455a9c7a27bc1391dd43093017dff918",
+      "sizeBytes": 42059
+    },
+    {
+      "path": "prepared/global/runs/compile-02/dependency-pins-before.json",
+      "sha256Bytes": "13e4113e5d9043f9a70b95c23d955f01455a9c7a27bc1391dd43093017dff918",
+      "sizeBytes": 42059
+    },
+    {
+      "path": "prepared/global/runs/compile-02/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt",
+      "sha256Bytes": "5833901a8147de7b64d4fb094bb7aa92a9603e574e13380ed695368b40f9503a",
+      "sizeBytes": 10342
+    },
+    {
+      "path": "prepared/global/runs/compile-02/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowGlobals.kt",
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc",
+      "sizeBytes": 2826
+    },
+    {
+      "path": "prepared/global/source-audit-history-01.json",
+      "sha256Bytes": "433c38bc499967208902d8631f8052ac37df4224128e677cc266d1854aff0e52",
+      "sizeBytes": 371
+    },
+    {
+      "path": "prepared/global/source-review.json",
+      "sha256Bytes": "6772c1b24b904b1ab94e8b0729186a6ed89f7e849f40554575e8c1ed858f35da",
+      "sizeBytes": 19747
+    },
+    {
+      "path": "prepared/live/frozen-handoff.json",
+      "sha256Bytes": "44b3f5508fc43b24bf9f3feb9a9258239321eecdce43e185b4ac4670c1a8aee5",
+      "sizeBytes": 15619
+    },
+    {
+      "path": "prepared/live/LiveListFixture.kt",
+      "sha256Bytes": "4b8ea133373b6fe6bbd55585214b623ac321593c13c8d0f045a0c1e98cac23d9",
+      "sizeBytes": 14302
+    },
+    {
+      "path": "prepared/live/ROOT-INTEGRATION.md",
+      "sha256Bytes": "36bf7721d331d9e10744fb99ab95acc1da3cb872b6007ef94d6d3544e1c41c97",
+      "sizeBytes": 5891
+    },
+    {
+      "path": "prepared/live/abi-audit.json",
+      "sha256Bytes": "e819e02a2eb08f3d0535fd305cee1311d319fa2aee9b2ecfbe762e0e34cc65ab",
+      "sizeBytes": 3594
+    },
+    {
+      "path": "prepared/live/audit_abi.py",
+      "sha256Bytes": "81c8a0e46e1bdc4a2a45227465ef91b02966e14d0307f2f6eabf52b17c0488c7",
+      "sizeBytes": 3572
+    },
+    {
+      "path": "prepared/live/audit_inputs.py",
+      "sha256Bytes": "06fde54715207ccf8ac2b64c6b7d0c1ac5fbd522251c72a312603ee08d37906f",
+      "sizeBytes": 2619
+    },
+    {
+      "path": "prepared/live/audit_source.py",
+      "sha256Bytes": "06e57212d258078339e91094534a49dd40d69f2082e3d062807bf3872ffddb03",
+      "sizeBytes": 5715
+    },
+    {
+      "path": "prepared/live/compile-02/compile-result.json",
+      "sha256Bytes": "5f407052a3c4311899fad4eb07827172c9dbc2d2fdafc0034ffadb4aa86f2925",
+      "sizeBytes": 36658
+    },
+    {
+      "path": "prepared/live/compile-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/live/compile.py",
+      "sha256Bytes": "bbe2723efda7739d76a75cb6215153f101e03a37c2499353debdc7a48252ebe5",
+      "sizeBytes": 2967
+    },
+    {
+      "path": "prepared/live/fixture-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/live/fixture-01/results/result.json",
+      "sha256Bytes": "22f656b38e447ba88f0e74853f9fb8261e2dc725decf6240a2d8e005f8df3a3b",
+      "sizeBytes": 1926
+    },
+    {
+      "path": "prepared/live/fixture-01/run.log",
+      "sha256Bytes": "24f83fa70fa472abdb25b091a1c239018c4a9abd68f8a4a06ddd47ccd3b656c9",
+      "sizeBytes": 44
+    },
+    {
+      "path": "prepared/live/fixture.py",
+      "sha256Bytes": "ada7b0cb29a1f05c89ef57e74cd9f084e428e1045ff6596a142ee49a48231d3b",
+      "sizeBytes": 2031
+    },
+    {
+      "path": "prepared/live/freeze.py",
+      "sha256Bytes": "466f82a7fe4ecfc4cd157af95093fe9c04f9bab1f85743c137f65a077d8ee7dd",
+      "sizeBytes": 6209
+    },
+    {
+      "path": "prepared/live/gradle-tasks.snippet.kts",
+      "sha256Bytes": "2823f24b9122f182ef96bb144c1441c06411f1436bb0983c5cbbde19b19c60cd",
+      "sizeBytes": 1162
+    },
+    {
+      "path": "prepared/live/input-audit.json",
+      "sha256Bytes": "5c02a93d452454ad4d5013805ecf3e0edc5653446ca955d217792081ed9b79dd",
+      "sizeBytes": 103225
+    },
+    {
+      "path": "prepared/live/install-contract.json",
+      "sha256Bytes": "63e6fbcef7f580995be40586159d95d8855a04922c0ea0b19f52afcd90755add",
+      "sizeBytes": 1633
+    },
+    {
+      "path": "prepared/live/live-list-windows-adaptation.diff",
+      "sha256Bytes": "8332a1e3a936b29128ab2bc1a53c05470e7e866ae39b701396c37c530ffe1c3d",
+      "sizeBytes": 8892
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256Bytes": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "sizeBytes": 148935
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/core/ui/transition/BiliPaiSharedElementKey.kt",
+      "sha256Bytes": "b6cf5d21f74dbe9a7d44b7af4c2847ee1764c5d0526b6f4cb881d20dda659448",
+      "sizeBytes": 5587
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/core/util/ResultExtensions.kt",
+      "sha256Bytes": "8a95f76412bcdbd6975cedecff9d8f3f07a814f4f23312011ae9fa4e6e376116",
+      "sizeBytes": 3603
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/data/repository/LiveAreaRoomsPolicy.kt",
+      "sha256Bytes": "b1472fdd261492b8d777f85f263ec23bd628e89f29b1c52e2b2b3531ae7d4c02",
+      "sizeBytes": 1804
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/data/repository/LiveFeedParsePolicy.kt",
+      "sha256Bytes": "83e53199389f2b8aeaf9241257cea31b940066d30a5b87a671ff83ee717eb7d7",
+      "sizeBytes": 3595
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "sha256Bytes": "28748c0fd10125e603a8c0f28fff63781f87d3350e1446cc355622f447f8f86d",
+      "sizeBytes": 54891
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "sha256Bytes": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a",
+      "sizeBytes": 173085
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt",
+      "sha256Bytes": "c3251089682757da236fca48d4bdd453b931bfd47e176c3f73e01f1e31bc36e1",
+      "sizeBytes": 9254
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveChromePalette.kt",
+      "sha256Bytes": "f2d304269a3f795a70358cf6cf9e85c2b6433639ef9d48e3f93a2d488c49c10e",
+      "sizeBytes": 4326
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt",
+      "sha256Bytes": "9552dbe8bb68a612bb5cf5b35318a6bd0888e45edc234ccc2245be844b43c194",
+      "sizeBytes": 1961
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveHomeCategoryIndicatorPolicy.kt",
+      "sha256Bytes": "22cd451faefa183a118a3cb65e0c61623cd310a54b7e8e68a4c04053310e5f42",
+      "sizeBytes": 2767
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveHomeSelectableChip.kt",
+      "sha256Bytes": "8ebee65136586c62439c3acbb169991303a0526c111ee683156042c6cddf3f81",
+      "sizeBytes": 2044
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "sha256Bytes": "a88f86fefe56e06d941438270ba0c32b3f35b739068cadf3ef4b838903ee49d8",
+      "sizeBytes": 44842
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt",
+      "sha256Bytes": "16f08c3a5b6dd8a3c0613a7ef2439fe55be7ad12769c68f99055f9c4bed9778a",
+      "sizeBytes": 970
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveRoomCard.kt",
+      "sha256Bytes": "9ffd472531ddfbeab17237e32acf5c03a9ae4c604de64ad46710ea02ee206db0",
+      "sizeBytes": 7533
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/feature/live/LiveRoomLayoutPolicy.kt",
+      "sha256Bytes": "fe011d262fb3dd955f3bceb339ca9e399638e3a59d272cef6acebb29e995d542",
+      "sizeBytes": 11340
+    },
+    {
+      "path": "prepared/live/original-stable/app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256Bytes": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "sizeBytes": 291157
+    },
+    {
+      "path": "prepared/live/prepare.py",
+      "sha256Bytes": "4699f2635036e2691f03397d48499b2cdc59d9e1b9c3e9b0d7bc8c0cf234c25e",
+      "sizeBytes": 10735
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/core/util/DesktopOriginalLiveApiErrors.kt",
+      "sha256Bytes": "85d5d212d7b6ef34d109c650dfd8d737535ed9d9c4ad20605637827c61d9eedc",
+      "sizeBytes": 1437
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/data/repository/DesktopOriginalLiveListProtocol.kt",
+      "sha256Bytes": "3c892bededf177f16bd396d3232ac86977587dc091c0e24924e3e6e352d7367c",
+      "sizeBytes": 11105
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/data/repository/LiveAreaRoomsPolicy.kt",
+      "sha256Bytes": "b1472fdd261492b8d777f85f263ec23bd628e89f29b1c52e2b2b3531ae7d4c02",
+      "sizeBytes": 1804
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/data/repository/LiveFeedParsePolicy.kt",
+      "sha256Bytes": "83e53199389f2b8aeaf9241257cea31b940066d30a5b87a671ff83ee717eb7d7",
+      "sizeBytes": 3595
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/feature/live/DesktopLiveViewerCount.kt",
+      "sha256Bytes": "8bc359ade9062adfdb67a19df9e878518ad7b273a9ad6856f66e4a559aabde18",
+      "sizeBytes": 311
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt",
+      "sha256Bytes": "c3251089682757da236fca48d4bdd453b931bfd47e176c3f73e01f1e31bc36e1",
+      "sizeBytes": 9254
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/feature/live/LiveChromePalette.kt",
+      "sha256Bytes": "f2d304269a3f795a70358cf6cf9e85c2b6433639ef9d48e3f93a2d488c49c10e",
+      "sizeBytes": 4326
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt",
+      "sha256Bytes": "9552dbe8bb68a612bb5cf5b35318a6bd0888e45edc234ccc2245be844b43c194",
+      "sizeBytes": 1961
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/feature/live/LiveHomeCategoryIndicatorPolicy.kt",
+      "sha256Bytes": "22cd451faefa183a118a3cb65e0c61623cd310a54b7e8e68a4c04053310e5f42",
+      "sizeBytes": 2767
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/feature/live/LiveHomeSelectableChip.kt",
+      "sha256Bytes": "8ebee65136586c62439c3acbb169991303a0526c111ee683156042c6cddf3f81",
+      "sizeBytes": 2044
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "sha256Bytes": "caecaf23ef07a537a599fc6120c01932654f50f61a81b573ff5242a6bde5faad",
+      "sizeBytes": 44876
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt",
+      "sha256Bytes": "16f08c3a5b6dd8a3c0613a7ef2439fe55be7ad12769c68f99055f9c4bed9778a",
+      "sizeBytes": 970
+    },
+    {
+      "path": "prepared/live/prepared/generated/com/android/purebilibili/feature/live/LiveRoomCard.kt",
+      "sha256Bytes": "9ffd472531ddfbeab17237e32acf5c03a9ae4c604de64ad46710ea02ee206db0",
+      "sizeBytes": 7533
+    },
+    {
+      "path": "prepared/live/prepared/generated/live-list-selection-proof.json",
+      "sha256Bytes": "64ab817f325e7d51499bde784bc7a5330c47cf055d1fadba11b72a858f493627",
+      "sizeBytes": 8780
+    },
+    {
+      "path": "prepared/live/prepared/manual/com/bilipai/desktop/ui/DesktopLiveListBindings.kt",
+      "sha256Bytes": "97993d0091a4bb7496f72cede57a19ff32ae0997451acecd895a0e8937c59826",
+      "sizeBytes": 6622
+    },
+    {
+      "path": "prepared/live/prepared/tools/extract-upstream-live-list.py",
+      "sha256Bytes": "13a041d3833af04827723915c26703aba6986bbf495fd1c06d996599eeca8442",
+      "sizeBytes": 11074
+    },
+    {
+      "path": "prepared/live/registry-merge-recipe.json",
+      "sha256Bytes": "2eb6988301268f23b3d9b840bebcae18f8b7320076124460f814b0277ec8ccca",
+      "sizeBytes": 8087
+    },
+    {
+      "path": "prepared/live/replay-production/com/android/purebilibili/core/util/DesktopOriginalLiveApiErrors.kt",
+      "sha256Bytes": "85d5d212d7b6ef34d109c650dfd8d737535ed9d9c4ad20605637827c61d9eedc",
+      "sizeBytes": 1437
+    },
+    {
+      "path": "prepared/live/replay-production/com/android/purebilibili/data/repository/DesktopOriginalLiveListProtocol.kt",
+      "sha256Bytes": "3c892bededf177f16bd396d3232ac86977587dc091c0e24924e3e6e352d7367c",
+      "sizeBytes": 11105
+    },
+    {
+      "path": "prepared/live/replay-production/com/android/purebilibili/feature/live/DesktopLiveViewerCount.kt",
+      "sha256Bytes": "8bc359ade9062adfdb67a19df9e878518ad7b273a9ad6856f66e4a559aabde18",
+      "sizeBytes": 311
+    },
+    {
+      "path": "prepared/live/replay-production/com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "sha256Bytes": "caecaf23ef07a537a599fc6120c01932654f50f61a81b573ff5242a6bde5faad",
+      "sizeBytes": 44876
+    },
+    {
+      "path": "prepared/live/replay-production/live-list-selection-proof.json",
+      "sha256Bytes": "80f766afeec6d7875fbe50466bf9ebb52a558ac488d4c5cf588dff1aef5ed9dc",
+      "sizeBytes": 4811
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/core/util/DesktopOriginalLiveApiErrors.kt",
+      "sha256Bytes": "85d5d212d7b6ef34d109c650dfd8d737535ed9d9c4ad20605637827c61d9eedc",
+      "sizeBytes": 1437
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/data/repository/DesktopOriginalLiveListProtocol.kt",
+      "sha256Bytes": "3c892bededf177f16bd396d3232ac86977587dc091c0e24924e3e6e352d7367c",
+      "sizeBytes": 11105
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/data/repository/LiveAreaRoomsPolicy.kt",
+      "sha256Bytes": "b1472fdd261492b8d777f85f263ec23bd628e89f29b1c52e2b2b3531ae7d4c02",
+      "sizeBytes": 1804
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/data/repository/LiveFeedParsePolicy.kt",
+      "sha256Bytes": "83e53199389f2b8aeaf9241257cea31b940066d30a5b87a671ff83ee717eb7d7",
+      "sizeBytes": 3595
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/feature/live/DesktopLiveViewerCount.kt",
+      "sha256Bytes": "8bc359ade9062adfdb67a19df9e878518ad7b273a9ad6856f66e4a559aabde18",
+      "sizeBytes": 311
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt",
+      "sha256Bytes": "c3251089682757da236fca48d4bdd453b931bfd47e176c3f73e01f1e31bc36e1",
+      "sizeBytes": 9254
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/feature/live/LiveChromePalette.kt",
+      "sha256Bytes": "f2d304269a3f795a70358cf6cf9e85c2b6433639ef9d48e3f93a2d488c49c10e",
+      "sizeBytes": 4326
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt",
+      "sha256Bytes": "9552dbe8bb68a612bb5cf5b35318a6bd0888e45edc234ccc2245be844b43c194",
+      "sizeBytes": 1961
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/feature/live/LiveHomeCategoryIndicatorPolicy.kt",
+      "sha256Bytes": "22cd451faefa183a118a3cb65e0c61623cd310a54b7e8e68a4c04053310e5f42",
+      "sizeBytes": 2767
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/feature/live/LiveHomeSelectableChip.kt",
+      "sha256Bytes": "8ebee65136586c62439c3acbb169991303a0526c111ee683156042c6cddf3f81",
+      "sizeBytes": 2044
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "sha256Bytes": "caecaf23ef07a537a599fc6120c01932654f50f61a81b573ff5242a6bde5faad",
+      "sizeBytes": 44876
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt",
+      "sha256Bytes": "16f08c3a5b6dd8a3c0613a7ef2439fe55be7ad12769c68f99055f9c4bed9778a",
+      "sizeBytes": 970
+    },
+    {
+      "path": "prepared/live/replay-standalone/com/android/purebilibili/feature/live/LiveRoomCard.kt",
+      "sha256Bytes": "9ffd472531ddfbeab17237e32acf5c03a9ae4c604de64ad46710ea02ee206db0",
+      "sizeBytes": 7533
+    },
+    {
+      "path": "prepared/live/replay-standalone/live-list-selection-proof.json",
+      "sha256Bytes": "64ab817f325e7d51499bde784bc7a5330c47cf055d1fadba11b72a858f493627",
+      "sizeBytes": 8780
+    },
+    {
+      "path": "prepared/live/source-audit.json",
+      "sha256Bytes": "74e80ebfde8209973f6aede83d3d26fa35a33e18d38c56a4fb6c50790cc50bfe",
+      "sizeBytes": 8436
+    },
+    {
+      "path": "prepared/live/source-inventory.json",
+      "sha256Bytes": "2e13de27d9a37c43ea950ee8697a13953ea6abb2b2a729435e896067063abfe9",
+      "sizeBytes": 3379
+    },
+    {
+      "path": "prepared/live/ui-exact-reverse-patches.json",
+      "sha256Bytes": "5cd2673287b8725a7737476d27d64126aeaf92ac9d9e2851198974b1abe045ed",
+      "sizeBytes": 16570
+    },
+    {
+      "path": "prepared/subscription/frozen-handoff.json",
+      "sha256Bytes": "c019ddc3538a5f96f41f35f0ffa617cfc3069983101a59e14efa000611e6137a",
+      "sizeBytes": 17064
+    },
+    {
+      "path": "prepared/subscription/audit.py",
+      "sha256Bytes": "616dda5c7865fd6c834058ccb0c328d572a1b0be8a17cb875e06dbd41b5315ce",
+      "sizeBytes": 7941
+    },
+    {
+      "path": "prepared/subscription/compile.py",
+      "sha256Bytes": "5be80096031b9524bbebe36aeaf76cceb64b2bec98f9d1743e34f80e97794244",
+      "sizeBytes": 4024
+    },
+    {
+      "path": "prepared/subscription/existing-source-hunks.json",
+      "sha256Bytes": "20800ea8864e51c570fff737a6219122ee5699e52739b42b5d7474f2fc1d13f3",
+      "sizeBytes": 17399
+    },
+    {
+      "path": "prepared/subscription/freeze.py",
+      "sha256Bytes": "09b3a3c62c5774551abbfb3524a06828129368d74ed852ffefc267ac20df6cc2",
+      "sizeBytes": 2176
+    },
+    {
+      "path": "prepared/subscription/hunks/DesktopPluginServices.json",
+      "sha256Bytes": "6a28be847ea21853f16db8732f7b55542222c5c4589b9fb5249470569b59b566",
+      "sizeBytes": 1105
+    },
+    {
+      "path": "prepared/subscription/hunks/DesktopPluginStore.json",
+      "sha256Bytes": "fea5cdd5dd79d4f29a13d24e6837148fe218ddfb1f423de08b8350dc5851ad9f",
+      "sizeBytes": 814
+    },
+    {
+      "path": "prepared/subscription/hunks/DesktopSubscriptionRepository.json",
+      "sha256Bytes": "f84795e21bd973ca31b43a5b5918d62e75572815846c81d31a8256fea71de343",
+      "sizeBytes": 15178
+    },
+    {
+      "path": "prepared/subscription/original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedArticleExtractor.kt",
+      "sha256Bytes": "86a312780455a57c143e3deed1acb772c19ed49a415b9615f6b567c896960081",
+      "sizeBytes": 4008
+    },
+    {
+      "path": "prepared/subscription/original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedConditionalStore.kt",
+      "sha256Bytes": "b1258797c1a69a32c40cf194113af80df3d9983ea12446ae589a80b60d145daf",
+      "sizeBytes": 2331
+    },
+    {
+      "path": "prepared/subscription/original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+      "sha256Bytes": "1ebb33f5f2f67c6659ddc1d4f2cf3a833f28ae69e933ef2c3892f9ff7448f2fd",
+      "sizeBytes": 8305
+    },
+    {
+      "path": "prepared/subscription/original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedHtmlParser.kt",
+      "sha256Bytes": "a92c0a3e72478e15c30d170aad90a7d8ea83975acc0e037aa66e157c6f5a5015",
+      "sizeBytes": 9649
+    },
+    {
+      "path": "prepared/subscription/original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedLayoutAllocation.kt",
+      "sha256Bytes": "005bacf925078fec59524a78bd23bd717c21e682f1a9df867149dc3c97447630",
+      "sizeBytes": 1236
+    },
+    {
+      "path": "prepared/subscription/original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedModels.kt",
+      "sha256Bytes": "3276d1a66b8682508a2b17a03d3063368d4a8f94e730e679d8e4728002521b5f",
+      "sizeBytes": 1635
+    },
+    {
+      "path": "prepared/subscription/original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+      "sha256Bytes": "b4b65ab198829186889637e4eaa3f89f825f0634df262bbda3f2777895bcb050",
+      "sizeBytes": 3547
+    },
+    {
+      "path": "prepared/subscription/original-source/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedSourceCatalog.kt",
+      "sha256Bytes": "36477d508db469e5556dd12a6712fb64675e60343ecec05cc18d607978571f36",
+      "sizeBytes": 3921
+    },
+    {
+      "path": "prepared/subscription/original-source/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "sizeBytes": 396158
+    },
+    {
+      "path": "prepared/subscription/original-source/app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "sha256Bytes": "c3430358427744da0b3627f73561bfbe3d6519c86b96fcc49734035db5672707",
+      "sizeBytes": 44821
+    },
+    {
+      "path": "prepared/subscription/prepare.py",
+      "sha256Bytes": "f364be5fc0c295f53830f377e674cdfffb91adcad1c8d669d9d25767b1d211b3",
+      "sizeBytes": 21019
+    },
+    {
+      "path": "prepared/subscription/prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+      "sha256Bytes": "c6997bc14ed7800c57a923e7b7b039ab1beb1dd3e56237e0a4cfcbf19c9776f0",
+      "sizeBytes": 3149
+    },
+    {
+      "path": "prepared/subscription/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "sha256Bytes": "5c4b1c680f34cf201d37147f224a6f9999b49b8653237b1b6906c76374ec46d4",
+      "sizeBytes": 5228
+    },
+    {
+      "path": "prepared/subscription/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "sha256Bytes": "40df69f4b0d9f54d8343e668573fff6c8d8f698f8cbe4e89fce645eea4f89258",
+      "sizeBytes": 2194
+    },
+    {
+      "path": "prepared/subscription/prepared/desktop/tools/extract-upstream-subscription-page.py",
+      "sha256Bytes": "c2bfa5f63dbedbc96af2f45a1e28a09cbc6717adcc8a7e9631be2cd1e40c97ff",
+      "sizeBytes": 9342
+    },
+    {
+      "path": "prepared/subscription/prepared/generated/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2",
+      "sizeBytes": 43719
+    },
+    {
+      "path": "prepared/subscription/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "sha256Bytes": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291",
+      "sizeBytes": 6346
+    },
+    {
+      "path": "prepared/subscription/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c",
+      "sizeBytes": 10725
+    },
+    {
+      "path": "prepared/subscription/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+      "sha256Bytes": "0f8503b71f18049d8a47ebeaf38d929b21e35fcb8e3d16b572440dcab82cbb0b",
+      "sizeBytes": 9232
+    },
+    {
+      "path": "prepared/subscription/registry-recipe.json",
+      "sha256Bytes": "24e615efee0a02e36c0f28253a2400d03960ee82f0dbb9875bfa910f7d478e90",
+      "sizeBytes": 1273
+    },
+    {
+      "path": "prepared/subscription/ROOT-INTEGRATION.md",
+      "sha256Bytes": "2dfa4f17d2f7c08408aca3369f7165617fdbb12177c205822a85a92dc0c91761",
+      "sizeBytes": 8564
+    },
+    {
+      "path": "prepared/subscription/runs/compile-01/compiler.args",
+      "sha256Bytes": "aa8e3e50b0c3d376f26fc5c56a78b1bc4de73cadc6a9bfd5f58a58b3c0c01ca9",
+      "sizeBytes": 26533
+    },
+    {
+      "path": "prepared/subscription/runs/compile-01/compiler.log",
+      "sha256Bytes": "2d2001ceeec456d373f2b7c246084774137f82373ece35c1d1eb880ba6ea410b",
+      "sizeBytes": 727
+    },
+    {
+      "path": "prepared/subscription/runs/compile-01/dependency-pins-before.json",
+      "sha256Bytes": "dd3c13fd07457e744dafd3b51de47760f3a435139e2ec5291e9c674c1e62b6f6",
+      "sizeBytes": 44130
+    },
+    {
+      "path": "prepared/subscription/runs/compile-01/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+      "sha256Bytes": "bb242457662ecc36f07990319edbfa8009da83581725c23368ce800f072dbe5e",
+      "sizeBytes": 2454
+    },
+    {
+      "path": "prepared/subscription/runs/compile-01/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "sha256Bytes": "d10434f09ca7ef1aef8357673316a666c88f75518c5c77a78ed0a7db693504c4",
+      "sizeBytes": 4072
+    },
+    {
+      "path": "prepared/subscription/runs/compile-01/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "sha256Bytes": "0de20a7ad5bd07c7b3b10c50a1d7c1f1d2b38ce4fe7d451b55ab7af1e0b5cafa",
+      "sizeBytes": 2171
+    },
+    {
+      "path": "prepared/subscription/runs/compile-01/source-inputs/prepared/generated/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "sha256Bytes": "c233279d02773ef227562e2dcf986fa943689f0ca931765683f97c721431b834",
+      "sizeBytes": 43770
+    },
+    {
+      "path": "prepared/subscription/runs/compile-01/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "sha256Bytes": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291",
+      "sizeBytes": 6346
+    },
+    {
+      "path": "prepared/subscription/runs/compile-01/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c",
+      "sizeBytes": 10725
+    },
+    {
+      "path": "prepared/subscription/runs/compile-01/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+      "sha256Bytes": "b59669a85b324eb6c0d65781320aad66ddff820a8231ea31d8a985ec85422d0c",
+      "sizeBytes": 8450
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/compile-result.json",
+      "sha256Bytes": "2f6a6d1363dca618db5c9a69efbcdbccb11d3ee0e04cb8059102e1303c1138ea",
+      "sizeBytes": 16603
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/compiler.args",
+      "sha256Bytes": "8434cb57bc14dec061bac7688823cbd2479e0b22c71be07baf0494feac0b8b48",
+      "sizeBytes": 26514
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/compiler.log",
+      "sha256Bytes": "6077d195ee520c28aa54d3ddbf0e2c5173a8f346e2b1298e3f5c7fc110732449",
+      "sizeBytes": 727
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/dependency-pins-after.json",
+      "sha256Bytes": "4e3368bc9ee2b0e0a392369f80f66e38d9801eecc4a5080d2820dbc6b3664414",
+      "sizeBytes": 44130
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/dependency-pins-before.json",
+      "sha256Bytes": "4e3368bc9ee2b0e0a392369f80f66e38d9801eecc4a5080d2820dbc6b3664414",
+      "sizeBytes": 44130
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+      "sha256Bytes": "c6997bc14ed7800c57a923e7b7b039ab1beb1dd3e56237e0a4cfcbf19c9776f0",
+      "sizeBytes": 3149
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "sha256Bytes": "d10434f09ca7ef1aef8357673316a666c88f75518c5c77a78ed0a7db693504c4",
+      "sizeBytes": 4072
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "sha256Bytes": "0de20a7ad5bd07c7b3b10c50a1d7c1f1d2b38ce4fe7d451b55ab7af1e0b5cafa",
+      "sizeBytes": 2171
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/source-inputs/prepared/generated/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "sha256Bytes": "d15640bab17d6901e55fbb7e3f988b663a554f1ebaccf2f2cc51783c893773f7",
+      "sizeBytes": 43705
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "sha256Bytes": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291",
+      "sizeBytes": 6346
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c",
+      "sizeBytes": 10725
+    },
+    {
+      "path": "prepared/subscription/runs/compile-02/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+      "sha256Bytes": "0f8503b71f18049d8a47ebeaf38d929b21e35fcb8e3d16b572440dcab82cbb0b",
+      "sizeBytes": 9232
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/compile-result.json",
+      "sha256Bytes": "6bea21b20415c1d11ae664266b0bb24e4f88469e7b53045558d132a720c63dfb",
+      "sizeBytes": 16823
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/compiler.args",
+      "sha256Bytes": "8d603bfaaa57b647f158a8cd2f988da4f33b96f68001d12877f041937699a792",
+      "sizeBytes": 26514
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/compiler.log",
+      "sha256Bytes": "839e22a1ac8bc1ee8d6306980bb10e8e8f84b4f463950f973403b3d9f9ffe585",
+      "sizeBytes": 727
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/dependency-pins-after.json",
+      "sha256Bytes": "b582c7dae0d1f413850be3165139af6aa3b535a3fc3c7a7d7c3724a61c59abb2",
+      "sizeBytes": 44130
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/dependency-pins-before.json",
+      "sha256Bytes": "b582c7dae0d1f413850be3165139af6aa3b535a3fc3c7a7d7c3724a61c59abb2",
+      "sizeBytes": 44130
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+      "sha256Bytes": "c6997bc14ed7800c57a923e7b7b039ab1beb1dd3e56237e0a4cfcbf19c9776f0",
+      "sizeBytes": 3149
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "sha256Bytes": "5c4b1c680f34cf201d37147f224a6f9999b49b8653237b1b6906c76374ec46d4",
+      "sizeBytes": 5228
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "sha256Bytes": "40df69f4b0d9f54d8343e668573fff6c8d8f698f8cbe4e89fce645eea4f89258",
+      "sizeBytes": 2194
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/source-inputs/prepared/generated/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2",
+      "sizeBytes": 43719
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "sha256Bytes": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291",
+      "sizeBytes": 6346
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c",
+      "sizeBytes": 10725
+    },
+    {
+      "path": "prepared/subscription/runs/compile-03/source-inputs/proof-existing/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+      "sha256Bytes": "0f8503b71f18049d8a47ebeaf38d929b21e35fcb8e3d16b572440dcab82cbb0b",
+      "sizeBytes": 9232
+    },
+    {
+      "path": "prepared/subscription/source-audit/production/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2",
+      "sizeBytes": 43719
+    },
+    {
+      "path": "prepared/subscription/source-audit/production/subscription-page-producer-inventory.json",
+      "sha256Bytes": "9e49d7820fa06717f84f4a36a2f2a361b938916607f744bb00b8432dc45831d5",
+      "sizeBytes": 9132
+    },
+    {
+      "path": "prepared/subscription/source-audit/production-generated/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2",
+      "sizeBytes": 43719
+    },
+    {
+      "path": "prepared/subscription/source-audit/production-generated/subscription-page-producer-inventory.json",
+      "sha256Bytes": "9e49d7820fa06717f84f4a36a2f2a361b938916607f744bb00b8432dc45831d5",
+      "sizeBytes": 9132
+    },
+    {
+      "path": "prepared/subscription/source-audit/standalone/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "sha256Bytes": "9d9fff278a28d2ac78c66c2a04227751eaaebe8ffd39e73641bc0712b50780f2",
+      "sizeBytes": 43719
+    },
+    {
+      "path": "prepared/subscription/source-audit/standalone/subscription-page-producer-inventory.json",
+      "sha256Bytes": "9e49d7820fa06717f84f4a36a2f2a361b938916607f744bb00b8432dc45831d5",
+      "sizeBytes": 9132
+    },
+    {
+      "path": "prepared/subscription/source-checks.json",
+      "sha256Bytes": "668e4d476bb2ed038e2c5d4ee1cde405249da2c805984b3ae46b868474bd11ca",
+      "sizeBytes": 10464
+    },
+    {
+      "path": "prepared/subscription/source-inventory.json",
+      "sha256Bytes": "51ad3e76e01b0732a329af08251557d82e163c0571080ef7de7a9a04f5d2c01d",
+      "sizeBytes": 8878
+    },
+    {
+      "path": "root/home-data-pages-phase1-install/installed.json",
+      "sha256Bytes": "eed9720c2e2461603b06c1807dffd128f105cd38a44c0ff30f073f84b469fada",
+      "sizeBytes": 12341
+    },
+    {
+      "path": "root/home-data-pages-phase1-install/whole-build-ownership-repair/extract-discovery-platform.py.before",
+      "sha256Bytes": "7b90871d1e3efe981baa3315a598917b0899b623592f5a39a81b9d91cdf613c1",
+      "sizeBytes": 18292
+    },
+    {
+      "path": "root/home-data-pages-phase1-install/whole-build-ownership-repair/extract-discovery-platform.py.patch",
+      "sha256Bytes": "2ffc2ceee79543b79ae19758d807d472c0f52565c6a1e7d5d0da4dc952a7c51c",
+      "sizeBytes": 1172
+    },
+    {
+      "path": "root/home-data-pages-phase1-install/whole-build-ownership-repair/extract-upstream-home-bangumi-page.py.before",
+      "sha256Bytes": "0ef389f2a398878ffa1425b6bba445a0a79eec310df83c1f70d332652ac7adf2",
+      "sizeBytes": 9093
+    },
+    {
+      "path": "root/home-data-pages-phase1-install/whole-build-ownership-repair/extract-upstream-home-bangumi-page.py.patch",
+      "sha256Bytes": "3e62714b73a9b29380801ed753ab63ab8c589e40f25ebc0104bdc5275d19436e",
+      "sizeBytes": 2356
+    },
+    {
+      "path": "root/home-data-pages-phase1-install/whole-build-ownership-repair/extract-upstream-home-partition.py.before",
+      "sha256Bytes": "ecf012106676e260a7df0dce4e934c09169d99367e5a127d63433d0469a1ad92",
+      "sizeBytes": 6749
+    },
+    {
+      "path": "root/home-data-pages-phase1-install/whole-build-ownership-repair/extract-upstream-home-partition.py.patch",
+      "sha256Bytes": "9d647eb89e345a1665aed0dbfa6945532f01b1e69e9333a670a4a1b5d7b1cfe5",
+      "sizeBytes": 2855
+    },
+    {
+      "path": "root/home-data-pages-phase1-install/whole-build-ownership-repair/extract-upstream-plugins.py.before",
+      "sha256Bytes": "4cfc9d0f889f4334c292cb12b2a0e5f7441c73df2999bf7504726a058a3b2756",
+      "sizeBytes": 33744
+    },
+    {
+      "path": "root/home-data-pages-phase1-install/whole-build-ownership-repair/extract-upstream-plugins.py.patch",
+      "sha256Bytes": "7f1f446c6fdeaf0ee717001043723fe1c82577e835d8aa187bd8e89ed69ae2d9",
+      "sizeBytes": 1291
+    },
+    {
+      "path": "root/home-data-pages-phase1-install/whole-build-ownership-repair/report.json",
+      "sha256Bytes": "abe7f6d737ecb41ba2ccbdb942ccc527bd5f61fae709905a74ee635e4020a044",
+      "sizeBytes": 1552
+    },
+    {
+      "path": "root/home-subscription-install/installed.json",
+      "sha256Bytes": "168dd92373bed7fde28eb3bc3e60bb88e35e84b2e587de4c727d67e0d189e425",
+      "sizeBytes": 1655
+    },
+    {
+      "path": "root/home-owner-actual39/RetainedHomeGateFixture.kt",
+      "sha256Bytes": "e72b4180dd9c5a0d549dee7844db957d99d2e782dc68090beebc907957c0eb7c",
+      "sizeBytes": 6292
+    },
+    {
+      "path": "root/home-owner-actual39/compiler.args",
+      "sha256Bytes": "f4466615f710e958b1b4ab67c63c3033782f81dc11325d25a3129fd278372a3d",
+      "sizeBytes": 24515
+    },
+    {
+      "path": "root/home-owner-actual39/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/home-owner-actual39/result.json",
+      "sha256Bytes": "6cd98a91c093b7b9d2816b27627acf26638a96e0ae2329b970bb3977ee6248cf",
+      "sizeBytes": 620
+    },
+    {
+      "path": "root/home-owner-actual39/runtime.log",
+      "sha256Bytes": "afabb8247f5c7d65ec01905f97797220685f5c6988bacdb990085bfc13ddba6e",
+      "sizeBytes": 685
+    },
+    {
+      "path": "root/install-home-data-pages-phase1.py",
+      "sha256Bytes": "66fc69594f089b7963c3d22809831d675fb1af17d7ecb8c2af47d2209ae70d1f",
+      "sizeBytes": 7557
+    },
+    {
+      "path": "root/repair-home-source-ownership.py",
+      "sha256Bytes": "e038bf9b489a542be1e7907abd3beeb6d1ebf40bd3fcb7c381c7f50e0e283662",
+      "sizeBytes": 4482
+    },
+    {
+      "path": "root/install-home-subscription.py",
+      "sha256Bytes": "cf64f16cc798f00ef52f637493710d208e8948ccd97bff8be10d6cf8f3b747d7",
+      "sizeBytes": 4289
+    },
+    {
+      "path": "root/prove-home-actual39.py",
+      "sha256Bytes": "4de4fa1c2b88879c53da4bab205036158b5fee7bced87009c4eb8e69c7abc4d7",
+      "sizeBytes": 3499
+    },
+    {
+      "path": "root/freeze-home-data-pages39.py",
+      "sha256Bytes": "a944b158ab83d51649e68e74c6d1daf2e23d8026432f9751df876068761df275",
+      "sizeBytes": 7723
+    },
+    {
+      "path": "root/jvm-method-name-audit-39.json",
+      "sha256Bytes": "bd199269472d7e7d36a55472683a10bad4ecbc8954a4f635cbd69b537169f5c2",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/snapshot39/manifest.json",
+      "sha256Bytes": "4840845d18a6fd1171c32a03ba397306a0f509b6510ca9544ceac935befe46ae",
+      "sizeBytes": 125102
+    },
+    {
+      "path": "root/snapshot39/ordered-runtime-cp.json",
+      "sha256Bytes": "e9b8db57c428c214b243e2ea41761d0745c3b48ff386fe8d38901d892760fd8f",
+      "sizeBytes": 36694
+    },
+    {
+      "path": "root/classes-38.log",
+      "sha256Bytes": "7d947dcead84040378480a84755435def7fb7045118938ec9d0d194a8d7ffd4e",
+      "sizeBytes": 16162
+    },
+    {
+      "path": "root/classes-39.log",
+      "sha256Bytes": "b63c6f2f0197bf9f40739f3c8138ea24e55f8b840545f3c0f107b472b8b35e93",
+      "sizeBytes": 17120
+    },
+    {
+      "path": "root/home-plan-conversion-proof.log",
+      "sha256Bytes": "b5af33ee1166967cd426058301afda403a8d9114b08356f24b63c2c8b9340439",
+      "sizeBytes": 105310
+    },
+    {
+      "path": "root/home-plan-conversion-proof-02.log",
+      "sha256Bytes": "12ed24c6dc915992227da627e442d5b5f2a62fd541bba7b5226933c96d7568a8",
+      "sizeBytes": 103
+    },
+    {
+      "path": "root/sole-converter-final/desktop/tools/extract-upstream-home-viewmodel.py",
+      "sha256Bytes": "8fbf5e2ef1c635284500df3999122134b4377f088eb6012af30e901ea671c1e0",
+      "sizeBytes": 4783
+    },
+    {
+      "path": "root/sole-converter-final/desktop/tools/tests/test_extract_upstream_plugins.py",
+      "sha256Bytes": "c542e4a00c210adf3b297c87df10ad527d78b94d9c4915971849840ced4966e9",
+      "sizeBytes": 13128
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "dc38cee8fa0e14d9f03301e546724b84203aebc405e4fedcec28cb70edc4df61",
+      "sizeBytes": 1307
+    },
+    {
+      "path": "root/compiled-output-exclusions.json",
+      "sha256Bytes": "a71ce9c191d8070c7022ebc2b75b6def50216772d9b0de36c56e2b898ce68b7f",
+      "sizeBytes": 253898
+    }
+  ]
+}

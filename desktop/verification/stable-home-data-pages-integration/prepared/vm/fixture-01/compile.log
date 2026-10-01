@@ -1,0 +1,102 @@
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:32:5: error: property must be initialized or be abstract.
+    var home:suspend(Int)->Result<List<VideoItem>>={idx->calls+="home:$idx";Result.success(listOf(video("R$idx")))}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:32:50: error: syntax error: Expecting a '>'.
+    var home:suspend(Int)->Result<List<VideoItem>>={idx->calls+="home:$idx";Result.success(listOf(video("R$idx")))}
+                                                 ^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:32:50: error: syntax error: Property getter or setter expected.
+    var home:suspend(Int)->Result<List<VideoItem>>={idx->calls+="home:$idx";Result.success(listOf(video("R$idx")))}
+                                                 ^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:32:52: error: syntax error: Expecting member declaration.
+    var home:suspend(Int)->Result<List<VideoItem>>={idx->calls+="home:$idx";Result.success(listOf(video("R$idx")))}
+                                                   ^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:32:52: error: function declaration must have a name.
+    var home:suspend(Int)->Result<List<VideoItem>>={idx->calls+="home:$idx";Result.success(listOf(video("R$idx")))}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:32:53: error: unresolved reference 'idx'.
+    var home:suspend(Int)->Result<List<VideoItem>>={idx->calls+="home:$idx";Result.success(listOf(video("R$idx")))}
+                                                    ^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:32:56: error: syntax error: Unexpected tokens (use ';' to separate expressions on the same line).
+    var home:suspend(Int)->Result<List<VideoItem>>={idx->calls+="home:$idx";Result.success(listOf(video("R$idx")))}
+                                                       ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:32:76: error: syntax error: Expecting an element.
+    var home:suspend(Int)->Result<List<VideoItem>>={idx->calls+="home:$idx";Result.success(listOf(video("R$idx")))}
+                                                                           ^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:32:108: error: unresolved reference 'idx'.
+    var home:suspend(Int)->Result<List<VideoItem>>={idx->calls+="home:$idx";Result.success(listOf(video("R$idx")))}
+                                                                                                           ^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:33:5: error: property must be initialized or be abstract.
+    var region:suspend(Int,Int)->Result<List<VideoItem>>={tid,page->calls+="region:$tid:$page";Result.success(listOf(video("T$tid-$page")))}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:33:56: error: syntax error: Expecting a '>'.
+    var region:suspend(Int,Int)->Result<List<VideoItem>>={tid,page->calls+="region:$tid:$page";Result.success(listOf(video("T$tid-$page")))}
+                                                       ^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:33:56: error: syntax error: Property getter or setter expected.
+    var region:suspend(Int,Int)->Result<List<VideoItem>>={tid,page->calls+="region:$tid:$page";Result.success(listOf(video("T$tid-$page")))}
+                                                       ^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:33:58: error: syntax error: Expecting member declaration.
+    var region:suspend(Int,Int)->Result<List<VideoItem>>={tid,page->calls+="region:$tid:$page";Result.success(listOf(video("T$tid-$page")))}
+                                                         ^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:33:58: error: function declaration must have a name.
+    var region:suspend(Int,Int)->Result<List<VideoItem>>={tid,page->calls+="region:$tid:$page";Result.success(listOf(video("T$tid-$page")))}
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:33:59: error: unresolved reference 'tid'.
+    var region:suspend(Int,Int)->Result<List<VideoItem>>={tid,page->calls+="region:$tid:$page";Result.success(listOf(video("T$tid-$page")))}
+                                                          ^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:33:62: error: syntax error: Unexpected tokens (use ';' to separate expressions on the same line).
+    var region:suspend(Int,Int)->Result<List<VideoItem>>={tid,page->calls+="region:$tid:$page";Result.success(listOf(video("T$tid-$page")))}
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:33:95: error: syntax error: Expecting an element.
+    var region:suspend(Int,Int)->Result<List<VideoItem>>={tid,page->calls+="region:$tid:$page";Result.success(listOf(video("T$tid-$page")))}
+                                                                                              ^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:33:127: error: unresolved reference 'tid'.
+    var region:suspend(Int,Int)->Result<List<VideoItem>>={tid,page->calls+="region:$tid:$page";Result.success(listOf(video("T$tid-$page")))}
+                                                                                                                              ^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:33:132: error: unresolved reference 'page'.
+    var region:suspend(Int,Int)->Result<List<VideoItem>>={tid,page->calls+="region:$tid:$page";Result.success(listOf(video("T$tid-$page")))}
+                                                                                                                                   ^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:34:5: error: property must be initialized or be abstract.
+    var nav:suspend()->Result<NavData>={Result.success(NavData(isLogin=loggedIn,mid=if(loggedIn)123 else 0))}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:34:38: error: syntax error: Expecting a '>'.
+    var nav:suspend()->Result<NavData>={Result.success(NavData(isLogin=loggedIn,mid=if(loggedIn)123 else 0))}
+                                     ^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:34:38: error: syntax error: Property getter or setter expected.
+    var nav:suspend()->Result<NavData>={Result.success(NavData(isLogin=loggedIn,mid=if(loggedIn)123 else 0))}
+                                     ^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:34:40: error: syntax error: Expecting member declaration.
+    var nav:suspend()->Result<NavData>={Result.success(NavData(isLogin=loggedIn,mid=if(loggedIn)123 else 0))}
+                                       ^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:34:40: error: function declaration must have a name.
+    var nav:suspend()->Result<NavData>={Result.success(NavData(isLogin=loggedIn,mid=if(loggedIn)123 else 0))}
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:35:5: error: property must be initialized or be abstract.
+    var history:suspend(Int,Long,Long,String)->Result<HistoryResult>={ps,max,viewAt,business->calls+="history:$ps:$max:$viewAt:$business";Result.success(HistoryResult(emptyList(),null))}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:35:68: error: syntax error: Expecting a '>'.
+    var history:suspend(Int,Long,Long,String)->Result<HistoryResult>={ps,max,viewAt,business->calls+="history:$ps:$max:$viewAt:$business";Result.success(HistoryResult(emptyList(),null))}
+                                                                   ^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:35:68: error: syntax error: Property getter or setter expected.
+    var history:suspend(Int,Long,Long,String)->Result<HistoryResult>={ps,max,viewAt,business->calls+="history:$ps:$max:$viewAt:$business";Result.success(HistoryResult(emptyList(),null))}
+                                                                   ^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:35:70: error: syntax error: Expecting member declaration.
+    var history:suspend(Int,Long,Long,String)->Result<HistoryResult>={ps,max,viewAt,business->calls+="history:$ps:$max:$viewAt:$business";Result.success(HistoryResult(emptyList(),null))}
+                                                                     ^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:35:70: error: function declaration must have a name.
+    var history:suspend(Int,Long,Long,String)->Result<HistoryResult>={ps,max,viewAt,business->calls+="history:$ps:$max:$viewAt:$business";Result.success(HistoryResult(emptyList(),null))}
+                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:35:71: error: unresolved reference 'ps'.
+    var history:suspend(Int,Long,Long,String)->Result<HistoryResult>={ps,max,viewAt,business->calls+="history:$ps:$max:$viewAt:$business";Result.success(HistoryResult(emptyList(),null))}
+                                                                      ^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:35:73: error: syntax error: Unexpected tokens (use ';' to separate expressions on the same line).
+    var history:suspend(Int,Long,Long,String)->Result<HistoryResult>={ps,max,viewAt,business->calls+="history:$ps:$max:$viewAt:$business";Result.success(HistoryResult(emptyList(),null))}
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:35:138: error: syntax error: Expecting an element.
+    var history:suspend(Int,Long,Long,String)->Result<HistoryResult>={ps,max,viewAt,business->calls+="history:$ps:$max:$viewAt:$business";Result.success(HistoryResult(emptyList(),null))}
+                                                                                                                                         ^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:158:28: error: function invocation 'snapshot(...)' expected.
+        val before=h.store.snapshot.value
+                           ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\fixtures\HomeVmFixture.kt:161:23: error: function invocation 'snapshot(...)' expected.
+        check(h.store.snapshot.value==before)
+                      ^^^^^^^^

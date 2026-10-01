@@ -186,12 +186,12 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 833,
+    "candidateSourceIdentityCount": 864,
     "candidateResourceCount": 213,
     "all907CurrentSourceAndResourcePinsVerified": true,
-    "actualClassesEvidence": "verification/stable-home-windows-prefs-integration/root/classes-37.log",
+    "actualClassesEvidence": "verification/stable-home-data-pages-integration/root/classes-39.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-home-windows-prefs-integration/root/classes-37.log",
+    "latestCandidateClassesLog": "verification/stable-home-data-pages-integration/root/classes-39.log",
     "liveGuestBackendPassed": false,
     "liveGuestBackendFailure": "HTTP 412 at video details after popular/search passed",
     "liveGuestBackendEvidence": "verification/stable-comments-sharing-integration/root/actual-guest-backend/run-01/accepted-evidence.json",
@@ -219,7 +219,7 @@
     "fullDanmakuPanelPointerAccepted": false,
     "fullDanmakuAndroidRendererParityAccepted": false,
     "danmakuSettingsRootEvidence": "verification/stable-danmaku-settings-root-integration/integration-report.json",
-    "latestCandidateClassesPhase": 37,
+    "latestCandidateClassesPhase": 39,
     "danmakuActualProduct27Assertions": 61,
     "danmakuSettingsIsolatedPanelPointerAccepted": true,
     "danmakuSettingsIsolatedPanelUiAssertions": 32,
@@ -255,7 +255,7 @@
     "miuixActualRootNavigationDispatcherAccepted": false,
     "miuixOriginalNavModuleEvidence": "verification/stable-miuix-nav-integration/integration-report.json",
     "originalHomeUiSourceCompiled": true,
-    "originalHomeViewModelCompiled": false,
+    "originalHomeViewModelCompiled": true,
     "originalHomeRootMounted": false,
     "homeActual33NativeMediaAssertions": 19,
     "homeActual33PreferencesGates": 6,
@@ -275,7 +275,13 @@
     "homeActual37ProductOrigins": 4,
     "homeActual37ProductionOverrides": 0,
     "homeWindowsPreferenceActualRootMounted": false,
-    "homeWindowsPreferenceIntegrationEvidence": "verification/stable-home-windows-prefs-integration/integration-report.json"
+    "homeWindowsPreferenceIntegrationEvidence": "verification/stable-home-windows-prefs-integration/integration-report.json",
+    "originalHomeRawProtocolsCompiled": true,
+    "originalHomeFourEmbeddedPagesCompiled": true,
+    "homeActual39RetainedOwnerGates": 5,
+    "homeActual39ProductClassOrigins": 5,
+    "homeActual39ProductionOverrides": 0,
+    "homeDataPagesIntegrationEvidence": "verification/stable-home-data-pages-integration/integration-report.json"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -302,6 +308,7 @@
     "verification/stable-miuix-nav-integration/integration-report.json",
     "verification/stable-home-ui-media-integration/integration-report.json",
     "verification/stable-web-mask-osd-integration/integration-report.json",
-    "verification/stable-home-windows-prefs-integration/integration-report.json"
+    "verification/stable-home-windows-prefs-integration/integration-report.json",
+    "verification/stable-home-data-pages-integration/integration-report.json"
   ]
 }

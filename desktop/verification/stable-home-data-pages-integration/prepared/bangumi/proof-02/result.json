@@ -1,0 +1,26 @@
+{
+  "exitCode": 0,
+  "originals": [
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/bangumi/BangumiHubPolicyTest.kt",
+      "sha256LF": "eb99b8907dfa6fda36ce5c1fd5b8ebcddf81a22f975b5e9557e2d8834e753b60",
+      "methods": 12,
+      "fixtureChanges": "remove only JUnit imports/annotations; exact original bodies"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicyTest.kt",
+      "sha256LF": "ae6c5777c8fd6141d3640e554053cf71b26800fa1fbc2cbc6a1489c15ba72546",
+      "methods": 4,
+      "fixtureChanges": "remove only JUnit imports/annotations; exact original bodies"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/bangumi/MyFollowPolicyTest.kt",
+      "sha256LF": "842934966f7afe5ad38a6b0745a09ea6f60591bd535898f3ee749cd038307b87",
+      "methods": 12,
+      "fixtureChanges": "remove only JUnit imports/annotations; exact original bodies"
+    }
+  ],
+  "originalPolicyMethods": 28,
+  "explicitProspectiveClasses": true,
+  "actualRootAccepted": false
+}

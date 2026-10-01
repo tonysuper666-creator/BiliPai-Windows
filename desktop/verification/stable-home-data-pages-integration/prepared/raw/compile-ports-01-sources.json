@@ -1,0 +1,34 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopHomePreloadPolicy.kt",
+    "sha256Bytes": "d3fdea57a97b0b94aaa66b414792239d3137fbb777e3c4f6ee62b625338c5583"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalHomeActionProtocol.kt",
+    "sha256Bytes": "c8390780e95e622490af5c33e6cd7034095cee730a5bd35fc5d125efe3d35497"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalHomeHistoryProtocol.kt",
+    "sha256Bytes": "22ede1697b91e0ac938509901a5d11cac5cc1408f81d06f7ceddfc3e02afcf4e"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalHomeLiveProtocol.kt",
+    "sha256Bytes": "828cf230f131134a20b19ab712c61f5a7cd3b5b68e6986b104b955744b1bd296"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalHomeMessageProtocol.kt",
+    "sha256Bytes": "5a5f74105a991314296f0e35c5d566c51b6f96a369f158c4da60f0d8d568f2c1"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalHomeVideoProtocol.kt",
+    "sha256Bytes": "40ffcf0957890b82c0cbc60e5df74e7812b20a9f7ac4505dfdd60c28c9c60c50"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeProtocolEnvironment.kt",
+    "sha256Bytes": "bab988706006e029cfa5fc59298dec7a772ff4f64c4786abaa91f922c06f1edd"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeRequestPorts.kt",
+    "sha256Bytes": "4be042dd1a85af5e0b9db3f2f7cbf5b499fda4d333cb409f6053d589477f468e"
+  }
+]

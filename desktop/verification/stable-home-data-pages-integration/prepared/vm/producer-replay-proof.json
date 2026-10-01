@@ -1,0 +1,38 @@
+[
+  {
+    "path": "prepared\\generated\\com\\android\\purebilibili\\core\\util\\EasterEggs.kt",
+    "sha256": "b12c38b3b69474dddc7dbbe2502df72ee5e780c7dc3adde7527d6781ef8262d5",
+    "replayedPath": "replayed-generated\\com\\android\\purebilibili\\core\\util\\EasterEggs.kt",
+    "sameBytes": false
+  },
+  {
+    "path": "prepared\\generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeViewModel.kt",
+    "sha256": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc",
+    "replayedPath": "replayed-generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeViewModel.kt",
+    "sameBytes": true
+  },
+  {
+    "path": "prepared\\generated\\com\\android\\purebilibili\\feature\\home\\HomeFollowFeedMappingPolicy.kt",
+    "sha256": "70900dd4c3ed1f19cc95c3687ac6d7c757a12455da037158a761521cafe2717a",
+    "replayedPath": "replayed-generated\\com\\android\\purebilibili\\feature\\home\\HomeFollowFeedMappingPolicy.kt",
+    "sameBytes": false
+  },
+  {
+    "path": "prepared\\generated\\com\\android\\purebilibili\\feature\\home\\TodayWatchRefreshPolicy.kt",
+    "sha256": "0a30ad8228d57eec324734cd33a69a33c446bcbb8ae8f3ae607da52d7e5dfe9c",
+    "replayedPath": "replayed-generated\\com\\android\\purebilibili\\feature\\home\\TodayWatchRefreshPolicy.kt",
+    "sameBytes": false
+  },
+  {
+    "path": "prepared\\generated\\com\\android\\purebilibili\\feature\\message\\DesktopHomeTotalUnreadCount.kt",
+    "sha256": "9a1695d1a46c5cc074c148b03c633c00702fb80efa437aa7f797dcf1de2fb8ae",
+    "replayedPath": "replayed-generated\\com\\android\\purebilibili\\feature\\message\\DesktopHomeTotalUnreadCount.kt",
+    "sameBytes": false
+  },
+  {
+    "path": "prepared\\generated\\com\\android\\purebilibili\\feature\\plugin\\DesktopHomeFeedFilterId.kt",
+    "sha256": "458cd2aabe5428c2ed83a98e94b3ff7be70a7a265f134d9cd0f4d60585e70950",
+    "replayedPath": "replayed-generated\\com\\android\\purebilibili\\feature\\plugin\\DesktopHomeFeedFilterId.kt",
+    "sameBytes": false
+  }
+]

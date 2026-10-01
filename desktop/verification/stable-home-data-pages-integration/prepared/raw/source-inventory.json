@@ -1,0 +1,115 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "observedRegistryCount": 831,
+  "records": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "sha256": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "sha256Bytes": "b9df568bd9c04f63a07141bc66b974a1c8f12208906d6fa28aa98ababa88fa20",
+      "mode": "policy-extract",
+      "features": [
+        "home-protocols"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt",
+      "sha256": "4081b04ee97b4edab58507811d43b637afb78a04fd1b6f94ffa6697f72905c4a",
+      "sha256Bytes": "c74515e41e743074581d632d7f5ff81f4aac25fabdd62d5f0ef5ccf6f80c071d",
+      "mode": "policy-extract",
+      "features": [
+        "home-protocols"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "sha256": "28748c0fd10125e603a8c0f28fff63781f87d3350e1446cc355622f447f8f86d",
+      "sha256Bytes": "48e5d79551ca5206303cffdac56cec36c8da5774f54539fac93af183809e9b8f",
+      "mode": "policy-extract",
+      "features": [
+        "home-protocols"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt",
+      "sha256": "405e952ef30ec06f14a155599a92641d533e73f28ea198f0aebfda90960a4bc8",
+      "sha256Bytes": "5da7d4dba7e30148d11987036ba20269836aaaf7714799193e0161d83621a435",
+      "mode": "policy-extract",
+      "features": [
+        "home-protocols"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sha256": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+      "sha256Bytes": "74abbdb8d4aab4a82333bc5ab14da2948e76a4e432884101292033ee635dee25",
+      "mode": "policy-extract",
+      "features": [
+        "home-protocols"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt",
+      "sha256": "67deacd84bee9f8803b2190e079d5486d2593bf26bc29d1a114ae259273fe87d",
+      "sha256Bytes": "00745b6aa8046185702c14719421e8474e37289ef5e68ede63ac0b1730f1111a",
+      "mode": "direct",
+      "features": [
+        "home-protocols"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "sha256Bytes": "9b7d174db3a1a08802e8f7c4282353896552052cf066facc6853e8c27024d493",
+      "mode": "api-extract",
+      "features": [
+        "home-protocol-platform-reference"
+      ],
+      "existingIdentity": true,
+      "existingMode": "api-extract",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/AnalyticsHelper.kt",
+      "sha256": "b8a96390d286964518caea6849afaeba075f5d3e8ac1cdb23b73af17feac6ccc",
+      "sha256Bytes": "cfcf260048f83cf7bf538f91d90dd9479d956a3f4ca669b0eef9913d71f831ca",
+      "mode": "policy-extract",
+      "features": [
+        "home-protocol-platform-reference"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "sha256Bytes": "27aa95562630640a5308f02c0c417d2deda7254d08b364b6dd9dbf48facbb542",
+      "mode": "policy-extract",
+      "features": [
+        "home-protocol-platform-reference"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": true
+    }
+  ],
+  "mergeOnly": true
+}

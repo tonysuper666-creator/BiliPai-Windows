@@ -1,0 +1,46 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\util\\EasterEggs.kt",
+    "sha256Bytes": "b12c38b3b69474dddc7dbbe2502df72ee5e780c7dc3adde7527d6781ef8262d5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeViewModel.kt",
+    "sha256Bytes": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\home\\HomeFollowFeedMappingPolicy.kt",
+    "sha256Bytes": "70900dd4c3ed1f19cc95c3687ac6d7c757a12455da037158a761521cafe2717a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\home\\TodayWatchRefreshPolicy.kt",
+    "sha256Bytes": "0a30ad8228d57eec324734cd33a69a33c446bcbb8ae8f3ae607da52d7e5dfe9c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\message\\DesktopHomeTotalUnreadCount.kt",
+    "sha256Bytes": "9a1695d1a46c5cc074c148b03c633c00702fb80efa437aa7f797dcf1de2fb8ae"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\plugin\\DesktopHomeFeedFilterId.kt",
+    "sha256Bytes": "458cd2aabe5428c2ed83a98e94b3ff7be70a7a265f134d9cd0f4d60585e70950"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeDataEnvironment.kt",
+    "sha256Bytes": "a6f4ba7834ddc5bee8bc0e258b5d38c190d98a8de956d6bd1c4b8facdac20e53"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeFollowingCache.kt",
+    "sha256Bytes": "0645b926003f24702211863c9bdc6e0950255a5d946fcbf4bda078ecbb22ba9a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeOwnedMutableStateFlow.kt",
+    "sha256Bytes": "5b5308d75689cdeac2c810067617ecbe6bcc8fb2232577332158c6d81e46b480"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalTodayWatchOwner.kt",
+    "sha256Bytes": "0e090cadc6ac4b2f3422be8b2a06c77d20953f6e3beec56b7dbd83df03f09407"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\prepared\\replacements\\com\\bilipai\\desktop\\plugins\\DesktopTodayWatchRepository.kt",
+    "sha256Bytes": "b32c09a4df17ea723a3c41e77153b87426130c7c539996778efef6ed31808a00"
+  }
+]

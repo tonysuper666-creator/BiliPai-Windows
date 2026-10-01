@@ -1,0 +1,12 @@
+{
+  "baseProducer": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-partition-parity\\prepared\\tools\\extract-upstream-home-partition.py",
+  "baseSHA256LF": "166c371b03e0ed398b99fa4097db94868ddcf5e16a157348581921152e526efc",
+  "desiredSHA256LF": "e65633d64bb428a6e1812158db4bb1feb6ba6ff1699e31bebde044421d7a0070",
+  "patchSHA256": "9b79d22b1228bbe04572bd182a3d458712c10fc612f07693898d2bc0289b36d6",
+  "consumerFunctions": [
+    "ContentVideoGridSkeleton",
+    "ContentVideoGridItemSkeleton"
+  ],
+  "oneExistingProducer": true,
+  "referenceOnlyNotInstall": true
+}

@@ -1,0 +1,6 @@
+desktop\.local\stable-home-partition-parity\generated\com\android\purebilibili\feature\partition\DesktopOriginalPartitionScreen.kt:259:43: warning: 'val Icons.Filled.DirectionsRun: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.DirectionsRun.
+        129 -> if (selected) Icons.Filled.DirectionsRun else Icons.Outlined.DirectionsRun
+                                          ^^^^^^^^^^^^^
+desktop\.local\stable-home-partition-parity\generated\com\android\purebilibili\feature\partition\DesktopOriginalPartitionScreen.kt:259:77: warning: 'val Icons.Outlined.DirectionsRun: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.DirectionsRun.
+        129 -> if (selected) Icons.Filled.DirectionsRun else Icons.Outlined.DirectionsRun
+                                                                            ^^^^^^^^^^^^^

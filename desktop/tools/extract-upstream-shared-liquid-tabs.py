@@ -62,6 +62,7 @@ def generate(repo: Path, output: Path, standalone: bool = False):
     selected_names.append(n)
     if n=='BottomBarMatchedReusableLiquidDock':break
    selected_names.append('BottomBarMatchedDockVisibility')
+   selected_names.append('BottomBarMatchedLiquidIndicator')
    selected_imports='\n'.join(line for line in s.splitlines() if line.startswith('import '))
   if 'import androidx.compose.ui.platform.LocalConfiguration' in s:t.append(('import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.DesktopDynamicWindowConfiguration as LocalConfiguration'))
   if 'import android.os.Build\n' in s:t.append(('import android.os.Build\n','import com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported\n'))

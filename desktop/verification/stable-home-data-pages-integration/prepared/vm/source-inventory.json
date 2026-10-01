@@ -1,0 +1,103 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "registryObservedCount": 770,
+  "records": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+      "sha256": "63ffd0eadd3080e2b304612c9c1e672f5f2370ca9c9db4f8040a52e85cbc15aa",
+      "sha256Bytes": "289b35176745e1f85800f674152b9aee95762a0ecd9a77920d4bbf4ce21d4a82",
+      "mode": "policy-extract",
+      "features": [
+        "home-viewmodel"
+      ],
+      "existingIdentity": true,
+      "existingFeatures": [
+        "discovery",
+        "plugins"
+      ],
+      "existingMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/EasterEggs.kt",
+      "sha256": "1a4758cc65806db893da7942433a4ba44fd2b91c1396bf1653dbdcd59dc6827f",
+      "sha256Bytes": "b12c38b3b69474dddc7dbbe2502df72ee5e780c7dc3adde7527d6781ef8262d5",
+      "mode": "direct",
+      "features": [
+        "home-viewmodel"
+      ],
+      "existingIdentity": false,
+      "existingFeatures": [],
+      "existingMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt",
+      "sha256": "14aed865e65aa2a8f79db3760abd9931b36c5b719676eb577241601cd90be454",
+      "sha256Bytes": "0a30ad8228d57eec324734cd33a69a33c446bcbb8ae8f3ae607da52d7e5dfe9c",
+      "mode": "direct",
+      "features": [
+        "home-viewmodel"
+      ],
+      "existingIdentity": false,
+      "existingFeatures": [],
+      "existingMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt",
+      "sha256": "45dc3e2eb12e82a5dc2d0fec4bf82a03154444fd4519f6b2256c98f19ab2d630",
+      "sha256Bytes": "70900dd4c3ed1f19cc95c3687ac6d7c757a12455da037158a761521cafe2717a",
+      "mode": "direct",
+      "features": [
+        "home-viewmodel"
+      ],
+      "existingIdentity": false,
+      "existingFeatures": [],
+      "existingMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/BiliPaiFeedFilterPlugin.kt",
+      "sha256": "10c8ec1f6ae455fc6e488908c948a8e424080faa3c772788194dcdd3bd2adff3",
+      "sha256Bytes": "13c85e09808761bda90b0e09d4c55da1deb6b8775c52e1747170b6576134fa61",
+      "mode": "policy-extract",
+      "features": [
+        "home-viewmodel"
+      ],
+      "existingIdentity": true,
+      "existingFeatures": [
+        "discovery"
+      ],
+      "existingMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/MessageCenterPolicy.kt",
+      "sha256": "b341edc17ccbe4d802341635279bc98e7cd308c067d96ab2f4e549b175703605",
+      "sha256Bytes": "fe60c6c93c86b00fbb4b2b3ffe2c3e3bae091dc31282bfa004c6ef9896e44d43",
+      "mode": "policy-extract",
+      "features": [
+        "home-viewmodel"
+      ],
+      "existingIdentity": false,
+      "existingFeatures": [],
+      "existingMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "sha256": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b",
+      "sha256Bytes": "72243edb8af9ee05cbdf2493d1f34915db513fe9926798f5fc21374b53cefecc",
+      "mode": "policy-extract",
+      "features": [
+        "home-viewmodel"
+      ],
+      "existingIdentity": true,
+      "existingFeatures": [
+        "settings-home-dynamic-parity",
+        "settings-dynamic-tabs-parity",
+        "settings-dynamic-full-card-parity",
+        "dynamic-detail-reply"
+      ],
+      "existingMode": "policy-extract",
+      "soleProducer": "existing extract-upstream-dynamic-settings.py appends only 2 original getters to same registry"
+    }
+  ],
+  "newIdentityCount": 4,
+  "instruction": "Merge features only on current records, preserve existing sole producers/modes; no whole registry replacement"
+}

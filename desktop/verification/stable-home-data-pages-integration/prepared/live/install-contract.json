@@ -1,0 +1,29 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\tools\\extract-upstream-live-list.py",
+      "target": "desktop/tools/extract-upstream-live-list.py",
+      "sha256Bytes": "13a041d3833af04827723915c26703aba6986bbf495fd1c06d996599eeca8442",
+      "sha256LF": "13a041d3833af04827723915c26703aba6986bbf495fd1c06d996599eeca8442",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopLiveListBindings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveListBindings.kt",
+      "sha256Bytes": "97993d0091a4bb7496f72cede57a19ff32ae0997451acecd895a0e8937c59826",
+      "sha256LF": "97993d0091a4bb7496f72cede57a19ff32ae0997451acecd895a0e8937c59826",
+      "newSoleDefinition": true
+    }
+  ],
+  "localSharedHunks": 0,
+  "productionSelectedGeneratedSources": 4,
+  "directOriginalFiles": 9,
+  "declaredProspectiveRootRequired": "parent raw694 must be installed with its exact retained owner environment and two same-source transport families before whole compile",
+  "registry": "registry-merge-recipe.json",
+  "gradleRecipe": "gradle-tasks.snippet.kts",
+  "callerRecipe": "ROOT-INTEGRATION.md",
+  "generatedPreparedFilesInstall": false,
+  "jarInstall": false,
+  "newExternalDependencies": 0
+}

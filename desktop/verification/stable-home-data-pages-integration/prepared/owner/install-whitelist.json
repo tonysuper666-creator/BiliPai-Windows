@@ -1,0 +1,68 @@
+{
+  "manualSources": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeBlockedPort.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeBlockedPort.kt",
+      "sha256Bytes": "ef3cda156722265454e5429a0172f114eee26caeacedeab98cdd3dc10c24f049",
+      "sha256LF": "ef3cda156722265454e5429a0172f114eee26caeacedeab98cdd3dc10c24f049"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeEmbeddedRetainedOwner.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEmbeddedRetainedOwner.kt",
+      "sha256Bytes": "94bfdbb6b929ea87200b17915888acdcec43adb8f0380823119b341dd708ace7",
+      "sha256LF": "94bfdbb6b929ea87200b17915888acdcec43adb8f0380823119b341dd708ace7"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt",
+      "sha256Bytes": "981b50e08be45ae2f9f6dd2b56b6c672704e1aacb485b066e74d0404190273a6",
+      "sha256LF": "981b50e08be45ae2f9f6dd2b56b6c672704e1aacb485b066e74d0404190273a6"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.kt",
+      "sha256Bytes": "c22cd94ca423d85a2099180485cec615d0775b1bc38be34a9f4babfe9dbb3283",
+      "sha256LF": "c22cd94ca423d85a2099180485cec615d0775b1bc38be34a9f4babfe9dbb3283"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootNavigation.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootNavigation.kt",
+      "sha256Bytes": "c60906c4b59ff3c617c8f24e8fba433cb998c537829f6e7029ba6911c5a763d4",
+      "sha256LF": "c60906c4b59ff3c617c8f24e8fba433cb998c537829f6e7029ba6911c5a763d4"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "fbf546f62dc00c4e2e9e754e942ee026c7bfaac002c73cb0395710c3fb9956c7",
+      "sha256LF": "fbf546f62dc00c4e2e9e754e942ee026c7bfaac002c73cb0395710c3fb9956c7"
+    }
+  ],
+  "narrowPatches": [
+    {
+      "path": "home-blocked-owner.patch",
+      "sha256Bytes": "e562bcd0771ea374eefd49150da04b59509012bb666b5de83207271b4807a641"
+    },
+    {
+      "path": "root-api-prerequisites.patch",
+      "sha256Bytes": "db472709b3e63b3ca609138dca2f88a1929b73a39339dcee2205116a7f159598"
+    }
+  ],
+  "registryDelta": {
+    "path": "upstream-source-delta.json",
+    "sha256Bytes": "ad6fc6b0ea1abdb12987bec7fb1d95f29073f9617c27ac9116bfc63343a595c2"
+  },
+  "referenceOnly": [
+    "prepared/follow-getters-reference/DesktopOriginalDynamicTimelineRepository.kt",
+    "prepared/blocked-delta/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+    "prepared/generated/com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt"
+  ],
+  "mustNotInstall": [
+    "history/**",
+    "classes-owner-*/**",
+    "gate-*/classes/**",
+    "any compiled JAR/DLL",
+    "full RootShell replacement",
+    "partial AppNavigation VideoRoute",
+    "external JAR changes"
+  ]
+}

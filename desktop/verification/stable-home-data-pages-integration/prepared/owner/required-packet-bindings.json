@@ -1,0 +1,27 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\frozen-handoff.json",
+    "sha256Bytes": "ac33081aa67a40a3f807e20426de7f7fc12d1ea6d3128f50e3a0f951e9587a37",
+    "installedByThisPacket": false
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\frozen-handoff.json",
+    "sha256Bytes": "4824a6984eead54af5ac2c045cb9a21d600488d6be4ed3cbea2ad5e6eabdf5f3",
+    "installedByThisPacket": false
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-partition-parity\\frozen-handoff.json",
+    "sha256Bytes": "d059904f107df7a650dd60816030828663cec950ae3250c23f89da81d5d28faf",
+    "installedByThisPacket": false
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-bangumi-page-parity\\frozen-handoff.json",
+    "sha256Bytes": "d7e62ffd35be7b302f7952d3ca4668910f73cc88a5d734bb91a529ffaf7ddcac",
+    "installedByThisPacket": false
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\frozen-handoff.json",
+    "sha256Bytes": "44b3f5508fc43b24bf9f3feb9a9258239321eecdce43e185b4ac4670c1a8aee5",
+    "installedByThisPacket": false
+  }
+]

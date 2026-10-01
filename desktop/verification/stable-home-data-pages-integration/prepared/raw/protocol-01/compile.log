@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-home-request-ports-parity\fixtures\ProtocolFixture.kt:67:106: error: argument type mismatch: actual type is 'List<PopularItem>', but 'List<DynamicRegionItem>?' was expected.
+            "getRegionVideos"->if(call.args[0]==13)DynamicRegionResponse(data=DynamicRegionData(archives=listOf(popular("BVregion13")))) else DynamicRegionResponse(code=-400)
+                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

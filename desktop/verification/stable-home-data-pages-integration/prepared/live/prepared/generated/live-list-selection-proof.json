@@ -1,0 +1,165 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "selectedSources": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveRoomCard.kt",
+      "output": "com/android/purebilibili/feature/live/LiveRoomCard.kt",
+      "originalSha256LF": "9ffd472531ddfbeab17237e32acf5c03a9ae4c604de64ad46710ea02ee206db0",
+      "preparedSha256LF": "9ffd472531ddfbeab17237e32acf5c03a9ae4c604de64ad46710ea02ee206db0",
+      "wholeOriginalFile": true,
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveChromePalette.kt",
+      "output": "com/android/purebilibili/feature/live/LiveChromePalette.kt",
+      "originalSha256LF": "f2d304269a3f795a70358cf6cf9e85c2b6433639ef9d48e3f93a2d488c49c10e",
+      "preparedSha256LF": "f2d304269a3f795a70358cf6cf9e85c2b6433639ef9d48e3f93a2d488c49c10e",
+      "wholeOriginalFile": true,
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt",
+      "output": "com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt",
+      "originalSha256LF": "c3251089682757da236fca48d4bdd453b931bfd47e176c3f73e01f1e31bc36e1",
+      "preparedSha256LF": "c3251089682757da236fca48d4bdd453b931bfd47e176c3f73e01f1e31bc36e1",
+      "wholeOriginalFile": true,
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeSelectableChip.kt",
+      "output": "com/android/purebilibili/feature/live/LiveHomeSelectableChip.kt",
+      "originalSha256LF": "8ebee65136586c62439c3acbb169991303a0526c111ee683156042c6cddf3f81",
+      "preparedSha256LF": "8ebee65136586c62439c3acbb169991303a0526c111ee683156042c6cddf3f81",
+      "wholeOriginalFile": true,
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeCategoryIndicatorPolicy.kt",
+      "output": "com/android/purebilibili/feature/live/LiveHomeCategoryIndicatorPolicy.kt",
+      "originalSha256LF": "22cd451faefa183a118a3cb65e0c61623cd310a54b7e8e68a4c04053310e5f42",
+      "preparedSha256LF": "22cd451faefa183a118a3cb65e0c61623cd310a54b7e8e68a4c04053310e5f42",
+      "wholeOriginalFile": true,
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt",
+      "output": "com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt",
+      "originalSha256LF": "9552dbe8bb68a612bb5cf5b35318a6bd0888e45edc234ccc2245be844b43c194",
+      "preparedSha256LF": "9552dbe8bb68a612bb5cf5b35318a6bd0888e45edc234ccc2245be844b43c194",
+      "wholeOriginalFile": true,
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt",
+      "output": "com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt",
+      "originalSha256LF": "16f08c3a5b6dd8a3c0613a7ef2439fe55be7ad12769c68f99055f9c4bed9778a",
+      "preparedSha256LF": "16f08c3a5b6dd8a3c0613a7ef2439fe55be7ad12769c68f99055f9c4bed9778a",
+      "wholeOriginalFile": true,
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveFeedParsePolicy.kt",
+      "output": "com/android/purebilibili/data/repository/LiveFeedParsePolicy.kt",
+      "originalSha256LF": "83e53199389f2b8aeaf9241257cea31b940066d30a5b87a671ff83ee717eb7d7",
+      "preparedSha256LF": "83e53199389f2b8aeaf9241257cea31b940066d30a5b87a671ff83ee717eb7d7",
+      "wholeOriginalFile": true,
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveAreaRoomsPolicy.kt",
+      "output": "com/android/purebilibili/data/repository/LiveAreaRoomsPolicy.kt",
+      "originalSha256LF": "b1472fdd261492b8d777f85f263ec23bd628e89f29b1c52e2b2b3531ae7d4c02",
+      "preparedSha256LF": "b1472fdd261492b8d777f85f263ec23bd628e89f29b1c52e2b2b3531ae7d4c02",
+      "wholeOriginalFile": true,
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveRoomLayoutPolicy.kt",
+      "output": "com/android/purebilibili/feature/live/DesktopLiveViewerCount.kt",
+      "originalSha256LF": "fe011d262fb3dd955f3bceb339ca9e399638e3a59d272cef6acebb29e995d542",
+      "preparedSha256LF": "8bc359ade9062adfdb67a19df9e878518ad7b273a9ad6856f66e4a559aabde18",
+      "wholeOriginalFile": false,
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/util/ResultExtensions.kt",
+      "output": "com/android/purebilibili/core/util/DesktopOriginalLiveApiErrors.kt",
+      "originalSha256LF": "8a95f76412bcdbd6975cedecff9d8f3f07a814f4f23312011ae9fa4e6e376116",
+      "preparedSha256LF": "85d5d212d7b6ef34d109c650dfd8d737535ed9d9c4ad20605637827c61d9eedc",
+      "wholeOriginalFile": false,
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "output": "com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "originalSha256LF": "a88f86fefe56e06d941438270ba0c32b3f35b739068cadf3ef4b838903ee49d8",
+      "preparedSha256LF": "caecaf23ef07a537a599fc6120c01932654f50f61a81b573ff5242a6bde5faad",
+      "wholeOriginalFile": true,
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "declaration": "getRecommendedLiveRooms",
+      "originalBodySha256LF": "d8c8e9377b7f989639c552e871b3e1c16f039fd369a8e977b2af5a8604bf613e",
+      "preparedBodySha256LF": "c694178241499dd8a6796d8de525ef240f0f11bfa78f6e38a1bbd5b2f2b53f64",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "declaration": "getLiveFeedHome",
+      "originalBodySha256LF": "1d30fd94a89cca12613059e23dc45d28bb075f98d04f44459237b8b9c423167f",
+      "preparedBodySha256LF": "0a87f9025eeb1b98455e7a4b816332f53df88ad9d5dbf0a9f3492157fcb5f432",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "declaration": "getLiveSecondHome",
+      "originalBodySha256LF": "22c6fefcb5bbb723c47dfa42423d4709d6555e923da8838d9b7ac9f7a68452c6",
+      "preparedBodySha256LF": "e64c4572d9f93ca951ea70e3724d2e02d0d84705483541b1dabe5a4207080227",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "declaration": "buildLiveAppFeedParams",
+      "originalBodySha256LF": "ad2a39ca4511d997dfcc937b1f8a45e19b9ceea37b1bfd7ac3631442f69f107e",
+      "preparedBodySha256LF": "c9b997d6e95dc1b70bffad4b7fa3f96aa5f2ec0e21646ba9cf54e4c2b422c3c9",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "declaration": "buildLiveAppSecondListParams",
+      "originalBodySha256LF": "064e48f0ce1e80b4307e705131ec9f8c5a3fadcaa86d81c04c611e7e54211a16",
+      "preparedBodySha256LF": "dfefae20922e39d63617846c9705312a2db8bc58029c5149107744bd6a8e36d8",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "declaration": "fallbackLiveFeedHome",
+      "originalBodySha256LF": "ac58ada7d93e3559d131bb972bdcfc5fb573d736be4d0cf2a89890b1ab3fd93f",
+      "preparedBodySha256LF": "ac58ada7d93e3559d131bb972bdcfc5fb573d736be4d0cf2a89890b1ab3fd93f",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "declaration": "getLiveAreaIndex",
+      "originalBodySha256LF": "7b31f8070f051c2f6e4215bf00daee10c878b94aa710385d678d1b51457c6100",
+      "preparedBodySha256LF": "6456c58fe333f7d168efb588bd99f7bb9836e85b952f271dfccfa4f6433e18b6",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "declaration": "getAreaRoomsPage",
+      "originalBodySha256LF": "4784c5991ddb398f02f996b3aa635430ad37804a429e3cef503769b1b9fc9a0c",
+      "preparedBodySha256LF": "1ba1778cbd893015afb3f487096ca9e6c52c546e5c1c895b3f05a283638738d3",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "output": "com/android/purebilibili/data/repository/DesktopOriginalLiveListProtocol.kt",
+      "originalSha256LF": "28748c0fd10125e603a8c0f28fff63781f87d3350e1446cc355622f447f8f86d",
+      "preparedSha256LF": "3c892bededf177f16bd396d3232ac86977587dc091c0e24924e3e6e352d7367c",
+      "wholeOriginalFile": false,
+      "adapted": true
+    }
+  ]
+}

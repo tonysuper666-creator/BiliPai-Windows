@@ -1,0 +1,53 @@
+{
+  "assertionCorrection": "Original task copied sources used CRLF bytes; generator uses LF. All original/selected semantic bodies match LF exactly; byte difference is not suppressed or claimed equal.",
+  "rows": [
+    {
+      "path": "prepared\\generated\\com\\android\\purebilibili\\core\\util\\EasterEggs.kt",
+      "preparedSha256Bytes": "b12c38b3b69474dddc7dbbe2502df72ee5e780c7dc3adde7527d6781ef8262d5",
+      "sha256LF": "1a4758cc65806db893da7942433a4ba44fd2b91c1396bf1653dbdcd59dc6827f",
+      "replayedPath": "replayed-generated\\com\\android\\purebilibili\\core\\util\\EasterEggs.kt",
+      "replayedSha256Bytes": "1a4758cc65806db893da7942433a4ba44fd2b91c1396bf1653dbdcd59dc6827f",
+      "sameLF": true
+    },
+    {
+      "path": "prepared\\generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeViewModel.kt",
+      "preparedSha256Bytes": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc",
+      "sha256LF": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc",
+      "replayedPath": "replayed-generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeViewModel.kt",
+      "replayedSha256Bytes": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc",
+      "sameLF": true
+    },
+    {
+      "path": "prepared\\generated\\com\\android\\purebilibili\\feature\\home\\HomeFollowFeedMappingPolicy.kt",
+      "preparedSha256Bytes": "70900dd4c3ed1f19cc95c3687ac6d7c757a12455da037158a761521cafe2717a",
+      "sha256LF": "45dc3e2eb12e82a5dc2d0fec4bf82a03154444fd4519f6b2256c98f19ab2d630",
+      "replayedPath": "replayed-generated\\com\\android\\purebilibili\\feature\\home\\HomeFollowFeedMappingPolicy.kt",
+      "replayedSha256Bytes": "45dc3e2eb12e82a5dc2d0fec4bf82a03154444fd4519f6b2256c98f19ab2d630",
+      "sameLF": true
+    },
+    {
+      "path": "prepared\\generated\\com\\android\\purebilibili\\feature\\home\\TodayWatchRefreshPolicy.kt",
+      "preparedSha256Bytes": "0a30ad8228d57eec324734cd33a69a33c446bcbb8ae8f3ae607da52d7e5dfe9c",
+      "sha256LF": "14aed865e65aa2a8f79db3760abd9931b36c5b719676eb577241601cd90be454",
+      "replayedPath": "replayed-generated\\com\\android\\purebilibili\\feature\\home\\TodayWatchRefreshPolicy.kt",
+      "replayedSha256Bytes": "14aed865e65aa2a8f79db3760abd9931b36c5b719676eb577241601cd90be454",
+      "sameLF": true
+    },
+    {
+      "path": "prepared\\generated\\com\\android\\purebilibili\\feature\\message\\DesktopHomeTotalUnreadCount.kt",
+      "preparedSha256Bytes": "9a1695d1a46c5cc074c148b03c633c00702fb80efa437aa7f797dcf1de2fb8ae",
+      "sha256LF": "67c52b5bd405395d5a9507f59e1059114ebea20c7541a71c994a98fb0741f77a",
+      "replayedPath": "replayed-generated\\com\\android\\purebilibili\\feature\\message\\DesktopHomeTotalUnreadCount.kt",
+      "replayedSha256Bytes": "67c52b5bd405395d5a9507f59e1059114ebea20c7541a71c994a98fb0741f77a",
+      "sameLF": true
+    },
+    {
+      "path": "prepared\\generated\\com\\android\\purebilibili\\feature\\plugin\\DesktopHomeFeedFilterId.kt",
+      "preparedSha256Bytes": "458cd2aabe5428c2ed83a98e94b3ff7be70a7a265f134d9cd0f4d60585e70950",
+      "sha256LF": "713d3756806dbc12aff21a625aea3fbc3c210f201f40592fb50cfddee4cb730f",
+      "replayedPath": "replayed-generated\\com\\android\\purebilibili\\feature\\plugin\\DesktopHomeFeedFilterId.kt",
+      "replayedSha256Bytes": "713d3756806dbc12aff21a625aea3fbc3c210f201f40592fb50cfddee4cb730f",
+      "sameLF": true
+    }
+  ]
+}

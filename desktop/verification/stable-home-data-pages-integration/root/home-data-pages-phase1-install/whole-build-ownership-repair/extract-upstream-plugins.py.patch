@@ -1,0 +1,18 @@
+--- a/desktop/tools/extract-upstream-plugins.py
++++ b/desktop/tools/extract-upstream-plugins.py
+@@ -340,14 +340,12 @@
+     path = BASE + "feature/home/HomeViewModel.kt"
+     source = read(repo, path)
+     pieces = ["package com.android.purebilibili.feature.home", "import com.android.purebilibili.core.plugin.*", "import kotlinx.collections.immutable.*"]
+-    for name in ("toTodayWatchMode", "toTodayWatchPlan", "toTodayUpRanks"):
++    for name in ("toTodayWatchMode", "toTodayUpRanks"): # Full original HomeVM now owns toTodayWatchPlan once.
+         if name == "toTodayUpRanks":
+             method = selector.function(substitute(source, "RecommendationGroup?.toTodayUpRanks", "RecommendationGroup.toTodayUpRanks"), name, parser)
+             method = substitute(method, "RecommendationGroup.toTodayUpRanks", "RecommendationGroup?.toTodayUpRanks")
+         else:
+             method = selector.function(source, name, parser)
+-        if name == "toTodayWatchPlan":
+-            method = substitute(method, "private fun RecommendationResult.toTodayWatchPlan", "internal fun RecommendationResult.toTodayWatchPlan")
+         pieces.append(method)
+     generated.append(write(output, path, source, "\n\n".join(pieces), "DesktopTodayWatchPlanConversion.kt"))
+     rows = asset_inventory(repo)

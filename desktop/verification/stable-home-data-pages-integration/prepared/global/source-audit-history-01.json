@@ -1,0 +1,7 @@
+{
+  "status": "AUDIT_SCRIPT_FAILURE",
+  "sourceModified": false,
+  "runtimeOrHTTP": false,
+  "reason": "Initial body selector stopped at a default parameter '=' before reaching the LottieAnimation body, yielding zero matches.",
+  "correction": "Parse balanced function parameter parentheses before selecting the body. Production source and compiled payload unchanged."
+}

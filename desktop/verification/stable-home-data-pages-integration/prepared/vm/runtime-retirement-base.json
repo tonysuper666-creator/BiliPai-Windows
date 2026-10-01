@@ -1,0 +1,12 @@
+{
+  "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\plugins\\DesktopPluginRuntime.kt",
+  "baseSha256Bytes": "70ab482dbc4d41a83f6b450774f320d3c98929e00dde1b54878e8cdd2f29605a",
+  "baseSha256LF": "3f33392b1eb7bf14c7e0cbc8c9330890b8991a3b85d5f74859b7159ad6383de3",
+  "desiredSha256LF": "2cd1916118e2fa3d87354f1ab93707c2e5bdd7193373f520fbe85f4a0d4879fc",
+  "changes": [
+    "replace constructor with required epoch getter and same Runtime parent scope",
+    "account-only -> actual epoch Flow",
+    "stop and join original Home owner before beforeStoreFreeze, scope/plugin shutdown and store freeze"
+  ],
+  "sharedMainEdited": false
+}

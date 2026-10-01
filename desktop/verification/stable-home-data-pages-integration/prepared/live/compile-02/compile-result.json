@@ -1,0 +1,659 @@
+{
+  "exitCode": 0,
+  "sources": 14,
+  "sourcePins": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalLiveApiErrors.kt",
+      "sha256Bytes": "85d5d212d7b6ef34d109c650dfd8d737535ed9d9c4ad20605637827c61d9eedc"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalLiveListProtocol.kt",
+      "sha256Bytes": "3c892bededf177f16bd396d3232ac86977587dc091c0e24924e3e6e352d7367c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\LiveAreaRoomsPolicy.kt",
+      "sha256Bytes": "b1472fdd261492b8d777f85f263ec23bd628e89f29b1c52e2b2b3531ae7d4c02"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\LiveFeedParsePolicy.kt",
+      "sha256Bytes": "83e53199389f2b8aeaf9241257cea31b940066d30a5b87a671ff83ee717eb7d7"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\DesktopLiveViewerCount.kt",
+      "sha256Bytes": "8bc359ade9062adfdb67a19df9e878518ad7b273a9ad6856f66e4a559aabde18"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveBiliPaiVisualPolicy.kt",
+      "sha256Bytes": "c3251089682757da236fca48d4bdd453b931bfd47e176c3f73e01f1e31bc36e1"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveChromePalette.kt",
+      "sha256Bytes": "f2d304269a3f795a70358cf6cf9e85c2b6433639ef9d48e3f93a2d488c49c10e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveHomeAreaSelectionPolicy.kt",
+      "sha256Bytes": "9552dbe8bb68a612bb5cf5b35318a6bd0888e45edc234ccc2245be844b43c194"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveHomeCategoryIndicatorPolicy.kt",
+      "sha256Bytes": "22cd451faefa183a118a3cb65e0c61623cd310a54b7e8e68a4c04053310e5f42"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveHomeSelectableChip.kt",
+      "sha256Bytes": "8ebee65136586c62439c3acbb169991303a0526c111ee683156042c6cddf3f81"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveListScreen.kt",
+      "sha256Bytes": "caecaf23ef07a537a599fc6120c01932654f50f61a81b573ff5242a6bde5faad"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveListTabColorPolicy.kt",
+      "sha256Bytes": "16f08c3a5b6dd8a3c0613a7ef2439fe55be7ad12769c68f99055f9c4bed9778a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveRoomCard.kt",
+      "sha256Bytes": "9ffd472531ddfbeab17237e32acf5c03a9ae4c604de64ad46710ea02ee206db0"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopLiveListBindings.kt",
+      "sha256Bytes": "97993d0091a4bb7496f72cede57a19ff32ae0997451acecd895a0e8937c59826"
+    }
+  ],
+  "actualProductEntries": 97,
+  "declaredProspectiveEntries": 1,
+  "prospectiveOwnerNetworkPayload": {
+    "frozenManifest": "4824a6984eead54af5ac2c045cb9a21d600488d6be4ed3cbea2ad5e6eabdf5f3",
+    "declaredProspectiveNotActual": true,
+    "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\stable-home-request-ports-parity-declared-prospective.jar",
+    "jarSha256Bytes": "e4eef32e65a89dd85bda7558efcdf08c4276d34df9a611f2deb5c51bd8e9eda3",
+    "entries": [
+      {
+        "path": "com/android/purebilibili/core/refresh/WatchLaterRefreshBus.class",
+        "sha256Bytes": "bc65f778573a1008675a9da08431db181c1720c38a69cbf9d7600090b5112b25"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopHomePreloadPolicyKt.class",
+        "sha256Bytes": "6c43911422ea08c93e85086e901ff5a88f91608d33774e2b90b062e0eca23910"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeActionProtocol$submitRecommendationFeedback$1.class",
+        "sha256Bytes": "5cc9b0acbd83b6f1bb122f7ac52ba859bcf699be29745dda866191df047fc233"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeActionProtocol$submitRecommendationFeedback$2.class",
+        "sha256Bytes": "82ca5cd5944bed92605c0886f1cae21d901495827e4926930dd5e31dfe82ab84"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeActionProtocol$toggleWatchLater$1.class",
+        "sha256Bytes": "1eaa4fe51c570e6dde5475c7a41bb3caadc743f162a4387122fc0426e4d9ccb1"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeActionProtocol$toggleWatchLater$2.class",
+        "sha256Bytes": "ccd30eef37ff7d39373ba76a91fc5b51bbe837caff6da8c0702b2cd28b1ecb6c"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeActionProtocol.class",
+        "sha256Bytes": "32d5cd8bb3f66dbc516a13023540cb0c79887297c154f2594bc54a7d3577f87f"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeHistoryProtocol$getHistoryList$1.class",
+        "sha256Bytes": "150e0b2fefc40e1a4b6b496b4b5de5200c2e836ef600934b3843d17ab974423f"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeHistoryProtocol$getHistoryList$2.class",
+        "sha256Bytes": "e2f8fbd2efcf08a164854cfa799815497b39066d6bf4e6a9636a7860b481e445"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeHistoryProtocol.class",
+        "sha256Bytes": "8d596ba69be7419d889412e6a58421aa150f7021531355ee08154f30789cf024"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeLiveProtocol$getFollowedLive$1.class",
+        "sha256Bytes": "b0f3428f359dd4a52e0315bd5577838dc484709333a9cf4df939f74a598d7912"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeLiveProtocol$getFollowedLivePage$1.class",
+        "sha256Bytes": "867921a5c307bceddf56e680c8dbc64892fcc7c8c6128ac28b65c6e6d4b57fa1"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeLiveProtocol$getFollowedLivePage$2.class",
+        "sha256Bytes": "2b15db566c0a382e0e6139f4cd7c58ac8e6dfcee9fa61a49bc4632584866c1bf"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeLiveProtocol$getLiveRooms$1.class",
+        "sha256Bytes": "da078e6ee7039b209fde305251227e9356bcb5053c6c450075999e4945ba3c3d"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeLiveProtocol$getLiveRooms$2.class",
+        "sha256Bytes": "0689a7f9dada438ee3c7f3ec98ffb45e54afdd95485aaf85f98f88caf7f1ff07"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeLiveProtocol.class",
+        "sha256Bytes": "490a0cee64148398d728f41b6101f370d013d271a92fb45e708070b39bc68480"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeMessageProtocol$getFeedUnread$1.class",
+        "sha256Bytes": "a486c51a8dbe3275b6602e29b1ccf57b1242e721c3f4da43726a68aa2b0d7afe"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeMessageProtocol$getFeedUnread$2.class",
+        "sha256Bytes": "686679872884a136bcdfba958440f10c526097f33b87518458c7c29971cb3ecf"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeMessageProtocol$getUnreadCount$1.class",
+        "sha256Bytes": "ab7835066079e495f704d4e421775ff2be4085341389120e053b850eb3429177"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeMessageProtocol$getUnreadCount$2.class",
+        "sha256Bytes": "2ea9e4d3c52801a8a38af2e3f3a846168c2a039600e5a9c485efe5eef229d597"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeMessageProtocol.class",
+        "sha256Bytes": "ba7ae160f02951816de2804e60f43e7a84aef66e283cbd69dbf8fc32ed1085b1"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$awaitHomePreloadResult$1.class",
+        "sha256Bytes": "9b786a9832bc2b37928ecee6d32aacf125c106ec53fae5bd359c26be2c670e69"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$fetchAsGuestFallback$1.class",
+        "sha256Bytes": "6667e43b72a876a9192e128d7c72b4b5fe643aa49d41353dbee99b3e1e3b9775"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$fetchMergedMobileFeed$1.class",
+        "sha256Bytes": "718ddf5cd262217ebe6287e1a36579ba17bb0c6d17761de64306f7209372d03e"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$fetchMergedWebFeed$1.class",
+        "sha256Bytes": "445f64fb32ac6a322713ca51fa519826f0d8eca5d0f4a1ccdb79953b37bd6edd"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$fetchMobileFeed$1.class",
+        "sha256Bytes": "2249915aa6baff1a3d1792e81ec50f1d3137d821fecb7741559f25e0e0043832"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$fetchWebFeed$1.class",
+        "sha256Bytes": "1a847b453f57ed4b9582394ae3572c999fec48f3997094bea99e60b9efe01a74"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getHomeVideos$1.class",
+        "sha256Bytes": "9396ecdcdf2699d283351d5be37c4242b26a73ce9a38974b8eb6f9962d91b69f"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getHomeVideos$2.class",
+        "sha256Bytes": "336cbc4c169b4f335749f0dfc5143871916839be253f0f93bd5d1e460c67161f"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getHomeVideosInternal$1.class",
+        "sha256Bytes": "5e77dca732e70e792a6a8bc409d68481683e8f6ab639da623ff3fe2166d157d0"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getHomeVideosInternal$2$mobileDeferred$1.class",
+        "sha256Bytes": "85b878aa870ce94f76dba00887a28414f6aa333f6f1714accb08cfff09c75d22"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getHomeVideosInternal$2$webDeferred$1.class",
+        "sha256Bytes": "b9375c27e87a1ef5572192b17cbff9eaa49c9cdc0fdae14e711a9de35e6d8efa"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getHomeVideosInternal$2.class",
+        "sha256Bytes": "1ea30e9bf6b23b9ca8d70d472da83d1810e0bb2941ba6995c6eac787d23ab3b2"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getNavInfo$1.class",
+        "sha256Bytes": "4d02c39ebc3db4439b8c8d04f3b808a08fb8376fed9a7a6eb8a62a4bee7be74d"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getNavInfo$2.class",
+        "sha256Bytes": "3969715414dd924a1990519f9708b7eb5942d2480f00f4656ef3018d562dec65"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getPopularVideos$1.class",
+        "sha256Bytes": "c9bfdbff0cc1696737ac6f93e2b1fe6de6414732189777aa437706fa7a81d3a4"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getPopularVideos$2.class",
+        "sha256Bytes": "24f267cd6a63efcd63164224c87c5614c82ba96af0935132ab77e760cd1363d0"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getPreciousVideos$1.class",
+        "sha256Bytes": "4e9d8d2ab9e96751ac2f6b41d3e5005ad40f71e3fd553ba513572307a42c5a9b"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getPreciousVideos$2.class",
+        "sha256Bytes": "8b7ffce4d878e655586e3a4678f9587de5fc56dde83c80bc25875113222ca18b"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getPreviewVideoUrl$1.class",
+        "sha256Bytes": "9b4cf715b6e9d00ec375040a536f6851945827c5bf88daf9ea7934bae995d5d0"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getRankingVideos$1.class",
+        "sha256Bytes": "cec1cf1d163375e7f805aa4474de10e623e4a386b97b65b3929a29251414c0a5"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getRankingVideos$2.class",
+        "sha256Bytes": "10a215aa2a5316e781f6eda080a483e0dfcfe99359bb7fbbd422258d5c0c74ce"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getRegionVideos$1.class",
+        "sha256Bytes": "d6111291bbaf302a8866dea359000c7d37ae62bee615ce9317f55c6f6ae0c7aa"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getRegionVideos$2.class",
+        "sha256Bytes": "4b5ce27ef3462a3571b8e000354839697b968bb8eb1ba606e06645a88faa71d9"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getWeeklyMustWatchVideos$1.class",
+        "sha256Bytes": "a7563b0179279327c3fe15f7d6d71d1527a062eaf73ffdfb9cff5618b27200e0"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$getWeeklyMustWatchVideos$2.class",
+        "sha256Bytes": "af6c62abd778ebb259ba1b60cb873a695bdaf53843103f8040185ce6ddc0fc54"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$preloadHomeData$1.class",
+        "sha256Bytes": "03c1742998bb821b88b2269a5fa552985b656230dd955a2bac9f5b5c992f351f"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol$WhenMappings.class",
+        "sha256Bytes": "72cd92348b417244f991cbd430a3e8782f14ea6124c0a6b3fa2f1f43aad366f1"
+      },
+      {
+        "path": "com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.class",
+        "sha256Bytes": "aeadaf0086ef87c3617c90ad43fd0e52ab8f03015c02a4efd547f4b7bcebc988"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$cloudFavoriteFolders$2.class",
+        "sha256Bytes": "220ce506ffeb49e8563260d84a7bbd17213983aab85a844f76d378946e0eda33"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$cloudFavoriteVideos$2.class",
+        "sha256Bytes": "d6a4a3bfc94ebc4fb9b02cacdf1276decf734ee86d186ec0398549ff601bb3f6"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$cloudHistory$2.class",
+        "sha256Bytes": "d454a9853bc389a606ba1af0eed0715db9f7674bd5c94b507ea8d5f6f025ee3f"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$comments$2.class",
+        "sha256Bytes": "4e371812249e0a9feba0bf43797f5e9c6e031ce28b1262f6e3f5eaf8c9b6c3bb"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$Companion.class",
+        "sha256Bytes": "6a1d0474ee67e3a028f1ff66b797cb066fcf4973e4c9a4f6447ae0935c6e895b"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$ensureVisitorSession$1.class",
+        "sha256Bytes": "9283b1e4e01d665f1c66d450205afa5255ca9c37df1c6c53480e8c08488d1761"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$followingVideos$2.class",
+        "sha256Bytes": "f23888d48cf64a42608e446486e9a1af8d2bac36d85af85a4e8d543ac6db1620"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$homeWbiKeys$1.class",
+        "sha256Bytes": "10daa14dd153dd94c98dcefc057bef47377f812dd5ec67f738d04a48e38b1135"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$importCookies$2.class",
+        "sha256Bytes": "01934b8bb5d681869af8a61bb3902bdbc97c2a6255a1ff237bbd5cb22acd917a"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$installLogin$2.class",
+        "sha256Bytes": "d0d44ae7e4c22735aa9242e3311786f511c378d4aa172b7248bd5064ebe60c22"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$playback$2.class",
+        "sha256Bytes": "e3a82ea7da28c35fe4cf7303ef5566b054376f30da87381ef28ec93d5d5c46cc"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$popular$2.class",
+        "sha256Bytes": "ffeb39e6471eb79c3de5b9c42810d0406dd20ce4e558f6ec4a5d6f835bdb5c68"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$recommendations$2.class",
+        "sha256Bytes": "76f6e5461b71e67cb20f121c637af5d27bdd41e864d1056651e761ca5783e140"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$refreshAccount$2.class",
+        "sha256Bytes": "63bd508485160ae775a4c5a1bb5af228e4ca74742119d054f332cfd28f1809fb"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$related$2.class",
+        "sha256Bytes": "7cb92f657853b8de05275c667cdd0c0ba031fbfe87e5017594329de28f72d9b2"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$removeSavedAccount$2.class",
+        "sha256Bytes": "14764dfa1b43b95e56699a5eb7534046ad2e67ec2dec418163ab8770d7628cf5"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$search$2.class",
+        "sha256Bytes": "d7c08a0fed7a2fff57537843dbd8c4725305fc1a5507e704992a6d8f031964a6"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$sign$1.class",
+        "sha256Bytes": "e3e32d36901caace6a44314fc03348046238fb4018616a5e4d64c17c58629812"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$special$$inlined$-addInterceptor$1.class",
+        "sha256Bytes": "ae99e37097e3c71b11cd04e157137580f05c53b635955657cb919ddf7b15361e"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$special$$inlined$-addNetworkInterceptor$1.class",
+        "sha256Bytes": "1de2d5255b7afa3766ea03889be81f8166a10e59e72f91cce2d8c2d8fdd49c96"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$switchAccount$2.class",
+        "sha256Bytes": "7c1b27895b3cac3d668cf791bf10cedc41e2a7a53d5f63fc6f0846cb0f81e1a0"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$validateCookieHeader$1.class",
+        "sha256Bytes": "f242ba40e50a8a2d63fdbcc40708659878d2a96460de6b9c4405e9d87601b968"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$videoDetails$2.class",
+        "sha256Bytes": "2979b9aa087a0a54542a6bb71aa250e9b9f94ca6d8165edd6f0d6d8c1483c36f"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository$watchLater$2.class",
+        "sha256Bytes": "55afad558e8bead0860205b3d86b8aee71a7f42264df7b871d415ee2828880f4"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopRepository.class",
+        "sha256Bytes": "6a967f4ab56860112aa7312a112df9f9818ab51f475949613998d74eae4cb7e4"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionEpoch.class",
+        "sha256Bytes": "a81b8aaccfaa19fd958696f698f93b3eb4dac297ede453735dc4be012c00d77c"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$accountRecords$$inlined$sortedByDescending$1.class",
+        "sha256Bytes": "90893594785e5f207e95530c2290f36919ab0b653cba0d8197ba28dbeb38b6d4"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$Companion.class",
+        "sha256Bytes": "a0de4ba761fe0af75db0a929aa19593286fd61f0a8c9c98fa95b43d334f455d7"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$CookieIdentity.class",
+        "sha256Bytes": "45b3562c341e715e0e7bbb05fb48413c39fe3b9e6a4d7071b78731b0ce98615e"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$CookieSnapshot.class",
+        "sha256Bytes": "39651bbf0c3e8612d6ce94caf2f137cb7f6694b46644df265cf95e16374c098a"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$persist$1.class",
+        "sha256Bytes": "b18fa5c6b8beae04158cfc83bcaddadd64daf4421496743f2d44ed6c8ef7b2cf"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$readSaved$1$restored$1.class",
+        "sha256Bytes": "afda3d4bafca2ef2b6b1b5ae425883974044a30cb6269c0d99bb90f2f5808dc2"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$SavedAccount$$serializer.class",
+        "sha256Bytes": "8cf2808d680442b0362a44b1f3363729385d1f6fd95941f5abdb3d008fdb6485"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$SavedAccount$Companion.class",
+        "sha256Bytes": "f56e916595701d94b5ee56f959ce8ada4032b7942898f721f73612263d63cf41"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$SavedAccount.class",
+        "sha256Bytes": "543c363d47832453f517ebd70fab9550cc25c381917b4c1a74cc410fd86fb0b6"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$SavedSession$$serializer.class",
+        "sha256Bytes": "494add9139080adce2606f977adc763862e4c2cea7f831cd5e39f80ea1a79042"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$SavedSession$Companion.class",
+        "sha256Bytes": "90ae0ea8156e382f96428e7f8133e0f7cfe7e6deb31af53f893266b3e2096c98"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$SavedSession.class",
+        "sha256Bytes": "0e605273892a97e07f21688e090c2eb1703c4db65953af3d3ea84bc431688c8b"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$ServerCookie$$serializer.class",
+        "sha256Bytes": "65b5dd8d87d0ad27b13b5473d29962fb6583e64bc8dc4aebc2fa0e1e7af4aca0"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$ServerCookie$Companion.class",
+        "sha256Bytes": "cb74a795b6254f46673a759c96bc430105618d1d02efe2e58668a6469a8ef658"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore$ServerCookie.class",
+        "sha256Bytes": "5006c3dcb2752f08c11808e5444d248f15b2d4a64757031cfd4cbecb34cdfb45"
+      },
+      {
+        "path": "com/bilipai/desktop/data/DesktopSessionStore.class",
+        "sha256Bytes": "46e8cdba761e0a67901ac83860d1260c7174e13fb963b74f80a66ce8b942fbd1"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeLocalIdentityAnalytics.class",
+        "sha256Bytes": "6ef4402b999fa9ecc002474bde8222f3127c5e96a58b4d5f10c5832085ef2af6"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeProtocolEnvironment.class",
+        "sha256Bytes": "ee268a564f8de326021ccf5abdbdc2843c1eb6473796107e8becfc67e588b18a"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$actions$1$submitRecommendationFeedback$1.class",
+        "sha256Bytes": "19c8c6a8dc91a17949d73f9fb2b03371c774f67fc9baf0d70db45fb8c44eea39"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$actions$1$submitRecommendationFeedback$2.class",
+        "sha256Bytes": "3ccaf3ca36e13beafa8b063a6a0927e2e6e0b067aac81201a17170c6a424c9d3"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$actions$1$toggleWatchLater$1.class",
+        "sha256Bytes": "3ee7bbe0e0e13c3c5c9dbbaf9514586391b4f8f12d6a480c1a6bb0b7489ac1e2"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$actions$1$toggleWatchLater$2.class",
+        "sha256Bytes": "58ff861d46349b9268e1a664f7a1af82d42ae5a9f1dde415736ebc6e44904243"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$actions$1.class",
+        "sha256Bytes": "32d367e0c98199ffbe1307524b0da886733b957dbf5193e5b7b94788dc44efaa"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$following$1$getFollowings$2.class",
+        "sha256Bytes": "b18daec0bb394ef56294360ec2a97489bc1e696f3ee7169e82e5cbea8cf18a60"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$following$1.class",
+        "sha256Bytes": "9792c19fd9fdbab0a08fe3fab58b79d14e25b06b22936ca7d5a8cafcc7643444"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$history$1$getHistoryList$1.class",
+        "sha256Bytes": "a8eeb253cbcdb8675a6ea8cac298308afdf89ba5049eddfc91cd5576e9eb434c"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$history$1$getHistoryList$2.class",
+        "sha256Bytes": "da90f03addaf034b2cc33d06e7f8a23738b04b7c25bce1f0e78670cf0508cb4d"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$history$1.class",
+        "sha256Bytes": "08ad50f64f23e8ccf4f2f858a1e6521519e61f0d9881a887c9ddb2f7ab482500"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$live$1$getFollowedLive$1.class",
+        "sha256Bytes": "d1f86d616b9684d603c08e1d14709b4f1be86e0d4ee6786bfbf6192fb0e72112"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$live$1$getFollowedLive$2.class",
+        "sha256Bytes": "997ad943d5a6151d88f77c824d1e55848c879ecc321b3fd4fc2f2fd0e095dbfd"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$live$1$getLiveRooms$1.class",
+        "sha256Bytes": "74c790eb8497b8637182ab4417e237516fe4b7b2e845c6acff5b26b613f5e185"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$live$1$getLiveRooms$2.class",
+        "sha256Bytes": "5847b4f7f0657452a07ee06df9f82c56adecabce8504c4c769f910148733ce36"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$live$1.class",
+        "sha256Bytes": "016e82e1de76509d2e523454651c36590793cdb613281cd25593ac56edbb96d5"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$messages$1$getFeedUnread$1.class",
+        "sha256Bytes": "3c2e37d87317e44bd314ebfc5a79a84b0461f150162ec08f86a7c642978ea09b"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$messages$1$getFeedUnread$2.class",
+        "sha256Bytes": "5fee7af6f153ea9c2668368cf4b55dad5b04119167abe957ccaa54eea05145c1"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$messages$1$getUnreadCount$1.class",
+        "sha256Bytes": "0f85f65a64e4d2f471d4d1ec7558fc2dc650169f75f83f1d54e93ac22779af1a"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$messages$1$getUnreadCount$2.class",
+        "sha256Bytes": "e49ce5c92e459bdc75b58f9218daf33bced6c651ab996db0e2a8232601b50f6b"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$messages$1.class",
+        "sha256Bytes": "8ced5098dd84f897caf8f91bf4bd3e181c88e066860845addb9b584fa3e94966"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$owned$1.class",
+        "sha256Bytes": "bba94110754222204d2b51faa829365e5ab16269ca2da11302a1ac354af6363f"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$result$1.class",
+        "sha256Bytes": "ad747026f4ff7ed88dc703f1519c0964ae78f93d0197d83883bf431fbb91570f"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getHomeVideos$1.class",
+        "sha256Bytes": "df14718c1b232087ba7ff22190484e42735010993deb7d797aa9c0770dee0337"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getHomeVideos$2.class",
+        "sha256Bytes": "5577a096861b0b3a75945587006a98a4ceacdcbcabd74c0cd40cec30b98c7bdc"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getNavInfo$1.class",
+        "sha256Bytes": "a0a62975b8ff5acbf106a4befa90c57ee7601c717fa961e69c74662cfec7fb92"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getNavInfo$2.class",
+        "sha256Bytes": "b0979dedddc417afad93aab4ab8198311ab9d98f213074d58a0fc71d17524f40"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getPopularVideos$1.class",
+        "sha256Bytes": "6b7044b2b4f7a72c9b89fc2b9ff7a34b6d51bc61dee3cf282d6d2f79c2c667a4"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getPopularVideos$2.class",
+        "sha256Bytes": "27fb9d5c718f27c0c710c002ba75026ad78a9a34b9cb4e8ba315c9b5c0f3696a"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getPreciousVideos$1.class",
+        "sha256Bytes": "2cc94e194bcff4fc9fffcd3804a0cab674b1bd3ee0b683174667cf4f59b8cfa4"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getPreciousVideos$2.class",
+        "sha256Bytes": "8b8bbb832d8a024f15a97f46d333592aaad37d1ddd261bed9459eadb686ff072"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getPreviewVideoUrl$2.class",
+        "sha256Bytes": "e690e8911fa2f83d67331531f08d2db3464ddcacc65501f3049e9d9ec110ad5d"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getRankingVideos$1.class",
+        "sha256Bytes": "27186e2a4dc8b186cf9da3ad400d31c6eada1aa962722c59951960f9f42ea87c"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getRankingVideos$2.class",
+        "sha256Bytes": "b81ca7298c416fedb7297fc6321156669505221aa2f1555b44f747d22c86675c"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getRegionVideos$1.class",
+        "sha256Bytes": "e7832f13495f7f6c3fc211d24e5547dd0e2eb1a52a5f7b781890f1046cce3156"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getRegionVideos$2.class",
+        "sha256Bytes": "3fb152e94fcc23dd73ead600ad17be6237f83e5c75f4da66d6a5ca27793a043f"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getWeeklyMustWatchVideos$1.class",
+        "sha256Bytes": "73608e1c0827be5ae08182765bf769e43ef50a61b2d6b34d17c4a25997f72f12"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1$getWeeklyMustWatchVideos$2.class",
+        "sha256Bytes": "16edd5a42a7019a86051865c090660d8d2df13691dac07b49ff5b56a3206b6c6"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts$video$1.class",
+        "sha256Bytes": "04f314aa021cb7e082f710a1ccb1a77e07a6f3e2e2497534d4b3a227e26bec00"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRequestPorts.class",
+        "sha256Bytes": "c8ad8674f8f93ae392453703b4eff29e177371eb3bd63122dc9bdbcea84819d0"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding$environment$1.class",
+        "sha256Bytes": "f1df43bac01c0d224a6c6df73b2865adb996922810b581a0e2737032e5c3ea5b"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding$environment$4$1.class",
+        "sha256Bytes": "e0c82b259988df72cea210efd59a800cb37d8769e6757ae8fdf8b87d243ee34c"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding$environment$4.class",
+        "sha256Bytes": "52268ae737d7be1c2ffd66dd9eaec11c8eb118cf6dbc356e8aa6669aa9884809"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding$environment$5$1.class",
+        "sha256Bytes": "765a276c9eedc5e3ee0d02000955255e80dca5580cadf184e70682a3cefe8e25"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding$environment$6$1.class",
+        "sha256Bytes": "d8e239610660d9663a061e435c8c64265938026395dba8d5fc4e050198ee6912"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding$environment$7$1.class",
+        "sha256Bytes": "43c863b1ccc1dbaba4b51733396d9e18657a64a31ecdbb319968ed603df36e7e"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding$environment$8$1.class",
+        "sha256Bytes": "ff9a0e95d630c90378fb2469f6167d911d0e24150512d163ef43c76f74f4ccf6"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding$environment$8.class",
+        "sha256Bytes": "cf66435486f28f4860db851ea51d0101c82df71066ed95aeed7274bc6afd8f3b"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding$environment$9$1.class",
+        "sha256Bytes": "1f80d468b53f23ec50a124f8341213ab7a48d24402f3b1459fd52f44a63b5aa9"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding$environment$9.class",
+        "sha256Bytes": "06b167efabfd4efcee11542f7df84efbb57ac556672d8e5ec62f79d22efd59d5"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding$service$1.class",
+        "sha256Bytes": "51c671b75fd254e066f435d21cf0409f7ed0ed48311309ab27bfe717099b6a07"
+      },
+      {
+        "path": "com/bilipai/desktop/ui/DesktopHomeRootRequestBinding.class",
+        "sha256Bytes": "a33724db76722d5149818c9f9052cbab43809657a613cb33ba29f546b0839544"
+      },
+      {
+        "path": "META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+        "sha256Bytes": "4fa488b2fa39b14d0c21c3d572b4230208f1fa0b621673c24e2a9f338b80b495"
+      }
+    ]
+  },
+  "classFqnOverlap": [],
+  "classes": 103,
+  "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\compile-02\\original-live-list.jar",
+  "jarSha256Bytes": "f865e9e0d4123f032c409120b8bd8b742d949a16daaed581a4d3f0444e1be2e7",
+  "sharedGradleRun": false,
+  "actualRootRuntime": false,
+  "usesVM287": false
+}

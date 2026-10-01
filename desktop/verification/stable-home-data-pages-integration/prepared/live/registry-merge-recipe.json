@@ -1,0 +1,214 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "observedRegistryRows": 833,
+  "observedRegistrySha256Bytes": "94372472535a84b81a0a79d811bff93180594cdc4c196153b8872735c7d5b51f",
+  "newProductionOriginalRows": 12,
+  "existingProductionFeatureMerge": 1,
+  "mergeExistingRowsPreservingModeAndAllFeatures": true,
+  "records": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "sha256": "a88f86fefe56e06d941438270ba0c32b3f35b739068cadf3ef4b838903ee49d8",
+      "sha256Bytes": "8478d40056c87c3f1b171266c6ae0877ac818d2b1e976ff2b9ca3625a7e655af",
+      "mode": "policy-extract",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveRoomCard.kt",
+      "sha256": "9ffd472531ddfbeab17237e32acf5c03a9ae4c604de64ad46710ea02ee206db0",
+      "sha256Bytes": "2569dd719c11f108c6a6d554896d454f2393de2ef1b63bf83abdaa452588f6ed",
+      "mode": "direct",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveChromePalette.kt",
+      "sha256": "f2d304269a3f795a70358cf6cf9e85c2b6433639ef9d48e3f93a2d488c49c10e",
+      "sha256Bytes": "90d9784f83512afce8f4abc711b2c756500262448aa5930ad511070e83745250",
+      "mode": "direct",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt",
+      "sha256": "c3251089682757da236fca48d4bdd453b931bfd47e176c3f73e01f1e31bc36e1",
+      "sha256Bytes": "b30feebeb8be39b39624525cb79446861be8cf6dc2ef01b4f78e47081502b8e4",
+      "mode": "direct",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeSelectableChip.kt",
+      "sha256": "8ebee65136586c62439c3acbb169991303a0526c111ee683156042c6cddf3f81",
+      "sha256Bytes": "9cd08468510a2292361f62327767c2ff5eff5ad05c694080d27602f91e8730b9",
+      "mode": "direct",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeCategoryIndicatorPolicy.kt",
+      "sha256": "22cd451faefa183a118a3cb65e0c61623cd310a54b7e8e68a4c04053310e5f42",
+      "sha256Bytes": "215a207dc21f33cd57b16731e4e40b37bb7fcfc2a9484758ef1ad42ebdea4ef6",
+      "mode": "direct",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt",
+      "sha256": "9552dbe8bb68a612bb5cf5b35318a6bd0888e45edc234ccc2245be844b43c194",
+      "sha256Bytes": "c02abd39d72bd508f186f069beb718423d5aef0b71bb8105a4a5596a04b1cdba",
+      "mode": "direct",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt",
+      "sha256": "16f08c3a5b6dd8a3c0613a7ef2439fe55be7ad12769c68f99055f9c4bed9778a",
+      "sha256Bytes": "62e22348b7f40eea9dc305f76d98106c06fb77659178b2f842991707659f026a",
+      "mode": "direct",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveRoomLayoutPolicy.kt",
+      "sha256": "fe011d262fb3dd955f3bceb339ca9e399638e3a59d272cef6acebb29e995d542",
+      "sha256Bytes": "9469c2afd366e6788235ff8e450a2d08b489cf7e93661b667f289106d4259488",
+      "mode": "policy-extract",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "sha256": "28748c0fd10125e603a8c0f28fff63781f87d3350e1446cc355622f447f8f86d",
+      "sha256Bytes": "48e5d79551ca5206303cffdac56cec36c8da5774f54539fac93af183809e9b8f",
+      "mode": "policy-extract",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/LiveFeedParsePolicy.kt",
+      "sha256": "83e53199389f2b8aeaf9241257cea31b940066d30a5b87a671ff83ee717eb7d7",
+      "sha256Bytes": "a23b01eeb1f092c323914152fdb629a50bdbc1ef210af2e4be2c1ac2ba0f227e",
+      "mode": "direct",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/LiveAreaRoomsPolicy.kt",
+      "sha256": "b1472fdd261492b8d777f85f263ec23bd628e89f29b1c52e2b2b3531ae7d4c02",
+      "sha256Bytes": "80198605e44f502b679cd2ea5e63d224c091c6b24b9583eb51142f054e2e52e0",
+      "mode": "direct",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/BiliPaiSharedElementKey.kt",
+      "sha256": "b6cf5d21f74dbe9a7d44b7af4c2847ee1764c5d0526b6f4cb881d20dda659448",
+      "sha256Bytes": "963a984d2c0ab16a2d5462a49472733a4203251c5f802e2fd45ece7975e3bc36",
+      "mode": "direct",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": true,
+      "existingMode": "direct",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "sha256Bytes": "9b7d174db3a1a08802e8f7c4282353896552052cf066facc6853e8c27024d493",
+      "mode": "api-extract",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": true,
+      "existingMode": "api-extract",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "sha256": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a",
+      "sha256Bytes": "3a072e769187f1863b54fd5bcce9e5f634aa27157c0332086f02117c51745aed",
+      "mode": "policy-extract",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "sha256Bytes": "d7f21117c7eb6efab55429f517fb9641af8a5a89c7d0b0b85ac3973c5ddb5c5b",
+      "mode": "policy-extract",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/ResultExtensions.kt",
+      "sha256": "8a95f76412bcdbd6975cedecff9d8f3f07a814f4f23312011ae9fa4e6e376116",
+      "sha256Bytes": "e31292f00a463be01b82aa5415aefce778c14105232761826c36fe976d6e74b8",
+      "mode": "policy-extract",
+      "features": [
+        "live-home-list"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false
+    }
+  ]
+}

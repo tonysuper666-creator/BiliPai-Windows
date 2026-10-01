@@ -1,0 +1,17 @@
+{
+  "mainSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-33",
+  "fixture": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\fixtures\\RetainedHomeGateFixture.kt",
+    "sha256Bytes": "3ce3c6793a90edb5a3cbd3988f980bd3b248ed6c290be4b297a7a7461d1b653a"
+  },
+  "preparedOverrides": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-retained-integration\\classes-owner-08",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\classes-ports-05",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-viewmodel-parity\\classes-vm-06"
+  ],
+  "actualMainMounted": false,
+  "userAccount": false,
+  "native": false,
+  "http": false,
+  "exit": 0
+}

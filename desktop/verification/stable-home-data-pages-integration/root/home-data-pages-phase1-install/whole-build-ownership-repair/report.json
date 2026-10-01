@@ -1,0 +1,32 @@
+{
+  "wholeClasses38FailurePreserved": true,
+  "changes": [
+    {
+      "path": "desktop/tools/extract-upstream-home-partition.py",
+      "beforeSHA256Bytes": "ecf012106676e260a7df0dce4e934c09169d99367e5a127d63433d0469a1ad92",
+      "afterSHA256Bytes": "4b15b4718fb80986dcf827d0f5610b193e99fa653e00bfa4d2b4d2d1deb01667"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-bangumi-page.py",
+      "beforeSHA256Bytes": "0ef389f2a398878ffa1425b6bba445a0a79eec310df83c1f70d332652ac7adf2",
+      "afterSHA256Bytes": "d2b6020e333db5bbd0492f9627c6f173ee240d1f2f089c1bda030ae7a31bf3eb"
+    },
+    {
+      "path": "desktop/tools/extract-discovery-platform.py",
+      "beforeSHA256Bytes": "7b90871d1e3efe981baa3315a598917b0899b623592f5a39a81b9d91cdf613c1",
+      "afterSHA256Bytes": "55d8329dd359c6c4b5304f7584cd6c53c05b0c00c68bae6fb06cef1a8dbc298b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "beforeSHA256Bytes": "4cfc9d0f889f4334c292cb12b2a0e5f7441c73df2999bf7504726a058a3b2756",
+      "afterSHA256Bytes": "f80863ef7eadb13be51e6b2c4cb744475666b0799a4d7df613f7ade4d8276fbc"
+    }
+  ],
+  "noBusinessAlgorithmRewrite": true,
+  "noNewLifecycleDependency": true,
+  "retainedOwnerReplacesAndroidViewModelPlatformBaseOnly": true,
+  "canonicalPartitionThreeDeclarationsNowFullSourceProducer": true,
+  "canonicalTodayWatchPlanNowFullHomeVmProducer": true,
+  "canonicalGridItemSkeletonStillExistingFavoritesProducer": true,
+  "oldPlannerPreservedAndResolvesSameOriginalPlanConverter": true
+}

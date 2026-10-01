@@ -1,0 +1,16 @@
+{
+  "compileHistoriesPreserved": true,
+  "mutablePreparationInputsInOldPerRunReceipts": true,
+  "oldPerRunInputLocationsNotClaimedCurrentlyHashMatching": true,
+  "finalCompile05InputRowsCurrentlyVerified": true,
+  "protocolFixtureHistoryCorrections": [
+    "DynamicRegionItem original response type",
+    "original merged ordering App first",
+    "original tid202 ranking rid1009",
+    "original legacy fnver/fourk arguments precede platform/highQuality"
+  ],
+  "algorithmsChangedToPassFixture": false,
+  "initialGeneratorReplayFailure": "missing PREFIX constant in new script, fixed before exact 6/7 replay",
+  "frozenUi524Vm287Unchanged": true,
+  "vm287MetadataCorrection": "MERGED two concurrent Web/App requests, four raw helper functions across modes"
+}

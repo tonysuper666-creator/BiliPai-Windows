@@ -1,0 +1,762 @@
+[
+  {
+    "originalStart": 46,
+    "originalEnd": 77,
+    "preparedStart": 46,
+    "preparedEnd": 46,
+    "original": "\nimport android.app.Application",
+    "prepared": ""
+  },
+  {
+    "originalStart": 1170,
+    "originalEnd": 1198,
+    "preparedStart": 1139,
+    "preparedEnd": 1139,
+    "original": "android.widget.Toast\nimport ",
+    "prepared": ""
+  },
+  {
+    "originalStart": 2104,
+    "originalEnd": 2153,
+    "preparedStart": 2045,
+    "preparedEnd": 2045,
+    "original": "platform.LocalContext\nimport androidx.compose.ui.",
+    "prepared": ""
+  },
+  {
+    "originalStart": 2418,
+    "originalEnd": 2556,
+    "preparedStart": 2310,
+    "preparedEnd": 2310,
+    "original": "androidx.lifecycle.AndroidViewModel\nimport androidx.lifecycle.viewModelScope\nimport androidx.lifecycle.viewmodel.compose.viewModel\nimport ",
+    "prepared": ""
+  },
+  {
+    "originalStart": 2579,
+    "originalEnd": 2638,
+    "preparedStart": 2333,
+    "preparedEnd": 2333,
+    "original": "e\nimport com.android.purebilibili.core.network.NetworkModul",
+    "prepared": ""
+  },
+  {
+    "originalStart": 3646,
+    "originalEnd": 3709,
+    "preparedStart": 3341,
+    "preparedEnd": 3341,
+    "original": "com.android.purebilibili.data.repository.LiveRepository\nimport ",
+    "prepared": ""
+  },
+  {
+    "originalStart": 3862,
+    "originalEnd": 3862,
+    "preparedStart": 3494,
+    "preparedEnd": 3806,
+    "original": "",
+    "prepared": "\nimport kotlinx.coroutines.CoroutineScope\nimport kotlinx.coroutines.CancellationException\nimport com.bilipai.desktop.ui.DesktopLiveListOwner\nimport com.bilipai.desktop.ui.DesktopOwnedLiveListState\nimport com.bilipai.desktop.ui.DesktopOriginalLiveListRequests\nimport com.bilipai.desktop.ui.DesktopLiveListPlatform"
+  },
+  {
+    "originalStart": 5287,
+    "originalEnd": 5288,
+    "preparedStart": 5231,
+    "preparedEnd": 5236,
+    "original": "a",
+    "prepared": "\n    "
+  },
+  {
+    "originalStart": 5289,
+    "originalEnd": 5291,
+    "preparedStart": 5237,
+    "preparedEnd": 5238,
+    "original": "pl",
+    "prepared": "r"
+  },
+  {
+    "originalStart": 5292,
+    "originalEnd": 5293,
+    "preparedStart": 5239,
+    "preparedEnd": 5240,
+    "original": "c",
+    "prepared": "v"
+  },
+  {
+    "originalStart": 5295,
+    "originalEnd": 5299,
+    "preparedStart": 5242,
+    "preparedEnd": 5243,
+    "original": "ion:",
+    "prepared": "e"
+  },
+  {
+    "originalStart": 5300,
+    "originalEnd": 5303,
+    "preparedStart": 5244,
+    "preparedEnd": 5246,
+    "original": "App",
+    "prepared": "va"
+  },
+  {
+    "originalStart": 5304,
+    "originalEnd": 5312,
+    "preparedStart": 5247,
+    "preparedEnd": 5247,
+    "original": "ication)",
+    "prepared": ""
+  },
+  {
+    "originalStart": 5313,
+    "originalEnd": 5323,
+    "preparedStart": 5248,
+    "preparedEnd": 5249,
+    "original": ": AndroidV",
+    "prepared": "v"
+  },
+  {
+    "originalStart": 5331,
+    "originalEnd": 5333,
+    "preparedStart": 5257,
+    "preparedEnd": 5260,
+    "original": "(a",
+    "prepared": "Sco"
+  },
+  {
+    "originalStart": 5334,
+    "originalEnd": 5334,
+    "preparedStart": 5261,
+    "preparedEnd": 5276,
+    "original": "",
+    "prepared": "e: CoroutineSco"
+  },
+  {
+    "originalStart": 5335,
+    "originalEnd": 5336,
+    "preparedStart": 5277,
+    "preparedEnd": 5286,
+    "original": "l",
+    "prepared": "e,\n    pr"
+  },
+  {
+    "originalStart": 5337,
+    "originalEnd": 5338,
+    "preparedStart": 5287,
+    "preparedEnd": 5288,
+    "original": "c",
+    "prepared": "v"
+  },
+  {
+    "originalStart": 5340,
+    "originalEnd": 5340,
+    "preparedStart": 5290,
+    "preparedEnd": 5315,
+    "original": "",
+    "prepared": "e val requests: DesktopOr"
+  },
+  {
+    "originalStart": 5341,
+    "originalEnd": 5341,
+    "preparedStart": 5316,
+    "preparedEnd": 5355,
+    "original": "",
+    "prepared": "ginalLiveListRequests,\n    private val "
+  },
+  {
+    "originalStart": 5342,
+    "originalEnd": 5342,
+    "preparedStart": 5356,
+    "preparedEnd": 5357,
+    "original": "",
+    "prepared": "w"
+  },
+  {
+    "originalStart": 5343,
+    "originalEnd": 5343,
+    "preparedStart": 5358,
+    "preparedEnd": 5384,
+    "original": "",
+    "prepared": "er: DesktopLiveListOwner,\n"
+  },
+  {
+    "originalStart": 5374,
+    "originalEnd": 5376,
+    "preparedStart": 5415,
+    "preparedEnd": 5419,
+    "original": "Mu",
+    "prepared": "Desk"
+  },
+  {
+    "originalStart": 5377,
+    "originalEnd": 5380,
+    "preparedStart": 5420,
+    "preparedEnd": 5425,
+    "original": "abl",
+    "prepared": "opOwn"
+  },
+  {
+    "originalStart": 5381,
+    "originalEnd": 5381,
+    "preparedStart": 5426,
+    "preparedEnd": 5435,
+    "original": "",
+    "prepared": "dLiveList"
+  },
+  {
+    "originalStart": 5386,
+    "originalEnd": 5390,
+    "preparedStart": 5440,
+    "preparedEnd": 5440,
+    "original": "Flow",
+    "prepared": ""
+  },
+  {
+    "originalStart": 5424,
+    "originalEnd": 5424,
+    "preparedStart": 5474,
+    "preparedEnd": 5481,
+    "original": "",
+    "prepared": ", owner"
+  },
+  {
+    "originalStart": 5523,
+    "originalEnd": 5523,
+    "preparedStart": 5580,
+    "preparedEnd": 5619,
+    "original": "",
+    "prepared": "\n        if (!owner.isCurrent()) return"
+  },
+  {
+    "originalStart": 6165,
+    "originalEnd": 6165,
+    "preparedStart": 6261,
+    "preparedEnd": 6262,
+    "original": "",
+    "prepared": "t"
+  },
+  {
+    "originalStart": 6166,
+    "originalEnd": 6176,
+    "preparedStart": 6263,
+    "preparedEnd": 6264,
+    "original": "unCatching",
+    "prepared": "y"
+  },
+  {
+    "originalStart": 6214,
+    "originalEnd": 6215,
+    "preparedStart": 6302,
+    "preparedEnd": 6303,
+    "original": "N",
+    "prepared": "r"
+  },
+  {
+    "originalStart": 6216,
+    "originalEnd": 6216,
+    "preparedStart": 6304,
+    "preparedEnd": 6308,
+    "original": "",
+    "prepared": "ques"
+  },
+  {
+    "originalStart": 6217,
+    "originalEnd": 6231,
+    "preparedStart": 6309,
+    "preparedEnd": 6310,
+    "original": "workModule.api",
+    "prepared": "s"
+  },
+  {
+    "originalStart": 6447,
+    "originalEnd": 6447,
+    "preparedStart": 6526,
+    "preparedEnd": 6688,
+    "original": "",
+    "prepared": " catch (cancelled: CancellationException) { throw cancelled\n                } catch (_: Exception) { /* Original optional area-list fallback ignores failure. */ }"
+  },
+  {
+    "originalStart": 6499,
+    "originalEnd": 6499,
+    "preparedStart": 6740,
+    "preparedEnd": 6779,
+    "original": "",
+    "prepared": "\n        if (!owner.isCurrent()) return"
+  },
+  {
+    "originalStart": 7164,
+    "originalEnd": 7164,
+    "preparedStart": 7444,
+    "preparedEnd": 7483,
+    "original": "",
+    "prepared": "\n        if (!owner.isCurrent()) return"
+  },
+  {
+    "originalStart": 9060,
+    "originalEnd": 9060,
+    "preparedStart": 9379,
+    "preparedEnd": 9418,
+    "original": "",
+    "prepared": "if (!owner.isCurrent()) return\n        "
+  },
+  {
+    "originalStart": 9529,
+    "originalEnd": 9529,
+    "preparedStart": 9887,
+    "preparedEnd": 9926,
+    "original": "",
+    "prepared": "if (!owner.isCurrent()) return\n        "
+  },
+  {
+    "originalStart": 9702,
+    "originalEnd": 9705,
+    "preparedStart": 10099,
+    "preparedEnd": 10100,
+    "original": "Liv",
+    "prepared": "r"
+  },
+  {
+    "originalStart": 9706,
+    "originalEnd": 9707,
+    "preparedStart": 10101,
+    "preparedEnd": 10103,
+    "original": "R",
+    "prepared": "qu"
+  },
+  {
+    "originalStart": 9708,
+    "originalEnd": 9710,
+    "preparedStart": 10104,
+    "preparedEnd": 10104,
+    "original": "po",
+    "prepared": ""
+  },
+  {
+    "originalStart": 9711,
+    "originalEnd": 9712,
+    "preparedStart": 10105,
+    "preparedEnd": 10105,
+    "original": "i",
+    "prepared": ""
+  },
+  {
+    "originalStart": 9713,
+    "originalEnd": 9716,
+    "preparedStart": 10106,
+    "preparedEnd": 10107,
+    "original": "ory",
+    "prepared": "s"
+  },
+  {
+    "originalStart": 11820,
+    "originalEnd": 11823,
+    "preparedStart": 12211,
+    "preparedEnd": 12212,
+    "original": "Liv",
+    "prepared": "r"
+  },
+  {
+    "originalStart": 11824,
+    "originalEnd": 11825,
+    "preparedStart": 12213,
+    "preparedEnd": 12215,
+    "original": "R",
+    "prepared": "qu"
+  },
+  {
+    "originalStart": 11826,
+    "originalEnd": 11828,
+    "preparedStart": 12216,
+    "preparedEnd": 12216,
+    "original": "po",
+    "prepared": ""
+  },
+  {
+    "originalStart": 11829,
+    "originalEnd": 11830,
+    "preparedStart": 12217,
+    "preparedEnd": 12217,
+    "original": "i",
+    "prepared": ""
+  },
+  {
+    "originalStart": 11831,
+    "originalEnd": 11834,
+    "preparedStart": 12218,
+    "preparedEnd": 12219,
+    "original": "ory",
+    "prepared": "s"
+  },
+  {
+    "originalStart": 13549,
+    "originalEnd": 13552,
+    "preparedStart": 13934,
+    "preparedEnd": 13935,
+    "original": "Liv",
+    "prepared": "r"
+  },
+  {
+    "originalStart": 13553,
+    "originalEnd": 13554,
+    "preparedStart": 13936,
+    "preparedEnd": 13938,
+    "original": "R",
+    "prepared": "qu"
+  },
+  {
+    "originalStart": 13555,
+    "originalEnd": 13557,
+    "preparedStart": 13939,
+    "preparedEnd": 13939,
+    "original": "po",
+    "prepared": ""
+  },
+  {
+    "originalStart": 13558,
+    "originalEnd": 13559,
+    "preparedStart": 13940,
+    "preparedEnd": 13940,
+    "original": "i",
+    "prepared": ""
+  },
+  {
+    "originalStart": 13560,
+    "originalEnd": 13563,
+    "preparedStart": 13941,
+    "preparedEnd": 13942,
+    "original": "ory",
+    "prepared": "s"
+  },
+  {
+    "originalStart": 15558,
+    "originalEnd": 15563,
+    "preparedStart": 15937,
+    "preparedEnd": 15937,
+    "original": " = {}",
+    "prepared": ""
+  },
+  {
+    "originalStart": 15923,
+    "originalEnd": 15923,
+    "preparedStart": 16297,
+    "preparedEnd": 16299,
+    "original": "",
+    "prepared": ",\n"
+  },
+  {
+    "originalStart": 15924,
+    "originalEnd": 15925,
+    "preparedStart": 16300,
+    "preparedEnd": 16300,
+    "original": "=",
+    "prepared": ""
+  },
+  {
+    "originalStart": 15926,
+    "originalEnd": 15926,
+    "preparedStart": 16301,
+    "preparedEnd": 16322,
+    "original": "",
+    "prepared": "  platform: DesktopLi"
+  },
+  {
+    "originalStart": 15927,
+    "originalEnd": 15927,
+    "preparedStart": 16323,
+    "preparedEnd": 16325,
+    "original": "",
+    "prepared": "eL"
+  },
+  {
+    "originalStart": 15928,
+    "originalEnd": 15931,
+    "preparedStart": 16326,
+    "preparedEnd": 16333,
+    "original": "ewM",
+    "prepared": "stPlatf"
+  },
+  {
+    "originalStart": 15932,
+    "originalEnd": 15937,
+    "preparedStart": 16334,
+    "preparedEnd": 16336,
+    "original": "del()",
+    "prepared": "rm"
+  },
+  {
+    "originalStart": 16046,
+    "originalEnd": 16085,
+    "preparedStart": 16445,
+    "preparedEnd": 16445,
+    "original": "\n    val context = LocalContext.current",
+    "prepared": ""
+  },
+  {
+    "originalStart": 21170,
+    "originalEnd": 21171,
+    "preparedStart": 21530,
+    "preparedEnd": 21537,
+    "original": "v",
+    "prepared": "if (!pl"
+  },
+  {
+    "originalStart": 21172,
+    "originalEnd": 21185,
+    "preparedStart": 21538,
+    "preparedEnd": 21540,
+    "original": "l success = c",
+    "prepared": "tf"
+  },
+  {
+    "originalStart": 21186,
+    "originalEnd": 21186,
+    "preparedStart": 21541,
+    "preparedEnd": 21542,
+    "original": "",
+    "prepared": "r"
+  },
+  {
+    "originalStart": 21188,
+    "originalEnd": 21193,
+    "preparedStart": 21544,
+    "preparedEnd": 21544,
+    "original": "andro",
+    "prepared": ""
+  },
+  {
+    "originalStart": 21194,
+    "originalEnd": 21197,
+    "preparedStart": 21545,
+    "preparedEnd": 21547,
+    "original": "d.p",
+    "prepared": "sC"
+  },
+  {
+    "originalStart": 21199,
+    "originalEnd": 21199,
+    "preparedStart": 21549,
+    "preparedEnd": 21550,
+    "original": "",
+    "prepared": "r"
+  },
+  {
+    "originalStart": 21200,
+    "originalEnd": 21210,
+    "preparedStart": 21551,
+    "preparedEnd": 21558,
+    "original": "bilibili.f",
+    "prepared": "nt()) r"
+  },
+  {
+    "originalStart": 21211,
+    "originalEnd": 21212,
+    "preparedStart": 21559,
+    "preparedEnd": 21559,
+    "original": "a",
+    "prepared": ""
+  },
+  {
+    "originalStart": 21215,
+    "originalEnd": 21220,
+    "preparedStart": 21562,
+    "preparedEnd": 21562,
+    "original": "e.dow",
+    "prepared": ""
+  },
+  {
+    "originalStart": 21221,
+    "originalEnd": 21221,
+    "preparedStart": 21563,
+    "preparedEnd": 21564,
+    "original": "",
+    "prepared": "@"
+  },
+  {
+    "originalStart": 21222,
+    "originalEnd": 21223,
+    "preparedStart": 21565,
+    "preparedEnd": 21565,
+    "original": "o",
+    "prepared": ""
+  },
+  {
+    "originalStart": 21224,
+    "originalEnd": 21229,
+    "preparedStart": 21566,
+    "preparedEnd": 21567,
+    "original": "d.Dow",
+    "prepared": "u"
+  },
+  {
+    "originalStart": 21230,
+    "originalEnd": 21241,
+    "preparedStart": 21568,
+    "preparedEnd": 21570,
+    "original": "loadManager",
+    "prepared": "ch"
+  },
+  {
+    "originalStart": 21278,
+    "originalEnd": 21278,
+    "preparedStart": 21607,
+    "preparedEnd": 21610,
+    "original": "",
+    "prepared": "val"
+  },
+  {
+    "originalStart": 21279,
+    "originalEnd": 21279,
+    "preparedStart": 21611,
+    "preparedEnd": 21618,
+    "original": "",
+    "prepared": "success"
+  },
+  {
+    "originalStart": 21280,
+    "originalEnd": 21280,
+    "preparedStart": 21619,
+    "preparedEnd": 21620,
+    "original": "",
+    "prepared": "="
+  },
+  {
+    "originalStart": 21281,
+    "originalEnd": 21282,
+    "preparedStart": 21621,
+    "preparedEnd": 21629,
+    "original": " ",
+    "prepared": "platform"
+  },
+  {
+    "originalStart": 21287,
+    "originalEnd": 21293,
+    "preparedStart": 21634,
+    "preparedEnd": 21635,
+    "original": "ImageT",
+    "prepared": "C"
+  },
+  {
+    "originalStart": 21294,
+    "originalEnd": 21298,
+    "preparedStart": 21636,
+    "preparedEnd": 21637,
+    "original": "Gall",
+    "prepared": "v"
+  },
+  {
+    "originalStart": 21300,
+    "originalEnd": 21301,
+    "preparedStart": 21639,
+    "preparedEnd": 21639,
+    "original": "y",
+    "prepared": ""
+  },
+  {
+    "originalStart": 21302,
+    "originalEnd": 21416,
+    "preparedStart": 21640,
+    "preparedEnd": 21640,
+    "original": "\n                                            context = context,\n                                            url = ",
+    "prepared": ""
+  },
+  {
+    "originalStart": 21430,
+    "originalEnd": 21482,
+    "preparedStart": 21654,
+    "preparedEnd": 21654,
+    "original": "\n                                            title =",
+    "prepared": ""
+  },
+  {
+    "originalStart": 21493,
+    "originalEnd": 21534,
+    "preparedStart": 21665,
+    "preparedEnd": 21665,
+    "original": "\n                                        ",
+    "prepared": ""
+  },
+  {
+    "originalStart": 21572,
+    "originalEnd": 21573,
+    "preparedStart": 21703,
+    "preparedEnd": 21712,
+    "original": "T",
+    "prepared": "if (platf"
+  },
+  {
+    "originalStart": 21574,
+    "originalEnd": 21575,
+    "preparedStart": 21713,
+    "preparedEnd": 21717,
+    "original": "a",
+    "prepared": "rm.i"
+  },
+  {
+    "originalStart": 21576,
+    "originalEnd": 21581,
+    "preparedStart": 21718,
+    "preparedEnd": 21722,
+    "original": "t.mak",
+    "prepared": "Curr"
+  },
+  {
+    "originalStart": 21582,
+    "originalEnd": 21585,
+    "preparedStart": 21723,
+    "preparedEnd": 21724,
+    "original": "Tex",
+    "prepared": "n"
+  },
+  {
+    "originalStart": 21587,
+    "originalEnd": 21588,
+    "preparedStart": 21726,
+    "preparedEnd": 21728,
+    "original": "\n",
+    "prepared": "))"
+  },
+  {
+    "originalStart": 21589,
+    "originalEnd": 21628,
+    "preparedStart": 21729,
+    "preparedEnd": 21744,
+    "original": "                                       ",
+    "prepared": "platform.feedba"
+  },
+  {
+    "originalStart": 21629,
+    "originalEnd": 21636,
+    "preparedStart": 21745,
+    "preparedEnd": 21747,
+    "original": "ontext,",
+    "prepared": "k("
+  },
+  {
+    "originalStart": 21720,
+    "originalEnd": 21721,
+    "preparedStart": 21831,
+    "preparedEnd": 21831,
+    "original": ",",
+    "prepared": ""
+  },
+  {
+    "originalStart": 21758,
+    "originalEnd": 21824,
+    "preparedStart": 21868,
+    "preparedEnd": 21868,
+    "original": "    Toast.LENGTH_SHORT\n                                    ).show(",
+    "prepared": ""
+  },
+  {
+    "originalStart": 23046,
+    "originalEnd": 23051,
+    "preparedStart": 23090,
+    "preparedEnd": 23090,
+    "original": " = {}",
+    "prepared": ""
+  },
+  {
+    "originalStart": 23103,
+    "originalEnd": 23108,
+    "preparedStart": 23142,
+    "preparedEnd": 23142,
+    "original": " = {}",
+    "prepared": ""
+  }
+]

@@ -1,0 +1,45 @@
+{
+  "newSourcePayload": [
+    {
+      "source": "prepared/tools/extract-upstream-home-protocols.py",
+      "target": "desktop/tools/extract-upstream-home-protocols.py",
+      "sha256Bytes": "ac9f13b5c84b824e57215caacbd527f01e1e6b26738b854569dc6c5877dca5ed"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeLocalIdentityAnalytics.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeLocalIdentityAnalytics.kt",
+      "sha256Bytes": "42b56c755720466a7de39fd4d4c739bf5272a58a09cc12a8200558ddd7c194f0"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeProtocolEnvironment.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeProtocolEnvironment.kt",
+      "sha256Bytes": "bab988706006e029cfa5fc59298dec7a772ff4f64c4786abaa91f922c06f1edd"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRequestPorts.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRequestPorts.kt",
+      "sha256Bytes": "4be042dd1a85af5e0b9db3f2f7cbf5b499fda4d333cb409f6053d589477f468e"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeRootRequestBinding.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRequestBinding.kt",
+      "sha256Bytes": "66a42d7df260d936e6b998a21ea470b7ebc2bf7335f6d852e6a9ec317e4d5a2e"
+    }
+  ],
+  "applyNarrowPatches": [
+    "shared-http-owner-admission.patch",
+    "home-preview-subject.patch"
+  ],
+  "mergeSourceInventory": "source-inventory.json",
+  "gradleSnippetOnly": "gradle-tasks.snippet.kts",
+  "neverInstall": [
+    "prepared/generated",
+    "prepared/transport-delta",
+    "prepared/preview-delta",
+    "prepared/sole-producer-delta",
+    "classes-*",
+    "task-store",
+    "producer-replay"
+  ],
+  "productDependenciesAdded": 0
+}

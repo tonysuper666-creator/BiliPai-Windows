@@ -1,0 +1,6 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+  "baseLF": "ccce6dfea52a7306918f20817c61f31ca431fe6f9a6025c48223cc0eff09fe98",
+  "desiredLF": "fd1ede2e75ba505be3b45a52052d146730cfea0ee27caf84eee32687cf7ebbfe",
+  "scope": "optional owner-bound admission only; same local-first algorithm/default PROFILE/remote result/error mapping"
+}

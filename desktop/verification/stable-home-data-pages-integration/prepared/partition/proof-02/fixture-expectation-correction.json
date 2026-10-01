@@ -1,0 +1,7 @@
+{
+  "originalStaleTestExpectation": "showUpBadge = false",
+  "stableOriginalSourceActual": "showUpBadge = showUpBadges from global persisted settings",
+  "fixtureCorrectionOnly": true,
+  "productionAlgorithmChanged": false,
+  "originalFailedRun": "proof-01"
+}

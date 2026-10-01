@@ -28,6 +28,7 @@ class DesktopDiscoveryRepository(private val repository: DesktopRepository,
         .addConverterFactory(Json { ignoreUnknownKeys = true; coerceInputValues = true }.asConverterFactory("application/json".toMediaType()))
         .build().create(BilibiliApi::class.java)
     private val mutationMutex = Mutex()
+    internal val homePreferences: DesktopDiscoveryPreferences get() = preferences
     val feedMode: StateFlow<DesktopRecommendationMode> get() = preferences.feedMode
     val refreshCount: StateFlow<Int> get() = preferences.refreshCount
     suspend fun setFeedMode(value: DesktopRecommendationMode) = preferences.setFeedMode(value)

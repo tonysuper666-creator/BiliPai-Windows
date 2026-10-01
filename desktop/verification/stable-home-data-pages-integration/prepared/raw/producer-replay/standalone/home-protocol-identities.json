@@ -1,0 +1,230 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourcePins": {
+    "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+    "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt": "4081b04ee97b4edab58507811d43b637afb78a04fd1b6f94ffa6697f72905c4a",
+    "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt": "28748c0fd10125e603a8c0f28fff63781f87d3350e1446cc355622f447f8f86d",
+    "app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt": "405e952ef30ec06f14a155599a92641d533e73f28ea198f0aebfda90960a4bc8",
+    "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+    "app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt": "67deacd84bee9f8803b2190e079d5486d2593bf26bc29d1a114ae259273fe87d"
+  },
+  "declarations": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "shouldStartHomePreload",
+      "originalSha256LF": "58da1a8d74929053aa7c389d836875cafda71543433efb72e0d4f2b8180680bb",
+      "desiredSha256LF": "58da1a8d74929053aa7c389d836875cafda71543433efb72e0d4f2b8180680bb",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "shouldPrimeBuvidForHomePreload",
+      "originalSha256LF": "2fb6ac98769bd534a8b82db65ae6093df5ee79eee55d476629943db079578f4d",
+      "desiredSha256LF": "94eb2e1592cff1b7d22570bebbd1f91d2ee94d7090d68f98ee9f69963a1d184a",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "shouldReuseInFlightPreloadForHomeRequest",
+      "originalSha256LF": "c648a412976f8c5d52ac6b3634de4f89a765df09a16d75a0d8d763cf8b63404a",
+      "desiredSha256LF": "c648a412976f8c5d52ac6b3634de4f89a765df09a16d75a0d8d763cf8b63404a",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "shouldReportHomeDataReadyForSplash",
+      "originalSha256LF": "f8add166ca26c4b342a771bc8978bba9c09ef4ae1c58789aacd77c34efbfc28c",
+      "desiredSha256LF": "f8add166ca26c4b342a771bc8978bba9c09ef4ae1c58789aacd77c34efbfc28c",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "resolveHomeFeedWbiKeys",
+      "originalSha256LF": "b69c784fec04567548cd77e8baa86bb6a9e9ac356f56b47cf4afafcd8f93b6ab",
+      "desiredSha256LF": "b69c784fec04567548cd77e8baa86bb6a9e9ac356f56b47cf4afafcd8f93b6ab",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "isHomeDataReady",
+      "originalSha256LF": "824cbb14e8e15576f53f093646ee3af59ec3cc377bd0ca13e43a2553e679b533",
+      "desiredSha256LF": "824cbb14e8e15576f53f093646ee3af59ec3cc377bd0ca13e43a2553e679b533",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "preloadHomeData",
+      "originalSha256LF": "949ed645a17636035968f1d778f2f5ee10a1f5e2bed14ba1ded48ca40ebc8703",
+      "desiredSha256LF": "172261a31ab56081bc281db9793e3a7632d4428b8d44c59cf268fd0929f42958",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "awaitHomePreloadResult",
+      "originalSha256LF": "c1eebe2ee03eae14a6d279027d230d9507019c94951a246446fa1466d7fc84e4",
+      "desiredSha256LF": "c1eebe2ee03eae14a6d279027d230d9507019c94951a246446fa1466d7fc84e4",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "consumePreloadedHomeVideos",
+      "originalSha256LF": "f87d0b034b6970be6b9795e97aba6b9bad92c11809d43961de3642b019a7e56f",
+      "desiredSha256LF": "f87d0b034b6970be6b9795e97aba6b9bad92c11809d43961de3642b019a7e56f",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "getHomeVideos",
+      "originalSha256LF": "ddae9a7f3b5722c4bb58296cf2da36593ad12bb838be0508d8c4a52295c2c0b8",
+      "desiredSha256LF": "ddae9a7f3b5722c4bb58296cf2da36593ad12bb838be0508d8c4a52295c2c0b8",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "getHomeVideosInternal",
+      "originalSha256LF": "b371042bb54b4c7dd97ec5b7eda1cc34ddc9822fd33c0644cb8a01c4c99b0afd",
+      "desiredSha256LF": "9b722a05cb2f411c43bc5735b0602b0efa16ce97386c3c28009a86b56a5e0010",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "fetchWebFeed",
+      "originalSha256LF": "9daba2b85c5e5147033d0daedc1398926f8c2c29caf3217af9a25bd39d4495f6",
+      "desiredSha256LF": "0c4225b86c6bd115b0264965f4d68f22d6754457904755b263865f84c903cb0e",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "fetchMobileFeed",
+      "originalSha256LF": "ee286ebca3a722dffe5536cab2f8b5cd124b69ad9c39acf1db8450467d020622",
+      "desiredSha256LF": "91c627a38cca7d04a8e77f6016b21f60b4d683ad5309e81079fbcbd4ae311e52",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "fetchMergedWebFeed",
+      "originalSha256LF": "af1c30553fc182bc552ca1f0dc78a512fc479f1f38370981965526d3bd8e7505",
+      "desiredSha256LF": "af84a62be56d3d8430acd6e212905471e0ab516e9a8e5a10de7099410c031474",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "fetchMergedMobileFeed",
+      "originalSha256LF": "21ab7dd1f5e7b4c57f5167f089d17e27ed69a6f493ee363b19f272042d585025",
+      "desiredSha256LF": "9416bd871af337f92a74a3f3117f914fb8f9c9509e5fddd13eb9c206b0f47503",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "getPopularVideos",
+      "originalSha256LF": "63c764869a0583d6535a1f10ac3e3538e78256b11bc36b8d93e7281e2e3cfe11",
+      "desiredSha256LF": "d288f115699c6c596af1703a4d357b922c41f44718f0f11d548153bf5ed17b03",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "getRankingVideos",
+      "originalSha256LF": "152272cfda954bb793d35fd68bea88c1a2806a5dc0f4789ebcda0f484fb74f95",
+      "desiredSha256LF": "9962478cfccfea4d51a7786e1a643740251495b00039c7ece37cfea9f13feb13",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "getPreciousVideos",
+      "originalSha256LF": "ffd510d33b881006dee71d50928aa1b5623b76d5c42e6cd38984d66348d3129f",
+      "desiredSha256LF": "195b8dbf47f0fa6587eb5ca3fc03a8fda3d7cd8e525d68c6eaeafb0693b25715",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "getWeeklyMustWatchVideos",
+      "originalSha256LF": "3aedf623dc7c3350ee5d0d932673d62cd2af9f4207c2279e68ba297623b40e5d",
+      "desiredSha256LF": "e1ffb0946ad10ebbf9b026321148ab794a26078e22bd293ca38c2edeb30cbda0",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "getRegionVideos",
+      "originalSha256LF": "3dd95be7ae3fc59c2151b001ed09366dbf835e4c01416436612c1ff5eaa2cbc3",
+      "desiredSha256LF": "bff55a9ebd7288c30e31a811fde0de920181319237775ff161810149d5df071a",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "getNavInfo",
+      "originalSha256LF": "a2dac34a64dd00a95af7e5ad3608de94642117548ee2af0a128db7b4cca9e595",
+      "desiredSha256LF": "6c271e198f06f8a993195b3ced963038e86fea4e093d47007628a797e771425e",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "getPreviewVideoUrl",
+      "originalSha256LF": "acf839d1fd9313750f9cf3a7fc5d813b16a888536acb6e0737027fa4150640eb",
+      "desiredSha256LF": "acf839d1fd9313750f9cf3a7fc5d813b16a888536acb6e0737027fa4150640eb",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "declaration": "fetchAsGuestFallback",
+      "originalSha256LF": "bfd8877509ee1f53acd1ca61fabbb5f64a07f086a758cb6c4b2d35c7a92d8153",
+      "desiredSha256LF": "db23a948b71d45ab333b21d5359f11422e88d4a015f24a0a5c2400f89b7ae64b",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt",
+      "declaration": "getHistoryList",
+      "originalSha256LF": "2d80f3a2a4ad369cb4283a30a99eeeafa4755283e603a71751d1da7905d7d27c",
+      "desiredSha256LF": "1ddcf96c2407e9f6fcb8b45234f0de6682be666b6ca68dbcbde2b5179e9be6b2",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "declaration": "getLiveRooms",
+      "originalSha256LF": "5290854d4da00d64b8a44cba965b311727cd8612d475b553491546e685035f1c",
+      "desiredSha256LF": "6f0a19b2508bc43e91303eafb5089dcc6b04eeb3d0e9f2b02c71f75e5d2c9bad",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "declaration": "getFollowedLive",
+      "originalSha256LF": "a20ca02273e67f71a3365fdc51ac11ab4eedee6ecde0c45002b5351e8c30aa05",
+      "desiredSha256LF": "a20ca02273e67f71a3365fdc51ac11ab4eedee6ecde0c45002b5351e8c30aa05",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "declaration": "getFollowedLivePage",
+      "originalSha256LF": "3c4aab47d456bd53757e75b34c63e11a3d50d1113c77e29dfbe62b2cdeef73b1",
+      "desiredSha256LF": "b1a866320e11b9a8450a83c132fde04b106e55e6d065548e7038d18e8c49f64d",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt",
+      "declaration": "getUnreadCount",
+      "originalSha256LF": "e8629bc41b15130c43ea466c1035a650e19e74a08331b563af29070ecac8e483",
+      "desiredSha256LF": "a632dd0070acce67e7714b08ecbe16a94dbf637985cb08b9608ba6cdc05e1ca3",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt",
+      "declaration": "getFeedUnread",
+      "originalSha256LF": "94a76fd5423a198f78e187c2274bee77902c88a5a2a7f86ef541b9bc7344182d",
+      "desiredSha256LF": "bbc30ee4147495790eb74408d53c732da7633ab2cae37cebe76c51796b3b9eb7",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "declaration": "submitRecommendationFeedback",
+      "originalSha256LF": "bde48176bf22160df6d2a392443a90ae53ceb993de46a0c6e79c6ea123dfb90e",
+      "desiredSha256LF": "e5da6e5a5deab7f2523879b42d43a2eb571131c5f5e3492cc86a2eed93f54037",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "declaration": "toggleWatchLater",
+      "originalSha256LF": "4b7de4d5950e024ab26e800a7cc14b763ff4927657761ec3bfeb9b9c043c58f2",
+      "desiredSha256LF": "c5d4d0284bd5791e106f1200ff38220fbb70aba07934c187c33033ea69cc9c67",
+      "adapted": true
+    }
+  ]
+}

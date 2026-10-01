@@ -1,0 +1,63 @@
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:18:48: error: unresolved reference 'BILIPAI_FEED_FILTER_PLUGIN_ID'.
+import com.android.purebilibili.feature.plugin.BILIPAI_FEED_FILTER_PLUGIN_ID
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:30:49: error: unresolved reference 'totalMessageUnreadCount'.
+import com.android.purebilibili.feature.message.totalMessageUnreadCount
+                                                ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:441:44: error: unresolved reference 'BILIPAI_FEED_FILTER_PLUGIN_ID'.
+            PluginManager.awaitPluginReady(BILIPAI_FEED_FILTER_PLUGIN_ID)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:456:37: error: unresolved reference 'shouldAutoRebuildTodayWatchPlan'.
+                                if (shouldAutoRebuildTodayWatchPlan(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:473:21: error: unresolved reference 'shouldAutoRebuildTodayWatchPlan'.
+                if (shouldAutoRebuildTodayWatchPlan(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:519:17: error: unresolved reference 'shouldAutoRebuildTodayWatchPlan'.
+            if (shouldAutoRebuildTodayWatchPlan(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:617:21: error: unresolved reference 'shouldAutoRebuildTodayWatchPlan'.
+                if (shouldAutoRebuildTodayWatchPlan(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:634:31: error: unresolved reference 'collectTodayWatchConsumedForManualRefresh'.
+        todayConsumedBvids += collectTodayWatchConsumedForManualRefresh(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:893:13: error: modifier 'override' is not applicable to 'local variable'.
+            override val liveSubCategory = if (category == HomeCategory.LIVE) {
+            ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:926:25: error: unresolved reference 'shouldAutoRebuildTodayWatchPlan'.
+                    if (shouldAutoRebuildTodayWatchPlan(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:971:9: error: modifier 'override' is not applicable to 'local variable'.
+        override val currentCategory = _uiState.value.currentCategory
+        ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:993:21: error: unresolved reference 'shouldAutoRebuildTodayWatchPlan'.
+                if (shouldAutoRebuildTodayWatchPlan(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:1284:13: error: modifier 'override' is not applicable to 'local variable'.
+            override val refreshMessage = com.android.purebilibili.core.util.EasterEggs.getRefreshMessage()
+            ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:1297:13: error: modifier 'override' is not applicable to 'local variable'.
+            override val undoAvailable = shouldExposeHomeRefreshUndo(
+            ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:1409:9: error: modifier 'override' is not applicable to 'local variable'.
+        override val currentCategory = _uiState.value.currentCategory
+        ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:1461:38: error: unresolved reference 'totalMessageUnreadCount'.
+                messageUnreadCount = totalMessageUnreadCount(
+                                     ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:1474:9: error: modifier 'override' is not applicable to 'local variable'.
+        override val currentCategory = category
+        ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:1475:9: error: modifier 'override' is not applicable to 'local variable'.
+        override val popularSubCategory = _uiState.value.popularSubCategory
+        ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:1673:25: error: unresolved reference 'shouldAutoRebuildTodayWatchPlan'.
+                    if (shouldAutoRebuildTodayWatchPlan(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:1917:18: error: unresolved reference 'shouldIncludeHomeFollowDynamicInVideoFeed'.
+            if (!shouldIncludeHomeFollowDynamicInVideoFeed(archive.bvid)) {
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-viewmodel-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeViewModel.kt:1921:31: error: unresolved reference 'resolveDynamicArchiveAid'.
+            val resolvedAid = resolveDynamicArchiveAid(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^

@@ -1,0 +1,189 @@
+{
+  "status": "FROZEN_SOURCE_ONLY_WINDOW_GLOBALS_AND_LOTTIE",
+  "artifactCount": 33,
+  "artifacts": [
+    {
+      "path": "audit-prefs-ports.py",
+      "bytes": 2996,
+      "sha256Bytes": "a70b7e94e8ca6d4b288f90dca33d1418f3d9fd9a8429b9cb9e74eca030ca7c3f"
+    },
+    {
+      "path": "audit-source.py",
+      "bytes": 7307,
+      "sha256Bytes": "06bfe35b262cd8f4c065ad0cba7bac93d3caf462daa536889f7bac7f21160fe5"
+    },
+    {
+      "path": "compile.py",
+      "bytes": 3799,
+      "sha256Bytes": "399fc163ca604135f28d57052f65a2a1148c1617403c859e77b66c2bb9f913ad"
+    },
+    {
+      "path": "freeze.py",
+      "bytes": 1542,
+      "sha256Bytes": "84fa006130a3caaf23906b108c7ba9c87cd18ebdded3e110d654c666ba4270cf"
+    },
+    {
+      "path": "original-prefs-source/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "bytes": 396158,
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "path": "original-prefs-source/app/src/main/java/com/android/purebilibili/core/util/FoldableDisplayPolicy.kt",
+      "bytes": 9316,
+      "sha256Bytes": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5"
+    },
+    {
+      "path": "original-prefs-source/app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt",
+      "bytes": 5026,
+      "sha256Bytes": "306e82c59477a5b8801a86f85d0d0c856c31fc5801d52dd626af3765afc4530e"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+      "bytes": 4058,
+      "sha256Bytes": "e37ef5012d302af1f8a02d5c7e4932c0a7644f06ae1d5907947602ee672b430e"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+      "bytes": 10062,
+      "sha256Bytes": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+      "bytes": 64881,
+      "sha256Bytes": "e7ee5766b05d05a39e81f0a81774c0870eb340879493df4397f94864b9d386f8"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt",
+      "bytes": 20028,
+      "sha256Bytes": "b7024240db5a025573b2c00689001b7d9b2adcb9e83e4132744d242127a5ca83"
+    },
+    {
+      "path": "prefs-platform-port-review.json",
+      "bytes": 5646,
+      "sha256Bytes": "2b5e42ab61a917db9271b7038a2b4053873565c41e866a3244fb7950b5dacbfe"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt",
+      "bytes": 10342,
+      "sha256Bytes": "5833901a8147de7b64d4fb094bb7aa92a9603e574e13380ed695368b40f9503a"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowGlobals.kt",
+      "bytes": 2826,
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "bytes": 10077,
+      "sha256Bytes": "cc07f410268f4476ab2a1da9b78f17c611000632ce6d10e58a92b2a818b4fbf2"
+    },
+    {
+      "path": "runs/compile-01/compile-result.json",
+      "bytes": 2753,
+      "sha256Bytes": "7338cc75465ee3722a4a4bb5fdf73a278f5295ebf73814a8006cfc662e6b7b48"
+    },
+    {
+      "path": "runs/compile-01/compiler.args",
+      "bytes": 25163,
+      "sha256Bytes": "42ec7e949b8298615aa3cf89b76c36c9bdb776c9fccb7c07261a16b1dbe2d723"
+    },
+    {
+      "path": "runs/compile-01/compiler.log",
+      "bytes": 971,
+      "sha256Bytes": "602ca2c179175fe0333275f94a315f061bd8a27c488ae54a9a601c08f322ab70"
+    },
+    {
+      "path": "runs/compile-01/dependency-pins-after.json",
+      "bytes": 42059,
+      "sha256Bytes": "6aa75fadbfbb1192f455ac81e5337da05eb500ef38f60670d974fa4b6cdef990"
+    },
+    {
+      "path": "runs/compile-01/dependency-pins-before.json",
+      "bytes": 42059,
+      "sha256Bytes": "6aa75fadbfbb1192f455ac81e5337da05eb500ef38f60670d974fa4b6cdef990"
+    },
+    {
+      "path": "runs/compile-01/prepared-home-window-lottie.jar",
+      "bytes": 48348,
+      "sha256Bytes": "1bba37cebaceb0adabc8e2efe503f2a9bf187486324ad2bc1bc424fe34710d6b"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt",
+      "bytes": 9805,
+      "sha256Bytes": "000709e167cf4d66949b36c9804bc1f84a5527749fdd8e7bfd8b1c224006eb81"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowGlobals.kt",
+      "bytes": 2826,
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc"
+    },
+    {
+      "path": "runs/compile-02/compile-result.json",
+      "bytes": 3001,
+      "sha256Bytes": "616c2bda60dd53009b05d053e8d83615a7e098fdc4240f6fe9cf33630e83b20e"
+    },
+    {
+      "path": "runs/compile-02/compiler.args",
+      "bytes": 25163,
+      "sha256Bytes": "e7750a8efeb6b58f172356bfbf817e8180fb15edd0cf2c8313354f65a96fe32e"
+    },
+    {
+      "path": "runs/compile-02/compiler.log",
+      "bytes": 971,
+      "sha256Bytes": "bd0b96ae2381135ed5afadb5a835d124999ca2e6e7816cf2e88c7d837e00db12"
+    },
+    {
+      "path": "runs/compile-02/dependency-pins-after.json",
+      "bytes": 42059,
+      "sha256Bytes": "13e4113e5d9043f9a70b95c23d955f01455a9c7a27bc1391dd43093017dff918"
+    },
+    {
+      "path": "runs/compile-02/dependency-pins-before.json",
+      "bytes": 42059,
+      "sha256Bytes": "13e4113e5d9043f9a70b95c23d955f01455a9c7a27bc1391dd43093017dff918"
+    },
+    {
+      "path": "runs/compile-02/prepared-home-window-lottie.jar",
+      "bytes": 51845,
+      "sha256Bytes": "d31f20e142077f7d6eaf0225581a085adc5854250d24459a1e30208de9fdd062"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt",
+      "bytes": 10342,
+      "sha256Bytes": "5833901a8147de7b64d4fb094bb7aa92a9603e574e13380ed695368b40f9503a"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowGlobals.kt",
+      "bytes": 2826,
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc"
+    },
+    {
+      "path": "source-audit-history-01.json",
+      "bytes": 371,
+      "sha256Bytes": "433c38bc499967208902d8631f8052ac37df4224128e677cc266d1854aff0e52"
+    },
+    {
+      "path": "source-review.json",
+      "bytes": 19747,
+      "sha256Bytes": "6772c1b24b904b1ab94e8b0729186a6ed89f7e849f40554575e8c1ed858f35da"
+    }
+  ],
+  "installPayload": [
+    {
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt",
+      "sha256Bytes": "5833901a8147de7b64d4fb094bb7aa92a9603e574e13380ed695368b40f9503a"
+    },
+    {
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowGlobals.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowGlobals.kt",
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc"
+    }
+  ],
+  "sourceOnlyCompilePass": true,
+  "productionClassIntersection": [],
+  "runtimeOrAnimationAccepted": false,
+  "HTTP": false,
+  "nativeWindow": false,
+  "MainOrSharedSourceModified": false
+}

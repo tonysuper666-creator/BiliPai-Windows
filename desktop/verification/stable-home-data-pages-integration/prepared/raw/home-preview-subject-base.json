@@ -1,0 +1,8 @@
+{
+  "path": "desktop/tools/extract-upstream-home-page.py",
+  "baseSha256LF": "bfb436456c3dacbbf1868657b9023e48b226d6a7ed6ace23cadb4275211cb6df",
+  "baseSha256Bytes": "bfb436456c3dacbbf1868657b9023e48b226d6a7ed6ace23cadb4275211cb6df",
+  "desiredSha256LF": "d0b3c42a3102042c6fb464ae0a60390d2004b1c9dbe4b1ca1e50bf6ea447957d",
+  "rawSourceUnchanged": true,
+  "originalCallerUnchangedInsideKey": true
+}

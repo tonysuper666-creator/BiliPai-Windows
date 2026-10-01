@@ -1,0 +1,204 @@
+{
+  "original": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "20c2bd7ee1d9be5226f50ddf472d31f979ed7ed5",
+      "sha256LF": "63ffd0eadd3080e2b304612c9c1e672f5f2370ca9c9db4f8040a52e85cbc15aa"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeUiState.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "1faf5d4b4b5b9b97a6361d5aeba619247038ebc9",
+      "sha256LF": "3dd55fff4015adb388f9a403e6ae585a01b4a81f9aff3502a3af97f069187939"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "96eed38257155e5b633ce42b5d1180da09ca56a7",
+      "sha256LF": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeCategoryPage.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "e2e8ba05849e7ed5b63aca3232c2d21e838836c3",
+      "sha256LF": "0d350bbae49db96c6290220767155433df729fa16e852f31544faeb2aeb17ea2"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "6a7a29eaf4d0d1f49bad3cfd2a20bf67d9944357",
+      "sha256LF": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "570444a8c1d83b29fbc11ef0bf6f71157808c1db",
+      "sha256LF": "28748c0fd10125e603a8c0f28fff63781f87d3350e1446cc355622f447f8f86d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "6c178eef4f884209c3a5292c0520813d316e1867",
+      "sha256LF": "405e952ef30ec06f14a155599a92641d533e73f28ea198f0aebfda90960a4bc8"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "bf4f6073bdc29e9235de542c375eaf944d9c9203",
+      "sha256LF": "4081b04ee97b4edab58507811d43b637afb78a04fd1b6f94ffa6697f72905c4a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "377e9680841ef3c1f2edcc2aca3605008099606a",
+      "sha256LF": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/TodayWatchFeedbackStore.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "e1bd7089a0d49c3724a5a013feea979da9e92e6b",
+      "sha256LF": "c5a13d5bed751c048d3ec872e1a6a82fc418571f1403aa0723c1bb433843d1e9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/TodayWatchProfileStore.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "fd24f4229c19ca731a82e00dff9b8a67d62f7237",
+      "sha256LF": "d289cc728e86ffb16b8a5c222fe02397b84d5a19e1fcad9e41bf7ca5a1bc30be"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "e343c21510d6519a63def7b9906ac9400087bc11",
+      "sha256LF": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/BlockedUpRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "1f09620f14363faf7a289f6c5560a3b4ced12321",
+      "sha256LF": "28c40af8019e3d10f7c36f05404f300f7728bc2a196010a7bbe1663270270fe7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "c8fddc1d08933deed87784474ce12c464ca49a1f",
+      "sha256LF": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeNotInterestedPolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "359b8a95ea0333f242e73351618d5e8b652b47b7",
+      "sha256LF": "b8ee05057d102d553720f926aa9f3c81d789201835a47d51ffda8f04882b8570"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchCandidatePoolPolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "c818cb72d51c2d11f7e16f912630130ae45d5f48",
+      "sha256LF": "1e257a61e2a75a8c80666a3aa668aa772abac1f5f15b1f695a8e7975e9098c9c"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "7561fc2702477615d559cddaa106722ba2da9cc0",
+      "sha256LF": "14aed865e65aa2a8f79db3760abd9931b36c5b719676eb577241601cd90be454"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchQueuePolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "f5b383d9e02ac2201900c8dbd5c0173733c747c7",
+      "sha256LF": "618f2836f085299c4aacb18f25b76234bf4ccce8fab4742e0244bd7901dd2ee1"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "sha256Bytes": "1fffabeeee120f4fc436da89d7a79dd3a04db6da00d226a877f129dedf15509b",
+      "sha256LF": "5e67b909a6a29178205fd76bf874a5f492bf07c0c193691b11049d64574a0d40",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+      "sha256Bytes": "68c9b4ef48015ffe8b9688719d2bf3f01474fd017f5a663a69ce1669c83d6b4b",
+      "sha256LF": "3682befd886830df7187924e5c661324337c34b6df205d35adb096f89553c4f5",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryModels.kt",
+      "sha256Bytes": "6cc913e1f5c682435b675e7831cf91b15a8aa008335ba11ad5937c75bdfb74fa",
+      "sha256LF": "6b9d2b9fb443de9185d7cd148e66e08ff25bd8c25f3cbfff8047aa9ed2869b03",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryTransport.kt",
+      "sha256Bytes": "2552b506367ed3becf31d0b86fd03f5c96058ada7da8773dda23eefdb4f73d0b",
+      "sha256LF": "bd934d821f7f41cfb891805fc9b063f2e84e027293da67daadedb78031cb05e6",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "f75fe99edcb7299249da3f0437f3a4a0c4d5b62edc8e4d1103ad0820e6faa490",
+      "sha256LF": "1d07e32e4b89c8596ca2c98147c8a60d900099eaa8339e2822c788b745b46f55",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "70ab482dbc4d41a83f6b450774f320d3c98929e00dde1b54878e8cdd2f29605a",
+      "sha256LF": "3f33392b1eb7bf14c7e0cbc8c9330890b8991a3b85d5f74859b7159ad6383de3",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "dc71e802b410b1ed1affdd1e98b15c743a079db96c945fa66eafb4c9260ba8f9",
+      "sha256LF": "770128c34fde1e7b00a8650e2f8dac79bb906aed131fa162e3893fde7515b9ba",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "6a1c1d3eb4e92dca3dff067fd9a1d9f86a4e59b93c925c395b51c9cec9279634",
+      "sha256LF": "50a6b04b1b1b289ab7ca3ac584dbde1e8f71226badb603e1f82e8c48a8a9ad6a",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "299a98c5b1e80b04820178654c0388fc0fb112cb5d7fa8b4fca73d3290018e6f",
+      "sha256LF": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "sha256Bytes": "ba2fd53f7774b113e892e58fe5cf1e69151b1894509d5cfafa37caffa92feb62",
+      "sha256LF": "a80bd55e796a1bc276bce2ea6bf0476985fcba3d2ab0ca35ceafb555f40dcac5",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "f502a403e97af6caed1d4f4eb9085ca11f746ad1b56222b44830a97637fa2922",
+      "sha256LF": "657dbba5b4c050d3524e25abb1d3554b130a1415319c1a11ab9679294ec43767",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopHomeCardMetadataRepository.kt",
+      "sha256Bytes": "020a5e9feff213036f11a5e2b0b2b30bf38c6490171630d743456f7cf197f306",
+      "sha256LF": "6e84d23cdb26dfa6f30fd9e903bba8a6a36bc8917ba6163e2c094cb1b5cf726b",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "sha256Bytes": "0aee7b311cf0530fc9fc64ef1cb67e1ffe2ea6f6f51b9756b5086e795ccb46c7",
+      "sha256LF": "77dff043fe6dc96d84ce9be8c39fae99e2089d5b8c11bbe4591a13dbb8222f7a",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginProviderScreens.kt",
+      "sha256Bytes": "d3dc55015643af8d229cfa774ec978c2da426413e2a83a29d22f2f06499daff4",
+      "sha256LF": "15e0ad913d4dc50267ccdfce7b87bc589fbe970369637b160c1219790a8a4ddc",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "4aa3ad5e1be0fa947fdbb3027ae860126b970f612958719e2521ece8ed48e90a",
+      "sha256LF": "4f5ca0821a7c62be6df66a220d6565aebdb7f9091d97d8923b4f5894b1cf9dd9",
+      "scope": "Read-only current sibling source; not newly compiled by this audit"
+    }
+  ]
+}

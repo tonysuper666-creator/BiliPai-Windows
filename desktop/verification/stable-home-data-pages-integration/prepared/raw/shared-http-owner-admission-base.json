@@ -1,0 +1,20 @@
+{
+  "newClient": false,
+  "newCookieState": false,
+  "newAccountAuthority": false,
+  "callFactoryIsFacade": true,
+  "rows": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseSha256Bytes": "299a98c5b1e80b04820178654c0388fc0fb112cb5d7fa8b4fca73d3290018e6f",
+      "baseSha256LF": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "desiredSha256LF": "1fe31dea406890ed26fd59013592dc05a270bae22035b8e8259ed897a2acf545"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "baseSha256Bytes": "6a1c1d3eb4e92dca3dff067fd9a1d9f86a4e59b93c925c395b51c9cec9279634",
+      "baseSha256LF": "50a6b04b1b1b289ab7ca3ac584dbde1e8f71226badb603e1f82e8c48a8a9ad6a",
+      "desiredSha256LF": "dfb7ce977a5162793bf86906982fd6fc58a66dd8c50a754caa5690e381663b63"
+    }
+  ]
+}

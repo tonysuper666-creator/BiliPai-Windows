@@ -1,0 +1,109 @@
+{
+  "status": "SOURCE_ONLY_REQUIRED_PLATFORM_PORTS_PENDING",
+  "originalSources": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "gitCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "anchors": [
+        {
+          "start": 1262,
+          "end": 1262,
+          "source": "internal fun defaultTabletUseSidebar(isTabletDevice: Boolean): Boolean = isTabletDevice"
+        },
+        {
+          "start": 7600,
+          "end": 7603,
+          "source": "        .map { preferences ->\n            preferences[KEY_TABLET_NAVIGATION_MODE]\n                ?: defaultTabletUseSidebar(isLargeScreenOrFoldableConfiguration(context))\n        }"
+        }
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/util/FoldableDisplayPolicy.kt",
+      "gitCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Bytes": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5",
+      "sha256LF": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5",
+      "anchors": [
+        {
+          "start": 227,
+          "end": 237,
+          "source": "internal fun Context.isLargeScreenOrFoldableConfiguration(): Boolean {\n    return resolveLargeScreenOrFoldableConfiguration(\n        smallestScreenWidthDp = resources.configuration.smallestScreenWidthDp,\n        hasHingeAngleSensor = hasFoldableHingeAngleSensor(),\n    )\n}\n\ninternal fun resolveLargeScreenOrFoldableConfiguration(\n    smallestScreenWidthDp: Int,\n    hasHingeAngleSensor: Boolean,\n): Boolean = smallestScreenWidthDp >= LARGE_SCREEN_SMALLEST_WIDTH_DP || hasHingeAngleSensor"
+        }
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt",
+      "gitCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Bytes": "306e82c59477a5b8801a86f85d0d0c856c31fc5801d52dd626af3765afc4530e",
+      "sha256LF": "306e82c59477a5b8801a86f85d0d0c856c31fc5801d52dd626af3765afc4530e",
+      "anchors": [
+        {
+          "start": 38,
+          "end": 42,
+          "source": "    fun isMobileData(context: Context): Boolean {\n        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager\n        val network = connectivityManager.activeNetwork ?: return false\n        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false\n        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)"
+        }
+      ]
+    }
+  ],
+  "currentSources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeWindowPlatform.kt",
+      "sha256Bytes": "bf209f05e434369053f39c0b8a5d0e254b6504447235729a3b62adb48adb04e8",
+      "sha256LF": "bf209f05e434369053f39c0b8a5d0e254b6504447235729a3b62adb48adb04e8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalHomePreferences.kt",
+      "sha256Bytes": "4d5989e97318c7264753d076ea2d2fe0ade8be92df6d2029142642782cc0bd64",
+      "sha256LF": "ef4373b6ed5a377e86e8faba6beb42698bf0e63cbbe0b00ac01bda4a8e579db6"
+    }
+  ],
+  "scanRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin",
+  "caseSensitiveScanTokens": [
+    "GetInternetConnectionProfile",
+    "IsWwanConnectionProfile",
+    "TRANSPORT_CELLULAR",
+    "isMobileNetwork",
+    "isMobileData",
+    "wwan"
+  ],
+  "scanMatches": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomePreferences.kt",
+      "line": 16,
+      "source": "private val isMobileNetwork:()->Boolean,"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomePreferences.kt",
+      "line": 33,
+      "source": "return when(mode){0->false;2->true;else->isMobileNetwork()}"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomePreferences.kt",
+      "line": 49,
+      "source": "isMobileNetwork:()->Boolean):DesktopOriginalHomePreferences=withContext(Dispatchers.IO) {"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomePreferences.kt",
+      "line": 64,
+      "source": "DesktopOriginalHomePreferences(store,scope,defaultTabletUseSidebar,isMobileNetwork)"
+    }
+  ],
+  "requiredPorts": [
+    {
+      "name": "defaultTabletUseSidebar",
+      "type": "Boolean",
+      "original": "smallestScreenWidthDp >= 600 || hasHingeAngleSensor; saved KEY_TABLET_NAVIGATION_MODE overrides default",
+      "windowsBinding": "Required actual device/display classification with explicit Windows mapping; not supplied by current clientPolicy"
+    },
+    {
+      "name": "isMobileNetwork",
+      "type": "() -> Boolean",
+      "original": "activeNetwork TRANSPORT_CELLULAR; no active network/capabilities -> false",
+      "windowsBinding": "Required actual active cellular transport getter; not metered cost, no current implementation found in scanned source"
+    }
+  ],
+  "preferencesStore": "Existing single DesktopPluginStore/settings, app lifetime, no MID or popup binding",
+  "networkOrWindowExecuted": false,
+  "MainOrSharedModified": false
+}

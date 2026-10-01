@@ -1,0 +1,150 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+    "baseSha256Bytes": "8238d33612d005a23b27ce0491f99df94431c7312db20f826fb9c799c324af78",
+    "baseSha256LF": "59d38334bdf696514d29ff9c615b817baca64d60dea23a0ead27f38db69ed51e",
+    "candidateSha256LF": "0f8503b71f18049d8a47ebeaf38d929b21e35fcb8e3d16b572440dcab82cbb0b",
+    "changes": [
+      {
+        "before": "    val loading: Boolean = false)",
+        "after": "    val loading: Boolean = false, val activeSources: List<FeedSource> = emptyList())"
+      },
+      {
+        "before": "        val enabledIds = ((if (builtinEnabled) sources.filter { it.enabled }.map { \"builtin:${it.id}\" } else emptyList()) +\n            extra.sources.filter { isHttpFeedUrl(it.url) }.map { it.id }).toSet()",
+        "after": "        val builtinSources = if (builtinEnabled) sources.filter { it.enabled && isHttpFeedUrl(it.url) }\n            .map { FeedSource(\"builtin:${it.id}\", it.title, it.url) } else emptyList()\n        val activeSources = (builtinSources + extra.sources.filter { isHttpFeedUrl(it.url) }).distinctBy { it.url }\n        val enabledIds = activeSources.map { it.id }.toSet()"
+      },
+      {
+        "before": "DesktopSubscriptionState(sources, reading.copy(items = mergeCachedFeedItems(reading.items, emptyList(), enabledIds)))",
+        "after": "DesktopSubscriptionState(sources, reading.copy(items = mergeCachedFeedItems(reading.items, emptyList(), enabledIds)), activeSources = activeSources)"
+      },
+      {
+        "before": "cache.copy(items = emptyList()), if (builtinEnabled) emptyList() else listOf(\"请启用订阅插件或已授权的 JS 订阅模块\"))",
+        "after": "cache.copy(items = emptyList()), if (builtinEnabled) emptyList() else listOf(\"请启用订阅插件或已授权的 JS 订阅模块\"), activeSources = sources)"
+      },
+      {
+        "before": "DesktopSubscriptionState(feeds, cache.copy(items = mergeCachedFeedItems(cache.items, emptyList(), ids)), loading = true)",
+        "after": "DesktopSubscriptionState(feeds, cache.copy(items = mergeCachedFeedItems(cache.items, emptyList(), ids)), loading = true, activeSources = sources)"
+      },
+      {
+        "before": "cache.copy(items = mergeCachedFeedItems(cache.items, update.items, ids)), update.errors, loading = true)",
+        "after": "cache.copy(items = mergeCachedFeedItems(cache.items, update.items, ids)), update.errors, loading = true, activeSources = sources)"
+      },
+      {
+        "before": "DesktopSubscriptionState(SubscriptionFeedStore.list(context), FeedReadingStore.load(context), result.errors)",
+        "after": "DesktopSubscriptionState(SubscriptionFeedStore.list(context), FeedReadingStore.load(context), result.errors, activeSources = sources)"
+      },
+      {
+        "before": "_state.value = DesktopSubscriptionState(sources, reading.copy(items = mergeCachedFeedItems(reading.items, emptyList(), enabledIds)), activeSources = activeSources)",
+        "after": "publishState(DesktopSubscriptionState(sources, reading.copy(items = mergeCachedFeedItems(reading.items, emptyList(), enabledIds)), activeSources = activeSources))"
+      },
+      {
+        "before": "_state.value = DesktopSubscriptionState(feeds,\n                cache.copy(items = emptyList()), if (builtinEnabled) emptyList() else listOf(\"请启用订阅插件或已授权的 JS 订阅模块\"), activeSources = sources)",
+        "after": "publishState(DesktopSubscriptionState(feeds,\n                cache.copy(items = emptyList()), if (builtinEnabled) emptyList() else listOf(\"请启用订阅插件或已授权的 JS 订阅模块\"), activeSources = sources))"
+      },
+      {
+        "before": "_state.value = DesktopSubscriptionState(feeds, cache.copy(items = mergeCachedFeedItems(cache.items, emptyList(), ids)), loading = true, activeSources = sources)",
+        "after": "publishState(DesktopSubscriptionState(feeds, cache.copy(items = mergeCachedFeedItems(cache.items, emptyList(), ids)), loading = true, activeSources = sources))"
+      },
+      {
+        "before": "_state.value = DesktopSubscriptionState(feeds,\n                    cache.copy(items = mergeCachedFeedItems(cache.items, update.items, ids)), update.errors, loading = true, activeSources = sources)",
+        "after": "publishState(DesktopSubscriptionState(feeds,\n                    cache.copy(items = mergeCachedFeedItems(cache.items, update.items, ids)), update.errors, loading = true, activeSources = sources))"
+      },
+      {
+        "before": "_state.value = DesktopSubscriptionState(SubscriptionFeedStore.list(context), FeedReadingStore.load(context), result.errors, activeSources = sources)",
+        "after": "publishState(DesktopSubscriptionState(SubscriptionFeedStore.list(context), FeedReadingStore.load(context), result.errors, activeSources = sources))"
+      },
+      {
+        "before": "_state.value = _state.value.copy(loading = false)",
+        "after": "publishCleanupState(_state.value.copy(loading = false))"
+      },
+      {
+        "before": "_state.value = _state.value.copy(reading = FeedReadingStore.load(context))",
+        "after": "publishState(_state.value.copy(reading = FeedReadingStore.load(context)))"
+      },
+      {
+        "before": "_state.value = _state.value.copy(reading = FeedReadingStore.load(context))",
+        "after": "publishState(_state.value.copy(reading = FeedReadingStore.load(context)))"
+      },
+      {
+        "before": "_state.value = _state.value.copy(loading = false)",
+        "after": "publishCleanupState(_state.value.copy(loading = false))"
+      },
+      {
+        "before": "_state.value = _state.value.copy(loading = false) ",
+        "after": "publishCleanupState(_state.value.copy(loading = false)) "
+      },
+      {
+        "before": "publishState(DesktopSubscriptionState(sources, reading.copy(items = mergeCachedFeedItems(reading.items, emptyList(), enabledIds)), activeSources = activeSources))",
+        "after": "publishState(DesktopSubscriptionState(sources, reading.copy(items = mergeCachedFeedItems(reading.items, emptyList(), enabledIds)), activeSources = activeSources)) { !stopped && token == generation.get() && builtinEnabled == enabled() && extra.revision == extraSourceRevision() }"
+      },
+      {
+        "before": "    suspend fun refresh(): Unit = withContext(Dispatchers.IO) {\n        check(!stopped) { \"订阅服务已停止\" }\n        val token = generation.incrementAndGet()\n        val feeds = SubscriptionFeedStore.list(context)\n        val builtinEnabled = enabled()\n        val extra = extraSources()\n        val builtinSources = if (builtinEnabled) feeds.filter { it.enabled && isHttpFeedUrl(it.url) }\n            .map { FeedSource(\"builtin:${it.id}\", it.title, it.url) } else emptyList()\n        val sources = (builtinSources + extra.sources.filter { isHttpFeedUrl(it.url) }).distinctBy { it.url }\n        val ids = sources.map { it.id }.toSet()\n        val cache = FeedReadingStore.load(context)\n        fun current() = !stopped && token == generation.get() && enabled() == builtinEnabled &&\n            extra.revision == extraSourceRevision()\n        if (sources.isEmpty()) {\n            if (current()) publishState(DesktopSubscriptionState(feeds,\n                cache.copy(items = emptyList()), if (builtinEnabled) emptyList() else listOf(\"请启用订阅插件或已授权的 JS 订阅模块\"), activeSources = sources))\n            return@withContext\n        }\n        publishState(DesktopSubscriptionState(feeds, cache.copy(items = mergeCachedFeedItems(cache.items, emptyList(), ids)), loading = true, activeSources = sources))\n        try {\n            val result = loadFeedSources(sources, FeedConditionalStore.load(context)) { update ->\n                if (current()) publishState(DesktopSubscriptionState(feeds,\n                    cache.copy(items = mergeCachedFeedItems(cache.items, update.items, ids)), update.errors, loading = true, activeSources = sources))\n            }\n            if (!current()) return@withContext\n            val merged = mergeCachedFeedItems(cache.items, result.items, ids)\n            mutation.withLock {\n                if (!current()) return@withLock\n                FeedReadingStore.saveItems(context, merged)\n                if (result.validators.isNotEmpty()) FeedConditionalStore.update(context, result.validators)\n                publishState(DesktopSubscriptionState(SubscriptionFeedStore.list(context), FeedReadingStore.load(context), result.errors, activeSources = sources))\n            }\n        } finally {\n            if (token == generation.get()) publishCleanupState(_state.value.copy(loading = false))\n        }\n    }\n\n",
+        "after": "    suspend fun refresh(): Unit = withContext(Dispatchers.IO) {\n        check(!stopped) { \"订阅服务已停止\" }\n        val token = generation.incrementAndGet()\n        val feeds = SubscriptionFeedStore.list(context)\n        val builtinEnabled = enabled()\n        val extra = extraSources()\n        val builtinSources = if (builtinEnabled) feeds.filter { it.enabled && isHttpFeedUrl(it.url) }\n            .map { FeedSource(\"builtin:${it.id}\", it.title, it.url) } else emptyList()\n        val sources = (builtinSources + extra.sources.filter { isHttpFeedUrl(it.url) }).distinctBy { it.url }\n        val ids = sources.map { it.id }.toSet()\n        val cache = FeedReadingStore.load(context)\n        fun current() = !stopped && token == generation.get() && enabled() == builtinEnabled &&\n            extra.revision == extraSourceRevision()\n        if (sources.isEmpty()) {\n            if (current()) publishState(DesktopSubscriptionState(feeds,\n                cache.copy(items = emptyList()), if (builtinEnabled) emptyList() else listOf(\"请启用订阅插件或已授权的 JS 订阅模块\"), activeSources = sources)) { current() }\n            return@withContext\n        }\n        publishState(DesktopSubscriptionState(feeds, cache.copy(items = mergeCachedFeedItems(cache.items, emptyList(), ids)), loading = true, activeSources = sources)) { current() }\n        try {\n            val result = loadFeedSources(sources, FeedConditionalStore.load(context)) { update ->\n                if (current()) publishState(DesktopSubscriptionState(feeds,\n                    cache.copy(items = mergeCachedFeedItems(cache.items, update.items, ids)), update.errors, loading = true, activeSources = sources)) { current() }\n            }\n            if (!current()) return@withContext\n            val merged = mergeCachedFeedItems(cache.items, result.items, ids)\n            mutation.withLock {\n                if (!current()) return@withLock\n                FeedReadingStore.saveItems(context, merged)\n                if (result.validators.isNotEmpty()) FeedConditionalStore.update(context, result.validators)\n                publishState(DesktopSubscriptionState(SubscriptionFeedStore.list(context), FeedReadingStore.load(context), result.errors, activeSources = sources)) { current() }\n            }\n        } finally {\n            if (token == generation.get()) publishCleanupState(_state.value.copy(loading = false))\n        }\n    }\n\n"
+      },
+      {
+        "before": "                FeedReadingStore.saveItems(context, merged)\n                if (result.validators.isNotEmpty()) FeedConditionalStore.update(context, result.validators)\n                publishState(DesktopSubscriptionState(SubscriptionFeedStore.list(context), FeedReadingStore.load(context), result.errors, activeSources = sources)) { current() }",
+        "after": "                DesktopSubscriptionWriteAdmission.whileCurrent(::current) {\n                FeedReadingStore.saveItems(context, merged)\n                if (result.validators.isNotEmpty()) FeedConditionalStore.update(context, result.validators)\n                publishState(DesktopSubscriptionState(SubscriptionFeedStore.list(context), FeedReadingStore.load(context), result.errors, activeSources = sources)) { current() }\n                }"
+      },
+      {
+        "before": "publishState(DesktopSubscriptionState(feeds,\n                    cache.copy(items = mergeCachedFeedItems(cache.items, update.items, ids)), update.errors, loading = true, activeSources = sources)) { current() }",
+        "after": "publishProgress(DesktopSubscriptionState(feeds,\n                    cache.copy(items = mergeCachedFeedItems(cache.items, update.items, ids)), update.errors, loading = true, activeSources = sources)) { current() }"
+      },
+      {
+        "before": "if (token == generation.get()) publishCleanupState(_state.value.copy(loading = false))",
+        "after": "if (token == generation.get()) publishCleanupState { token == generation.get() }"
+      },
+      {
+        "before": "publishState(_state.value.copy(reading = FeedReadingStore.load(context)))",
+        "after": "publishReading(FeedReadingStore.load(context))",
+        "occurrences": 2
+      },
+      {
+        "before": "publishCleanupState(_state.value.copy(loading = false))",
+        "after": "publishCleanupState()",
+        "occurrences": 2
+      },
+      {
+        "before": "    private suspend fun <T> mutate(block: suspend () -> T): T = withContext(Dispatchers.IO) {",
+        "after": "    /** Original article fetch without premature persistence; the original UI keeps its length comparison. */\n    suspend fun fetchArticleBody(item: ParsedFeedItem): Result<String> {\n        check(!stopped) { \"订阅服务已停止\" }\n        return fetchArticleHtml(item.link)\n    }\n    suspend fun saveFullBody(item: ParsedFeedItem, html: String): Unit = mutation.withLock {\n        check(!stopped) { \"订阅服务已停止\" }\n        FeedReadingStore.saveFullBody(context, feedItemKey(item), html)\n        publishReading(FeedReadingStore.load(context))\n    }\n    private fun publishState(value: DesktopSubscriptionState, current: () -> Boolean = { !stopped }) =\n        DesktopSubscriptionWriteAdmission.commitOrOriginal { if (current()) _state.value = value }\n    private fun publishReading(reading: FeedReadingSnapshot) =\n        DesktopSubscriptionWriteAdmission.commitOrOriginal { if (!stopped) _state.value = _state.value.copy(reading = reading) }\n    private fun publishProgress(value: DesktopSubscriptionState, current: () -> Boolean) =\n        DesktopSubscriptionWriteAdmission.commitOrOriginal {\n            if (current()) _state.value = value.copy(reading = value.reading.copy(\n                readKeys = _state.value.reading.readKeys, fullBodies = _state.value.reading.fullBodies))\n        }\n    private fun publishCleanupState(current: () -> Boolean = { true }) =\n        DesktopSubscriptionWriteAdmission.cleanupOrOriginal { if (current()) _state.value = _state.value.copy(loading = false) }\n\n    private suspend fun <T> mutate(block: suspend () -> T): T = withContext(Dispatchers.IO) {"
+      },
+      {
+        "before": "        generation.incrementAndGet()\n        try { mutation.withLock",
+        "after": "        val token = generation.incrementAndGet()\n        try { mutation.withLock"
+      },
+      {
+        "before": "catch (error: Throwable) { publishCleanupState(); throw error }",
+        "after": "catch (error: Throwable) { publishCleanupState { token == generation.get() }; throw error }"
+      }
+    ],
+    "inverseOriginalEqual": true,
+    "installWholeFile": false
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+    "baseSha256Bytes": "993efcfb35bb9661aff3bce2a402c3573d406b67e345ccfffde7f8ce07e53da0",
+    "baseSha256LF": "f59a31d6f346050b287971f979715e82a83f2861dadda2085ae7c46408d423b0",
+    "candidateSha256LF": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291",
+    "changes": [
+      {
+        "before": "            try { Files.move(temp, baseFile.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }\n            catch (unsupported: AtomicMoveNotSupportedException) { Files.move(temp, baseFile.toPath(), StandardCopyOption.REPLACE_EXISTING) }",
+        "after": "            DesktopSubscriptionWriteAdmission.commitOrOriginal {\n            try { Files.move(temp, baseFile.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }\n            catch (unsupported: AtomicMoveNotSupportedException) { Files.move(temp, baseFile.toPath(), StandardCopyOption.REPLACE_EXISTING) }\n            }"
+      }
+    ],
+    "inverseOriginalEqual": true,
+    "installWholeFile": false
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+    "baseSha256Bytes": "dc71e802b410b1ed1affdd1e98b15c743a079db96c945fa66eafb4c9260ba8f9",
+    "baseSha256LF": "770128c34fde1e7b00a8650e2f8dac79bb906aed131fa162e3893fde7515b9ba",
+    "candidateSha256LF": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c",
+    "changes": [
+      {
+        "before": "            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }",
+        "after": "            DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()\n            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }"
+      }
+    ],
+    "inverseOriginalEqual": true,
+    "installWholeFile": false
+  }
+]

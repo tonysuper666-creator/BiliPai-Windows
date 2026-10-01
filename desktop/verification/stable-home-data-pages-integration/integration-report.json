@@ -1,0 +1,35 @@
+{
+  "wholeClassesPhase": 39,
+  "wholeClassesPassed": true,
+  "sourceIdentityCount": 864,
+  "resourceCount": 213,
+  "actualRuntimeEntries": 97,
+  "actualKotlinClasses": 10969,
+  "invalidJvmMethodNames": 0,
+  "completeOriginalHomeViewModelCompiled": true,
+  "originalRawHomeProtocolsCompiled": true,
+  "completeOriginalEmbeddedPagesCompiled": [
+    "Partition",
+    "HomeBangumiHub",
+    "LiveList",
+    "SubscriptionFeedPage"
+  ],
+  "allFourActualOriginalEmbeddedPagesMounted": false,
+  "actualRetainedOwnerGateGroups": 5,
+  "actualProductClassOrigins": 5,
+  "productionOverrides": 0,
+  "exactOriginalPlanConverterTestPassed": true,
+  "sourceOwnershipWholeBuildCorrection": true,
+  "preservedPreparedHistoricalManifests": true,
+  "sameExistingSharedHttpCookieWbiAndPluginStores": true,
+  "oldTodayWatchAndRuntimePreservedUntilFactoryMounted": true,
+  "homeRetainerInstalled": false,
+  "fullRootFactoryNavigationReturnOrAccountAccepted": false,
+  "newWindowsExeDeployed": false,
+  "pending": [
+    "Actual four-page aggregate/factory/root Home mounting and old planner simultaneous retirement",
+    "Original Profile and full category/live subnavigation routes",
+    "Click-time geometry/return owner and physical-window interaction acceptance",
+    "Final Windows EXE packaging and desktop deployment"
+  ]
+}

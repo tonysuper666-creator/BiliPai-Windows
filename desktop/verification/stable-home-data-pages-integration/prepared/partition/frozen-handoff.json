@@ -1,0 +1,583 @@
+{
+  "status": "FROZEN_COMPLETE_ORIGINAL_PARTITION_SOURCE_ONLY",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceIdentityCount": 5,
+  "completeOriginalPartitionInverseByteEqual": true,
+  "compileSourceCount": 6,
+  "narrowCompilePassed": true,
+  "adaptedOriginalPolicyMethods": 16,
+  "adaptedOriginalAssertions": 117,
+  "preparedOwnerGates": 7,
+  "originalTestStaleExpectationCorrectionOnly": true,
+  "referenceIndicatorInstalled": false,
+  "actualFullRootOrAccountAccepted": false,
+  "artifacts": [
+    {
+      "path": "PartitionOwnerFixture.kt",
+      "sha256Bytes": "3991cc9d4aff797d1850dbbf941e793029f1052122e618d4996c16af6b3c7299",
+      "sizeBytes": 4843
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "3df0ab0925b5a6316aa17ddf5faf0dd1c902ed4d49b978aa5976cdc20f281cc3",
+      "sizeBytes": 3519
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "sha256Bytes": "7c887e60fdcc2c7b1f0bcc57f5bc516f79f9480165bb940bc332c488dd453c52",
+      "sizeBytes": 25782
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "sha256Bytes": "578ec443e2c5fb2ad3106b5482b7578dc08857bbb169978e8f5d1e7018760cf7",
+      "sizeBytes": 1280
+    },
+    {
+      "path": "compile-01/result.json",
+      "sha256Bytes": "a002c566597673c5772ce2b4222f982dbf9d7eab8890105a15255c58edb23f5e",
+      "sizeBytes": 142
+    },
+    {
+      "path": "compile-02/compiler.args",
+      "sha256Bytes": "c096a734a663abc7b9845aa3e0a870d30e7b8dd35790416f34a64e88716d7b73",
+      "sizeBytes": 26177
+    },
+    {
+      "path": "compile-02/compiler.log",
+      "sha256Bytes": "12e2744a892f58dacac7c7d84ff8c0bf502f6dc98343fc408434813c6d3f1e37",
+      "sizeBytes": 900
+    },
+    {
+      "path": "compile-02/result.json",
+      "sha256Bytes": "f562ad864334ccb1813886ab33bf24f0c713a7184a22015d16cb015dec922cee",
+      "sizeBytes": 142
+    },
+    {
+      "path": "compile-03/compiler.args",
+      "sha256Bytes": "47d1cdc1fdb2583f9758ee31561a4711d00627e64128eab841a55e7116a4a980",
+      "sizeBytes": 26177
+    },
+    {
+      "path": "compile-03/compiler.log",
+      "sha256Bytes": "12e2744a892f58dacac7c7d84ff8c0bf502f6dc98343fc408434813c6d3f1e37",
+      "sizeBytes": 900
+    },
+    {
+      "path": "compile-03/result.json",
+      "sha256Bytes": "f562ad864334ccb1813886ab33bf24f0c713a7184a22015d16cb015dec922cee",
+      "sizeBytes": 142
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "644141cff839e062bf0682dd77422e9c8054d79e2631c22d4cd46ca420fc13da",
+      "sizeBytes": 1884
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "1f7288a7a1815c03edb7a9baacdad04f8dde2ac357cb3c8d75cc31c6b7c5ea52",
+      "sizeBytes": 6923
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/skeleton/DesktopOriginalMediaListSkeleton.kt",
+      "sha256Bytes": "a057901c4d6f6155e62a368c663db39053cf04b229a12bcb8337f0bd592e45e7",
+      "sizeBytes": 6405
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/util/FeedRefreshPaging.kt",
+      "sha256Bytes": "7ed91d88e7198729fd2503db6317a0abe15c92efaed7c670bce122bd37c7ae98",
+      "sizeBytes": 380
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt",
+      "sha256Bytes": "628f76935eba485f1adf9b81774643fc3b33a791970e5144de032bdad4463312",
+      "sizeBytes": 580
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreen.kt",
+      "sha256Bytes": "ee8e65d7b83dcdb15abe29f8a8c88426feb0b153b6395bcbd6038dbffbad719f",
+      "sizeBytes": 55161
+    },
+    {
+      "path": "generated/partition-producer-inventory.json",
+      "sha256Bytes": "826cd212697b50f0c22a96406bba2ee46c71fcef3dcc3679726bf8a6c53c646d",
+      "sizeBytes": 6620
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "36cbaac4f6e39fa1e7771cdfd3d486ec5f6cd9aafd3992e2519e220b010ff708",
+      "sizeBytes": 821
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "sha256Bytes": "82d560bf7d4e062c4b2351c126c0c14038706e6db87b14e661496b910be0f531",
+      "sizeBytes": 21837
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/util/FeedRefreshPaging.kt",
+      "sha256Bytes": "b6254cc64b4bdb9b3e1db9f98bed29cc0b5d7bb46b62a32f8cb3c16a96fb10cb",
+      "sizeBytes": 393
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt",
+      "sha256Bytes": "203267dcdef5556502f9c3d918dd78448c742c112d66b2c4308aa1c41376a665",
+      "sizeBytes": 600
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "sha256Bytes": "54de85d1d9c252c76fdb751633a6bc2a222f490942bbaf44075c548e14fc4e31",
+      "sizeBytes": 23765
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt",
+      "sha256Bytes": "ba7e937abb7921d672631a2abc0e79c45e53b28e2c8342d882d15a44ef25ac8c",
+      "sizeBytes": 55718
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "586e940ec4d539279f54ef4f955612b4236947eb561ce41eadeb6d4548c6be8f",
+      "sizeBytes": 8857
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPartitionRoot.kt",
+      "sha256Bytes": "43975346ea194c568449a816e069ec8b88dedab9657df2338ebae83b0e34c355",
+      "sizeBytes": 2094
+    },
+    {
+      "path": "prepared/tools/extract-upstream-home-partition.py",
+      "sha256Bytes": "166c371b03e0ed398b99fa4097db94868ddcf5e16a157348581921152e526efc",
+      "sizeBytes": 6613
+    },
+    {
+      "path": "proof-01/OriginalPartitionPolicyFixture.kt",
+      "sha256Bytes": "12771e6ab9dd7060f3207b2b7b0cff451625b79736c6675c2310085489ec0755",
+      "sizeBytes": 16078
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sha256Bytes": "b8eaba9a853ef06bcc6ae257c080c1a63aa5c50fcb7559538a1b004c1712baed",
+      "sizeBytes": 25264
+    },
+    {
+      "path": "proof-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "proof-01/original-test.kt",
+      "sha256Bytes": "d357e47236e04ed24562363d7b3e08dbd8f14f794175cfbcb8b150e7a646246f",
+      "sizeBytes": 14315
+    },
+    {
+      "path": "proof-01/result.json",
+      "sha256Bytes": "2b32c38eeca1a6342cacf1d290aec41059e3fc5ccc55b55f0253db81268540df",
+      "sizeBytes": 216
+    },
+    {
+      "path": "proof-01/runtime.log",
+      "sha256Bytes": "a664359b33bc83a8b05f7bbc1a3044a1b51f9e7bbfa4789e41517669db7041d2",
+      "sizeBytes": 1509
+    },
+    {
+      "path": "proof-02/OriginalPartitionPolicyFixture.kt",
+      "sha256Bytes": "fad1f1b50799710096571e4337742738b0755212ecd5d91016e9e274f5e68079",
+      "sizeBytes": 16175
+    },
+    {
+      "path": "proof-02/compiler.args",
+      "sha256Bytes": "d5730e5336dab1ba0d793756b51399f4a501eda3dbefa4f00b73a1a0e9f1b405",
+      "sizeBytes": 25264
+    },
+    {
+      "path": "proof-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "proof-02/fixture-expectation-correction.json",
+      "sha256Bytes": "070ef0f0a9484215b295563e47fc9b95a3c1039efa6172c5ba52ed7d2f525b01",
+      "sizeBytes": 267
+    },
+    {
+      "path": "proof-02/original-test.kt",
+      "sha256Bytes": "d357e47236e04ed24562363d7b3e08dbd8f14f794175cfbcb8b150e7a646246f",
+      "sizeBytes": 14315
+    },
+    {
+      "path": "proof-02/result.json",
+      "sha256Bytes": "275754857665cee3956f13cc083ef7a2ac678e1bc23b5cf9cf0f775d5d5fb909",
+      "sizeBytes": 216
+    },
+    {
+      "path": "proof-02/runtime.log",
+      "sha256Bytes": "af74796f9d56ae660cc328567533ff9fb9bfce850a052e63e7119a629a0aff96",
+      "sizeBytes": 139
+    },
+    {
+      "path": "prove.py",
+      "sha256Bytes": "a17cc099ddef1ca8e5b4021619ad717c18928f3b341207097258f16dca6bda9e",
+      "sizeBytes": 4515
+    },
+    {
+      "path": "reference-only/DesktopPartitionIndicatorReference.kt",
+      "sha256Bytes": "457f42b4745fc1d36cbc6e334f2e185a946781e3c388663f514331bd75759749",
+      "sizeBytes": 5709
+    },
+    {
+      "path": "registry-recipe.json",
+      "sha256Bytes": "a976479dbdca51158fadb405faf656c32985a1658c002c192a3e0be48abfa58b",
+      "sizeBytes": 1293
+    },
+    {
+      "path": "shared-tabs-indicator-base.json",
+      "sha256Bytes": "d819fcb231639235408cef5e4af1387fbe33a5b6e54afd5e1e74f7819c466324",
+      "sizeBytes": 292
+    },
+    {
+      "path": "shared-tabs-indicator.patch",
+      "sha256Bytes": "f9c24bca363e80f9ab30ddabc7fcb3e3fb836a6289a88a8cf1451d3d316b0f9a",
+      "sizeBytes": 809
+    }
+  ],
+  "excludedRebuildableBinaries": [
+    {
+      "path": "compile-02/classes/META-INF/original_partition.kotlin_module",
+      "sha256Bytes": "3846941237321b059eb6ea3cabe394ba7ee40e494808116875c02d43fdd14fd5"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/core/ui/skeleton/DesktopOriginalMediaListSkeletonKt.class",
+      "sha256Bytes": "f787a78df8dbb2a072a9ce35d0c6abbddd237635c2d4c10136397a8b6ef12e7d"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/core/util/FeedRefreshPagingKt.class",
+      "sha256Bytes": "dc4b296376e30d70fe7a01ed9fca34f9cf1cd48725888d161cd89e6d4ce58fe9"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/common/VideoLazyKeyPolicyKt.class",
+      "sha256Bytes": "b4c3ba7705dcfbb3884d1edebe06a4bfc5d7a9fe443c52f8378462f74f266cf2"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/home/components/BottomBarLiquidOrientation.class",
+      "sha256Bytes": "f816decffe1f8f5c783d76ab46e619af8f9a7bc08d7d078b3c4d3b4405c416ff"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/home/components/DesktopPartitionIndicatorReferenceKt.class",
+      "sha256Bytes": "4b7eba7e425db45b81e116d88d2f6f2fd4a907a499d99e9673ab015658463d7f"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/ComposableSingletons$DesktopOriginalPartitionScreenKt.class",
+      "sha256Bytes": "7466aafaa3673afd95c20df3ec02bd9f4db6645902d4e7411b85d300690a3c44"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionContent$3$1.class",
+      "sha256Bytes": "6b6e56768d364d14494897af5561bea0efb8480b017ab9f8ad4b79456d0aad97"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionContent$4$1.class",
+      "sha256Bytes": "55cfc1eceea033ac4e4113cd5055fa4bf4fc819449bde81fbff51acd5d84a446"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionContent$5$1$3$1.class",
+      "sha256Bytes": "e24796fc3b239a2e8fbf614d159df5965826408bd677ec9fc0738bcd1183f943"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionSideRail$1$1.class",
+      "sha256Bytes": "d2c48dc4eb4dd1d326f8459e010ee48dfb70157e3f0dea29b4f84270e5af8afa"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionSideRail$2$1$2.class",
+      "sha256Bytes": "9ea03bbe8d616102d9fb3eb4fd29ba39d930aaed193fb4878ead999dabd3ef46"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionSideRail$2$1.class",
+      "sha256Bytes": "6e9985fe185b595cf578d74e0f411f4c8f493802d985e14072463d51535b6135"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$WhenMappings.class",
+      "sha256Bytes": "36c9aa7fb7821245182c1cd34f8d33f8234193bec34d75eba425e3c4326f9280"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt.class",
+      "sha256Bytes": "45281a6dfd8b96098c508b28206b66a5b67ebbc22483ea2e1e53c66d26bc7c7d"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/PartitionCategory.class",
+      "sha256Bytes": "57656f0c4c153eac110a6ac11a15fb1b40976cbacb841f0c2e322e239915c21b"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/PartitionFeedUiState.class",
+      "sha256Bytes": "46e1481c59ebc87db22d0d5baaea0e6de88d3f1fdfe450e258f5916f630446dc"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/PartitionFeedViewModel$WhenMappings.class",
+      "sha256Bytes": "c6d52e20acf13738e2202bcf70e1d702ce115cd3dba256eacf7b3069076fdab9"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/PartitionFeedViewModel$loadSelectedPartition$1.class",
+      "sha256Bytes": "d9f4eb465d7158f863800253ed834b99185650c90616c934a0d7da998628d504"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/PartitionFeedViewModel.class",
+      "sha256Bytes": "950085981531cb442a1705e8cddb33871124d62c9f5d3d22b47eff4539c1911f"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/PartitionLoadMode.class",
+      "sha256Bytes": "b2eae8fcf2e621c9ea2d729901fedb4b79f71b211990a42637c0afde99699d23"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/PartitionSideRailDragHolder.class",
+      "sha256Bytes": "57f1b0b00d0dd753963fc0144b7c73762100bb4c92c70de183cff0ead420704a"
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/feature/partition/PartitionSideRailIndicatorHorizontalPadding.class",
+      "sha256Bytes": "1b16357d98e4490796012b0f3bc64afd6823e8c19da8d8e3225bf0cd4f262aea"
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalPartitionRootKt.class",
+      "sha256Bytes": "21bbc550b952f19d175099e3c54b8aa10c9c512f4f92e413105537bf8bb145b0"
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopPartitionEnvironment.class",
+      "sha256Bytes": "3daad43af425458e3099e807bf9b6c4eb4073a2ffc15d7de2829c7d372455bc4"
+    },
+    {
+      "path": "compile-03/classes/META-INF/original_partition.kotlin_module",
+      "sha256Bytes": "3846941237321b059eb6ea3cabe394ba7ee40e494808116875c02d43fdd14fd5"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/core/ui/skeleton/DesktopOriginalMediaListSkeletonKt.class",
+      "sha256Bytes": "f787a78df8dbb2a072a9ce35d0c6abbddd237635c2d4c10136397a8b6ef12e7d"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/core/util/FeedRefreshPagingKt.class",
+      "sha256Bytes": "dc4b296376e30d70fe7a01ed9fca34f9cf1cd48725888d161cd89e6d4ce58fe9"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/common/VideoLazyKeyPolicyKt.class",
+      "sha256Bytes": "b4c3ba7705dcfbb3884d1edebe06a4bfc5d7a9fe443c52f8378462f74f266cf2"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/home/components/BottomBarLiquidOrientation.class",
+      "sha256Bytes": "f816decffe1f8f5c783d76ab46e619af8f9a7bc08d7d078b3c4d3b4405c416ff"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/home/components/DesktopPartitionIndicatorReferenceKt.class",
+      "sha256Bytes": "4b7eba7e425db45b81e116d88d2f6f2fd4a907a499d99e9673ab015658463d7f"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/ComposableSingletons$DesktopOriginalPartitionScreenKt.class",
+      "sha256Bytes": "901ca72c513e43a512444f3324419984e588766efeb9e40cad2dfeea9bcb5810"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionContent$3$1.class",
+      "sha256Bytes": "6b6e56768d364d14494897af5561bea0efb8480b017ab9f8ad4b79456d0aad97"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionContent$4$1.class",
+      "sha256Bytes": "55cfc1eceea033ac4e4113cd5055fa4bf4fc819449bde81fbff51acd5d84a446"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionContent$5$1$3$1.class",
+      "sha256Bytes": "e24796fc3b239a2e8fbf614d159df5965826408bd677ec9fc0738bcd1183f943"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionSideRail$1$1.class",
+      "sha256Bytes": "d2c48dc4eb4dd1d326f8459e010ee48dfb70157e3f0dea29b4f84270e5af8afa"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionSideRail$2$1$2.class",
+      "sha256Bytes": "9ea03bbe8d616102d9fb3eb4fd29ba39d930aaed193fb4878ead999dabd3ef46"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$PartitionSideRail$2$1.class",
+      "sha256Bytes": "6e9985fe185b595cf578d74e0f411f4c8f493802d985e14072463d51535b6135"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt$WhenMappings.class",
+      "sha256Bytes": "36c9aa7fb7821245182c1cd34f8d33f8234193bec34d75eba425e3c4326f9280"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/DesktopOriginalPartitionScreenKt.class",
+      "sha256Bytes": "219a5dc3c515a3a90eadb8eafc52f5539abe3001bde458b488e6f356cb0f6de2"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/PartitionCategory.class",
+      "sha256Bytes": "57656f0c4c153eac110a6ac11a15fb1b40976cbacb841f0c2e322e239915c21b"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/PartitionFeedUiState.class",
+      "sha256Bytes": "46e1481c59ebc87db22d0d5baaea0e6de88d3f1fdfe450e258f5916f630446dc"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/PartitionFeedViewModel$WhenMappings.class",
+      "sha256Bytes": "c6d52e20acf13738e2202bcf70e1d702ce115cd3dba256eacf7b3069076fdab9"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/PartitionFeedViewModel$loadSelectedPartition$1.class",
+      "sha256Bytes": "d9f4eb465d7158f863800253ed834b99185650c90616c934a0d7da998628d504"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/PartitionFeedViewModel.class",
+      "sha256Bytes": "950085981531cb442a1705e8cddb33871124d62c9f5d3d22b47eff4539c1911f"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/PartitionLoadMode.class",
+      "sha256Bytes": "b2eae8fcf2e621c9ea2d729901fedb4b79f71b211990a42637c0afde99699d23"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/PartitionSideRailDragHolder.class",
+      "sha256Bytes": "57f1b0b00d0dd753963fc0144b7c73762100bb4c92c70de183cff0ead420704a"
+    },
+    {
+      "path": "compile-03/classes/com/android/purebilibili/feature/partition/PartitionSideRailIndicatorHorizontalPadding.class",
+      "sha256Bytes": "1b16357d98e4490796012b0f3bc64afd6823e8c19da8d8e3225bf0cd4f262aea"
+    },
+    {
+      "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopOriginalPartitionRootKt.class",
+      "sha256Bytes": "3f82cbd878538f6f59890bcb89e4e35b63c899cd0344793ca6f4cc794ed32995"
+    },
+    {
+      "path": "compile-03/classes/com/bilipai/desktop/ui/DesktopPartitionEnvironment.class",
+      "sha256Bytes": "65a8fd3e5d2eddd8af3f213cd58bbf42463d2469fe85fa2dcc41e28107c37aa7"
+    },
+    {
+      "path": "prepared/tools/__pycache__/extract-upstream-home-partition.cpython-312.pyc",
+      "sha256Bytes": "943967389c39ebd477b5f02dc9bf2be0f4bf5cb38371af863568a8d902983afc"
+    },
+    {
+      "path": "proof-01/classes/META-INF/partition_fixture.kotlin_module",
+      "sha256Bytes": "66b6edca1cc3314a36170195b595f86d250df3fd5513647311502659ae5ddf22"
+    },
+    {
+      "path": "proof-01/classes/com/android/purebilibili/feature/partition/OriginalPartitionPolicyFixtureKt$main$1.class",
+      "sha256Bytes": "d9ffe5413902de2f6f7bdee3d3ea7e02ca2fa0faeb75da087a6c8aae0534511a"
+    },
+    {
+      "path": "proof-01/classes/com/android/purebilibili/feature/partition/OriginalPartitionPolicyFixtureKt.class",
+      "sha256Bytes": "efe516e25ae2bb8dc19dfbed56ccf667625ba613d72890c67c0fc79e9e4ae897"
+    },
+    {
+      "path": "proof-01/classes/com/android/purebilibili/feature/partition/PartitionScreenStructureTest.class",
+      "sha256Bytes": "31bbbd66eaac98266b03f644af52f8125b0a69fb943f1c3367ebb993e9ffc1d2"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "1d1932e5002a7e46343b1a9b9c1a31eaab2a6138eae93e8e352c97e6c803edd4"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$1.class",
+      "sha256Bytes": "9459167f1efe45ca796801eadc3da26152715c2c55fa3f2377e34114e623ec00"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$requests$1.class",
+      "sha256Bytes": "82d5de40819ff6c143cd981a91edc93f4096f292dedb8bed53474e7eec5904c0"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$requests$2.class",
+      "sha256Bytes": "d34a127941d8212c6fb46217ce897dbb8b11211a52d7423cc57f60ee4c9c597c"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$retired$1$1.class",
+      "sha256Bytes": "2b127846f0d67f6655b4ed6b696a0aee5fe633c00e8e1d03bdce85a3a223006e"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$retired$1.class",
+      "sha256Bytes": "f1d75545abd353fb52fc018948b677f1af1ff4e061b9469853cb9284b4c3f24d"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$retired$2.class",
+      "sha256Bytes": "a26b26969fdb984c83c591295eb63bd40394cfdf6b5e9a3f7845b8dabdfc410f"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$switched$1.class",
+      "sha256Bytes": "534dc8b9244601945072418f4ac1e682995a50366a09b8c9c8621748c16ce782"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$switched$2.class",
+      "sha256Bytes": "0b01246e2d5423b441f5b19887d9e1560aa0713282f67c4dcf570ca2c8fbe64d"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt.class",
+      "sha256Bytes": "dc975d25eddcf038a7fd7754f9d9d06dd221092cc29f449e2c28c63453c32544"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/ScriptedPartitionRequests$getPopularVideos$1.class",
+      "sha256Bytes": "06c340b2c41d030220c4babc743b84488a10bd88aae58d19b5f6fab46b07f102"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/ScriptedPartitionRequests$getRegionVideos$1.class",
+      "sha256Bytes": "3362b7c528ce8934bb02bfbbcfc7a57be54060daee5f6e125028cee793b8749f"
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/ScriptedPartitionRequests.class",
+      "sha256Bytes": "8d2bf6feadec4114244a780f22bd11345a351d3572a063ac4a96c4df988a60b4"
+    },
+    {
+      "path": "proof-02/classes/META-INF/partition_fixture.kotlin_module",
+      "sha256Bytes": "66b6edca1cc3314a36170195b595f86d250df3fd5513647311502659ae5ddf22"
+    },
+    {
+      "path": "proof-02/classes/com/android/purebilibili/feature/partition/OriginalPartitionPolicyFixtureKt$main$1.class",
+      "sha256Bytes": "ef2fa7c2a4eb4f7aaa0c535e4022689e55a882c7296d89ca6a0aadbde726014e"
+    },
+    {
+      "path": "proof-02/classes/com/android/purebilibili/feature/partition/OriginalPartitionPolicyFixtureKt.class",
+      "sha256Bytes": "26c49f096adcb12d062ea71ff8d02dab13f458e3bc8e39783731d5533591a8cb"
+    },
+    {
+      "path": "proof-02/classes/com/android/purebilibili/feature/partition/PartitionScreenStructureTest.class",
+      "sha256Bytes": "411c5e95fb06d40e26f5c6d9bd33113c109cb70158e13688a4233103cc76a89f"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "1d1932e5002a7e46343b1a9b9c1a31eaab2a6138eae93e8e352c97e6c803edd4"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$1.class",
+      "sha256Bytes": "9459167f1efe45ca796801eadc3da26152715c2c55fa3f2377e34114e623ec00"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$requests$1.class",
+      "sha256Bytes": "82d5de40819ff6c143cd981a91edc93f4096f292dedb8bed53474e7eec5904c0"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$requests$2.class",
+      "sha256Bytes": "d34a127941d8212c6fb46217ce897dbb8b11211a52d7423cc57f60ee4c9c597c"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$retired$1$1.class",
+      "sha256Bytes": "2b127846f0d67f6655b4ed6b696a0aee5fe633c00e8e1d03bdce85a3a223006e"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$retired$1.class",
+      "sha256Bytes": "f1d75545abd353fb52fc018948b677f1af1ff4e061b9469853cb9284b4c3f24d"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$retired$2.class",
+      "sha256Bytes": "a26b26969fdb984c83c591295eb63bd40394cfdf6b5e9a3f7845b8dabdfc410f"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$switched$1.class",
+      "sha256Bytes": "534dc8b9244601945072418f4ac1e682995a50366a09b8c9c8621748c16ce782"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt$provePartitionOwner$switched$2.class",
+      "sha256Bytes": "0b01246e2d5423b441f5b19887d9e1560aa0713282f67c4dcf570ca2c8fbe64d"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/PartitionOwnerFixtureKt.class",
+      "sha256Bytes": "dc975d25eddcf038a7fd7754f9d9d06dd221092cc29f449e2c28c63453c32544"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/ScriptedPartitionRequests$getPopularVideos$1.class",
+      "sha256Bytes": "06c340b2c41d030220c4babc743b84488a10bd88aae58d19b5f6fab46b07f102"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/ScriptedPartitionRequests$getRegionVideos$1.class",
+      "sha256Bytes": "3362b7c528ce8934bb02bfbbcfc7a57be54060daee5f6e125028cee793b8749f"
+    },
+    {
+      "path": "proof-02/classes/com/bilipai/desktop/ui/ScriptedPartitionRequests.class",
+      "sha256Bytes": "8d2bf6feadec4114244a780f22bd11345a351d3572a063ac4a96c4df988a60b4"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "appendSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "stable-home-retained-navigation"
+      ],
+      "sha256": "8fc80b9b38349b0ea582535110b35719b440962fe0e3f17f280c4f20848465d2"
+    }
+  ],
+  "mergeExistingFeatures": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "appendFeatures": [
+        "stable-home-retained-navigation"
+      ],
+      "preserveExistingMode": true,
+      "productionOwner": "existing extract-upstream-home-full-card.py VideoRoute; this packet does not generate it"
+    }
+  ],
+  "newGeneratorTask": false,
+  "newExternalDependency": false,
+  "newResource": false
+}

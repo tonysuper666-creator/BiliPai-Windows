@@ -1,0 +1,31 @@
+{
+  "status": "READ_ONLY_COMPLETE_VM_BACKEND_CONTRACT_NOT_PRODUCTION",
+  "artifacts": [
+    {
+      "path": "algorithm-partitions.json",
+      "sha256Bytes": "b73c17dde6491b0319a6bb4a6463e5b06b26080de272713f271d03d4397995ed",
+      "bytes": 5063
+    },
+    {
+      "path": "audit.py",
+      "sha256Bytes": "338c7e1bf16a3524455eb06fa5e3f78fd9ebf7f4d9b0d293e3052fd313f51a79",
+      "bytes": 19488
+    },
+    {
+      "path": "backend-contract.json",
+      "sha256Bytes": "4856ff5ae9a8e5d68129488073db32f39f33d22663e497068853794fb87d9557",
+      "bytes": 34018
+    },
+    {
+      "path": "method-anchors.json",
+      "sha256Bytes": "e1b1ad74c34e33e14087b2463125f490862ee1fbde1f75abd046e0c7c931309e",
+      "bytes": 4632
+    },
+    {
+      "path": "source-pins.json",
+      "sha256Bytes": "d042e4beca8dd0494c2ffde126e6ddd4c2444a3b9efdc1bf90ee3c71642fac91",
+      "bytes": 11232
+    }
+  ],
+  "boundary": "No VM producer/UI renderer/cache/client/Store production emitted. No Gradle/compiler/HTTP/account/GUI. Root/pinned current source inspection only; Parent uniquely owns eventual original Home VM producer."
+}

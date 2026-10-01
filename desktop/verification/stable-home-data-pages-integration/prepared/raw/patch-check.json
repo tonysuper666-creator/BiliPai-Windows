@@ -1,0 +1,18 @@
+{
+  "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023",
+  "checkOnlyNoSharedWrite": true,
+  "rows": [
+    {
+      "patch": "shared-http-owner-admission.patch",
+      "sha256Bytes": "0ea1670d36c3c0f27bd912ac93e36084a6629136dae2fffc2069677067a9398b",
+      "checkOnlyExit": 0,
+      "output": ""
+    },
+    {
+      "patch": "home-preview-subject.patch",
+      "sha256Bytes": "2964d9b38035b8ed6b8a20385bda732b797248ace1f95e1f769c21521da8b804",
+      "checkOnlyExit": 0,
+      "output": ""
+    }
+  ]
+}

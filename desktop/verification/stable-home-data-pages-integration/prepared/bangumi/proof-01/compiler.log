@@ -1,0 +1,12 @@
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\proof-01\MyFollowPolicyTest.kt:43:9: error: unresolved reference 'assertNotEquals'.
+        assertNotEquals(first, second)
+        ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\proof-01\MyFollowPolicyTest.kt:66:9: error: unresolved reference 'assertNotEquals'.
+        assertNotEquals(first, second)
+        ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\proof-01\MyFollowPolicyTest.kt:89:9: error: unresolved reference 'assertNotEquals'.
+        assertNotEquals(first, second)
+        ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-bangumi-page-parity\proof-01\MyFollowPolicyTest.kt:112:9: error: unresolved reference 'assertNotEquals'.
+        assertNotEquals(first, second)
+        ^^^^^^^^^^^^^^^

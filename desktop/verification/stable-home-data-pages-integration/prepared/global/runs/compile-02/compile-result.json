@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "sourceOnly": true,
+  "actualRuntimeAcceptance": false,
+  "nativeOrAnimationExecuted": false,
+  "HTTP": false,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-global-platform-parity\\runs\\compile-02\\source-inputs\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeErrorAnimation.kt",
+      "sha256Bytes": "5833901a8147de7b64d4fb094bb7aa92a9603e574e13380ed695368b40f9503a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-global-platform-parity\\runs\\compile-02\\source-inputs\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeWindowGlobals.kt",
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc"
+    }
+  ],
+  "snapshotManifestSha256Bytes": "a94cf303442cc285a81650237f0cc1a3910c47e4f3b1a43e42a23e36e0c63883",
+  "orderedCpSha256Bytes": "e76eb70649106c7acc0d446c539e6b971fcf578daaca68221a5897fda2fdb09d",
+  "runtimeEntries": 97,
+  "candidateJarSha256Bytes": "d31f20e142077f7d6eaf0225581a085adc5854250d24459a1e30208de9fdd062",
+  "classCount": 19,
+  "productionClassIntersection": [],
+  "classes": [
+    "com/bilipai/desktop/ui/DesktopHomeActualWindowResources.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt$DesktopHomeActualErrorAnimation$1$1$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt$DesktopHomeActualErrorAnimation$1$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt$DesktopHomeActualErrorAnimation$3$1$listener$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt$DesktopHomeActualErrorAnimation$4$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt$DesktopHomeActualErrorAnimation_6a0pyJM$lambda$12$0$$inlined$onDispose$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt$DesktopHomeActualErrorAnimation_6a0pyJM$lambda$7$0$$inlined$onDispose$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeErrorAnimationKt.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$Companion.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$load$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$read$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$read$2.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$read$3.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding$read$bytes$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieBinding.class",
+    "com/bilipai/desktop/ui/DesktopHomeLottieLease.class",
+    "com/bilipai/desktop/ui/DesktopHomeWindowGlobalsKt$rememberDesktopHomeActualWindowResources$2$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeWindowGlobalsKt$rememberDesktopHomeActualWindowResources$lambda$3$0$$inlined$onDispose$1.class",
+    "com/bilipai/desktop/ui/DesktopHomeWindowGlobalsKt.class"
+  ]
+}

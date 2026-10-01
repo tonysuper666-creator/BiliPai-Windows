@@ -1,0 +1,266 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
+@@ -53,7 +53,7 @@
+ import com.bilipai.desktop.player.PlaybackSegment
+ 
+ /** Windows platform adapter around upstream API declarations, models, signing and playback policies. */
+-private data class DesktopSessionEpoch(val value: Long)
++private data class DesktopSessionEpoch(val value: Long, val stillOwned: () -> Boolean = { true }, val guestBuvid3: String? = null)
+ class DesktopRepository internal constructor(private val sessions: DesktopSessionStore) {
+     constructor() : this(DesktopSessionStore())
+ 
+@@ -72,12 +72,19 @@
+         .readTimeout(25, TimeUnit.SECONDS)
+         .addInterceptor { chain ->
+             val original = chain.request()
+-            val expectedEpoch = sessions.generation
+-            val builder = original.newBuilder().tag(DesktopSessionEpoch::class.java, DesktopSessionEpoch(expectedEpoch))
++            // An owner-bound Call.Factory stamps this before newCall/enqueue. Preserve it here;
++            // choosing the current epoch at execution would authorize an old queued request.
++            val requestOwner = original.tag(DesktopSessionEpoch::class.java) ?: DesktopSessionEpoch(sessions.generation)
++            val expectedEpoch = requestOwner.value
++            if (expectedEpoch != sessions.generation || !requestOwner.stillOwned())
++                throw java.io.IOException("Request owner retired")
++            val builder = original.newBuilder().tag(DesktopSessionEpoch::class.java, requestOwner)
+                 .header("User-Agent", resolvePlatformUserAgent(original.url, original.header("User-Agent")))
+-            applyDesktopMergedRecommendationHeaders(builder, original.url, sessions.currentCookies()["buvid3"].orEmpty())
++            val requestCookies = if (requestOwner.guestBuvid3 != null) emptyMap()
++                else sessions.homeRequestCookies(expectedEpoch, requestOwner.stillOwned)
++            applyDesktopMergedRecommendationHeaders(builder, original.url, requestOwner.guestBuvid3 ?: requestCookies["buvid3"].orEmpty())
+             if (original.url.host == "app.bilibili.com" && original.url.encodedPath in setOf("/x/v2/space", "/x/v2/space/likearc")) {
+-                val buvid = original.header("X-BiliPai-Login-Buvid") ?: sessions.currentCookies()["buvid3"].orEmpty()
++                val buvid = original.header("X-BiliPai-Login-Buvid") ?: requestOwner.guestBuvid3 ?: requestCookies["buvid3"].orEmpty()
+                 if (buvid.isNotBlank()) builder.header("buvid", buvid)
+                 builder.removeHeader("X-BiliPai-Login-Buvid").header("bili-http-engine", "cronet").header("env", "prod")
+                     .header("app-key", "android64").header("x-bili-aurora-zone", "sh001")
+@@ -89,8 +96,16 @@
+             if (original.header("Accept").isNullOrBlank()) builder.header("Accept", "application/json, text/plain, */*")
+             builder.header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
+             sessions.requestGeneration.set(expectedEpoch)
+-            val response = try { chain.proceed(builder.build()) } finally { sessions.requestGeneration.remove() }
+-            if (expectedEpoch != sessions.generation) { response.close(); throw BiliApiException(-101, "账号已切换，请重新加载") }
++            sessions.requestAdmission.set(requestOwner.stillOwned)
++            sessions.requestGuestBuvid3.set(requestOwner.guestBuvid3)
++            val response = try { chain.proceed(builder.build()) } finally {
++                sessions.requestGuestBuvid3.remove()
++                sessions.requestAdmission.remove()
++                sessions.requestGeneration.remove()
++            }
++            if (expectedEpoch != sessions.generation || !requestOwner.stillOwned()) {
++                response.close(); throw BiliApiException(-101, "账号已切换，请重新加载")
++            }
+             if (response.code == 412 || response.code == 429) {
+                 val code = response.code
+                 response.close()
+@@ -103,16 +118,22 @@
+         // OkHttp's CookieJar runs after application interceptors. Imported cookies must be applied here.
+         .addNetworkInterceptor { chain ->
+             val request = chain.request()
+-            val epoch = request.tag(DesktopSessionEpoch::class.java)?.value ?: sessions.generation
+-            if (epoch != sessions.generation) throw BiliApiException(-101, "账号已切换，请重新操作")
++            val requestOwner = request.tag(DesktopSessionEpoch::class.java) ?: DesktopSessionEpoch(sessions.generation)
++            val epoch = requestOwner.value
++            if (epoch != sessions.generation || !requestOwner.stillOwned()) throw BiliApiException(-101, "账号已切换，请重新操作")
+             val forcedCookie = request.header(FORCE_COOKIE_HEADER)
+-            val replacement = if (forcedCookie != null) {
++            val replacement = if (requestOwner.guestBuvid3 != null) {
++                // The original guest route has fresh visitor identity only; explicit account
++                // headers cannot override its guest CookieJar boundary.
++                request.newBuilder().removeHeader(FORCE_COOKIE_HEADER)
++                    .header("Cookie", "buvid3=${requestOwner.guestBuvid3}").build()
++            } else if (forcedCookie != null) {
+                 request.newBuilder().header("Cookie", forcedCookie).removeHeader(FORCE_COOKIE_HEADER).build()
+             } else request
+             val response = chain.proceed(stripDesktopAnonymousHomeFeedCookie(stripDesktopMergedFeedCookie(replacement)))
+             // BridgeInterceptor saves response cookies after this interceptor returns. An old
+             // account's in-flight response must never populate the newly activated account jar.
+-            if (epoch != sessions.generation) response.newBuilder().headers(response.headers.newBuilder().removeAll("Set-Cookie").build()).build()
++            if (epoch != sessions.generation || !requestOwner.stillOwned()) response.newBuilder().headers(response.headers.newBuilder().removeAll("Set-Cookie").build()).build()
+             else response
+         }
+         .build()
+@@ -136,6 +157,59 @@
+     private var wbiGeneration = -1L
+     private val playbackCache = DesktopPlaybackCache()
+ 
++    // Original guest CookieJar identity generation expression, now a scalar on the SAME
++    // existing transport owner. No second CookieJar/cache/client or account credential copy.
++    private val homeGuestBuvid3: String by lazy { java.util.UUID.randomUUID().toString().replace("-", "") + "infoc" }
++
++    /** Admission facade over the SAME client/dispatcher/pool/CookieJar. No client or cookie
++     * state is constructed. The immutable epoch and lifetime are attached before Call creation. */
++    internal fun ownedHomeCallFactory(expectedEpoch: Long, stillOwned: () -> Boolean, guest: Boolean = false): okhttp3.Call.Factory =
++        okhttp3.Call.Factory { request ->
++            if (expectedEpoch != sessions.generation || !stillOwned())
++                throw java.io.IOException("Home request owner retired")
++            client.newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
++                DesktopSessionEpoch(expectedEpoch, stillOwned, if (guest) homeGuestBuvid3 else null)).build())
++        }
++
++    /** Services over the SAME Call.Factory/client/cookie state, used once by retained Home. */
++    internal fun <T> ownedHomeService(type: Class<T>, baseUrl: String, expectedEpoch: Long,
++        stillOwned: () -> Boolean, guest: Boolean = false): T = Retrofit.Builder().baseUrl(baseUrl)
++        .callFactory(ownedHomeCallFactory(expectedEpoch, stillOwned, guest))
++        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(type)
++
++    /** Reads the existing WBI cache, with its existing expiry and owner-bound nav API. */
++    internal suspend fun homeWbiKeys(expectedEpoch: Long, stillOwned: () -> Boolean,
++        ownedApi: BilibiliApi): Result<Pair<String, String>> {
++        return try {
++            if (expectedEpoch != sessions.generation || !stillOwned()) throw kotlinx.coroutines.CancellationException("Home epoch retired")
++            sign(emptyMap(), requestApi = ownedApi, expectedEpoch = expectedEpoch, stillOwned = stillOwned)
++            val keys = wbiMutex.withLock {
++                if (expectedEpoch != sessions.generation || wbiGeneration != expectedEpoch || !stillOwned())
++                    throw kotlinx.coroutines.CancellationException("Home WBI epoch retired")
++                requireNotNull(wbiKeys)
++            }
++            Result.success(keys)
++        } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
++        catch (failure: Exception) { Result.failure(failure) }
++    }
++
++    internal suspend fun ensureOwnedHomeSession(expectedEpoch: Long, stillOwned: () -> Boolean,
++        ownedBuvidApi: BuvidApi) = ensureVisitorSession(expectedEpoch, stillOwned,
++            ownedHomeCallFactory(expectedEpoch, stillOwned), ownedBuvidApi)
++
++    internal fun ownedHomeAccessToken(expectedEpoch: Long, stillOwned: () -> Boolean): String? =
++        sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) { sessions.accessTokenCredentials().first }
++    internal fun ownedHomeCookie(name: String, expectedEpoch: Long, stillOwned: () -> Boolean): String? =
++        sessions.homeRequestCookies(expectedEpoch, stillOwned)[name]
++    // SavedSession is synchronously read/decrypted by the existing Store constructor. This is
++    // the actual same-owner restoration boundary, not a second deferred restoration cache.
++    internal fun assertOwnedHomeSessionRestored(expectedEpoch: Long, stillOwned: () -> Boolean) =
++        sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) { Unit }
++
++    internal fun updateHomeNavIdentity(expectedEpoch: Long, expectedMid: Long?, navMid: Long?, isVip: Boolean,
++        onAuthenticationInvalidated: (Long, Long) -> Unit): Boolean =
++        sessions.updateHomeNavIdentity(expectedEpoch, expectedMid, navMid, isVip, onAuthenticationInvalidated)
++
+     internal val httpClient: OkHttpClient get() = client
+     private val playbackClient by lazy { com.bilipai.desktop.network.DesktopNetworkProxyPlatform.buildPlaybackOkHttpClient(client) }
+     internal val playbackHttpClient: OkHttpClient get() = playbackClient
+@@ -417,21 +491,25 @@
+         sessions.logout()
+     }
+ 
+-    private suspend fun ensureVisitorSession() = visitorMutex.withLock {
+-        val generation = sessions.generation
++    private suspend fun ensureVisitorSession(expectedEpoch: Long? = null,
++        stillOwned: () -> Boolean = { true }, callFactory: okhttp3.Call.Factory = client,
++        visitorApi: BuvidApi = buvidApi) = visitorMutex.withLock {
++        val generation = expectedEpoch ?: sessions.generation
++        if (generation != sessions.generation || !stillOwned()) throw CancellationException("Visitor owner retired")
+         if (visitorInitialized && visitorGeneration == generation) return@withLock
+         // Standard visitor bootstrap, once per process. It does not attempt to bypass a security challenge.
+-        client.newCall(Request.Builder().url("https://www.bilibili.com/")
++        callFactory.newCall(Request.Builder().url("https://www.bilibili.com/")
+             .header("Accept", "text/html,application/xhtml+xml").build()).execute().use { response ->
+             if (!response.isSuccessful) throw BiliApiException(response.code, "无法初始化 B 站访客会话 (${response.code})")
+         }
+-        val response = buvidApi.getSpi()
++        val response = visitorApi.getSpi()
+         checkCode(response.code, "无法获取 B 站访客标识")
+         val visitors = mutableMapOf<String, String>()
+         response.data?.let { data ->
+             data.b_3.takeIf { it.isNotBlank() }?.let { visitors["buvid3"] = it }
+             data.b_4.takeIf { it.isNotBlank() }?.let { visitors["buvid4"] = it }
+         }
++        if (generation != sessions.generation || !stillOwned()) throw CancellationException("Visitor owner retired")
+         sessions.saveSpiCookies(visitors, generation)
+         visitorGeneration = generation
+         visitorInitialized = true
+@@ -446,16 +524,19 @@
+     }
+ 
+     private suspend fun sign(params: Map<String, String>, includeRiskFingerprint: Boolean = false,
+-        forceRefresh: Boolean = false): Map<String, String> {
++        forceRefresh: Boolean = false, requestApi: BilibiliApi = api, expectedEpoch: Long? = null,
++        stillOwned: () -> Boolean = { true }): Map<String, String> {
+         val keys = wbiMutex.withLock {
+             val now = System.currentTimeMillis()
+-            val generation = sessions.generation
++            val generation = expectedEpoch ?: sessions.generation
++            if (generation != sessions.generation || !stillOwned()) throw CancellationException("WBI owner retired")
+             if (forceRefresh || wbiKeys == null || now >= wbiExpiresAt || wbiGeneration != generation) {
+                 // The anonymous nav response can carry WBI keys with code -101.
+-                val img = api.getNavInfo().data?.wbi_img ?: throw BiliApiException(-1, "无法获取接口签名信息")
++                val img = requestApi.getNavInfo().data?.wbi_img ?: throw BiliApiException(-1, "无法获取接口签名信息")
+                 val imageKey = img.img_url.substringAfterLast('/').substringBefore('.')
+                 val subKey = img.sub_url.substringAfterLast('/').substringBefore('.')
+                 require(imageKey.length == 32 && subKey.length == 32) { "接口签名信息格式异常" }
++                if (generation != sessions.generation || !stillOwned()) throw CancellationException("WBI owner retired")
+                 wbiKeys = imageKey to subKey
+                 wbiGeneration = generation
+                 wbiExpiresAt = now + TimeUnit.MINUTES.toMillis(5)
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt
+@@ -23,6 +23,9 @@
+     @Volatile var generation: Long = 0
+         private set(value) { field = value; mutableGeneration.value = value }
+     internal val requestGeneration = ThreadLocal<Long>()
++    // The same synchronous OkHttp interceptor scope as requestGeneration, cleared in finally.
++    internal val requestAdmission = ThreadLocal<() -> Boolean>()
++    internal val requestGuestBuvid3 = ThreadLocal<String?>()
+     private val serverCookies = saved.serverCookies.mapNotNull { it.toCookie() }
+         .filter { it.expiresAt > System.currentTimeMillis() }
+         .associateBy { it.identity() }.toMutableMap()
+@@ -39,6 +42,37 @@
+     internal fun accountCookieHeader(mid: Long): String? = synchronized(lock) {
+         accountRecords(saved).firstOrNull { it.session.mid == mid }?.cookies?.entries?.joinToString("; ") { "${it.key}=${it.value}" }
+     }
++    internal fun <T> withHomeRequestAdmission(expectedGeneration: Long, stillOwned: () -> Boolean, block: () -> T): T = synchronized(lock) {
++        if (generation != expectedGeneration || !stillOwned()) throw BiliApiException(-101, "账号已切换，请重新加载")
++        block()
++    }
++    internal fun homeRequestCookies(expectedGeneration: Long, stillOwned: () -> Boolean): Map<String, String> =
++        withHomeRequestAdmission(expectedGeneration, stillOwned) { currentCookies() }
++
++    /** Original TokenManager MID/VIP cache intent is projected into this existing account.
++     * Never adopt another MID or credentials, and never increment epoch for a profile flag. */
++    internal fun updateHomeNavIdentity(expectedGeneration: Long, expectedMid: Long?, navMid: Long?, isVip: Boolean,
++        onAuthenticationInvalidated: (Long, Long) -> Unit): Boolean = synchronized(lock) {
++        if (generation != expectedGeneration || saved.account?.mid != expectedMid) return@synchronized false
++        val current = saved.account
++        if (current == null) return@synchronized navMid == null
++        if (navMid == null) {
++            // A current AUTH nav=-101 is an input to Root's existing account lifecycle, not
++            // permission to silently clear/relabel the saved account or its credentials.
++            onAuthenticationInvalidated(expectedGeneration, current.mid)
++            return@synchronized true
++        }
++        if (navMid != current.mid) return@synchronized false
++        if (current.isVip == isVip) return@synchronized true
++        val updated = current.copy(isVip = isVip)
++        var next = saved.copy(account = updated)
++        next = next.copy(accounts = accountRecords(next))
++        persist(next); saved = next
++        mutableAccount.value = updated
++        mutableAccounts.value = accountRecords(saved).map { it.toInfo() }
++        true
++    }
++
+     internal fun loginIdentityBuvid(): String = synchronized(lock) { saved.loginBuvid }
+     internal fun saveLoginIdentityBuvid(buvid: String) = synchronized(lock) { val next = saved.copy(loginBuvid = buvid); persist(next); saved = next }
+ 
+@@ -63,7 +97,7 @@
+     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
+         if (url.scheme != "https" || !isBilibiliHost(url.host)) return
+         synchronized(lock) {
+-            if (requestGeneration.get()?.let { it != generation } == true) return
++            if (requestGeneration.get()?.let { it != generation } == true || requestAdmission.get()?.invoke() == false || requestGuestBuvid3.get() != null) return
+             val now = System.currentTimeMillis()
+             var accountCookies = saved.cookies
+             cookies.filter { belongsToResponseHost(it, url.host) }.forEach { cookie ->
+@@ -87,7 +121,11 @@
+     override fun loadForRequest(url: HttpUrl): List<Cookie> {
+         if (url.scheme != "https" || !isBilibiliHost(url.host)) return emptyList()
+         return synchronized(lock) {
+-            if (requestGeneration.get()?.let { it != generation } == true) throw BiliApiException(-101, "账号已切换，请重新加载")
++            if (requestGeneration.get()?.let { it != generation } == true || requestAdmission.get()?.invoke() == false)
++                throw BiliApiException(-101, "账号已切换，请重新加载")
++            requestGuestBuvid3.get()?.let { visitor ->
++                return@synchronized listOf(Cookie.Builder().domain(url.host).name("buvid3").value(visitor).build())
++            }
+             removeExpired(System.currentTimeMillis())
+             val cookies = serverCookies.values.filter { it.matches(url) }.toMutableList()
+             // SPI's b_3/b_4 are explicitly returned for the Bilibili visitor session. They fill missing

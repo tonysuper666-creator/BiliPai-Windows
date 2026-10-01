@@ -1,0 +1,30 @@
+--- a/desktop/tools/extract-upstream-home-page.py
++++ b/desktop/tools/extract-upstream-home-page.py
+@@ -37,6 +37,16 @@
+         row=next(r for r in rows if r["path"]==path)
+         return scope["read"](Path(temporary)/row["generated"])
+ 
++def _bind_preview_subject(text):
++    # Android can keep AnimatedVisibility composed while the subject changes. The native
++    # preview owns a source/coroutine, so preserve the original caller but scope its remembered
++    # URL/player effect to the actual immutable BVID/CID subject. Epoch is Root's outer key.
++    opening="            if (item != null) {\n                com.android.purebilibili.feature.home.components.VideoPreviewDialog("
++    closing="                hazeState = hazeState\n            )\n            }\n        }\n        } // Unified header/feed depth snapshot"
++    assert text.count(opening)==1 and text.count(closing)==1
++    text=text.replace(opening,"            if (item != null) {\n                key(item.bvid, item.cid) {\n                com.android.purebilibili.feature.home.components.VideoPreviewDialog(")
++    return text.replace(closing,"                hazeState = hazeState\n            )\n                } // Native preview subject lifetime\n            }\n        }\n        } // Unified header/feed depth snapshot")
++
+ def generate(repo, output, standalone=False):
+     output=Path(output).resolve();written=[]
+     with tempfile.TemporaryDirectory(prefix="bilipai-original-home-") as temporary:
+@@ -49,7 +59,9 @@
+             relative=source.relative_to(work/"prepared")
+             if relative.parts[0] not in ("generated","manual"):continue
+             target=output/Path(*relative.parts[1:])
+-            scope["write"](target,scope["read"](source));written.append(target)
++            body=scope["read"](source)
++            if row and row["path"]=="app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt":body=_bind_preview_subject(body)
++            scope["write"](target,body);written.append(target)
+         output.mkdir(parents=True,exist_ok=True)
+         scope["write"](output/"home-page-producer-inventory.json",json.dumps(rows,ensure_ascii=False,indent=2)+"\n")
+         scope["write"](output/"home-page-settings-selection.json",scope["read"](work/"settings-selection-evidence.json"))

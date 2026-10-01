@@ -1,0 +1,58 @@
+package com.bilipai.desktop.plugins
+
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.asContextElement
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.withContext
+
+/** Stateless operation context. The Root remains the sole account/page admission authority. */
+object DesktopSubscriptionWriteAdmission {
+    private class Operation(
+        val checkRequest: () -> Unit,
+        val commit: ((() -> Unit) -> Boolean),
+        val cleanup: ((() -> Unit) -> Boolean),
+    )
+    private val current = ThreadLocal<Operation?>()
+
+    suspend fun <T> withOwned(
+        stillOwned: () -> Boolean,
+        commitIfCurrent: ((() -> Unit) -> Boolean),
+        block: suspend () -> T,
+    ): T {
+        val requestContext = currentCoroutineContext()
+        fun checkOwner() {
+            if (!stillOwned()) throw CancellationException("Subscription owner retired")
+        }
+        fun checkRequest() { requestContext.ensureActive(); checkOwner() }
+        fun commit(requestRequired: Boolean, action: () -> Unit): Boolean {
+            if (requestRequired) checkRequest() else checkOwner()
+            var entered = false
+            val accepted = commitIfCurrent {
+                if (requestRequired) checkRequest() else checkOwner()
+                action()
+                entered = true
+            }
+            if (!accepted || !entered) throw CancellationException("Subscription admission rejected")
+            return true
+        }
+        checkRequest()
+        val operation = Operation(::checkRequest, { commit(true, it) }, { commit(false, it) })
+        return withContext(current.asContextElement(operation)) { block().also { checkRequest() } }
+    }
+
+    /** Used only immediately around the existing AtomicFile final replacement/publication. */
+    fun commitOrOriginal(action: () -> Unit) {
+        val operation = current.get()
+        if (operation == null) action() else operation.commit(action)
+    }
+
+    /** Busy cleanup may run after its Job cancels, while the same Root owner still exists. */
+    fun cleanupOrOriginal(action: () -> Unit) {
+        val operation = current.get()
+        if (operation == null) action() else operation.cleanup(action)
+    }
+
+    /** Settings writes already hold Root admission before entering the original backing monitor. */
+    fun checkCurrentRequestOrOriginal() { current.get()?.checkRequest?.invoke() }
+}

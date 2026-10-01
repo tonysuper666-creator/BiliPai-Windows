@@ -1,0 +1,13 @@
+{
+  "actualMainAcceptance": false,
+  "explicitPreparedHomeUi": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-page-parity\\classes-full-07",
+  "snapshotManifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-26\\manifest.json",
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-request-ports-parity\\prepared\\preview-delta\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeScreen.kt",
+      "sha256Bytes": "e093bc60616fe2f9b1eed4bdc6e6a451334b635fda75b0f048ed6ddbc11a32a0"
+    }
+  ],
+  "exitCode": 0,
+  "nativePreviewOrMountedHomeAcceptance": false
+}
