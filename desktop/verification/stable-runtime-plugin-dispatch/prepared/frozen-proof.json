@@ -1,0 +1,129 @@
+{
+  "frozen": true,
+  "phase": "actual68-zero-production-override-runtime-dispatch-memory-proof",
+  "passed": true,
+  "assertions": 33,
+  "actualSnapshot": {
+    "manifestPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-68\\manifest.json",
+    "manifestSHA256": "605583c59ae5975391dc4f705834ab927cfef84d0ac6c3ac40b9844284dfabdd",
+    "orderedCPPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-68\\ordered-runtime-cp.json",
+    "orderedCPSHA256": "14eeaec07e050b1fe181cfe82fb199b2f5c481d959582407412b702932fbcec9",
+    "entries": 101,
+    "mainKotlinSHA256": "bb2fb5cd152d53afc4bcaaca150677773f011b2dd74fe980ef64f6d1caa75280"
+  },
+  "actualLoadedProductClasses": 4,
+  "productionOverrides": 0,
+  "fixtureClassIntersectionZero": true,
+  "allRuntimeAndWorkerResourcesPrePostVerified": true,
+  "realRuntimeShutdownJoins": true,
+  "secondRuntimeOnlyForeignTokenFixture": true,
+  "nativeLeaseAndProviderExplicitTestDoubles": true,
+  "httpAccountGuiOrNativeRun": false,
+  "fullRootOrNativeAccepted": false,
+  "sourceReview": "source-review/review.json",
+  "result": "runs/01/result.json",
+  "artifacts": [
+    {
+      "path": "RuntimeDispatchFixture.kt",
+      "sha256Bytes": "4d4d43ee3a2e99bba4b26a469f534c6261092f4fdc82a79c5d3c4dc6f8a6184f",
+      "bytes": 11542
+    },
+    {
+      "path": "run.py",
+      "sha256Bytes": "58effd3f79be3b1a259bee5d59ff4b52f875f3cfa8533e71367ec10331d1540b",
+      "bytes": 5531
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "5d0735dcf32b1687609d06e8d04bb9518db2b588bcad9acbc646c8168cfb10e7",
+      "bytes": 5434
+    },
+    {
+      "path": "worker-resource-identity.json",
+      "sha256Bytes": "130646a5e7cccd22072a5924b76228f5db4f3ce3e09ec0234b43166e341cefed",
+      "bytes": 50359
+    },
+    {
+      "path": "source-review/review.json",
+      "sha256Bytes": "b93385e4c206d7fd6d388ffd438c80a2117cc7428befa37c49362d2a77bca05b",
+      "bytes": 3020
+    },
+    {
+      "path": "source-review/DesktopPluginRuntime.kt",
+      "sha256Bytes": "39eb118b090cb83b2a8dc5e3e592f598c29350c59974c9e7c21b23ec9b3384ca",
+      "bytes": 30038
+    },
+    {
+      "path": "runs/01/RuntimeDispatchFixture.kt",
+      "sha256Bytes": "4d4d43ee3a2e99bba4b26a469f534c6261092f4fdc82a79c5d3c4dc6f8a6184f",
+      "bytes": 11542
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "8afaf59d744aee64806adec2a5e7d5fd76e800420c5916cd91fb417e9e6f347d",
+      "bytes": 25824
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/01/compile-result.json",
+      "sha256Bytes": "75954be3cb44403ecb595eee4dccc1f16ac3699ce5494a45f4c498f68767c5b2",
+      "bytes": 97
+    },
+    {
+      "path": "runs/01/run-command.json",
+      "sha256Bytes": "f2d7297520f551e8fd173270e7cf4c3f5f762e88de3d2104cdb044d1f56c6e9e",
+      "bytes": 27435
+    },
+    {
+      "path": "runs/01/run.log",
+      "sha256Bytes": "98ccebc5662b9a6051b877f2f740bbf04898a596962b1cf51b480d42d0ca4ae1",
+      "bytes": 2227
+    },
+    {
+      "path": "runs/01/pins-before.json",
+      "sha256Bytes": "d10b6dda8aee136133db756baeae2ae0df62e5bd48dbd20093960f2443ab8b1c",
+      "bytes": 43201
+    },
+    {
+      "path": "runs/01/pins-after.json",
+      "sha256Bytes": "d10b6dda8aee136133db756baeae2ae0df62e5bd48dbd20093960f2443ab8b1c",
+      "bytes": 43201
+    },
+    {
+      "path": "runs/01/class-overlap.json",
+      "sha256Bytes": "24f0b1379cc4d1738d945d4078d34e3c16c8a77583fbef7675e83105314da383",
+      "bytes": 2622
+    },
+    {
+      "path": "runs/01/actual-code-origins.json",
+      "sha256Bytes": "25f95d1f89993bb23edfa117b69712f54b64bf538c0bebeab536828c47851607",
+      "bytes": 1789
+    },
+    {
+      "path": "runs/01/result.json",
+      "sha256Bytes": "40930a1dde7baec3a49cd5c199c4eac4c59d4d75cbb6cd27cfcd6fb90c935fb8",
+      "bytes": 2285
+    },
+    {
+      "path": "runs/01/runtime/result.json",
+      "sha256Bytes": "897bb12ed374989fdeedb6ca7376fbb14bd44dfe545a06f88bec59b8b03f6307",
+      "bytes": 2257
+    }
+  ],
+  "rawArtifactCount": 18,
+  "excluded": [
+    "runs/01/fixture.jar",
+    "*.class",
+    "runs/01/runtime/private-store/**",
+    "actual production and worker JAR/runtime binaries (referenced by verified pins only)"
+  ],
+  "pending": [
+    "NativeOwner/whole Root assembly",
+    "Original legacy CDN delayed-write guard",
+    "Original history final-write admission"
+  ]
+}

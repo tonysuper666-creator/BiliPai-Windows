@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "scope": "Independent source review plus focused actual68 memory fixture; no Native/Root authority acceptance",
+  "source": {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+    "sha256Bytes": "39eb118b090cb83b2a8dc5e3e592f598c29350c59974c9e7c21b23ec9b3384ca"
+  },
+  "actualSnapshotManifestSHA256": "605583c59ae5975391dc4f705834ab927cfef84d0ac6c3ac40b9844284dfabdd",
+  "findings": [
+    {
+      "status": "confirmed",
+      "anchor": "DesktopPluginRuntime.kt:283–305",
+      "claim": "Dispatch captures exact CurrentVideo object and Runtime identity, generation/BVID/CID, owner predicate and enabled provider identities; every operation rejects a foreign token and stale/disabled provider."
+    },
+    {
+      "status": "confirmed",
+      "anchor": "DesktopPluginRuntime.kt:308–321",
+      "claim": "Mutex waiting is outside admission; synchronous mutation runs within short captured-source admission and caller cancellation/dispatch are rechecked before its result is returned."
+    },
+    {
+      "status": "confirmed",
+      "anchor": "DesktopPluginRuntime.kt:325–337",
+      "claim": "Suspending provider callback work runs outside admission, with pre/post short admission and caller/identity/provider rechecks. Rejection does not claim to undo an already admitted in-flight side effect."
+    },
+    {
+      "status": "confirmed",
+      "anchor": "DesktopPluginRuntime.kt:342–363",
+      "claim": "Retirement captures old provider identities and uses existing Runtime scope, not canceled VM scope. Old-generation cleanup cannot reset a subsequent load whose generation increments before waiting for playerMutex."
+    },
+    {
+      "status": "confirmed",
+      "anchor": "DesktopPluginRuntime.kt:444–472",
+      "claim": "Real Runtime shutdown canceled/joined its jobs, JS/subscription/package lifecycle and actual registered plugin scopes; same Store rejects subsequent writes."
+    }
+  ],
+  "fixtureBoundaries": [
+    "MemoryNativeLease is an explicit fixture-owned predicate/short admission, not a Store/account/native lease proof",
+    "FixturePlayerPlugin delayed callbacks and counters are test doubles registered through actual PluginManager; all production PlayerPlugin providers including Sponsor are disabled",
+    "Second Runtime exists only to verify rejection of a foreign token; it uses the same temporary Store/GlobalPluginManager and both real shutdownForRestore joins. This does not support a second production Runtime authority",
+    "Actual JS catalog compiled into main68 and every existing resource file were verified; no fake catalog, new runtime download or JS plugin execution",
+    "No product classes recompiled/overridden; actual4 class origins/bytes and all101CP pre/post hashes verified",
+    "No HTTP, account, GUI/HWND/input/native operation performed"
+  ],
+  "pending": [
+    "NativeOwner/whole Root assembly",
+    "Original legacy CDN delayed-write guard",
+    "Original history final-write admission"
+  ]
+}

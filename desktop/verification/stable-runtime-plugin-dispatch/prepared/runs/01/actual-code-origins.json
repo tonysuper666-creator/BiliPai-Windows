@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "productionOverrides": 0,
+  "loaded": [
+    {
+      "class": "com.bilipai.desktop.plugins.DesktopPluginRuntime",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-68\\main-kotlin.jar",
+      "entry": "com/bilipai/desktop/plugins/DesktopPluginRuntime.class",
+      "classSHA256Bytes": "b6dc436eca79e30594970d03c8922a7e1a2fc9cb482fee2c68bae0a16861758b"
+    },
+    {
+      "class": "com.bilipai.desktop.plugins.DesktopPlayerPluginDispatch",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-68\\main-kotlin.jar",
+      "entry": "com/bilipai/desktop/plugins/DesktopPlayerPluginDispatch.class",
+      "classSHA256Bytes": "3e8087cbc6eb3a44ee9559d8302d36da5fb47c13c7cc39b388d5ced4aafc66df"
+    },
+    {
+      "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-68\\main-kotlin.jar",
+      "entry": "com/bilipai/desktop/plugins/DesktopPluginStore.class",
+      "classSHA256Bytes": "7a94181cde639fd7813cba5d361431d192778bcd75eddd18eafca4bba41c1710"
+    },
+    {
+      "class": "com.android.purebilibili.core.plugin.PluginManager",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-68\\main-kotlin.jar",
+      "entry": "com/android/purebilibili/core/plugin/PluginManager.class",
+      "classSHA256Bytes": "14a56fe449010762fa28a95f4ad191129bf5f51fe6235d3fe6801e6e8cd5fb2f"
+    }
+  ]
+}

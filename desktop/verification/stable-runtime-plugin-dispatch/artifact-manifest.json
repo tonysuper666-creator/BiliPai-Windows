@@ -1,0 +1,155 @@
+{
+  "artifacts": [
+    {
+      "path": "prepared/RuntimeDispatchFixture.kt",
+      "sha256Bytes": "4d4d43ee3a2e99bba4b26a469f534c6261092f4fdc82a79c5d3c4dc6f8a6184f",
+      "sizeBytes": 11542
+    },
+    {
+      "path": "prepared/run.py",
+      "sha256Bytes": "58effd3f79be3b1a259bee5d59ff4b52f875f3cfa8533e71367ec10331d1540b",
+      "sizeBytes": 5531
+    },
+    {
+      "path": "prepared/freeze.py",
+      "sha256Bytes": "5d0735dcf32b1687609d06e8d04bb9518db2b588bcad9acbc646c8168cfb10e7",
+      "sizeBytes": 5434
+    },
+    {
+      "path": "prepared/worker-resource-identity.json",
+      "sha256Bytes": "130646a5e7cccd22072a5924b76228f5db4f3ce3e09ec0234b43166e341cefed",
+      "sizeBytes": 50359
+    },
+    {
+      "path": "prepared/source-review/review.json",
+      "sha256Bytes": "b93385e4c206d7fd6d388ffd438c80a2117cc7428befa37c49362d2a77bca05b",
+      "sizeBytes": 3020
+    },
+    {
+      "path": "prepared/source-review/DesktopPluginRuntime.kt",
+      "sha256Bytes": "39eb118b090cb83b2a8dc5e3e592f598c29350c59974c9e7c21b23ec9b3384ca",
+      "sizeBytes": 30038
+    },
+    {
+      "path": "prepared/runs/01/RuntimeDispatchFixture.kt",
+      "sha256Bytes": "4d4d43ee3a2e99bba4b26a469f534c6261092f4fdc82a79c5d3c4dc6f8a6184f",
+      "sizeBytes": 11542
+    },
+    {
+      "path": "prepared/runs/01/compile.args",
+      "sha256Bytes": "8afaf59d744aee64806adec2a5e7d5fd76e800420c5916cd91fb417e9e6f347d",
+      "sizeBytes": 25824
+    },
+    {
+      "path": "prepared/runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/runs/01/compile-result.json",
+      "sha256Bytes": "75954be3cb44403ecb595eee4dccc1f16ac3699ce5494a45f4c498f68767c5b2",
+      "sizeBytes": 97
+    },
+    {
+      "path": "prepared/runs/01/run-command.json",
+      "sha256Bytes": "f2d7297520f551e8fd173270e7cf4c3f5f762e88de3d2104cdb044d1f56c6e9e",
+      "sizeBytes": 27435
+    },
+    {
+      "path": "prepared/runs/01/run.log",
+      "sha256Bytes": "98ccebc5662b9a6051b877f2f740bbf04898a596962b1cf51b480d42d0ca4ae1",
+      "sizeBytes": 2227
+    },
+    {
+      "path": "prepared/runs/01/pins-before.json",
+      "sha256Bytes": "d10b6dda8aee136133db756baeae2ae0df62e5bd48dbd20093960f2443ab8b1c",
+      "sizeBytes": 43201
+    },
+    {
+      "path": "prepared/runs/01/pins-after.json",
+      "sha256Bytes": "d10b6dda8aee136133db756baeae2ae0df62e5bd48dbd20093960f2443ab8b1c",
+      "sizeBytes": 43201
+    },
+    {
+      "path": "prepared/runs/01/class-overlap.json",
+      "sha256Bytes": "24f0b1379cc4d1738d945d4078d34e3c16c8a77583fbef7675e83105314da383",
+      "sizeBytes": 2622
+    },
+    {
+      "path": "prepared/runs/01/actual-code-origins.json",
+      "sha256Bytes": "25f95d1f89993bb23edfa117b69712f54b64bf538c0bebeab536828c47851607",
+      "sizeBytes": 1789
+    },
+    {
+      "path": "prepared/runs/01/result.json",
+      "sha256Bytes": "40930a1dde7baec3a49cd5c199c4eac4c59d4d75cbb6cd27cfcd6fb90c935fb8",
+      "sizeBytes": 2285
+    },
+    {
+      "path": "prepared/runs/01/runtime/result.json",
+      "sha256Bytes": "897bb12ed374989fdeedb6ca7376fbb14bd44dfe545a06f88bec59b8b03f6307",
+      "sizeBytes": 2257
+    },
+    {
+      "path": "prepared/frozen-proof.json",
+      "sha256Bytes": "a9577b92c9dcddca14ee7a5cd63f54e90a52beee8c610f89aea219008b3e705e",
+      "sizeBytes": 4612
+    },
+    {
+      "path": "root/source-before/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "76e804cf841c75c83a7309af71147ba0eb9746739d3fb76c735c5b4f90afbbb6",
+      "sizeBytes": 23951
+    },
+    {
+      "path": "root/source-after/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "39eb118b090cb83b2a8dc5e3e592f598c29350c59974c9e7c21b23ec9b3384ca",
+      "sizeBytes": 30038
+    },
+    {
+      "path": "root/source-diffs/DesktopPluginRuntime.kt.diff",
+      "sha256Bytes": "0ae246fc3bdaa5ecccdb3511b69a59e72f35fa9c8faef3ae2dd97f9fdffe8175",
+      "sizeBytes": 7340
+    },
+    {
+      "path": "root/snapshot68/manifest.json",
+      "sha256Bytes": "605583c59ae5975391dc4f705834ab927cfef84d0ac6c3ac40b9844284dfabdd",
+      "sizeBytes": 149824
+    },
+    {
+      "path": "root/snapshot68/ordered-runtime-cp.json",
+      "sha256Bytes": "14eeaec07e050b1fe181cfe82fb199b2f5c481d959582407412b702932fbcec9",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-68.log",
+      "sha256Bytes": "2c25ec3836892c64a10772289f8016410d46d925d93d75d8b8f85e491cb2b0ae",
+      "sizeBytes": 9071
+    },
+    {
+      "path": "root/classpath-68.log",
+      "sha256Bytes": "e971995017237a0e946dec41c885ecc73fc4dd92e0a9fd5442027fae208a4a3e",
+      "sizeBytes": 290
+    },
+    {
+      "path": "root/freeze-runtime-dispatch68.py",
+      "sha256Bytes": "32251329b77426015e179e2b314470c3435441511b411973e851aa4a61c9bf41",
+      "sizeBytes": 8594
+    },
+    {
+      "path": "root/jvm-method-name-audit-68.json",
+      "sha256Bytes": "2732aaf4942049976581a9665934af22b589819a2ae6be89ab2b955ace6e61e0",
+      "sizeBytes": 240
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "612b61fe1e7e35e3043feb8c3436cefe3470af1d7850c96a9a96938366d4a460",
+      "sizeBytes": 1556
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    "runs/01/fixture.jar",
+    "*.class",
+    "runs/01/runtime/private-store/**",
+    "actual production and worker JAR/runtime binaries (referenced by verified pins only)"
+  ]
+}

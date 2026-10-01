@@ -1,0 +1,45 @@
+ASSERT 1 only registered fixture PlayerPlugin enabled; Sponsor disabled
+ASSERT 2 capture requires actual loaded video identity
+ASSERT 3 actual generation/BVID/CID capture current
+ASSERT 4 wrong BVID rejected
+ASSERT 5 wrong CID rejected
+ASSERT 6 old generation rejected
+ASSERT 7 foreign Runtime token rejected
+ASSERT 8 foreign mutation cannot execute
+ASSERT 9 provider identity cannot be replaced with same id
+ASSERT 10 synchronous mutation inside short admission
+ASSERT 11 accepted mutation returns once
+ASSERT 12 suspending callback starts outside admission
+ASSERT 13 suspending callback resumes outside admission
+ASSERT 14 callback result admitted after suspension
+ASSERT 15 short mutation admission rejection
+ASSERT 16 short callback admission rejection
+ASSERT 17 rejection did not run mutation
+ASSERT 18 queued mutation waits outside admission
+ASSERT 19 entry retired during callback rejects result
+ASSERT 20 entry retired during mutex wait rejects queued body
+ASSERT 21 disabled actual provider rejects late callback result
+ASSERT 22 disabled actual provider rejects synchronous mutation
+ASSERT 23 cancelled caller waiting on mutex does not publish
+ASSERT 24 retire exact old dispatch after caller lifetime cancellation
+ASSERT 25 repeat retirement rejected
+ASSERT 26 new load waits behind actual callback mutex after incrementing generation
+ASSERT 27 old callback cannot return after generation retirement
+ASSERT 28 later loaded generation remains current after old cleanup
+ASSERT 29 old queued retirement did not reset later load/provider
+ASSERT 30 late old retirement cannot overwrite current video identity
+ASSERT 31 retirement cleanup does not depend on dead entry predicate
+ASSERT 32 retired exact video remains invalid after actual Runtime-scope cleanup
+ASSERT 33 actual Runtime shutdown joined and froze same Store writes
+Plugin PluginManager warning
+Plugin PluginManager warning
+Plugin PluginManager warning
+Plugin PluginManager warning
+Plugin PluginManager warning
+Plugin PluginManager warning
+Plugin PluginManager warning
+Plugin PluginManager warning
+Plugin PluginManager warning
+Plugin PluginManager warning
+Plugin PluginManager warning
+Plugin PluginManager warning

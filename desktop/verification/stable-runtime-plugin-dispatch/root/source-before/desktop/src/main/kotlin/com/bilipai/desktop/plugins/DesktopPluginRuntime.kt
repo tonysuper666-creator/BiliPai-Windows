@@ -29,19 +29,6 @@ import java.util.concurrent.atomic.AtomicReference
 
 data class DesktopEyePaint(val dimAlpha: Float, val warmAlpha: Float, val warmArgb: Int = 0xffffc07a.toInt())
 
-/** A captured view of the existing Runtime video, not another generation owner.
- * Root binds its required predicates to one canonical accepted native lease. */
-internal class DesktopPlayerPluginDispatch internal constructor(
-    internal val runtime: DesktopPluginRuntime,
-    internal val videoIdentity: Any,
-    internal val generation: Long,
-    internal val stillOwned: () -> Boolean,
-    internal val admission: ((() -> Unit) -> Boolean),
-    internal val providers: List<Plugin>,
-) {
-    override fun toString() = "DesktopPlayerPluginDispatch(generation=$generation)"
-}
-
 /** Windows binds the original plugin manager and original JSON engine to real storage. */
 class DesktopPluginRuntime(val store: DesktopPluginStore,
     repository: DesktopRepository? = null, community: DesktopCommunityRepository? = null,
@@ -63,7 +50,6 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     val enhancementConfiguration: DesktopVideoEnhancementConfiguration
     private val danmakuEnhance = DanmakuEnhancePlugin()
     private val sponsorBlock = SponsorBlockPlugin()
-    internal val originalSponsorBlock get() = sponsorBlock
     val todayWatch = TodayWatchPlugin { DesktopPluginRepositoryBinding.recommendationContext() }
     val dlnaCast = DlnaCastPlugin()
     val googleCast = DesktopGoogleCastPlugin()
@@ -276,89 +262,6 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
             throw cancelled
         }
         return generation
-    }
-
-    /** Root uses the actual inherited generation from handoff, or the generation
-     * returned by this Runtime's real load. Never recapture it after an await. */
-    internal fun capturePlaybackPluginDispatch(bvid: String, cid: Long, expectedGeneration: Long,
-        stillOwned: () -> Boolean, admission: ((() -> Unit) -> Boolean)): DesktopPlayerPluginDispatch? {
-        val video = currentVideo.get() ?: return null
-        if (closing.get() || video.generation != expectedGeneration || playerGeneration.get() != expectedGeneration ||
-            video.bvid != bvid || video.cid != cid || !stillOwned()) return null
-        val dispatch = DesktopPlayerPluginDispatch(this, video, expectedGeneration, stillOwned, admission,
-            PluginManager.getEnabledPlugins(Plugin::class).toList())
-        return dispatch.takeIf(::isPlaybackPluginDispatchCurrent)
-    }
-
-    internal fun isPlaybackPluginDispatchCurrent(dispatch: DesktopPlayerPluginDispatch): Boolean =
-        dispatch.runtime === this && !closing.get() && currentVideo.get() === dispatch.videoIdentity &&
-            playerGeneration.get() == dispatch.generation && dispatch.stillOwned()
-
-    private fun requirePlaybackPluginDispatch(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
-        allowDisabledSponsor: Boolean) {
-        if (!isPlaybackPluginDispatchCurrent(dispatch)) throw CancellationException("Playback plugin dispatch retired")
-        val retainedDisabledSponsor = allowDisabledSponsor && plugin === sponsorBlock
-        if (!retainedDisabledSponsor && (dispatch.providers.none { it === plugin } ||
-                plugins.value.none { it.plugin === plugin && it.enabled }))
-            throw CancellationException("Captured playback plugin is no longer enabled")
-    }
-
-    /** Wait for the SAME playerMutex outside Store/entry/native gates. Synchronous
-     * provider mutations then use Root's short captured-source atomic admission. */
-    internal suspend fun <T> mutatePlaybackPlugin(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
-        allowDisabledSponsor: Boolean, action: () -> T): T = playerMutex.withLock {
-        currentCoroutineContext().ensureActive()
-        requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor)
-        var result: Result<T>? = null
-        if (!dispatch.admission {
-            requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor)
-            result = runCatching(action)
-        }) throw CancellationException("Playback plugin mutation admission retired")
-        currentCoroutineContext().ensureActive()
-        requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor)
-        (result ?: throw CancellationException("Playback plugin admission did not execute")).getOrThrow()
-    }
-
-    /** Suspending original callbacks/HTTP stay outside short admission monitors.
-     * A newer video cannot run a provider callback until this mutex is released;
-     * cancellation/retirement prevents the old result from being published. */
-    internal suspend fun <T> runPlaybackPluginCallback(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
-        action: suspend () -> T): T = playerMutex.withLock {
-        currentCoroutineContext().ensureActive()
-        requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor = false)
-        if (!dispatch.admission { requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor = false) })
-            throw CancellationException("Playback plugin callback admission retired")
-        val result = action()
-        currentCoroutineContext().ensureActive()
-        requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor = false)
-        if (!dispatch.admission { requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor = false) })
-            throw CancellationException("Playback plugin result admission retired")
-        result
-    }
-
-    /** Cleanup cannot depend on the canceled VM scope or current native entry.
-     * Capture OLD generation/provider identities now, then use Runtime's existing
-     * scope. A subsequent load increments generation BEFORE waiting for the mutex. */
-    internal fun retirePlaybackPluginDispatch(dispatch: DesktopPlayerPluginDispatch): Boolean {
-        if (dispatch.runtime !== this || closing.get() || currentVideo.get() !== dispatch.videoIdentity ||
-            !playerGeneration.compareAndSet(dispatch.generation, dispatch.generation + 1)) return false
-        val oldVideo = currentVideo.get()?.takeIf { it === dispatch.videoIdentity }
-        if (oldVideo != null) currentVideo.compareAndSet(oldVideo, null)
-        val capturedPlayers = dispatch.providers.filterIsInstance<PlayerPlugin>()
-        scope.launch {
-            playerMutex.withLock {
-                for (plugin in capturedPlayers) {
-                    currentCoroutineContext().ensureActive()
-                    if (closing.get() || playerGeneration.get() != dispatch.generation + 1 || currentVideo.get() != null)
-                        return@withLock
-                    if (plugins.value.none { it.plugin === plugin && it.enabled }) continue
-                    try { plugin.onVideoEnd() }
-                    catch (cancelled: CancellationException) { throw cancelled }
-                    catch (failure: Exception) { DesktopPluginLog.e(plugin.id, "Captured video plugin end failed", failure) }
-                }
-            }
-        }
-        return true
     }
 
     suspend fun onPositionUpdate(generation: Long, positionMs: Long): List<SkipAction> {
