@@ -1,0 +1,94 @@
+{
+  "passed": true,
+  "writesOnlyTaskLane": true,
+  "actualMainSnapshotManifestSha256Bytes": "8286563186e5d5be2495a598e1e32fb15091b7a459a5bbbc3d7e65243557e290",
+  "actualMainOrdered89CpSha256Bytes": "06316248361f2fae9d8eb53976ba1dc6936c5bd6416f98d2b6026c207ef9a217",
+  "actualMainCpAll89BinaryPinsVerified": true,
+  "originalAssetSha256Bytes": "2edb7fde32968e1dbdd413c6e74b2e90f91f9dd7dc8cce179501b4546e2b8513",
+  "originalAssetSha256Lf": "2edb7fde32968e1dbdd413c6e74b2e90f91f9dd7dc8cce179501b4546e2b8513",
+  "snapshotOriginalAssetLfEqual": true,
+  "candidateAssetSha256Bytes": "23ff374ea8a4fe8526d29773c8c8b262e83daa1b61d86169e8337fd55e9ef6bc",
+  "candidateSameBytesAcrossRuns03_04_05": true,
+  "actualOwnerSourcePins": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "snapshotSha256Lf": "50a6b04b1b1b289ab7ca3ac584dbde1e8f71226badb603e1f82e8c48a8a9ad6a",
+      "copyPath": "actual-main-owner-sources/DesktopSessionStore.kt",
+      "copySha256Bytes": "326c506c1cbb721b6e7e6a0aa40faec6505d78c2af15a9527940e1b2e59b04fc",
+      "currentSourceLfMatchesSnapshot": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "snapshotSha256Lf": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "copyPath": "actual-main-owner-sources/DesktopRepository.kt",
+      "copySha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "currentSourceLfMatchesSnapshot": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "snapshotSha256Lf": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+      "copyPath": "actual-main-owner-sources/DesktopDynamicCardOperations.kt",
+      "copySha256Bytes": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+      "currentSourceLfMatchesSnapshot": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCache.kt",
+      "snapshotSha256Lf": "58080c7b8a6efc9371877d5ed9cf8207307a21fdc031beb1078a9091d992fc0e",
+      "copyPath": "actual-main-owner-sources/DesktopDynamicCache.kt",
+      "copySha256Bytes": "58080c7b8a6efc9371877d5ed9cf8207307a21fdc031beb1078a9091d992fc0e",
+      "currentSourceLfMatchesSnapshot": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "snapshotSha256Lf": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "copyPath": "actual-main-owner-sources/DesktopDynamicCardSession.kt",
+      "copySha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "currentSourceLfMatchesSnapshot": true
+    }
+  ],
+  "reusedGalleryHandoffSha256Bytes": "08da9ef3efd871724d1cc58482dc5945e18c9312229e4749f75e0dc405826c18",
+  "reusedImmutableFilesExifPacking": [
+    {
+      "galleryPath": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "fc44e8bbaf636a75358edf499f7c10f72e5107405dee14f1da56aa4c3c0b4aac",
+      "copyPath": "dependencies-from-gallery/DesktopDynamicMotionPhotoFiles.kt",
+      "fresh05InputBytesEqual": true
+    },
+    {
+      "galleryPath": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "copyPath": "dependencies-from-gallery/DesktopDynamicMotionPhotoExif.kt",
+      "fresh05InputBytesEqual": true
+    },
+    {
+      "galleryPath": "generated-acceptance-final/com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "copyPath": "dependencies-from-gallery/DesktopOriginalMotionPhotoPacking.kt",
+      "fresh05InputBytesEqual": true
+    }
+  ],
+  "soleTargetChooserBodyUnchanged": true,
+  "soleDirectoryChooserBodyUnchanged": true,
+  "targetChooserOnlyVisibilityChange": "private -> internal",
+  "taskCompilerOnlyRemovesUnchangedSaveTargetDeclaration": true,
+  "actualMainRepoOpsSessionStoreSaveTargetCodeSourceVerifiedInFresh05": true,
+  "actualStoreMonitorFinalMoveAccountEpochStrong": true,
+  "actualStoreGuestOwnerMid": 0,
+  "assetsOwnCloseLockFinalMoveStrong": true,
+  "externalPageBoolCloseStrong": false,
+  "lockOrder": [
+    "actual SessionStore monitor",
+    "Assets own lock",
+    "MotionPhotoFiles own gate"
+  ],
+  "closeDoesNotHoldAssetsLockWhenClosingFilesOrCancelingCalls": true,
+  "closeIsNonblocking": true,
+  "JoinedOperationDrainsActualCallbackBeforeTempDeletion": true,
+  "currentMainInstalledIntegration": false,
+  "nativeChooser": false,
+  "PhotosReceiver": false,
+  "systemSHARE": false,
+  "optionalLivePhotoCompiledOnlyNotAccepted": true,
+  "commentSaveFragmentExecuted": false,
+  "independentAssetsReview": false
+}

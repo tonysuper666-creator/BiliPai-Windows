@@ -1,0 +1,474 @@
+{
+  "frozen": true,
+  "phase": "minimal Windows printed footer URL clip candidate, original full QR unchanged",
+  "baseline": "runs/01/baseline",
+  "candidate": "runs/01/candidate",
+  "candidateAssertions": 37,
+  "routes": 8,
+  "baselineDecodeFailures": 5,
+  "candidateDecodeFailures": 0,
+  "candidateAllOriginalQrMatrixPixelsExact": true,
+  "actualMainManifestSha256Bytes": "f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17",
+  "actualOrdered89CpSha256Bytes": "be8a62821f74e73653ed2354afbb1de3d6ec8236db68f056328a482a5e0f4d9d",
+  "candidateOnlyDeclaredOverrides": "Canvas + renderer families; actual spec/Paint/bitmapfactory/writer",
+  "candidateCanvasSha256Bytes": "47bd5a2961b03047c035f8f3e77b8f886ba5bab98ebd7954026678818bd6f11b",
+  "candidateProducerSha256Bytes": "882d4a32047bcfe9c4e29edd87b1fc572419d38c7d7cdf5c038aca82e7141852",
+  "candidateRendererSha256Bytes": "0866b1077fc93ff5325576f2b96140ca9d54507dab1e14cefb282ea978e32280",
+  "independentReadOnlyReviewSha256Bytes": "b449fc035e32700dcb3b461a9805cbe679029625456dbc3a92d860f25cff8a17",
+  "AndroidActualRender": false,
+  "printedFooterUrlMayBeClipped": true,
+  "fullOriginalQrPayloadPreserved": true,
+  "MainInstalled": false,
+  "HTTP": false,
+  "HWND": false,
+  "realPicker": false,
+  "systemSHARE": false,
+  "historyRetained": [
+    "prepare01-observer-failure.json",
+    "runs/01/baseline"
+  ],
+  "files": [
+    {
+      "path": "QrClipFixture.kt",
+      "sha256Bytes": "ac14a1fbc748b6c2350bcd0032d4552ed767cfc5fa935593e7bf6ca2aba3ead2",
+      "size": 7280
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "31f3227d8e8391783f68c6266d77bf19348a139b4a43ae3489be20284f17ad5f",
+      "size": 3831
+    },
+    {
+      "path": "ROOT-INTEGRATION.txt",
+      "sha256Bytes": "11153413d25586bacc74db461caf64b36a42ab723c5b370a1a23d58f867f70f2",
+      "size": 2340
+    },
+    {
+      "path": "binary-artifact-inventory.json",
+      "sha256Bytes": "c5638c09eee7ff3a757f062c0409070f4bf04be0fdcd47e85343a2ed82371c5e",
+      "size": 430
+    },
+    {
+      "path": "canvas-vs-main.diff",
+      "sha256Bytes": "e1b50ad12e13f0339e30b73283083de2e78fc8cb6a4b80b67047b8e218d8a1bc",
+      "size": 1151
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "d420627ab0077272bb4621b1357fb2935de9682f8cb86f19004b6895be3c4d4f",
+      "size": 3236
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/core/store/DesktopOriginalReplySettings.kt",
+      "sha256Bytes": "c329eec975d698c394fc723cf0e62811367179f9cff63b9b628c036a262cc18b",
+      "size": 3040
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/core/store/DesktopOriginalReplySkeletonSettingsStore.kt",
+      "sha256Bytes": "a04fbc6a5094b14cb0173d3fd33e2182058cbf75589a57dd515a267997711cd6",
+      "size": 898
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/core/ui/common/DesktopOriginalReplyClipboard.kt",
+      "sha256Bytes": "2a767ac4af4a5f097470ab0f6c9e475cb35fecc0d96a37a2951f75a449808438",
+      "size": 1216
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplyLoadingSkeletons.kt",
+      "sha256Bytes": "159cfcdbba32b227ec9dd63317d327c067544787395c3ca26f0f59a5ffed9958",
+      "size": 4949
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplySkeletonBreathing.kt",
+      "sha256Bytes": "0f403f52431998f06e91695469b470ec0466c701485be118353e731a0664e36d",
+      "size": 1852
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/feature/aicu/DesktopOriginalReplyAicuNavigation.kt",
+      "sha256Bytes": "64ab4e1518681db26626551fcdd4bf0a25c2f6b472afef140756b673a040f26c",
+      "size": 400
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUi.kt",
+      "sha256Bytes": "2f5dce3859aa61a08aa3b8d14f8585b03466a7ac1e12d9418a1b422ec6b11118",
+      "size": 11530
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/feature/home/components/DesktopOriginalReplyCapsuleShape.kt",
+      "sha256Bytes": "e282bfb39af977553f1d9f8b934a7c9c69a219c7e29aef2ee37ccbe132206955",
+      "size": 451
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyCommentImageSpec.kt",
+      "sha256Bytes": "66ee63530154e4951451f4abbf4de67a93ddc8fab45c3625e053555c0f8d45fe",
+      "size": 1524
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponents.kt",
+      "sha256Bytes": "8f2eb4a6be6e49ac383408a84866c0f3118f014b100b8b31be58e701f69788fb",
+      "size": 87026
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyImageRenderer.kt",
+      "sha256Bytes": "e2ea6c85cec672b8edd7914b95bbb51cf975f26c69101c2d3c5c8e289bece533",
+      "size": 4781
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyReportReasonDialog.kt",
+      "sha256Bytes": "15ea696907c032994162e84b4a25df1c572f4d86bc5307f1faed180e36b7ff63",
+      "size": 1988
+    },
+    {
+      "path": "generated/baseline/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponents.kt",
+      "sha256Bytes": "fe099a81965129a2d77fc8542f98ef4c07e47c0b1b5eaac91b949192652ca8b5",
+      "size": 67808
+    },
+    {
+      "path": "generated/baseline/com/bilipai/desktop/ui/DesktopOriginalDynamicCommentPanel.kt",
+      "sha256Bytes": "f73c642e4c5e968fa7a22c699294f0b9c1044ffa7fa976075df63bc1eb0dad4d",
+      "size": 6268
+    },
+    {
+      "path": "generated/baseline/com/bilipai/desktop/ui/DesktopOriginalDynamicThreadContent.kt",
+      "sha256Bytes": "2622aca6fcda5c7520e094a707debca4c4c4fd3be5a7348dc6f7357a4b8d9c65",
+      "size": 3929
+    },
+    {
+      "path": "generated/baseline/com/bilipai/desktop/ui/DesktopOriginalReplyFailedCaptureDissolve.kt",
+      "sha256Bytes": "4864474c76c50b581c304a4c789d2b8be1edbfce0bcc09112af780504fa70c5f",
+      "size": 8605
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/core/store/DesktopOriginalReplySettings.kt",
+      "sha256Bytes": "c329eec975d698c394fc723cf0e62811367179f9cff63b9b628c036a262cc18b",
+      "size": 3040
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/core/store/DesktopOriginalReplySkeletonSettingsStore.kt",
+      "sha256Bytes": "a04fbc6a5094b14cb0173d3fd33e2182058cbf75589a57dd515a267997711cd6",
+      "size": 898
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/core/ui/common/DesktopOriginalReplyClipboard.kt",
+      "sha256Bytes": "2a767ac4af4a5f097470ab0f6c9e475cb35fecc0d96a37a2951f75a449808438",
+      "size": 1216
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplyLoadingSkeletons.kt",
+      "sha256Bytes": "159cfcdbba32b227ec9dd63317d327c067544787395c3ca26f0f59a5ffed9958",
+      "size": 4949
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplySkeletonBreathing.kt",
+      "sha256Bytes": "0f403f52431998f06e91695469b470ec0466c701485be118353e731a0664e36d",
+      "size": 1852
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/feature/aicu/DesktopOriginalReplyAicuNavigation.kt",
+      "sha256Bytes": "64ab4e1518681db26626551fcdd4bf0a25c2f6b472afef140756b673a040f26c",
+      "size": 400
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUi.kt",
+      "sha256Bytes": "2f5dce3859aa61a08aa3b8d14f8585b03466a7ac1e12d9418a1b422ec6b11118",
+      "size": 11530
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/feature/home/components/DesktopOriginalReplyCapsuleShape.kt",
+      "sha256Bytes": "e282bfb39af977553f1d9f8b934a7c9c69a219c7e29aef2ee37ccbe132206955",
+      "size": 451
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyCommentImageSpec.kt",
+      "sha256Bytes": "66ee63530154e4951451f4abbf4de67a93ddc8fab45c3625e053555c0f8d45fe",
+      "size": 1524
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponents.kt",
+      "sha256Bytes": "8f2eb4a6be6e49ac383408a84866c0f3118f014b100b8b31be58e701f69788fb",
+      "size": 87026
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyImageRenderer.kt",
+      "sha256Bytes": "0866b1077fc93ff5325576f2b96140ca9d54507dab1e14cefb282ea978e32280",
+      "size": 4803
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyReportReasonDialog.kt",
+      "sha256Bytes": "15ea696907c032994162e84b4a25df1c572f4d86bc5307f1faed180e36b7ff63",
+      "size": 1988
+    },
+    {
+      "path": "generated/candidate/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponents.kt",
+      "sha256Bytes": "fe099a81965129a2d77fc8542f98ef4c07e47c0b1b5eaac91b949192652ca8b5",
+      "size": 67808
+    },
+    {
+      "path": "generated/candidate/com/bilipai/desktop/ui/DesktopOriginalDynamicCommentPanel.kt",
+      "sha256Bytes": "f73c642e4c5e968fa7a22c699294f0b9c1044ffa7fa976075df63bc1eb0dad4d",
+      "size": 6268
+    },
+    {
+      "path": "generated/candidate/com/bilipai/desktop/ui/DesktopOriginalDynamicThreadContent.kt",
+      "sha256Bytes": "2622aca6fcda5c7520e094a707debca4c4c4fd3be5a7348dc6f7357a4b8d9c65",
+      "size": 3929
+    },
+    {
+      "path": "generated/candidate/com/bilipai/desktop/ui/DesktopOriginalReplyFailedCaptureDissolve.kt",
+      "sha256Bytes": "4864474c76c50b581c304a4c789d2b8be1edbfce0bcc09112af780504fa70c5f",
+      "size": 8605
+    },
+    {
+      "path": "independent-readonly-review.json",
+      "sha256Bytes": "b449fc035e32700dcb3b461a9805cbe679029625456dbc3a92d860f25cff8a17",
+      "size": 3027
+    },
+    {
+      "path": "original/DesktopCommentImageCanvas.kt",
+      "sha256Bytes": "b52c13ed6d11c70dae98a35ac45548e793c47425790f1db3f04ba9ac3ebf1d73",
+      "size": 5525
+    },
+    {
+      "path": "original/DesktopOriginalReplyImageRenderer.kt",
+      "sha256Bytes": "fc399a97e2351b178eac7b168d37e5d2e7d2a82233d9dac4c8e6ea482dff6625",
+      "size": 4656
+    },
+    {
+      "path": "original/ReplyCommentImageSaver.kt",
+      "sha256Bytes": "2c7ab6898c5bfe9b334ba2b71393fe69c0dbe77050b964e41a3892245119f19d",
+      "size": 7708
+    },
+    {
+      "path": "original/extract-upstream-dynamic-reply.py",
+      "sha256Bytes": "06d9806747c801f7ec3f23a82f3564473bd58fce56baa97cd5aba7018c08217c",
+      "size": 35521
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "e11fc409712c88e2e2ef0c5fe395a8bd3060f112d1a33af2c2fedb86bd3fb7e9",
+      "size": 6216
+    },
+    {
+      "path": "prepare01-observer-failure.json",
+      "sha256Bytes": "0f2382b0f1cf51d2d4caad7e7e89415ef075ccf18e156583393f7c04aca4ff15",
+      "size": 281
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentImageCanvas.kt",
+      "sha256Bytes": "47bd5a2961b03047c035f8f3e77b8f886ba5bab98ebd7954026678818bd6f11b",
+      "size": 6173
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-reply.py",
+      "sha256Bytes": "882d4a32047bcfe9c4e29edd87b1fc572419d38c7d7cdf5c038aca82e7141852",
+      "size": 35913
+    },
+    {
+      "path": "producer-baseline.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "producer-candidate.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "producer-vs-main.diff",
+      "sha256Bytes": "0cdbeb238ba771e6a22c7cd5b8cc1fec9a72d7cf17cb94678b8cadf37f8c75f1",
+      "size": 901
+    },
+    {
+      "path": "renderer-vs-main.diff",
+      "sha256Bytes": "bd9c4cd5edcf2b88afd11a465b9414b73deac78fd4527b8b647c50924a69b27a",
+      "size": 539
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "0bdc992c97bf2a6fd136011347fb8301eca0e39bf38988aa023f6a95d3552600",
+      "size": 8029
+    },
+    {
+      "path": "runs/01/DesktopCommentCanvas.kt",
+      "sha256Bytes": "861891e2d804dd34ca2b68d3830660c1fb6bc563a287613da3afc2119f50680a",
+      "size": 2509
+    },
+    {
+      "path": "runs/01/DesktopOriginalReplyImageRenderer.kt",
+      "sha256Bytes": "0866b1077fc93ff5325576f2b96140ca9d54507dab1e14cefb282ea978e32280",
+      "size": 4803
+    },
+    {
+      "path": "runs/01/QrClipFixture.kt",
+      "sha256Bytes": "ac14a1fbc748b6c2350bcd0032d4552ed767cfc5fa935593e7bf6ca2aba3ead2",
+      "size": 7280
+    },
+    {
+      "path": "runs/01/accepted-comparison.json",
+      "sha256Bytes": "c83d9d726c87696ea46352b32ec7c288b9fc8e2d5f8bf785672ff1aca28632c7",
+      "size": 4557
+    },
+    {
+      "path": "runs/01/baseline/accepted-evidence.json",
+      "sha256Bytes": "d8abf7beefc6df25ef7f45ea6b6d652c9fd70b6c1603c09d320af229ff36fe93",
+      "size": 7337
+    },
+    {
+      "path": "runs/01/baseline/compile-evidence.json",
+      "sha256Bytes": "21e0b8312b18c52bf727a41219878aac7863a2c43e169c21d021dafe744d1be4",
+      "size": 34787
+    },
+    {
+      "path": "runs/01/baseline/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "runs/01/baseline/compiler.args",
+      "sha256Bytes": "32160c45b25af5a8f1fd3e0b815c522621833e3ed46504abfffe279977cd4ff4",
+      "size": 22569
+    },
+    {
+      "path": "runs/01/baseline/proof/long-dynamic-ids.png",
+      "sha256Bytes": "6c3f9511d075d7687dd33a99bb375caed8c6651247745f7b046f5d9d1effd23a",
+      "size": 43944
+    },
+    {
+      "path": "runs/01/baseline/proof/long-secondary-14-lines.png",
+      "sha256Bytes": "9ed653788298d161ec641842885c0c785957f27e6e4e21ef7a9a11a1381993d5",
+      "size": 143627
+    },
+    {
+      "path": "runs/01/baseline/proof/long-secondary.png",
+      "sha256Bytes": "ca42f17045bc153c9db267ceacaf80f92ec19eb88b9f9d3c722de2a74a0c95ca",
+      "size": 42821
+    },
+    {
+      "path": "runs/01/baseline/proof/long-video.png",
+      "sha256Bytes": "362a96f2612c291b24d0589d91c2568c31fae7d418eed02f4fec790a8bf82ed8",
+      "size": 43989
+    },
+    {
+      "path": "runs/01/baseline/proof/max-long-root.png",
+      "sha256Bytes": "a30db342b21769a6b379e8b8cf72dd05d13556de164772124676744f38cdf919",
+      "size": 44159
+    },
+    {
+      "path": "runs/01/baseline/proof/result.json",
+      "sha256Bytes": "ce85dabb581699ac4394212252c6419dc1a30dd41d4fd3dd24c21376cb021aa4",
+      "size": 5608
+    },
+    {
+      "path": "runs/01/baseline/proof/short-root.png",
+      "sha256Bytes": "c5e51739d814733dcfe598a65830695fd08775474d7622d786c9d9f018d4ffc9",
+      "size": 40695
+    },
+    {
+      "path": "runs/01/baseline/proof/three-digit-root.png",
+      "sha256Bytes": "b9805b8430b5d5f78b8c856b3f049b1196f41212b433e8c725e2863f9e191e2c",
+      "size": 41057
+    },
+    {
+      "path": "runs/01/baseline/proof/undated-long-secondary.png",
+      "sha256Bytes": "82a7119e24183274042304a51038c4b4f55aba2f88d177326c0b921da07ce664",
+      "size": 42703
+    },
+    {
+      "path": "runs/01/baseline/run.args",
+      "sha256Bytes": "fa3eaf5431a4fcf18f42d53d2dba41af2c77ce2a79d011edb63989c1eb575985",
+      "size": 22919
+    },
+    {
+      "path": "runs/01/baseline/run.log",
+      "sha256Bytes": "3ed2a69648214bbc8e8e980006b95ea56a0d51e194d54f4c41a7fb67387a512b",
+      "size": 101
+    },
+    {
+      "path": "runs/01/candidate/accepted-evidence.json",
+      "sha256Bytes": "288da311ce717db82299607ce5e62e04d9ab07bab02cd8a3199970be1f4f429d",
+      "size": 7920
+    },
+    {
+      "path": "runs/01/candidate/compile-evidence.json",
+      "sha256Bytes": "5c152c25bc29805a0b87d8e7f7dc3bf23b4f602d97cd87f5899debdd8e3eb3d3",
+      "size": 35557
+    },
+    {
+      "path": "runs/01/candidate/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "runs/01/candidate/compiler.args",
+      "sha256Bytes": "9abc335e78386a02713c81e87b1a7442885b34c197e2cf1e33b96852c1888c26",
+      "size": 22920
+    },
+    {
+      "path": "runs/01/candidate/proof/graphics-state-restored.png",
+      "sha256Bytes": "acf019dd36fe5e1d7bf8d6c33efc653c2c330e19708659b2233ec94087710317",
+      "size": 3614
+    },
+    {
+      "path": "runs/01/candidate/proof/long-dynamic-ids.png",
+      "sha256Bytes": "61607aba6f4b8ad70ad433f74c820eae731675361e14a98b54df800e1244efd9",
+      "size": 42288
+    },
+    {
+      "path": "runs/01/candidate/proof/long-secondary-14-lines.png",
+      "sha256Bytes": "90cb51d3a066d8a502a61b5c656cbc869e42416f636eb8ba5f882121a3cb4e23",
+      "size": 141854
+    },
+    {
+      "path": "runs/01/candidate/proof/long-secondary.png",
+      "sha256Bytes": "8f18239775533de0f03154b01acea14b99f3a7792d81ef9eb92152452dfa68ad",
+      "size": 41387
+    },
+    {
+      "path": "runs/01/candidate/proof/long-video.png",
+      "sha256Bytes": "cadaa03611f54bae51a3dc5fb3597caa1542bc4279bf2268ff66b51eb72e945b",
+      "size": 42173
+    },
+    {
+      "path": "runs/01/candidate/proof/max-long-root.png",
+      "sha256Bytes": "8fddbea9069968f326df6cf7ea30a11e122cb0a8d6f0b3fe442bae12ca2c3e1f",
+      "size": 42014
+    },
+    {
+      "path": "runs/01/candidate/proof/result.json",
+      "sha256Bytes": "f5c4097bb7d86170d4c01ebc29d9f8f2b64f20d128050f17ec06e7bc0a6e24c0",
+      "size": 6029
+    },
+    {
+      "path": "runs/01/candidate/proof/short-root.png",
+      "sha256Bytes": "003437328d6344415712ac10b53c1858202f7c8735d8b8173b74fc85e2520f02",
+      "size": 40299
+    },
+    {
+      "path": "runs/01/candidate/proof/three-digit-root.png",
+      "sha256Bytes": "fd6ba10cb91d7735a27d4d92054952973064c58c1c85fc375cb98e6974875a8f",
+      "size": 40364
+    },
+    {
+      "path": "runs/01/candidate/proof/undated-long-secondary.png",
+      "sha256Bytes": "3a7bf4b2ea589e59c3ed3fdcd58a6328a7c1de0f615836ce33f4be6322e11a2c",
+      "size": 41190
+    },
+    {
+      "path": "runs/01/candidate/run.args",
+      "sha256Bytes": "dc827bd4fe09b923c794fa6a789889b52d57717ddc842ae54277f98d54d63f87",
+      "size": 22925
+    },
+    {
+      "path": "runs/01/candidate/run.log",
+      "sha256Bytes": "a9660e88840c802d46ac5ebc6b07f206db2e7ce113d89eba5899fabc0a0eb3bd",
+      "size": 102
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "d4ff326b94e0b777fb91f851be68e17f2ab9ffd7aa61afab4439361f8cebe476",
+      "size": 1824
+    }
+  ],
+  "fileCount": 88,
+  "totalRawBytes": 1633234
+}

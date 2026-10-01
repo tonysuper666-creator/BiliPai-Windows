@@ -1,0 +1,70 @@
+{
+  "status": "no-additional-blocker-found-in-declared-Windows-clip-slice",
+  "sourcePins": [
+    {
+      "path": "desktop/.local/comment-qr-windows-clip-parity/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentImageCanvas.kt",
+      "sha256Bytes": "47bd5a2961b03047c035f8f3e77b8f886ba5bab98ebd7954026678818bd6f11b"
+    },
+    {
+      "path": "desktop/.local/comment-qr-windows-clip-parity/prepared/desktop/tools/extract-upstream-dynamic-reply.py",
+      "sha256Bytes": "882d4a32047bcfe9c4e29edd87b1fc572419d38c7d7cdf5c038aca82e7141852"
+    },
+    {
+      "path": "desktop/.local/comment-qr-windows-clip-parity/generated/candidate/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyImageRenderer.kt",
+      "sha256Bytes": "0866b1077fc93ff5325576f2b96140ca9d54507dab1e14cefb282ea978e32280"
+    },
+    {
+      "path": "desktop/.local/comment-qr-windows-clip-parity/source-audit.json",
+      "sha256Bytes": "d4ff326b94e0b777fb91f851be68e17f2ab9ffd7aa61afab4439361f8cebe476"
+    },
+    {
+      "path": "desktop/.local/comment-qr-windows-clip-parity/runs/01/accepted-comparison.json",
+      "sha256Bytes": "c83d9d726c87696ea46352b32ec7c288b9fc8e2d5f8bf785672ff1aca28632c7"
+    },
+    {
+      "path": "desktop/.local/comment-qr-windows-clip-parity/canvas-vs-main.diff",
+      "sha256Bytes": "e1b50ad12e13f0339e30b73283083de2e78fc8cb6a4b80b67047b8e218d8a1bc"
+    },
+    {
+      "path": "desktop/.local/comment-qr-windows-clip-parity/producer-vs-main.diff",
+      "sha256Bytes": "0cdbeb238ba771e6a22c7cd5b8cc1fec9a72d7cf17cb94678b8cadf37f8c75f1"
+    },
+    {
+      "path": "desktop/.local/comment-qr-windows-clip-parity/renderer-vs-main.diff",
+      "sha256Bytes": "bd9c4cd5edcf2b88afd11a465b9414b73deac78fd4527b8b647c50924a69b27a"
+    }
+  ],
+  "sourceReview": {
+    "CanvasAppendOnlyByteEqualAfterRemoval": true,
+    "printedFooterCallOnly": true,
+    "graphicsState": "paint applies same existing color/font; child graphics inherits it; clip and drawing isolated in created child; finally dispose",
+    "clipBoundary": "original qrLeft used; zero-width clamp only if negative; no QR bitmap or payload changes",
+    "allOtherDrawTextUnchanged": true,
+    "writerBodyUnchanged": true,
+    "noNewSettingsOrStoreOrModel": true
+  },
+  "recordedProviderEvidence": {
+    "assertions": 37,
+    "routes": 8,
+    "baselineWindowsQrFailures": 5,
+    "candidateFailures": 0,
+    "allCandidateQrPixelsPristine": true,
+    "originalPayloadsExact": true,
+    "independentPillowFooterRegionOnly": true,
+    "writerSpecPaintBitmapFactoryFromActualMain": true,
+    "declaredOverrides": "Canvas+renderer families only"
+  },
+  "limits": {
+    "reviewerRuntimeRerun": false,
+    "AndroidActualRendered": false,
+    "AndroidOverlapClaim": false,
+    "WindowsAwtObservedGapOnly": true,
+    "printedFooterUrlMayBeClipped": true,
+    "fullQrUrlPayloadPreserved": true,
+    "MainInstalled": false,
+    "HTTPByReviewer": false,
+    "HWNDByReviewer": false,
+    "SharedGradle": false,
+    "peerLaneEdited": false
+  }
+}

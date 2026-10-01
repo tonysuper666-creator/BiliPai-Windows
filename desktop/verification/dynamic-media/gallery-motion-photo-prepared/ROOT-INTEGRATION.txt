@@ -1,0 +1,127 @@
+Prepared Gallery / Motion Photo slice; do not install fixture JARs.
+
+BASELINE AND SOURCES
+The task-only Kotlin lanes link against immutable navigation Main manifest
+4780b40c15bd0de96f01fe5f60086bd2e67684764d075d8af8f437a27b0887c5
+and ordered 89 CP c2f31a97c207af9d501d669897deebfee51f4edf9a12b1280df59b542ec4b6ab.
+Current working Main source pins are a separate read-only inventory, not an
+assertion that later Root changes were executed. No Main/Gradle/registry changed.
+
+1. Install the prepared valid-XMP source producer, choosing a fresh generated
+   directory in the existing Main extraction pipeline. It selects original
+   alpha.9 JPEG/XMP marker assembly, gallery single/multiple result and MIME
+   policy. Preserve the original multiple maxItems > 1 constructor admission.
+   Windows maxItems == 1 uses the original single contract instead.
+   Add a source conformance check that regenerates and matches emitted bytes.
+   Original Android files remain pinned. The ONLY packing body difference is
+   deletion of the three exact duplicate GCamera modern attribute lines listed
+   in generated-acceptance-final/producer-receipt.json and its raw unified diff.
+
+2. Install DesktopDynamicMotionPhotoFiles.kt, DesktopDynamicMotionPhotoExif.kt
+   and DesktopDynamicGallerySelection.kt from prepared, not their fixtures.
+   Actual platform default for the EXIF writer reads existing Windows BIOS
+   SystemManufacturer/SystemProductName REG_SZ using existing JNA core only.
+   Empty, unavailable or invalid identity follows the original exception/raw
+   JPEG fallback. Never inject a camera brand or claim Photos compatibility.
+   Make/Model replace Android Build.MANUFACTURER/MODEL at the platform boundary.
+   DateTime and DateTimeOriginal retain the original local-time formatter and
+   Locale.US. The UTC/fixed date is ONLY the explicitly declared fixture.
+
+3. Runtime graph additions are precisely:
+   org.apache.commons:commons-imaging:1.0.0-alpha6
+   commons-io:commons-io:2.19.0
+   org.apache.commons:commons-lang3:3.17.0
+   Required compile/runtime graph is closed by downloaded POMs. Tests and build
+   plugin dependencies are not runtime. Preserve official Apache LICENSE/NOTICE.
+   dependencies/*-receipt.json pins official archives/advertised SHA512 and
+   verifies Maven JAR bytes equal official binary archive JAR bytes.
+   Root owns the actual Gradle graph/packaging/source approval change. Rebuild
+   against Root's new full graph and verify all three jars are packaged.
+
+4. Reuse existing DesktopDynamicImageAssets transport and tracked Call set.
+   Add an operation that obtains normalized image/video URLs from the original
+   preview resolver, selects ONE existing save target, downloads to operation
+   temp files, then invokes composeDownloaded. Do not create another HTTP client
+   authority, CookieJar, account, store or cache owner. CookieJar.NO_COOKIES and
+   Bilibili Referer remain; retain existing operation cancellation and close.
+   Prefer streamed 64KiB video temp download as in original Android source;
+   the current Main download() buffers video up to 200MiB and is not yet fixed
+   by this file-only candidate. Require successful nonempty transport results
+   and limits before compose. Close responses/streams and delete operation
+   download temp files in finally, including picker cancellation and retirement.
+
+5. Use the existing Root Window as chooser parent; reuse the current save target
+   and overwrite confirmation seam. The candidate itself opens no chooser.
+   Existing selectDynamicSaveTarget is private and uses null parent; expose or
+   route it through a single existing owner binding instead of creating a second
+   chooser. No second Window. Keep explicit user-selected destination and
+   no-overwrite semantics. Android MediaStore/SAF/index scan has no Windows
+   one-to-one API; no persistent Pictures path preference or auto import is
+   implemented by this candidate. Do not claim those original storage settings.
+
+6. Capture the existing Root session/operation epoch and actual
+   repository.dynamicCacheSessionGuard.dynamicCacheOwner() before starting.
+   Pass stillOwned=operations/session/card owner and a REQUIRED atomic commit:
+   guard.withCurrentDynamicCacheOwner(captured) { reject retired card/session;
+       suppliedCommit() }. Recheck expected epoch. Do not implement check-then-
+   commit outside the actual guard. This uses only the existing owner guard,
+   never reads cookies or creates cache state. Return false if admission fails.
+   On card/preview operation disposal close the MotionPhotoFiles binding so its
+   own gate drains/serializes final file movement, then cancel its task. The
+   candidate gate never acquires SessionStore; lock order is existing owner
+   admission -> candidate gate, with no reverse order.
+
+7. Wire original DesktopDynamicCardPlatform.saveMotionPhoto to this operation;
+   keep the current original requestSaveMotionPhoto menu/action and saveOwned
+   progress/result/cancellation handling. Do not change the UI algorithm or
+   introduce alternate drafts/lists/caches. Cancellation is explicitly rethrown
+   by the adapter and EXIF owner, never converted to successful raw fallback.
+   Other EXIF exceptions retain the original raw-JPEG best-effort fallback.
+
+8. In current DesktopDynamicEditorWindowsPickers.pickImages, replace the
+   take-before-handle-accept result handling with DesktopDynamicGallerySelection
+   after the existing owner-approved JFileChooser return. Pass selectedFile as
+   data and nonempty selectedFiles as clips, preserving original data-first
+   LinkedHashSet distinct-then-take. Pass existing selectedImages and stillOwned;
+   the adapter has no stored list. Select the original single policy if one slot
+   remains. Existing dynamic editor capacity remains 1..9. The real dialog is
+   not exercised in this lane; preserve existing Root parent and file filters.
+   The actual frozen Main selected-image handle reader/close has been exercised.
+
+9. Preserve existing LivePhoto map URL matching/normalization and original
+   preview source anchors/zoom/pager/return transitions. This producer does NOT
+   replace those algorithms. Original export consumes externally supplied MP4
+   URL metadata; no original MotionPhoto tail import/extraction algorithm exists
+   in the inspected alpha.9 functions. The fixture's tail extraction is an
+   independent output verification only. Do not add an unrequested import UI.
+
+REMAINING LIVEPHOTO PLATFORM WORK (NOT ACCEPTED BY THESE PROOFS)
+Current DesktopDynamicLivePhoto keeps loop/mute, anonymous source, mouse click/
+longpress and owner cleanup. It does not map original first-frame transparency,
+failure overlay/retry, or ON_PAUSE/STOP/RESUME to the existing Root Window state.
+Use existing MpvPlayer.state firstVideoFrameReady/error/failure and owned reload
+seams, but prove their native event meaning before claiming equivalence with
+ExoPlayer.onRenderedFirstFrame. Keep the existing preview/player owner and
+cookie-free transport. Do not involve main playback/SMTC. Original retry resets
+failure, seeks zero, prepares and plays. Actual Windows SwingPanel/HWND alpha,
+clipping/3D/zoom/return transforms and lifecycle/retry require their own proof.
+The bundled libmpv/ffmpeg/ffprobe are already present; no new codec dependency
+was installed. FFprobe proof uses a self-made MP4, not an actual native player.
+
+10. After Root integration, fresh actual Main zero-override fixture must invoke
+    the installed save operation with task-owned fixture transport and chooser
+    results, including mid-download close, same MID epoch rotation, source temp
+    failure and no-overwrite/replace. Current candidate proofs only compose
+    already-downloaded self-made files; they do not prove Main HTTP or callbacks.
+    Recompile Gallery adapter against the new actual Main selected-image class.
+    Keep unique items/cache ownership and account/session owner scopes intact.
+
+11. Image system SHARE remains an explicit current Main unbound operation.
+    Do not reuse diagnostics-specific native grant authority to silently share
+    arbitrary images, and do not mark SHARE/receiver accepted from these files.
+    No ShareShow/system pane or receiver was executed.
+
+12. Package/runtime proof, real JFileChooser, Main callback UI, native LivePhoto
+    decoding/transforms, actual Windows Photos MotionPhoto recognition and
+    system image share remain separate acceptance boundaries. No installed EXE,
+    deployment, account request or user material is part of this lane.

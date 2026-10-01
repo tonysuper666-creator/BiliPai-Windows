@@ -1,0 +1,111 @@
+{
+  "preparedSliceAccepted": true,
+  "MainIntegrationAccepted": false,
+  "actualBaselineManifestSha256Bytes": "4780b40c15bd0de96f01fe5f60086bd2e67684764d075d8af8f437a27b0887c5",
+  "actualBaseline89CpSha256Bytes": "c2f31a97c207af9d501d669897deebfee51f4edf9a12b1280df59b542ec4b6ab",
+  "finalCohorts": [
+    {
+      "path": "runs/04/accepted-evidence.json",
+      "sha256Bytes": "8ba0147bbc310f8cf81722ab8d1f3f22e4e00af29edcff9e9db2f4c636a587e2",
+      "assertions": 42,
+      "cases": 11
+    },
+    {
+      "path": "exif-runs/04/accepted-evidence.json",
+      "sha256Bytes": "45b537cb0e3830cf08f328950e5fd8497e76e467f3249ee6905185061be56bd6",
+      "assertions": 22,
+      "cases": 8
+    },
+    {
+      "path": "gallery-runs/01/accepted-evidence.json",
+      "sha256Bytes": "3f92849031c9a5fb57c01dced2dbd7a99d2bce1187f95361a94819a6f65848ce",
+      "assertions": 12,
+      "cases": 4
+    }
+  ],
+  "assertionsTotalAcrossThreeIndependentNarrowCohorts": 76,
+  "casesTotal": 23,
+  "sourceAudit": {
+    "path": "audit03/source-audit.json",
+    "sha256Bytes": "be6d874b4dcd7fec9b2ec2791849a853fffff990369008d00e43fd01f969f306"
+  },
+  "preparedAndGenerated": [
+    {
+      "path": "generated-acceptance-final/com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+      "bytes": 1664
+    },
+    {
+      "path": "generated-acceptance-final/com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "generated-acceptance-final/original-packing-before-xmp-fix.txt",
+      "sha256Bytes": "7617dea48c6a9fd822b04ca6a4d1f510c7d03dfdf3c233646a222bb5460b671e",
+      "bytes": 5216
+    },
+    {
+      "path": "generated-acceptance-final/packing-after-xmp-fix.txt",
+      "sha256Bytes": "ebd8fb324c3e621108763c9c340317e38c822b8051f575c0fa17e739090386fe",
+      "bytes": 5090
+    },
+    {
+      "path": "generated-acceptance-final/producer-receipt.json",
+      "sha256Bytes": "bba5156b6fe4358b50656ca45b753cf7500169bacee245ca7358c544196e70f4",
+      "bytes": 4021
+    },
+    {
+      "path": "generated-acceptance-final/xmp-three-line-adaptation.diff",
+      "sha256Bytes": "b293afee40aef0ebf0d94dc4442653d039bab214bbbf0e45c7194d92905700af",
+      "bytes": 461
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "sha256Bytes": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810",
+      "bytes": 1563
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "bytes": 4478
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "fc44e8bbaf636a75358edf499f7c10f72e5107405dee14f1da56aa4c3c0b4aac",
+      "bytes": 6973
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-gallery-motion-photo-valid-xmp.py",
+      "sha256Bytes": "be480408e2155f4d98ba8d7ea23ff5f520b4d9d4df5b95f3f261896b93df4cfa",
+      "bytes": 8334
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-gallery-motion-photo.py",
+      "sha256Bytes": "7219d7fbeb9df35f09cae8ab701cba4ffdaeae31ff826315239786de9f8ee2ed",
+      "bytes": 6142
+    }
+  ],
+  "sourceCommentOnlyAdaptation": {
+    "path": "source-comment-adaptation.json",
+    "sha256Bytes": "aebb1deb39441e88fb0af04043e07a775f6476f862ec92fe18bb8455a9cb2f32"
+  },
+  "onlyPackingAlgorithmAdaptation": "delete three duplicate GCamera modern attributes, exact whitelist/diff",
+  "actualRuntime92RequiredGraph": [
+    "org.apache.commons:commons-imaging:1.0.0-alpha6",
+    "commons-io:commons-io:2.19.0",
+    "org.apache.commons:commons-lang3:3.17.0"
+  ],
+  "noRealPickerWindow": true,
+  "noMainHTTP": true,
+  "noSystemSHARE": true,
+  "noReceiver": true,
+  "noMpvHWND": true,
+  "noWindowsPhotosRecognition": true,
+  "noPackagedRuntime": true,
+  "noDesktopDeployment": true,
+  "integrationChecklist": {
+    "path": "ROOT-INTEGRATION.txt",
+    "sha256Bytes": "46b77dd59196e7d09362d91a315a1063e924f4c1e66c493b89a424a04884b04c"
+  }
+}

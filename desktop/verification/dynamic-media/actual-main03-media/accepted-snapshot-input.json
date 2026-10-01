@@ -1,0 +1,10 @@
+{
+  "snapshotRepoRelativePath": "desktop/.local/dynamic-media-main-integration/main-product-snapshot-03",
+  "manifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+  "orderedCpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+  "runtimeEntries": 92,
+  "externalEntries": 89,
+  "sourceFiles": 398,
+  "registryEntries": 622,
+  "authorizedByRootImmutableSnapshot": true
+}

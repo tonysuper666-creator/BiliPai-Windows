@@ -1,0 +1,27 @@
+{
+  "sourceOnly": true,
+  "actualNativePlaybackExecuted": false,
+  "newWindowOrPlayerAuthority": false,
+  "original": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/LivePhotoPlayback.kt",
+  "originalBindings": [
+    "onRenderedFirstFrame -> hasFrame",
+    "onPlayerError -> failed",
+    "STATE_READY clears failure",
+    "ON_PAUSE/STOP pause; ON_RESUME play",
+    "seek0+prepare+play retry",
+    "original alpha and button text/layout"
+  ],
+  "adaptations": [
+    "actual existing MpvPlayer.state firstVideoFrameReady/error/failure",
+    "Root existing hostVisible -> explicit required LocalDesktopLivePhotoWindowStarted provider",
+    "isPlaying and current Window started state must both allow native playback",
+    "existing recoverSource atomic source/failure admission with position0 paused=false"
+  ],
+  "unaccepted": [
+    "Root provider integration",
+    "native firstVideoFrameReady equals displayed frame",
+    "SwingPanel/actual HWND alpha and Compose retry overlay stacking",
+    "actual decoding/retry/minimize/resume",
+    "image preview 3D/pager/clipping/return transforms"
+  ]
+}

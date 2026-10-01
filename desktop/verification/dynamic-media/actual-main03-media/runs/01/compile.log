@@ -1,0 +1,27 @@
+desktop\.local\actual-main-assets-integration-proof\runs\01\sources\DownloadFixture.kt:89:17: warning: condition is always 'false'.
+            if (body == null || gate == null) response else {
+                ^^^^^^^^^^^^
+desktop\.local\actual-main-assets-integration-proof\runs\01\sources\DownloadFixture.kt:162:66: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(count.get() == before+1 && !Files.exists(target!!.path) && noTemps(), "no automatic network retry and failed HTTP scratch drained")
+                                                                 ^^
+desktop\.local\actual-main-assets-integration-proof\runs\01\sources\DownloadFixture.kt:164:44: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(Files.readAllBytes(target!!.path).contentEquals(image) && noTemps(), "explicit retry commits complete bytes")
+                                           ^^
+desktop\.local\actual-main-assets-integration-proof\runs\01\sources\DownloadFixture.kt:174:39: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(!Files.exists(target!!.path) && noTemps(), "empty body drains scratch")
+                                      ^^
+desktop\.local\actual-main-assets-integration-proof\runs\01\sources\DownloadFixture.kt:176:39: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(!Files.exists(target!!.path) && noTemps(), "declared oversize rejected before heap body decode")
+                                      ^^
+desktop\.local\actual-main-assets-integration-proof\runs\01\sources\DownloadFixture.kt:188:61: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(saving.isCancelled && !Files.exists(target!!.path), "cancelled parent commits no streamed output")
+                                                            ^^
+desktop\.local\actual-main-assets-integration-proof\runs\01\sources\DownloadFixture.kt:199:35: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+        prove(!Files.exists(target!!.path) && noTemps(), "own-close operation returns after actual callback/output-stream drain")
+                                  ^^
+desktop\.local\actual-main-assets-integration-proof\runs\01\sources\DownloadFixture.kt:223:39: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(!Files.exists(target!!.path) && noTemps(), "old full downloaded/rendered output and scratch are drained")
+                                      ^^
+desktop\.local\actual-main-assets-integration-proof\runs\01\sources\DownloadFixture.kt:235:44: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(Files.readAllBytes(target!!.path).takeLast(video.size).toByteArray().contentEquals(video) && noTemps(), "guest output retains actual MP4 and drains scratch")
+                                           ^^

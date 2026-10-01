@@ -1,0 +1,121 @@
+{
+  "passed": true,
+  "assertions": 37,
+  "cases": 11,
+  "caseNames": [
+    "original gallery ordered distinct/take, cancellation and MIME",
+    "real Skia JPEG95 + original packing + bounded actual MP4 tail",
+    "actual tagged JPEG input: original EXIF-before-XMP insertion",
+    "selected target no-overwrite and explicit replace",
+    "same MID owner rotation rejects final commit",
+    "retired task rejects during 64KiB stream and drains",
+    "closed owner rejects before work",
+    "controlled EXIF writer failure retains original raw-JPEG fallback",
+    "actual codec corruption and empty original video rejection",
+    "desktop video resource budget checked before heap decoding",
+    "pre-cancelled parent performs no save"
+  ],
+  "realSyntheticMedia": true,
+  "realSkiaCodec": true,
+  "originalPackingBodyExceptApprovedThreeXmpAttributeLines": true,
+  "EXIFWriterImplemented": false,
+  "syntheticExifInputOnly": true,
+  "MainIntegration": false,
+  "HTTP": false,
+  "HWND": false,
+  "nativeSHARE": false,
+  "historicalActualMainManifestSha256Bytes": "4780b40c15bd0de96f01fe5f60086bd2e67684764d075d8af8f437a27b0887c5",
+  "orderedRuntimeCpSha256Bytes": "c2f31a97c207af9d501d669897deebfee51f4edf9a12b1280df59b542ec4b6ab",
+  "runtimeCpEntries": 89,
+  "productionOverrides": 0,
+  "candidateJarSha256Bytes": "4d302b313cead69771f0f8b77afaa03ac4e53632a806c79b0cdb0cbcbbb6deb2",
+  "compiledAttempt": "03",
+  "independentMediaReadback": [
+    {
+      "path": "motion-photo.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "jpegDecoded": [
+        96,
+        64
+      ],
+      "mp4TailSha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "xmpVideoSizeMatchesActualTail": true
+    },
+    {
+      "path": "packing-preserves-input-exif.jpg",
+      "sha256Bytes": "796c701cdbc494ee01b5286c439e18e60855dfb5d52ba604b3c7b5cfccc89e25",
+      "jpegDecoded": [
+        96,
+        64
+      ],
+      "mp4TailSha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "xmpVideoSizeMatchesActualTail": true
+    },
+    {
+      "path": "existing.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "jpegDecoded": [
+        96,
+        64
+      ],
+      "mp4TailSha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "xmpVideoSizeMatchesActualTail": true
+    },
+    {
+      "path": "exif-failure-fallback.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "jpegDecoded": [
+        96,
+        64
+      ],
+      "mp4TailSha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "xmpVideoSizeMatchesActualTail": true
+    }
+  ],
+  "ffprobeActualExtractedSyntheticVideo": true,
+  "nativeExtractionDirectory": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-motion-n8ls5t9k",
+  "nativeTools": [
+    {
+      "path": "desktop\\resources\\common\\native\\windows-x64\\ffmpeg.exe",
+      "sha256Bytes": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea"
+    },
+    {
+      "path": "desktop\\resources\\common\\native\\windows-x64\\ffprobe.exe",
+      "sha256Bytes": "67176fa62f89f94c3bcd379fd05677a25651569a2eb8880ec2194e62c82be412"
+    }
+  ],
+  "ffmpegCommand": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\resources\\common\\native\\windows-x64\\ffmpeg.exe",
+    "-hide_banner",
+    "-nostdin",
+    "-y",
+    "-f",
+    "lavfi",
+    "-i",
+    "testsrc=size=96x64:rate=15",
+    "-t",
+    "0.8",
+    "-c:v",
+    "mpeg4",
+    "-pix_fmt",
+    "yuv420p",
+    "-movflags",
+    "+faststart",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-gallery-motion-photo-parity\\runs\\03\\media\\source.mp4"
+  ],
+  "ffprobeCommand": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\resources\\common\\native\\windows-x64\\ffprobe.exe",
+    "-v",
+    "error",
+    "-show_streams",
+    "-show_format",
+    "-of",
+    "json",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-gallery-motion-photo-parity\\runs\\03\\proof\\independently-extracted-tail.mp4"
+  ],
+  "ExifWriterAcceptance": false,
+  "approvedXmpFixOnly": "delete three duplicate GCamera modern attribute lines",
+  "WindowsMotionPhotoContainerFormatAccepted": true,
+  "WindowsPhotosMotionPhotoRecognition": false,
+  "noInstalledMainClaim": true
+}

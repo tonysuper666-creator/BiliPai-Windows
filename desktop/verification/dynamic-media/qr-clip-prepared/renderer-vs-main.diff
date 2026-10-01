@@ -1,0 +1,11 @@
+--- actual-Main-generated-renderer
++++ prepared-Windows-one-call-mapping
+@@ -84,7 +84,7 @@
+     val footerBaseline = qrTop + 42f
+     canvas.drawText(spec.footerText, footerLeft, footerBaseline, footerPaint)
+     canvas.drawText("BiliPai · ${spec.generatedAtText}", footerLeft, footerBaseline + 42f, tinyPaint)
+-    canvas.drawText(spec.qrUrl, footerLeft, footerBaseline + 84f, tinyPaint)
++    canvas.drawFooterTextBeforeQr(spec.qrUrl, footerLeft, footerBaseline + 84f, tinyPaint, qrLeft)
+ 
+     canvas.close()
+     return bitmap

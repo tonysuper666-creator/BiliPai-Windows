@@ -1,0 +1,73 @@
+{
+  "frozen": true,
+  "scope": {
+    "candidateOnly": true,
+    "generationPassed": true,
+    "originalBodyReverseExact": true,
+    "KotlinCompiled": false,
+    "MainChanged": false
+  },
+  "artifactCount": 12,
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\ROOT-INTEGRATION.md",
+      "relative": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "82e545b2ac634c134767ce722f6e64b3273a8808517b055a6590025fbff4238a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\base-extract-upstream-dynamic-detail.py",
+      "relative": "base-extract-upstream-dynamic-detail.py",
+      "sha256Bytes": "3cd3d1411a3bd08b9e86393b91fff6749aaf1eb166ac99ba4ed16aaa7dc4ea5e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\desired-extract-upstream-dynamic-detail.py",
+      "relative": "desired-extract-upstream-dynamic-detail.py",
+      "sha256Bytes": "71a77a716758a0166cb8c548c911715844e2ebc7569b88269c9b3306cc8c98a1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\extractor.patch",
+      "relative": "extractor.patch",
+      "sha256Bytes": "544fd62a251afea97f9fea1385f57bdbdd76faddd895935ccdaf455b313c4d25"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\generated-base\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicReplyPagingGuard.kt",
+      "relative": "generated-base\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicReplyPagingGuard.kt",
+      "sha256Bytes": "a577efbe673a821abf08cbd09a1fe2cf5f916e52812a3861026e32b8baef0378"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\generated-base\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicReplySession.kt",
+      "relative": "generated-base\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicReplySession.kt",
+      "sha256Bytes": "6121926c5f3bbc259a527cdd14542266cd84128b7319bd8219bac17e4785bba4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\generated-base\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalDynamicReplyCountPolicies.kt",
+      "relative": "generated-base\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalDynamicReplyCountPolicies.kt",
+      "sha256Bytes": "fee71436e462930401a9ad5e50226ff3dc115ceb4424c64f19b0b9e0ce77975d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\generated-desired\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicReplyPagingGuard.kt",
+      "relative": "generated-desired\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicReplyPagingGuard.kt",
+      "sha256Bytes": "a577efbe673a821abf08cbd09a1fe2cf5f916e52812a3861026e32b8baef0378"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\generated-desired\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicReplySession.kt",
+      "relative": "generated-desired\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicReplySession.kt",
+      "sha256Bytes": "a2a4eb4ac3a283fba4fe73ce3df0c96a5a5e3c235b4822c06078f032e0592c5c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\generated-desired\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalDynamicReplyCountPolicies.kt",
+      "relative": "generated-desired\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalDynamicReplyCountPolicies.kt",
+      "sha256Bytes": "fee71436e462930401a9ad5e50226ff3dc115ceb4424c64f19b0b9e0ce77975d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\generation-evidence.json",
+      "relative": "generation-evidence.json",
+      "sha256Bytes": "1b929c34c0c5ada6d258b7eb8e0d0e91a1718475364e88824c36885afa3af4e4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\source-identity.json",
+      "relative": "source-identity.json",
+      "sha256Bytes": "ae04cf6205a462063e55bf768971ca810aab3389020ffec37d7884ad6c35481b"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+--- actual-Main-Canvas
++++ prepared-Windows-footer-clip
+@@ -66,6 +66,17 @@
+             rect.right-rect.left, rect.bottom-rect.top, radiusX*2, radiusY*2))
+     }
+     fun drawText(text: String, x: Float, y: Float, value: DesktopCommentPaint) { paint(value); graphics.drawString(text, x, y) }
++    /** Only the printed footer URL is clipped to the existing qrLeft boundary.
++     * QR/spec URL, original font, coordinates, geometry and other text stay intact.
++     * Graphics state is isolated; no global drawText clipping policy is changed. */
++    fun drawFooterTextBeforeQr(text: String, x: Float, y: Float, value: DesktopCommentPaint, qrLeft: Float) {
++        paint(value)
++        val clipped = graphics.create() as java.awt.Graphics2D
++        try {
++            clipped.clip(Rectangle2D.Float(x, 0f, (qrLeft - x).coerceAtLeast(0f), height.toFloat()))
++            clipped.drawString(text, x, y)
++        } finally { clipped.dispose() }
++    }
+     fun drawRect(left: Float, top: Float, right: Float, bottom: Float, value: DesktopCommentPaint) {
+         paint(value); graphics.fill(Rectangle2D.Float(left, top, right-left, bottom-top))
+     }

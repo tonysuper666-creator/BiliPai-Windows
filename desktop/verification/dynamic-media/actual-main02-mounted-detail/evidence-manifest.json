@@ -1,0 +1,220 @@
+{
+  "frozen": true,
+  "scope": {
+    "passed": true,
+    "fiveActualMountedGates": true,
+    "actualMainMountedConsumer": true,
+    "MainOverrides": 0,
+    "knownSeparateUnchangedCountDefect": true,
+    "HTTP": false,
+    "HWND": false
+  },
+  "artifactCount": 41,
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\ComposerHelpersFixture.kt",
+      "relative": "ComposerHelpersFixture.kt",
+      "sha256Bytes": "7c44b1478f10cd660bbe0e1cc833d8c58bb5da153fd6504683caba52dc98b0ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\MountedDetailFixture.kt",
+      "relative": "MountedDetailFixture.kt",
+      "sha256Bytes": "9860b520a10ac5da23ae0a5f089ccce60f078feaad4da88e262095b89a8b3cd0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\SCOPE.md",
+      "relative": "SCOPE.md",
+      "sha256Bytes": "1b706e55e0364473c496b71aacad5fac6b719f6778ebe3af4f7fe20995c4c9eb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\actual-main02\\manifest.json",
+      "relative": "actual-main02\\manifest.json",
+      "sha256Bytes": "f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\actual-main02\\ordered-runtime-cp.json",
+      "relative": "actual-main02\\ordered-runtime-cp.json",
+      "sha256Bytes": "be8a62821f74e73653ed2354afbb1de3d6ec8236db68f056328a482a5e0f4d9d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\compile-main-fixtures.py",
+      "relative": "compile-main-fixtures.py",
+      "sha256Bytes": "acc16fac7f81295e2cf804157fbce7ce7f1015de9ee1dc22f07abff7b9c3d093"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\attempt01-background-reply-pointer-json",
+      "relative": "history\\attempt01-background-reply-pointer-json",
+      "sha256Bytes": "54f289bceedf978a5de5121366c8cf05cb7fe258946136a6f12c5a7cf347d73d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\attempt01-background-reply-pointer-png",
+      "relative": "history\\attempt01-background-reply-pointer-png",
+      "sha256Bytes": "de3151dedaa707cc1a4c98d3448fe6c0116b4e96148b079eb816fae9264aa6b4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\attempt02-wrong-replacement-root-label-json",
+      "relative": "history\\attempt02-wrong-replacement-root-label-json",
+      "sha256Bytes": "4bab769cff26ca41bbbabf6c1199c602c089c8f8cae4f87edc633c8743c48e37"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\attempt02-wrong-replacement-root-label-png",
+      "relative": "history\\attempt02-wrong-replacement-root-label-png",
+      "sha256Bytes": "9f97d8bb861ba8dbcf515cfa2bd7b8e56e12c216113bfef9e908120460d6e001"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\compiled-source-01-MountedDetailFixture.kt",
+      "relative": "history\\compiled-source-01-MountedDetailFixture.kt",
+      "sha256Bytes": "9c05ae6f801183faaf6052871cbde97e6beb08cb8cb34123e1e340130cc99c8c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\compiled-source-02-MountedDetailFixture.kt",
+      "relative": "history\\compiled-source-02-MountedDetailFixture.kt",
+      "sha256Bytes": "8acc9b858b7ac9a243a12ed321ee6f1248614dc4bd895c6bac60114af2439b84"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\compiled-source-03-MountedDetailFixture.kt",
+      "relative": "history\\compiled-source-03-MountedDetailFixture.kt",
+      "sha256Bytes": "0772dd4c08e006c4156044d2b04cb5261411f8715a8ef2ab36caaed58926417e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\compiled-source-04-MountedDetailFixture.kt",
+      "relative": "history\\compiled-source-04-MountedDetailFixture.kt",
+      "sha256Bytes": "9860b520a10ac5da23ae0a5f089ccce60f078feaad4da88e262095b89a8b3cd0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\runs\\compile-01.log",
+      "relative": "history\\runs\\compile-01.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\runs\\compile-02.log",
+      "relative": "history\\runs\\compile-02.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\runs\\compile-evidence-01.json",
+      "relative": "history\\runs\\compile-evidence-01.json",
+      "sha256Bytes": "cbee259b5303807f07c0405cde5908b8b7735f9d0e6a42dc89fa6803a3302df4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\runs\\compile-evidence-02.json",
+      "relative": "history\\runs\\compile-evidence-02.json",
+      "sha256Bytes": "0b19d79305d6345ae525b4351b6949941338b46cb5106074dfeed888e8089dea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\runs\\compiler-01.args",
+      "relative": "history\\runs\\compiler-01.args",
+      "sha256Bytes": "a363e4c932b4b9e0ca14bd1c5b8fccaa087fe5d5fca2eec991fb8d3f3ef7dda6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\runs\\compiler-02.args",
+      "relative": "history\\runs\\compiler-02.args",
+      "sha256Bytes": "810ec7dc2bedea3141b9e8fc9f1c46e45dee1bd2baa7ff01589fb38bb848d091"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\runs\\mounted-detail-result-01-classload.log",
+      "relative": "history\\runs\\mounted-detail-result-01-classload.log",
+      "sha256Bytes": "6cd34540612e0311f49d685da7ca61de3a088019ddb0e5708ae041454bb8c0ce"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\runs\\mounted-detail-result-01.log",
+      "relative": "history\\runs\\mounted-detail-result-01.log",
+      "sha256Bytes": "354c9c1f794063e600da1c16cddac31fe629d26519e0cf7aea381e1b03777907"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\runs\\mounted-detail-result-02-classload.log",
+      "relative": "history\\runs\\mounted-detail-result-02-classload.log",
+      "sha256Bytes": "39c7f74aaf7a406ed32f65f1647ff9d2e8350bd9911a277066be1c3745c224d2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\history\\runs\\mounted-detail-result-02.log",
+      "relative": "history\\runs\\mounted-detail-result-02.log",
+      "sha256Bytes": "47be9e50bacd9a3f705c38e8f6ab7a54bb1dea22769b4089cf378bfde2ce199e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\main02-live-replacement-rejects-cancelled-old-thread.png",
+      "relative": "main02-live-replacement-rejects-cancelled-old-thread.png",
+      "sha256Bytes": "cfeb57c4af0870e54be419e923bb537868e9f891560902cf10f85ccfcc719131"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\main02-publish-count-late-readback.png",
+      "relative": "main02-publish-count-late-readback.png",
+      "sha256Bytes": "5e1d5658ca3ec169891664ee93b863d7e4883120af2060d5a4f1e1070fbf6b8a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\main02-root-701-thread.png",
+      "relative": "main02-root-701-thread.png",
+      "sha256Bytes": "080c8599604f0d258e5bec229bff23c3b7c783bfe18ad71f14e7a137e7f90887"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\run-main-fixture.py",
+      "relative": "run-main-fixture.py",
+      "sha256Bytes": "fdb68d8ac4b2a0a2c96bd85cc14ffdd0d729e723684676f40751368c6daec97e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\compile-03.log",
+      "relative": "runs\\compile-03.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\compile-04.log",
+      "relative": "runs\\compile-04.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\compile-evidence-03.json",
+      "relative": "runs\\compile-evidence-03.json",
+      "sha256Bytes": "06b179852295a5be4553c234123377c7e1b884eca23c6923ae89cf739e20fa64"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\compile-evidence-04.json",
+      "relative": "runs\\compile-evidence-04.json",
+      "sha256Bytes": "55a2b255d203931ca4af179ec6cfc01e4721a87be2dd8c46747a6d5c1af1c532"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\compiler-03.args",
+      "relative": "runs\\compiler-03.args",
+      "sha256Bytes": "c9cc752d495f0f8c636ce18d27c339e62d0693fa101aebcf1b7e120668e8e7f2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\compiler-04.args",
+      "relative": "runs\\compiler-04.args",
+      "sha256Bytes": "e0014cffe8a11e9375fca41d8dd4ed75d2c10a518464378a6c4fb025c16f35e1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\mounted-detail-result-03-classload.log",
+      "relative": "runs\\mounted-detail-result-03-classload.log",
+      "sha256Bytes": "98d2edbe0230fae6aac76bd07ce349232f05323710c9be4a30b612d90783238c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\mounted-detail-result-03.json",
+      "relative": "runs\\mounted-detail-result-03.json",
+      "sha256Bytes": "c11f21733c55891b4de2b52b6640ab4ff75f147acbbdd432847af54b76c438e2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\mounted-detail-result-03.log",
+      "relative": "runs\\mounted-detail-result-03.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\mounted-detail-result-04-classload.log",
+      "relative": "runs\\mounted-detail-result-04-classload.log",
+      "sha256Bytes": "2d40222a0205d28af01322349c476a57bc9ecda4e6be70c0592da896c3513cce"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\mounted-detail-result-04.json",
+      "relative": "runs\\mounted-detail-result-04.json",
+      "sha256Bytes": "8b0c8766ebbbd28a4f89d471d091b17bd02f7f756f85355994d3e18f81bdcb31"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\runs\\mounted-detail-result-04.log",
+      "relative": "runs\\mounted-detail-result-04.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\mounted-main02-acceptance-final\\selected-main02-source-pins.json",
+      "relative": "selected-main02-source-pins.json",
+      "sha256Bytes": "c10b6583b6ca3bbe440ffdc8e9fc5bb922a4b7cc27fb6c630c3bf30d60340e81"
+    }
+  ]
+}

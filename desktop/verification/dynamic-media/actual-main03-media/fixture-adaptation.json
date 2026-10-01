@@ -1,0 +1,58 @@
+{
+  "inputFrozenManifestsAndFixturePins": [
+    {
+      "name": "download",
+      "lane": "dynamic-motion-photo-download-owner-parity",
+      "manifestSha256Bytes": "bd97df3e2aa1ea4529fa49f9196b8f95db7e0100dfcc20aff79d0b091a14a503",
+      "fixturePath": "runs/05/frozen-sources/DownloadFixture.kt",
+      "fixtureSha256Bytes": "b126e1747f014cc84dbd06548d22ba15c783bb1f05b7fbd50c8732b9e7b01c05"
+    },
+    {
+      "name": "gallery",
+      "lane": "dynamic-gallery-motion-photo-parity",
+      "manifestSha256Bytes": "08da9ef3efd871724d1cc58482dc5945e18c9312229e4749f75e0dc405826c18",
+      "fixturePath": "gallery-runs/01/frozen-sources/GalleryFixture.kt",
+      "fixtureSha256Bytes": "2b300b7d1365437e72cdcd90f535a9c11af842b3a5655ebfdd02ac4ab7a6a30c"
+    },
+    {
+      "name": "qr",
+      "lane": "comment-qr-windows-clip-parity",
+      "manifestSha256Bytes": "382b64f3b20ab5b0d330a78bcedc6a74a7a2d38a8be32f946dfa4905f25b5f57",
+      "fixturePath": "runs/01/QrClipFixture.kt",
+      "fixtureSha256Bytes": "ac14a1fbc748b6c2350bcd0032d4552ed767cfc5fa935593e7bf6ca2aba3ead2"
+    },
+    {
+      "name": "commitcancel",
+      "lane": "dynamic-detail-reply-parity/detail-container-next/motion-photo-commit-cancel-delta",
+      "manifestSha256Bytes": "af0187e4604340a71bc5bd3c7ece5065836e83ea1f2e2014eb28e8fad22d41a3",
+      "fixturePath": "compile-01/sources/CommitCancelFixture.kt",
+      "fixtureSha256Bytes": "f6965275972f9e2fe46d9eb8bb4830c683adbeb23805339093e9ad0ba2589fa7"
+    }
+  ],
+  "outputFixtures": [
+    {
+      "path": "fixtures/CommitCancelFixture.kt",
+      "sha256Bytes": "6dcc03f39c9fea8983516c2d88029c5f38831c37c6d10e36d0145d1edd3d6b69"
+    },
+    {
+      "path": "fixtures/DownloadFixture.kt",
+      "sha256Bytes": "cc41f3f3ec91f771f9b8e58128f5d0455b18ff6b1ebb1e7241e9f66977a5aed8"
+    },
+    {
+      "path": "fixtures/GalleryFixture.kt",
+      "sha256Bytes": "f8f4bf0562549bc0db310613f77bc21cb6f04595bfae06e7c73b612112635c8c"
+    },
+    {
+      "path": "fixtures/QrClipFixture.kt",
+      "sha256Bytes": "6bf663d5e5064ac7e93c15e7521c4fa015956fa0c964b3bb75251888ec3dbd94"
+    }
+  ],
+  "behavioral51_11DownloadCasesRetained": true,
+  "extraActualMainProductCodeSources": true,
+  "commitConcernUsesActualMainAssetsFilesNoCandidateJar": true,
+  "GalleryRotationUsesActualStoreInsteadOfSyntheticEpoch": true,
+  "qrCandidateModeRemovedAllClassesMustMain": true,
+  "productionSourcesCompiledOrOverridden": false,
+  "actualMainSnapshotRunPending": true,
+  "MainWrites": false
+}

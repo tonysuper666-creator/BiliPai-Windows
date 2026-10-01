@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "assertions": 12,
+  "cases": 4,
+  "actualFrozenMainSelectedImageHandles": true,
+  "originalSingleMultipleResultPolicy": true,
+  "newPersistentListOrCache": false,
+  "realJFileChooserOpened": false,
+  "HTTP": false,
+  "HWND": false,
+  "MainIntegration": false,
+  "historicalActualMainManifestSha256Bytes": "4780b40c15bd0de96f01fe5f60086bd2e67684764d075d8af8f437a27b0887c5",
+  "orderedRuntime89CpSha256Bytes": "c2f31a97c207af9d501d669897deebfee51f4edf9a12b1280df59b542ec4b6ab",
+  "candidateJarSha256Bytes": "4632967bc6b8051cad9f9e1b732a9f4b9a91545ff0e717ccd3a94fe035cccb4e",
+  "productionOverrides": 0,
+  "fixtureMediaSha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+  "newMainIntegration": false,
+  "newAccountApi": false
+}

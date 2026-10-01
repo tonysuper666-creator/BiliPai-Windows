@@ -1,0 +1,18 @@
+{
+  "rawResultPath": "runs/01/download/proof/result.json",
+  "rawLegacyField": "MainInstalledIntegration",
+  "rawLegacyValue": false,
+  "rawResultPreservedUnchanged": true,
+  "reason": "Literal inherited from frozen candidate fixture reused for the new actual Main run; it is not a failed behavioral assertion.",
+  "compiledActualMainSourceAndOperationsInstalled": true,
+  "compiledActualMainRuntimeExecutedZeroProductOverrides": true,
+  "actualMainManifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+  "actualOrdered92CpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+  "productionClassOverlap": [],
+  "RootShellOrChooserExecuted": false,
+  "HWNDExecuted": false,
+  "packagedRuntimeAccepted": false,
+  "deployedEXEAccepted": false,
+  "systemShareOrPhotosReceiverAccepted": false,
+  "matrixRepeatedForMetadata": false
+}

@@ -1,0 +1,30 @@
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:87:17: warning: condition is always 'false'.
+            if (body == null || gate == null) response else {
+                ^^^^^^^^^^^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:160:66: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(count.get() == before+1 && !Files.exists(target!!.path) && noTemps(), "no automatic network retry and failed HTTP scratch drained")
+                                                                 ^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:162:44: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(Files.readAllBytes(target!!.path).contentEquals(image) && noTemps(), "explicit retry commits complete bytes")
+                                           ^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:172:39: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(!Files.exists(target!!.path) && noTemps(), "empty body drains scratch")
+                                      ^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:174:39: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(!Files.exists(target!!.path) && noTemps(), "declared oversize rejected before heap body decode")
+                                      ^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:186:61: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(saving.isCancelled && !Files.exists(target!!.path), "cancelled parent commits no streamed output")
+                                                            ^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:197:35: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+        prove(!Files.exists(target!!.path) && noTemps(), "own-close operation returns after actual callback/output-stream drain")
+                                  ^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:221:39: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(!Files.exists(target!!.path) && noTemps(), "old full downloaded/rendered output and scratch are drained")
+                                      ^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\runs\04\src\DesktopDynamicImageAssets.kt:151:52: warning: the corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+                override fun onFailure(call: Call, error: IOException) { finished.complete(Result.failure(error)) }
+                                                   ^^^^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\runs\04\src\DesktopDynamicImageAssets.kt:156:48: warning: elvis operator (?:) always returns the left operand of non-nullable type 'ResponseBody'.
+                            val body = it.body ?: error("ͼƬ����Ϊ��")
+                                               ^^^^^^^^^^^^^^^^^^

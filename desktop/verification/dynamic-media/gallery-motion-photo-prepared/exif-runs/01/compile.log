@@ -1,0 +1,51 @@
+desktop\.local\dynamic-gallery-motion-photo-parity\ExifFixture.kt:29:20: error: unresolved reference 'findEXIFValueWithExactMatch'.
+    prove(metadata.findEXIFValueWithExactMatch(TiffTagConstants.TIFF_TAG_MAKE)?.stringValue == identity.manufacturer, "real writer Make readback")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\ExifFixture.kt:30:20: error: unresolved reference 'findEXIFValueWithExactMatch'.
+    prove(metadata.findEXIFValueWithExactMatch(TiffTagConstants.TIFF_TAG_MODEL)?.stringValue == identity.model, "real writer Model readback")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\ExifFixture.kt:31:20: error: unresolved reference 'findEXIFValueWithExactMatch'.
+    prove(metadata.findEXIFValueWithExactMatch(TiffTagConstants.TIFF_TAG_DATE_TIME)?.stringValue == "2026:10:01 10:00:00", "original DateTime format readback")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\ExifFixture.kt:32:20: error: unresolved reference 'findEXIFValueWithExactMatch'.
+    prove(metadata.findEXIFValueWithExactMatch(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL)?.stringValue == "2026:10:01 10:00:00", "original DateTimeOriginal readback")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\ExifFixture.kt:33:20: error: unresolved reference 'findEXIFValueWithExactMatch'.
+    prove(metadata.findEXIFValueWithExactMatch(TiffTagConstants.TIFF_TAG_ARTIST)?.stringValue == "Other existing artist", "other existing EXIF preserved")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\ExifFixture.kt:34:20: error: unresolved reference 'findEXIFValueWithExactMatch'.
+    prove(metadata.findEXIFValueWithExactMatch(TiffTagConstants.TIFF_TAG_IMAGE_DESCRIPTION)?.stringValue == "Other existing description", "other EXIF description preserved")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\ExifFixture.kt:35:20: error: unresolved reference 'findEXIFValueWithExactMatch'.
+    prove(metadata.findEXIFValueWithExactMatch(TiffTagConstants.TIFF_TAG_ORIENTATION)?.intValue == 1, "other EXIF orientation preserved")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\ExifFixture.kt:42:66: error: unresolved reference 'findEXIFValueWithExactMatch'.
+    prove((Imaging.getMetadata(rawWritten) as JpegImageMetadata).findEXIFValueWithExactMatch(TiffTagConstants.TIFF_TAG_MAKE)?.stringValue == identity.manufacturer, "real writer adds EXIF to absent EXIF")
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\ExifFixture.kt:49:27: error: unresolved reference 'findEXIFValueWithExactMatch'.
+    prove(windowsMetadata.findEXIFValueWithExactMatch(TiffTagConstants.TIFF_TAG_MAKE)?.stringValue == windowsIdentity.manufacturer, "actual Windows BIOS manufacturer mapped exactly")
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\ExifFixture.kt:50:27: error: unresolved reference 'findEXIFValueWithExactMatch'.
+    prove(windowsMetadata.findEXIFValueWithExactMatch(TiffTagConstants.TIFF_TAG_MODEL)?.stringValue == windowsIdentity.model, "actual Windows BIOS product model mapped exactly")
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\ExifFixture.kt:66:28: error: unresolved reference 'findEXIFValueWithExactMatch'.
+    prove(combinedMetadata.findEXIFValueWithExactMatch(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL)?.stringValue == "2026:10:01 10:00:00", "actual packed JPEG retains real DateTimeOriginal")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicMotionPhotoExif.kt:3:20: error: unresolved reference 'platform'.
+import com.sun.jna.platform.win32.Advapi32Util
+                   ^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicMotionPhotoExif.kt:4:20: error: unresolved reference 'platform'.
+import com.sun.jna.platform.win32.WinReg
+                   ^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicMotionPhotoExif.kt:23:24: error: unresolved reference 'Advapi32Util'.
+    val manufacturer = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, key, "SystemManufacturer").trim()
+                       ^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicMotionPhotoExif.kt:23:60: error: unresolved reference 'WinReg'.
+    val manufacturer = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, key, "SystemManufacturer").trim()
+                                                           ^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicMotionPhotoExif.kt:24:17: error: unresolved reference 'Advapi32Util'.
+    val model = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, key, "SystemProductName").trim()
+                ^^^^^^^^^^^^
+desktop\.local\dynamic-gallery-motion-photo-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicMotionPhotoExif.kt:24:53: error: unresolved reference 'WinReg'.
+    val model = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, key, "SystemProductName").trim()
+                                                    ^^^^^^

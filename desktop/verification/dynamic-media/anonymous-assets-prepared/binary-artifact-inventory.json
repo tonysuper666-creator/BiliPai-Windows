@@ -1,0 +1,37 @@
+{
+  "files": [
+    {
+      "path": "livephoto-source-only/compile01/source-only-candidate.jar",
+      "sha256Bytes": "c476e9e71c86f9041a431cab8032f957008251028f4585cb01087d633b9e095d",
+      "size": 25427
+    },
+    {
+      "path": "livephoto-source-only/compile02/source-only-candidate.jar",
+      "sha256Bytes": "c476e9e71c86f9041a431cab8032f957008251028f4585cb01087d633b9e095d",
+      "size": 25427
+    },
+    {
+      "path": "runs/02/candidate-and-fixture.jar",
+      "sha256Bytes": "01e7f9b35b9e5ed9ad5365252034e5fcf3cbf3a96eee8ad067efa343a42f1418",
+      "size": 114263
+    },
+    {
+      "path": "runs/03/candidate-and-fixture.jar",
+      "sha256Bytes": "01e7f9b35b9e5ed9ad5365252034e5fcf3cbf3a96eee8ad067efa343a42f1418",
+      "size": 114263
+    },
+    {
+      "path": "runs/04/candidate-and-fixture.jar",
+      "sha256Bytes": "3650c591105c040bf6293b9d4de105396dc790ea1a7c955327a6422525f9ba82",
+      "size": 122662
+    },
+    {
+      "path": "runs/05/candidate-and-fixture.jar",
+      "sha256Bytes": "06980001b41e25dcdc1a0346e0efda3c210909535c4fcd6536552d1760c3c930",
+      "size": 123503
+    }
+  ],
+  "notCopiedAsRaw": true,
+  "runtimeDependencyGraph": "runs/05/compile-evidence.json:ordered92Classpath",
+  "externalOfficialDependencyProvenance": "immutable Gallery handoff 08da9ef3efd871724d1cc58482dc5945e18c9312229e4749f75e0dc405826c18"
+}

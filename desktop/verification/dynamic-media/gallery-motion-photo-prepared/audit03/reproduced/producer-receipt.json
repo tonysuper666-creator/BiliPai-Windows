@@ -1,0 +1,108 @@
+{
+  "formatVersion": 1,
+  "originalTag": "v0.2.3-alpha.9",
+  "originalCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "originalSourceLfPins": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "sha256Lf": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+      "tagBytesLfEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/GalleryVisualMediaContracts.kt",
+      "sha256Lf": "ec395620e07c73be2d830d274cdebb525bba07fe607f44b235634ec6c4a84549",
+      "tagBytesLfEqual": true
+    }
+  ],
+  "selectedPacking": {
+    "source": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+    "startLine": 2310,
+    "endLine": 2412,
+    "originalSha256Lf": "7617dea48c6a9fd822b04ca6a4d1f510c7d03dfdf3c233646a222bb5460b671e",
+    "sha256Lf": "ebd8fb324c3e621108763c9c340317e38c822b8051f575c0fa17e739090386fe",
+    "unchangedBodyExceptThreeXmpAttributes": true,
+    "unchangedBody": false,
+    "deletedExactLines": [
+      "        GCamera:MotionPhoto=\"1\"",
+      "        GCamera:MotionPhotoVersion=\"1\"",
+      "        GCamera:MotionPhotoPresentationTimestampUs=\"0\""
+    ],
+    "why": "XML expanded-attribute uniqueness; Camera and GCamera map to identical namespace URI",
+    "preserved": [
+      "Camera modern three attributes",
+      "GCamera MicroVideo legacy four attributes",
+      "MiCamera",
+      "Container",
+      "JPEG marker assembly",
+      "unchanged MP4 append"
+    ],
+    "sourceVariablesLiftedToParameters": [
+      "jpegWithExif",
+      "videoSize"
+    ],
+    "newReturnOnly": "return jpegSegmentBytes"
+  },
+  "gallerySingleResult": {
+    "source": "app/src/main/java/com/android/purebilibili/core/util/GalleryVisualMediaContracts.kt",
+    "originalExpression": "?.let { result -> result.data ?: result.clipData?.getItemAt(0)?.uri }",
+    "adaptedResult": "if (!resultOk) null else data ?: clips?.get(0)",
+    "platformEmptyClipsMustBeNull": true
+  },
+  "galleryMultipleAdmission": {
+    "originalExactStatement": "require(maxItems > 1) { \"Max items must be higher than 1\" }",
+    "liftedBeforeParseResult": true
+  },
+  "galleryResult": {
+    "source": "app/src/main/java/com/android/purebilibili/core/util/GalleryVisualMediaContracts.kt",
+    "originalBodySha256Lf": "123ab6fe5c88e9e29aeb58b8f029cf2932438281d06329bd54b4fa39851f398b",
+    "adaptedBodySha256Lf": "54531b05849302190508196c73e7419fbd42f4b5b3dd6d5a9b112603740b36e1",
+    "substitutionsOnly": [
+      [
+        "if (resultCode != Activity.RESULT_OK || intent == null)",
+        "if (!resultOk)"
+      ],
+      [
+        "linkedSetOf<Uri>()",
+        "linkedSetOf<String>()"
+      ],
+      [
+        "intent.data?.let(selectedUris::add)",
+        "data?.let(selectedUris::add)"
+      ],
+      [
+        "intent.clipData?.let { clipData ->",
+        "clips?.let { clipData ->"
+      ],
+      [
+        "clipData.itemCount",
+        "clipData.size"
+      ],
+      [
+        "clipData.getItemAt(index).uri",
+        "clipData[index]"
+      ]
+    ],
+    "originalLinkedSetOrderDedupeAndTake": true
+  },
+  "galleryMime": {
+    "originalBodySha256Lf": "aa1e23f1076ba6439e23b0bdd386c6270556b13a2ea971d217aa2b8543d89768",
+    "adaptedBodySha256Lf": "dd3f5ed2716c725457da3c1d6237366b53d92db7e343cfa4097852e8052c6b5f",
+    "typeQualifierOnly": true
+  },
+  "generated": [
+    {
+      "path": "com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+      "bytes": 1664
+    }
+  ],
+  "androidExifWriterIncluded": false,
+  "androidMediaStoreOrSafIncluded": false,
+  "newBusinessPackingAlgorithm": false,
+  "newAccountApiStoreOrCache": false
+}

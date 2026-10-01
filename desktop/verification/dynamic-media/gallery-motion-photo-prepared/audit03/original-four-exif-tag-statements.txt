@@ -1,0 +1,6 @@
+                exif.setAttribute(android.media.ExifInterface.TAG_MAKE, Build.MANUFACTURER)
+                    exif.setAttribute(android.media.ExifInterface.TAG_MODEL, Build.MODEL)
+                    val now = java.text.SimpleDateFormat("yyyy:MM:dd HH:mm:ss", java.util.Locale.US).format(java.util.Date())
+                    exif.setAttribute(android.media.ExifInterface.TAG_DATETIME, now)
+                    exif.setAttribute(android.media.ExifInterface.TAG_DATETIME_ORIGINAL, now)
+                    exif.saveAttributes()

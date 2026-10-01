@@ -1,0 +1,13 @@
+{
+  "originalFilesPath": "desktop/.local/dynamic-motion-photo-download-owner-parity/dependencies-from-gallery/DesktopDynamicMotionPhotoFiles.kt",
+  "originalFilesSha256Bytes": "fc44e8bbaf636a75358edf499f7c10f72e5107405dee14f1da56aa4c3c0b4aac",
+  "candidatePath": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.kt",
+  "candidateSha256Bytes": "702e37833b3ef68bb73c677e6f81cc77b77a98a2cdef3eca07f9d135c2b6738e",
+  "delta": "two added lines only: capture currentCoroutineContext before commit and ensureActive under final Files gate",
+  "reverseRemovalByteEqual": true,
+  "packingAlgorithmChanged": false,
+  "AssetsBodyChanged": false,
+  "StoreAssetsFilesLockOrderChanged": false,
+  "old233And114Unmodified": true,
+  "MainChanged": false
+}

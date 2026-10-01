@@ -1,0 +1,11 @@
+Exception in thread "main" java.lang.NullPointerException: null cannot be cast to non-null type org.apache.commons.imaging.formats.jpeg.JpegImageMetadata
+	at com.bilipai.desktop.ui.gallerymotionphotoproof.ExifFixtureKt$main$1.invokeSuspend(ExifFixture.kt:79)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.gallerymotionphotoproof.ExifFixtureKt.main(ExifFixture.kt:14)

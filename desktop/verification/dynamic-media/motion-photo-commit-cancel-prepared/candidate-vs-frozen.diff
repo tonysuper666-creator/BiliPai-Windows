@@ -1,0 +1,13 @@
+--- frozen-gallery-Files
++++ prepared-cancel-gate-Files
+@@ -79,8 +79,10 @@
+                     output.flush()
+                 }
+                 checkpoint()
++                val commitContext = currentCoroutineContext()
+                 val committed = withOwnedCommit {
+                     synchronized(gate) {
++                        commitContext.ensureActive()
+                         assertOwned()
+                         validateTarget(parent, absolute, target.replaceExisting)
+                         if (target.replaceExisting) Files.move(staged, absolute, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)

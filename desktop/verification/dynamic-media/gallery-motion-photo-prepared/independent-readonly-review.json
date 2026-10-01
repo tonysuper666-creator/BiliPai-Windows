@@ -1,0 +1,34 @@
+{
+  "review": "Independent narrow read-only source review",
+  "candidateSourcePins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-gallery-motion-photo-parity\\prepared\\desktop\\tools\\extract-upstream-dynamic-gallery-motion-photo-valid-xmp.py",
+      "sha256Bytes": "be480408e2155f4d98ba8d7ea23ff5f520b4d9d4df5b95f3f261896b93df4cfa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-gallery-motion-photo-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "fc44e8bbaf636a75358edf499f7c10f72e5107405dee14f1da56aa4c3c0b4aac"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-gallery-motion-photo-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a"
+    }
+  ],
+  "conclusion": "No additional blocker found in these three source files under the stated owner-commit premise.",
+  "ownerCommitPremise": "Root withOwnedCommit must atomically admit/check the existing owner and run its final file move. It must not become an asynchronous unchecked callback. No separate owner/store/cache is constructed here.",
+  "observations": [
+    "Producer removes exactly the three duplicate GCamera MotionPhoto expanded attributes while preserving modern Camera and legacy fields; ordered distinct/take and constructor admission are retained.",
+    "CancellationException is rethrown from EXIF handling. Ordinary EXIF failure checks coroutine activity and owner before the raw-JPEG fallback.",
+    "Bounded 32MiB still input and 200MiB streaming video copy are retained; staged output is same-directory, rechecked at commit and cleaned in finally.",
+    "RegGetValueW reads actual HKLM BIOS REG_SZ values, maps actual manufacturer/model, and writes the original four EXIF fields. No camera identity or gallery support is fabricated."
+  ],
+  "currentSourceCommentRevision": "Peer reports two MotionPhotoFiles comments updated after runs04 to state the declared three-attribute adaptation. This review pins current source bytes and does not identify them as runs04 compiler inputs.",
+  "evidenceLimit": "Source-only. Peer-provided runtime assertions were not independently executed or accepted by this review. No claim of Main integration, Root download binding, Photos/Mpv window or receiving application support.",
+  "executedWindow": false,
+  "executedDownload": false,
+  "executedHttp": false,
+  "editedMain": false,
+  "executedMain": false,
+  "executedPhotosReceiver": false,
+  "modifiedCandidateOrFrozenPayload": false
+}

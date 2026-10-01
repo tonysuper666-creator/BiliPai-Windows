@@ -1,0 +1,8 @@
+{
+  "passed": false,
+  "stage": "synthetic FFmpeg fixture preparation",
+  "reason": "The existing LGPL FFmpeg build has no libx264 encoder. No Kotlin fixture or product execution occurred.",
+  "nextHarnessOnlyCorrection": "Use the bundled native mpeg4 encoder to create the synthetic MP4. Retain compile01 bytes and execute a fresh run02.",
+  "productBug": false,
+  "historicalFailurePreserved": true
+}

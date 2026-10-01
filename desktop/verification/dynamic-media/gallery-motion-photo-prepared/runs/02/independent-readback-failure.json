@@ -1,0 +1,13 @@
+{
+  "passed": false,
+  "stage": "independent physical XMP XML readback after Kotlin 37 assertions / 11 cases",
+  "exception": "xml.etree.ElementTree.ParseError: duplicate attribute: line 3, column 4",
+  "cause": "Original Camera and GCamera prefixes have the identical namespace URI, and the original Description repeats three expanded attribute names.",
+  "originalSource": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt:2316",
+  "originalSourceLfSha256": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+  "inheritedOriginalFormatDefect": true,
+  "productFormatAccepted": false,
+  "kotlinRawPackingAndGalleryAssertionsPassed": true,
+  "MainIntegration": false,
+  "historicalFailurePreserved": true
+}

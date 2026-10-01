@@ -1,0 +1,72 @@
+Prepared Assets integration, not installed Main
+
+Baseline: ce9ac0a actual Main at
+desktop/.local/dynamic-detail-reply-main-integration/main-product-snapshot-01.
+Manifest SHA256 8286563186e5d5be2495a598e1e32fb15091b7a459a5bbbc3d7e65243557e290.
+Ordered 89-CP SHA256 06316248361f2fae9d8eb53976ba1dc6936c5bd6416f98d2b6026c207ef9a217.
+Main Kotlin SHA256 034fe5936eab96f818d5f2ff5ef5341ac65f122f9427772fb2f483a222737200.
+
+Install prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt
+as the existing Assets source. Keep its unchanged DesktopDynamicSaveTarget declaration.
+The task-only compiler omitted that one declaration solely to reuse the exact
+actual Main SaveTarget class; do not use that task compile source as install source.
+The one existing selectDynamicSaveTarget chooser body is unchanged. Only its
+visibility changes private -> internal, for Root comment image reuse.
+
+Root already received immutable Gallery handoff 08da9ef3efd871724d1cc58482dc5945e18c9312229e4749f75e0dc405826c18.
+Reuse exactly its DesktopDynamicMotionPhotoFiles.kt, DesktopDynamicMotionPhotoExif.kt,
+and the valid-XMP original packing producer/output. The present audit pins these
+inputs and copies them byte for byte in dependencies-from-gallery; these are not
+new algorithms. Reuse its approved Apache Imaging 1.0.0-alpha6, IO 2.19.0 and
+Lang3 3.17.0 graph, official provenance/license receipts and original XMP whitelist.
+Runtime is original actual 89 entries plus those three exact JARs = 92 entries.
+Do not install any candidate-and-fixture.jar, fixture or private home as product.
+
+Change only the existing Host Assets constructor using root-captured-owner.fragment.kt.
+Keep its existing Repository, CardOperations, CardSession and sole Window authority.
+Capture repository.dynamicCacheSessionGuard.dynamicCacheOwner(), including guest MID=0.
+Use the exact captured owner for withCurrentDynamicCacheOwner; match captured
+epoch to operations.expectedEpoch in stillOwned. No mid > 0 authentication guard.
+If capture races a new account epoch, old operations stay unavailable and cannot
+commit under the new captured owner. The actual Store lock validates exact owner
+and covers final movement; no separate cache, Store or synthetic epoch is added.
+
+Lock order is actual SessionStore monitor -> Assets own lock -> MotionPhotoFiles
+own gate. Assets.close sets its closed flag under its own lock, releases that lock,
+then closes Files and cancels existing calls. No reverse Store acquisition while
+holding the Files gate was added. A retired account cannot pass Store commit,
+and Assets own close cannot pass its own commit lock. CardSession.close/alive=false
+does not share those locks: external page ownership is a checked bool and is not
+a strong atomic page-close guarantee. Root owns page ordering and should preserve
+this distinction rather than advertise a transaction stronger than the source.
+
+Each download uses a same-parent safe temporary file, a 64KiB stream buffer and
+32MiB image / 200MiB video limits. Existing explicit overwrite selection is kept.
+No-cookie jar plus the last network interceptor strips Cookie and FORCE_COOKIE_HEADER
+from inherited client interceptors. Ordinary PNG/GIF/WebP/JPEG and standalone MP4
+retain their downloaded bytes, matching existing Windows save behavior. Android's
+ordinary static-image Bitmap JPEG95 re-encode is not newly implemented by this
+Assets slice. MotionPhoto does use the accepted actual Skia JPEG95/four-tag EXIF/
+corrected original XMP/MP4 packing chain. Batch retains prior partial-save semantics.
+
+close() is deliberately nonblocking; an individual save's completion waits for
+the canceled OkHttp callback to close its streams, then removes its scratch file.
+Root must cancel and join owned jobs at a shutdown drain boundary before claiming
+scratch drain. This proof does not establish cleanup after process termination.
+
+save-comment-image.pending-root-writer.fragment.kt is an unexecuted thin append.
+Root must first install its writer replaceExisting and withOwnedCommit parameters,
+then have the final PNG move call withOwnedCommit and treat false as canceled.
+Reuse selectDynamicSaveTarget; do not add another chooser or renderer. No PNG
+writer or comment save claim was made by the present test.
+
+Optional livephoto-source-only/DesktopDynamicLivePhoto.kt is a separate unexecuted
+candidate. It requires Root to supply existing hostVisible via the explicit
+LocalDesktopLivePhotoWindowStarted provider. It maps original first-frame/error/
+retry/pause/resume decisions to the existing dedicated MpvPlayer, without new Window,
+main-player or SMTC ownership. Native physical first frame, HWND alpha/overlay,
+minimize/resume and real retry need actual window tests before acceptance.
+
+After Root installation, produce a fresh actual Main compile/snapshot and use
+real integrated UI/source checks. This candidate does not establish Main-installed
+behavior, native chooser, Photos recognition, system SHARE or actual receiver.

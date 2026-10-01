@@ -1,0 +1,21 @@
+{
+  "compilePassed": true,
+  "executed": false,
+  "sourceOnly": true,
+  "actualMainManifestSha256Bytes": "8286563186e5d5be2495a598e1e32fb15091b7a459a5bbbc3d7e65243557e290",
+  "actualOrdered89CpSha256Bytes": "06316248361f2fae9d8eb53976ba1dc6936c5bd6416f98d2b6026c207ef9a217",
+  "runtimeEntries": 89,
+  "composeCompilerPluginSha256Bytes": "95ccd5c4008e454a5cb26f89405613f2ae33f46bf950c8be4d01bbdbdcfbcd08",
+  "sourceSha256Bytes": "8d9435231e0c1ddb7ef303139118bd6e3ec0986472ba7d7fdd02eef4fde7e057",
+  "sourceOnlyJarSha256Bytes": "c476e9e71c86f9041a431cab8032f957008251028f4585cb01087d633b9e095d",
+  "candidateClassFamiliesOnly": [
+    "DesktopDynamicLivePhotoKt",
+    "DesktopDynamicLivePhotoPlayer",
+    "ComposableSingletons$DesktopDynamicLivePhotoKt"
+  ],
+  "nativeFrameRetryWindowLifecycleAccepted": false,
+  "actualHWND": false,
+  "nativeDecoder": false,
+  "RootProviderInstalled": false,
+  "MainModified": false
+}

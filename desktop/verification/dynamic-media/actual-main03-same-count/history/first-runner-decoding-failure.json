@@ -1,0 +1,10 @@
+{
+  "firstRunnerPostProcessingPassed": false,
+  "actualJvmExitCode": 0,
+  "actualJvmAssertionResultPassed": true,
+  "failure": "UnicodeDecodeError: default Windows GBK output.read_text cannot decode valid UTF-8 JSON",
+  "fix": "read_text(encoding=utf-8) only",
+  "actualJvmRepeated": false,
+  "compiledKotlinUnchanged": true,
+  "resultSha256Bytes": "4277d96d5452a5c6a8e0887302c9b1aef68af06bbd861881a12083766c167a4d"
+}

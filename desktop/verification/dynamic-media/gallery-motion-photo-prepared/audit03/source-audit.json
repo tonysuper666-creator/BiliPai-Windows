@@ -1,0 +1,178 @@
+{
+  "passed": true,
+  "originalTag": "v0.2.3-alpha.9",
+  "originalCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "originals": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "sha256Lf": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+      "gitBlob": "db02a4a87512087d5b237688557d1b212e8e05fc",
+      "pinnedTagLfBytesEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/LivePhotoPlayback.kt",
+      "sha256Lf": "c0cf2c7f51b32898e44e058c1a49a6797d9f7b2f13cadbd22f9af43c7b03e14e",
+      "gitBlob": "fbcdcc739a135f0a039ca19ebdff73ddd99952ee",
+      "pinnedTagLfBytesEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImageSaveLocationPolicy.kt",
+      "sha256Lf": "320d756b9808f6be10ca5f54697a26f05739f95cfbe2e7c554ff078fba864e3f",
+      "gitBlob": "c6ecda4e4d37340355c8f1479f022a0ea685c6f9",
+      "pinnedTagLfBytesEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "sha256Lf": "b5df989c98b1694ca07b741cd759a73e7dc814f90d2bee0ba90ad3e2ad8cbbad",
+      "gitBlob": "3fdb889175f54f4267277b547d2e5788085f29cd",
+      "pinnedTagLfBytesEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewFeedbackPolicy.kt",
+      "sha256Lf": "04f61c4635b4032e118f37ae60fe9f343ef99173dd7cf256b350dc865ac4c4c4",
+      "gitBlob": "90fd265ac2184c0107f0560dac9c75b543753dae",
+      "pinnedTagLfBytesEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "sha256Lf": "5043b00a5fa2e368ed056e517c666c7e52217207926ba17f24724013de20eacd",
+      "gitBlob": "ec0150c5c2a73160149509deda5f592ed5ad3abd",
+      "pinnedTagLfBytesEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "sha256Lf": "810c4e6b30a4e339de5567807a7713d10c3a5ef5a71fc25224899417f5f67769",
+      "gitBlob": "1daeeb64e04b80646f21c3d760fd32bd36bd41a7",
+      "pinnedTagLfBytesEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageGesturePolicy.kt",
+      "sha256Lf": "0705fa2a78eb24e6be623ded274e0916bcfa60bc026adf7bcc237576c23f939d",
+      "gitBlob": "9d33f44cfeba511b958052b24eb6523a4f041020",
+      "pinnedTagLfBytesEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageScalePolicy.kt",
+      "sha256Lf": "c8ee53a835c3946bee36389966fcc5abae9332d958e9951f6d9a1a2698c993d5",
+      "gitBlob": "058f22fc01d9c07435d244cd66f588fab435ac7a",
+      "pinnedTagLfBytesEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/GalleryVisualMediaContracts.kt",
+      "sha256Lf": "ec395620e07c73be2d830d274cdebb525bba07fe607f44b235634ec6c4a84549",
+      "gitBlob": "c13c27d9b77dc9277cd55b614b38540504f8d105",
+      "pinnedTagLfBytesEqual": true
+    }
+  ],
+  "generatedFreshByteEqual": [
+    {
+      "path": "generated-acceptance-final\\com\\android\\purebilibili\\core\\util\\DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+      "bytes": 1664,
+      "freshProducerBytesEqual": true
+    },
+    {
+      "path": "generated-acceptance-final\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568,
+      "freshProducerBytesEqual": true
+    },
+    {
+      "path": "generated-acceptance-final\\original-packing-before-xmp-fix.txt",
+      "sha256Bytes": "7617dea48c6a9fd822b04ca6a4d1f510c7d03dfdf3c233646a222bb5460b671e",
+      "bytes": 5216,
+      "freshProducerBytesEqual": true
+    },
+    {
+      "path": "generated-acceptance-final\\packing-after-xmp-fix.txt",
+      "sha256Bytes": "ebd8fb324c3e621108763c9c340317e38c822b8051f575c0fa17e739090386fe",
+      "bytes": 5090,
+      "freshProducerBytesEqual": true
+    },
+    {
+      "path": "generated-acceptance-final\\producer-receipt.json",
+      "sha256Bytes": "bba5156b6fe4358b50656ca45b753cf7500169bacee245ca7358c544196e70f4",
+      "bytes": 4021,
+      "freshProducerBytesEqual": true
+    },
+    {
+      "path": "generated-acceptance-final\\xmp-three-line-adaptation.diff",
+      "sha256Bytes": "b293afee40aef0ebf0d94dc4442653d039bab214bbbf0e45c7194d92905700af",
+      "bytes": 461,
+      "freshProducerBytesEqual": true
+    }
+  ],
+  "producerSha256Bytes": "be480408e2155f4d98ba8d7ea23ff5f520b4d9d4df5b95f3f261896b93df4cfa",
+  "onlyMotionPackingBodyAdaptation": {
+    "deletedExactThreeLines": [
+      "        GCamera:MotionPhoto=\"1\"",
+      "        GCamera:MotionPhotoVersion=\"1\"",
+      "        GCamera:MotionPhotoPresentationTimestampUs=\"0\""
+    ],
+    "beforeSha256Bytes": "7617dea48c6a9fd822b04ca6a4d1f510c7d03dfdf3c233646a222bb5460b671e",
+    "afterSha256Bytes": "ebd8fb324c3e621108763c9c340317e38c822b8051f575c0fa17e739090386fe",
+    "allOtherSelectedPackingBytesEqual": true
+  },
+  "originalExifTagBodySha256Bytes": "78facb1c97ad7e4c841bebe86844e8f0cbc62ac38bf22cd7fe971d733b136678",
+  "currentReadOnlySourcePins": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-card.py",
+      "sha256Lf": "e4d18c733e69290352a159953bdc000e08e9e964b5229803da8a561b8d43f449",
+      "scope": "read-only current working source; not frozen Main source proof"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "sha256Lf": "b89aeccb07b6312ff9851b9ecde434fbfec60237b1f279c7c2514ee743bbaea4",
+      "scope": "read-only current working source; not frozen Main source proof"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Lf": "2edb7fde32968e1dbdd413c6e74b2e90f91f9dd7dc8cce179501b4546e2b8513",
+      "scope": "read-only current working source; not frozen Main source proof"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicLivePhoto.kt",
+      "sha256Lf": "57b670d27ffe63f19b4da0110edcb3bc3269cc5e3c15eb3a29982e5dc2f0a064",
+      "scope": "read-only current working source; not frozen Main source proof"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Lf": "84389c917a95da7d5f4626565785f7ccec7e947b807ee1dbe0d45744edc012eb",
+      "scope": "read-only current working source; not frozen Main source proof"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "sha256Lf": "a3145a3338402012fa5ad46a5396b30c36cf194522f763951c475364f7f7e7bc",
+      "scope": "read-only current working source; not frozen Main source proof"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorPlatform.kt",
+      "sha256Lf": "6d1e1c00ded1899851b0424879a842c470db89c0445715de108af496fb343681",
+      "scope": "read-only current working source; not frozen Main source proof"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Lf": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "scope": "read-only current working source; not frozen Main source proof"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Lf": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6",
+      "scope": "read-only current working source; not frozen Main source proof"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Lf": "86863c8be2ab2731d2a0ff16219b5c237ff298a16992bac3b0aa5b76ef9bf51e",
+      "scope": "read-only current working source; not frozen Main source proof"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "sha256Lf": "c225eae70a6b006096652da7a55a53922d443c6151555badefd05a5372ddfb25",
+      "scope": "read-only current working source; not frozen Main source proof"
+    }
+  ],
+  "androidSourcesModified": false,
+  "MainOrGradleModified": false,
+  "newImageImportExtractionAlgorithm": false,
+  "rawFixtureTailExtractionIsVerificationOnly": true
+}

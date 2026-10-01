@@ -878,6 +878,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         LocalDesktopDynamicCardRepository provides repository,
         LocalDesktopDynamicCardSession provides dynamicCardSession,
         LocalDesktopDetailForeground provides (hostDisplayable && hostVisible),
+        LocalDesktopDynamicSaveParent provides hostWindow,
         LocalDesktopDynamicEditorActions provides dynamicEditor.actions,
         LocalDesktopDynamicCardStateRegistry provides dynamicCardRegistry,
         LocalDesktopDynamicCardMutations provides dynamicCardRegistry.bindings,

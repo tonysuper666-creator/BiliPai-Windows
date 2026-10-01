@@ -1,0 +1,48 @@
+{
+  "actualMainProofsPassed": true,
+  "mainSnapshotSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+  "actualGraphEntries": 92,
+  "unchangedPriorExternalArtifacts": 86,
+  "addedApprovedArtifacts": 3,
+  "packagedApacheNotices": 6,
+  "originalGeneratedUnchanged": 753,
+  "onlyChangedGenerated": [
+    "desktop/build/generated/dynamic-detail/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession.kt",
+    "desktop/build/generated/dynamic-reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyImageRenderer.kt"
+  ],
+  "onlyAddedGenerated": [
+    "desktop/build/generated/dynamic-gallery-motion-photo/com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+    "desktop/build/generated/dynamic-gallery-motion-photo/com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt"
+  ],
+  "zeroProductOverrides": true,
+  "fixtureClassOverlap": [],
+  "assertions": 135,
+  "cases": 24,
+  "actualMountedSameCountCasePassed": true,
+  "actualMountedNewestPointerPairs": 1,
+  "rootVisualInspection": [
+    "Main03 mounted dark detail: both actual comment header and card show 33 after late detail1.",
+    "Main03 exported long secondary reply: printed link ends before the intact original QR."
+  ],
+  "metadataCorrections": [
+    "Raw download proof retains a legacy MainInstalledIntegration=false flag; accepted aggregate and class origins verify compiled Main03 integration. Root Window chooser/Shell/deployed EXE remain unaccepted."
+  ],
+  "sourceMapping": [
+    "Chooser parent is the existing Root Window; no new picker/window/account owner.",
+    "Assets defaults now use equivalent lambdas after adding an optional parent to the existing chooser.",
+    "Card disposal closes the installed save owner before cancelling its operation scope."
+  ],
+  "scope": {
+    "realAccount": false,
+    "actualChooser": false,
+    "completeRootShell": false,
+    "nativeLivePhoto": false,
+    "PhotosRecognition": false,
+    "systemShare": false,
+    "liquidGlass": false,
+    "packaged": false,
+    "persistentDirectory": false,
+    "fullStaticEncoding": false,
+    "loadMoreSameCountReceipt": false
+  }
+}

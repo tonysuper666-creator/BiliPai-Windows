@@ -1,0 +1,32 @@
+--- a/desktop/tools/extract-upstream-dynamic-detail.py
++++ b/desktop/tools/extract-upstream-dynamic-detail.py
+@@ -22,6 +22,10 @@
+     # Expose the existing target owner for Root's guarded count projection.
+     # The private selected detail fallback remains private and is never a page/cache authority.
+     fields += '    internal val selectedCommentTarget: StateFlow<DynamicCommentTarget?> = _selectedCommentTarget.asStateFlow()\n'
++    # Windows receipt metadata records a confirmed response even when its count is unchanged.
++    # It owns no count/target/item schema, and never advances on reset/fallback.
++    fields += '    private val _commentConfirmationRevision = MutableStateFlow(0L)\n'
++    fields += '    internal val commentConfirmationRevision: StateFlow<Long> = _commentConfirmationRevision.asStateFlow()\n'
+     begin=original.index('    private fun findDynamicById')
+     end=original.index('    fun likeDynamic(',begin)
+     body=original[begin:end]
+@@ -121,6 +125,18 @@
+                         '        launchOwned {', 1)
+     post = post.replace('                val replyTarget = _commentReplyTarget.value\n', '', 1)
+     body = body[:post_start] + post + body[post_end:]
++    # The exact selected response is already checked for task ownership,
++    # current request id and current sort. Keep its original count assignment.
++    selected_count = '                    _commentTotalCount.value = selected.totalCount\n'
++    assert body.count(selected_count) == 1
++    body = body.replace(selected_count,
++                        selected_count + '                    _commentConfirmationRevision.update { it + 1L }\n', 1)
++    # Delete success likewise runs after ensureRequestOwned in the original
++    # fold branch; a reset/fallback or cancelled failure produces no receipt.
++    deleted_count = '                    _commentTotalCount.value = (_commentTotalCount.value - 1).coerceAtLeast(0)\n'
++    assert body.count(deleted_count) == 1
++    body = body.replace(deleted_count,
++                        deleted_count + '                    _commentConfirmationRevision.update { it + 1L }\n', 1)
+     # Capture a new original request id before admission; close cancels owned
+     # child jobs, while sorting/refreshing keep the same subject session.
+     video=read(repo,VIDEO_VM)

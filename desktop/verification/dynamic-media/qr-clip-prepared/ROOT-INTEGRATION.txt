@@ -1,0 +1,35 @@
+Install candidate only after Root review. Main has not been edited here.
+
+Two minimal source deltas:
+1. DesktopCommentImageCanvas.kt: append drawFooterTextBeforeQr only. The method
+   paints with the same value/font and uses a fresh Graphics2D copy to clip at
+   existing qrLeft, then disposes the copy in finally. All existing methods and
+   the real PNG writer body/signature remain unchanged.
+2. extract-upstream-dynamic-reply.py: replace_once only the selected original
+   canvas.drawText(spec.qrUrl, footerLeft, footerBaseline + 84f, tinyPaint)
+   with canvas.drawFooterTextBeforeQr(spec.qrUrl, footerLeft, footerBaseline + 84f, tinyPaint, qrLeft).
+   Exact old/new strings are in source-audit.json. Fresh producer changes only
+   this one call in the renderer; the other 15 outputs are byte-identical.
+
+Candidate Canvas SHA256 47bd5a2961b03047c035f8f3e77b8f886ba5bab98ebd7954026678818bd6f11b.
+Candidate producer SHA256 882d4a32047bcfe9c4e29edd87b1fc572419d38c7d7cdf5c038aca82e7141852.
+Generated renderer SHA256 0866b1077fc93ff5325576f2b96140ca9d54507dab1e14cefb282ea978e32280.
+Original spec/QR URL/QR algorithm unchanged; this is explicit Windows drawing
+adaptation. Printed long URL can be cut visually, complete link remains in QR.
+No title/author/message/footer-caption/date drawText change or font substitution.
+
+Root source conformance should whitelist exactly this single call binding,
+not arbitrary body changes. Do not copy task jars into product. Apply exact
+diffs to any later Root versions rather than overwrite unrelated new changes.
+Recompile actual Main and freeze a new snapshot before claiming installed result.
+No new dependencies or native objects are required.
+
+Actual Main baseline02: f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17.
+Actual ordered 89 CP: be8a62821f74e73653ed2354afbb1de3d6ec8236db68f056328a482a5e0f4d9d.
+Proof: baseline20/8 -> candidate37/8, decode fail5 ->0 and pristine fail8 ->0.
+Declared runtime overrides: Canvas + renderer only. Real spec/Paint/bitmapfactory/
+PNG writer/ImageIO/Files codeSource is unchanged actual Main. No HWND or chooser.
+
+Do not describe the observed overlap as proven Android behavior. Android actual
+Paint/render output was not run, and its typography differs from the AWT seam.
+The Windows failure and Windows clipping delta are directly evidenced.

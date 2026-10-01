@@ -1,0 +1,399 @@
+{
+  "frozen": true,
+  "phase": "actual compiled Main03 media save/gallery/QR integration with zero production overrides",
+  "actualMainConfig": {
+    "snapshotRepoRelativePath": "desktop/.local/dynamic-media-main-integration/main-product-snapshot-03",
+    "manifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+    "orderedCpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+    "runtimeEntries": 92,
+    "externalEntries": 89,
+    "sourceFiles": 398,
+    "registryEntries": 622,
+    "authorizedByRootImmutableSnapshot": true
+  },
+  "acceptedCohort": "runs/01",
+  "assertions": 135,
+  "cases": 24,
+  "allProductClassesActualMainZeroOverride": true,
+  "productionClassOverlap": [],
+  "actualCompiledMainSourceAndOperationsInstalled": true,
+  "legacyDownloadMainInstalledIntegrationFlagCorrection": "metadata-correction.json",
+  "rawLegacyMetadataPreserved": true,
+  "RootShellAndRealChooserExecuted": false,
+  "HWND": false,
+  "packagedRuntime": false,
+  "deployedEXEAccepted": false,
+  "systemSHARE": false,
+  "PhotosRecognition": false,
+  "outsideSocket": false,
+  "actualLoopbackHttp": true,
+  "files": [
+    {
+      "path": "PLAN.md",
+      "sha256Bytes": "8c1b8431cb1f64ddba0a534ec6debea3d368c1b2ef9ae1379b28ca2749df4229",
+      "size": 2621
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "cae591382273c121e5887887e920607a38def6e54410b21166a7111fa8cc3831",
+      "size": 4360
+    },
+    {
+      "path": "ROOT-RECEIPT.txt",
+      "sha256Bytes": "d591a2dfffffef366c95fc5ce4404b56c4c68d8bdc62e7ed40e996f389e77a1c",
+      "size": 2138
+    },
+    {
+      "path": "accepted-main-snapshot/manifest.json",
+      "sha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+      "size": 251488
+    },
+    {
+      "path": "accepted-main-snapshot/ordered-runtime-cp.json",
+      "sha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+      "size": 34473
+    },
+    {
+      "path": "accepted-snapshot-input.json",
+      "sha256Bytes": "5884c4c875045c1c814f621d67cfb795cee8917718bb3d819b88c04259d80876",
+      "size": 436
+    },
+    {
+      "path": "binary-artifact-inventory.json",
+      "sha256Bytes": "77260876f199483d33ae19ee07dedd4de23156246211dbb15e5060e4872d5d07",
+      "size": 280
+    },
+    {
+      "path": "fixture-adaptation.json",
+      "sha256Bytes": "9c31bb0ca7c865e13bb9d6455933edb32be9b4d102b4aac4604d36580664ab19",
+      "size": 2483
+    },
+    {
+      "path": "fixtures/CommitCancelFixture.kt",
+      "sha256Bytes": "6dcc03f39c9fea8983516c2d88029c5f38831c37c6d10e36d0145d1edd3d6b69",
+      "size": 8867
+    },
+    {
+      "path": "fixtures/DownloadFixture.kt",
+      "sha256Bytes": "cc41f3f3ec91f771f9b8e58128f5d0455b18ff6b1ebb1e7241e9f66977a5aed8",
+      "size": 18951
+    },
+    {
+      "path": "fixtures/GalleryFixture.kt",
+      "sha256Bytes": "f8f4bf0562549bc0db310613f77bc21cb6f04595bfae06e7c73b612112635c8c",
+      "size": 4567
+    },
+    {
+      "path": "fixtures/QrClipFixture.kt",
+      "sha256Bytes": "6bf663d5e5064ac7e93c15e7521c4fa015956fa0c964b3bb75251888ec3dbd94",
+      "size": 7271
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "d3860458a5b04ee7f7488876b26e18e2133e84d4a25e8479ee384fcfa14789f6",
+      "size": 3013
+    },
+    {
+      "path": "metadata-correction.json",
+      "sha256Bytes": "63bcd5d67e0a691887cbeeacc606cac019e37b0b7e2c4a963b7a8a69caf73a25",
+      "size": 892
+    },
+    {
+      "path": "original-fixtures/CommitCancelFixture.kt",
+      "sha256Bytes": "f6965275972f9e2fe46d9eb8bb4830c683adbeb23805339093e9ad0ba2589fa7",
+      "size": 8897
+    },
+    {
+      "path": "original-fixtures/DownloadFixture.kt",
+      "sha256Bytes": "b126e1747f014cc84dbd06548d22ba15c783bb1f05b7fbd50c8732b9e7b01c05",
+      "size": 18636
+    },
+    {
+      "path": "original-fixtures/GalleryFixture.kt",
+      "sha256Bytes": "2b300b7d1365437e72cdcd90f535a9c11af842b3a5655ebfdd02ac4ab7a6a30c",
+      "size": 3406
+    },
+    {
+      "path": "original-fixtures/QrClipFixture.kt",
+      "sha256Bytes": "ac14a1fbc748b6c2350bcd0032d4552ed767cfc5fa935593e7bf6ca2aba3ead2",
+      "size": 7280
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "746c9e1853c5e6671a139e424c7bf722d706a326f3cfda4b38b26c6865847eea",
+      "size": 8822
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "18424d056a04860d75e0162cbd1b10feb0cd47d5b4d5587b7ef0adbde20a4b24",
+      "size": 9665
+    },
+    {
+      "path": "runs/01/accepted-integration-evidence.json",
+      "sha256Bytes": "1522e068c5aec3dd08d4b24f9f678b4f72b34a0a7a0e97a7c0f1847a095b3354",
+      "size": 2103
+    },
+    {
+      "path": "runs/01/actual-source-evidence.json",
+      "sha256Bytes": "9a5bc3b8cfc707569e8237fc1e45058d3a5f826dd36ba13fbc987b9d1a8fc80c",
+      "size": 3007
+    },
+    {
+      "path": "runs/01/actual-source-pins/CommunityDynamicScreens.kt",
+      "sha256Bytes": "3df5ab891a05892654b38b451c959270fd7d10fb9d8c3462dc2c74061b6b3531",
+      "size": 19359
+    },
+    {
+      "path": "runs/01/actual-source-pins/DesktopCommentImageCanvas.kt",
+      "sha256Bytes": "47bd5a2961b03047c035f8f3e77b8f886ba5bab98ebd7954026678818bd6f11b",
+      "size": 6173
+    },
+    {
+      "path": "runs/01/actual-source-pins/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "84389c917a95da7d5f4626565785f7ccec7e947b807ee1dbe0d45744edc012eb",
+      "size": 1849
+    },
+    {
+      "path": "runs/01/actual-source-pins/DesktopDynamicGallerySelection.kt",
+      "sha256Bytes": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810",
+      "size": 1563
+    },
+    {
+      "path": "runs/01/actual-source-pins/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "5ed7475e399b768f1090e3f4a22d15f26c45c6debdb336422a0bfb774f02c868",
+      "size": 12486
+    },
+    {
+      "path": "runs/01/actual-source-pins/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "size": 4478
+    },
+    {
+      "path": "runs/01/actual-source-pins/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "702e37833b3ef68bb73c677e6f81cc77b77a98a2cdef3eca07f9d135c2b6738e",
+      "size": 7088
+    },
+    {
+      "path": "runs/01/actual-source-pins/DesktopOriginalDynamicCardHost.kt",
+      "sha256Bytes": "4ba31d8de6566acfc372ab4bcc3c6a3e7b36089f374305f858d77799e56e7827",
+      "size": 15603
+    },
+    {
+      "path": "runs/01/commitcancel/accepted-evidence.json",
+      "sha256Bytes": "9431801774d17a15bfb312ecea778ba0573542321567c4fa319d6c0124cf5cc6",
+      "size": 7241
+    },
+    {
+      "path": "runs/01/commitcancel/proof/existing-target.jpg",
+      "sha256Bytes": "9cece45c68b045dfbb6160cca511eccc54495e39b1776056eb70d70553b0f45f",
+      "size": 39
+    },
+    {
+      "path": "runs/01/commitcancel/proof/result.json",
+      "sha256Bytes": "7b37987422b9ac72d402857a096fe922e5e2171854d1eddc6311a9099da3119d",
+      "size": 5963
+    },
+    {
+      "path": "runs/01/commitcancel/run.args",
+      "sha256Bytes": "3104774d6e3d402f02c3b285856e53b13cfaf0b1072d388a5ccfee9f160166b5",
+      "size": 23747
+    },
+    {
+      "path": "runs/01/commitcancel/run.log",
+      "sha256Bytes": "305b39d344645349a8bcf021be57ae1aab86c291879f42f314f1a780c94f6266",
+      "size": 124
+    },
+    {
+      "path": "runs/01/compile-evidence.json",
+      "sha256Bytes": "989bd6c5aee3b2866dede8416afeb11fef434fd662692ef9efbfcac0998e4606",
+      "size": 39736
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "321711947c0b1d661faf52b5cf11125dd5f30975341394726e2bc7d05e75b84d",
+      "size": 3228
+    },
+    {
+      "path": "runs/01/compiler.args",
+      "sha256Bytes": "d62b081ab0a269557101b5f251bd236b1c60b5727190bcb67be404b1233ef17c",
+      "size": 23780
+    },
+    {
+      "path": "runs/01/download/accepted-evidence.json",
+      "sha256Bytes": "50d5f1c112e2bb1844b4f8f796d2fdab140c8fb3dc9c14c853955ab0e4ae835d",
+      "size": 1403
+    },
+    {
+      "path": "runs/01/download/proof/BiliPai-1790816612769-1.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/01/download/proof/BiliPai-1790816612769-2.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/01/download/proof/failed.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/01/download/proof/guest-motion-photo.jpg",
+      "sha256Bytes": "6ad4f188d325edf47c1348a89af20c373f17f3518fe547e2ab3d7dfd28b4c0af",
+      "size": 1060012
+    },
+    {
+      "path": "runs/01/download/proof/motion-photo.jpg",
+      "sha256Bytes": "e807085111eeeb49ee7e5e1ab71aba88e2e1cfb760357067ea4378e937a38a20",
+      "size": 1060012
+    },
+    {
+      "path": "runs/01/download/proof/plain.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "size": 1055711
+    },
+    {
+      "path": "runs/01/download/proof/plain.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/01/download/proof/result.json",
+      "sha256Bytes": "79e8c751b126b79417862ca976894d6f87d6541f99dfab343b1208f5c6ec6459",
+      "size": 546
+    },
+    {
+      "path": "runs/01/download/run.args",
+      "sha256Bytes": "1150a14cb12e87e7b10a9741fc05f5a52466d2f3c350443a6e2e2259d0e852ab",
+      "size": 23727
+    },
+    {
+      "path": "runs/01/download/run.log",
+      "sha256Bytes": "5eb2a471c9e6d2fbe331e59b3f6ad55020b25fa16d04cee57329523d750afcf7",
+      "size": 119
+    },
+    {
+      "path": "runs/01/gallery/accepted-evidence.json",
+      "sha256Bytes": "246b61b529f2a44ea9cc0a08d7df415dca7705df2bce4cc4c7f8b8b405649ea5",
+      "size": 1135
+    },
+    {
+      "path": "runs/01/gallery/proof/first.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/01/gallery/proof/result.json",
+      "sha256Bytes": "b042ae52aa0c37e80cea0328db68422cf6904bf87593a14dfeab244ce69961c6",
+      "size": 311
+    },
+    {
+      "path": "runs/01/gallery/proof/second.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/01/gallery/proof/third.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/01/gallery/run.args",
+      "sha256Bytes": "747f3c53b8acb0182c2852a471ac2cb9c07ce03331ca1ea799a6b41c38859ff4",
+      "size": 23556
+    },
+    {
+      "path": "runs/01/gallery/run.log",
+      "sha256Bytes": "3e8b34e9c61b2a2a6013581c4cb1e506c83e4b017555cba6f97d6cdc87a2c7eb",
+      "size": 109
+    },
+    {
+      "path": "runs/01/qr/accepted-evidence.json",
+      "sha256Bytes": "c226e30b257a9bb5547ccf47cbfa5f63de5014a7d6a32ef62e5eb0398ba20142",
+      "size": 8182
+    },
+    {
+      "path": "runs/01/qr/proof/graphics-state-restored.png",
+      "sha256Bytes": "acf019dd36fe5e1d7bf8d6c33efc653c2c330e19708659b2233ec94087710317",
+      "size": 3614
+    },
+    {
+      "path": "runs/01/qr/proof/long-dynamic-ids.png",
+      "sha256Bytes": "61607aba6f4b8ad70ad433f74c820eae731675361e14a98b54df800e1244efd9",
+      "size": 42288
+    },
+    {
+      "path": "runs/01/qr/proof/long-secondary-14-lines.png",
+      "sha256Bytes": "90cb51d3a066d8a502a61b5c656cbc869e42416f636eb8ba5f882121a3cb4e23",
+      "size": 141854
+    },
+    {
+      "path": "runs/01/qr/proof/long-secondary.png",
+      "sha256Bytes": "8f18239775533de0f03154b01acea14b99f3a7792d81ef9eb92152452dfa68ad",
+      "size": 41387
+    },
+    {
+      "path": "runs/01/qr/proof/long-video.png",
+      "sha256Bytes": "cadaa03611f54bae51a3dc5fb3597caa1542bc4279bf2268ff66b51eb72e945b",
+      "size": 42173
+    },
+    {
+      "path": "runs/01/qr/proof/max-long-root.png",
+      "sha256Bytes": "8fddbea9069968f326df6cf7ea30a11e122cb0a8d6f0b3fe442bae12ca2c3e1f",
+      "size": 42014
+    },
+    {
+      "path": "runs/01/qr/proof/result.json",
+      "sha256Bytes": "78d4f0c7ff9a97ddbaff1559046b3d9129674b0f59dc207ffd8448b27c69ae45",
+      "size": 6104
+    },
+    {
+      "path": "runs/01/qr/proof/short-root.png",
+      "sha256Bytes": "003437328d6344415712ac10b53c1858202f7c8735d8b8173b74fc85e2520f02",
+      "size": 40299
+    },
+    {
+      "path": "runs/01/qr/proof/three-digit-root.png",
+      "sha256Bytes": "fd6ba10cb91d7735a27d4d92054952973064c58c1c85fc375cb98e6974875a8f",
+      "size": 40364
+    },
+    {
+      "path": "runs/01/qr/proof/undated-long-secondary.png",
+      "sha256Bytes": "3a7bf4b2ea589e59c3ed3fdcd58a6328a7c1de0f615836ce33f4be6322e11a2c",
+      "size": 41190
+    },
+    {
+      "path": "runs/01/qr/run.args",
+      "sha256Bytes": "18b18768c55c059a198710143a68bcfc624b57ba1fd3da7ff976e6c740908381",
+      "size": 23369
+    },
+    {
+      "path": "runs/01/qr/run.log",
+      "sha256Bytes": "4f13cde72f49b3d9eb387df23eff8e433ee5b3d8e2bc05fa02d8afc871feed60",
+      "size": 104
+    },
+    {
+      "path": "runs/01/sources/CommitCancelFixture.kt",
+      "sha256Bytes": "6dcc03f39c9fea8983516c2d88029c5f38831c37c6d10e36d0145d1edd3d6b69",
+      "size": 8867
+    },
+    {
+      "path": "runs/01/sources/DownloadFixture.kt",
+      "sha256Bytes": "cc41f3f3ec91f771f9b8e58128f5d0455b18ff6b1ebb1e7241e9f66977a5aed8",
+      "size": 18951
+    },
+    {
+      "path": "runs/01/sources/GalleryFixture.kt",
+      "sha256Bytes": "f8f4bf0562549bc0db310613f77bc21cb6f04595bfae06e7c73b612112635c8c",
+      "size": 4567
+    },
+    {
+      "path": "runs/01/sources/QrClipFixture.kt",
+      "sha256Bytes": "6bf663d5e5064ac7e93c15e7521c4fa015956fa0c964b3bb75251888ec3dbd94",
+      "size": 7271
+    }
+  ],
+  "fileCount": 73,
+  "totalRawBytes": 4317095
+}

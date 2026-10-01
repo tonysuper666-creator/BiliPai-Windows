@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "assertions": 18,
+  "cases": 4,
+  "actualFrozenMainSelectedImageHandles": true,
+  "originalSingleMultipleResultPolicy": true,
+  "newPersistentListOrCache": false,
+  "realJFileChooserOpened": false,
+  "HTTP": false,
+  "HWND": false,
+  "MainCompiledProductIntegration": true,
+  "MainShellUIExecuted": false,
+  "productionOverrides": false,
+  "actualMainConfig": {
+    "snapshotRepoRelativePath": "desktop/.local/dynamic-media-main-integration/main-product-snapshot-03",
+    "manifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+    "orderedCpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+    "runtimeEntries": 92,
+    "externalEntries": 89,
+    "sourceFiles": 398,
+    "registryEntries": 622,
+    "authorizedByRootImmutableSnapshot": true
+  },
+  "productionClassOverlap": [],
+  "fixtureJarSha256Bytes": "b497e4e5f8747bbb102bcaed78c10bcbbe5955dfe84b26bc80a81c41f8e78d63",
+  "taskPrivateRuntimeHome": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-main-gallery-q0jcweu0",
+  "actualMainShellWindowExecuted": false,
+  "actualNativeChooser": false
+}

@@ -1,0 +1,7 @@
+Input #0, lavfi, from 'testsrc=size=96x64:rate=15':
+  Duration: N/A, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: wrapped_avframe, rgb24, 96x64 [SAR 1:1 DAR 3:2], 15 fps, 15 tbr, 15 tbn
+[vost#0:0 @ 00000080004eeb00] Unknown encoder 'libx264'
+[vost#0:0 @ 00000080004eeb00] Error selecting an encoder
+Error opening output file C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\dynamic-gallery-motion-photo-parity\runs\01\media\source.mp4.
+Error opening output files: Encoder not found

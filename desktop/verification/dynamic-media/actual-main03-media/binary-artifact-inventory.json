@@ -1,0 +1,11 @@
+{
+  "files": [
+    {
+      "path": "runs/01/fixtures-only.jar",
+      "sha256Bytes": "b497e4e5f8747bbb102bcaed78c10bcbbe5955dfe84b26bc80a81c41f8e78d63",
+      "size": 101197
+    }
+  ],
+  "notCopiedAsRaw": true,
+  "actualMainArtifactPins": "accepted-main-snapshot/manifest.json"
+}

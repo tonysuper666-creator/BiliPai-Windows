@@ -1,0 +1,57 @@
+{
+  "passed": true,
+  "actualMainConfig": {
+    "snapshotRepoRelativePath": "desktop/.local/dynamic-media-main-integration/main-product-snapshot-03",
+    "manifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+    "orderedCpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+    "runtimeEntries": 92,
+    "externalEntries": 89,
+    "sourceFiles": 398,
+    "registryEntries": 622,
+    "authorizedByRootImmutableSnapshot": true
+  },
+  "actualSourcePins": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "snapshotSha256Lf": "5ed7475e399b768f1090e3f4a22d15f26c45c6debdb336422a0bfb774f02c868",
+      "copyRawSha256Bytes": "5ed7475e399b768f1090e3f4a22d15f26c45c6debdb336422a0bfb774f02c868"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.kt",
+      "snapshotSha256Lf": "702e37833b3ef68bb73c677e6f81cc77b77a98a2cdef3eca07f9d135c2b6738e",
+      "copyRawSha256Bytes": "702e37833b3ef68bb73c677e6f81cc77b77a98a2cdef3eca07f9d135c2b6738e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoExif.kt",
+      "snapshotSha256Lf": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "copyRawSha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "snapshotSha256Lf": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810",
+      "copyRawSha256Bytes": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "snapshotSha256Lf": "84389c917a95da7d5f4626565785f7ccec7e947b807ee1dbe0d45744edc012eb",
+      "copyRawSha256Bytes": "84389c917a95da7d5f4626565785f7ccec7e947b807ee1dbe0d45744edc012eb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentImageCanvas.kt",
+      "snapshotSha256Lf": "47bd5a2961b03047c035f8f3e77b8f886ba5bab98ebd7954026678818bd6f11b",
+      "copyRawSha256Bytes": "47bd5a2961b03047c035f8f3e77b8f886ba5bab98ebd7954026678818bd6f11b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "snapshotSha256Lf": "4ba31d8de6566acfc372ab4bcc3c6a3e7b36089f374305f858d77799e56e7827",
+      "copyRawSha256Bytes": "4ba31d8de6566acfc372ab4bcc3c6a3e7b36089f374305f858d77799e56e7827"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "snapshotSha256Lf": "3df5ab891a05892654b38b451c959270fd7d10fb9d8c3462dc2c74061b6b3531",
+      "copyRawSha256Bytes": "3df5ab891a05892654b38b451c959270fd7d10fb9d8c3462dc2c74061b6b3531"
+    }
+  ],
+  "RootWindowChooserParentMappingsCompiledOnlyNotExecuted": true,
+  "MainSourceWrites": false
+}

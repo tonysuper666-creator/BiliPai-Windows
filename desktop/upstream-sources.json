@@ -4688,7 +4688,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
       "mode": "policy-extract",
       "features": [
-        "settings-dynamic-full-card-parity"
+        "settings-dynamic-full-card-parity",
+        "dynamic-media-export-parity"
       ],
       "sha256": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0"
     },
@@ -5195,6 +5196,14 @@
         "dynamic-detail-container"
       ],
       "sha256": "3208a12aa98ecc40dfd560dc444bbfadab982cc3c33f6eb8cc18adec3467e2b1"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/GalleryVisualMediaContracts.kt",
+      "mode": "policy-extract",
+      "features": [
+        "dynamic-media-export-parity"
+      ],
+      "sha256": "ec395620e07c73be2d830d274cdebb525bba07fe607f44b235634ec6c4a84549"
     }
   ],
   "featureCoverage": {

@@ -499,6 +499,30 @@ val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-full-card"))
 }
 
+val extractUpstreamDynamicGalleryMotionPhoto by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-gallery-motion-photo.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/dynamic-gallery-motion-photo").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-dynamic-gallery-motion-photo.py")
+    inputs.files(sources.filter { "dynamic-media-export-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-gallery-motion-photo"))
+}
+
+val verifyUpstreamDynamicMedia by tasks.registering(Exec::class) {
+    dependsOn(extractUpstreamDynamicGalleryMotionPhoto)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-dynamic-media.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--generated", layout.buildDirectory.dir("generated/dynamic-gallery-motion-photo").get().asFile.absolutePath,
+        "--output", layout.buildDirectory.file("generated/dynamic-media-verification.json").get().asFile.absolutePath)
+    inputs.files("tools/verify-upstream-dynamic-media.py", "tools/extract-upstream-dynamic-gallery-motion-photo.py")
+    inputs.dir(layout.buildDirectory.dir("generated/dynamic-gallery-motion-photo"))
+    outputs.file(layout.buildDirectory.file("generated/dynamic-media-verification.json"))
+}
+
 val extractUpstreamDynamicEditor by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -740,6 +764,29 @@ val verifyAppearanceDependencies by tasks.registering {
     }
 }
 
+val verifyDynamicMediaDependencies by tasks.registering {
+    inputs.file("third-party/dynamic-media-dependency-pins.json")
+    inputs.dir("src/main/resources/licenses/dynamic-media")
+    doLast {
+        val pins = JsonSlurper().parse(file("third-party/dynamic-media-dependency-pins.json")) as Map<*, *>
+        val artifacts = configurations.getByName("runtimeClasspath").resolvedConfiguration.resolvedArtifacts
+        fun digest(file: File) = MessageDigest.getInstance("SHA-256").digest(file.readBytes()).joinToString("") { "%02x".format(it) }
+        val dependencies = pins["dependencies"] as List<*>
+        require(dependencies.size == 3) { "The approved image metadata runtime graph changed." }
+        dependencies.forEach { item ->
+            val entry = item as Map<*, *>
+            val artifact = artifacts.filter { it.moduleVersion.id.toString() == entry["coordinate"] }.singleOrNull()
+                ?: error("Image metadata dependency was replaced or duplicated: ${entry["coordinate"]}")
+            require(digest(artifact.file) == entry["sha256"]) { "Image metadata dependency checksum failed: ${entry["coordinate"]}" }
+        }
+        (pins["notices"] as List<*>).forEach { item ->
+            val entry = item as Map<*, *>
+            require(digest(file("src/main/resources/${entry["resource"]}")) == entry["sha256"]) { "Apache notice checksum failed: ${entry["resource"]}" }
+        }
+        logger.lifecycle("Verified three approved image metadata runtime dependencies and six Apache notices.")
+    }
+}
+
 val verifySettingsSearchDependencies by tasks.registering {
     inputs.dir("src/main/resources/licenses/pinyin4j-2.5.0")
     doLast {
@@ -852,6 +899,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/home-full-card/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-tabs"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-full-card"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-gallery-motion-photo"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-editor"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-reply"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-detail"))
@@ -874,6 +922,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamCrashPrompt) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeCards, extractUpstreamDynamicTabs) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeFullCard) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicFullCard) }
+tasks.named("compileKotlin") { dependsOn(verifyUpstreamDynamicMedia, verifyDynamicMediaDependencies) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicEditor, verifyUpstreamDynamicEditorProtocol) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicReply, extractUpstreamDynamicDetail,
     extractUpstreamDynamicReplyProtocol, extractUpstreamDynamicDetailProtocol, verifyUpstreamDynamicDetailReplyProtocol) }
@@ -956,6 +1005,9 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-compose:3.5.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.5.0")
     implementation("com.google.zxing:core:3.5.4")
+    implementation("org.apache.commons:commons-imaging:1.0.0-alpha6")
+    implementation("commons-io:commons-io:2.19.0")
+    implementation("org.apache.commons:commons-lang3:3.17.0")
     implementation("net.java.dev.jna:jna:5.17.0")
     implementation("org.json:json:20240303")
     implementation("com.belerweb:pinyin4j:2.5.0")

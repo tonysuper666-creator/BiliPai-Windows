@@ -1,0 +1,3 @@
+desktop\.local\dynamic-motion-photo-download-owner-parity\livephoto-source-only\DesktopDynamicLivePhoto.kt:103:9: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+        SwingPanel(factory={native.surface},background=Color.Black,
+        ^^^^^^^^^^

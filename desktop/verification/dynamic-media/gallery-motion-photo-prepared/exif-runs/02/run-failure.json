@@ -1,0 +1,1 @@
+{"accepted":false,"kind":"task-only-observer-null-cast","cause":"actual raw fallback JPEG legitimately has no metadata; fixture forced a non-null JpegImageMetadata cast","productionWriterChanged":false,"productBug":false}

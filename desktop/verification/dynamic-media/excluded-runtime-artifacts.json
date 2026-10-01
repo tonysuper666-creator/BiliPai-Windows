@@ -1,0 +1,78 @@
+{
+  "locallyVerified": true,
+  "binariesCommitted": false,
+  "artifacts": [
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "baseline-proof-01/private-native-home/.skiko/.skiko.lock",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    },
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "baseline-proof-01/private-native-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/icudtl.dat",
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    },
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "baseline-proof-01/private-native-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/skiko-windows-x64.dll",
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    },
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "baseline-proof-01/private-native-home/temp/jna-80007053/jna13943501349597605956.dll",
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    },
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "baseline-proof-01/private-native-home/temp/jna-80007053/jna13943501349597605956.dll.x",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    },
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "candidate-proof-01/private-native-home/.skiko/.skiko.lock",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    },
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "candidate-proof-01/private-native-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/icudtl.dat",
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    },
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "candidate-proof-01/private-native-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/skiko-windows-x64.dll",
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    },
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "candidate-proof-01/private-native-home/temp/jna-80007053/jna8110103687859573967.dll",
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    },
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "candidate-proof-01/private-native-home/temp/jna-80007053/jna8110103687859573967.dll.x",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    },
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "compile-01/candidate-and-focused-fixture.jar",
+      "sha256Bytes": "23482319e5eb24489c1be3a4edf57e0ac9435179001257ca4ab1ff6d707d1fe2",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    },
+    {
+      "cohort": "motion-photo-commit-cancel-prepared",
+      "originalPath": "dependencies/frozen-assets114.jar",
+      "sha256Bytes": "06980001b41e25dcdc1a0346e0efda3c210909535c4fcd6536552d1760c3c930",
+      "reason": "Compiled binary or task-private native extraction cache; locally hash-verified, not committed."
+    }
+  ]
+}

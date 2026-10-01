@@ -1,0 +1,1 @@
+{"accepted":false,"kind":"task-console-encoding","cause":"successful warning output contained Chinese diagnostic that Python GBK stdout could not encode; raw log and candidate jar retained; no runtime evidence emitted","candidateChanged":false}

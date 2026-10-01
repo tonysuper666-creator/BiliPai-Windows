@@ -1,0 +1,26 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+    "sha256Lf": "635a092a3a13f70a04154dea72a41785d862155c36cc2af9a36ce7945e9f0a24"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+    "sha256Lf": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+    "sha256Lf": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicDetailReadback.kt",
+    "sha256Lf": "663db84af822db5216e89e61e3c1a7c613c79ac1966c1b1e4c2053f848009121"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-dynamic-detail-container.py",
+    "sha256Lf": "aa81541c070d3662bc1c187735d4335b5af2795de3e46107272b64069d0e8ed8"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-dynamic-detail.py",
+    "sha256Lf": "3cd3d1411a3bd08b9e86393b91fff6749aaf1eb166ac99ba4ed16aaa7dc4ea5e"
+  }
+]

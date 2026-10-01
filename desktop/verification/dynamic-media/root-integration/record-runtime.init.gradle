@@ -1,0 +1,17 @@
+import groovy.json.JsonOutput
+
+allprojects {
+    afterEvaluate { targetProject ->
+        if (targetProject.name == 'bilipai-windows') {
+            def outputPath = new File(targetProject.projectDir, '.local/dynamic-media-main-integration/actual-main-runtime-paths.json')
+            def runtimeFiles = targetProject.sourceSets.main.runtimeClasspath
+            tasks.register('recordMediaRuntimeClasspath') {
+                inputs.files(runtimeFiles)
+                outputs.file(outputPath)
+                doLast {
+                    outputPath.text = JsonOutput.prettyPrint(JsonOutput.toJson([entries: runtimeFiles.files.collect { it.absolutePath }])) + '\n'
+                }
+            }
+        }
+    }
+}

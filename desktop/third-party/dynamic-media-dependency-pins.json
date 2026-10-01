@@ -1,0 +1,42 @@
+{
+  "dependencies": [
+    {
+      "coordinate": "org.apache.commons:commons-imaging:1.0.0-alpha6",
+      "sha256": "19da061ae2d28d97dc0489a8735a48c2626168c462cd0c0a0bac87996921af5e"
+    },
+    {
+      "coordinate": "commons-io:commons-io:2.19.0",
+      "sha256": "824268919b4b62f9f40f08c54381de5993b078f58667e332d17348ae019d72b9"
+    },
+    {
+      "coordinate": "org.apache.commons:commons-lang3:3.17.0",
+      "sha256": "6ee731df5c8e5a2976a1ca023b6bb320ea8d3539fbe64c8a1d5cb765127c33b4"
+    }
+  ],
+  "notices": [
+    {
+      "resource": "licenses/dynamic-media/commons-imaging/LICENSE.txt",
+      "sha256": "c1074fe69e98408aaa9d2483662743b8c7783c5b1099c5e3f52e758f42fce97c"
+    },
+    {
+      "resource": "licenses/dynamic-media/commons-imaging/NOTICE.txt",
+      "sha256": "36a2d5a34d6f42fda3778af68b1fbc9ef92e9ef5f18a42a7b0e7a88ab37c8603"
+    },
+    {
+      "resource": "licenses/dynamic-media/commons-io/LICENSE.txt",
+      "sha256": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac"
+    },
+    {
+      "resource": "licenses/dynamic-media/commons-io/NOTICE.txt",
+      "sha256": "b54b0db6c617273efff79ba193bb01b05eadcddfff55c24063b38b2acef714c3"
+    },
+    {
+      "resource": "licenses/dynamic-media/commons-lang3/LICENSE.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "resource": "licenses/dynamic-media/commons-lang3/NOTICE.txt",
+      "sha256": "73c3dd73ad54910699e4e364345798d083a9126b9799663d4bdce8d7468b7f66"
+    }
+  ]
+}

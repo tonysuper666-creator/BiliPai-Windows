@@ -1,0 +1,138 @@
+{
+  "baseCommit": "e10471a960e8d7dde10d0395c4f5f6c07dbcb4f7",
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "registryBefore": 621,
+  "registryAfter": 622,
+  "sourceWindowsVersion": "0.2.406.9",
+  "deployedWindowsVersion": "0.2.406.5",
+  "packaged": false,
+  "actualMainManifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+  "actualOrderedCpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+  "runtimeEntries": 92,
+  "compiledSourceFiles": 398,
+  "cohorts": {
+    "gallery-motion-photo-prepared": {
+      "declared": 233,
+      "archived": 233,
+      "excluded": 0
+    },
+    "anonymous-assets-prepared": {
+      "declared": 114,
+      "archived": 114,
+      "excluded": 0
+    },
+    "qr-clip-prepared": {
+      "declared": 88,
+      "archived": 88,
+      "excluded": 0
+    },
+    "motion-photo-commit-cancel-prepared": {
+      "declared": 34,
+      "archived": 22,
+      "excluded": 12
+    },
+    "actual-main02-mounted-detail": {
+      "declared": 41,
+      "archived": 41,
+      "excluded": 0
+    },
+    "actual-main02-same-count-failure": {
+      "declared": 16,
+      "archived": 16,
+      "excluded": 0
+    },
+    "comment-confirmation-source-delta": {
+      "declared": 12,
+      "archived": 12,
+      "excluded": 0
+    },
+    "comment-confirmation-prepared-proof": {
+      "declared": 11,
+      "archived": 11,
+      "excluded": 0
+    },
+    "actual-main03-media": {
+      "declared": 73,
+      "archived": 73,
+      "excluded": 0
+    },
+    "actual-main03-same-count": {
+      "declared": 26,
+      "archived": 26,
+      "excluded": 0
+    }
+  },
+  "excludedRuntimeArtifacts": 12,
+  "review": {
+    "actualMainProofsPassed": true,
+    "mainSnapshotSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+    "actualGraphEntries": 92,
+    "unchangedPriorExternalArtifacts": 86,
+    "addedApprovedArtifacts": 3,
+    "packagedApacheNotices": 6,
+    "originalGeneratedUnchanged": 753,
+    "onlyChangedGenerated": [
+      "desktop/build/generated/dynamic-detail/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession.kt",
+      "desktop/build/generated/dynamic-reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyImageRenderer.kt"
+    ],
+    "onlyAddedGenerated": [
+      "desktop/build/generated/dynamic-gallery-motion-photo/com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+      "desktop/build/generated/dynamic-gallery-motion-photo/com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt"
+    ],
+    "zeroProductOverrides": true,
+    "fixtureClassOverlap": [],
+    "assertions": 135,
+    "cases": 24,
+    "actualMountedSameCountCasePassed": true,
+    "actualMountedNewestPointerPairs": 1,
+    "rootVisualInspection": [
+      "Main03 mounted dark detail: both actual comment header and card show 33 after late detail1.",
+      "Main03 exported long secondary reply: printed link ends before the intact original QR."
+    ],
+    "metadataCorrections": [
+      "Raw download proof retains a legacy MainInstalledIntegration=false flag; accepted aggregate and class origins verify compiled Main03 integration. Root Window chooser/Shell/deployed EXE remain unaccepted."
+    ],
+    "sourceMapping": [
+      "Chooser parent is the existing Root Window; no new picker/window/account owner.",
+      "Assets defaults now use equivalent lambdas after adding an optional parent to the existing chooser.",
+      "Card disposal closes the installed save owner before cancelling its operation scope."
+    ],
+    "scope": {
+      "realAccount": false,
+      "actualChooser": false,
+      "completeRootShell": false,
+      "nativeLivePhoto": false,
+      "PhotosRecognition": false,
+      "systemShare": false,
+      "liquidGlass": false,
+      "packaged": false,
+      "persistentDirectory": false,
+      "fullStaticEncoding": false,
+      "loadMoreSameCountReceipt": false
+    }
+  },
+  "changes": [
+    "Install sole original Gallery result and Motion Photo JPEG/XMP producer with the exact approved three duplicate expanded-attribute omissions.",
+    "Stream anonymous image/video downloads, drain callbacks before cleanup and admit final writes under the existing SessionStore owner.",
+    "Recheck save Job cancellation inside the final Motion Photo commit gate.",
+    "Wire the existing card saveMotionPhoto and original editor Gallery result to the installed operations.",
+    "Use the existing Root Window as parent of the single save chooser.",
+    "Clip only the printed footer URL at the original QR boundary; complete QR URL and all QR matrix pixels stay original.",
+    "Protect same-value selected-comment confirmations against detail responses started earlier."
+  ],
+  "scope": {
+    "actualChooserAccepted": false,
+    "completeRootShellAccepted": false,
+    "nativeLivePhotoPlaybackAccepted": false,
+    "PhotosRecognitionAccepted": false,
+    "systemShareAccepted": false,
+    "liquidGlassEnabled": false,
+    "fullStaticImageEncodingParity": false,
+    "persistentSaveDirectoryParity": false,
+    "loadMoreSameCountReceiptWindowAccepted": false,
+    "originalBatchAllAttemptsParity": false,
+    "fullDetailParity": false,
+    "fullApplicationParity": false
+  }
+}

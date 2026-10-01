@@ -1,0 +1,94 @@
+{
+  "frozen": true,
+  "scope": {
+    "passed": false,
+    "reproducedProductBug": true,
+    "actualMainMountedConsumer": true,
+    "MainOverrides": 0,
+    "HTTP": false,
+    "HWND": false
+  },
+  "artifactCount": 16,
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\ComposerHelpersFixture.kt",
+      "relative": "ComposerHelpersFixture.kt",
+      "sha256Bytes": "7c44b1478f10cd660bbe0e1cc833d8c58bb5da153fd6504683caba52dc98b0ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\SCOPE.md",
+      "relative": "SCOPE.md",
+      "sha256Bytes": "b601cfd3bf788ab325af9ac78f4710d6e999ec285349496ac1a8821d0277a1c7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\SameCountFixture.kt",
+      "relative": "SameCountFixture.kt",
+      "sha256Bytes": "cf94dfd6fb8d68333b82d877940a178f21fab763ae4578803d0bb631aa9d00fa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\actual-main02\\manifest.json",
+      "relative": "actual-main02\\manifest.json",
+      "sha256Bytes": "f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\actual-main02\\ordered-runtime-cp.json",
+      "relative": "actual-main02\\ordered-runtime-cp.json",
+      "sha256Bytes": "be8a62821f74e73653ed2354afbb1de3d6ec8236db68f056328a482a5e0f4d9d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\compile-01.log",
+      "relative": "compile-01.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\compile-evidence-01.json",
+      "relative": "compile-evidence-01.json",
+      "sha256Bytes": "0af84e5e3559a4be655d6f2733d0beda9421a4af16cf9e4d4d1ebcf0b3df8e43"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\compile-main-fixtures.py",
+      "relative": "compile-main-fixtures.py",
+      "sha256Bytes": "acc16fac7f81295e2cf804157fbce7ce7f1015de9ee1dc22f07abff7b9c3d093"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\compiler-01.args",
+      "relative": "compiler-01.args",
+      "sha256Bytes": "99f0d3e3e05f152468524903817fa0f71106794729f3cdc80ac2cb7a971479ba"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\failure-current-main02.json",
+      "relative": "failure-current-main02.json",
+      "sha256Bytes": "61fa8f245605d6dcfd7060b29b86a65cbdf4336179edba3aedcf77224da13e21"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\failure-current-main02.png",
+      "relative": "failure-current-main02.png",
+      "sha256Bytes": "936b94084a333004dcb7681089b6232ceeaaea4f1b22aaf91486e3a1d105f449"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\main02-unchanged-count-late-readback.png",
+      "relative": "main02-unchanged-count-late-readback.png",
+      "sha256Bytes": "936b94084a333004dcb7681089b6232ceeaaea4f1b22aaf91486e3a1d105f449"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\run-main-fixture.py",
+      "relative": "run-main-fixture.py",
+      "sha256Bytes": "fdb68d8ac4b2a0a2c96bd85cc14ffdd0d729e723684676f40751368c6daec97e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\unchanged-count-result-01-classload.log",
+      "relative": "unchanged-count-result-01-classload.log",
+      "sha256Bytes": "fa08ff017db7c7bf45e47929226d6bc70816b0a853893c58f3d76f9e35d14354"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\unchanged-count-result-01.json",
+      "relative": "unchanged-count-result-01.json",
+      "sha256Bytes": "714775691083dafa88f721e48025b3d786194498be7292d7a9b95456d6931824"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main02-unchanged-count-failure-final\\unchanged-count-result-01.log",
+      "relative": "unchanged-count-result-01.log",
+      "sha256Bytes": "200b564c406a91b42b08454aee74d430d776aecb263ed48d9aa1608281746511"
+    }
+  ]
+}

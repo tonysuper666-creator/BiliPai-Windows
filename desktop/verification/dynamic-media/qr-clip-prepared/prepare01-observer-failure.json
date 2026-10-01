@@ -1,0 +1,6 @@
+{
+  "phase": "input pin observer before any output or run",
+  "failure": "Reader expected sha256Lf for generatedProductFiles; actual snapshot schema uses sha256Bytes.",
+  "productBug": false,
+  "nextChange": "Read the actual raw generated-byte pin; no candidate or Main change."
+}

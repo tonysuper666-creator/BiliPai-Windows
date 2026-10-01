@@ -1,0 +1,119 @@
+{
+  "passed": true,
+  "runtimeEntriesAddedToOriginal89": 3,
+  "actualTotalClasspathEntries": 92,
+  "runtimeGraph": [
+    {
+      "groupId": "org.apache.commons",
+      "artifactId": "commons-imaging",
+      "version": "1.0.0-alpha6"
+    },
+    {
+      "groupId": "commons-io",
+      "artifactId": "commons-io",
+      "version": "2.19.0"
+    },
+    {
+      "groupId": "org.apache.commons",
+      "artifactId": "commons-lang3",
+      "version": "3.17.0"
+    }
+  ],
+  "officialArchiveSha512AndJarEquality": true,
+  "requiredChildGraphClosed": true,
+  "parentPoms": [
+    "commons-parent-81.pom",
+    "apache-33.pom",
+    "commons-parent-73.pom"
+  ],
+  "downloads": [
+    {
+      "url": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/81/commons-parent-81.pom",
+      "finalUrl": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/81/commons-parent-81.pom",
+      "path": "commons-parent-81.pom",
+      "bytes": 77518,
+      "sha256Bytes": "348d4e7c131be6114c854a719ce7a44307a7c39bd366084977b24fd29ad0edb4",
+      "sha512Bytes": "ffd6abb50fe660ca0fd5cba86c1615430fc45716e78e2d18aa1b0a46a978e8053dbbd7e3fa36c8bfe71898c47106fbf28738d30734409cfd823ba3eb30dd21a8"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/org/apache/apache/33/apache-33.pom",
+      "finalUrl": "https://repo.maven.apache.org/maven2/org/apache/apache/33/apache-33.pom",
+      "path": "apache-33.pom",
+      "bytes": 24184,
+      "sha256Bytes": "d78bd8524c5f8380a190a6525686629a95dfe512df21111383a6d8c0923a4415",
+      "sha512Bytes": "17ccc60c4670ded2b9b0986c8549c7f7789afb4a194c81d16c9c8de10b514396f241c8b1622150b38a8d3a889f6733af66554685b7b801647b5ddfaccef5537e"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/commons-io/commons-io/2.19.0/commons-io-2.19.0.jar",
+      "finalUrl": "https://repo.maven.apache.org/maven2/commons-io/commons-io/2.19.0/commons-io-2.19.0.jar",
+      "path": "commons-io-2.19.0.jar",
+      "bytes": 556073,
+      "sha256Bytes": "824268919b4b62f9f40f08c54381de5993b078f58667e332d17348ae019d72b9",
+      "sha512Bytes": "98ad3cb92c31b51461c44d06c223a425c3ee8254ad3ddfdc3724e7d14444d2eeac3b054f70be5d4500268f712c1f08779fd5e4360437b4a883c406c0dc3a2c7c"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/commons-io/commons-io/2.19.0/commons-io-2.19.0.pom",
+      "finalUrl": "https://repo.maven.apache.org/maven2/commons-io/commons-io/2.19.0/commons-io-2.19.0.pom",
+      "path": "commons-io-2.19.0.pom",
+      "bytes": 20643,
+      "sha256Bytes": "542b7a502ed61950d1b83112b51b1617d3407e3a4df5ab56a98d760e0f8c5950",
+      "sha512Bytes": "da62da1a247b02823fb1cf38a3ce90551a35fa84747793da74231134646f2bb7260ab6ed738439a38f4d7f6973b9b79f5324d16cd366c2293ccb695ed9fe6f45"
+    },
+    {
+      "url": "https://archive.apache.org/dist/commons/io/binaries/commons-io-2.19.0-bin.zip.sha512",
+      "finalUrl": "https://archive.apache.org/dist/commons/io/binaries/commons-io-2.19.0-bin.zip.sha512",
+      "path": "commons-io-2.19.0-bin.zip.sha512",
+      "bytes": 129,
+      "sha256Bytes": "a5236590cf65b992d1d703b98a9950bf03661fa1325dc2d895da5be83fe39eb9",
+      "sha512Bytes": "49f06406d3988f008aaa99bb802b9b627fafede053ae308eae49e6282a771a2a73e0e38512a426d775fb7762dd13170183e5276d5359ffc988703efdee8f7cd6"
+    },
+    {
+      "url": "https://archive.apache.org/dist/commons/io/binaries/commons-io-2.19.0-bin.zip",
+      "finalUrl": "https://archive.apache.org/dist/commons/io/binaries/commons-io-2.19.0-bin.zip",
+      "path": "commons-io-2.19.0-bin.zip",
+      "bytes": 9596727,
+      "sha256Bytes": "7bc0a9a947c35777e8dc664838fe1e45440a6cad1b1b3a11efddd6de4a4b9eb5",
+      "sha512Bytes": "282bdb2cd5ff9417434321ffc2eb8f3dd5d1fe96f38bd27a9f35c49692fffdae93effb2fe529b98790dac6723a7e0d5cc3587564a47fd289133162c5343db574"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.17.0/commons-lang3-3.17.0.jar",
+      "finalUrl": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.17.0/commons-lang3-3.17.0.jar",
+      "path": "commons-lang3-3.17.0.jar",
+      "bytes": 673587,
+      "sha256Bytes": "6ee731df5c8e5a2976a1ca023b6bb320ea8d3539fbe64c8a1d5cb765127c33b4",
+      "sha512Bytes": "dfd5ff7fe7f852b9caabc81e5a00e20616f98405085f059b64dc2121feb5fa6cb327e11a3d2f954c079811c31f6fd484e90f932d45078796fbfa7dbf1f1eb5aa"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.17.0/commons-lang3-3.17.0.pom",
+      "finalUrl": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.17.0/commons-lang3-3.17.0.pom",
+      "path": "commons-lang3-3.17.0.pom",
+      "bytes": 31256,
+      "sha256Bytes": "351c6e4940e939b1f330df47f60f13ba383db81ee008181af541f3a2a6d2a56c",
+      "sha512Bytes": "2060772b0d93b07010006c038ff6e378a5b65bfa63ab2c63768ccf76850b1cb63d19c40066adb594648692fda959a6ac27772570ddde043a15d799041a756bf2"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/73/commons-parent-73.pom",
+      "finalUrl": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/73/commons-parent-73.pom",
+      "path": "commons-parent-73.pom",
+      "bytes": 77692,
+      "sha256Bytes": "4ed44560b07f8448479dfd1e83a422ba4e83e60b36e51b2871ac502a6d5c1bea",
+      "sha512Bytes": "92ac408c429061b32904fc45772f738ee0b424d31be6c509d32ee4e7297984d40d3f13d86b0ef3987fa34b2cd71897deba3988e0bd23a56adbe17e4f9e11c847"
+    },
+    {
+      "url": "https://archive.apache.org/dist/commons/lang/binaries/commons-lang3-3.17.0-bin.zip.sha512",
+      "finalUrl": "https://archive.apache.org/dist/commons/lang/binaries/commons-lang3-3.17.0-bin.zip.sha512",
+      "path": "commons-lang3-3.17.0-bin.zip.sha512",
+      "bytes": 129,
+      "sha256Bytes": "b5923dc93ce7c3db88d044bc18f44187ca64522b4e6fd4c42c17b24a11fa21dc",
+      "sha512Bytes": "b81e64967e74dceec419ecb17ead550f537a7e0293c81b329119b7d017a34557d8ed9c9116f363172dc59ade0a5c55750b0fc0055967152e8bfb88e8d4a4218f"
+    },
+    {
+      "url": "https://archive.apache.org/dist/commons/lang/binaries/commons-lang3-3.17.0-bin.zip",
+      "finalUrl": "https://archive.apache.org/dist/commons/lang/binaries/commons-lang3-3.17.0-bin.zip",
+      "path": "commons-lang3-3.17.0-bin.zip",
+      "bytes": 11055479,
+      "sha256Bytes": "924d95a2792478457e59ef062e3d4b508febf60aef779b7c0a6a0e057c9e33a9",
+      "sha512Bytes": "00ea810d00b0f8a5bf898edfed1fa022e9bd2bf31c9c00859de2ac6c4bc971d6833f3c2e0b24cecad6bb979de2078be8b1cc7eb42ca63c9ec35f70b1490e8c3d"
+    }
+  ]
+}

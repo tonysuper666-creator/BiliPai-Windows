@@ -1,0 +1,13 @@
+--- actual-Main-producer
++++ prepared-Windows-footer-clip
+@@ -217,6 +217,10 @@
+     body = body.replace('bitmap.setPixel(', 'bitmap.setRGB(')
+     body = body.replace('android.graphics.Typeface.DEFAULT_BOLD', 'java.awt.Font.BOLD')
+     body = body.replace('    return bitmap\n}', '    canvas.close()\n    return bitmap\n}', 1)
++    # Windows AWT footer URL glyphs must not paint over the original QR bitmap.
++    # Keep the complete original spec/QR payload; only this printed URL is clipped.
++    body = replace_once(body, 'canvas.drawText(spec.qrUrl, footerLeft, footerBaseline + 84f, tinyPaint)',
++                        'canvas.drawFooterTextBeforeQr(spec.qrUrl, footerLeft, footerBaseline + 84f, tinyPaint, qrLeft)')
+     emit(SAVER, '''package com.android.purebilibili.feature.video.ui.components
+ import java.awt.image.BufferedImage
+ import com.bilipai.desktop.ui.DesktopCommentPaint as Paint

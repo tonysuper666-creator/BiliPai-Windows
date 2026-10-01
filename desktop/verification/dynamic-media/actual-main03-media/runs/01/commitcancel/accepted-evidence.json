@@ -1,0 +1,105 @@
+{
+  "passed": true,
+  "mode": "actual-main",
+  "assertions": 25,
+  "cases": 1,
+  "correctCancellationTargetPreserved": true,
+  "baselineRegressionObserved": false,
+  "actualStoreMonitorBlockedThreadId": 42,
+  "actualBlockedFrames": [
+    "app//com.bilipai.desktop.data.DesktopSessionStore.withCurrentDynamicCacheOwner(DesktopSessionStore.kt:46)",
+    "app//com.bilipai.desktop.ui.DesktopDynamicImageAssets.commitOwned(DesktopDynamicImageAssets.kt:50)",
+    "app//com.bilipai.desktop.ui.DesktopDynamicImageAssets.access$commitOwned(DesktopDynamicImageAssets.kt:29)",
+    "app//com.bilipai.desktop.ui.DesktopDynamicImageAssets$motionPhoto$2.invoke(DesktopDynamicImageAssets.kt:54)",
+    "app//com.bilipai.desktop.ui.DesktopDynamicImageAssets$motionPhoto$2.invoke(DesktopDynamicImageAssets.kt:54)",
+    "app//com.bilipai.desktop.ui.DesktopDynamicMotionPhotoFiles$composeDownloaded$2$1.invokeSuspend(DesktopDynamicMotionPhotoFiles.kt:83)",
+    "app//com.bilipai.desktop.ui.DesktopDynamicMotionPhotoFiles$composeDownloaded$2$1.invoke(DesktopDynamicMotionPhotoFiles.kt)",
+    "app//com.bilipai.desktop.ui.DesktopDynamicMotionPhotoFiles$composeDownloaded$2$1.invoke(DesktopDynamicMotionPhotoFiles.kt)",
+    "app//kotlinx.coroutines.intrinsics.UndispatchedKt.startUndspatched(Undispatched.kt:66)",
+    "app//kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)",
+    "app//kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:165)",
+    "app//kotlinx.coroutines.BuildersKt.withContext(Unknown Source)",
+    "app//com.bilipai.desktop.ui.DesktopDynamicMotionPhotoFiles.composeDownloaded(DesktopDynamicMotionPhotoFiles.kt:44)",
+    "app//com.bilipai.desktop.ui.assetsintegrationproof.commitcancel.CommitCancelFixtureKt$main$1$save$1.invokeSuspend(CommitCancelFixture.kt:72)",
+    "app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)",
+    "app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)",
+    "app//kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)",
+    "app//kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)",
+    "app//kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)",
+    "app//kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)",
+    "app//kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)",
+    "app//kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)"
+  ],
+  "onlySaveJobCanceled": true,
+  "accountEpochAndAssetsStayedLive": true,
+  "unchangedAssetsCommitBindingExecuted": true,
+  "scratchDrainedAfterJoin": true,
+  "HTTP": false,
+  "HWND": false,
+  "chooser": false,
+  "MainCompiledProductIntegration": true,
+  "MainShellUIExecuted": false,
+  "productionOverrides": false,
+  "loadedClasses": [
+    {
+      "className": "com.bilipai.desktop.data.DesktopSessionStore",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-media-main-integration\\main-product-snapshot-03\\main-kotlin.jar",
+      "classSha256Bytes": "2acab352838fef4a25b0b20242385af72eac9c4a2c90b9b80461ae2b16ce9e9c"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopRepository",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-media-main-integration\\main-product-snapshot-03\\main-kotlin.jar",
+      "classSha256Bytes": "9246ada03ac958257d869820bcb2316423db90b9c0fc9e7b60198a95ecaaeb92"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopDynamicCardOperations",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-media-main-integration\\main-product-snapshot-03\\main-kotlin.jar",
+      "classSha256Bytes": "e5e78e32f2fdbae5141a2fbb3f16de1d659b7feb2a8e7359fd7910a936751688"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicSaveTarget",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-media-main-integration\\main-product-snapshot-03\\main-kotlin.jar",
+      "classSha256Bytes": "ee96512853dc580abbbca39cecedd489677e499b0279560ff72b3cccdde560a5"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicImageAssets",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-media-main-integration\\main-product-snapshot-03\\main-kotlin.jar",
+      "classSha256Bytes": "52e2c2b42ffcc51546c30a5410d61932eb870e6232990a280150a00efbaab449"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicMotionPhotoFiles",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-media-main-integration\\main-product-snapshot-03\\main-kotlin.jar",
+      "classSha256Bytes": "5fe9128a509cb6becc74065bbd2f4659c50c71c5c52f9dffd609ab2c39a5ae1c"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicMotionPhotoExif",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-media-main-integration\\main-product-snapshot-03\\main-kotlin.jar",
+      "classSha256Bytes": "36d0d3d69ca0248c3ef9a67cc99160d0701dcaac4c2f1af859294981072f32b7"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicMotionPhotoFilesKt",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-media-main-integration\\main-product-snapshot-03\\main-kotlin.jar",
+      "classSha256Bytes": "b53a1eb647960109ed746bdee0654f54cac2709cec721416ed1dcb2ad75d9e56"
+    },
+    {
+      "className": "com.android.purebilibili.feature.dynamic.components.DesktopOriginalMotionPhotoPackingKt",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-media-main-integration\\main-product-snapshot-03\\main-kotlin.jar",
+      "classSha256Bytes": "186b24b11e5ca816310d145bd72ba9ecd61daa07137fc945fa176a56010a3deb"
+    }
+  ],
+  "actualMainConfig": {
+    "snapshotRepoRelativePath": "desktop/.local/dynamic-media-main-integration/main-product-snapshot-03",
+    "manifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+    "orderedCpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+    "runtimeEntries": 92,
+    "externalEntries": 89,
+    "sourceFiles": 398,
+    "registryEntries": 622,
+    "authorizedByRootImmutableSnapshot": true
+  },
+  "productionClassOverlap": [],
+  "fixtureJarSha256Bytes": "b497e4e5f8747bbb102bcaed78c10bcbbe5955dfe84b26bc80a81c41f8e78d63",
+  "taskPrivateRuntimeHome": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-main-commitcancel-ofua1_a2",
+  "actualMainShellWindowExecuted": false,
+  "actualNativeChooser": false
+}

@@ -1,0 +1,56 @@
+{
+  "frozen": true,
+  "artifactCount": 11,
+  "scope": {
+    "candidateOnly": true,
+    "originalSessionProductOverrides": 1,
+    "actualMainAcceptance": false,
+    "fourFocusedCasesPassed": true
+  },
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\receipt-offline-proof-final\\compile-01.log",
+      "sha256Bytes": "5f232b26934f4b134ccc5a6da7fe0e6bd06854ddd088838777895fe8f44755c7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\receipt-offline-proof-final\\compile-evidence-01.json",
+      "sha256Bytes": "98e919591edef51142240a45b38a2a6dd0e2461f6cd6f4f2ea5b5110a18dadec"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\receipt-offline-proof-final\\compile-receipt-fixtures.py",
+      "sha256Bytes": "3dde262ca3a85f7405b3d0e208e6ddfa41f11444088ae4b0aaf5b5cd13716a51"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\receipt-offline-proof-final\\compiler-01.args",
+      "sha256Bytes": "6ff9525531037002f4c4925efb57b3d58c37dbd17bcb40e31c442665d4dea515"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\receipt-offline-proof-final\\receipt-classload-01.log",
+      "sha256Bytes": "894c0167d7491c03b0cae5e7387cbedb984d791e6413d6f9085799036f2fd1c5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\receipt-offline-proof-final\\receipt-result-01.json",
+      "sha256Bytes": "28bd63609b9313f9701270d18208649a196a5e58775099014e18991ef395e915"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\receipt-offline-proof-final\\receipt-result-01.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\receipt-offline-proof-final\\ReceiptFixture.kt",
+      "sha256Bytes": "3c5366f43f89d36f0fbcd5c2ffb157b64bdc2cf6ed154512dbb7b1f9b2edd834"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\receipt-offline-proof-final\\ReceiptRequestsFixture.kt",
+      "sha256Bytes": "c845a86021c3a100760c695e3621c770475adc4204bdfdbe7dc22d283cca042c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\receipt-offline-proof-final\\run-receipt-fixtures.py",
+      "sha256Bytes": "16bd4d2de8f66105801ac6108b0551392b80dde54d11145a163a1c317f98f97b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\receipt-offline-proof-final\\SCOPE.md",
+      "sha256Bytes": "98695d032bb2c767a2731df998cfebc27bab28ea37445404a24a6c547155b551"
+    }
+  ]
+}

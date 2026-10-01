@@ -1,0 +1,120 @@
+{
+  "frozen": true,
+  "scope": {
+    "passed": true,
+    "actualMainMountedNarrowCase": true,
+    "actualOriginalPointerPairs": 1,
+    "MainProductOverrides": 0,
+    "onlyTwoPointReceiptClosure": true,
+    "loadMoreReceiptAccepted": false,
+    "HTTP": false,
+    "HWND": false
+  },
+  "artifactCount": 26,
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\ComposerHelpersFixture.kt",
+      "sha256Bytes": "7c44b1478f10cd660bbe0e1cc833d8c58bb5da153fd6504683caba52dc98b0ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\SCOPE.md",
+      "sha256Bytes": "33c97ea23471f4c2d37312ca673112ffb126986821822100d1e43051f2645e08"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\SameCountFixture.kt",
+      "sha256Bytes": "cf94dfd6fb8d68333b82d877940a178f21fab763ae4578803d0bb631aa9d00fa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\actual-main03\\manifest.json",
+      "sha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\actual-main03\\ordered-runtime-cp.json",
+      "sha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\bound-source\\CommunityDynamicScreens.kt",
+      "sha256Bytes": "3df5ab891a05892654b38b451c959270fd7d10fb9d8c3462dc2c74061b6b3531"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\bound-source\\DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\bound-source\\DesktopDynamicDetailReadback.kt",
+      "sha256Bytes": "663db84af822db5216e89e61e3c1a7c613c79ac1966c1b1e4c2053f848009121"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\bound-source\\DesktopDynamicEditorRoot.kt",
+      "sha256Bytes": "7b8848caec0b6d19be856b90f0ca8e76858ea28383a2d97aa4daf10429e99234"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\bound-source\\DesktopOriginalDynamicReplySession.kt",
+      "sha256Bytes": "f5d7155c00ce061f2e56f19c2ff6a9e4fbe779de258c7a8c90af96666660f76f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\bound-source\\extract-upstream-dynamic-detail.py",
+      "sha256Bytes": "71a77a716758a0166cb8c548c911715844e2ebc7569b88269c9b3306cc8c98a1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\class-source-binding.json",
+      "sha256Bytes": "8bf2ce81d4207d4f41345a860c0d35f85b94885503d9afd3f284eda313622822"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\compile-01.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\compile-evidence-01.json",
+      "sha256Bytes": "2548a8da085f75c4ddb80765e2421600b9016c847352a6955901bd3441c0929d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\compile-no-product-overrides.py",
+      "sha256Bytes": "2c003093f387586aa27e874c7c6dacd14d7a333d703228bec21f1824ecad8734"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\compiler-01.args",
+      "sha256Bytes": "789e3e134b1074cbdbc1cb683a97d1b3f449c3bb2565ade2f14e21a822475046"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\history\\actual-main02-card1-header33.png",
+      "sha256Bytes": "936b94084a333004dcb7681089b6232ceeaaea4f1b22aaf91486e3a1d105f449"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\history\\actual-main02-count33-divergence.json",
+      "sha256Bytes": "714775691083dafa88f721e48025b3d786194498be7292d7a9b95456d6931824"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\history\\first-runner-decoding-failure.json",
+      "sha256Bytes": "dc35178cc8338a2d9601a82f0433d3e6dce5ad5fae1b9502e2a4adc273fb2d79"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\history\\first-runner-gbk-decode.py",
+      "sha256Bytes": "5f83a2aea25571995c659c00f08566672368fb5f506c1982e2d1406da7b6eb6e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\history\\frozen-main02-failure16-manifest.json",
+      "sha256Bytes": "3e1ec8eedfe3e56738362672841151188ef084e7d7cc76f3b9c0e94648488818"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\main03-unchanged-count-late-readback.png",
+      "sha256Bytes": "99e9426b4ba882de38e73979b0d6bd655a8c0fbacc3bad7ed9548fd19148f8f0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\run-main03-fixture.py",
+      "sha256Bytes": "bb7bffa492abaa839b1b0629e845514111836cef7f22f04e63352077ed51b0a5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\unchanged-count-result-01-classload.log",
+      "sha256Bytes": "eba0373f94c1a58cd8ed06b953226df0857a66c2223ae7bc229afc0d418c8b4c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\unchanged-count-result-01.json",
+      "sha256Bytes": "4277d96d5452a5c6a8e0887302c9b1aef68af06bbd861881a12083766c167a4d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\main03-unchanged-count-acceptance-final\\unchanged-count-result-01.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

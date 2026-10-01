@@ -1,0 +1,1 @@
+{"accepted":false,"kind":"task-fixture-compile","cause":"coroutine/JDK wildcard imports made CancellationException ambiguous; candidate product sources compiled without error","candidateChanged":false}

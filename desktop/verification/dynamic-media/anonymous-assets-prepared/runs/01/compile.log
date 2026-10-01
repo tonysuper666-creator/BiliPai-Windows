@@ -1,0 +1,10 @@
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:181:47: error: overload resolution ambiguity between candidates:
+typealias CancellationException = CancellationException
+class CancellationException : IllegalStateException
+            prove(result.exceptionOrNull() is CancellationException, "late same MID actual session epoch blocks admitted old commit")
+                                              ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:189:106: error: overload resolution ambiguity between candidates:
+typealias CancellationException = CancellationException
+class CancellationException : IllegalStateException
+        prove(runCatching { closed.saveImage("https://fixture.invalid/image.png") }.exceptionOrNull() is CancellationException, "closed save owner rejects before selector/HTTP")
+                                                                                                         ^^^^^^^^^^^^^^^^^^^^^

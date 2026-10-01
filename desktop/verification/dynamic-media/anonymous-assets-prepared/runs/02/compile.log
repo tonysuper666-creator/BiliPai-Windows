@@ -1,0 +1,21 @@
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:79:17: warning: condition is always 'false'.
+            if (body == null || gate == null) response else {
+                ^^^^^^^^^^^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:142:66: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(count.get() == before+1 && !Files.exists(target!!.path) && noTemps(), "no automatic network retry and failed HTTP scratch drained")
+                                                                 ^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:144:44: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(Files.readAllBytes(target!!.path).contentEquals(image) && noTemps(), "explicit retry commits complete bytes")
+                                           ^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:156:61: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(saving.isCancelled && !Files.exists(target!!.path), "cancelled parent commits no streamed output")
+                                                            ^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\DownloadFixture.kt:182:39: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicSaveTarget'.
+            prove(!Files.exists(target!!.path) && noTemps(), "old full downloaded/rendered output and scratch are drained")
+                                      ^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\runs\02\src\DesktopDynamicImageAssets.kt:151:52: warning: the corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+                override fun onFailure(call: Call, error: IOException) { finished.complete(Result.failure(error)) }
+                                                   ^^^^^
+desktop\.local\dynamic-motion-photo-download-owner-parity\runs\02\src\DesktopDynamicImageAssets.kt:156:48: warning: elvis operator (?:) always returns the left operand of non-nullable type 'ResponseBody'.
+                            val body = it.body ?: error("ͼƬ����Ϊ��")
+                                               ^^^^^^^^^^^^^^^^^^

@@ -1,0 +1,120 @@
+{
+  "passed": true,
+  "actualMainManifestSha256Bytes": "f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17",
+  "actualOrdered89CpSha256Bytes": "be8a62821f74e73653ed2354afbb1de3d6ec8236db68f056328a482a5e0f4d9d",
+  "baselineWindowsDecodeFailures": 5,
+  "candidateWindowsDecodeFailures": 0,
+  "candidateAssertions": 37,
+  "routes": 8,
+  "pixelComparisons": [
+    {
+      "name": "short-root",
+      "changedPixelBounds": [
+        879,
+        457,
+        921,
+        476
+      ],
+      "originalPayload": "https://www.bilibili.com/video/av123?comment_on=1&comment_root_id=77",
+      "candidatePayloadDecoded": "https://www.bilibili.com/video/av123?comment_on=1&comment_root_id=77",
+      "candidateQrPixelsPristine": true
+    },
+    {
+      "name": "three-digit-root",
+      "changedPixelBounds": [
+        879,
+        457,
+        932,
+        477
+      ],
+      "originalPayload": "https://www.bilibili.com/video/av123?comment_on=1&comment_root_id=621",
+      "candidatePayloadDecoded": "https://www.bilibili.com/video/av123?comment_on=1&comment_root_id=621",
+      "candidateQrPixelsPristine": true
+    },
+    {
+      "name": "long-video",
+      "changedPixelBounds": [
+        878,
+        457,
+        1080,
+        482
+      ],
+      "originalPayload": "https://www.bilibili.com/video/av1234567890?comment_on=1&comment_root_id=1234567890123",
+      "candidatePayloadDecoded": "https://www.bilibili.com/video/av1234567890?comment_on=1&comment_root_id=1234567890123",
+      "candidateQrPixelsPristine": true
+    },
+    {
+      "name": "long-dynamic-ids",
+      "changedPixelBounds": [
+        876,
+        457,
+        1080,
+        482
+      ],
+      "originalPayload": "https://www.bilibili.com/video/av9876543210987?comment_on=1&comment_root_id=987654321098765432",
+      "candidatePayloadDecoded": "https://www.bilibili.com/video/av9876543210987?comment_on=1&comment_root_id=987654321098765432",
+      "candidateQrPixelsPristine": true
+    },
+    {
+      "name": "max-long-root",
+      "changedPixelBounds": [
+        878,
+        457,
+        1080,
+        482
+      ],
+      "originalPayload": "https://www.bilibili.com/video/av9223372036854775807?comment_on=1&comment_root_id=9223372036854775807",
+      "candidatePayloadDecoded": "https://www.bilibili.com/video/av9223372036854775807?comment_on=1&comment_root_id=9223372036854775807",
+      "candidateQrPixelsPristine": true
+    },
+    {
+      "name": "long-secondary",
+      "changedPixelBounds": [
+        877,
+        457,
+        1079,
+        482
+      ],
+      "originalPayload": "https://www.bilibili.com/video/av987654321098765432?comment_on=1&comment_root_id=765432109876543210&comment_secondary_id=876543210987654321",
+      "candidatePayloadDecoded": "https://www.bilibili.com/video/av987654321098765432?comment_on=1&comment_root_id=765432109876543210&comment_secondary_id=876543210987654321",
+      "candidateQrPixelsPristine": true
+    },
+    {
+      "name": "long-secondary-14-lines",
+      "changedPixelBounds": [
+        878,
+        1187,
+        1080,
+        1212
+      ],
+      "originalPayload": "https://www.bilibili.com/video/av9223372036854775807?comment_on=1&comment_root_id=9223372036854775805&comment_secondary_id=9223372036854775806",
+      "candidatePayloadDecoded": "https://www.bilibili.com/video/av9223372036854775807?comment_on=1&comment_root_id=9223372036854775805&comment_secondary_id=9223372036854775806",
+      "candidateQrPixelsPristine": true
+    },
+    {
+      "name": "undated-long-secondary",
+      "changedPixelBounds": [
+        876,
+        457,
+        1080,
+        482
+      ],
+      "originalPayload": "https://www.bilibili.com/video/av4567890123456789?comment_on=1&comment_root_id=6789012345678901&comment_secondary_id=5678901234567890",
+      "candidatePayloadDecoded": "https://www.bilibili.com/video/av4567890123456789?comment_on=1&comment_root_id=6789012345678901&comment_secondary_id=5678901234567890",
+      "candidateQrPixelsPristine": true
+    }
+  ],
+  "specAllFieldsEqualBaselineCandidate": true,
+  "originalGeometryAndFontsPreserved": true,
+  "changedPixelsOnlyPrintedFooterAtOrBeyondQrLeft": true,
+  "printedUrlMayBeClipped": true,
+  "originalQRPayloadCompleteAndExact": true,
+  "AndroidActualRenderAccepted": false,
+  "MainInstalled": false,
+  "writerSpecPaintBitmapFactoryActualMainNotOverridden": true,
+  "declaredOverrides": "Canvas family + renderer family only",
+  "sourceAuditSha256Bytes": "d4ff326b94e0b777fb91f851be68e17f2ab9ffd7aa61afab4439361f8cebe476",
+  "HTTP": false,
+  "HWND": false,
+  "picker": false
+}

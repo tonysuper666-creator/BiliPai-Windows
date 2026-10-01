@@ -1,0 +1,42 @@
+{
+  "actualMain03ManifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+  "orderedActual92CpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+  "productionEntries": 92,
+  "testOnlySupportEntries": 1,
+  "MainProductOverrides": [],
+  "classLoadLines": [
+    "[2026-10-01T02:03:24.348+0100][class,load] com.bilipai.desktop.ui.CommunityDynamicScreensKt source: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-media-main-integration/main-product-snapshot-03/main-kotlin.jar",
+    "[2026-10-01T02:03:24.359+0100][class,load] com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicReplySession source: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-media-main-integration/main-product-snapshot-03/main-kotlin.jar",
+    "[2026-10-01T02:03:23.705+0100][class,load] com.bilipai.desktop.data.DesktopDynamicCardOperations source: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-media-main-integration/main-product-snapshot-03/main-kotlin.jar",
+    "[2026-10-01T02:03:23.695+0100][class,load] com.bilipai.desktop.ui.DesktopDynamicCardStateRegistry source: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-media-main-integration/main-product-snapshot-03/main-kotlin.jar"
+  ],
+  "sourcePins": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail.py",
+      "sha256Lf": "71a77a716758a0166cb8c548c911715844e2ebc7569b88269c9b3306cc8c98a1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Lf": "3df5ab891a05892654b38b451c959270fd7d10fb9d8c3462dc2c74061b6b3531"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicDetailReadback.kt",
+      "sha256Lf": "663db84af822db5216e89e61e3c1a7c613c79ac1966c1b1e4c2053f848009121"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Lf": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorRoot.kt",
+      "sha256Lf": "7b8848caec0b6d19be856b90f0ca8e76858ea28383a2d97aa4daf10429e99234"
+    }
+  ],
+  "generatedOriginalSessionSha256Lf": "f5d7155c00ce061f2e56f19c2ff6a9e4fbe779de258c7a8c90af96666660f76f",
+  "exactSameFixtureBytesAsActualMain02Failure16": true,
+  "originalSelectedSuccessGuardVerified": true,
+  "onlySelectedAndDeleteSuccessfulReceiptPoints": true,
+  "actualJvmExitCode": 0,
+  "firstRunnerPrintPostProcessingFailed": true,
+  "correctedVerificationPassed": true
+}

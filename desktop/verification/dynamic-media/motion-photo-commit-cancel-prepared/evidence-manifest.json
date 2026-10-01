@@ -1,0 +1,219 @@
+{
+  "status": "frozen-prepared-narrow-platform-cancellation-delta",
+  "artifactCount": 34,
+  "artifacts": [
+    {
+      "path": "baseline-proof-01/accepted-evidence.json",
+      "sha256Bytes": "168063397a3e62caf821c2c791c1cd46dba0e0febd57cdb1fbd408c562ded96e",
+      "sizeBytes": 7116
+    },
+    {
+      "path": "baseline-proof-01/files/existing-target.jpg",
+      "sha256Bytes": "ef72d266e05f74633aafbcb95b3315041604e1a628b1516f6a5606b63ef653ac",
+      "sizeBytes": 1060012
+    },
+    {
+      "path": "baseline-proof-01/files/result.json",
+      "sha256Bytes": "bed8ee4c42803c1caf686ed70d50cc5365e54fcc29a3df1153ba0a3250ac6d31",
+      "sizeBytes": 5728
+    },
+    {
+      "path": "baseline-proof-01/private-native-home/.skiko/.skiko.lock",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "baseline-proof-01/private-native-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/icudtl.dat",
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "sizeBytes": 10468208
+    },
+    {
+      "path": "baseline-proof-01/private-native-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/skiko-windows-x64.dll",
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "sizeBytes": 14109696
+    },
+    {
+      "path": "baseline-proof-01/private-native-home/temp/jna-80007053/jna13943501349597605956.dll",
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "sizeBytes": 273408
+    },
+    {
+      "path": "baseline-proof-01/private-native-home/temp/jna-80007053/jna13943501349597605956.dll.x",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "baseline-proof-01/run.args",
+      "sha256Bytes": "5c627a3068259e6144fabea0a178d0fe70b76a9418ad513a4468b82dc1b94f33",
+      "sizeBytes": 24689
+    },
+    {
+      "path": "baseline-proof-01/run.log",
+      "sha256Bytes": "8b6832d5256ac8c834e31a115915166f659e593373bedd0bdecd376024dac3b6",
+      "sizeBytes": 556
+    },
+    {
+      "path": "candidate-proof-01/accepted-evidence.json",
+      "sha256Bytes": "86275c6fdd48c78f3d4149ae43e1eb92bf45c829f548855423d465f8096200ca",
+      "sizeBytes": 7138
+    },
+    {
+      "path": "candidate-proof-01/files/existing-target.jpg",
+      "sha256Bytes": "9cece45c68b045dfbb6160cca511eccc54495e39b1776056eb70d70553b0f45f",
+      "sizeBytes": 39
+    },
+    {
+      "path": "candidate-proof-01/files/result.json",
+      "sha256Bytes": "e5035cf0cd221072d87025f727d82fb13e2da05fe9e9cf7b0e7c56101fd2d8f7",
+      "sizeBytes": 5751
+    },
+    {
+      "path": "candidate-proof-01/private-native-home/.skiko/.skiko.lock",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "candidate-proof-01/private-native-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/icudtl.dat",
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "sizeBytes": 10468208
+    },
+    {
+      "path": "candidate-proof-01/private-native-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/skiko-windows-x64.dll",
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "sizeBytes": 14109696
+    },
+    {
+      "path": "candidate-proof-01/private-native-home/temp/jna-80007053/jna8110103687859573967.dll",
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "sizeBytes": 273408
+    },
+    {
+      "path": "candidate-proof-01/private-native-home/temp/jna-80007053/jna8110103687859573967.dll.x",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "candidate-proof-01/run.args",
+      "sha256Bytes": "724d3eb901603d6b19abd400248a299b9037f86e969a906adc4c48a2206bdaf3",
+      "sizeBytes": 24704
+    },
+    {
+      "path": "candidate-proof-01/run.log",
+      "sha256Bytes": "52b63fde7a10cd9f2d40ffd922a817a286d36aae3158beba0c0791bf781bc129",
+      "sizeBytes": 557
+    },
+    {
+      "path": "candidate-vs-frozen.diff",
+      "sha256Bytes": "11994ef9a1059b08061b2ff161e03468261781204ebe08f4ab6559ed55b7037c",
+      "sizeBytes": 642
+    },
+    {
+      "path": "CommitCancelFixture.kt",
+      "sha256Bytes": "f6965275972f9e2fe46d9eb8bb4830c683adbeb23805339093e9ad0ba2589fa7",
+      "sizeBytes": 8897
+    },
+    {
+      "path": "compile-01/candidate-and-focused-fixture.jar",
+      "sha256Bytes": "23482319e5eb24489c1be3a4edf57e0ac9435179001257ca4ab1ff6d707d1fe2",
+      "sizeBytes": 44681
+    },
+    {
+      "path": "compile-01/compile-evidence.json",
+      "sha256Bytes": "07630bd714726799bb7213c46562476eb09de3d9327c8d326222057421c1faa9",
+      "sizeBytes": 40630
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "sha256Bytes": "9fc4a6b7bd899e2c6c7d1bd50de9a25e67696ba5bfc8a8f3fd0c6eabac9e51fb",
+      "sizeBytes": 23897
+    },
+    {
+      "path": "compile-01/sources/CommitCancelFixture.kt",
+      "sha256Bytes": "f6965275972f9e2fe46d9eb8bb4830c683adbeb23805339093e9ad0ba2589fa7",
+      "sizeBytes": 8897
+    },
+    {
+      "path": "compile-01/sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "702e37833b3ef68bb73c677e6f81cc77b77a98a2cdef3eca07f9d135c2b6738e",
+      "sizeBytes": 7088
+    },
+    {
+      "path": "dependencies/frozen-assets114.jar",
+      "sha256Bytes": "06980001b41e25dcdc1a0346e0efda3c210909535c4fcd6536552d1760c3c930",
+      "sizeBytes": 123503
+    },
+    {
+      "path": "focused-proof.py",
+      "sha256Bytes": "8dcdbd5349befd9486a4404e90dfd6c7d682f23fc9df6dbef807775186485f07",
+      "sizeBytes": 9186
+    },
+    {
+      "path": "prepare-delta.py",
+      "sha256Bytes": "ad355a9822821901f007415bb6b6b181e0dd483f7b484f35baccf0b69621298f",
+      "sizeBytes": 1835
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "702e37833b3ef68bb73c677e6f81cc77b77a98a2cdef3eca07f9d135c2b6738e",
+      "sizeBytes": 7088
+    },
+    {
+      "path": "ROOT-INTEGRATION.txt",
+      "sha256Bytes": "8de16fc9de0b1ea591c14e5ca592128d9715ecc99ab6c69480a4b8a3e7e9d815",
+      "sizeBytes": 3762
+    },
+    {
+      "path": "source-delta-audit.json",
+      "sha256Bytes": "1c931258e119e47e2389e3aa53341f1f89e516e6e15ca8ffb16cf400ad7435a8",
+      "sizeBytes": 777
+    }
+  ],
+  "sourceDeltaAddedLines": 2,
+  "sourceSha256Bytes": "702e37833b3ef68bb73c677e6f81cc77b77a98a2cdef3eca07f9d135c2b6738e",
+  "proofs": {
+    "baseline": {
+      "path": "baseline-proof-01/accepted-evidence.json",
+      "sha256Bytes": "168063397a3e62caf821c2c791c1cd46dba0e0febd57cdb1fbd408c562ded96e",
+      "assertions": 24,
+      "cases": 1,
+      "targetPreserved": false
+    },
+    "candidate": {
+      "path": "candidate-proof-01/accepted-evidence.json",
+      "sha256Bytes": "86275c6fdd48c78f3d4149ae43e1eb92bf45c829f548855423d465f8096200ca",
+      "assertions": 24,
+      "cases": 1,
+      "targetPreserved": true
+    }
+  },
+  "baselineReproducesKnownBug": true,
+  "candidatePreservesTargetAndDrainsScratch": true,
+  "exactActualStoreMonitorWaitObserved": true,
+  "onlySaveJobCanceled": true,
+  "accountOpsAssetsStayedLive": true,
+  "unchangedActualFrozenAssetsBindingExecuted": true,
+  "MainStoreRepoOpsSaveTargetOverride": false,
+  "declaredFilesFamilyOverride": true,
+  "actualMain828RuntimeCount": 89,
+  "approvedGalleryDependenciesUnchanged": 3,
+  "oldFrozenArtifactsReverified": {
+    "dynamic-gallery-motion-photo-parity": 233,
+    "dynamic-motion-photo-download-owner-parity": 114
+  },
+  "old51TransportCasesRerun": false,
+  "packingAlgorithmChanged": false,
+  "ExifBodyChanged": false,
+  "AssetsBodyChanged": false,
+  "StoreAssetsFilesLockOrderChanged": false,
+  "MainInstalled": false,
+  "MainRegistryEdited": false,
+  "HTTP": false,
+  "HWND": false,
+  "chooser": false,
+  "SharedGradle": false
+}

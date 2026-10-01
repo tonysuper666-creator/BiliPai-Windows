@@ -1,0 +1,6 @@
+desktop\.local\dynamic-detail-root-mounted-proof\comment-confirmation-receipt-delta\generated-desired\com\android\purebilibili\feature\dynamic\DesktopOriginalDynamicReplySession.kt:551:49: warning: unnecessary safe call on a non-null receiver of type 'DynamicCommentTarget'.
+                    target?.oid != oid || target?.type != type || current.sortMode != sortMode
+                                                ^^
+desktop\.local\dynamic-detail-root-mounted-proof\comment-confirmation-receipt-delta\generated-desired\com\android\purebilibili\feature\dynamic\DesktopOriginalDynamicReplySession.kt:582:49: warning: unnecessary safe call on a non-null receiver of type 'DynamicCommentTarget'.
+                    target?.oid != oid || target?.type != type
+                                                ^^

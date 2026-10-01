@@ -1,0 +1,32 @@
+Actual compiled Main03 installed source/operations integration PASS: 135 / 24.
+
+Main snapshot desktop/.local/dynamic-media-main-integration/main-product-snapshot-03.
+Manifest f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6.
+Ordered92CP 3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac.
+398 source LF pins, registry622, 89 external entries. Three approved official
+Imaging/IO/Lang3 dependency bytes checked against immutable official inventory.
+
+Accepted aggregate: runs/01/accepted-integration-evidence.json.
+Four raw cohorts: download55/11 + commitcancel25/1 + gallery18/4 + qr37/8.
+The only compiled sources are four unique task fixtures, class overlap=[] against
+the full real92 graph. Real codeSource covers Assets/Files/Exif/packing/SaveTarget/
+Repo/Ops/Store, Gallery policy/selection/solehandles and Canvas/renderer/spec/Paint/
+PNG writer. Commit concern also records actual class bytes and blocked JVM frames.
+No candidate library JAR, class substitution or copied owner/commit implementation.
+
+Preserve the raw download MainInstalledIntegration=false legacy field. Its meaning
+is corrected in metadata-correction.json: compiled source/operations installed and
+executed=true; Root chooser/Shell/packaged/deployedEXE execution=false. Do not rerun
+or rewrite raw results to make flags look aligned. Other receipts and binary/class
+source pins directly show zero-overridden Main integration.
+
+Root thin changes after prepared114: parent Component chooser argument, chooser
+default function references mapped to equivalent lambdas, directory helper internal,
+and existing Root Window composition local. They are snapshot-source-pinned only;
+the real chooser/nativeWindow path is not run. Same selector/result semantics are
+tested through explicitly declared task result callbacks. No LivePhoto optional
+candidate or physical decoder first-frame claim is involved.
+
+Main stays owned by Root. No source from this lane is to be installed as product.
+Raw sources/logs/JSON and self-made outputs may be frozen as verification; no
+compiled fixture JAR or private runtime home belongs in desktop deployment.

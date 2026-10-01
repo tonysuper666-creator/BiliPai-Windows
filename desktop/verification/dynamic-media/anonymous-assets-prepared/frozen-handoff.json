@@ -1,0 +1,600 @@
+{
+  "frozen": true,
+  "phase": "Assets anonymous streaming and atomic actual-Store owner candidate",
+  "acceptedCohort": "runs/05",
+  "acceptedAssertions": 51,
+  "acceptedCases": 11,
+  "actualMainSnapshotManifestSha256Bytes": "8286563186e5d5be2495a598e1e32fb15091b7a459a5bbbc3d7e65243557e290",
+  "actualOrdered89CpSha256Bytes": "06316248361f2fae9d8eb53976ba1dc6936c5bd6416f98d2b6026c207ef9a217",
+  "preparedCandidateOnly": true,
+  "MainInstalledIntegration": false,
+  "declaredOverride": "Assets family only; no Ops/Session/Repo/SaveTarget replacement",
+  "externalSocket": false,
+  "HWND": false,
+  "actualChooser": false,
+  "PhotosRecognition": false,
+  "systemSHARE": false,
+  "optionalLivePhotoSourceOnly": true,
+  "commentSaveFragmentExecuted": false,
+  "historyRetained": [
+    "runs/01",
+    "runs/02",
+    "runs/03",
+    "runs/04",
+    "livephoto-source-only/compile01"
+  ],
+  "files": [
+    {
+      "path": "DownloadFixture.kt",
+      "sha256Bytes": "b126e1747f014cc84dbd06548d22ba15c783bb1f05b7fbd50c8732b9e7b01c05",
+      "size": 18636
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "36086dfe5b1d382f3fa28b68b07278f6d09e2c27dfe3a8048c4e25d7695a6ac5",
+      "size": 3234
+    },
+    {
+      "path": "ROOT-INTEGRATION.txt",
+      "sha256Bytes": "fd9510d283fec3548e060d3cfa4e9e328b710410f1ca108a1c5819aabf0422d6",
+      "size": 5000
+    },
+    {
+      "path": "actual-main-owner-sources/DesktopDynamicCache.kt",
+      "sha256Bytes": "58080c7b8a6efc9371877d5ed9cf8207307a21fdc031beb1078a9091d992fc0e",
+      "size": 11527
+    },
+    {
+      "path": "actual-main-owner-sources/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+      "size": 33869
+    },
+    {
+      "path": "actual-main-owner-sources/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "size": 2955
+    },
+    {
+      "path": "actual-main-owner-sources/DesktopRepository.kt",
+      "sha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "size": 34708
+    },
+    {
+      "path": "actual-main-owner-sources/DesktopSessionStore.kt",
+      "sha256Bytes": "326c506c1cbb721b6e7e6a0aa40faec6505d78c2af15a9527940e1b2e59b04fc",
+      "size": 19172
+    },
+    {
+      "path": "binary-artifact-inventory.json",
+      "sha256Bytes": "16140481965693e491eb1526c6a24c56ac50f74904bce202ee670e377255fc44",
+      "size": 1352
+    },
+    {
+      "path": "compile-livephoto-source-only.py",
+      "sha256Bytes": "c2d506bdfb82034b7e65583aabed99732d5dd1b074d103200c3dfca8bae7c2ec",
+      "size": 3177
+    },
+    {
+      "path": "dependencies-from-gallery/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "size": 4478
+    },
+    {
+      "path": "dependencies-from-gallery/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "fc44e8bbaf636a75358edf499f7c10f72e5107405dee14f1da56aa4c3c0b4aac",
+      "size": 6973
+    },
+    {
+      "path": "dependencies-from-gallery/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "size": 5568
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "f4fc90635b8a4860bdad97ccdd439c8f2025e6cfb07bbb555c473c1db87d2d06",
+      "size": 9236
+    },
+    {
+      "path": "livephoto-source-only/DesktopDynamicLivePhoto.kt",
+      "sha256Bytes": "8d9435231e0c1ddb7ef303139118bd6e3ec0986472ba7d7fdd02eef4fde7e057",
+      "size": 6459
+    },
+    {
+      "path": "livephoto-source-only/candidate-vs-original.diff",
+      "sha256Bytes": "d3a70ec7a16dddc36ea4d682539b7ec77afae30950378c9db07aca9b7f2432cd",
+      "size": 4471
+    },
+    {
+      "path": "livephoto-source-only/compile01/compile.log",
+      "sha256Bytes": "9c58bc04fc0326571b897b87e897ed499d11f9a6b875bb6f200b7ce53fdebbb0",
+      "size": 456
+    },
+    {
+      "path": "livephoto-source-only/compile01/compiler.args",
+      "sha256Bytes": "ac90beae7971ca6535b2d1658d87155f41f57b808c1912314c15bb77716cb8d0",
+      "size": 22921
+    },
+    {
+      "path": "livephoto-source-only/compile01/observer-failure.json",
+      "sha256Bytes": "09309953ff54ccf889d68fc82a08c5f7b6d125ac18b7aca817a655e463500360",
+      "size": 276
+    },
+    {
+      "path": "livephoto-source-only/compile02/compile-evidence.json",
+      "sha256Bytes": "97c5540835f3336a18c3f1d247c1efa4819761373486923b73bda11ccb482c14",
+      "size": 917
+    },
+    {
+      "path": "livephoto-source-only/compile02/compile.log",
+      "sha256Bytes": "9c58bc04fc0326571b897b87e897ed499d11f9a6b875bb6f200b7ce53fdebbb0",
+      "size": 456
+    },
+    {
+      "path": "livephoto-source-only/compile02/compiler.args",
+      "sha256Bytes": "0db0a354e8263c49ea6adc34a11545de9d64f1956ba032e172edfed3908a1de7",
+      "size": 22921
+    },
+    {
+      "path": "livephoto-source-only/original-DesktopDynamicLivePhoto.kt",
+      "sha256Bytes": "57b670d27ffe63f19b4da0110edcb3bc3269cc5e3c15eb3a29982e5dc2f0a064",
+      "size": 4255
+    },
+    {
+      "path": "livephoto-source-only/source-map.json",
+      "sha256Bytes": "c44ee841c4aadc58cdc933a2f9b4d8807dd152be13a3d28a412ea04e172ea502",
+      "size": 1119
+    },
+    {
+      "path": "original/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "2edb7fde32968e1dbdd413c6e74b2e90f91f9dd7dc8cce179501b4546e2b8513",
+      "size": 8715
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "23ff374ea8a4fe8526d29773c8c8b262e83daa1b61d86169e8337fd55e9ef6bc",
+      "size": 12520
+    },
+    {
+      "path": "root-captured-owner.fragment.kt",
+      "sha256Bytes": "afeec4ee78a9286cd1671355272c473e1980fb9b6a0ca498c7e3d77230a8543f",
+      "size": 2271
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "1f43cfe0f85857d4abac2b43074b8b5436f35d5b944c6a25eb6f1315c844498f",
+      "size": 9387
+    },
+    {
+      "path": "runs/01/candidate-vs-original.diff",
+      "sha256Bytes": "2a1c3a37c760b92b7a344d8bbfabad52350f75e915e15233e09b573ec79772c5",
+      "size": 16984
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "c8f5916f25492a2863318dc14db1d00dc8f2478d59cbdc52231c07d738a12007",
+      "size": 1008
+    },
+    {
+      "path": "runs/01/compiler.args",
+      "sha256Bytes": "86a9864b02419a66d55108c2b1e8c2d069a3d7c7cdc4d5947f4b498a32dd10c1",
+      "size": 24013
+    },
+    {
+      "path": "runs/01/failure.json",
+      "sha256Bytes": "89e6e8162713ccaf581fb331b6871948f829943ef615db528409e45e1c4dd433",
+      "size": 202
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "8d79ead05999d5bfe7031d42c136eb42aba510dbc290afe1d9184f1b88ef7fae",
+      "size": 12505
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "size": 4478
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "fc44e8bbaf636a75358edf499f7c10f72e5107405dee14f1da56aa4c3c0b4aac",
+      "size": 6973
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "size": 5568
+    },
+    {
+      "path": "runs/01/frozen-sources/DownloadFixture.kt",
+      "sha256Bytes": "7898166f6660417429d7aad339e7680b655fb65ea19929a1ca6a7a120b83324c",
+      "size": 14302
+    },
+    {
+      "path": "runs/01/install-source.kt",
+      "sha256Bytes": "23ff374ea8a4fe8526d29773c8c8b262e83daa1b61d86169e8337fd55e9ef6bc",
+      "size": 12520
+    },
+    {
+      "path": "runs/01/src/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "8d79ead05999d5bfe7031d42c136eb42aba510dbc290afe1d9184f1b88ef7fae",
+      "size": 12505
+    },
+    {
+      "path": "runs/02/candidate-vs-original.diff",
+      "sha256Bytes": "2a1c3a37c760b92b7a344d8bbfabad52350f75e915e15233e09b573ec79772c5",
+      "size": 16984
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "c55ece242a9d5a790f45a35f912475bb4dad267cf8dc8dbb4c1906b0391d562f",
+      "size": 2493
+    },
+    {
+      "path": "runs/02/compiler.args",
+      "sha256Bytes": "6bd2270ec4d36e818689e380537e9058f255d6a1bb7251d49adff3693c259d6f",
+      "size": 24013
+    },
+    {
+      "path": "runs/02/failure.json",
+      "sha256Bytes": "6b53677e0c0dc5cf1be3570fd4236d2524d9331b3f72dd6c0b54b67a348f10cb",
+      "size": 245
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "8d79ead05999d5bfe7031d42c136eb42aba510dbc290afe1d9184f1b88ef7fae",
+      "size": 12505
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "size": 4478
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "fc44e8bbaf636a75358edf499f7c10f72e5107405dee14f1da56aa4c3c0b4aac",
+      "size": 6973
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "size": 5568
+    },
+    {
+      "path": "runs/02/frozen-sources/DownloadFixture.kt",
+      "sha256Bytes": "e470e4cf7176c13df5929d0e51e3b8a322119d0cae1eafbc9177442c4cc4e4d9",
+      "size": 14340
+    },
+    {
+      "path": "runs/02/install-source.kt",
+      "sha256Bytes": "23ff374ea8a4fe8526d29773c8c8b262e83daa1b61d86169e8337fd55e9ef6bc",
+      "size": 12520
+    },
+    {
+      "path": "runs/02/src/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "8d79ead05999d5bfe7031d42c136eb42aba510dbc290afe1d9184f1b88ef7fae",
+      "size": 12505
+    },
+    {
+      "path": "runs/03/accepted-evidence.json",
+      "sha256Bytes": "184ddd954f847469f0ac5e6668dff2106af42dba46418af40f666411657e8bce",
+      "size": 2352
+    },
+    {
+      "path": "runs/03/candidate-vs-original.diff",
+      "sha256Bytes": "2a1c3a37c760b92b7a344d8bbfabad52350f75e915e15233e09b573ec79772c5",
+      "size": 16984
+    },
+    {
+      "path": "runs/03/compile-evidence.json",
+      "sha256Bytes": "92a19ab54a4324090c286b3f9d39dca19ef4cad0afe384a636717a1ffe7dbe06",
+      "size": 38707
+    },
+    {
+      "path": "runs/03/compile.log",
+      "sha256Bytes": "cba2649c29a6e193a7e5340820691a26b6343e9fbf85a0ffbb3a60f2b9d07a01",
+      "size": 2493
+    },
+    {
+      "path": "runs/03/compiler.args",
+      "sha256Bytes": "372f2bb7fa49797c899ee59a0c60a969574ef73f0e37598240b66c519170928c",
+      "size": 24013
+    },
+    {
+      "path": "runs/03/frozen-sources/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "8d79ead05999d5bfe7031d42c136eb42aba510dbc290afe1d9184f1b88ef7fae",
+      "size": 12505
+    },
+    {
+      "path": "runs/03/frozen-sources/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "size": 4478
+    },
+    {
+      "path": "runs/03/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "fc44e8bbaf636a75358edf499f7c10f72e5107405dee14f1da56aa4c3c0b4aac",
+      "size": 6973
+    },
+    {
+      "path": "runs/03/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "size": 5568
+    },
+    {
+      "path": "runs/03/frozen-sources/DownloadFixture.kt",
+      "sha256Bytes": "e470e4cf7176c13df5929d0e51e3b8a322119d0cae1eafbc9177442c4cc4e4d9",
+      "size": 14340
+    },
+    {
+      "path": "runs/03/install-source.kt",
+      "sha256Bytes": "23ff374ea8a4fe8526d29773c8c8b262e83daa1b61d86169e8337fd55e9ef6bc",
+      "size": 12520
+    },
+    {
+      "path": "runs/03/proof/failed.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/03/proof/motion-photo.jpg",
+      "sha256Bytes": "7f00a976fd27cfc59d32d8b89bb4cc8cef1416ed1cb6de94e5d611abdd03bd02",
+      "size": 1060012
+    },
+    {
+      "path": "runs/03/proof/plain.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "size": 1055711
+    },
+    {
+      "path": "runs/03/proof/plain.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/03/proof/result.json",
+      "sha256Bytes": "8385f52b25cc3c938ee47dc42fda88f590e8c6e2cdae47c856280db52c766f70",
+      "size": 446
+    },
+    {
+      "path": "runs/03/run.args",
+      "sha256Bytes": "bc04b6f1768dfed3ad908312423bb7f94745b1b00f9b1358da329ccf64ba2746",
+      "size": 23567
+    },
+    {
+      "path": "runs/03/run.log",
+      "sha256Bytes": "678b91d254447198c67201dad711325f5531213a845ee9144faa032e4ff32e2b",
+      "size": 128
+    },
+    {
+      "path": "runs/03/src/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "8d79ead05999d5bfe7031d42c136eb42aba510dbc290afe1d9184f1b88ef7fae",
+      "size": 12505
+    },
+    {
+      "path": "runs/04/accepted-evidence.json",
+      "sha256Bytes": "50d001672e70d77bff5579e3a57eba52571e38f68f4c1d379dbcdfa0aa91714f",
+      "size": 2353
+    },
+    {
+      "path": "runs/04/candidate-vs-original.diff",
+      "sha256Bytes": "2a1c3a37c760b92b7a344d8bbfabad52350f75e915e15233e09b573ec79772c5",
+      "size": 16984
+    },
+    {
+      "path": "runs/04/compile-evidence.json",
+      "sha256Bytes": "282a3548e9351e120b8cbe5b6225a2c77a6c146b4de4e505f0e1d653f3a3febf",
+      "size": 38707
+    },
+    {
+      "path": "runs/04/compile.log",
+      "sha256Bytes": "e2b316c77139cc7a5cb1872b2d231e1c42aba57cbf1361496af0179ef58e8c49",
+      "size": 3514
+    },
+    {
+      "path": "runs/04/compiler.args",
+      "sha256Bytes": "4018c96c3445ebdf05087df406a4924770c5c1a1113f5d2f6ed8749d6bdd33e5",
+      "size": 24013
+    },
+    {
+      "path": "runs/04/frozen-sources/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "8d79ead05999d5bfe7031d42c136eb42aba510dbc290afe1d9184f1b88ef7fae",
+      "size": 12505
+    },
+    {
+      "path": "runs/04/frozen-sources/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "size": 4478
+    },
+    {
+      "path": "runs/04/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "fc44e8bbaf636a75358edf499f7c10f72e5107405dee14f1da56aa4c3c0b4aac",
+      "size": 6973
+    },
+    {
+      "path": "runs/04/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "size": 5568
+    },
+    {
+      "path": "runs/04/frozen-sources/DownloadFixture.kt",
+      "sha256Bytes": "f4ebb5dfe2ee8179888ea0cab68b337cfb0dd8e17047c4609f2a5e0978b8cea2",
+      "size": 17667
+    },
+    {
+      "path": "runs/04/install-source.kt",
+      "sha256Bytes": "23ff374ea8a4fe8526d29773c8c8b262e83daa1b61d86169e8337fd55e9ef6bc",
+      "size": 12520
+    },
+    {
+      "path": "runs/04/proof/BiliPai-1790814017087-1.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/04/proof/BiliPai-1790814017087-2.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/04/proof/failed.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/04/proof/motion-photo.jpg",
+      "sha256Bytes": "ac68aebf530445a63814dbd943eec0a50b2b184dfeb23f7a06e6c9b1d2024eac",
+      "size": 1060012
+    },
+    {
+      "path": "runs/04/proof/plain.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "size": 1055711
+    },
+    {
+      "path": "runs/04/proof/plain.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/04/proof/result.json",
+      "sha256Bytes": "9ee7cba1809e8bcfbf7af1c1e83aa0282e62175a9e59d3b082747cb0b853607e",
+      "size": 447
+    },
+    {
+      "path": "runs/04/run.args",
+      "sha256Bytes": "6275d30edd6ab6f7cd15f65f8cefb0ed2dc8ac4d7a485ec5b8700c45efa8c4c0",
+      "size": 23567
+    },
+    {
+      "path": "runs/04/run.log",
+      "sha256Bytes": "7f5a9c7f2d95e6c08758aea491f6545d17b535379af09894a8bcaa800f559bbd",
+      "size": 129
+    },
+    {
+      "path": "runs/04/src/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "8d79ead05999d5bfe7031d42c136eb42aba510dbc290afe1d9184f1b88ef7fae",
+      "size": 12505
+    },
+    {
+      "path": "runs/05/accepted-evidence.json",
+      "sha256Bytes": "f623c6b3ae9f61e3ca036a9f730c3fea137357af26602df031cc728580ce60c2",
+      "size": 2395
+    },
+    {
+      "path": "runs/05/candidate-vs-original.diff",
+      "sha256Bytes": "2a1c3a37c760b92b7a344d8bbfabad52350f75e915e15233e09b573ec79772c5",
+      "size": 16984
+    },
+    {
+      "path": "runs/05/compile-evidence.json",
+      "sha256Bytes": "05c8c8e7f71e3a9bbdcc316e8d63d38cb4c76a73d0d1ec0f63cf3d5baceab302",
+      "size": 38707
+    },
+    {
+      "path": "runs/05/compile.log",
+      "sha256Bytes": "0ca7d5e0f097ea6670d740f0e77b2614426e8a4903bcdef24017290e99815ed1",
+      "size": 3925
+    },
+    {
+      "path": "runs/05/compiler.args",
+      "sha256Bytes": "b4c9e389f85eb1127a400a185eb27fc22439b2375b7c7acab9aa0f7c56a91333",
+      "size": 24013
+    },
+    {
+      "path": "runs/05/frozen-sources/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "8d79ead05999d5bfe7031d42c136eb42aba510dbc290afe1d9184f1b88ef7fae",
+      "size": 12505
+    },
+    {
+      "path": "runs/05/frozen-sources/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "size": 4478
+    },
+    {
+      "path": "runs/05/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "fc44e8bbaf636a75358edf499f7c10f72e5107405dee14f1da56aa4c3c0b4aac",
+      "size": 6973
+    },
+    {
+      "path": "runs/05/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "size": 5568
+    },
+    {
+      "path": "runs/05/frozen-sources/DownloadFixture.kt",
+      "sha256Bytes": "b126e1747f014cc84dbd06548d22ba15c783bb1f05b7fbd50c8732b9e7b01c05",
+      "size": 18636
+    },
+    {
+      "path": "runs/05/install-source.kt",
+      "sha256Bytes": "23ff374ea8a4fe8526d29773c8c8b262e83daa1b61d86169e8337fd55e9ef6bc",
+      "size": 12520
+    },
+    {
+      "path": "runs/05/proof/BiliPai-1790814386408-1.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/05/proof/BiliPai-1790814386408-2.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/05/proof/failed.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/05/proof/guest-motion-photo.jpg",
+      "sha256Bytes": "b8de9e21136602bcb546fb0d622a2d7880d1f96166edeacf4fa2332649f0b757",
+      "size": 1060012
+    },
+    {
+      "path": "runs/05/proof/motion-photo.jpg",
+      "sha256Bytes": "b8de9e21136602bcb546fb0d622a2d7880d1f96166edeacf4fa2332649f0b757",
+      "size": 1060012
+    },
+    {
+      "path": "runs/05/proof/plain.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "size": 1055711
+    },
+    {
+      "path": "runs/05/proof/plain.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "size": 249
+    },
+    {
+      "path": "runs/05/proof/result.json",
+      "sha256Bytes": "905d3fb7736e27a3d084639ca09e9e16b341a21fab450a89c8b4f6879d02972c",
+      "size": 485
+    },
+    {
+      "path": "runs/05/run.args",
+      "sha256Bytes": "f4b67fed760a5f9281afaefbc4948d93deac2173f4ff5bb6ae99a3c574907f5a",
+      "size": 23567
+    },
+    {
+      "path": "runs/05/run.log",
+      "sha256Bytes": "a479d7eae1df8ff2c3ebd4c635743398d778f9a53306aedf23281e47b7e1c530",
+      "size": 129
+    },
+    {
+      "path": "runs/05/src/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "8d79ead05999d5bfe7031d42c136eb42aba510dbc290afe1d9184f1b88ef7fae",
+      "size": 12505
+    },
+    {
+      "path": "save-comment-image.pending-root-writer.fragment.kt",
+      "sha256Bytes": "4a7af5266f2950556509977cf8ec1cfc6af9ef64b7bce1fe1b386224cfada19b",
+      "size": 635
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "c4f3227827fcce9accc11f6a99d274cf55bf90139a4d3a7a1461d197d2b2ef7a",
+      "size": 4942
+    }
+  ],
+  "fileCount": 114,
+  "totalRawBytes": 8438858
+}

@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "baseToolSha256Lf": "3cd3d1411a3bd08b9e86393b91fff6749aaf1eb166ac99ba4ed16aaa7dc4ea5e",
+  "desiredToolSha256Lf": "71a77a716758a0166cb8c548c911715844e2ebc7569b88269c9b3306cc8c98a1",
+  "baseToolSha256Bytes": "3cd3d1411a3bd08b9e86393b91fff6749aaf1eb166ac99ba4ed16aaa7dc4ea5e",
+  "generatedSourceHashes": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\generated-desired\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicReplyPagingGuard.kt",
+      "sha256Bytes": "a577efbe673a821abf08cbd09a1fe2cf5f916e52812a3861026e32b8baef0378"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\generated-desired\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicReplySession.kt",
+      "sha256Bytes": "a2a4eb4ac3a283fba4fe73ce3df0c96a5a5e3c235b4822c06078f032e0592c5c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-root-mounted-proof\\comment-confirmation-receipt-delta\\generated-desired\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalDynamicReplyCountPolicies.kt",
+      "sha256Bytes": "fee71436e462930401a9ad5e50226ff3dc115ceb4424c64f19b0b9e0ce77975d"
+    }
+  ],
+  "originalBodyReversalExact": true,
+  "onlyTwoSuccessfulReceiptAdvances": true,
+  "noFallbackResetAdvance": true,
+  "otherOutputsByteEqual": true,
+  "RootCollectorChangeNotIncluded": true,
+  "MainEdited": false,
+  "sharedGradle": false
+}

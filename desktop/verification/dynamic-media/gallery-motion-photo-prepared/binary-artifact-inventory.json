@@ -1,0 +1,82 @@
+{
+  "reason": "excluded from raw Git copy; exact task candidate/runtime/archive bytes for reproducible review",
+  "files": [
+    {
+      "path": "dependencies/commons-imaging-1.0.0-alpha6-bin.zip",
+      "sha256Bytes": "fdc4d93483711e158f05293607ac4805fb862560bc25e48882eb4d51dfb19f81",
+      "bytes": 89275477
+    },
+    {
+      "path": "dependencies/commons-imaging-1.0.0-alpha6-src.zip",
+      "sha256Bytes": "db75f7e98bbd0e25078465f6da44c5137efe43e5e857bbf642714e1036f75506",
+      "bytes": 41593986
+    },
+    {
+      "path": "dependencies/commons-imaging-1.0.0-alpha6.jar",
+      "sha256Bytes": "19da061ae2d28d97dc0489a8735a48c2626168c462cd0c0a0bac87996921af5e",
+      "bytes": 863102
+    },
+    {
+      "path": "dependencies/commons-io-2.19.0-bin.zip",
+      "sha256Bytes": "7bc0a9a947c35777e8dc664838fe1e45440a6cad1b1b3a11efddd6de4a4b9eb5",
+      "bytes": 9596727
+    },
+    {
+      "path": "dependencies/commons-io-2.19.0.jar",
+      "sha256Bytes": "824268919b4b62f9f40f08c54381de5993b078f58667e332d17348ae019d72b9",
+      "bytes": 556073
+    },
+    {
+      "path": "dependencies/commons-lang3-3.17.0-bin.zip",
+      "sha256Bytes": "924d95a2792478457e59ef062e3d4b508febf60aef779b7c0a6a0e057c9e33a9",
+      "bytes": 11055479
+    },
+    {
+      "path": "dependencies/commons-lang3-3.17.0.jar",
+      "sha256Bytes": "6ee731df5c8e5a2976a1ca023b6bb320ea8d3539fbe64c8a1d5cb765127c33b4",
+      "bytes": 673587
+    },
+    {
+      "path": "dependencies/official-bin-commons-imaging-1.0.0-alpha6.jar",
+      "sha256Bytes": "19da061ae2d28d97dc0489a8735a48c2626168c462cd0c0a0bac87996921af5e",
+      "bytes": 863102
+    },
+    {
+      "path": "exif-runs/02/candidate-and-fixture.jar",
+      "sha256Bytes": "c7d6efec6880416a9b182d5cac1d0c47fd239fe89ba191c1d701cb54a686ba34",
+      "bytes": 52042
+    },
+    {
+      "path": "exif-runs/03/candidate-and-fixture.jar",
+      "sha256Bytes": "d4036476d7278e861eb8fc393aa6702b75c4851c31fbf73694e42d5ea665e147",
+      "bytes": 52119
+    },
+    {
+      "path": "exif-runs/04/candidate-and-fixture.jar",
+      "sha256Bytes": "696ae84692a8a963f74a42f26954b2a9555bb2e1f6de768962e1cafa830f2109",
+      "bytes": 52363
+    },
+    {
+      "path": "gallery-runs/01/candidate-and-fixture.jar",
+      "sha256Bytes": "4632967bc6b8051cad9f9e1b732a9f4b9a91545ff0e717ccd3a94fe035cccb4e",
+      "bytes": 18993
+    },
+    {
+      "path": "runs/01/candidate-and-fixture.jar",
+      "sha256Bytes": "b4d3e4b66cdc62d35e5c9542d227340c23998a306a24aa4f342df7cc3c277a07",
+      "bytes": 48929
+    },
+    {
+      "path": "runs/03/candidate-and-fixture.jar",
+      "sha256Bytes": "4d302b313cead69771f0f8b77afaa03ac4e53632a806c79b0cdb0cbcbbb6deb2",
+      "bytes": 49072
+    },
+    {
+      "path": "runs/04/candidate-and-fixture.jar",
+      "sha256Bytes": "c8764736697fbd2a871f654722c02844f4d264c477f600c9923cfa9d7cde2e25",
+      "bytes": 49675
+    }
+  ],
+  "noPrivateAccountOrStore": true,
+  "noInstalledPackage": true
+}

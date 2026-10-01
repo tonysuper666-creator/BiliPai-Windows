@@ -1,0 +1,31 @@
+{
+  "actualMainManifestSha256Bytes": "f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17",
+  "sourceTag": "v0.2.3-alpha.9",
+  "originalSaverLfSha256": "2c7ab6898c5bfe9b334ba2b71393fe69c0dbe77050b964e41a3892245119f19d",
+  "GitTagOriginalSaverByteEqual": true,
+  "actualMainCanvasLfSha256": "b52c13ed6d11c70dae98a35ac45548e793c47425790f1db3f04ba9ac3ebf1d73",
+  "candidateCanvasSha256Bytes": "47bd5a2961b03047c035f8f3e77b8f886ba5bab98ebd7954026678818bd6f11b",
+  "actualMainProducerLfSha256": "06d9806747c801f7ec3f23a82f3564473bd58fce56baa97cd5aba7018c08217c",
+  "candidateProducerSha256Bytes": "882d4a32047bcfe9c4e29edd87b1fc572419d38c7d7cdf5c038aca82e7141852",
+  "actualMainRendererSha256Bytes": "e2ea6c85cec672b8edd7914b95bbb51cf975f26c69101c2d3c5c8e289bece533",
+  "candidateRendererSha256Bytes": "0866b1077fc93ff5325576f2b96140ca9d54507dab1e14cefb282ea978e32280",
+  "freshOriginalProducerAllOutputs": 16,
+  "onlyChangedGeneratedOutput": [
+    "com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyImageRenderer.kt"
+  ],
+  "onlyRendererCallMapping": {
+    "old": "canvas.drawText(spec.qrUrl, footerLeft, footerBaseline + 84f, tinyPaint)",
+    "new": "canvas.drawFooterTextBeforeQr(spec.qrUrl, footerLeft, footerBaseline + 84f, tinyPaint, qrLeft)"
+  },
+  "rendererAllOtherBytesIdentical": true,
+  "noOriginalSpecOrUrlPayloadChanges": true,
+  "allDrawTextUnchangedExceptExplicitPrintedFooterURLCall": true,
+  "writerBodyAndSignatureUnchanged": true,
+  "AndroidTypographyUsesDefaultPaintAndDefaultBold": true,
+  "WindowsTypographyUsesDialogAWTFont": true,
+  "AndroidActualRenderExecuted": false,
+  "baselineWindowsQrOverlapObservedInSeparateFrozenPNG77": true,
+  "printedFooterUrlCanBeVisuallyClipped": true,
+  "fullQrPayloadAndOriginalGeometryPreserved": true,
+  "writesMainOrGradle": false
+}

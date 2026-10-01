@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "assertions": 34,
+  "cases": 7,
+  "actualLoopbackHTTP": true,
+  "outsideSocket": false,
+  "actualMainRepoOpsSessionStore": true,
+  "OpsOrSessionOverride": false,
+  "candidateAssetsOverrideDeclared": true,
+  "actualAtomicAccountEpochGate": true,
+  "externalPageBoolCloseStrongGuarantee": false,
+  "actualReceiverCookiesAbsent": true,
+  "HTTPRequests": 10,
+  "realChooserOpened": false,
+  "MainInstalledIntegration": false,
+  "PhotosRecognition": false,
+  "HWND": false,
+  "systemSHARE": false,
+  "actualMainManifestSha256Bytes": "8286563186e5d5be2495a598e1e32fb15091b7a459a5bbbc3d7e65243557e290",
+  "actualOrdered89CpSha256Bytes": "06316248361f2fae9d8eb53976ba1dc6936c5bd6416f98d2b6026c207ef9a217",
+  "runtimeEntries": 92,
+  "candidateJarSha256Bytes": "01e7f9b35b9e5ed9ad5365252034e5fcf3cbf3a96eee8ad067efa343a42f1418",
+  "installSourceSha256Bytes": "23ff374ea8a4fe8526d29773c8c8b262e83daa1b61d86169e8337fd55e9ef6bc",
+  "declaredAssetsOnlyOverrideClassNames": [
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$Companion.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImage$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImages$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveLivePhotoVideo$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$write$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt$selectDynamicSaveDirectory$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt$selectDynamicSaveTarget$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt.class"
+  ],
+  "independentPillowFourExifTagsAndJpegDecode": true,
+  "independentXmlAndExactMp4Tail": true,
+  "syntheticMediaPins": [
+    {
+      "path": "runs/04/media/source.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb"
+    },
+    {
+      "path": "runs/04/media/source.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f"
+    }
+  ],
+  "taskPrivateNativeHome": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-download-0nfcpxei",
+  "freshActualMainInstalledExecutionClaim": false
+}

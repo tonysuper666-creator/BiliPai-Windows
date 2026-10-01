@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "assertions": 22,
+  "cases": 8,
+  "caseNames": [
+    "actual lossless writer replaces only four original tags; real Imaging readback",
+    "actual Skia JPEG95 input with no EXIF gains original four tags",
+    "actual Windows platform identity is read and written without fabricated camera metadata",
+    "actual EXIF parser rejects corrupted JPEG",
+    "same MID different epoch owner retirement rejects EXIF result",
+    "real EXIF writer plus original corrected XMP and original MP4 append",
+    "real library failure retains original raw-JPEG fallback",
+    "real writer cancellation cannot leak into best effort fallback"
+  ],
+  "actualExifLibrary": true,
+  "actualFourTagWriteReadback": true,
+  "actualWindowsIdentityRead": true,
+  "declaredSyntheticIdentityAlsoTested": true,
+  "MainIntegration": false,
+  "HTTP": false,
+  "HWND": false,
+  "nativeSHARE": false,
+  "historicalActualMainManifestSha256Bytes": "4780b40c15bd0de96f01fe5f60086bd2e67684764d075d8af8f437a27b0887c5",
+  "actualOrdered89CpSha256Bytes": "c2f31a97c207af9d501d669897deebfee51f4edf9a12b1280df59b542ec4b6ab",
+  "runtimeCpEntries": 92,
+  "productionOverrides": 0,
+  "candidateJarSha256Bytes": "d4036476d7278e861eb8fc393aa6702b75c4851c31fbf73694e42d5ea665e147",
+  "independentPillowExifReadback": true,
+  "independentLosslessJpegChecks": [
+    {
+      "before": "exif-runs\\03\\media\\original-other-exif.jpg",
+      "after": "exif-runs\\03\\proof\\four-tags-written.jpg",
+      "exactEntropySha256Bytes": "b573d24b8beaa3845fa734dfeaa5ef0b078b760f5039eecc6f67ed8ba52e09d1",
+      "otherJpegSegmentsEqual": true,
+      "decodedPixelsEqual": true
+    },
+    {
+      "before": "exif-runs\\03\\proof\\jpeg95-before-exif.jpg",
+      "after": "exif-runs\\03\\proof\\jpeg95-after-exif.jpg",
+      "exactEntropySha256Bytes": "05bc0631ef0b75ea2dba8d22ad1cf1eb8bed60b1ef0012ed802cc7067d8c4f7c",
+      "otherJpegSegmentsEqual": true,
+      "decodedPixelsEqual": true
+    },
+    {
+      "before": "exif-runs\\03\\proof\\jpeg95-before-exif.jpg",
+      "after": "exif-runs\\03\\proof\\windows-platform-identity.jpg",
+      "exactEntropySha256Bytes": "05bc0631ef0b75ea2dba8d22ad1cf1eb8bed60b1ef0012ed802cc7067d8c4f7c",
+      "otherJpegSegmentsEqual": true,
+      "decodedPixelsEqual": true
+    }
+  ],
+  "independentXmpXmlAndExactMp4Tail": true,
+  "actualWindowsPlatformIdentity": {
+    "manufacturer": "Micro-Star International Co., Ltd.",
+    "model": "MS-7E79"
+  },
+  "nativeExtractionDirectory": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-exif-uz4jvyrt",
+  "syntheticMediaSourcePins": [
+    {
+      "path": "runs\\03\\media\\source.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb"
+    },
+    {
+      "path": "runs\\03\\media\\source.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f"
+    },
+    {
+      "path": "exif-runs\\03\\media\\original-other-exif.jpg",
+      "sha256Bytes": "f898cabba0f304407658460aae17e59fca972569b97bc9497e1fa86d3acb731f"
+    }
+  ],
+  "WindowsPhotosMotionPhotoRecognition": false,
+  "systemSHARE": false,
+  "noInstalledMainClaim": true
+}

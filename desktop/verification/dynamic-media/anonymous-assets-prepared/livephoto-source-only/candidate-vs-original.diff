@@ -1,0 +1,84 @@
+--- current-Main-LivePhoto
++++ source-only-LivePhoto-platform-binding
+@@ -1,8 +1,15 @@
+ package com.bilipai.desktop.ui
+ 
+ import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.padding
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.Alignment
++import androidx.compose.ui.graphics.graphicsLayer
++import androidx.compose.ui.unit.dp
++import com.android.purebilibili.core.ui.components.AppText
++import com.android.purebilibili.core.ui.components.AppTextButton
+ import androidx.compose.ui.awt.SwingPanel
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.platform.LocalHapticFeedback
+@@ -17,6 +24,12 @@
+ import javax.swing.SwingUtilities
+ import javax.swing.Timer
+ 
++/** Root supplies its EXISTING host-visible/non-iconified state. No new Window
++ * or independently persisted lifecycle owner. This default fails explicitly. */
++internal val LocalDesktopLivePhotoWindowStarted = staticCompositionLocalOf<Boolean> {
++    error("LivePhoto requires the existing Root Window lifecycle binding")
++}
++
+ internal class DesktopDynamicLivePhotoPlayer(internal val native:MpvPlayer) {
+     fun seekTo(milliseconds:Long)=native.seekTo(milliseconds.coerceAtLeast(0)/1000.0)
+     fun play()=native.setPaused(false)
+@@ -29,8 +42,14 @@
+     onLongPress:(()->Unit)?=null,
+ ) {
+     val platform=LocalDesktopDynamicCardBindings.current
++    val windowStarted=LocalDesktopLivePhotoWindowStarted.current
+     val native=remember(videoUrl,platform){MpvPlayer()}
+     val wrapper=remember(native){DesktopDynamicLivePhotoPlayer(native)}
++    val state by native.state.collectAsState()
++    // Existing native adapter signal: MPV_EVENT_PLAYBACK_RESTART + video output
++    // dimensions/codec. It has NOT been proven as actual displayed HWND pixels.
++    val hasFrame=state.firstVideoFrameReady&&state.error==null&&state.failure==null
++    val failed=state.error!=null||state.failure!=null
+     val latestClick by rememberUpdatedState(onClick)
+     val latestLongPress by rememberUpdatedState(onLongPress)
+     DisposableEffect(native,platform) {
+@@ -68,13 +87,34 @@
+     DisposableEffect(native){
+         if(platform.isOwned()){
+             native.setLoop(true);native.setMuted(isMuted)
+-            native.load(PlaybackSource(videoUrl=videoUrl,referer="https://www.bilibili.com/",cookieHeader="",title="实况照片",startPaused=!isPlaying))
++            native.load(PlaybackSource(videoUrl=videoUrl,referer="https://www.bilibili.com/",cookieHeader="",title="实况照片",startPaused=!isPlaying||!windowStarted))
+             playerRef?.invoke(wrapper)
+         }
+         onDispose{playerRef?.invoke(null);native.close()}
+     }
+-    LaunchedEffect(native,isPlaying,isMuted){if(platform.isOwned()){native.setPaused(!isPlaying);native.setMuted(isMuted)}}
+-    SwingPanel(factory={native.surface},background=Color.Black,modifier=modifier.fillMaxSize())
++    // Original pause/stop/resume intent mapped only to the existing Window's
++    // started state; a stopped/minimized host cannot be resumed by a UI update.
++    LaunchedEffect(native,isPlaying,isMuted,windowStarted){if(platform.isOwned()){
++        native.setPaused(!isPlaying||!windowStarted);native.setMuted(isMuted)
++    }}
++    Box(modifier=modifier){
++        // Exact original first-frame alpha decision. SwingPanel/native HWND
++        // alpha and Compose overlay stacking remain UNVERIFIED platform work.
++        SwingPanel(factory={native.surface},background=Color.Black,
++            modifier=Modifier.fillMaxSize().graphicsLayer { alpha=if(hasFrame)1f else 0f })
++        if(failed){
++            AppTextButton(onClick={
++                if(platform.isOwned()&&windowStarted){
++                    // Existing owned native reload maps original seek(0), prepare,
++                    // play. No main player, Cookie, SMTC or replacement owner.
++                    native.recoverSource(native.currentSourceVersion,positionSeconds=0.0,paused=false,
++                        expectedFailureAttemptId=state.failure?.attemptId)
++                }
++            },modifier=Modifier.align(Alignment.BottomStart).padding(16.dp)){
++                AppText("实况加载失败 · 点击重试",color=Color.White)
++            }
++        }
++    }
+ }
+ @Composable internal fun rememberDynamicPlatformHaptic():(HapticType)->Unit {
+     val feedback=LocalHapticFeedback.current

@@ -1,0 +1,15 @@
+{
+  "files": [
+    {
+      "path": "runs/01/baseline/fixture-and-declared-candidate.jar",
+      "sha256Bytes": "94a5ca823a01d7b7c008ed8023c3e71d0f30ba5fab6419933e0c8c47112d6ff1",
+      "size": 16516
+    },
+    {
+      "path": "runs/01/candidate/fixture-and-declared-candidate.jar",
+      "sha256Bytes": "266f5cf1bbe6027cf8f8248d4f1ddfb0386eb3c55eac8e31843cf172326d5643",
+      "size": 24585
+    }
+  ],
+  "excludedFromRaw": true
+}

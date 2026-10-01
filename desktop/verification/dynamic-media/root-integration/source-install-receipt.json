@@ -1,0 +1,57 @@
+{
+  "baseCommit": "e10471a960e8d7dde10d0395c4f5f6c07dbcb4f7",
+  "registryBefore": 621,
+  "registryAfter": 622,
+  "payloads": [
+    {
+      "source": "dynamic-gallery-motion-photo-parity/prepared/desktop/tools/extract-upstream-dynamic-gallery-motion-photo-valid-xmp.py",
+      "target": "desktop/tools/extract-upstream-dynamic-gallery-motion-photo.py",
+      "candidateSha256Lf": "be480408e2155f4d98ba8d7ea23ff5f520b4d9d4df5b95f3f261896b93df4cfa",
+      "priorSha256Lf": null
+    },
+    {
+      "source": "dynamic-gallery-motion-photo-parity/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoExif.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoExif.kt",
+      "candidateSha256Lf": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "priorSha256Lf": null
+    },
+    {
+      "source": "dynamic-gallery-motion-photo-parity/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "candidateSha256Lf": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810",
+      "priorSha256Lf": null
+    },
+    {
+      "source": "dynamic-detail-reply-parity/detail-container-next/motion-photo-commit-cancel-delta/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.kt",
+      "candidateSha256Lf": "702e37833b3ef68bb73c677e6f81cc77b77a98a2cdef3eca07f9d135c2b6738e",
+      "priorSha256Lf": null
+    },
+    {
+      "source": "dynamic-motion-photo-download-owner-parity/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "candidateSha256Lf": "23ff374ea8a4fe8526d29773c8c8b262e83daa1b61d86169e8337fd55e9ef6bc",
+      "priorSha256Lf": "43eb54e5479270fce298b0806a69a002f7d22e9a6258d03462ef7604eed6d9c9"
+    },
+    {
+      "source": "comment-qr-windows-clip-parity/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentImageCanvas.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentImageCanvas.kt",
+      "candidateSha256Lf": "47bd5a2961b03047c035f8f3e77b8f886ba5bab98ebd7954026678818bd6f11b",
+      "priorSha256Lf": "b52c13ed6d11c70dae98a35ac45548e793c47425790f1db3f04ba9ac3ebf1d73"
+    },
+    {
+      "source": "comment-qr-windows-clip-parity/prepared/desktop/tools/extract-upstream-dynamic-reply.py",
+      "target": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "candidateSha256Lf": "882d4a32047bcfe9c4e29edd87b1fc572419d38c7d7cdf5c038aca82e7141852",
+      "priorSha256Lf": "06d9806747c801f7ec3f23a82f3564473bd58fce56baa97cd5aba7018c08217c"
+    },
+    {
+      "source": "dynamic-detail-root-mounted-proof/comment-confirmation-receipt-delta/desired-extract-upstream-dynamic-detail.py",
+      "target": "desktop/tools/extract-upstream-dynamic-detail.py",
+      "candidateSha256Lf": "71a77a716758a0166cb8c548c911715844e2ebc7569b88269c9b3306cc8c98a1",
+      "priorSha256Lf": "3cd3d1411a3bd08b9e86393b91fff6749aaf1eb166ac99ba4ed16aaa7dc4ea5e"
+    }
+  ],
+  "runtimeAccepted": false,
+  "packaged": false
+}

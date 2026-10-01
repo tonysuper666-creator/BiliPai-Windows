@@ -1,0 +1,1179 @@
+{
+  "formatVersion": 1,
+  "scope": "Gallery/MotionPhoto prepared source and real synthetic-media proof; no installed Main feature claim",
+  "laneRoot": "desktop/.local/dynamic-gallery-motion-photo-parity",
+  "files": [
+    {
+      "path": "audit03/original-four-exif-tag-statements.txt",
+      "sha256Bytes": "78facb1c97ad7e4c841bebe86844e8f0cbc62ac38bf22cd7fe971d733b136678",
+      "bytes": 529
+    },
+    {
+      "path": "audit03/reproduced/com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+      "bytes": 1664
+    },
+    {
+      "path": "audit03/reproduced/com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "audit03/reproduced/original-packing-before-xmp-fix.txt",
+      "sha256Bytes": "7617dea48c6a9fd822b04ca6a4d1f510c7d03dfdf3c233646a222bb5460b671e",
+      "bytes": 5216
+    },
+    {
+      "path": "audit03/reproduced/packing-after-xmp-fix.txt",
+      "sha256Bytes": "ebd8fb324c3e621108763c9c340317e38c822b8051f575c0fa17e739090386fe",
+      "bytes": 5090
+    },
+    {
+      "path": "audit03/reproduced/producer-receipt.json",
+      "sha256Bytes": "bba5156b6fe4358b50656ca45b753cf7500169bacee245ca7358c544196e70f4",
+      "bytes": 4021
+    },
+    {
+      "path": "audit03/reproduced/xmp-three-line-adaptation.diff",
+      "sha256Bytes": "b293afee40aef0ebf0d94dc4442653d039bab214bbbf0e45c7194d92905700af",
+      "bytes": 461
+    },
+    {
+      "path": "audit03/source-audit.json",
+      "sha256Bytes": "be6d874b4dcd7fec9b2ec2791849a853fffff990369008d00e43fd01f969f306",
+      "bytes": 8632
+    },
+    {
+      "path": "binary-artifact-inventory.json",
+      "sha256Bytes": "97b73e1b7afea141cb3364c8913e382029042cc10ded4d20279cafbb2cdad33e",
+      "bytes": 2930
+    },
+    {
+      "path": "dependencies/apache-33.pom",
+      "sha256Bytes": "d78bd8524c5f8380a190a6525686629a95dfe512df21111383a6d8c0923a4415",
+      "bytes": 24184
+    },
+    {
+      "path": "dependencies/commons-imaging-1.0.0-alpha6-bin.zip.sha512",
+      "sha256Bytes": "c4d65579b46a8373aedc5e18231d8e2a02d24cef07637057eebd941a045999c3",
+      "bytes": 129
+    },
+    {
+      "path": "dependencies/commons-imaging-1.0.0-alpha6-src.zip.sha512",
+      "sha256Bytes": "da0c3301a10e5435c4ce26c9f3a7455a5c8e81748caa9b4078e658d2a671c0ac",
+      "bytes": 129
+    },
+    {
+      "path": "dependencies/commons-imaging-1.0.0-alpha6.pom",
+      "sha256Bytes": "bf3e202c6cb32b27b48c055dfe900333dcc8f362173dc076fb4199b4f2ffcc27",
+      "bytes": 16225
+    },
+    {
+      "path": "dependencies/commons-io-2.19.0-bin.zip.sha512",
+      "sha256Bytes": "a5236590cf65b992d1d703b98a9950bf03661fa1325dc2d895da5be83fe39eb9",
+      "bytes": 129
+    },
+    {
+      "path": "dependencies/commons-io-2.19.0.pom",
+      "sha256Bytes": "542b7a502ed61950d1b83112b51b1617d3407e3a4df5ab56a98d760e0f8c5950",
+      "bytes": 20643
+    },
+    {
+      "path": "dependencies/commons-lang3-3.17.0-bin.zip.sha512",
+      "sha256Bytes": "b5923dc93ce7c3db88d044bc18f44187ca64522b4e6fd4c42c17b24a11fa21dc",
+      "bytes": 129
+    },
+    {
+      "path": "dependencies/commons-lang3-3.17.0.pom",
+      "sha256Bytes": "351c6e4940e939b1f330df47f60f13ba383db81ee008181af541f3a2a6d2a56c",
+      "bytes": 31256
+    },
+    {
+      "path": "dependencies/commons-parent-73.pom",
+      "sha256Bytes": "4ed44560b07f8448479dfd1e83a422ba4e83e60b36e51b2871ac502a6d5c1bea",
+      "bytes": 77692
+    },
+    {
+      "path": "dependencies/commons-parent-81.pom",
+      "sha256Bytes": "348d4e7c131be6114c854a719ce7a44307a7c39bd366084977b24fd29ad0edb4",
+      "bytes": 77518
+    },
+    {
+      "path": "dependencies/imaging-download-receipt.json",
+      "sha256Bytes": "f46ac5e2ae3a3caf75cfa68ab07bc4dae1f47b281708af24975e347ecb965bab",
+      "bytes": 3650
+    },
+    {
+      "path": "dependencies/official-bin-LICENSE.txt",
+      "sha256Bytes": "c1074fe69e98408aaa9d2483662743b8c7783c5b1099c5e3f52e758f42fce97c",
+      "bytes": 14099
+    },
+    {
+      "path": "dependencies/official-bin-NOTICE.txt",
+      "sha256Bytes": "36a2d5a34d6f42fda3778af68b1fbc9ef92e9ef5f18a42a7b0e7a88ab37c8603",
+      "bytes": 177
+    },
+    {
+      "path": "dependencies/official-commons-io-LICENSE.txt",
+      "sha256Bytes": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac",
+      "bytes": 11359
+    },
+    {
+      "path": "dependencies/official-commons-io-NOTICE.txt",
+      "sha256Bytes": "b54b0db6c617273efff79ba193bb01b05eadcddfff55c24063b38b2acef714c3",
+      "bytes": 172
+    },
+    {
+      "path": "dependencies/official-commons-lang3-LICENSE.txt",
+      "sha256Bytes": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "dependencies/official-commons-lang3-NOTICE.txt",
+      "sha256Bytes": "73c3dd73ad54910699e4e364345798d083a9126b9799663d4bdce8d7468b7f66",
+      "bytes": 174
+    },
+    {
+      "path": "dependencies/official-src-LICENSE.txt",
+      "sha256Bytes": "c1074fe69e98408aaa9d2483662743b8c7783c5b1099c5e3f52e758f42fce97c",
+      "bytes": 14099
+    },
+    {
+      "path": "dependencies/official-src-NOTICE.txt",
+      "sha256Bytes": "36a2d5a34d6f42fda3778af68b1fbc9ef92e9ef5f18a42a7b0e7a88ab37c8603",
+      "bytes": 177
+    },
+    {
+      "path": "dependencies/official-src-pom.xml",
+      "sha256Bytes": "bf3e202c6cb32b27b48c055dfe900333dcc8f362173dc076fb4199b4f2ffcc27",
+      "bytes": 16225
+    },
+    {
+      "path": "dependencies/official-src-WriteExifMetadataExample.java",
+      "sha256Bytes": "2eb4054baff72119c10c374b46fc9a48d031fc92e72ecf1a197c6e76363a4f95",
+      "bytes": 11507
+    },
+    {
+      "path": "dependencies/transitive-graph-receipt.json",
+      "sha256Bytes": "588a5a119de8c44a14b311614d0f422b22d7df6bf62f90db978f8db868247ad0",
+      "bytes": 6538
+    },
+    {
+      "path": "download-exif-dependencies.py",
+      "sha256Bytes": "9e8e5280fbb75b22e3589596e5c0e6342def4b4cebf8739f1df8819a1623aecf",
+      "bytes": 3210
+    },
+    {
+      "path": "download-exif-transitives.py",
+      "sha256Bytes": "530c03d5b3194b3df33737e1f854efd4063f73e132f4610d29955fa60f54c1aa",
+      "bytes": 4081
+    },
+    {
+      "path": "exif-runner.py",
+      "sha256Bytes": "f171ff99075f8a38bba879d1bce6c229ec1d90e0ea881d1d24a24237fd5558c7",
+      "bytes": 11052
+    },
+    {
+      "path": "exif-runs/01/compile-failure.json",
+      "sha256Bytes": "c72f670bf181c29cd7617058aca01228f6139a17fbbc1cc24996ccabaf2c8a2f",
+      "bytes": 225
+    },
+    {
+      "path": "exif-runs/01/compile.log",
+      "sha256Bytes": "4b39ef78d3bd4b13ea1f1f0f5f0bae7e79623e1057a5234ac1ba33d120158879",
+      "bytes": 5802
+    },
+    {
+      "path": "exif-runs/01/compiler.args",
+      "sha256Bytes": "a16d21d66abd7c1bb08716034d066e6ce3cbdb092d938ec134ff1af737f4b833",
+      "bytes": 24002
+    },
+    {
+      "path": "exif-runs/01/frozen-sources/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "7881703cccdd536e2cdacb64682c74316e1c0ffa07742d38607764b292c70eb0",
+      "bytes": 3390
+    },
+    {
+      "path": "exif-runs/01/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "387a8196808a4bf981dd614b7a9569521a085e3f48fe1ccb28691b72ecb95d2b",
+      "bytes": 6976
+    },
+    {
+      "path": "exif-runs/01/frozen-sources/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "5d44fe42941f5738891af8c012e5b9782e7fbf8f69783a28a40bc2562af13dd8",
+      "bytes": 1434
+    },
+    {
+      "path": "exif-runs/01/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "exif-runs/01/frozen-sources/ExifFixture.kt",
+      "sha256Bytes": "e47332ce0f3f115d37c2a78360b6b0db6fc5ed153169b085731b0c9d7a68433c",
+      "bytes": 8193
+    },
+    {
+      "path": "exif-runs/02/compile-evidence.json",
+      "sha256Bytes": "5c3ecb0880ab61e2998089c8b29190725281999cf4e5b57fc485e523475d5c87",
+      "bytes": 37217
+    },
+    {
+      "path": "exif-runs/02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "exif-runs/02/compiler.args",
+      "sha256Bytes": "e83906fd5f34e974351ac16217d03aa012b4ef47ffc53126ab0a4a40be184e9e",
+      "bytes": 24002
+    },
+    {
+      "path": "exif-runs/02/frozen-sources/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "bytes": 4478
+    },
+    {
+      "path": "exif-runs/02/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "387a8196808a4bf981dd614b7a9569521a085e3f48fe1ccb28691b72ecb95d2b",
+      "bytes": 6976
+    },
+    {
+      "path": "exif-runs/02/frozen-sources/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "5d44fe42941f5738891af8c012e5b9782e7fbf8f69783a28a40bc2562af13dd8",
+      "bytes": 1434
+    },
+    {
+      "path": "exif-runs/02/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "exif-runs/02/frozen-sources/ExifFixture.kt",
+      "sha256Bytes": "ccbc73d56e6b9db2f068ef4870fddd9a9d60ddefe2e0d6b52e99baa2480bcf4a",
+      "bytes": 8193
+    },
+    {
+      "path": "exif-runs/02/media/original-other-exif.jpg",
+      "sha256Bytes": "f898cabba0f304407658460aae17e59fca972569b97bc9497e1fa86d3acb731f",
+      "bytes": 2158
+    },
+    {
+      "path": "exif-runs/02/proof/four-tags-written.jpg",
+      "sha256Bytes": "e7cf6aca8de1f5ec8a5fdf705bd6b3689109ab67abaa87f7cd232efd47d0dd64",
+      "bytes": 2170
+    },
+    {
+      "path": "exif-runs/02/proof/jpeg95-after-exif.jpg",
+      "sha256Bytes": "b6fe48952c95293d85beb817b9a829bc074dfaf94a34b2a9e6bf621404cac59c",
+      "bytes": 1819
+    },
+    {
+      "path": "exif-runs/02/proof/jpeg95-before-exif.jpg",
+      "sha256Bytes": "06917ceecedeb1feb5903f74a8947f1d17bdc2168105586065727f2039f721c6",
+      "bytes": 1625
+    },
+    {
+      "path": "exif-runs/02/proof/motion-photo-with-real-exif.jpg",
+      "sha256Bytes": "829b55c8ce34b3f55641f6ed4d5c571234abd930421221809d1f3fd876210620",
+      "bytes": 1060028
+    },
+    {
+      "path": "exif-runs/02/proof/real-library-failure-fallback.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "bytes": 1059834
+    },
+    {
+      "path": "exif-runs/02/proof/windows-platform-identity.jpg",
+      "sha256Bytes": "9ffd1d146a23b25a391c84c9b6cf374df999b4b554cefe6130b2776444cdb94d",
+      "bytes": 1803
+    },
+    {
+      "path": "exif-runs/02/run-failure.json",
+      "sha256Bytes": "6ff3a7ed9c4bde688de3ac821cf4116767127ba9464e65b34f2a900fdaa8060b",
+      "bytes": 222
+    },
+    {
+      "path": "exif-runs/02/run.args",
+      "sha256Bytes": "75c10e98b542d3fa4815c8d52185bd4cccf040d129ea83f914e4f1aa9674f7e9",
+      "bytes": 23553
+    },
+    {
+      "path": "exif-runs/02/run.log",
+      "sha256Bytes": "d8816b7d67bb5ae5f15930eb99bc877e28d5557aa8a712925a72839b634db453",
+      "bytes": 945
+    },
+    {
+      "path": "exif-runs/03/accepted-evidence.json",
+      "sha256Bytes": "553621c109d2a37d514c90e0ce714a1a61b7ca80ac9d1d0cdd00f3413be74232",
+      "bytes": 3135
+    },
+    {
+      "path": "exif-runs/03/compile-evidence.json",
+      "sha256Bytes": "712c67f7367bf48865e87ce3a43d6e71114aee191d6bdb324bc9f2d97f3d9bb4",
+      "bytes": 37217
+    },
+    {
+      "path": "exif-runs/03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "exif-runs/03/compiler.args",
+      "sha256Bytes": "94aa4bd20eb56ce7c62b1212aaa5466b575c535a49800610f6cb9745c564c7a3",
+      "bytes": 24002
+    },
+    {
+      "path": "exif-runs/03/frozen-sources/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "bytes": 4478
+    },
+    {
+      "path": "exif-runs/03/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "387a8196808a4bf981dd614b7a9569521a085e3f48fe1ccb28691b72ecb95d2b",
+      "bytes": 6976
+    },
+    {
+      "path": "exif-runs/03/frozen-sources/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "5d44fe42941f5738891af8c012e5b9782e7fbf8f69783a28a40bc2562af13dd8",
+      "bytes": 1434
+    },
+    {
+      "path": "exif-runs/03/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "exif-runs/03/frozen-sources/ExifFixture.kt",
+      "sha256Bytes": "bc045c2b7ba157c187419c87d4277b7779d878ee179f81d820a2a7eb335d0b70",
+      "bytes": 8195
+    },
+    {
+      "path": "exif-runs/03/media/original-other-exif.jpg",
+      "sha256Bytes": "f898cabba0f304407658460aae17e59fca972569b97bc9497e1fa86d3acb731f",
+      "bytes": 2158
+    },
+    {
+      "path": "exif-runs/03/proof/four-tags-written.jpg",
+      "sha256Bytes": "e7cf6aca8de1f5ec8a5fdf705bd6b3689109ab67abaa87f7cd232efd47d0dd64",
+      "bytes": 2170
+    },
+    {
+      "path": "exif-runs/03/proof/jpeg95-after-exif.jpg",
+      "sha256Bytes": "b6fe48952c95293d85beb817b9a829bc074dfaf94a34b2a9e6bf621404cac59c",
+      "bytes": 1819
+    },
+    {
+      "path": "exif-runs/03/proof/jpeg95-before-exif.jpg",
+      "sha256Bytes": "06917ceecedeb1feb5903f74a8947f1d17bdc2168105586065727f2039f721c6",
+      "bytes": 1625
+    },
+    {
+      "path": "exif-runs/03/proof/motion-photo-with-real-exif.jpg",
+      "sha256Bytes": "829b55c8ce34b3f55641f6ed4d5c571234abd930421221809d1f3fd876210620",
+      "bytes": 1060028
+    },
+    {
+      "path": "exif-runs/03/proof/real-library-failure-fallback.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "bytes": 1059834
+    },
+    {
+      "path": "exif-runs/03/proof/result.json",
+      "sha256Bytes": "58cff27f1f15ffbb8e6d5b06ef63c3cb0a6ff9bf94cf0b0e1e4f6cc5c2774182",
+      "bytes": 798
+    },
+    {
+      "path": "exif-runs/03/proof/windows-platform-identity.jpg",
+      "sha256Bytes": "9ffd1d146a23b25a391c84c9b6cf374df999b4b554cefe6130b2776444cdb94d",
+      "bytes": 1803
+    },
+    {
+      "path": "exif-runs/03/proof/windows-platform-identity.json",
+      "sha256Bytes": "4dce6b031abe3f4b72251d45a3178c2a91d2f90a2d34fb231e77f1596254cb79",
+      "bytes": 71
+    },
+    {
+      "path": "exif-runs/03/run.args",
+      "sha256Bytes": "6530b3bb47d60547e02a3419c7a91a10f7ebe76003529f8a420abb67075d51d2",
+      "bytes": 23553
+    },
+    {
+      "path": "exif-runs/03/run.log",
+      "sha256Bytes": "c3ab8abede3dd81bb082beabc1b4f067ad8848eb74cf265caa50f05154ab561d",
+      "bytes": 110
+    },
+    {
+      "path": "exif-runs/04/accepted-evidence.json",
+      "sha256Bytes": "45b537cb0e3830cf08f328950e5fd8497e76e467f3249ee6905185061be56bd6",
+      "bytes": 3135
+    },
+    {
+      "path": "exif-runs/04/compile-evidence.json",
+      "sha256Bytes": "8b664ef49ed13bac55e9eb265802695e74bfd5dfc279a11c0dff23a8a4928713",
+      "bytes": 37231
+    },
+    {
+      "path": "exif-runs/04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "exif-runs/04/compiler.args",
+      "sha256Bytes": "5fb458eccec87e48d920c6f3400bac75236fe2587db1c0accaaa5f0f3c815e82",
+      "bytes": 24016
+    },
+    {
+      "path": "exif-runs/04/frozen-sources/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "bytes": 4478
+    },
+    {
+      "path": "exif-runs/04/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "387a8196808a4bf981dd614b7a9569521a085e3f48fe1ccb28691b72ecb95d2b",
+      "bytes": 6976
+    },
+    {
+      "path": "exif-runs/04/frozen-sources/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+      "bytes": 1664
+    },
+    {
+      "path": "exif-runs/04/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "exif-runs/04/frozen-sources/ExifFixture.kt",
+      "sha256Bytes": "bc045c2b7ba157c187419c87d4277b7779d878ee179f81d820a2a7eb335d0b70",
+      "bytes": 8195
+    },
+    {
+      "path": "exif-runs/04/media/original-other-exif.jpg",
+      "sha256Bytes": "f898cabba0f304407658460aae17e59fca972569b97bc9497e1fa86d3acb731f",
+      "bytes": 2158
+    },
+    {
+      "path": "exif-runs/04/proof/four-tags-written.jpg",
+      "sha256Bytes": "e7cf6aca8de1f5ec8a5fdf705bd6b3689109ab67abaa87f7cd232efd47d0dd64",
+      "bytes": 2170
+    },
+    {
+      "path": "exif-runs/04/proof/jpeg95-after-exif.jpg",
+      "sha256Bytes": "b6fe48952c95293d85beb817b9a829bc074dfaf94a34b2a9e6bf621404cac59c",
+      "bytes": 1819
+    },
+    {
+      "path": "exif-runs/04/proof/jpeg95-before-exif.jpg",
+      "sha256Bytes": "06917ceecedeb1feb5903f74a8947f1d17bdc2168105586065727f2039f721c6",
+      "bytes": 1625
+    },
+    {
+      "path": "exif-runs/04/proof/motion-photo-with-real-exif.jpg",
+      "sha256Bytes": "829b55c8ce34b3f55641f6ed4d5c571234abd930421221809d1f3fd876210620",
+      "bytes": 1060028
+    },
+    {
+      "path": "exif-runs/04/proof/real-library-failure-fallback.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "bytes": 1059834
+    },
+    {
+      "path": "exif-runs/04/proof/result.json",
+      "sha256Bytes": "58cff27f1f15ffbb8e6d5b06ef63c3cb0a6ff9bf94cf0b0e1e4f6cc5c2774182",
+      "bytes": 798
+    },
+    {
+      "path": "exif-runs/04/proof/windows-platform-identity.jpg",
+      "sha256Bytes": "9ffd1d146a23b25a391c84c9b6cf374df999b4b554cefe6130b2776444cdb94d",
+      "bytes": 1803
+    },
+    {
+      "path": "exif-runs/04/proof/windows-platform-identity.json",
+      "sha256Bytes": "4dce6b031abe3f4b72251d45a3178c2a91d2f90a2d34fb231e77f1596254cb79",
+      "bytes": 71
+    },
+    {
+      "path": "exif-runs/04/run.args",
+      "sha256Bytes": "2d77ceead7092c77682ec84a5ed7ef2e92a6de87d6d48dda43f4a950e8aad2f3",
+      "bytes": 23553
+    },
+    {
+      "path": "exif-runs/04/run.log",
+      "sha256Bytes": "c3ab8abede3dd81bb082beabc1b4f067ad8848eb74cf265caa50f05154ab561d",
+      "bytes": 110
+    },
+    {
+      "path": "ExifFixture.kt",
+      "sha256Bytes": "bc045c2b7ba157c187419c87d4277b7779d878ee179f81d820a2a7eb335d0b70",
+      "bytes": 8195
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "019009155e04a6e01c06130b02144d6c20c58bb1f2576fd6a90b1ee982307bcc",
+      "bytes": 4464
+    },
+    {
+      "path": "gallery-runner.py",
+      "sha256Bytes": "f1b8c5f119226213e56ced4294abcbc4732cffe52c9b1e3a761c5587176d2cb4",
+      "bytes": 5479
+    },
+    {
+      "path": "gallery-runs/01/accepted-evidence.json",
+      "sha256Bytes": "3f92849031c9a5fb57c01dced2dbd7a99d2bce1187f95361a94819a6f65848ce",
+      "bytes": 778
+    },
+    {
+      "path": "gallery-runs/01/compile-evidence.json",
+      "sha256Bytes": "dd4155e6d4dfb2a7899872a7d0ed3ce8ba18252c6ee651a62e0b95c62e56751a",
+      "bytes": 35203
+    },
+    {
+      "path": "gallery-runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "gallery-runs/01/compiler.args",
+      "sha256Bytes": "80c0b7801c26a493e00e6f946445f435bf60c90325952428da9cd4a981571be6",
+      "bytes": 22994
+    },
+    {
+      "path": "gallery-runs/01/frozen-sources/DesktopDynamicGallerySelection.kt",
+      "sha256Bytes": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810",
+      "bytes": 1563
+    },
+    {
+      "path": "gallery-runs/01/frozen-sources/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+      "bytes": 1664
+    },
+    {
+      "path": "gallery-runs/01/frozen-sources/GalleryFixture.kt",
+      "sha256Bytes": "2b300b7d1365437e72cdcd90f535a9c11af842b3a5655ebfdd02ac4ab7a6a30c",
+      "bytes": 3406
+    },
+    {
+      "path": "gallery-runs/01/proof/first.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "bytes": 249
+    },
+    {
+      "path": "gallery-runs/01/proof/result.json",
+      "sha256Bytes": "c4beddc722160cc103d4c5a2324eab2c466a82a7e46812306b5211b42f4f3cb9",
+      "bytes": 241
+    },
+    {
+      "path": "gallery-runs/01/proof/second.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "bytes": 249
+    },
+    {
+      "path": "gallery-runs/01/proof/third.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "bytes": 249
+    },
+    {
+      "path": "gallery-runs/01/run.args",
+      "sha256Bytes": "90304dfc1ad0dfd2c5e9f9a3e9315b88453dd6226c533a819ba4a8270d78fd0e",
+      "bytes": 22514
+    },
+    {
+      "path": "gallery-runs/01/run.log",
+      "sha256Bytes": "f7f410ef8b00331f9ff06ef66bb3b1781ecfbd7efbdf57993b8b24de9dd142d4",
+      "bytes": 112
+    },
+    {
+      "path": "GalleryFixture.kt",
+      "sha256Bytes": "2b300b7d1365437e72cdcd90f535a9c11af842b3a5655ebfdd02ac4ab7a6a30c",
+      "bytes": 3406
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "5d44fe42941f5738891af8c012e5b9782e7fbf8f69783a28a40bc2562af13dd8",
+      "bytes": 1434
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "0b05865f3eb49bcc3233a4bf01e8c2571ef7d35ef6c841452337d629a4a9d497",
+      "bytes": 5694
+    },
+    {
+      "path": "generated/producer-receipt.json",
+      "sha256Bytes": "bff0e09177570887776f565b958e7366405f85f5cbaa7932a2c3388692038c45",
+      "bytes": 2861
+    },
+    {
+      "path": "generated-acceptance-final/com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+      "bytes": 1664
+    },
+    {
+      "path": "generated-acceptance-final/com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "generated-acceptance-final/original-packing-before-xmp-fix.txt",
+      "sha256Bytes": "7617dea48c6a9fd822b04ca6a4d1f510c7d03dfdf3c233646a222bb5460b671e",
+      "bytes": 5216
+    },
+    {
+      "path": "generated-acceptance-final/packing-after-xmp-fix.txt",
+      "sha256Bytes": "ebd8fb324c3e621108763c9c340317e38c822b8051f575c0fa17e739090386fe",
+      "bytes": 5090
+    },
+    {
+      "path": "generated-acceptance-final/producer-receipt.json",
+      "sha256Bytes": "bba5156b6fe4358b50656ca45b753cf7500169bacee245ca7358c544196e70f4",
+      "bytes": 4021
+    },
+    {
+      "path": "generated-acceptance-final/xmp-three-line-adaptation.diff",
+      "sha256Bytes": "b293afee40aef0ebf0d94dc4442653d039bab214bbbf0e45c7194d92905700af",
+      "bytes": 461
+    },
+    {
+      "path": "generated-xmp-valid/com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "5d44fe42941f5738891af8c012e5b9782e7fbf8f69783a28a40bc2562af13dd8",
+      "bytes": 1434
+    },
+    {
+      "path": "generated-xmp-valid/com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "generated-xmp-valid/original-packing-before-xmp-fix.txt",
+      "sha256Bytes": "7617dea48c6a9fd822b04ca6a4d1f510c7d03dfdf3c233646a222bb5460b671e",
+      "bytes": 5216
+    },
+    {
+      "path": "generated-xmp-valid/packing-after-xmp-fix.txt",
+      "sha256Bytes": "ebd8fb324c3e621108763c9c340317e38c822b8051f575c0fa17e739090386fe",
+      "bytes": 5090
+    },
+    {
+      "path": "generated-xmp-valid/producer-receipt.json",
+      "sha256Bytes": "65627a901b1f5a58c41db0839ee977151630ce742d04a62d57e361206373e6cf",
+      "bytes": 3509
+    },
+    {
+      "path": "generated-xmp-valid/xmp-three-line-adaptation.diff",
+      "sha256Bytes": "b293afee40aef0ebf0d94dc4442653d039bab214bbbf0e45c7194d92905700af",
+      "bytes": 461
+    },
+    {
+      "path": "handoff-summary.json",
+      "sha256Bytes": "9968531513891846c077885d576fb19e6e7f4571ab229839324813abf2021981",
+      "bytes": 4379
+    },
+    {
+      "path": "history/exif-runner-03.py",
+      "sha256Bytes": "ac690843cb72aaa0c25fbc7302454128cd1354caff63a9e8846a02cb65e01529",
+      "bytes": 11045
+    },
+    {
+      "path": "history/producer-valid-xmp-03.py",
+      "sha256Bytes": "6edf868373758dce718656e0ca46c1d7c64008a44150db1d74395461053e0b20",
+      "bytes": 7474
+    },
+    {
+      "path": "history/runner-xmp-valid-03.py",
+      "sha256Bytes": "cc83828f90b5136e8894f1a90329ff5e736a4db7ff73cacd6ca0a2740fccdea6",
+      "bytes": 9935
+    },
+    {
+      "path": "independent-readonly-review.json",
+      "sha256Bytes": "638a5d21514866f8af3854c8c04b453eb893d85197de0130e6170b8eebe7b9e5",
+      "bytes": 2928
+    },
+    {
+      "path": "independent-review-origin.json",
+      "sha256Bytes": "8855020d038d7c6a20a58f34615a34418471205752d98079c58f3b87c2897cb3",
+      "bytes": 343
+    },
+    {
+      "path": "PackingFixture.kt",
+      "sha256Bytes": "f0e18c24e3df7a9ca3366506cdc930aa2ba0b1d2f958c968e22771bb835aea07",
+      "bytes": 9430
+    },
+    {
+      "path": "PackingFixtureAcceptance.kt",
+      "sha256Bytes": "1f8a8d5606bbb0dd9cbc0a7f4deccfc257e847d4ca364f02607a0a3d071c1ce1",
+      "bytes": 10138
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "sha256Bytes": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810",
+      "bytes": 1563
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "48f487b94a69390ac1dd335d4e61c3cc3c32d0b57b910466a811d21d8036f55a",
+      "bytes": 4478
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "fc44e8bbaf636a75358edf499f7c10f72e5107405dee14f1da56aa4c3c0b4aac",
+      "bytes": 6973
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-gallery-motion-photo-valid-xmp.py",
+      "sha256Bytes": "be480408e2155f4d98ba8d7ea23ff5f520b4d9d4df5b95f3f261896b93df4cfa",
+      "bytes": 8334
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-gallery-motion-photo.py",
+      "sha256Bytes": "7219d7fbeb9df35f09cae8ab701cba4ffdaeae31ff826315239786de9f8ee2ed",
+      "bytes": 6142
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "f98b615a1cac68d011d6c5fd1c8c2bf92fa7089df5582a92a87d83a796c193fa",
+      "bytes": 5643
+    },
+    {
+      "path": "ROOT-INTEGRATION.txt",
+      "sha256Bytes": "46b77dd59196e7d09362d91a315a1063e924f4c1e66c493b89a424a04884b04c",
+      "bytes": 8537
+    },
+    {
+      "path": "runner-xmp-valid.py",
+      "sha256Bytes": "5cfadd7e026ab15bb74cde7761a146ddf1bc98b03ad4e709fc0c60ba3c6f1754",
+      "bytes": 9942
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "67d79d9458d58f8a85d95fbeb00e9ba5f698ad0b1b050bbeb23762068e2e1cf3",
+      "bytes": 9775
+    },
+    {
+      "path": "runs/01/compile-evidence.json",
+      "sha256Bytes": "ecbe356aa21959265c32b6ced5a5d7a32e4edfcb5ef28a6a34677d26e95b70fc",
+      "bytes": 35411
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/01/compiler.args",
+      "sha256Bytes": "e1a6401eb6b022f9d716af808722a940a2fbedd5e4320b16cb57812b3f71b676",
+      "bytes": 23209
+    },
+    {
+      "path": "runs/01/ffmpeg.log",
+      "sha256Bytes": "4fff759ff62121e84b1808e8ec9486e1ffb0ef8f331d520f7cd6c736d63b698b",
+      "bytes": 543
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "387a8196808a4bf981dd614b7a9569521a085e3f48fe1ccb28691b72ecb95d2b",
+      "bytes": 6976
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "5d44fe42941f5738891af8c012e5b9782e7fbf8f69783a28a40bc2562af13dd8",
+      "bytes": 1434
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "0b05865f3eb49bcc3233a4bf01e8c2571ef7d35ef6c841452337d629a4a9d497",
+      "bytes": 5694
+    },
+    {
+      "path": "runs/01/frozen-sources/PackingFixture.kt",
+      "sha256Bytes": "f0e18c24e3df7a9ca3366506cdc930aa2ba0b1d2f958c968e22771bb835aea07",
+      "bytes": 9430
+    },
+    {
+      "path": "runs/01/media/source.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "bytes": 249
+    },
+    {
+      "path": "runs/01/media/tagged-input.jpg",
+      "sha256Bytes": "7a36d58fe131342f775c3a054b382d245062e9d18ac93ff96bbc5b4721813da1",
+      "bytes": 1970
+    },
+    {
+      "path": "runs/01/run-failure.json",
+      "sha256Bytes": "09cba8d2fa1e447ef054c27b834bcc72a4be046ce7ea5e6a40a650b90dff5f78",
+      "bytes": 403
+    },
+    {
+      "path": "runs/02/ffmpeg.log",
+      "sha256Bytes": "ee846250f727c003798d8b43822eb2241fde6e7015e60459ece655b7feea3b75",
+      "bytes": 1222
+    },
+    {
+      "path": "runs/02/independent-readback-failure.json",
+      "sha256Bytes": "514270362caabdcfb144b24ea8aa9aeafb34bd0aff27813af48488b21b89efaf",
+      "bytes": 767
+    },
+    {
+      "path": "runs/02/media/source.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "bytes": 1055711
+    },
+    {
+      "path": "runs/02/media/source.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "bytes": 249
+    },
+    {
+      "path": "runs/02/media/tagged-input.jpg",
+      "sha256Bytes": "7a36d58fe131342f775c3a054b382d245062e9d18ac93ff96bbc5b4721813da1",
+      "bytes": 1970
+    },
+    {
+      "path": "runs/02/proof/corrupt-image.bin",
+      "sha256Bytes": "5464533c9647b67eb320c40ccc5959537c09102ae75388f6a7675b433e745c9d",
+      "bytes": 12
+    },
+    {
+      "path": "runs/02/proof/empty.mp4",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/02/proof/exif-failure-fallback.jpg",
+      "sha256Bytes": "bc321abdb777e75eeff64c290a75524e104dfd5b27eaa9ab5550028e52dd5453",
+      "bytes": 1059960
+    },
+    {
+      "path": "runs/02/proof/existing.jpg",
+      "sha256Bytes": "bc321abdb777e75eeff64c290a75524e104dfd5b27eaa9ab5550028e52dd5453",
+      "bytes": 1059960
+    },
+    {
+      "path": "runs/02/proof/motion-photo.jpg",
+      "sha256Bytes": "bc321abdb777e75eeff64c290a75524e104dfd5b27eaa9ab5550028e52dd5453",
+      "bytes": 1059960
+    },
+    {
+      "path": "runs/02/proof/packing-preserves-input-exif.jpg",
+      "sha256Bytes": "edb75bc6ba24dfad68569d7d76985716529a02145760423d5e89e41e6e466304",
+      "bytes": 1060305
+    },
+    {
+      "path": "runs/02/proof/result.json",
+      "sha256Bytes": "eb16602fff1cfb98e30dac421f0b02b831d66871002f9868e0bcc16688702b0e",
+      "bytes": 869
+    },
+    {
+      "path": "runs/02/run.args",
+      "sha256Bytes": "bee887832c587c5bd6aae859351c8accbd1fde241f13855a1925fb7f3b392019",
+      "bytes": 22980
+    },
+    {
+      "path": "runs/02/run.log",
+      "sha256Bytes": "a05bac81d31b8e4b7e0e01dcd1d6b9f131af23c1d6866abe04dbda67383eaa22",
+      "bytes": 102
+    },
+    {
+      "path": "runs/03/accepted-evidence.json",
+      "sha256Bytes": "8ab348a921060b5a96fe9fb8249bdbb8c4c3b286051dc7fab7370e494dea057c",
+      "bytes": 4644
+    },
+    {
+      "path": "runs/03/compile-evidence.json",
+      "sha256Bytes": "a589b3a0c8e10a29e17495213c002ac45183dbe855b33fe3604a8080a29b47ce",
+      "bytes": 35441
+    },
+    {
+      "path": "runs/03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/03/compiler.args",
+      "sha256Bytes": "9c13908877ca8272dae407add64c9ba77281a92f81c6feb5af39d63c8e8f8822",
+      "bytes": 23239
+    },
+    {
+      "path": "runs/03/ffmpeg.log",
+      "sha256Bytes": "67eaa84978f8991cb46049455780f9b16e1a36c461efbca377b3a0f3327f5c87",
+      "bytes": 1222
+    },
+    {
+      "path": "runs/03/ffprobe-tail.json",
+      "sha256Bytes": "803349597913f0c5f00edbcc35686e2e34109a31128c9ed8603e70922b0055fb",
+      "bytes": 2724
+    },
+    {
+      "path": "runs/03/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "387a8196808a4bf981dd614b7a9569521a085e3f48fe1ccb28691b72ecb95d2b",
+      "bytes": 6976
+    },
+    {
+      "path": "runs/03/frozen-sources/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "5d44fe42941f5738891af8c012e5b9782e7fbf8f69783a28a40bc2562af13dd8",
+      "bytes": 1434
+    },
+    {
+      "path": "runs/03/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "runs/03/frozen-sources/PackingFixtureAcceptance.kt",
+      "sha256Bytes": "76c61c4e0b29e0203eccf8d93b35df0b583e46afb5099388c46f0d16ae0152ef",
+      "bytes": 9466
+    },
+    {
+      "path": "runs/03/media/source.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "bytes": 1055711
+    },
+    {
+      "path": "runs/03/media/source.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "bytes": 249
+    },
+    {
+      "path": "runs/03/media/tagged-input.jpg",
+      "sha256Bytes": "7a36d58fe131342f775c3a054b382d245062e9d18ac93ff96bbc5b4721813da1",
+      "bytes": 1970
+    },
+    {
+      "path": "runs/03/proof/corrupt-image.bin",
+      "sha256Bytes": "5464533c9647b67eb320c40ccc5959537c09102ae75388f6a7675b433e745c9d",
+      "bytes": 12
+    },
+    {
+      "path": "runs/03/proof/empty.mp4",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/03/proof/exif-failure-fallback.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "bytes": 1059834
+    },
+    {
+      "path": "runs/03/proof/existing.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "bytes": 1059834
+    },
+    {
+      "path": "runs/03/proof/independently-extracted-tail.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "bytes": 1055711
+    },
+    {
+      "path": "runs/03/proof/motion-photo.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "bytes": 1059834
+    },
+    {
+      "path": "runs/03/proof/packing-preserves-input-exif.jpg",
+      "sha256Bytes": "796c701cdbc494ee01b5286c439e18e60855dfb5d52ba604b3c7b5cfccc89e25",
+      "bytes": 1060179
+    },
+    {
+      "path": "runs/03/proof/result.json",
+      "sha256Bytes": "bf8794381f9948ca7f437b440437ce047ea11cfb7ab5536b98e04987eb96daaf",
+      "bytes": 905
+    },
+    {
+      "path": "runs/03/run.args",
+      "sha256Bytes": "93f4db9e8e00e931b8030e3907c29303622a9c076479dd663c347a80503d9b70",
+      "bytes": 22990
+    },
+    {
+      "path": "runs/03/run.log",
+      "sha256Bytes": "a05bac81d31b8e4b7e0e01dcd1d6b9f131af23c1d6866abe04dbda67383eaa22",
+      "bytes": 102
+    },
+    {
+      "path": "runs/04/accepted-evidence.json",
+      "sha256Bytes": "8ba0147bbc310f8cf81722ab8d1f3f22e4e00af29edcff9e9db2f4c636a587e2",
+      "bytes": 4672
+    },
+    {
+      "path": "runs/04/compile-evidence.json",
+      "sha256Bytes": "f315fa614681bc52bd906610c1402250ca81dcdae28c999bf97eb4b9ebe399fc",
+      "bytes": 35455
+    },
+    {
+      "path": "runs/04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/04/compiler.args",
+      "sha256Bytes": "c43852f8683f853f5bbdbb8106c4212114da1d32b4eb027c026d4710145d8436",
+      "bytes": 23253
+    },
+    {
+      "path": "runs/04/ffmpeg.log",
+      "sha256Bytes": "b9b3305af3b82bd15ac328d623aa73815c7c6e72a56b56a1c7d9e78daafbb9f9",
+      "bytes": 1222
+    },
+    {
+      "path": "runs/04/ffprobe-tail.json",
+      "sha256Bytes": "fa4e3e1f1b510c7533821ba0b218e25aa1443ad3b4cca59b2024b2c42f6c1c47",
+      "bytes": 2724
+    },
+    {
+      "path": "runs/04/frozen-sources/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "387a8196808a4bf981dd614b7a9569521a085e3f48fe1ccb28691b72ecb95d2b",
+      "bytes": 6976
+    },
+    {
+      "path": "runs/04/frozen-sources/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+      "bytes": 1664
+    },
+    {
+      "path": "runs/04/frozen-sources/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "runs/04/frozen-sources/PackingFixtureAcceptance.kt",
+      "sha256Bytes": "1f8a8d5606bbb0dd9cbc0a7f4deccfc257e847d4ca364f02607a0a3d071c1ce1",
+      "bytes": 10138
+    },
+    {
+      "path": "runs/04/media/source.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "bytes": 1055711
+    },
+    {
+      "path": "runs/04/media/source.png",
+      "sha256Bytes": "ed82282274f791a7ac67d67c4253bbd5b4f373eed06edc3d53e5b34a3710b0bb",
+      "bytes": 249
+    },
+    {
+      "path": "runs/04/media/tagged-input.jpg",
+      "sha256Bytes": "7a36d58fe131342f775c3a054b382d245062e9d18ac93ff96bbc5b4721813da1",
+      "bytes": 1970
+    },
+    {
+      "path": "runs/04/proof/corrupt-image.bin",
+      "sha256Bytes": "5464533c9647b67eb320c40ccc5959537c09102ae75388f6a7675b433e745c9d",
+      "bytes": 12
+    },
+    {
+      "path": "runs/04/proof/empty.mp4",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/04/proof/exif-failure-fallback.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "bytes": 1059834
+    },
+    {
+      "path": "runs/04/proof/existing.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "bytes": 1059834
+    },
+    {
+      "path": "runs/04/proof/independently-extracted-tail.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "bytes": 1055711
+    },
+    {
+      "path": "runs/04/proof/motion-photo.jpg",
+      "sha256Bytes": "9536e78c1735b44e49469e17a03b7aff9c4a83c83de5f68b76b9a3a19307d03c",
+      "bytes": 1059834
+    },
+    {
+      "path": "runs/04/proof/packing-preserves-input-exif.jpg",
+      "sha256Bytes": "796c701cdbc494ee01b5286c439e18e60855dfb5d52ba604b3c7b5cfccc89e25",
+      "bytes": 1060179
+    },
+    {
+      "path": "runs/04/proof/result.json",
+      "sha256Bytes": "3f817a91eeba1595bab4869847de3e9827c5b3a5854c3f21307e46b45f1ee986",
+      "bytes": 933
+    },
+    {
+      "path": "runs/04/run.args",
+      "sha256Bytes": "b126075649e66697397ac3487e6ed1198368ed14cef0ee4f6b35f8e2e900214c",
+      "bytes": 22990
+    },
+    {
+      "path": "runs/04/run.log",
+      "sha256Bytes": "9221cd4bc4438d73f21ca2c3213793ebd8f1106a326cc19abd3e686502ca53fa",
+      "bytes": 102
+    },
+    {
+      "path": "source-audit-final/failure.json",
+      "sha256Bytes": "7e9a32b06fcddf7fe0cdf9f01bf5872436b96eeaf93617945fe7ab6b205ca9eb",
+      "bytes": 161
+    },
+    {
+      "path": "source-audit-final/reproduced/com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+      "bytes": 1664
+    },
+    {
+      "path": "source-audit-final/reproduced/com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt",
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+      "bytes": 5568
+    },
+    {
+      "path": "source-audit-final/reproduced/original-packing-before-xmp-fix.txt",
+      "sha256Bytes": "7617dea48c6a9fd822b04ca6a4d1f510c7d03dfdf3c233646a222bb5460b671e",
+      "bytes": 5216
+    },
+    {
+      "path": "source-audit-final/reproduced/packing-after-xmp-fix.txt",
+      "sha256Bytes": "ebd8fb324c3e621108763c9c340317e38c822b8051f575c0fa17e739090386fe",
+      "bytes": 5090
+    },
+    {
+      "path": "source-audit-final/reproduced/producer-receipt.json",
+      "sha256Bytes": "bba5156b6fe4358b50656ca45b753cf7500169bacee245ca7358c544196e70f4",
+      "bytes": 4021
+    },
+    {
+      "path": "source-audit-final/reproduced/xmp-three-line-adaptation.diff",
+      "sha256Bytes": "b293afee40aef0ebf0d94dc4442653d039bab214bbbf0e45c7194d92905700af",
+      "bytes": 461
+    },
+    {
+      "path": "source-audit-final-02/failure.json",
+      "sha256Bytes": "cb257bff243269c947ba971f593356fc4af7230ff7048b4887d01269195a2b18",
+      "bytes": 196
+    },
+    {
+      "path": "source-audit-final-02/reproduced/original-packing-before-xmp-fix.txt",
+      "sha256Bytes": "7617dea48c6a9fd822b04ca6a4d1f510c7d03dfdf3c233646a222bb5460b671e",
+      "bytes": 5216
+    },
+    {
+      "path": "source-audit-final-02/reproduced/packing-after-xmp-fix.txt",
+      "sha256Bytes": "ebd8fb324c3e621108763c9c340317e38c822b8051f575c0fa17e739090386fe",
+      "bytes": 5090
+    },
+    {
+      "path": "source-audit-final-02/reproduced/xmp-three-line-adaptation.diff",
+      "sha256Bytes": "b293afee40aef0ebf0d94dc4442653d039bab214bbbf0e45c7194d92905700af",
+      "bytes": 461
+    },
+    {
+      "path": "source-audit.py",
+      "sha256Bytes": "7dcb71105508280bbbf1b0133165fcc01b922f04636829ade6e0aa7484259740",
+      "bytes": 5649
+    },
+    {
+      "path": "source-comment-adaptation.json",
+      "sha256Bytes": "aebb1deb39441e88fb0af04043e07a775f6476f862ec92fe18bb8455a9cb2f32",
+      "bytes": 582
+    }
+  ],
+  "excludedBinaryInventory": {
+    "path": "binary-artifact-inventory.json",
+    "sha256Bytes": "97b73e1b7afea141cb3364c8913e382029042cc10ded4d20279cafbb2cdad33e"
+  },
+  "preservesAllFailureHistory": true,
+  "copiesNoAccountOrStore": true,
+  "immutableAfterFreeze": true
+}

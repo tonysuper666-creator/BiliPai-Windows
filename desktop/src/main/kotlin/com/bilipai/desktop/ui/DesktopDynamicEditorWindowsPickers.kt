@@ -26,15 +26,16 @@ internal class DesktopDynamicEditorWindowsPickers(
         if (!stillOwned()) return@onEventThread
         val chooser = JFileChooser().apply {
             dialogTitle = "选择图片"
-            isMultiSelectionEnabled = true
+            isMultiSelectionEnabled = maxItems > 1
             isAcceptAllFileFilterUsed = false
             fileFilter = FileNameExtensionFilter("图片", "png", "jpg", "jpeg", "gif", "webp", "bmp", "avif", "heic", "heif", "tif", "tiff")
         }
         if (chooser.showOpenDialog(parent()) == JFileChooser.APPROVE_OPTION && stillOwned()) {
             try {
-                val paths = chooser.selectedFiles.toList().ifEmpty { listOfNotNull(chooser.selectedFile) }
-                    .take(maxItems.coerceIn(1, 9)).map { it.toPath() }
-                val sources = selectedImages.accept(paths)
+                val sources = DesktopDynamicGallerySelection(selectedImages, stillOwned).acceptResult(
+                    approved = true, single = chooser.selectedFile?.toPath(),
+                    multiple = chooser.selectedFiles.map { it.toPath() }.takeIf { it.isNotEmpty() },
+                    maxItems = maxItems.coerceIn(1, 9))
                 if (stillOwned()) onSelected(sources)
             } catch (failure: Exception) {
                 if (stillOwned()) onFailure("无法读取所选图片")

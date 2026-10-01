@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "actualMainConfig": {
+    "snapshotRepoRelativePath": "desktop/.local/dynamic-media-main-integration/main-product-snapshot-03",
+    "manifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+    "orderedCpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+    "runtimeEntries": 92,
+    "externalEntries": 89,
+    "sourceFiles": 398,
+    "registryEntries": 622,
+    "authorizedByRootImmutableSnapshot": true
+  },
+  "allProductClassesActualMainZeroOverride": true,
+  "productionClassOverlap": [],
+  "fixtureJarSha256Bytes": "b497e4e5f8747bbb102bcaed78c10bcbbe5955dfe84b26bc80a81c41f8e78d63",
+  "cohorts": {
+    "download": {
+      "assertions": 55,
+      "cases": 11
+    },
+    "commitcancel": {
+      "assertions": 25,
+      "cases": 1
+    },
+    "gallery": {
+      "assertions": 18,
+      "cases": 4
+    },
+    "qr": {
+      "assertions": 37,
+      "cases": 8
+    }
+  },
+  "original51DownloadBehavioralAssertionsRetained": true,
+  "addedActualMainCodeSourceAssertions": true,
+  "newFilesQueuedCancelConcernAccepted": true,
+  "actualGalleryPolicyAndExistingSelectedHandles": true,
+  "actualMainQrFullEightRoutesDecoded": true,
+  "independentDownloadedMotionAndGuestReadback": [
+    {
+      "path": "runs/01/download/proof/motion-photo.jpg",
+      "sha256Bytes": "e807085111eeeb49ee7e5e1ab71aba88e2e1cfb760357067ea4378e937a38a20",
+      "fourRealExifTagsValid": true,
+      "jpegDecoded": true,
+      "independentXmlValid": true,
+      "mp4ExactTail": true
+    },
+    {
+      "path": "runs/01/download/proof/guest-motion-photo.jpg",
+      "sha256Bytes": "6ad4f188d325edf47c1348a89af20c373f17f3518fe547e2ab3d7dfd28b4c0af",
+      "fourRealExifTagsValid": true,
+      "jpegDecoded": true,
+      "independentXmlValid": true,
+      "mp4ExactTail": true
+    }
+  ],
+  "actualLoopbackHttpOnly": true,
+  "outsideSocket": false,
+  "actualChooser": false,
+  "HWND": false,
+  "MainShellUIExecuted": false,
+  "packagedRuntime": false,
+  "systemSHARE": false,
+  "PhotosRecognition": false,
+  "officialApproved92GraphVerified": true
+}

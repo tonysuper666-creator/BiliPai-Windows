@@ -1,0 +1,1 @@
+{"compilePassed":true,"acceptedCompileReceipt":false,"kind":"task class-family audit","cause":"Compose compiler generated its expected ComposableSingletons for retry text; initial observer allowlist omitted that family; no UI/native execution occurred","sourceChanged":false}

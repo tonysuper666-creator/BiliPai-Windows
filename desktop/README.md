@@ -21,6 +21,8 @@
 
 完整差距与验收记录见 [PARITY.md](PARITY.md)。该表描述当前分支源码；桌面原测试包未因此自动更新。
 
+当前源码已接原版动态详情与楼中楼、实况照片保存及选图规则。实际编译主程序的隔离验证通过了图片保存取消保护、账号切换、二维码导出和评论数量迟到响应修复；持久保存目录、普通图片编码、原生实况播放、系统分享和完整窗口验收继续进行。记录见 [动态媒体验证](verification/dynamic-media/integration-report.json)，本批尚未重新打包桌面 EXE。
+
 `upstream-sources.json` 记录复用文件、LF SHA-256、上游 tag 和完整 commit SHA。网络构建保留上游全部 303 个 Retrofit 接口方法及 45 份响应模型，`tools/source-parity-report.py` 逐一审计声明。来源复用与接口数量不能证明完整功能对齐。
 
 ## 本地构建

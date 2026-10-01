@@ -1,0 +1,14 @@
+[
+  {
+    "lane": "actual-main-assets-integration-proof",
+    "label": "actual-main03-media",
+    "manifest": "frozen-handoff.json",
+    "sha256Bytes": "79b7e3795d1524380d603fedb6875376308ea8b4bdf3fb9a0ad8aa617fc4676c"
+  },
+  {
+    "lane": "dynamic-detail-root-mounted-proof/main03-unchanged-count-acceptance-final",
+    "label": "actual-main03-same-count",
+    "manifest": "evidence-manifest.json",
+    "sha256Bytes": "459a38d34f4045716a82b488d8dd2f29f102472896f009ce51fe1f3a89560f2e"
+  }
+]

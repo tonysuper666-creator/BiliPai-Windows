@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "rootApproved": true,
+  "version": "1.0.0-alpha6",
+  "officialArchiveSha512Verified": true,
+  "mavenJarEqualsOfficialArchiveJar": true,
+  "downloads": [
+    {
+      "url": "https://downloads.apache.org/commons/imaging/binaries/commons-imaging-1.0.0-alpha6-bin.zip.sha512",
+      "finalUrl": "https://downloads.apache.org/commons/imaging/binaries/commons-imaging-1.0.0-alpha6-bin.zip.sha512",
+      "path": "commons-imaging-1.0.0-alpha6-bin.zip.sha512",
+      "bytes": 129,
+      "sha256Bytes": "c4d65579b46a8373aedc5e18231d8e2a02d24cef07637057eebd941a045999c3",
+      "sha512Bytes": "8adf9bee43d19eae06394d3918f33eb9972b1841c801a463716f6bfb668bfc65510b9360436ffeb04ea6809cd2e6bc16499609c521c4a29a9eeee466dc3dbc76"
+    },
+    {
+      "url": "https://downloads.apache.org/commons/imaging/binaries/commons-imaging-1.0.0-alpha6-bin.zip",
+      "finalUrl": "https://downloads.apache.org/commons/imaging/binaries/commons-imaging-1.0.0-alpha6-bin.zip",
+      "path": "commons-imaging-1.0.0-alpha6-bin.zip",
+      "bytes": 89275477,
+      "sha256Bytes": "fdc4d93483711e158f05293607ac4805fb862560bc25e48882eb4d51dfb19f81",
+      "sha512Bytes": "283fa5241edb5b6e68224368779b67da0a11dcd79089fe81bc6a3dbe59db93664aaca2a0ca3ef7a1f3936119a6a9c08421b4f4cd563f77e5d2f162723c7b5ec7"
+    },
+    {
+      "url": "https://downloads.apache.org/commons/imaging/source/commons-imaging-1.0.0-alpha6-src.zip.sha512",
+      "finalUrl": "https://downloads.apache.org/commons/imaging/source/commons-imaging-1.0.0-alpha6-src.zip.sha512",
+      "path": "commons-imaging-1.0.0-alpha6-src.zip.sha512",
+      "bytes": 129,
+      "sha256Bytes": "da0c3301a10e5435c4ce26c9f3a7455a5c8e81748caa9b4078e658d2a671c0ac",
+      "sha512Bytes": "cd7196720000720741cd588da624249d054498c99fb04232def274cb4b327fcc05ff5c7cee977386504ccedf96adccfa83c1b153c9c79cd15f1922c02f5e1cdf"
+    },
+    {
+      "url": "https://downloads.apache.org/commons/imaging/source/commons-imaging-1.0.0-alpha6-src.zip",
+      "finalUrl": "https://downloads.apache.org/commons/imaging/source/commons-imaging-1.0.0-alpha6-src.zip",
+      "path": "commons-imaging-1.0.0-alpha6-src.zip",
+      "bytes": 41593986,
+      "sha256Bytes": "db75f7e98bbd0e25078465f6da44c5137efe43e5e857bbf642714e1036f75506",
+      "sha512Bytes": "2afcfe1a2732f7731a9c669583dc593daf1b6f38426757d9df380123085c083ada68c0d2954854f288d7729c619a8282213920cc8ecd04f74975d4e9dd7f2022"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-imaging/1.0.0-alpha6/commons-imaging-1.0.0-alpha6.jar",
+      "finalUrl": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-imaging/1.0.0-alpha6/commons-imaging-1.0.0-alpha6.jar",
+      "path": "commons-imaging-1.0.0-alpha6.jar",
+      "bytes": 863102,
+      "sha256Bytes": "19da061ae2d28d97dc0489a8735a48c2626168c462cd0c0a0bac87996921af5e",
+      "sha512Bytes": "b84ca82bbdeafa55dba16d4319a9ea6a8d2cad8c8f97695cf75a97c15a874268bdd1e8f39a16a08118bb5e4ea5e0d2e4261efab07d49a3332ca954859549d631"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-imaging/1.0.0-alpha6/commons-imaging-1.0.0-alpha6.pom",
+      "finalUrl": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-imaging/1.0.0-alpha6/commons-imaging-1.0.0-alpha6.pom",
+      "path": "commons-imaging-1.0.0-alpha6.pom",
+      "bytes": 16225,
+      "sha256Bytes": "bf3e202c6cb32b27b48c055dfe900333dcc8f362173dc076fb4199b4f2ffcc27",
+      "sha512Bytes": "af69ef063869511f836ca5ca3c6e8446e42330babb6660f5453afe83ed785620beb5dba24ce2af5d98345c7e7c09a280e0343e9273d8aac137313b4965b4ef72"
+    }
+  ],
+  "transitiveResolutionPending": true
+}

@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "originalTag": "v0.2.3-alpha.9",
+  "generated": {
+    "com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d"
+  },
+  "freshBytesEqual": true,
+  "nativeOrPackageAccepted": false
+}

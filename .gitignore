@@ -122,3 +122,6 @@ app/src/test/java/com/android/purebilibili/docs/UiDesignDocumentationStructureTe
 .reasonix/
 reasonix.toml
 .zcodeignore
+
+# Task-only JNI extraction caches are never source or verification artifacts.
+desktop/verification/**/private-native-home/

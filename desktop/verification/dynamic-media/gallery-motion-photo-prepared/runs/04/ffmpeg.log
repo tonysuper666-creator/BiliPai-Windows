@@ -1,0 +1,17 @@
+Input #0, lavfi, from 'testsrc=size=96x64:rate=15':
+  Duration: N/A, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: wrapped_avframe, rgb24, 96x64 [SAR 1:1 DAR 3:2], 15 fps, 15 tbr, 15 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (wrapped_avframe (native) -> mpeg4 (native))
+[mpeg4 @ 000000df02f421c0] too many threads/slices (5), reducing to 4
+Output #0, mp4, to 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\dynamic-gallery-motion-photo-parity\runs\04\media\source.mp4':
+  Metadata:
+    encoder         : Lavf62.12.102
+  Stream #0:0: Video: mpeg4 (mp4v / 0x7634706D), yuv420p(tv, progressive), 96x64 [SAR 1:1 DAR 3:2], q=2-31, 200 kb/s, 15 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.28.102 mpeg4
+    Side data:
+      CPB properties: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A
+[mp4 @ 000000df02f36380] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 000000df02f07040] video:6KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 15.286315%
+frame=   12 fps=0.0 q=2.0 Lsize=       7KiB time=00:00:00.80 bitrate=  71.3kbits/s speed=27.7x elapsed=0:00:00.02    
