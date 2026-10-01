@@ -1,0 +1,22 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlayerVideoOutput.kt",
+    "sha256LF": "44352defeeb3cd3ec0c9a8902a6311d91bacea779accdbab7689b1483611d34c"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+    "sha256LF": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopWebMaskPath.kt",
+    "sha256LF": "b49c3e4e88564a15b1e71eb04cb9292cb3be9a1a307ef0f231db5199a240fd6b"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+    "sha256LF": "183bd4dec1f83c718b1e58b7fa271780361ce575e8e13eebfe958ff550932432"
+  }
+]

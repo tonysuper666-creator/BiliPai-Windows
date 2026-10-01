@@ -1,0 +1,117 @@
+{
+  "status": "PASS",
+  "actual31CP": "0da93f5423ef53986a1939d97b37114a97e4a8e64b646052d34eaeaa916a6dee",
+  "candidate": "bad3de73a640fb55eeb41106f4d04a4159145d2551abbd0ef9e742a05e79bada",
+  "candidateApis": [
+    {
+      "key": "com/android/purebilibili/feature/video/danmaku/method:shouldApplyDanmakuLoadResult(JJJJ)Z",
+      "package": "com/android/purebilibili/feature/video/danmaku",
+      "member": "shouldApplyDanmakuLoadResult",
+      "descriptor": "(JJJJ)Z",
+      "kind": "method",
+      "facade": "com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskOwnerKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    },
+    {
+      "key": "com/android/purebilibili/feature/video/danmaku/method:getDesktopOriginalWebMask(Lcom/bilipai/desktop/danmaku/DesktopDanmakuSource;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "package": "com/android/purebilibili/feature/video/danmaku",
+      "member": "getDesktopOriginalWebMask",
+      "descriptor": "(Lcom/bilipai/desktop/danmaku/DesktopDanmakuSource;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "kind": "method",
+      "facade": "com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskProtocolKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    },
+    {
+      "key": "com/android/purebilibili/feature/video/danmaku/method:normalizeDanmakuPlaybackSpeed(F)F",
+      "package": "com/android/purebilibili/feature/video/danmaku",
+      "member": "normalizeDanmakuPlaybackSpeed",
+      "descriptor": "(F)F",
+      "kind": "method",
+      "facade": "com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskRefreshPolicyKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    },
+    {
+      "key": "com/android/purebilibili/feature/video/danmaku/method:resolveDanmakuDriftSyncIntervalMs(F)J",
+      "package": "com/android/purebilibili/feature/video/danmaku",
+      "member": "resolveDanmakuDriftSyncIntervalMs",
+      "descriptor": "(F)J",
+      "kind": "method",
+      "facade": "com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskRefreshPolicyKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    },
+    {
+      "key": "com/bilipai/desktop/danmaku/method:applyDesktopWebMaskClip(Ljava/awt/Graphics2D;IILcom/android/purebilibili/danmaku/engine/DanmakuMaskFrame;)V",
+      "package": "com/bilipai/desktop/danmaku",
+      "member": "applyDesktopWebMaskClip",
+      "descriptor": "(Ljava/awt/Graphics2D;IILcom/android/purebilibili/danmaku/engine/DanmakuMaskFrame;)V",
+      "kind": "method",
+      "facade": "com/bilipai/desktop/danmaku/DesktopWebMaskPathKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    },
+    {
+      "key": "com/bilipai/desktop/danmaku/method:awaitFrame$default(Lcom/bilipai/desktop/danmaku/Owner;JLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;",
+      "package": "com/bilipai/desktop/danmaku",
+      "member": "awaitFrame$default",
+      "descriptor": "(Lcom/bilipai/desktop/danmaku/Owner;JLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;",
+      "kind": "method",
+      "facade": "com/bilipai/desktop/danmaku/WebMaskProofKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    },
+    {
+      "key": "com/bilipai/desktop/danmaku/method:main([Ljava/lang/String;)V",
+      "package": "com/bilipai/desktop/danmaku",
+      "member": "main",
+      "descriptor": "([Ljava/lang/String;)V",
+      "kind": "method",
+      "facade": "com/bilipai/desktop/danmaku/WebMaskProofKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    },
+    {
+      "key": "com/bilipai/desktop/danmaku/method:originalConfig(Lcom/bilipai/desktop/danmaku/DanmakuSettings;Lcom/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform;)Lcom/android/purebilibili/feature/video/danmaku/DanmakuConfig;",
+      "package": "com/bilipai/desktop/danmaku",
+      "member": "originalConfig",
+      "descriptor": "(Lcom/bilipai/desktop/danmaku/DanmakuSettings;Lcom/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform;)Lcom/android/purebilibili/feature/video/danmaku/DanmakuConfig;",
+      "kind": "method",
+      "facade": "com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatformKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    },
+    {
+      "key": "com/bilipai/desktop/danmaku/method:desktopDanmakuFont(Lcom/android/purebilibili/danmaku/engine/DanmakuRenderConfig;Lcom/bilipai/desktop/danmaku/DanmakuComment;FZ)Ljava/awt/Font;",
+      "package": "com/bilipai/desktop/danmaku",
+      "member": "desktopDanmakuFont",
+      "descriptor": "(Lcom/android/purebilibili/danmaku/engine/DanmakuRenderConfig;Lcom/bilipai/desktop/danmaku/DanmakuComment;FZ)Ljava/awt/Font;",
+      "kind": "method",
+      "facade": "com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatformKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    },
+    {
+      "key": "com/bilipai/desktop/ui/method:originalScope(Lcom/bilipai/desktop/ui/DesktopDanmakuPresentation;)Lcom/android/purebilibili/core/store/DanmakuSettingsScope;",
+      "package": "com/bilipai/desktop/ui",
+      "member": "originalScope",
+      "descriptor": "(Lcom/bilipai/desktop/ui/DesktopDanmakuPresentation;)Lcom/android/purebilibili/core/store/DanmakuSettingsScope;",
+      "kind": "method",
+      "facade": "com/bilipai/desktop/ui/DesktopDanmakuSettingsProjectionKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    },
+    {
+      "key": "com/bilipai/desktop/ui/method:projectOriginalDanmakuRendererSettings(Lcom/bilipai/desktop/danmaku/DanmakuSettings;Lcom/android/purebilibili/core/store/DanmakuSettings;)Lcom/bilipai/desktop/danmaku/DanmakuSettings;",
+      "package": "com/bilipai/desktop/ui",
+      "member": "projectOriginalDanmakuRendererSettings",
+      "descriptor": "(Lcom/bilipai/desktop/danmaku/DanmakuSettings;Lcom/android/purebilibili/core/store/DanmakuSettings;)Lcom/bilipai/desktop/danmaku/DanmakuSettings;",
+      "kind": "method",
+      "facade": "com/bilipai/desktop/ui/DesktopDanmakuSettingsProjectionKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    },
+    {
+      "key": "com/bilipai/desktop/ui/method:importLegacyWindowsDanmakuIfAbsent(Lcom/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences;Lcom/bilipai/desktop/danmaku/DanmakuSettings;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "package": "com/bilipai/desktop/ui",
+      "member": "importLegacyWindowsDanmakuIfAbsent",
+      "descriptor": "(Lcom/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences;Lcom/bilipai/desktop/danmaku/DanmakuSettings;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "kind": "method",
+      "facade": "com/bilipai/desktop/ui/DesktopDanmakuSettingsProjectionKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar"
+    }
+  ],
+  "checkedExistingStaticCount": 355,
+  "unexpected": []
+}

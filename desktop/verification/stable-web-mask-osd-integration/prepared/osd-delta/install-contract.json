@@ -1,0 +1,37 @@
+{
+  "status": "READY_SOURCE_ONLY",
+  "fixedTagCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "payloadCount": 0,
+  "localHunkCount": 7,
+  "localHunksSHA256": "ce0208680c44546ba19671b7ced40a902acd7f107c73bc34d62ed493c0e46ac7",
+  "installOrder": [
+    "Root media74 canonical exact local hunks",
+    "Root mask100 canonical payloads and exact local hunks",
+    "OSD7 local hunks only after exact before/after/count verification",
+    "Root whole compile and actual same-window native video/OSD/mask acceptance"
+  ],
+  "wholeReviewFilesAreInstallPayloads": false,
+  "registryDelta": [],
+  "dependencyDelta": [],
+  "generatedProducerDelta": [],
+  "authority": "Existing Mpv Session native poll/output/sourceVersion/playbackRevision; same Overlay mask/source/account owner; one observed OSD-to-physical transform",
+  "requiredPort": "PlayerVideoOutputState.viewport:PlayerVideoViewport? observed in the same native poll. Absent/not-ready/retired clears or skips mask; no guessed fit fallback.",
+  "negativeMargins": "Native crop/pan ml/mt may be negative and remain exact; existing physical canvas clips mapped shape.",
+  "proof": {
+    "groups": 4,
+    "assertions": 21,
+    "actualSkiaAndJava2D": true,
+    "nativeMpv": false,
+    "actualRootWindow": false,
+    "inputsAreExplicitObservations": true
+  },
+  "pending": [
+    "Actual Root same-window native OSD observation and final mask painting acceptance",
+    "Original engine compositor/AA pixel identity",
+    "SCREEN_TOP layout, independent portrait-fullscreen UI, original full special/Live renderer queue closure"
+  ],
+  "historicalFreezesUnmodified": [
+    "5faef2a880cc1376185165edd4f71eefa09fb4711133ba7706a7bc79cfbd82c5",
+    "9b9ced6df9540109469a25da9917407126e97bdce5656688b04627f2f05fe966"
+  ]
+}

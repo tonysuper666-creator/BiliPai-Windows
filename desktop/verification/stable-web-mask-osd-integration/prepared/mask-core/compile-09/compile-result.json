@@ -1,0 +1,126 @@
+{
+  "status": "PASS",
+  "actualWholeSnapshot": "999bc989c995f877761b22c5c00a6a0d99819100d8cef591a25f94b5d56a3a5d",
+  "actual92CP": "0da93f5423ef53986a1939d97b37114a97e4a8e64b646052d34eaeaa916a6dee",
+  "jarSha256Bytes": "bad3de73a640fb55eeb41106f4d04a4159145d2551abbd0ef9e742a05e79bada",
+  "sourceInputs": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\WebMaskParser.kt",
+      "sha256Bytes": "b5f116903577025ba9efbc8d7966301283fc12aa5638354b8f5735118294054c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\danmaku\\engine\\DanmakuMaskFrame.kt",
+      "sha256Bytes": "5b2ec025b62c8f126b4ec8ad16b5886b1785881bd55daa476acfe5591485583e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalWebMaskProtocol.kt",
+      "sha256Bytes": "6086df00d120630d5bc253e117c1c75ed8f9a4b3add1a48f322bc2117d08bc8d"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalWebMaskOwner.kt",
+      "sha256Bytes": "ca22ed4897465a4955f30bfb2d9e3a24e1ecaf53ca9798d98a145bc171a84f85"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalWebMaskRefreshPolicy.kt",
+      "sha256Bytes": "c688a2b504f4b0c060ea1c2e9a45186588155a0ef7b518bbefd037bddda43c0b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopOwnedWebMaskSource.kt",
+      "sha256Bytes": "1b7dae404ad9e31e7f55c01153dcf0860b2c64464bc3f471f2fd3e8ed1516ccb"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopWebMaskPath.kt",
+      "sha256Bytes": "b49c3e4e88564a15b1e71eb04cb9292cb3be9a1a307ef0f231db5199a240fd6b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopPlaybackController.kt",
+      "sha256Bytes": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "sha256Bytes": "183bd4dec1f83c718b1e58b7fa271780361ce575e8e13eebfe958ff550932432"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuSettings.kt",
+      "sha256Bytes": "26a724cc43f484aef5fa88a4f6f6e6ccc64e4564e39d2687b6b5323df7ff5b13"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256Bytes": "cffab09d475d7aa7bf4b92e531752a464e8ba3a679bf0682759291b78e71c76c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "4d382d2dee6b0cbb7a8b75a1613a160f4e126c0df76553d03645e73a74820763"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\proof\\WebMaskProof.kt",
+      "sha256Bytes": "868d0e98b14dae6347ba7eb9c417e6c711187b86806e4ea4769f1cefb6e03f41"
+    }
+  ],
+  "declaredExistingClassFamilies": [
+    "com/bilipai/desktop/DesktopPlaybackController$2$1$4.class",
+    "com/bilipai/desktop/DesktopPlaybackController$2$1$emit$1.class",
+    "com/bilipai/desktop/DesktopPlaybackController$2$1.class",
+    "com/bilipai/desktop/DesktopPlaybackController$2.class",
+    "com/bilipai/desktop/DesktopPlaybackController$3.class",
+    "com/bilipai/desktop/DesktopPlaybackController$Current.class",
+    "com/bilipai/desktop/DesktopPlaybackController$PendingSponsorSkip.class",
+    "com/bilipai/desktop/DesktopPlaybackController$QueueOwnership.class",
+    "com/bilipai/desktop/DesktopPlaybackController$Target.class",
+    "com/bilipai/desktop/DesktopPlaybackController$WhenMappings.class",
+    "com/bilipai/desktop/DesktopPlaybackController$beginPlugins$1.class",
+    "com/bilipai/desktop/DesktopPlaybackController$completeSponsorSkip$1.class",
+    "com/bilipai/desktop/DesktopPlaybackController$heartbeatReporter$2.class",
+    "com/bilipai/desktop/DesktopPlaybackController$heartbeatReporter$3$1.class",
+    "com/bilipai/desktop/DesktopPlaybackController$heartbeatReporter$3.class",
+    "com/bilipai/desktop/DesktopPlaybackController$load$2$2.class",
+    "com/bilipai/desktop/DesktopPlaybackController$load$2.class",
+    "com/bilipai/desktop/DesktopPlaybackController$openQueueItem$2$3.class",
+    "com/bilipai/desktop/DesktopPlaybackController$openQueueItem$2.class",
+    "com/bilipai/desktop/DesktopPlaybackController$playPart$2.class",
+    "com/bilipai/desktop/DesktopPlaybackController$playback$1.class",
+    "com/bilipai/desktop/DesktopPlaybackController$prepareResolved$$inlined$sortedBy$1.class",
+    "com/bilipai/desktop/DesktopPlaybackController$recover$3$WhenMappings.class",
+    "com/bilipai/desktop/DesktopPlaybackController$recover$3.class",
+    "com/bilipai/desktop/DesktopPlaybackController$reloadSource$2.class",
+    "com/bilipai/desktop/DesktopPlaybackController$runPositionPlugins$1.class",
+    "com/bilipai/desktop/DesktopPlaybackController$watchdog$1.class",
+    "com/bilipai/desktop/DesktopPlaybackController$watchdog$2.class",
+    "com/bilipai/desktop/DesktopPlaybackController.class",
+    "com/bilipai/desktop/DesktopPlaybackControllerKt.class",
+    "com/bilipai/desktop/DesktopPlaybackDataSource$DefaultImpls.class",
+    "com/bilipai/desktop/DesktopPlaybackDataSource.class",
+    "com/bilipai/desktop/DesktopPlaybackState.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$Companion.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$ConfigKey.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$PendingLive.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$User32.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$installDocument$processing$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1$2.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1$invokeSuspend$$inlined$map$1$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1$invokeSuspend$$inlined$map$1$2$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1$invokeSuspend$$inlined$map$1$2.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1$invokeSuspend$$inlined$map$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$panel$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay.class",
+    "com/bilipai/desktop/danmaku/DanmakuPoolSourceSnapshot.class",
+    "com/bilipai/desktop/danmaku/DanmakuSettings$$serializer.class",
+    "com/bilipai/desktop/danmaku/DanmakuSettings$Companion.class",
+    "com/bilipai/desktop/danmaku/DanmakuSettings.class",
+    "com/bilipai/desktop/danmaku/DesktopDanmakuConfigLog.class",
+    "com/bilipai/desktop/danmaku/DesktopDanmakuPaintGeometry$Companion.class",
+    "com/bilipai/desktop/danmaku/DesktopDanmakuPaintGeometry.class",
+    "com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.class",
+    "com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatformKt.class",
+    "com/bilipai/desktop/danmaku/DesktopWindowsDanmakuRenderPlatform.class",
+    "com/bilipai/desktop/ui/DesktopDanmakuPresentation.class",
+    "com/bilipai/desktop/ui/DesktopDanmakuPresentationBinding.class",
+    "com/bilipai/desktop/ui/DesktopDanmakuSettingsProjectionKt.class"
+  ],
+  "newClassOverlapZero": true,
+  "sourceOnly": true,
+  "actualRootWindowRuntime": false
+}

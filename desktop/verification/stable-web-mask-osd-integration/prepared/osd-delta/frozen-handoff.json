@@ -1,0 +1,160 @@
+{
+  "status": "READY_SOURCE_ONLY",
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "localHunkCount": 7,
+  "payloadCount": 0,
+  "actual31Manifest": "999bc989c995f877761b22c5c00a6a0d99819100d8cef591a25f94b5d56a3a5d",
+  "mask100Manifest": "5faef2a880cc1376185165edd4f71eefa09fb4711133ba7706a7bc79cfbd82c5",
+  "media74Manifest": "9b9ced6df9540109469a25da9917407126e97bdce5656688b04627f2f05fe966",
+  "compileResult": "30026a8d0e4a498dc2fce5907afd5de1ccc2abf7ca235d9cd1bc142bbfc6a9fd",
+  "sourceAudit": "a245566dd1b4a4c327cf5686a001e7c496fa21e9f638aec4d5b2b95b2646f3c5",
+  "topMethods": "2fb2ec1e52797e6611c58b6fc4470955bf63050a97ab9597fa652ef5eef53d98",
+  "installContract": "d4360e4983b62a227dce02cbc39b1f2f75fdba62c9b283ad3f707211ab15683e",
+  "proof": {
+    "groups": 4,
+    "assertions": 21,
+    "actualSkiaAndJava2D": true,
+    "nativeMpv": false,
+    "actualRootWindow": false,
+    "inputsAreExplicitObservations": true
+  },
+  "actualRootRuntime": false,
+  "nativeMpvExecuted": false,
+  "evidence": [
+    {
+      "relative": "audit-freeze.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\audit-freeze.py",
+      "sha256Bytes": "65cab3c38e1bdefda1a4ba9775463508936d6fdfd4200996242cbf9c09d67d58"
+    },
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "sha256Bytes": "183bd4dec1f83c718b1e58b7fa271780361ce575e8e13eebfe958ff550932432"
+    },
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopWebMaskPath.kt",
+      "sha256Bytes": "b49c3e4e88564a15b1e71eb04cb9292cb3be9a1a307ef0f231db5199a240fd6b"
+    },
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256Bytes": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5"
+    },
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlayerVideoOutput.kt",
+      "sha256Bytes": "44352defeeb3cd3ec0c9a8902a6311d91bacea779accdbab7689b1483611d34c"
+    },
+    {
+      "relative": "baseline-manifest.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\baseline-manifest.json",
+      "sha256Bytes": "7d01a7f6116b2d494e7c2904a75890da106065b24810935bd9fdde3c68298cc4"
+    },
+    {
+      "relative": "compile-01/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-01\\compiler.args",
+      "sha256Bytes": "ce5114ed1ceae9dbddf231dfac5a377fee09ed4646e070ca4e2f24fb6196a718"
+    },
+    {
+      "relative": "compile-01/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-01\\compiler.log",
+      "sha256Bytes": "b6c7cda33bbbc17bc1a64b723146cfa1b0e4ed533cabde4eeefa80d8f58fdb89"
+    },
+    {
+      "relative": "compile-01/native-osd-mask-candidate.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-01\\native-osd-mask-candidate.jar",
+      "sha256Bytes": "c5749e8b7f0c6baf2c943af2b7e5377f26f0949e7c1cf36c4c0642e83c24c42c"
+    },
+    {
+      "relative": "compile-02/compile-result.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-02\\compile-result.json",
+      "sha256Bytes": "30026a8d0e4a498dc2fce5907afd5de1ccc2abf7ca235d9cd1bc142bbfc6a9fd"
+    },
+    {
+      "relative": "compile-02/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-02\\compiler.args",
+      "sha256Bytes": "90a4da8599501dbeef255da565efc5d26256175505672b875463a309a6af4336"
+    },
+    {
+      "relative": "compile-02/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-02\\compiler.log",
+      "sha256Bytes": "1ea09ef2a727ee69211d6de294b4b3904ae8f55fa43c7f231b67a11cea4ad8b8"
+    },
+    {
+      "relative": "compile-02/native-osd-mask-candidate.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-02\\native-osd-mask-candidate.jar",
+      "sha256Bytes": "d890f7a32988c42f08de33bb3658893c798b044a986fbd6139c9778f5c4150dd"
+    },
+    {
+      "relative": "compile-02/ordered-cp-receipt.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-02\\ordered-cp-receipt.json",
+      "sha256Bytes": "f6a2d74be1becbcb6fe94ec5b1f7f2cf56b16beb54651ad3c745b4008b8517ac"
+    },
+    {
+      "relative": "compile-02/proof-result.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-02\\proof-result.txt",
+      "sha256Bytes": "eef1ad258560ad9d9f04e07331990cb50a0384af817e2a08dc91a99cbbb8e58e"
+    },
+    {
+      "relative": "compile-02/runtime.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-02\\runtime.log",
+      "sha256Bytes": "9e4ab1cbc43d00802bba1f7aee268bfd16079724b181942dce32347a19435b90"
+    },
+    {
+      "relative": "compile.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile.py",
+      "sha256Bytes": "cce4c664a4fd31d5133cc679264d3c97381cda86a3aaf20423f2eef556d53165"
+    },
+    {
+      "relative": "install-contract.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\install-contract.json",
+      "sha256Bytes": "d4360e4983b62a227dce02cbc39b1f2f75fdba62c9b283ad3f707211ab15683e"
+    },
+    {
+      "relative": "local-hunks.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\local-hunks.json",
+      "sha256Bytes": "ce0208680c44546ba19671b7ced40a902acd7f107c73bc34d62ed493c0e46ac7"
+    },
+    {
+      "relative": "prepare.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\prepare.py",
+      "sha256Bytes": "4fba2e814cae9970a3fad458bada4b9551945f495e89830a5cb4a4cddd0db0d5"
+    },
+    {
+      "relative": "proof/OsdMaskProof.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\proof\\OsdMaskProof.kt",
+      "sha256Bytes": "cf7105a1df323d4b9bf5a19f94f048a0039c58a816c7588150d329a1c3f3d810"
+    },
+    {
+      "relative": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "sha256Bytes": "270bbedec2b28d63254d04263d3e12a5d4e5226d2231eecbc2f5567099e57d14"
+    },
+    {
+      "relative": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopWebMaskPath.kt",
+      "sha256Bytes": "1702c11f675ac4801a8e0c9940116c8827520575e0770173c44b66d9f29e722c"
+    },
+    {
+      "relative": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256Bytes": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf"
+    },
+    {
+      "relative": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlayerVideoOutput.kt",
+      "sha256Bytes": "e74a76a7fe3d68e847db5cca179174ca31ca77055a76c9cad66000d3e406bc79"
+    },
+    {
+      "relative": "source-audit.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\source-audit.json",
+      "sha256Bytes": "a245566dd1b4a4c327cf5686a001e7c496fa21e9f638aec4d5b2b95b2646f3c5"
+    },
+    {
+      "relative": "topmethod-receipt.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\topmethod-receipt.json",
+      "sha256Bytes": "2fb2ec1e52797e6611c58b6fc4470955bf63050a97ab9597fa652ef5eef53d98"
+    }
+  ]
+}

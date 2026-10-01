@@ -1,0 +1,78 @@
+{
+  "status": "READY_FIXTURE_SOURCE_ONLY_ACTUAL_GRAPH_PENDING",
+  "fixedBiliPaiCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "fixedMpvCommit": "69e63f425a531f814431fba12750bdb3721357f2",
+  "nativeDLLSHA256": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+  "fixtureSource": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\NativeOsdMaskFixture.kt",
+    "sha256Bytes": "2854cc80d59f7c7d20c4f68d63143089c1b7ea2890926094cb9ee1cf2ab3a474"
+  },
+  "runner": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\run.py",
+    "sha256Bytes": "915b9dcd043988ba7f16579001fbfa18a9383dd0285624a96409d9744b164a0a"
+  },
+  "prospectiveCompileReceipt": "913bc98ed647773683e187efc2c516d2e522b916b8b5a96e41aeb6492d63c594",
+  "fixtureSymbolAudit": "cfcfa6aacc01609130f4700dd3374f98406713ce06083b726e2a5e0618884359",
+  "fixtureProductionClassOverlap": 0,
+  "nativeExecuted": false,
+  "strictActualRuntimeEntries": 97,
+  "requiredActualAdmission": [
+    "Root-provided installed snapshot directory, manifest byteSHA and ordered97CP byteSHA; count strictly97",
+    "11 required actual class FQNs must occur uniquely in sole product main-kotlin.jar",
+    "Every actual CP/JDK/DLL/media/fixture input pinned; JVM runtime permits zero prospective production override",
+    "Native local clips fixed by existing actual33 media pins; no generation/download/account"
+  ],
+  "minimumPlatformCalls": [
+    "MpvPlayer(useNullAudioOutput=true); same existing surface Canvas.addNotify()/default Session attach",
+    "Private hidden JFrame real peer/client size, User32.GetClientRect/GetDpiForWindow, existing graphicsConfiguration.defaultTransform/device.displayMode",
+    "loadVersioned(localPath); existing state native first-frame receipt+videoOutput.viewport+ownsSourceVersion",
+    "Existing actor captureScreenshot for decoded source pixels (no Robot/desktop screenshot)",
+    "setVideoPanscan/seekToTracked/resize/current stopIfSourceVersion/close",
+    "Original full WebMaskParser→same DesktopWebMaskPath→applyDesktopWebMaskClip→existing AdvancedDanmakuRenderer"
+  ],
+  "cannotClaim": [
+    "Main Root ComposeWindow/SwingPanel bounds/layout acceptance",
+    "Real account/WBI metadata HTTP, source-controller mask actor acceptance",
+    "Physical monitor first frame or native transparent overlay final screen pixels",
+    "An asymmetric user monitor: asymmetric/fractional test values are explicit fixture inputs only",
+    "Original ByteDance compositor/AA identity, SCREEN_TOP or portrait/fullLive/special renderer closure"
+  ],
+  "reusedExistingTests": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\danmaku\\AdvancedDanmakuTest.kt",
+      "sha256Bytes": "7f3883793a4e652914a128383abf2b83f309d9de0050202403ef7773c45c1971",
+      "reuse": "Existing full mode7/9 authored parser/frame/paint and no executable mode8; same Advanced renderer reused after standard mask child."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\player\\PlayerVideoOutputTest.kt",
+      "sha256Bytes": "38a05a14277d885276eaea78d012f00a708d9484aed3f97a6ecd19631b4e25cf",
+      "reuse": "Existing exact native capability, sourceVersion/shader ownership, source-scoped reset and no setter-as-observation semantics."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\DesktopOverlayNativeSmoke.kt",
+      "sha256Bytes": "04c7daf2404b037be69b80f5c8f1fbfde650261c6f49a69717d051c3cd00cc07",
+      "reuse": "Existing transparent default-native HWND/surface and standard-vs-later layers, lifecycle; Robot/screen proof deliberately not invoked by this runner."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-render-main31-proof\\actual-hidden-window\\ActualMonitorWindowProof.kt",
+      "sha256Bytes": "56f00660556f5f180298a5b4b762ca5d0233631952ee540a3fb28b794a3b3e52",
+      "reuse": "Existing private hidden AWT peer and actual graphicsConfiguration/device/defaultTransform/physical short-side measurement."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-native-media-proof\\NativeHomeMediaFixture.kt",
+      "sha256Bytes": "593b39977aa40e0b370a6d789e87bc6d15c02703ee7cdf4d6b6a5e66fd10751f",
+      "reuse": "Existing actual default actor state receipt/loadVersioned/seek/stop/teardown contracts, file-only fencing and actual CP origin receipts; software/Home actor not created in new runner."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\proof\\WebMaskProof.kt",
+      "sha256Bytes": "868d0e98b14dae6347ba7eb9c417e6c711187b86806e4ea4769f1cefb6e03f41",
+      "reuse": "Existing MASK header+gzip+base64 fixture encoding only; production full original parser reused, not rewritten."
+    }
+  ],
+  "officialClientHeader": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\client.h",
+    "sha256Bytes": "1acf99ee77c8c2a6f1d1993bd81bbc8a91d27fb5924e80171670e6139a4bd353",
+    "url": "https://raw.githubusercontent.com/mpv-player/mpv/69e63f425a531f814431fba12750bdb3721357f2/include/mpv/client.h",
+    "commit": "69e63f425a531f814431fba12750bdb3721357f2"
+  }
+}

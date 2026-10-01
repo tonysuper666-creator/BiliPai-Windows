@@ -1,0 +1,32 @@
+[
+  {
+    "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+    "sha256LF": "b001d27e4e30af5c36dfbc990378a6448aabd1dcd532f5e259819e825d873641",
+    "canonical": "Advanced213 sole producer"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "sha256LF": "dba945d6158081370ecd3455f5bbcacfbbae0983c449ed629d63031e54597f78",
+    "canonical": "Actual31 complete source capture, exact LOCAL hunks only"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+    "sha256LF": "f1bd64ca7c4b50c6fe5f58dadd8e248794fddeb6b4e366e3d9244759cc32b513",
+    "canonical": "Actual31 complete source capture, exact LOCAL hunks only"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+    "sha256LF": "eaafed3a14fcbe95258171cf3aed2cf0b8332e925f7dae1f23806505f299e320",
+    "canonical": "Actual31 complete source capture, exact LOCAL hunks only"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+    "sha256LF": "2ddd07492e3f386950d4fec879a0e5abb1ac5a633f438cf345bdd666312557a0",
+    "canonical": "Actual31 complete source capture, exact LOCAL hunks only"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+    "sha256LF": "b30a402680e77fcb2f9498c4e76886150bb70634597c60994d5cbbf6317a1685",
+    "canonical": "Actual31 complete source capture, exact LOCAL hunks only"
+  }
+]

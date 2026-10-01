@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "candidateJar": "d890f7a32988c42f08de33bb3658893c798b044a986fbd6139c9778f5c4150dd",
+  "declaredExistingFacadeOverrides": [
+    "com/bilipai/desktop/danmaku/DesktopWebMaskPathKt.class",
+    "com/bilipai/desktop/player/PlayerVideoOutputKt.class"
+  ],
+  "candidateApi": [
+    {
+      "key": "com/bilipai/desktop/danmaku/method:main([Ljava/lang/String;)V",
+      "package": "com/bilipai/desktop/danmaku",
+      "member": "main",
+      "descriptor": "([Ljava/lang/String;)V",
+      "kind": "method",
+      "facade": "com/bilipai/desktop/danmaku/OsdMaskProofKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-02\\native-osd-mask-candidate.jar"
+    },
+    {
+      "key": "com/bilipai/desktop/danmaku/method:applyDesktopWebMaskClip(Ljava/awt/Graphics2D;IILcom/android/purebilibili/danmaku/engine/DanmakuMaskFrame;Lcom/bilipai/desktop/player/PlayerVideoViewport;)V",
+      "package": "com/bilipai/desktop/danmaku",
+      "member": "applyDesktopWebMaskClip",
+      "descriptor": "(Ljava/awt/Graphics2D;IILcom/android/purebilibili/danmaku/engine/DanmakuMaskFrame;Lcom/bilipai/desktop/player/PlayerVideoViewport;)V",
+      "kind": "method",
+      "facade": "com/bilipai/desktop/danmaku/DesktopWebMaskPathKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-02\\native-osd-mask-candidate.jar"
+    },
+    {
+      "key": "com/bilipai/desktop/player/method:parseNativeVideoCapability(Ljava/lang/String;Ljava/lang/String;)Lcom/bilipai/desktop/player/NativeVideoCapability;",
+      "package": "com/bilipai/desktop/player",
+      "member": "parseNativeVideoCapability",
+      "descriptor": "(Ljava/lang/String;Ljava/lang/String;)Lcom/bilipai/desktop/player/NativeVideoCapability;",
+      "kind": "method",
+      "facade": "com/bilipai/desktop/player/PlayerVideoOutputKt.class",
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-02\\native-osd-mask-candidate.jar"
+    }
+  ],
+  "existingApiCount": 35,
+  "unexpected": []
+}

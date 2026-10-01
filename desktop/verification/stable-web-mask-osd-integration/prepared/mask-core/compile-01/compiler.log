@@ -1,0 +1,66 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:28:38: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                        when (segment.verb) {
+                                     ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:29:62: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.MOVE -> p.moveTo(segment.p0!!.x, segment.p0!!.y)
+                                                             ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:29:78: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.MOVE -> p.moveTo(segment.p0!!.x, segment.p0!!.y)
+                                                                             ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:30:62: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.LINE -> p.lineTo(segment.p1!!.x, segment.p1!!.y)
+                                                             ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:30:78: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.LINE -> p.lineTo(segment.p1!!.x, segment.p1!!.y)
+                                                                             ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:31:62: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.QUAD -> p.quadTo(segment.p1!!.x, segment.p1!!.y, segment.p2!!.x, segment.p2!!.y)
+                                                             ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:31:78: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.QUAD -> p.quadTo(segment.p1!!.x, segment.p1!!.y, segment.p2!!.x, segment.p2!!.y)
+                                                                             ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:31:94: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.QUAD -> p.quadTo(segment.p1!!.x, segment.p1!!.y, segment.p2!!.x, segment.p2!!.y)
+                                                                                             ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:31:110: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.QUAD -> p.quadTo(segment.p1!!.x, segment.p1!!.y, segment.p2!!.x, segment.p2!!.y)
+                                                                                                             ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:32:64: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.CUBIC -> p.curveTo(segment.p1!!.x, segment.p1!!.y, segment.p2!!.x, segment.p2!!.y, segment.p3!!.x, segment.p3!!.y)
+                                                               ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:32:80: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.CUBIC -> p.curveTo(segment.p1!!.x, segment.p1!!.y, segment.p2!!.x, segment.p2!!.y, segment.p3!!.x, segment.p3!!.y)
+                                                                               ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:32:96: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.CUBIC -> p.curveTo(segment.p1!!.x, segment.p1!!.y, segment.p2!!.x, segment.p2!!.y, segment.p3!!.x, segment.p3!!.y)
+                                                                                               ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:32:112: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.CUBIC -> p.curveTo(segment.p1!!.x, segment.p1!!.y, segment.p2!!.x, segment.p2!!.y, segment.p3!!.x, segment.p3!!.y)
+                                                                                                               ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:32:128: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.CUBIC -> p.curveTo(segment.p1!!.x, segment.p1!!.y, segment.p2!!.x, segment.p2!!.y, segment.p3!!.x, segment.p3!!.y)
+                                                                                                                               ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:32:144: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                            PathVerb.CUBIC -> p.curveTo(segment.p1!!.x, segment.p1!!.y, segment.p2!!.x, segment.p2!!.y, segment.p3!!.x, segment.p3!!.y)
+                                                                                                                                               ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:35:81: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                                val quads = SkiaPath.convertConicToQuads(segment.p0!!, segment.p1!!, segment.p2!!, segment.conicWeight, 5)
+                                                                                ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:35:95: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                                val quads = SkiaPath.convertConicToQuads(segment.p0!!, segment.p1!!, segment.p2!!, segment.conicWeight, 5)
+                                                                                              ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:35:109: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                                val quads = SkiaPath.convertConicToQuads(segment.p0!!, segment.p1!!, segment.p2!!, segment.conicWeight, 5)
+                                                                                                            ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DesktopWebMaskPath.kt:35:123: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PathSegment?'.
+                                val quads = SkiaPath.convertConicToQuads(segment.p0!!, segment.p1!!, segment.p2!!, segment.conicWeight, 5)
+                                                                                                                          ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\review-only\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DanmakuOverlay.kt:71:56: error: unresolved reference 'smartOcclusionEnabled'.
+    override val webMaskEnabled:Boolean get()=settings.smartOcclusionEnabled && !liveMode && !closed.get()
+                                                       ^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\review-only\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DanmakuOverlay.kt:205:40: error: unresolved reference 'smartOcclusionEnabled'.
+        val smartChanged=this.settings.smartOcclusionEnabled!=normalized.smartOcclusionEnabled
+                                       ^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\review-only\desktop\src\main\kotlin\com\bilipai\desktop\danmaku\DanmakuOverlay.kt:205:74: error: unresolved reference 'smartOcclusionEnabled'.
+        val smartChanged=this.settings.smartOcclusionEnabled!=normalized.smartOcclusionEnabled
+                                                                         ^^^^^^^^^^^^^^^^^^^^^

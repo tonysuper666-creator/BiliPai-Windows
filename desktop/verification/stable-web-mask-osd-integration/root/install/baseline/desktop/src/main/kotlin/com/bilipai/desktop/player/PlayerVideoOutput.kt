@@ -1,0 +1,62 @@
+package com.bilipai.desktop.player
+
+/** Safe current native GPU/video metadata. No media addresses, plugin code or request credentials. */
+data class PlayerVideoOutputState(
+    val sourceVersion: Long = 0,
+    val maximumTextureDimension: Int? = null,
+    val intermediateFormat: String? = null,
+    /** Actual decoded texture size; display aspect corrections do not change FSR's input texel grid. */
+    val inputWidth: Int = 0,
+    val inputHeight: Int = 0,
+    val displayWidth: Int = 0,
+    val displayHeight: Int = 0,
+    val gamma: String? = null,
+    val dolbyVisionProfile: Int? = null,
+)
+
+data class PlayerVideoShaderOptions(
+    /** FSR's RGBA8 and Anime4K's float16 FBO match the original Android renderer. */
+    val intermediateFormat: String = "auto",
+    val parameters: Map<String, Double> = emptyMap(),
+    /** Multi-stage algorithms must prove all their stages actually executed. */
+    val requiredPassDescriptions: Set<String> = emptySet(),
+) {
+    internal fun frozen(): PlayerVideoShaderOptions {
+        require(intermediateFormat in setOf("auto", "rgba8", "rgba16hf")) { "Unsupported video intermediate format." }
+        require(parameters.size <= 32) { "Too many video shader parameters." }
+        parameters.forEach { (name, value) ->
+            require(name.length in 1..128 && PARAMETER_NAME.matches(name) && value.isFinite()) { "Invalid video shader parameter." }
+        }
+        require(requiredPassDescriptions.size <= 32 && requiredPassDescriptions.all {
+            it.length in 1..512 && it.none { character -> character.code < 32 || character.code == 127 }
+        }) { "Invalid required video shader passes." }
+        return copy(parameters = java.util.Collections.unmodifiableMap(parameters.toMap()),
+            requiredPassDescriptions = java.util.Collections.unmodifiableSet(requiredPassDescriptions.toSet()))
+    }
+
+    internal fun nativeParameterValue(): String = parameters.entries.joinToString(",") { "${it.key}=${it.value}" }
+
+    private companion object { val PARAMETER_NAME = Regex("[A-Za-z_][A-Za-z0-9_-]*(?:/[A-Za-z_][A-Za-z0-9_]*)?") }
+}
+
+/** These two exact strings are emitted by the pinned vo=gpu backend, independently of an account/source. */
+internal sealed interface NativeVideoCapability {
+    data class MaximumTextureDimension(val dimension: Int) : NativeVideoCapability
+    data class IntermediateFormat(val name: String) : NativeVideoCapability
+}
+
+internal fun parseNativeVideoCapability(prefix: String, text: String): NativeVideoCapability? {
+    val line = text.trim()
+    if (prefix == "vo/gpu/d3d11") {
+        val match = Regex("Maximum Texture2D size: ([0-9]+)x([0-9]+)").matchEntire(line) ?: return null
+        val width = match.groupValues[1].toIntOrNull() ?: return null
+        val height = match.groupValues[2].toIntOrNull() ?: return null
+        if (width != height || width !in 1..0x08000000) return null
+        return NativeVideoCapability.MaximumTextureDimension(width)
+    }
+    if (prefix == "vo/gpu") {
+        val match = Regex("Using FBO format ([a-z][a-z0-9_]{0,31})\\.").matchEntire(line) ?: return null
+        return NativeVideoCapability.IntermediateFormat(match.groupValues[1])
+    }
+    return null
+}

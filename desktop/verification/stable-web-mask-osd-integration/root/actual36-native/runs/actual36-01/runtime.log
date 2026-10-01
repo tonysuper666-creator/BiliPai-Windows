@@ -1,0 +1,44 @@
+PASS real task-owned HWND stays hidden
+PASS first load explicitly publishes empty bounds for its new source
+PASS first native frame has a current source receipt
+PASS actual libmpv screenshot returns decoded source dimensions
+PASS native OSD dimensions equal actual Canvas client pixels
+PASS original physical paint geometry agrees with actual Canvas client pixels
+PASS non-video-aspect task-owned canvas produces real native margins
+PASS installed original full MASK/gzip/base64/SVG parser retains native source viewBox
+PASS native-fit uses actual OSD margins and physical client dimensions
+PASS native-fit actual standard child preserves mapped mask pixels
+PASS native-fit actual standard child continues outside mapped mask
+PASS native-fit original advanced glyphs remain visible inside mask
+PASS native-fit absent real rectangle skips optional mask
+PASS native negative crop margins are preserved
+PASS installed original full MASK/gzip/base64/SVG parser retains native source viewBox
+PASS native-crop uses actual OSD margins and physical client dimensions
+PASS native-crop actual standard child preserves mapped mask pixels
+PASS native-crop actual standard child continues outside mapped mask
+PASS native-crop original advanced glyphs remain visible inside mask
+PASS native-crop absent real rectangle skips optional mask
+PASS seek keeps viewport/source association
+PASS installed original full MASK/gzip/base64/SVG parser retains native source viewBox
+PASS native-tall-client uses actual OSD margins and physical client dimensions
+PASS native-tall-client actual standard child preserves mapped mask pixels
+PASS native-tall-client actual standard child continues outside mapped mask
+PASS native-tall-client original advanced glyphs remain visible inside mask
+PASS native-tall-client absent real rectangle skips optional mask
+PASS load immediately retires old native source token
+PASS replacement load explicitly clears observed rectangle
+PASS retired source cannot admit current native rectangle
+PASS old source cannot stop its replacement
+PASS same native output versions never regress after replacement
+PASS current owned source stops through existing actor
+PASS stop advances source identity and leaves empty bounds
+PASS retired native poll cannot republish bounds after stop
+PASS explicit asymmetric/fractional physical fixture uses independent axes
+PASS fixture opens no Java network/listener
+PASS native worker returns to baseline after teardown
+PASS close clears final observed rectangle
+PASS 39 actual native OSD/source/Java2D assertions; Root window and screen overlay acceptance remain separate
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.danmaku.nativeosdproof.NativeOsdMaskFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/.local/stable-danmaku-native-mask-output-proof/runs/actual36-01/native-osd-mask-fixture.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.danmaku.nativeosdproof.NativeOsdMaskFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

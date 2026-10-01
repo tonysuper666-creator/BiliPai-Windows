@@ -1,0 +1,4 @@
+status=PASS
+groups=4
+assertions=21
+scope=actual Skia/Java2D + exact production ABI; explicit observed OSD fixture inputs; no HWND/native MPV/Root window acceptance

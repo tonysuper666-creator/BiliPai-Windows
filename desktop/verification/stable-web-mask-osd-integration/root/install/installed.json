@@ -1,0 +1,310 @@
+{
+  "applied": true,
+  "maskFrozenSHA256": "5faef2a880cc1376185165edd4f71eefa09fb4711133ba7706a7bc79cfbd82c5",
+  "osdFrozenSHA256": "bb8d61645481ba0eba1eeb2c0069cff4f9fde1bc46bbd57d655b5e0b327029b2",
+  "newSources": [
+    "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOwnedWebMaskSource.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt"
+  ],
+  "localHunks": [
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "oldCount": 1,
+      "reason": "Pin complete parser and original refresh interval source to the existing sole producer",
+      "beforeSha256LF": "b001d27e4e30af5c36dfbc990378a6448aabd1dcd532f5e259819e825d873641",
+      "afterSha256LF": "9d7ab3a2c04d88da0b75999e7420c6cd915d2c416bea1707fe1924c81fa17143"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "oldCount": 1,
+      "reason": "Full parser/model/protocol/window methods/refresh policy without a second scope/client/store",
+      "beforeSha256LF": "9d7ab3a2c04d88da0b75999e7420c6cd915d2c416bea1707fe1924c81fa17143",
+      "afterSha256LF": "bd96a5daa30af1c3d436924e97ed84ca227fbd51cb7f2365be48530307faab0f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "oldCount": 1,
+      "reason": "Embed fixed explicit Windows lifecycle platform seam, selected methods retain separate origin hashes",
+      "beforeSha256LF": "bd96a5daa30af1c3d436924e97ed84ca227fbd51cb7f2365be48530307faab0f",
+      "afterSha256LF": "1f8a62f4a561aba588e058b68932ef9921a6bc009f576d40d4027dd38b630d4e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "oldCount": 1,
+      "reason": "Truthful source-only pending scope; standard mask is now acquired and painted, ordinary passive default already source-proven",
+      "beforeSha256LF": "1f8a62f4a561aba588e058b68932ef9921a6bc009f576d40d4027dd38b630d4e",
+      "afterSha256LF": "72fb8c0affd99cd66688cae9544d444aaacf59c20bb6e8eb351101838bf1fb65"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "oldCount": 1,
+      "reason": "Same scalar ephemeral projection receives original smart toggle; transient prevents duplicate persisted authority",
+      "beforeSha256LF": "eaafed3a14fcbe95258171cf3aed2cf0b8332e925f7dae1f23806505f299e320",
+      "afterSha256LF": "26a724cc43f484aef5fa88a4f6f6e6ccc64e4564e39d2687b6b5323df7ff5b13"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "oldCount": 1,
+      "reason": "Consume original smart flag/default display band without inventing an unused face-detection caller",
+      "beforeSha256LF": "b30a402680e77fcb2f9498c4e76886150bb70634597c60994d5cbbf6317a1685",
+      "afterSha256LF": "cffab09d475d7aa7bf4b92e531752a464e8ba3a679bf0682759291b78e71c76c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "oldCount": 1,
+      "reason": "Original full preference setter flows through the sole projection to the actual renderer",
+      "beforeSha256LF": "2ddd07492e3f386950d4fec879a0e5abb1ac5a633f438cf345bdd666312557a0",
+      "afterSha256LF": "4d382d2dee6b0cbb7a8b75a1613a160f4e126c0df76553d03645e73a74820763"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Original mask member owner/refresh policy, same existing native Overlay",
+      "beforeSha256LF": "dba945d6158081370ecd3455f5bbcacfbbae0983c449ed629d63031e54597f78",
+      "afterSha256LF": "eb9fcbfdaf81fcdb7ad9fde35cd1c77992e0bd2be04403e949222d37d582c4f1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "One existing Overlay inherits original mask members; no second actor",
+      "beforeSha256LF": "eb9fcbfdaf81fcdb7ad9fde35cd1c77992e0bd2be04403e949222d37d582c4f1",
+      "afterSha256LF": "ecb5eff84876f6c2d1e225dad381e9c8c97f105513a3c898e11d94f482fa6249"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "All task/lock/transport/config/time/paint ports belong to the existing Overlay",
+      "beforeSha256LF": "ecb5eff84876f6c2d1e225dad381e9c8c97f105513a3c898e11d94f482fa6249",
+      "afterSha256LF": "f302169a70471aa5ea4ca697d5045479e06ac32a2b6f4cae38224809ff6b8a2e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Source mask readiness participates in the sole render-config cache",
+      "beforeSha256LF": "f302169a70471aa5ea4ca697d5045479e06ac32a2b6f4cae38224809ff6b8a2e",
+      "afterSha256LF": "da938ef69ecca3bb42689cb1bedda1fcbcacc95a39065feaa3c0f8df84555883"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Live never enables the VOD metadata mask",
+      "beforeSha256LF": "da938ef69ecca3bb42689cb1bedda1fcbcacc95a39065feaa3c0f8df84555883",
+      "afterSha256LF": "9573413f361d98174625c88849f8b54e2e667db5853f5e5fc698bd8893b1e7a2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Same original smart && bytes readiness drives render config",
+      "beforeSha256LF": "9573413f361d98174625c88849f8b54e2e667db5853f5e5fc698bd8893b1e7a2",
+      "afterSha256LF": "ea00df6ee2cc5da17f7c36e3c2c1aaef315b87491dcf5eb24a8090cf7fc61b97"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Original applyConfigToController maskEnabled semantics, same resolved config",
+      "beforeSha256LF": "ea00df6ee2cc5da17f7c36e3c2c1aaef315b87491dcf5eb24a8090cf7fc61b97",
+      "afterSha256LF": "abaef980e3fda833cd138db4686aae5cd2ddde499f8ee60e351cdb3e34e71abf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Apply current owned SVG mask only to the standard physical child Graphics2D; advanced/eye tint remain later original layer consumers",
+      "beforeSha256LF": "abaef980e3fda833cd138db4686aae5cd2ddde499f8ee60e351cdb3e34e71abf",
+      "afterSha256LF": "10d9f32808f98136868630c25ea1ea7d7c102ed5934bb9c75a959d44f5687d67"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Actual same-global smart toggle cancels/restarts only mask child jobs",
+      "beforeSha256LF": "10d9f32808f98136868630c25ea1ea7d7c102ed5934bb9c75a959d44f5687d67",
+      "afterSha256LF": "421d5cc39c4c733e3e8bd53938b8a92fc2fbb4a7534003c77dc5aef2a42da62d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Required online fixed identity tail; null explicitly means no online metadata source",
+      "beforeSha256LF": "421d5cc39c4c733e3e8bd53938b8a92fc2fbb4a7534003c77dc5aef2a42da62d",
+      "afterSha256LF": "fb758560dcfd66ecfcb9eb65d592b7c970e503e1e319440d9e68107c6b2ee5cc"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Do not admit mask identity from another CID/native source",
+      "beforeSha256LF": "fb758560dcfd66ecfcb9eb65d592b7c970e503e1e319440d9e68107c6b2ee5cc",
+      "afterSha256LF": "43a7654c54677e48b709dbd08908410f07908ce02540ec95246fffe76cc4951b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Offline path cannot issue online metadata/mask requests",
+      "beforeSha256LF": "43a7654c54677e48b709dbd08908410f07908ce02540ec95246fffe76cc4951b",
+      "afterSha256LF": "8a488a9ce39b14ab500403b71f096c311a29e153121ef03f52e22ea583ccf533"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Live source retires all VOD mask bytes/frames/tasks",
+      "beforeSha256LF": "8a488a9ce39b14ab500403b71f096c311a29e153121ef03f52e22ea583ccf533",
+      "afterSha256LF": "66bc8046d539ea306304d40441912cd2e10142f0604aa61347a865e5dbeae415"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Same existing source-load actor receives the required fixed mask identity",
+      "beforeSha256LF": "66bc8046d539ea306304d40441912cd2e10142f0604aa61347a865e5dbeae415",
+      "afterSha256LF": "4b509e8e469b95476ffef6b79cf51508076c21c646c9d8cea90861b8cf9ad16e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Optional metadata/mask child launches concurrently with existing initial standard loading",
+      "beforeSha256LF": "4b509e8e469b95476ffef6b79cf51508076c21c646c9d8cea90861b8cf9ad16e",
+      "afterSha256LF": "6f71d763d1bcce934da54e202599d1163942be559a019137cb62706cc7ed492c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Original segment-window request retires obsolete mask decode generation",
+      "beforeSha256LF": "6f71d763d1bcce934da54e202599d1163942be559a019137cb62706cc7ed492c",
+      "afterSha256LF": "6884b9d8ebad8eba2c596abf3e18407d7eeb2a260b0a4fbbcf84120232aba92c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Locally supplied/cleared document cannot retain previous online mask source",
+      "beforeSha256LF": "6884b9d8ebad8eba2c596abf3e18407d7eeb2a260b0a4fbbcf84120232aba92c",
+      "afterSha256LF": "072f75c45f93ccdf51a77262ecae48dd5c92dee37410169777807951fb10e3bf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Existing native timer reuses original speed-adjusted mask poll interval; seek jump requests immediately; retirement checked before visibility",
+      "beforeSha256LF": "072f75c45f93ccdf51a77262ecae48dd5c92dee37410169777807951fb10e3bf",
+      "afterSha256LF": "6f1794a32e040a01bc21fa3375ff90220ab0445327c2f1e72f4c03735d47488d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Close cancels optional mask children before canceling the sole request scope",
+      "beforeSha256LF": "6f1794a32e040a01bc21fa3375ff90220ab0445327c2f1e72f4c03735d47488d",
+      "afterSha256LF": "183bd4dec1f83c718b1e58b7fa271780361ce575e8e13eebfe958ff550932432"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "oldCount": 1,
+      "reason": "Same Controller current owner, epoch/native version and existing community/WBI metadata transport",
+      "beforeSha256LF": "f1bd64ca7c4b50c6fe5f58dadd8e248794fddeb6b4e366e3d9244759cc32b513",
+      "afterSha256LF": "ed73b26a0744b3ffe0adfcebe98ff78a829645a4a7ad5ade9b72d3997b89ba2d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "oldCount": 1,
+      "reason": "Immediate owner invalidation retires mask network/decode independently of native window visibility",
+      "beforeSha256LF": "ed73b26a0744b3ffe0adfcebe98ff78a829645a4a7ad5ade9b72d3997b89ba2d",
+      "afterSha256LF": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+      "oldCount": 1,
+      "reason": "Expose actual already-observed native OSD rectangle, with one source-to-physical transform and nullable not-ready state",
+      "beforeSha256LF": "44352defeeb3cd3ec0c9a8902a6311d91bacea779accdbab7689b1483611d34c",
+      "afterSha256LF": "e74a76a7fe3d68e847db5cca179174ca31ca77055a76c9cad66000d3e406bc79"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "oldCount": 2,
+      "reason": "Both existing load/stop source resets clear the actual rectangle",
+      "beforeSha256LF": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5",
+      "afterSha256LF": "6cdf1d5a1eb8ea81a039abf3be346d0788225225080bc44176479d11c9f64375"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "oldCount": 1,
+      "reason": "Retain the OSD dimensions/margins already read in the one native poll; no new property call, actor or fit calculation",
+      "beforeSha256LF": "6cdf1d5a1eb8ea81a039abf3be346d0788225225080bc44176479d11c9f64375",
+      "afterSha256LF": "b6c94ea894502d4cd53a9c4220e2847de2c9d48c36ede3538783760300e44271"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "oldCount": 1,
+      "reason": "Publish rectangle with the same sourceVersion/session/playbackRevision lock admission and same output cycle",
+      "beforeSha256LF": "b6c94ea894502d4cd53a9c4220e2847de2c9d48c36ede3538783760300e44271",
+      "afterSha256LF": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+      "oldCount": 1,
+      "reason": "Same bounded immutable path carrier consumes the one actual video-to-physical transform",
+      "beforeSha256LF": "b49c3e4e88564a15b1e71eb04cb9292cb3be9a1a307ef0f231db5199a240fd6b",
+      "afterSha256LF": "fcf52562c950a18abd42b75a0e53cc49fd269427a5403243646a98003e5f3c97"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+      "oldCount": 1,
+      "reason": "Actual OSD rectangle is required for masking; when it is not observed, video/danmaku continue without a guessed transform",
+      "beforeSha256LF": "fcf52562c950a18abd42b75a0e53cc49fd269427a5403243646a98003e5f3c97",
+      "afterSha256LF": "1702c11f675ac4801a8e0c9940116c8827520575e0770173c44b66d9f29e722c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "oldCount": 1,
+      "reason": "Same native player/source owns both mask frame and observed video bounds; no second getter parameter/actor",
+      "beforeSha256LF": "183bd4dec1f83c718b1e58b7fa271780361ce575e8e13eebfe958ff550932432",
+      "afterSha256LF": "270bbedec2b28d63254d04263d3e12a5d4e5226d2231eecbc2f5567099e57d14"
+    }
+  ],
+  "registryAdded": [
+    "app/src/main/java/com/android/purebilibili/feature/video/danmaku/WebMaskParser.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt"
+  ],
+  "registryMerged": [
+    "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+    "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt"
+  ],
+  "sourceIdentityCount": 833,
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOwnedWebMaskSource.kt",
+      "sha256LF": "1b7dae404ad9e31e7f55c01153dcf0860b2c64464bc3f471f2fd3e8ed1516ccb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+      "sha256LF": "1702c11f675ac4801a8e0c9940116c8827520575e0770173c44b66d9f29e722c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "sha256LF": "72fb8c0affd99cd66688cae9544d444aaacf59c20bb6e8eb351101838bf1fb65"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "sha256LF": "26a724cc43f484aef5fa88a4f6f6e6ccc64e4564e39d2687b6b5323df7ff5b13"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256LF": "cffab09d475d7aa7bf4b92e531752a464e8ba3a679bf0682759291b78e71c76c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "sha256LF": "4d382d2dee6b0cbb7a8b75a1613a160f4e126c0df76553d03645e73a74820763"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256LF": "270bbedec2b28d63254d04263d3e12a5d4e5226d2231eecbc2f5567099e57d14"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256LF": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+      "sha256LF": "e74a76a7fe3d68e847db5cca179174ca31ca77055a76c9cad66000d3e406bc79"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256LF": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf"
+    }
+  ],
+  "sourceOnly": true,
+  "nativeOrFullRootAccepted": false
+}

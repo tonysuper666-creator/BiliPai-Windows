@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "actualManifest": "a445ed0f4944ba6ac581b06401576aec23638ef242aa1da442a6baead60b637d",
+  "orderedActualCP": "2fa3092ec985e32bf6b1b046266e6b84994adeeb023615549a9422eddb0aa493",
+  "strictActualRuntimeEntries": 97,
+  "actualClassOriginsVerified": 11,
+  "productionClassOverrides": 0,
+  "nativeDLL": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\libmpv-2.dll",
+    "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4"
+  },
+  "resultSHA256Bytes": "9789b282c3c6b7b15002c2ddbc3388e0bd428380942978185fcb9b23cd86cd46",
+  "rootWindowAccepted": false,
+  "nativeOverlayScreenPaintAccepted": false,
+  "physicalMonitorPresentationObserved": false,
+  "scope": "Actual default native HWND player observed OSD/source lifecycle + same production Java2D path/clip helper and original advanced renderer; private hidden AWT window only"
+}

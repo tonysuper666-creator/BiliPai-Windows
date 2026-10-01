@@ -1,0 +1,63 @@
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt b/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+index 79a7b6e1..f7fc9545 100644
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -1606,7 +1606,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
+                                     initialWeeklyNumber = if (section == DesktopSection.WEEKLY) weeklyInitialNumber else null)
+                             section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku, retainedMedia)
+                             section == DesktopSection.BANGUMI -> BangumiBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, downloads, onToggleFullscreen, playerContent, seasonId, danmaku,
+-                                initialIsCourse = isCourse, initialEpisodeId = episodeId, initialProgressSeconds = seasonProgress, initialSeasonType = seasonType, retained = retainedMedia)
++                                initialIsCourse = isCourse, initialEpisodeId = episodeId, initialProgressSeconds = seasonProgress, initialSeasonType = seasonType, retained = retainedMedia, community = community)
+                             section == DesktopSection.DOWNLOADS -> DownloadBrowserScreen(downloads, player, playerError,
+                                 { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, danmaku, retainedMedia,
+                                 onOnlinePlay = { task ->
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt b/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt
+index 5f6614f7..88a3e41a 100644
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt
+@@ -38,6 +38,7 @@ import kotlinx.coroutines.launch
+ import kotlinx.coroutines.flow.collect
+ import kotlinx.coroutines.currentCoroutineContext
+ import kotlinx.coroutines.ensureActive
++import kotlinx.coroutines.isActive
+ 
+ @Composable
+ fun LiveBrowserScreen(
+@@ -213,6 +214,7 @@ fun BangumiBrowserScreen(
+     initialIsCourse: Boolean = false, initialEpisodeId: Long = 0, initialProgressSeconds: Double = 0.0,
+     initialSeasonType: Int = 1,
+     retained: DesktopRetainedMedia? = null,
++    community: DesktopCommunityRepository,
+ ) {
+     val media = remember(repository) { DesktopMediaRepository(repository) }
+     val pageScope = rememberCoroutineScope()
+@@ -274,14 +276,27 @@ fun BangumiBrowserScreen(
+                 val info = media.bangumiPlaybackInfo(current, selected, selectedQuality)
+                 currentCoroutineContext().ensureActive()
+                 episode = selected; playback = info; quality = info.source.quality
+-                sourceVersion = initialized.loadVersioned(info.source.toNativePlayback().copy(startPositionSeconds = startPosition)); loaded = true
++                val maskEpoch = repository.sessionEpoch
++                val episodeSourceVersion = initialized.loadVersioned(info.source.toNativePlayback().copy(startPositionSeconds = startPosition))
++                sourceVersion = episodeSourceVersion; loaded = true
+                 val index = current.episodes.indexOfFirst { it.id == selected.id }
+                 memory.previous = if (index > 0) ({ current.episodes.getOrNull(index - 1)?.let { playEpisode(it) } }) else null
+                 memory.next = if (index >= 0 && index + 1 < current.episodes.size)
+                     ({ current.episodes.getOrNull(index + 1)?.let { playEpisode(it) } }) else null
+                 overlay?.setDocument(DanmakuDocument())
+                 overlay?.enabled = danmakuEnabled
+-                if (selected.cid > 0 && current.danmakuAllowed) launch { overlay?.load(selected.cid, selected.aid, selected.durationSeconds.toDouble()) }
++                if (selected.cid > 0 && current.danmakuAllowed) launch {
++                    overlay?.load(selected.cid, selected.aid, selected.durationSeconds.toDouble(),
++                        expectedSourceVersion = episodeSourceVersion,
++                        maskSource = selected.bvid.takeIf { it.isNotBlank() }?.let { bvid ->
++                            com.bilipai.desktop.danmaku.DesktopOwnedWebMaskSource(bvid, selected.cid,
++                                episodeSourceVersion, maskEpoch,
++                                stillOwned = { memory.scope.isActive && memory.sourceVersion == episodeSourceVersion &&
++                                    memory.episode?.id == selected.id && memory.season?.seasonId == current.seasonId &&
++                                    repository.sessionEpoch == maskEpoch && initialized.ownsSourceVersion(episodeSourceVersion) },
++                                metadata = community::playerMetadata)
++                        })
++                }
+             } catch (cancelled: CancellationException) { throw cancelled
+             } catch (failure: Exception) { if (memory.isCurrentRequest()) { error = failure.message ?: "番剧播放失败"; loaded = false }
+             } finally { if (memory.isCurrentRequest()) opening = false }

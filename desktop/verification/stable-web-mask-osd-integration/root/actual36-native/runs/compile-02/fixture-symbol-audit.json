@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "fixtureClassCount": 11,
+  "fixtureClasses": [
+    "com/bilipai/desktop/danmaku/nativeosdproof/LocalOnlyFence.class",
+    "com/bilipai/desktop/danmaku/nativeosdproof/MeasuredCanvas.class",
+    "com/bilipai/desktop/danmaku/nativeosdproof/NativeOsdMaskFixtureKt$main$1$13.class",
+    "com/bilipai/desktop/danmaku/nativeosdproof/NativeOsdMaskFixtureKt$main$1$observerJob$1$1.class",
+    "com/bilipai/desktop/danmaku/nativeosdproof/NativeOsdMaskFixtureKt$main$1$observerJob$1.class",
+    "com/bilipai/desktop/danmaku/nativeosdproof/NativeOsdMaskFixtureKt$main$1.class",
+    "com/bilipai/desktop/danmaku/nativeosdproof/NativeOsdMaskFixtureKt$until$1.class",
+    "com/bilipai/desktop/danmaku/nativeosdproof/NativeOsdMaskFixtureKt$until$2.class",
+    "com/bilipai/desktop/danmaku/nativeosdproof/NativeOsdMaskFixtureKt.class",
+    "com/bilipai/desktop/danmaku/nativeosdproof/OsdFixtureRect.class",
+    "com/bilipai/desktop/danmaku/nativeosdproof/OsdFixtureUser32.class"
+  ],
+  "productionClassOverrides": 0,
+  "intersection": [],
+  "fixtureJarSHA256Bytes": "cbdd39929b0f2ef4772259c74888f2bc1d30dab83f213395473aabedb9340dd4"
+}

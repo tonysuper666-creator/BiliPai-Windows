@@ -1,0 +1,935 @@
+{
+  "schema": "raw-artifact-manifest-v1",
+  "artifacts": [
+    {
+      "path": "prepared/mask-core/frozen-handoff.json",
+      "sha256Bytes": "5faef2a880cc1376185165edd4f71eefa09fb4711133ba7706a7bc79cfbd82c5",
+      "sizeBytes": 43477
+    },
+    {
+      "path": "prepared/mask-core/audit-freeze.py",
+      "sha256Bytes": "7d10fa2744135009be041a81b96690f2fe689090c23ae61bc7fb87f06c9acc14",
+      "sizeBytes": 13593
+    },
+    {
+      "path": "prepared/mask-core/baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "dba945d6158081370ecd3455f5bbcacfbbae0983c449ed629d63031e54597f78",
+      "sizeBytes": 26723
+    },
+    {
+      "path": "prepared/mask-core/baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "sha256Bytes": "eaafed3a14fcbe95258171cf3aed2cf0b8332e925f7dae1f23806505f299e320",
+      "sizeBytes": 4555
+    },
+    {
+      "path": "prepared/mask-core/baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256Bytes": "b30a402680e77fcb2f9498c4e76886150bb70634597c60994d5cbbf6317a1685",
+      "sizeBytes": 5317
+    },
+    {
+      "path": "prepared/mask-core/baseline/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "f1bd64ca7c4b50c6fe5f58dadd8e248794fddeb6b4e366e3d9244759cc32b513",
+      "sizeBytes": 56695
+    },
+    {
+      "path": "prepared/mask-core/baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "2ddd07492e3f386950d4fec879a0e5abb1ac5a633f438cf345bdd666312557a0",
+      "sizeBytes": 4392
+    },
+    {
+      "path": "prepared/mask-core/baseline/desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "sha256Bytes": "b001d27e4e30af5c36dfbc990378a6448aabd1dcd532f5e259819e825d873641",
+      "sizeBytes": 29170
+    },
+    {
+      "path": "prepared/mask-core/baseline-manifest.json",
+      "sha256Bytes": "342432a0a40fab6a66af795c09ecf77d3afe24f0e7983089737805d4e5f6563c",
+      "sizeBytes": 1517
+    },
+    {
+      "path": "prepared/mask-core/compile-01/compiler.args",
+      "sha256Bytes": "e0e057e4e84163da1d01191e32a4b724e879ed33c0befb0a6801e84da4f608b2",
+      "sizeBytes": 25022
+    },
+    {
+      "path": "prepared/mask-core/compile-01/compiler.log",
+      "sha256Bytes": "70b736a99c8f1f482b3b42cf383ec43d5314d45395883059a74f3c3b7035c89b",
+      "sizeBytes": 12095
+    },
+    {
+      "path": "prepared/mask-core/compile-02/compiler.args",
+      "sha256Bytes": "aa0870a9669c39f0e9379a09fabbbb97e85a7e39bab4761da11e1cd513524825",
+      "sizeBytes": 25804
+    },
+    {
+      "path": "prepared/mask-core/compile-02/compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee",
+      "sizeBytes": 3514
+    },
+    {
+      "path": "prepared/mask-core/compile-03/compiler.args",
+      "sha256Bytes": "71e100f56a76317d9c333f206fe96b84f76b1fde02d470ba725eeeebf05fd4a3",
+      "sizeBytes": 25971
+    },
+    {
+      "path": "prepared/mask-core/compile-03/compiler.log",
+      "sha256Bytes": "820366232ca824e71935b439c91a72144168b989875c9d2b73ab55890d0bafb9",
+      "sizeBytes": 3679
+    },
+    {
+      "path": "prepared/mask-core/compile-04/compiler.args",
+      "sha256Bytes": "a01a5415dae273e5770d81c973946b62610b30f5d894c4300e08f8ab528061f1",
+      "sizeBytes": 26220
+    },
+    {
+      "path": "prepared/mask-core/compile-04/compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee",
+      "sizeBytes": 3514
+    },
+    {
+      "path": "prepared/mask-core/compile-05/compiler.args",
+      "sha256Bytes": "5ae15ec41a0419cc95daaf5bf08da272330c33be65defa15d3100a2540685f2b",
+      "sizeBytes": 26220
+    },
+    {
+      "path": "prepared/mask-core/compile-05/compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee",
+      "sizeBytes": 3514
+    },
+    {
+      "path": "prepared/mask-core/compile-05/runtime.log",
+      "sha256Bytes": "3f2f10cdc6765d51c131248aad5f003e9a96ead626db9784c7920b79caf7f2a3",
+      "sizeBytes": 985
+    },
+    {
+      "path": "prepared/mask-core/compile-06/compiler.args",
+      "sha256Bytes": "114d0ff0e7ec5d04ad1453d0787c7c4bcbb81482b992807651f644931dbe995f",
+      "sizeBytes": 26220
+    },
+    {
+      "path": "prepared/mask-core/compile-06/compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee",
+      "sizeBytes": 3514
+    },
+    {
+      "path": "prepared/mask-core/compile-06/runtime.log",
+      "sha256Bytes": "9fcaca0a8a1cd6cbae143320cdd33466ccca1452d518e729a9f4cce21ce26a4b",
+      "sizeBytes": 544
+    },
+    {
+      "path": "prepared/mask-core/compile-07/compiler.args",
+      "sha256Bytes": "ab9cb060345c926c59b64ce4b3e94851787eb131ece8555e57ed42aa3f66c164",
+      "sizeBytes": 26220
+    },
+    {
+      "path": "prepared/mask-core/compile-07/compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee",
+      "sizeBytes": 3514
+    },
+    {
+      "path": "prepared/mask-core/compile-07/runtime.log",
+      "sha256Bytes": "9fcaca0a8a1cd6cbae143320cdd33466ccca1452d518e729a9f4cce21ce26a4b",
+      "sizeBytes": 544
+    },
+    {
+      "path": "prepared/mask-core/compile-08/compile-result.json",
+      "sha256Bytes": "4d8027cc95256b8af672da1949fe0a10c9d90945b554a9c52c967b0ab5a3adeb",
+      "sizeBytes": 9670
+    },
+    {
+      "path": "prepared/mask-core/compile-08/compiler.args",
+      "sha256Bytes": "3b602e7c1fc900584d18e31067a36f2c7c5791db92a7731af3c6a2abfe39a79b",
+      "sizeBytes": 26220
+    },
+    {
+      "path": "prepared/mask-core/compile-08/compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee",
+      "sizeBytes": 3514
+    },
+    {
+      "path": "prepared/mask-core/compile-08/proof-result.json",
+      "sha256Bytes": "fea62e0a80ee80244847e548b0bc2f0ea78b2d17fe9b90429130b9ca87bfd5e1",
+      "sizeBytes": 137
+    },
+    {
+      "path": "prepared/mask-core/compile-08/runtime.log",
+      "sha256Bytes": "deb0aaf9df644e8b51b9dfc5f42087a84884dbabf4ea57f0194e8d5ceb8d9445",
+      "sizeBytes": 138
+    },
+    {
+      "path": "prepared/mask-core/compile-09/compile-result.json",
+      "sha256Bytes": "f7110f8b531d2a8efcc6e9fb0f6847985ec195962e16be102a5849f6acb453fd",
+      "sizeBytes": 9670
+    },
+    {
+      "path": "prepared/mask-core/compile-09/compiler.args",
+      "sha256Bytes": "042b9ed8049294c55576b3c2c3a6ab65567a758b6b72d4ce4ce30ba5e9d3b786",
+      "sizeBytes": 26220
+    },
+    {
+      "path": "prepared/mask-core/compile-09/compiler.log",
+      "sha256Bytes": "e50955aedce5552f0c8c310473c49c6e16eb5d605620dcf03b465c2d485aa679",
+      "sizeBytes": 3085
+    },
+    {
+      "path": "prepared/mask-core/compile-09/proof-result.json",
+      "sha256Bytes": "cd56fd2a4a78d6c8b5f36cf73c15320bb84f2de7ff962d1f179b0bd8a37a9692",
+      "sizeBytes": 137
+    },
+    {
+      "path": "prepared/mask-core/compile-09/runtime.log",
+      "sha256Bytes": "7f31198f1932d412bf9f2b222968496c9b4f5ef6353a8f4d49035eb89d0d5bac",
+      "sizeBytes": 138
+    },
+    {
+      "path": "prepared/mask-core/compile.py",
+      "sha256Bytes": "8a0788a0e52dab7cbb1dd98713da8dbf1436ff82c69cf58817a2cd10f72218ef",
+      "sizeBytes": 4273
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
+      "sha256Bytes": "b94bf1289a9d47aa2c76c731806c5ac577a64d960565c03a8487a0f4fa5cbf0d",
+      "sizeBytes": 509
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/danmaku/engine/DanmakuItem.kt",
+      "sha256Bytes": "f51d92fe5e0febc7be695958c287153b760558ff0463993585077ccf662cba0a",
+      "sizeBytes": 2341
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/danmaku/engine/DanmakuMaskFrame.kt",
+      "sha256Bytes": "5b2ec025b62c8f126b4ec8ad16b5886b1785881bd55daa476acfe5591485583e",
+      "sizeBytes": 266
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/danmaku/engine/DanmakuRenderConfig.kt",
+      "sha256Bytes": "e4663f9436ff0619cafe49b57179a891e6df970079cae926d64cb07083c13c09",
+      "sizeBytes": 638
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuProtocol.kt",
+      "sha256Bytes": "b48dd3e055769f1dcd2893ad1f56d1145ebbd9aeb9822e988e575802a2310e45",
+      "sizeBytes": 6058
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuThumbupPolicy.kt",
+      "sha256Bytes": "25d6e2c796b0588a51ecb455cf2d98a780a53099ff5df1235e95eb8560391b3c",
+      "sizeBytes": 542
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+      "sha256Bytes": "833f19902c2111845280962635ea86cea032f889dd05e584218728260bf5a7ae",
+      "sizeBytes": 9806
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/danmaku/DanmakuDisplayBand.kt",
+      "sha256Bytes": "e9906bd2e35e7edbd0a7b60c88d46e7b9af5d3623ca6333c0729f0e5bd707335",
+      "sizeBytes": 457
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuEngineBudgets.kt",
+      "sha256Bytes": "eea71bfebc1e8c4c9f6ccc8b6b604d8e47f72830671cf5b1661e70452f45c906",
+      "sizeBytes": 513
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuItemParser.kt",
+      "sha256Bytes": "ca3bdc4e5fa76316637b90f861584f9fe6469edc0a8ab116cfc51042f5729690",
+      "sizeBytes": 3924
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuLayerPolicy.kt",
+      "sha256Bytes": "36e57e5e0c96bf783a070fa68653fde79ad4164b80e9ba257f9736501ec83bce",
+      "sizeBytes": 687
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalLiveDanmakuAdmission.kt",
+      "sha256Bytes": "cbcf58e55c8b50cbd00096790e0426c1108e067ff233548414c254c6c6ef592f",
+      "sizeBytes": 1115
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalLiveDanmakuRenderConfig.kt",
+      "sha256Bytes": "c5649e24ad12a87e21b4b652441b3862a6a86d5e01b98da103d7b443d5b7b1ac",
+      "sizeBytes": 2198
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskOwner.kt",
+      "sha256Bytes": "ca22ed4897465a4955f30bfb2d9e3a24e1ecaf53ca9798d98a145bc171a84f85",
+      "sizeBytes": 9675
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskProtocol.kt",
+      "sha256Bytes": "6086df00d120630d5bc253e117c1c75ed8f9a4b3add1a48f322bc2117d08bc8d",
+      "sizeBytes": 677
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskRefreshPolicy.kt",
+      "sha256Bytes": "c688a2b504f4b0c060ea1c2e9a45186588155a0ef7b518bbefd037bddda43c0b",
+      "sizeBytes": 822
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/danmaku/WebMaskParser.kt",
+      "sha256Bytes": "b5f116903577025ba9efbc8d7966301283fc12aa5638354b8f5735118294054c",
+      "sizeBytes": 6567
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "sha256Bytes": "2a2bbdfbdb43db83d158a6e638dc9393e0b1a8d2fd6ea7944b9700598d5f3b13",
+      "sizeBytes": 18982
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "sha256Bytes": "631336c4914189dbc81418891b505e61fb75388d65409270244527dd08ffb425",
+      "sizeBytes": 25098
+    },
+    {
+      "path": "prepared/mask-core/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDanmakuSession.kt",
+      "sha256Bytes": "3b8a7fc2284be4bdd7cc3b98ae82bc31749a28479ff55ddd4d5477c0324e0985",
+      "sizeBytes": 9469
+    },
+    {
+      "path": "prepared/mask-core/generated/com/bilipai/desktop/settings/DesktopDanmakuBlockPreferences.kt",
+      "sha256Bytes": "b9237857a873dddbe0b677fb710ae8a57cab6346abffceccea67c450627258df",
+      "sizeBytes": 2992
+    },
+    {
+      "path": "prepared/mask-core/generated/source-inventory.json",
+      "sha256Bytes": "e59ae3742bece762c36cc04dd311ef4e24040f229199122bca8cb005ac408b1d",
+      "sizeBytes": 30702
+    },
+    {
+      "path": "prepared/mask-core/install-contract.json",
+      "sha256Bytes": "0f7c9076981f37e4137bccd0b1e1d5292e0d9f57fcebf3f9dcacb7e83cbf994f",
+      "sizeBytes": 3224
+    },
+    {
+      "path": "prepared/mask-core/local-hunks.json",
+      "sha256Bytes": "b666b2704658c16dd87301c75864ec1fc4191a166e283650afd6645e5c4deae1",
+      "sizeBytes": 32630
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "sizeBytes": 396158
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "sha256Bytes": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5",
+      "sizeBytes": 45677
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+      "sha256Bytes": "eb3bc94d8a8bc3ac4a22fc734116b977b6ff27f53ee5a7b264090edfe1f12cf1",
+      "sizeBytes": 10629
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "sha256Bytes": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93",
+      "sizeBytes": 108961
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuParser.kt",
+      "sha256Bytes": "753c99914651fad5d05323889b650eba86b36625ffc45266e1f4ccad273b5791",
+      "sizeBytes": 18297
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt",
+      "sha256Bytes": "65b184189813db2db4ab04c175e5b2c4eda682fce57be547bd2b290237473400",
+      "sizeBytes": 9716
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/FaceOcclusionPolicy.kt",
+      "sha256Bytes": "cb448bd78a562e36cba767d122f372f3b891c365893d5cb628195e2e0c4489a4",
+      "sizeBytes": 20971
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/WebMaskParser.kt",
+      "sha256Bytes": "c17f878278d739c4d9028e7dbcaa9fbcb7aab216a0f4f6222a882336de7f13cc",
+      "sizeBytes": 6507
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "sha256Bytes": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0",
+      "sizeBytes": 787
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt",
+      "sha256Bytes": "f7532155c6e8429f27dd251193001e17ac0a824934ea669ad016f7d187985c46",
+      "sizeBytes": 43891
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "sha256Bytes": "0c21e3775ca011d8e18791facb365b0c4e712a8b02798a510102a4f71d22c62a",
+      "sizeBytes": 18934
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "sha256Bytes": "5846ca9e334a80a6eca37da32b1157c8276001484ff355b413a4320200c9ee2b",
+      "sizeBytes": 25326
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LiveDanmakuOverlay.kt",
+      "sha256Bytes": "7a885958bb3335c7aaf008c0f92660d63bf38bb71317ad228112272c9e5b0e47",
+      "sizeBytes": 12017
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "sha256Bytes": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e",
+      "sizeBytes": 296288
+    },
+    {
+      "path": "prepared/mask-core/original-stable/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "sha256Bytes": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "sizeBytes": 398331
+    },
+    {
+      "path": "prepared/mask-core/original-stable/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/ByteDanceDanmakuEngine.kt",
+      "sha256Bytes": "c3c29bee7a68a611aaac9fd3a14886f68fea52dc17f122517038f546c845d57c",
+      "sizeBytes": 13308
+    },
+    {
+      "path": "prepared/mask-core/original-stable/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+      "sha256Bytes": "ba80d0cfef445bda5a9e2ebc10f68de83d1ccc24cf881d7a49d02bf656c6cfa7",
+      "sizeBytes": 3432
+    },
+    {
+      "path": "prepared/mask-core/owner-template.kt",
+      "sha256Bytes": "e468ccc5f3586b1abc9eb03760800c3e203019fef75ce929fc2d5dbc38bd9381",
+      "sizeBytes": 6873
+    },
+    {
+      "path": "prepared/mask-core/prepare-consumers.py",
+      "sha256Bytes": "c7b7047650f393c96b10ccf0373c9405dd9ab3ef65b9130780b1aee9d4e0f9dc",
+      "sizeBytes": 11575
+    },
+    {
+      "path": "prepared/mask-core/prepare.py",
+      "sha256Bytes": "1ba297af0358ffd290f6ed65ae83442cca26059f01f9325873b96a21f6b30cf7",
+      "sizeBytes": 9798
+    },
+    {
+      "path": "prepared/mask-core/prepared/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOwnedWebMaskSource.kt",
+      "sha256Bytes": "1b7dae404ad9e31e7f55c01153dcf0860b2c64464bc3f471f2fd3e8ed1516ccb",
+      "sizeBytes": 552
+    },
+    {
+      "path": "prepared/mask-core/prepared/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+      "sha256Bytes": "b49c3e4e88564a15b1e71eb04cb9292cb3be9a1a307ef0f231db5199a240fd6b",
+      "sizeBytes": 4498
+    },
+    {
+      "path": "prepared/mask-core/prepared/desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "sha256Bytes": "72fb8c0affd99cd66688cae9544d444aaacf59c20bb6e8eb351101838bf1fb65",
+      "sizeBytes": 42173
+    },
+    {
+      "path": "prepared/mask-core/proof/WebMaskProof.kt",
+      "sha256Bytes": "868d0e98b14dae6347ba7eb9c417e6c711187b86806e4ea4769f1cefb6e03f41",
+      "sizeBytes": 11866
+    },
+    {
+      "path": "prepared/mask-core/registry-recipe.json",
+      "sha256Bytes": "728def105fde166de3eb1aaebfbb460782b0372aa88b922726e1b9a5896036ce",
+      "sizeBytes": 1447
+    },
+    {
+      "path": "prepared/mask-core/review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "183bd4dec1f83c718b1e58b7fa271780361ce575e8e13eebfe958ff550932432",
+      "sizeBytes": 29216
+    },
+    {
+      "path": "prepared/mask-core/review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "sha256Bytes": "26a724cc43f484aef5fa88a4f6f6e6ccc64e4564e39d2687b6b5323df7ff5b13",
+      "sizeBytes": 4640
+    },
+    {
+      "path": "prepared/mask-core/review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256Bytes": "cffab09d475d7aa7bf4b92e531752a464e8ba3a679bf0682759291b78e71c76c",
+      "sizeBytes": 5531
+    },
+    {
+      "path": "prepared/mask-core/review-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf",
+      "sizeBytes": 57209
+    },
+    {
+      "path": "prepared/mask-core/review-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "4d382d2dee6b0cbb7a8b75a1613a160f4e126c0df76553d03645e73a74820763",
+      "sizeBytes": 4443
+    },
+    {
+      "path": "prepared/mask-core/source-audit.json",
+      "sha256Bytes": "3d5d7f542ac4eb4296551be21ea0916a4ce09217b2ab73b012a996ebac50e315",
+      "sizeBytes": 39995
+    },
+    {
+      "path": "prepared/mask-core/source-inventory.json",
+      "sha256Bytes": "e59ae3742bece762c36cc04dd311ef4e24040f229199122bca8cb005ac408b1d",
+      "sizeBytes": 30702
+    },
+    {
+      "path": "prepared/mask-core/topmethod-receipt.json",
+      "sha256Bytes": "a25f54f3055a2aa6cc080f1db310bb3e356915df15a80868ed15ac2b3ea024b2",
+      "sizeBytes": 8838
+    },
+    {
+      "path": "prepared/osd-delta/frozen-handoff.json",
+      "sha256Bytes": "bb8d61645481ba0eba1eeb2c0069cff4f9fde1bc46bbd57d655b5e0b327029b2",
+      "sizeBytes": 11493
+    },
+    {
+      "path": "prepared/osd-delta/audit-freeze.py",
+      "sha256Bytes": "65cab3c38e1bdefda1a4ba9775463508936d6fdfd4200996242cbf9c09d67d58",
+      "sizeBytes": 10768
+    },
+    {
+      "path": "prepared/osd-delta/baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "183bd4dec1f83c718b1e58b7fa271780361ce575e8e13eebfe958ff550932432",
+      "sizeBytes": 29216
+    },
+    {
+      "path": "prepared/osd-delta/baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+      "sha256Bytes": "b49c3e4e88564a15b1e71eb04cb9292cb3be9a1a307ef0f231db5199a240fd6b",
+      "sizeBytes": 4498
+    },
+    {
+      "path": "prepared/osd-delta/baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5",
+      "sizeBytes": 60406
+    },
+    {
+      "path": "prepared/osd-delta/baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+      "sha256Bytes": "44352defeeb3cd3ec0c9a8902a6311d91bacea779accdbab7689b1483611d34c",
+      "sizeBytes": 3202
+    },
+    {
+      "path": "prepared/osd-delta/baseline-manifest.json",
+      "sha256Bytes": "7d01a7f6116b2d494e7c2904a75890da106065b24810935bd9fdde3c68298cc4",
+      "sizeBytes": 1677
+    },
+    {
+      "path": "prepared/osd-delta/compile-01/compiler.args",
+      "sha256Bytes": "ce5114ed1ceae9dbddf231dfac5a377fee09ed4646e070ca4e2f24fb6196a718",
+      "sizeBytes": 24774
+    },
+    {
+      "path": "prepared/osd-delta/compile-01/compiler.log",
+      "sha256Bytes": "b6c7cda33bbbc17bc1a64b723146cfa1b0e4ed533cabde4eeefa80d8f58fdb89",
+      "sizeBytes": 440
+    },
+    {
+      "path": "prepared/osd-delta/compile-02/compile-result.json",
+      "sha256Bytes": "30026a8d0e4a498dc2fce5907afd5de1ccc2abf7ca235d9cd1bc142bbfc6a9fd",
+      "sizeBytes": 6279
+    },
+    {
+      "path": "prepared/osd-delta/compile-02/compiler.args",
+      "sha256Bytes": "90a4da8599501dbeef255da565efc5d26256175505672b875463a309a6af4336",
+      "sizeBytes": 24774
+    },
+    {
+      "path": "prepared/osd-delta/compile-02/compiler.log",
+      "sha256Bytes": "1ea09ef2a727ee69211d6de294b4b3904ae8f55fa43c7f231b67a11cea4ad8b8",
+      "sizeBytes": 475
+    },
+    {
+      "path": "prepared/osd-delta/compile-02/ordered-cp-receipt.json",
+      "sha256Bytes": "f6a2d74be1becbcb6fe94ec5b1f7f2cf56b16beb54651ad3c745b4008b8517ac",
+      "sizeBytes": 35360
+    },
+    {
+      "path": "prepared/osd-delta/compile-02/proof-result.txt",
+      "sha256Bytes": "eef1ad258560ad9d9f04e07331990cb50a0384af817e2a08dc91a99cbbb8e58e",
+      "sizeBytes": 164
+    },
+    {
+      "path": "prepared/osd-delta/compile-02/runtime.log",
+      "sha256Bytes": "9e4ab1cbc43d00802bba1f7aee268bfd16079724b181942dce32347a19435b90",
+      "sizeBytes": 168
+    },
+    {
+      "path": "prepared/osd-delta/compile.py",
+      "sha256Bytes": "cce4c664a4fd31d5133cc679264d3c97381cda86a3aaf20423f2eef556d53165",
+      "sizeBytes": 4797
+    },
+    {
+      "path": "prepared/osd-delta/install-contract.json",
+      "sha256Bytes": "d4360e4983b62a227dce02cbc39b1f2f75fdba62c9b283ad3f707211ab15683e",
+      "sizeBytes": 1765
+    },
+    {
+      "path": "prepared/osd-delta/local-hunks.json",
+      "sha256Bytes": "ce0208680c44546ba19671b7ced40a902acd7f107c73bc34d62ed493c0e46ac7",
+      "sizeBytes": 6945
+    },
+    {
+      "path": "prepared/osd-delta/prepare.py",
+      "sha256Bytes": "4fba2e814cae9970a3fad458bada4b9551945f495e89830a5cb4a4cddd0db0d5",
+      "sizeBytes": 6660
+    },
+    {
+      "path": "prepared/osd-delta/proof/OsdMaskProof.kt",
+      "sha256Bytes": "cf7105a1df323d4b9bf5a19f94f048a0039c58a816c7588150d329a1c3f3d810",
+      "sizeBytes": 5632
+    },
+    {
+      "path": "prepared/osd-delta/review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "270bbedec2b28d63254d04263d3e12a5d4e5226d2231eecbc2f5567099e57d14",
+      "sizeBytes": 29355
+    },
+    {
+      "path": "prepared/osd-delta/review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+      "sha256Bytes": "1702c11f675ac4801a8e0c9940116c8827520575e0770173c44b66d9f29e722c",
+      "sizeBytes": 4739
+    },
+    {
+      "path": "prepared/osd-delta/review-only/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf",
+      "sizeBytes": 60780
+    },
+    {
+      "path": "prepared/osd-delta/review-only/desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+      "sha256Bytes": "e74a76a7fe3d68e847db5cca179174ca31ca77055a76c9cad66000d3e406bc79",
+      "sizeBytes": 4136
+    },
+    {
+      "path": "prepared/osd-delta/source-audit.json",
+      "sha256Bytes": "a245566dd1b4a4c327cf5686a001e7c496fa21e9f638aec4d5b2b95b2646f3c5",
+      "sizeBytes": 30963
+    },
+    {
+      "path": "prepared/osd-delta/topmethod-receipt.json",
+      "sha256Bytes": "2fb2ec1e52797e6611c58b6fc4470955bf63050a97ab9597fa652ef5eef53d98",
+      "sizeBytes": 2331
+    },
+    {
+      "path": "root/actual36-native/actual36-frozen-handoff.json",
+      "sha256Bytes": "cbe90b11fa8d43fc74c8c7ddc5d8ee7cf00a805caa5eb7b51ef38eb28a5d059a",
+      "sizeBytes": 17939
+    },
+    {
+      "path": "root/actual36-native/actual36-contract.json",
+      "sha256Bytes": "297bf04c08039a68c6fc6d531977cc9797b2676372e9d5b27458e1cc4fec5541",
+      "sizeBytes": 5083
+    },
+    {
+      "path": "root/actual36-native/actual36-source-audit.json",
+      "sha256Bytes": "99342b7af5bec7d364f67e85fc6563c375e8e71efe47c99031aef55e8e06483b",
+      "sizeBytes": 35086
+    },
+    {
+      "path": "root/actual36-native/freeze-actual36.py",
+      "sha256Bytes": "51d24ce01ae6348ef266b92bd425e2617c7ec640905c48092c7446a0dab123bc",
+      "sizeBytes": 10120
+    },
+    {
+      "path": "root/actual36-native/NativeOsdMaskFixture.kt",
+      "sha256Bytes": "2854cc80d59f7c7d20c4f68d63143089c1b7ea2890926094cb9ee1cf2ab3a474",
+      "sizeBytes": 18274
+    },
+    {
+      "path": "root/actual36-native/platform-contract.json",
+      "sha256Bytes": "6b3038daf5a9ab72a26f7aed047dfaa90c49a145b0b1189a5e0e9c2ae8f76931",
+      "sizeBytes": 6069
+    },
+    {
+      "path": "root/actual36-native/prepare-handoff.py",
+      "sha256Bytes": "31149179d40a66859baecf94a9d8b8460f9e50cdbbf761d697bcb2cd0866cda3",
+      "sizeBytes": 6721
+    },
+    {
+      "path": "root/actual36-native/prepared-handoff-02.json",
+      "sha256Bytes": "ed47c105aa0dac47ec6613886495802eb2a4ef27d2a45a903dd4d9a7819a9995",
+      "sizeBytes": 7915
+    },
+    {
+      "path": "root/actual36-native/prepared-handoff-03.json",
+      "sha256Bytes": "9977ef125530cbe799611608ca0fe3ee92b40ff4aeff016fd2bb0059f086f3e3",
+      "sizeBytes": 8271
+    },
+    {
+      "path": "root/actual36-native/prepared-handoff.json",
+      "sha256Bytes": "4159557f152d52b7597f4f7c42f56163336c828f8edc32edce022983b4039b6f",
+      "sizeBytes": 7915
+    },
+    {
+      "path": "root/actual36-native/run.py",
+      "sha256Bytes": "915b9dcd043988ba7f16579001fbfa18a9383dd0285624a96409d9744b164a0a",
+      "sizeBytes": 10864
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/accepted.json",
+      "sha256Bytes": "f5c243fddd992e7f9e532a28074c73e8fe6a9962e9c9566ef2f02041e66e98dc",
+      "sizeBytes": 966
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/compile-result.json",
+      "sha256Bytes": "f38394f8f2da788eb3250ec83fc8f48ebb0187fae817528f12f33968517d3d3b",
+      "sizeBytes": 323
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/compiler.args",
+      "sha256Bytes": "7550e5292913cd295507f8befb3e50340bb839aa8ddb708cbf1e569803904757",
+      "sizeBytes": 24578
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/dependency-pins-after.json",
+      "sha256Bytes": "d54f295c573ec65acf6284bed29206fa01399bd5e120004e17df42b826487470",
+      "sizeBytes": 42913
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/dependency-pins-before.json",
+      "sha256Bytes": "d54f295c573ec65acf6284bed29206fa01399bd5e120004e17df42b826487470",
+      "sizeBytes": 42913
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/fixture-symbol-audit.json",
+      "sha256Bytes": "198ed1f70a0e47006c35eb7a54551c530b0b45b35de3db0f2cbb3000e955cc02",
+      "sizeBytes": 1142
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/java-command.json",
+      "sha256Bytes": "56b2017204efcc81a03c36979b9b23e0b44fd0e045f49712ef702c1aba2d5680",
+      "sizeBytes": 26797
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/proof/native-crop-java2d.png",
+      "sha256Bytes": "13f760f704df5e69968e64288892286570075182b716237beea66312e74323c9",
+      "sizeBytes": 6037
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/proof/native-decoded-frame.png",
+      "sha256Bytes": "bb91e900b399602975e98446ca268251597a87bf799fb262cecd6d540ffc8df0",
+      "sizeBytes": 17769
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/proof/native-fit-java2d.png",
+      "sha256Bytes": "9811afdfd7f230b8e7f4944b193e0549051c3edd50b3d94c2c5b5401d2ed90b5",
+      "sizeBytes": 5584
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/proof/native-tall-client-java2d.png",
+      "sha256Bytes": "f768c31d9069c52c3a22439f56a352c0c6d1be739477a684d32a3b6150a80836",
+      "sizeBytes": 6081
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/proof/result.json",
+      "sha256Bytes": "9789b282c3c6b7b15002c2ddbc3388e0bd428380942978185fcb9b23cd86cd46",
+      "sizeBytes": 7821
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/runtime-exit.json",
+      "sha256Bytes": "8531bb6f8ca5219cd8af8eee79fcad408bf256e790c66033173453047c728202",
+      "sizeBytes": 84
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/runtime.log",
+      "sha256Bytes": "1c4f8d194de3a2e851eaeaab69d146e57310f05dfa4807fc9d79e2e4cfef2091",
+      "sizeBytes": 3219
+    },
+    {
+      "path": "root/actual36-native/runs/actual36-01/source-inputs/NativeOsdMaskFixture.kt",
+      "sha256Bytes": "2854cc80d59f7c7d20c4f68d63143089c1b7ea2890926094cb9ee1cf2ab3a474",
+      "sizeBytes": 18274
+    },
+    {
+      "path": "root/actual36-native/runs/compile-01/compile-result.json",
+      "sha256Bytes": "913bc98ed647773683e187efc2c516d2e522b916b8b5a96e41aeb6492d63c594",
+      "sizeBytes": 1469
+    },
+    {
+      "path": "root/actual36-native/runs/compile-01/compiler.args",
+      "sha256Bytes": "7035dc661d2ae1f5be27458e41afeeff3ef1202eb7ad077bc9061b5fc9d6c824",
+      "sizeBytes": 24250
+    },
+    {
+      "path": "root/actual36-native/runs/compile-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual36-native/runs/compile-01/dependency-pins-after.json",
+      "sha256Bytes": "400b418d503d07f20f609948923de938624492b36f290290d340e2a15000e51a",
+      "sizeBytes": 41424
+    },
+    {
+      "path": "root/actual36-native/runs/compile-01/dependency-pins-before.json",
+      "sha256Bytes": "400b418d503d07f20f609948923de938624492b36f290290d340e2a15000e51a",
+      "sizeBytes": 41424
+    },
+    {
+      "path": "root/actual36-native/runs/compile-01/fixture-symbol-audit.json",
+      "sha256Bytes": "243c7884586321eb5212dc23026709d3c033b24258b849ebfe88ca16c8542cd8",
+      "sizeBytes": 1142
+    },
+    {
+      "path": "root/actual36-native/runs/compile-01/source-inputs/NativeOsdMaskFixture.kt",
+      "sha256Bytes": "03620a0f441fa8d06a20d44b8f68510ca65fe5a54ea59d7c5f9003021502d283",
+      "sizeBytes": 17383
+    },
+    {
+      "path": "root/actual36-native/runs/compile-02/compile-result.json",
+      "sha256Bytes": "913bc98ed647773683e187efc2c516d2e522b916b8b5a96e41aeb6492d63c594",
+      "sizeBytes": 1469
+    },
+    {
+      "path": "root/actual36-native/runs/compile-02/compiler.args",
+      "sha256Bytes": "6f72180acb2be8abd7383ebdbc11172e3fba2df991b578fa13c3462d271fe803",
+      "sizeBytes": 24250
+    },
+    {
+      "path": "root/actual36-native/runs/compile-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual36-native/runs/compile-02/dependency-pins-after.json",
+      "sha256Bytes": "06cb4e66a89fa9692bbff6787cd9758a54e1aafe8ddd52cac30cfa819a1cf8e6",
+      "sizeBytes": 41424
+    },
+    {
+      "path": "root/actual36-native/runs/compile-02/dependency-pins-before.json",
+      "sha256Bytes": "06cb4e66a89fa9692bbff6787cd9758a54e1aafe8ddd52cac30cfa819a1cf8e6",
+      "sizeBytes": 41424
+    },
+    {
+      "path": "root/actual36-native/runs/compile-02/fixture-symbol-audit.json",
+      "sha256Bytes": "cfcfa6aacc01609130f4700dd3374f98406713ce06083b726e2a5e0618884359",
+      "sizeBytes": 1142
+    },
+    {
+      "path": "root/actual36-native/runs/compile-02/source-inputs/NativeOsdMaskFixture.kt",
+      "sha256Bytes": "2854cc80d59f7c7d20c4f68d63143089c1b7ea2890926094cb9ee1cf2ab3a474",
+      "sizeBytes": 18274
+    },
+    {
+      "path": "root/snapshot36/manifest.json",
+      "sha256Bytes": "a445ed0f4944ba6ac581b06401576aec23638ef242aa1da442a6baead60b637d",
+      "sizeBytes": 119577
+    },
+    {
+      "path": "root/snapshot36/ordered-runtime-cp.json",
+      "sha256Bytes": "2fa3092ec985e32bf6b1b046266e6b84994adeeb023615549a9422eddb0aa493",
+      "sizeBytes": 36694
+    },
+    {
+      "path": "root/install/baseline-registry.json",
+      "sha256Bytes": "ab9df96046ad57baa98b3dcd910040994f453418e5603cbd5ae752f55fe0756e",
+      "sizeBytes": 304924
+    },
+    {
+      "path": "root/install/baseline/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "f1bd64ca7c4b50c6fe5f58dadd8e248794fddeb6b4e366e3d9244759cc32b513",
+      "sizeBytes": 56695
+    },
+    {
+      "path": "root/install/baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "dba945d6158081370ecd3455f5bbcacfbbae0983c449ed629d63031e54597f78",
+      "sizeBytes": 26723
+    },
+    {
+      "path": "root/install/baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "sha256Bytes": "eaafed3a14fcbe95258171cf3aed2cf0b8332e925f7dae1f23806505f299e320",
+      "sizeBytes": 4555
+    },
+    {
+      "path": "root/install/baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256Bytes": "b30a402680e77fcb2f9498c4e76886150bb70634597c60994d5cbbf6317a1685",
+      "sizeBytes": 5317
+    },
+    {
+      "path": "root/install/baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "09c6a58db1f495c26c586419d03004aa9b39945ef4f74832b3ba78ef23d50901",
+      "sizeBytes": 61362
+    },
+    {
+      "path": "root/install/baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+      "sha256Bytes": "2a52fa03ca38f19b0fbd783e82de06284c429a6f3484a137e652b1e2607b4380",
+      "sizeBytes": 3264
+    },
+    {
+      "path": "root/install/baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "2ddd07492e3f386950d4fec879a0e5abb1ac5a633f438cf345bdd666312557a0",
+      "sizeBytes": 4392
+    },
+    {
+      "path": "root/install/baseline/desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "sha256Bytes": "b001d27e4e30af5c36dfbc990378a6448aabd1dcd532f5e259819e825d873641",
+      "sizeBytes": 29170
+    },
+    {
+      "path": "root/install/installed.json",
+      "sha256Bytes": "eab2e5825bd44dda37e2fa57ccad8366a3b1e3803c9b34899e1f80d48b85e9a0",
+      "sizeBytes": 17229
+    },
+    {
+      "path": "root/install-web-mask-osd.py",
+      "sha256Bytes": "89f42f1b00531b077be5501633fe0555d22808e481c9dc0876591c7fb24e343d",
+      "sizeBytes": 3674
+    },
+    {
+      "path": "root/jvm-method-name-audit-36.json",
+      "sha256Bytes": "8ad1ba614f965e9debad0f1ecd187541a5b33af58e8023f35cb514de519dd776",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/classes-34.log",
+      "sha256Bytes": "1e809e75e999c7b30da5833b386709ba1a108287738bd95d39804a0939171a24",
+      "sizeBytes": 14169
+    },
+    {
+      "path": "root/classes-35.log",
+      "sha256Bytes": "89b8eb14de89bdcd98ca67b3b329e8f42692aca22068727b503db491061a7182",
+      "sizeBytes": 7679
+    },
+    {
+      "path": "root/classes-36.log",
+      "sha256Bytes": "fb40ea94ad3c4040ba6a657e124ea3d68458037d35e91e7168accc454bc95a72",
+      "sizeBytes": 50705
+    },
+    {
+      "path": "root/pgc-source/base/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "06b7390a0db107dbcf390fdf6f6fb4c961c7cb1469a2116d80bde28c00cab4f7",
+      "sizeBytes": 41105
+    },
+    {
+      "path": "root/pgc-source/final/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "60438ac0c22e426c5ab61fdaf66ab916b8c262cffd531a83463fc8d212c256e8",
+      "sizeBytes": 42137
+    },
+    {
+      "path": "root/pgc-source/base/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "ae4aa9a55b7729cae2449ad3cd6fb90f299224c41d8ba61caff9e8110bf99909",
+      "sizeBytes": 140870
+    },
+    {
+      "path": "root/pgc-source/final/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "350dc8046540b56876f1432bf62fdd97fbf83d3b729f255b408c17bc1ed6e024",
+      "sizeBytes": 140893
+    },
+    {
+      "path": "root/pgc-source/required-community-owner.patch",
+      "sha256Bytes": "50035b4c99cb1a0c891691d9bd7419028d85fe0d65744e3ce571b00bfa680e8e",
+      "sizeBytes": 5332
+    },
+    {
+      "path": "root/freeze-web-mask-osd36.py",
+      "sha256Bytes": "d0212e884c8247912e5d9d21e5e194dcc1d305b2d783530152e39fbb338d107e",
+      "sizeBytes": 6881
+    },
+    {
+      "path": "root/compiled-output-exclusions.json",
+      "sha256Bytes": "bf93f98d4675b07bac161c4ad48e70ca1c767dedf5ac4d42e835a96170e61cf4",
+      "sizeBytes": 3606
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "12c76edefc7970ab1b1702f8934c2adce434c03666e6d73a2ffa6da4dfe11f10",
+      "sizeBytes": 1365
+    }
+  ]
+}

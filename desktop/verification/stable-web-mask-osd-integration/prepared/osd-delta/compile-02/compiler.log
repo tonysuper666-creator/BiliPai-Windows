@@ -1,0 +1,3 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-native-osd-mask-delta\proof\OsdMaskProof.kt:66:96: warning: unnecessary safe call on a non-null receiver of type 'Long'.
+    fun accepted(version:Long?,owned:Boolean)=output.takeIf {it.sourceVersion==version&&version?.let {owned}==true}?.viewport
+                                                                                               ^^

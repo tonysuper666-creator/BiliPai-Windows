@@ -1,0 +1,91 @@
+{
+  "status": "PASS",
+  "actualWholeSnapshot": "999bc989c995f877761b22c5c00a6a0d99819100d8cef591a25f94b5d56a3a5d",
+  "actual92CP": "0da93f5423ef53986a1939d97b37114a97e4a8e64b646052d34eaeaa916a6dee",
+  "prospectiveJarInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar",
+      "sha256Bytes": "bad3de73a640fb55eeb41106f4d04a4159145d2551abbd0ef9e742a05e79bada",
+      "kind": "declared prospective frozen mask core100"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\runs\\04\\prepared-home-platform.jar",
+      "sha256Bytes": "ec6c0e4a310bdfec4f10377ca65c7198c869073a1c9f5a426cea7291290cc4f0",
+      "kind": "declared prospective frozen media74"
+    }
+  ],
+  "jarSha256Bytes": "d890f7a32988c42f08de33bb3658893c798b044a986fbd6139c9778f5c4150dd",
+  "sourceInputs": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "sha256Bytes": "270bbedec2b28d63254d04263d3e12a5d4e5226d2231eecbc2f5567099e57d14"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopWebMaskPath.kt",
+      "sha256Bytes": "1702c11f675ac4801a8e0c9940116c8827520575e0770173c44b66d9f29e722c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256Bytes": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlayerVideoOutput.kt",
+      "sha256Bytes": "e74a76a7fe3d68e847db5cca179174ca31ca77055a76c9cad66000d3e406bc79"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\proof\\OsdMaskProof.kt",
+      "sha256Bytes": "cf7105a1df323d4b9bf5a19f94f048a0039c58a816c7588150d329a1c3f3d810"
+    }
+  ],
+  "declaredExistingClassFamilies": [
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$Companion.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$ConfigKey.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$PendingLive.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$User32.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$installDocument$processing$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1$2.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1$invokeSuspend$$inlined$map$1$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1$invokeSuspend$$inlined$map$1$2$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1$invokeSuspend$$inlined$map$1$2.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1$invokeSuspend$$inlined$map$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1$1$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$loadSource$loading$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay$panel$1.class",
+    "com/bilipai/desktop/danmaku/DanmakuOverlay.class",
+    "com/bilipai/desktop/danmaku/DanmakuPoolSourceSnapshot.class",
+    "com/bilipai/desktop/danmaku/DesktopWebMaskPath$Companion$PathBudgetExceeded.class",
+    "com/bilipai/desktop/danmaku/DesktopWebMaskPath$Companion$WhenMappings.class",
+    "com/bilipai/desktop/danmaku/DesktopWebMaskPath$Companion.class",
+    "com/bilipai/desktop/danmaku/DesktopWebMaskPath.class",
+    "com/bilipai/desktop/danmaku/DesktopWebMaskPathKt.class",
+    "com/bilipai/desktop/player/MpvCallException.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Command.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$HardwareDecoding.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Load.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Property.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Screenshot.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Seek.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$SubtitleConfiguration.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Subtitles.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$VideoShaders.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action.class",
+    "com/bilipai/desktop/player/MpvPlayer$ExternalSubtitle.class",
+    "com/bilipai/desktop/player/MpvPlayer$Session.class",
+    "com/bilipai/desktop/player/MpvPlayer$canvas$1.class",
+    "com/bilipai/desktop/player/MpvPlayer$captureScreenshot$1.class",
+    "com/bilipai/desktop/player/MpvPlayer$captureScreenshot$4.class",
+    "com/bilipai/desktop/player/MpvPlayer.class",
+    "com/bilipai/desktop/player/NativeVideoCapability$IntermediateFormat.class",
+    "com/bilipai/desktop/player/NativeVideoCapability$MaximumTextureDimension.class",
+    "com/bilipai/desktop/player/NativeVideoCapability.class",
+    "com/bilipai/desktop/player/PlayerVideoOutputKt.class",
+    "com/bilipai/desktop/player/PlayerVideoOutputState.class",
+    "com/bilipai/desktop/player/PlayerVideoShaderOptions$Companion.class",
+    "com/bilipai/desktop/player/PlayerVideoShaderOptions.class"
+  ],
+  "newClassOverlapZero": true,
+  "sourceOnly": true,
+  "actualRootWindowRuntime": false,
+  "nativeMpvExecuted": false
+}

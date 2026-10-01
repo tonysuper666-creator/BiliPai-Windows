@@ -1,0 +1,86 @@
+[
+  {
+    "label": "prepared/mask-core",
+    "path": "compile-02/original-web-mask-candidate.jar",
+    "sha256Bytes": "87cefe5804abaa0cc9af29cc6338f17cd8b722948c9f46c724de6a6ac159b438",
+    "sizeBytes": 237124,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  },
+  {
+    "label": "prepared/mask-core",
+    "path": "compile-04/original-web-mask-candidate.jar",
+    "sha256Bytes": "a4a3f4ac5ca5a3007fe727ba0a7aac386aeb76fcc394bcd84673ae06df3c84c5",
+    "sizeBytes": 275919,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  },
+  {
+    "label": "prepared/mask-core",
+    "path": "compile-05/original-web-mask-candidate.jar",
+    "sha256Bytes": "814d65ac66ad6f79cdea24b93c9a4076f7e5666c04e71590a77264806f7a469c",
+    "sizeBytes": 284224,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  },
+  {
+    "label": "prepared/mask-core",
+    "path": "compile-06/original-web-mask-candidate.jar",
+    "sha256Bytes": "1c87c173e813d61b3920caf01160ac5bcc8f2f7ab11f02f23225a26c1b5737f7",
+    "sizeBytes": 284771,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  },
+  {
+    "label": "prepared/mask-core",
+    "path": "compile-07/original-web-mask-candidate.jar",
+    "sha256Bytes": "dcba434ed84107a4973ab1c1a52b405b319e0f0888cf46782ac528d361c22fb2",
+    "sizeBytes": 284975,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  },
+  {
+    "label": "prepared/mask-core",
+    "path": "compile-08/original-web-mask-candidate.jar",
+    "sha256Bytes": "74703d206d28f96e0751ff624e60e5ef6a01cf54117a107a6ad7251792880b06",
+    "sizeBytes": 285062,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  },
+  {
+    "label": "prepared/mask-core",
+    "path": "compile-09/original-web-mask-candidate.jar",
+    "sha256Bytes": "bad3de73a640fb55eeb41106f4d04a4159145d2551abbd0ef9e742a05e79bada",
+    "sizeBytes": 291043,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  },
+  {
+    "label": "prepared/osd-delta",
+    "path": "compile-01/native-osd-mask-candidate.jar",
+    "sha256Bytes": "c5749e8b7f0c6baf2c943af2b7e5377f26f0949e7c1cf36c4c0642e83c24c42c",
+    "sizeBytes": 155083,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  },
+  {
+    "label": "prepared/osd-delta",
+    "path": "compile-02/native-osd-mask-candidate.jar",
+    "sha256Bytes": "d890f7a32988c42f08de33bb3658893c798b044a986fbd6139c9778f5c4150dd",
+    "sizeBytes": 155141,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  },
+  {
+    "label": "root/actual36-native",
+    "path": "runs/actual36-01/native-osd-mask-fixture.jar",
+    "sha256Bytes": "42679a3b0152232b343bcd70d708db7ab3625282a1b4e111040a92bb85372217",
+    "sizeBytes": 41945,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  },
+  {
+    "label": "root/actual36-native",
+    "path": "runs/compile-01/native-osd-mask-fixture.jar",
+    "sha256Bytes": "63003bbba737458ece6fb5b5c0b017de72b6a908cbcadf7c1e445ada20c28f8d",
+    "sizeBytes": 40793,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  },
+  {
+    "label": "root/actual36-native",
+    "path": "runs/compile-02/native-osd-mask-fixture.jar",
+    "sha256Bytes": "cbdd39929b0f2ef4772259c74888f2bc1d30dab83f213395473aabedb9340dd4",
+    "sizeBytes": 41943,
+    "reason": "Rebuildable fixture/isolated compiler output; not an installed binary"
+  }
+]

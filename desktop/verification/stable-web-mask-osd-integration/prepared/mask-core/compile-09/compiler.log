@@ -1,0 +1,21 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\review-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:402:44: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+        recordQueueRequest(expected, player?.currentSourceVersion)
+                                           ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\review-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:415:36: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+                val latest = player?.state?.value ?: native
+                                   ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\review-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:416:27: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+                if (player?.recoverSource(active.sourceVersion, source.toNative(latest.positionSeconds, latest.paused),
+                          ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\review-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:474:19: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            player?.setMuted(preferences().muted); pluginMuteUntilMs = null; pluginMuteFromMs = null
+                  ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\review-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:479:39: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            handledEnd = false; player?.replay(); current = context.copy(pluginGeneration = null); beginPlugins(current!!); return
+                                      ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\review-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:812:54: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            danmaku?.setComments(emptyList()); player?.stopIfSourceVersion(version)
+                                                     ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\review-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:834:37: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            suspended = true; player?.setPaused(true)
+                                    ^^

@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "fixtureOnly": true,
+  "mode": "prepared-compile",
+  "actualManifest": "999bc989c995f877761b22c5c00a6a0d99819100d8cef591a25f94b5d56a3a5d",
+  "orderedActualCP": "0da93f5423ef53986a1939d97b37114a97e4a8e64b646052d34eaeaa916a6dee",
+  "prospectiveCompileOnly": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-osd-mask-delta\\compile-02\\native-osd-mask-candidate.jar",
+      "sha256Bytes": "d890f7a32988c42f08de33bb3658893c798b044a986fbd6139c9778f5c4150dd",
+      "scope": "PROSPECTIVE compile-only, forbidden for execution"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar",
+      "sha256Bytes": "bad3de73a640fb55eeb41106f4d04a4159145d2551abbd0ef9e742a05e79bada",
+      "scope": "PROSPECTIVE compile-only, forbidden for execution"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\runs\\04\\prepared-home-platform.jar",
+      "sha256Bytes": "ec6c0e4a310bdfec4f10377ca65c7198c869073a1c9f5a426cea7291290cc4f0",
+      "scope": "PROSPECTIVE compile-only, forbidden for execution"
+    }
+  ],
+  "nativeExecuted": false
+}

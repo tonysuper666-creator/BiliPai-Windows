@@ -615,7 +615,8 @@
         "playback",
         "comments",
         "stable-danmaku-list-menu",
-        "stable-danmaku-settings-panel"
+        "stable-danmaku-settings-panel",
+        "stable-web-mask-parity"
       ],
       "sha256": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5"
     },
@@ -1543,7 +1544,8 @@
       "sha256": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93",
       "features": [
         "plugins",
-        "stable-danmaku-list-menu"
+        "stable-danmaku-list-menu",
+        "stable-web-mask-parity"
       ],
       "mode": "extracted"
     },
@@ -6305,7 +6307,8 @@
       "sha256": "ba80d0cfef445bda5a9e2ebc10f68de83d1ccc24cf881d7a49d02bf656c6cfa7",
       "mode": "selected",
       "features": [
-        "stable-danmaku-list-menu"
+        "stable-danmaku-list-menu",
+        "stable-web-mask-parity"
       ]
     },
     {
@@ -6970,6 +6973,24 @@
       "mode": "policy-extract",
       "features": [
         "home-page"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/WebMaskParser.kt",
+      "sha256": "c17f878278d739c4d9028e7dbcaa9fbcb7aab216a0f4f6222a882336de7f13cc",
+      "mode": "extracted",
+      "features": [
+        "stable-danmaku-list-menu",
+        "stable-web-mask-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt",
+      "sha256": "65b184189813db2db4ab04c175e5b2c4eda682fce57be547bd2b290237473400",
+      "mode": "extracted",
+      "features": [
+        "stable-danmaku-list-menu",
+        "stable-web-mask-parity"
       ]
     }
   ],

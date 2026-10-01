@@ -1,0 +1,65 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+    "old": "    val dolbyVisionProfile: Int? = null,\n)",
+    "new": "    val dolbyVisionProfile: Int? = null,\n    /** Actual same-poll OSD video bounds; absent while no owned native video is ready. */\n    val viewport:PlayerVideoViewport? = null,\n)\n\n/** Native OSD observations, including legitimate negative crop/pan margins. No aspect/fit inference. */\ndata class PlayerVideoViewport(val osdWidth:Int,val osdHeight:Int,val left:Int,val top:Int,val contentWidth:Int,val contentHeight:Int) {\n    init {require(osdWidth>0&&osdHeight>0&&contentWidth>0&&contentHeight>0)}\n    fun sourceToPhysicalTransform(width:Int,height:Int,sourceWidth:Int,sourceHeight:Int):java.awt.geom.AffineTransform {\n        require(width>0&&height>0&&sourceWidth>0&&sourceHeight>0)\n        return java.awt.geom.AffineTransform.getScaleInstance(width.toDouble()/osdWidth,height.toDouble()/osdHeight).apply {\n            translate(left.toDouble(),top.toDouble())\n            scale(contentWidth.toDouble()/sourceWidth,contentHeight.toDouble()/sourceHeight)\n        }\n    }\n}",
+    "requiredOldCount": 1,
+    "beforeSha256LF": "44352defeeb3cd3ec0c9a8902a6311d91bacea779accdbab7689b1483611d34c",
+    "afterSha256LF": "e74a76a7fe3d68e847db5cca179174ca31ca77055a76c9cad66000d3e406bc79",
+    "reason": "Expose actual already-observed native OSD rectangle, with one source-to-physical transform and nullable not-ready state"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "old": "displayWidth = 0, displayHeight = 0, gamma = null",
+    "new": "displayWidth = 0, displayHeight = 0, viewport = null, gamma = null",
+    "requiredOldCount": 2,
+    "beforeSha256LF": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5",
+    "afterSha256LF": "6cdf1d5a1eb8ea81a039abf3be346d0788225225080bc44176479d11c9f64375",
+    "reason": "Both existing load/stop source resets clear the actual rectangle"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "old": "            val gamma = if (fileLoaded) property(native, handle, \"video-params/gamma\")",
+    "new": "            val videoViewport = if(osdWidth!=null&&osdWidth>0&&osdHeight!=null&&osdHeight>0&&marginLeft!=null&&marginTop!=null&&marginRight!=null&&marginBottom!=null&&displayWidth>0&&displayHeight>0)\n                PlayerVideoViewport(osdWidth,osdHeight,marginLeft,marginTop,displayWidth,displayHeight) else null\n            val gamma = if (fileLoaded) property(native, handle, \"video-params/gamma\")",
+    "requiredOldCount": 1,
+    "beforeSha256LF": "6cdf1d5a1eb8ea81a039abf3be346d0788225225080bc44176479d11c9f64375",
+    "afterSha256LF": "b6c94ea894502d4cd53a9c4220e2847de2c9d48c36ede3538783760300e44271",
+    "reason": "Retain the OSD dimensions/margins already read in the one native poll; no new property call, actor or fit calculation"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "old": "displayWidth = displayWidth, displayHeight = displayHeight, gamma = gamma",
+    "new": "displayWidth = displayWidth, displayHeight = displayHeight, viewport = videoViewport, gamma = gamma",
+    "requiredOldCount": 1,
+    "beforeSha256LF": "b6c94ea894502d4cd53a9c4220e2847de2c9d48c36ede3538783760300e44271",
+    "afterSha256LF": "04d7c18cac64c11842811b5919124d37221713a64fc9eabeef257655de35e9bf",
+    "reason": "Publish rectangle with the same sourceVersion/session/playbackRevision lock admission and same output cycle"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+    "old": "    internal fun scaledArea(width: Int, height: Int, sourceWidth: Int, sourceHeight: Int): Area =\n        Area(AffineTransform.getScaleInstance(width.toDouble()/sourceWidth, height.toDouble()/sourceHeight).createTransformedShape(path))",
+    "new": "    internal fun scaledArea(width: Int, height: Int, sourceWidth: Int, sourceHeight: Int): Area =\n        Area(AffineTransform.getScaleInstance(width.toDouble()/sourceWidth, height.toDouble()/sourceHeight).createTransformedShape(path))\n    internal fun transformedArea(transform:AffineTransform):Area=Area(transform.createTransformedShape(path))",
+    "requiredOldCount": 1,
+    "beforeSha256LF": "b49c3e4e88564a15b1e71eb04cb9292cb3be9a1a307ef0f231db5199a240fd6b",
+    "afterSha256LF": "fcf52562c950a18abd42b75a0e53cc49fd269427a5403243646a98003e5f3c97",
+    "reason": "Same bounded immutable path carrier consumes the one actual video-to-physical transform"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+    "old": "internal fun applyDesktopWebMaskClip(graphics: Graphics2D, width: Int, height: Int, frame: com.android.purebilibili.danmaku.engine.DanmakuMaskFrame?) {\n    if (frame == null || width <= 0 || height <= 0) return\n    val visible = Area(Rectangle2D.Double(0.0, 0.0, width.toDouble(), height.toDouble()))\n    visible.subtract(frame.path.scaledArea(width, height, frame.sourceWidth, frame.sourceHeight))\n    graphics.clip(visible)\n}",
+    "new": "internal fun applyDesktopWebMaskClip(graphics: Graphics2D, width: Int, height: Int, frame: com.android.purebilibili.danmaku.engine.DanmakuMaskFrame?, videoViewport:com.bilipai.desktop.player.PlayerVideoViewport?) {\n    if (frame == null || videoViewport == null || width <= 0 || height <= 0) return\n    val visible = Area(Rectangle2D.Double(0.0, 0.0, width.toDouble(), height.toDouble()))\n    visible.subtract(frame.path.transformedArea(videoViewport.sourceToPhysicalTransform(width,height,frame.sourceWidth,frame.sourceHeight)))\n    graphics.clip(visible)\n}",
+    "requiredOldCount": 1,
+    "beforeSha256LF": "fcf52562c950a18abd42b75a0e53cc49fd269427a5403243646a98003e5f3c97",
+    "afterSha256LF": "1702c11f675ac4801a8e0c9940116c8827520575e0770173c44b66d9f29e722c",
+    "reason": "Actual OSD rectangle is required for masking; when it is not observed, video/danmaku continue without a guessed transform"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "applyDesktopWebMaskClip(physical,geometry.viewport.widthPx,geometry.viewport.heightPx,currentWebMaskFrame((displayTime*1000).toLong()))",
+    "new": "applyDesktopWebMaskClip(physical,geometry.viewport.widthPx,geometry.viewport.heightPx,currentWebMaskFrame((displayTime*1000).toLong()),player.videoOutput.value.takeIf {it.sourceVersion==poolSourceVersion && poolSourceVersion?.let(player::ownsSourceVersion)==true}?.viewport)",
+    "requiredOldCount": 1,
+    "beforeSha256LF": "183bd4dec1f83c718b1e58b7fa271780361ce575e8e13eebfe958ff550932432",
+    "afterSha256LF": "270bbedec2b28d63254d04263d3e12a5d4e5226d2231eecbc2f5567099e57d14",
+    "reason": "Same native player/source owns both mask frame and observed video bounds; no second getter parameter/actor"
+  }
+]

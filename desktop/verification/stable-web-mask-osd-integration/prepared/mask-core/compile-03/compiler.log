@@ -1,0 +1,24 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\proof\WebMaskProof.kt:100:62: error: cannot access 'var cachedCid: Long': it is protected in 'com.bilipai.desktop.danmaku.Owner'.
+    fun target()=DesktopOwnedWebMaskSource("BVfixture",owner.cachedCid,42,7,{alive.get()}, {bvid,cid->verify(bvid=="BVfixture"&&cid==owner.cachedCid,"required metadata identity");metadata.incrementAndGet();PlayerInfoData(dmMask=DanmakuMaskInfo(maskUrl="//fixture.hdslb.com/mask",fps=30))})
+                                                             ^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\proof\WebMaskProof.kt:100:140: error: cannot access 'var cachedCid: Long': it is protected in 'com.bilipai.desktop.danmaku.Owner'.
+    fun target()=DesktopOwnedWebMaskSource("BVfixture",owner.cachedCid,42,7,{alive.get()}, {bvid,cid->verify(bvid=="BVfixture"&&cid==owner.cachedCid,"required metadata identity");metadata.incrementAndGet();PlayerInfoData(dmMask=DanmakuMaskInfo(maskUrl="//fixture.hdslb.com/mask",fps=30))})
+                                                                                                                                           ^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\proof\WebMaskProof.kt:104:11: error: cannot access 'var webMaskEnabled: Boolean': it is protected in 'com.bilipai.desktop.danmaku.Owner'.
+    owner.webMaskEnabled=false;owner.onWebMaskSettingChanged()
+          ^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\proof\WebMaskProof.kt:106:11: error: cannot access 'var webMaskEnabled: Boolean': it is protected in 'com.bilipai.desktop.danmaku.Owner'.
+    owner.webMaskEnabled=true;owner.onWebMaskSettingChanged();awaitFrame(owner)
+          ^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\proof\WebMaskProof.kt:114:11: error: cannot access 'var webMaskEnabled: Boolean': it is protected in 'com.bilipai.desktop.danmaku.Owner'.
+    owner.webMaskEnabled=false;owner.onWebMaskSettingChanged()
+          ^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\proof\WebMaskProof.kt:117:28: error: cannot access 'var webMaskEnabled: Boolean': it is protected in 'com.bilipai.desktop.danmaku.Owner'.
+    source.gate=null;owner.webMaskEnabled=true;owner.onWebMaskSettingChanged();awaitFrame(owner)
+                           ^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\proof\WebMaskProof.kt:118:11: error: cannot access 'var cachedCid: Long': it is protected in 'com.bilipai.desktop.danmaku.Owner'.
+    owner.cachedCid=2;owner.loadGeneration=2;owner.bindWebMaskSource(null)
+          ^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-danmaku-web-mask-parity\proof\WebMaskProof.kt:118:29: error: cannot access 'var loadGeneration: Long': it is protected in 'com.bilipai.desktop.danmaku.Owner'.
+    owner.cachedCid=2;owner.loadGeneration=2;owner.bindWebMaskSource(null)
+                            ^^^^^^^^^^^^^^

@@ -1,0 +1,48 @@
+{
+  "newSourceCount": 2,
+  "newRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/WebMaskParser.kt",
+      "sha256": "c17f878278d739c4d9028e7dbcaa9fbcb7aab216a0f4f6222a882336de7f13cc",
+      "mode": "extracted",
+      "features": [
+        "stable-danmaku-list-menu",
+        "stable-web-mask-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt",
+      "sha256": "65b184189813db2db4ab04c175e5b2c4eda682fce57be547bd2b290237473400",
+      "mode": "extracted",
+      "features": [
+        "stable-danmaku-list-menu",
+        "stable-web-mask-parity"
+      ]
+    }
+  ],
+  "mergeOnly": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "addFeatures": [
+        "stable-web-mask-parity"
+      ],
+      "keepModeAndExistingFeatures": true
+    },
+    {
+      "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+      "addFeatures": [
+        "stable-web-mask-parity"
+      ],
+      "keepModeAndExistingFeatures": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "addFeatures": [
+        "stable-web-mask-parity"
+      ],
+      "keepModeAndExistingFeatures": true
+    }
+  ],
+  "producerAlreadyInGradle": true,
+  "additionalDependencyCount": 0
+}

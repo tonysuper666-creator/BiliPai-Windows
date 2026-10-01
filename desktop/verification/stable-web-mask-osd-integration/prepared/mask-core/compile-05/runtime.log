@@ -1,0 +1,12 @@
+Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 32 out of bounds for length 32
+	at com.bilipai.desktop.danmaku.DesktopWebMaskPath$Companion.createPathFromPathData(DesktopWebMaskPath.kt:36)
+	at com.bilipai.desktop.danmaku.WebMaskProofKt$main$1.invokeSuspend(WebMaskProof.kt:81)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.danmaku.WebMaskProofKt.main(WebMaskProof.kt:59)

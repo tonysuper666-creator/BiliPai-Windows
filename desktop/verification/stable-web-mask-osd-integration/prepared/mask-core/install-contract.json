@@ -1,0 +1,52 @@
+{
+  "status": "READY_SOURCE_ONLY",
+  "installOrder": [
+    "Root media74 exact local hunks first",
+    "Mask core3 payload +28 exact local hunks (historical packages unchanged)",
+    "Separate required actual-OSD/video-coordinate delta next",
+    "Root whole compile/runtime acceptance of final combination"
+  ],
+  "payloads": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOwnedWebMaskSource.kt",
+      "prepared": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopOwnedWebMaskSource.kt",
+      "sha256Bytes": "1b7dae404ad9e31e7f55c01153dcf0860b2c64464bc3f471f2fd3e8ed1516ccb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+      "prepared": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopWebMaskPath.kt",
+      "sha256Bytes": "b49c3e4e88564a15b1e71eb04cb9292cb3be9a1a307ef0f231db5199a240fd6b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "prepared": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\prepared\\desktop\\tools\\extract-upstream-danmaku-list-menu.py",
+      "sha256Bytes": "72fb8c0affd99cd66688cae9544d444aaacf59c20bb6e8eb351101838bf1fb65"
+    }
+  ],
+  "localHunksSHA256": "b666b2704658c16dd87301c75864ec1fc4191a166e283650afd6645e5c4deae1",
+  "registryRecipeSHA256": "728def105fde166de3eb1aaebfbb460782b0372aa88b922726e1b9a5896036ce",
+  "wholeRootOverwritesAuthorized": false,
+  "windowClipIsIntermediate": true,
+  "pending": [
+    "Real native video OSD bounds must be stacked before claiming video-coordinate mask parity",
+    "Actual Root/native paint acceptance, no external HTTP or real B station metadata exercised here",
+    "SCREEN_TOP/full original ordinary video-viewport layout and independent portrait fullscreen layout",
+    "ByteDance compositor/AA pixel identity and original special/Live renderer queue closure"
+  ],
+  "platformDifferences": [
+    "Java2D rational-conic carrier midpoint tolerance0.01 source pixels, maxdepth16; complete SVG grammar via existing Skia",
+    "Windows current frame is half-open [start,end); no overlapping boundary-mask union",
+    "Retained2402frames/2M pathcommands, perSVG20k commands; overbudget optionalmask omitted",
+    "Original uninitialized-window guard overflow corrected, original10s/30s/5s expression otherwise retained"
+  ],
+  "singleAuthority": "Existing Overlay requests/requestLock/source/rawDocument/native sourceVersion + Controller current owner/account epoch + same community WBI metadata + original full global preference",
+  "proof": {
+    "status": "PASS",
+    "groups": 5,
+    "assertions": 43,
+    "externalHttp": false,
+    "rootWindowRuntime": false,
+    "realSkiaSvgAbi": true,
+    "realJava2DPaint": true
+  }
+}

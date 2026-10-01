@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "fixtureOnly": true,
+  "mode": "actual-run",
+  "actualManifest": "a445ed0f4944ba6ac581b06401576aec23638ef242aa1da442a6baead60b637d",
+  "orderedActualCP": "2fa3092ec985e32bf6b1b046266e6b84994adeeb023615549a9422eddb0aa493",
+  "prospectiveCompileOnly": [],
+  "nativeExecuted": false
+}

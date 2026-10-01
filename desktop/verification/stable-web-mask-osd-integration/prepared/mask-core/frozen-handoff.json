@@ -1,0 +1,535 @@
+{
+  "status": "READY_SOURCE_ONLY",
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "payloadCount": 3,
+  "localHunkCount": 28,
+  "newSourceIdentityCount": 2,
+  "generatedAdditions": 5,
+  "productionCompileSources": 12,
+  "proofSources": 1,
+  "actual31Manifest": "999bc989c995f877761b22c5c00a6a0d99819100d8cef591a25f94b5d56a3a5d",
+  "compileResult": "f7110f8b531d2a8efcc6e9fb0f6847985ec195962e16be102a5849f6acb453fd",
+  "proof": {
+    "status": "PASS",
+    "groups": 5,
+    "assertions": 43,
+    "externalHttp": false,
+    "rootWindowRuntime": false,
+    "realSkiaSvgAbi": true,
+    "realJava2DPaint": true
+  },
+  "sourceAudit": "3d5d7f542ac4eb4296551be21ea0916a4ce09217b2ab73b012a996ebac50e315",
+  "installContract": "0f7c9076981f37e4137bccd0b1e1d5292e0d9f57fcebf3f9dcacb7e83cbf994f",
+  "topMethods": "a25f54f3055a2aa6cc080f1db310bb3e356915df15a80868ed15ac2b3ea024b2",
+  "firstWindowFailure": {
+    "originalEndValue": "Long.MIN_VALUE",
+    "originalGuard": "positionMs >= webMaskWindowStartMs + 5000L && positionMs <= webMaskWindowEndMs - 5000L",
+    "failedFixture": "compile-06/runtime.log",
+    "failedFixtureJar": "1c87c173e813d61b3920caf01160ac5bcc8f2f7ab11f02f23225a26c1b5737f7",
+    "fix": "One shared valid/initialized-window guard, then unchanged original5s expression"
+  },
+  "actualRootRuntime": false,
+  "windowVideoCoordinatesPendingSeparateOSDDelta": true,
+  "evidence": [
+    {
+      "relative": "audit-freeze.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\audit-freeze.py",
+      "sha256Bytes": "7d10fa2744135009be041a81b96690f2fe689090c23ae61bc7fb87f06c9acc14"
+    },
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "sha256Bytes": "dba945d6158081370ecd3455f5bbcacfbbae0983c449ed629d63031e54597f78"
+    },
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuSettings.kt",
+      "sha256Bytes": "eaafed3a14fcbe95258171cf3aed2cf0b8332e925f7dae1f23806505f299e320"
+    },
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256Bytes": "b30a402680e77fcb2f9498c4e76886150bb70634597c60994d5cbbf6317a1685"
+    },
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopPlaybackController.kt",
+      "sha256Bytes": "f1bd64ca7c4b50c6fe5f58dadd8e248794fddeb6b4e366e3d9244759cc32b513"
+    },
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "2ddd07492e3f386950d4fec879a0e5abb1ac5a633f438cf345bdd666312557a0"
+    },
+    {
+      "relative": "baseline/desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\baseline\\desktop\\tools\\extract-upstream-danmaku-list-menu.py",
+      "sha256Bytes": "b001d27e4e30af5c36dfbc990378a6448aabd1dcd532f5e259819e825d873641"
+    },
+    {
+      "relative": "baseline-manifest.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\baseline-manifest.json",
+      "sha256Bytes": "342432a0a40fab6a66af795c09ecf77d3afe24f0e7983089737805d4e5f6563c"
+    },
+    {
+      "relative": "compile-01/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-01\\compiler.args",
+      "sha256Bytes": "e0e057e4e84163da1d01191e32a4b724e879ed33c0befb0a6801e84da4f608b2"
+    },
+    {
+      "relative": "compile-01/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-01\\compiler.log",
+      "sha256Bytes": "70b736a99c8f1f482b3b42cf383ec43d5314d45395883059a74f3c3b7035c89b"
+    },
+    {
+      "relative": "compile-02/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-02\\compiler.args",
+      "sha256Bytes": "aa0870a9669c39f0e9379a09fabbbb97e85a7e39bab4761da11e1cd513524825"
+    },
+    {
+      "relative": "compile-02/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-02\\compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee"
+    },
+    {
+      "relative": "compile-02/original-web-mask-candidate.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-02\\original-web-mask-candidate.jar",
+      "sha256Bytes": "87cefe5804abaa0cc9af29cc6338f17cd8b722948c9f46c724de6a6ac159b438"
+    },
+    {
+      "relative": "compile-03/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-03\\compiler.args",
+      "sha256Bytes": "71e100f56a76317d9c333f206fe96b84f76b1fde02d470ba725eeeebf05fd4a3"
+    },
+    {
+      "relative": "compile-03/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-03\\compiler.log",
+      "sha256Bytes": "820366232ca824e71935b439c91a72144168b989875c9d2b73ab55890d0bafb9"
+    },
+    {
+      "relative": "compile-04/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-04\\compiler.args",
+      "sha256Bytes": "a01a5415dae273e5770d81c973946b62610b30f5d894c4300e08f8ab528061f1"
+    },
+    {
+      "relative": "compile-04/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-04\\compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee"
+    },
+    {
+      "relative": "compile-04/original-web-mask-candidate.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-04\\original-web-mask-candidate.jar",
+      "sha256Bytes": "a4a3f4ac5ca5a3007fe727ba0a7aac386aeb76fcc394bcd84673ae06df3c84c5"
+    },
+    {
+      "relative": "compile-05/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-05\\compiler.args",
+      "sha256Bytes": "5ae15ec41a0419cc95daaf5bf08da272330c33be65defa15d3100a2540685f2b"
+    },
+    {
+      "relative": "compile-05/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-05\\compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee"
+    },
+    {
+      "relative": "compile-05/original-web-mask-candidate.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-05\\original-web-mask-candidate.jar",
+      "sha256Bytes": "814d65ac66ad6f79cdea24b93c9a4076f7e5666c04e71590a77264806f7a469c"
+    },
+    {
+      "relative": "compile-05/runtime.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-05\\runtime.log",
+      "sha256Bytes": "3f2f10cdc6765d51c131248aad5f003e9a96ead626db9784c7920b79caf7f2a3"
+    },
+    {
+      "relative": "compile-06/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-06\\compiler.args",
+      "sha256Bytes": "114d0ff0e7ec5d04ad1453d0787c7c4bcbb81482b992807651f644931dbe995f"
+    },
+    {
+      "relative": "compile-06/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-06\\compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee"
+    },
+    {
+      "relative": "compile-06/original-web-mask-candidate.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-06\\original-web-mask-candidate.jar",
+      "sha256Bytes": "1c87c173e813d61b3920caf01160ac5bcc8f2f7ab11f02f23225a26c1b5737f7"
+    },
+    {
+      "relative": "compile-06/runtime.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-06\\runtime.log",
+      "sha256Bytes": "9fcaca0a8a1cd6cbae143320cdd33466ccca1452d518e729a9f4cce21ce26a4b"
+    },
+    {
+      "relative": "compile-07/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-07\\compiler.args",
+      "sha256Bytes": "ab9cb060345c926c59b64ce4b3e94851787eb131ece8555e57ed42aa3f66c164"
+    },
+    {
+      "relative": "compile-07/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-07\\compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee"
+    },
+    {
+      "relative": "compile-07/original-web-mask-candidate.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-07\\original-web-mask-candidate.jar",
+      "sha256Bytes": "dcba434ed84107a4973ab1c1a52b405b319e0f0888cf46782ac528d361c22fb2"
+    },
+    {
+      "relative": "compile-07/runtime.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-07\\runtime.log",
+      "sha256Bytes": "9fcaca0a8a1cd6cbae143320cdd33466ccca1452d518e729a9f4cce21ce26a4b"
+    },
+    {
+      "relative": "compile-08/compile-result.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-08\\compile-result.json",
+      "sha256Bytes": "4d8027cc95256b8af672da1949fe0a10c9d90945b554a9c52c967b0ab5a3adeb"
+    },
+    {
+      "relative": "compile-08/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-08\\compiler.args",
+      "sha256Bytes": "3b602e7c1fc900584d18e31067a36f2c7c5791db92a7731af3c6a2abfe39a79b"
+    },
+    {
+      "relative": "compile-08/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-08\\compiler.log",
+      "sha256Bytes": "9870d74cf8a958579fe60344fb7f9482e24f601d13d1088b1c8bd49e385459ee"
+    },
+    {
+      "relative": "compile-08/original-web-mask-candidate.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-08\\original-web-mask-candidate.jar",
+      "sha256Bytes": "74703d206d28f96e0751ff624e60e5ef6a01cf54117a107a6ad7251792880b06"
+    },
+    {
+      "relative": "compile-08/proof-result.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-08\\proof-result.json",
+      "sha256Bytes": "fea62e0a80ee80244847e548b0bc2f0ea78b2d17fe9b90429130b9ca87bfd5e1"
+    },
+    {
+      "relative": "compile-08/runtime.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-08\\runtime.log",
+      "sha256Bytes": "deb0aaf9df644e8b51b9dfc5f42087a84884dbabf4ea57f0194e8d5ceb8d9445"
+    },
+    {
+      "relative": "compile-09/compile-result.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\compile-result.json",
+      "sha256Bytes": "f7110f8b531d2a8efcc6e9fb0f6847985ec195962e16be102a5849f6acb453fd"
+    },
+    {
+      "relative": "compile-09/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\compiler.args",
+      "sha256Bytes": "042b9ed8049294c55576b3c2c3a6ab65567a758b6b72d4ce4ce30ba5e9d3b786"
+    },
+    {
+      "relative": "compile-09/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\compiler.log",
+      "sha256Bytes": "e50955aedce5552f0c8c310473c49c6e16eb5d605620dcf03b465c2d485aa679"
+    },
+    {
+      "relative": "compile-09/original-web-mask-candidate.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\original-web-mask-candidate.jar",
+      "sha256Bytes": "bad3de73a640fb55eeb41106f4d04a4159145d2551abbd0ef9e742a05e79bada"
+    },
+    {
+      "relative": "compile-09/proof-result.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\proof-result.json",
+      "sha256Bytes": "cd56fd2a4a78d6c8b5f36cf73c15320bb84f2de7ff962d1f179b0bd8a37a9692"
+    },
+    {
+      "relative": "compile-09/runtime.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile-09\\runtime.log",
+      "sha256Bytes": "7f31198f1932d412bf9f2b222968496c9b4f5ef6353a8f4d49035eb89d0d5bac"
+    },
+    {
+      "relative": "compile.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\compile.py",
+      "sha256Bytes": "8a0788a0e52dab7cbb1dd98713da8dbf1436ff82c69cf58817a2cd10f72218ef"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\core\\store\\DanmakuSettingsScope.kt",
+      "sha256Bytes": "b94bf1289a9d47aa2c76c731806c5ac577a64d960565c03a8487a0f4fa5cbf0d"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/danmaku/engine/DanmakuItem.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\danmaku\\engine\\DanmakuItem.kt",
+      "sha256Bytes": "f51d92fe5e0febc7be695958c287153b760558ff0463993585077ccf662cba0a"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/danmaku/engine/DanmakuMaskFrame.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\danmaku\\engine\\DanmakuMaskFrame.kt",
+      "sha256Bytes": "5b2ec025b62c8f126b4ec8ad16b5886b1785881bd55daa476acfe5591485583e"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/danmaku/engine/DanmakuRenderConfig.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\danmaku\\engine\\DanmakuRenderConfig.kt",
+      "sha256Bytes": "e4663f9436ff0619cafe49b57179a891e6df970079cae926d64cb07083c13c09"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuProtocol.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDanmakuProtocol.kt",
+      "sha256Bytes": "b48dd3e055769f1dcd2893ad1f56d1145ebbd9aeb9822e988e575802a2310e45"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuThumbupPolicy.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDanmakuThumbupPolicy.kt",
+      "sha256Bytes": "25d6e2c796b0588a51ecb455cf2d98a780a53099ff5df1235e95eb8560391b3c"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuConfig.kt",
+      "sha256Bytes": "833f19902c2111845280962635ea86cea032f889dd05e584218728260bf5a7ae"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/danmaku/DanmakuDisplayBand.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuDisplayBand.kt",
+      "sha256Bytes": "e9906bd2e35e7edbd0a7b60c88d46e7b9af5d3623ca6333c0729f0e5bd707335"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuEngineBudgets.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalDanmakuEngineBudgets.kt",
+      "sha256Bytes": "eea71bfebc1e8c4c9f6ccc8b6b604d8e47f72830671cf5b1661e70452f45c906"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuItemParser.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalDanmakuItemParser.kt",
+      "sha256Bytes": "ca3bdc4e5fa76316637b90f861584f9fe6469edc0a8ab116cfc51042f5729690"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuLayerPolicy.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalDanmakuLayerPolicy.kt",
+      "sha256Bytes": "36e57e5e0c96bf783a070fa68653fde79ad4164b80e9ba257f9736501ec83bce"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalLiveDanmakuAdmission.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalLiveDanmakuAdmission.kt",
+      "sha256Bytes": "cbcf58e55c8b50cbd00096790e0426c1108e067ff233548414c254c6c6ef592f"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalLiveDanmakuRenderConfig.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalLiveDanmakuRenderConfig.kt",
+      "sha256Bytes": "c5649e24ad12a87e21b4b652441b3862a6a86d5e01b98da103d7b443d5b7b1ac"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskOwner.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalWebMaskOwner.kt",
+      "sha256Bytes": "ca22ed4897465a4955f30bfb2d9e3a24e1ecaf53ca9798d98a145bc171a84f85"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskProtocol.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalWebMaskProtocol.kt",
+      "sha256Bytes": "6086df00d120630d5bc253e117c1c75ed8f9a4b3add1a48f322bc2117d08bc8d"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskRefreshPolicy.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalWebMaskRefreshPolicy.kt",
+      "sha256Bytes": "c688a2b504f4b0c060ea1c2e9a45186588155a0ef7b518bbefd037bddda43c0b"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/danmaku/WebMaskParser.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\WebMaskParser.kt",
+      "sha256Bytes": "b5f116903577025ba9efbc8d7966301283fc12aa5638354b8f5735118294054c"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DanmakuContextMenu.kt",
+      "sha256Bytes": "2a2bbdfbdb43db83d158a6e638dc9393e0b1a8d2fd6ea7944b9700598d5f3b13"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DanmakuPoolSheet.kt",
+      "sha256Bytes": "631336c4914189dbc81418891b505e61fb75388d65409270244527dd08ffb425"
+    },
+    {
+      "relative": "generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDanmakuSession.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalDanmakuSession.kt",
+      "sha256Bytes": "3b8a7fc2284be4bdd7cc3b98ae82bc31749a28479ff55ddd4d5477c0324e0985"
+    },
+    {
+      "relative": "generated/com/bilipai/desktop/settings/DesktopDanmakuBlockPreferences.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\com\\bilipai\\desktop\\settings\\DesktopDanmakuBlockPreferences.kt",
+      "sha256Bytes": "b9237857a873dddbe0b677fb710ae8a57cab6346abffceccea67c450627258df"
+    },
+    {
+      "relative": "generated/source-inventory.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\generated\\source-inventory.json",
+      "sha256Bytes": "e59ae3742bece762c36cc04dd311ef4e24040f229199122bca8cb005ac408b1d"
+    },
+    {
+      "relative": "install-contract.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\install-contract.json",
+      "sha256Bytes": "0f7c9076981f37e4137bccd0b1e1d5292e0d9f57fcebf3f9dcacb7e83cbf994f"
+    },
+    {
+      "relative": "local-hunks.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\local-hunks.json",
+      "sha256Bytes": "b666b2704658c16dd87301c75864ec1fc4191a166e283650afd6645e5c4deae1"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\DanmakuRepository.kt",
+      "sha256Bytes": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuConfig.kt",
+      "sha256Bytes": "eb3bc94d8a8bc3ac4a22fc734116b977b6ff27f53ee5a7b264090edfe1f12cf1"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuManager.kt",
+      "sha256Bytes": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuParser.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuParser.kt",
+      "sha256Bytes": "753c99914651fad5d05323889b650eba86b36625ffc45266e1f4ccad273b5791"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuPlaybackSyncPolicy.kt",
+      "sha256Bytes": "65b184189813db2db4ab04c175e5b2c4eda682fce57be547bd2b290237473400"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/FaceOcclusionPolicy.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\FaceOcclusionPolicy.kt",
+      "sha256Bytes": "cb448bd78a562e36cba767d122f372f3b891c365893d5cb628195e2e0c4489a4"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/WebMaskParser.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\WebMaskParser.kt",
+      "sha256Bytes": "c17f878278d739c4d9028e7dbcaa9fbcb7aab216a0f4f6222a882336de7f13cc"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\WeightedTextData.kt",
+      "sha256Bytes": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\VideoDetailOverlayHost.kt",
+      "sha256Bytes": "f7532155c6e8429f27dd251193001e17ac0a824934ea669ad016f7d187985c46"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DanmakuContextMenu.kt",
+      "sha256Bytes": "0c21e3775ca011d8e18791facb365b0c4e712a8b02798a510102a4f71d22c62a"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DanmakuPoolSheet.kt",
+      "sha256Bytes": "5846ca9e334a80a6eca37da32b1157c8276001484ff355b413a4320200c9ee2b"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LiveDanmakuOverlay.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\LiveDanmakuOverlay.kt",
+      "sha256Bytes": "7a885958bb3335c7aaf008c0f92660d63bf38bb71317ad228112272c9e5b0e47"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\section\\VideoPlayerSection.kt",
+      "sha256Bytes": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e"
+    },
+    {
+      "relative": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt",
+      "sha256Bytes": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae"
+    },
+    {
+      "relative": "original-stable/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/ByteDanceDanmakuEngine.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\danmaku-engine\\src\\main\\java\\com\\android\\purebilibili\\danmaku\\engine\\ByteDanceDanmakuEngine.kt",
+      "sha256Bytes": "c3c29bee7a68a611aaac9fd3a14886f68fea52dc17f122517038f546c845d57c"
+    },
+    {
+      "relative": "original-stable/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\original-stable\\danmaku-engine\\src\\main\\java\\com\\android\\purebilibili\\danmaku\\engine\\DanmakuModels.kt",
+      "sha256Bytes": "ba80d0cfef445bda5a9e2ebc10f68de83d1ccc24cf881d7a49d02bf656c6cfa7"
+    },
+    {
+      "relative": "owner-template.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\owner-template.kt",
+      "sha256Bytes": "e468ccc5f3586b1abc9eb03760800c3e203019fef75ce929fc2d5dbc38bd9381"
+    },
+    {
+      "relative": "prepare-consumers.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\prepare-consumers.py",
+      "sha256Bytes": "c7b7047650f393c96b10ccf0373c9405dd9ab3ef65b9130780b1aee9d4e0f9dc"
+    },
+    {
+      "relative": "prepare.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\prepare.py",
+      "sha256Bytes": "1ba297af0358ffd290f6ed65ae83442cca26059f01f9325873b96a21f6b30cf7"
+    },
+    {
+      "relative": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOwnedWebMaskSource.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopOwnedWebMaskSource.kt",
+      "sha256Bytes": "1b7dae404ad9e31e7f55c01153dcf0860b2c64464bc3f471f2fd3e8ed1516ccb"
+    },
+    {
+      "relative": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopWebMaskPath.kt",
+      "sha256Bytes": "b49c3e4e88564a15b1e71eb04cb9292cb3be9a1a307ef0f231db5199a240fd6b"
+    },
+    {
+      "relative": "prepared/desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\prepared\\desktop\\tools\\extract-upstream-danmaku-list-menu.py",
+      "sha256Bytes": "72fb8c0affd99cd66688cae9544d444aaacf59c20bb6e8eb351101838bf1fb65"
+    },
+    {
+      "relative": "proof/WebMaskProof.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\proof\\WebMaskProof.kt",
+      "sha256Bytes": "868d0e98b14dae6347ba7eb9c417e6c711187b86806e4ea4769f1cefb6e03f41"
+    },
+    {
+      "relative": "registry-recipe.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\registry-recipe.json",
+      "sha256Bytes": "728def105fde166de3eb1aaebfbb460782b0372aa88b922726e1b9a5896036ce"
+    },
+    {
+      "relative": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "sha256Bytes": "183bd4dec1f83c718b1e58b7fa271780361ce575e8e13eebfe958ff550932432"
+    },
+    {
+      "relative": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuSettings.kt",
+      "sha256Bytes": "26a724cc43f484aef5fa88a4f6f6e6ccc64e4564e39d2687b6b5323df7ff5b13"
+    },
+    {
+      "relative": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256Bytes": "cffab09d475d7aa7bf4b92e531752a464e8ba3a679bf0682759291b78e71c76c"
+    },
+    {
+      "relative": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopPlaybackController.kt",
+      "sha256Bytes": "45b6a40d3b544668416e602a3fb358de823bf72a2d1f59c25e0600fb5e0844cf"
+    },
+    {
+      "relative": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "4d382d2dee6b0cbb7a8b75a1613a160f4e126c0df76553d03645e73a74820763"
+    },
+    {
+      "relative": "source-audit.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\source-audit.json",
+      "sha256Bytes": "3d5d7f542ac4eb4296551be21ea0916a4ce09217b2ab73b012a996ebac50e315"
+    },
+    {
+      "relative": "source-inventory.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\source-inventory.json",
+      "sha256Bytes": "e59ae3742bece762c36cc04dd311ef4e24040f229199122bca8cb005ac408b1d"
+    },
+    {
+      "relative": "topmethod-receipt.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-web-mask-parity\\topmethod-receipt.json",
+      "sha256Bytes": "a25f54f3055a2aa6cc080f1db310bb3e356915df15a80868ed15ac2b3ea024b2"
+    }
+  ]
+}

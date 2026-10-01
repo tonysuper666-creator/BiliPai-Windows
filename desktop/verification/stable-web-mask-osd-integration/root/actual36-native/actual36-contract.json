@@ -1,0 +1,133 @@
+{
+  "status": "PASS_ACTUAL36_NATIVE_OUTPUT_JAVA2D",
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-36",
+  "actualManifest": "a445ed0f4944ba6ac581b06401576aec23638ef242aa1da442a6baead60b637d",
+  "actualCP": "2fa3092ec985e32bf6b1b046266e6b84994adeeb023615549a9422eddb0aa493",
+  "strictActualRuntimeEntries": 97,
+  "nativeAssertions": 39,
+  "productClassOrigins": 11,
+  "productionClassOverrides": 0,
+  "nativeDLL": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\libmpv-2.dll",
+    "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4"
+  },
+  "nativeLocalMedia": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-native-media-proof\\runs\\actual33-01\\local-media\\moving.mp4",
+      "sha256Bytes": "0e09ab9a6a9af00cee99508e4a3ff41e9436f7d1850e4b31c6ceb0c22d8c4656"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-native-media-proof\\runs\\actual33-01\\local-media\\blue.mp4",
+      "sha256Bytes": "262f6f21541a05f071086581390c2484935dd329143e5b7bf06736f31eb4a965"
+    }
+  ],
+  "observedNativePhases": [
+    {
+      "phase": "native-fit",
+      "nativeViewport": {
+        "osdWidth": 900,
+        "osdHeight": 720,
+        "left": 0,
+        "top": 107,
+        "contentWidth": 900,
+        "contentHeight": 506
+      },
+      "canvas": {
+        "logicalWidth": 600,
+        "logicalHeight": 480,
+        "physicalWidth": 900,
+        "physicalHeight": 720,
+        "defaultScaleX": 1.5,
+        "defaultScaleY": 1.5,
+        "GetDpiForWindow": 144,
+        "physicalMonitorShortSide": 2160
+      },
+      "sourceViewBoxWidth": 160,
+      "sourceViewBoxHeight": 90,
+      "maskedPixels": 113155,
+      "unmaskedPixels": 534150,
+      "originalAdvancedPixelsInsideMask": 695,
+      "nativeSourceVersion": 1
+    },
+    {
+      "phase": "native-crop",
+      "nativeViewport": {
+        "osdWidth": 900,
+        "osdHeight": 720,
+        "left": -190,
+        "top": 0,
+        "contentWidth": 1280,
+        "contentHeight": 720
+      },
+      "canvas": {
+        "logicalWidth": 600,
+        "logicalHeight": 480,
+        "physicalWidth": 900,
+        "physicalHeight": 720,
+        "defaultScaleX": 1.5,
+        "defaultScaleY": 1.5,
+        "GetDpiForWindow": 144,
+        "physicalMonitorShortSide": 2160
+      },
+      "sourceViewBoxWidth": 160,
+      "sourceViewBoxHeight": 90,
+      "maskedPixels": 229705,
+      "unmaskedPixels": 417600,
+      "originalAdvancedPixelsInsideMask": 695,
+      "nativeSourceVersion": 1
+    },
+    {
+      "phase": "native-tall-client",
+      "nativeViewport": {
+        "osdWidth": 645,
+        "osdHeight": 1065,
+        "left": 0,
+        "top": 351,
+        "contentWidth": 645,
+        "contentHeight": 362
+      },
+      "canvas": {
+        "logicalWidth": 430,
+        "logicalHeight": 710,
+        "physicalWidth": 645,
+        "physicalHeight": 1065,
+        "defaultScaleX": 1.5,
+        "defaultScaleY": 1.5,
+        "GetDpiForWindow": 144,
+        "physicalMonitorShortSide": 2160
+      },
+      "sourceViewBoxWidth": 160,
+      "sourceViewBoxHeight": 90,
+      "maskedPixels": 57750,
+      "unmaskedPixels": 628462,
+      "originalAdvancedPixelsInsideMask": 713,
+      "nativeSourceVersion": 1
+    }
+  ],
+  "observedFirstNativeReceiptElapsedNanos": 434052800,
+  "observedFirstReceiptIsBenchmark": false,
+  "accepted": "f5c243fddd992e7f9e532a28074c73e8fe6a9962e9c9566ef2f02041e66e98dc",
+  "sourceAudit": "99342b7af5bec7d364f67e85fc6563c375e8e71efe47c99031aef55e8e06483b",
+  "productionPatchCount": 0,
+  "sharedGradleInvoked": false,
+  "actual": [
+    "Installed default HWND/native Session observes genuine OSD bounds at actual150% device scaling",
+    "Non-video-aspect hidden client letterbox and real negative crop/pan margins",
+    "Native decoded local frame, original full MASK parser/SVG carrier and same Java2D standard-only clip",
+    "Existing authored Advanced renderer remains visible inside standard mask exclusion",
+    "Load/replace/seek/source retirement/stop empty output and native worker teardown"
+  ],
+  "notAccepted": [
+    "Root ComposeWindow/SwingPanel actual layout and final screen presentation",
+    "Real B station/WBI/account metadata/controller mask owner network acceptance",
+    "Native transparent overlay pixel-on-screen clipping/physical monitor first-frame timing",
+    "Original ByteDance compositor/AA identity",
+    "Asymmetric user monitor; asymmetric values only explicit fixture input",
+    "SCREEN_TOP/independent portrait fullscreen/full original special and Live renderer closure"
+  ],
+  "historicalPreparationReceiptsAreSupersededNotRuntimeAuthorities": [
+    "prepared-handoff.json",
+    "prepared-handoff-02.json",
+    "prepared-handoff-03.json"
+  ]
+}

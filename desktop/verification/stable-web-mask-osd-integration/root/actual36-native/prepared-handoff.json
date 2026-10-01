@@ -1,0 +1,109 @@
+{
+  "status": "READY_FIXTURE_SOURCE_ONLY_ACTUAL_GRAPH_PENDING",
+  "nativeExecuted": false,
+  "productionClassOverrides": 0,
+  "platformContract": "03c654db931c663a1ea27306b91e360d9c6f82606a5dc01a4cb0c5452de8a6a9",
+  "prospectiveCompile": "913bc98ed647773683e187efc2c516d2e522b916b8b5a96e41aeb6492d63c594",
+  "evidence": [
+    {
+      "relative": "NativeOsdMaskFixture.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\NativeOsdMaskFixture.kt",
+      "sha256Bytes": "2854cc80d59f7c7d20c4f68d63143089c1b7ea2890926094cb9ee1cf2ab3a474"
+    },
+    {
+      "relative": "platform-contract.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\platform-contract.json",
+      "sha256Bytes": "03c654db931c663a1ea27306b91e360d9c6f82606a5dc01a4cb0c5452de8a6a9"
+    },
+    {
+      "relative": "prepare-handoff.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\prepare-handoff.py",
+      "sha256Bytes": "fa12a5bf6c22c787a01c4469c767d31361935c58b66ec0c867906cb7bd484c16"
+    },
+    {
+      "relative": "run.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\run.py",
+      "sha256Bytes": "0314403f383ec4a1faf813574707b949a9a853d2385f2313d09cfb7aaf2c2859"
+    },
+    {
+      "relative": "runs/compile-01/compile-result.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-01\\compile-result.json",
+      "sha256Bytes": "913bc98ed647773683e187efc2c516d2e522b916b8b5a96e41aeb6492d63c594"
+    },
+    {
+      "relative": "runs/compile-01/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-01\\compiler.args",
+      "sha256Bytes": "7035dc661d2ae1f5be27458e41afeeff3ef1202eb7ad077bc9061b5fc9d6c824"
+    },
+    {
+      "relative": "runs/compile-01/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-01\\compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "relative": "runs/compile-01/dependency-pins-after.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-01\\dependency-pins-after.json",
+      "sha256Bytes": "400b418d503d07f20f609948923de938624492b36f290290d340e2a15000e51a"
+    },
+    {
+      "relative": "runs/compile-01/dependency-pins-before.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-01\\dependency-pins-before.json",
+      "sha256Bytes": "400b418d503d07f20f609948923de938624492b36f290290d340e2a15000e51a"
+    },
+    {
+      "relative": "runs/compile-01/fixture-symbol-audit.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-01\\fixture-symbol-audit.json",
+      "sha256Bytes": "243c7884586321eb5212dc23026709d3c033b24258b849ebfe88ca16c8542cd8"
+    },
+    {
+      "relative": "runs/compile-01/native-osd-mask-fixture.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-01\\native-osd-mask-fixture.jar",
+      "sha256Bytes": "63003bbba737458ece6fb5b5c0b017de72b6a908cbcadf7c1e445ada20c28f8d"
+    },
+    {
+      "relative": "runs/compile-01/source-inputs/NativeOsdMaskFixture.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-01\\source-inputs\\NativeOsdMaskFixture.kt",
+      "sha256Bytes": "03620a0f441fa8d06a20d44b8f68510ca65fe5a54ea59d7c5f9003021502d283"
+    },
+    {
+      "relative": "runs/compile-02/compile-result.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-02\\compile-result.json",
+      "sha256Bytes": "913bc98ed647773683e187efc2c516d2e522b916b8b5a96e41aeb6492d63c594"
+    },
+    {
+      "relative": "runs/compile-02/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-02\\compiler.args",
+      "sha256Bytes": "6f72180acb2be8abd7383ebdbc11172e3fba2df991b578fa13c3462d271fe803"
+    },
+    {
+      "relative": "runs/compile-02/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-02\\compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "relative": "runs/compile-02/dependency-pins-after.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-02\\dependency-pins-after.json",
+      "sha256Bytes": "06cb4e66a89fa9692bbff6787cd9758a54e1aafe8ddd52cac30cfa819a1cf8e6"
+    },
+    {
+      "relative": "runs/compile-02/dependency-pins-before.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-02\\dependency-pins-before.json",
+      "sha256Bytes": "06cb4e66a89fa9692bbff6787cd9758a54e1aafe8ddd52cac30cfa819a1cf8e6"
+    },
+    {
+      "relative": "runs/compile-02/fixture-symbol-audit.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-02\\fixture-symbol-audit.json",
+      "sha256Bytes": "cfcfa6aacc01609130f4700dd3374f98406713ce06083b726e2a5e0618884359"
+    },
+    {
+      "relative": "runs/compile-02/native-osd-mask-fixture.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-02\\native-osd-mask-fixture.jar",
+      "sha256Bytes": "cbdd39929b0f2ef4772259c74888f2bc1d30dab83f213395473aabedb9340dd4"
+    },
+    {
+      "relative": "runs/compile-02/source-inputs/NativeOsdMaskFixture.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-native-mask-output-proof\\runs\\compile-02\\source-inputs\\NativeOsdMaskFixture.kt",
+      "sha256Bytes": "2854cc80d59f7c7d20c4f68d63143089c1b7ea2890926094cb9ee1cf2ab3a474"
+    }
+  ]
+}

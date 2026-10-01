@@ -186,12 +186,12 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 831,
+    "candidateSourceIdentityCount": 833,
     "candidateResourceCount": 213,
     "all907CurrentSourceAndResourcePinsVerified": true,
-    "actualClassesEvidence": "verification/stable-home-ui-media-integration/root/classes-33.log",
+    "actualClassesEvidence": "verification/stable-web-mask-osd-integration/root/classes-36.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-home-ui-media-integration/root/classes-33.log",
+    "latestCandidateClassesLog": "verification/stable-web-mask-osd-integration/root/classes-36.log",
     "liveGuestBackendPassed": false,
     "liveGuestBackendFailure": "HTTP 412 at video details after popular/search passed",
     "liveGuestBackendEvidence": "verification/stable-comments-sharing-integration/root/actual-guest-backend/run-01/accepted-evidence.json",
@@ -219,7 +219,7 @@
     "fullDanmakuPanelPointerAccepted": false,
     "fullDanmakuAndroidRendererParityAccepted": false,
     "danmakuSettingsRootEvidence": "verification/stable-danmaku-settings-root-integration/integration-report.json",
-    "latestCandidateClassesPhase": 33,
+    "latestCandidateClassesPhase": 36,
     "danmakuActualProduct27Assertions": 61,
     "danmakuSettingsIsolatedPanelPointerAccepted": true,
     "danmakuSettingsIsolatedPanelUiAssertions": 32,
@@ -262,7 +262,14 @@
     "homeActual33ProductionOverrides": 0,
     "homeActual33RuntimeEntries": 97,
     "homeActualRootWindowOrAccountAccepted": false,
-    "homeSourceIntegrationEvidence": "verification/stable-home-ui-media-integration/integration-report.json"
+    "homeSourceIntegrationEvidence": "verification/stable-home-ui-media-integration/integration-report.json",
+    "originalSmartMaskParserAndRequestCompiled": true,
+    "actualNativeOsdMaskAssertions": 39,
+    "actualNativeOsdMaskProductOrigins": 11,
+    "actualNativeOsdMaskRuntimeEntries": 97,
+    "actualNativeOsdMaskProductionOverrides": 0,
+    "actualFullRootMaskScreenAccepted": false,
+    "smartMaskIntegrationEvidence": "verification/stable-web-mask-osd-integration/integration-report.json"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -287,6 +294,7 @@
     "verification/stable-miuix5c91-integration/integration-report.json",
     "verification/stable-danmaku-render-integration/integration-report.json",
     "verification/stable-miuix-nav-integration/integration-report.json",
-    "verification/stable-home-ui-media-integration/integration-report.json"
+    "verification/stable-home-ui-media-integration/integration-report.json",
+    "verification/stable-web-mask-osd-integration/integration-report.json"
   ]
 }
