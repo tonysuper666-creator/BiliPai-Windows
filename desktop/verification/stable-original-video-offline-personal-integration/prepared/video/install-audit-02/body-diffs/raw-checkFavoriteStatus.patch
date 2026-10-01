@@ -1,0 +1,26 @@
+--- original:checkFavoriteStatus
++++ owned:checkFavoriteStatus
+@@ -1,16 +1,21 @@
+     suspend fun checkFavoriteStatus(aid: Long): Boolean {
+         return withContext(Dispatchers.IO) {
++            currentCoroutineContext().ensureActive(); assertOwned()
+             try {
+                 val response = api.checkFavoured(aid)
++                currentCoroutineContext().ensureActive(); assertOwned()
+                 if (response.code == 0) {
+                     val isFavoured = response.data?.favoured ?: false
+-                    com.android.purebilibili.core.util.Logger.d("ActionRepository", " checkFavoriteStatus: aid=$aid, isFavoured=$isFavoured")
++                    Logger.d("ActionRepository", " checkFavoriteStatus: aid=$aid, isFavoured=$isFavoured")
+                     isFavoured
+                 } else {
+                     false
+                 }
++            } catch (cancelled: CancellationException) {
++                throw cancelled
+             } catch (e: Exception) {
+-                android.util.Log.e("ActionRepository", "checkFavoriteStatus failed", e)
++                assertOwned()
++                Logger.e("ActionRepository", "checkFavoriteStatus failed", e)
+                 false
+             }
+         }

@@ -1,0 +1,405 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "identities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt",
+      "sha256LF": "9269462327088da5a4103e451776a9bb70a1cd098bdb71b54ee73d9b43ce8edb",
+      "gitBlob": "06ca05617b78fe065421b206fbcd3a25d0ed8618",
+      "requestedMode": "selected",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt",
+      "sha256LF": "bfd4b78900bf0a1b04847ccccb4a18b6d0d445be258f00dcd3ff6f1ce1d71771",
+      "gitBlob": "5b4eaef8315ed17122ea8de8d4b872a74abdb46f",
+      "requestedMode": "direct",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt",
+      "sha256LF": "24f95b99fbb5d8c8830acd31880ff651091c62195407a9ef85f9317f0f498a2a",
+      "gitBlob": "dc40151ea62138e5797360e59c4271ee5701939d",
+      "requestedMode": "direct",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/AnimatedGesturePercentText.kt",
+      "sha256LF": "512a6a361feb78e06487a1ce2711f078f4aca291a6e1645e6efa2225923659f7",
+      "gitBlob": "ddbd93e59a1ea42bef236f420c901d23fe581eb8",
+      "requestedMode": "direct",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/components/AnimatedGesturePercentText.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt",
+      "sha256LF": "964174cee6a0261a430094eb85af8008bf6d51555d11617da3053f4d3b5f5b78",
+      "gitBlob": "f86b77fe3ef6250d0771b44f716b8e39c23089d1",
+      "requestedMode": "selected",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentMotionPolicy.kt",
+      "sha256LF": "adfd21ce5b00af901c5a5857eba9427a195de8d7c812cd80745969f5d2b1f99c",
+      "gitBlob": "7e5e8366ea689e0bbf020c431db962d7868985d1",
+      "requestedMode": "direct",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/components/CircularGesturePercentMotionPolicy.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "sha256LF": "198913c1d091d5aed119b90fedfbb7e77183457584c49c737c4aae7f113f37c0",
+      "gitBlob": "1775313c3b78d802728b7ac9492a4ba8e27d07a0",
+      "requestedMode": "selected",
+      "existingRecord": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+        "sha256": "198913c1d091d5aed119b90fedfbb7e77183457584c49c737c4aae7f113f37c0",
+        "mode": "policy-extract",
+        "features": [
+          "stable-danmaku-settings-panel"
+        ]
+      },
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoGestureMotion.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+      "sha256LF": "799f5d6fdd39adba83bd59aa52860b3d3378908b135aed4c55527e50686dc03a",
+      "gitBlob": "6b7c035b4afd4523f0a54fbf5f47c3e4234c2aae",
+      "requestedMode": "selected",
+      "existingRecord": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+        "sha256": "799f5d6fdd39adba83bd59aa52860b3d3378908b135aed4c55527e50686dc03a",
+        "mode": "policy-extract",
+        "features": [
+          "profile-main-original"
+        ]
+      },
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoActionSection.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "sha256LF": "b3a84152a38284bea0336b7df37c674cac78b4bab46d29a6e216a6a1f8fbc8ef",
+      "gitBlob": "e5f15d09184077c63058c0e1e96467ae9dddc613",
+      "requestedMode": "selected",
+      "existingRecord": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+        "mode": "policy-extract",
+        "features": [
+          "resolveDisplayBgmList",
+          "stable-video-metadata",
+          "stable-bgm-native-detail"
+        ],
+        "sha256": "b3a84152a38284bea0336b7df37c674cac78b4bab46d29a6e216a6a1f8fbc8ef",
+        "declarationSha256": "f7e103373fda9e5f283fff08a798a86ee578e0c217747249e1b38236bcb4fd73"
+      },
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoSection.kt",
+        "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoBgmTag.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+      "sha256LF": "84f95453d715ece786e29ee291570b52e6a40ae99336b77b53f065d68c7b5128",
+      "gitBlob": "dd6ff4f3c33bfc4306ee60dc3f2b22298c0f3aef",
+      "requestedMode": "selected",
+      "existingRecord": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+        "mode": "policy-extract",
+        "features": [
+          "home-full-card",
+          "stable-video-metadata"
+        ],
+        "sha256": "84f95453d715ece786e29ee291570b52e6a40ae99336b77b53f065d68c7b5128"
+      },
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoDisplayPolicy.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicy.kt",
+      "sha256LF": "28a99feed6df363e283381e4270f34093b4de72589a5c231bfde3f38662f1785",
+      "gitBlob": "e544093fce7111c8be8bb7bc54ad211f94004b00",
+      "requestedMode": "reference",
+      "existingRecord": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicy.kt",
+        "sha256": "28a99feed6df363e283381e4270f34093b4de72589a5c231bfde3f38662f1785",
+        "mode": "direct",
+        "features": [
+          "stable-video-metadata"
+        ]
+      },
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": []
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppPlayerChromeProfile.kt",
+      "sha256LF": "678594826a55c05d161be7f52bd3c4bbdab1af46346458c64bc7027d060f0042",
+      "gitBlob": "1e82f0ce4b054335593787f19a510e7da960e879",
+      "requestedMode": "direct",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/core/ui/AppPlayerChromeProfile.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt",
+      "sha256LF": "f24f729482b9deac38a4fa17c8e60a15b8be49d08b6d641cdacdd87902b28e32",
+      "gitBlob": "dfe434f8d2727796fc8bc31c70340c109da5b969",
+      "requestedMode": "selected",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/common/Modifiers.kt",
+      "sha256LF": "ffb0a934822dc39744a56ec031875e813f8e2a055ed857f5dfc1db4e1e5a5fa2",
+      "gitBlob": "24e6b81e179fb0f778b2212e8f9fa7554ab5c57e",
+      "requestedMode": "selected",
+      "existingRecord": {
+        "path": "app/src/main/java/com/android/purebilibili/core/ui/common/Modifiers.kt",
+        "sha256": "ffb0a934822dc39744a56ec031875e813f8e2a055ed857f5dfc1db4e1e5a5fa2",
+        "mode": "selected",
+        "features": [
+          "dynamic-detail-reply"
+        ]
+      },
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/core/ui/common/DesktopOriginalVideoCopyModifiers.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "sha256LF": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "gitBlob": "6a7a29eaf4d0d1f49bad3cfd2a20bf67d9944357",
+      "requestedMode": "selected",
+      "existingRecord": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+        "sha256": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+        "features": [
+          "discovery",
+          "stable-weekly-series-parity",
+          "weekly",
+          "home-protocols",
+          "stable-root-home-navigation"
+        ],
+        "mode": "policy-extract"
+      },
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/data/repository/DesktopOriginalCreatorCardStats.kt",
+        "com/android/purebilibili/data/repository/DesktopOriginalVideoCreatorCard.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "gitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+      "requestedMode": "selected",
+      "existingRecord": {
+        "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+        "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+        "features": [
+          "discovery",
+          "appearance-parity",
+          "settings-privacy-section-parity",
+          "settings-local-diagnostics-parity",
+          "settings-home-dynamic-parity",
+          "settings-home-card-parity",
+          "settings-dynamic-tabs-parity",
+          "home-full-card",
+          "settings-dynamic-full-card-parity",
+          "dynamic-detail-reply",
+          "settings-image-save-path-parity",
+          "stable-collection-sheet",
+          "stable-video-metadata",
+          "stable-shared-liquid-tabs",
+          "stable-video-original-comments",
+          "stable-favorites",
+          "stable-danmaku-list-menu",
+          "stable-linked-dock-search",
+          "stable-frosted-audio-renderer",
+          "stable-danmaku-settings-panel",
+          "home-page",
+          "home-protocol-platform-reference",
+          "live-sub-navigation",
+          "stable-navigation3-host",
+          "stable-profile-windows-platform",
+          "stable-download-list-original"
+        ],
+        "mode": "policy-extract"
+      },
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/core/store/DesktopOriginalVideoInfoSettings.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
+      "sha256LF": "e266056182d40e924535401011071fc61fcfc59738e9263076717f49765c47fa",
+      "gitBlob": "3a287fd3974b1fbf1dbc6b2907f97b828250b882",
+      "requestedMode": "selected",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoDomainBinding.kt",
+      "sha256LF": "73fcfd5af57e257658164b7adbd2b103c412686a91efa5b8db99d1f67a84f491",
+      "gitBlob": "eb987f1b06e0a2339931c570ec2fd3754ae3fc14",
+      "requestedMode": "direct",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/viewmodel/VideoDomainBinding.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "sha256LF": "377a74a359cc84eb2961f5ff022da12158345a677d14087ea1fc7d3991f148c8",
+      "gitBlob": "a9fd83c4ee8e8eeacfaaac305ab6ee8c85173989",
+      "requestedMode": "selected",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+        "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoEngagementActionsFactory.kt",
+        "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoCoinBalanceLoader.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt",
+      "sha256LF": "63c0826814274dc8df583105b3dc796498da6ab41d1bd2c50491b52ef68c74d6",
+      "gitBlob": "fde1e2268a673569315dc32368b629893d2c57b2",
+      "requestedMode": "selected",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt",
+      "sha256LF": "15d803c80018a16b4ca0bb37bf7b89bab65bb18e102bcd2c84fca991833fe822",
+      "gitBlob": "ab7dc02a955cc11439eeb774289e45410611aba3",
+      "requestedMode": "direct",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt",
+      "sha256LF": "ac32f597609d7fa820d04d4fe6b3fc6071fe94a431c22ca4ae9d20e90d1605e4",
+      "gitBlob": "0873e5808de0201dea49acdd3156fbefc1318150",
+      "requestedMode": "direct",
+      "existingRecord": null,
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sha256LF": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+      "gitBlob": "377e9680841ef3c1f2edcc2aca3605008099606a",
+      "requestedMode": "selected",
+      "existingRecord": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+        "sha256": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+        "features": [
+          "discovery",
+          "dynamic-follow-observer-parity",
+          "stable-collection-sheet",
+          "stable-video-metadata",
+          "stable-favorites",
+          "stable-favorite-folder-sheet",
+          "home-protocols"
+        ],
+        "mode": "policy-extract"
+      },
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": [
+        "com/android/purebilibili/data/repository/DesktopOriginalVideoEngagementProtocol.kt"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/AnalyticsHelper.kt",
+      "sha256LF": "b8a96390d286964518caea6849afaeba075f5d3e8ac1cdb23b73af17feac6ccc",
+      "gitBlob": "b25cb99570d4e5ac71e02209ce24353e30acc0ff",
+      "requestedMode": "reference",
+      "existingRecord": {
+        "path": "app/src/main/java/com/android/purebilibili/core/util/AnalyticsHelper.kt",
+        "sha256": "b8a96390d286964518caea6849afaeba075f5d3e8ac1cdb23b73af17feac6ccc",
+        "mode": "policy-extract",
+        "features": [
+          "home-protocol-platform-reference"
+        ]
+      },
+      "mergeOnly": true,
+      "neverOverwriteOtherOwner": true,
+      "outputPaths": []
+    }
+  ],
+  "identityCount": 24,
+  "identityModesMustMerge": true,
+  "notAnInstalledRegistry": true
+}

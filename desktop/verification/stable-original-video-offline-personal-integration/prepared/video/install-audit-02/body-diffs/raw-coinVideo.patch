@@ -1,0 +1,35 @@
+--- original:coinVideo
++++ owned:coinVideo
+@@ -1,15 +1,17 @@
+     suspend fun coinVideo(aid: Long, count: Int, alsoLike: Boolean): Result<Boolean> {
+         return withContext(Dispatchers.IO) {
++            currentCoroutineContext().ensureActive(); assertOwned()
+             try {
+-                val csrf = TokenManager.csrfCache ?: ""
++                val csrf = readCsrf() ?: ""
+                 if (csrf.isEmpty()) {
+                     return@withContext Result.failure(Exception("请先登录"))
+                 }
+                 
+                 val selectLike = if (alsoLike) 1 else 0
+                 val response = api.coinVideo(aid = aid, multiply = count, selectLike = selectLike, csrf = csrf)
+-                com.android.purebilibili.core.util.Logger.d("ActionRepository", " coinVideo: aid=$aid, count=$count, code=${response.code}")
++                Logger.d("ActionRepository", " coinVideo: aid=$aid, count=$count, code=${response.code}")
+                 
++                currentCoroutineContext().ensureActive(); assertOwned()
+                 when (response.code) {
+                     0 -> Result.success(true)
+                     34004 -> Result.failure(Exception("操作太频繁，请稍后重试"))
+@@ -17,8 +19,11 @@
+                     -104 -> Result.failure(Exception("硬币余额不足"))
+                     else -> Result.failure(Exception(response.message.ifEmpty { "投币失败: ${response.code}" }))
+                 }
++            } catch (cancelled: CancellationException) {
++                throw cancelled
+             } catch (e: Exception) {
+-                android.util.Log.e("ActionRepository", "coinVideo failed", e)
++                assertOwned()
++                Logger.e("ActionRepository", "coinVideo failed", e)
+                 Result.failure(e)
+             }
+         }

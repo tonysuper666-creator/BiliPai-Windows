@@ -1,0 +1,30 @@
+desktop\.local\stable-video-detail-full-ui-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\VideoEngagementViewModel.kt:334:155: warning: unnecessary safe call on a non-null receiver of type 'VideoSubjectSnapshot'.
+                .onFailure { if (it is CancellationException) throw it; environment.assertOwned(); if (_uiState.value.subject?.generation == state.subject?.generation) emitMessage(it.message ?: "ÊÕ²Ø²Ù×÷Ê§°Ü") }
+                                                                                                                                                          ^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\VideoEngagementViewModel.kt:356:155: warning: unnecessary safe call on a non-null receiver of type 'VideoSubjectSnapshot'.
+                .onFailure { if (it is CancellationException) throw it; environment.assertOwned(); if (_uiState.value.subject?.generation == state.subject?.generation) emitMessage(it.message ?: "²Ù×÷Ê§°Ü") }
+                                                                                                                                                          ^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\08\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\VideoEngagementViewModel.kt:384:155: warning: unnecessary safe call on a non-null receiver of type 'VideoSubjectSnapshot'.
+                .onFailure { if (it is CancellationException) throw it; environment.assertOwned(); if (_uiState.value.subject?.generation == state.subject?.generation) emitMessage(it.message ?: "Í¶±ÒÊ§°Ü") }
+                                                                                                                                                          ^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\08\source-inputs\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalPlayerSurface.kt:34:9: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+        SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
+        ^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\08\source-inputs\reference-owner\DesktopDynamicCardOperations.kt:657:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\08\source-inputs\reference-owner\DesktopDynamicCardOperations.kt:681:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\08\source-inputs\reference-owner\DesktopDynamicCardOperations.kt:703:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\08\source-inputs\reference-owner\DesktopDynamicCardOperations.kt:732:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\08\source-inputs\reference-owner\DesktopDynamicCardOperations.kt:758:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\08\source-inputs\reference-owner\DesktopDynamicCardOperations.kt:860:60: warning: the corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+                override fun onFailure(call: okhttp3.Call, failure: IOException) {
+                                                           ^^^^^^^

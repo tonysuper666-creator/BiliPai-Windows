@@ -1,0 +1,26 @@
+--- original:checkLikeStatus
++++ owned:checkLikeStatus
+@@ -1,16 +1,21 @@
+     suspend fun checkLikeStatus(aid: Long): Boolean {
+         return withContext(Dispatchers.IO) {
++            currentCoroutineContext().ensureActive(); assertOwned()
+             try {
+                 val response = api.hasLiked(aid)
++                currentCoroutineContext().ensureActive(); assertOwned()
+                 if (response.code == 0) {
+                     val isLiked = response.data == 1
+-                    com.android.purebilibili.core.util.Logger.d("ActionRepository", " checkLikeStatus: aid=$aid, isLiked=$isLiked")
++                    Logger.d("ActionRepository", " checkLikeStatus: aid=$aid, isLiked=$isLiked")
+                     isLiked
+                 } else {
+                     false
+                 }
++            } catch (cancelled: CancellationException) {
++                throw cancelled
+             } catch (e: Exception) {
+-                android.util.Log.e("ActionRepository", "checkLikeStatus failed", e)
++                assertOwned()
++                Logger.e("ActionRepository", "checkLikeStatus failed", e)
+                 false
+             }
+         }

@@ -1,0 +1,59 @@
+{
+  "status": "PASS_PREPARED_SOURCE",
+  "actualSnapshot": 47,
+  "actualRuntimeEntries": 97,
+  "sources": 9,
+  "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\compile-05\\original-offline-player.jar",
+  "jarSha256Bytes": "5e03d94f6e95391470eb9f6c6192e370393008ce3e80af759ad19011affc243f",
+  "declaredProspectiveOverrides": [
+    "DanmakuOverlay sole existing family",
+    "3146 bridge not present in actual47; task-only modified frozen source"
+  ],
+  "sharedGestureReference": {
+    "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-full-ui-parity\\runs\\03\\candidate.jar",
+    "sha256Bytes": "a95cfab0d91e528bf443edd529445352d5c2d250584d0b8a75ed69fb5ff34b65",
+    "prospectiveNotActual": true,
+    "otherSharedJarFamiliesNotInstalledHere": true
+  },
+  "sourcePins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOfflineMpvControl.kt",
+      "sha256Bytes": "7f667404eb2b8bcb142764cb1bd16d3b4d8a359529d3cf2bd86eda6e370a59b1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOfflineRootMediaEffects.kt",
+      "sha256Bytes": "4d8ab6c0e45379471423f14b59c02aae0f030015f061154c7d37c483fc6768fd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalOfflinePlayerBindings.kt",
+      "sha256Bytes": "51e6408f7ae196f9a760ce903790879d6800512ef5ed9f2f4e3da8cfc932940c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\store\\player\\DesktopOriginalLongPressSpeedSettings.kt",
+      "sha256Bytes": "f39d8887a6f8d5ae8fe37d458b768b0696d92a16a72cd4ad02efc971af9fd198"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\download\\DesktopOfflineInteractionPolicy.kt",
+      "sha256Bytes": "4c3d8c24d180f51e40fef44dfaa5f63b34835379464352edd760b37d57c4ab3c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\download\\OfflinePlaybackSessionPolicy.kt",
+      "sha256Bytes": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\download\\OfflineVideoPlayerScreen.kt",
+      "sha256Bytes": "5dea4737674fa7e5cfc3c0c2dd38488087313c65606e16b5b7e7da59211a31f4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\compile-inputs\\bridge\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOfflineTaskPlayerBinding.kt",
+      "sha256Bytes": "1274a2e6ca918ff1701ef2fdf65cbd1e3473115b97655e5a578fcee39aaf9ac7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\compile-inputs\\overlay\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "sha256Bytes": "3d388c4b158f009296d474a96793eecea241e0dd8f2e51e457731e7996377e09"
+    }
+  ],
+  "sharedGradleRun": false,
+  "rootMounted": false,
+  "nativeForegroundAccepted": false
+}

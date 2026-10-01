@@ -1,0 +1,21 @@
+--- original:getDefaultFolderId
++++ owned:getDefaultFolderId
+@@ -1,10 +1,15 @@
+     private suspend fun getDefaultFolderId(): Long? {
+         return try {
+-            val mid = TokenManager.midCache ?: return null
++            val mid = readMid() ?: return null
++            currentCoroutineContext().ensureActive(); assertOwned()
+             val response = api.getFavFolders(mid)
++            currentCoroutineContext().ensureActive(); assertOwned()
+             response.data?.list?.firstOrNull()?.id
+-        } catch (e: Exception) {
+-            android.util.Log.e("ActionRepository", "getDefaultFolderId failed", e)
++        } catch (cancelled: CancellationException) {
++                throw cancelled
++            } catch (e: Exception) {
++                assertOwned()
++            Logger.e("ActionRepository", "getDefaultFolderId failed", e)
+             null
+         }
+     }

@@ -1,0 +1,39 @@
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoInfoSettings.kt:4:36: error: unresolved reference 'intPreferencesKey'.
+import com.bilipai.desktop.plugins.intPreferencesKey
+                                   ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalVideoInfoSettings.kt:18:45: error: unresolved reference 'intPreferencesKey'.
+    private val KEY_VIDEO_TAG_SIZE_PRESET = intPreferencesKey("video_tag_size_preset")
+                                            ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\gesture\GestureLevelOverlay.kt:59:41: error: unresolved reference 'rememberAppPlayerChromeProfile'.
+import com.android.purebilibili.core.ui.rememberAppPlayerChromeProfile
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\gesture\GestureLevelOverlay.kt:86:31: error: unresolved reference 'rememberAppPlayerChromeProfile'.
+    val playerChromeProfile = rememberAppPlayerChromeProfile()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoInfoSection.kt:62:48: error: unresolved reference 'copyOnLongPress'.
+import com.android.purebilibili.core.ui.common.copyOnLongPress
+                                               ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoInfoSection.kt:66:48: error: unresolved reference 'copyOnClick'.
+import com.android.purebilibili.core.ui.common.copyOnClick
+                                               ^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoInfoSection.kt:327:41: error: unresolved reference 'copyOnLongPress'.
+                    modifier = Modifier.copyOnLongPress(info.title, "视频标题")
+                                        ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoInfoSection.kt:739:22: error: unresolved reference 'copyOnClick'.
+                    .copyOnClick(info.bvid, "BV号")
+                     ^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoInfoSection.kt:904:43: error: unresolved reference 'resolveBgmTagInfo'.
+                                val bgm = resolveBgmTagInfo(tag)
+                                          ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoInfoSection.kt:905:61: error: argument type mismatch: actual type is 'Any', but 'BgmInfo' was expected.
+                                if (bgm != null) onBgmClick(bgm) else onTagClick(tag.tag_name)
+                                                            ^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoInfoSection.kt:909:34: error: unresolved reference 'copyOnLongPress'.
+                                .copyOnLongPress(tag.tag_name, "标签"),
+                                 ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoInfoSection.kt:1006:21: error: unresolved reference 'OwnerDecoratedAvatar'.
+                    OwnerDecoratedAvatar(
+                    ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoInfoSection.kt:1066:49: error: unresolved reference 'copyOnLongPress'.
+                upNameModifier = upNameModifier.copyOnLongPress(info.owner.name, "UP主名称")
+                                                ^^^^^^^^^^^^^^^

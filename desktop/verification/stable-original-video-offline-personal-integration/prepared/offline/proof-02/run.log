@@ -1,0 +1,20 @@
+PASS Canonical original long-press default is read from the same Store
+PASS Original normalization clamps the actual stored key, without a second preference authority
+PASS Full original control loads exact task into the sole retained offline owner
+PASS Full original effects have no duplicate legacy asset/checkpoint jobs
+PASS Actual unchanged MPV DLL supplies an owned local first frame
+PASS Original control facade writes actual native speed and app volume
+PASS Viewport brightness publishes only for the actual source version
+PASS Actual same overlay painter composes viewport dim with existing plugin eye tint
+PASS Stale/foreign brightness setter cannot mutate current viewport
+PASS Retiring the native source suppresses its tint while preserving plugin eye tint
+PASS The complete original renderer exposes original episode controls and authoritative queue position
+PASS Original metadata payload and actual playing observer retain title/artist/bvid/cid and native ownership
+PASS Real original next-episode pointer action loads the exact second task, without a browser chooser
+PASS Original episode replacement retires the previous native token
+PASS Account retirement rejects facade writes to the real shared MPV
+PASS Old source brightness cleanup cannot touch a newer source
+PASS Full renderer disposal and its exact-source cleanup preserve an independent native owner
+PASS Full original effects reach declared window/media/foreground fixture boundaries, with no no-op callbacks
+PASS Focused acceptance performs only synthetic local IO and unchanged native playback
+OFFLINE_ORIGINAL_PROOF {"status":"PASS","groups":3,"assertions":19,"pointerPairs":1,"sameRetainedMemory":true,"realLocalNativeFrame":true,"fullOriginalUIRendered":true,"actualOverlayJava2DPaint":true,"HTTPCalls":0,"rootWindowAccepted":false,"nativeHWNDForegroundInputAccepted":false,"WindowsSMTCPIPAccepted":false}

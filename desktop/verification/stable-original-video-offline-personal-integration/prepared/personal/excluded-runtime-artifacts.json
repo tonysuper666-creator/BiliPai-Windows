@@ -1,0 +1,35 @@
+{
+  "artifacts": [
+    {
+      "path": "compile-01/candidate.jar",
+      "sha256Bytes": "3f3d926cf653b380aab56e468a4e4502d372a2c05daf64601b7935a1d4fe0077",
+      "reason": "task-only compiled source reference; not raw archive/install/runtime dependency"
+    },
+    {
+      "path": "compile-03/candidate.jar",
+      "sha256Bytes": "147b5d01a5f4309b2c2090755236d50bdc21fa4961b997bdce8565f0aa5c36fc",
+      "reason": "task-only compiled source reference; not raw archive/install/runtime dependency"
+    },
+    {
+      "path": "compile-04/candidate.jar",
+      "sha256Bytes": "f429307e1c29ca0cbe8aab4d21bb62eed99aae29452dc4f3f6319ffb68af8f64",
+      "reason": "task-only compiled source reference; not raw archive/install/runtime dependency"
+    },
+    {
+      "path": "compile-05/candidate.jar",
+      "sha256Bytes": "0795b21c82bddef9de4d65c5480cb490676037b76268b1557cf0d5c14bc4c75c",
+      "reason": "task-only compiled source reference; not raw archive/install/runtime dependency"
+    },
+    {
+      "path": "compile-06/candidate.jar",
+      "sha256Bytes": "83c24a7d32f8d19105f590e20db45961b8ff9e8c5d01d19f39b590ff93abf262",
+      "reason": "task-only compiled source reference; not raw archive/install/runtime dependency"
+    }
+  ],
+  "otherExcluded": [
+    "compiled class directories",
+    "task temporary PluginStore/Library/session files",
+    "__pycache__"
+  ],
+  "noInstallBinary": true
+}

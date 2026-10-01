@@ -1,0 +1,6 @@
+desktop\.local\stable-video-detail-full-ui-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\VideoEngagementViewModel.kt:6:59: error: unresolved reference 'resolveTripleActionFeedbackMessage'.
+import com.android.purebilibili.feature.video.ui.feedback.resolveTripleActionFeedbackMessage
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\05\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\VideoEngagementViewModel.kt:448:25: error: unresolved reference 'resolveTripleActionFeedbackMessage'.
+                        resolveTripleActionFeedbackMessage(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

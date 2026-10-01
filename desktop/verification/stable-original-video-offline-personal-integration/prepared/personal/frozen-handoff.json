@@ -1,0 +1,351 @@
+{
+  "schemaVersion": 1,
+  "targetTag": "v0.2.3",
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "scope": "prepared complete original History/HistorySearch/Liked/CoinArchive Root/queue/retention seams; installed original UI/VM/protocol reused",
+  "actualSnapshot48Manifest": "298fd01851352c496f011fef69f9091652c6ba41ea0223a418ee298762cab89d",
+  "actualSnapshot48OrderedCp": "2ae45d9e07b65c705807c27ace118cb0f9cdb320a54793b144e80e760f8ed7a1",
+  "assertions": 19,
+  "groups": 3,
+  "pointerPairs": 2,
+  "newCoreProductOverrides": 0,
+  "explicitWholeConsumerCompileOverrides": 2,
+  "MainIntegrated": false,
+  "RootRuntime": false,
+  "HTTPsocket": false,
+  "HWND": false,
+  "EXE": false,
+  "installWhitelistSha": "0697a5f80f93e3faccdbf897feb6ec336d670bc312b7c4715108d1bacddfdfdb",
+  "artifacts": [
+    {
+      "path": "compile-01/compile.args",
+      "sha256Bytes": "1b61f8b60a273fba0a63c762af4945d775d736406eaacfa2c91cae1527044491",
+      "size": 25749
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "compile-01/inputs.json",
+      "sha256Bytes": "fc505c966e6cb3230bedb230e4e452ab7bb9c4edb4a6489f90d13add53b4cb0f",
+      "size": 2250
+    },
+    {
+      "path": "compile-02/compile.args",
+      "sha256Bytes": "10a87bea50f266cfb2a215874d0cee58c73012cd14500eff04b6c252d2d40d9d",
+      "size": 26211
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "ff4342bddf7a82dd60a77bba76204696bdff5e0002e26084812af72ae894f5d2",
+      "size": 442
+    },
+    {
+      "path": "compile-02/inputs.json",
+      "sha256Bytes": "6b456d88bf0a38f32a151b117273d124270bbd0a06a3a1fc9bd65c4c677ed791",
+      "size": 3036
+    },
+    {
+      "path": "compile-03/compile.args",
+      "sha256Bytes": "a23393c6887cef6e2a6692a77a85b347e76ef0d631281fd800ce1069bfd99f34",
+      "size": 26211
+    },
+    {
+      "path": "compile-03/compile.log",
+      "sha256Bytes": "9376e7e4b29e5b4a17ba2b46c470bbd97c6440d8096c9a539c86ff6d3df5699c",
+      "size": 7162
+    },
+    {
+      "path": "compile-03/inputs.json",
+      "sha256Bytes": "85881add86a46d68bd79dcd5fe73ffb3182fae7c7eae11769d9b80a6e07e60ad",
+      "size": 3036
+    },
+    {
+      "path": "compile-04/compile.args",
+      "sha256Bytes": "8ea1f5e6f108c2e4d4d1d0d61c91613f5a604a6e854df439660c7c1a3cd58981",
+      "size": 25749
+    },
+    {
+      "path": "compile-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "compile-04/inputs.json",
+      "sha256Bytes": "f6970065c325f848c494b7e480d42605e93195494da2f2a8db374d338e8fe87f",
+      "size": 2250
+    },
+    {
+      "path": "compile-05/compile.args",
+      "sha256Bytes": "6e4d0a6da59ac15495f403756899d2ae95e89e87ceaf384a57c3ac63a05d4eb3",
+      "size": 25740
+    },
+    {
+      "path": "compile-05/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "compile-05/inputs.json",
+      "sha256Bytes": "f6970065c325f848c494b7e480d42605e93195494da2f2a8db374d338e8fe87f",
+      "size": 2250
+    },
+    {
+      "path": "compile-06/compile.args",
+      "sha256Bytes": "382c7cf96dc7539ece3a9c42ecb9b6b940311c2bd116370595c8697e1e9317f3",
+      "size": 25740
+    },
+    {
+      "path": "compile-06/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "compile-06/inputs.json",
+      "sha256Bytes": "f6970065c325f848c494b7e480d42605e93195494da2f2a8db374d338e8fe87f",
+      "size": 2250
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "7b89901730a12dc2ae1878c79c26f323555917ee7508774c38c26126e59ef8cd",
+      "size": 2865
+    },
+    {
+      "path": "consumer-bases.json",
+      "sha256Bytes": "785ba8a5195575e0ccdf3ab5c96dddb89a85489029b216020823c3b8d36cea94",
+      "size": 563
+    },
+    {
+      "path": "consumer.patch",
+      "sha256Bytes": "89fed58b8263408b9f0ef8ebf0e4f2a620179f7608d5a2f7f145bc7463647cfa",
+      "size": 12002
+    },
+    {
+      "path": "excluded-runtime-artifacts.json",
+      "sha256Bytes": "8360efe358c23194c185415f6c4abf4302bf203b29d4b650a3720fb2c6739425",
+      "size": 1395
+    },
+    {
+      "path": "fixtures/PersonalListsFixture.kt",
+      "sha256Bytes": "afb25af76bbb7d639fe776ed26176fe232a64fa70febfe5beed2c3c7321fd8d2",
+      "size": 17007
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "abb676a491724902a6ea61be8a9bfc90d6a30e92724442abd7ede1934e44e973",
+      "size": 2706
+    },
+    {
+      "path": "gradle-snippet.kts",
+      "sha256Bytes": "56264624e4dc05cdd26a39f686a7801cce25379b0fbd0be8bfa35bff0fee2096",
+      "size": 1088
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "0697a5f80f93e3faccdbf897feb6ec336d670bc312b7c4715108d1bacddfdfdb",
+      "size": 1881
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "1eb737becccb659ab1085c91e9defc560ff3ad1c2a2b1485dc820bfc72c2eda9",
+      "size": 3979
+    },
+    {
+      "path": "prepare_handoff.py",
+      "sha256Bytes": "38b82b345db0d38939853a964e0318ea285004eb9db59cdfaf5dded630a74152",
+      "size": 10908
+    },
+    {
+      "path": "prepare_integration.py",
+      "sha256Bytes": "a16a8de1e792d78e7c6091f38b6b3a290cf3520eabb7c13669cec7df91847487",
+      "size": 9818
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "ea9f42b0b7d326eb771748c71ad9b2614a16892986663c1bd9ca4273c4509bbe",
+      "size": 155853
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "259e0c0cde2c73c664c61145e6379d864691b2c6dad7276bc54d0bd78dc5236e",
+      "size": 26038
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPersonalListHost.kt",
+      "sha256Bytes": "bf291fb274d47ea982c8004fada328991a8484e1b3ffea3ffc57287858db987e",
+      "size": 3920
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopPersonalArticleResolver.kt",
+      "sha256Bytes": "272904bf46d66683b1ce15167df5ac0c3e756e655f19265bd81eb93909dec10a",
+      "size": 2166
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
+      "sha256Bytes": "b4de393a9632c14e83966d44b1c41830bf99c57159c7113489a9bc6e799db188",
+      "size": 7594
+    },
+    {
+      "path": "prepared/selected/com/bilipai/desktop/ui/DesktopOriginalHistoryArticlePolicy.kt",
+      "sha256Bytes": "bfac651358f74cd9f5dc341bcc6cff81b064a85c53f79f2bbdd98d5d3f560172",
+      "size": 811
+    },
+    {
+      "path": "prepared/selected/com/bilipai/desktop/ui/DesktopOriginalHistoryNavigation.kt",
+      "sha256Bytes": "a4da54f99e8c8fdb3d12e5649a3b27cc78e2dcdf8cd7665856a967d51d950c25",
+      "size": 9280
+    },
+    {
+      "path": "prepared/tools/extract-upstream-personal-lists.py",
+      "sha256Bytes": "6d92f58b039e0b7e402a44cffdca22d347d61e81f3133360adb7164279b14041",
+      "size": 4204
+    },
+    {
+      "path": "producer-replay/com/bilipai/desktop/ui/DesktopOriginalHistoryArticlePolicy.kt",
+      "sha256Bytes": "bfac651358f74cd9f5dc341bcc6cff81b064a85c53f79f2bbdd98d5d3f560172",
+      "size": 811
+    },
+    {
+      "path": "producer-replay/com/bilipai/desktop/ui/DesktopOriginalHistoryNavigation.kt",
+      "sha256Bytes": "a4da54f99e8c8fdb3d12e5649a3b27cc78e2dcdf8cd7665856a967d51d950c25",
+      "size": 9280
+    },
+    {
+      "path": "proof-01/compile.args",
+      "sha256Bytes": "d3977f151f18d51dab5039969fb537bc77e9144ff0084b2d5fecc220c1637b74",
+      "size": 25167
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "6aadfeb19b458f57b9825f2c1526a082329e47234ed1fe2dc83ac5954c0d8f2a",
+      "size": 2424
+    },
+    {
+      "path": "proof-01/proof.json",
+      "sha256Bytes": "5888b3c3396eb8c961f6148e17dd4477f52c3a068548640bac92cb15f5781508",
+      "size": 854
+    },
+    {
+      "path": "proof-02/compile.args",
+      "sha256Bytes": "d86066f97e74d1090a4a549d8dd967d61a468dab069d83d5ee6222539afb78cf",
+      "size": 25167
+    },
+    {
+      "path": "proof-02/compile.log",
+      "sha256Bytes": "bb2b03197d83797679fcdeab51f580a46acdaa1cca31da42bb279ab45c2d3c00",
+      "size": 1475
+    },
+    {
+      "path": "proof-02/proof.json",
+      "sha256Bytes": "1204251d479e14283cc0e1652940c0e4ac29db877bf2b466aa94a29ce89d22f6",
+      "size": 854
+    },
+    {
+      "path": "proof-03/compile.args",
+      "sha256Bytes": "6af2e8d79f68f4bec8212b2ad99b9867799b76676cfb55a07c55c1b3581bfd21",
+      "size": 25167
+    },
+    {
+      "path": "proof-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "proof-03/proof.json",
+      "sha256Bytes": "1a91bea067c791f4d27a570c29a6241a9ce9ce1f58ce7b48fdbf1109032a022c",
+      "size": 871
+    },
+    {
+      "path": "proof-03/run.log",
+      "sha256Bytes": "b9a4e7276881b7648fecc72707c070587d1c887539538a854bcbc80613bf0018",
+      "size": 1725
+    },
+    {
+      "path": "proof-04/compile.args",
+      "sha256Bytes": "a0baaea5bd4b5d83991d3d2b6665e590c34a0a90ed032db717c972f84de6409a",
+      "size": 25167
+    },
+    {
+      "path": "proof-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "proof-04/proof.json",
+      "sha256Bytes": "1eb0444b3b7dcaa49fe942fc82e872ee446802c55701d0e19ce2b745530bed6a",
+      "size": 871
+    },
+    {
+      "path": "proof-04/run.log",
+      "sha256Bytes": "c838d07fc8866632be8ac36361785bfb395f6b187a095f766aa9cb74ac979416",
+      "size": 18511
+    },
+    {
+      "path": "proof-05/compile.args",
+      "sha256Bytes": "9a0fdbf42073f1fe0893be1d1fd0ab78ce99673f4f2146e24c02f3dd5d9d793c",
+      "size": 25167
+    },
+    {
+      "path": "proof-05/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "proof-05/proof.json",
+      "sha256Bytes": "7192511ee8f7adcd44bf06a9c523c227bf0109bd27b545bf12459037a01cb784",
+      "size": 871
+    },
+    {
+      "path": "proof-05/run.log",
+      "sha256Bytes": "dd0e2e179defc9c051ee15a742b08c23623c1bd113ac0c1cd5adccde9ab0411e",
+      "size": 2072
+    },
+    {
+      "path": "proof-05/temporary/original-history-material3.png",
+      "sha256Bytes": "577cd6d026be81d9fd3a875c7168be54b8c7a2746a7b09fa7194e1b0cf196bd4",
+      "size": 29613
+    },
+    {
+      "path": "proof-05/temporary/original-liked-material3.png",
+      "sha256Bytes": "f2858f61aa18003a28e28bfd0fd3b4f08b4a83ee38cb42e2fa0d475aa8c18748",
+      "size": 16587
+    },
+    {
+      "path": "proof-05/temporary/result.json",
+      "sha256Bytes": "c4d454c2859ef03239ed394688f1a6045031f37ece43dfc56c71e7d034d2ca08",
+      "size": 152
+    },
+    {
+      "path": "proof-metadata-correction.json",
+      "sha256Bytes": "28f3231114c7c3691bdb6ae901c7afacc2c9dd7f711381b283021ceef8e2a1a4",
+      "size": 600
+    },
+    {
+      "path": "prove.py",
+      "sha256Bytes": "f2a68c085d415ddf7b4da8e935e02898189d352b5fe41b7d04a37167d2ccccad",
+      "size": 2898
+    },
+    {
+      "path": "registry-delta.json",
+      "sha256Bytes": "42e8ece0ef06a4f830b159c0c808b90a7c13c786e46e7a3f6fed3b4a22801568",
+      "size": 1491
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "e08f94a0d56c266302df73d009e01a86bd0d85d9cdf2fa7ea1a15d4fa8335a1a",
+      "size": 5463
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "384bf88b834384124682dc3b3a85e6f743aeaba7372d06a5e6bd359039ed41f0",
+      "size": 733
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "9befd91fd8eecb43c70e533fb50a8205da7521ff54bf54c2adf610947fa55ab3",
+      "size": 3831
+    }
+  ]
+}

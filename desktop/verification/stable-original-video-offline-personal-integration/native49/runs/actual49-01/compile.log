@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-offline-native-integration-proof\OfflineNativeFixture.kt:90:29: error: unresolved reference 'DesktopOriginalDanmakuPreferences'.
+    private val preferences=DesktopOriginalDanmakuPreferences(store,DesktopDanmakuBlockPreferences(store,writeOwned),writeOwned)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-offline-native-integration-proof\OfflineNativeFixture.kt:90:69: error: unresolved reference 'DesktopDanmakuBlockPreferences'.
+    private val preferences=DesktopOriginalDanmakuPreferences(store,DesktopDanmakuBlockPreferences(store,writeOwned),writeOwned)
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

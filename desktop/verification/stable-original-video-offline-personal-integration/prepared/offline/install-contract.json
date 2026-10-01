@@ -1,0 +1,94 @@
+{
+  "status": "READY_SOURCE_ONLY",
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "payloads": [
+    {
+      "path": "prepared/desktop/tools/extract-upstream-offline-player.py",
+      "sha256Bytes": "aae44d0243bf85db90a7ee9bc5cf7a3c947bcaaa48ea356b46d378ec935f2532"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineMpvControl.kt",
+      "sha256Bytes": "7f667404eb2b8bcb142764cb1bd16d3b4d8a359529d3cf2bd86eda6e370a59b1"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineRootMediaEffects.kt",
+      "sha256Bytes": "4d8ab6c0e45379471423f14b59c02aae0f030015f061154c7d37c483fc6768fd"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflinePlayerBindings.kt",
+      "sha256Bytes": "51e6408f7ae196f9a760ce903790879d6800512ef5ed9f2f4e3da8cfc932940c"
+    }
+  ],
+  "localDeltas": [
+    {
+      "file": "bridge-delta.json",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineTaskPlayerBinding.kt",
+      "hunks": 5,
+      "baseLfSha256": "29a47115d6eb7e340c38907ea5b12766ad70e2c3877c504341d4a2fe7d7e473c",
+      "candidateLfSha256": "1274a2e6ca918ff1701ef2fdf65cbd1e3473115b97655e5a578fcee39aaf9ac7",
+      "exactReplayAndInverse": true
+    },
+    {
+      "file": "overlay-delta.json",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "hunks": 16,
+      "baseLfSha256": "270bbedec2b28d63254d04263d3e12a5d4e5226d2231eecbc2f5567099e57d14",
+      "candidateLfSha256": "3d388c4b158f009296d474a96793eecea241e0dd8f2e51e457731e7996377e09",
+      "exactReplayAndInverse": true
+    }
+  ],
+  "registryDelta": {
+    "path": "registry-delta.json",
+    "sha256Bytes": "00e13d4c62a37414acbbde7685007baf52dac7b01c04c10ebda4c3b501e73fac"
+  },
+  "newOriginalIdentities": 2,
+  "existingIdentityFeatureMerges": 2,
+  "productionGeneratorSelectedFiles": 3,
+  "soleDirectSyncFiles": 1,
+  "canonicalLongPressGetter": "com.android.purebilibili.core.store.player.DesktopOriginalLongPressSpeedSettings.getLongPressSpeed(DesktopPluginContext):Flow<Float>",
+  "host": "DesktopOriginalOfflinePlayerHost(taskId:String,bindings:DesktopOriginalOfflinePlayerBindings,onBack:()->Unit)",
+  "requiredBindings": "DesktopOriginalOfflinePlayerBindings(context,backend,entryScope,preferences,presentation,window,surface,media,feedback)",
+  "sharedSurfaceContract": {
+    "path": "shared-surface-contract.json",
+    "sha256Bytes": "98a8c7dd5e4d9e632b88f354ed02b67514776b6618c7ca5913c2460be82b4976"
+  },
+  "overlayOwnerPredicate": "Read-only nonblocking native token/entry Job/volatile epoch/gate::owns. Do not acquire Store/entry locks or write while Overlay invokes it under its request lock.",
+  "compileEvidence": {
+    "path": "compile-05/compile-result.json",
+    "sha256Bytes": "b0a3231270e260aedaaa022bd1414fa91c62f9954a0af4006566ef214b44f625"
+  },
+  "compileJar": {
+    "path": "compile-05/original-offline-player.jar",
+    "sha256Bytes": "5e03d94f6e95391470eb9f6c6192e370393008ce3e80af759ad19011affc243f"
+  },
+  "proofEvidence": {
+    "path": "proof-04/proof-result.json",
+    "sha256Bytes": "63e365206ef84be8878f35a9aa543097b55a82c5f909c83fa176879fc97f788a"
+  },
+  "proof": {
+    "groups": 3,
+    "assertions": 24,
+    "pointerPairs": 1,
+    "actualSnapshot": 47,
+    "actualRuntimeEntries": 97
+  },
+  "integrationRecipe": {
+    "path": "ROOT-INTEGRATION.md",
+    "sha256Bytes": "bb4258993396e123b0f3e9db16b76b37b0df72fbc08455bb3c2ef1539499eb60"
+  },
+  "rootRequired": [
+    "Actual taskId leaf + same manager/retained MPV/overlay/global original prefs and captured entry epoch.",
+    "Replace initial leaf player content with full original Host after sole shared source installation.",
+    "Root precise SMTC retained-source command priority and original offline title/artist/bvid loop.",
+    "Root global PiP action and single-carrier exclusion while actual PiP owns the native surface.",
+    "Actual current-theme/fullscreen/window/presentation ports and native foreground acceptance."
+  ],
+  "differences": [
+    "Viewport dim is video brightness, not Windows display brightness.",
+    "Volume is actual MPV application volume, not system stream.",
+    "WindowsMediaSession has no OS cover thumbnail ABI; original full cover UI remains."
+  ],
+  "rootMounted": false,
+  "installedJar": false,
+  "sharedGradleRun": false
+}

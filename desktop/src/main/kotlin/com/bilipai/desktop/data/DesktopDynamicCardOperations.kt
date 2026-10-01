@@ -254,6 +254,37 @@ internal class DesktopDynamicCardOperations(
         com.bilipai.desktop.ui.DesktopVideoShareImageTransport.download(guestWeb.callFactory(),url,::isOwned)
     }
 
+// Desktop original complete video engagement/info binding
+    private val videoCreatorCard by lazy { com.android.purebilibili.data.repository.DesktopOriginalVideoCreatorCard(api, ::assertOwned) }
+    suspend fun getVideoCreatorCardStats(mid:Long):Result<com.android.purebilibili.data.repository.CreatorCardStats> = result {
+        read { videoCreatorCard.getCreatorCardStats(mid).getOrThrow() }
+    }
+    internal fun originalVideoCoinBalanceLoader():com.android.purebilibili.feature.video.viewmodel.VideoCoinBalanceLoader =
+        com.android.purebilibili.feature.video.viewmodel.originalVideoCoinBalanceLoader(api,
+            { assertOwned(); !repository.authCookies()["SESSDATA"].isNullOrEmpty() }, ::assertOwned)
+    internal fun originalVideoEngagementActions(analytics:com.bilipai.desktop.ui.DesktopOriginalVideoInteractionAnalytics):com.android.purebilibili.feature.video.viewmodel.VideoEngagementActions {
+        val owner = repository.dynamicCacheSessionGuard.dynamicCacheOwner()
+        val protocol = com.android.purebilibili.data.repository.DesktopOriginalVideoEngagementProtocol(api,
+            { assertOwned(); repository.requireCsrf() },
+            { assertOwned(); repository.account.value?.mid },
+            { assertOwned(); repository.authCookies()["SESSDATA"] },
+            { assertOwned(); repository.accessTokenCredentials().first }, ::assertOwned,
+            { change -> assertOwned(); repository.followStateEvents.confirm(checkNotNull(owner),change) },
+            com.android.purebilibili.data.repository.DesktopOriginalFavoriteFolderProtocol(api,
+                { assertOwned(); repository.account.value?.mid }, { assertOwned(); repository.requireCsrf() }, ::assertOwned))
+        val original = com.android.purebilibili.feature.video.viewmodel.originalVideoEngagementActions(
+            com.android.purebilibili.feature.video.usecase.VideoInteractionUseCase(protocol,analytics))
+        return object : com.android.purebilibili.feature.video.viewmodel.VideoEngagementActions {
+            override suspend fun toggleFollow(mid:Long,currentlyFollowing:Boolean)=result { mutate { original.toggleFollow(mid,currentlyFollowing).getOrThrow() } }
+            override suspend fun toggleLike(aid:Long,currentlyLiked:Boolean,bvid:String)=result { mutate { original.toggleLike(aid,currentlyLiked,bvid).getOrThrow() } }
+            override suspend fun toggleDislike(aid:Long,currentlyDisliked:Boolean,bvid:String)=result { mutate { original.toggleDislike(aid,currentlyDisliked,bvid).getOrThrow() } }
+            override suspend fun toggleFavorite(aid:Long,currentlyFavorited:Boolean,bvid:String)=result { mutate { original.toggleFavorite(aid,currentlyFavorited,bvid).getOrThrow() } }
+            override suspend fun toggleWatchLater(aid:Long,currentlyInWatchLater:Boolean,bvid:String)=result { mutate { original.toggleWatchLater(aid,currentlyInWatchLater,bvid).getOrThrow() } }
+            override suspend fun doCoin(aid:Long,count:Int,alsoLike:Boolean,bvid:String)=result { mutate { original.doCoin(aid,count,alsoLike,bvid).getOrThrow() } }
+            override suspend fun doTripleAction(aid:Long)=result { mutate { original.doTripleAction(aid).getOrThrow() } }
+        }
+    }
+
 // GENERATED original editor members; do not hand-maintain a second request algorithm.
 // ORIGINAL app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt
 // LF-normalized SHA-256: 2f85544e1e973dd0e7178077ef5c1f439b798a1d86b46701803adeb2a7c0364f

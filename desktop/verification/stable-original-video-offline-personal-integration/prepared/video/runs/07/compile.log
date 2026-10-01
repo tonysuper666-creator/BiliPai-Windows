@@ -1,0 +1,3 @@
+desktop\.local\stable-video-detail-full-ui-parity\runs\07\source-inputs\reference-owner\DesktopDynamicCardOperations.kt:270:55: error: unresolved reference 'substringAfter'.
+            { assertOwned(); repository.authCookies().substringAfter("SESSDATA=", "").substringBefore(";").ifBlank { null } },
+                                                      ^^^^^^^^^^^^^^

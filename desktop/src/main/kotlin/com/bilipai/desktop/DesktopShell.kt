@@ -425,13 +425,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
     } }
     var lastMediaSection by remember { mutableStateOf<DesktopSection?>(null) }
-    var mediaPrevious by remember { mutableStateOf<(() -> Unit)?>(null) }
-    var mediaNext by remember { mutableStateOf<(() -> Unit)?>(null) }
+    val pipPrevious = remember(playback) { java.util.concurrent.atomic.AtomicReference<() -> Unit>({ playback.previous() }) }
+    val pipNext = remember(playback) { java.util.concurrent.atomic.AtomicReference<() -> Unit>({ playback.next() }) }
     val pipSeek = remember(player, playback) { java.util.concurrent.atomic.AtomicReference<(Double) -> Unit>({ playback.seekTo(it) }) }
     val pip = remember(player, playback) { player?.let { PictureInPictureController(it, onRestore = {
         showVideo = playback.state.value.details != null
         if (!showVideo) lastMediaSection?.let { section = it }
-    }, onPrevious = { mediaPrevious?.invoke() ?: playback.previous() }, onNext = { mediaNext?.invoke() ?: playback.next() },
+    }, onPrevious = { pipPrevious.get().invoke() }, onNext = { pipNext.get().invoke() },
         onSeekTo = { pipSeek.get().invoke(it) }) } }
     val emptyPipState = remember { MutableStateFlow(false) }
     val pipActive by (pip?.active ?: emptyPipState).collectAsState()
@@ -473,7 +473,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     SideEffect {
         beforeListenAcquire.set { storyHost.retire(); pip?.close(); retainedMedia.stop() }
         beforeStoryAcquire.set { pip?.close(); retainedMedia.stop(); listen?.pause(); systemTargetAudio = false }
-        pipSeek.set { seconds -> if (retainedMedia.current != null) player?.seekTo(seconds) else playback.seekTo(seconds) }
+        pipPrevious.set { val owner = retainedMedia.current; if (owner != null) owner.previous?.invoke() else playback.previous() }
+        pipNext.set { val owner = retainedMedia.current; if (owner != null) owner.next?.invoke() else playback.next() }
+        pipSeek.set { seconds ->
+            val owner = retainedMedia.current
+            if (owner != null) { if (owner.ownsNativeSource) player?.seekTo(seconds) } else playback.seekTo(seconds)
+        }
     }
     val nativeTextShare = remember(hostWindow) {
         DesktopNativeTextShare(
@@ -636,6 +641,19 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         onDispose { hostWindow?.removeHierarchyListener(listener); (hostWindow as? java.awt.Frame)?.removeWindowStateListener(windowStateListener) }
     }
     SideEffect { enhancementHostStarted.value = hostVisible }
+    fun seekCurrentSystemMedia(seconds: Double, relative: Boolean = false) {
+        if (!seconds.isFinite() || isClosing() || activatingUpdate) return
+        val retained = if (systemTargetAudio) null else retainedMedia.current
+        when {
+            systemTargetAudio -> audioPlayer?.let { if (relative) it.seekBy(seconds) else it.seekTo(seconds) }
+            retained != null -> player?.let {
+                // A retained Offline/Live/PGC source has priority over stale ordinary detail metadata.
+                if (retained.ownsNativeSource) { if (relative) it.seekBy(seconds) else it.seekTo(seconds) }
+            }
+            playback.state.value.details != null -> if (relative) playback.seekBy(seconds) else playback.seekTo(seconds)
+            else -> player?.let { if (relative) it.seekBy(seconds) else it.seekTo(seconds) }
+        }
+    }
     val systemMedia = remember(hostWindow, hostDisplayable, player, playback, listen, retainedMedia) {
         hostWindow?.takeIf { hostDisplayable }?.let { owner -> WindowsMediaSession(owner, onCommand = { command ->
             val target = if (systemTargetAudio) audioPlayer else player
@@ -644,13 +662,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     else target?.let { if (it.state.value.ended) it.replay() else it.setPaused(false) }
                 WindowsMediaCommand.PAUSE -> if (systemTargetAudio) listen?.pause() else target?.setPaused(true)
                 WindowsMediaCommand.STOP -> if (systemTargetAudio) listen?.pause() else { pip?.close(); retainedMedia.stop(); playback.stop(); target?.stop() }
-                WindowsMediaCommand.NEXT -> if (systemTargetAudio) listen?.next() else retainedMedia.current?.next?.invoke() ?: playback.next()
-                WindowsMediaCommand.PREVIOUS -> if (systemTargetAudio) listen?.previous() else retainedMedia.current?.previous?.invoke() ?: playback.previous()
-                WindowsMediaCommand.FAST_FORWARD -> if (!systemTargetAudio && playback.state.value.details != null) playback.seekBy(10.0) else target?.seekBy(10.0)
-                WindowsMediaCommand.REWIND -> if (!systemTargetAudio && playback.state.value.details != null) playback.seekBy(-10.0) else target?.seekBy(-10.0)
+                WindowsMediaCommand.NEXT -> if (systemTargetAudio) listen?.next() else { val owner = retainedMedia.current; if (owner != null) owner.next?.invoke() else playback.next() }
+                WindowsMediaCommand.PREVIOUS -> if (systemTargetAudio) listen?.previous() else { val owner = retainedMedia.current; if (owner != null) owner.previous?.invoke() else playback.previous() }
+                WindowsMediaCommand.FAST_FORWARD -> seekCurrentSystemMedia(10.0, relative = true)
+                WindowsMediaCommand.REWIND -> seekCurrentSystemMedia(-10.0, relative = true)
             }
-        }, onSeek = { seconds -> if (!systemTargetAudio && playback.state.value.details != null) playback.seekTo(seconds)
-            else (if (systemTargetAudio) audioPlayer else player)?.seekTo(seconds) }) }
+        }, onSeek = { seconds -> seekCurrentSystemMedia(seconds) }) }
     }
 
     fun changePreferences(next: PlayerPreferences) {
@@ -1003,7 +1020,6 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     DesktopRetainedMediaEffects(retainedMedia) {
         mediaActive = it
         val owner = retainedMedia.current
-        mediaPrevious = owner?.previous; mediaNext = owner?.next
         when (owner) {
             retainedMedia.live -> lastMediaSection = DesktopSection.LIVE
             retainedMedia.bangumi -> lastMediaSection = DesktopSection.BANGUMI
@@ -1079,11 +1095,16 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             val current = playback.state.value
             val audio = listen?.state?.value
             val audioTarget = systemTargetAudio && audio?.current != null
+            val retainedOwner = retainedMedia.current
+            val offlinePayload = if (!audioTarget && retainedOwner === retainedMedia.offline && retainedOwner.ownsNativeSource)
+                downloads.tasks.value.firstOrNull { it.id == retainedMedia.offline.current }?.let {
+                    com.android.purebilibili.feature.download.resolveOfflineMiniPlayerPayload(it.item)
+                } else null
             val state = (if (audioTarget) audioPlayer else player)?.state?.value
             if (state != null) systemMedia?.update(WindowsMediaSnapshot(
-                title = if (audioTarget) audio!!.current!!.title else if (retainedMedia.current != null) retainedMedia.title else current.details?.title ?: state.sourceTitle,
-                artist = if (audioTarget) audio!!.current!!.owner else if (retainedMedia.current != null) "" else current.details?.author.orEmpty(),
-                mediaId = if (audioTarget) audio!!.current!!.bvid else if (retainedMedia.current != null) state.sourceTitle else current.details?.bvid ?: state.sourceTitle,
+                title = if (audioTarget) audio!!.current!!.title else offlinePayload?.title ?: if (retainedOwner != null) retainedMedia.title else current.details?.title ?: state.sourceTitle,
+                artist = if (audioTarget) audio!!.current!!.owner else offlinePayload?.owner ?: if (retainedOwner != null) "" else current.details?.author.orEmpty(),
+                mediaId = if (audioTarget) audio!!.current!!.bvid else offlinePayload?.bvid ?: if (retainedOwner != null) state.sourceTitle else current.details?.bvid ?: state.sourceTitle,
                 state = state, isAudio = audioTarget || state.audioOnly,
                 hasPrevious = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex > 0 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.previous != null } ?: playback.hasPrevious,
                 hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.next != null } ?: playback.hasNext,
@@ -1358,8 +1379,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     { DesktopOriginalNowPlayingVisibility(listening.current!=null&&!rootNowPlayingDismissed,
                         physicalDestination is BiliPaiNavKey.AudioMode,pipActive,true,false,
                         physicalDestination is BiliPaiNavKey.VideoDetail,actualWindow.width>actualWindow.height,
-                        physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe)
-                DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted ->
+                        physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe,library)
+                DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists ->
                     CompositionLocalProvider(LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable)) {
 
                 val section = desktopReadySection(entryKey)
@@ -1608,7 +1629,69 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     }
                                 }
                             }
-                            section in listOf(DesktopSection.CLOUD_HISTORY, DesktopSection.WATCH_LATER, DesktopSection.FOLLOWINGS, DesktopSection.LIKED) ->
+                            entryKey == BiliPaiNavKey.History || entryKey is BiliPaiNavKey.HistorySearch || entryKey is BiliPaiNavKey.LikedVideos -> {
+                                val entry = if (entryKey is BiliPaiNavKey.LikedVideos) personalLists.liked(entryKey)
+                                    else personalLists.history(entryKey)
+                                val queue = entry.queueBridge {
+                                    DesktopFavoriteQueueBridge(playback, listen, entry::owns,
+                                        { audio -> systemTargetAudio == audio },
+                                        beforeOpen = { audio ->
+                                            if (!entry.owns() || isClosing() || activatingUpdate ||
+                                                !checkpointForNavigation() || (audio && listen == null)) false
+                                            else {
+                                                changePreferences(preferences.copy(playbackMode = com.bilipai.desktop.player.PlaybackMode.SEQUENTIAL))
+                                                storyHost.retire(); retainedMedia.stop()
+                                                if (audio) { playback.pause(); systemTargetAudio = true }
+                                                else { listen?.pause(); systemTargetAudio = false }
+                                                true
+                                            }
+                                        },
+                                        revealVideo = {
+                                            playback.state.value.queue.getOrNull(playback.state.value.queueIndex)?.let { card ->
+                                                if (entry.owns()) commands.video(BiliPaiNavKey.VideoDetail(card.bvid,
+                                                    card.preferredCid, card.cover,
+                                                    initialVertical = entry.viewModel.uiState.value.items.firstOrNull { it.bvid == card.bvid }?.isVertical == true,
+                                                    sourceRoute = entry.key.toLegacyRoute()))
+                                            }
+                                        }, revealAudio = {
+                                            listen?.state?.value?.current?.let { item -> if (entry.owns()) commands.push(
+                                                BiliPaiNavKey.AudioMode(item.bvid, item.cid,
+                                                    ((listen.player.state.value.positionSeconds) * 1000L).toLong())) }
+                                        })
+                                }
+                                val prefs = personalLists.preferences
+                                val bindings = remember(entry, queue, rootTextShareBindings) {
+                                    DesktopFavoriteBindings(prefs.showOnlineCount, prefs.homeSettings, prefs.initialHomeSettings(),
+                                        prefs.navigationSettings, prefs.initialNavigationSettings(), entry.categories,
+                                        queue::openQueue, queue::appendQueue,
+                                        { subject, text, _ -> requestDesktopTextShare(rootTextShareBindings, entry.scope,
+                                            subject, text, entry::owns, { error = it }) }, prefs.homeFeedCardStyle,
+                                        desktopDetailRenderEffectsSupported(), prefs.backToTopEnabled, prefs.initialBackToTopEnabled(),
+                                        prefs.backToTopOffset, prefs.initialBackToTopOffset(),
+                                        { x,y -> if(entry.owns()) prefs.setBackToTopOffset(x,y) },
+                                        { x,y -> if(entry.owns()) prefs.updateBackToTopOffset(x,y) })
+                                }
+                                val personalNavigation = remember(entry, commands) {
+                                    val article = DesktopPersonalArticleResolver(repository.ownedHomeCallFactory(
+                                        personalLists.gate.epoch, entry::owns), entry::owns)
+                                    DesktopPersonalListNavigation(
+                                        { key -> if(entry.owns()) commands.push(key) },
+                                        { route -> if(entry.owns()) commands.push(com.android.purebilibili.navigation3.legacyRouteToBiliPaiNavKey(route)) },
+                                        article::resolve, { key -> if(entry.owns()) commands.video(key) })
+                                }
+                                DesktopDetailWindow {
+                                    DesktopOriginalPersonalListHost(entry, bindings, personalNavigation,
+                                        onBack = { commands.back() }, onUp = { commands.push(BiliPaiNavKey.Space(it)) },
+                                        onOpenHistorySearch = { commands.push(BiliPaiNavKey.HistorySearch(it)) },
+                                        revealQueue = queue::revealIfOwned,
+                                        onPlayAllAudio = { bvid,cid -> if(!queue.revealIfOwned(bvid,cid,true)) error="音频播放器当前不可用" },
+                                        historySearchChannel = personalLists.historySearchChannel,
+                                        historyScrollToTopChannel = personalLists.historyScrollToTopChannel,
+                                        globalHazeState = personalLists.globalHazeState,
+                                        isCurrentPage = active && !activatingUpdate)
+                                }
+                            }
+                            section in listOf(DesktopSection.WATCH_LATER, DesktopSection.FOLLOWINGS) ->
                                 PersonalContentScreen(when(section) {
                                     DesktopSection.CLOUD_HISTORY -> PersonalSection.HISTORY
                                     DesktopSection.WATCH_LATER -> PersonalSection.WATCH_LATER
@@ -1673,15 +1756,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             }
                             entryKey is BiliPaiNavKey.OfflineVideoPlayer -> {
                                 val owner = requireNotNull(homeRootRef.get()?.retainer?.current()).entry.gate
-                                val binding = remember(owner,entryKey.taskId) { DesktopOfflineTaskPlayerBinding(downloads,retainedMedia,danmaku,
-                                    owner.scope,owner.epoch,{repository.sessionEpoch},owner::owns,owner::commit,
+                                val offlineEntryScope = rememberCoroutineScope()
+                                val binding = remember(owner,entryKey.taskId,offlineEntryScope) { DesktopOfflineTaskPlayerBinding(downloads,retainedMedia,danmaku,
+                                    offlineEntryScope,owner.epoch,{repository.sessionEpoch},{owner.owns() && offlineEntryScope.isActive},owner::commit,
                                     ::desktopDownloadNetworkAvailable,{playerError}) }
-                                DesktopOfflineTaskPlayerHost(entryKey.taskId,binding,{commands.back()},
-                                    {task->if(task.episodeId>0) commands.push(BiliPaiNavKey.BangumiPlayer(task.seasonId,task.episodeId,
-                                        task.item.lastPlaybackPositionMs.coerceAtLeast(0L),task.isCourse))
-                                    else commands.video(BiliPaiNavKey.VideoDetail(task.item.bvid,task.item.cid,task.item.cover,
-                                        resumePositionMs=task.item.lastPlaybackPositionMs.coerceAtLeast(0L),sourceRoute="offline_video"))},
-                                    onToggleFullscreen,playerContent)
+                                DesktopOriginalOfflineRootHost(entryKey.taskId,binding,offlineEntryScope,globalPluginContext,
+                                    originalDanmakuPreferences,danmakuPresentation,systemMedia,pip,pipActive,hostWindow,
+                                    isFullscreen,setFullscreen,{homeRootRef.get()?.refreshCurrentRootChrome()},
+                                    {commands.back()},{error=it})
                             }
                             entryKey is BiliPaiNavKey.WeeklySeries -> DesktopWeeklySeriesScreen(discovery.weeklySeriesRequests(),repository,entryKey.number,{commands.back()},
                                 {video,list -> val cards=list.map{VideoCard(it.bvid,it.title,it.pic,it.owner.name,it.stat.view.toLong(),it.duration,preferredCid=it.cid)};

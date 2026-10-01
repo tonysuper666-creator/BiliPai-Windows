@@ -1,0 +1,45 @@
+{
+  "copy": [
+    {
+      "from": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPersonalListHost.kt",
+      "to": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPersonalListHost.kt",
+      "sha256Bytes": "bf291fb274d47ea982c8004fada328991a8484e1b3ffea3ffc57287858db987e",
+      "action": "copy sole new manual"
+    },
+    {
+      "from": "prepared/manual/com/bilipai/desktop/ui/DesktopPersonalArticleResolver.kt",
+      "to": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalArticleResolver.kt",
+      "sha256Bytes": "272904bf46d66683b1ce15167df5ac0c3e756e655f19265bd81eb93909dec10a",
+      "action": "copy sole new manual"
+    },
+    {
+      "from": "prepared/manual/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
+      "to": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
+      "sha256Bytes": "b4de393a9632c14e83966d44b1c41830bf99c57159c7113489a9bc6e799db188",
+      "action": "copy sole new manual"
+    },
+    {
+      "from": "prepared/tools/extract-upstream-personal-lists.py",
+      "to": "desktop/tools/extract-upstream-personal-lists.py",
+      "sha256Bytes": "6d92f58b039e0b7e402a44cffdca22d347d61e81f3133360adb7164279b14041",
+      "action": "copy sole new producer"
+    }
+  ],
+  "patch": {
+    "path": "consumer.patch",
+    "sha256Bytes": "89fed58b8263408b9f0ef8ebf0e4f2a620179f7608d5a2f7f145bc7463647cfa",
+    "basePins": "consumer-bases.json",
+    "targets": [
+      "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt"
+    ],
+    "action": "apply hunks only; prepared/existing compile references never full-copy"
+  },
+  "registry": "registry-delta.json",
+  "gradle": "gradle-snippet.kts",
+  "generatedReferenceOnly": [
+    "prepared/selected",
+    "producer-replay"
+  ],
+  "noBinaries": true
+}

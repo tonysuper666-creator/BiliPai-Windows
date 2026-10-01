@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-offline-native-integration-proof\OfflineNativeFixture.kt:323:79: error: argument type mismatch: actual type is 'String?', but 'String' was expected.
+                    baselineSourceVersion=player.loadVersioned(PlaybackSource(tasks[0].item.filePath, title="fixture platform baseline",startPositionSeconds=0.5,startPaused=true))
+                                                                              ^^^^^^^^^^^^^^^^^^^^^^

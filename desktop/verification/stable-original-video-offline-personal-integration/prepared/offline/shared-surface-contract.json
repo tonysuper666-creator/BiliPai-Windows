@@ -1,0 +1,27 @@
+{
+  "soleOwner": "/root/player_parity/dynamic_action_review",
+  "frozenStage1": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-full-ui-parity\\frozen-stage1.json",
+    "sha256Bytes": "6019bfa5ffdd3ca51b413add293c6dd724867e5f9c9731d3dbba2f515181e564"
+  },
+  "surfaceSource": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-full-ui-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalPlayerSurface.kt",
+    "sha256Bytes": "332bc71f6a56647e7c913e92c52478dd34f127bda8ccc593598ae3795eedc79b",
+    "referenceOnlyNotCopiedOrInstalledHere": true
+  },
+  "signature": "@Composable internal fun DesktopOriginalPlayerSurface(player:MpvPlayer,sourceVersion:Long?,isOwned:()->Boolean,modifier:Modifier,foreground:@Composable()->Unit)",
+  "delegate": "DesktopOriginalPlayerSurface(control.nativePlayer,control.sourceVersion,control::isForegroundOwned,modifier,foreground)",
+  "loadingForegroundDoesNotGrantNativeWrites": true,
+  "gestureCompileProofReference": {
+    "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-full-ui-parity\\runs\\03\\candidate.jar",
+    "sha256Bytes": "a95cfab0d91e528bf443edd529445352d5c2d250584d0b8a75ed69fb5ff34b65",
+    "prospectiveNotActual": true,
+    "otherSharedJarFamiliesNotInstalledHere": true
+  },
+  "noBinaryFallbackOrNewDependency": true,
+  "rootRequired": [
+    "Install child sole original GestureLevelOverlay/source closure and Surface, never this proof JAR.",
+    "Consume actual PiP active state so only one MPV Canvas/popup carrier attaches.",
+    "Actual HWND pointer input and Root window/SMTC/PiP acceptance remain required."
+  ]
+}

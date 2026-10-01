@@ -1,0 +1,21 @@
+desktop\.local\stable-video-detail-full-ui-parity\runs\04\source-inputs\generated\com\android\purebilibili\data\repository\DesktopOriginalVideoEngagementProtocol.kt:264:25: error: unresolved reference 'WatchLaterRefreshBus'.
+                        WatchLaterRefreshBus.notifyChanged()
+                        ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\04\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\VideoEngagementViewModel.kt:6:59: error: unresolved reference 'resolveTripleActionFeedbackMessage'.
+import com.android.purebilibili.feature.video.ui.feedback.resolveTripleActionFeedbackMessage
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\04\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\VideoEngagementViewModel.kt:7:59: error: unresolved reference 'resolveTripleActionVisualState'.
+import com.android.purebilibili.feature.video.ui.feedback.resolveTripleActionVisualState
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\04\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\VideoEngagementViewModel.kt:399:34: error: unresolved reference 'resolveTripleActionVisualState'.
+                    val visual = resolveTripleActionVisualState(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\04\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\VideoEngagementViewModel.kt:440:25: error: unresolved reference 'resolveTripleActionFeedbackMessage'.
+                        resolveTripleActionFeedbackMessage(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\04\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\VideoEngagementViewModel.kt:482:81: error: unresolved reference 'sendOwned'.
+            currentCoroutineContext().ensureActive(); environment.assertOwned() sendOwned(VideoEngagementEvent.Message(message)) }
+                                                                                ^^^^^^^^^
+desktop\.local\stable-video-detail-full-ui-parity\runs\04\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\VideoSubjectSnapshot.kt:4:1: error: this annotation is not repeatable.
+@Immutable
+^^^^^^^^^^

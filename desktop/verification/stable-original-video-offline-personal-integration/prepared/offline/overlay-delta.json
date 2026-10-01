@@ -1,0 +1,87 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+  "baseLfSha256": "270bbedec2b28d63254d04263d3e12a5d4e5226d2231eecbc2f5567099e57d14",
+  "candidateLfSha256": "3d388c4b158f009296d474a96793eecea241e0dd8f2e51e457731e7996377e09",
+  "hunks": [
+    {
+      "label": "one bounded source-owned viewport tint",
+      "before": "    @Volatile private var eyeTint = DesktopEyeTint()",
+      "after": "    @Volatile private var eyeTint = DesktopEyeTint()\n    @Volatile private var viewportBrightness:Pair<Long,Float>? = null\n    private fun ownedViewportBrightness():Pair<Long,Float>? = viewportBrightness?.takeIf {\n        !closed.get() && player.ownsSourceVersion(it.first)\n    }"
+    },
+    {
+      "label": "actual paint respects native version and retains plugin eye tint",
+      "before": "                eyeTint.paint(context, width, height)",
+      "after": "                ownedViewportBrightness()?.let { (_,brightness) -> DesktopEyeTint(1f-brightness,0f).paint(context,width,height) }\n                eyeTint.paint(context, width, height)"
+    },
+    {
+      "label": "actual same-overlay source-owned getter/setter/clear",
+      "before": "    fun setPluginDanmakuProcessor(processor: DanmakuPluginProcessor?) {",
+      "after": "    /** Video-viewport brightness, not Windows system/display brightness. Root writes on its owned UI actor. */\n    fun setViewportBrightness(expectedSourceVersion:Long,brightness:Float):Boolean = synchronized(requestLock) {\n        if(closed.get()||!brightness.isFinite()||!player.ownsSourceVersion(expectedSourceVersion))return@synchronized false\n        viewportBrightness=expectedSourceVersion to brightness.coerceIn(0f,1f)\n        SwingUtilities.invokeLater {if(!closed.get())panel.repaint()}\n        true\n    }\n    fun viewportBrightnessFor(expectedSourceVersion:Long):Float? = synchronized(requestLock) {\n        if(closed.get()||!player.ownsSourceVersion(expectedSourceVersion))null\n        else viewportBrightness?.takeIf {it.first==expectedSourceVersion}?.second ?: 1f\n    }\n    fun clearViewportBrightness(expectedSourceVersion:Long):Boolean = synchronized(requestLock) {\n        if(closed.get()||!player.ownsSourceVersion(expectedSourceVersion)||viewportBrightness?.first!=expectedSourceVersion)return@synchronized false\n        viewportBrightness=null\n        SwingUtilities.invokeLater {if(!closed.get())panel.repaint()}\n        true\n    }\n\n    fun setPluginDanmakuProcessor(processor: DanmakuPluginProcessor?) {"
+    },
+    {
+      "label": "native viewport tint visibility even when danmaku disabled",
+      "before": "        val visible = ((enabled && mutableCount.value > 0) || eyeTint.visible)",
+      "after": "        val visible = ((enabled && mutableCount.value > 0) || eyeTint.visible || ownedViewportBrightness()?.second?.let {it<1f}==true)"
+    },
+    {
+      "label": "original UI local asset load uses same existing source-generation publication guard",
+      "before": "    suspend fun loadOffline(standardSegments: List<Path>, specialSegments: List<Path> = emptyList(), durationSeconds: Double = 0.0) {\n        require(durationSeconds.isFinite() && durationSeconds >= 0)\n        loadSource(OfflineDanmakuSource(standardSegments, specialSegments), 1L, 0L, durationSeconds, null, null)\n    }",
+      "after": "    suspend fun loadOffline(standardSegments: List<Path>, specialSegments: List<Path> = emptyList(), durationSeconds: Double = 0.0, expectedSourceVersion:Long? = null, stillOwned:(()->Boolean)? = null) {\n        require(durationSeconds.isFinite() && durationSeconds >= 0)\n        require(stillOwned==null||expectedSourceVersion!=null)\n        loadSource(OfflineDanmakuSource(standardSegments, specialSegments), 1L, 0L, durationSeconds, expectedSourceVersion, null, stillOwned)\n    }"
+    },
+    {
+      "label": "bounded exact native/entry owner rejects retired offline documents",
+      "before": "    @Volatile private var rawDocument = DanmakuDocument()",
+      "after": "    @Volatile private var rawDocument = DanmakuDocument()\n    // One captured native/entry-read-only owner for the existing OFFLINE window actor, not another task/cache.\n    @Volatile private var offlineDocumentOwner:Pair<Long,()->Boolean>? = null\n    private fun currentOfflineDocumentOwned():Boolean = offlineDocumentOwner?.let {\n        !closed.get() && player.ownsSourceVersion(it.first) && it.second()\n    } ?: !closed.get()"
+    },
+    {
+      "label": "same native painter suppresses retired offline source immediately",
+      "before": "                if (configuration.enabled) {",
+      "after": "                if (configuration.enabled && currentOfflineDocumentOwned()) {"
+    },
+    {
+      "label": "same actor captures required full-UI owner at its existing load boundary",
+      "before": "private suspend fun loadSource(playbackSource: DesktopDanmakuSource, cid: Long, aid: Long, durationSeconds: Double, expectedSourceVersion: Long?, maskSource:DesktopOwnedWebMaskSource?) {",
+      "after": "private suspend fun loadSource(playbackSource: DesktopDanmakuSource, cid: Long, aid: Long, durationSeconds: Double, expectedSourceVersion: Long?, maskSource:DesktopOwnedWebMaskSource?, offlineOwner:(()->Boolean)? = null) {"
+    },
+    {
+      "label": "new online or offline load replaces rather than accumulates previous document owner",
+      "before": "                poolSourceVersion = expectedSourceVersion",
+      "after": "                poolSourceVersion = expectedSourceVersion\n                offlineDocumentOwner = offlineOwner?.let {requireNotNull(expectedSourceVersion) to it}"
+    },
+    {
+      "label": "retired entry cannot start an offline window reader",
+      "before": "            publish(result, version)\n            synchronized(requestLock) {\n                if (version == generation.get() && !closed.get()) {",
+      "after": "            publish(result, version)\n            synchronized(requestLock) {\n                if (version == generation.get() && !closed.get() && currentOfflineDocumentOwned()) {"
+    },
+    {
+      "label": "old offline window stops reading after captured entry/native source retires",
+      "before": "                            .distinctUntilChanged().collectLatest {\n                                try {",
+      "after": "                            .distinctUntilChanged().collectLatest {\n                                try {\n                                    if(!currentOfflineDocumentOwned())throw CancellationException(\"Offline document owner retired\")"
+    },
+    {
+      "label": "late offline decode cannot publish into a retired document",
+      "before": "    private fun publish(result: DanmakuWindowResult, version: Long) {\n        synchronized(requestLock) {\n            if (version != generation.get() || closed.get()) return",
+      "after": "    private fun publish(result: DanmakuWindowResult, version: Long) {\n        synchronized(requestLock) {\n            if (version != generation.get() || closed.get() || !currentOfflineDocumentOwned()) return"
+    },
+    {
+      "label": "plugin/raw-document admission retains the same offline source owner",
+      "before": "    private fun installDocument(document: DanmakuDocument, version: Long) {\n        val (revision, processor) = synchronized(requestLock) {\n            if (version != generation.get() || closed.get()) return",
+      "after": "    private fun installDocument(document: DanmakuDocument, version: Long) {\n        val (revision, processor) = synchronized(requestLock) {\n            if (version != generation.get() || closed.get() || !currentOfflineDocumentOwned()) return"
+    },
+    {
+      "label": "deferred same-EDT painter installation rejects late offline owner",
+      "before": "            if (!closed.get() && version == generation.get() && revision == documentRevision.get()) {",
+      "after": "            if (!closed.get() && version == generation.get() && revision == documentRevision.get() && currentOfflineDocumentOwned()) {"
+    },
+    {
+      "label": "existing live actor clears prior offline-owner marker",
+      "before": "                .also { commandCid = null; mutableCommands.value = emptyList() }",
+      "after": "                .also { offlineDocumentOwner=null; commandCid = null; mutableCommands.value = emptyList() }"
+    },
+    {
+      "label": "direct documents and exact release clear prior offline ownership",
+      "before": "                retireWebMaskSource()\n                commandCid = null; mutableCommands.value = emptyList()",
+      "after": "                retireWebMaskSource()\n                offlineDocumentOwner=null\n                commandCid = null; mutableCommands.value = emptyList()"
+    }
+  ]
+}

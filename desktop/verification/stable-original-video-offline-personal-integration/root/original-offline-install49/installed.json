@@ -1,0 +1,12 @@
+{
+  "applied": true,
+  "payloads": 4,
+  "existingHunks": 21,
+  "newOriginalIdentities": 2,
+  "sourceRegistryCount": 955,
+  "sharedSurfaceReused": true,
+  "newRuntimeDependencies": 0,
+  "rootFullOfflineMounted": false,
+  "wholeCompilationPending": true,
+  "newExeDeployed": false
+}

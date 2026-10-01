@@ -1,0 +1,16 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-48",
+  "manifestSha": "298fd01851352c496f011fef69f9091652c6ba41ea0223a418ee298762cab89d",
+  "orderedCpSha": "2ae45d9e07b65c705807c27ace118cb0f9cdb320a54793b144e80e760f8ed7a1",
+  "preparedOnly": true,
+  "coreJarSha": "f429307e1c29ca0cbe8aab4d21bb62eed99aae29452dc4f3f6319ffb68af8f64",
+  "originalProductOverrides": 0,
+  "coreNewClasses": 26,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-history-liked-parity\\fixtures\\PersonalListsFixture.kt",
+      "sha": "8d223888f1d719b339a88bdaa808318f6eddd02441f279ed2ecfd28d3c13c0fb"
+    }
+  ],
+  "compileExit": 1
+}

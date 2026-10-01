@@ -1,0 +1,26 @@
+--- original:checkCoinStatus
++++ owned:checkCoinStatus
+@@ -1,16 +1,21 @@
+     suspend fun checkCoinStatus(aid: Long): Int {
+         return withContext(Dispatchers.IO) {
++            currentCoroutineContext().ensureActive(); assertOwned()
+             try {
+                 val response = api.hasCoined(aid)
++                currentCoroutineContext().ensureActive(); assertOwned()
+                 if (response.code == 0) {
+                     val coinCount = response.data?.multiply ?: 0
+-                    com.android.purebilibili.core.util.Logger.d("ActionRepository", " checkCoinStatus: aid=$aid, coinCount=$coinCount")
++                    Logger.d("ActionRepository", " checkCoinStatus: aid=$aid, coinCount=$coinCount")
+                     coinCount
+                 } else {
+                     0
+                 }
++            } catch (cancelled: CancellationException) {
++                throw cancelled
+             } catch (e: Exception) {
+-                android.util.Log.e("ActionRepository", "checkCoinStatus failed", e)
++                assertOwned()
++                Logger.e("ActionRepository", "checkCoinStatus failed", e)
+                 0
+             }
+         }

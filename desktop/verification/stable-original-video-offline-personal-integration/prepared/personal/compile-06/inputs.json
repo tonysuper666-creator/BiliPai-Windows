@@ -1,0 +1,32 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-48",
+  "manifestSha": "298fd01851352c496f011fef69f9091652c6ba41ea0223a418ee298762cab89d",
+  "orderedCpSha": "2ae45d9e07b65c705807c27ace118cb0f9cdb320a54793b144e80e760f8ed7a1",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-history-liked-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalPersonalListHost.kt",
+      "sha256Bytes": "bf291fb274d47ea982c8004fada328991a8484e1b3ffea3ffc57287858db987e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-history-liked-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopPersonalArticleResolver.kt",
+      "sha256Bytes": "272904bf46d66683b1ce15167df5ac0c3e756e655f19265bd81eb93909dec10a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-history-liked-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopPersonalListsRoot.kt",
+      "sha256Bytes": "b4de393a9632c14e83966d44b1c41830bf99c57159c7113489a9bc6e799db188"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-history-liked-parity\\prepared\\selected\\com\\bilipai\\desktop\\ui\\DesktopOriginalHistoryArticlePolicy.kt",
+      "sha256Bytes": "bfac651358f74cd9f5dc341bcc6cff81b064a85c53f79f2bbdd98d5d3f560172"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-personal-history-liked-parity\\prepared\\selected\\com\\bilipai\\desktop\\ui\\DesktopOriginalHistoryNavigation.kt",
+      "sha256Bytes": "a4da54f99e8c8fdb3d12e5649a3b27cc78e2dcdf8cd7665856a967d51d950c25"
+    }
+  ],
+  "prepared": true,
+  "mainIntegration": false,
+  "productOverrides": "none",
+  "exit": 0
+}

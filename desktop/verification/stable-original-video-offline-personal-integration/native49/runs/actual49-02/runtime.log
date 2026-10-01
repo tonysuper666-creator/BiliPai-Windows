@@ -1,0 +1,7 @@
+PASS Unchanged full original renderer owns exact local task and actual native first frame
+FAIL Actual original landscape entry applies real fixture Window fullscreen placement
+Exception in thread "main" java.lang.IllegalStateException: Actual original landscape entry applies real fixture Window fullscreen placement
+	at com.bilipai.desktop.offlinenativefixture.Fixture.record(OfflineNativeFixture.kt:185)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.record$default(OfflineNativeFixture.kt:183)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.run(OfflineNativeFixture.kt:284)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.main(OfflineNativeFixture.kt:359)

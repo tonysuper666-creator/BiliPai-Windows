@@ -1,0 +1,423 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceIdentities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt",
+      "sha256LF": "9269462327088da5a4103e451776a9bb70a1cd098bdb71b54ee73d9b43ce8edb",
+      "gitBlob": "06ca05617b78fe065421b206fbcd3a25d0ed8618"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt",
+      "sha256LF": "bfd4b78900bf0a1b04847ccccb4a18b6d0d445be258f00dcd3ff6f1ce1d71771",
+      "gitBlob": "5b4eaef8315ed17122ea8de8d4b872a74abdb46f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt",
+      "sha256LF": "24f95b99fbb5d8c8830acd31880ff651091c62195407a9ef85f9317f0f498a2a",
+      "gitBlob": "dc40151ea62138e5797360e59c4271ee5701939d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/AnimatedGesturePercentText.kt",
+      "sha256LF": "512a6a361feb78e06487a1ce2711f078f4aca291a6e1645e6efa2225923659f7",
+      "gitBlob": "ddbd93e59a1ea42bef236f420c901d23fe581eb8"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt",
+      "sha256LF": "964174cee6a0261a430094eb85af8008bf6d51555d11617da3053f4d3b5f5b78",
+      "gitBlob": "f86b77fe3ef6250d0771b44f716b8e39c23089d1"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentMotionPolicy.kt",
+      "sha256LF": "adfd21ce5b00af901c5a5857eba9427a195de8d7c812cd80745969f5d2b1f99c",
+      "gitBlob": "7e5e8366ea689e0bbf020c431db962d7868985d1"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "sha256LF": "198913c1d091d5aed119b90fedfbb7e77183457584c49c737c4aae7f113f37c0",
+      "gitBlob": "1775313c3b78d802728b7ac9492a4ba8e27d07a0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+      "sha256LF": "799f5d6fdd39adba83bd59aa52860b3d3378908b135aed4c55527e50686dc03a",
+      "gitBlob": "6b7c035b4afd4523f0a54fbf5f47c3e4234c2aae"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "sha256LF": "b3a84152a38284bea0336b7df37c674cac78b4bab46d29a6e216a6a1f8fbc8ef",
+      "gitBlob": "e5f15d09184077c63058c0e1e96467ae9dddc613"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+      "sha256LF": "84f95453d715ece786e29ee291570b52e6a40ae99336b77b53f065d68c7b5128",
+      "gitBlob": "dd6ff4f3c33bfc4306ee60dc3f2b22298c0f3aef"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicy.kt",
+      "sha256LF": "28a99feed6df363e283381e4270f34093b4de72589a5c231bfde3f38662f1785",
+      "gitBlob": "e544093fce7111c8be8bb7bc54ad211f94004b00"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppPlayerChromeProfile.kt",
+      "sha256LF": "678594826a55c05d161be7f52bd3c4bbdab1af46346458c64bc7027d060f0042",
+      "gitBlob": "1e82f0ce4b054335593787f19a510e7da960e879"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt",
+      "sha256LF": "f24f729482b9deac38a4fa17c8e60a15b8be49d08b6d641cdacdd87902b28e32",
+      "gitBlob": "dfe434f8d2727796fc8bc31c70340c109da5b969"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/common/Modifiers.kt",
+      "sha256LF": "ffb0a934822dc39744a56ec031875e813f8e2a055ed857f5dfc1db4e1e5a5fa2",
+      "gitBlob": "24e6b81e179fb0f778b2212e8f9fa7554ab5c57e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "sha256LF": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "gitBlob": "6a7a29eaf4d0d1f49bad3cfd2a20bf67d9944357"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "gitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
+      "sha256LF": "e266056182d40e924535401011071fc61fcfc59738e9263076717f49765c47fa",
+      "gitBlob": "3a287fd3974b1fbf1dbc6b2907f97b828250b882"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoDomainBinding.kt",
+      "sha256LF": "73fcfd5af57e257658164b7adbd2b103c412686a91efa5b8db99d1f67a84f491",
+      "gitBlob": "eb987f1b06e0a2339931c570ec2fd3754ae3fc14"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "sha256LF": "377a74a359cc84eb2961f5ff022da12158345a677d14087ea1fc7d3991f148c8",
+      "gitBlob": "a9fd83c4ee8e8eeacfaaac305ab6ee8c85173989"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt",
+      "sha256LF": "63c0826814274dc8df583105b3dc796498da6ab41d1bd2c50491b52ef68c74d6",
+      "gitBlob": "fde1e2268a673569315dc32368b629893d2c57b2"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt",
+      "sha256LF": "15d803c80018a16b4ca0bb37bf7b89bab65bb18e102bcd2c84fca991833fe822",
+      "gitBlob": "ab7dc02a955cc11439eeb774289e45410611aba3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt",
+      "sha256LF": "ac32f597609d7fa820d04d4fe6b3fc6071fe94a431c22ca4ae9d20e90d1605e4",
+      "gitBlob": "0873e5808de0201dea49acdd3156fbefc1318150"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sha256LF": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+      "gitBlob": "377e9680841ef3c1f2edcc2aca3605008099606a"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt",
+      "mode": "full-source-platform-adapt",
+      "sha256LF": "e2d0177345b46aa0c94d046063dba5a4a0d889e7f1de238fa8b74e44b056ebfc",
+      "physicalLines": 509,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt",
+      "mode": "direct",
+      "sha256LF": "bfd4b78900bf0a1b04847ccccb4a18b6d0d445be258f00dcd3ff6f1ce1d71771",
+      "physicalLines": 239,
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt",
+      "mode": "direct",
+      "sha256LF": "24f95b99fbb5d8c8830acd31880ff651091c62195407a9ef85f9317f0f498a2a",
+      "physicalLines": 49,
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/AnimatedGesturePercentText.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/AnimatedGesturePercentText.kt",
+      "mode": "direct",
+      "sha256LF": "512a6a361feb78e06487a1ce2711f078f4aca291a6e1645e6efa2225923659f7",
+      "physicalLines": 194,
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt",
+      "mode": "full-source-platform-adapt",
+      "sha256LF": "d5b68d43b0c344cf451ec10f64c5323de7a8714f4fc85d339ca90d753777c9ed",
+      "physicalLines": 87,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/CircularGesturePercentMotionPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentMotionPolicy.kt",
+      "mode": "direct",
+      "sha256LF": "adfd21ce5b00af901c5a5857eba9427a195de8d7c812cd80745969f5d2b1f99c",
+      "physicalLines": 38,
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoGestureMotion.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "mode": "selected-original-motion",
+      "sha256LF": "fc2683988b880b636ee3c8cd5c8c5813e27c818fc1a929b85b71aea192c6f176",
+      "physicalLines": 62,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoActionSection.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+      "mode": "full-renderer-reference-existing-TripleProgressIcon",
+      "sha256LF": "7dcadf3d378575a0620300ae65d48bea4a648f9c1ac60066040ae730c9260a90",
+      "physicalLines": 782,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoSection.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "mode": "full-ordinary-info-renderers-and-rich-description",
+      "sha256LF": "710335d284c4b2d5f8a68c1e21dee3da4e2a72d00c586a39e60b4c4be150899a",
+      "physicalLines": 1328,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoDisplayPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+      "mode": "remaining-original-display-policy-reference-sole-shared",
+      "sha256LF": "5f4972eddabc66e5360ef46130ccdff19590967512638c2468f831af4f37d78d",
+      "physicalLines": 168,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicy.kt",
+      "mode": "direct",
+      "sha256LF": "28a99feed6df363e283381e4270f34093b4de72589a5c231bfde3f38662f1785",
+      "physicalLines": 50,
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/AppPlayerChromeProfile.kt",
+      "origin": "design-system/src/main/java/com/android/purebilibili/core/ui/AppPlayerChromeProfile.kt",
+      "mode": "direct",
+      "sha256LF": "678594826a55c05d161be7f52bd3c4bbdab1af46346458c64bc7027d060f0042",
+      "physicalLines": 37,
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoBgmTag.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "mode": "original-tag-helper-no-existing-emitter",
+      "sha256LF": "cdf8c3594fb3bfa68bfc489b26c82604d422d6d024ed633d7492977ac51600b2",
+      "physicalLines": 7,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt",
+      "mode": "full-original-avatar-platform-adapt",
+      "sha256LF": "a3ac0bcd678e898e12b7ea7f4f515d26f7c29bc84d6fd98e7b4a144de96fd75b",
+      "physicalLines": 90,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/common/DesktopOriginalVideoCopyModifiers.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/core/ui/common/Modifiers.kt",
+      "mode": "complete-original-copy-modifier-and-platform-feedback",
+      "sha256LF": "cefcba9b77ce74db85f3309ffdb9c75e8203a5b95a57ec50930b5be26924d14d",
+      "physicalLines": 41,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalCreatorCardStats.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "mode": "original-model",
+      "sha256LF": "ac026fff1fdbfbfb5842e5041c91b03c8aeb497a1aa5dca73fb2123f6bcb7179",
+      "physicalLines": 10,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalVideoInfoSettings.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "mode": "original-key-read-write-bridge-same-global-store",
+      "sha256LF": "9f9bacd873e518d91873cb57d818015c94c86b77c709e70eece5271d83ff35ac",
+      "physicalLines": 100,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
+      "mode": "complete-original-subject-schema",
+      "sha256LF": "616d3b83f78ad963370f20d42d1ca6bdbb4854dee51d22816538ba32516e5b1b",
+      "physicalLines": 14,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/VideoDomainBinding.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoDomainBinding.kt",
+      "mode": "direct",
+      "sha256LF": "73fcfd5af57e257658164b7adbd2b103c412686a91efa5b8db99d1f67a84f491",
+      "physicalLines": 6,
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "mode": "complete-original-engagement-state-actions-algorithm-owned-platform",
+      "sha256LF": "a63c662f68cb4c17c83d0e15b9cc6a6174bc98be9ed5e011e7f12e9a136aaf96",
+      "physicalLines": 499,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoEngagementActionsFactory.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "mode": "thin-existing-original-usecase-delegate",
+      "sha256LF": "a992322359e678918f6ef26ebdd852db950f2e039c02f346879ccb7ebce504a8",
+      "physicalLines": 11,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoCoinBalanceLoader.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "mode": "original-coin-read-timeout-policy-existing-owned-api",
+      "sha256LF": "5d85f09abf4abb5a49bcc8710e5e436ed82030dabc7f950a48d73d9507b5b2a5",
+      "physicalLines": 27,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt",
+      "mode": "complete-original-usecase-required-owned-dependencies",
+      "sha256LF": "dbb29ef582aa896bc256fe8addb32c2ee4b50232af714c6fde082c1c5e6fe1e0",
+      "physicalLines": 235,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt",
+      "mode": "direct",
+      "sha256LF": "15d803c80018a16b4ca0bb37bf7b89bab65bb18e102bcd2c84fca991833fe822",
+      "physicalLines": 33,
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt",
+      "mode": "direct",
+      "sha256LF": "ac32f597609d7fa820d04d4fe6b3fc6071fe94a431c22ca4ae9d20e90d1605e4",
+      "physicalLines": 24,
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalVideoEngagementProtocol.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "mode": "original-raw-protocol-original-fields-errors-sequential-triple",
+      "sha256LF": "389440625bc75dcff54a53f4bacdd732db0b8478c4cc30bf68ae82130d848c06",
+      "physicalLines": 375,
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalVideoCreatorCard.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "mode": "original-creator-read-cache-single-current-entry-authority",
+      "sha256LF": "f5255395e3218f6397804937208cafe27512fd0b93f09782010bed84f502b473",
+      "physicalLines": 36,
+      "generated": true
+    }
+  ],
+  "adaptations": [
+    {
+      "label": "Circular numeral actual desktop RenderEffect capability",
+      "before": "Build.VERSION.SDK_INT >= Build.VERSION_CODES.S",
+      "after": "desktopDetailRenderEffectsSupported()"
+    },
+    {
+      "label": "Capture actual info request binding",
+      "before": "    val playerControlVisibility by",
+      "after": "    val VideoRepository = LocalDesktopOriginalVideoInfoBindings.current\n    val playerControlVisibility by"
+    },
+    {
+      "label": "Capture current original avatar request owner",
+      "before": "    var card by remember(ownerMid)",
+      "after": "    val VideoRepository = LocalDesktopOriginalVideoInfoBindings.current\n    var card by remember(ownerMid)"
+    },
+    {
+      "label": "Windows feedback replaces Android clipboard toast capability branch",
+      "before": "                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {\n                    Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT).show()\n                } else if (label != null) {\n                    Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT).show()\n                }",
+      "after": "                context.showFeedback(toastMsg)"
+    },
+    {
+      "label": "Full EngagementVM uses required existing entry scope/actions/current owner",
+      "before": "class VideoEngagementViewModel(\n    private val actions: VideoEngagementActions = DefaultVideoEngagementActions(),\n    private val coinBalanceLoader: VideoCoinBalanceLoader = DefaultVideoCoinBalanceLoader\n) : ViewModel() {",
+      "after": "internal class VideoEngagementViewModel(private val environment: DesktopOriginalVideoEngagementEnvironment) {\n    private val actions get() = environment.actions\n    private val coinBalanceLoader get() = environment.coinBalanceLoader\n    private val viewModelScope get() = environment.scope\n    private fun updateOwned(transform: (VideoEngagementUiState) -> VideoEngagementUiState) =\n        environment.commit { _uiState.update(transform) }\n    private suspend fun sendOwned(event: VideoEngagementEvent) {\n        currentCoroutineContext().ensureActive(); environment.assertOwned()\n        _events.send(event)\n    }\n"
+    },
+    {
+      "label": "Original events retain transient subject generation in the existing channel",
+      "before": "private val _events = Channel<VideoEngagementEvent>(Channel.BUFFERED)",
+      "after": "private val _events = Channel<Pair<Long?, VideoEngagementEvent>>(Channel.BUFFERED)"
+    },
+    {
+      "label": "Reject queued old-subject events without changing original public event schema",
+      "before": "val events = _events.receiveAsFlow()",
+      "after": "val events = _events.receiveAsFlow().mapNotNull { (generation, event) ->\n        if (environment.isOwned() && _uiState.value.subject?.generation == generation) event else null\n    }"
+    },
+    {
+      "label": "Atomic initial engagement seed publication",
+      "before": "        _uiState.value = VideoEngagementUiState(",
+      "after": "        environment.commit { _uiState.value = VideoEngagementUiState("
+    },
+    {
+      "label": "Close seed publication gate",
+      "before": "            followingMids = seed.followingMids\n        )",
+      "after": "            followingMids = seed.followingMids\n        ) }"
+    },
+    {
+      "label": "Capture coin balance subject generation",
+      "before": "    fun openCoinDialog() {",
+      "after": "    fun openCoinDialog() {\n        val capturedSubject = _uiState.value.subject"
+    },
+    {
+      "label": "Reject coin balance after old subject retires",
+      "before": "            val balance = coinBalanceLoader.load()",
+      "after": "            val balance = coinBalanceLoader.load()\n            currentCoroutineContext().ensureActive(); environment.assertOwned()\n            if (_uiState.value.subject?.generation != capturedSubject?.generation) return@launch"
+    },
+    {
+      "label": "Capture delayed original feedback subject",
+      "before": "    internal fun emitMessage(message: String) {",
+      "after": "    internal fun emitMessage(message: String) {\n        val capturedGeneration = _uiState.value.subject?.generation"
+    },
+    {
+      "label": "Reject replacement subject during original feedback launch",
+      "before": "environment.assertOwned();\n sendOwned(VideoEngagementEvent.Message(message))",
+      "after": "environment.assertOwned();\n            if (_uiState.value.subject?.generation != capturedGeneration) return@launch\n            sendOwned(VideoEngagementEvent.Message(message))"
+    },
+    {
+      "label": "Original complete interaction usecase on existing owned transport and required analytics",
+      "before": "class VideoInteractionUseCase {",
+      "after": "internal class VideoInteractionUseCase(\n    private val ActionRepository: DesktopOriginalVideoEngagementProtocol,\n    private val AnalyticsHelper: DesktopOriginalVideoInteractionAnalytics,\n) {"
+    },
+    {
+      "label": "Original default-folder read guarded before response consumption",
+      "before": "            val response = api.getFavFolders(mid)",
+      "after": "            currentCoroutineContext().ensureActive(); assertOwned()\n            val response = api.getFavFolders(mid)\n            currentCoroutineContext().ensureActive(); assertOwned()"
+    }
+  ],
+  "scope": "Complete original ordinary information/actions and shared gesture units. Full ordinary player overlays and page assembly are next, not yet claimed.",
+  "existingReferenceOwners": [
+    "metadata honor/team",
+    "BGM discovery full subtree",
+    "profile public TripleProgressIcon",
+    "Home resolveCompactPublishTimeRowText"
+  ],
+  "actualProductAcceptance": false
+}

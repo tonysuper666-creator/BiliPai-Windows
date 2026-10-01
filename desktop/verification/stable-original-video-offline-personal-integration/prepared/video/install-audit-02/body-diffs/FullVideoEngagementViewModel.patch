@@ -1,0 +1,333 @@
+--- original-full-Engagement-class
++++ owned-full-Engagement-class
+@@ -1,13 +1,22 @@
+-class VideoEngagementViewModel(
+-    private val actions: VideoEngagementActions = DefaultVideoEngagementActions(),
+-    private val coinBalanceLoader: VideoCoinBalanceLoader = DefaultVideoCoinBalanceLoader
+-) : ViewModel() {
++internal class VideoEngagementViewModel(private val environment: DesktopOriginalVideoEngagementEnvironment) {
++    private val actions get() = environment.actions
++    private val coinBalanceLoader get() = environment.coinBalanceLoader
++    private val viewModelScope get() = environment.scope
++    private fun updateOwned(transform: (VideoEngagementUiState) -> VideoEngagementUiState) =
++        environment.commit { _uiState.update(transform) }
++    private suspend fun sendOwned(event: VideoEngagementEvent) {
++        currentCoroutineContext().ensureActive(); environment.assertOwned()
++        _events.send(_uiState.value.subject?.generation to event)
++    }
++
+     private val _uiState = MutableStateFlow(VideoEngagementUiState())
+     val uiState = _uiState.asStateFlow()
+ 
+-    private val _events = Channel<VideoEngagementEvent>(Channel.BUFFERED)
+-    val events = _events.receiveAsFlow()
+-    private var appContext: Context? = null
++    private val _events = Channel<Pair<Long?, VideoEngagementEvent>>(Channel.BUFFERED)
++    val events = _events.receiveAsFlow().mapNotNull { (generation, event) ->
++        if (environment.isOwned() && _uiState.value.subject?.generation == generation) event else null
++    }
++    private var appContext: Context? = environment.context
+     private var locallyModifiedFields: Set<VideoEngagementField> = emptySet()
+ 
+     private enum class VideoEngagementField {
+@@ -30,7 +39,7 @@
+             return
+         }
+         locallyModifiedFields = emptySet()
+-        _uiState.value = VideoEngagementUiState(
++        environment.commit { _uiState.value = VideoEngagementUiState(
+             subject = subject,
+             isLoggedIn = seed.isLoggedIn,
+             isVip = seed.isVip,
+@@ -43,11 +52,11 @@
+             favoriteCount = seed.favoriteCount,
+             isInWatchLater = seed.isInWatchLater,
+             followingMids = seed.followingMids
+-        )
++        ) }
+     }
+ 
+     fun sync(seed: VideoEngagementSeed) {
+-        _uiState.update { current ->
++        updateOwned { current ->
+             current.copy(
+                 isLoggedIn = seed.isLoggedIn,
+                 isVip = seed.isVip,
+@@ -65,18 +74,23 @@
+     }
+ 
+     fun setCoinDialogVisible(visible: Boolean) {
+-        _uiState.update { it.copy(coinDialogVisible = visible) }
++        updateOwned { it.copy(coinDialogVisible = visible) }
+     }
+ 
+     fun openCoinDialog() {
++        val capturedSubject = _uiState.value.subject
+         if (_uiState.value.coinCount >= 2) {
+             emitMessage("已投满2个硬币")
+             return
+         }
+-        _uiState.update { it.copy(coinDialogVisible = true, userCoinBalance = null) }
+-        viewModelScope.launch {
++        updateOwned { it.copy(coinDialogVisible = true, userCoinBalance = null) }
++        viewModelScope.launch {
++            currentCoroutineContext().ensureActive(); environment.assertOwned();
++
+             val balance = coinBalanceLoader.load()
+-            _uiState.update { current ->
++            currentCoroutineContext().ensureActive(); environment.assertOwned()
++            if (_uiState.value.subject?.generation != capturedSubject?.generation) return@launch
++            updateOwned { current ->
+                 if (current.coinDialogVisible) current.copy(userCoinBalance = balance) else current
+             }
+         }
+@@ -87,14 +101,17 @@
+         val targetMid = mid ?: state.subject?.ownerMid ?: return
+         val wasFollowing = currentlyFollowing ?: state.isFollowing
+         viewModelScope.launch {
++            currentCoroutineContext().ensureActive(); environment.assertOwned();
++
+             actions.toggleFollow(targetMid, wasFollowing)
+                 .onSuccess { following ->
++                    currentCoroutineContext().ensureActive(); environment.assertOwned()
+                     if (_uiState.value.subject?.generation != state.subject?.generation) return@onSuccess
+                     locallyModifiedFields = locallyModifiedFields + VideoEngagementField.FOLLOWING_MIDS
+                     if (state.subject?.ownerMid == targetMid) {
+                         locallyModifiedFields = locallyModifiedFields + VideoEngagementField.FOLLOWING
+                     }
+-                    _uiState.update { current ->
++                    updateOwned { current ->
+                         val followingMids = current.followingMids.toMutableSet().apply {
+                             if (following) add(targetMid) else remove(targetMid)
+                         }
+@@ -104,9 +121,9 @@
+                         )
+                     }
+                     emitMessage(if (following) "关注成功" else "已取消关注")
+-                    if (following) _events.send(VideoEngagementEvent.OpenFollowGroups(targetMid))
+-                }
+-                .onFailure { emitMessage(it.message ?: "操作失败") }
++                    if (following) sendOwned(VideoEngagementEvent.OpenFollowGroups(targetMid))
++                }
++                .onFailure { if (it is CancellationException) throw it; environment.assertOwned(); if (_uiState.value.subject?.generation == state.subject?.generation) emitMessage(it.message ?: "操作失败") }
+         }
+     }
+ 
+@@ -121,12 +138,15 @@
+         val targetBvid = bvid ?: state.subject?.bvid ?: return
+         val wasLiked = currentlyLiked ?: state.isLiked
+         viewModelScope.launch {
++            currentCoroutineContext().ensureActive(); environment.assertOwned();
++
+             actions.toggleLike(targetAid, wasLiked, targetBvid)
+                 .onSuccess { liked ->
++                    currentCoroutineContext().ensureActive(); environment.assertOwned()
+                     if (_uiState.value.subject?.generation != state.subject?.generation) return@onSuccess
+                     locallyModifiedFields = locallyModifiedFields + VideoEngagementField.LIKE +
+                         if (liked) setOf(VideoEngagementField.DISLIKE) else emptySet()
+-                    _uiState.update { current ->
++                    updateOwned { current ->
+                         if (current.subject?.generation != state.subject?.generation) current
+                         else current.copy(
+                             isLiked = liked,
+@@ -137,14 +157,14 @@
+                             likeBurstVisible = liked
+                         )
+                     }
+-                    onResult?.invoke(liked)
++                    environment.commit { if (_uiState.value.subject?.generation == state.subject?.generation) onResult?.invoke(liked) }
+                     val easterEggEnabled = appContext?.let(SettingsManager::isEasterEggEnabledSync) == true
+                     emitMessage(
+                         if (liked && easterEggEnabled) EasterEggs.getLikeMessage()
+                         else if (liked) "已点赞" else "已取消点赞"
+                     )
+                 }
+-                .onFailure { emitMessage(it.message ?: "操作失败") }
++                .onFailure { if (it is CancellationException) throw it; environment.assertOwned(); if (_uiState.value.subject?.generation == state.subject?.generation) emitMessage(it.message ?: "操作失败") }
+         }
+     }
+ 
+@@ -158,12 +178,15 @@
+         val targetBvid = bvid ?: state.subject?.bvid ?: return
+         val wasDisliked = currentlyDisliked ?: state.isDisliked
+         viewModelScope.launch {
++            currentCoroutineContext().ensureActive(); environment.assertOwned();
++
+             actions.toggleDislike(targetAid, wasDisliked, targetBvid)
+                 .onSuccess { disliked ->
++                    currentCoroutineContext().ensureActive(); environment.assertOwned()
+                     if (_uiState.value.subject?.generation != state.subject?.generation) return@onSuccess
+                     locallyModifiedFields = locallyModifiedFields + VideoEngagementField.DISLIKE +
+                         if (disliked) setOf(VideoEngagementField.LIKE) else emptySet()
+-                    _uiState.update { current ->
++                    updateOwned { current ->
+                         if (current.subject?.generation != state.subject?.generation) current
+                         else current.copy(
+                             isDisliked = disliked,
+@@ -178,7 +201,7 @@
+                     }
+                     emitMessage(if (disliked) "已点踩" else "已取消点踩")
+                 }
+-                .onFailure { emitMessage(it.message ?: "操作失败") }
++                .onFailure { if (it is CancellationException) throw it; environment.assertOwned(); if (_uiState.value.subject?.generation == state.subject?.generation) emitMessage(it.message ?: "操作失败") }
+         }
+     }
+ 
+@@ -186,11 +209,14 @@
+         val state = _uiState.value
+         val subject = state.subject ?: return
+         viewModelScope.launch {
++            currentCoroutineContext().ensureActive(); environment.assertOwned();
++
+             actions.toggleFavorite(subject.aid, state.isFavorited, subject.bvid)
+                 .onSuccess { favorited ->
++                    currentCoroutineContext().ensureActive(); environment.assertOwned()
+                     if (_uiState.value.subject?.generation != subject.generation) return@onSuccess
+                     locallyModifiedFields = locallyModifiedFields + VideoEngagementField.FAVORITE
+-                    _uiState.update { current ->
++                    updateOwned { current ->
+                         if (current.subject?.generation == subject.generation) {
+                             current.copy(
+                                 isFavorited = favorited,
+@@ -201,10 +227,10 @@
+                             )
+                         } else current
+                     }
+-                    _events.send(VideoEngagementEvent.InvalidateFavoriteFolders)
++                    sendOwned(VideoEngagementEvent.InvalidateFavoriteFolders)
+                     emitMessage(if (favorited) "已收藏" else "已取消收藏")
+                 }
+-                .onFailure { emitMessage(it.message ?: "收藏操作失败") }
++                .onFailure { if (it is CancellationException) throw it; environment.assertOwned(); if (_uiState.value.subject?.generation == state.subject?.generation) emitMessage(it.message ?: "收藏操作失败") }
+         }
+     }
+ 
+@@ -212,18 +238,21 @@
+         val state = _uiState.value
+         val subject = state.subject ?: return
+         viewModelScope.launch {
++            currentCoroutineContext().ensureActive(); environment.assertOwned();
++
+             actions.toggleWatchLater(subject.aid, state.isInWatchLater, subject.bvid)
+                 .onSuccess { inWatchLater ->
++                    currentCoroutineContext().ensureActive(); environment.assertOwned()
+                     if (_uiState.value.subject?.generation != subject.generation) return@onSuccess
+                     locallyModifiedFields = locallyModifiedFields + VideoEngagementField.WATCH_LATER
+-                    _uiState.update { current ->
++                    updateOwned { current ->
+                         if (current.subject?.generation == subject.generation) {
+                             current.copy(isInWatchLater = inWatchLater)
+                         } else current
+                     }
+                     emitMessage(if (inWatchLater) "已添加到稍后再看" else "已从稍后再看移除")
+                 }
+-                .onFailure { emitMessage(it.message ?: "操作失败") }
++                .onFailure { if (it is CancellationException) throw it; environment.assertOwned(); if (_uiState.value.subject?.generation == state.subject?.generation) emitMessage(it.message ?: "操作失败") }
+         }
+     }
+ 
+@@ -232,12 +261,15 @@
+         val subject = state.subject ?: return
+         setCoinDialogVisible(false)
+         viewModelScope.launch {
++            currentCoroutineContext().ensureActive(); environment.assertOwned();
++
+             actions.doCoin(subject.aid, count, alsoLike, subject.bvid)
+                 .onSuccess {
++                    currentCoroutineContext().ensureActive(); environment.assertOwned()
+                     if (_uiState.value.subject?.generation != subject.generation) return@onSuccess
+                     locallyModifiedFields = locallyModifiedFields + VideoEngagementField.COIN +
+                         if (alsoLike) setOf(VideoEngagementField.LIKE, VideoEngagementField.DISLIKE) else emptySet()
+-                    _uiState.update { current ->
++                    updateOwned { current ->
+                         if (current.subject?.generation != subject.generation) current
+                         else current.copy(
+                             coinCount = minOf(current.coinCount + count, 2),
+@@ -248,7 +280,7 @@
+                     val easterEggEnabled = appContext?.let(SettingsManager::isEasterEggEnabledSync) == true
+                     emitMessage(if (easterEggEnabled) EasterEggs.getCoinMessage() else "投币成功")
+                 }
+-                .onFailure { emitMessage(it.message ?: "投币失败") }
++                .onFailure { if (it is CancellationException) throw it; environment.assertOwned(); if (_uiState.value.subject?.generation == state.subject?.generation) emitMessage(it.message ?: "投币失败") }
+         }
+     }
+ 
+@@ -264,9 +296,12 @@
+         val targetAid = aid ?: state.subject?.aid ?: return
+         val targetBvid = bvid ?: state.subject?.bvid ?: return
+         viewModelScope.launch {
++            currentCoroutineContext().ensureActive(); environment.assertOwned();
++
+             emitMessage("正在三连")
+             actions.doTripleAction(targetAid)
+                 .onSuccess { result ->
++                    currentCoroutineContext().ensureActive(); environment.assertOwned()
+                     if (_uiState.value.subject?.generation != state.subject?.generation) return@onSuccess
+                     val visual = resolveTripleActionVisualState(
+                         currentLiked = currentLiked ?: state.isLiked,
+@@ -277,7 +312,7 @@
+                         coinFailureMessage = result.coinMessage,
+                         favoriteSuccess = result.favoriteSuccess
+                     )
+-                    _uiState.update { current ->
++                    updateOwned { current ->
+                         if (current.subject?.generation != state.subject?.generation) current
+                         else current.copy(
+                             isLiked = visual.isLiked,
+@@ -305,9 +340,9 @@
+                         if (result.favoriteSuccess) add(VideoEngagementField.FAVORITE)
+                     }
+                     if (result.favoriteSuccess) {
+-                        _events.send(VideoEngagementEvent.InvalidateFavoriteFolders)
+-                    }
+-                    onResult?.invoke(result)
++                        sendOwned(VideoEngagementEvent.InvalidateFavoriteFolders)
++                    }
++                    environment.commit { if (_uiState.value.subject?.generation == state.subject?.generation) onResult?.invoke(result) }
+                     emitMessage(
+                         resolveTripleActionFeedbackMessage(
+                             result.likeSuccess,
+@@ -320,25 +355,25 @@
+                     if (result.allSuccess && context != null && SettingsManager.getTripleJumpEnabled(context).first()) {
+                         delay(2_000L)
+                         if (_uiState.value.subject?.generation == state.subject?.generation) {
+-                            _events.send(VideoEngagementEvent.LoadVideo("BV1JsK5eyEuB"))
++                            sendOwned(VideoEngagementEvent.LoadVideo("BV1JsK5eyEuB"))
+                         }
+                     }
+                 }
+-                .onFailure { emitMessage(it.message ?: "三连失败") }
++                .onFailure { if (it is CancellationException) throw it; environment.assertOwned(); if (_uiState.value.subject?.generation == state.subject?.generation) emitMessage(it.message ?: "三连失败") }
+         }
+     }
+ 
+     fun dismissLikeBurst() {
+-        _uiState.update { it.copy(likeBurstVisible = false) }
++        updateOwned { it.copy(likeBurstVisible = false) }
+     }
+ 
+     fun dismissTripleCelebration() {
+-        _uiState.update { it.copy(tripleCelebrationVisible = false) }
++        updateOwned { it.copy(tripleCelebrationVisible = false) }
+     }
+ 
+     fun applyFavoriteFolderResult(isFavorited: Boolean) {
+         locallyModifiedFields = locallyModifiedFields + VideoEngagementField.FAVORITE
+-        _uiState.update { current ->
++        updateOwned { current ->
+             current.copy(
+                 isFavorited = isFavorited,
+                 favoriteCount = (
+@@ -350,7 +385,11 @@
+     }
+ 
+     internal fun emitMessage(message: String) {
+-        viewModelScope.launch { _events.send(VideoEngagementEvent.Message(message)) }
++        val capturedGeneration = _uiState.value.subject?.generation
++        viewModelScope.launch {
++            currentCoroutineContext().ensureActive(); environment.assertOwned();
++            if (_uiState.value.subject?.generation != capturedGeneration) return@launch
++            sendOwned(VideoEngagementEvent.Message(message)) }
+     }
+ }
+ 

@@ -1,0 +1,5 @@
+Exception in thread "main" java.lang.IllegalStateException: Full original task/native owner did not load
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.waitFor(OfflineNativeFixture.kt:67)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.access$waitFor(OfflineNativeFixture.kt:1)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.run(OfflineNativeFixture.kt:291)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.main(OfflineNativeFixture.kt:374)

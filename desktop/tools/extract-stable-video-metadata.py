@@ -28,6 +28,8 @@ def generate(repo,output):
     bodies=[]
     for name in ['VideoDetailBadgeChip','VideoArgueMsgRow','VideoHonorChip','CreatorTeamSection','CreatorTeamMemberChip']:
         body=media.function(original,name,parser)
+        if name in ('VideoDetailBadgeChip','VideoArgueMsgRow','VideoHonorChip'):
+            body=body.replace('private fun '+name,'internal fun '+name,1)
         if name=='CreatorTeamSection':
             assert body.count('com.android.purebilibili.data.repository.ActionRepository')==3
             body=body.replace('com.android.purebilibili.data.repository.ActionRepository','ActionRepository')

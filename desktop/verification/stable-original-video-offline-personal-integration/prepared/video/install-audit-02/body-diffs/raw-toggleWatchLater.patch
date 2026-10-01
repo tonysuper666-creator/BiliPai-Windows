@@ -1,0 +1,36 @@
+--- original:toggleWatchLater
++++ owned:toggleWatchLater
+@@ -1,7 +1,8 @@
+     suspend fun toggleWatchLater(aid: Long, add: Boolean): Result<Boolean> {
+         return withContext(Dispatchers.IO) {
++            currentCoroutineContext().ensureActive(); assertOwned()
+             try {
+-                val csrf = TokenManager.csrfCache ?: ""
++                val csrf = readCsrf() ?: ""
+                 if (csrf.isEmpty()) {
+                     return@withContext Result.failure(Exception("请先登录"))
+                 }
+@@ -12,8 +13,9 @@
+                     api.deleteFromWatchLater(aid = aid, csrf = csrf)
+                 }
+                 
+-                com.android.purebilibili.core.util.Logger.d("ActionRepository", " toggleWatchLater: aid=$aid, add=$add, code=${response.code}")
++                Logger.d("ActionRepository", " toggleWatchLater: aid=$aid, add=$add, code=${response.code}")
+                 
++                currentCoroutineContext().ensureActive(); assertOwned()
+                 when (response.code) {
+                     0 -> {
+                         WatchLaterRefreshBus.notifyChanged()
+@@ -23,8 +25,11 @@
+                     90003 -> Result.failure(Exception("视频已被删除"))
+                     else -> Result.failure(Exception(response.message.ifEmpty { "操作失败: ${response.code}" }))
+                 }
++            } catch (cancelled: CancellationException) {
++                throw cancelled
+             } catch (e: Exception) {
+-                android.util.Log.e("ActionRepository", "toggleWatchLater failed", e)
++                assertOwned()
++                Logger.e("ActionRepository", "toggleWatchLater failed", e)
+                 Result.failure(e)
+             }
+         }

@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "sources": 34,
+  "exitCode": 0,
+  "actual47RuntimeEntries": 97,
+  "productAcceptance": false,
+  "candidateJarSha256Bytes": "6539a0a1dad48acfaf5ee41ac259a0cd99ea571b4f52576d382bb2227cef7591",
+  "explicitExistingOverride": [
+    "Metadata renderer three visibility adjustments only; original bodies preserved",
+    "Actual47 Operations with only the new video member fragment; same original transport/session authority"
+  ]
+}

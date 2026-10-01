@@ -86,6 +86,7 @@ internal class DesktopReadyOriginalRootServices(
     val dismissNowPlayingBar: () -> Unit,
     val nowPlayingVisibility: () -> DesktopOriginalNowPlayingVisibility,
     val ffprobe: Path,
+    val library: com.bilipai.desktop.DesktopLibrary,
 )
 
 /** Shutdown order is captured entry/route admission first, drains outside Store locks, then
@@ -97,12 +98,18 @@ internal class DesktopReadyOriginalRootHandle(
     val palette: WallpaperPaletteStore,
 ) {
     private val closed = AtomicBoolean(false)
+    private val chromeRefresh = AtomicReference<(() -> Unit)?>(null)
+    fun installCurrentRootChrome(refresh: () -> Unit) { if (isActive()) chromeRefresh.set(refresh) }
+    fun refreshCurrentRootChrome() { if (isActive()) chromeRefresh.get()?.invoke() }
     val route = AtomicReference<DesktopOriginalRootRouteAssembly?>()
+    val personalLists = AtomicReference<DesktopPersonalListsRoot?>()
     var imageTrim: DesktopApplicationImageCacheTrim? = null
     fun isActive() = !closed.get() && retainer.isActive() && navigation.owns()
     suspend fun closeAndJoin() = withContext(NonCancellable) {
         if (!closed.compareAndSet(false, true)) return@withContext
+        chromeRefresh.set(null)
         route.getAndSet(null)?.close()
+        personalLists.getAndSet(null)?.closeAndJoin()
         retainer.closeAndJoin()
         imageTrim?.close(); imageTrim = null
         palette.close(); preferencePlatform.close(); navigation.close()
@@ -116,7 +123,7 @@ internal class DesktopReadyOriginalRootHandle(
     services: DesktopReadyOriginalRootServices,
     handleReference: AtomicReference<DesktopReadyOriginalRootHandle?>,
     modifier: Modifier,
-    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean) -> Unit,
+    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean, DesktopPersonalListsRoot) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val applicationImages = LocalDesktopApplicationImageLoader.current
@@ -182,6 +189,7 @@ internal class DesktopReadyOriginalRootHandle(
     val systemWallpaperChrome = remember(navigation, resources) { DesktopWindowsProfileChrome(services.actualWindow,
         resources.clientPolicy, { themeColor.luminance() > .5f }, { failure ->
             services.diagnostics?.record("W", "RootChrome", failure.javaClass.simpleName) }) }
+    SideEffect { handle.installCurrentRootChrome(systemWallpaperChrome::refreshCurrentRootTheme) }
     val navPreferences = remember(services.runtime.store, handle) { DesktopOriginalRootNavigationPreferences(
         services.runtime.store, scope, handle::isActive, services.imageLifetime::withCommit) }
     var settings by remember(services.runtime.store, handle) { mutableStateOf<DesktopOriginalHomePreferences?>(null) }
@@ -264,6 +272,13 @@ internal class DesktopReadyOriginalRootHandle(
             { prefs.navigation.value.orderedVisibleTabIds.map { it.lowercase() }.toSet() }) }
         SideEffect { handle.route.set(routes) }
         DisposableEffect(routes) { onDispose { handle.route.compareAndSet(routes, null); routes.close() } }
+        val personalLists = remember(root, services.library) { DesktopPersonalListsRoot(root.entry.gate,
+            services.repository, services.runtime.store, services.library,
+            services.community.searchPreferences::isPrivacyModeEnabledSync, services.feedback, haze) }
+        SideEffect { handle.personalLists.set(personalLists); personalLists.prune(physicalStack.toList()) }
+        DisposableEffect(personalLists) { onDispose {
+            handle.personalLists.compareAndSet(personalLists, null); personalLists.close()
+        } }
         val profile = remember(root, windowBinding) { windowBinding.profile(root, services.profileAccounts(root.entry.gate)) }
         var activeDestination by remember(root) { mutableStateOf<BiliPaiNavKey>(BiliPaiNavKey.Home) }
         var dynamicUnreadCount by remember(root) { mutableIntStateOf(0) }
@@ -325,7 +340,7 @@ internal class DesktopReadyOriginalRootHandle(
             { query -> routes.push(BiliPaiNavKey.Search(query)) },
             { target -> dispatchDesktopReadyNativeTarget(root, routes, target) },
             { searchLaunch = 0 }, { scope.launch { prefs.setTabletUseSidebar(!prefs.navigation.value.tabletUseSidebar) } },
-            services.historySearch, services.favoriteSearch, services.watchLaterSearch)
+            personalLists.historySearchChannel, services.favoriteSearch, services.watchLaterSearch)
         val chromeBindings = DesktopOriginalRootChromeBindings(owner, navPreferences, scope, actions, audio,
             services.nowPlayingVisibility, audioNavigation, { 0.dp }, { dynamicUnreadCount }, { searchLaunch },
             { prefs.homeSettings.value.cardTransitionEnabled }, sidebarAccountSwitcher, { sourceReady = it })
@@ -364,7 +379,8 @@ internal class DesktopReadyOriginalRootHandle(
                     resolveVideoCardTransitionExposure(clock.phase,
                         clock.settleState == VideoCardTransitionSettleState.InteractiveSeek,
                         clock.settleState == VideoCardTransitionSettleState.CancelRestore || clock.gestureRestoreInProgress)) },
-                Modifier.fillMaxSize(), chromeBindings, { active -> activeDestination = active; services.activeDestinationChanged(active) }, saveable, leaf)
+                Modifier.fillMaxSize(), chromeBindings, { active -> activeDestination = active; services.activeDestinationChanged(active) }, saveable,
+                { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists) })
         }
         }
     }

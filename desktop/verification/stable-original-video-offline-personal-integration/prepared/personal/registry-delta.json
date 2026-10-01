@@ -1,0 +1,34 @@
+{
+  "newSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchArticleNavigationPolicy.kt",
+      "sha256": "98daed344df34c2f5a7ec69050a0959feec821445d63b7edbdd19b812ccb1495",
+      "mode": "policy-extract",
+      "features": [
+        "stable-personal-history-liked"
+      ]
+    }
+  ],
+  "mergeFeatures": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "requiredExistingSha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "preserveExistingMode": true,
+      "addFeatures": [
+        "stable-personal-history-liked"
+      ]
+    }
+  ],
+  "referenceOnly": [
+    "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+    "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/LikedVideosRepository.kt",
+    "app/src/main/java/com/android/purebilibili/feature/list/HistoryNavigationPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/refresh/HistoryRefreshBus.kt",
+    "app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt",
+    "app/src/main/java/com/android/purebilibili/data/model/response/HistoryModels.kt",
+    "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"
+  ],
+  "noWholeManifestReplacement": true
+}

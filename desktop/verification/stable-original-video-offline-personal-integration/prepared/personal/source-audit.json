@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalIdentityPins": 11,
+  "sourceSelectionsByteIdenticalToProductionReplay": 2,
+  "actual48CpEntries": 97,
+  "immutableAllCpShasVerified": true,
+  "newCoreClasses": 26,
+  "actualProductFqnOverlap": [],
+  "consumerPatchCheck": 0,
+  "actual48RegistryBaseline": 939,
+  "currentObservedRegistry": 955,
+  "currentRegistryShaBytes": "7a6f3ceb34775b3c4a1865d730c30009b9caadce9763daaf6693d3797de2a1ea",
+  "originalUiAndVmProducer": "existing extract-upstream-favorites.py; no new CommonList/VM/repository outputs",
+  "privateFunctionCollisionScope": "core new namespace and explicit Root-family compile03; no claim newly installed whole-module audit"
+}

@@ -1,0 +1,12 @@
+{
+  "path": "desktop/tools/extract-stable-video-metadata.py",
+  "baseSha256LF": "aa2d56bc054555f91543c287af2f6ac49fda7d1568020c35310aac8f14862887",
+  "hunks": [
+    {
+      "before": "        body=media.function(original,name,parser)\n",
+      "after": "        body=media.function(original,name,parser)\n        if name in ('VideoDetailBadgeChip','VideoArgueMsgRow','VideoHonorChip'):\n            body=body.replace('private fun '+name,'internal fun '+name,1)\n",
+      "expectedCount": 1
+    }
+  ],
+  "bodiesUnchanged": true
+}

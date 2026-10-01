@@ -1,0 +1,78 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+    "outputs": [
+      {
+        "path": "prepared/selected/com/bilipai/desktop/ui/DesktopOriginalHistoryNavigation.kt",
+        "sha256LfUtf8": "a4da54f99e8c8fdb3d12e5649a3b27cc78e2dcdf8cd7665856a967d51d950c25"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchArticleNavigationPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "98daed344df34c2f5a7ec69050a0959feec821445d63b7edbdd19b812ccb1495",
+    "outputs": [
+      {
+        "path": "prepared/selected/com/bilipai/desktop/ui/DesktopOriginalHistoryArticlePolicy.kt",
+        "sha256LfUtf8": "bfac651358f74cd9f5dc341bcc6cff81b064a85c53f79f2bbdd98d5d3f560172"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "fa688e0dcd59efc702bf71c1bee5742c7e3a03297ed70a10babfa355265a7827",
+    "mode": "reference: actual installed sole producer; no new output"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "3b7f9f11283ced21a58739277ec270e086991d630c2af24c3c33d770d87ee4c4",
+    "mode": "reference: actual installed sole producer; no new output"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "4081b04ee97b4edab58507811d43b637afb78a04fd1b6f94ffa6697f72905c4a",
+    "mode": "reference: actual installed sole producer; no new output"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/LikedVideosRepository.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "4295264225343d4cb82eca9df937c738855dabe48b80d2632106dfb27aa44d2c",
+    "mode": "reference: actual installed sole producer; no new output"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/list/HistoryNavigationPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "088f7ad8fe4a0095d34ff992e42f0bc9369ba7eb63b1faaa28bd56d9cefeff97",
+    "mode": "reference: actual installed sole producer; no new output"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/refresh/HistoryRefreshBus.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "d18a6866aa051cf7f2681e6266a88273ff1d2dfefd958fccfe0966c3aacfb896",
+    "mode": "reference: actual installed sole producer; no new output"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "67deacd84bee9f8803b2190e079d5486d2593bf26bc29d1a114ae259273fe87d",
+    "mode": "reference: actual installed sole producer; no new output"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/model/response/HistoryModels.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "2448b417671765f6abb9ba9caed1459740da872c3b67004f66616bc27f34933d",
+    "mode": "reference: actual installed sole producer; no new output"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+    "mode": "reference: actual installed sole producer; no new output"
+  }
+]

@@ -1,0 +1,1054 @@
+{
+  "passed": true,
+  "actual47MainKotlinSha256Bytes": "6c67aade3e1862046237409101cff747c0f0913f5a868ed10b5955e3410dda2a",
+  "candidateJarSha256Bytes": "5beaaedff287e7ce61161be31fd01c40583fd59ee783352963819c9c2c8d2a31",
+  "candidateClasses": 407,
+  "actualClasses": 12005,
+  "declaredExistingOverrideFamilies": [
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations",
+    "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataKt"
+  ],
+  "existingClassOverlapCount": 204,
+  "existingMethodIntersectionCount": 2,
+  "unexpectedClasses": [],
+  "unexpectedTopLevelMethods": [],
+  "illegalNonLocalReturnClasses": [],
+  "classOverlaps": [
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations.class",
+      "candidateSha256Bytes": "80d3ecc39e1102cf2d4cdcd14105205eca6f62b70b75383848d1d1270d0ec8d6",
+      "actualSha256Bytes": "6602290180468e6e0f99055c330f960c801c77c9ec202f87f23ae6a03c383a16"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$guardedClient$lambda$0$$inlined$-addNetworkInterceptor$1.class",
+      "candidateSha256Bytes": "05de2a05890cfa1ac4a7443ba4e3842f0f7398906f49c2704ce4701b252563c2",
+      "actualSha256Bytes": "05de2a05890cfa1ac4a7443ba4e3842f0f7398906f49c2704ce4701b252563c2"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$read$2.class",
+      "candidateSha256Bytes": "29c7ac0ed7b89869b0fc808112353e9567c054311e31bf23422707d0ee6839ea",
+      "actualSha256Bytes": "ccce36f145afbf84de5a4813c9584b7a8723c48b073f366a21e6ffc4c5957cb3"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$mutate$2$1.class",
+      "candidateSha256Bytes": "8d00dcd7f78426d49cd58d94715b89769316436c30f36658b3fd9136af10f77c",
+      "actualSha256Bytes": "8d00dcd7f78426d49cd58d94715b89769316436c30f36658b3fd9136af10f77c"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$mutate$1.class",
+      "candidateSha256Bytes": "a335685bde7541e61650b79fd1040d8da704a82ee93de13c5ff482864988614c",
+      "actualSha256Bytes": "c242e3a8025a186cfe8a3ee358341a25725164580b6408a9a326d48768f2bf87"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$result$1.class",
+      "candidateSha256Bytes": "f23aee056c65bf98cdc060f5109825301f88821ad24d4fa9fb2d5153d5aca409",
+      "actualSha256Bytes": "f23aee056c65bf98cdc060f5109825301f88821ad24d4fa9fb2d5153d5aca409"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$2.class",
+      "candidateSha256Bytes": "c9be9783520eccda35e6309433f276b7005c7bd746d4c4f0a05643837e6e8857",
+      "actualSha256Bytes": "c9be9783520eccda35e6309433f276b7005c7bd746d4c4f0a05643837e6e8857"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$2$1.class",
+      "candidateSha256Bytes": "39b3fddafe15f3fc5781aa32bbbb6af1456ff6181c9d44d3122bbe898603f5c5",
+      "actualSha256Bytes": "39b3fddafe15f3fc5781aa32bbbb6af1456ff6181c9d44d3122bbe898603f5c5"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$1.class",
+      "candidateSha256Bytes": "e17533fbe4fd74e5fd0487f5bda6b604de46b5f847440bc238533e037814c65b",
+      "actualSha256Bytes": "e17533fbe4fd74e5fd0487f5bda6b604de46b5f847440bc238533e037814c65b"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$2.class",
+      "candidateSha256Bytes": "7a2b4ce253ff0dcb23e35113547ad9cd08f8977d5efd96ae4da46be804964efb",
+      "actualSha256Bytes": "7a2b4ce253ff0dcb23e35113547ad9cd08f8977d5efd96ae4da46be804964efb"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$2$1.class",
+      "candidateSha256Bytes": "572eec5598dddcbb2c3b73f6ddf6715d201e63d3cca6268d40ac8a46f3286536",
+      "actualSha256Bytes": "572eec5598dddcbb2c3b73f6ddf6715d201e63d3cca6268d40ac8a46f3286536"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$1.class",
+      "candidateSha256Bytes": "70b29ab3f7aa39380edc960cdf274ebce2dbb4b02e75655c492d70c783219be5",
+      "actualSha256Bytes": "70b29ab3f7aa39380edc960cdf274ebce2dbb4b02e75655c492d70c783219be5"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$2.class",
+      "candidateSha256Bytes": "4655695e1d486b30d40851be93e69f9af38ebb0d9159ca760a833ce1f3c9d0e1",
+      "actualSha256Bytes": "4655695e1d486b30d40851be93e69f9af38ebb0d9159ca760a833ce1f3c9d0e1"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$2$1.class",
+      "candidateSha256Bytes": "da8cd1489076f29eb8431bc60f9800c57c0c795818f84aee348edc19559e40f3",
+      "actualSha256Bytes": "da8cd1489076f29eb8431bc60f9800c57c0c795818f84aee348edc19559e40f3"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$1.class",
+      "candidateSha256Bytes": "8bc9226b1ddfcab483cf39e593521a896528bbbe1bba37a07a8cd1993b61e09e",
+      "actualSha256Bytes": "8bc9226b1ddfcab483cf39e593521a896528bbbe1bba37a07a8cd1993b61e09e"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$2.class",
+      "candidateSha256Bytes": "968731d1b74687edc38ede2979a52dad4d92f643d09747c0722ad2d5e3361250",
+      "actualSha256Bytes": "968731d1b74687edc38ede2979a52dad4d92f643d09747c0722ad2d5e3361250"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$2$1.class",
+      "candidateSha256Bytes": "509f7a498145c7185fcbb6fd890febf1d529b6831374890749e27b3cdbf3ef7a",
+      "actualSha256Bytes": "509f7a498145c7185fcbb6fd890febf1d529b6831374890749e27b3cdbf3ef7a"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$1.class",
+      "candidateSha256Bytes": "b316910c82067685be60a1a09d7981e47450e2543bd7cbb391a71748d55ce02b",
+      "actualSha256Bytes": "b316910c82067685be60a1a09d7981e47450e2543bd7cbb391a71748d55ce02b"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$fetchMessageUserInfo$2.class",
+      "candidateSha256Bytes": "d54888cef57f305b281921f7496382aba1e0fd4e4989deba001169860c0a393c",
+      "actualSha256Bytes": "d54888cef57f305b281921f7496382aba1e0fd4e4989deba001169860c0a393c"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$2.class",
+      "candidateSha256Bytes": "3c79e236ed3ed7a561726d12f0cb8dad8b537e1d4319df0da3f7858546cc1063",
+      "actualSha256Bytes": "3c79e236ed3ed7a561726d12f0cb8dad8b537e1d4319df0da3f7858546cc1063"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$2$1.class",
+      "candidateSha256Bytes": "35ac1ddca930747ffdbde1fb90d95d92afe7420e4c82c54a47ec54f1aba391cc",
+      "actualSha256Bytes": "35ac1ddca930747ffdbde1fb90d95d92afe7420e4c82c54a47ec54f1aba391cc"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$1.class",
+      "candidateSha256Bytes": "da939355ec13f49a3a902d7afbfcae3bda6fad3b2ec0bd67e96bc3249aaced8a",
+      "actualSha256Bytes": "da939355ec13f49a3a902d7afbfcae3bda6fad3b2ec0bd67e96bc3249aaced8a"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$2.class",
+      "candidateSha256Bytes": "c8638a59621f0941ba4a6d3968e2536deb34dcd14352bfcc76fdc680c02e7413",
+      "actualSha256Bytes": "c8638a59621f0941ba4a6d3968e2536deb34dcd14352bfcc76fdc680c02e7413"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$2$1.class",
+      "candidateSha256Bytes": "1aa7af6dce11ea83e63d11aaf9d9881d7c5e38ffe0d6def84951b080a1c16a92",
+      "actualSha256Bytes": "1aa7af6dce11ea83e63d11aaf9d9881d7c5e38ffe0d6def84951b080a1c16a92"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$1.class",
+      "candidateSha256Bytes": "ffb0c592eedd0d6b1e01e656377f4445a4b57056f67bf7683f425a1b6ba4e188",
+      "actualSha256Bytes": "ffb0c592eedd0d6b1e01e656377f4445a4b57056f67bf7683f425a1b6ba4e188"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$addWatchLater$2.class",
+      "candidateSha256Bytes": "721a2a08d21464812007b1b00d4587adf30042ffca4988c4b8896e75e2c4febc",
+      "actualSha256Bytes": "721a2a08d21464812007b1b00d4587adf30042ffca4988c4b8896e75e2c4febc"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$postSourceComment$2.class",
+      "candidateSha256Bytes": "db3e753ddf223883b2af8afd16aee8ada248b75b1cefbb7fc9e80a7fe6fdce3d",
+      "actualSha256Bytes": "db3e753ddf223883b2af8afd16aee8ada248b75b1cefbb7fc9e80a7fe6fdce3d"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$postSourceComment$1.class",
+      "candidateSha256Bytes": "c92582706c0ea3f09396b721c25b96696dbb1e34ae48cc6d55264e6fc87a610f",
+      "actualSha256Bytes": "c92582706c0ea3f09396b721c25b96696dbb1e34ae48cc6d55264e6fc87a610f"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$setLike$2.class",
+      "candidateSha256Bytes": "bf6a3c3ea29bf7595bfa39177ce3c54b9e7688d36f62b8a332c4a36a1ac31ea9",
+      "actualSha256Bytes": "bf6a3c3ea29bf7595bfa39177ce3c54b9e7688d36f62b8a332c4a36a1ac31ea9"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$repost$2.class",
+      "candidateSha256Bytes": "4af55b9bb7fb6dfd255e90a12e04824370891f300cbadca78e14ede9a74418c1",
+      "actualSha256Bytes": "4af55b9bb7fb6dfd255e90a12e04824370891f300cbadca78e14ede9a74418c1"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$2.class",
+      "candidateSha256Bytes": "a86a6fb24e90a0e80ae49ff2fb0f7bbd1bd6d158bfb49b5ed5ff5b433dbc4188",
+      "actualSha256Bytes": "a86a6fb24e90a0e80ae49ff2fb0f7bbd1bd6d158bfb49b5ed5ff5b433dbc4188"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$2$1.class",
+      "candidateSha256Bytes": "7c7b2a18e4137d2ec692b0c72be35c5f9cc0aae192ab4661fae23e6bf94e1aa9",
+      "actualSha256Bytes": "7c7b2a18e4137d2ec692b0c72be35c5f9cc0aae192ab4661fae23e6bf94e1aa9"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$1.class",
+      "candidateSha256Bytes": "12a0220914cf3ea743a752df6305e552d02b875f45595e9253e146914a754246",
+      "actualSha256Bytes": "12a0220914cf3ea743a752df6305e552d02b875f45595e9253e146914a754246"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$delete$2.class",
+      "candidateSha256Bytes": "c579924cb35a1c2c86dec0079dcff62513371760bf72926df07c88cf403a484c",
+      "actualSha256Bytes": "c579924cb35a1c2c86dec0079dcff62513371760bf72926df07c88cf403a484c"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$setTop$2.class",
+      "candidateSha256Bytes": "d47f1280e3ff344653ddddcbaf5cb2577253beae62ed54abc1e43d74f19479ea",
+      "actualSha256Bytes": "d47f1280e3ff344653ddddcbaf5cb2577253beae62ed54abc1e43d74f19479ea"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$setVisibility$2.class",
+      "candidateSha256Bytes": "77c4e007fac9993a21ed74a83dacee9b7f1eed39aac326e153cc6a84e10d70dd",
+      "actualSha256Bytes": "77c4e007fac9993a21ed74a83dacee9b7f1eed39aac326e153cc6a84e10d70dd"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$loadReplyInteraction$2.class",
+      "candidateSha256Bytes": "59bc1598d66b0e345000c321d4f9adc2729a1febf57aa4a5a877a8f53c6fe16f",
+      "actualSha256Bytes": "59bc1598d66b0e345000c321d4f9adc2729a1febf57aa4a5a877a8f53c6fe16f"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$modifyReplySubject$2.class",
+      "candidateSha256Bytes": "e42a88961d0461a412f4caa669cfdad557969439a5e50bdde80206725999e7e2",
+      "actualSha256Bytes": "e42a88961d0461a412f4caa669cfdad557969439a5e50bdde80206725999e7e2"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$report$2.class",
+      "candidateSha256Bytes": "1f02c49faf78649baf85a8a85c46fff19c30147137cbbe0f5560183c63272d9c",
+      "actualSha256Bytes": "1f02c49faf78649baf85a8a85c46fff19c30147137cbbe0f5560183c63272d9c"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$checkCreatorFollowStatus$2.class",
+      "candidateSha256Bytes": "6cfd746db1e56587d5907e1844a82e4a666987cf32fa0f2bc76363edcfff31ac",
+      "actualSha256Bytes": "6cfd746db1e56587d5907e1844a82e4a666987cf32fa0f2bc76363edcfff31ac"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$checkCreatorFollowStatus$2$1.class",
+      "candidateSha256Bytes": "e4c101087a1efacaf8d9fa6697b64ff3d02e706deaf74c2467501be6468df4c9",
+      "actualSha256Bytes": "e4c101087a1efacaf8d9fa6697b64ff3d02e706deaf74c2467501be6468df4c9"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$checkCreatorFollowStatus$1.class",
+      "candidateSha256Bytes": "373f16ca04541afe1a3950c2dbfb2ce99fe6ad444a382f67179f50eb32214a1c",
+      "actualSha256Bytes": "373f16ca04541afe1a3950c2dbfb2ce99fe6ad444a382f67179f50eb32214a1c"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$setCollectionSubscription$2.class",
+      "candidateSha256Bytes": "891c6e3f4750c05ac28ebe699d949ccdf2fbacbd7d0faeb7550f5fada3963972",
+      "actualSha256Bytes": "891c6e3f4750c05ac28ebe699d949ccdf2fbacbd7d0faeb7550f5fada3963972"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$setCollectionSubscription$2$1.class",
+      "candidateSha256Bytes": "6db2365ef0e2a084d59c1af55667bd57df51e4b5ad2c966a5f044b6f9549287b",
+      "actualSha256Bytes": "6db2365ef0e2a084d59c1af55667bd57df51e4b5ad2c966a5f044b6f9549287b"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$setCollectionSubscription$1.class",
+      "candidateSha256Bytes": "cf84cbbc109810f1fdcf319cdcefdfa656e29effdb2e4896db19b5e3fc95d2f1",
+      "actualSha256Bytes": "cf84cbbc109810f1fdcf319cdcefdfa656e29effdb2e4896db19b5e3fc95d2f1"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$checkCollectionSubscriptionStatus$2.class",
+      "candidateSha256Bytes": "7c2d326e4578c9ee41934373205f06cfaab7748a77ef19c6a85125a8cc614d9b",
+      "actualSha256Bytes": "7c2d326e4578c9ee41934373205f06cfaab7748a77ef19c6a85125a8cc614d9b"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$checkCollectionSubscriptionStatus$2$1.class",
+      "candidateSha256Bytes": "5dbcd3de57e0bfd7810f1e87a35e7afec499db6b7358faff379cda0e15dae5bd",
+      "actualSha256Bytes": "5dbcd3de57e0bfd7810f1e87a35e7afec499db6b7358faff379cda0e15dae5bd"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$checkCollectionSubscriptionStatus$1.class",
+      "candidateSha256Bytes": "da8bb748555fd1d332ceac8aac427a392557e185bf361874483b22b1ee2d337f",
+      "actualSha256Bytes": "da8bb748555fd1d332ceac8aac427a392557e185bf361874483b22b1ee2d337f"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$isPubliclyVisible$2.class",
+      "candidateSha256Bytes": "1919506e623b57d29de29205fd93684f53dc155ea6d0635fb1442bef60f29fd2",
+      "actualSha256Bytes": "1919506e623b57d29de29205fd93684f53dc155ea6d0635fb1442bef60f29fd2"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getPublishedDynamicDetail$2.class",
+      "candidateSha256Bytes": "0937cde9a344107322d6e03a0e63fb1661f767b8912ce11db39f4e828c6d047b",
+      "actualSha256Bytes": "0937cde9a344107322d6e03a0e63fb1661f767b8912ce11db39f4e828c6d047b"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDanmakuThumbupState$2.class",
+      "candidateSha256Bytes": "c17a79bdfbda48f6feeb3e2fc10528a3b76f382908f1a6deab17836fa4b370a5",
+      "actualSha256Bytes": "c17a79bdfbda48f6feeb3e2fc10528a3b76f382908f1a6deab17836fa4b370a5"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDanmakuThumbupState$2$1.class",
+      "candidateSha256Bytes": "d58071c16de106a606abca4ca4afd26a9b70fdd7d1d462a900672ffdce6d57eb",
+      "actualSha256Bytes": "d58071c16de106a606abca4ca4afd26a9b70fdd7d1d462a900672ffdce6d57eb"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDanmakuThumbupState$1.class",
+      "candidateSha256Bytes": "2f2f505aa02092392e6d901ee38dfbb25abb046930ffc058866b3dfbd8183a82",
+      "actualSha256Bytes": "2f2f505aa02092392e6d901ee38dfbb25abb046930ffc058866b3dfbd8183a82"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$recallDanmaku$2.class",
+      "candidateSha256Bytes": "a921ceac89457779907910d017d743f4437152e1cc7cba7d3775240c49a115b7",
+      "actualSha256Bytes": "a921ceac89457779907910d017d743f4437152e1cc7cba7d3775240c49a115b7"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$recallDanmaku$2$1.class",
+      "candidateSha256Bytes": "5eab01c7ecada4e6bc45b7d50d8d288ae70005757ff54b5d7347c2366f4c121a",
+      "actualSha256Bytes": "5eab01c7ecada4e6bc45b7d50d8d288ae70005757ff54b5d7347c2366f4c121a"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$recallDanmaku$1.class",
+      "candidateSha256Bytes": "95256418c188886617985834c8c37c1bd32c21a131ca152f404df55a4593d506",
+      "actualSha256Bytes": "95256418c188886617985834c8c37c1bd32c21a131ca152f404df55a4593d506"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$likeDanmaku$2.class",
+      "candidateSha256Bytes": "9afa92615b8f34f86af674be1c3a1173cec4b8f2f1429eea5c847ed240a430e4",
+      "actualSha256Bytes": "9afa92615b8f34f86af674be1c3a1173cec4b8f2f1429eea5c847ed240a430e4"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$likeDanmaku$2$1.class",
+      "candidateSha256Bytes": "9c47e6cd3e64c9d03bb79d450cb36fe9f8692378e9bf38fb9d1f327c5c77aeab",
+      "actualSha256Bytes": "9c47e6cd3e64c9d03bb79d450cb36fe9f8692378e9bf38fb9d1f327c5c77aeab"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$likeDanmaku$1.class",
+      "candidateSha256Bytes": "1575668d0c416265925513faf7505c6af94984aa3b240014951ffe2af7ade9e6",
+      "actualSha256Bytes": "1575668d0c416265925513faf7505c6af94984aa3b240014951ffe2af7ade9e6"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$reportDanmaku$2.class",
+      "candidateSha256Bytes": "7d86fc08644b32876f42ea6843d8a37b61d54fec6e7d7434c645b51ea35bcf62",
+      "actualSha256Bytes": "7d86fc08644b32876f42ea6843d8a37b61d54fec6e7d7434c645b51ea35bcf62"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$reportDanmaku$2$1.class",
+      "candidateSha256Bytes": "7c921a8637246081761d39156898660e00e9fe76c2fee396fbe981d94f1323bc",
+      "actualSha256Bytes": "7c921a8637246081761d39156898660e00e9fe76c2fee396fbe981d94f1323bc"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$reportDanmaku$1.class",
+      "candidateSha256Bytes": "52d946560cd6cbe123d75b3bd2d71efac4438271a05c62e2865f5cc2269369a4",
+      "actualSha256Bytes": "52d946560cd6cbe123d75b3bd2d71efac4438271a05c62e2865f5cc2269369a4"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDanmakuCloudFilterRules$2.class",
+      "candidateSha256Bytes": "a64b8746d61285a975bfc5ac3d32358b936cd70bee2b535493fee87d55bfa573",
+      "actualSha256Bytes": "a64b8746d61285a975bfc5ac3d32358b936cd70bee2b535493fee87d55bfa573"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDanmakuCloudFilterRules$2$1.class",
+      "candidateSha256Bytes": "287a46da77840e00d170a559d06e8357802b5b881257f4d3112e7217143d2d58",
+      "actualSha256Bytes": "287a46da77840e00d170a559d06e8357802b5b881257f4d3112e7217143d2d58"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDanmakuCloudFilterRules$1.class",
+      "candidateSha256Bytes": "b18c7fbc1211d61988c7cb7f1c67d346ef4136df8c477c4768ce0ddacd5f147d",
+      "actualSha256Bytes": "b18c7fbc1211d61988c7cb7f1c67d346ef4136df8c477c4768ce0ddacd5f147d"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$addDanmakuCloudFilterRule$2.class",
+      "candidateSha256Bytes": "6784cac856a264db966a337574fb5025e3728cd8dbe34ea4d948b43775680506",
+      "actualSha256Bytes": "6784cac856a264db966a337574fb5025e3728cd8dbe34ea4d948b43775680506"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$addDanmakuCloudFilterRule$2$1.class",
+      "candidateSha256Bytes": "1affb61d8357fd7d1f87d7925bd777e2b7fa088faae1960b7c424ed3fdab0461",
+      "actualSha256Bytes": "1affb61d8357fd7d1f87d7925bd777e2b7fa088faae1960b7c424ed3fdab0461"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$addDanmakuCloudFilterRule$1.class",
+      "candidateSha256Bytes": "45f427632da24062fbd59d3c0c0ea576eea305ee60f8f1c38dfd03d6fb83bf1a",
+      "actualSha256Bytes": "45f427632da24062fbd59d3c0c0ea576eea305ee60f8f1c38dfd03d6fb83bf1a"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteDanmakuCloudFilterRule$2.class",
+      "candidateSha256Bytes": "981301496c0407051a93e2824db43087558295f64ea6c0458dc7a77334154019",
+      "actualSha256Bytes": "981301496c0407051a93e2824db43087558295f64ea6c0458dc7a77334154019"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteDanmakuCloudFilterRule$2$1.class",
+      "candidateSha256Bytes": "c1f7fc6e28d637a76a8f723c91ab24c1a8b185dafcc832fe840d1e1431b7959a",
+      "actualSha256Bytes": "c1f7fc6e28d637a76a8f723c91ab24c1a8b185dafcc832fe840d1e1431b7959a"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteDanmakuCloudFilterRule$1.class",
+      "candidateSha256Bytes": "eafd7eee8ef492e8ae8fa42f434771456e04081702cdc5971f052dda572ff33a",
+      "actualSha256Bytes": "eafd7eee8ef492e8ae8fa42f434771456e04081702cdc5971f052dda572ff33a"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$syncDanmakuCloudConfig$2.class",
+      "candidateSha256Bytes": "efb06ac8ec8e918a477db5aeea833e10587d6a5457c3df41da5bf9c544c8e506",
+      "actualSha256Bytes": "efb06ac8ec8e918a477db5aeea833e10587d6a5457c3df41da5bf9c544c8e506"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$syncDanmakuCloudConfig$2$1.class",
+      "candidateSha256Bytes": "e71f8eb4ff3532aa08331fb6047f31719b8c6babe27ae7ab40e765714bcbd83f",
+      "actualSha256Bytes": "e71f8eb4ff3532aa08331fb6047f31719b8c6babe27ae7ab40e765714bcbd83f"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$syncDanmakuCloudConfig$1.class",
+      "candidateSha256Bytes": "4a1c22ee1113d24c3f384197208f1030998b769a7c8c0db2c64d0c1e05f96c85",
+      "actualSha256Bytes": "4a1c22ee1113d24c3f384197208f1030998b769a7c8c0db2c64d0c1e05f96c85"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendVideoShareText$2.class",
+      "candidateSha256Bytes": "38a8f89a81ee151aadca2221b1593afe907d45db67498a77eb4b76005640135c",
+      "actualSha256Bytes": "38a8f89a81ee151aadca2221b1593afe907d45db67498a77eb4b76005640135c"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendVideoShareText$2$1.class",
+      "candidateSha256Bytes": "d0855047469de9c081246241de5d7d6fd5c3410cf683b99e048ecd0fc8b3bb42",
+      "actualSha256Bytes": "d0855047469de9c081246241de5d7d6fd5c3410cf683b99e048ecd0fc8b3bb42"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendVideoShareText$1.class",
+      "candidateSha256Bytes": "c8b9f2520554af7b42dc9d8ddda2a0aa3ebf35f7222b42a920595e4873e3c876",
+      "actualSha256Bytes": "c8b9f2520554af7b42dc9d8ddda2a0aa3ebf35f7222b42a920595e4873e3c876"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$downloadVideoShareCover$2.class",
+      "candidateSha256Bytes": "67cf73219c75a13a79a4b682b0fa889c6f2902adbbc1755aa2ede40282c174c5",
+      "actualSha256Bytes": "67cf73219c75a13a79a4b682b0fa889c6f2902adbbc1755aa2ede40282c174c5"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$downloadVideoShareCover$2$1.class",
+      "candidateSha256Bytes": "6662cfb296a752c743c29bdb6cedd8456a031d6cc8c8045bd3887eaef1864168",
+      "actualSha256Bytes": "6662cfb296a752c743c29bdb6cedd8456a031d6cc8c8045bd3887eaef1864168"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$2.class",
+      "candidateSha256Bytes": "ac3df57b3b8b13523b8af850af85a3d4d9afee8d73ff352c8e6a5753ce4aa885",
+      "actualSha256Bytes": "d222cdc98889ed7f1bf68e369e098d8dded41441d61a61e98ca66e300552cc60"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$2$1.class",
+      "candidateSha256Bytes": "14cf627583ba223e13394dbc2544ceaf5ce6efdfbb9aba3ab6bbc59aebfcad19",
+      "actualSha256Bytes": "ac435fba98490b38f9bd132571027bb7ed7592d6e83c37878870ff90110588d2"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$1.class",
+      "candidateSha256Bytes": "ef83befdeb3bdcdd9997d57c3a8f3861d2f67ca12203fe46d7a1471baa92415d",
+      "actualSha256Bytes": "d4720c447d53949e38d9aeed03484ffcbbf25ed236b2b1630666f7b18b13f0ed"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$2.class",
+      "candidateSha256Bytes": "1b5651add2f2dd60fbaaff428a873fea78ea0a1d6515b9fd1aae3fcd3be8dd77",
+      "actualSha256Bytes": "983f607e4478dffbe7a5684571217562fe5563cbb347ccdb2d5c0074b08cdba0"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$2$1.class",
+      "candidateSha256Bytes": "1ef42348162a6ee6b998bb145d9499066782d62f9462739de5834d7c2f10fc3e",
+      "actualSha256Bytes": "5c9aa7cfff7e8821ec1b7b3b0e4bcb38dd2f8f1eaf64830f7502231e2d435868"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$1.class",
+      "candidateSha256Bytes": "2f4d5e60cc6acae49d4be53c47506ca4606ce143bfe2601b951123ad9e7c0f8a",
+      "actualSha256Bytes": "6ce16d921d049464cd584c6e1b6682f044e2f7c0c90961b7d759eba2ce630ab3"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$2.class",
+      "candidateSha256Bytes": "b76facbf26cf5926f842158847d45752462583c31f12075f1c7bc3983b23891b",
+      "actualSha256Bytes": "99c8e8c9158a75029dbc31893b01b35ac83d0f59ceba689ae80af0f303095da3"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$2$1.class",
+      "candidateSha256Bytes": "995711d5c1487d83b5ba73aa3ee0e328d8e66f9f554e12a2febfb2b377e7e55c",
+      "actualSha256Bytes": "5f5424a9126d2a1d60ce3f825573fc9bb249aea747ef931b646c204199c6d27c"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$1.class",
+      "candidateSha256Bytes": "e2b811e27132d4ec80ec2355c32bb4341252a4dc96cb58aa3531fa9416b4fc47",
+      "actualSha256Bytes": "075c1156cfc1f62af9885843e939c1c465e6a0d71718a76121b8c9670bd97813"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$2.class",
+      "candidateSha256Bytes": "2542fb454b3661276e7a8dcd99452f0fc6b963d3bf115af76b686de82feca4d6",
+      "actualSha256Bytes": "dc8df9bafe38612e1fba0e0875d9ce46e0c41f45949eba87b15e842eb91d74ae"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$2$1.class",
+      "candidateSha256Bytes": "9eaf0fe892b329be28650572b2fb3ae5f8e3692fac07c872fc813e2284d84dc6",
+      "actualSha256Bytes": "57c57e3ce1fd480c7d0c2fa256c20adfc7bd380ac1bb223b4fe0afb610f9a3e2"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$1.class",
+      "candidateSha256Bytes": "eb78d57b88bb49be3ac6f408d25feb09630ee7a3082f5fc11b65ad4752bcf29d",
+      "actualSha256Bytes": "002d4838adbf8ad05a4f663b2eaa31ab0cddf4b70a826e0076b852efa50f7aa2"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$2.class",
+      "candidateSha256Bytes": "655a413c6eb8c8ebc0581dcc4037cb345e8a040595e134dfde3aab25eff2af31",
+      "actualSha256Bytes": "f064f4b216f61d19cecf8bbe504b703bb72a3bd72151ea8ac83e01f80bdd9ab3"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$2$1.class",
+      "candidateSha256Bytes": "3133ea43f43952449378e215bbce6882cbed0416e6b4c75d1a6456e44165fa40",
+      "actualSha256Bytes": "15b970390d9b3d43f5e047c793d61ac07717a4158ba83437e8f661bdfe17bbdb"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$1.class",
+      "candidateSha256Bytes": "c94934ed769697bdddb12c5dfb45e1f73573efcdc2d1a6f2841c9f9e92dd2967",
+      "actualSha256Bytes": "4988460818da699a2e6fa2e3d22fea64f2ef8f7c46030f8ec52c7c9ac740dfab"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$2.class",
+      "candidateSha256Bytes": "6314682ccfcf2390a386705f11a69becb3f3b9963b7cc00b536c60654ed37d74",
+      "actualSha256Bytes": "b1ee09542506f83ace901b976a58dcace671b3ec1af4299b3c30ad6102ad5525"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$2$1.class",
+      "candidateSha256Bytes": "2879a8929b1f592807316c94be01959089c0409e6d781b82f2e362bcc92b2bb9",
+      "actualSha256Bytes": "35c0ff79d3c3668af805b7fcc4d1e788b3ed03355ff382f062c2e132563df24a"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$1.class",
+      "candidateSha256Bytes": "57dddb964ef2ab890aa5a33a6c68beb7aa0fe7d261892f5774c648e059373545",
+      "actualSha256Bytes": "fb01d011c5d7e0d737956af96b7ed0b32a585c1a757fe672a2ed58dc2ed0ac29"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadEditorImage$1.class",
+      "candidateSha256Bytes": "f5754823b7faa91c95c14427177c0168453e15a718da19bab0144ab93f7faa7b",
+      "actualSha256Bytes": "25167eb3c385a986b400c867a238fe956fa21953f79e250d083621216fc44ff3"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadEditorCommentImageBody$1.class",
+      "candidateSha256Bytes": "0ec5308c0e3530705af2f8d290c2889b6193cc0b6359555079fe45694145d792",
+      "actualSha256Bytes": "317ac841f1fecfb55e3b9f6e4f5f954b29a4a8be83b8b0dcd8575682cec10bce"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentsForSubject$2.class",
+      "candidateSha256Bytes": "1ac5b618454b81a579a72c5967078707d0752fe0b1ee6072e16d86cda9a4e6ea",
+      "actualSha256Bytes": "a46759f4d1b65a865e6f13ba5e4ce2c3525d963139350d165ad8a89ecb7cc614"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentsForSubject$2$1.class",
+      "candidateSha256Bytes": "8777f6f8a01f666be83a95e4f8249a48bd7641ac5d086a698eedc738a820edf7",
+      "actualSha256Bytes": "fae406505053a85f7d4e131f90f9859d6b8430edc387d5b2129dce828ad1d393"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentsForSubject$1.class",
+      "candidateSha256Bytes": "5a94f4f9cd87d0f38ba4d58c186777f64010329b4ba72e2d1768250053837631",
+      "actualSha256Bytes": "76cf06ad28a2d80e6ddac22a0b7705442e33a43b4b352e73f3ba9ed4bb4db161"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentCountForSubject$2.class",
+      "candidateSha256Bytes": "e6c7187ec0305beb22f324ab69b162783670acf02717e56bd678712b9ee38c92",
+      "actualSha256Bytes": "f63fb26c5f60a424196a22d84b61b9b6e419c3fe427e60a1afdd8006b6e6f163"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentCountForSubject$2$1.class",
+      "candidateSha256Bytes": "5f42c40c83c3fab416b094f60e0bffc4cfffaa23df4fe63b1a5c34abc248d6ac",
+      "actualSha256Bytes": "3cc4307b54bb7ea40726dc03cf743186f9bc86684c11381fa53996173e9725a1"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentCountForSubject$1.class",
+      "candidateSha256Bytes": "a5ac43153eb4561faaee777d7b3c464aef4204042861abf48aba3d37e405e678",
+      "actualSha256Bytes": "b5eea01e664da073c3b3e35cf29b79ebd2eef9c0a33423f5222678d2cb48733f"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSortedSubCommentsForSubject$2.class",
+      "candidateSha256Bytes": "76800a3c74a563e1ee7748a5d433e8ed94e29bd07d3f45762ef47dff0b42e7bc",
+      "actualSha256Bytes": "bdc0fad988ed750fd4b41b5f71f6d98e89545899662acdc863d9e9b3dae8b950"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSortedSubCommentsForSubject$2$1.class",
+      "candidateSha256Bytes": "9d8daf2248e4694e94a025d54a44393685e85a2c12b244df2b4c8d8167642f70",
+      "actualSha256Bytes": "e54d5987eac1c676eac327d52aebfa673458a4191687f84fb72ed9920b32f2ef"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSortedSubCommentsForSubject$1.class",
+      "candidateSha256Bytes": "1c1ea3cd8e50d75ef1c6d633ddc2c89536ced6220b2b61fbf10789c2b56486bb",
+      "actualSha256Bytes": "3087d1dde24ee098826b7dc6d1a991f420e32cb4feaa4b420e3e268aa92d0a42"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSubCommentsForSubject$2.class",
+      "candidateSha256Bytes": "cb971a293df153a60659ab0700c52ae63c7ef8e78dad536517e23c45c67d95ef",
+      "actualSha256Bytes": "871dc396c7afe95ab02f5cfb0f6dc4fca2c1179bfca676e18fcc8ff4114355f7"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSubCommentsForSubject$2$1.class",
+      "candidateSha256Bytes": "f58401cf024e0925e424cdd2270451885929b281d121eaf4a775a19c2f5588e6",
+      "actualSha256Bytes": "de1ba2f2558cabe84f8f33232659618442b4cbdd5a71752156b81c7b8d1a26d0"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSubCommentsForSubject$1.class",
+      "candidateSha256Bytes": "15c08dcf57911e81ea0bac18dd4cd38f726b040a84c81d86056283104d25cba8",
+      "actualSha256Bytes": "752fcccaa01e82d7ccfe1fa7a3736c7ab4729ea5b7b817b12c782bdc96269835"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDialogCommentsForSubject$2.class",
+      "candidateSha256Bytes": "03cd1a0a6feda2b273ad422a9dc79241a45822d76971b21b4a16523f020b32e7",
+      "actualSha256Bytes": "97c082fbcbc302157710853b3abc60f4ec88ee378d5be44d07f3684f10911e59"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDialogCommentsForSubject$2$1.class",
+      "candidateSha256Bytes": "567993e2dccc69bb995f08f1a4d5d1cef9d849b5c1629e51093b68fa19458618",
+      "actualSha256Bytes": "c74917ee4e08c5e68431ad4d5d9171fad1e8ddc9644ae63bcd106fcb2499249b"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDialogCommentsForSubject$1.class",
+      "candidateSha256Bytes": "cd2cfe35c0a009fd5ffa777b17fb24d7af749243dc242af7f961d6f664af1ba2",
+      "actualSha256Bytes": "1b1a7c23244d3a859f37d2a82c122b2ed85d88bb3a478d91719c0e9fd144e873"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$translateReply$2.class",
+      "candidateSha256Bytes": "addd91f18cec8a3689d5d0ab3ab69a41847640eab265f775465d04a4207b91ae",
+      "actualSha256Bytes": "e218e0ad48452445cab021eef59181df24bcfcacb91948a765e537d3fb71240d"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$translateReply$2$1.class",
+      "candidateSha256Bytes": "a72c259cbb22b1c3b3ba59a22c5b370c6e60b6244cf908e1be8f883fd61d878e",
+      "actualSha256Bytes": "f8535f3594f58db14ff4f94798a3422b92e4f781669dd09086f8c8bcf4ab6f1d"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$translateReply$1.class",
+      "candidateSha256Bytes": "e97e3cea8e9b6fd5ad4cdb98c65c006adff6bbb08ae6f6901d28fbb36b3b8ff5",
+      "actualSha256Bytes": "4787f813e2ab9248a303d61eeae94e792c01f58b6f95a70774eba8427fce009a"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImage$2.class",
+      "candidateSha256Bytes": "72c7734fe180d9dbeb7411ce4d7a061eca9dc73ebcd61d3bf650529498093ebc",
+      "actualSha256Bytes": "131e0efe1a8a1259b7d0640931fc284ed599a4bf4a30af22509cad33d45ba593"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImage$2$1.class",
+      "candidateSha256Bytes": "ca629522abb8db6d2478f4057bf1ee4b53b389622085b1da3af73dea6f3d5548",
+      "actualSha256Bytes": "0dc0d7946cfcf00d213e759955af7eae2c5898ea04ff91deaa0ba191a31224e6"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImage$1.class",
+      "candidateSha256Bytes": "cbd7432fbfef899b0d54c0c5051d04e58f58ba4e887b5b1faef1a46d1e4226a9",
+      "actualSha256Bytes": "c29da11b94cd85b4fe6370b17fc85edd9543457f94b73413aa6c677c6646f1ec"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImageBody$2.class",
+      "candidateSha256Bytes": "cd103137c359c6119dd39574eb9b854b1aa226d6c349bf4c8702fe2f7c79588d",
+      "actualSha256Bytes": "40889e048529a19283f7c909fc423cd6489cadcd7f2cf12e296234c7ef95cd35"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImageBody$2$1.class",
+      "candidateSha256Bytes": "305ca48ca3329cfde05439749f07f57adc099abeadaa240f12dcee482bf0a8fc",
+      "actualSha256Bytes": "591f1d52455bc4be1780e643bfe7a7d0a16e6e893d6520318e17896450fb9d9f"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImageBody$1.class",
+      "candidateSha256Bytes": "431289774a1ff67d30b1f5f07c0f4a5af59c1b8e14aaace30c5a873727b10691",
+      "actualSha256Bytes": "29128406fc6f3eb0223a6113824bb7259b8053614397067e87a6429d963f9d34"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$addCommentForSubject$2.class",
+      "candidateSha256Bytes": "9f97c10b2ca57e17e39e6997ca3e7286d3b1b8a809040e6129673cfa36d3ca5d",
+      "actualSha256Bytes": "d13a4d0aaeb633d10f2e4197bfe60a2d5559eb6e91d6c821d602d810c835f8f5"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$addCommentForSubject$2$1.class",
+      "candidateSha256Bytes": "999aeb4a6d1040f95c64459802eca99df8244bb8fe5739c3b3480fd8ee1720cf",
+      "actualSha256Bytes": "de30465942717ebd587bca5c6e9176f4a2613111e6cef3b9125a3cde2931f606"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$addCommentForSubject$1.class",
+      "candidateSha256Bytes": "b32f9ba52ad2cf0ae034dbe15a754398df93a819a13f8022f6a369517bb8c060",
+      "actualSha256Bytes": "aebb9c4ff9d9e72590a6031c72165789f5f8bbf3553fd9f96591908fb050a6ff"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$likeCommentForSubject$2.class",
+      "candidateSha256Bytes": "abbeafc385981e09c56b4f931274ac6ad9a4a761665d9acd22d7ae9e5b9628f9",
+      "actualSha256Bytes": "366c14343f208a0038a287390ec673ad64fffd9924899d7c223320914947dc26"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$likeCommentForSubject$2$1.class",
+      "candidateSha256Bytes": "f9eff916d6278622f5571965b3988635d860b2a10f1a21999b672d8c31a6cebb",
+      "actualSha256Bytes": "f994f0c67a14b4b6289a29179ebcf38dc39c99b95740085244e7e7bca3176c81"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$likeCommentForSubject$1.class",
+      "candidateSha256Bytes": "3aeb8e7135cc780f5d9cb6112b33f7bf0733044ed84a61f851c172868775208d",
+      "actualSha256Bytes": "23617f6adf20f419bf0144c34b6bfdd34701c1f5eac9a13a22bbe08816a4fad7"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$hateCommentForSubject$2.class",
+      "candidateSha256Bytes": "a9bc78648bccdc7afb19980ff5af9722bba002cd91744db433edfcb165550fdb",
+      "actualSha256Bytes": "6cfd8466a5d7dd3e081ba4e72668d6a3574ed9f9cc37a69f19c0b950bbe4bb50"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$hateCommentForSubject$2$1.class",
+      "candidateSha256Bytes": "87672e7cb93130c64710db9147d1f33b50821aa67085d5980dd7d38e86bfda03",
+      "actualSha256Bytes": "4697deaf6dbffb2348006ec215a215bceb701539647155e017751de8bffb6d6e"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$hateCommentForSubject$1.class",
+      "candidateSha256Bytes": "77b3f44aaa632fd995690226eef0dd75738f03b8774f995ab4c13074fc87deeb",
+      "actualSha256Bytes": "0ca8e656bd8b97050c5a8909224772ec77f0d4590f302ba1b5791ae74eace81b"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteCommentForSubject$2.class",
+      "candidateSha256Bytes": "ff0712955221c6a9a3ac0a6b298816c37e717a772c3f52eef7574e15e33edd0b",
+      "actualSha256Bytes": "3a1703192d27f280eadb4882852f94f57b438e83cb1e30ce22a8d1f85421d3d2"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteCommentForSubject$2$1.class",
+      "candidateSha256Bytes": "89352b0e6399e422617d890ab33b7728e12f90130546d35cfab509b3a9d3026d",
+      "actualSha256Bytes": "9d84f0c8611744815571931bef25387642cba61f9cbca5fafa064e226b14b3b9"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteCommentForSubject$1.class",
+      "candidateSha256Bytes": "666a9b58bb8348232d911caeb0f31dfb2c41116297597cd7da8a21b613af4227",
+      "actualSha256Bytes": "553afa474ff2198a34748cdeff420ea9a850545eced62cf436fc9cdb1d775f51"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$setCommentTopForSubject$2.class",
+      "candidateSha256Bytes": "61c25ccdf271bc75c8108ffc53e8406689d15abb84602c0fd9f11839c517ba26",
+      "actualSha256Bytes": "e379d528a3ca85465f475944982090ad2db1fb502ae3bdf5e5cfcf29b2f7c867"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$setCommentTopForSubject$2$1.class",
+      "candidateSha256Bytes": "6e8e3c35df498728e77a7617e12f4515876a9178b623721aa9a51ad256f42e2a",
+      "actualSha256Bytes": "313ca15a06f420f5845de80aa066f0e6abcd8033dee0cf01ba759d3e91fc0d3c"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$setCommentTopForSubject$1.class",
+      "candidateSha256Bytes": "6b29ed31fbe698ebd443d36b6b1896c104852f8a314d0384bf7be12f87007263",
+      "actualSha256Bytes": "a8320d088c81da4c5a36df613ca42437a7a5993fd6edf7f556b89c90f3149db6"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$reportCommentForSubject$2.class",
+      "candidateSha256Bytes": "84a6d9ddc2001c1ab82a3b3df1028fc8d1687c8a836f56aedb68a0e1932a6b77",
+      "actualSha256Bytes": "3cfa99aaaeb377f74f2671fdd5b53104f828f877f85ff5a0f228553f757f8aa4"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$reportCommentForSubject$2$1.class",
+      "candidateSha256Bytes": "cfd25415b31e87a27f07dcabc70fe5116868663826b99c38bab49b0d6ebd2237",
+      "actualSha256Bytes": "65c835d6677368d579f025508745291023a8bc4da0cde03d8e3f6e0ce700fee0"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$reportCommentForSubject$1.class",
+      "candidateSha256Bytes": "11ec0837dab07d36b6ba06d9e71639ae09f41421388b425e343d78255ccf7bab",
+      "actualSha256Bytes": "531ce1f0cea2ecf2879a35ddcf8a9e63142ceaee862a3f80f11deb1d60de0e6c"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2.class",
+      "candidateSha256Bytes": "9a53ab0132a6f304be10fe2b9f331a3ae5b8f8950b93b469cdaba6845b49bc5d",
+      "actualSha256Bytes": "3eb677978a866f6120e205393c52e26a5044dd4dfbf0d193dcccb601c592cc68"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1.class",
+      "candidateSha256Bytes": "514ed1fd3888485e129a9807f8a97b5f1682866eac39b7022cc72ab6e0c13802",
+      "actualSha256Bytes": "35194364040f963bb5ee647ebc6c869670f897d6921dbcb42cf3c048d86ac860"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$articleProtocol$1.class",
+      "candidateSha256Bytes": "ab121e17dfe2ef41a7c658d935a0a38a96c6f58b1a504fedc5e9b6642be9c826",
+      "actualSha256Bytes": "72b49eadfd587cd30ede8c716feff0a49be4bc2228e933dc2639d8d6da0a1afb"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$articleProtocol$2.class",
+      "candidateSha256Bytes": "19afbd979bf7cda37a8d86cabce85b4664f97013ac0b93bb4e4e89e861c65140",
+      "actualSha256Bytes": "9ce2300d4cae387c5735d0ee7320bc9756bcf2413297438e06d609c112a4773b"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$protocol$1.class",
+      "candidateSha256Bytes": "a01f7ac2e0e0527f5030b39501ea2d39fcc8c7af315a92806e971ba0e8bf0eb8",
+      "actualSha256Bytes": "9edf022bf3a3a352785f97044272cc2be32b5de0e3bfe7802920dd0b9ebc6122"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$protocol$2.class",
+      "candidateSha256Bytes": "0537fb6c3f5cf06b30342089979aaaf5a29f889b28b59238e3882bbf155ed922",
+      "actualSha256Bytes": "a7b39ddd2746e2ede199714d30de0c1d8676f650b986fab572594e0cd45c6336"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$protocol$3.class",
+      "candidateSha256Bytes": "ad95167e3975db672922cd49d17d56c9bd43ffc22418db2f041d9fac6b9e7f13",
+      "actualSha256Bytes": "4612a3aea8bddf18180cc055d7e084d2b788e43e9406de424d2303d521de1c15"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$1.class",
+      "candidateSha256Bytes": "59224c206d067f1f721be3d7404aada3df319afb04aa00d89452662fb4a7e411",
+      "actualSha256Bytes": "dad1bd608fb45d356af39da6b2e84d45eedb7de6b354724e38063824fc4e04ec"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$signOriginalDetailParams$1.class",
+      "candidateSha256Bytes": "eaca80de3b569e42ca110523efd96bc02ded576bc12ab08755e01fc7dc1964c1",
+      "actualSha256Bytes": "8d3f0c9cd6113715f4920b551019c80db9d8085eecfc821187ce2c40e48cc677"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitGradeDanmaku$2.class",
+      "candidateSha256Bytes": "06596f523019e6cd000ee334709375e5eb9c1649ad029abd039616380e1addfd",
+      "actualSha256Bytes": "8d345339a39296f8462e63c09274dea9529ae8fe46dc476477b31166d66bb12f"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitGradeDanmaku$2$1.class",
+      "candidateSha256Bytes": "5dcb8c3b1feb08904c2ff3cf2430dbdd6c14eef72a4e15b0477d7df3a1eae9fc",
+      "actualSha256Bytes": "97ac80c2f5eb732f60fb0d6af63d79290fb4526dbf8408f63d1713f0760a8722"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitGradeDanmaku$1.class",
+      "candidateSha256Bytes": "6a4bdadbbdfc41d5a7c4a923acffb35d703943685a4d3f3159c704fa9fc15179",
+      "actualSha256Bytes": "92e2183c87bd582a4f4da0f7270aece935f8be4db473a38e935150fefe8ab532"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$checkCommentStatus$2.class",
+      "candidateSha256Bytes": "83ecb3de754b70350b45f36c3e8399c44f9bbcae353cfdd6dda276bbcf9279ba",
+      "actualSha256Bytes": "ca0d40ef14b23fbba18d9c7313c4234b72194907144978553707e3c983eae2eb"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$checkCommentStatus$2$1.class",
+      "candidateSha256Bytes": "f313686f406d37126724c7440326ec161d5f42c427b00469cae24bb91ee447d6",
+      "actualSha256Bytes": "1d36e9ca6d4bd94a554174fe187a2da5976587155f7f8027f29ec21ec43df45b"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$checkCommentStatus$1.class",
+      "candidateSha256Bytes": "b88302dee1bdb1acc991124caba28021f1c4da534a7b56b96ba7b5d1ebaea8de",
+      "actualSha256Bytes": "150564c137f8c101f883dcd4b1a2de3a4a7bfa38ef946ee2ac27ca5fb598657c"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmList$2.class",
+      "candidateSha256Bytes": "6baf9c5d3a2ca5100cb3e9ce3d6444c2e78108c560f88f0997ec51d83372900c",
+      "actualSha256Bytes": "6a2598cd7a6ab34e560776fd1255c31b228bd060f3c3ef6cceea5d17ecfcf927"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmList$2$1.class",
+      "candidateSha256Bytes": "5e496f39a9e78c28c531d64042ab8d5be5afb392b96d0df14b6d90ae4b7c22db",
+      "actualSha256Bytes": "3c4fc4371ff24f5c8da8ffc413b253a29eeddf33c91ad28ab31e745070868f41"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmList$1.class",
+      "candidateSha256Bytes": "a9fecad76ea2cf38a7c826cac6697b66c6332b352807094c4fb5a5e41ac64b97",
+      "actualSha256Bytes": "93c4ae25a334f11319cec82935893ee7c266cb35c2c7d9e027c60faa05dad673"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmDetail$2.class",
+      "candidateSha256Bytes": "0c7c97b17c1eeeebea05986b134263af54c94f0900ae2d3f2a8987113bbde498",
+      "actualSha256Bytes": "97d0f286310343bb3660ac66ff7c0f1f1c0e679b82c42d2e87758f6cc71f9813"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmDetail$2$1.class",
+      "candidateSha256Bytes": "efeb7aa94b18e593594261479e5c7cd5c9c1411bd9e87fa8750547c1145ea0d7",
+      "actualSha256Bytes": "3a438b1fb6fd9da2c5971b42b1e3992e349462acf9720bad484f1f130c220306"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmDetail$1.class",
+      "candidateSha256Bytes": "0105c036817afa2f46bef0f865d83baf433df168bdd77af6c2f436d6e2541f67",
+      "actualSha256Bytes": "bfa3262d3f3b573cde971d59659d2ed90f83902d506686ad324b0a6fc98f1b24"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmRecommendVideos$2.class",
+      "candidateSha256Bytes": "a2e03fb01635927de2141b241ca2c70fcde98e6fe7d9adcd1ef607414969ec91",
+      "actualSha256Bytes": "31a11603832481ddeb210a529965a9df5ea613550564947a0194790f193e2d46"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmRecommendVideos$2$1.class",
+      "candidateSha256Bytes": "0761b7d6920c7a2fa05479cfba58a00f1eaf300a36038ad121c4df251346a019",
+      "actualSha256Bytes": "777d8ee12b0643ae4103092331c886430a819f1fe348829086ae00b322946d4c"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmRecommendVideos$1.class",
+      "candidateSha256Bytes": "f5bfce03ac3cbc16cebad9804483d57de27cd40311b607428652cfc9e47e6e44",
+      "actualSha256Bytes": "03f2fcee19bb97d8ae69e72c270ab55904f4a3f681eaf9cace4bd3bd5daa8d94"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getAllBgmRecommendVideos$2.class",
+      "candidateSha256Bytes": "885e7112819d73e8364fca17516dd5e821265a34fadd01aed32456a274336a86",
+      "actualSha256Bytes": "8491865b0fbbd01372d72abe1c718952793c8f4e0b4c8df3aeb255c79cbc89f7"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getAllBgmRecommendVideos$2$1.class",
+      "candidateSha256Bytes": "22da77e2db5736822b1d9867584228280f6afe04c183fc5e836b23328d16ec3d",
+      "actualSha256Bytes": "8088eedfde955ee9cffb22a5d6dec276fc8676e3a6438561dfb147d57ad9681a"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getAllBgmRecommendVideos$1.class",
+      "candidateSha256Bytes": "efacb19691b54ccf7fe92fed5e48be43325d87544d0b4d6e2dc42023ae07d600",
+      "actualSha256Bytes": "2c01521ef6ab6c2e924da48f0029ffa135ad7f598342bcae24d0547fe97600a7"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$updateBgmWish$2.class",
+      "candidateSha256Bytes": "c0fef3fb6614cf279cb50c3b085438ded2175fb4f8e62c4f8604e937f96c693e",
+      "actualSha256Bytes": "7656db40c25a1b8fa7252ee3a15adc0dafbe80513dc25ed738b27386b74bb5e4"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$updateBgmWish$2$1.class",
+      "candidateSha256Bytes": "d2021bbd10fbf87db566a876281ef9592fef0737f2d79bdc8a6ab7c8d9402adc",
+      "actualSha256Bytes": "393f84edf1cb977d4036b680fc091c9749af62d090dd2abdb37496583b7194ba"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$updateBgmWish$1.class",
+      "candidateSha256Bytes": "609ac693439807863805ea423efd5f97d2679b89be06a66d5236d1ddfedf5652",
+      "actualSha256Bytes": "da1f6e936ce60c0209392414c832f6576d36712cf17652794ed77f544d3b4114"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmEmotePackages$2.class",
+      "candidateSha256Bytes": "0bd1113b044df41230869344c3616cb440790158e0ef0e14aeb9646487cfa89c",
+      "actualSha256Bytes": "84e82f2dcef2b60a2ac011cca720b921c0bc0bc3dbc26b62cbcffd4d4f22d485"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmEmotePackages$2$1.class",
+      "candidateSha256Bytes": "13a6e4374fbec676eea8521e26e6a1b6436272b0ff6b2b1c8aec110b91486788",
+      "actualSha256Bytes": "e443dae429f3d5039427a40f7a27a8f058013a09713824c59769b38f2cb9fd9d"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$getBgmEmotePackages$1.class",
+      "candidateSha256Bytes": "54deb1bfa5485ea265df23cab8663ba69b851f58eb81190e2b7b01ee121392b9",
+      "actualSha256Bytes": "e4a434482659e5c97c4590b54daff720c5b4ec8a60f7aa976242723156366ac3"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$loadBgmEmptyAnimation$2.class",
+      "candidateSha256Bytes": "5d746699e046807c1b368d714f7e13cf9bacb68e89e3879e37113f9352508a7f",
+      "actualSha256Bytes": "0b2d19c9c4ce834aabbb9031c9da58cd58cba04d9ffac8d242781294aadec5e1"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$loadBgmEmptyAnimation$2$1$1.class",
+      "candidateSha256Bytes": "3ee487afd67df2871126d8f0b14815781f59e7b095dbcbdb5f26dbca6f72afa4",
+      "actualSha256Bytes": "91d8272715c2b3e5aebf1fa6d392d4fbc34e48f2a7ac4a9efa10e6bf9e533e13"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$loadBgmEmptyAnimation$2$1$2.class",
+      "candidateSha256Bytes": "9512c7ceb2e080ddcd0953fe8e1be3e7e3fec729b4a8c7ebfe571c969eb4e1bc",
+      "actualSha256Bytes": "00aedaad7fcdd55c06bb221e805a317b21532f82d8d9a5b935bad66f4d196e86"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$bgmDetailRequests$1.class",
+      "candidateSha256Bytes": "cd93c28f69db90c904e98eaa068d2c388996de001c2c64e7bdee6f3d04f2a0aa",
+      "actualSha256Bytes": "8440eb6671b06f3765f775ab74f841a8dbc6f12b713015cb1f096a3b018c0649"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$bgmDetailRequests$1$getBgmDetail$1.class",
+      "candidateSha256Bytes": "bf3b3adf21a5d406bcf32b0d47a676bb336cc45d0ddb4dcdaba97d26387d629a",
+      "actualSha256Bytes": "9eed3fd2a8ffc0a80bde79d36f7db2ad1a8af3a94b47027cff940d0c65426eb7"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$bgmDetailRequests$1$getAllBgmRecommendVideos$1.class",
+      "candidateSha256Bytes": "50f922f714480125ab29983e22237efaf08f919200907c3c02816ed3e712c671",
+      "actualSha256Bytes": "b7795a460c4835d6c3af3956fec728d57c02a6c02da7718ecd43cebf1541e82f"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$bgmDetailRequests$1$updateBgmWish$1.class",
+      "candidateSha256Bytes": "fc0f76cb58eca1758130cbcb26b38664dfa6da94319462375efe8ce1292296af",
+      "actualSha256Bytes": "c12b76551be5ed5370f4f22d5563ba955cceeb982cda87e0134359a533738485"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$bgmDetailRequests$1$getEmotePackages$1.class",
+      "candidateSha256Bytes": "57f781f73d60d94fbeb8aa3b52f4bf9764dc4185edb4417a6662ea769783d48f",
+      "actualSha256Bytes": "197143d30d4c73b9181030826b5cd46e4ce3a79ac7fd71055f293420eacce4af"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$jar$1.class",
+      "candidateSha256Bytes": "bd81969bc9e038e7ab37c21675c0996184892759620eb19dc38a56004c00a7f5",
+      "actualSha256Bytes": "41f598e6c5ad2814fe4690ce9bc7bbf5fe0c7821076a9a401a4b77ad6e00d900"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$upSearch$1.class",
+      "candidateSha256Bytes": "f4605e2cc1997b59e522bdfbbf98aecb9ebb5fd5d17cfe808a139de967862b3d",
+      "actualSha256Bytes": "a72803cf230f5012e85b5f8075f197720601408c36aa8ce986d804d849cf95b1"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$grpc$4.class",
+      "candidateSha256Bytes": "04ad7355ccb1c74bc21a3e9f6f1d76df017da3fb51df4e8b285bbc382ba6fabd",
+      "actualSha256Bytes": "04ad7355ccb1c74bc21a3e9f6f1d76df017da3fb51df4e8b285bbc382ba6fabd"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$messageShare$1.class",
+      "candidateSha256Bytes": "bc7a2831ddcf24341bd460dd01edce713288a73bafe1bdc81580781bf6739fe1",
+      "actualSha256Bytes": "bc7a2831ddcf24341bd460dd01edce713288a73bafe1bdc81580781bf6739fe1"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$userInfo$1.class",
+      "candidateSha256Bytes": "16dd9d00beb77222ba2a89be7e266490768e7cc3809f94a51181033d55aa1001",
+      "actualSha256Bytes": "ef392216ff3c6e141f2ee3ef2f60b937211b53e37bcb2af2b4c8c2b06614afaa"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$emotes$3.class",
+      "candidateSha256Bytes": "f2e6a91d8359d75137fb1328405755aa30a73e7c07e99050d7c037f8e974f3b0",
+      "actualSha256Bytes": "f2e6a91d8359d75137fb1328405755aa30a73e7c07e99050d7c037f8e974f3b0"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$originalDanmakuActions$2.class",
+      "candidateSha256Bytes": "289899b7e8d4dcffe41ae36d5105de5d9b9e53817c088616f7e03e6e52a988ee",
+      "actualSha256Bytes": "289899b7e8d4dcffe41ae36d5105de5d9b9e53817c088616f7e03e6e52a988ee"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$originalDanmakuCloudRules$2.class",
+      "candidateSha256Bytes": "d820e0d9d720fe5920b5eed761017c3b9d2d032189b40339461e621f5e128c68",
+      "actualSha256Bytes": "d820e0d9d720fe5920b5eed761017c3b9d2d032189b40339461e621f5e128c68"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$commentGrpc$1.class",
+      "candidateSha256Bytes": "ff7d8ac4a81208f51455e290cacd7900e94fe6035cd460301ce1b1b1c9d53fb3",
+      "actualSha256Bytes": "4345febf5b1c0696f140f78bc46881b778d4637e15d6bb37d10ae6cb159ceeb6"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$commentGrpc$2.class",
+      "candidateSha256Bytes": "fc669af00c42bb9e82a9f31458159728a5c8c6fa61bdfe61ba81928ff9600663",
+      "actualSha256Bytes": "3e0a0e1a003d08c0c02551ff28b94dbe606d22c463cc91af11f5ecd9898fe96d"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$commentProtocol$2.class",
+      "candidateSha256Bytes": "ad224e5280e9b91c955203ab148e663bbe073fdfb0e81828f0538eddaa2a2fd3",
+      "actualSha256Bytes": "940bfc54884505f188a0bbe196c78669ec009f99ec0fe70c9e75d8028bd8388f"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$commentProtocol$3.class",
+      "candidateSha256Bytes": "80fc18bd5d2ca916eba0e22324833da3953a270a0e6d38ed0e4e8a033c3f7537",
+      "actualSha256Bytes": "682a1c8a87b97f7b28a4e2911ad640f1120699a672bd30e16491313ad1cee506"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$originalCommentFraud$2.class",
+      "candidateSha256Bytes": "15f464c43ada083f2c67664c37a22069cc77f0d76b791366986153923cbe07d0",
+      "actualSha256Bytes": "de4fd3a760e26e169bdec7d15aeb787b5cd70e4d96d18015131f7834e162923a"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$originalCommentFraud$3.class",
+      "candidateSha256Bytes": "03b91de18ac603c777c454000dbdf510fdaf85b02dcfda2141127b6eeae7dde0",
+      "actualSha256Bytes": "a6e9620e320596985bd4b36d419acf5511f9ab8fcd14c191553adc6ba6a18908"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$originalCommentFraud$4.class",
+      "candidateSha256Bytes": "0990377794400a7f5c832aff11fbeae80ed724d98a7ac00237f2ce796003f3cd",
+      "actualSha256Bytes": "e8da75db4058a0ae3656d07bf706d1c14e4b39067e14fc69faff11fd2f624222"
+    },
+    {
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations$bgm$1.class",
+      "candidateSha256Bytes": "90d52595916286f338a47a55353b203868505a02be53d77f2f153da9c15ce4e4",
+      "actualSha256Bytes": "86b6988b1f6e34baab68336b37c76de5460a537bac9dbe220e6a17216bf275ee"
+    },
+    {
+      "classEntry": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataKt.class",
+      "candidateSha256Bytes": "cc79193a7b0d06763fab2c301c5e7cd3452e6564d5a795260a839b79c0eacf7e",
+      "actualSha256Bytes": "f42ea65979ed1e5d973ecc6164af400c5cc13006cda0769515939153ffedf313"
+    },
+    {
+      "classEntry": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataKt$CreatorTeamSection$2$1.class",
+      "candidateSha256Bytes": "d72e552c9066b0f852a20ec226367116f0bd4a3a8e77a4953debe606bc4d9b45",
+      "actualSha256Bytes": "d72e552c9066b0f852a20ec226367116f0bd4a3a8e77a4953debe606bc4d9b45"
+    },
+    {
+      "classEntry": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataKt$CreatorTeamSection$3$1.class",
+      "candidateSha256Bytes": "416e8786e38f25420c059862995949c9bb094012597d237f17a93644715b67b7",
+      "actualSha256Bytes": "416e8786e38f25420c059862995949c9bb094012597d237f17a93644715b67b7"
+    },
+    {
+      "classEntry": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataKt$CreatorTeamSection$3$1$1.class",
+      "candidateSha256Bytes": "697d9eeca07ba48018d6426a1758afffcedefeb8bdda947ddb427544ebbb9790",
+      "actualSha256Bytes": "697d9eeca07ba48018d6426a1758afffcedefeb8bdda947ddb427544ebbb9790"
+    },
+    {
+      "classEntry": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataKt$CreatorTeamSection$4$2$1$1$1$1.class",
+      "candidateSha256Bytes": "f5931d6afeada0cd4e269ae2806d8a3a328ee0260175a9c432589da4a47cf412",
+      "actualSha256Bytes": "f5931d6afeada0cd4e269ae2806d8a3a328ee0260175a9c432589da4a47cf412"
+    },
+    {
+      "classEntry": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataKt$WhenMappings.class",
+      "candidateSha256Bytes": "4ab21bc83858b70abe8eefbf89151acd572b97bc6aa3565013cf5fa2e9283ae8",
+      "actualSha256Bytes": "4ab21bc83858b70abe8eefbf89151acd572b97bc6aa3565013cf5fa2e9283ae8"
+    }
+  ],
+  "topLevelMethodIntersections": [
+    {
+      "package": "com.android.purebilibili.feature.video.ui.section",
+      "name": "DesktopOriginalVideoHonors",
+      "parameters": "(Lcom/android/purebilibili/data/model/response/ViewInfo;ZLkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)",
+      "candidateOwner": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataKt.class",
+      "actualOwner": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataKt.class"
+    },
+    {
+      "package": "com.android.purebilibili.feature.video.ui.section",
+      "name": "CreatorTeamSection",
+      "parameters": "(Ljava/util/List;JLkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)",
+      "candidateOwner": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataKt.class",
+      "actualOwner": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataKt.class"
+    }
+  ]
+}

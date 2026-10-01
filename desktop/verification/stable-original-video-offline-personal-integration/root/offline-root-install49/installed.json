@@ -1,0 +1,21 @@
+{
+  "applied": true,
+  "hunks": 18,
+  "sourceCount": 956,
+  "fullOriginalOfflineRootMounted": true,
+  "newNativeActors": 0,
+  "newStores": 0,
+  "newRuntimeDependencies": 0,
+  "wholeCompilationPending": true,
+  "nativeAcceptancePending": true,
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "sha256Lf": "248c96ab9549a686bd46fb54a499d3a93d8dae03112b4bf5b6fcc9a92c9a5eec"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Lf": "1da75d8abb6a43180eb5a187809374f82a809ad3673fd9430b4a9c81a9913b6c"
+    }
+  ]
+}

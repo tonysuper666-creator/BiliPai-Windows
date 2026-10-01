@@ -1,0 +1,8 @@
+PASS Blank fixture Window platform fullscreen baseline
+PASS Unchanged full original renderer owns exact local task and actual native first frame
+FAIL_OBSERVED Actual original landscape entry applies real fixture Window fullscreen placement
+Exception in thread "main" java.lang.IllegalStateException: Original exit fullscreen control did not change original local state
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.waitFor(OfflineNativeFixture.kt:70)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.waitFor$default(OfflineNativeFixture.kt:67)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.run(OfflineNativeFixture.kt:354)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.main(OfflineNativeFixture.kt:446)

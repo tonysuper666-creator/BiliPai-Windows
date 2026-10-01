@@ -1,0 +1,21 @@
+work\BiliPai\desktop\.local\stable-personal-history-liked-parity\fixtures\PersonalListsFixture.kt:102:22: error: unresolved reference 'desktopOriginalHistoryVideoClick'.
+        val callback=desktopOriginalHistoryVideoClick(vm,history.scope,history::owns,navigation)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-personal-history-liked-parity\fixtures\PersonalListsFixture.kt:104:13: error: unresolved reference 'callback'.
+            callback(vm.resolveHistoryLookupKey(vm.uiState.value.items.first()),0,"cover",true)
+            ^^^^^^^^
+work\BiliPai\desktop\.local\stable-personal-history-liked-parity\fixtures\PersonalListsFixture.kt:105:13: error: unresolved reference 'callback'.
+            callback(vm.resolveHistoryLookupKey(vm.uiState.value.items.first { it.title=="��ʷԭ�γ�" }),0,"",false)
+            ^^^^^^^^
+work\BiliPai\desktop\.local\stable-personal-history-liked-parity\fixtures\PersonalListsFixture.kt:106:13: error: unresolved reference 'callback'.
+            callback(vm.resolveHistoryLookupKey(vm.uiState.value.items.first { it.title=="��ʷԭֱ��" }),0,"",false)
+            ^^^^^^^^
+work\BiliPai\desktop\.local\stable-personal-history-liked-parity\fixtures\PersonalListsFixture.kt:107:13: error: unresolved reference 'callback'.
+            callback(vm.resolveHistoryLookupKey(vm.uiState.value.items.first { it.title=="��ʷԭר��" }),0,"",false)
+            ^^^^^^^^
+work\BiliPai\desktop\.local\stable-personal-history-liked-parity\fixtures\PersonalListsFixture.kt:112:16: error: operator '==' cannot be applied to 'String' and 'Long'.
+        verify(routes.filterIsInstance<BiliPaiNavKey.Live>().single().roomId==300L && routes.filterIsInstance<BiliPaiNavKey.ArticleDetail>().single().articleId==400L,"original business-aware live/article navigation is not flattened to video")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-personal-history-liked-parity\fixtures\PersonalListsFixture.kt:135:113: error: unresolved reference 'setHistorySearchQuery'.
+        swing { pending=root.history(BiliPaiNavKey.HistorySearch("�ӳ�"));(pending.viewModel as HistoryViewModel).setHistorySearchQuery("�ӳ�") }
+                                                                                                                ^^^^^^^^^^^^^^^^^^^^^

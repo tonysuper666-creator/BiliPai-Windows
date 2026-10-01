@@ -1,0 +1,150 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt
+@@ -86,6 +86,7 @@
+     val dismissNowPlayingBar: () -> Unit,
+     val nowPlayingVisibility: () -> DesktopOriginalNowPlayingVisibility,
+     val ffprobe: Path,
++    val library: com.bilipai.desktop.DesktopLibrary,
+ )
+ 
+ /** Shutdown order is captured entry/route admission first, drains outside Store locks, then
+@@ -98,11 +99,13 @@
+ ) {
+     private val closed = AtomicBoolean(false)
+     val route = AtomicReference<DesktopOriginalRootRouteAssembly?>()
++    val personalLists = AtomicReference<DesktopPersonalListsRoot?>()
+     var imageTrim: DesktopApplicationImageCacheTrim? = null
+     fun isActive() = !closed.get() && retainer.isActive() && navigation.owns()
+     suspend fun closeAndJoin() = withContext(NonCancellable) {
+         if (!closed.compareAndSet(false, true)) return@withContext
+         route.getAndSet(null)?.close()
++        personalLists.getAndSet(null)?.closeAndJoin()
+         retainer.closeAndJoin()
+         imageTrim?.close(); imageTrim = null
+         palette.close(); preferencePlatform.close(); navigation.close()
+@@ -116,7 +119,7 @@
+     services: DesktopReadyOriginalRootServices,
+     handleReference: AtomicReference<DesktopReadyOriginalRootHandle?>,
+     modifier: Modifier,
+-    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean) -> Unit,
++    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean, DesktopPersonalListsRoot) -> Unit,
+ ) {
+     val scope = rememberCoroutineScope()
+     val applicationImages = LocalDesktopApplicationImageLoader.current
+@@ -264,6 +267,13 @@
+             { prefs.navigation.value.orderedVisibleTabIds.map { it.lowercase() }.toSet() }) }
+         SideEffect { handle.route.set(routes) }
+         DisposableEffect(routes) { onDispose { handle.route.compareAndSet(routes, null); routes.close() } }
++        val personalLists = remember(root, services.library) { DesktopPersonalListsRoot(root.entry.gate,
++            services.repository, services.runtime.store, services.library,
++            services.community.searchPreferences::isPrivacyModeEnabledSync, services.feedback, haze) }
++        SideEffect { handle.personalLists.set(personalLists); personalLists.prune(physicalStack.toList()) }
++        DisposableEffect(personalLists) { onDispose {
++            handle.personalLists.compareAndSet(personalLists, null); personalLists.close()
++        } }
+         val profile = remember(root, windowBinding) { windowBinding.profile(root, services.profileAccounts(root.entry.gate)) }
+         var activeDestination by remember(root) { mutableStateOf<BiliPaiNavKey>(BiliPaiNavKey.Home) }
+         var dynamicUnreadCount by remember(root) { mutableIntStateOf(0) }
+@@ -325,7 +335,7 @@
+             { query -> routes.push(BiliPaiNavKey.Search(query)) },
+             { target -> dispatchDesktopReadyNativeTarget(root, routes, target) },
+             { searchLaunch = 0 }, { scope.launch { prefs.setTabletUseSidebar(!prefs.navigation.value.tabletUseSidebar) } },
+-            services.historySearch, services.favoriteSearch, services.watchLaterSearch)
++            personalLists.historySearchChannel, services.favoriteSearch, services.watchLaterSearch)
+         val chromeBindings = DesktopOriginalRootChromeBindings(owner, navPreferences, scope, actions, audio,
+             services.nowPlayingVisibility, audioNavigation, { 0.dp }, { dynamicUnreadCount }, { searchLaunch },
+             { prefs.homeSettings.value.cardTransitionEnabled }, sidebarAccountSwitcher, { sourceReady = it })
+@@ -364,7 +374,8 @@
+                     resolveVideoCardTransitionExposure(clock.phase,
+                         clock.settleState == VideoCardTransitionSettleState.InteractiveSeek,
+                         clock.settleState == VideoCardTransitionSettleState.CancelRestore || clock.gestureRestoreInProgress)) },
+-                Modifier.fillMaxSize(), chromeBindings, { active -> activeDestination = active; services.activeDestinationChanged(active) }, saveable, leaf)
++                Modifier.fillMaxSize(), chromeBindings, { active -> activeDestination = active; services.activeDestinationChanged(active) }, saveable,
++                { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists) })
+         }
+         }
+     }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -1358,8 +1358,8 @@
+                     { DesktopOriginalNowPlayingVisibility(listening.current!=null&&!rootNowPlayingDismissed,
+                         physicalDestination is BiliPaiNavKey.AudioMode,pipActive,true,false,
+                         physicalDestination is BiliPaiNavKey.VideoDetail,actualWindow.width>actualWindow.height,
+-                        physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe)
+-                DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted ->
++                        physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe,library)
++                DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists ->
+                     CompositionLocalProvider(LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable)) {
+ 
+                 val section = desktopReadySection(entryKey)
+@@ -1608,7 +1608,69 @@
+                                     }
+                                 }
+                             }
+-                            section in listOf(DesktopSection.CLOUD_HISTORY, DesktopSection.WATCH_LATER, DesktopSection.FOLLOWINGS, DesktopSection.LIKED) ->
++                            entryKey == BiliPaiNavKey.History || entryKey is BiliPaiNavKey.HistorySearch || entryKey is BiliPaiNavKey.LikedVideos -> {
++                                val entry = if (entryKey is BiliPaiNavKey.LikedVideos) personalLists.liked(entryKey)
++                                    else personalLists.history(entryKey)
++                                val queue = entry.queueBridge {
++                                    DesktopFavoriteQueueBridge(playback, listen, entry::owns,
++                                        { audio -> systemTargetAudio == audio },
++                                        beforeOpen = { audio ->
++                                            if (!entry.owns() || isClosing() || activatingUpdate ||
++                                                !checkpointForNavigation() || (audio && listen == null)) false
++                                            else {
++                                                changePreferences(preferences.copy(playbackMode = com.bilipai.desktop.player.PlaybackMode.SEQUENTIAL))
++                                                storyHost.retire(); retainedMedia.stop()
++                                                if (audio) { playback.pause(); systemTargetAudio = true }
++                                                else { listen?.pause(); systemTargetAudio = false }
++                                                true
++                                            }
++                                        },
++                                        revealVideo = {
++                                            playback.state.value.queue.getOrNull(playback.state.value.queueIndex)?.let { card ->
++                                                if (entry.owns()) commands.video(BiliPaiNavKey.VideoDetail(card.bvid,
++                                                    card.preferredCid, card.cover,
++                                                    initialVertical = entry.viewModel.uiState.value.items.firstOrNull { it.bvid == card.bvid }?.isVertical == true,
++                                                    sourceRoute = entry.key.toLegacyRoute()))
++                                            }
++                                        }, revealAudio = {
++                                            listen?.state?.value?.current?.let { item -> if (entry.owns()) commands.push(
++                                                BiliPaiNavKey.AudioMode(item.bvid, item.cid,
++                                                    ((listen.player.state.value.positionSeconds) * 1000L).toLong())) }
++                                        })
++                                }
++                                val prefs = personalLists.preferences
++                                val bindings = remember(entry, queue, rootTextShareBindings) {
++                                    DesktopFavoriteBindings(prefs.showOnlineCount, prefs.homeSettings, prefs.initialHomeSettings(),
++                                        prefs.navigationSettings, prefs.initialNavigationSettings(), entry.categories,
++                                        queue::openQueue, queue::appendQueue,
++                                        { subject, text, _ -> requestDesktopTextShare(rootTextShareBindings, entry.scope,
++                                            subject, text, entry::owns, { error = it }) }, prefs.homeFeedCardStyle,
++                                        desktopDetailRenderEffectsSupported(), prefs.backToTopEnabled, prefs.initialBackToTopEnabled(),
++                                        prefs.backToTopOffset, prefs.initialBackToTopOffset(),
++                                        { x,y -> if(entry.owns()) prefs.setBackToTopOffset(x,y) },
++                                        { x,y -> if(entry.owns()) prefs.updateBackToTopOffset(x,y) })
++                                }
++                                val personalNavigation = remember(entry, commands) {
++                                    val article = DesktopPersonalArticleResolver(repository.ownedHomeCallFactory(
++                                        personalLists.gate.epoch, entry::owns), entry::owns)
++                                    DesktopPersonalListNavigation(
++                                        { key -> if(entry.owns()) commands.push(key) },
++                                        { route -> if(entry.owns()) commands.push(com.android.purebilibili.navigation3.legacyRouteToBiliPaiNavKey(route)) },
++                                        article::resolve, { key -> if(entry.owns()) commands.video(key) })
++                                }
++                                DesktopDetailWindow {
++                                    DesktopOriginalPersonalListHost(entry, bindings, personalNavigation,
++                                        onBack = { commands.back() }, onUp = { commands.push(BiliPaiNavKey.Space(it)) },
++                                        onOpenHistorySearch = { commands.push(BiliPaiNavKey.HistorySearch(it)) },
++                                        revealQueue = queue::revealIfOwned,
++                                        onPlayAllAudio = { bvid,cid -> if(!queue.revealIfOwned(bvid,cid,true)) error="音频播放器当前不可用" },
++                                        historySearchChannel = personalLists.historySearchChannel,
++                                        historyScrollToTopChannel = personalLists.historyScrollToTopChannel,
++                                        globalHazeState = personalLists.globalHazeState,
++                                        isCurrentPage = active && !activatingUpdate)
++                                }
++                            }
++                            section in listOf(DesktopSection.WATCH_LATER, DesktopSection.FOLLOWINGS) ->
+                                 PersonalContentScreen(when(section) {
+                                     DesktopSection.CLOUD_HISTORY -> PersonalSection.HISTORY
+                                     DesktopSection.WATCH_LATER -> PersonalSection.WATCH_LATER

@@ -1,0 +1,30 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlobSHA256": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226",
+    "lfSHA256": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226",
+    "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\download\\OfflineVideoPlayerScreen.kt"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlaybackPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlobSHA256": "d0557a25563a5a5362917680a6233123aba5abd82df96abe325696d281ba07ba",
+    "lfSHA256": "d0557a25563a5a5362917680a6233123aba5abd82df96abe325696d281ba07ba",
+    "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\download\\OfflineVideoPlaybackPolicy.kt"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflinePlaybackSessionPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlobSHA256": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6",
+    "lfSHA256": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6",
+    "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\download\\OfflinePlaybackSessionPolicy.kt"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlobSHA256": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed",
+    "lfSHA256": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed",
+    "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\player\\PlayerSettingsStore.kt"
+  }
+]

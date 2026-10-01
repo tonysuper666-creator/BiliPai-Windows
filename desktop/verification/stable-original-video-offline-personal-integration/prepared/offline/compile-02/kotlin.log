@@ -1,0 +1,6 @@
+desktop\.local\stable-original-offline-player-parity\compile-inputs\bridge\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOfflineTaskPlayerBinding.kt:107:107: warning: expression is unused.
+                        { if(onEpisode!=null)onEpisode(previous.id) else open(previous.id, onOnlinePlay); Unit }
+                                                                                                          ^^^^
+desktop\.local\stable-original-offline-player-parity\compile-inputs\bridge\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOfflineTaskPlayerBinding.kt:110:99: warning: expression is unused.
+                        { if(onEpisode!=null)onEpisode(next.id) else open(next.id, onOnlinePlay); Unit }
+                                                                                                  ^^^^

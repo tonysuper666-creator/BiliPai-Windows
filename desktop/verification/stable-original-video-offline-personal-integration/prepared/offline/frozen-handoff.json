@@ -1,0 +1,392 @@
+{
+  "status": "FROZEN_SOURCE_ONLY",
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifactCount": 84,
+  "artifacts": [
+    {
+      "path": "bridge-delta.json",
+      "sha256Bytes": "da34c08299f6155000d03b34cc17c711ee1a1e92a12d5a14a0b4223b1a9f5237"
+    },
+    {
+      "path": "compile-01/compile-result.json",
+      "sha256Bytes": "b9c4daa0503f5158544e0961a731f6cf2c959b4f6d93fc89305b42edecdc1940"
+    },
+    {
+      "path": "compile-01/kotlin.args",
+      "sha256Bytes": "fcd17c79e9da8fc7143970fc9698ae6dcd0c16249f471172937ddd922cb19c17"
+    },
+    {
+      "path": "compile-01/kotlin.log",
+      "sha256Bytes": "e00efc0b192afa238b06698b69f1605c219c70d6f853cd84e3c214aa651474ab"
+    },
+    {
+      "path": "compile-01/original-offline-player.jar",
+      "sha256Bytes": "ccafad1715306da751f7a64d8b1183cd5e78e8eddc67252074b7d0e53b767f2d"
+    },
+    {
+      "path": "compile-02/compile-result.json",
+      "sha256Bytes": "aafa52147c3ae00d33fdf43642157477cc09134d63fd7116654e17bbd97d3207"
+    },
+    {
+      "path": "compile-02/kotlin.args",
+      "sha256Bytes": "b3d8d4760a993eb3fec013d041ded970ec8de44ada9cb037e92befbecb29e2c2"
+    },
+    {
+      "path": "compile-02/kotlin.log",
+      "sha256Bytes": "e00efc0b192afa238b06698b69f1605c219c70d6f853cd84e3c214aa651474ab"
+    },
+    {
+      "path": "compile-02/original-offline-player.jar",
+      "sha256Bytes": "846ec30c9c4924a8fecb449f6c374954eef53f56a716705a3d387aa3c40a1c90"
+    },
+    {
+      "path": "compile-03/compile-result.json",
+      "sha256Bytes": "15535f5965425a1cf7a43c2e869ef3a731974df1a9edda19f1bd08129d8aea41"
+    },
+    {
+      "path": "compile-03/kotlin.args",
+      "sha256Bytes": "814adb9ae366aa6a2bc8137f9d490fad8871b78c69703d6c0319ab1f03936842"
+    },
+    {
+      "path": "compile-03/kotlin.log",
+      "sha256Bytes": "e00efc0b192afa238b06698b69f1605c219c70d6f853cd84e3c214aa651474ab"
+    },
+    {
+      "path": "compile-03/original-offline-player.jar",
+      "sha256Bytes": "15175325807df280892d129d8a149bb7756345f4505df29e40ae359931150d70"
+    },
+    {
+      "path": "compile-04/compile-result.json",
+      "sha256Bytes": "64f56b623489260a25384a1ee5fd5cb423318eb3fe25f102c932698ab670d483"
+    },
+    {
+      "path": "compile-04/kotlin.args",
+      "sha256Bytes": "f12df0a0d1a3b03a13882ac0ec951f7ce7e5cb2755f4cfa159c0146c2912a151"
+    },
+    {
+      "path": "compile-04/kotlin.log",
+      "sha256Bytes": "e00efc0b192afa238b06698b69f1605c219c70d6f853cd84e3c214aa651474ab"
+    },
+    {
+      "path": "compile-04/original-offline-player.jar",
+      "sha256Bytes": "a5b65a5daf08a83fe8dcb1df0fd703c3a9ef9adb35718cb685bf49c1a9791210"
+    },
+    {
+      "path": "compile-05/compile-result.json",
+      "sha256Bytes": "b0a3231270e260aedaaa022bd1414fa91c62f9954a0af4006566ef214b44f625"
+    },
+    {
+      "path": "compile-05/kotlin.args",
+      "sha256Bytes": "fad5620d7d38fa6e2847abfc19152f4a24430637448a8e096ed3e27e493f1639"
+    },
+    {
+      "path": "compile-05/kotlin.log",
+      "sha256Bytes": "e00efc0b192afa238b06698b69f1605c219c70d6f853cd84e3c214aa651474ab"
+    },
+    {
+      "path": "compile-05/original-offline-player.jar",
+      "sha256Bytes": "5e03d94f6e95391470eb9f6c6192e370393008ce3e80af759ad19011affc243f"
+    },
+    {
+      "path": "compile-inputs/bridge/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineTaskPlayerBinding.kt",
+      "sha256Bytes": "1274a2e6ca918ff1701ef2fdf65cbd1e3473115b97655e5a578fcee39aaf9ac7"
+    },
+    {
+      "path": "compile-inputs/overlay/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "3d388c4b158f009296d474a96793eecea241e0dd8f2e51e457731e7996377e09"
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "78eb80f8d8c544ed3076d6c926a9026a679c0d2aab909932e05608834a75b8f7"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "9c9f36247f7e3db2c26f73956f9680bfd438dcb2de539464e34b61bcbdc08db4"
+    },
+    {
+      "path": "generation-audit/com/android/purebilibili/core/store/player/DesktopOriginalLongPressSpeedSettings.kt",
+      "sha256Bytes": "f39d8887a6f8d5ae8fe37d458b768b0696d92a16a72cd4ad02efc971af9fd198"
+    },
+    {
+      "path": "generation-audit/com/android/purebilibili/feature/download/DesktopOfflineInteractionPolicy.kt",
+      "sha256Bytes": "4c3d8c24d180f51e40fef44dfaa5f63b34835379464352edd760b37d57c4ab3c"
+    },
+    {
+      "path": "generation-audit/com/android/purebilibili/feature/download/OfflinePlaybackSessionPolicy.kt",
+      "sha256Bytes": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6"
+    },
+    {
+      "path": "generation-audit/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+      "sha256Bytes": "ae07ddf23c6cfe567f08ed97251012e475071bfa78778942140a3306ac448aef"
+    },
+    {
+      "path": "generation-audit/source-receipt.json",
+      "sha256Bytes": "817ff11a4fe194b9396ff0359d358ca23b37443b21bf2cd1d576d3ae8d83f87e"
+    },
+    {
+      "path": "generation-audit-final/com/android/purebilibili/core/store/player/DesktopOriginalLongPressSpeedSettings.kt",
+      "sha256Bytes": "f39d8887a6f8d5ae8fe37d458b768b0696d92a16a72cd4ad02efc971af9fd198"
+    },
+    {
+      "path": "generation-audit-final/com/android/purebilibili/feature/download/DesktopOfflineInteractionPolicy.kt",
+      "sha256Bytes": "4c3d8c24d180f51e40fef44dfaa5f63b34835379464352edd760b37d57c4ab3c"
+    },
+    {
+      "path": "generation-audit-final/com/android/purebilibili/feature/download/OfflinePlaybackSessionPolicy.kt",
+      "sha256Bytes": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6"
+    },
+    {
+      "path": "generation-audit-final/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+      "sha256Bytes": "5dea4737674fa7e5cfc3c0c2dd38488087313c65606e16b5b7e7da59211a31f4"
+    },
+    {
+      "path": "generation-audit-final/source-receipt.json",
+      "sha256Bytes": "a6745fa1cb36406cedbe45c2f65c5db0d5027829f1245437fbf3c0ffaadd1011"
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "9efc1f249d25ca957d09394305ea1e70f87b4e7cc3cf816fa8f3c766cadff078"
+    },
+    {
+      "path": "make-producer.py",
+      "sha256Bytes": "68ec84717bc6e0f4e22ef4fee47263bd3635568c90b6d6df8fe1f74098c5bb0a"
+    },
+    {
+      "path": "OfflineOriginalFixture.kt",
+      "sha256Bytes": "e95f06ff68cda2d6af6df694b4f673411a78067dda9b7c88be13973804fe07b8"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+      "sha256Bytes": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/download/OfflinePlaybackSessionPolicy.kt",
+      "sha256Bytes": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlaybackPolicy.kt",
+      "sha256Bytes": "d0557a25563a5a5362917680a6233123aba5abd82df96abe325696d281ba07ba"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+      "sha256Bytes": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226"
+    },
+    {
+      "path": "overlay-delta.json",
+      "sha256Bytes": "e6b5d58ae95c9f3cae9da683508cef9087e9e5b7fe6b5f8275c8e4ca95f1f40b"
+    },
+    {
+      "path": "prepare-platform.py",
+      "sha256Bytes": "cbdeba26c0468b34bcad302d06aba2b9fdb9f50d341f56a5051e173d5269eb4c"
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "48a74b2f88e9fb73582daa8d0c728c265fd73126dcde12e432248e3bbd6ec73f"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineMpvControl.kt",
+      "sha256Bytes": "7f667404eb2b8bcb142764cb1bd16d3b4d8a359529d3cf2bd86eda6e370a59b1"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineRootMediaEffects.kt",
+      "sha256Bytes": "4d8ab6c0e45379471423f14b59c02aae0f030015f061154c7d37c483fc6768fd"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflinePlayerBindings.kt",
+      "sha256Bytes": "51e6408f7ae196f9a760ce903790879d6800512ef5ed9f2f4e3da8cfc932940c"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-offline-player.py",
+      "sha256Bytes": "aae44d0243bf85db90a7ee9bc5cf7a3c947bcaaa48ea356b46d378ec935f2532"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/store/player/DesktopOriginalLongPressSpeedSettings.kt",
+      "sha256Bytes": "f39d8887a6f8d5ae8fe37d458b768b0696d92a16a72cd4ad02efc971af9fd198"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/download/DesktopOfflineInteractionPolicy.kt",
+      "sha256Bytes": "4c3d8c24d180f51e40fef44dfaa5f63b34835379464352edd760b37d57c4ab3c"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/download/OfflinePlaybackSessionPolicy.kt",
+      "sha256Bytes": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+      "sha256Bytes": "5dea4737674fa7e5cfc3c0c2dd38488087313c65606e16b5b7e7da59211a31f4"
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "59c70a5eacf705d8056b8c027bc210203281927bde2766ab971623098fcd9c1b"
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sha256Bytes": "0eb1cded4e8c4f42c496ab69b74f7fbaa399bb43bf419d50368f078323182703"
+    },
+    {
+      "path": "proof-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-02/compiler.args",
+      "sha256Bytes": "dafd1ba0991c07fe3a40eb77c7e492df5ea2e8526c5e1889e85dee2510594852"
+    },
+    {
+      "path": "proof-02/offline-original-fixture.jar",
+      "sha256Bytes": "9193a42dff179b6d6a322e7f10a75028780ce94a63751f0d40e692a0fbfb846a"
+    },
+    {
+      "path": "proof-02/proof-result.json",
+      "sha256Bytes": "1000c4930603d8637aca7231d60dcc22186e74ee86a173dd091d6ad6a1620355"
+    },
+    {
+      "path": "proof-02/run.log",
+      "sha256Bytes": "2f76a704452d8fd4603638ca76b87989fef6a9c89eb2f54c7ab1ee525e86298c"
+    },
+    {
+      "path": "proof-02/runtime-command.json",
+      "sha256Bytes": "f0418bbc2279138ddfd9f9772c25e67b8606fbf9533f3b2a44ccaf6aefc5ef1a"
+    },
+    {
+      "path": "proof-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-03/compiler.args",
+      "sha256Bytes": "430818f281ea07a1945a257e1819244b91afcdcdb3cef76abe122b87204bcecb"
+    },
+    {
+      "path": "proof-03/offline-original-fixture.jar",
+      "sha256Bytes": "adb0aa926ad0061b7c73db7f11f965be53208ebe0c73cca71b92b9f19e5b2a66"
+    },
+    {
+      "path": "proof-03/pins-after.json",
+      "sha256Bytes": "0bdb696a84dffd876235d5388aea3bc5348b7dc112ea5e6cc3f2935f9f6216ba"
+    },
+    {
+      "path": "proof-03/pins-before.json",
+      "sha256Bytes": "0bdb696a84dffd876235d5388aea3bc5348b7dc112ea5e6cc3f2935f9f6216ba"
+    },
+    {
+      "path": "proof-03/proof-result.json",
+      "sha256Bytes": "61e826ce07ec4bc5b6bade3bbda34e36eb5802ea3425946e41b2d33f684a53c7"
+    },
+    {
+      "path": "proof-03/run.log",
+      "sha256Bytes": "fae8f1dd9f89c29610376961a0470c1bc49836d665c3856a1e0f61ca9bd41b7f"
+    },
+    {
+      "path": "proof-03/runtime-command.json",
+      "sha256Bytes": "db0bffcd03c8ed4e95f857795b94e73c2d308c1f50a4cef56c609e730c4ef0a5"
+    },
+    {
+      "path": "proof-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-04/compiler.args",
+      "sha256Bytes": "a4c923cf0c69b41a288b440b4cd11ba671865cdb8b5ad8507559aa99e52a451b"
+    },
+    {
+      "path": "proof-04/offline-original-fixture.jar",
+      "sha256Bytes": "c5991443420997d453879988612f81e1f3f03e780cfce90a744dc76ca03a3898"
+    },
+    {
+      "path": "proof-04/pins-after.json",
+      "sha256Bytes": "494d1ed2ef1977e083c1ca0b77bcdc1b1b1b1b0765733499669c8cbe24465e09"
+    },
+    {
+      "path": "proof-04/pins-before.json",
+      "sha256Bytes": "494d1ed2ef1977e083c1ca0b77bcdc1b1b1b1b0765733499669c8cbe24465e09"
+    },
+    {
+      "path": "proof-04/proof-result.json",
+      "sha256Bytes": "63e365206ef84be8878f35a9aa543097b55a82c5f909c83fa176879fc97f788a"
+    },
+    {
+      "path": "proof-04/run.log",
+      "sha256Bytes": "18c2e9ebf32a6995ea31936f675e5e867f8559c9d70fee199bfe516bf0d0a605"
+    },
+    {
+      "path": "proof-04/runtime-command.json",
+      "sha256Bytes": "2e5f19a7dcb7d6c88975e4dec6edbecde6dce9619b460b06b24530de22ef6d57"
+    },
+    {
+      "path": "registry-delta.json",
+      "sha256Bytes": "00e13d4c62a37414acbbde7685007baf52dac7b01c04c10ebda4c3b501e73fac"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "bb4258993396e123b0f3e9db16b76b37b0df72fbc08455bb3c2ef1539499eb60"
+    },
+    {
+      "path": "run-proof.py",
+      "sha256Bytes": "a4dcc3eee32b4452a1a5df29ef269492cc2f21730f0553f8a52c9dbdd2ef02fd"
+    },
+    {
+      "path": "shared-surface-contract.json",
+      "sha256Bytes": "98a8c7dd5e4d9e632b88f354ed02b67514776b6618c7ca5913c2460be82b4976"
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "102a884632d2e0c853f508524d48a28040f790ac882606525925aeda99a2abbd"
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "b93929750057e67b769d44400fabddf1004680c30b1882ddb5f500899a26a8b9"
+    },
+    {
+      "path": "ui-platform-delta.json",
+      "sha256Bytes": "d9c124b426b02e41bad4d96c01693516a20fda12a23ead339dac97ce71d74f81"
+    }
+  ],
+  "installContract": {
+    "path": "install-contract.json",
+    "sha256Bytes": "9efc1f249d25ca957d09394305ea1e70f87b4e7cc3cf816fa8f3c766cadff078"
+  },
+  "finalSourceAudit": {
+    "path": "source-audit.json",
+    "sha256Bytes": "102a884632d2e0c853f508524d48a28040f790ac882606525925aeda99a2abbd"
+  },
+  "finalCompile": "compile-05",
+  "finalProof": "proof-04",
+  "groups": 3,
+  "assertions": 24,
+  "pointerPairs": 1,
+  "runtimeSnapshot": 47,
+  "runtimeEntries": 97,
+  "sharedSourceDependency": {
+    "soleOwner": "/root/player_parity/dynamic_action_review",
+    "frozenStage1": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-full-ui-parity\\frozen-stage1.json",
+      "sha256Bytes": "6019bfa5ffdd3ca51b413add293c6dd724867e5f9c9731d3dbba2f515181e564"
+    },
+    "surfaceSource": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-full-ui-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalPlayerSurface.kt",
+      "sha256Bytes": "332bc71f6a56647e7c913e92c52478dd34f127bda8ccc593598ae3795eedc79b",
+      "referenceOnlyNotCopiedOrInstalledHere": true
+    },
+    "signature": "@Composable internal fun DesktopOriginalPlayerSurface(player:MpvPlayer,sourceVersion:Long?,isOwned:()->Boolean,modifier:Modifier,foreground:@Composable()->Unit)",
+    "delegate": "DesktopOriginalPlayerSurface(control.nativePlayer,control.sourceVersion,control::isForegroundOwned,modifier,foreground)",
+    "loadingForegroundDoesNotGrantNativeWrites": true,
+    "gestureCompileProofReference": {
+      "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-full-ui-parity\\runs\\03\\candidate.jar",
+      "sha256Bytes": "a95cfab0d91e528bf443edd529445352d5c2d250584d0b8a75ed69fb5ff34b65",
+      "prospectiveNotActual": true,
+      "otherSharedJarFamiliesNotInstalledHere": true
+    },
+    "noBinaryFallbackOrNewDependency": true,
+    "rootRequired": [
+      "Install child sole original GestureLevelOverlay/source closure and Surface, never this proof JAR.",
+      "Consume actual PiP active state so only one MPV Canvas/popup carrier attaches.",
+      "Actual HWND pointer input and Root window/SMTC/PiP acceptance remain required."
+    ]
+  },
+  "wholeRootNativeAcceptancePending": true,
+  "historyUnmodified": [
+    "3146 initial bridge",
+    "DownloadList58",
+    "Download actual47 proof771e"
+  ],
+  "noLiveMutationOrGradle": true
+}

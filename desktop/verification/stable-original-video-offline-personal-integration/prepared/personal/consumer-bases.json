@@ -1,0 +1,12 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+    "baseSha256LfUtf8": "89dff1ee1b2e12848b53e0ec1325bef6440108e94dd677c560b27c3904e2fb90",
+    "desiredSha256LfUtf8": "259e0c0cde2c73c664c61145e6379d864691b2c6dad7276bc54d0bd78dc5236e"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "baseSha256LfUtf8": "9f2ee694ac6df39da28c4dd459b94bdec356630f47fffcf2f7ef080093f6cece",
+    "desiredSha256LfUtf8": "ea9f42b0b7d326eb771748c71ad9b2614a16892986663c1bd9ca4273c4509bbe"
+  }
+]

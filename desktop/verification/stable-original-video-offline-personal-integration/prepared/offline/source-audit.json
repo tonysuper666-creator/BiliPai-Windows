@@ -1,0 +1,123 @@
+{
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "fourSourceGitBlobPinsVerified": true,
+  "sourceInventory": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlobSHA256": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226",
+      "lfSHA256": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\download\\OfflineVideoPlayerScreen.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlaybackPolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlobSHA256": "d0557a25563a5a5362917680a6233123aba5abd82df96abe325696d281ba07ba",
+      "lfSHA256": "d0557a25563a5a5362917680a6233123aba5abd82df96abe325696d281ba07ba",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\download\\OfflineVideoPlaybackPolicy.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflinePlaybackSessionPolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlobSHA256": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6",
+      "lfSHA256": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\download\\OfflinePlaybackSessionPolicy.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlobSHA256": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed",
+      "lfSHA256": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-offline-player-parity\\original-stable\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\player\\PlayerSettingsStore.kt"
+    }
+  ],
+  "completeOriginalUiLines": 1225,
+  "fullDeclarations": [
+    "GestureMode",
+    "OfflineVideoPlayerScreen",
+    "ProgressInfo",
+    "OfflineProgressBar"
+  ],
+  "uiEdits": 60,
+  "exactPositionalReplayAndInverse": true,
+  "selectedBodies": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlaybackPolicy.kt",
+      "sha256LF": "d0557a25563a5a5362917680a6233123aba5abd82df96abe325696d281ba07ba",
+      "output": "com/android/purebilibili/feature/download/DesktopOfflineInteractionPolicy.kt",
+      "outputSha256LF": "4c3d8c24d180f51e40fef44dfaa5f63b34835379464352edd760b37d57c4ab3c",
+      "selectedMethods": [
+        "resolveOfflineVideoStartFullscreen",
+        "shouldResumePlaybackAfterOfflineSeek",
+        "shouldShowOfflineDanmakuControl",
+        "shouldShowOfflineDanmakuLayer",
+        "resolveOfflineSeekProgressFromTouch",
+        "resolveOfflineSeekPositionFromTouch"
+      ],
+      "selectedOriginalSha256LF": "172bfb706b4013a0ad0b3107bb0a90e04f89824e85d40158f09d5c7fd5c63ab8",
+      "selectedAdaptedSha256LF": "5134e20f02ac032320ba8e6ce79c29311b4700c8b5ceb84ca00a99b5f71001ca",
+      "exactInversePass": true,
+      "persistedPositionHelperReusedExistingMediaProducer": true,
+      "AndroidPhoneOrientationHelpersRetainedReviewOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+      "sha256LF": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed",
+      "output": "com/android/purebilibili/core/store/player/DesktopOriginalLongPressSpeedSettings.kt",
+      "outputSha256LF": "f39d8887a6f8d5ae8fe37d458b768b0696d92a16a72cd4ad02efc971af9fd198",
+      "selectedMethods": [
+        "getLongPressSpeed"
+      ],
+      "originalGetterSha256LF": "ead18d842382be4d3fc9d6b828bc9e745586d3dec4804fea48c3ef359537d65f",
+      "adaptedGetterSha256LF": "8f8e795ac0a34fa5ee053b384752f8e70d679ca42008b4c1ad7a35b21ac2f5a0",
+      "exactInversePass": true,
+      "canonicalKey": "long_press_speed",
+      "existingDefaultAndNormalizePolicyReused": true
+    }
+  ],
+  "soleDirect": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflinePlaybackSessionPolicy.kt",
+    "mode": "direct",
+    "sha256LF": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6",
+    "standaloneEmitted": true,
+    "productionSyncSoleCopy": true
+  },
+  "generation": [
+    {
+      "path": "com/android/purebilibili/core/store/player/DesktopOriginalLongPressSpeedSettings.kt",
+      "sha256Bytes": "f39d8887a6f8d5ae8fe37d458b768b0696d92a16a72cd4ad02efc971af9fd198"
+    },
+    {
+      "path": "com/android/purebilibili/feature/download/DesktopOfflineInteractionPolicy.kt",
+      "sha256Bytes": "4c3d8c24d180f51e40fef44dfaa5f63b34835379464352edd760b37d57c4ab3c"
+    },
+    {
+      "path": "com/android/purebilibili/feature/download/OfflinePlaybackSessionPolicy.kt",
+      "sha256Bytes": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6"
+    },
+    {
+      "path": "com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+      "sha256Bytes": "5dea4737674fa7e5cfc3c0c2dd38488087313c65606e16b5b7e7da59211a31f4"
+    }
+  ],
+  "localDeltas": [
+    {
+      "file": "bridge-delta.json",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineTaskPlayerBinding.kt",
+      "hunks": 5,
+      "baseLfSha256": "29a47115d6eb7e340c38907ea5b12766ad70e2c3877c504341d4a2fe7d7e473c",
+      "candidateLfSha256": "1274a2e6ca918ff1701ef2fdf65cbd1e3473115b97655e5a578fcee39aaf9ac7",
+      "exactReplayAndInverse": true
+    },
+    {
+      "file": "overlay-delta.json",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "hunks": 16,
+      "baseLfSha256": "270bbedec2b28d63254d04263d3e12a5d4e5226d2231eecbc2f5567099e57d14",
+      "candidateLfSha256": "3d388c4b158f009296d474a96793eecea241e0dd8f2e51e457731e7996377e09",
+      "exactReplayAndInverse": true
+    }
+  ],
+  "actualRuntimePins": 97,
+  "noLiveMutationOrGradle": true
+}

@@ -1,0 +1,33 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineTaskPlayerBinding.kt",
+  "baseFrozenBridge": "3146f18a8aa93dbabd88ea5bafda6192399db7ddf90d3226c4f093cb56cf4c23",
+  "baseLfSha256": "29a47115d6eb7e340c38907ea5b12766ad70e2c3877c504341d4a2fe7d7e473c",
+  "candidateLfSha256": "1274a2e6ca918ff1701ef2fdf65cbd1e3473115b97655e5a578fcee39aaf9ac7",
+  "hunks": [
+    {
+      "label": "manual original-consumer entry without another actor",
+      "before": "    fun open(taskId: String, onOnlinePlay: (DownloadTask) -> Unit): Job? {",
+      "after": "    fun open(taskId: String, onOnlinePlay: (DownloadTask) -> Unit): Job? = openOwned(taskId,onOnlinePlay,null)\n\n    /** The complete original screen owns its episode state, asset effect and two-second checkpoint effect. */\n    internal fun openOriginal(taskId:String,onEpisode:(String)->Unit):Job? =\n        openOwned(taskId,{throw IllegalStateException(\"视频文件已被删除\")},onEpisode)\n\n    private fun openOwned(taskId: String, onOnlinePlay: (DownloadTask) -> Unit, onEpisode:((String)->Unit)?): Job? {"
+    },
+    {
+      "label": "original previous UI state",
+      "before": "{ open(previous.id, onOnlinePlay); Unit }",
+      "after": "{ if(onEpisode!=null)onEpisode(previous.id) else open(previous.id, onOnlinePlay); Unit }"
+    },
+    {
+      "label": "original next UI state",
+      "before": "{ open(next.id, onOnlinePlay); Unit }",
+      "after": "{ if(onEpisode!=null)onEpisode(next.id) else open(next.id, onOnlinePlay); Unit }"
+    },
+    {
+      "label": "no duplicate original asset/checkpoint jobs",
+      "before": "                    memory.assetsJob = entryScope.launch { loadDanmaku(taskId, nativeVersion, version) }\n                    memory.checkpointJob = entryScope.launch {\n                        while (isActive && ownsRequest(version) && ownsAcceptedSource()) {\n                            delay(2_000L)\n                            checkpoint()\n                        }\n                    }",
+      "after": "                    if(onEpisode==null) {\n                        memory.assetsJob = entryScope.launch { loadDanmaku(taskId, nativeVersion, version) }\n                        memory.checkpointJob = entryScope.launch {\n                            while (isActive && ownsRequest(version) && ownsAcceptedSource()) {\n                                delay(2_000L)\n                                checkpoint()\n                            }\n                        }\n                    }"
+    },
+    {
+      "label": "same Store entry-admission and exact source release",
+      "before": "    fun setDanmakuEnabled(enabled: Boolean) {",
+      "after": "    internal fun persistOriginal(taskId:String,positionMs:Long) {\n        val version=generation.get()\n        admit(version) {\n            if(ownsAcceptedSource() && acceptedTaskId==taskId) {\n                val durationMs=(player!!.state.value.durationSeconds*1000).toLong()\n                manager.savePlaybackPosition(taskId,positionMs,durationMs)\n            }\n        }\n    }\n\n    internal suspend fun loadOriginalDanmaku(taskId:String,standard:List<java.nio.file.Path>,special:List<java.nio.file.Path>) {\n        currentCoroutineContext().ensureActive()\n        val nativeVersion=acceptedVersion ?: return\n        val version=generation.get()\n        if(!ownsRequest(version)||!ownsAcceptedSource()||acceptedTaskId!=taskId)return\n        val task=selectedTask(taskId) ?: return\n        overlay?.loadOffline(standard,special,task.item.duration.toDouble(),expectedSourceVersion=nativeVersion,\n            stillOwned={ownsRequest(version)&&ownsAcceptedSource()&&acceptedTaskId==taskId&&acceptedVersion==nativeVersion})\n        currentCoroutineContext().ensureActive()\n    }\n\n    internal fun releaseOriginal(taskId:String,nativeVersion:Long?) {\n        if(nativeVersion==null)return\n        val version=generation.get()\n        admit(version) {\n            if(ownsAcceptedSource() && acceptedTaskId==taskId && acceptedVersion==nativeVersion) {\n                memory.stopPlayback();memory.current=null\n                acceptedVersion=null;acceptedTaskId=null\n            }\n        }\n    }\n\n    fun setDanmakuEnabled(enabled: Boolean) {"
+    }
+  ]
+}

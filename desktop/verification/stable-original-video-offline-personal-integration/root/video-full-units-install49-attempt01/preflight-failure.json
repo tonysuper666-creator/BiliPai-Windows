@@ -1,0 +1,1 @@
+{"stage": "Gradle source root preflight", "candidateMutated": false, "failure": "Existing build has several Kotlin main source blocks, so unique marker assumption was wrong. Append independent sole tasks and source root once instead."}

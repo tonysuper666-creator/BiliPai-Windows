@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "sources": 30,
+  "exitCode": 0,
+  "actual47RuntimeEntries": 97,
+  "productAcceptance": false,
+  "candidateJarSha256Bytes": "c5f39cd09c0ab7111ffb3628ed8ecaf0dc0a62eba8a741306f3667ca8690dae6",
+  "explicitExistingOverride": "Metadata renderer visibility only; original bodies preserved"
+}

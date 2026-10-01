@@ -1,0 +1,31 @@
+--- original:favoriteVideo
++++ owned:favoriteVideo
+@@ -1,7 +1,8 @@
+     suspend fun favoriteVideo(aid: Long, favorite: Boolean, folderId: Long? = null): Result<Boolean> {
+         return withContext(Dispatchers.IO) {
++            currentCoroutineContext().ensureActive(); assertOwned()
+             try {
+-                val csrf = TokenManager.csrfCache ?: ""
++                val csrf = readCsrf() ?: ""
+                 if (csrf.isEmpty()) {
+                     return@withContext Result.failure(Exception("请先登录"))
+                 }
+@@ -18,13 +19,17 @@
+                     api.dealFavorite(rid = aid, addIds = "", delIds = targetFolderId.toString(), csrf = csrf)
+                 }
+                 
++                currentCoroutineContext().ensureActive(); assertOwned()
+                 if (response.code == 0) {
+                     Result.success(favorite)
+                 } else {
+                     Result.failure(Exception(response.message.ifEmpty { "操作失败: ${response.code}" }))
+                 }
++            } catch (cancelled: CancellationException) {
++                throw cancelled
+             } catch (e: Exception) {
+-                android.util.Log.e("ActionRepository", "favoriteVideo failed", e)
++                assertOwned()
++                Logger.e("ActionRepository", "favoriteVideo failed", e)
+                 Result.failure(e)
+             }
+         }

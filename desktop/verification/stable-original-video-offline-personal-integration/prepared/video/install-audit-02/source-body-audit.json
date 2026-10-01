@@ -1,0 +1,216 @@
+{
+  "passed": true,
+  "identities": 24,
+  "outputs": 26,
+  "directFullFileByteEqual": 8,
+  "completeOrdinaryInfoBodiesReverseNormalized": 5,
+  "wholeActionRemainingBodyByteEqual": true,
+  "rows": [
+    {
+      "name": "VideoTitleSection",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "sourceStartLine": 295,
+      "sourceEndLine": 388,
+      "originalBodySha256LF": "95cd93195a4b14ff6b378ac11a6e0ef36ee7ddc8a08a0e578a2f173f00c6076c",
+      "generatedFile": "feature/video/ui/section/DesktopOriginalVideoInfoSection.kt",
+      "generatedBodySha256LF": "95cd93195a4b14ff6b378ac11a6e0ef36ee7ddc8a08a0e578a2f173f00c6076c",
+      "reverseNormalizedBodyEqual": true,
+      "declaredPlatformAdaptation": true
+    },
+    {
+      "name": "VideoDetailSponsorLabelChip",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "sourceStartLine": 400,
+      "sourceEndLine": 436,
+      "originalBodySha256LF": "c33e57e686e8fb16d1bdabfc76e2bc8279aa5823c5aea41051822462916dd84e",
+      "generatedFile": "feature/video/ui/section/DesktopOriginalVideoInfoSection.kt",
+      "generatedBodySha256LF": "c33e57e686e8fb16d1bdabfc76e2bc8279aa5823c5aea41051822462916dd84e",
+      "reverseNormalizedBodyEqual": true,
+      "declaredPlatformAdaptation": true
+    },
+    {
+      "name": "VideoTitleWithDesc",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "sourceStartLine": 440,
+      "sourceEndLine": 938,
+      "originalBodySha256LF": "24d94408abe383393b283adb28da3366f743d5a4c3832aa6c4eeed328d9617d5",
+      "generatedFile": "feature/video/ui/section/DesktopOriginalVideoInfoSection.kt",
+      "generatedBodySha256LF": "118e29c521f6194dc5e3a1e645f678701818c704c0ec0d50dd4a628b79d1b3b3",
+      "reverseNormalizedBodyEqual": true,
+      "declaredPlatformAdaptation": true
+    },
+    {
+      "name": "UpInfoSection",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "sourceStartLine": 1004,
+      "sourceEndLine": 1356,
+      "originalBodySha256LF": "63c1c74be87199cbe7693765da190f79f50187f7fce34a50d1913a835cb96c90",
+      "generatedFile": "feature/video/ui/section/DesktopOriginalVideoInfoSection.kt",
+      "generatedBodySha256LF": "602e910f158c766ed781eca0a5fb14e848f690dcadcc2ca9b016deb92beebba5",
+      "reverseNormalizedBodyEqual": true,
+      "declaredPlatformAdaptation": true
+    },
+    {
+      "name": "DescriptionSection",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "sourceStartLine": 1560,
+      "sourceEndLine": 1611,
+      "originalBodySha256LF": "de95132d6f925d0fbe5efa479461c980917367c5e92d5acaf094189e23d5c4f5",
+      "generatedFile": "feature/video/ui/section/DesktopOriginalVideoInfoSection.kt",
+      "generatedBodySha256LF": "de95132d6f925d0fbe5efa479461c980917367c5e92d5acaf094189e23d5c4f5",
+      "reverseNormalizedBodyEqual": true,
+      "declaredPlatformAdaptation": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt",
+      "generatedFile": "feature/video/ui/gesture/GestureLevelOverlay.kt",
+      "wholeFileReverseNormalizedEqual": true,
+      "originalSha256LF": "9269462327088da5a4103e451776a9bb70a1cd098bdb71b54ee73d9b43ce8edb",
+      "generatedSha256LF": "e2d0177345b46aa0c94d046063dba5a4a0d889e7f1de238fa8b74e44b056ebfc"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt",
+      "generatedFile": "feature/video/ui/components/CircularGesturePercentText.kt",
+      "wholeFileReverseNormalizedEqual": true,
+      "originalSha256LF": "964174cee6a0261a430094eb85af8008bf6d51555d11617da3053f4d3b5f5b78",
+      "generatedSha256LF": "d5b68d43b0c344cf451ec10f64c5323de7a8714f4fc85d339ca90d753777c9ed"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+      "wholeRemainingFileByteEqual": true,
+      "excludedReference": "actual47 public TripleProgressIcon, sole Profile producer"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "completeClassPreservedWithExplicitOwnedAdaptation": true,
+      "originalClassSha256LF": "2de9ba6d0cf2b295aa999c9b39a34f517e264c7bdf25580990b17c203006e17c",
+      "adaptedClassSha256LF": "06bfea570eb7e96a0a3bf669e58656bb246d86f3a209c212e8cbbf49902c7f1f",
+      "fullDiff": "body-diffs/FullVideoEngagementViewModel.patch",
+      "pendingOriginalSuccessExtensions": [
+        "toEngagementSeed",
+        "withEngagement"
+      ]
+    },
+    {
+      "name": "followUser",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 222,
+      "sourceEndLine": 248,
+      "originalBodySha256LF": "4a84111cd8d71fbcfbec6644f14bc5950374b6bf72f65d3bbd18924b8e995ed3",
+      "generatedBodySha256LF": "0196db63afad0fb876d103590b3d0f1dc687ab6d54894b60dfff75112718f636",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-followUser.patch"
+    },
+    {
+      "name": "favoriteVideo",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 256,
+      "sourceEndLine": 286,
+      "originalBodySha256LF": "f4be9c447225cb2ffb787b1ba7c1e33e0325033a76bc254b9eda43cccadc0e54",
+      "generatedBodySha256LF": "94d4d4905a9347c488816643222ff8c7dfe25f1661ed938370c2c682afe63f86",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-favoriteVideo.patch"
+    },
+    {
+      "name": "getDefaultFolderId",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 375,
+      "sourceEndLine": 384,
+      "originalBodySha256LF": "afa11a58cc968108a64dc2f4348a218cbe8cadbbc7c920962fa750cc40635896",
+      "generatedBodySha256LF": "0ae2bb4f34c185ddb6cf700de46cce38123d9d3afae6776340d9e72acab40cfe",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-getDefaultFolderId.patch"
+    },
+    {
+      "name": "likeVideo",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 731,
+      "sourceEndLine": 753,
+      "originalBodySha256LF": "7fff7404ed902e14732a72312c5ae47d91cb9c79541b2dbef7c4a0982f6d95be",
+      "generatedBodySha256LF": "27ad9b1e35cd2d1217da55b81f91b5e92701fa1fc758fed91d8609008176aa65",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-likeVideo.patch"
+    },
+    {
+      "name": "dislikeVideo",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 779,
+      "sourceEndLine": 812,
+      "originalBodySha256LF": "95932098c5775be9d86a7dffd77c040cffb7083f1f85aa92b5a1e8e678150b10",
+      "generatedBodySha256LF": "5c02de797d2e0e1865e3183ca8a8d1bd7664302624fcf5134e65ac4aa8d4ad4f",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-dislikeVideo.patch"
+    },
+    {
+      "name": "coinVideo",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 836,
+      "sourceEndLine": 860,
+      "originalBodySha256LF": "68fcf597338d6db9b9a8a55dfe4517bb0842401f55808a26154460ef3df9fffe",
+      "generatedBodySha256LF": "f019a47796c999fc5ddb1c9f3e5b80a03ee0315d21631b344ae088162fe00868",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-coinVideo.patch"
+    },
+    {
+      "name": "tripleAction",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 893,
+      "sourceEndLine": 922,
+      "originalBodySha256LF": "9df6df4f90ce505f9e4c903014bf136aff5e89bb1737e581c251fdecf9ffd1f5",
+      "generatedBodySha256LF": "4de26659a643716586fdf29a3caf5b7b27162f8eeba875234988010285266837",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-tripleAction.patch"
+    },
+    {
+      "name": "toggleWatchLater",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 927,
+      "sourceEndLine": 957,
+      "originalBodySha256LF": "e4035e207336bc70217a14efbc48e29ed9dc55ffc9bfab9aec2397fda9c7fa1b",
+      "generatedBodySha256LF": "ea127c2fd3655593805eff338332323dd986ac5dbed44a951b71b0187f5365e8",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-toggleWatchLater.patch"
+    },
+    {
+      "name": "checkLikeStatus",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 758,
+      "sourceEndLine": 774,
+      "originalBodySha256LF": "4252421d0dd37cfa413f6a5561583c8d221db515948024fda037aeaba0f90cb1",
+      "generatedBodySha256LF": "0267d7acafdac8bbe6b925c03cf7da168854496bcf80f890f5994953c023e48b",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-checkLikeStatus.patch"
+    },
+    {
+      "name": "checkFavoriteStatus",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 659,
+      "sourceEndLine": 675,
+      "originalBodySha256LF": "c0ccb761069c8f24f6cd4f4490b0340f5371c9b62a8512a29440684a1cc2ec6f",
+      "generatedBodySha256LF": "f9bb7594e58c3d23df3e20afc29925bc04d1b3a86f90102f807de2250169b713",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-checkFavoriteStatus.patch"
+    },
+    {
+      "name": "checkFollowStatus",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 442,
+      "sourceEndLine": 458,
+      "originalBodySha256LF": "7ba7a743a25b5c2fc76a7ae5c6d71aab80b36073e651a65cb85bbb0dcc37f920",
+      "generatedBodySha256LF": "4221afdd470096d059808539b72f5c74ce10e83d3ce80a12a9307973da340f7c",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-checkFollowStatus.patch"
+    },
+    {
+      "name": "checkCoinStatus",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sourceStartLine": 865,
+      "sourceEndLine": 881,
+      "originalBodySha256LF": "2f033e459a8a75952783e994edf085259228a304f64d7d8b6bfe730d98ea1fe7",
+      "generatedBodySha256LF": "a9ac2c754757fb3a81f5185b289b5997fb95ec4d3309cd8d9faccdba6ec9200c",
+      "declaredChanges": "Required same API/credentials; cancellation/current-owner guards and existing follow bus; logger platform alias only",
+      "fullDiff": "body-diffs/raw-checkCoinStatus.patch"
+    }
+  ],
+  "strictInverseClaimScope": "Info5, Gesture2, Action remaining file, Direct8; owned VM/protocol full diffs separately explicit, not claimed byte-identical"
+}

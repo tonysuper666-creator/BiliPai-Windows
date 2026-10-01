@@ -1,0 +1,6 @@
+PASS Unchanged full original renderer owns exact local task and actual native first frame
+Exception in thread "main" java.lang.IllegalStateException: Original orientation effect did not apply actual fullscreen placement
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.waitFor(OfflineNativeFixture.kt:67)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.waitFor$default(OfflineNativeFixture.kt:64)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.run(OfflineNativeFixture.kt:295)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.main(OfflineNativeFixture.kt:384)

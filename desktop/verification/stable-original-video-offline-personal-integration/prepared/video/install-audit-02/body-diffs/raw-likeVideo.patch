@@ -1,0 +1,33 @@
+--- original:likeVideo
++++ owned:likeVideo
+@@ -1,22 +1,27 @@
+     suspend fun likeVideo(aid: Long, like: Boolean): Result<Boolean> {
+         return withContext(Dispatchers.IO) {
++            currentCoroutineContext().ensureActive(); assertOwned()
+             try {
+-                val csrf = TokenManager.csrfCache ?: ""
++                val csrf = readCsrf() ?: ""
+                 if (csrf.isEmpty()) {
+                     return@withContext Result.failure(Exception("请先登录"))
+                 }
+                 
+                 val likeAction = if (like) 1 else 2
+                 val response = api.likeVideo(aid = aid, like = likeAction, csrf = csrf)
+-                com.android.purebilibili.core.util.Logger.d("ActionRepository", " likeVideo: aid=$aid, like=$like, code=${response.code}")
++                Logger.d("ActionRepository", " likeVideo: aid=$aid, like=$like, code=${response.code}")
+                 
++                currentCoroutineContext().ensureActive(); assertOwned()
+                 if (response.code == 0) {
+                     Result.success(like)
+                 } else {
+                     Result.failure(Exception(response.message.ifEmpty { "点赞失败: ${response.code}" }))
+                 }
++            } catch (cancelled: CancellationException) {
++                throw cancelled
+             } catch (e: Exception) {
+-                android.util.Log.e("ActionRepository", "likeVideo failed", e)
++                assertOwned()
++                Logger.e("ActionRepository", "likeVideo failed", e)
+                 Result.failure(e)
+             }
+         }

@@ -1733,3 +1733,56 @@ val extractUpstreamDownloadTransport by tasks.registering(Exec::class) {
 }
 sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/download-transport")) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDownloadTransport) }
+
+val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-detail-full-units.py",
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-detail-units").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-video-detail-full-units.py", "tools/sync-upstream.py",
+        "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py", sourceManifest)
+    inputs.files(sources.filter { "stable-video-detail-full-units" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-video-detail-units"))
+}
+val verifyOriginalVideoDetailMembers by tasks.registering(Exec::class) {
+    dependsOn(extractOriginalVideoDetailUnits)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-video-detail-full-units.py",
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-detail-units").get().asFile.absolutePath,
+        layout.buildDirectory.file("generated/original-video-detail-members-verification.json").get().asFile.absolutePath)
+    inputs.files("tools/verify-upstream-video-detail-full-units.py", "src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt")
+    inputs.file(layout.buildDirectory.file("generated/original-video-detail-units/video-operations-members.fragment"))
+    outputs.file(layout.buildDirectory.file("generated/original-video-detail-members-verification.json"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-detail-units")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalVideoDetailUnits, verifyOriginalVideoDetailMembers) }
+
+val extractOriginalOfflinePlayer by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-offline-player.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/original-offline-player").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-offline-player.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py", sourceManifest)
+    inputs.files(sources.filter { "stable-offline-player-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-offline-player"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-offline-player")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalOfflinePlayer) }
+
+// Insert beside extractOriginalFavorites. No dependency change.
+val extractOriginalPersonalLists by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalFavorites)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-personal-lists.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-personal-lists").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-personal-lists.py", "tools/extract-upstream-dynamic-reply-protocol.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-personal-history-liked" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-personal-lists"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-personal-lists")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalPersonalLists) }

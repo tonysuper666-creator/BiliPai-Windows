@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "prospectiveProductionOverrides": [
+    "new Video full-unit classes",
+    "existing Metadata visibility",
+    "existing Operations added-member buddy"
+  ],
+  "actual47RuntimeEntries": 97,
+  "actualProductAcceptance": false,
+  "groupedCases": 3,
+  "assertions": 26,
+  "loadedClassOrigins": 7,
+  "fixtureProductClassOverlap": 0,
+  "resultSha256Bytes": "983bf3ed8f526da339e9bcf25f00bbe635a526a5253a31097133f4aebca75da5"
+}

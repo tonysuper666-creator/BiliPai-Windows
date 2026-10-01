@@ -1,0 +1,10 @@
+{
+  "applied": true,
+  "payloads": 4,
+  "patchedConsumers": 2,
+  "newOriginalIdentities": 1,
+  "sourceRegistryCount": 956,
+  "wholeCompilationPending": true,
+  "rootRuntimePending": true,
+  "newExeDeployed": false
+}

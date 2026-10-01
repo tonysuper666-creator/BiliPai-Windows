@@ -1,0 +1,199 @@
+{
+  "passed": true,
+  "totalOutputs": 27,
+  "productionSelectedOutputs": 18,
+  "directOutputsCopiedOnce": 9,
+  "rows": [
+    {
+      "path": "com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt",
+      "sha256LF": "e2d0177345b46aa0c94d046063dba5a4a0d889e7f1de238fa8b74e44b056ebfc",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt",
+      "sha256LF": "bfd4b78900bf0a1b04847ccccb4a18b6d0d445be258f00dcd3ff6f1ce1d71771",
+      "standaloneByteEqual": true,
+      "productionGenerated": false,
+      "directCopiedOnce": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt",
+      "sha256LF": "24f95b99fbb5d8c8830acd31880ff651091c62195407a9ef85f9317f0f498a2a",
+      "standaloneByteEqual": true,
+      "productionGenerated": false,
+      "directCopiedOnce": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/AnimatedGesturePercentText.kt",
+      "sha256LF": "512a6a361feb78e06487a1ce2711f078f4aca291a6e1645e6efa2225923659f7",
+      "standaloneByteEqual": true,
+      "productionGenerated": false,
+      "directCopiedOnce": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt",
+      "sha256LF": "d5b68d43b0c344cf451ec10f64c5323de7a8714f4fc85d339ca90d753777c9ed",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/CircularGesturePercentMotionPolicy.kt",
+      "sha256LF": "adfd21ce5b00af901c5a5857eba9427a195de8d7c812cd80745969f5d2b1f99c",
+      "standaloneByteEqual": true,
+      "productionGenerated": false,
+      "directCopiedOnce": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoGestureMotion.kt",
+      "sha256LF": "fc2683988b880b636ee3c8cd5c8c5813e27c818fc1a929b85b71aea192c6f176",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoActionSection.kt",
+      "sha256LF": "7dcadf3d378575a0620300ae65d48bea4a648f9c1ac60066040ae730c9260a90",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoSection.kt",
+      "sha256LF": "710335d284c4b2d5f8a68c1e21dee3da4e2a72d00c586a39e60b4c4be150899a",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoDisplayPolicy.kt",
+      "sha256LF": "5f4972eddabc66e5360ef46130ccdff19590967512638c2468f831af4f37d78d",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicy.kt",
+      "sha256LF": "28a99feed6df363e283381e4270f34093b4de72589a5c231bfde3f38662f1785",
+      "standaloneByteEqual": true,
+      "productionGenerated": false,
+      "directCopiedOnce": true
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/AppPlayerChromeProfile.kt",
+      "sha256LF": "678594826a55c05d161be7f52bd3c4bbdab1af46346458c64bc7027d060f0042",
+      "standaloneByteEqual": true,
+      "productionGenerated": false,
+      "directCopiedOnce": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoBgmTag.kt",
+      "sha256LF": "cdf8c3594fb3bfa68bfc489b26c82604d422d6d024ed633d7492977ac51600b2",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt",
+      "sha256LF": "a3ac0bcd678e898e12b7ea7f4f515d26f7c29bc84d6fd98e7b4a144de96fd75b",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/common/DesktopOriginalVideoCopyModifiers.kt",
+      "sha256LF": "cefcba9b77ce74db85f3309ffdb9c75e8203a5b95a57ec50930b5be26924d14d",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalCreatorCardStats.kt",
+      "sha256LF": "ac026fff1fdbfbfb5842e5041c91b03c8aeb497a1aa5dca73fb2123f6bcb7179",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalVideoInfoSettings.kt",
+      "sha256LF": "9f9bacd873e518d91873cb57d818015c94c86b77c709e70eece5271d83ff35ac",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
+      "sha256LF": "616d3b83f78ad963370f20d42d1ca6bdbb4854dee51d22816538ba32516e5b1b",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/VideoDomainBinding.kt",
+      "sha256LF": "73fcfd5af57e257658164b7adbd2b103c412686a91efa5b8db99d1f67a84f491",
+      "standaloneByteEqual": true,
+      "productionGenerated": false,
+      "directCopiedOnce": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "sha256LF": "a63c662f68cb4c17c83d0e15b9cc6a6174bc98be9ed5e011e7f12e9a136aaf96",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoEngagementActionsFactory.kt",
+      "sha256LF": "a992322359e678918f6ef26ebdd852db950f2e039c02f346879ccb7ebce504a8",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoCoinBalanceLoader.kt",
+      "sha256LF": "5d85f09abf4abb5a49bcc8710e5e436ed82030dabc7f950a48d73d9507b5b2a5",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt",
+      "sha256LF": "dbb29ef582aa896bc256fe8addb32c2ee4b50232af714c6fde082c1c5e6fe1e0",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt",
+      "sha256LF": "15d803c80018a16b4ca0bb37bf7b89bab65bb18e102bcd2c84fca991833fe822",
+      "standaloneByteEqual": true,
+      "productionGenerated": false,
+      "directCopiedOnce": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt",
+      "sha256LF": "ac32f597609d7fa820d04d4fe6b3fc6071fe94a431c22ca4ae9d20e90d1605e4",
+      "standaloneByteEqual": true,
+      "productionGenerated": false,
+      "directCopiedOnce": true
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalVideoEngagementProtocol.kt",
+      "sha256LF": "389440625bc75dcff54a53f4bacdd732db0b8478c4cc30bf68ae82130d848c06",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalVideoCreatorCard.kt",
+      "sha256LF": "f5255395e3218f6397804937208cafe27512fd0b93f09782010bed84f502b473",
+      "standaloneByteEqual": true,
+      "productionGenerated": true,
+      "directCopiedOnce": false
+    }
+  ],
+  "soleProducerSha256LF": "eabd8d074fbba868dd67ffaedf86dc98560ce16bf50fcd546e4b1bb9518bd883",
+  "memberFragmentByteEqual": true
+}

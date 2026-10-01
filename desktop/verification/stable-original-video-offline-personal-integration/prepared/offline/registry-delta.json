@@ -1,0 +1,46 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+    "mode": "extracted",
+    "sha256": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226",
+    "features": [
+      "stable-offline-player-original",
+      "downloads",
+      "source-parity"
+    ],
+    "operation": "addOneSourceIdentity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlaybackPolicy.kt",
+    "mode": "policy-extract",
+    "sha256": "d0557a25563a5a5362917680a6233123aba5abd82df96abe325696d281ba07ba",
+    "features": [
+      "stable-offline-player-original",
+      "downloads",
+      "source-parity"
+    ],
+    "operation": "mergeExistingFeatures"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflinePlaybackSessionPolicy.kt",
+    "mode": "direct",
+    "sha256": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6",
+    "features": [
+      "stable-offline-player-original",
+      "downloads",
+      "source-parity"
+    ],
+    "operation": "addOneSourceIdentity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+    "mode": "extracted",
+    "sha256": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed",
+    "features": [
+      "stable-offline-player-original",
+      "downloads",
+      "source-parity"
+    ],
+    "operation": "mergeExistingFeatures"
+  }
+]

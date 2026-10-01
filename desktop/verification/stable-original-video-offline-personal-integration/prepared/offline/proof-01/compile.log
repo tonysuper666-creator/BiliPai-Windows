@@ -1,0 +1,6 @@
+desktop\.local\stable-original-offline-player-parity\OfflineOriginalFixture.kt:60:98: error: argument type mismatch: actual type is '(() -> Unit) -> Unit', but '(() -> Unit) -> Boolean' was expected.
+    val preferences=DesktopOriginalDanmakuPreferences(store,DesktopDanmakuBlockPreferences(store,writeOwned),writeOwned)
+                                                                                                 ^^^^^^^^^^
+desktop\.local\stable-original-offline-player-parity\OfflineOriginalFixture.kt:60:110: error: argument type mismatch: actual type is '(() -> Unit) -> Unit', but '(() -> Unit) -> Boolean' was expected.
+    val preferences=DesktopOriginalDanmakuPreferences(store,DesktopDanmakuBlockPreferences(store,writeOwned),writeOwned)
+                                                                                                             ^^^^^^^^^^

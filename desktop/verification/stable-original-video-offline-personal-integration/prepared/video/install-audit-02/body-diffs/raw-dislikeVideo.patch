@@ -1,0 +1,44 @@
+--- original:dislikeVideo
++++ owned:dislikeVideo
+@@ -1,11 +1,12 @@
+     suspend fun dislikeVideo(aid: Long, dislike: Boolean): Result<Boolean> {
+         return withContext(Dispatchers.IO) {
++            currentCoroutineContext().ensureActive(); assertOwned()
+             try {
+-                if (TokenManager.sessDataCache.isNullOrEmpty()) {
++                if (readSessData().isNullOrEmpty()) {
+                     return@withContext Result.failure(Exception("请先登录"))
+                 }
+ 
+-                val csrf = TokenManager.csrfCache ?: ""
++                val csrf = readCsrf() ?: ""
+                 if (csrf.isEmpty()) {
+                     return@withContext Result.failure(Exception("请先登录"))
+                 }
+@@ -14,10 +15,11 @@
+                     aid = aid,
+                     dislike = dislikeAction,
+                     csrf = csrf,
+-                    accessKey = TokenManager.accessTokenCache
++                    accessKey = readAccessToken()
+                 )
+-                com.android.purebilibili.core.util.Logger.d("ActionRepository", " dislikeVideo: aid=$aid, dislike=$dislike, code=${response.code}")
++                Logger.d("ActionRepository", " dislikeVideo: aid=$aid, dislike=$dislike, code=${response.code}")
+ 
++                currentCoroutineContext().ensureActive(); assertOwned()
+                 when {
+                     response.code == 0 || response.code == 65007 || response.code == 65005 ->
+                         Result.success(dislike)
+@@ -26,8 +28,11 @@
+                     )
+                     else -> Result.failure(Exception(response.message.ifEmpty { "点踩失败: ${response.code}" }))
+                 }
++            } catch (cancelled: CancellationException) {
++                throw cancelled
+             } catch (e: Exception) {
+-                android.util.Log.e("ActionRepository", "dislikeVideo failed", e)
++                assertOwned()
++                Logger.e("ActionRepository", "dislikeVideo failed", e)
+                 Result.failure(e)
+             }
+         }

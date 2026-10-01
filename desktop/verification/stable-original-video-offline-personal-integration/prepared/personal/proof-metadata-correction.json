@@ -1,0 +1,14 @@
+{
+  "historicalFile": "proof-05/temporary/result.json",
+  "historicalBytesSha": "c4d454c2859ef03239ed394688f1a6045031f37ece43dfc56c71e7d034d2ca08",
+  "correction": "Hardcoded groups=2 was not incremented when the UI group was added. Three GROUP lines are present in run.log. Preserve historical JSON; this corrects reporting only, no new test run.",
+  "assertions": 19,
+  "groups": 3,
+  "pointerPairs": 2,
+  "codeSourceOriginalUiAndVm": "actual48 main-kotlin.jar",
+  "newCoreProductClassOverrides": 0,
+  "RootShellRuntime": false,
+  "HWND": false,
+  "HTTPsocket": false,
+  "userAccountDisk": false
+}

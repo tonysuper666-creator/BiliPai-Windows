@@ -1,0 +1,21 @@
+PASS same retained original History VM while a video covers it
+PASS original display resolver receives exact same Library BVID/CID cached milliseconds
+PASS full original cursor pagination fields preserved
+PASS full original history render-key append deduplication
+PASS entire original navigation callback keeps CID/resume/vertical/source
+PASS original course route preserves season/episode/resume and course flag
+PASS original business-aware live/article navigation is not flattened to video
+PASS actual sole HistoryRefreshBus reaches retained original History observer
+PASS actual original Like protocol consumes requested foreign MID and owner name
+PASS actual original Coin archive uses distinct original API with target MID
+PASS actual stack keeps covered Like and persistent MainHost History owners
+PASS pop retires original Like entry but not retained History destination
+PASS synthetic account lives in actual in-memory SessionStore only
+GROUP original retained protocols/navigation PASS
+PASS delayed actual original search reached terminal application interceptor
+PASS same MID credential epoch change retires the original list and queued search
+PASS late response cannot publish old account search rows
+GROUP same-MID retirement PASS
+ORIGIN originalHistory=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-48/main-kotlin.jar
+ORIGIN originalCommonList=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-48/main-kotlin.jar
+RESULT assertions=16 preparedThinAdapters=true originalClassOverrides=0 actualRootUI=false HTTPsocket=false

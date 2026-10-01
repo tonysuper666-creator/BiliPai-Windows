@@ -1,0 +1,20 @@
+--- original:tripleAction
++++ owned:tripleAction
+@@ -1,6 +1,7 @@
+     suspend fun tripleAction(aid: Long): Result<TripleResult> {
+         return withContext(Dispatchers.IO) {
+-            val csrf = TokenManager.csrfCache ?: ""
++            currentCoroutineContext().ensureActive(); assertOwned()
++            val csrf = readCsrf() ?: ""
+             if (csrf.isEmpty()) {
+                 return@withContext Result.failure(Exception("请先登录"))
+             }
+@@ -18,7 +19,7 @@
+             val favoriteResult = favoriteVideo(aid, true)
+             val favoriteSuccess = favoriteResult.isSuccess
+             
+-            com.android.purebilibili.core.util.Logger.d("ActionRepository", " tripleAction: like=$likeSuccess, coin=$coinSuccess, fav=$favoriteSuccess")
++            Logger.d("ActionRepository", " tripleAction: like=$likeSuccess, coin=$coinSuccess, fav=$favoriteSuccess")
+             
+             Result.success(TripleResult(
+                 likeSuccess = likeSuccess,

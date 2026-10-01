@@ -1,0 +1,26 @@
+--- original:checkFollowStatus
++++ owned:checkFollowStatus
+@@ -1,16 +1,21 @@
+     suspend fun checkFollowStatus(mid: Long): Boolean {
+         return withContext(Dispatchers.IO) {
++            currentCoroutineContext().ensureActive(); assertOwned()
+             try {
+                 val response = api.getRelation(mid)
++                currentCoroutineContext().ensureActive(); assertOwned()
+                 if (response.code == 0) {
+                     val isFollowing = response.data?.isFollowing ?: false
+-                    com.android.purebilibili.core.util.Logger.d("ActionRepository", " checkFollowStatus: mid=$mid, isFollowing=$isFollowing")
++                    Logger.d("ActionRepository", " checkFollowStatus: mid=$mid, isFollowing=$isFollowing")
+                     isFollowing
+                 } else {
+                     false
+                 }
++            } catch (cancelled: CancellationException) {
++                throw cancelled
+             } catch (e: Exception) {
+-                android.util.Log.e("ActionRepository", "checkFollowStatus failed", e)
++                assertOwned()
++                Logger.e("ActionRepository", "checkFollowStatus failed", e)
+                 false
+             }
+         }
