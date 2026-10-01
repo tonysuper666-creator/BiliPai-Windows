@@ -1,0 +1,425 @@
+{
+  "schema": "raw-artifact-manifest-v1",
+  "artifacts": [
+    {
+      "path": "prepared/evidence-manifest.json",
+      "sha256Bytes": "40c49cf00959b09a650304edb5117b7c02e958ae58775d401209ec9929b18e63",
+      "sizeBytes": 9391
+    },
+    {
+      "path": "prepared/actual30-runtime-class-presence.json",
+      "sha256Bytes": "ae8d685b15264eff0132fe3f7895b3057db8ad7633e19b582bcf976d40b7e068",
+      "sizeBytes": 12921
+    },
+    {
+      "path": "prepared/audit.py",
+      "sha256Bytes": "837479ee1ba065bdb85b08a0613e742cdbd4c3cce510a645aaf851417e8acacc",
+      "sizeBytes": 12606
+    },
+    {
+      "path": "prepared/build-and-platform-contract.json",
+      "sha256Bytes": "f5ce04247c82b6f895fd52a35892503d0a790134ad31af58bff875242d71e9eb",
+      "sizeBytes": 4593
+    },
+    {
+      "path": "prepared/external-import-closure.json",
+      "sha256Bytes": "837b0d102d284dd0fa07cf500eeb3feeeda97f6f7caa44dd07a4ac93f6b875c8",
+      "sizeBytes": 6820
+    },
+    {
+      "path": "prepared/nav-provenance-append-only-rows.json",
+      "sha256Bytes": "41346f4b8503c84aaef61d7804493a2052ff07570cabf09d2e83a8b4c708f693",
+      "sizeBytes": 8309
+    },
+    {
+      "path": "prepared/same-project-nav-build-proposal.patch",
+      "sha256Bytes": "bd5559c1745f8ea47c094d5d0a8874a3980bc8b6938c70428c7d1b1d97b2a710",
+      "sizeBytes": 1528
+    },
+    {
+      "path": "prepared/source-inputs/gradle/libs.versions.toml",
+      "sha256Bytes": "7dc37306989d0cec42366adfb753747b07b9dc14cc223bd65f1d6b833962333a",
+      "sizeBytes": 4479
+    },
+    {
+      "path": "prepared/source-inputs/LICENSE",
+      "sha256Bytes": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sizeBytes": 11358
+    },
+    {
+      "path": "prepared/source-inputs/miuix-nav/build.gradle.kts",
+      "sha256Bytes": "5f3a23bb5205ae9abca544d64881eec698982906feede3be2c7e71e517d88ff5",
+      "sizeBytes": 2111
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/LiveNavTransitionScope.kt",
+      "sha256Bytes": "213254564fb9ba619f53056b15b8c6f9eb705ceb4d138b3da07040dc5470a466",
+      "sizeBytes": 2501
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/LocalNavTransitionScope.kt",
+      "sha256Bytes": "af79c44044a8924a48e3bcb553e25361aca12050903298177b6f74da09741e27",
+      "sizeBytes": 991
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavBackStack.kt",
+      "sha256Bytes": "4f7ca1bd3df0a202dae1c6d1fbe11f8cc570b8ff4d943cf3421717f9b4b7a4bd",
+      "sizeBytes": 3179
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavController.kt",
+      "sha256Bytes": "5de78bde72e4661b2fc155ca5c9e1b9d513a4ca4c721625224f966586f65476a",
+      "sizeBytes": 2539
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavDisplay.kt",
+      "sha256Bytes": "098f004cb630401376b0bf29a0153a48843dbf4ca9dcc50bbc28a6db32308cc1",
+      "sizeBytes": 56524
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavDisplayEffects.kt",
+      "sha256Bytes": "070f4c488dd15eae46aa2186ee53de9a8c48b7cd2e316d152f5102a18530f6ac",
+      "sizeBytes": 5523
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavEntry.kt",
+      "sha256Bytes": "b810ff02d6691d2ac6295ebfc2e50410bf15c54ec14f71e42649185d9a5cdee3",
+      "sizeBytes": 4882
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavKey.kt",
+      "sha256Bytes": "de94a5378c33b2f539c4892c6109f4ab5e3ba6fa9961b6747bff361abe243241",
+      "sizeBytes": 1078
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavSystemCornerRadius.kt",
+      "sha256Bytes": "078c7e84b75da21678ff53710c667da8ca344fa5cd8a3747f4b5b0841058c477",
+      "sizeBytes": 756
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/gesture/NavPredictiveBackDriver.kt",
+      "sha256Bytes": "6782eb2c7e459e5398ab9e54f1432b8da71389453b29d4231c5db66478e34c7a",
+      "sizeBytes": 2718
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/gesture/NavSwipeArbitrator.kt",
+      "sha256Bytes": "aa2f81ba5a7b33105347a1c61ef22b75d31a4eeceddb265fc8405ff2dd0116ec",
+      "sizeBytes": 5660
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/gesture/NavSwipeDismiss.kt",
+      "sha256Bytes": "39dc3c27ba1e2799399cec5a876ffc3440711a7631f613918421d1c12858d99c",
+      "sizeBytes": 26561
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/gesture/PredictiveBackHandler.kt",
+      "sha256Bytes": "77c5f24d5144b8dbd32d1b4102e3cfb15e74d15f222c55c6834b15b525f87e45",
+      "sizeBytes": 10324
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/gesture/WindowNavigationEventBridge.kt",
+      "sha256Bytes": "ee20df84ac39293bc1f6f41c0f2dde808a85bcd59cc9ab900f6ef1d550cbdefd",
+      "sizeBytes": 2395
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/runtime/NavChange.kt",
+      "sha256Bytes": "2c6141d76ba514c975ab6e208c0ca27c8920426ba9408f3db4ae54402812cfdf",
+      "sizeBytes": 1247
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/runtime/NavDriver.kt",
+      "sha256Bytes": "7bf819a442c30d01ae3b7f1a01ff1274e489328ed6f2d99893c7f806bbc6dabf",
+      "sizeBytes": 16532
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/runtime/NavPresentation.kt",
+      "sha256Bytes": "ef6369ce874726e707ac4aaee5dadec5bbd988cd4441cf758e7191b5104354f2",
+      "sizeBytes": 11029
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/runtime/NavReconciler.kt",
+      "sha256Bytes": "9b285ef96e4b0a5cd2ca0b8a0a0f6f9eb355de68e51ea974cd4d15cc095905af",
+      "sizeBytes": 2325
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/runtime/NavSettleEasing.kt",
+      "sha256Bytes": "05df7e6f7977716c562675385c4f645148095383e28be97711854b2e975659dc",
+      "sizeBytes": 2575
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/state/NavEntryLifecycle.kt",
+      "sha256Bytes": "911356800a27e9db4b98def0df8e026054e27f4270b8025e75e647034d23469c",
+      "sizeBytes": 3855
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/state/NavEntryViewModel.kt",
+      "sha256Bytes": "522e62783a9ea881ea01ec22cf23d4d2f15c2bdea9db7e0b8dd60ebd5d812d52",
+      "sizeBytes": 6186
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/state/NavSaveableStateHolder.kt",
+      "sha256Bytes": "ce81465354efcbc169b517e1a473ee6fd6c66ed76d723b231635ba4d30c54be3",
+      "sizeBytes": 4205
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavDirectionalTransition.kt",
+      "sha256Bytes": "34074da13ac54002c43d8685bed634308565df21a2ef6f9319ed89264160916c",
+      "sizeBytes": 3769
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavMotion.kt",
+      "sha256Bytes": "db38ae9009dd14fb5cb77c630b95f68dd01e607512ba92da452dfccdc2eda9ea",
+      "sizeBytes": 3972
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavRole.kt",
+      "sha256Bytes": "237132fa96b27af882cc3defd7a72785369a6c25aac35932c49a7664996781df",
+      "sizeBytes": 748
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavTransition.kt",
+      "sha256Bytes": "6a14ed7520b2acaab568a8ca045e1f25f31f8ffdd34e610c52f50c6a900ecfb4",
+      "sizeBytes": 7774
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavTransitions.kt",
+      "sha256Bytes": "b391a984290e9b0c2bd89cbd6dd14f59ac4e0bef5b71b9c9ab22ff884f2c35b8",
+      "sizeBytes": 4986
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavTransitionScope.kt",
+      "sha256Bytes": "4bcb97e477f0491b7041fe1c37bed1b555be319225e93a640d6fae2a65e3b9bd",
+      "sizeBytes": 5507
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/skikoMain/kotlin/nav/core/NavSystemCornerRadius.skiko.kt",
+      "sha256Bytes": "be4d6e312caf1c813bce7430f6ecf0d5499f7831ff24e81ea220f99b0c36e479",
+      "sizeBytes": 398
+    },
+    {
+      "path": "prepared/source-inputs/upstream/miuix-nav/src/skikoMain/kotlin/nav/gesture/WindowNavigationEventBridge.skiko.kt",
+      "sha256Bytes": "aff0e63ddb271481787ca12b4c7046a024e413268877c60f3e1b48ff68f0e7bc",
+      "sizeBytes": 236
+    },
+    {
+      "path": "prepared/source-inventory.json",
+      "sha256Bytes": "ffcdc5685ee53ed08b0252e0bb96f18ba96483a00d131c21c5d07f9207d75592",
+      "sizeBytes": 28868
+    },
+    {
+      "path": "root/snapshot32/manifest.json",
+      "sha256Bytes": "28118f431eb78418791426c914690143faedeeaef14cc11fb216ac648caad413",
+      "sizeBytes": 117093
+    },
+    {
+      "path": "root/snapshot32/ordered-runtime-cp.json",
+      "sha256Bytes": "aba962efa0ce8cdd882f692e87a95d533e229766e091b4b5fa6f9d68f8b3101c",
+      "sizeBytes": 36693
+    },
+    {
+      "path": "root/actual32-nav/NavReceipt.kt",
+      "sha256Bytes": "ca1e64bd59d4bcb5ce5392e1fac3a279ff57489a195bcdf3306f6a20c27a7481",
+      "sizeBytes": 5888
+    },
+    {
+      "path": "root/actual32-nav/accepted.json",
+      "sha256Bytes": "ab025e30c1dabdadf73ba6301556962c735332f8402af95fa647db1dfb046fba",
+      "sizeBytes": 3104
+    },
+    {
+      "path": "root/actual32-nav/compile.args",
+      "sha256Bytes": "f74ad9422ed7a57c7368792572cc5ed4320f4542baedaa8607833fd41feada74",
+      "sizeBytes": 25130
+    },
+    {
+      "path": "root/actual32-nav/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual32-nav/library-static-method-name-audit.json",
+      "sha256Bytes": "ea1b11f93ecb06672a6187e4ed31e62452d387b24a2ee40941068b91054a0b2d",
+      "sizeBytes": 146
+    },
+    {
+      "path": "root/actual32-nav/run.log",
+      "sha256Bytes": "49bcca5b93ab2464793b6605e9abb897306412917d24d2c014c6b444df064ddc",
+      "sizeBytes": 2457
+    },
+    {
+      "path": "root/actual32-nav/runtime/result.json",
+      "sha256Bytes": "49bcca5b93ab2464793b6605e9abb897306412917d24d2c014c6b444df064ddc",
+      "sizeBytes": 2457
+    },
+    {
+      "path": "root/first-fixture-list-identity-failure/NavReceipt.kt",
+      "sha256Bytes": "a6952c6461a6c039c63e0ad30b779b2ae169ae6b28c8f0fd5553b12faa669572",
+      "sizeBytes": 5798
+    },
+    {
+      "path": "root/first-fixture-list-identity-failure/compile.args",
+      "sha256Bytes": "e3d7e39c458a6ef5ca08a5c341d049c2f07f10a24f0d923e69a2b63129599162",
+      "sizeBytes": 25124
+    },
+    {
+      "path": "root/first-fixture-list-identity-failure/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/first-fixture-list-identity-failure/library-static-method-name-audit.json",
+      "sha256Bytes": "ea1b11f93ecb06672a6187e4ed31e62452d387b24a2ee40941068b91054a0b2d",
+      "sizeBytes": 146
+    },
+    {
+      "path": "root/first-fixture-list-identity-failure/run.log",
+      "sha256Bytes": "0e86425ca8a90604f559e98573fc7efea2719c8857110b4671d591983513854a",
+      "sizeBytes": 205
+    },
+    {
+      "path": "root/actual32-dock/frosted-audio/FrostedAudioFixture.kt",
+      "sha256Bytes": "bcf34194dff6081a441f0dcc75c7e674758de6dcb4944315f8082f29246d8f88",
+      "sizeBytes": 17542
+    },
+    {
+      "path": "root/actual32-dock/frosted-audio/accepted.json",
+      "sha256Bytes": "39d1c300209e544fa755d796967a09e863270756a4204982d78a7943d3fbfa80",
+      "sizeBytes": 1489
+    },
+    {
+      "path": "root/actual32-dock/frosted-audio/compile.args",
+      "sha256Bytes": "47c874eee9035541015e91eaab0dadc0b18e17acf56ff11375e992339441e9ce",
+      "sizeBytes": 24848
+    },
+    {
+      "path": "root/actual32-dock/frosted-audio/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual32-dock/frosted-audio/runtime.log",
+      "sha256Bytes": "f7a09f3120fbf21d750126430df3fc23d63031d31e9ced6c6ef228f7d8290331",
+      "sizeBytes": 643
+    },
+    {
+      "path": "root/actual32-dock/frosted-audio/runtime/result.json",
+      "sha256Bytes": "a4c0a8a55196815f9f8fe095bf3796d394c3f3ba8e1c9518f362a9e227cd3879",
+      "sizeBytes": 696
+    },
+    {
+      "path": "root/actual32-dock/frosted-audio/runtime/sole-fixture-preferences/plugin-settings.json",
+      "sha256Bytes": "d1ac40ec06adf9d583838200e33d3b46fdff463003c7695a485565e5531f995e",
+      "sizeBytes": 276
+    },
+    {
+      "path": "root/actual32-dock/linked-dock/LinkedDockFixture.kt",
+      "sha256Bytes": "2ee96b0f6b842364c3980fa23569226fa2e417cdd7639eb2a694a1b88d2d47cc",
+      "sizeBytes": 16381
+    },
+    {
+      "path": "root/actual32-dock/linked-dock/accepted.json",
+      "sha256Bytes": "d22e0cc46be2127d38b6c1c2b9935e8130e70d1a0f9762655d26ab3f76a545eb",
+      "sizeBytes": 1472
+    },
+    {
+      "path": "root/actual32-dock/linked-dock/compile.args",
+      "sha256Bytes": "09d771a14c5872d377950bdf6c134dc045b351aacd3ee7a3de1d7c9609ef996e",
+      "sizeBytes": 24842
+    },
+    {
+      "path": "root/actual32-dock/linked-dock/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual32-dock/linked-dock/runtime.log",
+      "sha256Bytes": "2ff7351b720e4e80fe001e7e50583e4c041bd777f05268e50443c1e27551a868",
+      "sizeBytes": 61
+    },
+    {
+      "path": "root/actual32-dock/linked-dock/runtime/result.json",
+      "sha256Bytes": "3eda8751560a563b3ff24ef123d92c1b0246164e98e67f040d1881434353f181",
+      "sizeBytes": 414
+    },
+    {
+      "path": "root/actual32-dock/linked-dock/runtime/sole-global-fixture-store/plugin-settings.json",
+      "sha256Bytes": "244e455c8ea0d691feafecde3a8db21aa00ab726d6dc1049e83d4f34508aac92",
+      "sizeBytes": 202
+    },
+    {
+      "path": "root/actual32-dock/result.json",
+      "sha256Bytes": "9db23a2b7aad37aa760a13b241cccbe166b8e3c6175486590339324cf74724ef",
+      "sizeBytes": 3743
+    },
+    {
+      "path": "root/install/baseline-provenance.json",
+      "sha256Bytes": "6335d17d09e86ff2e1f8a92f478c3c043ccd330279060fc859e802631d02714a",
+      "sizeBytes": 54245
+    },
+    {
+      "path": "root/install/installed.json",
+      "sha256Bytes": "040093f8ce3c690e88f6fcbc9a5a1d1e1448b51b54c92bd8b900aa5adf145196",
+      "sizeBytes": 712
+    },
+    {
+      "path": "root/install-miuix5c91-nav.py",
+      "sha256Bytes": "32affa9cc330926087b7ac7ff72a43310a47dbd1b01eab41de53eaa17de97d96",
+      "sizeBytes": 3212
+    },
+    {
+      "path": "root/prove-miuix-nav-actual32.py",
+      "sha256Bytes": "1fc2f6a9408940a861fc8e57ca6021b6cd9caaa8d4441912ca1e781b14a3ca16",
+      "sizeBytes": 10248
+    },
+    {
+      "path": "root/prove-miuix-nav-actual32-02.py",
+      "sha256Bytes": "06cb3bcc60529ad629258a090f3955e5b7526a6afddb92b84bd87f39e69e1ecc",
+      "sizeBytes": 10345
+    },
+    {
+      "path": "root/nav32-fixture-list-read-correction.json",
+      "sha256Bytes": "c0a5e306e49c53f88d48cfd25ee04ff37e9655fff7ae37ca7568f2345181d960",
+      "sizeBytes": 828
+    },
+    {
+      "path": "root/nav32-runtime-graph-audit.json",
+      "sha256Bytes": "098fdfadac02a51af3f023ac79bd2b86132648e8cdca95e36d350fbf4119ddc8",
+      "sizeBytes": 4253
+    },
+    {
+      "path": "root/prove-miuix-nav32-dock-product.py",
+      "sha256Bytes": "cf2f56f42a3ad380c10bf8ac2f636a313c4ce77c1ff49df217742ecaa3c281e7",
+      "sizeBytes": 6284
+    },
+    {
+      "path": "root/nav32-dock-runner-adaptation.json",
+      "sha256Bytes": "17d980bb2068b88857aad5d07c7cee1561cf02b87dd877b88d0129be6eb13e68",
+      "sizeBytes": 682
+    },
+    {
+      "path": "root/jvm-method-name-audit-32.json",
+      "sha256Bytes": "01cb918b23987ac83c0e9627bd565f9610cd046536618a8f0b278bd7074a2516",
+      "sizeBytes": 239
+    },
+    {
+      "path": "root/classes-32.log",
+      "sha256Bytes": "627edd52c73ad42df95efd61fd37f22590a0ed337c8a1b0d20d8a0b327870acc",
+      "sizeBytes": 7409
+    },
+    {
+      "path": "root/installed-upstream-provenance.json",
+      "sha256Bytes": "439a7452602ec2f3124bc745f524ed6a0d596794f7d22fccf64661cdaf699905",
+      "sizeBytes": 62851
+    },
+    {
+      "path": "root/freeze-miuix-nav32.py",
+      "sha256Bytes": "f8b26f84864108d994b49e7e8cda14c863d69add07440ac49769f6849d4fb319",
+      "sizeBytes": 6173
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "fc2cdaa94e64471716d03cd8a4ef8da0385b28fe3bd719460ac55a298d2642bf",
+      "sizeBytes": 1159
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Complete original Miuix Nav source closure
+
+Append all30 original Nav Kotlin sources to the same225-file/195-compiled-source :miuix5157 project, pinned5c91d5e5. Preserve every source byte, original entry/saveable/lifecycle/predictive-back policy and Skiko actuals. Declare the original lifecycle/serialization modules explicitly: actual32 has97 immutable runtime entries, no duplicate normal JVM class names, and retires the prior2.9.6 runtime-compose artifact. Main application class bytes match actual31; source-built UI library changes.
+
+Whole classes32 passes. Zero production overrides:32 actual original navigation-core assertions verify push/pop/CID identity, real serialized sealed routes, state corruption rejection, reconciliation and retained per-entry ViewModelStore cleanup; seven loaded class sources/bytes match the same library. Its complete classfile method-name scan is clean. Original Dock/Frosted/audio fixtures pass120 assertions/38 pointer pairs on the97-entry graph. First fixture error used SnapshotStateList identity equality; only the fixture now reads toList values and preserves the failure.
+
+This proves library/core and isolated Compose scenes. Full Root routes, actual NavigationEventDispatcher/window Escape and drag, native playback/accounts and desktop EXE remain pending. Original Skiko bridge is itself no-op and corner radius0.dp; adding sources alone does not constitute Root input integration. Prepared40 and prior actual30/31 evidence remain unchanged.

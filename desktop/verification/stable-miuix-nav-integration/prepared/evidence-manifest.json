@@ -1,0 +1,215 @@
+{
+  "status": "FROZEN_SOURCE_ONLY_NAV_CLOSURE_REVIEW",
+  "commit": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+  "archive": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\official\\miuix-5c91-5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca.zip",
+    "sha256Bytes": "fe87684eed8a9aac494b5405d00b01121273d83462772b56cb055dbb785269dc",
+    "bytes": 7242099
+  },
+  "artifactCount": 40,
+  "artifactRows": [
+    {
+      "relativePath": "actual30-runtime-class-presence.json",
+      "sha256Bytes": "ae8d685b15264eff0132fe3f7895b3057db8ad7633e19b582bcf976d40b7e068",
+      "bytes": 12921
+    },
+    {
+      "relativePath": "audit.py",
+      "sha256Bytes": "837479ee1ba065bdb85b08a0613e742cdbd4c3cce510a645aaf851417e8acacc",
+      "bytes": 12606
+    },
+    {
+      "relativePath": "build-and-platform-contract.json",
+      "sha256Bytes": "f5ce04247c82b6f895fd52a35892503d0a790134ad31af58bff875242d71e9eb",
+      "bytes": 4593
+    },
+    {
+      "relativePath": "external-import-closure.json",
+      "sha256Bytes": "837b0d102d284dd0fa07cf500eeb3feeeda97f6f7caa44dd07a4ac93f6b875c8",
+      "bytes": 6820
+    },
+    {
+      "relativePath": "nav-provenance-append-only-rows.json",
+      "sha256Bytes": "41346f4b8503c84aaef61d7804493a2052ff07570cabf09d2e83a8b4c708f693",
+      "bytes": 8309
+    },
+    {
+      "relativePath": "same-project-nav-build-proposal.patch",
+      "sha256Bytes": "bd5559c1745f8ea47c094d5d0a8874a3980bc8b6938c70428c7d1b1d97b2a710",
+      "bytes": 1528
+    },
+    {
+      "relativePath": "source-inputs/gradle/libs.versions.toml",
+      "sha256Bytes": "7dc37306989d0cec42366adfb753747b07b9dc14cc223bd65f1d6b833962333a",
+      "bytes": 4479
+    },
+    {
+      "relativePath": "source-inputs/LICENSE",
+      "sha256Bytes": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "relativePath": "source-inputs/miuix-nav/build.gradle.kts",
+      "sha256Bytes": "5f3a23bb5205ae9abca544d64881eec698982906feede3be2c7e71e517d88ff5",
+      "bytes": 2111
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/LiveNavTransitionScope.kt",
+      "sha256Bytes": "213254564fb9ba619f53056b15b8c6f9eb705ceb4d138b3da07040dc5470a466",
+      "bytes": 2501
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/LocalNavTransitionScope.kt",
+      "sha256Bytes": "af79c44044a8924a48e3bcb553e25361aca12050903298177b6f74da09741e27",
+      "bytes": 991
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavBackStack.kt",
+      "sha256Bytes": "4f7ca1bd3df0a202dae1c6d1fbe11f8cc570b8ff4d943cf3421717f9b4b7a4bd",
+      "bytes": 3179
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavController.kt",
+      "sha256Bytes": "5de78bde72e4661b2fc155ca5c9e1b9d513a4ca4c721625224f966586f65476a",
+      "bytes": 2539
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavDisplay.kt",
+      "sha256Bytes": "098f004cb630401376b0bf29a0153a48843dbf4ca9dcc50bbc28a6db32308cc1",
+      "bytes": 56524
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavDisplayEffects.kt",
+      "sha256Bytes": "070f4c488dd15eae46aa2186ee53de9a8c48b7cd2e316d152f5102a18530f6ac",
+      "bytes": 5523
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavEntry.kt",
+      "sha256Bytes": "b810ff02d6691d2ac6295ebfc2e50410bf15c54ec14f71e42649185d9a5cdee3",
+      "bytes": 4882
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavKey.kt",
+      "sha256Bytes": "de94a5378c33b2f539c4892c6109f4ab5e3ba6fa9961b6747bff361abe243241",
+      "bytes": 1078
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/core/NavSystemCornerRadius.kt",
+      "sha256Bytes": "078c7e84b75da21678ff53710c667da8ca344fa5cd8a3747f4b5b0841058c477",
+      "bytes": 756
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/gesture/NavPredictiveBackDriver.kt",
+      "sha256Bytes": "6782eb2c7e459e5398ab9e54f1432b8da71389453b29d4231c5db66478e34c7a",
+      "bytes": 2718
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/gesture/NavSwipeArbitrator.kt",
+      "sha256Bytes": "aa2f81ba5a7b33105347a1c61ef22b75d31a4eeceddb265fc8405ff2dd0116ec",
+      "bytes": 5660
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/gesture/NavSwipeDismiss.kt",
+      "sha256Bytes": "39dc3c27ba1e2799399cec5a876ffc3440711a7631f613918421d1c12858d99c",
+      "bytes": 26561
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/gesture/PredictiveBackHandler.kt",
+      "sha256Bytes": "77c5f24d5144b8dbd32d1b4102e3cfb15e74d15f222c55c6834b15b525f87e45",
+      "bytes": 10324
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/gesture/WindowNavigationEventBridge.kt",
+      "sha256Bytes": "ee20df84ac39293bc1f6f41c0f2dde808a85bcd59cc9ab900f6ef1d550cbdefd",
+      "bytes": 2395
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/runtime/NavChange.kt",
+      "sha256Bytes": "2c6141d76ba514c975ab6e208c0ca27c8920426ba9408f3db4ae54402812cfdf",
+      "bytes": 1247
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/runtime/NavDriver.kt",
+      "sha256Bytes": "7bf819a442c30d01ae3b7f1a01ff1274e489328ed6f2d99893c7f806bbc6dabf",
+      "bytes": 16532
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/runtime/NavPresentation.kt",
+      "sha256Bytes": "ef6369ce874726e707ac4aaee5dadec5bbd988cd4441cf758e7191b5104354f2",
+      "bytes": 11029
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/runtime/NavReconciler.kt",
+      "sha256Bytes": "9b285ef96e4b0a5cd2ca0b8a0a0f6f9eb355de68e51ea974cd4d15cc095905af",
+      "bytes": 2325
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/runtime/NavSettleEasing.kt",
+      "sha256Bytes": "05df7e6f7977716c562675385c4f645148095383e28be97711854b2e975659dc",
+      "bytes": 2575
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/state/NavEntryLifecycle.kt",
+      "sha256Bytes": "911356800a27e9db4b98def0df8e026054e27f4270b8025e75e647034d23469c",
+      "bytes": 3855
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/state/NavEntryViewModel.kt",
+      "sha256Bytes": "522e62783a9ea881ea01ec22cf23d4d2f15c2bdea9db7e0b8dd60ebd5d812d52",
+      "bytes": 6186
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/state/NavSaveableStateHolder.kt",
+      "sha256Bytes": "ce81465354efcbc169b517e1a473ee6fd6c66ed76d723b231635ba4d30c54be3",
+      "bytes": 4205
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavDirectionalTransition.kt",
+      "sha256Bytes": "34074da13ac54002c43d8685bed634308565df21a2ef6f9319ed89264160916c",
+      "bytes": 3769
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavMotion.kt",
+      "sha256Bytes": "db38ae9009dd14fb5cb77c630b95f68dd01e607512ba92da452dfccdc2eda9ea",
+      "bytes": 3972
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavRole.kt",
+      "sha256Bytes": "237132fa96b27af882cc3defd7a72785369a6c25aac35932c49a7664996781df",
+      "bytes": 748
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavTransition.kt",
+      "sha256Bytes": "6a14ed7520b2acaab568a8ca045e1f25f31f8ffdd34e610c52f50c6a900ecfb4",
+      "bytes": 7774
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavTransitions.kt",
+      "sha256Bytes": "b391a984290e9b0c2bd89cbd6dd14f59ac4e0bef5b71b9c9ab22ff884f2c35b8",
+      "bytes": 4986
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/commonMain/kotlin/nav/transition/NavTransitionScope.kt",
+      "sha256Bytes": "4bcb97e477f0491b7041fe1c37bed1b555be319225e93a640d6fae2a65e3b9bd",
+      "bytes": 5507
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/skikoMain/kotlin/nav/core/NavSystemCornerRadius.skiko.kt",
+      "sha256Bytes": "be4d6e312caf1c813bce7430f6ecf0d5499f7831ff24e81ea220f99b0c36e479",
+      "bytes": 398
+    },
+    {
+      "relativePath": "source-inputs/upstream/miuix-nav/src/skikoMain/kotlin/nav/gesture/WindowNavigationEventBridge.skiko.kt",
+      "sha256Bytes": "aff0e63ddb271481787ca12b4c7046a024e413268877c60f3e1b48ff68f0e7bc",
+      "bytes": 236
+    },
+    {
+      "relativePath": "source-inventory.json",
+      "sha256Bytes": "ffcdc5685ee53ed08b0252e0bb96f18ba96483a00d131c21c5d07f9207d75592",
+      "bytes": 28868
+    }
+  ],
+  "runtimeOrCompilerClaim": false,
+  "sharedSourceWrites": 0,
+  "newJars": 0
+}

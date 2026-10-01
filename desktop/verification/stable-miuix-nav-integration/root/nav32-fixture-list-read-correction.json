@@ -1,0 +1,29 @@
+{
+  "firstAttemptRunnerSHA256": "1fc2f6a9408940a861fc8e57ca6021b6cd9caaa8d4441912ca1e781b14a3ca16",
+  "secondRunnerSHA256": "06cb3bcc60529ad629258a090f3955e5b7526a6afddb92b84bd87f39e69e1ecc",
+  "firstFailureRetained": true,
+  "onlyFixtureSnapshotStateListValueReadCorrection": true,
+  "changes": [
+    {
+      "old": "OUT=MAIN/'desktop/.local/stable-miuix-nav-main32-proof'",
+      "new": "OUT=MAIN/'desktop/.local/stable-miuix-nav-main32-proof-02'",
+      "count": 1
+    },
+    {
+      "old": "stack==listOf(",
+      "new": "stack.toList()==listOf(",
+      "count": 7
+    },
+    {
+      "old": "empty==listOf(",
+      "new": "empty.toList()==listOf(",
+      "count": 1
+    },
+    {
+      "old": "restored==stack,",
+      "new": "restored.toList()==stack.toList(),",
+      "count": 1
+    }
+  ],
+  "noProductionModified": true
+}

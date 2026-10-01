@@ -1,0 +1,3 @@
+Exception in thread "main" java.lang.IllegalStateException: root survives pop
+	at actual32.navReceipt.NavReceiptKt.main$expect(NavReceipt.kt:27)
+	at actual32.navReceipt.NavReceiptKt.main(NavReceipt.kt:35)

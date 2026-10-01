@@ -1,0 +1,20 @@
+{
+  "originalRunnerSHA256": "d37c6ef6f375c130f16b60b7bdfc763966eebc3e0fdf3a682edf75652a54b77d",
+  "newRunnerSHA256": "cf2f56f42a3ad380c10bf8ac2f636a313c4ce77c1ff49df217742ecaa3c281e7",
+  "onlyNewCohortRegistryAndExact97GraphChanges": true,
+  "behaviorAssertionsChanged": false,
+  "changes": [
+    {
+      "old": "OUT=MAIN/f'desktop/.local/stable-miuix5c91-main{phase}-dock-ui-proof'",
+      "new": "OUT=MAIN/f'desktop/.local/stable-miuix-nav-main{phase}-dock-ui-proof'"
+    },
+    {
+      "old": "metadata['sourceRegistryCount']==770",
+      "new": "metadata['sourceRegistryCount']==773"
+    },
+    {
+      "old": "assert len(cp)==92",
+      "new": "assert len(cp)==97"
+    }
+  ]
+}

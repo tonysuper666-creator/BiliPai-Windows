@@ -1,0 +1,32 @@
+{
+  "name": "frosted-audio",
+  "passed": true,
+  "exactFrozenFixtureSHA256": "bcf34194dff6081a441f0dcc75c7e674758de6dcb4944315f8082f29246d8f88",
+  "executedFixtureSHA256": "bcf34194dff6081a441f0dcc75c7e674758de6dcb4944315f8082f29246d8f88",
+  "fixtureOnlyAdaptation": null,
+  "productionClassOverrides": 0,
+  "overlaps": [],
+  "completedRunCollectedWithoutRepeating": false,
+  "actualProductPhase": 32,
+  "actualProductCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-32\\main-kotlin.jar",
+  "actualMiuixCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-32\\miuix5157-jvm-0.9.4-5c91d5e5-windows-source1.jar",
+  "status": "PASS",
+  "assertions": 63,
+  "caseCount": 6,
+  "cases": [
+    "MATERIAL3-false-whole-frosted-required-root-consumer",
+    "MATERIAL3-true-whole-frosted-required-root-consumer",
+    "MIUIX-false-whole-frosted-required-root-consumer",
+    "MIUIX-true-whole-frosted-required-root-consumer",
+    "MATERIAL3-full-audio-controls-bounds-morph-gestures",
+    "MIUIX-full-audio-controls-bounds-morph-gestures"
+  ],
+  "pointerPairs": 32,
+  "themes": 2,
+  "actualOriginalRootConsumer": true,
+  "originalAudioDirectUiFixture": true,
+  "actualNativePlayerRuntimeNotExercised": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "preparedOnly": true
+}

@@ -1,0 +1,30 @@
+{
+  "targetTag": "v0.2.3",
+  "wholeClassesPhase": 32,
+  "wholeClassesPassed": true,
+  "soleSourceProject": ":miuix5157",
+  "librarySourceCommit": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+  "canonicalSourceFiles": 225,
+  "compiledOriginalSourceFiles": 195,
+  "fullOriginalNavSources": 30,
+  "navSourcesByteIdentical": true,
+  "actualNavCoreAssertions": 32,
+  "actualDockUiAssertions": 120,
+  "actualDockPointerPairs": 38,
+  "productionOverrides": 0,
+  "all97RuntimeEntriesPinnedBeforeAndAfter": true,
+  "normalClassFQNDuplicates": 0,
+  "libraryStaticMethodNameScannedClasses": 863,
+  "invalidLibraryMethodNameClassCount": 0,
+  "explicitOriginalLifecycleDependencyGraphResolved": true,
+  "previousLifecycleRuntimeCompose296Retired": true,
+  "mainProductBytesUnchangedFrom31": true,
+  "fixtureSnapshotListValueReadCorrectionOnly": true,
+  "fullRootNavigationAndActualWindowDispatcherAccepted": false,
+  "accountNativePlaybackOrExeAccepted": false,
+  "pending": [
+    "Actual retained Home/Root routing and navigation dispatcher binding",
+    "Entry saveable/lifecycle rendering and native Escape/drag acceptance",
+    "Actual full Windows EXE delivery"
+  ]
+}

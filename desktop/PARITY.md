@@ -20,6 +20,8 @@ v0.2.3 原依赖库对齐见 `verification/stable-miuix5c91-integration`：唯�
 
 弹幕原配置与实际消费见 `verification/stable-danmaku-render-integration`：唯一原提取器加入完整 Config/RenderConfig、显示带、分层、原直播配置/准入和两个原引擎预算；fixedVelocity/staticToScroll/massive/weight 从同原设置存储投影，视频权重仅按原 packet isSelf 例外，XML 不猜 MID，直播保留原不同过滤顺序。真实窗口显示模式与实际字体/DPI供统一物理绘制和独立命令投票共享引用。classes31 整包通过、773 来源/213 资源，actual31 零产品覆盖通过 2725 条纯算法/AWT、12 条明确显示模式夹具、8 条本机隐藏 AWT 窗口显示/字体/边框及 61 条设置/所有者断言；13 项实际 Gradle JUnit 通过。存储仍允许原 50 秒，上层渲染按原滚动 20 秒/固定 15 秒上限计算，旧夹具接口与超限时长假设按明确夹具差异修正，失败保留，未放宽产品算法。原普通/离线/竖屏/全屏五处默认均鼠标透传，因此修正历史通用命中待补标签；列表长按和独立命令投票分别保留。现 Windows 碰撞排程尚不是完整 ByteDance 引擎，原完整直播队列/图片生命期、服务端蒙版、portrait SCREEN_TOP、真实 Root 播放和 EXE 未验收。
 
+原导航库闭包见 `verification/stable-miuix-nav-integration`：同一 `:miuix5157` 加入 30 份完整原 Nav 源，原字节、每 entry 保存/生命周期、预测返回与 Skiko actual 保留；现在 225 个 canonical/195 编译源。原声明生命周期/序列化依赖显式接入，classes32 全包通过，97 运行项固定、全图 normal JVM 类重名为零，退役旧 2.9.6 runtime-compose。actual32 零产品覆盖通过 32 条原路由/真实 sealed 序列化/CID 身份/状态错误拒绝/entry ViewModelStore 保留与释放断言，完整库 classfile 方法名检查为零；原两套 Dock/Frosted/音频 UI 在新图复跑 120 断言/38 指针对通过。第一次夹具将 SnapshotStateList 当成结构相等错误，仅读取 toList 值修正并保留失败。应用产品类与 actual31 字节相同；完整 Root/真实窗口返回 dispatcher、entry UI/手势和 EXE 仍待接入验收。
+
 正式版元数据分别核验：发布说明 versionCode 414，固定 tag 源码 415，官方 APK 二进制清单 418。已观察 tag 后六次提交的 main 为 `f2973e9a0649a4d32618d65e8870165a048e0a02`、源码版本 418；版本号相同不能证明 APK 精确构建提交，候选仍固定上述 tag，歌词、听视频、首页撤销/定位提示与评论图标的六文件后续修改单列待复核。历史 Main15 启动首次结果因 Composition 错误被审查否决，第二次失败亦保留；准备实际 JS 资源后的第三次访客窗口启动通过，仅证明启动/关闭，不证明页面交互或新的 EXE 已交付。
 
 本轮窄验证包括原 BGM 后台 12 项/43 断言、评论检测 12 项/40 断言、实际 mpv 投票窗口 8 门和 6 次鼠标点击、隐藏真实 HWND 下载进度 34 断言，以及实际整包 Main14 类的玻璃背景采样 25 断言。后者确认原 Tab 前景不进入背景取样，同时保留正常绘制。原生文字分享的准备/回收和 actor 生命周期通过，系统分享面板及 DataRequested 尚未验收。窄测试、隐藏窗口 API 调用和真实整包页面验收分别记录；已有桌面 EXE 未替换。

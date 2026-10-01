@@ -1,0 +1,16 @@
+{
+  "applied": true,
+  "frozenReviewSHA256": "40c49cf00959b09a650304edb5117b7c02e958ae58775d401209ec9929b18e63",
+  "sameSoleProject": ":miuix5157",
+  "newProjectsOrClients": 0,
+  "originalSourceCommit": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+  "canonicalFiles": 225,
+  "compiledOriginalKotlin": 195,
+  "additionalRawSourceFiles": 30,
+  "originalRowsByteHashesUnchanged": true,
+  "buildBaselineLF": "e82496cc8406d13fb6821da00574e9a85c6e8549b2200c8390a87c209e66cdec",
+  "buildAfterLF": "65cad25911aa00e08627677cda6b0d56500698854863e59a02d1b194356ceac1",
+  "immutableDependencyAlreadyInActualRuntimeDeclaredExplicitly": true,
+  "noImplicitCollectionsUpgrade": true,
+  "wholeClassesAndRootNavAccepted": false
+}

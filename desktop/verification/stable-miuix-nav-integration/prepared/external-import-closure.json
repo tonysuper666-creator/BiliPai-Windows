@@ -1,0 +1,256 @@
+[
+  {
+    "import": "androidx.lifecycle.Lifecycle",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt",
+        "line": 41
+      },
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryLifecycle.kt",
+        "line": 8
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.LifecycleOwner",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryLifecycle.kt",
+        "line": 9
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.ViewModel",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 11
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.ViewModelProvider",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 12
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.ViewModelStore",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 13
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.ViewModelStoreOwner",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 14
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.compose.LocalLifecycleOwner",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryLifecycle.kt",
+        "line": 10
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.compose.rememberLifecycleOwner",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryLifecycle.kt",
+        "line": 11
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.defaultViewModelCreationExtras",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 15
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.defaultViewModelProviderFactory",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 16
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.viewmodel.ViewModelStoreOwner",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 17
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 18
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.viewmodel.initializer",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 19
+      }
+    ]
+  },
+  {
+    "import": "androidx.lifecycle.viewmodel.viewModelFactory",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 20
+      }
+    ]
+  },
+  {
+    "import": "androidx.navigationevent.DirectNavigationEventInput",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/WindowNavigationEventBridge.kt",
+        "line": 7
+      }
+    ]
+  },
+  {
+    "import": "androidx.navigationevent.NavigationEvent",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/PredictiveBackHandler.kt",
+        "line": 12
+      },
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/WindowNavigationEventBridge.kt",
+        "line": 8
+      }
+    ]
+  },
+  {
+    "import": "androidx.navigationevent.NavigationEventDispatcher",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt",
+        "line": 42
+      }
+    ]
+  },
+  {
+    "import": "androidx.navigationevent.NavigationEventDispatcherOwner",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt",
+        "line": 43
+      }
+    ]
+  },
+  {
+    "import": "androidx.navigationevent.NavigationEventHandler",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/PredictiveBackHandler.kt",
+        "line": 13
+      },
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/WindowNavigationEventBridge.kt",
+        "line": 9
+      }
+    ]
+  },
+  {
+    "import": "androidx.navigationevent.NavigationEventInfo",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/PredictiveBackHandler.kt",
+        "line": 14
+      },
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/WindowNavigationEventBridge.kt",
+        "line": 10
+      }
+    ]
+  },
+  {
+    "import": "androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt",
+        "line": 44
+      },
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/PredictiveBackHandler.kt",
+        "line": 15
+      }
+    ]
+  },
+  {
+    "import": "androidx.savedstate.SavedStateRegistryOwner",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 21
+      }
+    ]
+  },
+  {
+    "import": "androidx.savedstate.compose.LocalSavedStateRegistryOwner",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+        "line": 22
+      }
+    ]
+  },
+  {
+    "import": "kotlinx.serialization.KSerializer",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavBackStack.kt",
+        "line": 12
+      }
+    ]
+  },
+  {
+    "import": "kotlinx.serialization.json.Json",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavBackStack.kt",
+        "line": 13
+      }
+    ]
+  },
+  {
+    "import": "kotlinx.serialization.serializer",
+    "callSites": [
+      {
+        "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavBackStack.kt",
+        "line": 14
+      }
+    ]
+  }
+]

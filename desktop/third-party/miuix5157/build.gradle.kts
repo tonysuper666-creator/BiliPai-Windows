@@ -4,6 +4,7 @@ import kotlin.math.sqrt
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
+    kotlin("plugin.serialization")
 }
 group = "com.bilipai.windows.sourcefork"
 version = "0.9.4-5c91d5e5-windows-source1"
@@ -149,7 +150,7 @@ val bakeSquircleSdf by tasks.registering(BakeSquircleSdfTask::class) {
 }
 
 
-val originalModules = listOf("miuix-core", "miuix-shader", "miuix-squircle", "miuix-ui", "miuix-preference", "miuix-blur", "miuix-icons")
+val originalModules = listOf("miuix-core", "miuix-shader", "miuix-squircle", "miuix-ui", "miuix-preference", "miuix-blur", "miuix-icons", "miuix-nav")
 kotlin {
     jvmToolchain(21)
     jvm()
@@ -162,6 +163,11 @@ kotlin {
                 implementation("androidx.navigationevent:navigationevent-compose:1.1.2")
                 implementation("org.jetbrains.compose.material3:material3-window-size-class:1.12.0-alpha03")
                 implementation("com.materialkolor:material-color-utilities:5.0.1")
+                implementation("org.jetbrains.androidx.lifecycle:lifecycle-runtime:2.11.0")
+                implementation("org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:2.11.0")
+                implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.11.0")
+                implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
             }
         }
         jvmMain {

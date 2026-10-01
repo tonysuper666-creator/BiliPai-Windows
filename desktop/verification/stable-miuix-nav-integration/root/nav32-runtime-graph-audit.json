@@ -1,0 +1,55 @@
+{
+  "actualProductPhase": 32,
+  "entryCount": 97,
+  "addedOrRelocatedEntries": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-32\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 149,
+      "sha256Bytes": "167a7915d379755262b88415b4536ff0796048fc1450702746ac3c3b74a2281c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-32\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 9935,
+      "sha256Bytes": "4ffee7ee8c833b472d9c34f569de3b292aad79251bfa8d78c5a9188f3689c0e3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-32\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 73,
+      "sha256Bytes": "a784e344d2b168035d829b7ca0b6378e000b9176b966bf1f08c54435b9585104"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-32\\miuix5157-jvm-0.9.4-5c91d5e5-windows-source1.jar",
+      "sourceDependencyPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\third-party\\miuix5157\\build\\libs\\miuix5157-jvm-0.9.4-5c91d5e5-windows-source1.jar",
+      "sameByteDependencyRelocation": true,
+      "sha256Bytes": "c3fe8751624fec7702756a3a25e8af745f3e6aad6d53abff80c52b419d137451"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.lifecycle\\lifecycle-viewmodel-savedstate-desktop\\2.11.0\\ed1746452bd8f44f675b6c4c3a3c892d25517ff9\\lifecycle-viewmodel-savedstate-desktop-2.11.0.jar",
+      "sha256Bytes": "5dbf963e5be555b61ce47e18f8dfa82fad3b5c0e79cbeed7c9dca6c556f53847"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.lifecycle\\lifecycle-common-jvm\\2.11.0\\a56a66ee80e26159ac4281e8eca66857aa995fd3\\lifecycle-common-jvm-2.11.0.jar",
+      "sha256Bytes": "50a826ef0d1bd27ff384e4dd9d147bd1f343cc78d044f7b32a7ec6ce9b3fd2ba"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.lifecycle\\lifecycle-viewmodel-compose-desktop\\2.11.0\\ff2664cede898eb2b62baf979d3deec68f16b54e\\lifecycle-viewmodel-compose-desktop-2.11.0.jar",
+      "sha256Bytes": "b44ae28c255709eba43719179ab5a4a27b7a8d2075e20030e2e265211f320a0f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.lifecycle\\lifecycle-runtime-compose-desktop\\2.11.0\\1cca06f1b4a646e4608e2be2ac84eb1a2a7b5d6\\lifecycle-runtime-compose-desktop-2.11.0.jar",
+      "sha256Bytes": "4c94a5fa98b838a34b84eecb0fca5b291b417ab3af8518862b488f85868a2195"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.lifecycle\\lifecycle-runtime-desktop\\2.11.0\\b4e8a3260204a504b7008677906ba944162497f7\\lifecycle-runtime-desktop-2.11.0.jar",
+      "sha256Bytes": "3e5b56c54c826dbc2a8d8162af4d020840dbd3e742b8be3bf78546afdc2f7376"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.lifecycle\\lifecycle-viewmodel-desktop\\2.11.0\\f918680fbce7246e0f818359148a1a520ee4d4fe\\lifecycle-viewmodel-desktop-2.11.0.jar",
+      "sha256Bytes": "38384ad114f3231a5bfe04608c2c514747574fff3e347a7266e12e6ad35a6a1c"
+    }
+  ],
+  "normalClassFQNDuplicates": {}
+}

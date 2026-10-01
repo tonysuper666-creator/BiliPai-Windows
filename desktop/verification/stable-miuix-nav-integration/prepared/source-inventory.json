@@ -1,0 +1,593 @@
+{
+  "archive": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\official\\miuix-5c91-5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca.zip",
+    "sha256Bytes": "fe87684eed8a9aac494b5405d00b01121273d83462772b56cb055dbb785269dc",
+    "bytes": 7242099
+  },
+  "commit": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+  "productionFiles": [
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/LiveNavTransitionScope.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/core/LiveNavTransitionScope.kt",
+      "sha256Bytes": "213254564fb9ba619f53056b15b8c6f9eb705ceb4d138b3da07040dc5470a466",
+      "sha256LF": "213254564fb9ba619f53056b15b8c6f9eb705ceb4d138b3da07040dc5470a466",
+      "lines": 56,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Stable",
+        "androidx.compose.ui.unit.Density",
+        "androidx.compose.ui.unit.IntSize",
+        "androidx.compose.ui.unit.LayoutDirection",
+        "top.yukonga.miuix.kmp.nav.runtime.NavChange",
+        "top.yukonga.miuix.kmp.nav.runtime.NavPresentation",
+        "top.yukonga.miuix.kmp.nav.runtime.relativeDepth",
+        "top.yukonga.miuix.kmp.nav.runtime.roleFor",
+        "top.yukonga.miuix.kmp.nav.transition.NavGesture",
+        "top.yukonga.miuix.kmp.nav.transition.NavRole",
+        "top.yukonga.miuix.kmp.nav.transition.NavSettle",
+        "top.yukonga.miuix.kmp.nav.transition.NavTransitionScope"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/LocalNavTransitionScope.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/core/LocalNavTransitionScope.kt",
+      "sha256Bytes": "af79c44044a8924a48e3bcb553e25361aca12050903298177b6f74da09741e27",
+      "sha256LF": "af79c44044a8924a48e3bcb553e25361aca12050903298177b6f74da09741e27",
+      "lines": 25,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.ProvidableCompositionLocal",
+        "androidx.compose.runtime.compositionLocalOf",
+        "top.yukonga.miuix.kmp.nav.transition.NavTransitionScope"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavBackStack.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/core/NavBackStack.kt",
+      "sha256Bytes": "4f7ca1bd3df0a202dae1c6d1fbe11f8cc570b8ff4d943cf3421717f9b4b7a4bd",
+      "sha256LF": "4f7ca1bd3df0a202dae1c6d1fbe11f8cc570b8ff4d943cf3421717f9b4b7a4bd",
+      "lines": 76,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.runtime.remember",
+        "androidx.compose.runtime.saveable.Saver",
+        "androidx.compose.runtime.saveable.rememberSaveable",
+        "androidx.compose.runtime.snapshots.SnapshotStateList",
+        "androidx.compose.runtime.toMutableStateList",
+        "kotlinx.serialization.KSerializer",
+        "kotlinx.serialization.json.Json",
+        "kotlinx.serialization.serializer"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavController.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/core/NavController.kt",
+      "sha256Bytes": "5de78bde72e4661b2fc155ca5c9e1b9d513a4ca4c721625224f966586f65476a",
+      "sha256LF": "5de78bde72e4661b2fc155ca5c9e1b9d513a4ca4c721625224f966586f65476a",
+      "lines": 73,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.runtime.remember",
+        "androidx.compose.runtime.snapshots.SnapshotStateList"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/core/NavDisplay.kt",
+      "sha256Bytes": "098f004cb630401376b0bf29a0153a48843dbf4ca9dcc50bbc28a6db32308cc1",
+      "sha256LF": "098f004cb630401376b0bf29a0153a48843dbf4ca9dcc50bbc28a6db32308cc1",
+      "lines": 1054,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.foundation.background",
+        "androidx.compose.foundation.layout.Box",
+        "androidx.compose.foundation.layout.fillMaxSize",
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.runtime.CompositionLocalProvider",
+        "androidx.compose.runtime.DisposableEffect",
+        "androidx.compose.runtime.LaunchedEffect",
+        "androidx.compose.runtime.NonRestartableComposable",
+        "androidx.compose.runtime.SideEffect",
+        "androidx.compose.runtime.derivedStateOf",
+        "androidx.compose.runtime.getValue",
+        "androidx.compose.runtime.key",
+        "androidx.compose.runtime.movableContentOf",
+        "androidx.compose.runtime.mutableLongStateOf",
+        "androidx.compose.runtime.mutableStateMapOf",
+        "androidx.compose.runtime.mutableStateOf",
+        "androidx.compose.runtime.remember",
+        "androidx.compose.runtime.rememberCoroutineScope",
+        "androidx.compose.runtime.rememberUpdatedState",
+        "androidx.compose.runtime.setValue",
+        "androidx.compose.ui.Modifier",
+        "androidx.compose.ui.graphics.Color",
+        "androidx.compose.ui.graphics.graphicsLayer",
+        "androidx.compose.ui.graphics.isSpecified",
+        "androidx.compose.ui.input.pointer.PointerEventPass",
+        "androidx.compose.ui.input.pointer.pointerInput",
+        "androidx.compose.ui.layout.onSizeChanged",
+        "androidx.compose.ui.platform.LocalDensity",
+        "androidx.compose.ui.platform.LocalFocusManager",
+        "androidx.compose.ui.platform.LocalLayoutDirection",
+        "androidx.compose.ui.unit.Density",
+        "androidx.compose.ui.unit.IntSize",
+        "androidx.compose.ui.unit.LayoutDirection",
+        "androidx.compose.ui.unit.dp",
+        "androidx.compose.ui.util.fastForEach",
+        "androidx.lifecycle.Lifecycle",
+        "androidx.navigationevent.NavigationEventDispatcher",
+        "androidx.navigationevent.NavigationEventDispatcherOwner",
+        "androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner",
+        "kotlinx.coroutines.flow.onEach",
+        "kotlinx.coroutines.launch",
+        "top.yukonga.miuix.kmp.nav.gesture.PredictiveBackHandlerWithSessions",
+        "top.yukonga.miuix.kmp.nav.gesture.drivePredictiveBack",
+        "top.yukonga.miuix.kmp.nav.gesture.navSwipeDismissImpl",
+        "top.yukonga.miuix.kmp.nav.runtime.NavChange",
+        "top.yukonga.miuix.kmp.nav.runtime.NavPresentation",
+        "top.yukonga.miuix.kmp.nav.runtime.commitVelocityFloor",
+        "top.yukonga.miuix.kmp.nav.runtime.isVisibleAt",
+        "top.yukonga.miuix.kmp.nav.runtime.navBackCompletionDecision",
+        "top.yukonga.miuix.kmp.nav.runtime.navReconcile",
+        "top.yukonga.miuix.kmp.nav.runtime.relativeDepth",
+        "top.yukonga.miuix.kmp.nav.runtime.rememberNavPresentation",
+        "top.yukonga.miuix.kmp.nav.runtime.settleCancel",
+        "top.yukonga.miuix.kmp.nav.runtime.settleProgrammatic",
+        "top.yukonga.miuix.kmp.nav.runtime.settleTo",
+        "top.yukonga.miuix.kmp.nav.runtime.trackSettle",
+        "top.yukonga.miuix.kmp.nav.state.NavEntryViewModelStores",
+        "top.yukonga.miuix.kmp.nav.state.NavSaveableStateHolder",
+        "top.yukonga.miuix.kmp.nav.state.ProvideNavEntryLifecycle",
+        "top.yukonga.miuix.kmp.nav.state.ProvideNavEntryViewModelStore",
+        "top.yukonga.miuix.kmp.nav.state.navMaxLifecycleFor",
+        "top.yukonga.miuix.kmp.nav.state.navSaveableKey",
+        "top.yukonga.miuix.kmp.nav.state.rememberNavEntryLifecycleOwner",
+        "top.yukonga.miuix.kmp.nav.state.rememberNavEntryViewModelStoreOwner",
+        "top.yukonga.miuix.kmp.nav.state.rememberNavEntryViewModelStores",
+        "top.yukonga.miuix.kmp.nav.state.rememberNavSaveableStateHolder",
+        "top.yukonga.miuix.kmp.nav.transition.NavGesture",
+        "top.yukonga.miuix.kmp.nav.transition.NavMotion",
+        "top.yukonga.miuix.kmp.nav.transition.NavSettlePhase",
+        "top.yukonga.miuix.kmp.nav.transition.NavSwipeDirection",
+        "top.yukonga.miuix.kmp.nav.transition.NavTransition",
+        "top.yukonga.miuix.kmp.nav.transition.NavTransitions",
+        "top.yukonga.miuix.kmp.squircle.absoluteSquircleClip",
+        "kotlin.reflect.KClass"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavDisplayEffects.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/core/NavDisplayEffects.kt",
+      "sha256Bytes": "070f4c488dd15eae46aa2186ee53de9a8c48b7cd2e316d152f5102a18530f6ac",
+      "sha256LF": "070f4c488dd15eae46aa2186ee53de9a8c48b7cd2e316d152f5102a18530f6ac",
+      "lines": 114,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Immutable",
+        "androidx.compose.runtime.Stable",
+        "androidx.compose.ui.graphics.Color",
+        "androidx.compose.ui.unit.Dp",
+        "androidx.compose.ui.unit.dp"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavEntry.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/core/NavEntry.kt",
+      "sha256Bytes": "b810ff02d6691d2ac6295ebfc2e50410bf15c54ec14f71e42649185d9a5cdee3",
+      "sha256LF": "b810ff02d6691d2ac6295ebfc2e50410bf15c54ec14f71e42649185d9a5cdee3",
+      "lines": 109,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.runtime.Immutable",
+        "androidx.compose.runtime.getValue",
+        "androidx.compose.runtime.mutableStateOf",
+        "androidx.compose.runtime.setValue",
+        "top.yukonga.miuix.kmp.nav.transition.NavRole"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavKey.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/core/NavKey.kt",
+      "sha256Bytes": "de94a5378c33b2f539c4892c6109f4ab5e3ba6fa9961b6747bff361abe243241",
+      "sha256LF": "de94a5378c33b2f539c4892c6109f4ab5e3ba6fa9961b6747bff361abe243241",
+      "lines": 26,
+      "sourceSet": "commonMain",
+      "imports": []
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavSystemCornerRadius.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/core/NavSystemCornerRadius.kt",
+      "sha256Bytes": "078c7e84b75da21678ff53710c667da8ca344fa5cd8a3747f4b5b0841058c477",
+      "sha256LF": "078c7e84b75da21678ff53710c667da8ca344fa5cd8a3747f4b5b0841058c477",
+      "lines": 18,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.ui.unit.Dp"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/NavPredictiveBackDriver.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/gesture/NavPredictiveBackDriver.kt",
+      "sha256Bytes": "6782eb2c7e459e5398ab9e54f1432b8da71389453b29d4231c5db66478e34c7a",
+      "sha256LF": "6782eb2c7e459e5398ab9e54f1432b8da71389453b29d4231c5db66478e34c7a",
+      "lines": 50,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.animation.core.Animatable",
+        "androidx.compose.animation.core.AnimationVector1D",
+        "kotlinx.coroutines.flow.Flow",
+        "top.yukonga.miuix.kmp.nav.runtime.snapToFinger"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/NavSwipeArbitrator.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/gesture/NavSwipeArbitrator.kt",
+      "sha256Bytes": "aa2f81ba5a7b33105347a1c61ef22b75d31a4eeceddb265fc8405ff2dd0116ec",
+      "sha256LF": "aa2f81ba5a7b33105347a1c61ef22b75d31a4eeceddb265fc8405ff2dd0116ec",
+      "lines": 154,
+      "sourceSet": "commonMain",
+      "imports": [
+        "kotlin.math.abs"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/NavSwipeDismiss.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/gesture/NavSwipeDismiss.kt",
+      "sha256Bytes": "39dc3c27ba1e2799399cec5a876ffc3440711a7631f613918421d1c12858d99c",
+      "sha256LF": "39dc3c27ba1e2799399cec5a876ffc3440711a7631f613918421d1c12858d99c",
+      "lines": 433,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.animation.core.Animatable",
+        "androidx.compose.animation.core.AnimationVector1D",
+        "androidx.compose.foundation.gestures.awaitEachGesture",
+        "androidx.compose.foundation.gestures.awaitFirstDown",
+        "androidx.compose.runtime.rememberCoroutineScope",
+        "androidx.compose.runtime.rememberUpdatedState",
+        "androidx.compose.ui.Modifier",
+        "androidx.compose.ui.composed",
+        "androidx.compose.ui.input.pointer.PointerEventPass",
+        "androidx.compose.ui.input.pointer.pointerInput",
+        "androidx.compose.ui.input.pointer.positionChange",
+        "androidx.compose.ui.input.pointer.positionChangeIgnoreConsumed",
+        "androidx.compose.ui.input.pointer.util.VelocityTracker",
+        "kotlinx.coroutines.CoroutineScope",
+        "kotlinx.coroutines.Job",
+        "kotlinx.coroutines.launch",
+        "top.yukonga.miuix.kmp.nav.runtime.NavSettleSink",
+        "top.yukonga.miuix.kmp.nav.runtime.anchoredProgress",
+        "top.yukonga.miuix.kmp.nav.runtime.commitVelocityFloor",
+        "top.yukonga.miuix.kmp.nav.runtime.navBackCommitDecision",
+        "top.yukonga.miuix.kmp.nav.runtime.settleCancel",
+        "top.yukonga.miuix.kmp.nav.runtime.settleTo",
+        "top.yukonga.miuix.kmp.nav.runtime.snapToFinger",
+        "top.yukonga.miuix.kmp.nav.runtime.trackSettle",
+        "top.yukonga.miuix.kmp.nav.transition.NavGesture",
+        "top.yukonga.miuix.kmp.nav.transition.NavMotion",
+        "top.yukonga.miuix.kmp.nav.transition.NavSettlePhase",
+        "top.yukonga.miuix.kmp.nav.transition.NavSwipeDirection",
+        "top.yukonga.miuix.kmp.nav.transition.NavSwipeEdge",
+        "kotlin.coroutines.coroutineContext"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/PredictiveBackHandler.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/gesture/PredictiveBackHandler.kt",
+      "sha256Bytes": "77c5f24d5144b8dbd32d1b4102e3cfb15e74d15f222c55c6834b15b525f87e45",
+      "sha256LF": "77c5f24d5144b8dbd32d1b4102e3cfb15e74d15f222c55c6834b15b525f87e45",
+      "lines": 230,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.runtime.DisposableEffect",
+        "androidx.compose.runtime.SideEffect",
+        "androidx.compose.runtime.Stable",
+        "androidx.compose.runtime.remember",
+        "androidx.compose.runtime.rememberCoroutineScope",
+        "androidx.navigationevent.NavigationEvent",
+        "androidx.navigationevent.NavigationEventHandler",
+        "androidx.navigationevent.NavigationEventInfo",
+        "androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner",
+        "kotlinx.coroutines.CoroutineScope",
+        "kotlinx.coroutines.Job",
+        "kotlinx.coroutines.cancelAndJoin",
+        "kotlinx.coroutines.channels.Channel",
+        "kotlinx.coroutines.flow.Flow",
+        "kotlinx.coroutines.flow.receiveAsFlow",
+        "kotlinx.coroutines.launch",
+        "top.yukonga.miuix.kmp.nav.runtime.NavDriverSpec",
+        "top.yukonga.miuix.kmp.nav.transition.NavSwipeEdge"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/WindowNavigationEventBridge.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/gesture/WindowNavigationEventBridge.kt",
+      "sha256Bytes": "ee20df84ac39293bc1f6f41c0f2dde808a85bcd59cc9ab900f6ef1d550cbdefd",
+      "sha256LF": "ee20df84ac39293bc1f6f41c0f2dde808a85bcd59cc9ab900f6ef1d550cbdefd",
+      "lines": 63,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Composable",
+        "androidx.navigationevent.DirectNavigationEventInput",
+        "androidx.navigationevent.NavigationEvent",
+        "androidx.navigationevent.NavigationEventHandler",
+        "androidx.navigationevent.NavigationEventInfo"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/runtime/NavChange.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/runtime/NavChange.kt",
+      "sha256Bytes": "2c6141d76ba514c975ab6e208c0ca27c8920426ba9408f3db4ae54402812cfdf",
+      "sha256LF": "2c6141d76ba514c975ab6e208c0ca27c8920426ba9408f3db4ae54402812cfdf",
+      "lines": 32,
+      "sourceSet": "commonMain",
+      "imports": []
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/runtime/NavDriver.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/runtime/NavDriver.kt",
+      "sha256Bytes": "7bf819a442c30d01ae3b7f1a01ff1274e489328ed6f2d99893c7f806bbc6dabf",
+      "sha256LF": "7bf819a442c30d01ae3b7f1a01ff1274e489328ed6f2d99893c7f806bbc6dabf",
+      "lines": 322,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.animation.core.Animatable",
+        "androidx.compose.animation.core.AnimationSpec",
+        "androidx.compose.animation.core.AnimationVector1D",
+        "androidx.compose.animation.core.tween",
+        "top.yukonga.miuix.kmp.nav.transition.NavMotion",
+        "top.yukonga.miuix.kmp.nav.transition.NavSettleSpec",
+        "kotlin.math.abs",
+        "kotlin.math.sqrt"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/runtime/NavPresentation.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/runtime/NavPresentation.kt",
+      "sha256Bytes": "ef6369ce874726e707ac4aaee5dadec5bbd988cd4441cf758e7191b5104354f2",
+      "sha256LF": "ef6369ce874726e707ac4aaee5dadec5bbd988cd4441cf758e7191b5104354f2",
+      "lines": 225,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.animation.core.Animatable",
+        "androidx.compose.animation.core.AnimationVector1D",
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.runtime.Stable",
+        "androidx.compose.runtime.derivedStateOf",
+        "androidx.compose.runtime.getValue",
+        "androidx.compose.runtime.mutableFloatStateOf",
+        "androidx.compose.runtime.mutableStateListOf",
+        "androidx.compose.runtime.mutableStateOf",
+        "androidx.compose.runtime.remember",
+        "androidx.compose.runtime.setValue",
+        "top.yukonga.miuix.kmp.nav.core.NavEntry",
+        "top.yukonga.miuix.kmp.nav.transition.NavGesture",
+        "top.yukonga.miuix.kmp.nav.transition.NavRole",
+        "top.yukonga.miuix.kmp.nav.transition.NavSettle",
+        "top.yukonga.miuix.kmp.nav.transition.NavSettlePhase",
+        "kotlin.time.TimeSource"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/runtime/NavReconciler.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/runtime/NavReconciler.kt",
+      "sha256Bytes": "9b285ef96e4b0a5cd2ca0b8a0a0f6f9eb355de68e51ea974cd4d15cc095905af",
+      "sha256LF": "9b285ef96e4b0a5cd2ca0b8a0a0f6f9eb355de68e51ea974cd4d15cc095905af",
+      "lines": 49,
+      "sourceSet": "commonMain",
+      "imports": []
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/runtime/NavSettleEasing.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/runtime/NavSettleEasing.kt",
+      "sha256Bytes": "05df7e6f7977716c562675385c4f645148095383e28be97711854b2e975659dc",
+      "sha256LF": "05df7e6f7977716c562675385c4f645148095383e28be97711854b2e975659dc",
+      "lines": 66,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.animation.core.Easing",
+        "androidx.compose.runtime.Immutable",
+        "kotlin.math.PI",
+        "kotlin.math.cos",
+        "kotlin.math.exp",
+        "kotlin.math.sin",
+        "kotlin.math.sqrt"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryLifecycle.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/state/NavEntryLifecycle.kt",
+      "sha256Bytes": "911356800a27e9db4b98def0df8e026054e27f4270b8025e75e647034d23469c",
+      "sha256LF": "911356800a27e9db4b98def0df8e026054e27f4270b8025e75e647034d23469c",
+      "lines": 76,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.runtime.CompositionLocalProvider",
+        "androidx.lifecycle.Lifecycle",
+        "androidx.lifecycle.LifecycleOwner",
+        "androidx.lifecycle.compose.LocalLifecycleOwner",
+        "androidx.lifecycle.compose.rememberLifecycleOwner",
+        "top.yukonga.miuix.kmp.nav.core.NavPresentationState"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/state/NavEntryViewModel.kt",
+      "sha256Bytes": "522e62783a9ea881ea01ec22cf23d4d2f15c2bdea9db7e0b8dd60ebd5d812d52",
+      "sha256LF": "522e62783a9ea881ea01ec22cf23d4d2f15c2bdea9db7e0b8dd60ebd5d812d52",
+      "lines": 145,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.runtime.CompositionLocalProvider",
+        "androidx.compose.runtime.RememberObserver",
+        "androidx.compose.runtime.remember",
+        "androidx.compose.runtime.saveable.rememberSaveable",
+        "androidx.lifecycle.ViewModel",
+        "androidx.lifecycle.ViewModelProvider",
+        "androidx.lifecycle.ViewModelStore",
+        "androidx.lifecycle.ViewModelStoreOwner",
+        "androidx.lifecycle.defaultViewModelCreationExtras",
+        "androidx.lifecycle.defaultViewModelProviderFactory",
+        "androidx.lifecycle.viewmodel.ViewModelStoreOwner",
+        "androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner",
+        "androidx.lifecycle.viewmodel.initializer",
+        "androidx.lifecycle.viewmodel.viewModelFactory",
+        "androidx.savedstate.SavedStateRegistryOwner",
+        "androidx.savedstate.compose.LocalSavedStateRegistryOwner",
+        "kotlin.random.Random"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavSaveableStateHolder.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/state/NavSaveableStateHolder.kt",
+      "sha256Bytes": "ce81465354efcbc169b517e1a473ee6fd6c66ed76d723b231635ba4d30c54be3",
+      "sha256LF": "ce81465354efcbc169b517e1a473ee6fd6c66ed76d723b231635ba4d30c54be3",
+      "lines": 87,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.runtime.Stable",
+        "androidx.compose.runtime.remember",
+        "androidx.compose.runtime.saveable.SaveableStateHolder",
+        "androidx.compose.runtime.saveable.rememberSaveableStateHolder"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/transition/NavDirectionalTransition.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/transition/NavDirectionalTransition.kt",
+      "sha256Bytes": "34074da13ac54002c43d8685bed634308565df21a2ef6f9319ed89264160916c",
+      "sha256LF": "34074da13ac54002c43d8685bed634308565df21a2ef6f9319ed89264160916c",
+      "lines": 79,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Stable",
+        "androidx.compose.ui.Modifier",
+        "top.yukonga.miuix.kmp.nav.core.LiveNavTransitionScope",
+        "top.yukonga.miuix.kmp.nav.runtime.NavChange"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/transition/NavMotion.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/transition/NavMotion.kt",
+      "sha256Bytes": "db38ae9009dd14fb5cb77c630b95f68dd01e607512ba92da452dfccdc2eda9ea",
+      "sha256LF": "db38ae9009dd14fb5cb77c630b95f68dd01e607512ba92da452dfccdc2eda9ea",
+      "lines": 88,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.animation.core.Easing",
+        "androidx.compose.runtime.Immutable",
+        "androidx.compose.runtime.Stable",
+        "top.yukonga.miuix.kmp.nav.runtime.NavDriverSpec",
+        "top.yukonga.miuix.kmp.nav.runtime.NavProgrammaticEasing"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/transition/NavRole.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/transition/NavRole.kt",
+      "sha256Bytes": "237132fa96b27af882cc3defd7a72785369a6c25aac35932c49a7664996781df",
+      "sha256LF": "237132fa96b27af882cc3defd7a72785369a6c25aac35932c49a7664996781df",
+      "lines": 17,
+      "sourceSet": "commonMain",
+      "imports": []
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/transition/NavTransition.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/transition/NavTransition.kt",
+      "sha256Bytes": "6a14ed7520b2acaab568a8ca045e1f25f31f8ffdd34e610c52f50c6a900ecfb4",
+      "sha256LF": "6a14ed7520b2acaab568a8ca045e1f25f31f8ffdd34e610c52f50c6a900ecfb4",
+      "lines": 147,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Stable",
+        "androidx.compose.ui.Modifier",
+        "androidx.compose.ui.graphics.GraphicsLayerScope",
+        "androidx.compose.ui.graphics.graphicsLayer"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/transition/NavTransitionScope.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/transition/NavTransitionScope.kt",
+      "sha256Bytes": "4bcb97e477f0491b7041fe1c37bed1b555be319225e93a640d6fae2a65e3b9bd",
+      "sha256LF": "4bcb97e477f0491b7041fe1c37bed1b555be319225e93a640d6fae2a65e3b9bd",
+      "lines": 140,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.runtime.Stable",
+        "androidx.compose.ui.unit.Density",
+        "androidx.compose.ui.unit.IntSize",
+        "androidx.compose.ui.unit.LayoutDirection",
+        "top.yukonga.miuix.kmp.nav.runtime.NavChange"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/transition/NavTransitions.kt",
+      "storagePath": "miuix-nav/src/commonMain/kotlin/nav/transition/NavTransitions.kt",
+      "sha256Bytes": "b391a984290e9b0c2bd89cbd6dd14f59ac4e0bef5b71b9c9ab22ff884f2c35b8",
+      "sha256LF": "b391a984290e9b0c2bd89cbd6dd14f59ac4e0bef5b71b9c9ab22ff884f2c35b8",
+      "lines": 89,
+      "sourceSet": "commonMain",
+      "imports": [
+        "androidx.compose.ui.unit.LayoutDirection",
+        "androidx.compose.ui.util.fastRoundToInt"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/skikoMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavSystemCornerRadius.skiko.kt",
+      "storagePath": "miuix-nav/src/skikoMain/kotlin/nav/core/NavSystemCornerRadius.skiko.kt",
+      "sha256Bytes": "be4d6e312caf1c813bce7430f6ecf0d5499f7831ff24e81ea220f99b0c36e479",
+      "sha256LF": "be4d6e312caf1c813bce7430f6ecf0d5499f7831ff24e81ea220f99b0c36e479",
+      "lines": 12,
+      "sourceSet": "skikoMain",
+      "imports": [
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.ui.unit.Dp",
+        "androidx.compose.ui.unit.dp"
+      ]
+    },
+    {
+      "path": "miuix-nav/src/skikoMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/WindowNavigationEventBridge.skiko.kt",
+      "storagePath": "miuix-nav/src/skikoMain/kotlin/nav/gesture/WindowNavigationEventBridge.skiko.kt",
+      "sha256Bytes": "aff0e63ddb271481787ca12b4c7046a024e413268877c60f3e1b48ff68f0e7bc",
+      "sha256LF": "aff0e63ddb271481787ca12b4c7046a024e413268877c60f3e1b48ff68f0e7bc",
+      "lines": 9,
+      "sourceSet": "skikoMain",
+      "imports": [
+        "androidx.compose.runtime.Composable"
+      ]
+    }
+  ],
+  "counts": {
+    "commonMain": 28,
+    "skikoMain": 2,
+    "desktopMain": 0,
+    "totalKotlin": 30
+  },
+  "originalExpectedActualPairs": [
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavSystemCornerRadius.kt",
+      "line": 18,
+      "declaration": "expect fun rememberNavSystemCornerRadius(): Dp"
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/WindowNavigationEventBridge.kt",
+      "line": 39,
+      "declaration": "expect fun WindowNavigationEventBridge()"
+    },
+    {
+      "path": "miuix-nav/src/skikoMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavSystemCornerRadius.skiko.kt",
+      "line": 12,
+      "declaration": "actual fun rememberNavSystemCornerRadius(): Dp = 0.dp"
+    },
+    {
+      "path": "miuix-nav/src/skikoMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/WindowNavigationEventBridge.skiko.kt",
+      "line": 9,
+      "declaration": "actual fun WindowNavigationEventBridge() = Unit"
+    }
+  ]
+}
