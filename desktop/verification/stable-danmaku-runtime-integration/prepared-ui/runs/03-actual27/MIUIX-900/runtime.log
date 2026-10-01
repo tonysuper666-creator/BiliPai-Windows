@@ -1,0 +1,27 @@
+PASS: actual SettingsHost/Root/list Host classes load without JVM sentinel error
+PASS: guest/login fixture controls actual cloud section visibility
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.ui.DanmakuSettingsUiFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-danmaku-settings-main26-ui-proof/runs/03-actual27/settings-main26-ui-fixture.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.ui.DanmakuSettingsUiFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release
+Exception in thread "main" java.lang.IllegalStateException: actual slider release persists through same global store; labels=[弹幕设置, 竖屏专用, 开关、字号和区域与横屏同步，其余样式独立, 查看弹幕列表, 搜索 · 筛选 · 跳转, 同步弹幕设置到账号, 开启后，透明度、速度、显示区域等设置会同步到账号，并影响网页版等其它端, 账号同步状态, 当前设备本地设置尚未触发同步, 未同步, 立即同步, 字体大小, 100%, 透明度, 85%, 弹幕速度, 中, 高级渲染, 更细的弹幕渲染控制, 字体粗细, 5, 描边粗细, 1.5, 弹幕行高, 1.6, 滚动弹幕时长, 7s, 静态弹幕时长, 4s, 固定滚动速度, 固定弹幕转滚动, 海量弹幕模式, 显示区域, 1/4, 顶部, 1/2, 半屏, 3/4, 大部, 全屏, 铺满, 竖屏弹幕显示区域, 视频画面, 屏幕顶部, 合并重复弹幕, 减少刷屏干扰，将重复内容合并显示, 合并窗口, 500ms, 计数阈值, 2 条, 智能避脸遮挡, 实时识别人脸并避让弹幕轨道, 屏蔽类型, 关闭对应开关即可屏蔽, 滚动弹幕, 顶部弹幕, 底部弹幕, 彩色弹幕, 高级弹幕, 视频内互动提示, 智能云屏蔽, 关闭, 自定义屏蔽词, 屏蔽管理, 每行一个，也可粘贴 JSON：keywords / regex / userHashes]
+	at com.bilipai.desktop.ui.SettingsScene.wait(DanmakuSettingsUiFixture.kt:47)
+	at com.bilipai.desktop.ui.SettingsScene$wait$1.invokeSuspend(DanmakuSettingsUiFixture.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.internal.ScopeCoroutine.afterResume(Scopes.kt:35)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+	at kotlinx.coroutines.DispatchedTaskKt.resume(DispatchedTask.kt:233)
+	at kotlinx.coroutines.DispatchedTaskKt.dispatch(DispatchedTask.kt:152)
+	at kotlinx.coroutines.CancellableContinuationImpl.dispatchResume(CancellableContinuationImpl.kt:470)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core(CancellableContinuationImpl.kt:504)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core$default(CancellableContinuationImpl.kt:493)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeUndispatched(CancellableContinuationImpl.kt:596)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedResumeTask.run(EventLoop.common.kt:497)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.DanmakuSettingsUiFixtureKt.main(DanmakuSettingsUiFixture.kt:105)

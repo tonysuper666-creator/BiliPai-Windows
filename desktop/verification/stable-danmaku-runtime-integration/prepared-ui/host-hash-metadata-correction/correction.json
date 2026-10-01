@@ -1,0 +1,29 @@
+{
+  "status": "APPEND_ONLY_METADATA_CORRECTION_NO_PAYLOAD_CHANGE",
+  "reason": "Proof result metadata used Path.read_text() without explicit UTF-8 on Windows then UTF-8 encode, reencoding the non-ASCII Chinese source under the process default locale. Raw payload/source copy, actual class bytes, compilation and classload results are unchanged. LF pins must be computed from read_bytes().replace(CRLF,LF), or explicit UTF-8 read.",
+  "localeEncoding": "cp936",
+  "historicalFrozenManifestSha256": "1b0adb7c34ac19f5f9945ef3c5baea7a9aabdc5a137af9b938eaab29536c3a3a",
+  "historicalResultSha256": "973656b496fa81e3e8aa234e2af76e39d8c392de866f34a4cc070f0a0c138498",
+  "correctedPins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\host-nonlocal-return-delta\\source-before.kt",
+      "sha256Bytes": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f",
+      "sha256LF": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f",
+      "bytes": 7015,
+      "priorInvalidMetadata": "b4639c584bb5d93e308c0435bd1712a65ed4c59cac611fc444e8cad9986d916f",
+      "utf8ExplicitRoundtripSha256": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f",
+      "implicitLocaleReencodedSha256": "b4639c584bb5d93e308c0435bd1712a65ed4c59cac611fc444e8cad9986d916f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\host-nonlocal-return-delta\\DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256Bytes": "e52165bea8256acbfc8e417a326fedf8122cfed83dc0d7a5d38479c82dccb20c",
+      "sha256LF": "e52165bea8256acbfc8e417a326fedf8122cfed83dc0d7a5d38479c82dccb20c",
+      "bytes": 7016,
+      "priorInvalidMetadata": "55f1a1e65909c66fc52b84cfe4ef6c5210fe0e4402f68057788ecda2042db9e7",
+      "utf8ExplicitRoundtripSha256": "e52165bea8256acbfc8e417a326fedf8122cfed83dc0d7a5d38479c82dccb20c",
+      "implicitLocaleReencodedSha256": "55f1a1e65909c66fc52b84cfe4ef6c5210fe0e4402f68057788ecda2042db9e7"
+    }
+  ],
+  "acceptedPatchSha256Bytes": "142149c3a17b8d7386c28f169b7712cba764d22e2d5cdae643323c203dce7b89",
+  "boundary": "Do not rewrite frozen27 artifacts. Root uses actual byte pins 6676ec...->e52165.... No full UI acceptance implied."
+}

@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-04\source-inputs\03-DanmakuSettingsPanel.kt:592:70: warning: 'val Icons.Outlined.FormatListBulleted: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.FormatListBulleted.
+                                        imageVector = Icons.Outlined.FormatListBulleted,
+                                                                     ^^^^^^^^^^^^^^^^^^

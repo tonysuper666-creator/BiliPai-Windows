@@ -1,0 +1,26 @@
+{
+  "status": "CONFIRMED_JVM_CLASSFORMAT_BLOCKER",
+  "runtimeEvidence": "runs/02/MATERIAL3-900/runtime.log",
+  "fixtureProductionClassOverrides": 0,
+  "classes": [
+    {
+      "label": "actual26",
+      "jarPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-26\\main-kotlin.jar",
+      "jarSha256Bytes": "da1a6e8556580a49910373f5ed7f24fc4688831c2134dccd605f396c85cce9b0",
+      "classPath": "com/bilipai/desktop/ui/DesktopOriginalDanmakuSettingsHostKt.class",
+      "classSha256Bytes": "6a7189004275aac95a407b4ad7a83cbb08e83a3e6b78145815cd2a46055860ca",
+      "methods": [],
+      "invalidMethods": []
+    },
+    {
+      "label": "prepared06",
+      "jarPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-06\\original-danmaku-settings.jar",
+      "jarSha256Bytes": "549caaf0e59e8cfb46ab07be964b0b163b5f4358e61cfc152167961e46dac63e",
+      "classPath": "com/bilipai/desktop/ui/DesktopOriginalDanmakuSettingsHostKt.class",
+      "classSha256Bytes": "4c075daf36d24d5d434266f7ec3b90c06d39e19d677efb203b8c156c23f9c1cf",
+      "methods": [],
+      "invalidMethods": []
+    }
+  ],
+  "boundary": "No UI pointer occurred; whole source compile alone did not load this class. Frozen179 remains unchanged."
+}

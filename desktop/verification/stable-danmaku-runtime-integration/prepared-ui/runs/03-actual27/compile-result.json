@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\runs\\03-actual27\\source-inputs\\DanmakuSettingsUiFixture.kt",
+      "sha256Bytes": "1f891613fd69d94d7e6bf9adb675ae43b2c72848ac00ac19129aa02c508e750d"
+    }
+  ],
+  "productionSourceInputs": 0,
+  "jarSha256Bytes": "43a88ca9454a6edb80e277c120acc80dc2aa23011b7691893c7e539f9b8fc84f",
+  "fixtureClasses": [
+    "com/bilipai/desktop/ui/DanmakuSettingsUiFixtureKt$main$1.class",
+    "com/bilipai/desktop/ui/DanmakuSettingsUiFixtureKt.class",
+    "com/bilipai/desktop/ui/SettingsFence.class",
+    "com/bilipai/desktop/ui/SettingsPlatformFixture$cloud$1.class",
+    "com/bilipai/desktop/ui/SettingsPlatformFixture.class",
+    "com/bilipai/desktop/ui/SettingsScene$click$1.class",
+    "com/bilipai/desktop/ui/SettingsScene$edit$1.class",
+    "com/bilipai/desktop/ui/SettingsScene$pointer$1.class",
+    "com/bilipai/desktop/ui/SettingsScene$reveal$1.class",
+    "com/bilipai/desktop/ui/SettingsScene$scroll$1.class",
+    "com/bilipai/desktop/ui/SettingsScene$switch$1.class",
+    "com/bilipai/desktop/ui/SettingsScene$top$1.class",
+    "com/bilipai/desktop/ui/SettingsScene$wait$1.class",
+    "com/bilipai/desktop/ui/SettingsScene$wait$2.class",
+    "com/bilipai/desktop/ui/SettingsScene.class"
+  ],
+  "productionClassOverlap": [],
+  "actualSnapshotManifestSha256Bytes": "908d5cfdb65a99622fd2822771641b17d2bf35efe501a71ffcd231eace8c1c53",
+  "orderedCp92Sha256Bytes": "8dcd9678a9f669793267bfb530fda1c09ef3225c50cf54682a12228636afd772"
+}

@@ -1,0 +1,266 @@
+[
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+    "label": "actual-Main-window-presentation",
+    "beforeLF": "966cb14244670350865b92a9359831854657f00f4ee1e74907b5c0e4d0f10e90",
+    "afterLF": "3bad91295e5c724ab8a5b5dcba6aeba355694d151d01863ff0d1d70d5a93a077",
+    "old": "            DesktopApp(repository, playerResult.getOrNull()",
+    "new": "            val danmakuPresentation = com.bilipai.desktop.ui.rememberDesktopWindowsDanmakuPresentation(window, windowState)\n            DesktopApp(repository, playerResult.getOrNull()"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+    "label": "required-presentation-port",
+    "beforeLF": "3bad91295e5c724ab8a5b5dcba6aeba355694d151d01863ff0d1d70d5a93a077",
+    "afterLF": "914897f017c79d3ed46bbda59be80802a36de25ce69ba489ec4ba2746aa51d25",
+    "old": "                diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError)",
+    "new": "                diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError,\n                danmakuPresentation = danmakuPresentation)"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "required-public-root-presentation",
+    "beforeLF": "32779e755a61948c5d05628e1d6f859b018343468c068198eddc82d913d40b48",
+    "afterLF": "3ae5618c93f7761ef9d998126ee1efed753692df439dadf8d52d5a4c7f8b5790",
+    "old": "    diagnosticLifecycle: DesktopDiagnosticLifecycle? = null, diagnosticStartupError: String? = null) {",
+    "new": "    diagnosticLifecycle: DesktopDiagnosticLifecycle? = null, diagnosticStartupError: String? = null,\n    danmakuPresentation: DesktopDanmakuPresentationBinding) {"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "forward-required-presentation",
+    "beforeLF": "3ae5618c93f7761ef9d998126ee1efed753692df439dadf8d52d5a4c7f8b5790",
+    "afterLF": "d359f95caab72293a8c158bca9e651587304ebbc11e465efd4f110a79cc03a6b",
+    "old": "            diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError)",
+    "new": "            diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError,\n            danmakuPresentation = danmakuPresentation)"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "required-ready-root-presentation",
+    "beforeLF": "d359f95caab72293a8c158bca9e651587304ebbc11e465efd4f110a79cc03a6b",
+    "afterLF": "083f2d1c194598b15a45042ba9f64867e17354bb35262000d4b74821c691c4da",
+    "old": "    diagnosticLifecycle: DesktopDiagnosticLifecycle?, diagnosticStartupError: String?) {",
+    "new": "    diagnosticLifecycle: DesktopDiagnosticLifecycle?, diagnosticStartupError: String?,\n    danmakuPresentation: DesktopDanmakuPresentationBinding) {"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "one-global-original-pref-projection",
+    "beforeLF": "083f2d1c194598b15a45042ba9f64867e17354bb35262000d4b74821c691c4da",
+    "afterLF": "c395c34dfaaf05f047f581e3c7c6f57470b59a36fb2484825a45388d4b1cf9b0",
+    "old": "    val dynamicEditor = rememberDesktopDynamicEditorRoot(repository, dynamicCardSession)",
+    "new": "    val dynamicEditor = rememberDesktopDynamicEditorRoot(repository, dynamicCardSession)\n    val originalDanmakuBlocks = remember(pluginStore, dynamicEditor) {\n        DesktopDanmakuBlockPreferences(pluginStore, dynamicEditor.operations::withOwnedEditorImageAdmission)\n    }\n    val originalDanmakuPreferences = remember(pluginStore, originalDanmakuBlocks, dynamicEditor) {\n        DesktopOriginalDanmakuPreferences(pluginStore, originalDanmakuBlocks, dynamicEditor.operations::withOwnedEditorImageAdmission)\n    }\n    val originalDanmakuPresentation = danmakuPresentation.currentPresentation()\n    val originalDanmakuScope = originalDanmakuPresentation.originalScope()\n    val originalDanmakuSettings by remember(originalDanmakuPreferences, originalDanmakuScope) {\n        originalDanmakuPreferences.getDanmakuSettings(originalDanmakuScope)\n    }.collectAsState(originalDanmakuPreferences.currentSettings(originalDanmakuScope))\n    val rendererDanmakuSettings = projectOriginalDanmakuRendererSettings(preferences.danmaku, originalDanmakuSettings)\n    val latestRendererDanmakuSettings by rememberUpdatedState(rendererDanmakuSettings)\n"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "legacy-migration-under-actual-root-feedback",
+    "beforeLF": "c395c34dfaaf05f047f581e3c7c6f57470b59a36fb2484825a45388d4b1cf9b0",
+    "afterLF": "ea8866e81d8ddc077e6c7b6a2dfb1b9b18236c1c6fde2c4c0d80479681e39a52",
+    "old": "    var error by remember { mutableStateOf<String?>(null) }",
+    "new": "    var error by remember { mutableStateOf<String?>(null) }\n    LaunchedEffect(originalDanmakuPreferences) {\n        try { originalDanmakuPreferences.importLegacyWindowsDanmakuIfAbsent(preferenceStore.read().danmaku) }\n        catch (cancelled: CancellationException) { throw cancelled }\n        catch (failure: Exception) { error = failure.message ?: \"旧弹幕设置迁移失败\" }\n    }"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "controller-uses-same-projection",
+    "beforeLF": "ea8866e81d8ddc077e6c7b6a2dfb1b9b18236c1c6fde2c4c0d80479681e39a52",
+    "afterLF": "eedd4bdccea03e7cabd3e1dbbf3dc37789ecf545ef8af021285df78e573806ea",
+    "old": "            onRememberAudioQuality = { quality ->",
+    "new": "            currentDanmakuSettings = { latestRendererDanmakuSettings },\n            onRememberAudioQuality = { quality ->"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+    "label": "required-controller-renderer-getter",
+    "beforeLF": "5e63b0a0d1c09f8d3274c7b442fea2272055fa25fcafd7bf68414dc259e21fc3",
+    "afterLF": "92a72047039d4773a40fbe999fec986e54185c9e435b88302709d1d265a72cc9",
+    "old": "    private val onRememberAudioQuality: (Int) -> Unit = {},",
+    "new": "    private val onRememberAudioQuality: (Int) -> Unit = {},\n    private val currentDanmakuSettings: () -> com.bilipai.desktop.danmaku.DanmakuSettings,"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+    "label": "source-load-original-current-settings",
+    "beforeLF": "92a72047039d4773a40fbe999fec986e54185c9e435b88302709d1d265a72cc9",
+    "afterLF": "f1bd64ca7c4b50c6fe5f58dadd8e248794fddeb6b4e366e3d9244759cc32b513",
+    "old": "                danmaku?.applySettings(preferences().danmaku)",
+    "new": "                danmaku?.applySettings(currentDanmakuSettings())"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "modal-owner-cid-source-epoch",
+    "beforeLF": "eedd4bdccea03e7cabd3e1dbbf3dc37789ecf545ef8af021285df78e573806ea",
+    "afterLF": "b27067bc436df5b262bea10dbf39658ab53af8517ccb21b452d92afd2fc4ba9d",
+    "old": "    val commandCid = commandDetails?.pages?.getOrNull(playing.currentPart)?.cid ?: 0L",
+    "new": "    val commandCid = commandDetails?.pages?.getOrNull(playing.currentPart)?.cid ?: 0L\n    var originalDanmakuSettingsVisible by remember(sessionEpoch, commandCid, commandVersion) { mutableStateOf(false) }\n    var originalDanmakuPoolVisible by remember(sessionEpoch, commandCid, commandVersion) { mutableStateOf(false) }\n    var originalDanmakuEnabledChangeVersion by remember(sessionEpoch, commandCid, commandVersion) { mutableLongStateOf(0L) }"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "retire-legacy-writing-in-changePreferences",
+    "beforeLF": "b27067bc436df5b262bea10dbf39658ab53af8517ccb21b452d92afd2fc4ba9d",
+    "afterLF": "b848ae587686ac0b9d996b0dc988ec60f43cd744404f91619be594826595c0dd",
+    "old": "        preferences = next.normalized()",
+    "new": "        // Legacy Windows danmaku values are retained only for the one-time absent-key migration.\n        preferences = next.copy(danmaku = previous.danmaku).normalized()"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "changePreferences-current-renderer",
+    "beforeLF": "b848ae587686ac0b9d996b0dc988ec60f43cd744404f91619be594826595c0dd",
+    "afterLF": "18788994bf8061e1586182610a5d83aff47598411e59fcbb7984907867889642",
+    "old": "        danmaku?.applySettings(preferences.danmaku)",
+    "new": "        danmaku?.applySettings(latestRendererDanmakuSettings)"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "original-enabled-toggle",
+    "beforeLF": "18788994bf8061e1586182610a5d83aff47598411e59fcbb7984907867889642",
+    "afterLF": "caa9f6b49544ac5dc436b1cf6a53dce351bf82da4e13da3a9240b486bd2f5732",
+    "old": "    fun checkpointForNavigation(): Boolean {",
+    "new": "    fun toggleOriginalDanmaku() {\n        val targetEpoch = repository.sessionEpoch\n        val targetVersion = player?.currentSourceVersion\n        val targetCid = commandCid\n        val enabled = !originalDanmakuPreferences.currentSettings(danmakuPresentation.currentPresentation().originalScope()).enabled\n        scope.launch {\n            try {\n                originalDanmakuPreferences.setDanmakuEnabled(enabled, danmakuPresentation.currentPresentation().originalScope())\n                ensureActive()\n                if (repository.sessionEpoch == targetEpoch && player?.currentSourceVersion == targetVersion && commandCid == targetCid)\n                    originalDanmakuEnabledChangeVersion++\n            } catch (cancelled: CancellationException) { throw cancelled }\n            catch (failure: Exception) { error = failure.message ?: \"弹幕显示设置保存失败\" }\n        }\n    }\n    fun checkpointForNavigation(): Boolean {"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "renderer-reacts-global-original-keys-and-presentation",
+    "beforeLF": "caa9f6b49544ac5dc436b1cf6a53dce351bf82da4e13da3a9240b486bd2f5732",
+    "afterLF": "245da8b892fb303cf203b1a380e4943cd5be6089a2d528023aa4c02caaaafdb4",
+    "old": "    LaunchedEffect(player, danmaku) { player?.applyPreferences(preferences); danmaku?.applySettings(preferences.danmaku) }",
+    "new": "    LaunchedEffect(player, danmaku) { player?.applyPreferences(preferences) }\n    LaunchedEffect(danmaku, rendererDanmakuSettings) { danmaku?.applySettings(rendererDanmakuSettings) }"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "key-toggle-original-same-store",
+    "beforeLF": "245da8b892fb303cf203b1a380e4943cd5be6089a2d528023aa4c02caaaafdb4",
+    "afterLF": "fcbc1a5ab36dc8685ef77e265a92558a6c0ea8705f98e34a9d87205453c5ae44",
+    "old": "            PlayerKeyAction.ToggleDanmaku -> { changePreferences(preferences.copy(danmaku = preferences.danmaku.copy(enabled = !preferences.danmaku.enabled))); true }",
+    "new": "            PlayerKeyAction.ToggleDanmaku -> { toggleOriginalDanmaku(); true }"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "actual-PlayerPanel-renderer-view",
+    "beforeLF": "fcbc1a5ab36dc8685ef77e265a92558a6c0ea8705f98e34a9d87205453c5ae44",
+    "afterLF": "399c94e49a048d56965162480431378110fea3d8aec053a5fa80e05abb7260f4",
+    "old": "                        PlayerPanel(initialized, preferences, ::changePreferences, onToggleFullscreen,",
+    "new": "                        PlayerPanel(initialized, preferences.copy(danmaku = rendererDanmakuSettings), ::changePreferences, onToggleFullscreen,"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "actual-original-panel-entry",
+    "beforeLF": "399c94e49a048d56965162480431378110fea3d8aec053a5fa80e05abb7260f4",
+    "afterLF": "b5aab195f4d559070949947572745438bc579cd0ab0a650c0f4a77f08c4abde5",
+    "old": "                            surfaceOnly = section == DesktopSection.STORY,",
+    "new": "                            onOriginalDanmakuSettings = if (initialized === player && showVideo && playing.details?.raw != null && hostWindow != null) ({ originalDanmakuSettingsVisible = true }) else null,\n                            onOriginalDanmakuToggle = ::toggleOriginalDanmaku,\n                            surfaceOnly = section == DesktopSection.STORY,"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "command-enabled-original-pref",
+    "beforeLF": "b5aab195f4d559070949947572745438bc579cd0ab0a650c0f4a77f08c4abde5",
+    "afterLF": "36ceb733bbb334b38d6f105a1dfebe961adabdc763e71bbb4173843d66e5102e",
+    "old": "playback.currentCastSource(commandVersion) != null && preferences.danmaku.enabled)",
+    "new": "playback.currentCastSource(commandVersion) != null && rendererDanmakuSettings.enabled)"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "command-font-original-pref",
+    "beforeLF": "36ceb733bbb334b38d6f105a1dfebe961adabdc763e71bbb4173843d66e5102e",
+    "afterLF": "ff3b1f8be0c361c93cdf8a58eea9c3ae289c3866bcb80c2d7e1ecd423f16acb0",
+    "old": "                                    fontScale = preferences.danmaku.fontScale,",
+    "new": "                                    fontScale = rendererDanmakuSettings.fontScale,"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "command-interaction-original-pref",
+    "beforeLF": "ff3b1f8be0c361c93cdf8a58eea9c3ae289c3866bcb80c2d7e1ecd423f16acb0",
+    "afterLF": "396b07db5830dd7315c8165f64ab4f7fe68a00ec007c795f8a573e9817f3e693",
+    "old": "                                    hideInteractiveCommands = preferences.danmaku.hideInteractiveCommands,",
+    "new": "                                    hideInteractiveCommands = rendererDanmakuSettings.hideInteractiveCommands,"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+    "label": "nullable-auxiliary-owner-slot",
+    "beforeLF": "68ddcfb726a3388b00c93249906b55417d4f5406785b85af9240912825315af1",
+    "afterLF": "cd79b1ddc6dde10dd9370619a3f00e79e93ccee8105f3af1174b8d9eb67f3454",
+    "old": "    modifier: Modifier,\n) {",
+    "new": "    modifier: Modifier,\n    auxiliaryContent: (@Composable (DesktopOriginalCommentRootOwner) -> Unit)? = null,\n) {"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+    "label": "reuse-sole-provider-outside-modal",
+    "beforeLF": "cd79b1ddc6dde10dd9370619a3f00e79e93ccee8105f3af1174b8d9eb67f3454",
+    "afterLF": "57321d696b8de599b77a072fe49bca4266987bc67d23adb1a0d2122ea29e92ab",
+    "old": "        val context = checkNotNull(LocalDesktopDynamicTimelinePreferences.current).context",
+    "new": "        auxiliaryContent?.invoke(owner)\n        val context = checkNotNull(LocalDesktopDynamicTimelinePreferences.current).context"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "label": "full-original-root-consumer-same-comment-owner",
+    "beforeLF": "396b07db5830dd7315c8165f64ab4f7fe68a00ec007c795f8a573e9817f3e693",
+    "afterLF": "5d6cc681c6ed569632293257e788c7a70a6df7288329b06407e9a1f1a12506af",
+    "old": "                                            onLogin = { loginDialog = true }, modifier = Modifier.fillMaxWidth().height(440.dp))",
+    "new": "                                            onLogin = { loginDialog = true }, modifier = Modifier.fillMaxWidth().height(440.dp),\n                                            auxiliaryContent = if (player != null && danmaku != null && hostWindow != null && commentCid > 0L) ({ owner ->\n                                                val viewport = com.android.purebilibili.core.util.LocalWindowSizeClass.current\n                                                DesktopOriginalDanmakuRootHost(owner, repository, pluginStore, danmaku, commentCid,\n                                                    commentSourceVersion, stillOwned = {\n                                                        repository.sessionEpoch == commentEpoch && !isClosing() && !activatingUpdate && showVideo &&\n                                                            player.ownsSourceVersion(commentSourceVersion) && playback.state.value.details?.bvid == commentVideoId &&\n                                                            playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == commentCid &&\n                                                            playback.currentCastSource(commentSourceVersion) != null\n                                                    }, window = hostWindow, presentation = originalDanmakuPresentation,\n                                                    viewport = DesktopDanmakuSettingsViewport(viewport.widthDp.value.toInt(), viewport.heightDp.value.toInt()),\n                                                    currentPositionMs = { (player.state.value.positionSeconds * 1000.0).toLong().coerceAtLeast(0L) },\n                                                    seekFromUser = { playback.seekTo(it.coerceAtLeast(0L) / 1000.0) },\n                                                    showSettings = originalDanmakuSettingsVisible, showPool = originalDanmakuPoolVisible,\n                                                    onShowPool = { originalDanmakuSettingsVisible = false; originalDanmakuPoolVisible = true },\n                                                    onDismissSettings = { originalDanmakuSettingsVisible = false },\n                                                    onDismissPool = { originalDanmakuPoolVisible = false },\n                                                    enabledChangeVersion = originalDanmakuEnabledChangeVersion)\n                                            }) else null)"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+    "label": "original-panel-and-toggle-ports",
+    "beforeLF": "8a51edfba5939b7d30818b1917f037bcaa02e2785a53c3ed016051145d7e4b17",
+    "afterLF": "1f707c0280f154994f9670a4a3bf58ab875671785e8e26bef6a16a60f26c1b06",
+    "old": "    commandOverlay: (@Composable () -> Unit)? = null,",
+    "new": "    commandOverlay: (@Composable () -> Unit)? = null,\n    onOriginalDanmakuSettings: (() -> Unit)? = null,\n    onOriginalDanmakuToggle: (() -> Unit)? = null,"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+    "label": "remove-legacy-modal-state",
+    "beforeLF": "1f707c0280f154994f9670a4a3bf58ab875671785e8e26bef6a16a60f26c1b06",
+    "afterLF": "2a3640ac88f0d4a0de1220f60f51f1842cc94704e7333c3e1ffeb725aba963d0",
+    "old": "    var danmakuSettings by remember { mutableStateOf(false) }\n",
+    "new": ""
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+    "label": "all-active-danmaku-button-original-keys",
+    "beforeLF": "2a3640ac88f0d4a0de1220f60f51f1842cc94704e7333c3e1ffeb725aba963d0",
+    "afterLF": "a49b87858562edb83466b27958a2442b40856ea2d5127f7c32a303bd22645225",
+    "old": "            FilterChip(selected = preferences.danmaku.enabled, onClick = {\n                update(latestPreferences.copy(danmaku = latestPreferences.danmaku.copy(enabled = !preferences.danmaku.enabled)))\n            }, label = { Text(\"弹幕\") })\n            TextButton(onClick = { danmakuSettings = true }) { Text(\"弹幕设置\") }",
+    "new": "            FilterChip(selected = preferences.danmaku.enabled, onClick = { onOriginalDanmakuToggle?.invoke() },\n                enabled = onOriginalDanmakuToggle != null, label = { Text(\"弹幕\") })\n            TextButton(onClick = { onOriginalDanmakuSettings?.invoke() }, enabled = onOriginalDanmakuSettings != null) { Text(\"弹幕设置\") }"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+    "label": "retire-obsolete-Windows-dialog-call",
+    "beforeLF": "a49b87858562edb83466b27958a2442b40856ea2d5127f7c32a303bd22645225",
+    "afterLF": "96dfb051a57180ec252bfde2621abfa18212124d5d405305b5ab46eb92d70fd6",
+    "old": "    if (danmakuSettings) DanmakuSettingsDialog(preferences, onPreferencesChange) { danmakuSettings = false }\n",
+    "new": ""
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt",
+    "label": "retire-obsolete-basic-danmaku-rows",
+    "beforeLF": "4d04335d06aea0f8ef95eade5c9eb9f85509c6bc9a972719fb061756f302bd70",
+    "afterLF": "dbdebe726048505818aaa22bd7ac101f93d3ebc54003a040ee3dfcca6a52593b",
+    "old": "@Composable\nfun DanmakuSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: (PlayerPreferences) -> Unit, onDismiss: () -> Unit) {\n    val latestPreferences by rememberUpdatedState(preferences)\n    var draft by remember { mutableStateOf(preferences.danmaku) }\n    var rules by remember { mutableStateOf((preferences.danmaku.blockedKeywords + preferences.danmaku.blockedRules).distinct().joinToString(\"\\n\")) }\n    AlertDialog(onDismissRequest = onDismiss, title = { Text(\"弹幕设置\") }, text = {\n        Column(Modifier.width(540.dp).heightIn(max = 640.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {\n            PlayerSwitch(\"显示弹幕\", draft.enabled) { draft = draft.copy(enabled = it) }\n            PlayerSettingSlider(\"不透明度\", draft.opacity, 0.1f..1f, \"${(draft.opacity * 100).toInt()}%\") { draft = draft.copy(opacity = it) }\n            PlayerSettingSlider(\"字号\", draft.fontScale, 0.5f..2f, \"${(draft.fontScale * 100).toInt()}%\") { draft = draft.copy(fontScale = it) }\n            PlayerSettingSlider(\"显示区域\", draft.displayAreaRatio, 0.25f..1f, \"${(draft.displayAreaRatio * 100).toInt()}%\") { draft = draft.copy(displayAreaRatio = it) }\n            PlayerSettingSlider(\"滚动停留时间\", draft.scrollDurationSeconds, 2f..20f, \"${playbackSpeedLabel(draft.scrollDurationSeconds.toDouble())}秒\") { draft = draft.copy(scrollDurationSeconds = it) }\n            PlayerSettingSlider(\"速度系数（越大越慢）\", draft.speedFactor, 0.25f..4f, playbackSpeedLabel(draft.speedFactor.toDouble())) { draft = draft.copy(speedFactor = it) }\n            PlayerSettingSlider(\"固定弹幕停留\", draft.staticDurationSeconds, 1f..20f, \"${playbackSpeedLabel(draft.staticDurationSeconds.toDouble())}秒\") { draft = draft.copy(staticDurationSeconds = it) }\n            PlayerSettingSlider(\"行距\", draft.lineHeight, 1f..3f, playbackSpeedLabel(draft.lineHeight.toDouble())) { draft = draft.copy(lineHeight = it) }\n            PlayerSettingSlider(\"字重\", draft.fontWeight.toFloat(), 1f..9f, draft.fontWeight.toString(), steps = 7) { draft = draft.copy(fontWeight = it.toInt()) }\n            PlayerSwitch(\"文字描边\", draft.strokeEnabled) { draft = draft.copy(strokeEnabled = it) }\n            if (draft.strokeEnabled) PlayerSettingSlider(\"描边宽度\", draft.strokeWidth, 0f..5f, playbackSpeedLabel(draft.strokeWidth.toDouble())) { draft = draft.copy(strokeWidth = it) }\n            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {\n                FilterChip(draft.allowScroll, { draft = draft.copy(allowScroll = !draft.allowScroll) }, label = { Text(\"滚动\") })\n                FilterChip(draft.allowTop, { draft = draft.copy(allowTop = !draft.allowTop) }, label = { Text(\"顶部\") })\n                FilterChip(draft.allowBottom, { draft = draft.copy(allowBottom = !draft.allowBottom) }, label = { Text(\"底部\") })\n                FilterChip(draft.allowColorful, { draft = draft.copy(allowColorful = !draft.allowColorful) }, label = { Text(\"彩色\") })\n                FilterChip(draft.allowSpecial, { draft = draft.copy(allowSpecial = !draft.allowSpecial) }, label = { Text(\"高级 / BAS\") })\n            }\n            PlayerSwitch(\"屏蔽互动弹幕\", draft.hideInteractiveCommands) { draft = draft.copy(hideInteractiveCommands = it) }\n            PlayerSwitch(\"合并重复弹幕\", draft.mergeDuplicates) { draft = draft.copy(mergeDuplicates = it) }\n            if (draft.mergeDuplicates) {\n                PlayerSettingSlider(\"合并时间窗口\", draft.duplicateMergeWindowMs.toFloat(), 50f..5_000f, \"${draft.duplicateMergeWindowMs}毫秒\") {\n                    draft = draft.copy(duplicateMergeWindowMs = it.toInt())\n                }\n                PlayerSettingSlider(\"显示重复次数的阈值\", draft.duplicateMergeCountThreshold.toFloat(), 2f..20f, draft.duplicateMergeCountThreshold.toString(), steps = 17) {\n                    draft = draft.copy(duplicateMergeCountThreshold = it.toInt())\n                }\n            }\n            OutlinedTextField(value = rules, onValueChange = { rules = it.take(150_000) }, label = { Text(\"屏蔽规则，每行一条\") },\n                placeholder = { Text(\"关键词\\nregex:正则表达式\\nuid:用户弹幕哈希\") }, modifier = Modifier.fillMaxWidth(), minLines = 4, maxLines = 8)\n            TextButton(onClick = { draft = DanmakuSettings(); rules = \"\" }) { Text(\"恢复弹幕默认设置\") }\n        }\n    }, confirmButton = { Button(onClick = {\n        onPreferencesChange(latestPreferences.copy(danmaku = draft.copy(blockedKeywords = emptyList(), blockedRules = parseDanmakuBlockRules(rules))).normalized()); onDismiss()\n    }) { Text(\"保存\") } }, dismissButton = { TextButton(onClick = onDismiss) { Text(\"取消\") } })\n}\n\n",
+    "new": ""
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+    "label": "block-writer-same-page-job",
+    "beforeLF": "65a25e75125c8d8ebdc39b9fd0e4c2d48b7af22869ba7eb27c6de46814c2e281",
+    "afterLF": "0fb947ef869c3d2e829f773f576a1ddb692d61ae5b957f6287306af188258ead",
+    "old": "    val scope=rememberCoroutineScope()",
+    "new": "    val scope=environment.scope"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+    "label": "required-live-existing-rule-read",
+    "beforeLF": "0fb947ef869c3d2e829f773f576a1ddb692d61ae5b957f6287306af188258ead",
+    "afterLF": "d066f7d5981032d06957ee6c352a258364c621fe5112693b8acbbcf49b4f7d9b",
+    "old": "    onDismissPool:()->Unit,",
+    "new": "    onDismissPool:()->Unit,\n    currentBlockRulesRaw:()->String,"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+    "label": "no-empty-first-frame-rule-snapshot",
+    "beforeLF": "d066f7d5981032d06957ee6c352a258364c621fe5112693b8acbbcf49b4f7d9b",
+    "afterLF": "f0f85e0639df0ca812e8ed1840ce335e6dd849bad8cd69ae2a220b8f3dbda743",
+    "old": ".collectAsState(\"\")",
+    "new": ".collectAsState(currentBlockRulesRaw())"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+    "label": "append-to-actual-current-rules",
+    "beforeLF": "f0f85e0639df0ca812e8ed1840ce335e6dd849bad8cd69ae2a220b8f3dbda743",
+    "afterLF": "abe6c706450cdb3ba3364e50b90dc78e146eb1e5ce032f2d5294225606c3893c",
+    "old": "        val next=if(target==DanmakuBlockActionTarget.KEYWORD)",
+    "new": "        val rules=currentBlockRulesRaw()\n        val next=if(target==DanmakuBlockActionTarget.KEYWORD)"
+  }
+]

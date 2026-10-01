@@ -1,0 +1,75 @@
+{
+  "status": "FAIL",
+  "exitCode": 1,
+  "sourceCount": 13,
+  "sourceInputs": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalDanmakuSettingsModels.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\00-DesktopOriginalDanmakuSettingsModels.kt",
+      "sha256Bytes": "c6cb1e56f6c219a45aadd493dcc9391e138261e3700c643b3f7c7d9993a75779"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDanmakuCloudModels.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\01-DesktopOriginalDanmakuCloudModels.kt",
+      "sha256Bytes": "0f3d2d2fc6432acbaac2912e0f1bf97f9c1868ab87520857a746b3746a90bd3a"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\02-DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "sha256Bytes": "20dd426aa714ab4fe7718e486c7ca773c80efc6456270951bfd7578ef643df54"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DanmakuSettingsPanel.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\03-DanmakuSettingsPanel.kt",
+      "sha256Bytes": "7bdc1091653c5058c92e926027dac7b319e2aa2e7e198bc0cc440b51880ec92d"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\section\\DesktopOriginalDanmakuScopePolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\04-DesktopOriginalDanmakuScopePolicy.kt",
+      "sha256Bytes": "836aaa95b88c91df52ec2411c3c1018c6f7639b0f7a118d5165a15a89a68805e"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\bilipai\\desktop\\settings\\DesktopOriginalDanmakuPreferences.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\05-DesktopOriginalDanmakuPreferences.kt",
+      "sha256Bytes": "285626e61c418af0b0bde41f7afb9b8d41ccbba840126ce8a2e086349bec209b"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\feature\\video\\danmaku\\DanmakuCloudRuleSyncPolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\06-DanmakuCloudRuleSyncPolicy.kt",
+      "sha256Bytes": "2db83d5e871ea1cb7341696fe5db781fdb2aff87c4894283b74a8d11703780b5"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\feature\\video\\danmaku\\DanmakuSettingsPolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\07-DanmakuSettingsPolicy.kt",
+      "sha256Bytes": "de1b6440ed50739f289255bd9ecdae803621dca9824d5cd74fcb219026dccc8f"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\feature\\video\\danmaku\\DanmakuSyncStatusPolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\08-DanmakuSyncStatusPolicy.kt",
+      "sha256Bytes": "af90657b301ec7775d787dcdd4d361be764f33d56cd616b5949d13f4603d5e61"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\platform\\DesktopDanmakuSettingsPlatform.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\09-DesktopDanmakuSettingsPlatform.kt",
+      "sha256Bytes": "cd3f4265aa863356872ce9fa6563c0ed7f76b1c884975ca416b6d1bdac1272a0"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\platform\\DesktopDanmakuSettingsProjection.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\10-DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "7c29cf3086f05fd3ead09bbf6934dd8e3369edbd2fdb983c6d5c5828d005ac42"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\platform\\DesktopOriginalDanmakuSettingsHost.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\11-DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256Bytes": "f5f3a0e20b6f36eaa0b5f2e00d037efaf54ebb15cc949e52c8f728a254683c7d"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\selected-files\\DesktopDanmakuSettings.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-03\\source-inputs\\12-DesktopDanmakuSettings.kt",
+      "sha256Bytes": "896b93c2e4ff8a5a225995500b2c69574a5e5360f7ed995aa22d067362dc7f3f"
+    }
+  ],
+  "actualMain20ManifestSha256Bytes": "41439c3242e279bc0dc09a20501bdcb36e13cda7f66ab2bbbe537e7538d3ecf2",
+  "ordered92CpSha256Bytes": "4d1499c7ddbeeddbf31427505930ab0c3d5c6a3aaaf8dc08d2a585edca720232",
+  "preparedOnly": true
+}

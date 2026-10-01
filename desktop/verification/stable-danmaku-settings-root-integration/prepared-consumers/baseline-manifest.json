@@ -1,0 +1,41 @@
+{
+  "sourceRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023",
+  "actualSnapshot": 22,
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "4b8fd9401be5eb89e7121161f8c34542b4d151d60426e816b13cd9bd8c7e80f4",
+      "sha256LF": "966cb14244670350865b92a9359831854657f00f4ee1e74907b5c0e4d0f10e90"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "effb653e7b0bb18d32e8312aee1f6fd3dc650edeece988e327379cb5e0d271ce",
+      "sha256LF": "32779e755a61948c5d05628e1d6f859b018343468c068198eddc82d913d40b48"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "3faf9cb4b60c09ef3d33b9d9801b71dd7318738ef6cc1a630f7a00c038f1c0e5",
+      "sha256LF": "5e63b0a0d1c09f8d3274c7b442fea2272055fa25fcafd7bf68414dc259e21fc3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "sha256Bytes": "68ddcfb726a3388b00c93249906b55417d4f5406785b85af9240912825315af1",
+      "sha256LF": "68ddcfb726a3388b00c93249906b55417d4f5406785b85af9240912825315af1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+      "sha256Bytes": "65a25e75125c8d8ebdc39b9fd0e4c2d48b7af22869ba7eb27c6de46814c2e281",
+      "sha256LF": "65a25e75125c8d8ebdc39b9fd0e4c2d48b7af22869ba7eb27c6de46814c2e281"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+      "sha256Bytes": "f598e5d4c643ee189a20826b0443f7ae65aee09e4c9d10efa815176093d02c91",
+      "sha256LF": "8a51edfba5939b7d30818b1917f037bcaa02e2785a53c3ed016051145d7e4b17"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt",
+      "sha256Bytes": "c3e41e13fcc2a22161f4379b90f1d07e1091e12fb12210dddfc5c3233a9e1259",
+      "sha256LF": "4d04335d06aea0f8ef95eade5c9eb9f85509c6bc9a972719fb061756f302bd70"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "sourceCount": 13,
+  "sourceInputs": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalDanmakuSettingsModels.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\00-DesktopOriginalDanmakuSettingsModels.kt",
+      "sha256Bytes": "c6cb1e56f6c219a45aadd493dcc9391e138261e3700c643b3f7c7d9993a75779"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDanmakuCloudModels.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\01-DesktopOriginalDanmakuCloudModels.kt",
+      "sha256Bytes": "0f3d2d2fc6432acbaac2912e0f1bf97f9c1868ab87520857a746b3746a90bd3a"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\02-DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "sha256Bytes": "20dd426aa714ab4fe7718e486c7ca773c80efc6456270951bfd7578ef643df54"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DanmakuSettingsPanel.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\03-DanmakuSettingsPanel.kt",
+      "sha256Bytes": "7bdc1091653c5058c92e926027dac7b319e2aa2e7e198bc0cc440b51880ec92d"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\section\\DesktopOriginalDanmakuScopePolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\04-DesktopOriginalDanmakuScopePolicy.kt",
+      "sha256Bytes": "836aaa95b88c91df52ec2411c3c1018c6f7639b0f7a118d5165a15a89a68805e"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\com\\bilipai\\desktop\\settings\\DesktopOriginalDanmakuPreferences.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\05-DesktopOriginalDanmakuPreferences.kt",
+      "sha256Bytes": "b87118c1c3a7419bf99fcd0898d95bee70d35844ec2c229191f8042fd6e0ce45"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\feature\\video\\danmaku\\DanmakuCloudRuleSyncPolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\06-DanmakuCloudRuleSyncPolicy.kt",
+      "sha256Bytes": "2db83d5e871ea1cb7341696fe5db781fdb2aff87c4894283b74a8d11703780b5"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\feature\\video\\danmaku\\DanmakuSettingsPolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\07-DanmakuSettingsPolicy.kt",
+      "sha256Bytes": "de1b6440ed50739f289255bd9ecdae803621dca9824d5cd74fcb219026dccc8f"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\generated\\feature\\video\\danmaku\\DanmakuSyncStatusPolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\08-DanmakuSyncStatusPolicy.kt",
+      "sha256Bytes": "af90657b301ec7775d787dcdd4d361be764f33d56cd616b5949d13f4603d5e61"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\platform\\DesktopDanmakuSettingsPlatform.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\09-DesktopDanmakuSettingsPlatform.kt",
+      "sha256Bytes": "cd3f4265aa863356872ce9fa6563c0ed7f76b1c884975ca416b6d1bdac1272a0"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\platform\\DesktopDanmakuSettingsProjection.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\10-DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "7c29cf3086f05fd3ead09bbf6934dd8e3369edbd2fdb983c6d5c5828d005ac42"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\platform\\DesktopOriginalDanmakuSettingsHost.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\11-DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256Bytes": "f5f3a0e20b6f36eaa0b5f2e00d037efaf54ebb15cc949e52c8f728a254683c7d"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\selected-files\\DesktopDanmakuSettings.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\compile-04\\source-inputs\\12-DesktopDanmakuSettings.kt",
+      "sha256Bytes": "896b93c2e4ff8a5a225995500b2c69574a5e5360f7ed995aa22d067362dc7f3f"
+    }
+  ],
+  "actualMain20ManifestSha256Bytes": "41439c3242e279bc0dc09a20501bdcb36e13cda7f66ab2bbbe537e7538d3ecf2",
+  "ordered92CpSha256Bytes": "4d1499c7ddbeeddbf31427505930ab0c3d5c6a3aaaf8dc08d2a585edca720232",
+  "preparedOnly": true,
+  "jarSha256Bytes": "b3957c9c9467bb31e6b3b8f2e17548f3de2398eb72e170149ccee63d400d7c4b",
+  "candidateClasses": [
+    "com/android/purebilibili/core/store/DanmakuPanelWidthMode$Companion.class",
+    "com/android/purebilibili/core/store/DanmakuPanelWidthMode.class",
+    "com/android/purebilibili/core/store/DanmakuSettings.class",
+    "com/android/purebilibili/core/store/PortraitDanmakuDisplayAreaMode$Companion.class",
+    "com/android/purebilibili/core/store/PortraitDanmakuDisplayAreaMode.class",
+    "com/android/purebilibili/core/store/_00_DesktopOriginalDanmakuSettingsModelsKt.class",
+    "com/android/purebilibili/data/repository/DanmakuCloudFilterRule.class",
+    "com/android/purebilibili/data/repository/DanmakuCloudFilterRules.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol$addDanmakuCloudFilterRule$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol$addDanmakuCloudFilterRule$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol$deleteDanmakuCloudFilterRule$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol$deleteDanmakuCloudFilterRule$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol$getDanmakuCloudFilterRules$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol$getDanmakuCloudFilterRules$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol.class",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuCloudRuleSyncPolicy$CloudRuleAdd.class",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuCloudRuleSyncPolicy.class",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuCloudSyncStatus.class",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuCloudSyncUiState.class",
+    "com/android/purebilibili/feature/video/danmaku/_07_DanmakuSettingsPolicyKt.class",
+    "com/android/purebilibili/feature/video/danmaku/_08_DanmakuSyncStatusPolicyKt.class",
+    "com/android/purebilibili/feature/video/ui/components/ComposableSingletons$_03_DanmakuSettingsPanelKt.class",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelAnchor.class",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelLayoutPolicy.class",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelPresentation.class",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelSurfaceColors.class",
+    "com/android/purebilibili/feature/video/ui/components/_03_DanmakuSettingsPanelKt$DanmakuAreaSelector$AreaOption.class",
+    "com/android/purebilibili/feature/video/ui/components/_03_DanmakuSettingsPanelKt$DanmakuBlockManagerDialog$1$1.class",
+    "com/android/purebilibili/feature/video/ui/components/_03_DanmakuSettingsPanelKt$DanmakuBlockManagerDialog$3$1$1$8$1$1$1.class",
+    "com/android/purebilibili/feature/video/ui/components/_03_DanmakuSettingsPanelKt$DanmakuBlockManagerDialog$importLauncher$1$1$1$raw$1.class",
+    "com/android/purebilibili/feature/video/ui/components/_03_DanmakuSettingsPanelKt$DanmakuBlockManagerDialog$importLauncher$1$1$1.class",
+    "com/android/purebilibili/feature/video/ui/components/_03_DanmakuSettingsPanelKt$DanmakuBlockManagerDialog$syncCloudRules$1.class",
+    "com/android/purebilibili/feature/video/ui/components/_03_DanmakuSettingsPanelKt$DanmakuSettingsPanel$26$1$1$1$1.class",
+    "com/android/purebilibili/feature/video/ui/components/_03_DanmakuSettingsPanelKt$DanmakuSettingsPanel$26$1$1$1.class",
+    "com/android/purebilibili/feature/video/ui/components/_03_DanmakuSettingsPanelKt$WhenMappings.class",
+    "com/android/purebilibili/feature/video/ui/components/_03_DanmakuSettingsPanelKt.class",
+    "com/android/purebilibili/feature/video/ui/section/_04_DesktopOriginalDanmakuScopePolicyKt.class",
+    "com/bilipai/desktop/danmaku/DanmakuSettings$$serializer.class",
+    "com/bilipai/desktop/danmaku/DanmakuSettings$Companion.class",
+    "com/bilipai/desktop/danmaku/DanmakuSettings.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences$Companion.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences$Editor.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences$getDanmakuCloudSyncEnabled$$inlined$map$1$1.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences$getDanmakuCloudSyncEnabled$$inlined$map$1$2$1.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences$getDanmakuCloudSyncEnabled$$inlined$map$1$2.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences$getDanmakuCloudSyncEnabled$$inlined$map$1.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences$getDanmakuSettings$$inlined$map$1$1.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences$getDanmakuSettings$$inlined$map$1$2$1.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences$getDanmakuSettings$$inlined$map$1$2.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences$getDanmakuSettings$$inlined$map$1.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences$writeOriginal$2.class",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences.class",
+    "com/bilipai/desktop/ui/DesktopDanmakuCloudRuleActions.class",
+    "com/bilipai/desktop/ui/DesktopDanmakuOpenRuleDocument.class",
+    "com/bilipai/desktop/ui/DesktopDanmakuRuleImportLauncher.class",
+    "com/bilipai/desktop/ui/DesktopDanmakuSettingsPlatform.class",
+    "com/bilipai/desktop/ui/DesktopDanmakuSettingsPresentation.class",
+    "com/bilipai/desktop/ui/DesktopDanmakuSettingsViewport.class",
+    "com/bilipai/desktop/ui/_09_DesktopDanmakuSettingsPlatformKt$rememberDesktopDanmakuRuleImportLauncher$lambda$2$0$$inlined$onDispose$1.class",
+    "com/bilipai/desktop/ui/_09_DesktopDanmakuSettingsPlatformKt.class",
+    "com/bilipai/desktop/ui/_10_DesktopDanmakuSettingsProjectionKt.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$1$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$10$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$11$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$12$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$13$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$14$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$15$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$16$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$17$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$18$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$19$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$2$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$20$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$21$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$22$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$23$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$24$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$25$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$26$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$27$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$3$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$4$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$5$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$6$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$7$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$8$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$1$9$1$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt$DesktopOriginalDanmakuSettingsHost$update$1.class",
+    "com/bilipai/desktop/ui/_11_DesktopOriginalDanmakuSettingsHostKt.class"
+  ],
+  "actualClassOverlap": [
+    "com/bilipai/desktop/danmaku/DanmakuSettings$$serializer.class",
+    "com/bilipai/desktop/danmaku/DanmakuSettings$Companion.class",
+    "com/bilipai/desktop/danmaku/DanmakuSettings.class"
+  ],
+  "unexpectedActualClassOverlap": [],
+  "normalizationOnlyExistingSettingsOverride": true
+}

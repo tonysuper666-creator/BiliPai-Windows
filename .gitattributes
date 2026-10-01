@@ -51,3 +51,6 @@ desktop/verification/stable-danmaku-list-menu-integration/** -text
 desktop/verification/stable-favorites-root-integration/** -text
 
 desktop/verification/stable-full-dock-integration/** -text
+
+desktop/verification/stable-danmaku-settings-root-integration/** -text
+desktop/verification/stable-danmaku-runtime-integration/** -text

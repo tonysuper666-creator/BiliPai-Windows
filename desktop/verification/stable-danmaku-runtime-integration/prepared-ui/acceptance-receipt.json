@@ -1,0 +1,104 @@
+{
+  "status": "PASS",
+  "phase": "actual-main27-installed-full-settings-ui",
+  "targetOriginalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualSnapshot": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\manifest.json",
+      "sha256Bytes": "908d5cfdb65a99622fd2822771641b17d2bf35efe501a71ffcd231eace8c1c53",
+      "bytes": 116883
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\ordered-runtime-cp.json",
+      "sha256Bytes": "8dcd9678a9f669793267bfb530fda1c09ef3225c50cf54682a12228636afd772",
+      "bytes": 34652
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "sha256Bytes": "913351acaa508b924f738af0b0d1c3f4ca5a6e33c53388e99c271f37eec1a55f",
+      "bytes": 28170838
+    }
+  ],
+  "acceptedComparison": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\runs\\04-actual27\\accepted-comparison.json",
+    "sha256Bytes": "44971dafbbb991389cccfee3910bbdb1de7fda54b5cc6e94de2b79d6f88f1eb9",
+    "bytes": 35043
+  },
+  "compileResult": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\runs\\04-actual27\\compile-result.json",
+    "sha256Bytes": "5ed70eea219f68d53e6b877dbc44c1b8af72f337ce08d3814767d2eeba2ef90c",
+    "bytes": 1725
+  },
+  "fixtureSource": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\DanmakuSettingsUiFixture.kt",
+    "sha256Bytes": "d1585ba0dd0478caca02fb09333288bfba26209025a438ee5a6e160bbbe88871",
+    "bytes": 19699
+  },
+  "runnerSource": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\run.py",
+    "sha256Bytes": "4fc67740754c83fc902274dcc5042742886aedf7dc5c2d9ad03e3c71bc985714",
+    "bytes": 5295
+  },
+  "results": {
+    "cells": 2,
+    "styles": [
+      "MATERIAL3",
+      "MIUIX"
+    ],
+    "viewport": [
+      1100,
+      900
+    ],
+    "assertions": 32,
+    "pointerPairs": 58,
+    "actualEditableTextActions": 6,
+    "loadedActualClassBytePinsPerCell": 11,
+    "runtimeClasspathPinsVerifiedBeforeAndAfter": 92,
+    "productionSourceInputs": 0,
+    "productionClassOverrides": 0,
+    "productionClassOverlap": []
+  },
+  "testedActions": [
+    "Actual SettingsHost, original full Panel and BlockManager rendered; corrected Host/Root/list Host classes forcibly loaded.",
+    "Actual thumb drag for font and opacity, original scope switch, basic/advanced/blocking tabs and scoped switches.",
+    "Original keyword add/save, edited draft cancel, delete-and-replace/save and independent portrait/landscape persisted keys in the same actual global Store.",
+    "Declared memory-only chooser cancellation and one imported JSON stream partitioned keyword/regex/UID rules through original import confirmation and tabs.",
+    "One original close callback; required unused callbacks fail explicitly; fixture account state controls original guest/login cloud visibility."
+  ],
+  "boundaries": [
+    "Only fixture code compiled; actual Main27 production classes were not replaced.",
+    "ImageComposeScene offscreen pointer/scroll/semantics-edit proof, not native HWND or physical IME proof.",
+    "Guest/login and three-state presentation are explicit fixture inputs, not Root account/window integration.",
+    "Chooser and cloud transport ports are explicit in-memory fixture implementations; no HTTP, real account, native chooser or external application accessed.",
+    "Root owner/epoch integration, Android presentation parity and unsupported advanced Windows rendering algorithms are not claimed by this UI proof.",
+    "Actual Main27 immutable runtime bytes remain the baseline even if the live fork is upgraded later."
+  ],
+  "preservedHistory": [
+    {
+      "path": "runs/01",
+      "status": "FAIL",
+      "reason": "Fixture-only Kotlin syntax error; no runtime acceptance."
+    },
+    {
+      "path": "runs/02",
+      "status": "FAIL",
+      "reason": "Actual Main26 illegal NON_LOCAL_RETURN anonymous method reference raised ClassFormatError before UI draw."
+    },
+    {
+      "path": "runs/03-actual27",
+      "status": "FAIL",
+      "reason": "Material3 completed; Miuix slider track tap did not commit. Final fixture uses the original draggable thumb with real pointer moves."
+    },
+    {
+      "path": "host-nonlocal-return-delta",
+      "status": "FROZEN-PROSPECTIVE",
+      "reason": "Separate historical minimal Host-only fix and prospective classload proof; not counted as Main27 zero-override UI execution."
+    },
+    {
+      "path": "host-hash-metadata-correction/correction.json",
+      "status": "APPEND-ONLY-CORRECTION",
+      "reason": "Corrects two historical source LF metadata hashes affected by implicit Windows text decoding. Original frozen payload/runtime bytes remain unchanged."
+    }
+  ],
+  "modifications": "Only this ignored evidence lane; no shared production source, Gradle, source registry or frozen payload changed."
+}

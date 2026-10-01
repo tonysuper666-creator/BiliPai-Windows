@@ -1,0 +1,22 @@
+{
+  "reason": "Compose inline key labeled returns emitted illegal JVM NON_LOCAL_RETURN.<anonymous> references in actual26; use structured content guards",
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuSettingsHost.kt",
+      "beforeSha256Bytes": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f",
+      "afterSha256Bytes": "e52165bea8256acbfc8e417a326fedf8122cfed83dc0d7a5d38479c82dccb20c",
+      "beforeLfSha256": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f",
+      "afterLfSha256": "e52165bea8256acbfc8e417a326fedf8122cfed83dc0d7a5d38479c82dccb20c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuRoot.kt",
+      "beforeSha256Bytes": "55e99e0514cdd40eb976cbb645db7ca1b84c150ed0fae00bd525a293c9d49425",
+      "afterSha256Bytes": "cb1567ca82f092b01ac38af632962f5bb21ea711d89f7edb7fa3589141ee8bca",
+      "beforeLfSha256": "55e99e0514cdd40eb976cbb645db7ca1b84c150ed0fae00bd525a293c9d49425",
+      "afterLfSha256": "cb1567ca82f092b01ac38af632962f5bb21ea711d89f7edb7fa3589141ee8bca"
+    }
+  ],
+  "frozenHistoricalEvidenceModified": false,
+  "preferenceCloudLifetimePreserved": true,
+  "actualProductRuntimeAccepted": false
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-01T05:40:26.904Z" hostname="TONYSUPER666" time="0.086">
+  <properties/>
+  <testcase name="append preserves actual source owner CID pause and position without a transport request()" classname="com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest" time="0.024"/>
+  <testcase name="canceling a matching pending host cancels its fetch and retains the native baseline()" classname="com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest" time="0.009"/>
+  <testcase name="parts quality retry and pause retain lease while changed account rejects host stop()" classname="com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest" time="0.012"/>
+  <testcase name="initial delayed stream can update queue but cannot mutate or stop a foreign native replacement()" classname="com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest" time="0.01"/>
+  <testcase name="same BV different CID next retains queue token and original shuffle reconciliation maps both identities()" classname="com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest" time="0.016"/>
+  <testcase name="ordinary open retires an equal but distinct or previously owned host token()" classname="com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest" time="0.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

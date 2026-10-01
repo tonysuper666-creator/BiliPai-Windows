@@ -1,0 +1,18 @@
+--- before/DesktopOriginalDanmakuSettingsHost.kt
++++ after/DesktopOriginalDanmakuSettingsHost.kt
+@@ -33,7 +33,7 @@
+                 catch(failure:Exception){if(platform.isOwned())platform.showFeedback(failure.message?:"弹幕设置保存失败")}
+             }
+         }
+-        if(!platform.isOwned())return@key
++        if(platform.isOwned()) {
+         CompositionLocalProvider(LocalDesktopDanmakuSettingsPlatform provides platform,
+             LocalDesktopDanmakuSettingsViewport provides viewport) {
+             DanmakuSettingsPanel(
+@@ -84,5 +84,6 @@
+                 onDismiss={if(platform.isOwned())onDismiss()},
+             )
+         }
++        }
+     }
+ }

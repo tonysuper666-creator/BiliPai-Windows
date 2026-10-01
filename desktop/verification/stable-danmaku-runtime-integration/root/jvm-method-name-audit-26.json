@@ -1,0 +1,36 @@
+{
+  "phase": 26,
+  "jarSHA256": "da1a6e8556580a49910373f5ed7f24fc4688831c2134dccd605f396c85cce9b0",
+  "classCount": 9917,
+  "issueCount": 2,
+  "issues": [
+    {
+      "classFile": "com/bilipai/desktop/ui/DesktopOriginalDanmakuRootKt.class",
+      "classSHA256": "fb62afaf24535dcea5b0a6ccfa9ef353dd0571c603dab24d2e770c42a6071baa",
+      "invalidMethodNames": [
+        {
+          "kind": "constant-pool-method-reference",
+          "index": 419,
+          "owner": "$$$$$NON_LOCAL_RETURN$$$$$",
+          "name": "<anonymous>",
+          "descriptor": "()V"
+        }
+      ]
+    },
+    {
+      "classFile": "com/bilipai/desktop/ui/DesktopOriginalDanmakuSettingsHostKt.class",
+      "classSHA256": "6a7189004275aac95a407b4ad7a83cbb08e83a3e6b78145815cd2a46055860ca",
+      "invalidMethodNames": [
+        {
+          "kind": "constant-pool-method-reference",
+          "index": 204,
+          "owner": "$$$$$NON_LOCAL_RETURN$$$$$",
+          "name": "<anonymous>",
+          "descriptor": "()V"
+        }
+      ]
+    }
+  ],
+  "staticClassfileCheckOnly": true,
+  "allClassesRuntimeLoaded": false
+}

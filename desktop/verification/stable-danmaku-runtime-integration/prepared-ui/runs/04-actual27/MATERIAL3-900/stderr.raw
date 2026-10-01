@@ -1,0 +1,4 @@
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.ui.DanmakuSettingsUiFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-danmaku-settings-main26-ui-proof/runs/04-actual27/settings-main26-ui-fixture.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.ui.DanmakuSettingsUiFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

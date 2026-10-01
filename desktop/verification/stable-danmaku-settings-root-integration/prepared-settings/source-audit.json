@@ -1,0 +1,604 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "production-seven-selected-outputs",
+      "status": "PASS"
+    },
+    {
+      "check": "standalone-three-direct-outputs",
+      "status": "PASS"
+    },
+    {
+      "check": "production-byte-equal:com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "production-byte-equal:com/android/purebilibili/core/store/DesktopOriginalDanmakuSettingsModels.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "production-byte-equal:com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudModels.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "production-byte-equal:com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "production-byte-equal:com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "production-byte-equal:com/android/purebilibili/feature/video/ui/section/DesktopOriginalDanmakuScopePolicy.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "production-byte-equal:com/bilipai/desktop/ui/DesktopOriginalDanmakuCloudSyncBinding.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "production-skips-direct:feature/video/danmaku/DanmakuSettingsPolicy.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "production-skips-direct:feature/video/danmaku/DanmakuCloudRuleSyncPolicy.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "production-skips-direct:feature/video/danmaku/DanmakuSyncStatusPolicy.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "source-identity:app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "source-identity:app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "source-identity:app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuSettingsPolicy.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "source-identity:app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuCloudRuleSyncPolicy.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "source-identity:app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuSyncStatusPolicy.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "source-identity:app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "source-identity:app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "source-identity:app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:                        android.widget.Toast.makeText(\n               ",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:                        android.widget.Toast.makeText(context, it, and",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:                        android.widget.Toast.makeText(\n               ",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:DanmakuRepository.deleteDanmakuCloudFilterRule",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:DanmakuRepository.addDanmakuCloudFilterRule",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:DanmakuRepository.getDanmakuCloudFilterRules",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:context.contentResolver.openInputStream(uri)",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:contract = ActivityResultContracts.OpenDocument()",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:import com.android.purebilibili.data.repository.DanmakuRepository",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:import androidx.compose.ui.platform.LocalContext",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:import androidx.compose.ui.platform.LocalConfiguration",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:import androidx.activity.result.contract.ActivityResultContracts",
+      "status": "PASS"
+    },
+    {
+      "check": "panel-adaptation-once:import androidx.activity.compose.rememberLauncherForActivityResult",
+      "status": "PASS"
+    },
+    {
+      "check": "full-panel-reverse-normalized-byte-equal",
+      "status": "PASS"
+    },
+    {
+      "check": "complete-original-schema:DanmakuCloudFilterRule",
+      "status": "PASS"
+    },
+    {
+      "check": "complete-original-schema:DanmakuCloudFilterRules",
+      "status": "PASS"
+    },
+    {
+      "check": "complete-original-schema:DanmakuCloudSyncSettings",
+      "status": "PASS"
+    },
+    {
+      "check": "complete-original-schema:DanmakuCloudConfigPayload",
+      "status": "PASS"
+    },
+    {
+      "check": "original-config-payload-policy:mapDanmakuDisplayAreaRatioToCloudValue",
+      "status": "PASS"
+    },
+    {
+      "check": "original-config-payload-policy:mapDanmakuFontScaleToCloudFontSize",
+      "status": "PASS"
+    },
+    {
+      "check": "original-config-payload-policy:buildDanmakuCloudConfigPayload",
+      "status": "PASS"
+    },
+    {
+      "check": "original-config-payload-policy:isDanmakuCloudSyncSuccessful",
+      "status": "PASS"
+    },
+    {
+      "check": "full-original-config-state-function:buildDanmakuCloudSyncSettings",
+      "status": "PASS"
+    },
+    {
+      "check": "full-original-config-state-function:queueDanmakuCloudSync",
+      "status": "PASS"
+    },
+    {
+      "check": "full-original-config-state-function:requestDanmakuCloudSyncNow",
+      "status": "PASS"
+    },
+    {
+      "check": "original-700ms-not-modified",
+      "status": "PASS"
+    },
+    {
+      "check": "original-pending-comparison-not-modified",
+      "status": "PASS"
+    },
+    {
+      "check": "original-manual-version-not-modified",
+      "status": "PASS"
+    },
+    {
+      "check": "normalization-once:blockedRules = blockedRules.map { it.trim().take(500) }.filter(String::isNotEmpty).distinct().take(300),",
+      "status": "PASS"
+    },
+    {
+      "check": "normalization-once:duplicateMergeCountThreshold = duplicateMergeCountThreshold.coerceIn(2, 100),",
+      "status": "PASS"
+    },
+    {
+      "check": "normalization-once:duplicateMergeWindowMs = duplicateMergeWindowMs.coerceIn(50, 5_000),",
+      "status": "PASS"
+    },
+    {
+      "check": "normalization-once:staticDurationSeconds = finite(staticDurationSeconds, 4f, 1f, 20f),",
+      "status": "PASS"
+    },
+    {
+      "check": "normalization-once:scrollDurationSeconds = finite(scrollDurationSeconds, 7f, 2f, 20f),",
+      "status": "PASS"
+    },
+    {
+      "check": "normalization-once:displayAreaRatio = finite(displayAreaRatio, 0.5f, 0.25f, 1f),",
+      "status": "PASS"
+    },
+    {
+      "check": "normalization-once:speedFactor = finite(speedFactor, 1f, 0.25f, 4f),",
+      "status": "PASS"
+    },
+    {
+      "check": "normalization-once:fontScale = finite(fontScale, 1f, 0.5f, 2f),",
+      "status": "PASS"
+    },
+    {
+      "check": "normalization-only-eight-declared-lines",
+      "status": "PASS"
+    },
+    {
+      "check": "ops-only-four-member-fragment-before-editor",
+      "status": "PASS"
+    },
+    {
+      "check": "public-top-level-symbol-overlap-zero",
+      "status": "PASS"
+    },
+    {
+      "check": "only-existing-Settings-and-Operations-class-family-overlap",
+      "status": "PASS"
+    }
+  ],
+  "originalFullPanelLines": 1976,
+  "sourceIdentities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "c48abd1ee32d91d7ed8ebdbf87689f20f1de86c93a019c8a24e45581dc42a6ba",
+      "gitBlob": "bb4eae4fb5da0acf1137a827ddc4c3d6947f17e5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "gitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuSettingsPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "de1b6440ed50739f289255bd9ecdae803621dca9824d5cd74fcb219026dccc8f",
+      "gitBlob": "8c46ead1846c8d531bf2ec6c7df61be9cc672a05"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuCloudRuleSyncPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "2db83d5e871ea1cb7341696fe5db781fdb2aff87c4894283b74a8d11703780b5",
+      "gitBlob": "8002b8ec9273f9757aa25eb2a778bd2f69c1ebfc"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuSyncStatusPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "af90657b301ec7775d787dcdd4d361be764f33d56cd616b5949d13f4603d5e61",
+      "gitBlob": "aa9353e9da811e371ff32a91ab1442cb072182fb"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5",
+      "gitBlob": "fb1bdad390e9b94175920908dc859ea81849934f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "198913c1d091d5aed119b90fedfbb7e77183457584c49c737c4aae7f113f37c0",
+      "gitBlob": "1775313c3b78d802728b7ac9492a4ba8e27d07a0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e",
+      "gitBlob": "cb34ca4bc2a2fd6f8c82884aa37ce144f5ac8976"
+    }
+  ],
+  "fullConfigStateFunctions": [
+    {
+      "member": "buildDanmakuCloudSyncSettings",
+      "sourceLine": 2986,
+      "originalBodySha256LF": "b86ffed047e5b7a3d152e434ae36b24aaddb0b36669036bc7467891b7bcd288e",
+      "adaptedBodySha256LF": "b86ffed047e5b7a3d152e434ae36b24aaddb0b36669036bc7467891b7bcd288e"
+    },
+    {
+      "member": "queueDanmakuCloudSync",
+      "sourceLine": 3012,
+      "originalBodySha256LF": "e689e2b7daa26ae525422bc63618d7c49986599a92890aec46e67806fd3a20a9",
+      "adaptedBodySha256LF": "9ec63a121785affbee6685764cdd21ab6764a361f621d8e532f4828c6d9caa3d"
+    },
+    {
+      "member": "requestDanmakuCloudSyncNow",
+      "sourceLine": 3040,
+      "originalBodySha256LF": "ca1bf902bc08ce930d018951d573edffcfc65b9f4d1c35dd7c51fcbedf64e772",
+      "adaptedBodySha256LF": "1bb0865505c9e78854b8d2d683da4a144809391285381e0a05c78c569f3df94f"
+    }
+  ],
+  "cloudMethods": [
+    {
+      "member": "getDanmakuCloudFilterRules",
+      "sourceLine": 482,
+      "originalBodySha256LF": "c3268e954ea1c26ebc96d3c52153f0b2e3255da7edd3a8fc194c32d06c512b64",
+      "adaptedBodySha256LF": "27db272631b6116f1ac68b7fbedacca9b4fb4df5411e4acd6dc8041d21a77faa",
+      "changes": "Only Root CSRF alias and ownership/caller cancellation checks before and after existing API await; fields/server mappings unchanged."
+    },
+    {
+      "member": "addDanmakuCloudFilterRule",
+      "sourceLine": 505,
+      "originalBodySha256LF": "8c8841daca04baa23de112b037ec2ca93bde7b096692efd0e9a7d6362b799885",
+      "adaptedBodySha256LF": "3efe45504eb61d2de76af72d77d2441fa713b832bb333cc36bda0e2aae354275",
+      "changes": "Only Root CSRF alias and ownership/caller cancellation checks before and after existing API await; fields/server mappings unchanged."
+    },
+    {
+      "member": "deleteDanmakuCloudFilterRule",
+      "sourceLine": 529,
+      "originalBodySha256LF": "f02513ac2e391f09a70430b1bb9d878a37402f8d1953a038cdc33cecc0c7522d",
+      "adaptedBodySha256LF": "ca126006de6f20048417b235cefcdee873e5571c5c8e9c93b65e897877c18c53",
+      "changes": "Only Root CSRF alias and ownership/caller cancellation checks before and after existing API await; fields/server mappings unchanged."
+    },
+    {
+      "member": "syncDanmakuCloudConfig",
+      "sourceLine": 970,
+      "originalBodySha256LF": "eadf56450f4bcfe5322c962af35e77da84c7a329d0db17fbd42cb72b19c50c0f",
+      "adaptedBodySha256LF": "9a8c1e35729f12242b75e6ff1cc06c743fdb1d83e9f4154cb17589e96b3e2e9a",
+      "changes": "Only Root CSRF alias and ownership/caller cancellation checks before and after existing API await; fields/server mappings unchanged."
+    }
+  ],
+  "settingsSetters": [
+    {
+      "member": "setDanmakuEnabled",
+      "sourceLine": 4933,
+      "originalBodySha256LF": "7e1a04e1c1760621da5af18caea1b88592bdf1c4545283273b790cf226a468a8",
+      "adaptedBodySha256LF": "53ecd0777870af03c7c39769661aae52622ef365670008a0d6782a737576afec",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuOpacity",
+      "sourceLine": 4959,
+      "originalBodySha256LF": "f729c6947e02903fd6162891ef9ff7e13007f2aa7ba2f7b5665ab96787135ff7",
+      "adaptedBodySha256LF": "1ab9a08af5572c89623c22eef5e63b348e0e021d55cbf27f0777327af7f48bd2",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuFontScale",
+      "sourceLine": 4986,
+      "originalBodySha256LF": "051872d92440db1e29397853e1db0fb634cb564c96099cec88492f02f7360966",
+      "adaptedBodySha256LF": "8e9ab80fbf42458fe268472866b696f195e1ea6ff17a54396930ee15792bee10",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuSpeed",
+      "sourceLine": 5010,
+      "originalBodySha256LF": "66103a63e4e3c121e86a73263f1270e16e45280978e6e5d12d356ffbdfb2a536",
+      "adaptedBodySha256LF": "8af491e64f0d5a4966e4b0e47b83b9540f07da5852e434c6f5cf0a15cc9ba8eb",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuArea",
+      "sourceLine": 5037,
+      "originalBodySha256LF": "d653371e92a04badeecf0f990a236a5c3cb75d5d081ae611c5230c302ae1dbf2",
+      "adaptedBodySha256LF": "7255993f67500a9af3c24bbc84cc27b4c6ff4bd8d415e614d4b916763e428bff",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setPortraitDanmakuDisplayAreaMode",
+      "sourceLine": 5047,
+      "originalBodySha256LF": "46f5b292d6059b5b4b7b6b00d749cc6adf133ca06640ca98fa2dcd39d39ecd5e",
+      "adaptedBodySha256LF": "69a5cec76def0fdc43e8f377dbfd500c946277adb5b98a11b50a21baff351929",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuFontWeight",
+      "sourceLine": 5071,
+      "originalBodySha256LF": "caf8a5c000bc981995050a7b0957d305463db69915ed411db39b9a3c7d16de40",
+      "adaptedBodySha256LF": "dc47953464eacd313e537183924ef5a5eafbb12848ece0ed8216db221cd9d7ac",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuStrokeWidth",
+      "sourceLine": 5096,
+      "originalBodySha256LF": "c7860f395ba3eb4fc34ee2b2cdfb68d20a8446478016fc357385f8bc9f3114f8",
+      "adaptedBodySha256LF": "2e9f954588c6a9a380d45bb5414d5034f29cbe1ee36ecaa98f5799dbaa457bb7",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuLineHeight",
+      "sourceLine": 5121,
+      "originalBodySha256LF": "11aa81c2edeac9701ceee55dd07e38f2b98e1ef5b330f9d918d1ecd9998f42ab",
+      "adaptedBodySha256LF": "7731e6246a4711361497464a5dcf0256eab92ae5458aac027aefc5e75bdadb07",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuScrollDurationSeconds",
+      "sourceLine": 5146,
+      "originalBodySha256LF": "d756c9501650427320a98485c918a197b6ba29694d75bec405363524534a1e44",
+      "adaptedBodySha256LF": "78f3b9f53119a448dbd584fe974a5670cba1b1f6e144b4c6a412927919be5017",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuStaticDurationSeconds",
+      "sourceLine": 5172,
+      "originalBodySha256LF": "805c8496a0ad8c8f78d5cecd25b0357ed994473cb0da07f62a47ff5651a988ed",
+      "adaptedBodySha256LF": "9a9228753f405d3b9439e0f68c1b5682a81e7f13cc3f5cc7b6084180eed99bc1",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuScrollFixedVelocity",
+      "sourceLine": 5196,
+      "originalBodySha256LF": "2fe48f8c716f1301705db24062630baa4774dab56de7c57d58543ce456e63ea7",
+      "adaptedBodySha256LF": "340b2596a6698540dd0066631a6fa8f62ec4c88abfbff65d7a5bdea9ccc3797e",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuStaticToScroll",
+      "sourceLine": 5219,
+      "originalBodySha256LF": "448c2374f7f21a6baa87a29bba7d8885f74f90f564aa9f4055bd49cea359e912",
+      "adaptedBodySha256LF": "b9ff2161c01c7a6059bfb25fed42ea334a86ba703ee8b7282b4decfe6bd5270d",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuMassiveMode",
+      "sourceLine": 5242,
+      "originalBodySha256LF": "3800930046d0a1e53fb097e0c54d03c95d99dffb87d15bc01fdc72ab34122420",
+      "adaptedBodySha256LF": "ea36f4f9fdb3a62286d27a675765f5ccd3f3b2726fc0c6952b76ad7d6cd6d521",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuAllowScroll",
+      "sourceLine": 5266,
+      "originalBodySha256LF": "fe3b07c7f92f368f329098619e9bb568a477d4f7979bd8c6db96b56b72e229d1",
+      "adaptedBodySha256LF": "ae9eb6558e5b527d9775f783b854d58dae6675bb00788326f12bb0d9d5e922f5",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuAllowTop",
+      "sourceLine": 5301,
+      "originalBodySha256LF": "8ceb77a982f59e7ab0102956ab7444de13e7efa4adcbecc9020ed7bd4666570b",
+      "adaptedBodySha256LF": "54aa925e35d4290d6de611a110cfa26f5f7b66d68cffc5c0a64cefef4c394862",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuAllowBottom",
+      "sourceLine": 5324,
+      "originalBodySha256LF": "fcffb1f038d732622aedc8d54c4326b05f2bb13e24e85923773034078d5902e3",
+      "adaptedBodySha256LF": "bf940760136eb0de17fc98b169c050540acf5e9a0767c13055db34a93245d95a",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuAllowColorful",
+      "sourceLine": 5347,
+      "originalBodySha256LF": "9578aa48d1c320fee360aa79df4cb60288fdab42f1848348872c1b7270a08870",
+      "adaptedBodySha256LF": "a6b01e8374253781018aea831f32f20e7c9f0a1b1ef78664cbd06f4e3af6c322",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuAllowSpecial",
+      "sourceLine": 5370,
+      "originalBodySha256LF": "98cfa188bed173060a8b87bf49b9abbd054f62756bacd8083c20c4ba1887695e",
+      "adaptedBodySha256LF": "54ed2c5468474bb169f01218c06f1ed9a3e93e0d10f1382109098a884a48ff4d",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuWeightFilterLevel",
+      "sourceLine": 5282,
+      "originalBodySha256LF": "2ba1dc838004af35cdaad2db7bcb0d545acb04223bf37e657fbdddbef9bbe10e",
+      "adaptedBodySha256LF": "4fb3af26b2ab2b5953c2f08b476c47b4233f628b0ebe279081240eb9efc5a00c",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuHideInteractiveCommands",
+      "sourceLine": 5385,
+      "originalBodySha256LF": "392de23421fd7b06553d2dc31306d1f55dd86e8f7b01d6079fe15116d7542996",
+      "adaptedBodySha256LF": "d9ac2e0762d4260bb280a9efa0034f485572f27b7d22d08bf501347a5d8f800b",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuSmartOcclusion",
+      "sourceLine": 5411,
+      "originalBodySha256LF": "ee836af1b72b81faf692cf73a0786f3b6b9d5d9ea8a225367273c90b89df0c86",
+      "adaptedBodySha256LF": "4d7ad1973764968d3ca785a58a56c7286a269c0794d6673db24a21c62bb55248",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuFullscreenPanelWidthMode",
+      "sourceLine": 5431,
+      "originalBodySha256LF": "462604f6693a7cdac97ad54f9a279ebb8f8c5d5d11e73683e5fad24a6585ac8f",
+      "adaptedBodySha256LF": "e6822d317b8706174d4053e454624142047a1b8e556d8731e59fc81e02afa389",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuMergeDuplicates",
+      "sourceLine": 5527,
+      "originalBodySha256LF": "e513525ed7f37d57e74b76a978232f186b12500a3366251bd96116f9b3e9ccff",
+      "adaptedBodySha256LF": "6eed89025da0a4b0c5c4989579033c1e9d68b088ea1bb8e335ecbe2ae0c09969",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuDuplicateMergeWindowMs",
+      "sourceLine": 5552,
+      "originalBodySha256LF": "ddee1c6ff828e43f87074bc6613afbecbd1fd883857a76a3fde2e13fed76780d",
+      "adaptedBodySha256LF": "a34fa350d1d18b859614207209dc7132dbf604e1406d978b0a2c58ffaa9cf878",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuDuplicateMergeCountThreshold",
+      "sourceLine": 5578,
+      "originalBodySha256LF": "251c095ae37ee7b26c5b865e00db71fa2c0f2eada3cfec267fdb27750a6521dc",
+      "adaptedBodySha256LF": "6cbe9a944463b8fa69b8fc1c75f7ba75b7b79dc95a55cf9a192ca12c734e218e",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "setDanmakuCloudSyncEnabled",
+      "sourceLine": 2725,
+      "originalBodySha256LF": "46f4317ba9dd683351729eb7d5de333bcd661b86f2f3999054507f36ffc8022d",
+      "adaptedBodySha256LF": "bf81a9e98dd02b06b4c283b7cf70518652c16d00fb4f701ec05b4d99b6f27fa8",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    },
+    {
+      "member": "forceDanmakuDefaults",
+      "sourceLine": 5590,
+      "originalBodySha256LF": "481f748bf7fccfd6343d392d85591229bd36c996f7e1f47a993a70fc513e0c7f",
+      "adaptedBodySha256LF": "4f7e19eecde3fa75d825d65b2889739d170ef91c27697e7ac5f87014aeb71be9",
+      "changes": "Context argument removed; original edit body delegates owned global Store atomic update."
+    }
+  ],
+  "currentNormalizationDelta": {
+    "source": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+    "actualMain20Sha256Bytes": "c0d7312f3451ec530fd311d0d3b659505acd7a5a0df7aa4668df92795a2d66a9",
+    "actualMain20Sha256LF": "12c1c6b9490da21f0a489653a1fab654d5cb9dcad2506a753f6a6e2c5288a294",
+    "candidateSha256LF": "091ec93f13598c7c79b30762211f0392512aa741c0d8deb26267188f417d588e",
+    "reverseNormalizedActualSourceByteEqual": true,
+    "whitelist": [
+      {
+        "before": "fontScale = finite(fontScale, 1f, 0.5f, 2f),",
+        "after": "fontScale = finite(fontScale, 1f, 0.3f, 2f),"
+      },
+      {
+        "before": "speedFactor = finite(speedFactor, 1f, 0.25f, 4f),",
+        "after": "speedFactor = finite(speedFactor, 1f, 0.5f, 3f),"
+      },
+      {
+        "before": "displayAreaRatio = finite(displayAreaRatio, 0.5f, 0.25f, 1f),",
+        "after": "displayAreaRatio = com.android.purebilibili.core.store.normalizeDanmakuDisplayArea(finite(displayAreaRatio, 0.5f, 0.25f, 1f)),"
+      },
+      {
+        "before": "scrollDurationSeconds = finite(scrollDurationSeconds, 7f, 2f, 20f),",
+        "after": "scrollDurationSeconds = finite(scrollDurationSeconds, 7f, 1f, 50f),"
+      },
+      {
+        "before": "staticDurationSeconds = finite(staticDurationSeconds, 4f, 1f, 20f),",
+        "after": "staticDurationSeconds = finite(staticDurationSeconds, 4f, 1f, 50f),"
+      },
+      {
+        "before": "duplicateMergeWindowMs = duplicateMergeWindowMs.coerceIn(50, 5_000),",
+        "after": "duplicateMergeWindowMs = duplicateMergeWindowMs.coerceIn(100, 3000),"
+      },
+      {
+        "before": "duplicateMergeCountThreshold = duplicateMergeCountThreshold.coerceIn(2, 100),",
+        "after": "duplicateMergeCountThreshold = duplicateMergeCountThreshold.coerceIn(2, 10),"
+      },
+      {
+        "before": "blockedRules = blockedRules.map { it.trim().take(500) }.filter(String::isNotEmpty).distinct().take(300),",
+        "after": "blockedRules = com.android.purebilibili.feature.video.danmaku.parseDanmakuBlockRules(blockedRules.joinToString(\"\\n\")),"
+      }
+    ],
+    "originalAnchors": [
+      "SettingsManager.kt normalizeDanmakuFontScale .3..2; mapDanmakuSettingsFromPreferences uses full parseDanmakuBlockRules(blockRulesRaw)."
+    ],
+    "constructorOrModelFieldDelta": false,
+    "noSharedSourceEdits": true
+  },
+  "productionSelectedOutputs": [
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+    "com/android/purebilibili/core/store/DesktopOriginalDanmakuSettingsModels.kt",
+    "com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudModels.kt",
+    "com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol.kt",
+    "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences.kt",
+    "com/android/purebilibili/feature/video/ui/section/DesktopOriginalDanmakuScopePolicy.kt",
+    "com/bilipai/desktop/ui/DesktopOriginalDanmakuCloudSyncBinding.kt"
+  ],
+  "productionSkippedDirectOutputs": [
+    "feature/video/danmaku/DanmakuSettingsPolicy.kt",
+    "feature/video/danmaku/DanmakuCloudRuleSyncPolicy.kt",
+    "feature/video/danmaku/DanmakuSyncStatusPolicy.kt"
+  ]
+}

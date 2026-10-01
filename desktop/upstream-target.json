@@ -186,12 +186,12 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 765,
+    "candidateSourceIdentityCount": 770,
     "candidateResourceCount": 213,
     "all907CurrentSourceAndResourcePinsVerified": true,
-    "actualClassesEvidence": "verification/stable-full-dock-integration/root/classes-25.log",
+    "actualClassesEvidence": "verification/stable-danmaku-runtime-integration/root/classes-27.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-full-dock-integration/root/classes-25.log",
+    "latestCandidateClassesLog": "verification/stable-danmaku-runtime-integration/root/classes-27.log",
     "liveGuestBackendPassed": false,
     "liveGuestBackendFailure": "HTTP 412 at video details after popular/search passed",
     "liveGuestBackendEvidence": "verification/stable-comments-sharing-integration/root/actual-guest-backend/run-01/accepted-evidence.json",
@@ -211,7 +211,23 @@
     "fullDockActualProduct25UiAssertions": 120,
     "fullDockActualProduct25PointerPairs": 38,
     "fullDockActualProduct25ProductionOverrides": 0,
-    "fullDockEvidence": "verification/stable-full-dock-integration/integration-report.json"
+    "fullDockEvidence": "verification/stable-full-dock-integration/integration-report.json",
+    "all983CurrentSourceAndResourcePinsVerified": true,
+    "fullOriginalDanmakuPanelRootSourceWired": true,
+    "danmakuActualProduct26Assertions": 61,
+    "danmakuRootJunitMethodsPassed": 45,
+    "fullDanmakuPanelPointerAccepted": false,
+    "fullDanmakuAndroidRendererParityAccepted": false,
+    "danmakuSettingsRootEvidence": "verification/stable-danmaku-settings-root-integration/integration-report.json",
+    "latestCandidateClassesPhase": 27,
+    "danmakuActualProduct27Assertions": 61,
+    "danmakuSettingsIsolatedPanelPointerAccepted": true,
+    "danmakuSettingsIsolatedPanelUiAssertions": 32,
+    "danmakuSettingsIsolatedPanelPointerPairs": 58,
+    "danmakuSettingsRootActuallyMounted": false,
+    "invalidJvmMethodNameClassCount": 0,
+    "invalidJvmMethodNameScannedClassCount": 9917,
+    "danmakuRuntimeCorrectionEvidence": "verification/stable-danmaku-runtime-integration/integration-report.json"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -230,6 +246,8 @@
     "verification/stable-favorites-folder-integration/integration-report.json",
     "verification/stable-danmaku-list-menu-integration/integration-report.json",
     "verification/stable-favorites-root-integration/integration-report.json",
-    "verification/stable-full-dock-integration/integration-report.json"
+    "verification/stable-full-dock-integration/integration-report.json",
+    "verification/stable-danmaku-settings-root-integration/integration-report.json",
+    "verification/stable-danmaku-runtime-integration/integration-report.json"
   ]
 }

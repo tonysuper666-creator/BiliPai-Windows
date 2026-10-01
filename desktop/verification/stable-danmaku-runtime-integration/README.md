@@ -1,0 +1,7 @@
+# Full original danmaku settings runtime follow-up
+
+Target remains v0.2.3. Actual26 compiled but the first real full-panel mount failed before drawing: Compose emitted invalid JVM NON_LOCAL_RETURN.<anonymous> references in SettingsHost and Root. Preserve that failure and its original receipts. Two local source guards remove inline labeled returns without changing the original panel, preference setters, nullable loading semantics or the cloud actor lifetime.
+
+Actual27 whole compilation passes. Static inspection of 9917 Kotlin classes finds zero invalid JVM method names. The same actual frozen product passes the previous six groups /61 settings and consumer assertions with zero product-class overrides. Full SettingsHost now mounts in Material and Miuix isolated Compose scenes: 32 assertions, 58 actual pointer pairs and six editable-text actions exercise presentation-scoped persistence, shared font keys, all three tabs, advanced settings and the complete block manager add/edit/cancel/save/import flow.
+
+01–03 failures remain intact; 04 uses the real Miuix thumb drag because a track tap does not commit that original slider. Input chooser and cloud responses are explicit in-memory fixtures. This does not accept the full account-owned Root, physical HWND/IME/system chooser, original Android renderer or a deployed EXE. Actual27 carries its own same-byte Miuix5157 dependency copy, separate from the next5c91 upgrade.

@@ -1,0 +1,60 @@
+{
+  "sharedSupplementFrozenSHA256": "8e9d75a953d931b779c83c482422c21df12a8d6e784c556b0f380470bbe5f5be",
+  "sharedBeforeLF": "89c93a5b78a057373ab4c01ba5efcd585c98143e83a895e5c597e4952e808604",
+  "sharedAfterLF": "434523b12b0a218a0f1f0383dbfff64b782092b00d0c25d987844416adad0f89",
+  "completeOriginalVisibilityOverloads": 2,
+  "soleProducerExtendedOnly": true,
+  "harnessChanges": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopControllerNativeSmoke.kt",
+      "beforeLF": "80dfd3e03c4f1bdf731c4b4a5a6a388a7c2c598b49acee2388e43a9daa6bf31c",
+      "afterLF": "f3c9937ff7d3a027dca347cd88f129394ffafa1e83eaea3c6470f4bedd485b61",
+      "callSites": 2
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopPlaybackControllerTest.kt",
+      "beforeLF": "76722bfbc4d720e7e2be2ff17521d1c8965efff436dae844dab4a839d85bec4a",
+      "afterLF": "427fa39b59a9742969e2b51dfe544b91ce15c9d5b0f9404e32168b58f0288c8d",
+      "callSites": 1
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopCheckpointFailureTest.kt",
+      "beforeLF": "62078d208caddf57604b49d301815718446ee364ed6c5bb567b73cb48a25479c",
+      "afterLF": "7887cc5676220ca03fa76a62ca792c56498f100e1cbe4c0a1f288687d6e7c207",
+      "callSites": 1
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopPlaybackQueueOwnershipTest.kt",
+      "beforeLF": "253573351706c6ccc70451ae58a16757bcba930dea7b804e9fa41161ef871502",
+      "afterLF": "e6501f967185fc0c005398e744b0484fd006873a8844f5a57c5c2545fd0406d9",
+      "callSites": 1
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt",
+      "beforeLF": "282b88715a689a9fc2473f00b901353c3c80bf6662306c94966bfa46ce363a3f",
+      "afterLF": "cadc45aafaa9a6f30e79d2b18b1b14ed87665f827f1c48079567e41e9be78473",
+      "callSites": 1
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest.kt",
+      "beforeLF": "9da47ae2ddd0f1c28a8053273bd34b6f790ef4f92a50cd4065a423982750f7ae",
+      "afterLF": "f0a0b0793c7dca8a71b2439252ce0ae41f81bf386e624a493e3b297d3bf1d70f",
+      "callSites": 1
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioControllerTest.kt",
+      "beforeLF": "acc05ee2fa82134bbabb9e9e3ccc88c48ab7d5e35ed46316fc96e6e76baf3d9a",
+      "afterLF": "a5ef2e2d86f238d366121f97c3e73f81ec667f37be36cb23bb6eb107d799ec23",
+      "callSites": 1
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlaybackSettingsIntegrationFixtures.kt",
+      "beforeLF": "288a029d31e324d35396031924cf8b9e62cac023febbe655b71881c1e4f03e94",
+      "afterLF": "2a2f40789c4642dce0af5781b45a4ecd03de9810147ada13f2c4c8984d90da2b",
+      "callSites": 1
+    }
+  ],
+  "requiredRendererPortRetained": true,
+  "onlyOverlayAbsentHarnessesChanged": true,
+  "productionRootUsesActualProjection": true
+}

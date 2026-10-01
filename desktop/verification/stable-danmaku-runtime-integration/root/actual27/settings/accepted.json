@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "name": "settings",
+  "groups": 3,
+  "assertions": 34,
+  "productionClassOverrides": 0,
+  "classOverlaps": [],
+  "fixtureSHA256": "c4e995eb5a7cb68b86cf883f8cbdc50b165e65f43551e687ace89050e0ee8425",
+  "actualProductPhase": 27,
+  "actualMainJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+  "actualCodeSources": [
+    {
+      "class": "com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "classSha256Bytes": "727cc6eb00f49ea8cdd9d46df991d921ab53a0c6513ec4a78536a090cdb72d9f"
+    },
+    {
+      "class": "com.bilipai.desktop.settings.DesktopDanmakuBlockPreferences",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "classSha256Bytes": "21724474ec61e7c3da7e7decb613ef8712883b644a4a688f6d06ae27c55aca1c"
+    },
+    {
+      "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "classSha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5"
+    },
+    {
+      "class": "com.bilipai.desktop.danmaku.DanmakuSettings",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "classSha256Bytes": "dbf32478413ca46365f6cc2da388c6f1df822e83c5771b3b7063ce37ba3ebd44"
+    },
+    {
+      "class": "com.bilipai.desktop.danmaku.DanmakuScheduler",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "classSha256Bytes": "d819a918ea26d1f216af9ee2180b42ad1b0321d97ffd59cedbcbbaefd6868238"
+    },
+    {
+      "class": "com.android.purebilibili.core.network.BilibiliApi",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "classSha256Bytes": "36e363a5ec59e07eab90fd4b7b71ef3e9e450287499e119bba968cb0190f0124"
+    },
+    {
+      "class": "com.android.purebilibili.data.repository.DesktopOriginalDanmakuCloudRuleProtocol",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "classSha256Bytes": "651e7634ddfaea997d7a5f0e88098b63b110990b635108ce1129bae9e5a12e59"
+    },
+    {
+      "class": "com.android.purebilibili.data.repository.DanmakuCloudSyncSettings",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "classSha256Bytes": "59b7085b51461d7b79c5df6bd9add300c90fe0216b83cc3048da40373093206c"
+    },
+    {
+      "class": "com.android.purebilibili.feature.video.danmaku.DanmakuCloudSyncStatus",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "classSha256Bytes": "fdb1ecb3d7f9c26e92f40e3bf554c3d4a2d95773d3d2e2e1b08ee24b426e8006"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuCloudSyncBindingKt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "classSha256Bytes": "faa386d567356810e797dccad7a96b5ff51b9c35ab39d3475e985f09429f1078"
+    },
+    {
+      "class": "com.android.purebilibili.feature.video.ui.components.DanmakuSettingsPanelKt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-27\\main-kotlin.jar",
+      "classSha256Bytes": "50882626ff50f95983e03831141473aa0c9704575ad431519904d289d26a222e"
+    }
+  ],
+  "actualNativeRendererOrPanelPointerAccepted": false,
+  "systemWindowOrChooserUsed": false,
+  "accountOrSocketUsed": false
+}

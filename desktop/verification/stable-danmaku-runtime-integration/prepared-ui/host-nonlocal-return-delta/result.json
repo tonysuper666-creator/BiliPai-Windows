@@ -1,0 +1,48 @@
+{
+  "status": "PROSPECTIVE_MINIMAL_HOST_FIX_CLASSLOAD_PASS",
+  "actual26ManifestSha256Bytes": "ba49995574a32aabb30a07578dcfef7e4ae65ccf2882940ffb8d29272ea0695c",
+  "baseSourceSha256Bytes": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f",
+  "baseSourceSha256LF": "b4639c584bb5d93e308c0435bd1712a65ed4c59cac611fc444e8cad9986d916f",
+  "candidateSourceSha256LF": "55f1a1e65909c66fc52b84cfe4ef6c5210fe0e4402f68057788ecda2042db9e7",
+  "candidateJarSha256Bytes": "8df3c3745c32fead6148d7c6399e790abac271afd7d61eba4cd61f46cf401db5",
+  "classLoadResults": [
+    {
+      "label": "actual26",
+      "exitCode": 1,
+      "productionClassOverrides": 0,
+      "output": "Exception in thread \"main\" java.lang.ClassFormatError: Illegal method name \"<anonymous>\" in class com/bilipai/desktop/ui/DesktopOriginalDanmakuSettingsHostKt\r\n\tat java.base/java.lang.ClassLoader.defineClass1(Native Method)\r\n\tat java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:1027)\r\n\tat java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:150)\r\n\tat java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:862)\r\n\tat java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:760)\r\n\tat java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:681)\r\n\tat java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:639)\r\n\tat java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)\r\n\tat java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)\r\n\tat java.base/java.lang.Class.forName0(Native Method)\r\n\tat java.base/java.lang.Class.forName(Class.java:423)\r\n\tat java.base/java.lang.Class.forName(Class.java:414)\r\n\tat com.bilipai.desktop.diagnostics.hostload26.HostLoadProbeKt.main(HostLoadProbe.kt:2)\r\n\tat com.bilipai.desktop.diagnostics.hostload26.HostLoadProbeKt.main(HostLoadProbe.kt)\r\n"
+    },
+    {
+      "label": "prospective-local-branch",
+      "exitCode": 0,
+      "productionClassOverrides": 1,
+      "output": "HOST_CLASS_LOAD_PASS file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-danmaku-settings-main26-ui-proof/host-nonlocal-return-delta/prospective-host.jar\r\n"
+    }
+  ],
+  "methodReferenceReview": [
+    {
+      "label": "actual26",
+      "classSha256Bytes": "6a7189004275aac95a407b4ad7a83cbb08e83a3e6b78145815cd2a46055860ca",
+      "invalidMethodReferenceLines": [
+        "  #204 = Methodref          #200.#203     // $$$$$NON_LOCAL_RETURN$$$$$.\"<anonymous>\":()V",
+        "       820: invokestatic  #204                // Method $$$$$NON_LOCAL_RETURN$$$$$.\"<anonymous>\":()V"
+      ]
+    },
+    {
+      "label": "prepared06",
+      "classSha256Bytes": "4c075daf36d24d5d434266f7ec3b90c06d39e19d677efb203b8c156c23f9c1cf",
+      "invalidMethodReferenceLines": [
+        "  #193 = Methodref          #189.#192     // $$$$$NON_LOCAL_RETURN$$$$$.\"<anonymous>\":()V",
+        "       788: invokestatic  #193                // Method $$$$$NON_LOCAL_RETURN$$$$$.\"<anonymous>\":()V"
+      ]
+    },
+    {
+      "label": "prospective",
+      "classSha256Bytes": "60c6c1d130fe64e8339662afdb4f4ac7e2d7a2e822b3a62d2381ca493c432cfd",
+      "invalidMethodReferenceLines": []
+    }
+  ],
+  "diagnosis": "return@key in Compose inline content retains compiler sentinel Methodref $$$$$NON_LOCAL_RETURN$$$$$.<anonymous>:()V at bytecode offset820; class constant-pool name illegal before code executes. Use owned conditional branch around same provider/body instead of labelled return.",
+  "explicitAdaptation": "Only owner branch shape and one closing brace; all panel arguments, setters, state and original renderer unchanged.",
+  "boundary": "Not Main27, no actual UI rendering or zero-override success; actual26 expected failure and prospective one Host family override load success."
+}

@@ -1,0 +1,18 @@
+{
+  "compilerFailures": [
+    "01 Windows long path pin read",
+    "02 long path source input copy",
+    "03 original object consts moved into companion for the thin instance adapter"
+  ],
+  "historicalPasses": [
+    "compile04 original13 closure before fourth config method",
+    "compile05 full15 sources but copied filename prefixes changed physical Kt wrappers"
+  ],
+  "fixtureFailures": [
+    "proof01 standalone runtime missing Snapshot.apply notifications",
+    "proof02 asserted UI status before recompose frame",
+    "proof03 all state assertions complete but Class.forName assumed logical Kt name while prefixed copied source had a different wrapper"
+  ],
+  "final": "compile06 canonical logical filenames+same-byte relocated92CP; proof04 three groups34 checks and11 code sources PASS",
+  "noFailuresOverwritten": true
+}

@@ -1,0 +1,11 @@
+{
+  "status": "FAIL",
+  "exitCode": 1,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\runs\\01\\source-inputs\\DanmakuSettingsUiFixture.kt",
+      "sha256Bytes": "cfe85155544d439d134ac0cbc874d985156ce956d1463b64b6c4a3f46361814c"
+    }
+  ],
+  "productionSourceInputs": 0
+}

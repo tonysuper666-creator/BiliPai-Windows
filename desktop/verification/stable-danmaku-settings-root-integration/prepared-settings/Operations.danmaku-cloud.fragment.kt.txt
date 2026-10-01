@@ -1,0 +1,16 @@
+    // Desktop original danmaku cloud rule binding (insert before // GENERATED original editor members marker).
+    private val originalDanmakuCloudRules = com.android.purebilibili.data.repository.DesktopOriginalDanmakuCloudRuleProtocol(
+        api, { assertOwned(); repository.requireCsrf() }, ::assertOwned,
+    )
+    suspend fun getDanmakuCloudFilterRules(): Result<com.android.purebilibili.data.repository.DanmakuCloudFilterRules> = result {
+        read { originalDanmakuCloudRules.getDanmakuCloudFilterRules().getOrThrow() }
+    }
+    suspend fun addDanmakuCloudFilterRule(type:Int,filter:String): Result<com.android.purebilibili.data.repository.DanmakuCloudFilterRule> = result {
+        mutate { originalDanmakuCloudRules.addDanmakuCloudFilterRule(type,filter).getOrThrow() }
+    }
+    suspend fun deleteDanmakuCloudFilterRule(id:Long): Result<Unit> = result {
+        mutate { originalDanmakuCloudRules.deleteDanmakuCloudFilterRule(id).getOrThrow() }
+    }
+    suspend fun syncDanmakuCloudConfig(settings:com.android.purebilibili.data.repository.DanmakuCloudSyncSettings): Result<Unit> = result {
+        mutate { originalDanmakuCloudRules.syncDanmakuCloudConfig(settings).getOrThrow() }
+    }

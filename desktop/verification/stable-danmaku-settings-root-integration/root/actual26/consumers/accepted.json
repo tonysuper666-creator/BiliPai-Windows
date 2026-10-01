@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "name": "consumers",
+  "groups": 3,
+  "assertions": 27,
+  "productionClassOverrides": 0,
+  "classOverlaps": [],
+  "fixtureSHA256": "82655795a79ceea6b9f1e7e7b1aa752851d8909046ec96127672e4571d2aed9e",
+  "actualProductPhase": 26,
+  "actualMainJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-26\\main-kotlin.jar",
+  "actualCodeSources": [],
+  "actualNativeRendererOrPanelPointerAccepted": false,
+  "systemWindowOrChooserUsed": false,
+  "accountOrSocketUsed": false
+}

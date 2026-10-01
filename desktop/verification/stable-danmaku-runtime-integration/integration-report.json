@@ -1,0 +1,1326 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualWholeClassesPhase": 27,
+  "wholeClassesPassed": true,
+  "invalidMethodReferenceClassesBefore": 2,
+  "invalidMethodReferenceClassesAfter": 0,
+  "staticClassCount": 9917,
+  "sourceCorrectionFiles": 2,
+  "inlineLabeledReturnsReplacedByStructuredGuards": true,
+  "cloudSettingsActorMountedOutsideTransientModal": true,
+  "actualProductSettingsAndConsumerAssertions": 61,
+  "fullSettingsPanelUiStyles": 2,
+  "fullSettingsPanelUiAssertions": 32,
+  "actualComposePointerPairs": 58,
+  "actualEditableTextActions": 6,
+  "productionClassOverrides": 0,
+  "historicalActual26FailureRetained": true,
+  "prior179And515And451AndActual26FrozenCohortsUnmodified": true,
+  "candidateSourceIdentityCount": 770,
+  "actualHostAndRootAndListHostJvmClassLoadAccepted": true,
+  "actualFullSettingsHostIsolatedSceneAccepted": true,
+  "actualFullRootMounted": false,
+  "systemWindowOrNativeChooserUsed": false,
+  "realAccountOrNetworkCloudUsed": false,
+  "fullOriginalAndroidRendererParityAccepted": false,
+  "desktopExeReplaced": false,
+  "uiAcceptance": {
+    "status": "PASS",
+    "cells": 2,
+    "assertions": 32,
+    "pointerPairs": 58,
+    "actualEditableTextActions": 6,
+    "productionClassOverrides": 0,
+    "loadedClassBytePinsPerCell": 11,
+    "results": [
+      {
+        "status": "PASS",
+        "style": "MATERIAL3",
+        "viewportWidth": 1100,
+        "viewportHeight": 900,
+        "fixtureLoggedIn": false,
+        "assertions": 16,
+        "checks": [
+          "actual SettingsHost/Root/list Host classes load without JVM sentinel error",
+          "guest/login fixture controls actual cloud section visibility",
+          "original shared font key affects both presentation scopes",
+          "portrait switch does not overwrite landscape scoped key",
+          "same preferences owner retains independent scoped opacity",
+          "original advanced switch remains scoped",
+          "actual field contains \u539f\u5173\u952e\u8bcd",
+          "landscape rule save does not create a second list or overwrite portrait",
+          "actual field contains \u53d6\u6d88\u7f16\u8f91\u8bcd",
+          "original manager cancel discards local edited draft",
+          "actual field contains \u4fee\u6539\u5173\u952e\u8bcd",
+          "memory chooser cancellation opens no stream and keeps manager",
+          "required suspend file input consumed exactly one declared memory stream",
+          "full import partitions keyword/regex/hash without losing existing rule",
+          "one actual close callback",
+          "no external network/process/native chooser/account access"
+        ],
+        "pointerPairs": 29,
+        "scrollEvents": 51,
+        "actualEditableTextActions": 3,
+        "memoryOnlyChooserCalls": 2,
+        "memoryOnlyRuleInputCalls": 1,
+        "cloudRuleGetCalls": 4,
+        "memoryOnlyConfigSyncCalls": 0,
+        "productionClassOverrides": 0,
+        "actualCodeSources": [
+          {
+            "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuSettingsHostKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "d27211f39dabdf4b67b925a285d772fae786c14ed507d9fb73ca4e694cd7c7b8"
+          },
+          {
+            "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuRootKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "4823ae9c2ff21ff53b1b943968267a771ce6db225f23f936885aff55b3d7c04b"
+          },
+          {
+            "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuHostKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "276723bb3f099ea0a9a01a6b942ddf35248bd6b5b5b29d9de5b35896f3d5f1ed"
+          },
+          {
+            "class": "com.android.purebilibili.feature.video.ui.components.DanmakuSettingsPanelKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "50882626ff50f95983e03831141473aa0c9704575ad431519904d289d26a222e"
+          },
+          {
+            "class": "com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "727cc6eb00f49ea8cdd9d46df991d921ab53a0c6513ec4a78536a090cdb72d9f"
+          },
+          {
+            "class": "com.bilipai.desktop.settings.DesktopDanmakuBlockPreferences",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "21724474ec61e7c3da7e7decb613ef8712883b644a4a688f6d06ae27c55aca1c"
+          },
+          {
+            "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5"
+          },
+          {
+            "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuCloudSyncBindingKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "faa386d567356810e797dccad7a96b5ff51b9c35ab39d3475e985f09429f1078"
+          },
+          {
+            "class": "com.bilipai.desktop.ui.DesktopDanmakuSettingsPlatformKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "aea12e47d6faea5bae6e4973659a0d191e2bfd6ea3cb1148dd3dc15c25274ce0"
+          },
+          {
+            "class": "com.bilipai.desktop.appearance.DesktopAppearanceThemeKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "4492666cc089c6b2a0dd46b2b7146420cf766f3bc11a207fbe3d2df426f84a27"
+          },
+          {
+            "class": "com.android.purebilibili.core.ui.components.AppLiquidAwareTabRowKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "42cc35f31e377c403263c1cf2dd4057b1980bdc9e62d5f104f5f5a844bdae4b9"
+          }
+        ],
+        "RootOwnerAccountHWNDIntegrated": false,
+        "inputChooserMode": "explicit-memory-only",
+        "events": [
+          {
+            "kind": "actual-slider-drag",
+            "target": "font",
+            "startX": 464.94116,
+            "endX": 819.92,
+            "y": 412.0
+          },
+          {
+            "kind": "actual-slider-drag",
+            "target": "portrait opacity",
+            "startX": 825.4286,
+            "endX": 337.92,
+            "y": 497.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "switch:\u6eda\u52a8\u5f39\u5e55",
+            "x": 1010.0,
+            "y": 725.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u9ad8\u7ea7",
+            "x": 880.0,
+            "y": 256.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "switch:\u56fa\u5b9a\u6eda\u52a8\u901f\u5ea6",
+            "x": 1028.0,
+            "y": 627.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5c4f\u853d",
+            "x": 1007.0,
+            "y": 256.5
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5c4f\u853d\u7ba1\u7406",
+            "x": 742.0,
+            "y": 694.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "actual manager field",
+            "x": 550.0,
+            "y": 415.0
+          },
+          {
+            "kind": "actual-editable-text",
+            "value": "\u539f\u5173\u952e\u8bcd"
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u6dfb\u52a0",
+            "x": 1030.0,
+            "y": 483.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u4fdd\u5b58",
+            "x": 1030.0,
+            "y": 630.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5c4f\u853d\u7ba1\u7406",
+            "x": 742.0,
+            "y": 694.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5220\u9664",
+            "x": 1015.0,
+            "y": 550.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "actual manager field",
+            "x": 550.0,
+            "y": 415.0
+          },
+          {
+            "kind": "actual-editable-text",
+            "value": "\u53d6\u6d88\u7f16\u8f91\u8bcd"
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u6dfb\u52a0",
+            "x": 1030.0,
+            "y": 483.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u53d6\u6d88",
+            "x": 963.0,
+            "y": 630.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5c4f\u853d\u7ba1\u7406",
+            "x": 742.0,
+            "y": 694.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5220\u9664",
+            "x": 1015.0,
+            "y": 550.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "actual manager field",
+            "x": 550.0,
+            "y": 415.0
+          },
+          {
+            "kind": "actual-editable-text",
+            "value": "\u4fee\u6539\u5173\u952e\u8bcd"
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u6dfb\u52a0",
+            "x": 1030.0,
+            "y": 483.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u4fdd\u5b58",
+            "x": 1030.0,
+            "y": 630.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5c4f\u853d\u7ba1\u7406",
+            "x": 742.0,
+            "y": 694.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5bfc\u5165\u6587\u4ef6",
+            "x": 92.0,
+            "y": 470.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5bfc\u5165\u6587\u4ef6",
+            "x": 92.0,
+            "y": 470.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5408\u5e76\u5bfc\u5165",
+            "x": 622.0,
+            "y": 497.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u6b63\u5219 1",
+            "x": 139.5,
+            "y": 311.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "UID(hash) 1",
+            "x": 211.5,
+            "y": 336.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u4fdd\u5b58",
+            "x": 1030.0,
+            "y": 630.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u57fa\u7840",
+            "x": 753.0,
+            "y": 256.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "original panel close",
+            "x": 1054.0,
+            "y": 206.0
+          }
+        ],
+        "globalSettings": {
+          "danmaku_enabled": true,
+          "danmaku_opacity": 0.85,
+          "danmaku_font_scale": 1.0,
+          "danmaku_speed": 1.0,
+          "danmaku_area": 0.5,
+          "danmaku_font_weight": 5,
+          "danmaku_stroke_width": 1.5,
+          "danmaku_line_height": 1.6,
+          "danmaku_scroll_duration_seconds": 7.0,
+          "danmaku_static_duration_seconds": 4.0,
+          "danmaku_allow_scroll": true,
+          "danmaku_allow_top": true,
+          "danmaku_allow_bottom": true,
+          "danmaku_allow_colorful": true,
+          "danmaku_allow_special": true,
+          "danmaku_merge_duplicates": true,
+          "danmaku_duplicate_merge_window_ms": 500,
+          "danmaku_duplicate_merge_count_threshold": 2,
+          "danmaku_block_attention_commands": false,
+          "danmaku_block_rules": "",
+          "danmaku_defaults_version": 5,
+          "danmaku_cloud_sync_enabled": true,
+          "danmaku_landscape_font_scale": 1.6238135,
+          "danmaku_portrait_opacity": 0.49672675,
+          "danmaku_portrait_allow_scroll": false,
+          "danmaku_landscape_scroll_fixed_velocity": true,
+          "danmaku_landscape_block_rules": "\u4fee\u6539\u5173\u952e\u8bcd\n\u5bfc\u5165\u5173\u952e\u8bcd\nregex:\u5bfc\u5165.*\nuid:abcdef"
+        }
+      },
+      {
+        "status": "PASS",
+        "style": "MIUIX",
+        "viewportWidth": 1100,
+        "viewportHeight": 900,
+        "fixtureLoggedIn": true,
+        "assertions": 16,
+        "checks": [
+          "actual SettingsHost/Root/list Host classes load without JVM sentinel error",
+          "guest/login fixture controls actual cloud section visibility",
+          "original shared font key affects both presentation scopes",
+          "portrait switch does not overwrite landscape scoped key",
+          "same preferences owner retains independent scoped opacity",
+          "original advanced switch remains scoped",
+          "actual field contains \u539f\u5173\u952e\u8bcd",
+          "landscape rule save does not create a second list or overwrite portrait",
+          "actual field contains \u53d6\u6d88\u7f16\u8f91\u8bcd",
+          "original manager cancel discards local edited draft",
+          "actual field contains \u4fee\u6539\u5173\u952e\u8bcd",
+          "memory chooser cancellation opens no stream and keeps manager",
+          "required suspend file input consumed exactly one declared memory stream",
+          "full import partitions keyword/regex/hash without losing existing rule",
+          "one actual close callback",
+          "no external network/process/native chooser/account access"
+        ],
+        "pointerPairs": 29,
+        "scrollEvents": 51,
+        "actualEditableTextActions": 3,
+        "memoryOnlyChooserCalls": 2,
+        "memoryOnlyRuleInputCalls": 1,
+        "cloudRuleGetCalls": 4,
+        "memoryOnlyConfigSyncCalls": 2,
+        "productionClassOverrides": 0,
+        "actualCodeSources": [
+          {
+            "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuSettingsHostKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "d27211f39dabdf4b67b925a285d772fae786c14ed507d9fb73ca4e694cd7c7b8"
+          },
+          {
+            "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuRootKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "4823ae9c2ff21ff53b1b943968267a771ce6db225f23f936885aff55b3d7c04b"
+          },
+          {
+            "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuHostKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "276723bb3f099ea0a9a01a6b942ddf35248bd6b5b5b29d9de5b35896f3d5f1ed"
+          },
+          {
+            "class": "com.android.purebilibili.feature.video.ui.components.DanmakuSettingsPanelKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "50882626ff50f95983e03831141473aa0c9704575ad431519904d289d26a222e"
+          },
+          {
+            "class": "com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "727cc6eb00f49ea8cdd9d46df991d921ab53a0c6513ec4a78536a090cdb72d9f"
+          },
+          {
+            "class": "com.bilipai.desktop.settings.DesktopDanmakuBlockPreferences",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "21724474ec61e7c3da7e7decb613ef8712883b644a4a688f6d06ae27c55aca1c"
+          },
+          {
+            "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5"
+          },
+          {
+            "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuCloudSyncBindingKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "faa386d567356810e797dccad7a96b5ff51b9c35ab39d3475e985f09429f1078"
+          },
+          {
+            "class": "com.bilipai.desktop.ui.DesktopDanmakuSettingsPlatformKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "aea12e47d6faea5bae6e4973659a0d191e2bfd6ea3cb1148dd3dc15c25274ce0"
+          },
+          {
+            "class": "com.bilipai.desktop.appearance.DesktopAppearanceThemeKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "4492666cc089c6b2a0dd46b2b7146420cf766f3bc11a207fbe3d2df426f84a27"
+          },
+          {
+            "class": "com.android.purebilibili.core.ui.components.AppLiquidAwareTabRowKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-27/main-kotlin.jar",
+            "classSha256Bytes": "42cc35f31e377c403263c1cf2dd4057b1980bdc9e62d5f104f5f5a844bdae4b9"
+          }
+        ],
+        "RootOwnerAccountHWNDIntegrated": false,
+        "inputChooserMode": "explicit-memory-only",
+        "events": [
+          {
+            "kind": "actual-slider-drag",
+            "target": "font",
+            "startX": 466.70587,
+            "endX": 814.31995,
+            "y": 606.0
+          },
+          {
+            "kind": "actual-slider-drag",
+            "target": "portrait opacity",
+            "startX": 819.71436,
+            "endX": 342.32,
+            "y": 691.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 550.0,
+            "y": 450.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "switch:\u6eda\u52a8\u5f39\u5e55",
+            "x": 1011.5,
+            "y": 723.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u9ad8\u7ea7",
+            "x": 880.0,
+            "y": 272.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "switch:\u56fa\u5b9a\u6eda\u52a8\u901f\u5ea6",
+            "x": 1029.5,
+            "y": 662.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5c4f\u853d",
+            "x": 1009.0,
+            "y": 272.5
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": 2.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5c4f\u853d\u7ba1\u7406",
+            "x": 744.0,
+            "y": 709.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "actual manager field",
+            "x": 550.0,
+            "y": 412.0
+          },
+          {
+            "kind": "actual-editable-text",
+            "value": "\u539f\u5173\u952e\u8bcd"
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u6dfb\u52a0",
+            "x": 1027.0,
+            "y": 479.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u4fdd\u5b58",
+            "x": 1027.0,
+            "y": 627.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5c4f\u853d\u7ba1\u7406",
+            "x": 744.0,
+            "y": 709.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5220\u9664",
+            "x": 1011.0,
+            "y": 546.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "actual manager field",
+            "x": 550.0,
+            "y": 412.0
+          },
+          {
+            "kind": "actual-editable-text",
+            "value": "\u53d6\u6d88\u7f16\u8f91\u8bcd"
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u6dfb\u52a0",
+            "x": 1027.0,
+            "y": 479.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u53d6\u6d88",
+            "x": 953.0,
+            "y": 627.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5c4f\u853d\u7ba1\u7406",
+            "x": 744.0,
+            "y": 709.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5220\u9664",
+            "x": 1011.0,
+            "y": 546.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "actual manager field",
+            "x": 550.0,
+            "y": 412.0
+          },
+          {
+            "kind": "actual-editable-text",
+            "value": "\u4fee\u6539\u5173\u952e\u8bcd"
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u6dfb\u52a0",
+            "x": 1027.0,
+            "y": 479.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u4fdd\u5b58",
+            "x": 1027.0,
+            "y": 627.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5c4f\u853d\u7ba1\u7406",
+            "x": 744.0,
+            "y": 709.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5bfc\u5165\u6587\u4ef6",
+            "x": 90.0,
+            "y": 465.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5bfc\u5165\u6587\u4ef6",
+            "x": 90.0,
+            "y": 465.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u5408\u5e76\u5bfc\u5165",
+            "x": 668.0,
+            "y": 481.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u6b63\u5219 1",
+            "x": 551.0,
+            "y": 308.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "UID(hash) 1",
+            "x": 893.5,
+            "y": 333.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u4fdd\u5b58",
+            "x": 1027.0,
+            "y": 627.5
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "scroll",
+            "delta": -10.0,
+            "x": 880.0,
+            "y": 450.0
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "\u57fa\u7840",
+            "x": 751.0,
+            "y": 272.5
+          },
+          {
+            "kind": "pointer-pair",
+            "target": "original panel close",
+            "x": 1046.0,
+            "y": 214.0
+          }
+        ],
+        "globalSettings": {
+          "danmaku_enabled": true,
+          "danmaku_opacity": 0.85,
+          "danmaku_font_scale": 1.0,
+          "danmaku_speed": 1.0,
+          "danmaku_area": 0.5,
+          "danmaku_font_weight": 5,
+          "danmaku_stroke_width": 1.5,
+          "danmaku_line_height": 1.6,
+          "danmaku_scroll_duration_seconds": 7.0,
+          "danmaku_static_duration_seconds": 4.0,
+          "danmaku_allow_scroll": true,
+          "danmaku_allow_top": true,
+          "danmaku_allow_bottom": true,
+          "danmaku_allow_colorful": true,
+          "danmaku_allow_special": true,
+          "danmaku_merge_duplicates": true,
+          "danmaku_duplicate_merge_window_ms": 500,
+          "danmaku_duplicate_merge_count_threshold": 2,
+          "danmaku_block_attention_commands": false,
+          "danmaku_block_rules": "",
+          "danmaku_defaults_version": 5,
+          "danmaku_cloud_sync_enabled": true,
+          "danmaku_landscape_font_scale": 1.6259999,
+          "danmaku_portrait_opacity": 0.49600002,
+          "danmaku_portrait_allow_scroll": false,
+          "danmaku_landscape_scroll_fixed_velocity": true,
+          "danmaku_landscape_block_rules": "\u4fee\u6539\u5173\u952e\u8bcd\n\u5bfc\u5165\u5173\u952e\u8bcd\nregex:\u5bfc\u5165.*\nuid:abcdef"
+        }
+      }
+    ],
+    "scope": "Actual installed Main27 complete original Danmaku Settings Host/Panel and BlockManager, same actual global Store/scoped preference implementation, offscreen pointer/scroll/edit. Fixture supplies presentation/account state and declared memory-only cloud/file chooser ports; no Root/account/HWND/Android engine parity claim."
+  },
+  "excludedTaskBinaries": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\host-nonlocal-return-delta\\probe.jar",
+      "sha256Bytes": "4e40dcfe0a20dc338d72eb9f0f36d1ce09234ff998828a0eb595872396d7f4a5",
+      "bytes": 1639,
+      "relativePath": "host-nonlocal-return-delta/probe.jar"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\host-nonlocal-return-delta\\prospective-DesktopOriginalDanmakuSettingsHostKt.class",
+      "sha256Bytes": "60c6c1d130fe64e8339662afdb4f4ac7e2d7a2e822b3a62d2381ca493c432cfd",
+      "bytes": 67092,
+      "relativePath": "host-nonlocal-return-delta/prospective-DesktopOriginalDanmakuSettingsHostKt.class"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\host-nonlocal-return-delta\\prospective-host.jar",
+      "sha256Bytes": "8df3c3745c32fead6148d7c6399e790abac271afd7d61eba4cd61f46cf401db5",
+      "bytes": 65033,
+      "relativePath": "host-nonlocal-return-delta/prospective-host.jar"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\runs\\02\\settings-main26-ui-fixture.jar",
+      "sha256Bytes": "651c1b0d6a73917031d8e155f4d9573415036cf1e170056ab992eb33894edb42",
+      "bytes": 62421,
+      "relativePath": "runs/02/settings-main26-ui-fixture.jar"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\runs\\03-actual27\\settings-main26-ui-fixture.jar",
+      "sha256Bytes": "43a88ca9454a6edb80e277c120acc80dc2aa23011b7691893c7e539f9b8fc84f",
+      "bytes": 63036,
+      "relativePath": "runs/03-actual27/settings-main26-ui-fixture.jar"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\runs\\04-actual27\\settings-main26-ui-fixture.jar",
+      "sha256Bytes": "c5549bf818b8de3b1436c8beef2557144c1685915c8bd064660e334d4e14801a",
+      "bytes": 65958,
+      "relativePath": "runs/04-actual27/settings-main26-ui-fixture.jar"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\runtime-class-review\\actual26-DesktopOriginalDanmakuSettingsHostKt.class",
+      "sha256Bytes": "6a7189004275aac95a407b4ad7a83cbb08e83a3e6b78145815cd2a46055860ca",
+      "bytes": 68943,
+      "relativePath": "runtime-class-review/actual26-DesktopOriginalDanmakuSettingsHostKt.class"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\runtime-class-review\\prepared06-DesktopOriginalDanmakuSettingsHostKt.class",
+      "sha256Bytes": "4c075daf36d24d5d434266f7ec3b90c06d39e19d677efb203b8c156c23f9c1cf",
+      "bytes": 66965,
+      "relativePath": "runtime-class-review/prepared06-DesktopOriginalDanmakuSettingsHostKt.class"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "preparedOnly": true,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualDependencyManifestSha256Bytes": "41439c3242e279bc0dc09a20501bdcb36e13cda7f66ab2bbbe537e7538d3ecf2",
+  "original92CpSha256Bytes": "4d1499c7ddbeeddbf31427505930ab0c3d5c6a3aaaf8dc08d2a585edca720232",
+  "relocation": {
+    "orderedRelocatedCpSha256Bytes": "9e1365eb67f97b9930570ff87cd34b514b31d858d78cf210d31783ad87af89cf",
+    "relocationLedgerSha256Bytes": "68b9a804eabd84eedaf40c8b8e2487daad060616a4bac754c1f2f7d3be4fafec",
+    "sameByteOnlyRelocations": [
+      {
+        "index": 3,
+        "before": {
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\third-party\\miuix5157\\build\\libs\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+          "sha256Bytes": "78e22c70dd152058f2f7570f59906607e253231f1db346494820bd7e9db7b215"
+        },
+        "after": {
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5157-original-runtime\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+          "sha256Bytes": "78e22c70dd152058f2f7570f59906607e253231f1db346494820bd7e9db7b215"
+        }
+      }
+    ]
+  },
+  "producer": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\prepared\\desktop\\tools\\extract-upstream-danmaku-settings.py",
+    "sha256LF": "406c92feddc812f3fde05e6218ea4b56d851d0d64da5cd12942124f8c9ee89a7",
+    "entry": "generate(repo,output,standalone=False)",
+    "selectedOutputs": 7,
+    "directSkipped": 3
+  },
+  "manualSourcePayloads": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDanmakuSettingsPlatform.kt",
+      "sha256LF": "b0c32cdb429e978a93536bfe4b0e48b8358f3fb6db939ac122a3be7b9909b742"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDanmakuSettingsProjection.kt",
+      "sha256LF": "e3a38877315291dbe651256ff2a54a1bab7c51d9084126c87161fa2fbb9f4881"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256LF": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f"
+    }
+  ],
+  "sourceDelta": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\selected-files\\DesktopDanmakuSettings.kt",
+    "sha256LF": "091ec93f13598c7c79b30762211f0392512aa741c0d8deb26267188f417d588e",
+    "baseActual20Sha256Bytes": "c0d7312f3451ec530fd311d0d3b659505acd7a5a0df7aa4668df92795a2d66a9",
+    "exactEightLinePatch": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\selected-files\\DanmakuSettings.normalization.patch"
+  },
+  "opsFragment": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\Operations.danmaku-cloud.fragment.kt.txt",
+    "sha256LF": "66e1489657c42c9c4e5f6f3ce6f33900215f08481534e7e438e29ac939a1cb3d",
+    "anchor": "// GENERATED original editor members; do not hand-maintain a second request algorithm.",
+    "baseSha256Bytes": "9f4f93ac517d11f2a5b751f73fa26e94101fb41a37562850f314ba7688a275f7",
+    "copyWholeProofOnlyOperations": false
+  },
+  "settingsAuthority": "ONE supplied existing global DesktopPluginStore.settings namespace; installed sole DesktopDanmakuBlockPreferences; no MID namespace/new client/second cache",
+  "presentation": "Required DesktopDanmakuPresentationBinding.currentPresentation() from actual WindowState.placement and actual fullscreen monitor orientation. INLINE always original PORTRAIT; no video/window aspect inference.",
+  "initialization": "Await owned absent-only importLegacyWindowsDanmakuIfAbsent(existing Windows preferences); then forceDanmakuDefaults uses original version5 migration and does not reset imported existing values. Observe getDanmakuSettings(scope) and getDanmakuCloudSyncEnabled() actual flows. Root may wait for first emissions; do not fake a false cloud flag.",
+  "projection": "EVERY initial and subsequent Overlay.applySettings call, including old dialog/toggle callbacks, must use projectOriginalDanmakuRendererSettings from the same original scope Flow. Legacy Windows PlayerPreferences is only migration input and unrelated player settings, not the source for projected danmaku controls.",
+  "cloudOwner": "rememberDesktopOriginalDanmakuCloudSyncBinding must mount under the same original page/player owner outside the transient settings popup; lifetime keyed by CID/sourceVersion/epoch/native/page ownership. Complete700ms/manual-version/equality cleanup from original source, no second state/store authority.",
+  "cloudPorts": "same owned Operations get/add/delete/syncDanmakuCloudConfig(api/read/mutate/result), real login snapshot, original same-key cloud enabled Flow, actual monotonic elapsed time, owned failure log port.",
+  "cloudCallbacks": "Only enabled,opacity,fontScale,speed,displayArea and allowScroll/Top/Bottom/Colorful/Special queue original cloud config, matching original callsite. Disable clears pending/UI. Other setters do not add remote actions.",
+  "fileImport": "Required suspend openRuleInput(fileURI) captures current import caller CoroutineContext; every read/skip checks cancellation and same owner. Owned real Root chooser returns file URI or null. No Http stream/new client.",
+  "lateRuleAppend": "Existing menu Host must read current fullPrefs.currentSettings(scope).blockRulesRaw initially AND at append click; do not append against collectAsState(\"\") before first persisted emission.",
+  "recipe": [
+    "Install ONLY prepared producer and three manual platform sources; retain logical source basenames.",
+    "Register generate task output once; copy the three direct original policies once from pinned sources through registry. Merge eight identities/features, preserve existing mode/other features.",
+    "Apply selected Windows Settings exact eight-line normalization hunk to the sole existing class; no constructor or serialized-field change.",
+    "Insert ONLY four-method Ops fragment before existing original editor marker; preserve all other Ops families and verifier slices. Never copy proof-only whole Ops.",
+    "Use video_save_alignment Root common owner/provider exact wiring; no duplicate CommentVM/gallery/API/text-selection authority.",
+    "Compile whole product and run actual original settings UI plus real native renderer consumer acceptance separately."
+  ],
+  "proof": {
+    "compile06Sha256Bytes": "e3a68004d64f245ff2e16e8b6a4f9575edff828416b2bc00174f146c18b26754",
+    "candidateJarSha256Bytes": "549caaf0e59e8cfb46ab07be964b0b163b5f4358e61cfc152167961e46dac63e",
+    "proof04AcceptedSha256Bytes": "25c7f7ca719efa761710193f894986c7216cdac81b8d3131a11c1e187318241e",
+    "groupedCases": 3,
+    "assertions": 34,
+    "actualCodeSources": 11,
+    "actualOriginalPanelMounted": false,
+    "actualRootConsumerWiring": false
+  },
+  "pending": [
+    "Actual original Panel pointer/modal/file chooser not mounted by this proof.",
+    "Actual Root/Shell/Controller projected preference wiring and supported native monitor presentation require Root consumer integration.",
+    "Original independent portraitFullScreen renderer/UI owner remains unsupported; physical monitor orientation map is a declared Windows presentation adapter.",
+    "Original fixedVelocity/staticToScroll/massive/weightFilter/smartOcclusion/SCREEN_TOP fields persist completely but current Main20 Window model/Scheduler has no consuming pipeline.",
+    "Current Scheduler raw-duration math differs from original Android DanmakuConfig effective duration clamps; 34 assertions verify current Scheduler receives original stored bounds, not Android-engine parity.",
+    "Original panel geometry native overlay/hit test and smart-occlusion mask need real Windows layout/render owner.",
+    "Cloud protocol runtime here uses existing Retrofit models/API through an application interceptor, no socket or account. Ops four new public members were compiled, not executed with a real account."
+  ]
+}

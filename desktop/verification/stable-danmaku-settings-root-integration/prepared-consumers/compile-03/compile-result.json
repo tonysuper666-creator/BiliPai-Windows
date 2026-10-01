@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "sourceCount": 10,
+  "sourceInputs": [
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDanmakuWindowsPlatform.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\source-inputs\\00-DesktopDanmakuWindowsPlatform.kt",
+      "sha256Bytes": "1431a416f51a3dbc7248bf7f8cdc1ad36b8905edefbeb31c49f50992864cdb43"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDanmakuRoot.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\source-inputs\\01-DesktopOriginalDanmakuRoot.kt",
+      "sha256Bytes": "55e99e0514cdd40eb976cbb645db7ca1b84c150ed0fae00bd525a293c9d49425"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopWindowsDanmakuPresentation.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\source-inputs\\02-DesktopWindowsDanmakuPresentation.kt",
+      "sha256Bytes": "46dec51200ef21359d50800d4d197cfbdb30449bd82cc36a40e9180077786514"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopPlaybackController.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\source-inputs\\03-DesktopPlaybackController.kt",
+      "sha256Bytes": "f1bd64ca7c4b50c6fe5f58dadd8e248794fddeb6b4e366e3d9244759cc32b513"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\source-inputs\\04-DesktopShell.kt",
+      "sha256Bytes": "5d6cc681c6ed569632293257e788c7a70a6df7288329b06407e9a1f1a12506af"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\Main.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\source-inputs\\05-Main.kt",
+      "sha256Bytes": "914897f017c79d3ed46bbda59be80802a36de25ce69ba489ec4ba2746aa51d25"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDanmakuHost.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\source-inputs\\06-DesktopOriginalDanmakuHost.kt",
+      "sha256Bytes": "abe6c706450cdb3ba3364e50b90dc78e146eb1e5ce032f2d5294225606c3893c"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoCommentRoot.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\source-inputs\\07-DesktopVideoCommentRoot.kt",
+      "sha256Bytes": "57321d696b8de599b77a072fe49bca4266987bc67d23adb1a0d2122ea29e92ab"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\PlayerPanels.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\source-inputs\\08-PlayerPanels.kt",
+      "sha256Bytes": "96dfb051a57180ec252bfde2621abfa18212124d5d405305b5ab46eb92d70fd6"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\PlayerSettings.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\source-inputs\\09-PlayerSettings.kt",
+      "sha256Bytes": "dbdebe726048505818aaa22bd7ac101f93d3ebc54003a040ee3dfcca6a52593b"
+    }
+  ],
+  "actualSnapshot": 22,
+  "orderedRelocatedCP": "65e50623a5e52a7a4f0c7421e55dbd20bae752b5c53add8208be9c1f8c9772ae",
+  "prospectivePanelJar": "549caaf0e59e8cfb46ab07be964b0b163b5f4358e61cfc152167961e46dac63e",
+  "onlySameByteLibraryRelocation": [
+    3
+  ],
+  "preparedOnly": true,
+  "jarSha256Bytes": "ae69c77afd222fc7ec41570738e8d26c3dca06ffed0b901c091ebffc3aeb05e4"
+}

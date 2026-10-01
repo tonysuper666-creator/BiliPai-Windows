@@ -1,0 +1,24 @@
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-05\source-inputs\03-DanmakuSettingsPanel.kt:592:70: warning: 'val Icons.Outlined.FormatListBulleted: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.FormatListBulleted.
+                                        imageVector = Icons.Outlined.FormatListBulleted,
+                                                                     ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-05\source-inputs\14-DesktopDynamicCardOperations.kt:611:17: warning: expression is unused.
+                Unit
+                ^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-05\source-inputs\14-DesktopDynamicCardOperations.kt:635:17: warning: expression is unused.
+                Unit
+                ^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-05\source-inputs\14-DesktopDynamicCardOperations.kt:657:17: warning: expression is unused.
+                Unit
+                ^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-05\source-inputs\14-DesktopDynamicCardOperations.kt:686:17: warning: expression is unused.
+                Unit
+                ^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-05\source-inputs\14-DesktopDynamicCardOperations.kt:712:17: warning: expression is unused.
+                Unit
+                ^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-05\source-inputs\14-DesktopDynamicCardOperations.kt:728:12: warning: redundant creation of Json format. Creating instances for each usage can be slow.
+    return kotlinx.serialization.json.Json(json) { encodeDefaults = true }.encodeToString(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-05\source-inputs\14-DesktopDynamicCardOperations.kt:814:60: warning: the corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+                override fun onFailure(call: okhttp3.Call, failure: IOException) {
+                                                           ^^^^^^^

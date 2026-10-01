@@ -1,0 +1,32 @@
+--- before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuRoot.kt
++++ after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuRoot.kt
+@@ -70,16 +70,19 @@
+         val settings by remember(preferences,settingsScope){preferences.getDanmakuSettings(settingsScope)}
+             .collectAsState(preferences.currentSettings(settingsScope))
+         val syncSnapshot by remember(preferences){preferences.getDanmakuCloudSyncEnabled()}.collectAsState(initial=null)
+-        val syncEnabled=syncSnapshot?:return@key
+-        // The original 700 ms queue/effect remains mounted when a transient settings panel closes.
+-        val cloudSync=rememberDesktopOriginalDanmakuCloudSyncBinding(settings,syncEnabled,account!=null,platform)
+-        LaunchedEffect(enabledChangeVersion) {
+-            if(enabledChangeVersion>0L&&owned())cloudSync.queueChange{previous->previous.copy(enabled=preferences.currentSettings(settingsScope).enabled)}
++        val syncEnabled=syncSnapshot
++        if(syncEnabled!=null) {
++            // The original 700 ms queue/effect remains mounted when a transient settings panel closes.
++            val cloudSync=rememberDesktopOriginalDanmakuCloudSyncBinding(settings,syncEnabled,account!=null,platform)
++            LaunchedEffect(enabledChangeVersion) {
++                if(enabledChangeVersion>0L&&owned())cloudSync.queueChange{previous->previous.copy(enabled=preferences.currentSettings(settingsScope).enabled)}
++            }
++            if(owned()) {
++                DesktopOriginalDanmakuHost(overlay,environment,session,platform,blocks,settingsScope,showPool,
++                    currentPosition(),{if(owned())onDismissPool()},{preferences.currentSettings(settingsScope).blockRulesRaw})
++                if(showSettings)DesktopOriginalDanmakuSettingsHost(preferences,presentation,viewport,platform,
++                    syncEnabled,account!=null,cloudSync,{if(owned())onShowPool()},{if(owned())onDismissSettings()})
++            }
+         }
+-        if(!owned())return@key
+-        DesktopOriginalDanmakuHost(overlay,environment,session,platform,blocks,settingsScope,showPool,
+-            currentPosition(),{if(owned())onDismissPool()},{preferences.currentSettings(settingsScope).blockRulesRaw})
+-        if(showSettings)DesktopOriginalDanmakuSettingsHost(preferences,presentation,viewport,platform,
+-            syncEnabled,account!=null,cloudSync,{if(owned())onShowPool()},{if(owned())onDismissSettings()})
+     }
+ }

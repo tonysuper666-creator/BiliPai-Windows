@@ -1,0 +1,117 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceIdentities": 770,
+  "resources": 213,
+  "wholeClassesPhase": 26,
+  "wholeClassesPassed": true,
+  "original2030LinePanelSourceRetained": true,
+  "fullOriginalBlockManagerRetained": true,
+  "originalCloudRulesAndConfigFourMethodsSameOps": true,
+  "original700MsCloudStateMountedOutsideTransientModal": true,
+  "originalPreferencesSameGlobalStore": true,
+  "originalSupportedFieldsAllOverlayAndSourceLoadConsumersWired": true,
+  "originalRulesFullLengthAndCountRetained": true,
+  "oldWindowsDanmakuRowsRetiredAndAbsentOnlyMigrationRetained": true,
+  "requiredActualPresentationBinding": true,
+  "physicalMonitorWindowsAdapterExplicit": true,
+  "allActualRuleStreamReadsCheckCallerCancellationAndPageOwner": true,
+  "sameCommentOwnerAndGalleryProvider": true,
+  "uniqueOriginalTextSelectionSheetUsed": true,
+  "fixedCidSourceVersionAndEpochOwner": true,
+  "rootLocalHunks": 33,
+  "existingOverlayAbsentHarnessesRequiredRendererPortExplicit": true,
+  "actualProductProofGroups": 6,
+  "actualProductProofAssertions": 61,
+  "productionOverrides": 0,
+  "junitMethods": 45,
+  "junitSuites": [
+    {
+      "name": "com.bilipai.desktop.danmaku.AdvancedDanmakuTest",
+      "methods": 3
+    },
+    {
+      "name": "com.bilipai.desktop.danmaku.DanmakuPluginAdapterTest",
+      "methods": 3
+    },
+    {
+      "name": "com.bilipai.desktop.danmaku.DanmakuTest",
+      "methods": 11
+    },
+    {
+      "name": "com.bilipai.desktop.danmaku.DanmakuWindowLoaderTest",
+      "methods": 9
+    },
+    {
+      "name": "com.bilipai.desktop.DesktopPlaybackControllerTest",
+      "methods": 11
+    },
+    {
+      "name": "com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest",
+      "methods": 6
+    },
+    {
+      "name": "com.bilipai.desktop.ui.PlaybackSettingsDraftMemoryTest",
+      "methods": 2
+    }
+  ],
+  "sharedOriginalVisibilityOverloads": 2,
+  "soleSharedProducerExtended": true,
+  "actualRootPanelPointerAccepted": false,
+  "actualNativeOverlayHitTestAccepted": false,
+  "realSystemWindowChooserDisplayAccepted": false,
+  "realAccountCloudRequestsAccepted": false,
+  "fullAndroidRendererParityAccepted": false,
+  "desktopExeReplaced": false,
+  "pending": [
+    "Original fixedVelocity/staticToScroll/massive/weight/whole track-duration pipeline",
+    "Smart native mask and portrait SCREEN_TOP/separate portrait-fullscreen owner",
+    "Actual full settings/list/menu pointer and file chooser/native HWND runtime acceptance",
+    "Full Home/Music/Player/Space Root and EXE delivery"
+  ],
+  "scope": "Actual whole product classes, fixture-only zero production overrides, real store/projection/Scheduler filters and raw duration bounds, original config/rule protocol through an in-memory Retrofit interceptor, original Compose cloud effects, caller cancellation/typed presentation checks; no socket/account/HWND.",
+  "excludedTaskBinaries": [
+    {
+      "cohort": "prepared-settings",
+      "path": "compile-04/original-danmaku-settings.jar",
+      "sha256Bytes": "b3957c9c9467bb31e6b3b8f2e17548f3de2398eb72e170149ccee63d400d7c4b",
+      "size": 315401
+    },
+    {
+      "cohort": "prepared-settings",
+      "path": "compile-05/original-danmaku-settings.jar",
+      "sha256Bytes": "cff529df4c840fd49b82b61d2f217afdd699e66b5a5b41a37c16332030b382d5",
+      "size": 716194
+    },
+    {
+      "cohort": "prepared-settings",
+      "path": "compile-06/original-danmaku-settings.jar",
+      "sha256Bytes": "549caaf0e59e8cfb46ab07be964b0b163b5f4358e61cfc152167961e46dac63e",
+      "size": 714282
+    },
+    {
+      "cohort": "prepared-settings",
+      "path": "proof-01/settings-fixture.jar",
+      "sha256Bytes": "85005a77fb3d065d980320da8017547c9b5b57e1112c33a0e57ab6aef78cd917",
+      "size": 69557
+    },
+    {
+      "cohort": "prepared-settings",
+      "path": "proof-02/settings-fixture.jar",
+      "sha256Bytes": "55309aa93e2edb94cd409fb40ba78c73767aee2b6329b850effa4da0e231c6da",
+      "size": 69654
+    },
+    {
+      "cohort": "prepared-settings",
+      "path": "proof-03/settings-fixture.jar",
+      "sha256Bytes": "61d022e71e2ef799a25da3fb01f714acbd224542c7454f332938d1ae3ac3d71a",
+      "size": 71781
+    },
+    {
+      "cohort": "prepared-settings",
+      "path": "proof-04/settings-fixture.jar",
+      "sha256Bytes": "bbf68624448b6070049b8c34312cb32d6d18a1c7149f66dfc28788d43ce48f2d",
+      "size": 71767
+    }
+  ]
+}

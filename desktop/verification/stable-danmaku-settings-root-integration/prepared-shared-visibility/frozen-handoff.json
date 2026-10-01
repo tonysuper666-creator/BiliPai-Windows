@@ -1,0 +1,157 @@
+{
+  "frozen": true,
+  "artifactCount": 37,
+  "artifacts": [
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/core/store/LiquidGlassReadabilityMode.kt",
+      "sha256Bytes": "6c09d7bcbbf0ccad8bad287015d06d70ade91b85ef1007cc181c983aeee1f3b3"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "2b2a76521991a0292a32db716a42b7d1902135616e78b8a4b08329ae4260c1d2"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "sha256Bytes": "7edf121fbec02deabec7c6e3802e55fb152a7b944afc984f7b18943a1bec58ee"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "sha256Bytes": "447ec6804691f260d74779229f70a4ac18d04bc9670b603c95942184888cb7dd"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "sha256Bytes": "f8c044c12d3836364b399a61218093a62ed7fa8c19f44a9d9721f1e1545d19b7"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt",
+      "sha256Bytes": "24b82fb2da27b2e1c105e08345df388b4b672a5f42fc08065dda1ac8e42ac05b"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/core/ui/motion/BottomBarMotionSpec.kt",
+      "sha256Bytes": "c08f544c9bef2c5eb9acca0c4a820a1f15a23c2ed2d69acf19a7666b2a78fae2"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/core/ui/OpticalContrastPalette.kt",
+      "sha256Bytes": "dd7b8c98aafae301fb893f0e457a90caec9f299c9b698d574d8e311f7dba48a8"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "sha256Bytes": "5366b5a9aa8d643a2901224549d67af37262465f1cc0eaf7db7a5dfdc0bebb70"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "sha256Bytes": "ca9c71769cdd92979f977e746e4871632dff8dcf33157ec95b3e20147cef6474"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+      "sha256Bytes": "7054d0712e97eb6420f1423de21c90b0c9c9b792190790b37f3c953b786221fd"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "sha256Bytes": "1eb0fdb0e465a9cf59c38416330bab523650a5a7c1e45ca60850b924f9787b1a"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "sha256Bytes": "f309b30548bc644f9969c4ce782a37ea3c72bc00a32e2ecc8a0541cdf1070dd8"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "sha256Bytes": "db70b4fd3c80c133b5d7c25baf6fce1d205bc9a09cecee9dfb034d4d7cbd9097"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "sha256Bytes": "f9c78a078a1878e2421291fa6c6dbbba977c9ed5ddb7c7a30eae9abec1346b92"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "sha256Bytes": "a7c5cd3b69b5ff7e7c9b07f00b405ae89969bb7db2340e8826536bdf6172d018"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/HomeSelectionIndicatorPolicy.kt",
+      "sha256Bytes": "d38e0b494a9dc9899a2c8a28ef0589a3e5253193c4ed8117b7b093cc0c4f3503"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "sha256Bytes": "5d69ef660cd3a861206e42bdbfffb5a53027a1c2853d4d0d7b292534402b733f"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "sha256Bytes": "fbb387cba197c883792f878511a8ac33916b6877c2a505483d948a5ec0f12154"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "sha256Bytes": "9d95895ba5e761b03879a914a8f66dd468e24f572ec9763cb7d283717dc77b59"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "sha256Bytes": "fcbf2ef9cc1f704cc41bba979a01dc772848d5934fa3498fde784df814f62a53"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt",
+      "sha256Bytes": "7316e796a44422ebf7cc1f4de86a44a933bc3dcdf0627ad4bb72a069216b4a87"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+      "sha256Bytes": "e2bd60cc0fc7727643be0e330fe3d4d34e4d0a3640a6bfe683bf37261a70f9e6"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "sha256Bytes": "b4cf4605600fe00090558310e3d341f5ce5159899ae64fe63efe44b694a6c5bc"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "sha256Bytes": "d29ff4adf0d89e1f304ff8618b296a6d463943df1b71a3c8880037554fcccc39"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "sha256Bytes": "b78d7aa8fe6445ee7abc5a5aee0ca6b3b7ca66d5e35fb9818c6dadc7ad6ece36"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "sha256Bytes": "9058cbbe2441d610fb973093ddd46193b271555d64b47da837ad5f557bd9c157"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "sha256Bytes": "16dcf88d84f3f52e8a2655add028ceb06ee7d8a8cc4a5897a8a5083aa6a1429c"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "sha256Bytes": "693f2d1bc6561f869a972d67cee16000855ebbbcdbcf4a1b8d5e59e776f8dc99"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "sha256Bytes": "549900c6e747f6f6b0e775cd5166c9b519888cfb6389dbd8c0229bc1237a7eff"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "sha256Bytes": "0954ff64a12009ecb4c42cd428d43c809f526de4b63a881ccc32214de34df47a"
+    },
+    {
+      "path": "candidate-generation/generated/com/android/purebilibili/feature/home/HomeVisualPalette.kt",
+      "sha256Bytes": "3cd220846f4fc1ab161566fb5c41c7bfef49168981feccb74ba000414d2c8053"
+    },
+    {
+      "path": "candidate-generation/source-inventory.json",
+      "sha256Bytes": "b3ed8ce24a2984824b0a020bc50e7faa9421404952f371e16c5d9cdefd560dc6"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-shared-liquid-tabs.py",
+      "sha256Bytes": "434523b12b0a218a0f1f0383dbfff64b782092b00d0c25d987844416adad0f89"
+    },
+    {
+      "path": "producer.patch",
+      "sha256Bytes": "e81bde03fa21ecff0ddc1dfb86fd515e1f09eef01bb1a705837dbcb3f17a0321"
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "8361fdfedb5995002fb0fc54eb6b3c1334e9bf8cf289d9f0f7a1fc89752baa80"
+    },
+    {
+      "path": "source-inputs/extract-upstream-shared-liquid-tabs.py",
+      "sha256Bytes": "89c93a5b78a057373ab4c01ba5efcd585c98143e83a895e5c597e4952e808604"
+    }
+  ],
+  "sourceAuditSha256Bytes": "8361fdfedb5995002fb0fc54eb6b3c1334e9bf8cf289d9f0f7a1fc89752baa80",
+  "installation": "Apply ONLY producer.patch once after Root current89c base hash. Sole source output gains BOTH original overloads. Parent Home temporary reference helper must not be installed alongside; no new registry identity needed, existing BottomBarMatchedLiquidChrome source features merge only.",
+  "compileOrRuntimeClaim": false
+}

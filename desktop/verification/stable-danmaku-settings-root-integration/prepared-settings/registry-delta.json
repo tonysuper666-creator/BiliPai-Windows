@@ -1,0 +1,134 @@
+{
+  "reviewedRegistrySha256Bytes": "bc2b9a7f324adfdd0d9911058366271677af15354eae01dd597ab52344319d8e",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+      "sha256": "c48abd1ee32d91d7ed8ebdbf87689f20f1de86c93a019c8a24e45581dc42a6ba",
+      "proposedMode": "selected",
+      "operation": "append-source-identity",
+      "features": [
+        "stable-danmaku-settings-panel"
+      ],
+      "existing": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "proposedMode": "policy-extract",
+      "operation": "merge-features-preserve-mode",
+      "features": [
+        "stable-danmaku-settings-panel"
+      ],
+      "existing": {
+        "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+        "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+        "features": [
+          "discovery",
+          "appearance-parity",
+          "settings-privacy-section-parity",
+          "settings-local-diagnostics-parity",
+          "settings-home-dynamic-parity",
+          "settings-home-card-parity",
+          "settings-dynamic-tabs-parity",
+          "home-full-card",
+          "settings-dynamic-full-card-parity",
+          "dynamic-detail-reply",
+          "settings-image-save-path-parity",
+          "stable-collection-sheet",
+          "stable-video-metadata",
+          "stable-shared-liquid-tabs",
+          "stable-video-original-comments",
+          "stable-favorites",
+          "stable-danmaku-list-menu",
+          "stable-linked-dock-search",
+          "stable-frosted-audio-renderer"
+        ],
+        "mode": "policy-extract"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuSettingsPolicy.kt",
+      "sha256": "de1b6440ed50739f289255bd9ecdae803621dca9824d5cd74fcb219026dccc8f",
+      "proposedMode": "direct",
+      "operation": "append-source-identity",
+      "features": [
+        "stable-danmaku-settings-panel"
+      ],
+      "existing": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuCloudRuleSyncPolicy.kt",
+      "sha256": "2db83d5e871ea1cb7341696fe5db781fdb2aff87c4894283b74a8d11703780b5",
+      "proposedMode": "direct",
+      "operation": "append-source-identity",
+      "features": [
+        "stable-danmaku-settings-panel"
+      ],
+      "existing": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuSyncStatusPolicy.kt",
+      "sha256": "af90657b301ec7775d787dcdd4d361be764f33d56cd616b5949d13f4603d5e61",
+      "proposedMode": "direct",
+      "operation": "append-source-identity",
+      "features": [
+        "stable-danmaku-settings-panel"
+      ],
+      "existing": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "sha256": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5",
+      "proposedMode": "extracted",
+      "operation": "merge-features-preserve-mode",
+      "features": [
+        "stable-danmaku-settings-panel"
+      ],
+      "existing": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+        "mode": "extracted",
+        "features": [
+          "source-parity",
+          "media",
+          "downloads",
+          "stable-video-vote-parity",
+          "playback",
+          "comments",
+          "stable-danmaku-list-menu"
+        ],
+        "sha256": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "sha256": "198913c1d091d5aed119b90fedfbb7e77183457584c49c737c4aae7f113f37c0",
+      "proposedMode": "policy-extract",
+      "operation": "append-source-identity",
+      "features": [
+        "stable-danmaku-settings-panel"
+      ],
+      "existing": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "sha256": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e",
+      "proposedMode": "selected",
+      "operation": "merge-features-preserve-mode",
+      "features": [
+        "stable-danmaku-settings-panel"
+      ],
+      "existing": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+        "sha256": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e",
+        "mode": "selected",
+        "features": [
+          "stable-danmaku-list-menu"
+        ]
+      }
+    }
+  ],
+  "sourceIdentityCount": 8,
+  "directOutputCount": 3,
+  "selectedOutputCount": 7,
+  "noWholeRegistryReplacement": true
+}

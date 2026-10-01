@@ -1,0 +1,55 @@
+{
+  "installed": true,
+  "frozenHandoffSHA256": "51551c0d5070f6980e7511c052816fee4e5b0a1cb517e82f4f60208dce5eb01f",
+  "exactLocalHunks": 33,
+  "existingFiles": 7,
+  "newPayloads": 3,
+  "wholeReviewFilesCopied": false,
+  "existingDockOrRegistryOrOpsOrBuildOverwritten": false,
+  "installedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "914897f017c79d3ed46bbda59be80802a36de25ce69ba489ec4ba2746aa51d25"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "5d6cc681c6ed569632293257e788c7a70a6df7288329b06407e9a1f1a12506af"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "f1bd64ca7c4b50c6fe5f58dadd8e248794fddeb6b4e366e3d9244759cc32b513"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "sha256Bytes": "57321d696b8de599b77a072fe49bca4266987bc67d23adb1a0d2122ea29e92ab"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+      "sha256Bytes": "96dfb051a57180ec252bfde2621abfa18212124d5d405305b5ab46eb92d70fd6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt",
+      "sha256Bytes": "dbdebe726048505818aaa22bd7ac101f93d3ebc54003a040ee3dfcca6a52593b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+      "sha256Bytes": "abe6c706450cdb3ba3364e50b90dc78e146eb1e5ce032f2d5294225606c3893c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuWindowsPlatform.kt",
+      "sha256Bytes": "1431a416f51a3dbc7248bf7f8cdc1ad36b8905edefbeb31c49f50992864cdb43"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuRoot.kt",
+      "sha256Bytes": "55e99e0514cdd40eb976cbb645db7ca1b84c150ed0fae00bd525a293c9d49425"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsDanmakuPresentation.kt",
+      "sha256Bytes": "46dec51200ef21359d50800d4d197cfbdb30449bd82cc36a40e9180077786514"
+    }
+  ],
+  "fullOriginalSettingsAndMenuRootSourceWired": true,
+  "wholeClassesAccepted": false,
+  "nativeRendererFullParityAccepted": false,
+  "desktopExeReplaced": false
+}

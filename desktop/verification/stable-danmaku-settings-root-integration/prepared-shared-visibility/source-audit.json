@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "origin": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+  "originalSha256LF": "a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad",
+  "sourceLines": [
+    473,
+    522
+  ],
+  "overloads": [
+    {
+      "name": "BottomBarMatchedDockVisibility",
+      "sha256LF": "899cb7e3f7361aa0acfa95d6672167bae632fa97da295ae1d22a31913ebcd840"
+    },
+    {
+      "name": "BottomBarMatchedDockVisibility",
+      "sha256LF": "639da1c2af34ef4cd1279d7899992ce76e8f6fd99525f36a7f807e4b1054d19a"
+    }
+  ],
+  "originalBodiesProduced": true,
+  "declaredOnlyProducerDelta": {
+    "before": "    if n=='BottomBarMatchedReusableLiquidDock':break\n   selected_imports=",
+    "after": "    if n=='BottomBarMatchedReusableLiquidDock':break\n   selected_names.append('BottomBarMatchedDockVisibility')\n   selected_imports="
+  },
+  "baseProducerSha256LF": "89c93a5b78a057373ab4c01ba5efcd585c98143e83a895e5c597e4952e808604",
+  "candidateProducerSha256LF": "434523b12b0a218a0f1f0383dbfff64b782092b00d0c25d987844416adad0f89",
+  "reverseBaselineByteEqual": true,
+  "dependencyImports": "Original full same-file imports retained, including animation.*,MutableTransitionState,TransformOrigin,softLandingSpring/emphasizedEnterTween/emphasizedExitTween",
+  "noNewFqn": true,
+  "noLiveEdits": true,
+  "noGradle": true,
+  "noCompileOrRuntimeClaim": true
+}

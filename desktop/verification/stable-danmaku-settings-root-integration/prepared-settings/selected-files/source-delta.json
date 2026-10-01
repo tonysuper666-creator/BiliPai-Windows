@@ -1,0 +1,46 @@
+{
+  "source": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+  "actualMain20Sha256Bytes": "c0d7312f3451ec530fd311d0d3b659505acd7a5a0df7aa4668df92795a2d66a9",
+  "actualMain20Sha256LF": "12c1c6b9490da21f0a489653a1fab654d5cb9dcad2506a753f6a6e2c5288a294",
+  "candidateSha256LF": "091ec93f13598c7c79b30762211f0392512aa741c0d8deb26267188f417d588e",
+  "reverseNormalizedActualSourceByteEqual": true,
+  "whitelist": [
+    {
+      "before": "fontScale = finite(fontScale, 1f, 0.5f, 2f),",
+      "after": "fontScale = finite(fontScale, 1f, 0.3f, 2f),"
+    },
+    {
+      "before": "speedFactor = finite(speedFactor, 1f, 0.25f, 4f),",
+      "after": "speedFactor = finite(speedFactor, 1f, 0.5f, 3f),"
+    },
+    {
+      "before": "displayAreaRatio = finite(displayAreaRatio, 0.5f, 0.25f, 1f),",
+      "after": "displayAreaRatio = com.android.purebilibili.core.store.normalizeDanmakuDisplayArea(finite(displayAreaRatio, 0.5f, 0.25f, 1f)),"
+    },
+    {
+      "before": "scrollDurationSeconds = finite(scrollDurationSeconds, 7f, 2f, 20f),",
+      "after": "scrollDurationSeconds = finite(scrollDurationSeconds, 7f, 1f, 50f),"
+    },
+    {
+      "before": "staticDurationSeconds = finite(staticDurationSeconds, 4f, 1f, 20f),",
+      "after": "staticDurationSeconds = finite(staticDurationSeconds, 4f, 1f, 50f),"
+    },
+    {
+      "before": "duplicateMergeWindowMs = duplicateMergeWindowMs.coerceIn(50, 5_000),",
+      "after": "duplicateMergeWindowMs = duplicateMergeWindowMs.coerceIn(100, 3000),"
+    },
+    {
+      "before": "duplicateMergeCountThreshold = duplicateMergeCountThreshold.coerceIn(2, 100),",
+      "after": "duplicateMergeCountThreshold = duplicateMergeCountThreshold.coerceIn(2, 10),"
+    },
+    {
+      "before": "blockedRules = blockedRules.map { it.trim().take(500) }.filter(String::isNotEmpty).distinct().take(300),",
+      "after": "blockedRules = com.android.purebilibili.feature.video.danmaku.parseDanmakuBlockRules(blockedRules.joinToString(\"\\n\")),"
+    }
+  ],
+  "originalAnchors": [
+    "SettingsManager.kt normalizeDanmakuFontScale .3..2; mapDanmakuSettingsFromPreferences uses full parseDanmakuBlockRules(blockRulesRaw)."
+  ],
+  "constructorOrModelFieldDelta": false,
+  "noSharedSourceEdits": true
+}

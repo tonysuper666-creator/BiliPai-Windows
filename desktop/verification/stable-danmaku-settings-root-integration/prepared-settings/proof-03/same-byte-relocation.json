@@ -1,0 +1,17 @@
+{
+  "orderedRelocatedCpSha256Bytes": "9e1365eb67f97b9930570ff87cd34b514b31d858d78cf210d31783ad87af89cf",
+  "relocationLedgerSha256Bytes": "68b9a804eabd84eedaf40c8b8e2487daad060616a4bac754c1f2f7d3be4fafec",
+  "sameByteOnlyRelocations": [
+    {
+      "index": 3,
+      "before": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\third-party\\miuix5157\\build\\libs\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+        "sha256Bytes": "78e22c70dd152058f2f7570f59906607e253231f1db346494820bd7e9db7b215"
+      },
+      "after": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5157-original-runtime\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+        "sha256Bytes": "78e22c70dd152058f2f7570f59906607e253231f1db346494820bd7e9db7b215"
+      }
+    }
+  ]
+}

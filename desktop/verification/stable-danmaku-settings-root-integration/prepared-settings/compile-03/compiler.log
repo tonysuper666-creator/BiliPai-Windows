@@ -1,0 +1,33 @@
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-03\source-inputs\05-DesktopOriginalDanmakuPreferences.kt:41:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val DEFAULT_DANMAKU_OPACITY = DANMAKU_DEFAULT_OPACITY
+            ^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-03\source-inputs\05-DesktopOriginalDanmakuPreferences.kt:42:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val DEFAULT_DANMAKU_FONT_SCALE = 1.0f
+            ^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-03\source-inputs\05-DesktopOriginalDanmakuPreferences.kt:43:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val DEFAULT_DANMAKU_SPEED = 1.0f
+            ^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-03\source-inputs\05-DesktopOriginalDanmakuPreferences.kt:44:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val DEFAULT_DANMAKU_AREA = 0.5f
+            ^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-03\source-inputs\05-DesktopOriginalDanmakuPreferences.kt:45:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val DEFAULT_DANMAKU_FONT_WEIGHT = 5
+            ^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-03\source-inputs\05-DesktopOriginalDanmakuPreferences.kt:46:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val DEFAULT_DANMAKU_STROKE_WIDTH = 1.5f
+            ^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-03\source-inputs\05-DesktopOriginalDanmakuPreferences.kt:47:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val DEFAULT_DANMAKU_LINE_HEIGHT = 1.6f
+            ^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-03\source-inputs\05-DesktopOriginalDanmakuPreferences.kt:48:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val DEFAULT_DANMAKU_SCROLL_DURATION_SECONDS = 7.0f
+            ^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-03\source-inputs\05-DesktopOriginalDanmakuPreferences.kt:49:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val DEFAULT_DANMAKU_STATIC_DURATION_SECONDS = 4.0f
+            ^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-03\source-inputs\05-DesktopOriginalDanmakuPreferences.kt:50:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val DEFAULT_DANMAKU_DUPLICATE_MERGE_WINDOW_MS = 500
+            ^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-settings-panel-parity\compile-03\source-inputs\05-DesktopOriginalDanmakuPreferences.kt:51:13: error: const 'val' is only allowed on top level, in named objects, in companion objects or companion blocks.
+    private const val DEFAULT_DANMAKU_DUPLICATE_MERGE_COUNT_THRESHOLD = 2
+            ^^^^^

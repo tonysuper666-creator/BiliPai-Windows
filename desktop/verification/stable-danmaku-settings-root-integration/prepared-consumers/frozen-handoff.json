@@ -1,0 +1,88 @@
+{
+  "status": "READY_PREPARED_ONLY",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualSnapshot": 22,
+  "actualSnapshotManifest": "90df091a72910d314030cac755dcc980a8fc711111b8e5d20886fbf22e182cba",
+  "relocatedSameByte92CP": "65e50623a5e52a7a4f0c7421e55dbd20bae752b5c53add8208be9c1f8c9772ae",
+  "prospectivePanelManifest": "51acaae885d7cf690f2b17aaf4ea856b02aae81e8b25c0086a5ffb01dddeb6a8",
+  "prospectivePanelJar": "549caaf0e59e8cfb46ab07be964b0b163b5f4358e61cfc152167961e46dac63e",
+  "payloadCount": 3,
+  "payload": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDanmakuWindowsPlatform.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuWindowsPlatform.kt",
+      "sha256Bytes": "1431a416f51a3dbc7248bf7f8cdc1ad36b8905edefbeb31c49f50992864cdb43"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDanmakuRoot.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuRoot.kt",
+      "sha256Bytes": "55e99e0514cdd40eb976cbb645db7ca1b84c150ed0fae00bd525a293c9d49425"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopWindowsDanmakuPresentation.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsDanmakuPresentation.kt",
+      "sha256Bytes": "46dec51200ef21359d50800d4d197cfbdb30449bd82cc36a40e9180077786514"
+    }
+  ],
+  "localHunkCount": 33,
+  "localHunksSHA256": "4085df40c7496fdeb9818ac9b0504ac8cea5871447fcc1e89ed611784a3cc978",
+  "compiledSourceCount": 10,
+  "compiledJarSHA256": "ae69c77afd222fc7ec41570738e8d26c3dca06ffed0b901c091ebffc3aeb05e4",
+  "focusedProof": {
+    "groups": 3,
+    "assertions": 27,
+    "nativeWindowAndChooserNotExercised": true
+  },
+  "sourceAuditCheckCount": 146,
+  "newClassOverlap": [],
+  "evidence": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\contract.txt",
+      "sha256Bytes": "b0952508d4fc5c433a50401cf84277b54b28ae09ebde95dbe6a710ad91c52cc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\local-hunks.json",
+      "sha256Bytes": "4085df40c7496fdeb9818ac9b0504ac8cea5871447fcc1e89ed611784a3cc978"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\baseline-manifest.json",
+      "sha256Bytes": "1e34770fdc51478cc7f1c76431c48bd388c11ec7af13be15d66d569a2ce99c05"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\source-ownership-audit.json",
+      "sha256Bytes": "e32df7caea713deae3421cdccbbcf0298ab471d43bb463aab1b9ac11a879ea16"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\compile-result.json",
+      "sha256Bytes": "e1255265747fc5e6d248c075a52e8394daa8ded1e5dceec43c0ff074168e874e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\runtime-pins-before.json",
+      "sha256Bytes": "af3ef95fe990b6227f65eddee4422b467d60d5c2b8e9232309ae367903e314d1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\compile-03\\runtime-pins-after.json",
+      "sha256Bytes": "af3ef95fe990b6227f65eddee4422b467d60d5c2b8e9232309ae367903e314d1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\proof-02\\result.json",
+      "sha256Bytes": "ac0222be8f78b0c4cbc5ae11438ba92da26b8cebf65c05845133524619d436d7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\proof-02\\compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-root-consumers-parity\\proof-02\\run.log",
+      "sha256Bytes": "a4e7ae502213777e9b1d9f04da502b8f4574b73bbd9d2cbc33701540894e7049"
+    }
+  ],
+  "pending": [
+    "full native overlay hit-testing",
+    "fixedVelocity/staticToScroll/massive/weight renderer consumption",
+    "smartOcclusion native mask",
+    "portrait SCREEN_TOP area and separate portrait fullscreen UI",
+    "real Root HWND chooser/display/native player runtime acceptance",
+    "Root serial merge with full Dock current Main/Shell changes"
+  ]
+}

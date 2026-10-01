@@ -1,0 +1,20 @@
+PASS: actual SettingsHost/Root/list Host classes load without JVM sentinel error
+PASS: guest/login fixture controls actual cloud section visibility
+PASS: original shared font key affects both presentation scopes
+PASS: portrait switch does not overwrite landscape scoped key
+PASS: same preferences owner retains independent scoped opacity
+PASS: original advanced switch remains scoped
+PASS: actual field contains 原关键词
+PASS: landscape rule save does not create a second list or overwrite portrait
+PASS: actual field contains 取消编辑词
+PASS: original manager cancel discards local edited draft
+PASS: actual field contains 修改关键词
+PASS: memory chooser cancellation opens no stream and keeps manager
+PASS: required suspend file input consumed exactly one declared memory stream
+PASS: full import partitions keyword/regex/hash without losing existing rule
+PASS: one actual close callback
+PASS: no external network/process/native chooser/account access
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.ui.DanmakuSettingsUiFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-danmaku-settings-main26-ui-proof/runs/04-actual27/settings-main26-ui-fixture.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.ui.DanmakuSettingsUiFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

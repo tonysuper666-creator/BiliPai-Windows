@@ -1,0 +1,99 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt
++++ com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt
+@@ -21,7 +21,7 @@
+ import com.android.purebilibili.feature.video.danmaku.parseDanmakuBlockRules
+ import com.android.purebilibili.feature.video.danmaku.partitionDanmakuBlockRules
+ import com.android.purebilibili.feature.video.danmaku.DanmakuCloudRuleSyncPolicy
+-import com.android.purebilibili.data.repository.DanmakuRepository
++// Root supplies the sole owned cloud API through the platform binding.
+ import com.android.purebilibili.core.ui.components.AppButton
+ import com.android.purebilibili.core.ui.components.AppSegmentOption
+ import com.android.purebilibili.core.ui.components.AppThemeAdaptiveTabRow
+@@ -51,8 +51,8 @@
+ import androidx.compose.material3.ColorScheme
+ import androidx.compose.material3.MaterialTheme
+ import androidx.compose.material3.OutlinedTextFieldDefaults
+-import androidx.activity.compose.rememberLauncherForActivityResult
+-import androidx.activity.result.contract.ActivityResultContracts
++import com.bilipai.desktop.ui.rememberDesktopDanmakuRuleImportLauncher as rememberLauncherForActivityResult
++import com.bilipai.desktop.ui.DesktopDanmakuOpenRuleDocument
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+@@ -62,8 +62,8 @@
+ import androidx.compose.ui.graphics.Brush
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.luminance
+-import androidx.compose.ui.platform.LocalConfiguration
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopDanmakuSettingsViewport as LocalConfiguration
++import com.bilipai.desktop.ui.LocalDesktopDanmakuSettingsPlatform as LocalContext
+ import androidx.compose.ui.platform.LocalViewConfiguration
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextAlign
+@@ -1259,13 +1259,13 @@
+     var inputValue by remember(selectedTabIndex) { mutableStateOf("") }
+     var pendingImportResult by remember { mutableStateOf<DanmakuBlockRuleImportResult?>(null) }
+     val importLauncher = rememberLauncherForActivityResult(
+-        contract = ActivityResultContracts.OpenDocument()
++        contract = DesktopDanmakuOpenRuleDocument
+     ) { uri ->
+         if (uri == null) return@rememberLauncherForActivityResult
+         scope.launch {
+             pendingImportResult = try {
+                 val raw = withContext(Dispatchers.IO) {
+-                    context.contentResolver.openInputStream(uri)?.bufferedReader()?.use { reader ->
++                    context.openRuleInput(uri)?.bufferedReader()?.use { reader ->
+                         reader.readText()
+                     } ?: throw IOException("无法读取文件")
+                 }
+@@ -1290,7 +1290,7 @@
+         if (cloudSyncInProgress) return
+         scope.launch {
+             cloudSyncInProgress = true
+-            DanmakuRepository.getDanmakuCloudFilterRules()
++            context.cloud.getDanmakuCloudFilterRules()
+                 .onSuccess { result ->
+                     cloudRules = result.rules
+                     val mapped = result.rules.mapNotNull { rule ->
+@@ -1307,23 +1307,15 @@
+                     cloudBaseline = baseline
+                     onRulesSave(persistDanmakuBlockManagerSections(baseline))
+                     if (manual) {
+-                        android.widget.Toast.makeText(
+-                            context,
+-                            "已同步云端弹幕屏蔽规则（${mapped.size} 条）",
+-                            android.widget.Toast.LENGTH_SHORT
+-                        ).show()
++                        context.showFeedback("已同步云端弹幕屏蔽规则（${mapped.size} 条）")
+                     }
+                     result.toast?.takeIf { it.isNotBlank() }?.let {
+-                        android.widget.Toast.makeText(context, it, android.widget.Toast.LENGTH_SHORT).show()
++                        context.showFeedback(it)
+                     }
+                 }
+                 .onFailure { error ->
+                     if (manual) {
+-                        android.widget.Toast.makeText(
+-                            context,
+-                            error.message?.takeIf(String::isNotBlank) ?: "云端规则同步失败",
+-                            android.widget.Toast.LENGTH_SHORT
+-                        ).show()
++                        context.showFeedback(error.message?.takeIf(String::isNotBlank) ?: "云端规则同步失败")
+                     }
+                 }
+             cloudSyncInProgress = false
+@@ -1600,11 +1592,11 @@
+                             if (cloudAdds.isNotEmpty() || cloudDeletes.isNotEmpty()) {
+                                 scope.launch {
+                                     cloudAdds.forEach { add ->
+-                                        DanmakuRepository.addDanmakuCloudFilterRule(add.type, add.filter)
++                                        context.cloud.addDanmakuCloudFilterRule(add.type, add.filter)
+                                             .onSuccess { cloudRules = cloudRules + it }
+                                     }
+                                     cloudDeletes.forEach { id ->
+-                                        DanmakuRepository.deleteDanmakuCloudFilterRule(id)
++                                        context.cloud.deleteDanmakuCloudFilterRule(id)
+                                             .onSuccess {
+                                                 cloudRules = cloudRules.filterNot { rule -> rule.id == id }
+                                             }

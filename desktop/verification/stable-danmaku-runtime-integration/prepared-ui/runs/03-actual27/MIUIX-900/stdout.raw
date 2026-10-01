@@ -1,0 +1,2 @@
+PASS: actual SettingsHost/Root/list Host classes load without JVM sentinel error
+PASS: guest/login fixture controls actual cloud section visibility

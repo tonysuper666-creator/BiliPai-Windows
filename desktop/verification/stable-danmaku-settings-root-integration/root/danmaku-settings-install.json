@@ -1,0 +1,86 @@
+{
+  "installed": true,
+  "frozenManifestSHA256": "51acaae885d7cf690f2b17aaf4ea856b02aae81e8b25c0086a5ffb01dddeb6a8",
+  "frozenArtifactsVerified": 179,
+  "sourceCount": 770,
+  "resourceCount": 213,
+  "changes": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+      "operation": "append identity",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "operation": "feature merge",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuSettingsPolicy.kt",
+      "operation": "append identity",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuCloudRuleSyncPolicy.kt",
+      "operation": "append identity",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuSyncStatusPolicy.kt",
+      "operation": "append identity",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "operation": "feature merge",
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "operation": "append identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "operation": "feature merge",
+      "mode": "selected"
+    }
+  ],
+  "installedFiles": [
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-settings.py",
+      "sha256Bytes": "406c92feddc812f3fde05e6218ea4b56d851d0d64da5cd12942124f8c9ee89a7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsPlatform.kt",
+      "sha256Bytes": "b0c32cdb429e978a93536bfe4b0e48b8358f3fb6db939ac122a3be7b9909b742"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "e3a38877315291dbe651256ff2a54a1bab7c51d9084126c87161fa2fbb9f4881"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256Bytes": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "13b247f77dbc75e7d700acb68e7a594877cc9bfd2b0d739069f6109747f74cdb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "f569b4058d84de15f08e24207f620aa90f982306a53028f08888b717d578842f"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "b9bc2409d829e716461ca10dea50b2c219b5dbe72e9bbadd4b38dadf7f46cd7a"
+    }
+  ],
+  "eightLineNormalizationPatchOnly": true,
+  "opsWholeFileOverwritten": false,
+  "strictEditorAnchorPreserved": true,
+  "rootConsumerInstalled": false,
+  "wholeClassesAccepted": false,
+  "nativeRendererFullParityAccepted": false,
+  "desktopExeReplaced": false
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.DesktopPlaybackControllerTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-01T05:40:26.294Z" hostname="TONYSUPER666" time="0.608">
+  <properties/>
+  <testcase name="cloud favorite projection survives part and quality changes in the same video owner()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.469"/>
+  <testcase name="same BV collection preserves distinct CIDs and goes directly to the selected queue item()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.022"/>
+  <testcase name="closing the old account controller cannot release a newer native source()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.008"/>
+  <testcase name="pause cancels outstanding stream preparation and cannot start sound when it finally completes()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.009"/>
+  <testcase name="casting cannot read a previous account or a foreign native source before flow delivery()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.009"/>
+  <testcase name="shuffle retains original history so previous then next returns to the same item()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.019"/>
+  <testcase name="a newer source also prevents a delayed initial stream request from taking ownership()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.009"/>
+  <testcase name="ordinary queue walks each video parts before advancing to the next video()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.013"/>
+  <testcase name="quality switch and explicit retry preserve native source ownership CID position and pause()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.008"/>
+  <testcase name="cloud favorite projection rejects changed session and foreign source before flow delivery()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.009"/>
+  <testcase name="details alone do not finish opening or enable queue navigation before the stream is installed()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.009"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

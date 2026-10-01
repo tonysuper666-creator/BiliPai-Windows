@@ -1,0 +1,926 @@
+{
+  "frozen": true,
+  "preparedOnly": true,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifactCount": 179,
+  "artifacts": [
+    {
+      "path": "audit/full-panel.patch",
+      "sha256Bytes": "818872e5b08773ef73758a00ad1115a0eb4704f5f7c20d9683e39544a08562d9",
+      "size": 5700
+    },
+    {
+      "path": "audit/production-generated/com/android/purebilibili/core/store/DesktopOriginalDanmakuSettingsModels.kt",
+      "sha256Bytes": "c6cb1e56f6c219a45aadd493dcc9391e138261e3700c643b3f7c7d9993a75779",
+      "size": 2784
+    },
+    {
+      "path": "audit/production-generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudModels.kt",
+      "sha256Bytes": "7dba825789912c14669b0ff904d7b9324047f58fcef046bf8e636febf524f7b1",
+      "size": 2670
+    },
+    {
+      "path": "audit/production-generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "sha256Bytes": "cd3fe080e142ff17f88f4336b7a2ec3bfb39e9c0a40d4f94604a7d008f9dde84",
+      "size": 6296
+    },
+    {
+      "path": "audit/production-generated/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+      "sha256Bytes": "7bdc1091653c5058c92e926027dac7b319e2aa2e7e198bc0cc440b51880ec92d",
+      "size": 95645
+    },
+    {
+      "path": "audit/production-generated/com/android/purebilibili/feature/video/ui/section/DesktopOriginalDanmakuScopePolicy.kt",
+      "sha256Bytes": "836aaa95b88c91df52ec2411c3c1018c6f7639b0f7a118d5165a15a89a68805e",
+      "size": 353
+    },
+    {
+      "path": "audit/production-generated/com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences.kt",
+      "sha256Bytes": "b87118c1c3a7419bf99fcd0898d95bee70d35844ec2c229191f8042fd6e0ce45",
+      "size": 31195
+    },
+    {
+      "path": "audit/production-generated/com/bilipai/desktop/ui/DesktopOriginalDanmakuCloudSyncBinding.kt",
+      "sha256Bytes": "2b0882317e612878d83bcacf4d5294ff8982bcdd0e1f87582599f3223be63f5b",
+      "size": 7525
+    },
+    {
+      "path": "audit/production-generated/source-inventory.json",
+      "sha256Bytes": "92a96f804d716630baaf4af6ae3f9b0a6382085244032749f88f9dad42b8672b",
+      "size": 21309
+    },
+    {
+      "path": "audit-and-freeze.py",
+      "sha256Bytes": "f148c69226f4a2fdc86db0d614ed00a45fe8df954ac41a766be1f809e3db16b5",
+      "size": 17205
+    },
+    {
+      "path": "compile-02/runtime-pins-before.json",
+      "sha256Bytes": "04a2ede31fbab85a14421fdae7c32bd75ce6c9bb105bda07a732826d4e2dae10",
+      "size": 41450
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/core/store/DesktopOriginalDanmakuSettingsModels.kt",
+      "sha256Bytes": "c6cb1e56f6c219a45aadd493dcc9391e138261e3700c643b3f7c7d9993a75779",
+      "size": 2784
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudModels.kt",
+      "sha256Bytes": "0f3d2d2fc6432acbaac2912e0f1bf97f9c1868ab87520857a746b3746a90bd3a",
+      "size": 261
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "sha256Bytes": "20dd426aa714ab4fe7718e486c7ca773c80efc6456270951bfd7578ef643df54",
+      "size": 4188
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+      "sha256Bytes": "7bdc1091653c5058c92e926027dac7b319e2aa2e7e198bc0cc440b51880ec92d",
+      "size": 95645
+    },
+    {
+      "path": "compile-03/compile-result.json",
+      "sha256Bytes": "41404cbb9de1a0e07d10f3f8f284d50a83d62289e6f4c4932a2f4ec0b6399696",
+      "size": 7817
+    },
+    {
+      "path": "compile-03/compiler.args",
+      "sha256Bytes": "2c36e048a9d5d0172b4c2fad5c28eb84e0dca925632b854fb0ca5f7296f5ae48",
+      "size": 26230
+    },
+    {
+      "path": "compile-03/compiler.log",
+      "sha256Bytes": "6d65bdf1fdc59ebed8737801278b5dbf8daa6f90c5b16010ed04eee3fb650fbd",
+      "size": 3584
+    },
+    {
+      "path": "compile-03/runtime-pins-after.json",
+      "sha256Bytes": "04a2ede31fbab85a14421fdae7c32bd75ce6c9bb105bda07a732826d4e2dae10",
+      "size": 41450
+    },
+    {
+      "path": "compile-03/runtime-pins-before.json",
+      "sha256Bytes": "04a2ede31fbab85a14421fdae7c32bd75ce6c9bb105bda07a732826d4e2dae10",
+      "size": 41450
+    },
+    {
+      "path": "compile-03/source-inputs/00-DesktopOriginalDanmakuSettingsModels.kt",
+      "sha256Bytes": "c6cb1e56f6c219a45aadd493dcc9391e138261e3700c643b3f7c7d9993a75779",
+      "size": 2784
+    },
+    {
+      "path": "compile-03/source-inputs/01-DesktopOriginalDanmakuCloudModels.kt",
+      "sha256Bytes": "0f3d2d2fc6432acbaac2912e0f1bf97f9c1868ab87520857a746b3746a90bd3a",
+      "size": 261
+    },
+    {
+      "path": "compile-03/source-inputs/02-DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "sha256Bytes": "20dd426aa714ab4fe7718e486c7ca773c80efc6456270951bfd7578ef643df54",
+      "size": 4188
+    },
+    {
+      "path": "compile-03/source-inputs/03-DanmakuSettingsPanel.kt",
+      "sha256Bytes": "7bdc1091653c5058c92e926027dac7b319e2aa2e7e198bc0cc440b51880ec92d",
+      "size": 95645
+    },
+    {
+      "path": "compile-03/source-inputs/04-DesktopOriginalDanmakuScopePolicy.kt",
+      "sha256Bytes": "836aaa95b88c91df52ec2411c3c1018c6f7639b0f7a118d5165a15a89a68805e",
+      "size": 353
+    },
+    {
+      "path": "compile-03/source-inputs/05-DesktopOriginalDanmakuPreferences.kt",
+      "sha256Bytes": "285626e61c418af0b0bde41f7afb9b8d41ccbba840126ce8a2e086349bec209b",
+      "size": 31158
+    },
+    {
+      "path": "compile-03/source-inputs/06-DanmakuCloudRuleSyncPolicy.kt",
+      "sha256Bytes": "2db83d5e871ea1cb7341696fe5db781fdb2aff87c4894283b74a8d11703780b5",
+      "size": 4881
+    },
+    {
+      "path": "compile-03/source-inputs/07-DanmakuSettingsPolicy.kt",
+      "sha256Bytes": "de1b6440ed50739f289255bd9ecdae803621dca9824d5cd74fcb219026dccc8f",
+      "size": 409
+    },
+    {
+      "path": "compile-03/source-inputs/08-DanmakuSyncStatusPolicy.kt",
+      "sha256Bytes": "af90657b301ec7775d787dcdd4d361be764f33d56cd616b5949d13f4603d5e61",
+      "size": 2141
+    },
+    {
+      "path": "compile-03/source-inputs/09-DesktopDanmakuSettingsPlatform.kt",
+      "sha256Bytes": "cd3f4265aa863356872ce9fa6563c0ed7f76b1c884975ca416b6d1bdac1272a0",
+      "size": 2399
+    },
+    {
+      "path": "compile-03/source-inputs/10-DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "7c29cf3086f05fd3ead09bbf6934dd8e3369edbd2fdb983c6d5c5828d005ac42",
+      "size": 4011
+    },
+    {
+      "path": "compile-03/source-inputs/11-DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256Bytes": "f5f3a0e20b6f36eaa0b5f2e00d037efaf54ebb15cc949e52c8f728a254683c7d",
+      "size": 6423
+    },
+    {
+      "path": "compile-03/source-inputs/12-DesktopDanmakuSettings.kt",
+      "sha256Bytes": "896b93c2e4ff8a5a225995500b2c69574a5e5360f7ed995aa22d067362dc7f3f",
+      "size": 3561
+    },
+    {
+      "path": "compile-04/compile-result.json",
+      "sha256Bytes": "765e9517f85695edcd1a1a11f2da13e53c1d22571e3801854b4cbf7395d6efe4",
+      "size": 17720
+    },
+    {
+      "path": "compile-04/compiler.args",
+      "sha256Bytes": "497358479f0a580d8ec3d3bac01dc89f0d10f0f7c0d2060ab99e52fe3afec3da",
+      "size": 26230
+    },
+    {
+      "path": "compile-04/compiler.log",
+      "sha256Bytes": "72a3ceee1f2e3a908a37595e609d6d427e79460049d89efeca400abdb71b7888",
+      "size": 459
+    },
+    {
+      "path": "compile-04/original-danmaku-settings.jar",
+      "sha256Bytes": "b3957c9c9467bb31e6b3b8f2e17548f3de2398eb72e170149ccee63d400d7c4b",
+      "size": 315401
+    },
+    {
+      "path": "compile-04/runtime-pins-after.json",
+      "sha256Bytes": "04a2ede31fbab85a14421fdae7c32bd75ce6c9bb105bda07a732826d4e2dae10",
+      "size": 41450
+    },
+    {
+      "path": "compile-04/runtime-pins-before.json",
+      "sha256Bytes": "04a2ede31fbab85a14421fdae7c32bd75ce6c9bb105bda07a732826d4e2dae10",
+      "size": 41450
+    },
+    {
+      "path": "compile-04/source-inputs/00-DesktopOriginalDanmakuSettingsModels.kt",
+      "sha256Bytes": "c6cb1e56f6c219a45aadd493dcc9391e138261e3700c643b3f7c7d9993a75779",
+      "size": 2784
+    },
+    {
+      "path": "compile-04/source-inputs/01-DesktopOriginalDanmakuCloudModels.kt",
+      "sha256Bytes": "0f3d2d2fc6432acbaac2912e0f1bf97f9c1868ab87520857a746b3746a90bd3a",
+      "size": 261
+    },
+    {
+      "path": "compile-04/source-inputs/02-DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "sha256Bytes": "20dd426aa714ab4fe7718e486c7ca773c80efc6456270951bfd7578ef643df54",
+      "size": 4188
+    },
+    {
+      "path": "compile-04/source-inputs/03-DanmakuSettingsPanel.kt",
+      "sha256Bytes": "7bdc1091653c5058c92e926027dac7b319e2aa2e7e198bc0cc440b51880ec92d",
+      "size": 95645
+    },
+    {
+      "path": "compile-04/source-inputs/04-DesktopOriginalDanmakuScopePolicy.kt",
+      "sha256Bytes": "836aaa95b88c91df52ec2411c3c1018c6f7639b0f7a118d5165a15a89a68805e",
+      "size": 353
+    },
+    {
+      "path": "compile-04/source-inputs/05-DesktopOriginalDanmakuPreferences.kt",
+      "sha256Bytes": "b87118c1c3a7419bf99fcd0898d95bee70d35844ec2c229191f8042fd6e0ce45",
+      "size": 31195
+    },
+    {
+      "path": "compile-04/source-inputs/06-DanmakuCloudRuleSyncPolicy.kt",
+      "sha256Bytes": "2db83d5e871ea1cb7341696fe5db781fdb2aff87c4894283b74a8d11703780b5",
+      "size": 4881
+    },
+    {
+      "path": "compile-04/source-inputs/07-DanmakuSettingsPolicy.kt",
+      "sha256Bytes": "de1b6440ed50739f289255bd9ecdae803621dca9824d5cd74fcb219026dccc8f",
+      "size": 409
+    },
+    {
+      "path": "compile-04/source-inputs/08-DanmakuSyncStatusPolicy.kt",
+      "sha256Bytes": "af90657b301ec7775d787dcdd4d361be764f33d56cd616b5949d13f4603d5e61",
+      "size": 2141
+    },
+    {
+      "path": "compile-04/source-inputs/09-DesktopDanmakuSettingsPlatform.kt",
+      "sha256Bytes": "cd3f4265aa863356872ce9fa6563c0ed7f76b1c884975ca416b6d1bdac1272a0",
+      "size": 2399
+    },
+    {
+      "path": "compile-04/source-inputs/10-DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "7c29cf3086f05fd3ead09bbf6934dd8e3369edbd2fdb983c6d5c5828d005ac42",
+      "size": 4011
+    },
+    {
+      "path": "compile-04/source-inputs/11-DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256Bytes": "f5f3a0e20b6f36eaa0b5f2e00d037efaf54ebb15cc949e52c8f728a254683c7d",
+      "size": 6423
+    },
+    {
+      "path": "compile-04/source-inputs/12-DesktopDanmakuSettings.kt",
+      "sha256Bytes": "896b93c2e4ff8a5a225995500b2c69574a5e5360f7ed995aa22d067362dc7f3f",
+      "size": 3561
+    },
+    {
+      "path": "compile-05/compile-result.json",
+      "sha256Bytes": "28a3075a973b7ff9036219e58ba8691336d92c6533f530031707503ee3613ca8",
+      "size": 53039
+    },
+    {
+      "path": "compile-05/compiler.args",
+      "sha256Bytes": "d914261ac819d6b9be4e0da6207a2515dca31c028543958b3d67ede7f9b5172a",
+      "size": 26644
+    },
+    {
+      "path": "compile-05/compiler.log",
+      "sha256Bytes": "a9cd41d7560acb9565db788ffb94e217bd965e68913d76a10b63ecfd8650ff4c",
+      "size": 2314
+    },
+    {
+      "path": "compile-05/original-danmaku-settings.jar",
+      "sha256Bytes": "cff529df4c840fd49b82b61d2f217afdd699e66b5a5b41a37c16332030b382d5",
+      "size": 716194
+    },
+    {
+      "path": "compile-05/runtime-pins-after.json",
+      "sha256Bytes": "04a2ede31fbab85a14421fdae7c32bd75ce6c9bb105bda07a732826d4e2dae10",
+      "size": 41450
+    },
+    {
+      "path": "compile-05/runtime-pins-before.json",
+      "sha256Bytes": "04a2ede31fbab85a14421fdae7c32bd75ce6c9bb105bda07a732826d4e2dae10",
+      "size": 41450
+    },
+    {
+      "path": "compile-05/source-inputs/00-DesktopOriginalDanmakuSettingsModels.kt",
+      "sha256Bytes": "c6cb1e56f6c219a45aadd493dcc9391e138261e3700c643b3f7c7d9993a75779",
+      "size": 2784
+    },
+    {
+      "path": "compile-05/source-inputs/01-DesktopOriginalDanmakuCloudModels.kt",
+      "sha256Bytes": "7dba825789912c14669b0ff904d7b9324047f58fcef046bf8e636febf524f7b1",
+      "size": 2670
+    },
+    {
+      "path": "compile-05/source-inputs/02-DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "sha256Bytes": "cd3fe080e142ff17f88f4336b7a2ec3bfb39e9c0a40d4f94604a7d008f9dde84",
+      "size": 6296
+    },
+    {
+      "path": "compile-05/source-inputs/03-DanmakuSettingsPanel.kt",
+      "sha256Bytes": "7bdc1091653c5058c92e926027dac7b319e2aa2e7e198bc0cc440b51880ec92d",
+      "size": 95645
+    },
+    {
+      "path": "compile-05/source-inputs/04-DesktopOriginalDanmakuScopePolicy.kt",
+      "sha256Bytes": "836aaa95b88c91df52ec2411c3c1018c6f7639b0f7a118d5165a15a89a68805e",
+      "size": 353
+    },
+    {
+      "path": "compile-05/source-inputs/05-DesktopOriginalDanmakuPreferences.kt",
+      "sha256Bytes": "b87118c1c3a7419bf99fcd0898d95bee70d35844ec2c229191f8042fd6e0ce45",
+      "size": 31195
+    },
+    {
+      "path": "compile-05/source-inputs/06-DesktopOriginalDanmakuCloudSyncBinding.kt",
+      "sha256Bytes": "2b0882317e612878d83bcacf4d5294ff8982bcdd0e1f87582599f3223be63f5b",
+      "size": 7525
+    },
+    {
+      "path": "compile-05/source-inputs/07-DanmakuCloudRuleSyncPolicy.kt",
+      "sha256Bytes": "2db83d5e871ea1cb7341696fe5db781fdb2aff87c4894283b74a8d11703780b5",
+      "size": 4881
+    },
+    {
+      "path": "compile-05/source-inputs/08-DanmakuSettingsPolicy.kt",
+      "sha256Bytes": "de1b6440ed50739f289255bd9ecdae803621dca9824d5cd74fcb219026dccc8f",
+      "size": 409
+    },
+    {
+      "path": "compile-05/source-inputs/09-DanmakuSyncStatusPolicy.kt",
+      "sha256Bytes": "af90657b301ec7775d787dcdd4d361be764f33d56cd616b5949d13f4603d5e61",
+      "size": 2141
+    },
+    {
+      "path": "compile-05/source-inputs/10-DesktopDanmakuSettingsPlatform.kt",
+      "sha256Bytes": "b0c32cdb429e978a93536bfe4b0e48b8358f3fb6db939ac122a3be7b9909b742",
+      "size": 2648
+    },
+    {
+      "path": "compile-05/source-inputs/11-DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "e3a38877315291dbe651256ff2a54a1bab7c51d9084126c87161fa2fbb9f4881",
+      "size": 4202
+    },
+    {
+      "path": "compile-05/source-inputs/12-DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256Bytes": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f",
+      "size": 7015
+    },
+    {
+      "path": "compile-05/source-inputs/13-DesktopDanmakuSettings.kt",
+      "sha256Bytes": "091ec93f13598c7c79b30762211f0392512aa741c0d8deb26267188f417d588e",
+      "size": 3624
+    },
+    {
+      "path": "compile-05/source-inputs/14-DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "f569b4058d84de15f08e24207f620aa90f982306a53028f08888b717d578842f",
+      "size": 43477
+    },
+    {
+      "path": "compile-06/compile-result.json",
+      "sha256Bytes": "e3a68004d64f245ff2e16e8b6a4f9575edff828416b2bc00174f146c18b26754",
+      "size": 52786
+    },
+    {
+      "path": "compile-06/compiler.args",
+      "sha256Bytes": "23d9330357c63effb6de0210abd8781a2dd42c74405fc6d921f1c362a147fa71",
+      "size": 26602
+    },
+    {
+      "path": "compile-06/compiler.log",
+      "sha256Bytes": "bde78aeb91d8de8885d0cc08fae86dbcf81d2544eab114a2fe161bb86949ba13",
+      "size": 2290
+    },
+    {
+      "path": "compile-06/original-danmaku-settings.jar",
+      "sha256Bytes": "549caaf0e59e8cfb46ab07be964b0b163b5f4358e61cfc152167961e46dac63e",
+      "size": 714282
+    },
+    {
+      "path": "compile-06/runtime-pins-after.json",
+      "sha256Bytes": "0ee6ecce15b500356118be4ac14ef45797b5e49a9005c528d91e4e005b9b4304",
+      "size": 41451
+    },
+    {
+      "path": "compile-06/runtime-pins-before.json",
+      "sha256Bytes": "0ee6ecce15b500356118be4ac14ef45797b5e49a9005c528d91e4e005b9b4304",
+      "size": 41451
+    },
+    {
+      "path": "compile-06/same-byte-relocation.json",
+      "sha256Bytes": "59f5fd866b18c297ee8f1d338aa2f7221e07415b4902eadedf039f7f9120796f",
+      "size": 938
+    },
+    {
+      "path": "compile-06/source-inputs/DanmakuCloudRuleSyncPolicy.kt",
+      "sha256Bytes": "2db83d5e871ea1cb7341696fe5db781fdb2aff87c4894283b74a8d11703780b5",
+      "size": 4881
+    },
+    {
+      "path": "compile-06/source-inputs/DanmakuSettingsPanel.kt",
+      "sha256Bytes": "7bdc1091653c5058c92e926027dac7b319e2aa2e7e198bc0cc440b51880ec92d",
+      "size": 95645
+    },
+    {
+      "path": "compile-06/source-inputs/DanmakuSettingsPolicy.kt",
+      "sha256Bytes": "de1b6440ed50739f289255bd9ecdae803621dca9824d5cd74fcb219026dccc8f",
+      "size": 409
+    },
+    {
+      "path": "compile-06/source-inputs/DanmakuSyncStatusPolicy.kt",
+      "sha256Bytes": "af90657b301ec7775d787dcdd4d361be764f33d56cd616b5949d13f4603d5e61",
+      "size": 2141
+    },
+    {
+      "path": "compile-06/source-inputs/DesktopDanmakuSettings.kt",
+      "sha256Bytes": "091ec93f13598c7c79b30762211f0392512aa741c0d8deb26267188f417d588e",
+      "size": 3624
+    },
+    {
+      "path": "compile-06/source-inputs/DesktopDanmakuSettingsPlatform.kt",
+      "sha256Bytes": "b0c32cdb429e978a93536bfe4b0e48b8358f3fb6db939ac122a3be7b9909b742",
+      "size": 2648
+    },
+    {
+      "path": "compile-06/source-inputs/DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "e3a38877315291dbe651256ff2a54a1bab7c51d9084126c87161fa2fbb9f4881",
+      "size": 4202
+    },
+    {
+      "path": "compile-06/source-inputs/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "f569b4058d84de15f08e24207f620aa90f982306a53028f08888b717d578842f",
+      "size": 43477
+    },
+    {
+      "path": "compile-06/source-inputs/DesktopOriginalDanmakuCloudModels.kt",
+      "sha256Bytes": "7dba825789912c14669b0ff904d7b9324047f58fcef046bf8e636febf524f7b1",
+      "size": 2670
+    },
+    {
+      "path": "compile-06/source-inputs/DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "sha256Bytes": "cd3fe080e142ff17f88f4336b7a2ec3bfb39e9c0a40d4f94604a7d008f9dde84",
+      "size": 6296
+    },
+    {
+      "path": "compile-06/source-inputs/DesktopOriginalDanmakuCloudSyncBinding.kt",
+      "sha256Bytes": "2b0882317e612878d83bcacf4d5294ff8982bcdd0e1f87582599f3223be63f5b",
+      "size": 7525
+    },
+    {
+      "path": "compile-06/source-inputs/DesktopOriginalDanmakuPreferences.kt",
+      "sha256Bytes": "b87118c1c3a7419bf99fcd0898d95bee70d35844ec2c229191f8042fd6e0ce45",
+      "size": 31195
+    },
+    {
+      "path": "compile-06/source-inputs/DesktopOriginalDanmakuScopePolicy.kt",
+      "sha256Bytes": "836aaa95b88c91df52ec2411c3c1018c6f7639b0f7a118d5165a15a89a68805e",
+      "size": 353
+    },
+    {
+      "path": "compile-06/source-inputs/DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256Bytes": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f",
+      "size": 7015
+    },
+    {
+      "path": "compile-06/source-inputs/DesktopOriginalDanmakuSettingsModels.kt",
+      "sha256Bytes": "c6cb1e56f6c219a45aadd493dcc9391e138261e3700c643b3f7c7d9993a75779",
+      "size": 2784
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "12bce080691b71ce22bf3153796ac0f331cc857a2861a0fd11c35553b35dfb8b",
+      "size": 4927
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/DesktopOriginalDanmakuSettingsModels.kt",
+      "sha256Bytes": "c6cb1e56f6c219a45aadd493dcc9391e138261e3700c643b3f7c7d9993a75779",
+      "size": 2784
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudModels.kt",
+      "sha256Bytes": "7dba825789912c14669b0ff904d7b9324047f58fcef046bf8e636febf524f7b1",
+      "size": 2670
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuCloudRuleProtocol.kt",
+      "sha256Bytes": "cd3fe080e142ff17f88f4336b7a2ec3bfb39e9c0a40d4f94604a7d008f9dde84",
+      "size": 6296
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+      "sha256Bytes": "7bdc1091653c5058c92e926027dac7b319e2aa2e7e198bc0cc440b51880ec92d",
+      "size": 95645
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/section/DesktopOriginalDanmakuScopePolicy.kt",
+      "sha256Bytes": "836aaa95b88c91df52ec2411c3c1018c6f7639b0f7a118d5165a15a89a68805e",
+      "size": 353
+    },
+    {
+      "path": "generated/com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences.kt",
+      "sha256Bytes": "b87118c1c3a7419bf99fcd0898d95bee70d35844ec2c229191f8042fd6e0ce45",
+      "size": 31195
+    },
+    {
+      "path": "generated/com/bilipai/desktop/ui/DesktopOriginalDanmakuCloudSyncBinding.kt",
+      "sha256Bytes": "2b0882317e612878d83bcacf4d5294ff8982bcdd0e1f87582599f3223be63f5b",
+      "size": 7525
+    },
+    {
+      "path": "generated/feature/video/danmaku/DanmakuCloudRuleSyncPolicy.kt",
+      "sha256Bytes": "2db83d5e871ea1cb7341696fe5db781fdb2aff87c4894283b74a8d11703780b5",
+      "size": 4881
+    },
+    {
+      "path": "generated/feature/video/danmaku/DanmakuSettingsPolicy.kt",
+      "sha256Bytes": "de1b6440ed50739f289255bd9ecdae803621dca9824d5cd74fcb219026dccc8f",
+      "size": 409
+    },
+    {
+      "path": "generated/feature/video/danmaku/DanmakuSyncStatusPolicy.kt",
+      "sha256Bytes": "af90657b301ec7775d787dcdd4d361be764f33d56cd616b5949d13f4603d5e61",
+      "size": 2141
+    },
+    {
+      "path": "generated/source-inventory.json",
+      "sha256Bytes": "09fe443e8bb8c7853bc8307dfd720e3203b4528848513b35f46cb48d853e583c",
+      "size": 22433
+    },
+    {
+      "path": "history.json",
+      "sha256Bytes": "62e82d35afb3afaa0da4577ced096671faf531d870ae6f9d474593669039e647",
+      "size": 831
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "51e77f752ba52fbc6aa38be71f35986135b64e6fee0c258806c0ce085667d071",
+      "size": 8896
+    },
+    {
+      "path": "Operations.danmaku-cloud.fragment.kt.txt",
+      "sha256Bytes": "66e1489657c42c9c4e5f6f3ce6f33900215f08481534e7e438e29ac939a1cb3d",
+      "size": 1204
+    },
+    {
+      "path": "platform/DesktopDanmakuSettingsPlatform.kt",
+      "sha256Bytes": "b0c32cdb429e978a93536bfe4b0e48b8358f3fb6db939ac122a3be7b9909b742",
+      "size": 2648
+    },
+    {
+      "path": "platform/DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "e3a38877315291dbe651256ff2a54a1bab7c51d9084126c87161fa2fbb9f4881",
+      "size": 4202
+    },
+    {
+      "path": "platform/DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256Bytes": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f",
+      "size": 7015
+    },
+    {
+      "path": "prepare-normalization.py",
+      "sha256Bytes": "ef777760817cf831904f8f2992fb9fd3e5a60887cb0358e3c50859f073533e58",
+      "size": 3118
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "4f8e678d9d4e30313d454631661a4e0ab82adb49bb953e9f03b93b737684264e",
+      "size": 20310
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsPlatform.kt",
+      "sha256Bytes": "b0c32cdb429e978a93536bfe4b0e48b8358f3fb6db939ac122a3be7b9909b742",
+      "size": 2648
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "e3a38877315291dbe651256ff2a54a1bab7c51d9084126c87161fa2fbb9f4881",
+      "size": 4202
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256Bytes": "6676ec420e8cfe104fc7dceacacdb1025a28f00054ae68e28ecc63f41a547e7f",
+      "size": 7015
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-danmaku-settings.py",
+      "sha256Bytes": "406c92feddc812f3fde05e6218ea4b56d851d0d64da5cd12942124f8c9ee89a7",
+      "size": 20410
+    },
+    {
+      "path": "proof-01/accepted-result.json",
+      "sha256Bytes": "b836c22ee91b82ad3dfee1d5f5decf6e0842c9cd9724ab19193c2ea17a0c5114",
+      "size": 17715
+    },
+    {
+      "path": "proof-01/compile-result.json",
+      "sha256Bytes": "6c3bf47df56af8c038870b807c43cc522a113e771ffe0d77aa57f701134430e2",
+      "size": 138
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sha256Bytes": "97842431a1c31289ba99ea8081a4a71aeef7771a3fab222b77601c7ea5f660bf",
+      "size": 23793
+    },
+    {
+      "path": "proof-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "proof-01/runtime-command.json",
+      "sha256Bytes": "88a00995af25147f400f0053b3165e4220a85691245b8be4acee2cb970ee7bd8",
+      "size": 24845
+    },
+    {
+      "path": "proof-01/runtime-pins-after.json",
+      "sha256Bytes": "0ee6ecce15b500356118be4ac14ef45797b5e49a9005c528d91e4e005b9b4304",
+      "size": 41451
+    },
+    {
+      "path": "proof-01/runtime-pins-before.json",
+      "sha256Bytes": "0ee6ecce15b500356118be4ac14ef45797b5e49a9005c528d91e4e005b9b4304",
+      "size": 41451
+    },
+    {
+      "path": "proof-01/runtime.log",
+      "sha256Bytes": "1d6dd4102164cf7abf3c1dddb9899684491105df014e7a2af1252990d999b598",
+      "size": 1014
+    },
+    {
+      "path": "proof-01/same-byte-relocation.json",
+      "sha256Bytes": "59f5fd866b18c297ee8f1d338aa2f7221e07415b4902eadedf039f7f9120796f",
+      "size": 938
+    },
+    {
+      "path": "proof-01/scratch/store/plugin-settings.json",
+      "sha256Bytes": "34f48559beb744bd382b00c243cb1a2661217b756310c72405812b6ff683ac5b",
+      "size": 7368
+    },
+    {
+      "path": "proof-01/settings-fixture.jar",
+      "sha256Bytes": "85005a77fb3d065d980320da8017547c9b5b57e1112c33a0e57ab6aef78cd917",
+      "size": 69557
+    },
+    {
+      "path": "proof-01/SettingsFixture.kt",
+      "sha256Bytes": "4bb1989cd09539682d6003d1da91c389f363870a3983a59e4bcb48ff3c7c7b20",
+      "size": 16657
+    },
+    {
+      "path": "proof-02/accepted-result.json",
+      "sha256Bytes": "03d8c8354115ef7ede19be12c202d056b95ecf1c3043ee3c3e6fd37712cd38b1",
+      "size": 17715
+    },
+    {
+      "path": "proof-02/compile-result.json",
+      "sha256Bytes": "bd6d490167c154049f7c86ceafa01bfbbb72e6f8211f2096dca6f59ebba7ba30",
+      "size": 138
+    },
+    {
+      "path": "proof-02/compiler.args",
+      "sha256Bytes": "cb6c23f59dcc4beaf587bd6274fc337b46ea57bf0331ff098848b62013500f2f",
+      "size": 23793
+    },
+    {
+      "path": "proof-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "proof-02/runtime-command.json",
+      "sha256Bytes": "d9d888013a886ef9d6cbd86d829165bf58a49d50aeac5452d9452cb7469035d7",
+      "size": 24845
+    },
+    {
+      "path": "proof-02/runtime-pins-after.json",
+      "sha256Bytes": "0ee6ecce15b500356118be4ac14ef45797b5e49a9005c528d91e4e005b9b4304",
+      "size": 41451
+    },
+    {
+      "path": "proof-02/runtime-pins-before.json",
+      "sha256Bytes": "0ee6ecce15b500356118be4ac14ef45797b5e49a9005c528d91e4e005b9b4304",
+      "size": 41451
+    },
+    {
+      "path": "proof-02/runtime.log",
+      "sha256Bytes": "1ab097f7321803782e3d0e0d6677a434c4d705a00233f2a27f5c71171b41b62d",
+      "size": 1015
+    },
+    {
+      "path": "proof-02/same-byte-relocation.json",
+      "sha256Bytes": "59f5fd866b18c297ee8f1d338aa2f7221e07415b4902eadedf039f7f9120796f",
+      "size": 938
+    },
+    {
+      "path": "proof-02/scratch/store/plugin-settings.json",
+      "sha256Bytes": "34f48559beb744bd382b00c243cb1a2661217b756310c72405812b6ff683ac5b",
+      "size": 7368
+    },
+    {
+      "path": "proof-02/settings-fixture.jar",
+      "sha256Bytes": "55309aa93e2edb94cd409fb40ba78c73767aee2b6329b850effa4da0e231c6da",
+      "size": 69654
+    },
+    {
+      "path": "proof-02/SettingsFixture.kt",
+      "sha256Bytes": "625bef7a413b900d37fa2d01a2775779d5a76e77ca00ec81a56c561f98911ed4",
+      "size": 16734
+    },
+    {
+      "path": "proof-03/accepted-result.json",
+      "sha256Bytes": "e696a6bedd9c743a6db3060da0d88b043e954f6125aa4bd3f44813028c8f4695",
+      "size": 17715
+    },
+    {
+      "path": "proof-03/compile-result.json",
+      "sha256Bytes": "a1177f66d78144f51da7e380ccac0fa03d1a2d2a72fd5dca70a5f6246fe9ffff",
+      "size": 138
+    },
+    {
+      "path": "proof-03/compiler.args",
+      "sha256Bytes": "86da649d896a2fcc05a95b1c98f47bf33b03e2242cdbaab803414b128b27f2f6",
+      "size": 23793
+    },
+    {
+      "path": "proof-03/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "proof-03/runtime-command.json",
+      "sha256Bytes": "9ba2f7344be4677b492467059797a14bd9f56af84723deaef98e7c07c3ab77df",
+      "size": 24845
+    },
+    {
+      "path": "proof-03/runtime-pins-after.json",
+      "sha256Bytes": "0ee6ecce15b500356118be4ac14ef45797b5e49a9005c528d91e4e005b9b4304",
+      "size": 41451
+    },
+    {
+      "path": "proof-03/runtime-pins-before.json",
+      "sha256Bytes": "0ee6ecce15b500356118be4ac14ef45797b5e49a9005c528d91e4e005b9b4304",
+      "size": 41451
+    },
+    {
+      "path": "proof-03/runtime.log",
+      "sha256Bytes": "6156a24d355da9154a9edce868c3eca52c14c41f73aad3092439933fc88120dc",
+      "size": 1302
+    },
+    {
+      "path": "proof-03/same-byte-relocation.json",
+      "sha256Bytes": "59f5fd866b18c297ee8f1d338aa2f7221e07415b4902eadedf039f7f9120796f",
+      "size": 938
+    },
+    {
+      "path": "proof-03/scratch/store/plugin-settings.json",
+      "sha256Bytes": "34f48559beb744bd382b00c243cb1a2661217b756310c72405812b6ff683ac5b",
+      "size": 7368
+    },
+    {
+      "path": "proof-03/settings-fixture.jar",
+      "sha256Bytes": "61d022e71e2ef799a25da3fb01f714acbd224542c7454f332938d1ae3ac3d71a",
+      "size": 71781
+    },
+    {
+      "path": "proof-03/SettingsFixture.kt",
+      "sha256Bytes": "c4e995eb5a7cb68b86cf883f8cbdc50b165e65f43551e687ace89050e0ee8425",
+      "size": 16836
+    },
+    {
+      "path": "proof-04/accepted-result.json",
+      "sha256Bytes": "25c7f7ca719efa761710193f894986c7216cdac81b8d3131a11c1e187318241e",
+      "size": 18045
+    },
+    {
+      "path": "proof-04/compile-result.json",
+      "sha256Bytes": "a1177f66d78144f51da7e380ccac0fa03d1a2d2a72fd5dca70a5f6246fe9ffff",
+      "size": 138
+    },
+    {
+      "path": "proof-04/compiler.args",
+      "sha256Bytes": "a3aacff79b5152899c07c00827c3637c256ff748ebd4252b458b45737dc4d2aa",
+      "size": 23793
+    },
+    {
+      "path": "proof-04/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "proof-04/runtime-command.json",
+      "sha256Bytes": "f6e1a02dbd2efa015f7347837e7ca95f2759056822696b48b52cf35412b5df77",
+      "size": 24845
+    },
+    {
+      "path": "proof-04/runtime-pins-after.json",
+      "sha256Bytes": "0ee6ecce15b500356118be4ac14ef45797b5e49a9005c528d91e4e005b9b4304",
+      "size": 41451
+    },
+    {
+      "path": "proof-04/runtime-pins-before.json",
+      "sha256Bytes": "0ee6ecce15b500356118be4ac14ef45797b5e49a9005c528d91e4e005b9b4304",
+      "size": 41451
+    },
+    {
+      "path": "proof-04/runtime.log",
+      "sha256Bytes": "4c07f0cb77c4e592d4a9801066b6569c993adfea0a719a1863445b2350265d7e",
+      "size": 43
+    },
+    {
+      "path": "proof-04/same-byte-relocation.json",
+      "sha256Bytes": "59f5fd866b18c297ee8f1d338aa2f7221e07415b4902eadedf039f7f9120796f",
+      "size": 938
+    },
+    {
+      "path": "proof-04/scratch/result.json",
+      "sha256Bytes": "9cf95e74f07d95d943e0b70e7afa6d3ff9a6dc225882599df9241a4b1e4134b1",
+      "size": 4861
+    },
+    {
+      "path": "proof-04/scratch/store/plugin-settings.json",
+      "sha256Bytes": "34f48559beb744bd382b00c243cb1a2661217b756310c72405812b6ff683ac5b",
+      "size": 7368
+    },
+    {
+      "path": "proof-04/settings-fixture.jar",
+      "sha256Bytes": "bbf68624448b6070049b8c34312cb32d6d18a1c7149f66dfc28788d43ce48f2d",
+      "size": 71767
+    },
+    {
+      "path": "proof-04/SettingsFixture.kt",
+      "sha256Bytes": "c4e995eb5a7cb68b86cf883f8cbdc50b165e65f43551e687ace89050e0ee8425",
+      "size": 16836
+    },
+    {
+      "path": "proof-only/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "f569b4058d84de15f08e24207f620aa90f982306a53028f08888b717d578842f",
+      "size": 43477
+    },
+    {
+      "path": "registry-delta.json",
+      "sha256Bytes": "3fcef91f25013f7a0094217ea1c5e69b6e1a42c1e44b99f8a002c169ae539149",
+      "size": 4971
+    },
+    {
+      "path": "run-fixture.py",
+      "sha256Bytes": "7bd86e5e2853b0b03424112f1c989c97e137c8a170317fa3158ccc4883b63ffb",
+      "size": 3956
+    },
+    {
+      "path": "selected-files/DanmakuSettings.normalization.patch",
+      "sha256Bytes": "eafcf60abf161e3191893afba7823c2f947a61640f0a37b440ee9a30b3d436e2",
+      "size": 1994
+    },
+    {
+      "path": "selected-files/DesktopDanmakuSettings.kt",
+      "sha256Bytes": "091ec93f13598c7c79b30762211f0392512aa741c0d8deb26267188f417d588e",
+      "size": 3624
+    },
+    {
+      "path": "selected-files/source-delta.json",
+      "sha256Bytes": "9307586857f0408b2f4cb31870fe9d329d1064b7dc230aef198aa9625489c8e4",
+      "size": 2245
+    },
+    {
+      "path": "SettingsFixture.kt",
+      "sha256Bytes": "c4e995eb5a7cb68b86cf883f8cbdc50b165e65f43551e687ace89050e0ee8425",
+      "size": 16836
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "7d7cb680ad663646262fac94d91cea78206c9120fd7dd97d7ec7fe6591cdd7ae",
+      "size": 27155
+    },
+    {
+      "path": "source-inputs/actual20-DanmakuSettings.kt",
+      "sha256Bytes": "c0d7312f3451ec530fd311d0d3b659505acd7a5a0df7aa4668df92795a2d66a9",
+      "size": 3616
+    },
+    {
+      "path": "source-inputs/actual20-DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "9f4f93ac517d11f2a5b751f73fa26e94101fb41a37562850f314ba7688a275f7",
+      "size": 43095
+    },
+    {
+      "path": "symbol-audit.json",
+      "sha256Bytes": "9f2c9e22741285e08a5f3df788f0077bc9da66533e0db77a510f59a8a3074409",
+      "size": 16569
+    }
+  ],
+  "sourceAuditSha256Bytes": "7d7cb680ad663646262fac94d91cea78206c9120fd7dd97d7ec7fe6591cdd7ae",
+  "symbolAuditSha256Bytes": "9f2c9e22741285e08a5f3df788f0077bc9da66533e0db77a510f59a8a3074409",
+  "installContractSha256Bytes": "51e77f752ba52fbc6aa38be71f35986135b64e6fee0c258806c0ce085667d071",
+  "compile06Sha256Bytes": "e3a68004d64f245ff2e16e8b6a4f9575edff828416b2bc00174f146c18b26754",
+  "proof04AcceptedSha256Bytes": "25c7f7ca719efa761710193f894986c7216cdac81b8d3131a11c1e187318241e",
+  "directSourceCount": 3,
+  "selectedSourceCount": 7,
+  "manualPlatformSourceCount": 3,
+  "existingScalarSourceDeltaCount": 1,
+  "OpsMemberFragmentCount": 4,
+  "productionOverridesAllowedOnly": [
+    "sole existing DanmakuSettings 8 lines",
+    "sole existing Operations 4 methods"
+  ],
+  "pending": [
+    "Actual original Panel pointer/modal/file chooser not mounted by this proof.",
+    "Actual Root/Shell/Controller projected preference wiring and supported native monitor presentation require Root consumer integration.",
+    "Original independent portraitFullScreen renderer/UI owner remains unsupported; physical monitor orientation map is a declared Windows presentation adapter.",
+    "Original fixedVelocity/staticToScroll/massive/weightFilter/smartOcclusion/SCREEN_TOP fields persist completely but current Main20 Window model/Scheduler has no consuming pipeline.",
+    "Current Scheduler raw-duration math differs from original Android DanmakuConfig effective duration clamps; 34 assertions verify current Scheduler receives original stored bounds, not Android-engine parity.",
+    "Original panel geometry native overlay/hit test and smart-occlusion mask need real Windows layout/render owner.",
+    "Cloud protocol runtime here uses existing Retrofit models/API through an application interceptor, no socket or account. Ops four new public members were compiled, not executed with a real account."
+  ]
+}
