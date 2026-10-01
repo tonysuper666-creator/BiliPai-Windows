@@ -1,0 +1,17 @@
+--- stable/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt
+
++++ selected/com/android/purebilibili/danmaku/engine/DanmakuItem.kt
+
+@@ -1,8 +1,8 @@
+
+ package com.android.purebilibili.danmaku.engine
+ 
+-import android.graphics.Bitmap
+-import android.graphics.Path
+-import android.graphics.Typeface
++import java.awt.image.BufferedImage as Bitmap
++// Android Path is outside this selected standard-item class.
++import java.awt.Font as Typeface
+ 
+ const val DANMAKU_LAYER_SCROLL = 1001
+ const val DANMAKU_LAYER_TOP = 1002

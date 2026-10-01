@@ -1,0 +1,46 @@
+--- stable/refreshDanmakuThumbupState
+
++++ owned-session/refreshDanmakuThumbupState
+
+@@ -1,13 +1,19 @@
+
+     private fun refreshDanmakuThumbupState(dmid: Long) {
+         if (dmid <= 0L || currentCid <= 0L) return
+ 
+-        viewModelScope.launch {
+-            com.android.purebilibili.data.repository.DanmakuRepository
++        val request=++statsGeneration
++        statsRequests[dmid]=request
++        val menuRequest=menuGeneration
++        statsJobs.remove(dmid)?.cancel()
++        val loading=viewModelScope.launch {
++            try {
++            environment.actions
+                 .getDanmakuThumbupState(cid = currentCid, dmid = dmid)
++                .also { currentCoroutineContext().ensureActive(); assertOwned(); if(request!=statsRequests[dmid])return@launch }
+                 .onSuccess { thumbupState ->
+                     _likedDanmakuIds.update { if (thumbupState.liked) it + dmid else it - dmid }
+                     _danmakuMenuState.update { current ->
+-                        if (!current.visible || current.dmid != dmid) current
++                        if (menuRequest!=menuGeneration || !current.visible || current.dmid != dmid) current
+                         else current.copy(
+                             voteCount = thumbupState.likes,
+                             hasLiked = thumbupState.liked,
+@@ -18,9 +24,15 @@
+
+                 }
+                 .onFailure {
+                     _danmakuMenuState.update { current ->
+-                        if (!current.visible || current.dmid != dmid) current
++                        if (menuRequest!=menuGeneration || !current.visible || current.dmid != dmid) current
+                         else current.copy(voteLoading = false, canVote = false)
+                     }
+                 }
++                    } finally {
++                if (request==statsRequests[dmid] && menuRequest==menuGeneration && environment.isOwned() && ownerJob.isActive) {
++                    _danmakuMenuState.update { current -> if(!current.visible||current.dmid!=dmid)current else current.copy(voteLoading=false) }
++                }
++            }
+         }
++        if(!loading.isCompleted)statsJobs[dmid]=loading
+     }

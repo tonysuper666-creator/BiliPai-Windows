@@ -1,0 +1,71 @@
+--- stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt
+
++++ selected/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt
+
+@@ -3,12 +3,13 @@
+
+ 
+ import com.android.purebilibili.core.ui.components.AppTextButton
+ 
+-import android.content.ClipData
+-import android.content.ClipboardManager
+-import android.content.Context
+-import android.widget.Toast
++// Windows port: import android.content.ClipData
++// Windows port: import android.content.ClipboardManager
++// Windows port: import android.content.Context
++// Windows port: import android.widget.Toast
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
++import androidx.compose.foundation.combinedClickable
+ import androidx.compose.foundation.layout.*
+ import androidx.compose.foundation.lazy.LazyColumn
+ import androidx.compose.foundation.lazy.items
+@@ -31,7 +32,7 @@
+
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.Color
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopDanmakuBindings as LocalContext
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+@@ -245,11 +246,7 @@
+
+                             isHighlighted = isNearCurrentTime,
+                             onItemClick = {
+                                 onSeekTo(item.showAtTime)
+-                                Toast.makeText(
+-                                    context,
+-                                    "已跳转至 ${FormatUtils.formatDuration(item.showAtTime)}",
+-                                    Toast.LENGTH_SHORT
+-                                ).show()
++                                context.showFeedback("已跳转至 ${FormatUtils.formatDuration(item.showAtTime)}")
+                             },
+                             onLongClick = {
+                                 selectedItemForAction = item
+@@ -347,10 +344,8 @@
+
+                             modifier = Modifier
+                                 .fillMaxWidth()
+                                 .clickable {
+-                                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+-                                    val clip = ClipData.newPlainText("danmaku", item.text.orEmpty())
+-                                    clipboard.setPrimaryClip(clip)
+-                                    Toast.makeText(context, "已复制弹幕内容", Toast.LENGTH_SHORT).show()
++                                    context.copyText(item.text.orEmpty(), "danmaku")
++                                    context.showFeedback("已复制弹幕内容")
+                                     selectedItemForAction = null
+                                 }
+                                 .padding(vertical = 8.dp),
+@@ -467,7 +462,7 @@
+
+         modifier = modifier
+             .fillMaxWidth()
+             .clip(AppShapes.container(ContainerLevel.Card))
+-            .clickable(onClick = onItemClick),
++            .combinedClickable(onClick = onItemClick, onLongClick = onLongClick),
+         color = backgroundColor,
+         shape = AppShapes.container(ContainerLevel.Card),
+     ) {

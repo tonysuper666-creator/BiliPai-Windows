@@ -1,0 +1,45 @@
+--- stable/reportDanmaku
+
++++ owned-protocol/reportDanmaku
+
+@@ -4,18 +4,20 @@
+
+         reason: Int,
+         content: String = ""
+     ): Result<Unit> = withContext(Dispatchers.IO) {
++        kotlinx.coroutines.currentCoroutineContext().ensureActive()
++        assertOwned()
+         try {
+-            val csrf = com.android.purebilibili.core.store.TokenManager.csrfCache
++            val csrf = readCsrf()
+             if (csrf.isNullOrEmpty()) {
+                 return@withContext Result.failure(Exception("请先登录"))
+             }
+ 
+-            com.android.purebilibili.core.util.Logger.d("DanmakuRepo", "📤 reportDanmaku: cid=$cid, dmid=$dmid, reason=$reason")
+             
+             val response = api.reportDanmaku(cid = cid, dmid = dmid, reason = reason, content = content, csrf = csrf)
++            kotlinx.coroutines.currentCoroutineContext().ensureActive()
++            assertOwned()
+             
+             if (response.code == 0) {
+-                com.android.purebilibili.core.util.Logger.d("DanmakuRepo", "✅ Danmaku reported")
+                 Result.success(Unit)
+             } else {
+                 val errorMsg = when (response.code) {
+@@ -24,11 +26,12 @@
+
+                     -400 -> "请求参数错误"
+                     else -> response.message.ifEmpty { "举报失败 (${response.code})" }
+                 }
+-                android.util.Log.e("DanmakuRepo", "❌ reportDanmaku failed: ${response.code} - ${response.message}")
+                 Result.failure(Exception(errorMsg))
+             }
++        } catch (cancelled: kotlinx.coroutines.CancellationException) {
++            throw cancelled
+         } catch (e: Exception) {
+-            android.util.Log.e("DanmakuRepo", "❌ reportDanmaku exception: ${e.message}", e)
++            assertOwned()
+             Result.failure(e)
+         }
+     }

@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\compile-01\source-inputs\generated\com\android\purebilibili\feature\video\viewmodel\DesktopOriginalDanmakuSession.kt:196:53: error: no parameter with name 'content' found.
+        reportDanmaku(dmid = dmid, reason = reason, content = "")
+                                                    ^^^^^^^

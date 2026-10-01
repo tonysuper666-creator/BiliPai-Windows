@@ -1,0 +1,86 @@
+{
+  "snapshot16ManifestSha256Bytes": "d5a8a3d5bfea1f5ad1911448d974344e5567e1069d205865a1417f29d2ab7c18",
+  "selectedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "actualMain16Sha256Bytes": "e3a4a53b02238ab9cb6e5db68473c35d6e37035942f128007655ab6e334af9cb",
+      "baseSha256LF": "a31114146152227ba50efd89fbc7c98f0dcd810ba3450a6ca73f399d7c1651cb",
+      "candidateSha256LF": "ee4235dbcb628fe160295650be9c2eb218211e75f06fa0d7fe0dc7e7223cd45c",
+      "adaptations": [
+        {
+          "before": "    val isVipGradualColor: Boolean = false,\n",
+          "after": "    val isVipGradualColor: Boolean = false,\n    // Original source payload for the original list factories; display/plugin processing remains separate.\n    val originalElement: DanmakuProto.DanmakuElem? = null,\n    val originalXmlAttributes: String? = null,\n    val originalXmlContent: String? = null,\n"
+        },
+        {
+          "before": "            val text = StringBuilder()",
+          "after": "            val text = StringBuilder()\n            val sourceText = StringBuilder()"
+        },
+        {
+          "before": "                text.clear()",
+          "after": "                text.clear(); sourceText.clear()"
+        },
+        {
+          "before": "serverId = fields.getOrNull(7)?.toLongOrNull() ?: 0L, userHash = fields.getOrNull(6).orEmpty().take(200))",
+          "after": "serverId = fields.getOrNull(7)?.toLongOrNull() ?: 0L, userHash = fields.getOrNull(6).orEmpty().take(200),\n                    originalXmlAttributes = attributes.getValue(\"p\"))"
+        },
+        {
+          "before": "                val limit = if ((pending?.mode ?: 0) >= 7) 16_384 else 300",
+          "after": "                if (pending != null && pending?.mode in 1..6) sourceText.append(characters, start, length)\n                val limit = if ((pending?.mode ?: 0) >= 7) 16_384 else 300"
+        },
+        {
+          "before": "                        } else comments += it.copy(text = content)",
+          "after": "                        } else comments += it.copy(text = content, originalXmlContent = sourceText.toString())"
+        },
+        {
+          "before": "item.colorful == DanmakuProto.DmColorfulTypeVipGradualColor)",
+          "after": "item.colorful == DanmakuProto.DmColorfulTypeVipGradualColor, originalElement = item)"
+        }
+      ],
+      "reverseOriginalLfEqual": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "actualMain16Sha256Bytes": "03ff268b7c5beee38d2c71b226c4e32045b81820c15997f32201ceb92665cd8a",
+      "baseSha256LF": "ece907d1a9159883c8aa9219f61a5782cef08ccaf391f10fcb4d96c4e53800b2",
+      "candidateSha256LF": "7d4630ed6340b48870fe83f5cd47071a22698973924a2b0b571274d1d05ca99b",
+      "adaptations": [
+        {
+          "before": "    private var commandCid: Long? = null",
+          "after": "    private var commandCid: Long? = null\n    private var poolSourceVersion: Long? = null\n    private val mutablePoolSourceRevision = MutableStateFlow(0L)\n    val poolSourceRevision: StateFlow<Long> = mutablePoolSourceRevision.asStateFlow()\n    /** Derived view of the sole raw document, with no second item/cache authority. */\n    fun poolSourceFor(cid: Long, sourceVersion: Long): DanmakuPoolSourceSnapshot? = synchronized(requestLock) {\n        if (closed.get() || liveMode || cid <= 0L || commandCid != cid || poolSourceVersion != sourceVersion ||\n            !player.ownsSourceVersion(sourceVersion)) null\n        else DanmakuPoolSourceSnapshot(cid, sourceVersion, documentRevision.get(), rawDocument.comments)\n    }"
+        },
+        {
+          "before": "    suspend fun load(cid: Long, aid: Long = 0L, durationSeconds: Double = 0.0)",
+          "after": "    suspend fun load(cid: Long, aid: Long = 0L, durationSeconds: Double = 0.0, expectedSourceVersion: Long? = null)"
+        },
+        {
+          "before": "        loadSource(source, cid, aid, durationSeconds)",
+          "after": "        loadSource(source, cid, aid, durationSeconds, expectedSourceVersion)"
+        },
+        {
+          "before": "        loadSource(OfflineDanmakuSource(standardSegments, specialSegments), 1L, 0L, durationSeconds)",
+          "after": "        loadSource(OfflineDanmakuSource(standardSegments, specialSegments), 1L, 0L, durationSeconds, null)"
+        },
+        {
+          "before": "    private suspend fun loadSource(playbackSource: DesktopDanmakuSource, cid: Long, aid: Long, durationSeconds: Double)",
+          "after": "    private suspend fun loadSource(playbackSource: DesktopDanmakuSource, cid: Long, aid: Long, durationSeconds: Double, expectedSourceVersion: Long?)"
+        },
+        {
+          "before": "                commandCid = cid; mutableCommands.value = emptyList()",
+          "after": "                // Clear the old document before publishing a new CID/version identity.\n                rawDocument = DanmakuDocument()\n                poolSourceVersion = expectedSourceVersion\n                commandCid = cid; mutableCommands.value = emptyList()"
+        },
+        {
+          "before": "            documentRevision.incrementAndGet() to pluginProcessor",
+          "after": "            documentRevision.incrementAndGet().also { mutablePoolSourceRevision.value = it } to pluginProcessor"
+        }
+      ],
+      "reverseOriginalLfEqual": true
+    }
+  ],
+  "declaredProductOverrides": [
+    "DanmakuParser family",
+    "DanmakuOverlay family"
+  ],
+  "rootPlaybackRecipe": "Move existing load() danmaku launch from before native.loadVersioned to after current = Current(...version...) assignment. Capture expected/accountEpoch/version, guard context still owned, pass expectedSourceVersion=version. Old/default/offline callers expose no list snapshot.",
+  "opsRecipe": "Append member fragment only; never replace whole Ops. Add generated helper/source identities once to sole original producer/registry.",
+  "noMainOrGradle": true
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.danmaku.DanmakuPluginAdapterTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-01T05:00:42.462Z" hostname="TONYSUPER666" time="0.024">
+  <properties/>
+  <testcase name="null blocks actual display while plugin failure falls back to the original comment()" classname="com.bilipai.desktop.danmaku.DanmakuPluginAdapterTest" time="0.002"/>
+  <testcase name="eye protection paints actual dim and warm pixels and preserves the base opacity()" classname="com.bilipai.desktop.danmaku.DanmakuPluginAdapterTest" time="0.001"/>
+  <testcase name="original item fields are supplied and transformed content timing type color and style reach native comment()" classname="com.bilipai.desktop.danmaku.DanmakuPluginAdapterTest" time="0.021"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

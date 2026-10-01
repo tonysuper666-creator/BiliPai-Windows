@@ -1,0 +1,37 @@
+--- stable/getDanmakuThumbupState
+
++++ owned-protocol/getDanmakuThumbupState
+
+@@ -2,6 +2,8 @@
+
+         cid: Long,
+         dmid: Long
+     ): Result<DanmakuThumbupState> = withContext(Dispatchers.IO) {
++        kotlinx.coroutines.currentCoroutineContext().ensureActive()
++        assertOwned()
+         try {
+             if (dmid <= 0L) {
+                 return@withContext Result.failure(IllegalArgumentException("弹幕ID无效"))
+@@ -11,6 +13,8 @@
+
+                 oid = cid,
+                 ids = dmid.toString()
+             )
++            kotlinx.coroutines.currentCoroutineContext().ensureActive()
++            assertOwned()
+ 
+             if (response.code != 0) {
+                 val message = response.message.ifEmpty { "查询弹幕投票状态失败 (${response.code})" }
+@@ -21,8 +25,10 @@
+
+                 ?: return@withContext Result.failure(Exception("未找到该弹幕投票信息"))
+ 
+             Result.success(state)
++        } catch (cancelled: kotlinx.coroutines.CancellationException) {
++            throw cancelled
+         } catch (e: Exception) {
+-            android.util.Log.e("DanmakuRepo", "❌ getDanmakuThumbupState exception: ${e.message}", e)
++            assertOwned()
+             Result.failure(e)
+         }
+     }

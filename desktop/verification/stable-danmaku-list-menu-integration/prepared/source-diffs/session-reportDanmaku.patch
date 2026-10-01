@@ -1,0 +1,18 @@
+--- stable/reportDanmaku
+
++++ owned-session/reportDanmaku
+
+@@ -4,9 +4,11 @@
+
+             return
+         }
+         
++        assertOwned()
+         viewModelScope.launch {
+-            com.android.purebilibili.data.repository.DanmakuRepository
++            environment.actions
+                 .reportDanmaku(cid = currentCid, dmid = dmid, reason = reason, content = content)
++                .also { currentCoroutineContext().ensureActive(); assertOwned() }
+                 .onSuccess {
+                     toast("举报成功")
+                 }

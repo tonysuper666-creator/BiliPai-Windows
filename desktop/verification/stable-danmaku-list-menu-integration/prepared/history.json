@@ -1,0 +1,7 @@
+{
+  "compile01": "Failed because original report convenience overload was selected without full content overload; preserved raw log.",
+  "compile02": "Whole fourteen source compile passed before per-DMID stats job refinement; not final acceptance.",
+  "compile03": "Final full source compile passed.",
+  "proof01": "Fixture compile failed due wildcard ambiguity of the existing app DanmakuParser vs desktop DanmakuParser; no runtime happened.",
+  "proof02": "Explicit desktop parser import; final 3 grouped/37 assertions passed. No GUI/Root consumer claim."
+}

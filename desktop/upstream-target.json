@@ -96,7 +96,9 @@
       "sourceIntegrated": true,
       "candidateClassesPassed": true,
       "completeRuntimeAccepted": false,
-      "nativePlatformEvidence": "verification/stable-native-pages-integration/integration-report.json"
+      "nativePlatformEvidence": "verification/stable-native-pages-integration/integration-report.json",
+      "sourceIntegrationScope": "Original vote/grade source wired; full original list/menu/protocol/session compiled; list/menu Root mount and actual block-rule renderer consumer pending",
+      "originalListMenuEvidence": "verification/stable-danmaku-list-menu-integration/integration-report.json"
     },
     {
       "id": "video-honors-declarations-staff",
@@ -183,18 +185,21 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 741,
+    "candidateSourceIdentityCount": 748,
     "candidateResourceCount": 210,
     "all907CurrentSourceAndResourcePinsVerified": true,
-    "actualClassesEvidence": "verification/stable-favorites-folder-integration/root-follow-up/classes-18.log",
+    "actualClassesEvidence": "verification/stable-danmaku-list-menu-integration/root/classes-20.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-favorites-folder-integration/root-follow-up/classes-18.log",
+    "latestCandidateClassesLog": "verification/stable-danmaku-list-menu-integration/root/classes-20.log",
     "liveGuestBackendPassed": false,
     "liveGuestBackendFailure": "HTTP 412 at video details after popular/search passed",
     "liveGuestBackendEvidence": "verification/stable-comments-sharing-integration/root/actual-guest-backend/run-01/accepted-evidence.json",
     "all951CurrentSourceAndResourcePinsVerified": true,
     "favoriteProjectionJunitMethodsPassed": 3,
-    "favoriteProjectionEvidence": "verification/stable-favorites-folder-integration/integration-report.json"
+    "favoriteProjectionEvidence": "verification/stable-favorites-folder-integration/integration-report.json",
+    "all958CurrentSourceAndResourcePinsVerified": true,
+    "danmakuSourceJunitMethodsPassed": 26,
+    "danmakuListMenuEvidence": "verification/stable-danmaku-list-menu-integration/integration-report.json"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -210,6 +215,7 @@
     "verification/stable-player-download-integration/integration-report.json",
     "verification/stable-native-pages-integration/integration-report.json",
     "verification/stable-comments-sharing-integration/integration-report.json",
-    "verification/stable-favorites-folder-integration/integration-report.json"
+    "verification/stable-favorites-folder-integration/integration-report.json",
+    "verification/stable-danmaku-list-menu-integration/integration-report.json"
   ]
 }

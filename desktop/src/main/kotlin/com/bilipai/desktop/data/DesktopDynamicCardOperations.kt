@@ -209,6 +209,19 @@ internal class DesktopDynamicCardOperations(
     }
     /** Original publish verification uses AUTH; checkCreatedDyn remains GUEST above. */
     suspend fun getPublishedDynamicDetail(id: String): DynamicDetailResponse = read { dynamic.getDynamicDetail(id) }
+
+    // Desktop original danmaku list/menu actions. Existing sole API/epoch/read/mutate authority.
+    private val originalDanmakuActions = com.android.purebilibili.data.repository.DesktopOriginalDanmakuProtocol(
+        api, { assertOwned(); repository.requireCsrf() }, ::assertOwned)
+    internal suspend fun getDanmakuThumbupState(cid:Long,dmid:Long) =
+        result { read { originalDanmakuActions.getDanmakuThumbupState(cid,dmid).getOrThrow() } }
+    internal suspend fun recallDanmaku(cid:Long,dmid:Long) =
+        result { mutate { originalDanmakuActions.recallDanmaku(cid,dmid).getOrThrow() } }
+    internal suspend fun likeDanmaku(cid:Long,dmid:Long,like:Boolean=true) =
+        result { mutate { originalDanmakuActions.likeDanmaku(cid,dmid,like).getOrThrow() } }
+    internal suspend fun reportDanmaku(cid:Long,dmid:Long,reason:Int,content:String="") =
+        result { mutate { originalDanmakuActions.reportDanmaku(cid,dmid,reason,content).getOrThrow() } }
+
 // GENERATED original editor members; do not hand-maintain a second request algorithm.
 // ORIGINAL app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt
 // LF-normalized SHA-256: 2f85544e1e973dd0e7178077ef5c1f439b798a1d86b46701803adeb2a7c0364f

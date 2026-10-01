@@ -1,0 +1,721 @@
+{
+  "frozen": true,
+  "preparedOnly": true,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "phase": "danmaku-list-menu-complete-original-renderers-source-backed-schema-owned-protocol",
+  "artifactCount": 140,
+  "artifacts": [
+    {
+      "path": "audit-and-freeze.py",
+      "sha256Bytes": "ef539d4558ce3d846e149e35369da33cad499d852b27d6d5b656350b79b1b894",
+      "bytes": 15643
+    },
+    {
+      "path": "base-inputs/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "ece907d1a9159883c8aa9219f61a5782cef08ccaf391f10fcb4d96c4e53800b2",
+      "bytes": 23625
+    },
+    {
+      "path": "base-inputs/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "sha256Bytes": "a31114146152227ba50efd89fbc7c98f0dcd810ba3450a6ca73f399d7c1651cb",
+      "bytes": 8141
+    },
+    {
+      "path": "compile-01/compile-result.json",
+      "sha256Bytes": "0f9dff072d3e9a4694049709bc2293b1c8d96cf75b93fff94caf10b53021de61",
+      "bytes": 9226
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "sha256Bytes": "55a9a426cd0e971511219d7fa8d7ff2c2aa320a1977dab3389895e796542cab1",
+      "bytes": 26639
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "sha256Bytes": "e4d29a7b39d002e91cb4c20120e6d207c392d2bc8b15d41dce93b2c8b30887a1",
+      "bytes": 358
+    },
+    {
+      "path": "compile-01/runtime-pins-after.json",
+      "sha256Bytes": "f5ca36eba3928abc901d691ed5a2390cdf3bbb84d7d6db9081ac217d34af49a0",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-01/runtime-pins-before.json",
+      "sha256Bytes": "f5ca36eba3928abc901d691ed5a2390cdf3bbb84d7d6db9081ac217d34af49a0",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
+      "sha256Bytes": "b94bf1289a9d47aa2c76c731806c5ac577a64d960565c03a8487a0f4fa5cbf0d",
+      "bytes": 509
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/danmaku/engine/DanmakuItem.kt",
+      "sha256Bytes": "f51d92fe5e0febc7be695958c287153b760558ff0463993585077ccf662cba0a",
+      "bytes": 2341
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuProtocol.kt",
+      "sha256Bytes": "b48dd3e055769f1dcd2893ad1f56d1145ebbd9aeb9822e988e575802a2310e45",
+      "bytes": 6058
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuThumbupPolicy.kt",
+      "sha256Bytes": "25d6e2c796b0588a51ecb455cf2d98a780a53099ff5df1235e95eb8560391b3c",
+      "bytes": 542
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuItemParser.kt",
+      "sha256Bytes": "ca3bdc4e5fa76316637b90f861584f9fe6469edc0a8ab116cfc51042f5729690",
+      "bytes": 3924
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "sha256Bytes": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0",
+      "bytes": 787
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "sha256Bytes": "2a2bbdfbdb43db83d158a6e638dc9393e0b1a8d2fd6ea7944b9700598d5f3b13",
+      "bytes": 18982
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "sha256Bytes": "631336c4914189dbc81418891b505e61fb75388d65409270244527dd08ffb425",
+      "bytes": 25098
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDanmakuSession.kt",
+      "sha256Bytes": "e4a18274aec054ae7b9064722df12861321c32cf8cd2ddcfa09502443daa3bd3",
+      "bytes": 8515
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/bilipai/desktop/settings/DesktopDanmakuBlockPreferences.kt",
+      "sha256Bytes": "b9237857a873dddbe0b677fb710ae8a57cab6346abffceccea67c450627258df",
+      "bytes": 2992
+    },
+    {
+      "path": "compile-01/source-inputs/platform/com/bilipai/desktop/ui/DesktopDanmakuBindings.kt",
+      "sha256Bytes": "22ec3f340447146b3d3338636dc2d2d86fdc220b6d53106180fded7e68d2dd37",
+      "bytes": 2404
+    },
+    {
+      "path": "compile-01/source-inputs/platform/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+      "sha256Bytes": "65a25e75125c8d8ebdc39b9fd0e4c2d48b7af22869ba7eb27c6de46814c2e281",
+      "bytes": 4809
+    },
+    {
+      "path": "compile-01/source-inputs/selected-files/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "7d4630ed6340b48870fe83f5cd47071a22698973924a2b0b571274d1d05ca99b",
+      "bytes": 24856
+    },
+    {
+      "path": "compile-01/source-inputs/selected-files/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "sha256Bytes": "ee4235dbcb628fe160295650be9c2eb218211e75f06fa0d7fe0dc7e7223cd45c",
+      "bytes": 8709
+    },
+    {
+      "path": "compile-02/compile-result.json",
+      "sha256Bytes": "98aa1ccb4d285a75043bfb29146f3264cc5624f5e716c6573dae5cb72b6c994c",
+      "bytes": 20042
+    },
+    {
+      "path": "compile-02/compiler.args",
+      "sha256Bytes": "1afcd5a0e83fda2b83ec214357b8250906bc4875fb3155c5eb8f5f502285cb90",
+      "bytes": 26639
+    },
+    {
+      "path": "compile-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-02/original-danmaku-list-menu.jar",
+      "sha256Bytes": "3ebf58f76e75ccb096dc5688155d4f6d4c4121383094c7c606860d3844ee5bbf",
+      "bytes": 274468
+    },
+    {
+      "path": "compile-02/runtime-pins-after.json",
+      "sha256Bytes": "f5ca36eba3928abc901d691ed5a2390cdf3bbb84d7d6db9081ac217d34af49a0",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-02/runtime-pins-before.json",
+      "sha256Bytes": "f5ca36eba3928abc901d691ed5a2390cdf3bbb84d7d6db9081ac217d34af49a0",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
+      "sha256Bytes": "b94bf1289a9d47aa2c76c731806c5ac577a64d960565c03a8487a0f4fa5cbf0d",
+      "bytes": 509
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/danmaku/engine/DanmakuItem.kt",
+      "sha256Bytes": "f51d92fe5e0febc7be695958c287153b760558ff0463993585077ccf662cba0a",
+      "bytes": 2341
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuProtocol.kt",
+      "sha256Bytes": "b48dd3e055769f1dcd2893ad1f56d1145ebbd9aeb9822e988e575802a2310e45",
+      "bytes": 6058
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuThumbupPolicy.kt",
+      "sha256Bytes": "25d6e2c796b0588a51ecb455cf2d98a780a53099ff5df1235e95eb8560391b3c",
+      "bytes": 542
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuItemParser.kt",
+      "sha256Bytes": "ca3bdc4e5fa76316637b90f861584f9fe6469edc0a8ab116cfc51042f5729690",
+      "bytes": 3924
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "sha256Bytes": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0",
+      "bytes": 787
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "sha256Bytes": "2a2bbdfbdb43db83d158a6e638dc9393e0b1a8d2fd6ea7944b9700598d5f3b13",
+      "bytes": 18982
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "sha256Bytes": "631336c4914189dbc81418891b505e61fb75388d65409270244527dd08ffb425",
+      "bytes": 25098
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDanmakuSession.kt",
+      "sha256Bytes": "40b4ab88353727490fba22c77a333f84e23c06aef568e4e032acb3737c278bef",
+      "bytes": 9206
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/bilipai/desktop/settings/DesktopDanmakuBlockPreferences.kt",
+      "sha256Bytes": "b9237857a873dddbe0b677fb710ae8a57cab6346abffceccea67c450627258df",
+      "bytes": 2992
+    },
+    {
+      "path": "compile-02/source-inputs/platform/com/bilipai/desktop/ui/DesktopDanmakuBindings.kt",
+      "sha256Bytes": "22ec3f340447146b3d3338636dc2d2d86fdc220b6d53106180fded7e68d2dd37",
+      "bytes": 2404
+    },
+    {
+      "path": "compile-02/source-inputs/platform/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+      "sha256Bytes": "65a25e75125c8d8ebdc39b9fd0e4c2d48b7af22869ba7eb27c6de46814c2e281",
+      "bytes": 4809
+    },
+    {
+      "path": "compile-02/source-inputs/selected-files/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "7d4630ed6340b48870fe83f5cd47071a22698973924a2b0b571274d1d05ca99b",
+      "bytes": 24856
+    },
+    {
+      "path": "compile-02/source-inputs/selected-files/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "sha256Bytes": "ee4235dbcb628fe160295650be9c2eb218211e75f06fa0d7fe0dc7e7223cd45c",
+      "bytes": 8709
+    },
+    {
+      "path": "compile-03/compile-result.json",
+      "sha256Bytes": "d1cdb9415c2b9ca8fa0b3fc76aa77d031b2eda025c489a758e61190fa10cc7e4",
+      "bytes": 20050
+    },
+    {
+      "path": "compile-03/compiler.args",
+      "sha256Bytes": "ff0aed1c495c7721af3ee38dde2047fdde105484582a0e9a90dada08fa4362c3",
+      "bytes": 26639
+    },
+    {
+      "path": "compile-03/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-03/original-danmaku-list-menu.jar",
+      "sha256Bytes": "1685396c489da7ac256166473a449673d946c2a6524a59d5075121494b596af5",
+      "bytes": 274924
+    },
+    {
+      "path": "compile-03/runtime-pins-after.json",
+      "sha256Bytes": "f5ca36eba3928abc901d691ed5a2390cdf3bbb84d7d6db9081ac217d34af49a0",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-03/runtime-pins-before.json",
+      "sha256Bytes": "f5ca36eba3928abc901d691ed5a2390cdf3bbb84d7d6db9081ac217d34af49a0",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
+      "sha256Bytes": "b94bf1289a9d47aa2c76c731806c5ac577a64d960565c03a8487a0f4fa5cbf0d",
+      "bytes": 509
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/danmaku/engine/DanmakuItem.kt",
+      "sha256Bytes": "f51d92fe5e0febc7be695958c287153b760558ff0463993585077ccf662cba0a",
+      "bytes": 2341
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuProtocol.kt",
+      "sha256Bytes": "b48dd3e055769f1dcd2893ad1f56d1145ebbd9aeb9822e988e575802a2310e45",
+      "bytes": 6058
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuThumbupPolicy.kt",
+      "sha256Bytes": "25d6e2c796b0588a51ecb455cf2d98a780a53099ff5df1235e95eb8560391b3c",
+      "bytes": 542
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuItemParser.kt",
+      "sha256Bytes": "ca3bdc4e5fa76316637b90f861584f9fe6469edc0a8ab116cfc51042f5729690",
+      "bytes": 3924
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "sha256Bytes": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0",
+      "bytes": 787
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "sha256Bytes": "2a2bbdfbdb43db83d158a6e638dc9393e0b1a8d2fd6ea7944b9700598d5f3b13",
+      "bytes": 18982
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "sha256Bytes": "631336c4914189dbc81418891b505e61fb75388d65409270244527dd08ffb425",
+      "bytes": 25098
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDanmakuSession.kt",
+      "sha256Bytes": "3b8a7fc2284be4bdd7cc3b98ae82bc31749a28479ff55ddd4d5477c0324e0985",
+      "bytes": 9469
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/bilipai/desktop/settings/DesktopDanmakuBlockPreferences.kt",
+      "sha256Bytes": "b9237857a873dddbe0b677fb710ae8a57cab6346abffceccea67c450627258df",
+      "bytes": 2992
+    },
+    {
+      "path": "compile-03/source-inputs/platform/com/bilipai/desktop/ui/DesktopDanmakuBindings.kt",
+      "sha256Bytes": "22ec3f340447146b3d3338636dc2d2d86fdc220b6d53106180fded7e68d2dd37",
+      "bytes": 2404
+    },
+    {
+      "path": "compile-03/source-inputs/platform/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+      "sha256Bytes": "65a25e75125c8d8ebdc39b9fd0e4c2d48b7af22869ba7eb27c6de46814c2e281",
+      "bytes": 4809
+    },
+    {
+      "path": "compile-03/source-inputs/selected-files/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "7d4630ed6340b48870fe83f5cd47071a22698973924a2b0b571274d1d05ca99b",
+      "bytes": 24856
+    },
+    {
+      "path": "compile-03/source-inputs/selected-files/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "sha256Bytes": "ee4235dbcb628fe160295650be9c2eb218211e75f06fa0d7fe0dc7e7223cd45c",
+      "bytes": 8709
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "bf319c4639f338efa5bbee7b685850a19f4b74146a661c11ad94dbae60f8c2d3",
+      "bytes": 4312
+    },
+    {
+      "path": "DanmakuFixture.kt",
+      "sha256Bytes": "adb2ba8a6724af4320903d75712f4d209c8c94fdb4f3654793f5e43f9a437ea4",
+      "bytes": 12257
+    },
+    {
+      "path": "fragments/DesktopDynamicCardOperations.danmaku.ktfrag",
+      "sha256Bytes": "ba38d8f321674af90e6daa13c23e90031f41a0d900f9a7faf081404ba4b0cd38",
+      "bytes": 969
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
+      "sha256Bytes": "b94bf1289a9d47aa2c76c731806c5ac577a64d960565c03a8487a0f4fa5cbf0d",
+      "bytes": 509
+    },
+    {
+      "path": "generated/com/android/purebilibili/danmaku/engine/DanmakuItem.kt",
+      "sha256Bytes": "f51d92fe5e0febc7be695958c287153b760558ff0463993585077ccf662cba0a",
+      "bytes": 2341
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuProtocol.kt",
+      "sha256Bytes": "b48dd3e055769f1dcd2893ad1f56d1145ebbd9aeb9822e988e575802a2310e45",
+      "bytes": 6058
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuThumbupPolicy.kt",
+      "sha256Bytes": "25d6e2c796b0588a51ecb455cf2d98a780a53099ff5df1235e95eb8560391b3c",
+      "bytes": 542
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuItemParser.kt",
+      "sha256Bytes": "ca3bdc4e5fa76316637b90f861584f9fe6469edc0a8ab116cfc51042f5729690",
+      "bytes": 3924
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "sha256Bytes": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0",
+      "bytes": 787
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "sha256Bytes": "2a2bbdfbdb43db83d158a6e638dc9393e0b1a8d2fd6ea7944b9700598d5f3b13",
+      "bytes": 18982
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "sha256Bytes": "631336c4914189dbc81418891b505e61fb75388d65409270244527dd08ffb425",
+      "bytes": 25098
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDanmakuSession.kt",
+      "sha256Bytes": "3b8a7fc2284be4bdd7cc3b98ae82bc31749a28479ff55ddd4d5477c0324e0985",
+      "bytes": 9469
+    },
+    {
+      "path": "generated/com/bilipai/desktop/settings/DesktopDanmakuBlockPreferences.kt",
+      "sha256Bytes": "b9237857a873dddbe0b677fb710ae8a57cab6346abffceccea67c450627258df",
+      "bytes": 2992
+    },
+    {
+      "path": "generated/source-inventory.json",
+      "sha256Bytes": "614955f3121b255dd5e2ce89b05c7d0cf5a2f1785560275e51f0047759f03212",
+      "bytes": 15689
+    },
+    {
+      "path": "history.json",
+      "sha256Bytes": "0cc1fa4ab2911d961969fa4febb3578f44a0aba6f0f436eb6f718a3c2dcc71f6",
+      "bytes": 560
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "d8475a11f405a019876e210cc0ec3bc03c60696d7792005ed253a96ea42790a6",
+      "bytes": 9263
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "bytes": 396158
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "sha256Bytes": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5",
+      "bytes": 45677
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+      "sha256Bytes": "eb3bc94d8a8bc3ac4a22fc734116b977b6ff27f53ee5a7b264090edfe1f12cf1",
+      "bytes": 10629
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "sha256Bytes": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93",
+      "bytes": 108961
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuParser.kt",
+      "sha256Bytes": "753c99914651fad5d05323889b650eba86b36625ffc45266e1f4ccad273b5791",
+      "bytes": 18297
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "sha256Bytes": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0",
+      "bytes": 787
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt",
+      "sha256Bytes": "f7532155c6e8429f27dd251193001e17ac0a824934ea669ad016f7d187985c46",
+      "bytes": 43891
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "sha256Bytes": "0c21e3775ca011d8e18791facb365b0c4e712a8b02798a510102a4f71d22c62a",
+      "bytes": 18934
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "sha256Bytes": "5846ca9e334a80a6eca37da32b1157c8276001484ff355b413a4320200c9ee2b",
+      "bytes": 25326
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "sha256Bytes": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e",
+      "bytes": 296288
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "sha256Bytes": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "bytes": 398331
+    },
+    {
+      "path": "original-inputs/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+      "sha256Bytes": "ba80d0cfef445bda5a9e2ebc10f68de83d1ccc24cf881d7a49d02bf656c6cfa7",
+      "bytes": 3432
+    },
+    {
+      "path": "platform/com/bilipai/desktop/ui/DesktopDanmakuBindings.kt",
+      "sha256Bytes": "22ec3f340447146b3d3338636dc2d2d86fdc220b6d53106180fded7e68d2dd37",
+      "bytes": 2404
+    },
+    {
+      "path": "platform/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+      "sha256Bytes": "65a25e75125c8d8ebdc39b9fd0e4c2d48b7af22869ba7eb27c6de46814c2e281",
+      "bytes": 4809
+    },
+    {
+      "path": "platform-delta-contract.json",
+      "sha256Bytes": "d0eaa6ebca629176514843fcffd4a3afe62e0dd54743f2d18cbb0ec518297850",
+      "bytes": 6037
+    },
+    {
+      "path": "prepare-platform-deltas.py",
+      "sha256Bytes": "ab8fc1c810def11497a046e282af2dd00c1225f8d95691ce22f5b7c930c7604c",
+      "bytes": 7938
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "7d4630ed6340b48870fe83f5cd47071a22698973924a2b0b571274d1d05ca99b",
+      "bytes": 24856
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "sha256Bytes": "ee4235dbcb628fe160295650be9c2eb218211e75f06fa0d7fe0dc7e7223cd45c",
+      "bytes": 8709
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuBindings.kt",
+      "sha256Bytes": "22ec3f340447146b3d3338636dc2d2d86fdc220b6d53106180fded7e68d2dd37",
+      "bytes": 2404
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+      "sha256Bytes": "65a25e75125c8d8ebdc39b9fd0e4c2d48b7af22869ba7eb27c6de46814c2e281",
+      "bytes": 4809
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "sha256Bytes": "b2812e7db1e6a27e33f3a27bcd6885f8893acd226e50f5d283588b0609a5e084",
+      "bytes": 21907
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
+      "sha256Bytes": "b94bf1289a9d47aa2c76c731806c5ac577a64d960565c03a8487a0f4fa5cbf0d",
+      "bytes": 509
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/danmaku/engine/DanmakuItem.kt",
+      "sha256Bytes": "f51d92fe5e0febc7be695958c287153b760558ff0463993585077ccf662cba0a",
+      "bytes": 2341
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuProtocol.kt",
+      "sha256Bytes": "b48dd3e055769f1dcd2893ad1f56d1145ebbd9aeb9822e988e575802a2310e45",
+      "bytes": 6058
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/data/repository/DesktopOriginalDanmakuThumbupPolicy.kt",
+      "sha256Bytes": "25d6e2c796b0588a51ecb455cf2d98a780a53099ff5df1235e95eb8560391b3c",
+      "bytes": 542
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuItemParser.kt",
+      "sha256Bytes": "ca3bdc4e5fa76316637b90f861584f9fe6469edc0a8ab116cfc51042f5729690",
+      "bytes": 3924
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "sha256Bytes": "2a2bbdfbdb43db83d158a6e638dc9393e0b1a8d2fd6ea7944b9700598d5f3b13",
+      "bytes": 18982
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "sha256Bytes": "631336c4914189dbc81418891b505e61fb75388d65409270244527dd08ffb425",
+      "bytes": 25098
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDanmakuSession.kt",
+      "sha256Bytes": "3b8a7fc2284be4bdd7cc3b98ae82bc31749a28479ff55ddd4d5477c0324e0985",
+      "bytes": 9469
+    },
+    {
+      "path": "prepared/production-generated/com/bilipai/desktop/settings/DesktopDanmakuBlockPreferences.kt",
+      "sha256Bytes": "b9237857a873dddbe0b677fb710ae8a57cab6346abffceccea67c450627258df",
+      "bytes": 2992
+    },
+    {
+      "path": "prepared/production-generated/source-inventory.json",
+      "sha256Bytes": "3131a6cad3edff2ee36c9c12b09f87aa7e0028fc7fbbcc707df01a2104ab3096",
+      "bytes": 15305
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sha256Bytes": "752c024fd560bda85fd7b1943721b49f301a9e6d9576b3da5deda5a26c5ed0ac",
+      "bytes": 23774
+    },
+    {
+      "path": "proof-01/compiler.log",
+      "sha256Bytes": "9f0a4fd0b5cc14c59a53cb3baa18f7fa691fa774109f109fada435239d8d0b7a",
+      "bytes": 7358
+    },
+    {
+      "path": "proof-01/DanmakuFixture.kt",
+      "sha256Bytes": "f1967ffe3fb5cff9ad1d32b9a84ed48b90ddbe3c662f69119d3c9f2af09468f9",
+      "bytes": 12208
+    },
+    {
+      "path": "proof-01/runtime-pins-before.json",
+      "sha256Bytes": "f5ca36eba3928abc901d691ed5a2390cdf3bbb84d7d6db9081ac217d34af49a0",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-02/accepted-result.json",
+      "sha256Bytes": "b7cb613cf3d93e06c8f5f2a33c6dc9a314fafeb1a056269cd608245f3749689b",
+      "bytes": 3031
+    },
+    {
+      "path": "proof-02/compiler.args",
+      "sha256Bytes": "7152d122538c1bf459f993f3ff758f9da42cb5fd1b572a6b73a2b797881698e8",
+      "bytes": 23774
+    },
+    {
+      "path": "proof-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-02/danmaku-fixture.jar",
+      "sha256Bytes": "be84357cdb8dd5fb23f43586b86ed2c003ee4d767ff7a1df509af703f54b188e",
+      "bytes": 30528
+    },
+    {
+      "path": "proof-02/DanmakuFixture.kt",
+      "sha256Bytes": "adb2ba8a6724af4320903d75712f4d209c8c94fdb4f3654793f5e43f9a437ea4",
+      "bytes": 12257
+    },
+    {
+      "path": "proof-02/runtime-command.json",
+      "sha256Bytes": "551ac4a22bb78bbc8d8d7a87f5327fc9f4f39bc430e45e302a6a0342bada4254",
+      "bytes": 24841
+    },
+    {
+      "path": "proof-02/runtime-pins-after.json",
+      "sha256Bytes": "f5ca36eba3928abc901d691ed5a2390cdf3bbb84d7d6db9081ac217d34af49a0",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-02/runtime-pins-before.json",
+      "sha256Bytes": "f5ca36eba3928abc901d691ed5a2390cdf3bbb84d7d6db9081ac217d34af49a0",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-02/runtime.log",
+      "sha256Bytes": "456c4a99b8ed17bd3eedaf4b7682b402e449b126b7e2116fd2b3210a3955e771",
+      "bytes": 2314
+    },
+    {
+      "path": "proof-02/scratch/result.json",
+      "sha256Bytes": "f0ae20ccee9cfdc1a391d0c4417caaaa660a1a6ad75f7897699f7355d439f87e",
+      "bytes": 2313
+    },
+    {
+      "path": "run-fixture.py",
+      "sha256Bytes": "0a521e2f17234b5bad816f158c6c811c2eb0caca7c9e6fc9c437faa7248ed48c",
+      "bytes": 3030
+    },
+    {
+      "path": "selected-files/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "7d4630ed6340b48870fe83f5cd47071a22698973924a2b0b571274d1d05ca99b",
+      "bytes": 24856
+    },
+    {
+      "path": "selected-files/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "sha256Bytes": "ee4235dbcb628fe160295650be9c2eb218211e75f06fa0d7fe0dc7e7223cd45c",
+      "bytes": 8709
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "48a7b2605a7344e8cb6318be170a919c2c62454e4fb85a50146937d2b3eaf28f",
+      "bytes": 7044
+    },
+    {
+      "path": "source-diffs/DanmakuContextMenu.kt.patch",
+      "sha256Bytes": "69734300038e0def079609512b03a3ff86484260c6e9101483f7d1c66c906d7d",
+      "bytes": 1242
+    },
+    {
+      "path": "source-diffs/DanmakuItem.kt.patch",
+      "sha256Bytes": "aa5daf6f2b84143db173f5f45dadc509568df36c931d6def326f981070ee7c98",
+      "bytes": 552
+    },
+    {
+      "path": "source-diffs/DanmakuPoolSheet.kt.patch",
+      "sha256Bytes": "978fd49aba01922d32576eac158958c780bd5e18233d30994ca1062e459d8b9b",
+      "bytes": 3323
+    },
+    {
+      "path": "source-diffs/protocol-getDanmakuThumbupState.patch",
+      "sha256Bytes": "ac208e46f28917f6e2ab79893a7520add47c0273506e8e734c5d8c73c82fc7aa",
+      "bytes": 1262
+    },
+    {
+      "path": "source-diffs/protocol-likeDanmaku.patch",
+      "sha256Bytes": "e3f71e5be3015fe563b8f94288e046c801caf3e4d81e04df366f2207cfe07c19",
+      "bytes": 1878
+    },
+    {
+      "path": "source-diffs/protocol-recallDanmaku.patch",
+      "sha256Bytes": "148391ff4de67f331fa0cfde59658727599e8035ce8efed242a2614a4c445c16",
+      "bytes": 1829
+    },
+    {
+      "path": "source-diffs/protocol-reportDanmaku.patch",
+      "sha256Bytes": "0a10fca406db208f08f16a485f5917be3a7e8346229b3b69a955376bdf8c2da0",
+      "bytes": 1854
+    },
+    {
+      "path": "source-diffs/session-likeDanmaku.patch",
+      "sha256Bytes": "58f58b6d1f6943e37cbf1222910579d3ebf1900e1cbae3b59c1e2824801b9659",
+      "bytes": 2348
+    },
+    {
+      "path": "source-diffs/session-recallDanmaku.patch",
+      "sha256Bytes": "1081bce5265194d0b842fb192ee4d3f7fb45e12a9aa8d572b95d73e5b52529e9",
+      "bytes": 548
+    },
+    {
+      "path": "source-diffs/session-refreshDanmakuThumbupState.patch",
+      "sha256Bytes": "a422ead7d69ac25ebbea63bb0005b4a8ebbc70c8527e32f1177f551d47f0f5e6",
+      "bytes": 2193
+    },
+    {
+      "path": "source-diffs/session-reportDanmaku.patch",
+      "sha256Bytes": "e3435a94b85109d23e1c492994d51b01d7e3a6960bba450226b4d96f3e4d80e8",
+      "bytes": 553
+    },
+    {
+      "path": "source-diffs/WeightedTextData.kt.patch",
+      "sha256Bytes": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1
+    },
+    {
+      "path": "symbol-audit.json",
+      "sha256Bytes": "fc19791b34e42c6d5878c995cd31e4305407ecbe8d9282e7f3df725fdc284007",
+      "bytes": 2597
+    }
+  ],
+  "sourceAuditSha256Bytes": "48a7b2605a7344e8cb6318be170a919c2c62454e4fb85a50146937d2b3eaf28f",
+  "symbolAuditSha256Bytes": "fc19791b34e42c6d5878c995cd31e4305407ecbe8d9282e7f3df725fdc284007",
+  "installContractSha256Bytes": "d8475a11f405a019876e210cc0ec3bc03c60696d7792005ed253a96ea42790a6",
+  "compile03ResultSha256Bytes": "d1cdb9415c2b9ca8fa0b3fc76aa77d031b2eda025c489a758e61190fa10cc7e4",
+  "proof02AcceptedSha256Bytes": "b7cb613cf3d93e06c8f5f2a33c6dc9a314fafeb1a056269cd608245f3749689b",
+  "actualOriginalUiOrRootNativePointerAcceptance": false,
+  "pending": [
+    "Full DanmakuSettingsPanel/cloud/filter import/smart occlusion",
+    "Transparent native overlay pointer/hit testing",
+    "Actual Root list/settings entry mounting and native seek callback",
+    "Root original TextSelectionBottomSheet delegate under existing owned card provider"
+  ]
+}

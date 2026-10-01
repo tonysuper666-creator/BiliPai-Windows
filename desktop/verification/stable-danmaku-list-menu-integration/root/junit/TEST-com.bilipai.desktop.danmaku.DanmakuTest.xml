@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.danmaku.DanmakuTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-01T05:00:42.487Z" hostname="TONYSUPER666" time="0.048">
+  <properties/>
+  <testcase name="XML rejects external entities instead of opening local files()" classname="com.bilipai.desktop.danmaku.DanmakuTest" time="0.007"/>
+  <testcase name="duplicate merging keeps the original timing and styles and can be disabled()" classname="com.bilipai.desktop.danmaku.DanmakuTest" time="0.01"/>
+  <testcase name="settings changes immediately rebuild visible comments and apply type color keyword filters()" classname="com.bilipai.desktop.danmaku.DanmakuTest" time="0.004"/>
+  <testcase name="original XML pool receives full text and metadata while renderer keeps its display bounds()" classname="com.bilipai.desktop.danmaku.DanmakuTest" time="0.003"/>
+  <testcase name="a long fast comment cannot catch a short slow comment in one lane()" classname="com.bilipai.desktop.danmaku.DanmakuTest" time="0.001"/>
+  <testcase name="XML preserves standard modes colors and time while ignoring code comments()" classname="com.bilipai.desktop.danmaku.DanmakuTest" time="0.002"/>
+  <testcase name="backward and forward seeks rebuild only the destination timeline()" classname="com.bilipai.desktop.danmaku.DanmakuTest" time="0.002"/>
+  <testcase name="dense mixed comments never intersect on the same lane()" classname="com.bilipai.desktop.danmaku.DanmakuTest" time="0.012"/>
+  <testcase name="paused time freezes positions and viewport changes preserve visible content()" classname="com.bilipai.desktop.danmaku.DanmakuTest" time="0.001"/>
+  <testcase name="reverse scrolling comments move left to right without crossing forward comments()" classname="com.bilipai.desktop.danmaku.DanmakuTest" time="0.003"/>
+  <testcase name="area and speed settings reserve the chosen screen band after seeking()" classname="com.bilipai.desktop.danmaku.DanmakuTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

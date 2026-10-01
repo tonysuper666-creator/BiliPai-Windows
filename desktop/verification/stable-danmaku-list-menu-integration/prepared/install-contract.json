@@ -1,0 +1,130 @@
+{
+  "preparedOnly": true,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualCompileSnapshot16ManifestSha256Bytes": "d5a8a3d5bfea1f5ad1911448d974344e5567e1069d205865a1417f29d2ab7c18",
+  "actualCp92Sha256Bytes": "5a67a5cab59c2f1e3b9cd7fa04995bd03dfb61480bfc2c9b1654348d14f025eb",
+  "producer": "prepared/desktop/tools/extract-upstream-danmaku-list-menu.py",
+  "entry": "generate(repo,output,standalone=False)",
+  "productionSelectedCount": 9,
+  "directOnceReferences": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "sha256LF": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0"
+    }
+  ],
+  "manualSourceCount": 2,
+  "selectedCurrentPlatformSourceCount": 2,
+  "totalCompileSources": 14,
+  "originalSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "5846ca9e334a80a6eca37da32b1157c8276001484ff355b413a4320200c9ee2b",
+      "gitBlob": "d77e9b4e27780cfeeccb4aeb76f2a54c3fe53972"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "0c21e3775ca011d8e18791facb365b0c4e712a8b02798a510102a4f71d22c62a",
+      "gitBlob": "069c7ec27947b239ed52d4e159ee560de0eb1a93"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "gitBlob": "e58f702e55adce811b25e3230fdabedba4a7f83a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuParser.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "753c99914651fad5d05323889b650eba86b36625ffc45266e1f4ccad273b5791",
+      "gitBlob": "4c2350ba5de3d95c3003b219b5288cf18f7df634"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0",
+      "gitBlob": "053efe8de009825a1cb0aba7ad17be5a113f85d6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93",
+      "gitBlob": "b6119f8052338ad0cb61b36817a5244d25382d63"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "eb3bc94d8a8bc3ac4a22fc734116b977b6ff27f53ee5a7b264090edfe1f12cf1",
+      "gitBlob": "25189cf639c886f36ae03320b98f59e932e0895b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5",
+      "gitBlob": "fb1bdad390e9b94175920908dc859ea81849934f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "gitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "f7532155c6e8429f27dd251193001e17ac0a824934ea669ad016f7d187985c46",
+      "gitBlob": "3ff605bc9027b9533dfd76a01babc5d079e6761c"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e",
+      "gitBlob": "cb34ca4bc2a2fd6f8c82884aa37ce144f5ac8976"
+    },
+    {
+      "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "ba80d0cfef445bda5a9e2ebc10f68de83d1ccc24cf881d7a49d02bf656c6cfa7",
+      "gitBlob": "f2eb3b296dc53960b0454542d0c49c92335c3cbc"
+    }
+  ],
+  "sourceOnlyRecipe": [
+    "Copy sole new producer; run default into exactly one generated source directory. Do not compile task generated plus production-generated together.",
+    "Register direct WeightedTextData.kt once, LF pinned. Merge list-menu feature into already-existing source identities; never overwrite Root modes/features.",
+    "Install two manual platform sources from prepared/desktop/src/main/kotlin and the two selected Parser/Overlay files using base/candidate LF pins in platform-delta-contract.json.",
+    "Append fragments/DesktopDynamicCardOperations.danmaku.ktfrag only. Keep Root stream/grade/fraud/reply/editor members and existing sole API/Store/client untouched.",
+    "In DesktopPlaybackController.load move existing danmaku launch after native.loadVersioned and current=Current(...version...) assignment; validate same generation/accountEpoch/source ownership and pass expectedSourceVersion=version. Offline default callers deliberately produce no pool source snapshot.",
+    "Recompile the whole product: primary Comment source-payload tail fields change constructor/copy ABI. Existing precompiled Snapshot16 WindowLoader/plugin callers were not runtime exercised with this override."
+  ],
+  "requiredOwnedEnvironment": "DesktopDanmakuSessionEnvironment(cid,sourceVersion,expectedEpoch,callerScope,actions,stillOwned,currentMid,feedback,seekFromUser). stillOwned checks page alive AND repository.sessionEpoch==capturedEpoch AND same native sourceVersion AND current controller CID. Use Root DesktopPlaybackController.seekTo(ms/1000.0) to retain actual user-seek/sponsor behavior. currentMid is a late guarded Root read, not a cached or invented hash.",
+  "RootActionsBinding": "Implement DesktopDanmakuActions with same existing owned Operations methods; do not construct Retrofit/another Repository. Internal public schema is the original selected DanmakuThumbupState.",
+  "sessionRecipe": "remember per immutable page/CID/sourceVersion/accountEpoch, one DesktopOriginalDanmakuSession; close it on disposal (only its child scope). All action callbacks run on Root Compose UI dispatcher. Pool and menu consume same likedDanmakuIds. showOriginalDanmakuItem(item,currentMid) is the exact original manager isSelf/hash rule for a future actual overlay hit target.",
+  "host": "DesktopOriginalDanmakuHost(overlay,environment,session,platform,blockPreferences,settingsScope,showPool,currentPositionMs,onDismissPool). Root owns the entry Boolean and mounts the complete original UI; getter only projects sole raw loaded standard comments, not full server catalog.",
+  "platform": "Required DesktopDanmakuPlatform.isOwned/feedback/copyText/textSelection. Delegate textSelection to existing sole original TextSelectionBottomSheet under Root same owned LocalDesktopDynamicCardBindings provider (e.g. same source Video comment root common binding). No default fake card platform or new renderer.",
+  "settings": "DesktopDanmakuBlockPreferences(existingGlobalPluginStore,withOwnedAdmission). Root supplies its actual SessionStore owner admission and live page/source gate. One settings namespace, exact danmaku_portrait_block_rules/danmaku_landscape_block_rules plus legacy danmaku_block_rules fallback. Keys are never MID-bound. Existing block/filter policies reused; full settings/cloud/import UI is pending.",
+  "lockOrder": "Root current SessionStore owner admission -> PluginStore backing monitor/updateFromSnapshot. No HTTP/await inside either. Overlay getter requestLock -> existing player sourceVersion monitor; Root must not call getter while holding player source lock. Getter does not cross GUI/native work.",
+  "proof": {
+    "compilePhase": "compile-03",
+    "groupedCases": 3,
+    "assertions": 37,
+    "actualCodeSources": 6,
+    "memoryRetrofitNoSocket": true,
+    "declaredProductOverrides": "Parser/Overlay only",
+    "unexpectedClassOrTopLevelOverlap": 0,
+    "actualOriginalUiMounted": false,
+    "actualRootPlaybackCallbacksConsumed": false,
+    "actualOverlayHitTesting": false,
+    "OpsFragmentCompiledByRootStillRequired": true
+  },
+  "pending": [
+    "Full DanmakuSettingsPanel/cloud/filter import/smart occlusion",
+    "Transparent native overlay pointer/hit testing",
+    "Actual Root list/settings entry mounting and native seek callback",
+    "Root original TextSelectionBottomSheet delegate under existing owned card provider"
+  ],
+  "noMainOrSharedGradleEdits": true,
+  "noNewDependency": true,
+  "noAccountReadsOrExternalRequests": true,
+  "noHWND": true
+}

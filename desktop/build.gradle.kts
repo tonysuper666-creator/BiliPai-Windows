@@ -695,6 +695,20 @@ val extractOriginalFavoriteFolder by tasks.registering(Exec::class) {
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalFavorites, extractOriginalFavoriteFolder) }
 
+val extractOriginalDanmakuListMenu by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-danmaku-list-menu.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-danmaku-list-menu").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-danmaku-list-menu.py", "tools/extract-upstream-dynamic-reply-protocol.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-danmaku-list-menu" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-danmaku-list-menu"))
+}
+tasks.named("compileKotlin") { dependsOn(extractOriginalDanmakuListMenu) }
+
 val extractCommentFraudProtocol by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -1100,6 +1114,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/video-comment-ui/com"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/original-favorites/com"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/original-favorite-folder/com"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/original-danmaku-list-menu/com"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/comment-fraud-protocol/generated"))
     kotlin.srcDir(nativeDiagnosticShareOutput.map { it.dir("kotlin") })
 }

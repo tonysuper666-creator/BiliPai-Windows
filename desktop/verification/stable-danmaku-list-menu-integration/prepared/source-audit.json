@@ -1,0 +1,207 @@
+{
+  "status": "PASS",
+  "checkCount": 47,
+  "checks": [
+    {
+      "name": "standalone10-production9-direct1-omitted",
+      "passed": true
+    },
+    {
+      "name": "default-standalone-byte-equal:com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "passed": true
+    },
+    {
+      "name": "default-standalone-byte-equal:com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "passed": true
+    },
+    {
+      "name": "default-standalone-byte-equal:com/android/purebilibili/danmaku/engine/DanmakuItem.kt",
+      "passed": true
+    },
+    {
+      "name": "default-standalone-byte-equal:com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuItemParser.kt",
+      "passed": true
+    },
+    {
+      "name": "default-standalone-byte-equal:com/android/purebilibili/data/repository/DesktopOriginalDanmakuThumbupPolicy.kt",
+      "passed": true
+    },
+    {
+      "name": "default-standalone-byte-equal:com/android/purebilibili/data/repository/DesktopOriginalDanmakuProtocol.kt",
+      "passed": true
+    },
+    {
+      "name": "default-standalone-byte-equal:com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
+      "passed": true
+    },
+    {
+      "name": "default-standalone-byte-equal:com/bilipai/desktop/settings/DesktopDanmakuBlockPreferences.kt",
+      "passed": true
+    },
+    {
+      "name": "default-standalone-byte-equal:com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDanmakuSession.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuParser.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:app/src/main/java/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "passed": true
+    },
+    {
+      "name": "stable-pinned-source:danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+      "passed": true
+    },
+    {
+      "name": "compile14-and-focused3case37assertions-accepted",
+      "passed": true
+    },
+    {
+      "name": "14-exact-compiled-payload-inputs",
+      "passed": true
+    },
+    {
+      "name": "full-renderer-or-schema-reverse-equal:com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "passed": true
+    },
+    {
+      "name": "full-renderer-or-schema-reverse-equal:com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "passed": true
+    },
+    {
+      "name": "full-renderer-or-schema-reverse-equal:com/android/purebilibili/danmaku/engine/DanmakuItem.kt",
+      "passed": true
+    },
+    {
+      "name": "full-renderer-or-schema-reverse-equal:com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "passed": true
+    },
+    {
+      "name": "complete-original-standard-factory:createTextDataFromProto",
+      "passed": true
+    },
+    {
+      "name": "complete-original-standard-factory:formatDanmakuTextWithCount",
+      "passed": true
+    },
+    {
+      "name": "complete-original-standard-factory:createTextData",
+      "passed": true
+    },
+    {
+      "name": "complete-original-standard-factory:mapLayerType",
+      "passed": true
+    },
+    {
+      "name": "original-protocol-reverse-minus-platform-logs:getDanmakuThumbupState",
+      "passed": true
+    },
+    {
+      "name": "original-protocol-reverse-minus-platform-logs:recallDanmaku",
+      "passed": true
+    },
+    {
+      "name": "original-protocol-reverse-minus-platform-logs:likeDanmaku",
+      "passed": true
+    },
+    {
+      "name": "original-protocol-reverse-minus-platform-logs:reportDanmaku",
+      "passed": true
+    },
+    {
+      "name": "full-original-menu-state-schema-exact",
+      "passed": true
+    },
+    {
+      "name": "original-state-receipt-exact:refreshDanmakuThumbupState.onSuccess {",
+      "passed": true
+    },
+    {
+      "name": "original-state-receipt-exact:refreshDanmakuThumbupState.onFailure {",
+      "passed": true
+    },
+    {
+      "name": "original-state-receipt-exact:recallDanmaku.onSuccess {",
+      "passed": true
+    },
+    {
+      "name": "original-state-receipt-exact:recallDanmaku.onFailure {",
+      "passed": true
+    },
+    {
+      "name": "original-state-receipt-exact:likeDanmaku.onSuccess {",
+      "passed": true
+    },
+    {
+      "name": "original-state-receipt-exact:likeDanmaku.onFailure {",
+      "passed": true
+    },
+    {
+      "name": "original-state-receipt-exact:reportDanmaku.onSuccess {",
+      "passed": true
+    },
+    {
+      "name": "original-state-receipt-exact:reportDanmaku.onFailure {",
+      "passed": true
+    },
+    {
+      "name": "class-intersection-is-only-25-declared-platform-family-classes",
+      "passed": true
+    },
+    {
+      "name": "public-top-level-package-JVM-name-parameter-descriptor-intersection-zero",
+      "passed": true
+    }
+  ],
+  "originalBodiesKept": true,
+  "preparedOnly": true,
+  "platformAdaptations": [
+    "Two Android clipboard/Toast ports; required original text-selection delegate",
+    "Only upstream ignored onLongClick clickable->combinedClickable fix",
+    "Original complete standard model AWT bitmap/font carrier aliases only",
+    "Shared Root API/CSRF and owned cancellation/checkpoints",
+    "Per-DMID stats requests and menu-generation/same-like-request finally guards",
+    "One global settings namespace with original portrait/landscape/legacy keys and normalization",
+    "Sole Overlay rawDocument derived CID/sourceVersion/revision getter; original API fields retained in existing comments"
+  ],
+  "noMainOrGradle": true,
+  "noGuiOrNetwork": true
+}

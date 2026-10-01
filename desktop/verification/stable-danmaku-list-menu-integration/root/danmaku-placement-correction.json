@@ -1,0 +1,9 @@
+{
+  "wholeClasses19Passed": false,
+  "failure": "Strict editor protocol verifier includes all bytes until the comment marker; initial insertion entered that range",
+  "correction": "Move unchanged sole danmaku fragment before the editor marker; preserve every existing guarded protocol family byte-for-byte",
+  "beforeSha256LF": "0bf247e9c2087ffa6ae04f921e403be44d0b264466c9686a807b2e00c6d08f61",
+  "afterSha256LF": "ee4e9818a7ab882a0affaac1a02f6afef3a39e79b895ac598c2adee9cce7ddfc",
+  "fragmentSha256LF": "53f3f7f164b639a0fcad8bad40ccd008fb1d9d5bac70ccb68b671e4d5d475543",
+  "verifierChanged": false
+}

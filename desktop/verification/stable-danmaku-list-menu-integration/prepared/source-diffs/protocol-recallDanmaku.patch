@@ -1,0 +1,45 @@
+--- stable/recallDanmaku
+
++++ owned-protocol/recallDanmaku
+
+@@ -2,18 +2,20 @@
+
+         cid: Long,
+         dmid: Long
+     ): Result<String> = withContext(Dispatchers.IO) {
++        kotlinx.coroutines.currentCoroutineContext().ensureActive()
++        assertOwned()
+         try {
+-            val csrf = com.android.purebilibili.core.store.TokenManager.csrfCache
++            val csrf = readCsrf()
+             if (csrf.isNullOrEmpty()) {
+                 return@withContext Result.failure(Exception("请先登录"))
+             }
+ 
+-            com.android.purebilibili.core.util.Logger.d("DanmakuRepo", "📤 recallDanmaku: cid=$cid, dmid=$dmid")
+             
+             val response = api.recallDanmaku(cid = cid, dmid = dmid, csrf = csrf)
++            kotlinx.coroutines.currentCoroutineContext().ensureActive()
++            assertOwned()
+             
+             if (response.code == 0) {
+-                com.android.purebilibili.core.util.Logger.d("DanmakuRepo", "✅ Danmaku recalled: ${response.message}")
+                 Result.success(response.message)
+             } else {
+                 val errorMsg = when (response.code) {
+@@ -25,11 +27,12 @@
+
+                     36303 -> "该弹幕无法撤回"
+                     else -> response.message.ifEmpty { "撤回失败 (${response.code})" }
+                 }
+-                android.util.Log.e("DanmakuRepo", "❌ recallDanmaku failed: ${response.code} - ${response.message}")
+                 Result.failure(Exception(errorMsg))
+             }
++        } catch (cancelled: kotlinx.coroutines.CancellationException) {
++            throw cancelled
+         } catch (e: Exception) {
+-            android.util.Log.e("DanmakuRepo", "❌ recallDanmaku exception: ${e.message}", e)
++            assertOwned()
+             Result.failure(e)
+         }
+     }

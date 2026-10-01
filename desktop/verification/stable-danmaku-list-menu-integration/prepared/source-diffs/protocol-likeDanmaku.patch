@@ -1,0 +1,46 @@
+--- stable/likeDanmaku
+
++++ owned-protocol/likeDanmaku
+
+@@ -3,19 +3,21 @@
+
+         dmid: Long,
+         like: Boolean = true
+     ): Result<Unit> = withContext(Dispatchers.IO) {
++        kotlinx.coroutines.currentCoroutineContext().ensureActive()
++        assertOwned()
+         try {
+-            val csrf = com.android.purebilibili.core.store.TokenManager.csrfCache
++            val csrf = readCsrf()
+             if (csrf.isNullOrEmpty()) {
+                 return@withContext Result.failure(Exception("请先登录"))
+             }
+ 
+             val op = if (like) 1 else 2
+-            com.android.purebilibili.core.util.Logger.d("DanmakuRepo", "📤 likeDanmaku: cid=$cid, dmid=$dmid, op=$op")
+             
+             val response = api.likeDanmaku(oid = cid, dmid = dmid, op = op, csrf = csrf)
++            kotlinx.coroutines.currentCoroutineContext().ensureActive()
++            assertOwned()
+             
+             if (response.code == 0) {
+-                com.android.purebilibili.core.util.Logger.d("DanmakuRepo", "✅ Danmaku ${if (like) "liked" else "unliked"}")
+                 Result.success(Unit)
+             } else {
+                 val errorMsg = when (response.code) {
+@@ -26,11 +28,12 @@
+
+                     65005 -> "已经取消点赞了"
+                     else -> response.message.ifEmpty { "操作失败 (${response.code})" }
+                 }
+-                android.util.Log.e("DanmakuRepo", "❌ likeDanmaku failed: ${response.code} - ${response.message}")
+                 Result.failure(Exception(errorMsg))
+             }
++        } catch (cancelled: kotlinx.coroutines.CancellationException) {
++            throw cancelled
+         } catch (e: Exception) {
+-            android.util.Log.e("DanmakuRepo", "❌ likeDanmaku exception: ${e.message}", e)
++            assertOwned()
+             Result.failure(e)
+         }
+     }

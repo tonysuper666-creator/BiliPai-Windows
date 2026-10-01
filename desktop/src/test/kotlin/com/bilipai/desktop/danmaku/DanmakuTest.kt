@@ -7,6 +7,21 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class DanmakuTest {
+    @Test fun `original XML pool receives full text and metadata while renderer keeps its display bounds`() {
+        val content = "完整原弹幕\n" + "字".repeat(420)
+        val attributes = "2.5,5,64,255,0,1,hash-original,123456"
+        val comment = DanmakuParser.parse("""<i><d p="$attributes">$content</d></i>""").single()
+        val item = requireNotNull(com.android.purebilibili.feature.video.danmaku.DesktopOriginalDanmakuItemParser
+            .createTextData(requireNotNull(comment.originalXmlAttributes), requireNotNull(comment.originalXmlContent)))
+        assertEquals(content, item.text)
+        assertEquals(123456L, item.danmakuId)
+        assertEquals("hash-original", item.userHash)
+        assertEquals(2500L, item.showAtTime)
+        assertEquals(300, comment.text.length)
+        assertFalse(comment.text.contains('\n'))
+        assertEquals(48, comment.size)
+    }
+
     @Test fun `XML preserves standard modes colors and time while ignoring code comments`() {
         val comments = DanmakuParser.parse("""<i>
             <d p="2,4,25,16711680,0,0,hash,1">bottom &amp; red</d>

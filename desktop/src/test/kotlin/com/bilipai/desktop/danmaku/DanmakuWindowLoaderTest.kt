@@ -11,10 +11,39 @@ import java.nio.file.Files
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class DanmakuWindowLoaderTest {
+    @Test fun `original protobuf pool retains complete server payload independently of renderer sanitization`() {
+        val content = "原弹幕\t" + "字".repeat(420)
+        val element = field(1, value = 321) + field(2, value = 1250) + field(3, value = 6) +
+            field(4, value = 64) + field(5, value = 255) + field(6, bytes = "hash-original".toByteArray()) +
+            field(7, bytes = content.toByteArray()) + field(9, value = 8) + field(11, value = 1) +
+            field(13, value = 7) + field(15, value = 9) + field(24, value = 60001) +
+            field(28, value = 3) + field(29, value = 1)
+        val comment = DanmakuParser.parseProtobuf(listOf(field(1, bytes = element))).comments.single()
+        val original = requireNotNull(comment.originalElement)
+        val item = requireNotNull(com.android.purebilibili.feature.video.danmaku.DesktopOriginalDanmakuItemParser
+            .createTextDataFromProto(original)) as com.android.purebilibili.feature.video.danmaku.WeightedTextData
+        assertEquals(content, original.content)
+        assertEquals("$content x3", item.text)
+        assertEquals(321L, item.danmakuId)
+        assertEquals("hash-original", item.userHash)
+        assertEquals(1250L, item.showAtTime)
+        assertEquals(1, item.pool)
+        assertEquals(7, item.attr)
+        assertEquals(9L, item.likeCount)
+        assertEquals(8, item.weight)
+        assertTrue(item.isSelf)
+        assertTrue(item.isVipGradualColor)
+        assertEquals(3, item.duplicateCount)
+        assertEquals(303, comment.text.length)
+        assertFalse(comment.text.contains('\t'))
+        assertEquals(48, comment.size)
+    }
+
     @Test fun `offline protobuf uses original segment slots and keeps special assets over seeks without HTTP`() = runBlocking {
         val directory = Files.createTempDirectory("bilipai-offline-danmaku-")
         val standard = (1..4).map { directory.resolve("seg-$it.pb") }

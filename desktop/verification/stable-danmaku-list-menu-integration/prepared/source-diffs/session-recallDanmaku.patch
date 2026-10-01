@@ -1,0 +1,18 @@
+--- stable/recallDanmaku
+
++++ owned-session/recallDanmaku
+
+@@ -4,9 +4,11 @@
+
+             return
+         }
+         
++        assertOwned()
+         viewModelScope.launch {
+-            com.android.purebilibili.data.repository.DanmakuRepository
++            environment.actions
+                 .recallDanmaku(cid = currentCid, dmid = dmid)
++                .also { currentCoroutineContext().ensureActive(); assertOwned() }
+                 .onSuccess { message ->
+                     toast(message.ifEmpty { "撤回成功" })
+                 }

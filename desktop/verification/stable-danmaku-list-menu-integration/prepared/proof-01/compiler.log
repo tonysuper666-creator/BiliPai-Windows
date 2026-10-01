@@ -1,0 +1,61 @@
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:50:16: error: overload resolution ambiguity between candidates:
+object DanmakuParser : Any
+object DanmakuParser : Any
+    val parsed=DanmakuParser.parseProtobuf(listOf(segment))
+               ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:50:30: error: unresolved reference 'parseProtobuf'.
+    val parsed=DanmakuParser.parseProtobuf(listOf(segment))
+                             ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:52:37: error: unresolved reference 'text'.
+    verify(parsed.comments.single().text.length<rawContent.length,"existing display safety cap remains")
+                                    ^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:58:41: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+    val copied=parsed.comments.single().copy(id=4)
+                                        ^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:58:41: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+    val copied=parsed.comments.single().copy(id=4)
+                                        ^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:58:41: error: this declaration needs opt-in. Its usage must be marked with '@kotlin.ExperimentalStdlibApi' or '@OptIn(kotlin.ExperimentalStdlibApi::class)'
+    val copied=parsed.comments.single().copy(id=4)
+                                        ^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:58:46: error: no parameter with name 'id' found.
+    val copied=parsed.comments.single().copy(id=4)
+                                             ^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:59:19: error: unresolved reference 'originalElement'.
+    verify(copied.originalElement===parsed.comments.single().originalElement,"source payload survives sole WindowLoader's data-class copy")
+                  ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:59:62: error: unresolved reference 'originalElement'.
+    verify(copied.originalElement===parsed.comments.single().originalElement,"source payload survives sole WindowLoader's data-class copy")
+                                                             ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:61:13: error: overload resolution ambiguity between candidates:
+object DanmakuParser : Any
+object DanmakuParser : Any
+    val xml=DanmakuParser.parseDocument("<i><d p=\"1.25,4,36,123456,0,2, 123 ,902\">$xmlText</d></i>")
+            ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:61:27: error: unresolved reference 'parseDocument'.
+    val xml=DanmakuParser.parseDocument("<i><d p=\"1.25,4,36,123456,0,2, 123 ,902\">$xmlText</d></i>")
+                          ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:132:48: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        put("actualCodeSources",buildJsonArray{listOf(DanmakuParser::class.java,DanmakuProto::class.java,DesktopOriginalDanmakuProtocol::class.java,DesktopOriginalDanmakuSession::class.java,DanmakuThumbupStatsResponse::class.java,BilibiliApi::class.java).forEach{add(identity(it))}})
+                                               ^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:132:48: error: inapplicable candidate(s): fun <T> listOf(vararg elements: T): List<T>
+        put("actualCodeSources",buildJsonArray{listOf(DanmakuParser::class.java,DanmakuProto::class.java,DesktopOriginalDanmakuProtocol::class.java,DesktopOriginalDanmakuSession::class.java,DanmakuThumbupStatsResponse::class.java,BilibiliApi::class.java).forEach{add(identity(it))}})
+                                               ^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:132:55: error: overload resolution ambiguity between candidates:
+object DanmakuParser : Any
+object DanmakuParser : Any
+        put("actualCodeSources",buildJsonArray{listOf(DanmakuParser::class.java,DanmakuProto::class.java,DesktopOriginalDanmakuProtocol::class.java,DesktopOriginalDanmakuSession::class.java,DanmakuThumbupStatsResponse::class.java,BilibiliApi::class.java).forEach{add(identity(it))}})
+                                                      ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:132:76: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        put("actualCodeSources",buildJsonArray{listOf(DanmakuParser::class.java,DanmakuProto::class.java,DesktopOriginalDanmakuProtocol::class.java,DesktopOriginalDanmakuSession::class.java,DanmakuThumbupStatsResponse::class.java,BilibiliApi::class.java).forEach{add(identity(it))}})
+                                                                           ^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:132:76: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+val <T> KClass<T>.java: Class<T>
+        put("actualCodeSources",buildJsonArray{listOf(DanmakuParser::class.java,DanmakuProto::class.java,DesktopOriginalDanmakuProtocol::class.java,DesktopOriginalDanmakuSession::class.java,DanmakuThumbupStatsResponse::class.java,BilibiliApi::class.java).forEach{add(identity(it))}})
+                                                                           ^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:132:256: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        put("actualCodeSources",buildJsonArray{listOf(DanmakuParser::class.java,DanmakuProto::class.java,DesktopOriginalDanmakuProtocol::class.java,DesktopOriginalDanmakuSession::class.java,DanmakuThumbupStatsResponse::class.java,BilibiliApi::class.java).forEach{add(identity(it))}})
+                                                                                                                                                                                                                                                               ^^^^^^^
+work\BiliPai\desktop\.local\stable-danmaku-list-menu-parity\proof-01\DanmakuFixture.kt:132:263: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        put("actualCodeSources",buildJsonArray{listOf(DanmakuParser::class.java,DanmakuProto::class.java,DesktopOriginalDanmakuProtocol::class.java,DesktopOriginalDanmakuSession::class.java,DanmakuThumbupStatsResponse::class.java,BilibiliApi::class.java).forEach{add(identity(it))}})
+                                                                                                                                                                                                                                                                      ^^^^^^^^^^^^^^^^^^^

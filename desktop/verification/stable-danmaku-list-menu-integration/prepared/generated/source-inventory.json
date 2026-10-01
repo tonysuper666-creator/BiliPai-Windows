@@ -1,0 +1,297 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "5846ca9e334a80a6eca37da32b1157c8276001484ff355b413a4320200c9ee2b",
+      "gitBlob": "d77e9b4e27780cfeeccb4aeb76f2a54c3fe53972"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "0c21e3775ca011d8e18791facb365b0c4e712a8b02798a510102a4f71d22c62a",
+      "gitBlob": "069c7ec27947b239ed52d4e159ee560de0eb1a93"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "gitBlob": "e58f702e55adce811b25e3230fdabedba4a7f83a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuParser.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "753c99914651fad5d05323889b650eba86b36625ffc45266e1f4ccad273b5791",
+      "gitBlob": "4c2350ba5de3d95c3003b219b5288cf18f7df634"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0",
+      "gitBlob": "053efe8de009825a1cb0aba7ad17be5a113f85d6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93",
+      "gitBlob": "b6119f8052338ad0cb61b36817a5244d25382d63"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "eb3bc94d8a8bc3ac4a22fc734116b977b6ff27f53ee5a7b264090edfe1f12cf1",
+      "gitBlob": "25189cf639c886f36ae03320b98f59e932e0895b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5",
+      "gitBlob": "fb1bdad390e9b94175920908dc859ea81849934f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "gitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "f7532155c6e8429f27dd251193001e17ac0a824934ea669ad016f7d187985c46",
+      "gitBlob": "3ff605bc9027b9533dfd76a01babc5d079e6761c"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e",
+      "gitBlob": "cb34ca4bc2a2fd6f8c82884aa37ce144f5ac8976"
+    },
+    {
+      "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "ba80d0cfef445bda5a9e2ebc10f68de83d1ccc24cf881d7a49d02bf656c6cfa7",
+      "gitBlob": "f2eb3b296dc53960b0454542d0c49c92335c3cbc"
+    }
+  ],
+  "emitted": [
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "mode": "selected-full-renderer",
+      "sha256LF": "631336c4914189dbc81418891b505e61fb75388d65409270244527dd08ffb425",
+      "adaptations": [
+        {
+          "before": "import android.content.ClipData\n",
+          "after": "// Windows port: import android.content.ClipData\n"
+        },
+        {
+          "before": "import android.content.ClipboardManager\n",
+          "after": "// Windows port: import android.content.ClipboardManager\n"
+        },
+        {
+          "before": "import android.content.Context\n",
+          "after": "// Windows port: import android.content.Context\n"
+        },
+        {
+          "before": "import android.widget.Toast\n",
+          "after": "// Windows port: import android.widget.Toast\n"
+        },
+        {
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopDanmakuBindings as LocalContext"
+        },
+        {
+          "before": "                                Toast.makeText(\n                                    context,\n                                    \"已跳转至 ${FormatUtils.formatDuration(item.showAtTime)}\",\n                                    Toast.LENGTH_SHORT\n                                ).show()",
+          "after": "                                context.showFeedback(\"已跳转至 ${FormatUtils.formatDuration(item.showAtTime)}\")"
+        },
+        {
+          "before": "                                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager\n                                    val clip = ClipData.newPlainText(\"danmaku\", item.text.orEmpty())\n                                    clipboard.setPrimaryClip(clip)\n                                    Toast.makeText(context, \"已复制弹幕内容\", Toast.LENGTH_SHORT).show()",
+          "after": "                                    context.copyText(item.text.orEmpty(), \"danmaku\")\n                                    context.showFeedback(\"已复制弹幕内容\")"
+        },
+        {
+          "before": ".clickable(onClick = onItemClick)",
+          "after": ".combinedClickable(onClick = onItemClick, onLongClick = onLongClick)"
+        },
+        {
+          "before": "import androidx.compose.foundation.clickable",
+          "after": "import androidx.compose.foundation.clickable\nimport androidx.compose.foundation.combinedClickable"
+        }
+      ],
+      "reverseNormalizedOriginalByteEqual": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+      "mode": "selected-full-renderer",
+      "sha256LF": "2a2bbdfbdb43db83d158a6e638dc9393e0b1a8d2fd6ea7944b9700598d5f3b13",
+      "adaptations": [
+        {
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopDanmakuBindings as LocalContext"
+        },
+        {
+          "before": "import com.android.purebilibili.core.ui.common.copyPlainTextToClipboard",
+          "after": "import com.bilipai.desktop.ui.copyDesktopDanmakuText as copyPlainTextToClipboard"
+        },
+        {
+          "before": "import com.android.purebilibili.core.ui.common.TextSelectionBottomSheet",
+          "after": "import com.bilipai.desktop.ui.DesktopDanmakuTextSelection as TextSelectionBottomSheet"
+        }
+      ],
+      "reverseNormalizedOriginalByteEqual": true
+    },
+    {
+      "path": "com/android/purebilibili/danmaku/engine/DanmakuItem.kt",
+      "origin": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+      "mode": "selected-complete-schema",
+      "sha256LF": "f51d92fe5e0febc7be695958c287153b760558ff0463993585077ccf662cba0a",
+      "adaptations": [
+        {
+          "before": "import android.graphics.Bitmap",
+          "after": "import java.awt.image.BufferedImage as Bitmap"
+        },
+        {
+          "before": "import android.graphics.Typeface",
+          "after": "import java.awt.Font as Typeface"
+        },
+        {
+          "before": "import android.graphics.Path",
+          "after": "// Android Path is outside this selected standard-item class."
+        }
+      ],
+      "reverseNormalizedOriginalByteEqual": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "mode": "direct",
+      "sha256LF": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0",
+      "adaptations": [],
+      "reverseNormalizedOriginalByteEqual": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuItemParser.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuParser.kt",
+      "mode": "selected-original-factories-and-click-policies",
+      "sha256LF": "ca3bdc4e5fa76316637b90f861584f9fe6469edc0a8ab116cfc51042f5729690",
+      "adaptations": []
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalDanmakuThumbupPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "mode": "selected-original-schema-and-policy",
+      "sha256LF": "25d6e2c796b0588a51ecb455cf2d98a780a53099ff5df1235e95eb8560391b3c",
+      "adaptations": []
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalDanmakuProtocol.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "mode": "selected-complete-protocol",
+      "sha256LF": "b48dd3e055769f1dcd2893ad1f56d1145ebbd9aeb9822e988e575802a2310e45",
+      "adaptations": [
+        {
+          "member": "getDanmakuThumbupState",
+          "originalStartLine": 851,
+          "originalBodySha256LF": "65804ac473d118cfd41c5e7e85d352d1b6fe942b3cf9a18be2eaf05681d5d5e9",
+          "adaptedBodySha256LF": "7d14f42e710338fb87a10572fa64bd0c6e31618fda0f6f3dad0fee7bad564694",
+          "changes": "Only platform logs/identity injection and caller cancellation/owner guards. Request fields and response code/message rules unchanged."
+        },
+        {
+          "member": "recallDanmaku",
+          "originalStartLine": 812,
+          "originalBodySha256LF": "0e4fe69e14cea2b48b89b4d71162ffac6497a5fbe85c21682574acf55dc4ce6c",
+          "adaptedBodySha256LF": "d56a9200c75db97445e5e66d182644935cd5ecdd0c6084b0fb3730d9bfd7f74e",
+          "changes": "Only platform logs/identity injection and caller cancellation/owner guards. Request fields and response code/message rules unchanged."
+        },
+        {
+          "member": "likeDanmaku",
+          "originalStartLine": 887,
+          "originalBodySha256LF": "8f9309103d457e87d53cfe8d378acf51e0774a9e8f907d07c16c47bfa9a088c9",
+          "adaptedBodySha256LF": "05b116c4efd78e2a7c09bb1f04b55e523864cc4b7c483f41a2a73f219f5c732a",
+          "changes": "Only platform logs/identity injection and caller cancellation/owner guards. Request fields and response code/message rules unchanged."
+        },
+        {
+          "member": "reportDanmaku",
+          "originalStartLine": 932,
+          "originalBodySha256LF": "a7648d9d571a7cf1fb29cf6c14f12aaf0861bd409f96a3614470cda1cd725f06",
+          "adaptedBodySha256LF": "baebaf3d1c4e27d29ca4ad3e37b320f4f8c2ce061938be096723d76266691ba9",
+          "changes": "Only platform logs/identity injection and caller cancellation/owner guards. Request fields and response code/message rules unchanged."
+        }
+      ]
+    },
+    {
+      "path": "com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "mode": "selected-complete-original-scope",
+      "sha256LF": "b94bf1289a9d47aa2c76c731806c5ac577a64d960565c03a8487a0f4fa5cbf0d",
+      "adaptations": []
+    },
+    {
+      "path": "com/bilipai/desktop/settings/DesktopDanmakuBlockPreferences.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "mode": "selected-original-key-getter-normalization",
+      "sha256LF": "b9237857a873dddbe0b677fb710ae8a57cab6346abffceccea67c450627258df",
+      "adaptations": []
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDanmakuSession.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "mode": "selected-original-menu-session",
+      "sha256LF": "3b8a7fc2284be4bdd7cc3b98ae82bc31749a28479ff55ddd4d5477c0324e0985",
+      "adaptations": [
+        {
+          "member": "showDanmakuMenu",
+          "originalStartLine": 4770,
+          "originalBodySha256LF": "91dc33ce9a89c4c5796841b3fa9d6d6193662f5d69afb925f6098c7cc3a41d00",
+          "adaptedBodySha256LF": "5789d2e27019326fa0f5f5af2b5136541c6b14618bebf886d94ef7c4d18a1f24"
+        },
+        {
+          "member": "hideDanmakuMenu",
+          "originalStartLine": 4788,
+          "originalBodySha256LF": "a6ec0904010d0858b634ad133970061d4e873e98c523353315b58afa06b81128",
+          "adaptedBodySha256LF": "92fbe921ad2281f313cd1c22e4c7279c3a7640dc3adc672c140d91e92d0b6d29"
+        },
+        {
+          "member": "refreshDanmakuThumbupState",
+          "originalStartLine": 4797,
+          "originalBodySha256LF": "d325281728cfd62c47a26eaf24ef59a64c89360092ba16ce762f872eb573edbc",
+          "adaptedBodySha256LF": "79b953cc6e67715466a6c3dd351f1ad6db7398d882b07bd5fca092cad2492396"
+        },
+        {
+          "member": "recallDanmaku",
+          "originalStartLine": 4830,
+          "originalBodySha256LF": "475874207c8cb7cb024a677316f7bd461ad60fa0ab60b789253cf633fc2125b6",
+          "adaptedBodySha256LF": "90cc24adfe6a8499cdb0fd7f20b3277e68368324bc6e5842f8104e7b9858c510"
+        },
+        {
+          "member": "likeDanmaku",
+          "originalStartLine": 4854,
+          "originalBodySha256LF": "613d3ac58d8650e88a652de53f51b3f95bf3f40745dbe4391ed74cff08cee48d",
+          "adaptedBodySha256LF": "ceb21e5c289d3f225a560d3b8e1dcda2c7e2bc780aee3d52f4a560b4a1c7d6ab"
+        },
+        {
+          "member": "reportDanmaku",
+          "originalStartLine": 4909,
+          "originalBodySha256LF": "3fbd47fdb7c49a7472adbd2ccf99b833c17539183d219d5719080609e77f1c46",
+          "adaptedBodySha256LF": "47e165c866e33a6927ced26e09b1f09125bce07530b14ce186a3a1077416f819"
+        }
+      ]
+    }
+  ],
+  "standalone": true,
+  "directReferences": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt",
+      "sha256LF": "24a7fd1bb13efea0ea266b6105426173d0adeb973a3dcfcd156ed4a1f684c6c0"
+    }
+  ],
+  "pending": [
+    "Full DanmakuSettingsPanel/cloud/filter import/smart occlusion",
+    "Transparent native overlay pointer/hit testing",
+    "Actual Root list/settings entry mounting and native seek callback",
+    "Root original TextSelectionBottomSheet delegate under existing owned card provider"
+  ],
+  "originalDefectAdaptation": "DanmakuPoolItemRow ignored supplied onLongClick; only clickable->combinedClickable plus import changed.",
+  "singleAuthority": "Root API/Operations/Repository/accountEpoch/player sourceVersion/Overlay rawDocument/global PluginStore remain sole authorities"
+}

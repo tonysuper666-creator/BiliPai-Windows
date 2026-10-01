@@ -311,7 +311,6 @@ class DesktopPlaybackController internal constructor(
     }
 
     private suspend fun load(info: VideoDetails, index: Int, position: Double, paused: Boolean, expected: Long, baseline: Long?, accountEpoch: Long) = coroutineScope {
-        launch { if (expected == generation.get()) { danmaku?.applySettings(preferences().danmaku); danmaku?.load(info.pages[index].cid, info.aid, info.pages[index].duration.toDouble()) } }
         val settings = preferences().let { it.copy(speed = it.preferredSpeed) }
         val source = playback.playbackConfigured(info, index, state.value.quality, settings, blockedCodecs.toSet())
         if (!valid(expected, baseline, accountEpoch)) return@coroutineScope
@@ -322,6 +321,13 @@ class DesktopPlaybackController internal constructor(
         ownedSourceVersion = version; suspended = false; handledEnd = false; budget = DesktopPlaybackRecoveryBudget()
         current = Current(info, index, resolved, candidates, 0, version, expected, accountEpoch = accountEpoch,
             cdnFallback = fallback, watchdogLoadId = nextWatchdogLoadId.incrementAndGet())
+        launch {
+            if (!closed.get() && expected == generation.get() && playback.sessionEpoch == accountEpoch &&
+                ownedSourceVersion == version && native.currentSourceVersion == version && current?.sourceVersion == version) {
+                danmaku?.applySettings(preferences().danmaku)
+                danmaku?.load(info.pages[index].cid, info.aid, info.pages[index].duration.toDouble(), expectedSourceVersion = version)
+            }
+        }
         heartbeat.begin(DesktopHeartbeatIdentity(info.bvid, info.pages[index].cid, info.aid, accountEpoch), position)
         mutableState.update { it.copy(opening = false, effectiveQuality = resolved.quality, availableQualities = resolved.availableQualities) }
         watchdogSnapshot()?.let(watchdog::loaded)
