@@ -1,0 +1,299 @@
+[
+  {
+    "operation": "delete",
+    "originalStartLine": 20,
+    "originalLineCount": 10,
+    "preparedStartLine": 20,
+    "preparedLineCount": 0,
+    "original": "import android.animation.ValueAnimator\nimport android.content.ContentValues\nimport android.content.Context\nimport android.content.Intent\nimport android.net.Uri\nimport android.os.Build\nimport android.provider.MediaStore\nimport android.util.Log\nimport android.view.Window\nimport android.widget.Toast\n",
+    "prepared": ""
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 63,
+    "originalLineCount": 1,
+    "preparedStartLine": 53,
+    "preparedLineCount": 1,
+    "original": "import androidx.compose.ui.platform.LocalContext\n",
+    "prepared": "import coil3.compose.LocalPlatformContext as LocalContext\n"
+  },
+  {
+    "operation": "delete",
+    "originalStartLine": 66,
+    "originalLineCount": 1,
+    "preparedStartLine": 56,
+    "preparedLineCount": 0,
+    "original": "import androidx.compose.ui.platform.LocalView\n",
+    "prepared": ""
+  },
+  {
+    "operation": "delete",
+    "originalStartLine": 72,
+    "originalLineCount": 1,
+    "preparedStartLine": 61,
+    "preparedLineCount": 0,
+    "original": "import androidx.compose.ui.window.DialogWindowProvider\n",
+    "prepared": ""
+  },
+  {
+    "operation": "delete",
+    "originalStartLine": 74,
+    "originalLineCount": 1,
+    "preparedStartLine": 62,
+    "preparedLineCount": 0,
+    "original": "import coil3.imageLoader\n",
+    "prepared": ""
+  },
+  {
+    "operation": "delete",
+    "originalStartLine": 85,
+    "originalLineCount": 6,
+    "preparedStartLine": 72,
+    "preparedLineCount": 0,
+    "original": "import android.app.Activity\nimport android.content.ClipData\nimport android.content.ClipboardManager\nimport android.content.ContextWrapper\nimport androidx.core.content.FileProvider\nimport androidx.core.view.WindowCompat\n",
+    "prepared": ""
+  },
+  {
+    "operation": "delete",
+    "originalStartLine": 92,
+    "originalLineCount": 1,
+    "preparedStartLine": 73,
+    "preparedLineCount": 0,
+    "original": "import com.android.purebilibili.core.ui.LocalPredictiveBackGestureEnabled\n",
+    "prepared": ""
+  },
+  {
+    "operation": "delete",
+    "originalStartLine": 94,
+    "originalLineCount": 1,
+    "preparedStartLine": 74,
+    "preparedLineCount": 0,
+    "original": "import com.android.purebilibili.core.ui.setWindowNavigationBarColor\n",
+    "prepared": ""
+  },
+  {
+    "operation": "delete",
+    "originalStartLine": 98,
+    "originalLineCount": 1,
+    "preparedStartLine": 77,
+    "preparedLineCount": 0,
+    "original": "import androidx.media3.common.Player\n",
+    "prepared": ""
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 113,
+    "originalLineCount": 1,
+    "preparedStartLine": 91,
+    "preparedLineCount": 1,
+    "original": "import com.android.purebilibili.core.store.SettingsManager\n",
+    "prepared": "import com.android.purebilibili.core.store.DesktopDynamicCardSettings as SettingsManager\n"
+  },
+  {
+    "operation": "delete",
+    "originalStartLine": 115,
+    "originalLineCount": 1,
+    "preparedStartLine": 93,
+    "preparedLineCount": 0,
+    "original": "import com.android.purebilibili.core.util.rememberHapticFeedback\n",
+    "prepared": ""
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 117,
+    "originalLineCount": 5,
+    "preparedStartLine": 94,
+    "preparedLineCount": 1,
+    "original": "import androidx.lifecycle.compose.collectAsStateWithLifecycle\nimport androidx.navigationevent.NavigationEventInfo\nimport androidx.navigationevent.NavigationEventTransitionState\nimport androidx.navigationevent.compose.NavigationBackHandler\nimport androidx.navigationevent.compose.rememberNavigationEventState\n",
+    "prepared": "import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 164,
+    "originalLineCount": 10,
+    "preparedStartLine": 137,
+    "preparedLineCount": 1,
+    "original": "private fun animateWindowNavigationBarColor(window: Window?, targetColor: Int, durationMillis: Long = 180L) {\n    if (window == null) return\n    val from = window.navigationBarColor\n    if (from == targetColor) return\n    ValueAnimator.ofArgb(from, targetColor).apply {\n        this.duration = durationMillis\n        addUpdateListener { setWindowNavigationBarColor(window, it.animatedValue as Int) }\n        start()\n    }\n}\n",
+    "prepared": "\n"
+  },
+  {
+    "operation": "insert",
+    "originalStartLine": 177,
+    "originalLineCount": 0,
+    "preparedStartLine": 141,
+    "preparedLineCount": 1,
+    "original": "",
+    "prepared": "    val platform: com.bilipai.desktop.ui.DesktopDynamicCardPlatform,\n"
+  },
+  {
+    "operation": "insert",
+    "originalStartLine": 305,
+    "originalLineCount": 0,
+    "preparedStartLine": 270,
+    "preparedLineCount": 1,
+    "original": "",
+    "prepared": "    val platform = com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings.current\n"
+  },
+  {
+    "operation": "insert",
+    "originalStartLine": 312,
+    "originalLineCount": 0,
+    "preparedStartLine": 278,
+    "preparedLineCount": 1,
+    "original": "",
+    "prepared": "                platform = platform,\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 344,
+    "originalLineCount": 1,
+    "preparedStartLine": 311,
+    "preparedLineCount": 1,
+    "original": "                decorFitsSystemWindows = false\n",
+    "prepared": "\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 347,
+    "originalLineCount": 14,
+    "preparedStartLine": 314,
+    "preparedLineCount": 1,
+    "original": "            val dialogView = LocalView.current\n            SideEffect {\n                // The image itself already performs the return morph. The platform Dialog\n                // window animation would scale it a second time when the window is removed.\n                ((dialogView.parent as? DialogWindowProvider) ?: (dialogView as? DialogWindowProvider))\n                    ?.window?.let { window ->\n                        window.setWindowAnimations(0)\n                        // 平台 Dialog 默认 FLAG_DIM_BEHIND 会在窗口挂上时把整个屏幕压暗、\n                        // 关闭时瞬间变亮；画廊自带进度 scrim，这层额外 dim 表现为点击\n                        // 放大/返回时的变暗闪烁，必须清掉。\n                        window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)\n                        window.setDimAmount(0f)\n                    }\n            }\n",
+    "prepared": "            CompositionLocalProvider(com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings provides request.platform) {\n"
+  },
+  {
+    "operation": "insert",
+    "originalStartLine": 383,
+    "originalLineCount": 0,
+    "preparedStartLine": 337,
+    "preparedLineCount": 1,
+    "original": "",
+    "prepared": "    }\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 407,
+    "originalLineCount": 1,
+    "preparedStartLine": 362,
+    "preparedLineCount": 2,
+    "original": "    val haptic = rememberHapticFeedback()\n",
+    "prepared": "    val platform = com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings.current\n    val haptic = com.bilipai.desktop.ui.rememberDynamicPlatformHaptic()\n"
+  },
+  {
+    "operation": "delete",
+    "originalStartLine": 418,
+    "originalLineCount": 27,
+    "preparedStartLine": 374,
+    "preparedLineCount": 0,
+    "original": "    //  获取 Activity 和 Window 用于沉浸式控制\n    val activity = remember {\n        var ctx = context\n        while (ctx is ContextWrapper) {\n            if (ctx is Activity) return@remember ctx\n            ctx = ctx.baseContext\n        }\n        null\n    }\n    val window = remember { activity?.window }\n    val insetsController = remember {\n        window?.let { WindowCompat.getInsetsController(it, it.decorView) }\n    }\n    \n    //  保存原始导航栏颜色\n    val originalNavBarColor = remember { window?.navigationBarColor ?: android.graphics.Color.BLACK }\n    \n    //  进入时动画过渡到沉浸式导航栏（透明黑色），退出时动画恢复，避免颜色瞬间跳变\n    DisposableEffect(Unit) {\n        animateWindowNavigationBarColor(window, Color.Transparent.toArgb())\n        insetsController?.isAppearanceLightNavigationBars = false\n\n        onDispose {\n            animateWindowNavigationBarColor(window, originalNavBarColor)\n        }\n    }\n    \n",
+    "prepared": ""
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 448,
+    "originalLineCount": 10,
+    "preparedStartLine": 377,
+    "preparedLineCount": 1,
+    "original": "    val backEventState = rememberNavigationEventState(NavigationEventInfo.None)\n    val predictiveBackGestureEnabled = LocalPredictiveBackGestureEnabled.current\n    val backProgress = if (predictiveBackGestureEnabled) {\n        (backEventState.transitionState as? NavigationEventTransitionState.InProgress)\n            ?.latestEvent\n            ?.progress\n            ?: 0f\n    } else {\n        0f\n    }\n",
+    "prepared": "    val backProgress = 0f // Android predictive back has no Windows gesture provider.\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 472,
+    "originalLineCount": 4,
+    "preparedStartLine": 392,
+    "preparedLineCount": 4,
+    "original": "    val longPressSaveEnabled by SettingsManager.getImagePreviewLongPressSaveEnabled(context)\n        .collectAsStateWithLifecycle(initialValue = true)\n    val gallery3dPageEnabled by SettingsManager.getImagePreview3dPageEnabled(context)\n        .collectAsStateWithLifecycle(initialValue = false)\n",
+    "prepared": "    val longPressSaveEnabled by SettingsManager.getImagePreviewLongPressSaveEnabled(platform.context)\n        .collectAsStateWithLifecycle(initial = true)\n    val gallery3dPageEnabled by SettingsManager.getImagePreview3dPageEnabled(platform.context)\n        .collectAsStateWithLifecycle(initial = false)\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 494,
+    "originalLineCount": 5,
+    "preparedStartLine": 414,
+    "preparedLineCount": 1,
+    "original": "        Toast.makeText(\n            context,\n            if (success) successMessage else \"保存失败，请重试\",\n            Toast.LENGTH_SHORT\n        ).show()\n",
+    "prepared": "        platform.showFeedback(if (success) successMessage else \"保存失败，请重试\")\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 504,
+    "originalLineCount": 1,
+    "preparedStartLine": 420,
+    "preparedLineCount": 1,
+    "original": "            Toast.makeText(context, \"分享失败，请重试\", Toast.LENGTH_SHORT).show()\n",
+    "prepared": "            platform.showFeedback(\"分享失败，请重试\")\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 509,
+    "originalLineCount": 1,
+    "preparedStartLine": 425,
+    "preparedLineCount": 1,
+    "original": "    val gifImageLoader = context.imageLoader\n",
+    "prepared": "    val gifImageLoader = coil3.SingletonImageLoader.get(context)\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 555,
+    "originalLineCount": 1,
+    "preparedStartLine": 471,
+    "preparedLineCount": 1,
+    "original": "    var livePhotoPlayer by remember { mutableStateOf<Player?>(null) }\n",
+    "prepared": "    var livePhotoPlayer by remember { mutableStateOf<com.bilipai.desktop.ui.DesktopDynamicLivePhotoPlayer?>(null) }\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 557,
+    "originalLineCount": 6,
+    "preparedStartLine": 473,
+    "preparedLineCount": 8,
+    "original": "    var pendingSaveAction by remember { mutableStateOf<(() -> Unit)?>(null) }\n    val storagePermission = com.android.purebilibili.core.util.rememberStoragePermissionState { granted ->\n        if (granted) {\n            val action = pendingSaveAction\n            pendingSaveAction = null\n            action?.invoke()\n",
+    "prepared": "    fun saveOwned(operation:suspend ()->Boolean,successMessage:String=\"图片已保存到所选文件\") {\n        if(isSaving)return\n        isSaving=true\n        scope.launch {\n            try{handleImageSaveResult(operation(),successMessage)}\n            catch(cancelled:kotlinx.coroutines.CancellationException){throw cancelled}\n            catch(error:Exception){platform.showFeedback(error.message?:\"保存失败，请重试\")}\n            finally{isSaving=false}\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 565,
+    "originalLineCount": 19,
+    "preparedStartLine": 483,
+    "preparedLineCount": 16,
+    "original": "\n    fun requestSaveCurrentImage(imageUrl: String) {\n        if (imageUrl.isEmpty() || isSaving) return\n        if (onImageLongPress != null) {\n            onImageLongPress(imageUrl)\n            return\n        }\n        if (storagePermission.isGranted) {\n            isSaving = true\n            scope.launch {\n                val success = saveImageToGallery(context, imageUrl)\n                isSaving = false\n                withContext(Dispatchers.Main.immediate) {\n                    handleImageSaveResult(success)\n                }\n            }\n        } else {\n            pendingSaveAction = { requestSaveCurrentImage(imageUrl) }\n            storagePermission.request()\n",
+    "prepared": "    fun requestSaveCurrentImage(imageUrl:String) {\n        if(imageUrl.isEmpty()||isSaving)return\n        if(onImageLongPress!=null){onImageLongPress(imageUrl);return}\n        saveOwned({platform.saveImage(imageUrl)})\n    }\n    fun requestSaveMotionPhoto(imageUrl:String,videoUrl:String) = saveOwned({platform.saveMotionPhoto(imageUrl,videoUrl)},\"实况照片已保存到所选文件\")\n    fun requestSaveLivePhotoVideo(videoUrl:String) = saveOwned({platform.saveLivePhotoVideo(videoUrl)},\"实况视频已保存到所选文件\")\n    fun requestSaveAllImages()=saveOwned({platform.saveImages(images.map(::normalizeImageUrl).filter(String::isNotEmpty))})\n    fun requestShareCurrentImage(imageUrl:String) {\n        if(imageUrl.isEmpty()||isSharing)return\n        isSharing=true\n        scope.launch {\n            try{handleImageShareResult(platform.shareImage(imageUrl))}\n            catch(cancelled:kotlinx.coroutines.CancellationException){throw cancelled}\n            catch(error:Exception){platform.showFeedback(error.message?:\"分享失败，请重试\")}\n            finally{isSharing=false}\n"
+  },
+  {
+    "operation": "delete",
+    "originalStartLine": 586,
+    "originalLineCount": 63,
+    "preparedStartLine": 501,
+    "preparedLineCount": 0,
+    "original": "\n    fun requestSaveMotionPhoto(imageUrl: String, videoUrl: String) {\n        if (imageUrl.isEmpty() || videoUrl.isEmpty() || isSaving) return\n        if (storagePermission.isGranted) {\n            isSaving = true\n            scope.launch {\n                val success = saveMotionPhotoToGallery(context, imageUrl, videoUrl)\n                isSaving = false\n                withContext(Dispatchers.Main.immediate) {\n                    handleImageSaveResult(success, successMessage = \"实况照片已保存到相册\")\n                }\n            }\n        } else {\n            pendingSaveAction = { requestSaveMotionPhoto(imageUrl, videoUrl) }\n            storagePermission.request()\n        }\n    }\n\n    fun requestSaveLivePhotoVideo(videoUrl: String) {\n        if (videoUrl.isEmpty() || isSaving) return\n        if (storagePermission.isGranted) {\n            isSaving = true\n            scope.launch {\n                val success = saveLivePhotoVideoToGallery(context, videoUrl)\n                isSaving = false\n                withContext(Dispatchers.Main.immediate) {\n                    handleImageSaveResult(success, successMessage = \"实况视频已保存到相册\")\n                }\n            }\n        } else {\n            pendingSaveAction = { requestSaveLivePhotoVideo(videoUrl) }\n            storagePermission.request()\n        }\n    }\n\n    fun requestSaveAllImages() {\n        if (images.isEmpty() || isSaving) return\n        val urls = images.map(::normalizeImageUrl).filter(String::isNotEmpty)\n        if (storagePermission.isGranted) {\n            isSaving = true\n            scope.launch {\n                val success = urls.map { saveImageToGallery(context, it) }.all { it }\n                isSaving = false\n                withContext(Dispatchers.Main.immediate) { handleImageSaveResult(success) }\n            }\n        } else {\n            pendingSaveAction = { requestSaveAllImages() }\n            storagePermission.request()\n        }\n    }\n\n    fun requestShareCurrentImage(imageUrl: String) {\n        if (imageUrl.isEmpty() || isSharing) return\n        isSharing = true\n        scope.launch {\n            val success = shareImageFromPreview(context, imageUrl)\n            isSharing = false\n            withContext(Dispatchers.Main.immediate) {\n                handleImageShareResult(success)\n            }\n        }\n    }\n    \n",
+    "prepared": ""
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 792,
+    "originalLineCount": 41,
+    "preparedStartLine": 644,
+    "preparedLineCount": 1,
+    "original": "            NavigationBackHandler(\n                state = backEventState,\n                isBackEnabled = !isDismissing,\n                onBackCancelled = {\n                    if (!isDismissing) {\n                        scope.launch {\n                            if (isDismissing) return@launch\n                            backRecoverEpoch += 1\n                            val epoch = backRecoverEpoch\n                            backRecovering = true\n                            try {\n                                val dismissMotion = imagePreviewDismissMotion()\n                                animateTrigger.snapTo(lastScrubRawProgress)\n                                animateTrigger.animateTo(\n                                    targetValue = 1f,\n                                    animationSpec = emphasizedEnterTween(\n                                        durationMillis = dismissMotion.cancelRecoverDurationMillis\n                                    ),\n                                )\n                            } finally {\n                                // animateTo 被新的 dismiss / scrub 动画取消时(CancellationException)\n                                // 也必须复位,否则 currentTransitionProgress 的读口残留\n                                // backRecovering=true,后续 scrub 进度错乱、画面跳变。\n                                // 纪元不匹配说明已被接管,状态由接管方负责。\n                                if (backRecoverEpoch == epoch) {\n                                    backRecovering = false\n                                    lastScrubRawProgress = animateTrigger.value.coerceIn(0f, 1f)\n                                }\n                            }\n                        }\n                    }\n                },\n                onBackCompleted = {\n                    scope.launch {\n                        if (isDismissing) return@launch\n                        backRecovering = false\n                        animateTrigger.snapTo(lastScrubRawProgress)\n                        triggerDismiss()\n                    }\n                },\n            )\n",
+    "prepared": "\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 1232,
+    "originalLineCount": 1,
+    "preparedStartLine": 1044,
+    "preparedLineCount": 1,
+    "original": "                            LivePhotoPlayback(\n",
+    "prepared": "                            com.bilipai.desktop.ui.DesktopDynamicLivePhotoPlayback(\n"
+  },
+  {
+    "operation": "replace",
+    "originalStartLine": 1880,
+    "originalLineCount": 2,
+    "preparedStartLine": 1692,
+    "preparedLineCount": 1,
+    "original": "                            val clipboard = context.getSystemService(ClipboardManager::class.java)\n                            clipboard?.setPrimaryClip(ClipData.newPlainText(\"图片链接\", currentImageUrl))\n",
+    "prepared": "                            platform.copyText(currentImageUrl)\n"
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "schema": "bilipai-windows-upstream-target-v1",
+  "targetTag": "v0.2.3",
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "releaseId": 400418914,
+  "releaseUrl": "https://github.com/jay3-yy/BiliPai/releases/tag/v0.2.3",
+  "prerelease": false,
+  "publishedAt": "2026-09-30T20:38:28Z",
+  "upstreamVersionCode": 414,
+  "candidateBranch": "desktop/v023-parity",
+  "acceptedSourceTag": "v0.2.3-alpha.9",
+  "acceptedSourceCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "existingFeatureParityRemainsRequired": true,
+  "newFeatureRequirements": [
+    {"id": "comment-vote-card", "behavior": "视频评论投票卡片与 gRPC/REST 回退保留投票数据", "source": "feature/video/ui/components/VideoCommentVoteCard.kt", "status": "pending"},
+    {"id": "video-share-followings", "behavior": "一次向多位关注用户分享视频", "source": "feature/video/share/VideoShareToFollowingDialog.kt", "status": "pending"},
+    {"id": "dynamic-editor-fullscreen", "behavior": "动态发布全屏页面及评论图片，采用原流式上传", "source": "feature/dynamic", "status": "adapting"},
+    {"id": "landscape-share-targets", "behavior": "横屏分享面板提供原新增分享目标", "source": "feature/video/share/VideoShareMoreTargetsSheet.kt", "status": "pending"},
+    {"id": "bgm-detail", "behavior": "原生 BGM 音频详情、热门趋势、相关视频和评论", "source": "feature/audio/bgm", "status": "pending"},
+    {"id": "chapter-segment-bar", "behavior": "横屏章节分段进度条及点击章节跳转", "source": "feature/video/ui/overlay/ViewPointSegmentBar.kt", "status": "pending"},
+    {"id": "collection-drawer", "behavior": "收藏夹和合集简介、分集、播放数据、一键分享及分区 dock", "source": "feature/video/ui", "status": "pending"},
+    {"id": "offline-download", "behavior": "全部暂停和继续、默认两任务并发、实时速度、进度、画质重新下载及失效链接在线播放回退", "source": "feature/download", "status": "pending"},
+    {"id": "interactive-danmaku", "behavior": "投票弹幕交互、弹幕列表和长按菜单", "source": "feature/video/danmaku", "status": "pending"},
+    {"id": "video-honors-declarations-staff", "behavior": "荣誉徽章跳转、争议和禁止转载声明、团队关注", "source": "feature/video/ui/section/VideoInfoSection.kt", "status": "pending"},
+    {"id": "weekly-series", "behavior": "每周必看和热门系列的原生导航及历史期数选择", "source": "feature/home/WeeklySeriesScreen.kt", "status": "pending"},
+    {"id": "space-banner-gallery", "behavior": "空间多图横幅左右滑动、正确来源与返回目标", "source": "feature/space/SpaceScreen.kt", "status": "pending"}
+  ],
+  "changedBehaviorRequirements": [
+    {"id": "image-preview-transitions", "behavior": "采用正式版原 sourceKey、过渡准备、来源显隐、速度传递、缩放复位、圆角补偿及安全采样", "status": "adapting"},
+    {"id": "search-submit", "behavior": "提交搜索收起胶囊，避免下滑误触输入法", "status": "pending"},
+    {"id": "dynamic-blur-and-frame-rate", "behavior": "动态侧栏残影与渐进模糊修复，静止帧率追踪不持续请求高刷新率", "status": "pending"},
+    {"id": "home-cover-sampling", "behavior": "按屏幕采样封面并限制背景图片缓存", "status": "pending"},
+    {"id": "cover-first-frame-transition", "behavior": "封面到首帧的收缩和去饱和过渡", "status": "pending"},
+    {"id": "startup-and-threading", "behavior": "首启基线、WBI 预热及画质解析异步化，原 Main.immediate 调度", "status": "pending"},
+    {"id": "panel-frame-rate-diagnostics", "behavior": "播放器面板实际刷新率诊断及平台对应说明", "status": "pending"},
+    {"id": "release-startup", "behavior": "Android R8 VerifyError 属于 Android 发布边界；Windows 包须独立证明首次启动与原生播放", "status": "pending-windows-verification"}
+  ],
+  "acceptance": {
+    "officialReleaseVerified": true,
+    "localApkMatchesOfficialAssetDigest": true,
+    "candidateSourceImported": true,
+    "all832ExistingSourceAndResourcePinsVerified": true,
+    "platformAdaptersAligned": false,
+    "desktopClassesPassed": false,
+    "newFeatureRuntimeAccepted": false,
+    "nativeReleaseGatePassed": false,
+    "desktopFolderDeployed": false,
+    "autoPublicationAccepted": false
+  },
+  "sourceAudit": "verification/upstream-v023/source-delta.json",
+  "previousSourceReuseMeasurement": {
+    "tag": "v0.2.3-alpha.9",
+    "productionFiles": 1534,
+    "directFiles": 389,
+    "partialFiles": 202,
+    "coveragePercent": 38.5267,
+    "appliesToTargetRelease": false
+  }
+}

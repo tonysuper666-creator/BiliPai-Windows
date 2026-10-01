@@ -1,0 +1,54 @@
+Prepared stable preview migration (single existing producer)
+
+Base: original v0.2.3 / 3d5d19a2f994daccd0e2f8b5f522b6d82f43d589.
+The retained copied extractor differs from the frozen Main04 extractor only
+inside its existing ImagePreviewDialog preview/URL-policy selection. Other
+full-card selections still require Root's separate stable rebase. The narrow
+probe executes that exact producer block; it does not implement another dialog.
+
+Integration recipe:
+1. Merge producer.patch's preview-only changes into the single card extractor
+   being rebased by Root. Do not overwrite Root's other newly rebased selections
+   with this baseline copy. Add original resolveImagePreviewPlaceholderCacheKey;
+   retain the complete prefix before the new URL-policy documentation marker;
+   remove only obsolete Quad/BlurEffectCache selection and the new Android-only
+   animateWindowNavigationBarColor helper whose lifecycle is excluded already.
+2. Refresh the existing direct owners ImagePreviewSourceAnchor,
+   ImagePreviewTransitionPolicy, ImagePreviewDecodePolicy and ZoomableImage from
+   stable. Production generate(..., standalone=False) does not emit DIRECT; the
+   existing prepareUpstreamSources direct-copy authority copies them once.
+   Refresh the existing five registry identities; this slice adds no path.
+3. Regenerate the existing DesktopOriginalImagePreviewRenderer and URLPolicy;
+   retain the unique Root ImagePreviewOverlayHost and current platform interface,
+   Assets/globalLocations/client/store/lifetime ownership. No second dialog,
+   cache, account, model, or preview platform schema is needed.
+4. Recompile stable DrawGrid/DynamicCard/Space caller owners together. The
+   sourceKey default parameter changes JVM signatures, and ZoomableImage has new
+   Offset drag / Float release-velocity / resetZoomTrigger signatures. Old
+   Main04 binaries are a compile dependency only, not a stable runtime proof.
+   Parent separately owns Space caller/owner adaptation.
+
+Entry contract:
+ImagePreviewDialog adds sourceKey:String?=null after sourceRects. No sessionKey.
+isImagePreviewSourceHidden(bounds,sourceKey=null) prefers matching non-null keys;
+otherwise it uses active source-rect geometry. prepareImagePreviewSourceTransition
+(rect,sourceKey=null) stages geometry/key before show. The original controller
+publishes active rect after the overlay's SideEffect, restores source before
+window removal, and rejects stale token updates/dismissals.
+The original requestToken remember keys do not include sourceKey, platform,
+MID or epoch. Callers require their real owner key and immutable opened URL/list
+capture; this slice retains the upstream renderer's exact token algorithm.
+
+Evidence and limits:
+Six selected sources compiled once against immutable actual Main04's 92-entry
+runtime classpath, whose hashes passed before/after. Candidate overrides only
+existing preview owners and helpers; no Store/Ops/Assets/Repository source is
+compiled. Twenty-four source-contract checks passed, including complete selected
+prefix equality after reversing 33 independently reviewed exact platform pairs.
+Four direct bodies are full stable originals. Original transition, shape, zoom
+reset, velocity, controller handoff, placeholder/crossfade and live readiness
+behavior are retained. Original save functions are not copied into a new backend.
+Android Activity/navigation bar/dim/permission/MediaStore/predictive gestures
+remain explicit Windows platform boundaries. Existing desktop save/share/haptic/
+clipboard/feedback/live-player adapters remain. No runtime, HTTP, native window,
+caller button E2E, stable GPU/render acceptance, Gradle or Main edits occurred.

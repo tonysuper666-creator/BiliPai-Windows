@@ -1,0 +1,8 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt:writeTo#1
++++ v023:app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt:writeTo#1
+@@ -0,0 +1,5 @@
++        override fun writeTo(sink: BufferedSink) {
++            resolver.openInputStream(uri)?.use { input ->
++                sink.writeAll(input.source())
++            } ?: error("无法读取图片文件")
++        }

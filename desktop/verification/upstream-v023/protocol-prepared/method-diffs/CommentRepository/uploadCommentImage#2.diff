@@ -1,0 +1,39 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt:uploadCommentImage#2
++++ v023:app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt:uploadCommentImage#2
+@@ -0,0 +1,36 @@
++    suspend fun uploadCommentImage(
++        fileName: String,
++        mimeType: String,
++        resolver: ContentResolver,
++        uri: Uri
++    ): Result<ReplyPicture> = withContext(Dispatchers.IO) {
++        val size = queryContentImageSize(resolver, uri)
++        if (size == null) {
++            val bytes = resolver.openInputStream(uri)?.use { it.readBytes() }
++                ?: return@withContext Result.failure(Exception("无法读取图片文件"))
++            if (bytes.isEmpty()) return@withContext Result.failure(Exception("图片内容为空"))
++            if (bytes.size > MAX_COMMENT_IMAGE_BYTES) {
++                return@withContext Result.failure(Exception(IMAGE_TOO_LARGE_MESSAGE))
++            }
++            uploadCommentImage(
++                fileName = fileName,
++                mimeType = mimeType,
++                bytes = bytes
++            )
++        } else {
++            if (size <= 0L) return@withContext Result.failure(Exception("图片内容为空"))
++            if (size > MAX_COMMENT_IMAGE_BYTES) {
++                return@withContext Result.failure(Exception(IMAGE_TOO_LARGE_MESSAGE))
++            }
++            uploadCommentImagePart(
++                fileName = fileName.ifBlank { "comment_image.jpg" },
++                mimeType = mimeType,
++                fileBody = ContentUriRequestBody(
++                    resolver = resolver,
++                    uri = uri,
++                    mediaType = mimeType.toMediaType(),
++                    contentLength = size
++                )
++            )
++        }
++    }

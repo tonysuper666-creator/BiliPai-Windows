@@ -1,0 +1,101 @@
+--- a/desktop/tools/extract-upstream-dynamic-reply-protocol.py
++++ b/desktop/tools/extract-upstream-dynamic-reply-protocol.py
+@@ -1,7 +1,36 @@
+ """Original selected protocol producer; no snapshot or .local dependency."""
+ from pathlib import Path
+ import hashlib, re, subprocess, json
+-TAG = 'v0.2.3-alpha.9'
++def load_pinned_sources(repo: Path, paths):
++    """One fixed manifest commit plus Git blobs; never silently accept a local edit."""
++    def normalized(path):
++        value = str(path.absolute())
++        safe = Path(value if value.startswith('\\\\?\\') else '\\\\?\\' + value)
++        return safe.read_text(encoding='utf-8').replace('\r\n', '\n').replace('\r', '\n')
++    manifest = json.loads(normalized(repo / 'desktop/upstream-sources.json'))
++    commit = manifest['upstreamCommit']
++    assert re.fullmatch(r'[0-9a-f]{40}', commit), 'upstreamCommit must be a full fixed commit'
++    assert manifest['hashNormalization'] == 'lf'
++    assert manifest['upstreamRepository'] == 'jay3-yy/BiliPai'
++    pins = {}
++    for row in manifest['sources']:
++        assert row['path'] not in pins, 'duplicate source identity'
++        pins[row['path']] = row['sha256']
++    sources = {}; identities = []
++    for path in paths:
++        selected = repo / path
++        assert not selected.is_symlink() and selected.resolve().is_relative_to(repo.resolve()), path
++        text = normalized(selected)
++        actual_sha = hashlib.sha256(text.encode('utf-8')).hexdigest()
++        assert actual_sha == pins[path], path + ' differs from fixed source manifest'
++        blob = subprocess.check_output(['git', '-c', 'core.longpaths=true', 'rev-parse', commit + ':' + path], cwd=repo, text=True).strip()
++        current = subprocess.check_output(['git', '-c', 'core.longpaths=true', 'hash-object', '--path=' + path, path], cwd=repo, text=True).strip()
++        assert blob == current, path + ' differs from fixed Git commit blob'
++        sources[path] = text
++        identities.append(dict(path=path, pinnedCommit=commit, pinnedTag=manifest['upstreamTag'],
++            pinnedGitBlob=blob, currentGitBlob=current, sha256LfUtf8=actual_sha, matchesPinnedCommit=True))
++    return sources, identities
++
+ 
+ def masked(text):
+     out = list(text)
+@@ -227,15 +256,7 @@
+     A = 'app/src/main/java/com/android/purebilibili/'
+     paths = [A + 'data/repository/' + name + '.kt' for name in ('CommentRepository', 'CommentReadAccessPolicy', 'CommentGrpcRepository')]
+     paths += [A + 'core/network/ApiClient.kt', A + 'data/model/response/ResponseModels.kt']
+-    sources = {}
+-    source_ids = []
+-    for relative in paths:
+-        content = read(ROOT / relative)
+-        sources[relative] = content
+-        blob = subprocess.check_output(['git', 'rev-parse', TAG + ':' + relative], cwd=ROOT, text=True).strip()
+-        current = subprocess.check_output(['git', 'hash-object', '--path=' + relative, relative], cwd=ROOT, text=True).strip()
+-        assert blob == current, relative
+-        source_ids.append(dict(path=relative, tagBlob=blob, currentGitBlob=current, sha256LfUtf8=digest(content), matchesTag=True))
++    sources, source_ids = load_pinned_sources(ROOT, paths)
+     repo_path = paths[0]
+     repo = sources[repo_path]
+     read_names = ['resolveReadApi', 'fetchNonWbiCommentFallback', 'fetchCommentsByApi', 'fetchGuestHotCommentsCompat', 'fetchLegacyHotCommentsCompat', 'fetchCommentEmptySuccessFallback', 'getCommentsForSubject', 'getCommentCountForSubject', 'getSortedSubCommentsForSubject', 'getSubCommentsForSubject', 'getDialogCommentsForSubject', 'shouldTryGrpcMainList', 'resolveCommentMainListPaginationParameters', 'resolveCommentMainListMode', 'shouldTryGrpcPagedRequest']
+@@ -299,6 +320,8 @@
+         block = extract(repo, old, repo_path).replace('internal fun ' + old, 'private fun ' + new)
+         fragment += '\n' + block + '\n'
+     write(HERE / 'DesktopDynamicCommentOperations.fragment.kt', fragment)
++    write(HERE / 'source-identity.json', json.dumps(source_ids, indent=2) + '\n')
++    write(HERE / 'selected-source-bodies.json', json.dumps(records, indent=2) + '\n')
+     return sorted(HERE.rglob('generated/**/*.kt'))
+ if __name__ == '__main__':
+     import argparse
+--- a/desktop/tools/extract-upstream-dynamic-detail-protocol.py
++++ b/desktop/tools/extract-upstream-dynamic-detail-protocol.py
+@@ -1,7 +1,6 @@
+ """Original selected protocol producer; no snapshot or .local dependency."""
+ from pathlib import Path
+ import hashlib, re, subprocess, json
+-TAG = 'v0.2.3-alpha.9'
+ 
+ def generate(repo: Path, output: Path):
+     ROOT = repo
+@@ -44,14 +43,7 @@
+     article_path = A + 'data/repository/ArticleRepository.kt'
+     policy_path = A + 'data/repository/DynamicDetailFallbackPolicy.kt'
+     paths = [repo_path, article_path, policy_path, A + 'feature/article/ArticleContentLoadPolicy.kt', A + 'core/network/ApiClient.kt', A + 'feature/dynamic/DynamicDetailScreen.kt']
+-    sources = {}
+-    ids = []
+-    for path in paths:
+-        sources[path] = read(ROOT / path)
+-        blob = subprocess.check_output(['git', 'rev-parse', 'v0.2.3-alpha.9:' + path], cwd=ROOT, text=True).strip()
+-        current = subprocess.check_output(['git', 'hash-object', '--path=' + path, path], cwd=ROOT, text=True).strip()
+-        assert blob == current, path
+-        ids.append(dict(path=path, tagBlob=blob, currentGitBlob=current, sha256LfUtf8=digest(sources[path]), matchesTag=True))
++    sources, ids = protocol.load_pinned_sources(ROOT, paths)
+ 
+     def adapt(block):
+         block = drop_logs(block).replace('e.printStackTrace()', '').replace('runCatching', 'ownedCatching')
+@@ -109,6 +101,8 @@
+     write(HERE / 'generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt', article_helper)
+     fragment = "// Additional members inside the existing DesktopDynamicCardOperations; no replacement Ops file.\n// Seed is the original DynamicItem captured by the owner's caller. No new seed cache.\n// Null history callback explicitly leaves the original best-effort article history side effect unbound.\nsuspend fun getDynamicDetail(\n    dynamicId:String,\n    seedItem:DynamicItem?,\n    onArticleViewed:(suspend (Long)->Unit)?=null,\n):Result<DynamicItem> = result { read {\n    val articleProtocol=com.android.purebilibili.data.repository.DesktopDynamicDetailArticleProtocol(\n        web.create(ArticleApi::class.java), dynamic, ::signOriginalDetailParams, ::assertOwned, onArticleViewed)\n    val protocol=com.android.purebilibili.data.repository.DesktopDynamicDetailProtocol(\n        dynamic, ::signOriginalDetailParams,\n        { id -> articleProtocol.getArticleDetail(id).getOrNull() }, ::assertOwned)\n    protocol.getDynamicDetail(dynamicId,seedItem).getOrThrow()\n} }\nprivate suspend fun signOriginalDetailParams(params:Map<String,String>):Map<String,String> {\n    coroutineContext.ensureActive();assertOwned()\n    return try { repository.signWebParams(params).also { coroutineContext.ensureActive();assertOwned() }\n    } catch(cancelled:CancellationException) { throw cancelled\n    } catch(failure:Exception) { coroutineContext.ensureActive();assertOwned();params }\n}\n"
+     write(HERE / 'DesktopDynamicDetailOperations.fragment.kt', fragment)
++    write(HERE / 'source-identity.json', json.dumps(ids, indent=2) + '\n')
++    write(HERE / 'selected-source-bodies.json', json.dumps(records, indent=2) + '\n')
+     return sorted(HERE.rglob('generated/**/*.kt'))
+ if __name__ == '__main__':
+     import argparse

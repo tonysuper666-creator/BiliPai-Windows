@@ -1,0 +1,57 @@
+{
+  "schema": "prepared-v023-unique-preview-producer-delta-v1",
+  "preparedOnly": true,
+  "stableTag": "v0.2.3",
+  "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceReviewManifestSha256Bytes": "aad91096ddab1ff993737dab50caa3fdf4b9a46bde46da1b0fe0a738f395dc51",
+  "originalMain04ProducerSha256Lf": "e4d18c733e69290352a159953bdc000e08e9e964b5229803da8a561b8d43f449",
+  "candidateProducerSha256Bytes": "c101a060f42b86f918cf724f365e6908cfd3e5582457412290aec88e79cbc1ae",
+  "producerChangesOnlyWithinExistingPreviewSelection": true,
+  "allOtherCardProducerTextByteEqual": true,
+  "narrowProbeUsesExactCandidatePreludeAndPreviewBlock": true,
+  "newOriginalDeclarations": [
+    "resolveImagePreviewPlaceholderCacheKey"
+  ],
+  "removedObsoleteAlpha9Selections": [
+    "Quad footer marker/type",
+    "ImagePreviewBlurEffectCache platform replacement"
+  ],
+  "declaredAndroidBoundary": [
+    "Original animateWindowNavigationBarColor(Window?,ValueAnimator) removed; existing Activity/navigation/window block already excluded.",
+    "Existing desktop OverlayHost remains unique; Android predictive scrub provider remains explicitly unavailable in this slice."
+  ],
+  "stableOriginals": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "sha256Lf": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "sha256Lf": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "sha256Lf": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "sha256Lf": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "sha256Lf": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0"
+    }
+  ],
+  "selectedDirectDependencies": [
+    "ImagePreviewSourceAnchor",
+    "ImagePreviewTransitionPolicy",
+    "ImagePreviewDecodePolicy",
+    "ZoomableImage"
+  ],
+  "probeBoundary": "Preview/URL-policy source closure only. Root migrates all other full-card/caller extractors and recompiles their existing owners.",
+  "MainChanged": false,
+  "sourceRegistryChanged": false,
+  "sharedGradle": false,
+  "HTTP": false,
+  "HWND": false
+}

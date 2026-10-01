@@ -1,0 +1,173 @@
+{
+  "schema": "stable-original-preview-source-contract-v1",
+  "status": "PASS",
+  "originalTag": "v0.2.3",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalImagePreviewDialogLfSha256": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb",
+  "preparedRendererLfSha256": "5b1c1967b179f3ff6f3ffd2fb09cbdc1a04081a9c038593d6f9d635999e2c1e6",
+  "checks": [
+    {
+      "name": "Original complete direct source: ImagePreviewSourceAnchor",
+      "status": "PASS",
+      "originalLfSha256": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395",
+      "selectedLfSha256": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395"
+    },
+    {
+      "name": "Original complete direct source: ImagePreviewTransitionPolicy",
+      "status": "PASS",
+      "originalLfSha256": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5",
+      "selectedLfSha256": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5"
+    },
+    {
+      "name": "Original complete direct source: ImagePreviewDecodePolicy",
+      "status": "PASS",
+      "originalLfSha256": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a",
+      "selectedLfSha256": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a"
+    },
+    {
+      "name": "Original complete direct source: ZoomableImage",
+      "status": "PASS",
+      "originalLfSha256": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0",
+      "selectedLfSha256": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0"
+    },
+    {
+      "name": "Original URL-policy function: normalizeImageUrl",
+      "status": "PASS",
+      "originalLfSha256": "4568defced2e70312c7acc975680f9b7c80a242abb9b4247f67fdca016e7311c",
+      "selectedLfSha256": "4568defced2e70312c7acc975680f9b7c80a242abb9b4247f67fdca016e7311c"
+    },
+    {
+      "name": "Original URL-policy function: resolveImagePreviewPlaceholderCacheKey",
+      "status": "PASS",
+      "originalLfSha256": "f7c77d81afc29638fdb9a5ff61aa4f10b2c51ac6c8f33851dae453a509a9743f",
+      "selectedLfSha256": "f7c77d81afc29638fdb9a5ff61aa4f10b2c51ac6c8f33851dae453a509a9743f"
+    },
+    {
+      "name": "Original URL-policy function: resolveImageShareMimeType",
+      "status": "PASS",
+      "originalLfSha256": "f48b5b4aa654da7bea18223b0019056ddfe4549d019b19c88eebec6c5411f842",
+      "selectedLfSha256": "f48b5b4aa654da7bea18223b0019056ddfe4549d019b19c88eebec6c5411f842"
+    },
+    {
+      "name": "Original full declaration: CounterScaledCornerShape",
+      "status": "PASS",
+      "originalLfSha256": "33a99bc806642b7e53735e0138aa057d0e15ddb371cbe710329abbe065078606",
+      "selectedLfSha256": "33a99bc806642b7e53735e0138aa057d0e15ddb371cbe710329abbe065078606"
+    },
+    {
+      "name": "Original full declaration: ImagePreviewOverlayController",
+      "status": "PASS",
+      "originalLfSha256": "34137ed80cf0750c42a18f96f4e94cfd2ad5c5c902addafa73c186a70090a730",
+      "selectedLfSha256": "34137ed80cf0750c42a18f96f4e94cfd2ad5c5c902addafa73c186a70090a730"
+    },
+    {
+      "name": "Original exact function body/signature: isImagePreviewSourceHidden",
+      "status": "PASS",
+      "originalLfSha256": "797823a86ac3f95d082ec50792fab4f7005f0e38eca311a12fb161a357b23bce",
+      "selectedLfSha256": "797823a86ac3f95d082ec50792fab4f7005f0e38eca311a12fb161a357b23bce"
+    },
+    {
+      "name": "Original exact function body/signature: prepareImagePreviewSourceTransition",
+      "status": "PASS",
+      "originalLfSha256": "bc487d01963a4367e45fdc9f7fd87f4082d9fa531413f867176161dd8167ac62",
+      "selectedLfSha256": "bc487d01963a4367e45fdc9f7fd87f4082d9fa531413f867176161dd8167ac62"
+    },
+    {
+      "name": "Original exact function body/signature: currentTransitionProgress",
+      "status": "PASS",
+      "originalLfSha256": "14e349cebe5d31dc421578cf1f7925e5581a00f2c08b8694a463626b42a8be1f",
+      "selectedLfSha256": "14e349cebe5d31dc421578cf1f7925e5581a00f2c08b8694a463626b42a8be1f"
+    },
+    {
+      "name": "Original exact function body/signature: currentFlightRect",
+      "status": "PASS",
+      "originalLfSha256": "10f3033c51f7dc22c1c4634ad0b2e38f6c75924ac9fff5a51b80bb59e30de36c",
+      "selectedLfSha256": "10f3033c51f7dc22c1c4634ad0b2e38f6c75924ac9fff5a51b80bb59e30de36c"
+    },
+    {
+      "name": "Original exact function body/signature: triggerDismiss",
+      "status": "PASS",
+      "originalLfSha256": "ce6d45023484b131e3d82217aa63c0b169a6083b99ffcc517a1b39bd07075cba",
+      "selectedLfSha256": "ce6d45023484b131e3d82217aa63c0b169a6083b99ffcc517a1b39bd07075cba"
+    },
+    {
+      "name": "Original exact function body/signature: ImagePreviewActionButton",
+      "status": "PASS",
+      "originalLfSha256": "1379db0bcffe0607fd22df8ed9101fb028dea353d5c2f966ca8e047ee257a831",
+      "selectedLfSha256": "1379db0bcffe0607fd22df8ed9101fb028dea353d5c2f966ca8e047ee257a831"
+    },
+    {
+      "name": "Original exact function body/signature: ImagePreviewCommentTopBar",
+      "status": "PASS",
+      "originalLfSha256": "83cb2cdf24bc226e9da8b67b436eb8f6908a230055f578f6603764e81964fa63",
+      "selectedLfSha256": "83cb2cdf24bc226e9da8b67b436eb8f6908a230055f578f6603764e81964fa63"
+    },
+    {
+      "name": "Original exact function body/signature: ImagePreviewCommentPanel",
+      "status": "PASS",
+      "originalLfSha256": "5985b7f39b6233178e09ebf20f6d0d399cb7217720264265c68182af1a66d6cc",
+      "selectedLfSha256": "5985b7f39b6233178e09ebf20f6d0d399cb7217720264265c68182af1a66d6cc"
+    },
+    {
+      "name": "Original exact function body/signature: ImagePreviewCommentActionButton",
+      "status": "PASS",
+      "originalLfSha256": "56d7f482d3c50c9016ab7d4178e44401be3292b7fd3c469652556f47221d3ab9",
+      "selectedLfSha256": "56d7f482d3c50c9016ab7d4178e44401be3292b7fd3c469652556f47221d3ab9"
+    },
+    {
+      "name": "Original exact function body/signature: LivePhotoIcon",
+      "status": "PASS",
+      "originalLfSha256": "d35e703116e80f99110f55a886c39cef6c399b1d7de513df2aea17ea0f773321",
+      "selectedLfSha256": "d35e703116e80f99110f55a886c39cef6c399b1d7de513df2aea17ea0f773321"
+    },
+    {
+      "name": "Original exact function body/signature: LivePhotoOffIcon",
+      "status": "PASS",
+      "originalLfSha256": "66eb71822a3809bbfa3c743e7cc7c840418b7cd1bbe574d542a7ad1d3757498a",
+      "selectedLfSha256": "66eb71822a3809bbfa3c743e7cc7c840418b7cd1bbe574d542a7ad1d3757498a"
+    },
+    {
+      "name": "Original exact function body/signature: resolveLivePhotoVideoUrl",
+      "status": "PASS",
+      "originalLfSha256": "225490519adff5c7f361941870fed094d6de01e7bbf40ac5793d1ca4118bc2a4",
+      "selectedLfSha256": "225490519adff5c7f361941870fed094d6de01e7bbf40ac5793d1ca4118bc2a4"
+    },
+    {
+      "name": "Original ImagePreviewDialog after only two declared platform-capture lines removed",
+      "status": "PASS",
+      "originalLfSha256": "77c950e995949b47f1d6f7152fea8e90c12a5d95eace4f0fc71b0fbda38396be",
+      "selectedLfSha256": "77c950e995949b47f1d6f7152fea8e90c12a5d95eace4f0fc71b0fbda38396be"
+    },
+    {
+      "name": "Original request schema after declared platform field removed",
+      "status": "PASS",
+      "originalLfSha256": "f62ff5159d1d65a05be4757be9edf56592ece3869a83c09df356654e34f37ee7",
+      "selectedLfSha256": "f62ff5159d1d65a05be4757be9edf56592ece3869a83c09df356654e34f37ee7"
+    },
+    {
+      "name": "Complete selected prefix reverse-normalized by 33 exact reviewed platform adaptation pairs",
+      "status": "PASS",
+      "originalLfSha256": "00665134006288a96749ded8281d617fad6dca5f599ffab4c40e0dc479bf091d",
+      "selectedLfSha256": "00665134006288a96749ded8281d617fad6dca5f599ffab4c40e0dc479bf091d"
+    }
+  ],
+  "exactChecks": 24,
+  "completePlatformDiffRows": 33,
+  "reviewedPlatformContractSha256Bytes": "a0f6a768e2fdd5d45b37f0a4657e56d1aab220f8807c4b3205935f620c160366",
+  "parserInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\tools\\sync-upstream.py",
+      "sha256Bytes": "65a1a3bf226fb1093395833d168e7a35b0ba4c04b9d8bb84e5909b02b1df5e0f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\tools\\extract-upstream-media.py",
+      "sha256Bytes": "cf2067ad47f38dc9f54e3e37be463a4fe61f91599e209f7a314323392c88cf78"
+    }
+  ],
+  "declaredBoundaries": [
+    "Existing desktop platform context/settings/lifecycle alias, haptic/save/share/copy/feedback and live playback adapters.",
+    "Existing unique Root OverlayHost receives captured platform owner.",
+    "Android Activity/window/navigation-bar/dim/predictive provider and permission/MediaStore backend remain Windows platform boundaries.",
+    "No stable caller runtime proof. All owners of new ImagePreviewDialog/sourceKey and ZoomableImage signatures must recompile together."
+  ]
+}

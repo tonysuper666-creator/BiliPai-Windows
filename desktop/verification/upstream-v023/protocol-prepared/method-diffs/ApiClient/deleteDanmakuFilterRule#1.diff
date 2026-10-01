@@ -1,0 +1,7 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt:deleteDanmakuFilterRule#1
++++ v023:app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt:deleteDanmakuFilterRule#1
+@@ -0,0 +1,4 @@
++    suspend fun deleteDanmakuFilterRule(
++        @retrofit2.http.Field("ids") ids: Long,
++        @retrofit2.http.Field("csrf") csrf: String
++    ): DanmakuActionResponse

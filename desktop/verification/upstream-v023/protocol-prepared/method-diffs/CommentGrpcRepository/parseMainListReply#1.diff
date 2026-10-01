@@ -1,0 +1,26 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt:parseMainListReply#1
++++ v023:app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt:parseMainListReply#1
+@@ -4,6 +4,7 @@
+         var upTop: ReplyItem? = null
+         var adminTop: ReplyItem? = null
+         var voteTop: ReplyItem? = null
++        var voteCard: ReplyVoteCard? = null
+         val topReplies = mutableListOf<ReplyItem>()
+         val replies = mutableListOf<ReplyItem>()
+         var paginationNextOffset = ""
+@@ -18,6 +19,7 @@
+                 6 -> voteTop = parseReplyInfo(field.bytes)
+                 14 -> topReplies += parseReplyInfo(field.bytes)
+                 20 -> paginationNextOffset = parseFeedPaginationReplyNextOffset(field.bytes)
++                23 -> voteCard = parseVoteCard(field.bytes)
+             }
+         }
+ 
+@@ -41,6 +43,7 @@
+                 childInputText = subject.childText,
+                 uploadPictureIconState = subject.uploadPictureIconState
+             ),
++            voteCard = voteCard,
+             grpcNextOffset = paginationNextOffset
+         )
+     }

@@ -1,0 +1,9 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt:getBgmDetail#1
++++ v023:app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt:getBgmDetail#1
+@@ -1,5 +1,3 @@
+     suspend fun getBgmDetail(
+-        @Query("music_id") musicId: String,
+-        @Query("aid") aid: Long,
+-        @Query("cid") cid: Long
++        @QueryMap params: Map<String, String>
+     ): com.android.purebilibili.data.model.response.BgmDetailResponse

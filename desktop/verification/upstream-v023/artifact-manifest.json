@@ -1,0 +1,1026 @@
+{
+  "schema": "v023-source-target-audit-artifacts-v1",
+  "frozen": true,
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "runtimeAccepted": false,
+  "rawArtifacts": [
+    {
+      "path": "audit-release.py",
+      "bytes": 6586,
+      "sha256Bytes": "91f4611e6ec61033468c2dbd42ac7f7353e3a3fb3091f6a7e0f1595478510b32"
+    },
+    {
+      "path": "candidate-rebase.json",
+      "bytes": 26052,
+      "sha256Bytes": "bd4d478ef7960f541635c0ccf8793bec7b7ce78b3b392d782859002922aa106f"
+    },
+    {
+      "path": "candidate-source/desktop/tools/extract-upstream-crash-prompt.py",
+      "bytes": 4289,
+      "sha256Bytes": "c33d47e5766ad9ef2adcb8cd7ea9673f40c5ab9bc93d3b9c5e58633ac682b808"
+    },
+    {
+      "path": "candidate-source/desktop/tools/extract-upstream-dynamic-card.py",
+      "bytes": 32330,
+      "sha256Bytes": "62722e1a0ca0ad80b77ec89fa0c36d7f0bd998b98977c14154785d1f1aa811c5"
+    },
+    {
+      "path": "candidate-source/desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+      "bytes": 10390,
+      "sha256Bytes": "16971528080ffe72d67453d5276b3cbe3583c394477b8e5a5144546f3a9433ce"
+    },
+    {
+      "path": "candidate-source/desktop/tools/extract-upstream-dynamic-gallery-motion-photo.py",
+      "bytes": 8325,
+      "sha256Bytes": "e4f2910d5e8751e8ceeba3ca0593bf04b7d8ba80f42017c0ce332bd4eb49f9f2"
+    },
+    {
+      "path": "candidate-source/desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "bytes": 21834,
+      "sha256Bytes": "4bea60a6059c1a8f7b9e42caa8ef825ef84c0c59802d852e61f41130fd07c0e7"
+    },
+    {
+      "path": "candidate-source/desktop/tools/prepare-native-diagnostic-share.py",
+      "bytes": 6194,
+      "sha256Bytes": "46e8b35abe7139d204dee6bb6855c83dfbdc96ab20d1b83195d09d57e847160e"
+    },
+    {
+      "path": "candidate-source/desktop/upstream-sources.json",
+      "bytes": 240917,
+      "sha256Bytes": "82b9f2499a4a9ac6474107260f89d5f2d159a7434d2111f67cffb9d7c721b403"
+    },
+    {
+      "path": "freeze-audit.py",
+      "bytes": 6483,
+      "sha256Bytes": "b1111ee05fdcebf6c529995ba301816a9b9a1048254324431c023a1298a0fc32"
+    },
+    {
+      "path": "gradle-candidate-01.log",
+      "bytes": 78613,
+      "sha256Bytes": "8090f0992a383dcd88d01f6333bfa038d19be1ff1cd22d8ddafb1a0d022c39b1"
+    },
+    {
+      "path": "gradle-infrastructure-02.log",
+      "bytes": 1858,
+      "sha256Bytes": "539e190819f4c88352274aae82ba313c3a2701d9fffd7d2cd9e6bca1abbe6810"
+    },
+    {
+      "path": "gradle-preview-producer-04.log",
+      "bytes": 292,
+      "sha256Bytes": "e8895228debba9d0f9ee7a6ac4029b7868f573da5a66b09996045167c7069d42"
+    },
+    {
+      "path": "gradle-selected-producers-03.log",
+      "bytes": 695,
+      "sha256Bytes": "8e8cb579260f879dace997af78a616b01304800599e85893b5c2824395e072ae"
+    },
+    {
+      "path": "install-preview-producer.py",
+      "bytes": 2343,
+      "sha256Bytes": "e18649b35d2735c8acf6570ca33ee1b01d284e57fbe01f49cbd899e90694d26c"
+    },
+    {
+      "path": "install-protocol-producers.py",
+      "bytes": 2152,
+      "sha256Bytes": "a20a64f544e06285f91e1457c11c7e7b951e8f200abbce2e6c3ae40fd8d8df55"
+    },
+    {
+      "path": "integration-report.json",
+      "bytes": 2508,
+      "sha256Bytes": "dc468bfa10ab7cd9bb788e775077c56ccc577a98eb73cca3aefab40b6d2faba1"
+    },
+    {
+      "path": "prepare-candidate.py",
+      "bytes": 3394,
+      "sha256Bytes": "a67dae66c12705752c0ac5c3f6022a5fe42d6528cf3b190cee8d5e47b7add79a"
+    },
+    {
+      "path": "preview-install.json",
+      "bytes": 449,
+      "sha256Bytes": "15595d0c98e298fa5f224fbfde91a18165faaab93bc0e45f71b463236096707e"
+    },
+    {
+      "path": "preview-prepared/audit-preview.py",
+      "bytes": 8544,
+      "sha256Bytes": "e14afb91f35bed6c6ec76cf85551fdfc6ba6df125ed23c3b0927edbf5e816f3a"
+    },
+    {
+      "path": "preview-prepared/compile-01/compile-result.json",
+      "bytes": 12070,
+      "sha256Bytes": "b64ec1ca8d16256c3b902a387e2c5ff480699c215bed8b783eb660a28a9809cd"
+    },
+    {
+      "path": "preview-prepared/compile-01/compiler-inputs.json",
+      "bytes": 3668,
+      "sha256Bytes": "92030b82f997e9ab037836ca9d56ec8da9f2ff39d46a4d4394e074173179078b"
+    },
+    {
+      "path": "preview-prepared/compile-01/compiler.args",
+      "bytes": 24543,
+      "sha256Bytes": "5ebdfde882880b07fc99e5efdde509ddac8ae4f53fbdd25315e4c1a72b18aa2e"
+    },
+    {
+      "path": "preview-prepared/compile-01/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preview-prepared/compile-01/input-main04-manifest.json",
+      "bytes": 253558,
+      "sha256Bytes": "7bc5ac8875dadf38510120db6619bd6e748e7f790a47afc11374e14114f25865"
+    },
+    {
+      "path": "preview-prepared/compile-01/input-ordered-runtime-cp.json",
+      "bytes": 34464,
+      "sha256Bytes": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2"
+    },
+    {
+      "path": "preview-prepared/compile-01/runtime-pins-after.json",
+      "bytes": 41526,
+      "sha256Bytes": "41c6e737d68e91d261071ad5f7a60e02ce9bb1d43b6fb946a6829446f292b4ad"
+    },
+    {
+      "path": "preview-prepared/compile-01/runtime-pins-before.json",
+      "bytes": 41526,
+      "sha256Bytes": "41c6e737d68e91d261071ad5f7a60e02ce9bb1d43b6fb946a6829446f292b4ad"
+    },
+    {
+      "path": "preview-prepared/compile-01/source-inputs/DesktopOriginalImagePreviewRenderer.kt",
+      "bytes": 109276,
+      "sha256Bytes": "ba5665c13bb2eddeae4f9a3a126dc229231b7e310a26634c8de4d7d0dbc004fb"
+    },
+    {
+      "path": "preview-prepared/compile-01/source-inputs/DesktopOriginalImageUrlPolicy.kt",
+      "bytes": 1706,
+      "sha256Bytes": "5ed1711bf4eff2b489bba13c44d6842187684bbea25f2cf66d56516996865be9"
+    },
+    {
+      "path": "preview-prepared/compile-01/source-inputs/ImagePreviewDecodePolicy.kt",
+      "bytes": 1083,
+      "sha256Bytes": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a"
+    },
+    {
+      "path": "preview-prepared/compile-01/source-inputs/ImagePreviewSourceAnchor.kt",
+      "bytes": 1915,
+      "sha256Bytes": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395"
+    },
+    {
+      "path": "preview-prepared/compile-01/source-inputs/ImagePreviewTransitionPolicy.kt",
+      "bytes": 21375,
+      "sha256Bytes": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5"
+    },
+    {
+      "path": "preview-prepared/compile-01/source-inputs/ZoomableImage.kt",
+      "bytes": 16409,
+      "sha256Bytes": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0"
+    },
+    {
+      "path": "preview-prepared/compile-preview.py",
+      "bytes": 6000,
+      "sha256Bytes": "74eb8bf6e6b9dcca41f99c382efe212daead500f2efa916e20bc5a2289c4f00d"
+    },
+    {
+      "path": "preview-prepared/direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "bytes": 1083,
+      "sha256Bytes": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a"
+    },
+    {
+      "path": "preview-prepared/direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "bytes": 1915,
+      "sha256Bytes": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395"
+    },
+    {
+      "path": "preview-prepared/direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "bytes": 21375,
+      "sha256Bytes": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5"
+    },
+    {
+      "path": "preview-prepared/direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "bytes": 16409,
+      "sha256Bytes": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0"
+    },
+    {
+      "path": "preview-prepared/evidence-manifest.json",
+      "bytes": 9218,
+      "sha256Bytes": "aa2f0fded76142156e7470d40d999939e78fe9ea3a86300353ab8e1e805a92d9"
+    },
+    {
+      "path": "preview-prepared/freeze.py",
+      "bytes": 9761,
+      "sha256Bytes": "d2dfedcdcf91d0d71b5c056811abf7ebd8cbca668424619abfb178ea8573ae04"
+    },
+    {
+      "path": "preview-prepared/generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRenderer.kt",
+      "bytes": 109276,
+      "sha256Bytes": "ba5665c13bb2eddeae4f9a3a126dc229231b7e310a26634c8de4d7d0dbc004fb"
+    },
+    {
+      "path": "preview-prepared/generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImageUrlPolicy.kt",
+      "bytes": 1706,
+      "sha256Bytes": "5ed1711bf4eff2b489bba13c44d6842187684bbea25f2cf66d56516996865be9"
+    },
+    {
+      "path": "preview-prepared/handoff.json",
+      "bytes": 1691,
+      "sha256Bytes": "b6d77aee0aa13c78401f03d3a25b3c370624e1035a7e7bd11d5a6ffd7c3d9d8c"
+    },
+    {
+      "path": "preview-prepared/integration-notes.txt",
+      "bytes": 3663,
+      "sha256Bytes": "0697880c48e7d402df2f0c616c7f4f4757878d043621aa20025bc6703193a7e5"
+    },
+    {
+      "path": "preview-prepared/original-selected-preview-prefix.kt",
+      "bytes": 114428,
+      "sha256Bytes": "00665134006288a96749ded8281d617fad6dca5f599ffab4c40e0dc479bf091d"
+    },
+    {
+      "path": "preview-prepared/original-v023/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "bytes": 1083,
+      "sha256Bytes": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a"
+    },
+    {
+      "path": "preview-prepared/original-v023/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "bytes": 145795,
+      "sha256Bytes": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb"
+    },
+    {
+      "path": "preview-prepared/original-v023/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "bytes": 1915,
+      "sha256Bytes": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395"
+    },
+    {
+      "path": "preview-prepared/original-v023/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "bytes": 21375,
+      "sha256Bytes": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5"
+    },
+    {
+      "path": "preview-prepared/original-v023/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "bytes": 16409,
+      "sha256Bytes": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0"
+    },
+    {
+      "path": "preview-prepared/platform-diff-rows.json",
+      "bytes": 20322,
+      "sha256Bytes": "df069cd0d55c7f578e7acb032e114864fe8b9851987c4925023bb0034b30634f"
+    },
+    {
+      "path": "preview-prepared/preparation-contract.json",
+      "bytes": 2681,
+      "sha256Bytes": "9cefbc1c4bb6cb8e5b1cf99f7bea82cc49c4c887ca0bcaa2c1a942de93a68695"
+    },
+    {
+      "path": "preview-prepared/prepare.py",
+      "bytes": 7030,
+      "sha256Bytes": "f55be613a7f7c4753f7c5f2f3816efc81d57ba34cc7f09c68ab59131a9a2bc0c"
+    },
+    {
+      "path": "preview-prepared/prepared/desktop/tools/extract-upstream-dynamic-card.py",
+      "bytes": 32035,
+      "sha256Bytes": "c101a060f42b86f918cf724f365e6908cfd3e5582457412290aec88e79cbc1ae"
+    },
+    {
+      "path": "preview-prepared/probe-same-producer-block.py",
+      "bytes": 7994,
+      "sha256Bytes": "37d02e8354ecffdebbe028cbbbe7926a5b7ee979a550795f3ebe21e16f103c14"
+    },
+    {
+      "path": "preview-prepared/producer.patch",
+      "bytes": 3991,
+      "sha256Bytes": "cc1067b0d9bdcbb8e79aaefff31a5fb35a6167ca56bf61070c307f0aef8bf8ec"
+    },
+    {
+      "path": "preview-prepared/reviewed-platform-adaptation-contract.json",
+      "bytes": 12541,
+      "sha256Bytes": "a0f6a768e2fdd5d45b37f0a4657e56d1aab220f8807c4b3205935f620c160366"
+    },
+    {
+      "path": "preview-prepared/source-contract-result.json",
+      "bytes": 8893,
+      "sha256Bytes": "d6086e0de576ccd6ff0d855769c06013f6725b1e431163d06b0aa224f77b7268"
+    },
+    {
+      "path": "preview-prepared/stable-preview-platform-adaptations.patch",
+      "bytes": 20414,
+      "sha256Bytes": "c2b3aef2bae5d3e667c39ae8c66c1a2be6410ced65d6ae7beb14c6a9b388d1e2"
+    },
+    {
+      "path": "preview-prepared/stable-source-owner-inventory.json",
+      "bytes": 7287,
+      "sha256Bytes": "ce0279275adfaf4abdc031a75ea4c20198c4bbe3f40bf6f1a80134b87685139b"
+    },
+    {
+      "path": "preview-prepared/tool-inputs/compile-miuix.py",
+      "bytes": 5045,
+      "sha256Bytes": "1721b77c3e3c453eb609fe68408cc5853da923c59468368ec71fc0ce3bca3cbc"
+    },
+    {
+      "path": "preview-prepared/tool-inputs/extract-appearance-platform.py",
+      "bytes": 7078,
+      "sha256Bytes": "e00ed701f172467fafe4c580c558943335f00ccc5eeca36f9e012818a68a6e92"
+    },
+    {
+      "path": "preview-prepared/tool-inputs/extract-upstream-media.py",
+      "bytes": 12009,
+      "sha256Bytes": "cf2067ad47f38dc9f54e3e37be463a4fe61f91599e209f7a314323392c88cf78"
+    },
+    {
+      "path": "preview-prepared/tool-inputs/extract-upstream-plugins.py",
+      "bytes": 34124,
+      "sha256Bytes": "a118c2da5c4cd43a0796f8f4d4ce7acfacbe4ed22809f2685a5bd0c7ce2e09d4"
+    },
+    {
+      "path": "preview-prepared/tool-inputs/sync-upstream.py",
+      "bytes": 28670,
+      "sha256Bytes": "65a1a3bf226fb1093395833d168e7a35b0ba4c04b9d8bb84e5909b02b1df5e0f"
+    },
+    {
+      "path": "preview-source-review/capture.py",
+      "bytes": 9294,
+      "sha256Bytes": "c4447386f5f7a4da2f38968ae596d694f3db6d6522270adc710d578ba862c64d"
+    },
+    {
+      "path": "preview-source-review/current-main04-extract-upstream-dynamic-card.py",
+      "bytes": 32262,
+      "sha256Bytes": "e4d18c733e69290352a159953bdc000e08e9e964b5229803da8a561b8d43f449"
+    },
+    {
+      "path": "preview-source-review/diffs/DrawGrid.patch",
+      "bytes": 3343,
+      "sha256Bytes": "1bdddd63c8a2b24a8a4486e7abde8ec2c7768693c33d8b01d164c610fe98b87b"
+    },
+    {
+      "path": "preview-source-review/diffs/DynamicCard.patch",
+      "bytes": 5843,
+      "sha256Bytes": "f357788aff1a19adb22dd40bdc7b0142cd50bb5db86d64d2ed202341161b4e2b"
+    },
+    {
+      "path": "preview-source-review/diffs/ImagePreviewDecodePolicy.patch",
+      "bytes": 1171,
+      "sha256Bytes": "1bd1b013e1b07306209019dc920647f18fb4e1cccc31f4789f6c697246744ae3"
+    },
+    {
+      "path": "preview-source-review/diffs/ImagePreviewDialog.patch",
+      "bytes": 65262,
+      "sha256Bytes": "260d712f52558597b41bfd3e8d0d262620bc8071e1084c5efa75bfa745d1be3b"
+    },
+    {
+      "path": "preview-source-review/diffs/ImagePreviewFeedbackPolicy.patch",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preview-source-review/diffs/ImagePreviewSourceAnchor.patch",
+      "bytes": 844,
+      "sha256Bytes": "323f080c3e363ff69660626bf86d2acabcea5aa77ce443694d32bf4d6f404b11"
+    },
+    {
+      "path": "preview-source-review/diffs/ImagePreviewTransitionPolicy.patch",
+      "bytes": 8321,
+      "sha256Bytes": "a03d627226865f6653932f80ce74a19187eecd9ca83741c598889b265b7459dd"
+    },
+    {
+      "path": "preview-source-review/diffs/SpaceScreen.patch",
+      "bytes": 15992,
+      "sha256Bytes": "cbf09c794a7173aaab4cc352ac5030ddd7f39e6689dd06fdd65d8ef7181875a0"
+    },
+    {
+      "path": "preview-source-review/diffs/ZoomableImage.patch",
+      "bytes": 5180,
+      "sha256Bytes": "914cdaab3b2dfdfebf69bafbe2238b8e1f2e6738a9bffc5675dedaf305374596"
+    },
+    {
+      "path": "preview-source-review/evidence-manifest.json",
+      "bytes": 7000,
+      "sha256Bytes": "aad91096ddab1ff993737dab50caa3fdf4b9a46bde46da1b0fe0a738f395dc51"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DrawGrid.kt",
+      "bytes": 11278,
+      "sha256Bytes": "42fecf6d2b5f5075553315b735f0b0a324a70c2613963eb7da23370adf5caf7a"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCard.kt",
+      "bytes": 136932,
+      "sha256Bytes": "1e7f4239132196b0e67e678dda9508b7bec5357a7a1135d30632e899c207d08a"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "bytes": 1090,
+      "sha256Bytes": "b5df989c98b1694ca07b741cd759a73e7dc814f90d2bee0ba90ad3e2ad8cbbad"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "bytes": 128708,
+      "sha256Bytes": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewFeedbackPolicy.kt",
+      "bytes": 364,
+      "sha256Bytes": "04f61c4635b4032e118f37ae60fe9f343ef99173dd7cf256b350dc865ac4c4c4"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "bytes": 1759,
+      "sha256Bytes": "810c4e6b30a4e339de5567807a7713d10c3a5ef5a71fc25224899417f5f67769"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "bytes": 17220,
+      "sha256Bytes": "5043b00a5fa2e368ed056e517c666c7e52217207926ba17f24724013de20eacd"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "bytes": 13992,
+      "sha256Bytes": "9c11a03055c8588aef74591ed5f9465b0ade290ced8249eefa7902dbf9f8fbee"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "bytes": 244793,
+      "sha256Bytes": "a2c297f8da21d8956d4ca23c0671fe727e809a3b9848384ecc5a93fa9a1fc597"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DrawGrid.kt",
+      "bytes": 12218,
+      "sha256Bytes": "30e38696c88e7dc1a0634d2630fa663a5b2e0caf3c8a3932438b36cf9cb4b462"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCard.kt",
+      "bytes": 137919,
+      "sha256Bytes": "1b972841b2f27bfd15bf3d60bacc4f19ba2570c5833327df2b9ac51977c1e361"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "bytes": 1083,
+      "sha256Bytes": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "bytes": 145795,
+      "sha256Bytes": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewFeedbackPolicy.kt",
+      "bytes": 364,
+      "sha256Bytes": "04f61c4635b4032e118f37ae60fe9f343ef99173dd7cf256b350dc865ac4c4c4"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "bytes": 1915,
+      "sha256Bytes": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "bytes": 21375,
+      "sha256Bytes": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "bytes": 16409,
+      "sha256Bytes": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0"
+    },
+    {
+      "path": "preview-source-review/original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "bytes": 248431,
+      "sha256Bytes": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca"
+    },
+    {
+      "path": "preview-source-review/review.json",
+      "bytes": 15215,
+      "sha256Bytes": "2df85e7d730757e1f3f6a0166b77f63d9a9379538451c08d9edd1790f9bff2c3"
+    },
+    {
+      "path": "protocol-install.json",
+      "bytes": 678,
+      "sha256Bytes": "d9aada0c0f35abce8413c2455f491878f828f1168dc08feccbb73f57e406c228"
+    },
+    {
+      "path": "protocol-prepared/audit.py",
+      "bytes": 5275,
+      "sha256Bytes": "44346b1a8eb4a1493367a8edf67c55e28a81debf1c9463dcbdfd872648002c99"
+    },
+    {
+      "path": "protocol-prepared/detail-reply-evidence-manifest.json",
+      "bytes": 15684,
+      "sha256Bytes": "0a08d27a090c6d0eb402fd58f42fbb9951895a76db62c0fb3992c9ac43976b46"
+    },
+    {
+      "path": "protocol-prepared/detail-reply-handoff.json",
+      "bytes": 1616,
+      "sha256Bytes": "484a1030daadc2fac8d88e604b05bdffc768522853cc2ad6f06f2d7961a1715c"
+    },
+    {
+      "path": "protocol-prepared/detail-reply-members-verification.json",
+      "bytes": 382,
+      "sha256Bytes": "d69f8b8c081bcad0205daf98ae5af990dfa5bd3b5c56335e19ac5108918b0b61"
+    },
+    {
+      "path": "protocol-prepared/detail-reply-source-review.json",
+      "bytes": 17443,
+      "sha256Bytes": "2a443b9f496a656b58d5743d13b99c9ec90e49adb932c6c0eb8fab33c2db9031"
+    },
+    {
+      "path": "protocol-prepared/detail-reply.patch",
+      "bytes": 7490,
+      "sha256Bytes": "4ecb17946dbd331f23064b27149f8b4df5de6026d75121567e9f6f51737c41c8"
+    },
+    {
+      "path": "protocol-prepared/freeze-detail-reply.py",
+      "bytes": 1734,
+      "sha256Bytes": "e8c4f5adf359544b5f2b06202e064073024623589fa036a57f70b01d28f9ada5"
+    },
+    {
+      "path": "protocol-prepared/generated/detail/DesktopDynamicDetailOperations.fragment.kt",
+      "bytes": 1357,
+      "sha256Bytes": "feaddb448c71ee4b15838dbf49d83e6aa133dc0aa3727617617412b2e8e1c1c4"
+    },
+    {
+      "path": "protocol-prepared/generated/detail/generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt",
+      "bytes": 3947,
+      "sha256Bytes": "398db1a7f5f427d2a1a30a0cb7a93eeaf6f0adefb8df83b83e465986dedfa163"
+    },
+    {
+      "path": "protocol-prepared/generated/detail/generated/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol.kt",
+      "bytes": 6426,
+      "sha256Bytes": "d2660b7233603c35daa84bbc0c5adc0ed99518257019250cac3a94500d251e1d"
+    },
+    {
+      "path": "protocol-prepared/generated/detail/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicDetailFallbackPolicy.kt",
+      "bytes": 18742,
+      "sha256Bytes": "1929a1d230f324dcf6e7d9353eae1c1cbf574818411ee8e8cc99cf02ad649ee4"
+    },
+    {
+      "path": "protocol-prepared/generated/detail/selected-source-bodies.json",
+      "bytes": 2154,
+      "sha256Bytes": "373c7adfbf83c89e3ac34c029556f38cfdc22e323286cbb8e9eb3e5a89304cc9"
+    },
+    {
+      "path": "protocol-prepared/generated/detail/source-identity.json",
+      "bytes": 2687,
+      "sha256Bytes": "5e894bb38255a10320e71d9e7f5ef0a020f47043734c837c31e742fa625e7346"
+    },
+    {
+      "path": "protocol-prepared/generated/reply/DesktopDynamicCommentOperations.fragment.kt",
+      "bytes": 9061,
+      "sha256Bytes": "bbf261a115892bbf8498f39e8edb953a17b5136063af3df216c9b5097b065fba"
+    },
+    {
+      "path": "protocol-prepared/generated/reply/generated/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc.kt",
+      "bytes": 30968,
+      "sha256Bytes": "6f0445dc03fa2ad74ed11fcb41c87ba89c3664c2655c742b31f4a7950b181977"
+    },
+    {
+      "path": "protocol-prepared/generated/reply/generated/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol.kt",
+      "bytes": 22749,
+      "sha256Bytes": "29a13bae7b7c161e1fff3938b07ed6f79e52eca0148bb9bccaaff48ed6101a6d"
+    },
+    {
+      "path": "protocol-prepared/generated/reply/generated/com/android/purebilibili/data/repository/DesktopOriginalCommentReadAccessPolicy.kt",
+      "bytes": 3570,
+      "sha256Bytes": "08677e6c77aa8b5661aae9c6fbc81a7ea0cc9964e0b0cf72c5c53c70c8705f47"
+    },
+    {
+      "path": "protocol-prepared/generated/reply/selected-source-bodies.json",
+      "bytes": 6366,
+      "sha256Bytes": "ba38e495345df6f81afd4213325cff87c7d56a5dc4aa7a41ab8e54784284ae55"
+    },
+    {
+      "path": "protocol-prepared/generated/reply/source-identity.json",
+      "bytes": 2233,
+      "sha256Bytes": "2b8b0acd0e4c55c6d64e5f1d4f094703c0263178d7cfb1ee892d235846f6fdd6"
+    },
+    {
+      "path": "protocol-prepared/identity-gate-proof.json",
+      "bytes": 593,
+      "sha256Bytes": "204a89bf3ee30c354f785cfcad70b4994a809bd09e514b53b63b6979a4192a7b"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/ApiClient/addDanmakuFilterRule#1.diff",
+      "bytes": 450,
+      "sha256Bytes": "0766961ccac5fde5a0ac31bff09c5ecf3d50d9095c7778478c1057b849e83be4"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/ApiClient/deleteDanmakuFilterRule#1.diff",
+      "bytes": 398,
+      "sha256Bytes": "8ef46c83c03740e473ac551c4da325bd60494e7590232739b5f73a0ebfac310f"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/ApiClient/getAllBgmRecommendList#1.diff",
+      "bytes": 386,
+      "sha256Bytes": "198be0039c3fed4fc637bd7aa08960e9ccbd218ba20a2e9a19ffe0ab4926ef89"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/ApiClient/getBgmDetail#1.diff",
+      "bytes": 464,
+      "sha256Bytes": "3a748ae64a840cf7e457075356d081afd85a377a0495f52d7207819a7b682472"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/ApiClient/getDanmakuFilterRules#1.diff",
+      "bytes": 288,
+      "sha256Bytes": "1653c9c1f3a25f9ca31d67e92f826644fceaa0977038ad7e48307ef5c3c369db"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/ApiClient/updateBgmWish#1.diff",
+      "bytes": 427,
+      "sha256Bytes": "ab16317b61d63bd8c51d725ce5d9aa74bfbbc1d15593a032adbf965c43437fb4"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentGrpcRepository/parseMainListReply#1.diff",
+      "bytes": 1140,
+      "sha256Bytes": "5234fec3baa7d1433d9dbc51a85979fdcaed26cf2aa77f8919cf32d578a4202c"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentGrpcRepository/parseVoteCard#1.diff",
+      "bytes": 1568,
+      "sha256Bytes": "f807d5841f3221db74afdd11924fc6999c872f89058431ece8425668354af09e"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentReadAccessPolicy/hasRenderableCommentPayload#1.diff",
+      "bytes": 530,
+      "sha256Bytes": "955e4a17c3f2bd525b8fbb9f435227b4e9745da733187fb713107fd4935226f8"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentReadAccessPolicy/shouldFallbackGrpcCommentReadOnMissingLocation#1.diff",
+      "bytes": 558,
+      "sha256Bytes": "98c683fb9020b026da9a4b5acf8424509e1380d32e88412603f1b414cd6e677f"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentRepository/contentLength#1.diff",
+      "bytes": 285,
+      "sha256Bytes": "13c33c2a3e703f388058b33a2ffb8e89df512a4ddb747239db1e4ea41487d676"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentRepository/contentType#1.diff",
+      "bytes": 280,
+      "sha256Bytes": "c9ab29d5ddba3f7b80117308ae25c7008467bb88e009b4ee6774207c18396b0e"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentRepository/getCommentsForSubject#1.diff",
+      "bytes": 709,
+      "sha256Bytes": "df2afc56fc52c6de4a45512e647bf84e9888247eaaa21568e8b4197b214dcce8"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentRepository/isOneShot#1.diff",
+      "bytes": 267,
+      "sha256Bytes": "8b05ff19c1994abbc2f7b14fa4a06755fbcbbba6329dd78ab7b7c3db2c133d14"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentRepository/queryContentImageSize#1.diff",
+      "bytes": 703,
+      "sha256Bytes": "5cee49dd3295103d1238cef2e957ae992052621fc0c7312b1995bb903c56ef84"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentRepository/uploadCommentImage#1.diff",
+      "bytes": 2686,
+      "sha256Bytes": "ba92abe9e015ac238b9ee7bf283ddbd7aa9e88214f9a79567bdb626ab3219c0b"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentRepository/uploadCommentImage#2.diff",
+      "bytes": 1805,
+      "sha256Bytes": "9927e3a055b132725ab5faad86e3491a4b0b8612ca82ef1364cd3ee42b60f0b5"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentRepository/uploadCommentImagePart#1.diff",
+      "bytes": 2412,
+      "sha256Bytes": "9c411cb469a2f6e53765760d6ef92b972ceee4418f8181e8163b379a795593fb"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/CommentRepository/writeTo#1.diff",
+      "bytes": 436,
+      "sha256Bytes": "9a12ee3229ca817bb0e39f8a537cb7c29e57a7f321acba979d06ca611a4dccca"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/DynamicCreateRepository/uploadImage#1.diff",
+      "bytes": 1237,
+      "sha256Bytes": "1cb5efcf9e691af913776901128140c0cf31a7ac37c2e1e39f831c3f95205835"
+    },
+    {
+      "path": "protocol-prepared/method-diffs/DynamicDetailScreen/DynamicDetailScreen#1.diff",
+      "bytes": 1598,
+      "sha256Bytes": "e13c23432bd836914769c2cc4888b56236067f578609a25f696570181292c724"
+    },
+    {
+      "path": "protocol-prepared/method-token-original-diff.json",
+      "bytes": 1174144,
+      "sha256Bytes": "ad52e621a2366fcbf3272173985a4c872bf517c8e684481cd80b94adb5d423a3"
+    },
+    {
+      "path": "protocol-prepared/original-alpha9/app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "bytes": 147497,
+      "sha256Bytes": "33e0d081fc70ab587d333eb52a21a193932be2dbc5835f409901139d7a8212dd"
+    },
+    {
+      "path": "protocol-prepared/original-alpha9/app/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+      "bytes": 23015,
+      "sha256Bytes": "0c4502996df04147f5b5dd98414ad53d0390d91a14aa8baa9099863623ffea1d"
+    },
+    {
+      "path": "protocol-prepared/original-alpha9/app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "bytes": 5491,
+      "sha256Bytes": "a04d5aaf29a8416304bc6198724247f86719b9d0e6984b6098d0a6c4732d5445"
+    },
+    {
+      "path": "protocol-prepared/original-alpha9/app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt",
+      "bytes": 28438,
+      "sha256Bytes": "eddc5e3b092e785944c66a70b5c26f788551fdcad0e1ab8d137f33b679f52d07"
+    },
+    {
+      "path": "protocol-prepared/original-alpha9/app/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt",
+      "bytes": 3290,
+      "sha256Bytes": "c486a199ef6eaee6ec5a16d84c3a82688176e237c6a57519124d51bcee0d7a87"
+    },
+    {
+      "path": "protocol-prepared/original-alpha9/app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "bytes": 69461,
+      "sha256Bytes": "80fe4b7dc2d388641b3b5a5cf0cb287567274d91379816131fd1c354707cd998"
+    },
+    {
+      "path": "protocol-prepared/original-alpha9/app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "bytes": 12040,
+      "sha256Bytes": "f204c21e0e5a21e83b5b2b20ce59d822f8ac74cc8f109663da408e250506a373"
+    },
+    {
+      "path": "protocol-prepared/original-alpha9/app/src/main/java/com/android/purebilibili/data/repository/DynamicDetailFallbackPolicy.kt",
+      "bytes": 18488,
+      "sha256Bytes": "14eece47cbe4afbe048e6a782c72352734f2f419888c3c5fc6ab40b8dda227cc"
+    },
+    {
+      "path": "protocol-prepared/original-alpha9/app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "bytes": 27586,
+      "sha256Bytes": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b"
+    },
+    {
+      "path": "protocol-prepared/original-alpha9/app/src/main/java/com/android/purebilibili/feature/article/ArticleContentLoadPolicy.kt",
+      "bytes": 5933,
+      "sha256Bytes": "d486c186c42c0549a291f7fff35712167088e8d4ca5c30c5ac58885c5a6fe987"
+    },
+    {
+      "path": "protocol-prepared/original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "bytes": 46697,
+      "sha256Bytes": "eb0eefcbfb12d5ee5e06d312095797fcf67cbf7264fb32040cd4391f38d1d0cf"
+    },
+    {
+      "path": "protocol-prepared/original-stable/app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "bytes": 148935,
+      "sha256Bytes": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad"
+    },
+    {
+      "path": "protocol-prepared/original-stable/app/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+      "bytes": 23482,
+      "sha256Bytes": "fed6db98e75157fdfef5f9de3916a690808c506c10656747f90b504a1e95221f"
+    },
+    {
+      "path": "protocol-prepared/original-stable/app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "bytes": 5491,
+      "sha256Bytes": "a04d5aaf29a8416304bc6198724247f86719b9d0e6984b6098d0a6c4732d5445"
+    },
+    {
+      "path": "protocol-prepared/original-stable/app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt",
+      "bytes": 30015,
+      "sha256Bytes": "f9e73c36e47e4ec329f7bf2dcda2984210a3f4f41376519ec111b84ea71318d3"
+    },
+    {
+      "path": "protocol-prepared/original-stable/app/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt",
+      "bytes": 3327,
+      "sha256Bytes": "0e0d126dfaaa4684a5d97af698b7fabe0898868ce1e36ad48433449ec079a394"
+    },
+    {
+      "path": "protocol-prepared/original-stable/app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "bytes": 73462,
+      "sha256Bytes": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820"
+    },
+    {
+      "path": "protocol-prepared/original-stable/app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "bytes": 11927,
+      "sha256Bytes": "2f85544e1e973dd0e7178077ef5c1f439b798a1d86b46701803adeb2a7c0364f"
+    },
+    {
+      "path": "protocol-prepared/original-stable/app/src/main/java/com/android/purebilibili/data/repository/DynamicDetailFallbackPolicy.kt",
+      "bytes": 18488,
+      "sha256Bytes": "14eece47cbe4afbe048e6a782c72352734f2f419888c3c5fc6ab40b8dda227cc"
+    },
+    {
+      "path": "protocol-prepared/original-stable/app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "bytes": 27586,
+      "sha256Bytes": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b"
+    },
+    {
+      "path": "protocol-prepared/original-stable/app/src/main/java/com/android/purebilibili/feature/article/ArticleContentLoadPolicy.kt",
+      "bytes": 5933,
+      "sha256Bytes": "d486c186c42c0549a291f7fff35712167088e8d4ca5c30c5ac58885c5a6fe987"
+    },
+    {
+      "path": "protocol-prepared/original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "bytes": 46845,
+      "sha256Bytes": "ab0d6cf956ba9915445f421f299ea48e14a7561edd2a609973700531bf0f67b4"
+    },
+    {
+      "path": "protocol-prepared/original-tools/extract-upstream-dynamic-detail-protocol.py",
+      "bytes": 10685,
+      "sha256Bytes": "8c90755dcde0a4ae19a286bbcc1fbea302bdf4596d422b548ec157a6e1d2956b"
+    },
+    {
+      "path": "protocol-prepared/original-tools/extract-upstream-dynamic-reply-protocol.py",
+      "bytes": 20318,
+      "sha256Bytes": "5822d0d10dc29365b42e7a5e0f009530bc12e3bffc7cb4142d42273f1a73d0ce"
+    },
+    {
+      "path": "protocol-prepared/original-tools/verify-upstream-dynamic-detail-reply-protocol.py",
+      "bytes": 2395,
+      "sha256Bytes": "86908d69e6386ae3b186af123321270722ec72fbd61a631ea264011e8f0cd208"
+    },
+    {
+      "path": "protocol-prepared/prepare-detail-reply.py",
+      "bytes": 8069,
+      "sha256Bytes": "baf9154bdf536bbb4cd3e4bc760824166327533b038c85eb177b6e7b1ba159a7"
+    },
+    {
+      "path": "protocol-prepared/prepared/desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+      "bytes": 10390,
+      "sha256Bytes": "16971528080ffe72d67453d5276b3cbe3583c394477b8e5a5144546f3a9433ce"
+    },
+    {
+      "path": "protocol-prepared/prepared/desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "bytes": 21834,
+      "sha256Bytes": "4bea60a6059c1a8f7b9e42caa8ef825ef84c0c59802d852e61f41130fd07c0e7"
+    },
+    {
+      "path": "protocol-prepared/prepared/desktop/tools/verify-upstream-dynamic-detail-reply-protocol.py",
+      "bytes": 2395,
+      "sha256Bytes": "86908d69e6386ae3b186af123321270722ec72fbd61a631ea264011e8f0cd208"
+    },
+    {
+      "path": "protocol-prepared/prove-identity-gate.py",
+      "bytes": 2826,
+      "sha256Bytes": "00e1723ad8f13c1f3841a17856d85e67ec918420697edfb95a4deea2d573f334"
+    },
+    {
+      "path": "protocol-prepared/source-delta.json",
+      "bytes": 6826,
+      "sha256Bytes": "cf9f475939070c9d26046d551728c5104a68769720a575d2141e72c68e26b9c5"
+    },
+    {
+      "path": "protocol-prepared/verify-detail-reply.log",
+      "bytes": 86,
+      "sha256Bytes": "9181249fdfafee6a1d47a6df4170f3359dfe7cdba859be6fbbb6158128aadff9"
+    },
+    {
+      "path": "rebase-simple-producers.py",
+      "bytes": 4484,
+      "sha256Bytes": "b939c84d366047369a69b73c1fe3f6d0b32b46cb73dccbe0703c56e9829afd63"
+    },
+    {
+      "path": "release-api.json",
+      "bytes": 5025,
+      "sha256Bytes": "5ce6c56426753988061319b908d257dca06b65582d52925ef238d324bd24bf7b"
+    },
+    {
+      "path": "selected-producers/DesktopCrashLogPromptPolicy.kt.diff",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "selected-producers/DesktopOriginalGalleryResultPolicy.kt.diff",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "selected-producers/DesktopOriginalMotionPhotoPacking.kt.diff",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "selected-producers/DesktopPendingCrashLogPrompt.kt.diff",
+      "bytes": 1812,
+      "sha256Bytes": "1daa7a32ceedf5fd5299295a5ac07453277e103d550f01fe9b244a6be84e3418"
+    },
+    {
+      "path": "selected-producers/crash-new/reference-only/OriginalCrashLogPrompt.kt",
+      "bytes": 2524,
+      "sha256Bytes": "da8776b13c6b0ca90f024da74b8c7e79cb69a86ed6955bbce8847757a2fe6e72"
+    },
+    {
+      "path": "selected-producers/crash-new/sources/com/android/purebilibili/DesktopCrashLogPromptPolicy.kt",
+      "bytes": 613,
+      "sha256Bytes": "ffc5fe4fe346af2a903bcdb742a0f768f9e9dcdf11f729364970e03bc2713779"
+    },
+    {
+      "path": "selected-producers/crash-new/sources/com/android/purebilibili/DesktopPendingCrashLogPrompt.kt",
+      "bytes": 1924,
+      "sha256Bytes": "6c9c3ef2cd3f7c94a1db23d198ff76a2bd60b850a6c73bf61bad74f4d886185b"
+    },
+    {
+      "path": "selected-producers/crash-old/reference-only/OriginalCrashLogPrompt.kt",
+      "bytes": 2512,
+      "sha256Bytes": "663cd5b6b322d6faad25d66c41a40e709926411f87ffa5b06c0e418b3cfa9a3e"
+    },
+    {
+      "path": "selected-producers/crash-old/sources/com/android/purebilibili/DesktopCrashLogPromptPolicy.kt",
+      "bytes": 613,
+      "sha256Bytes": "34840fb910cdf6d842cb422b4af9146eafb0192692851794e6e1d4f25265b31b"
+    },
+    {
+      "path": "selected-producers/crash-old/sources/com/android/purebilibili/DesktopPendingCrashLogPrompt.kt",
+      "bytes": 1892,
+      "sha256Bytes": "839bf14ee4a19dce2fd3d65970623e1abb1c903f959e4a075a98dce312bfbb91"
+    },
+    {
+      "path": "selected-producers/extract-upstream-crash-prompt.py",
+      "bytes": 4289,
+      "sha256Bytes": "c33d47e5766ad9ef2adcb8cd7ea9673f40c5ab9bc93d3b9c5e58633ac682b808"
+    },
+    {
+      "path": "selected-producers/extract-upstream-dynamic-gallery-motion-photo.py",
+      "bytes": 8325,
+      "sha256Bytes": "e4f2910d5e8751e8ceeba3ca0593bf04b7d8ba80f42017c0ce332bd4eb49f9f2"
+    },
+    {
+      "path": "selected-producers/gallery-new/sources/com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+      "bytes": 1664,
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a"
+    },
+    {
+      "path": "selected-producers/gallery-new/sources/com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt",
+      "bytes": 5568,
+      "sha256Bytes": "52f013d2128d8689cc55e685d1a1c6e5aebaedfb5066b2bae61025bb748207a2"
+    },
+    {
+      "path": "selected-producers/gallery-new/sources/original-packing-before-xmp-fix.txt",
+      "bytes": 5216,
+      "sha256Bytes": "7617dea48c6a9fd822b04ca6a4d1f510c7d03dfdf3c233646a222bb5460b671e"
+    },
+    {
+      "path": "selected-producers/gallery-new/sources/packing-after-xmp-fix.txt",
+      "bytes": 5090,
+      "sha256Bytes": "ebd8fb324c3e621108763c9c340317e38c822b8051f575c0fa17e739090386fe"
+    },
+    {
+      "path": "selected-producers/gallery-new/sources/producer-receipt.json",
+      "bytes": 4013,
+      "sha256Bytes": "3ecfb0d1c6fc33a6f4cd6f3c374efab3eaf34c74be9168698278ca6c6153b786"
+    },
+    {
+      "path": "selected-producers/gallery-new/sources/xmp-three-line-adaptation.diff",
+      "bytes": 461,
+      "sha256Bytes": "670789f1771142e2dab86cf71016f6ef83023db123593799ae4eb831af80103a"
+    },
+    {
+      "path": "selected-producers/gallery-old/sources/com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+      "bytes": 1664,
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a"
+    },
+    {
+      "path": "selected-producers/gallery-old/sources/com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt",
+      "bytes": 5568,
+      "sha256Bytes": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d"
+    },
+    {
+      "path": "selected-producers/gallery-old/sources/original-packing-before-xmp-fix.txt",
+      "bytes": 5216,
+      "sha256Bytes": "7617dea48c6a9fd822b04ca6a4d1f510c7d03dfdf3c233646a222bb5460b671e"
+    },
+    {
+      "path": "selected-producers/gallery-old/sources/packing-after-xmp-fix.txt",
+      "bytes": 5090,
+      "sha256Bytes": "ebd8fb324c3e621108763c9c340317e38c822b8051f575c0fa17e739090386fe"
+    },
+    {
+      "path": "selected-producers/gallery-old/sources/producer-receipt.json",
+      "bytes": 4021,
+      "sha256Bytes": "bba5156b6fe4358b50656ca45b753cf7500169bacee245ca7358c544196e70f4"
+    },
+    {
+      "path": "selected-producers/gallery-old/sources/xmp-three-line-adaptation.diff",
+      "bytes": 461,
+      "sha256Bytes": "b293afee40aef0ebf0d94dc4442653d039bab214bbbf0e45c7194d92905700af"
+    },
+    {
+      "path": "simple-producers-review.json",
+      "bytes": 2922,
+      "sha256Bytes": "a79e504d089e681a635c0530a6568d90f136b6df80801d98a43627150dd10d51"
+    },
+    {
+      "path": "source-delta.json",
+      "bytes": 443986,
+      "sha256Bytes": "3bebfe9c965d513e43e28bfe528dc969bcba9179ac23a516d7ab59c6e0fd3561"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 4801,
+      "sha256Bytes": "4f2320be21236168e9837f64389e1507440af49e1764ba27bb800910ee081311"
+    },
+    {
+      "path": "upstream-numstat.txt",
+      "bytes": 24554,
+      "sha256Bytes": "6a7d552e1dd84f9c06533563208692d3d260d3d5cfa06f20bb2c029bb5afc36c"
+    }
+  ],
+  "excludedRuntimeReferences": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\compile-01\\prepared-stable-preview.jar",
+      "sha256Bytes": "31a9d946f9d64a441e9c5f33c5647bccb63df94dabb37080a4e763d8d2adc37f",
+      "bytes": 256808,
+      "why": "immutable runtime reference, not Git source evidence"
+    }
+  ]
+}

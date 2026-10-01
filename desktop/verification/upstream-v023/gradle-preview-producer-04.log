@@ -1,0 +1,6 @@
+> Task :prepareUpstreamSources UP-TO-DATE
+> Task :extractUpstreamDynamicFullCard
+
+BUILD SUCCESSFUL in 1s
+2 actionable tasks: 1 executed, 1 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html

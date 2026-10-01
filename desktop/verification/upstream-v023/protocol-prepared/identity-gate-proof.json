@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "exact stable manifest and Git blob accepted",
+      "passed": true
+    },
+    {
+      "case": "modified local source rejected by manifest LF SHA",
+      "passed": true
+    },
+    {
+      "case": "modified source plus matching altered manifest rejected by fixed Git blob",
+      "passed": true
+    }
+  ],
+  "MainFilesChanged": false,
+  "GitObjectWrites": false,
+  "GitIndexWrites": false,
+  "shadowFixtureOnly": true,
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "pinnedBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85"
+}

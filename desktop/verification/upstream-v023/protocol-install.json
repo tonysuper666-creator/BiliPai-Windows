@@ -1,0 +1,19 @@
+{
+  "schema": "stable-protocol-candidate-install-v1",
+  "preparedArtifactsVerified": 73,
+  "sourceManifestSha256Bytes": "0a08d27a090c6d0eb402fd58f42fbb9951895a76db62c0fb3992c9ac43976b46",
+  "candidateInstalled": true,
+  "mainInstalled": false,
+  "compiled": false,
+  "runtimeAccepted": false,
+  "installed": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "candidateLfSha256": "4bea60a6059c1a8f7b9e42caa8ef825ef84c0c59802d852e61f41130fd07c0e7"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+      "candidateLfSha256": "16971528080ffe72d67453d5276b3cbe3583c394477b8e5a5144546f3a9433ce"
+    }
+  ]
+}

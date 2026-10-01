@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "soleOperationsProducer": true,
+  "memberSha256Lf": {
+    "comment": "35d617fdbe043c4b6237980fbae058fa9e29153dcde2bb4dba039ebf1a84f4c2",
+    "detail": "e2da2c955187156916a80467e63cacabc19949179fe5d61a48b0cfcaaa5865a3"
+  },
+  "operationsSha256Lf": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+  "authPublishVerificationPreserved": true
+}

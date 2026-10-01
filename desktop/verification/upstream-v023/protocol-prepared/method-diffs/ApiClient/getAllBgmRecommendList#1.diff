@@ -1,0 +1,6 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt:getAllBgmRecommendList#1
++++ v023:app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt:getAllBgmRecommendList#1
+@@ -0,0 +1,3 @@
++    suspend fun getAllBgmRecommendList(
++        @Query("music_id") musicId: String
++    ): com.android.purebilibili.data.model.response.BgmRecommendListResponse

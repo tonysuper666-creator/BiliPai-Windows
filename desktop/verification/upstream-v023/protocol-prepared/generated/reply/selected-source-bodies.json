@@ -1,0 +1,163 @@
+[
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "resolveReadApi",
+    "startLine": 122,
+    "endLine": 127,
+    "sha256LfUtf8": "61b710e2a80ae72badcf6afa676e390a833df107499361c529786de89e6ed130"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "fetchNonWbiCommentFallback",
+    "startLine": 129,
+    "endLine": 154,
+    "sha256LfUtf8": "2a5422f76e6df782b1c4abd3345a9fe8178ca39d36c7c526978e63b80d3bb13d"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "fetchCommentsByApi",
+    "startLine": 156,
+    "endLine": 224,
+    "sha256LfUtf8": "2c0963c9d9c7b6b34e5a24b1414ca36f1ac468aab0ba09456cecb64edf136455"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "fetchGuestHotCommentsCompat",
+    "startLine": 226,
+    "endLine": 243,
+    "sha256LfUtf8": "ae181a144bae01bddca8c14d96b0e2e4ca10136dfac52b7ff983faaa40eb712a"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "fetchLegacyHotCommentsCompat",
+    "startLine": 250,
+    "endLine": 281,
+    "sha256LfUtf8": "32d774c0026ff0cb81dcfadc66b472a28409320ee440924d01d84c96f3163bbf"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "fetchCommentEmptySuccessFallback",
+    "startLine": 283,
+    "endLine": 384,
+    "sha256LfUtf8": "895fcbee66f9156dd1e40269adc2e44c9bdbd2564e1aa83703949afbe9c10f7e"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "getCommentsForSubject",
+    "startLine": 408,
+    "endLine": 567,
+    "sha256LfUtf8": "43e88c587bb2ac67e14b994de93e634779f54c5cfa93b0c8cc3eeb75cacda1e7"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "getCommentCountForSubject",
+    "startLine": 569,
+    "endLine": 584,
+    "sha256LfUtf8": "51c5076396f99ee443a84a2a7291e30e82007b4a6c5aff5a95c53f04bb437705"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "getSortedSubCommentsForSubject",
+    "startLine": 601,
+    "endLine": 627,
+    "sha256LfUtf8": "e87a2db7d2d1616a321b5836eb45e9e2fd0c74775567afcbc5a3ad9f3c746e35"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "getSubCommentsForSubject",
+    "startLine": 629,
+    "endLine": 725,
+    "sha256LfUtf8": "82cd0e17c0ac9aa5e96c24c1b9d7ce80af987c4c1b1b0d585a16e806e6798f28"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "getDialogCommentsForSubject",
+    "startLine": 727,
+    "endLine": 754,
+    "sha256LfUtf8": "89d438d2efd43dab8105297712dd8d2689ea9251722a18d54196a0d6c9853301"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "shouldTryGrpcMainList",
+    "startLine": 1085,
+    "endLine": 1098,
+    "sha256LfUtf8": "3ed10fd96a65ad3c91966d3384a6083f91bec6058aa6b5f41aa2bede2019782a"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "resolveCommentMainListPaginationParameters",
+    "startLine": 1100,
+    "endLine": 1113,
+    "sha256LfUtf8": "f1ddb5c681f5ae8e1e4d6d8fd70443c78c936891fd0148968a317b330bc76e4e"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "resolveCommentMainListMode",
+    "startLine": 1115,
+    "endLine": 1121,
+    "sha256LfUtf8": "7add7a2f0ba48468c1606ed9ceaebb2377de8b365bea15331877b434996e341a"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "shouldTryGrpcPagedRequest",
+    "startLine": 1123,
+    "endLine": 1128,
+    "sha256LfUtf8": "993754c4a6cf90b72c3123ed746d5dfeed6bd8865107db1cc73536a61544fa14"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "addCommentForSubject",
+    "startLine": 848,
+    "endLine": 921,
+    "sha256LfUtf8": "76357645a88abd655dcb7452bcfadde7f2232f0eb7dffa19b2209f7a77e59276"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "likeCommentForSubject",
+    "startLine": 1137,
+    "endLine": 1165,
+    "sha256LfUtf8": "d524b6187dbb34d9322540f0a22a9cd61e62bfc5abacf98f3df5e36905fd2165"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "hateCommentForSubject",
+    "startLine": 1173,
+    "endLine": 1201,
+    "sha256LfUtf8": "ab3989e0ddfbf066e912733643da9d5cdd04b3ea42dbf0f9c536d4052f31ec8a"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "deleteCommentForSubject",
+    "startLine": 1209,
+    "endLine": 1240,
+    "sha256LfUtf8": "ab367a7ad62cd465d934b9623abed4bd1aef58f484aa4ee961a82893629e45b1"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "setCommentTopForSubject",
+    "startLine": 1253,
+    "endLine": 1281,
+    "sha256LfUtf8": "cde0eb4a9c29204d634fb6d0759c8cbac46df330548a125f9c946d35549e9755"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "reportCommentForSubject",
+    "startLine": 1294,
+    "endLine": 1329,
+    "sha256LfUtf8": "9234202b78bda49b2f175a8df87b310a2965ca4d992277d5f0a573a1af32e39b"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "resolveSyncToDynamicField",
+    "startLine": 1081,
+    "endLine": 1083,
+    "sha256LfUtf8": "336db7698c491d7df31b9f0927121c36cc2f13900531018fa33fc37d42f78da2"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "name": "resolveReplyTopActionField",
+    "startLine": 1283,
+    "endLine": 1285,
+    "sha256LfUtf8": "27f3f8bc3f69ccc2cfd3f05cc16197e2902ad23bdbd8ec62e85bc8a0d128c6ed"
+  }
+]

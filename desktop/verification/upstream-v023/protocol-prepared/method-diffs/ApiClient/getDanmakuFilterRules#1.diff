@@ -1,0 +1,4 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt:getDanmakuFilterRules#1
++++ v023:app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt:getDanmakuFilterRules#1
+@@ -0,0 +1 @@
++    suspend fun getDanmakuFilterRules(): DanmakuFilterRulesResponse

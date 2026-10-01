@@ -1,0 +1,56 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "e343c21510d6519a63def7b9906ac9400087bc11",
+    "currentGitBlob": "e343c21510d6519a63def7b9906ac9400087bc11",
+    "sha256LfUtf8": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "835b61c21c45c4c4dee5652acbb1b10a4d220925",
+    "currentGitBlob": "835b61c21c45c4c4dee5652acbb1b10a4d220925",
+    "sha256LfUtf8": "a04d5aaf29a8416304bc6198724247f86719b9d0e6984b6098d0a6c4732d5445",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicDetailFallbackPolicy.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "3813bad824d50df4c4339a614d5b710a7ed044e5",
+    "currentGitBlob": "3813bad824d50df4c4339a614d5b710a7ed044e5",
+    "sha256LfUtf8": "14eece47cbe4afbe048e6a782c72352734f2f419888c3c5fc6ab40b8dda227cc",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleContentLoadPolicy.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "de3a2658e9db7d6f0a6fd681e5b5bee65dd3edff",
+    "currentGitBlob": "de3a2658e9db7d6f0a6fd681e5b5bee65dd3edff",
+    "sha256LfUtf8": "d486c186c42c0549a291f7fff35712167088e8d4ca5c30c5ac58885c5a6fe987",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "c8fddc1d08933deed87784474ce12c464ca49a1f",
+    "currentGitBlob": "c8fddc1d08933deed87784474ce12c464ca49a1f",
+    "sha256LfUtf8": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "6c099b54477ede53ffad412f05ebbd61aa098bea",
+    "currentGitBlob": "6c099b54477ede53ffad412f05ebbd61aa098bea",
+    "sha256LfUtf8": "ab0d6cf956ba9915445f421f299ea48e14a7561edd2a609973700531bf0f67b4",
+    "matchesPinnedCommit": true
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "schema": "stable-preview-candidate-install-v1",
+  "verifiedPreparedArtifacts": 47,
+  "patchAppliedToUnchangedSoleProducer": true,
+  "candidateProducerSha256Lf": "c101a060f42b86f918cf724f365e6908cfd3e5582457412290aec88e79cbc1ae",
+  "preparedSourceChecks": 24,
+  "preparedPlatformPairs": 33,
+  "candidateInstalled": true,
+  "mainInstalled": false,
+  "wholeProductCompiled": false,
+  "runtimeAccepted": false,
+  "callerIntegrationPending": true
+}
