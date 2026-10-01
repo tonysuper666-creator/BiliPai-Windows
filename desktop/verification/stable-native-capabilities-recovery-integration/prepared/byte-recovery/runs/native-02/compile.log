@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\native-02\inputs\existing\desktop\src\main\kotlin\com\bilipai\desktop\player\cache\DesktopMediaByteCache.kt:306:42: warning: elvis operator (?:) always returns the left operand of non-nullable type 'ResponseBody'.
+                val body = response.body ?: throw IOException("Media body missing")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\native-02\inputs\existing\desktop\src\main\kotlin\com\bilipai\desktop\player\cache\DesktopMediaByteCache.kt:357:46: warning: unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+                    val input = response.body?.byteStream() ?: throw IOException("Media body missing")
+                                             ^^

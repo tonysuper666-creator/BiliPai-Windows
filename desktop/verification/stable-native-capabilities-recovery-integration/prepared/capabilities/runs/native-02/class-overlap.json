@@ -1,0 +1,27 @@
+{
+  "fixtureOverlap": [],
+  "existingFamilyOverrides": [
+    "com/bilipai/desktop/player/MpvCallException.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Barrier.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Command.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$HardwareDecoding.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Load.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$OwnedMute.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Property.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Screenshot.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Seek.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$SubtitleConfiguration.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$Subtitles.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action$VideoShaders.class",
+    "com/bilipai/desktop/player/MpvPlayer$Action.class",
+    "com/bilipai/desktop/player/MpvPlayer$ExternalSubtitle.class",
+    "com/bilipai/desktop/player/MpvPlayer$Session.class",
+    "com/bilipai/desktop/player/MpvPlayer$canvas$1.class",
+    "com/bilipai/desktop/player/MpvPlayer$captureScreenshot$1.class",
+    "com/bilipai/desktop/player/MpvPlayer$captureScreenshot$4.class",
+    "com/bilipai/desktop/player/MpvPlayer$drainSourceCommands$1.class",
+    "com/bilipai/desktop/player/MpvPlayer$drainSourceCommands$2.class",
+    "com/bilipai/desktop/player/MpvPlayer.class"
+  ],
+  "newManualClasses": 19
+}

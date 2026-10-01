@@ -1,0 +1,56 @@
+PASS real HTTP503 byte read publishes a typed current native lease event
+PASS 503 event is body IO, not manufactured MPV demux failure
+PASS normal completed resolver leaves accepted source job and failure frame live
+PASS event fixes exact source version, publication, receipt and current lease
+PASS bounded event carries no origin URL, cookies or exception text
+PASS buffering Reader has real requested pause and valid position
+PASS actual Bridge observer recovers with no native failure attempt
+PASS real native ACK/codecs/readback for source 1
+PASS direct native ACK keeps semantic URL, source version and authorization
+PASS direct source uses actual buffered position and desired pause
+PASS real native readback preserves requested pause and position
+PASS recover retires failed capability and event, without cache retry
+PASS same failure cannot recover twice or target direct source
+PASS observer after direct ACK cannot recreate cache/load loop
+PASS second real failed IO produces its own fixed publication event
+PASS real native ACK/codecs/readback for source 3
+PASS new load retires old typed event and local capability
+PASS retired event cannot recover newer accepted identity
+PASS closed owner cannot recover retained old IO event
+{"snapshot":74,"groups":3,"assertions":19,"productionOverrides":0,"real503":true,"actualBridge":true,"actualDirectNativeAck":true,"wholeRootVM":false,"MainShell":false,"realAccount":false,"HTTPExternal":false,"OSInput":false}
+10�� 01, 2026 11:24:22 ���� fi.iki.elonen.NanoHTTPD$Response send
+����: Could not send response to the client
+java.io.IOException: Origin did not honor media byte range
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.origin(DesktopMediaByteCache.kt:252)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.writeSpanOwned(DesktopMediaByteCache.kt:352)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.writeSpan(DesktopMediaByteCache.kt:345)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.ensureRange(DesktopMediaByteCache.kt:338)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.ensureRange$default(DesktopMediaByteCache.kt:326)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease$stream$1$read$3.invokeSuspend(DesktopMediaByteCache.kt:395)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+
+10�� 01, 2026 11:24:22 ���� fi.iki.elonen.NanoHTTPD$Response send
+����: Could not send response to the client
+java.io.IOException: Origin did not honor media byte range
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.origin(DesktopMediaByteCache.kt:252)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.writeSpanOwned(DesktopMediaByteCache.kt:352)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.writeSpan(DesktopMediaByteCache.kt:345)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.ensureRange(DesktopMediaByteCache.kt:338)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.ensureRange$default(DesktopMediaByteCache.kt:326)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease$stream$1$read$3.invokeSuspend(DesktopMediaByteCache.kt:395)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+

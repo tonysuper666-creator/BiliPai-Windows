@@ -1,0 +1,98 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+    "index": 0,
+    "before": "            var bodyOwnsJob = false\n",
+    "after": "            var bodyOwnsJob = false\n            var nativeReadStamp: DesktopNativeByteReadStamp? = null\n",
+    "beforeSnippetSha256": "5dad9f7db52a813bbc65d37d2359f678c2c8e5fafd874c3e67319bdda0f2038f",
+    "afterSnippetSha256": "f9ed9f6041489fd271ae17290bdc784d803980772f51f643819a8eedab1d4434"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+    "index": 1,
+    "before": "                val metadata = runBlocking(job + Dispatchers.IO) { lease.metadata(track) }",
+    "after": "                nativeReadStamp = lease.captureNativeReadStamp()\n                val metadata = runBlocking(job + Dispatchers.IO) { lease.metadata(track) }",
+    "beforeSnippetSha256": "b249c25398464ec5929ba52f3b4baeef8c8a0f158da6f08795bd7b742ede2221",
+    "afterSnippetSha256": "75f743d04173909ca0af892f89fdc8144a78f10cf1a511626c33bb6d0ccd8c99"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+    "index": 2,
+    "before": "            catch (_: Exception) { job.cancel(); return fail(Response.Status.SERVICE_UNAVAILABLE) }",
+    "after": "            catch (failure: Exception) {\n                if (failure is IOException) lease.reportNativeReadFailure(nativeReadStamp, job, DesktopNativeByteFailureStage.METADATA)\n                job.cancel(); return fail(Response.Status.SERVICE_UNAVAILABLE)\n            }",
+    "beforeSnippetSha256": "4a1c61afcbff16d82bec8d315327cc9a08612d7b6e85c3030f63284130c97528",
+    "afterSnippetSha256": "46ba37f917c626ff5839c2b903e28800114ec94e7dbb8344f9ac34abfe6f1c6c"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+    "index": 3,
+    "before": "    private val frame = AtomicReference(Frame(initial, null, null))",
+    "after": "    private val frame = AtomicReference(Frame(initial, null, null))\n    private val nativeFailure = AtomicReference<DesktopNativeByteFailure?>()\n    private val failureSequence = AtomicLong()",
+    "beforeSnippetSha256": "d1d46b20506e05b090f9929cb72579e0d6c54634de6f046fc3648134e53308a7",
+    "afterSnippetSha256": "3f0023d11405a0096bc8a61d3dd62b8789b099d04d8e6219c11c859d5640e871"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+    "index": 4,
+    "before": "    internal fun probeAdmission(): DesktopMediaByteAdmission { check(); return frame.get().admission }",
+    "after": "    // Only the real loopback native metadata/body paths call this seam.\n    // Prefetch/probe stay best effort. Every read fixes its frame BEFORE IO.\n    internal fun captureNativeReadStamp(): DesktopNativeByteReadStamp? {\n        val value = frame.get()\n        if (closed.get() || value.retired || !leaseJob.isActive || value.version == null || value.publication == null) return null\n        return DesktopNativeByteReadStamp(this, value, value.version, value.publication, value.admission.receipt)\n    }\n    private fun matchesNativeStamp(stamp: DesktopNativeByteReadStamp): Boolean {\n        val value = frame.get()\n        return stamp.lease === this && stamp.frameIdentity === value && !closed.get() && !value.retired &&\n            leaseJob.isActive && value.admission.ownerJob.isActive && value.version == stamp.sourceVersion &&\n            value.publication === stamp.publication && value.admission.receipt == stamp.receipt\n    }\n    internal fun reportNativeReadFailure(stamp: DesktopNativeByteReadStamp?, callerJob: Job,\n        stage: DesktopNativeByteFailureStage) {\n        if (stamp == null || !callerJob.isActive || !matchesNativeStamp(stamp)) return\n        val value = frame.get()\n        try {\n            value.admission.commit {\n                if (!callerJob.isActive || !matchesNativeStamp(stamp)) return@commit\n                // First failure wins until this exact publication retires/adopts.\n                // No unbounded queue, IO, Throwable or callbacks under the gate.\n                if (nativeFailure.get()?.stamp?.frameIdentity !== value) {\n                    nativeFailure.set(DesktopNativeByteFailure(failureSequence.incrementAndGet(), stamp, stage))\n                }\n            }\n        } catch (_: CancellationException) { /* retired IO is not a transport failure */ }\n    }\n    internal fun ownsNativeFailure(value: DesktopNativeByteFailure): Boolean =\n        nativeFailure.get() === value && matchesNativeStamp(value.stamp)\n    internal fun latestNativeFailure(): DesktopNativeByteFailure? = nativeFailure.get()?.takeIf(::ownsNativeFailure)\n\n    internal fun probeAdmission(): DesktopMediaByteAdmission { check(); return frame.get().admission }",
+    "beforeSnippetSha256": "f722256f1df422addf4304ab6a47b3f15abd9f35a4dd364b659bfa4db8e8e23d",
+    "afterSnippetSha256": "bd63f01a1baa4bdcc7834808b9a49c2d5d4c8307e68585017213a9de4b2aa88a"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+    "index": 5,
+    "before": "check(frame.compareAndSet(old, next)) { \"Media byte lease changed\" }; watchOwner(next)",
+    "after": "check(frame.compareAndSet(old, next)) { \"Media byte lease changed\" }; nativeFailure.set(null); watchOwner(next)",
+    "beforeSnippetSha256": "97f64019aeb0e87e22e7585b37127681236eac49952a57cd9398c84ea7000923",
+    "afterSnippetSha256": "2ea2b590011aa68c8c9758dd4251a265e00221ab13aa8c8834e98cedd6765fd3"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+    "index": 6,
+    "before": "        watchOwner(next); return true",
+    "after": "        nativeFailure.set(null); watchOwner(next); return true",
+    "beforeSnippetSha256": "9d60cadad47907942d4f2cba513ec09d20935c93bf9d6116eef67b2035738334",
+    "afterSnippetSha256": "8803155ec8ec286583899608bf6a2ed6b3bedb07cef3950b226ff391a3a76d08"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+    "index": 7,
+    "before": "    internal fun markRetired() { closed.set(true);cache.unregister(this) }",
+    "after": "    internal fun markRetired() { closed.set(true);nativeFailure.set(null);cache.unregister(this) }",
+    "beforeSnippetSha256": "4d1cebba81d7fabce3387ef4d37834fb67c4c781b738ff1927268ae8cfbef32e",
+    "afterSnippetSha256": "614f70e8fa12529298e4b430676339ff7073960830a43060e320c23634336d78"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+    "index": 8,
+    "before": "            requestJob.ensureActive(); check(); if(position>=end)return -1\n            reader.get()?.takeIf",
+    "after": "            requestJob.ensureActive(); check(); if(position>=end)return -1\n            val nativeReadStamp = captureNativeReadStamp()\n            try {\n            reader.get()?.takeIf",
+    "beforeSnippetSha256": "5b2208e14b7e24e61968572434417894c8804777608afcce926b96fc0e5a06b9",
+    "afterSnippetSha256": "bd8c9fb8330c65fe774806ad0a0cb0878da52ca0daa46c0f6c53bca77ba284a3"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+    "index": 9,
+    "before": "            position+=n;return n\n        }\n        override fun close()",
+    "after": "            position+=n;return n\n            } catch (failure: IOException) {\n                if (!done.get()) reportNativeReadFailure(nativeReadStamp, requestJob, DesktopNativeByteFailureStage.BODY_READ)\n                throw failure\n            }\n        }\n        override fun close()",
+    "beforeSnippetSha256": "535ee6e6bcb0f88867943ab06ef7a945e06837ce6772275895ea259ee2fdf248",
+    "afterSnippetSha256": "e316ff0868617bdda2b9226db529e69744593ee809902792f3b32b4b2df02375"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+    "index": 0,
+    "before": "    /** Called by the existing full-owner position observer, with no new poller.",
+    "after": "    /** The real native loopback may buffer forever after an origin IOException,\n     * without MPV generating a PlayerFailure attempt. Consume its fixed lease\n     * event through the existing full-owner observer, including loading/paused.\n     * No fake native failure, latest-account lookup or second recovery poller. */\n    fun observeByteCacheFailure(): Boolean {\n        val expected = current() ?: return false\n        val transport = expected.nativeSource.source.nativeTransport ?: return false\n        val failure = transport.lease.latestNativeFailure() ?: return false\n        return recoverDirectAfterByteFailure(expected, failure)\n    }\n\n    internal fun recoverDirectAfterByteFailure(expected: DesktopOriginalVideoAcceptedPublication,\n        failure: com.bilipai.desktop.player.cache.DesktopNativeByteFailure): Boolean {\n        val transport = expected.nativeSource.source.nativeTransport ?: return false\n        fun currentFailure(): Boolean = owns(expected) && transport.lease.ownsNativeFailure(failure) &&\n            failure.sourceVersion == expected.sourceVersion &&\n            failure.stamp.publication === expected.nativeSource.source.nativePublication &&\n            failure.stamp.receipt == expected.nativeSource.source.authorizationReceipt\n        if (!currentFailure()) return false\n        var recovered = false\n        try {\n            publication.admit(expected.nativeSource.source, ::currentFailure) {\n                withEntryAdmission {\n                    if (!currentFailure()) return@withEntryAdmission\n                    player.admitSourceSnapshot(expected.nativeSource) {\n                        if (!currentFailure()) return@admitSourceSnapshot\n                        val readback = player.state.value\n                        val position = readback.positionSeconds\n                        if (!position.isFinite() || position < 0.0) return@admitSourceSnapshot\n                        // Requested pause remains real even when buffering has no\n                        // nativePaused readback. Never infer autoplay from null.\n                        val paused = readback.paused\n                        lateinit var next: DesktopOriginalVideoAcceptedPublication\n                        val direct = retainedSource(expected.nativeSource.source.copy(nativeTransport = null,\n                            startPositionSeconds = position, startPaused = paused)) { owns(next) }\n                        if (!player.recoverSource(expected.sourceVersion, direct, position, paused)) return@admitSourceSnapshot\n                        next = DesktopOriginalVideoAcceptedPublication(expected.request,\n                            checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == expected.sourceVersion) })\n                        accepted.set(next)\n                        inheritedMute.get()?.takeIf { it.lease === expected }?.let { previous ->\n                            inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))\n                        }\n                        onAccepted(next); recovered = true\n                    }\n                }\n            }\n        } catch (_: CancellationException) { return false }\n        return recovered\n    }\n\n    /** Called by the existing full-owner position observer, with no new poller.",
+    "beforeSnippetSha256": "2dbbed45f5eac3b4c041b6b6dec0b236ee4fb9991a6c2c84e4f856cbe0787053",
+    "afterSnippetSha256": "b29c2df8f60ab1ea835d04df4eca8c9e92067ea56df34c5bf089821bf3c92888"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerPluginBridge.kt",
+    "index": 0,
+    "before": "    override fun observeInheritedPluginMute() { native.observeInheritedPluginMute() }",
+    "after": "    override fun observeInheritedPluginMute() {\n        // This original observer runs before plugin/isPlaying/loading filters.\n        native.observeByteCacheFailure()\n        native.observeInheritedPluginMute()\n    }",
+    "beforeSnippetSha256": "77c5c9e4e0bdf8ddecb2b9e8ad5f9854823aa66dd22e66f34f2716af02e023e6",
+    "afterSnippetSha256": "1d9b742b7dd41e2dae191ff4d6780e3a62356c723004b1592adbd5dff59cc065"
+  }
+]

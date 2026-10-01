@@ -1,0 +1,33 @@
+{
+  "exit": 1,
+  "entries": 101,
+  "declaredProductionFamilies": 3,
+  "newManual": 1,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\runs\\compile-01\\inputs\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "58240f63c5c6ba06b80aaf33478401d59be681333818b73b5b2457a616c99f3c",
+      "size": 33639
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\runs\\compile-01\\inputs\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "7c096afc98856b9be17a5e1c66813938a8f656cd6071208e01fd41458f7971ce",
+      "size": 27143
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\runs\\compile-01\\inputs\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerPluginBridge.kt",
+      "sha256Bytes": "d5231336c53881ee48d420f01a3e66752639a2b05e32c9679738717f2c2804d8",
+      "size": 11987
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\runs\\compile-01\\inputs\\manual\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeByteFailure.kt",
+      "sha256Bytes": "c613b0ecfa25a162529abe7451a234ab1f2002564281c40f628a73cca01fde21",
+      "size": 1433
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\runs\\compile-01\\inputs\\fixture\\NativeByteFailureProof.kt",
+      "sha256Bytes": "1d0e2b996f18bc6766cf8ac403724916a412be0deb35202a7403c72cdfa574e2",
+      "size": 17822
+    }
+  ]
+}

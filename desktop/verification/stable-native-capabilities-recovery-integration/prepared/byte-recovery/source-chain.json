@@ -1,0 +1,81 @@
+{
+  "snapshot": 73,
+  "sourceSelections": [
+    {
+      "label": "synchronous prepare then Success",
+      "lineStart": 2945,
+      "lineEnd": 3047,
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-video-full-owner\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt",
+        "sha256Bytes": "dff8feb5fa8c207ad633dc18b23b877b4e6438bf325d1fc336569491d9b70ab1",
+        "size": 386755
+      },
+      "retained": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\source-chain\\VideoPlaybackViewModel-synchronous-prepare-then-Success.kt.txt",
+        "sha256Bytes": "a1a2fc149a02bb4e94be8100750e3a8d67f7e681db3081bd5e9655d3eb273edb",
+        "size": 6209
+      }
+    },
+    {
+      "label": "postLoad scheduling",
+      "lineStart": 3098,
+      "lineEnd": 3110,
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-video-full-owner\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt",
+        "sha256Bytes": "dff8feb5fa8c207ad633dc18b23b877b4e6438bf325d1fc336569491d9b70ab1",
+        "size": 386755
+      },
+      "retained": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\source-chain\\VideoPlaybackViewModel-postLoad-scheduling.kt.txt",
+        "sha256Bytes": "21cc6ff08d3f227d8c8fbe46b01a9d7cd2550b5aa535ef97bd81e9c0759088d5",
+        "size": 749
+      }
+    },
+    {
+      "label": "deferred plan dispatch",
+      "lineStart": 7338,
+      "lineEnd": 7360,
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-video-full-owner\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt",
+        "sha256Bytes": "dff8feb5fa8c207ad633dc18b23b877b4e6438bf325d1fc336569491d9b70ab1",
+        "size": 386755
+      },
+      "retained": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\source-chain\\VideoPlaybackViewModel-deferred-plan-dispatch.kt.txt",
+        "sha256Bytes": "aa916a6d9bf1676a6d9f19b69e38ce58f4912ce04cf5cbd71592598a4edd7059",
+        "size": 1040
+      }
+    },
+    {
+      "label": "observer before plugin/play tests",
+      "lineStart": 7360,
+      "lineEnd": 7390,
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-video-full-owner\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt",
+        "sha256Bytes": "dff8feb5fa8c207ad633dc18b23b877b4e6438bf325d1fc336569491d9b70ab1",
+        "size": 386755
+      },
+      "retained": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\source-chain\\VideoPlaybackViewModel-observer-before-plugin\\play-tests.kt.txt",
+        "sha256Bytes": "421d4f6a726c8bca4a8d4e2d67ffdc78d01a518276b5c4541d1f876d2b75fc12",
+        "size": 1731
+      }
+    }
+  ],
+  "plan": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\playback\\policy\\PlaybackPostLoadPlan.kt",
+    "sha256Bytes": "dcce56267efc6c31611db5ac8c2cf07512a319550fdc338ae6ba06691195c2d2",
+    "size": 2350
+  },
+  "retainedPlan": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\source-chain\\PlaybackPostLoadPlan.kt.txt",
+    "sha256Bytes": "645241d7f2f3a324308e5cd95c5f231bf8d6d63863858af7faa36c26a0f022ea",
+    "size": 2267
+  },
+  "firstStartOriginalDelayMs": 1200,
+  "needsFirstNativeFrame": false,
+  "loadingPausedBufferingConsumer": true,
+  "strictLatencyGuarantee": false,
+  "SponsorAwaitCanDelayLaterCycles": true,
+  "wholeVMRuntimeAccepted": false
+}

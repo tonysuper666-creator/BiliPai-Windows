@@ -1,0 +1,17 @@
+{
+  "exit": 0,
+  "entries": 101,
+  "productionOverrides": 0,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-recovery-actual74-proof\\runs\\actual74-01\\inputs\\MpvCapabilityProof.kt",
+      "sha256Bytes": "e890ab2b1d291d0940113d23a31260f706717993c9a1950b60db8c30297fe7f7",
+      "size": 3173
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-recovery-actual74-proof\\runs\\actual74-01\\inputs\\NativeByteFailureProof.kt",
+      "sha256Bytes": "d012abac9218164a5950d58bf4821e160071d22526f4753a77eef194d9a72d7e",
+      "size": 18053
+    }
+  ]
+}

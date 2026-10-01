@@ -1,0 +1,31 @@
+     * 定期检查插件（约500ms一次）
+     */
+    private fun startPluginCheck() {
+        pluginCheckJob?.cancel()
+        lastPluginDispatchPositionMs = null
+        pluginCheckJob = environment.invocations.launch {
+            while (true) {
+                // Same actual native lease; this also runs when all plugins are disabled.
+                environment.plugins.observeInheritedPluginMute()
+                val expected = environment.plugins.capturePlaybackDispatch()
+                if (expected == null) {
+                    delay(resolvePluginPollingIntervalMs(hasPlugins = false, isPlaying = false))
+                    continue
+                }
+                val plugins = getSessionPlayerPlugins().toList()
+                refreshSponsorContributionAvailability(plugins)
+                val currentVideo = _uiState.value as? VideoPlaybackUiState.Success
+                val sponsorPlugin = plugins
+                    .filterIsInstance<com.android.purebilibili.feature.plugin.SponsorBlockPlugin>()
+                    .firstOrNull()
+                if (sponsorPlugin == null) {
+                    sponsorBlockLoadedVideo = null
+                    sponsorBlockRetryVideo = null
+                    sponsorBlockLoadFailures = 0
+                    sponsorBlockRetryAtMs = 0L
+                    environment.plugins.onSponsorDisabled(expected)
+                    if (!environment.plugins.isPlaybackDispatchCurrent(expected)) continue
+                    _sponsorProgressMarkers.value = emptyList()
+                    clearSponsorSkipUi()
+                    sponsorVideoLabels.value = emptyMap()
+                    currentVideo?.let { updateSponsorVideoLabel(it.info.bvid, it.info.cid, emptyList()) }

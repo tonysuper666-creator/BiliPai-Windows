@@ -1,0 +1,33 @@
+{
+  "family": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+  "beforeSha256Bytes": "23f2361ffff70191afe0bc8dbdd66593e062e8b8629902e5bf4ccd267a3d6677",
+  "beforeSha256LF": "23f2361ffff70191afe0bc8dbdd66593e062e8b8629902e5bf4ccd267a3d6677",
+  "afterSha256LF": "9717dbc8dfb106e1b2674e8b6c57b5f288f8a788fb78aab97bfaa0e1f3410c5c",
+  "hunks": [
+    {
+      "name": "capability-flow",
+      "before": "    val state: StateFlow<PlayerState> = mutableState.asStateFlow()\n",
+      "after": "    val state: StateFlow<PlayerState> = mutableState.asStateFlow()\n    private val mutableDecoderCapabilities = MutableStateFlow<MpvDecoderCapabilities?>(null)\n    internal val decoderCapabilities: StateFlow<MpvDecoderCapabilities?> = mutableDecoderCapabilities.asStateFlow()\n"
+    },
+    {
+      "name": "session-start",
+      "before": "    private fun startSession(windowId: Long) {\n        mutableVideoOutput.value",
+      "after": "    private fun startSession(windowId: Long) {\n        mutableDecoderCapabilities.value = null\n        mutableVideoOutput.value"
+    },
+    {
+      "name": "detach",
+      "before": "            session.also { session = null; it?.closing?.set(true) }",
+      "after": "            mutableDecoderCapabilities.value = null\n            session.also { session = null; it?.closing?.set(true) }"
+    },
+    {
+      "name": "same-session-initialize",
+      "before": "                val nativeVersion = property(native, handle, \"mpv-version\")\n                synchronized(lock) {\n                    if (session === this && !closing.get()) mutableState.update { it.copy(ready = true, error = null, failure = null, nativeVersion = nativeVersion) }\n                }",
+      "after": "                val nativeVersion = property(native, handle, \"mpv-version\")\n                val decoders = readMpvDecoderCapabilities(native, handle)\n                synchronized(lock) {\n                    if (session === this && !closing.get()) {\n                        mutableDecoderCapabilities.value = decoders\n                        mutableState.update { it.copy(ready = true, error = null, failure = null, nativeVersion = nativeVersion) }\n                    }\n                }"
+    },
+    {
+      "name": "session-retire",
+      "before": "                    if (session === this) {\n                        session = null\n",
+      "after": "                    if (session === this) {\n                        session = null\n                        mutableDecoderCapabilities.value = null\n"
+    }
+  ]
+}

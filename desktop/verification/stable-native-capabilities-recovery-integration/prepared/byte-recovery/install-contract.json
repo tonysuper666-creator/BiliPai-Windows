@@ -1,0 +1,14 @@
+{
+  "copyWhitelist": [
+    "desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeByteFailure.kt"
+  ],
+  "exactHunks": "exact-hunks.json",
+  "wholeFamilyPins": "baseline-families.json",
+  "originalSourceRegistryDelta": 0,
+  "dependencyDelta": 0,
+  "cacheActors": 1,
+  "storeActors": 1,
+  "playerActors": 1,
+  "capacityPerLease": 1,
+  "proofLabel": "prospective overrides against immutable actual73; not installed Root"
+}

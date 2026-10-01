@@ -1,0 +1,2 @@
+{"event":"real503EventBeforeObserver","sourceVersion":1,"cacheCarrier":true,"ready":true,"loading":true,"ended":false,"positionSeconds":1.375,"requestedPause":true,"nativePaused":null,"failureAttemptId":null,"registrations":1,"sourceJobActive":true}
+{"event":"503DirectRealAck","sourceVersion":1,"cacheCarrier":false,"ready":true,"loading":false,"ended":false,"positionSeconds":1.4,"requestedPause":true,"nativePaused":true,"failureAttemptId":null,"registrations":0,"sourceJobActive":true}

@@ -1,0 +1,48 @@
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\compile-01\inputs\fixture\NativeByteFailureProof.kt:103:46: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+    fun semantic(video:String,audio:String?):PlaybackSource=PlaybackSource(video,audio,referer="",userAgent="",
+                                             ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\compile-01\inputs\fixture\NativeByteFailureProof.kt:103:61: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    fun semantic(video:String,audio:String?):PlaybackSource=PlaybackSource(video,audio,referer="",userAgent="",
+                                                            ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\compile-01\inputs\fixture\NativeByteFailureProof.kt:103:61: error: suspension functions can only be called within coroutine body.
+    fun semantic(video:String,audio:String?):PlaybackSource=PlaybackSource(video,audio,referer="",userAgent="",
+                                                            ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\compile-01\inputs\fixture\NativeByteFailureProof.kt:103:61: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+suspend fun <T> CoroutineDispatcher.invoke(noinline block: suspend CoroutineScope.() -> T): T
+    fun semantic(video:String,audio:String?):PlaybackSource=PlaybackSource(video,audio,referer="",userAgent="",
+                                                            ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\compile-01\inputs\fixture\NativeByteFailureProof.kt:106:18: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+        publish:(PlaybackSource,DesktopOriginalVideoMediaIntent)->DesktopOriginalVideoAcceptedPublication):DesktopOriginalVideoCachedMediaFactory =
+                 ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\compile-01\inputs\fixture\NativeByteFailureProof.kt:137:73: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+            val mediaPort = factory(b.captureMediaBytes(cache), null) { source, _ ->
+                                                                        ^^^^^^
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\compile-01\inputs\fixture\NativeByteFailureProof.kt:138:90: error: suspension functions can only be called within coroutine body.
+                owner.publish(subject, source, player.currentSourceVersion, checkNotNull(currentCoroutineContext()[Job])) { live.get() }
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\compile-01\inputs\fixture\NativeByteFailureProof.kt:141:105: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+        }, statuses, { owner.acceptedMedia { expected -> factory(acceptedRequest(expected), expected) { _, _ ->
+                                                                                                        ^
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\compile-01\inputs\fixture\NativeByteFailureProof.kt:163:65: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+            val f = factory(b.captureMediaBytes(cache), null) { source, _ ->
+                                                                ^^^^^^
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\compile-01\inputs\fixture\NativeByteFailureProof.kt:210:65: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+            val f = factory(b.captureMediaBytes(cache), null) { source, _ -> owner.publish(subject, source, player.currentSourceVersion, job) { live.get() } }
+                                                                ^^^^^^
+work\BiliPai\desktop\.local\stable-native-byte-failure-recovery-parity\runs\compile-01\inputs\fixture\NativeByteFailureProof.kt:220:65: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+            val f = factory(b.captureMediaBytes(cache), null) { source, _ -> owner.publish(subject, source, player.currentSourceVersion, job) { live.get() } }
+                                                                ^^^^^^

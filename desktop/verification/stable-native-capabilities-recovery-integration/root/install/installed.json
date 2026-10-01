@@ -1,0 +1,92 @@
+{
+  "phase": 74,
+  "baseCommit": "d63734162161f24536036686a9da6cb0d1efccdd",
+  "newManual": 6,
+  "existingFamilies": 4,
+  "exactHunks": 17,
+  "preparedPackets": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity",
+      "sha256Frozen": "837b6ee79a39843c67a63304157015b34ba94952e9c6f1d767d6ca3dd989edb0",
+      "raw": 144
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity",
+      "sha256Frozen": "ab3eda364cdc3a85b812787ad99792e160ce18354de5808817a24d3b6b618499",
+      "raw": 103
+    }
+  ],
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvDecoderCapabilities.kt",
+      "sha256Bytes": "7ec7e183daef014d78d56bb2adb7c633cb9667bcf99ff8802e9e48c1680b7a4b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvPlaybackCapabilities.kt",
+      "sha256Bytes": "9c3e352b88a0690cc04cc00e2f4c5261ff7b62841e00e2024ca2312e3d2507e1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+      "sha256Bytes": "3bb5303144455f58c304731b8e941e1646585aca99954c76e808113306015aab"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoDisplayCapabilities.kt",
+      "sha256Bytes": "9c9474b87c9f11475c9bd036ea094e7c731c47bbb4ac7d102ada99e7c82c2085"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoWakeLease.kt",
+      "sha256Bytes": "bdba7c89df98fbd90fd8d305d801c2d19655c9940ac8eb1690d6f93bdffedc71"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopNativeByteFailure.kt",
+      "sha256Bytes": "c613b0ecfa25a162529abe7451a234ab1f2002564281c40f628a73cca01fde21"
+    }
+  ],
+  "changedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "beforeSha256Bytes": "23f2361ffff70191afe0bc8dbdd66593e062e8b8629902e5bf4ccd267a3d6677",
+      "afterSha256Bytes": "9717dbc8dfb106e1b2674e8b6c57b5f288f8a788fb78aab97bfaa0e1f3410c5c",
+      "beforeSha256LF": "23f2361ffff70191afe0bc8dbdd66593e062e8b8629902e5bf4ccd267a3d6677",
+      "afterSha256LF": "9717dbc8dfb106e1b2674e8b6c57b5f288f8a788fb78aab97bfaa0e1f3410c5c",
+      "exactHunks": 5,
+      "indexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+      "beforeSha256Bytes": "6af5b637eb442be9fdde1803032e0d54f06c61c9bf7dbe011dc910e82b78be4e",
+      "afterSha256Bytes": "58240f63c5c6ba06b80aaf33478401d59be681333818b73b5b2457a616c99f3c",
+      "beforeSha256LF": "6af5b637eb442be9fdde1803032e0d54f06c61c9bf7dbe011dc910e82b78be4e",
+      "afterSha256LF": "58240f63c5c6ba06b80aaf33478401d59be681333818b73b5b2457a616c99f3c",
+      "exactHunks": 10,
+      "indexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "beforeSha256Bytes": "ec052008c2261556543d437e28ce294d3d977132c394339179268efc3a0f5a03",
+      "afterSha256Bytes": "7c096afc98856b9be17a5e1c66813938a8f656cd6071208e01fd41458f7971ce",
+      "beforeSha256LF": "ec052008c2261556543d437e28ce294d3d977132c394339179268efc3a0f5a03",
+      "afterSha256LF": "7c096afc98856b9be17a5e1c66813938a8f656cd6071208e01fd41458f7971ce",
+      "exactHunks": 1,
+      "indexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerPluginBridge.kt",
+      "beforeSha256Bytes": "7380e8ebb44ee12855ec24b93420d9f788f0d38a830454dc3f39e986aa1ca1ce",
+      "afterSha256Bytes": "d5231336c53881ee48d420f01a3e66752639a2b05e32c9679738717f2c2804d8",
+      "beforeSha256LF": "7380e8ebb44ee12855ec24b93420d9f788f0d38a830454dc3f39e986aa1ca1ce",
+      "afterSha256LF": "d5231336c53881ee48d420f01a3e66752639a2b05e32c9679738717f2c2804d8",
+      "exactHunks": 1,
+      "indexedInverse": true
+    }
+  ],
+  "newOriginalSourceIdentities": 0,
+  "newResources": 0,
+  "newDependencies": 0,
+  "originalRegistryUnchanged": true,
+  "sameNativeSessionDecoderQueryInstalled": true,
+  "sameObserverByteFailureRecoveryInstalled": true,
+  "completeRootMountAccepted": false,
+  "actualWindowsLeaseAccepted": false,
+  "desktopExeReplaced": false
+}

@@ -1,0 +1,188 @@
+[
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/player/MpvCapabilityProofKt$main$1$2$1.class",
+    "sha256Bytes": "732505d8c8a3ebdc6bd16da1fd03573b5bce35c6614cbc33e6c3ae738f686163",
+    "sizeBytes": 3183,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/player/MpvCapabilityProofKt$main$1$2.class",
+    "sha256Bytes": "be7953cd08ced578464f1107259c713ec3022399d3b5b3cb8600cf5c6dc6ff6d",
+    "sizeBytes": 3665,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/player/MpvCapabilityProofKt$main$1$caps$1.class",
+    "sha256Bytes": "c23383dea6cddd55d1441a3fd16939775cf59a68269d2646bb04c929223e7ae4",
+    "sizeBytes": 1557,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/player/MpvCapabilityProofKt$main$1$observed$1.class",
+    "sha256Bytes": "e0505a19771ce1149533ea0370cfc18339176c073f6f3feb1d58af29470a2501",
+    "sizeBytes": 3715,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/player/MpvCapabilityProofKt$main$1.class",
+    "sha256Bytes": "a5285aff992f5907da9a11945522e23eb34fc139de24c04244d59839e86e355c",
+    "sizeBytes": 14169,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/player/MpvCapabilityProofKt.class",
+    "sha256Bytes": "c8596165c615229e5bb690e2f8af123780c79c51accf5be1924d0df914541051",
+    "sizeBytes": 957,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$await$1.class",
+    "sha256Bytes": "3ebf058a48f5c77b57c26c61935ecff2e3b9a67b4c7d169a4769de74511382fd",
+    "sizeBytes": 1640,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$await$2.class",
+    "sha256Bytes": "ae6eca74d43e45a8f0cc8663b5a7208fd24b90899dba343aacd11ffcf0dde445",
+    "sizeBytes": 3540,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$acceptedRequest$admission$1.class",
+    "sha256Bytes": "cf147c795aa6bf8eff9184cc67dcf60643ef6e5fb49324ea324eadb9b0720e06",
+    "sizeBytes": 2558,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$acceptedRequest$admission$2.class",
+    "sha256Bytes": "68841e5e19da941c5b76dd03f518338aaf80240e7a6c9ccc767534b9253c4c0b",
+    "sizeBytes": 2816,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$binding$3.class",
+    "sha256Bytes": "843ec4282c91b44f15705b6311e28cc815a9e29142ec174f1591aac0edef8037",
+    "sizeBytes": 2490,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$binding$8.class",
+    "sha256Bytes": "2cf12bf30ae801880735b3c24fbab2c6624d1bc930588cc69c2a4cb3b57d12e2",
+    "sizeBytes": 3396,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$bridge$2$1.class",
+    "sha256Bytes": "013f251c80ed53a3b8de9c2767a5c2f79e77423eccd37b4d3d8eba495b80fdce",
+    "sizeBytes": 1856,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$factory$6.class",
+    "sha256Bytes": "173d4da1caff2f1168946cf839c0ac19d2735599961a44976ef9e1f47acc4cf6",
+    "sizeBytes": 2310,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$finalResolver$1.class",
+    "sha256Bytes": "c9b86e211db6d27e5542253767e85b46073c65851aa095354f03cfd04fe3eadc",
+    "sizeBytes": 11563,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$invocations$2$1.class",
+    "sha256Bytes": "749dd47f435e668967250375a61e7f5739e9b84c6ad41640f67de9b59286798a",
+    "sizeBytes": 1463,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$invocations$2.class",
+    "sha256Bytes": "ce2ffe5b7f9b53be086e630360c38ddd0a4b4d7249b0251e81fbec55e0bdd4e7",
+    "sizeBytes": 10406,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$observer$1.class",
+    "sha256Bytes": "77537bf3460b110552f3273e47472a093548e7d78e478bd275892ccf12122e4a",
+    "sizeBytes": 3271,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$owner$4.class",
+    "sha256Bytes": "c715bfad61cef21e8a2652a705fb2b07f9b0507a1e0db135f3cde7ec5503c777",
+    "sizeBytes": 2283,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$owner$6$1.class",
+    "sha256Bytes": "6c60eaa0735f84ab124a16b97dad24a9145117fe2cc8b89b6753787e9a135e07",
+    "sizeBytes": 2287,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$ready$1.class",
+    "sha256Bytes": "b6fab400d9446734d488d00cd6d8b33e28b155e4a3f964fc976e6fbbf2f1266e",
+    "sizeBytes": 1862,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$ready$2$1.class",
+    "sha256Bytes": "277789e1ab2b616cfafdfbb6b8a47b939ae8a58a707211ae49d74dd920b998e2",
+    "sizeBytes": 3598,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$ready$2.class",
+    "sha256Bytes": "b47424015db670ce0a8e9602e5b4b2099aa5266d03c91fe1282b08b568f73ca1",
+    "sizeBytes": 4345,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$resolver$1.class",
+    "sha256Bytes": "c6b9018a48fb076613fdea4edecad8cf09d520aadfd9e61b81569ffef996c351",
+    "sizeBytes": 11532,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$second$1.class",
+    "sha256Bytes": "f144c8ce757a2e1245f61c7ebf3e58437645d65b55131f2846b4aefac9024a27",
+    "sizeBytes": 11512,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1$statuses$1.class",
+    "sha256Bytes": "241daa34a31b34ad3e09083d88369b04e5a805576237c9a89e85762ce517e6c6",
+    "sizeBytes": 1803,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt$main$1.class",
+    "sha256Bytes": "7a65ec3c12ee2ddf875c0e70ced05ca9d1e0e4d4ab94ca53dc9e2ce231696c17",
+    "sizeBytes": 88158,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/com/bilipai/desktop/ui/NativeByteFailureProofKt.class",
+    "sha256Bytes": "62f7b37b182a3833949d1b251219100a1949f15c26c9a422727ad13ce3ee52c9",
+    "sizeBytes": 5640,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "e07d40d31f42f8f65e49869a18ee7ee80269bad672a92bfd451feabaabd90080",
+    "sizeBytes": 128,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/owned-data/cache/86def959-146e-4323-9b97-347c5d1fe62f.span",
+    "sha256Bytes": "d4f2db4da607fdc1b40f62238d68a94449dd8ea5e550b54c36063d7cfc6c4711",
+    "sizeBytes": 39928,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  },
+  {
+    "path": "runs/actual74-01/owned-data/plugins/plugin-settings.json",
+    "sha256Bytes": "b48cc163a52b50aae8620eb828d1dc053b13554f396c722a6314dff7dce0d591",
+    "sizeBytes": 176,
+    "reason": "Rebuildable fixture bytecode or fixture-owned private task data; not a production payload."
+  }
+]

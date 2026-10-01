@@ -1,0 +1,7 @@
+{
+  "phase": "pre-native overlap preflight",
+  "nativeStarted": false,
+  "fixtureCompileExit": 0,
+  "reason": "Whitelist matched MpvPlayer class prefix but omitted MpvCallException, which is also declared in the same exact MpvPlayer.kt source family.",
+  "correction": "Admit the explicitly named MpvCallException class from this same source file, without admitting any other production family. Rerun in native-02."
+}

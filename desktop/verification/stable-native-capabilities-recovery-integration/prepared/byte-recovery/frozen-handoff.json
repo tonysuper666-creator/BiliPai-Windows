@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "packet": "native-byte-failure-recovery",
+  "rawCount": 103,
+  "rawManifest": {
+    "path": "raw-manifest.json",
+    "sha256Bytes": "5e62ae9c1ddf3d7beefdd76bfe4f21a26f50cf8fdbef538c37878a8d5ad2f5d0",
+    "size": 18753
+  },
+  "excludedManifest": {
+    "path": "excluded-artifacts.json",
+    "sha256Bytes": "fc572e711468aabdc74c9cad617420beb555676a8260ac36da933d6f24c97968",
+    "size": 93765
+  },
+  "copyWhitelist": [
+    {
+      "path": "prepared/manual/desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopNativeByteFailure.kt",
+      "sha256Bytes": "c613b0ecfa25a162529abe7451a234ab1f2002564281c40f628a73cca01fde21",
+      "size": 1433
+    }
+  ],
+  "exactHunks": {
+    "path": "exact-hunks.json",
+    "sha256Bytes": "e5e7ebf3474bf90e41e0e98ccad7b8a61e74f8aba290a8e400364153b4422e70",
+    "size": 12382
+  },
+  "baselineFamilies": {
+    "path": "baseline-families.json",
+    "sha256Bytes": "b4ddd1ad507de4f31eb1e0c559251c2b217ceea50f7e8a17f1445f5355785b4c",
+    "size": 3644
+  },
+  "sourceAudit": {
+    "path": "source-audit.json",
+    "sha256Bytes": "619cfc6c25fc84389fddec680279f3ea2dc0e572035672d1807287ee02e02db8",
+    "size": 5979
+  },
+  "integration": {
+    "path": "ROOT-INTEGRATION.md",
+    "sha256Bytes": "13f6ebc6a11bb01e00dcad9009399aa0e10dfdfda2a8595dac199205dad5cd62",
+    "size": 6906
+  },
+  "snapshot": 73,
+  "entries": 101,
+  "declaredProductionFamilies": 3,
+  "newManual": 1,
+  "hunks": 12,
+  "sourceChecks": 47,
+  "native": {
+    "run": "native-03",
+    "groups": 3,
+    "assertions": 19,
+    "PASS": true,
+    "real503": true,
+    "actualBridge": true,
+    "realDirectAck": true
+  },
+  "closedFailures": [
+    "compile-01",
+    "native-01",
+    "native-02"
+  ],
+  "originalNativeFailureHelperUnchanged": true,
+  "originalRegistryDelta": 0,
+  "dependencyDelta": 0,
+  "CandidateWritten": false,
+  "installedProductAccepted": false,
+  "MainShellAccepted": false,
+  "wholeRootVMAccepted": false,
+  "windowAccepted": false,
+  "HTTPExternal": false,
+  "OSInput": false
+}

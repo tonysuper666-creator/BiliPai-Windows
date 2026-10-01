@@ -1,0 +1,831 @@
+{
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\runs\\native-01\\inputs\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "58240f63c5c6ba06b80aaf33478401d59be681333818b73b5b2457a616c99f3c",
+      "size": 33639
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\runs\\native-01\\inputs\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "7c096afc98856b9be17a5e1c66813938a8f656cd6071208e01fd41458f7971ce",
+      "size": 27143
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\runs\\native-01\\inputs\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerPluginBridge.kt",
+      "sha256Bytes": "d5231336c53881ee48d420f01a3e66752639a2b05e32c9679738717f2c2804d8",
+      "size": 11987
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\runs\\native-01\\inputs\\manual\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeByteFailure.kt",
+      "sha256Bytes": "c613b0ecfa25a162529abe7451a234ab1f2002564281c40f628a73cca01fde21",
+      "size": 1433
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\runs\\native-01\\inputs\\fixture\\NativeByteFailureProof.kt",
+      "sha256Bytes": "174dec424895281d93e490055882c933354217e4f5ce8ebdb4ab971bf40e7ae5",
+      "size": 18049
+    }
+  ],
+  "snapshotManifest": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-73\\manifest.json",
+    "sha256Bytes": "4fe15a56b0a78bda5bf067e52f4e20ceb88244eee943a007db248e6f1bb9e829",
+    "size": 155489
+  },
+  "orderedCp": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-73\\ordered-runtime-cp.json",
+    "sha256Bytes": "f71557c1952176118a9eba16479da2e244cacfb6cc419a65f43dc5501f822d31",
+    "size": 38191
+  },
+  "native": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\libmpv-2.dll",
+    "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+    "size": 120342528
+  },
+  "media": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\mpd-media\\dash.mpd",
+      "sha256Bytes": "b8a15ae8a3e4c673932041f47b85d5f486ec38a4409587415ae57ffd71597159",
+      "size": 2879
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\mpd-media\\dash-stream0.mp4",
+      "sha256Bytes": "ad8462a35e60b90c7207bb8487535a36930775467b556554a4a226b8f87fbf12",
+      "size": 85091
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\mpd-media\\dash-stream1.mp4",
+      "sha256Bytes": "2e226a2b3ac716f52c2950b849b00e144bdf93a889d5d1ccea10b8fe9878d24e",
+      "size": 39841
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\mpd-media\\dash-stream2.mp4",
+      "sha256Bytes": "8bbb62d3499cfb8109d21ed2eeab7beff17811c9e220602dc33a60e8ab674db8",
+      "size": 34871
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\mpd-media\\generator-receipt.json",
+      "sha256Bytes": "81cdbb067c1ab5296da26d72d04a18f8c1b2f041ab38496e997d84de76616c09",
+      "size": 2141
+    }
+  ],
+  "workerResources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\classpath.json",
+      "sha256Bytes": "0ff5200c111677e78ed303bb8a514aa00ce9c537362848d3079861a98e6258f5",
+      "size": 31344
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\desktop-js-worker.jar",
+      "sha256Bytes": "6c341fdb4ef33fa6fe504ba88e906500b95a4b048f55533950757c67592a5a18",
+      "size": 12139
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\polyglot\\polyglot\\24.2.2\\polyglot-24.2.2.jar",
+      "sha256Bytes": "fa012edab914c7ff5b0a1b50e41c9da710762b0b2d6a3cafb9a11647619349d0",
+      "size": 509041
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\sdk\\collections\\24.2.2\\collections-24.2.2.jar",
+      "sha256Bytes": "232dce19281954b247eeac5a87b4a77da3f7c2928d848a8ab3c9e49c73f29845",
+      "size": 121981
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\sdk\\nativeimage\\24.2.2\\nativeimage-24.2.2.jar",
+      "sha256Bytes": "7e351d630528cdcb6d0ecde6e3e97cfcee7f0a77896a79509efa51db3e770a95",
+      "size": 229765
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\sdk\\word\\24.2.2\\word-24.2.2.jar",
+      "sha256Bytes": "a1f53ca4755cc74226fe4b4eb1d8f924604950473a7d454a475781c0536ea303",
+      "size": 22537
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\js\\js-language\\24.2.2\\js-language-24.2.2.jar",
+      "sha256Bytes": "243bbffd40bef623143ccaa82cdb70ced78d79e6dcb7a17b3f585cc24a8e8183",
+      "size": 26005950
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\regex\\regex\\24.2.2\\regex-24.2.2.jar",
+      "sha256Bytes": "9392216f5c7be87b81d118cb98f01954f9b0976f55c1142da18d8b09a0c329a4",
+      "size": 3660977
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\truffle\\truffle-api\\24.2.2\\truffle-api-24.2.2.jar",
+      "sha256Bytes": "62e03f22f85aaf04adef5c836dc98bb724a176fad7d467c8732dfef5e1604ba4",
+      "size": 13683917
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\shadowed\\icu4j\\24.2.2\\icu4j-24.2.2.jar",
+      "sha256Bytes": "4e6af44b0a46abc57fc8e8db921fe894eddb855c3927d4aba01f02a3678b3b02",
+      "size": 18028032
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\shadowed\\xz\\24.2.2\\xz-24.2.2.jar",
+      "sha256Bytes": "84f7b56d64c8a96d3af8fa6010f79fd5b5a2ec3ba58eb122a98d114373a53ddc",
+      "size": 328273
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\truffle\\truffle-runtime\\24.2.2\\truffle-runtime-24.2.2.jar",
+      "sha256Bytes": "f57548fa379d480e36a092c98ae07385d442ccaf116964dba5afbcc864f9b745",
+      "size": 844849
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\sdk\\jniutils\\24.2.2\\jniutils-24.2.2.jar",
+      "sha256Bytes": "37640de084e8d0693f0872ff95162bb379992926848b2860708ecfafe7e7a3de",
+      "size": 275648
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\maven\\org\\graalvm\\truffle\\truffle-compiler\\24.2.2\\truffle-compiler-24.2.2.jar",
+      "sha256Bytes": "2aabf0261be6c7d167b273ba3d5d1d9f5a7f318eaba2bb346aecd2e50c12f891",
+      "size": 63130
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\engine-artifacts.json",
+      "sha256Bytes": "bbe60c5ad5a61b6423eb0997c4fb0457513d8e12deedc84fa74228c94e034d77",
+      "size": 9556
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\notices\\catalog.json",
+      "sha256Bytes": "76871b1fa3493eed382f8249087033da4cf4b1c3dac2b4963bd0ca41aa07aa6f",
+      "size": 10887
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\notices\\graal-compiler-LICENSE.md",
+      "sha256Bytes": "11a8fe0c63dcff8bd8674b89a5895dfbcf5f7e5453cf0a33566c4b3fb64e404c",
+      "size": 21035
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\notices\\graal-regex-LICENSE.md",
+      "sha256Bytes": "fe1573425a3a5c84318a0fac0a4b35289a342f33233f8a5f27215525384a580d",
+      "size": 1930
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\notices\\graal-sdk-LICENSE.md",
+      "sha256Bytes": "fe1573425a3a5c84318a0fac0a4b35289a342f33233f8a5f27215525384a580d",
+      "size": 1930
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\notices\\graal-truffle-LICENSE.md",
+      "sha256Bytes": "fe1573425a3a5c84318a0fac0a4b35289a342f33233f8a5f27215525384a580d",
+      "size": 1930
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\notices\\graal-vm-THIRD_PARTY_LICENSE_CE.txt",
+      "sha256Bytes": "b8093223559562fb0057af270e8de393fff61bfab9412b5c9ba270e17c672105",
+      "size": 551379
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\notices\\graaljs-3rd_party_licenses.txt",
+      "sha256Bytes": "772dcbfc6ca657d87c06c21a33af79d3edacf41c697e9051b5a298a82cc31aaa",
+      "size": 165127
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\notices\\graaljs-graal-js-LICENSE_GRAALJS",
+      "sha256Bytes": "1ae263ef11131dfde83daccd63c94d9ea11fc854196370385867adafb0ac3778",
+      "size": 3595
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\notices\\graaljs-graal-js-THIRD_PARTY_LICENSE_GRAALJS.txt",
+      "sha256Bytes": "606c1dd73cc09df7884c5862a4ceebb59a92dae286e1e7b667c50b1a067db6ad",
+      "size": 7993
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\notices\\graaljs-LICENSE",
+      "sha256Bytes": "2c0950e91e3b7cf3671ca3c5d68b21ce72960b81f9ba09659f61cc2ebed67ecd",
+      "size": 1978
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\provenance.json",
+      "sha256Bytes": "fbfe5ba925983fabad9473f84dafbfdc65a51cef324e142dd844662f3d9e00f6",
+      "size": 2423
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-console-l1-1-0.dll",
+      "sha256Bytes": "88ace577a9c51061cb7d1a36babbbefa48212fadc838ffde98fdfff60de18386",
+      "size": 22072
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-console-l1-2-0.dll",
+      "sha256Bytes": "c062477ad3bfdc57b0cc402179637a214dab5045c8d644592c7decca7d18aa50",
+      "size": 22056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-datetime-l1-1-0.dll",
+      "sha256Bytes": "1bd81dfd19204b44662510d9054852fb77c9f25c1088d647881c9b976cc16818",
+      "size": 22056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-debug-l1-1-0.dll",
+      "sha256Bytes": "591358eb4d1531e9563ee0813e4301c552ce364c912ce684d16576eabf195dc3",
+      "size": 21944
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-errorhandling-l1-1-0.dll",
+      "sha256Bytes": "d56ce7b1cd76108ad6c137326ec694a14c99d48c3d7b0ace8c3ff4d9bcee3ce8",
+      "size": 22096
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-fibers-l1-1-0.dll",
+      "sha256Bytes": "91d249d7bc0e38ef6bcb17158b1fdc6dd8888dc086615c9b8b750b87e52a5fb3",
+      "size": 22072
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-fibers-l1-1-1.dll",
+      "sha256Bytes": "fc9d86cec621383eab636ebc87ddd3f5c19a3cb2a33d97be112c051d0b275429",
+      "size": 22072
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-file-l1-1-0.dll",
+      "sha256Bytes": "1ca895aba4e7435563a6b43e85eba67a0f8c74aa6a6a94d0fc48fa35535e2585",
+      "size": 26152
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-file-l1-2-0.dll",
+      "sha256Bytes": "4cadbc0c39da7c6722206fdcebd670abe5b8d261e7b041dd94f9397a89d1990d",
+      "size": 22056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-file-l2-1-0.dll",
+      "sha256Bytes": "93c624b366ba16c643fc8933070a26f03b073ad0cf7f80173266d67536c61989",
+      "size": 21960
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-handle-l1-1-0.dll",
+      "sha256Bytes": "39095f59c41d76ec81bb2723d646fde4c148e7cc3402f4980d2ade95cb9c84f9",
+      "size": 21944
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-heap-l1-1-0.dll",
+      "sha256Bytes": "8f105771b236dbcb859de271f0a6822ce1cb79c36988dd42c9e3f6f55c5f7eb9",
+      "size": 22072
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-interlocked-l1-1-0.dll",
+      "sha256Bytes": "53b25e753ca785bf8b695d89dde5818a318890211dc992a89146f16658f0b606",
+      "size": 22072
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-kernel32-legacy-l1-1-1.dll",
+      "sha256Bytes": "a9b13a1cd1b8c19b0c6b4afcd5bb0dd29c0e2288231ac9e6db8510094ce68ba6",
+      "size": 22080
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-libraryloader-l1-1-0.dll",
+      "sha256Bytes": "7f39ba298b41e4963047341288cab36b6a241835ee11ba4ad70f44dacd40906c",
+      "size": 22056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-localization-l1-2-0.dll",
+      "sha256Bytes": "6ee44dd0d8510dc024c9f7c79b1b9fa88c987b26b6beb6653ddd11751c34e5dc",
+      "size": 22080
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-memory-l1-1-0.dll",
+      "sha256Bytes": "0512a35316ec9180437f86696a84c5c06a7e4e82e050055a656e5bf9fca206f9",
+      "size": 22056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-namedpipe-l1-1-0.dll",
+      "sha256Bytes": "c05f1fffe3b5a2738ea54ce9485cca026fb9635f982626fba1e1dcc531897273",
+      "size": 22096
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-processenvironment-l1-1-0.dll",
+      "sha256Bytes": "c4eca98c3c67b6395d5b005b00ac1eb0318b86b23aa71035a44c2b1602befba9",
+      "size": 21968
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-processthreads-l1-1-0.dll",
+      "sha256Bytes": "5ccb89e93d67bc3288d4e84649c5346e66e15e3d7cd65d989daf3f4cb584be9a",
+      "size": 22096
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-processthreads-l1-1-1.dll",
+      "sha256Bytes": "4ad565a8ba3ef0ea8ab87221ad11f83ee0bc844ce236607958406663b407333e",
+      "size": 22072
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-profile-l1-1-0.dll",
+      "sha256Bytes": "7809160932f44e59b021699f5bc68799eb7293ee1fa926d6fcca3c3445302e61",
+      "size": 22080
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-rtlsupport-l1-1-0.dll",
+      "sha256Bytes": "9dc1e91e71c7c054854bd1487cb4e6946d82c9f463430f1c4e8d1471005172b1",
+      "size": 21960
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-string-l1-1-0.dll",
+      "sha256Bytes": "60fc31d2a0c634412f529dba76af3b9bf991352877c6dae528186d3935704cfd",
+      "size": 22056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-synch-l1-1-0.dll",
+      "sha256Bytes": "3a72b4f29f39a265d32ad12f0ce15dbf60129c840e10d84d427829ede45e78ad",
+      "size": 22056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-synch-l1-2-0.dll",
+      "sha256Bytes": "efc1e4460984a73cf47a3def033af1c8f3b1dbc1a56cd27781d3aacf3e3330cb",
+      "size": 22080
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-sysinfo-l1-1-0.dll",
+      "sha256Bytes": "b203d862ddef1dd62bf623fc866c7f7a9c317c1c2ae30d1f52cb41f955b5698e",
+      "size": 22072
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-sysinfo-l1-2-0.dll",
+      "sha256Bytes": "2703635d835396afd0f138d7c73751afe7e33a24f4225d08c1690b0a371932c0",
+      "size": 22080
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-timezone-l1-1-0.dll",
+      "sha256Bytes": "33f4fddc181066fce06b2227bded813f95e94ed1f3d785e982c6b6b56c510c57",
+      "size": 22056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-core-util-l1-1-0.dll",
+      "sha256Bytes": "6eda016742a6171205a387a14b3c0b331841567740376f56768f8c151724207d",
+      "size": 21944
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-conio-l1-1-0.dll",
+      "sha256Bytes": "b762061b688aae679afe788904d2c9970f74a7dac98f3b42463d08f25e483d3f",
+      "size": 22056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-convert-l1-1-0.dll",
+      "sha256Bytes": "ebb2ae5535a64f65daeab8235585114fc9dd2cf1a49f5852d446250b998b6ae4",
+      "size": 26056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-environment-l1-1-0.dll",
+      "sha256Bytes": "17d63275d00bdd8670422b95bd264c532998e0a1b041079e54fce4b6b7a55819",
+      "size": 22080
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-filesystem-l1-1-0.dll",
+      "sha256Bytes": "9a9e2a65a281644e368d0f272b95ba5f6b445d1c35910d06056c5ebeb77402db",
+      "size": 22056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-heap-l1-1-0.dll",
+      "sha256Bytes": "bab9ac3ec83e380ae51e4295ef3bf2c738627812d3a49d1e713661abbc8dc57a",
+      "size": 22096
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-locale-l1-1-0.dll",
+      "sha256Bytes": "bd14c67ea28e21d6257ad780a37122c9b5773f69e693f5db6bffaee4d839526e",
+      "size": 22080
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-math-l1-1-0.dll",
+      "sha256Bytes": "606d66d82db562ea7979179d06486a0f94d079941d26b80a1e2c49d29959df6f",
+      "size": 30248
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-multibyte-l1-1-0.dll",
+      "sha256Bytes": "95f49efbe8107786733fa7c474025cf3fee0ac632f240367b296c736d06572aa",
+      "size": 30248
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-private-l1-1-0.dll",
+      "sha256Bytes": "1bc82bed6143d2bf1b6b08a7809f4a5e29317d6fddd338a7da3c0223522e4bbf",
+      "size": 75328
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-process-l1-1-0.dll",
+      "sha256Bytes": "f6156b1020380ec4f0e48577ebedaaef5fb1ab1f337d8b4e72e6a33a7567a9cc",
+      "size": 22096
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-runtime-l1-1-0.dll",
+      "sha256Bytes": "c5902934d026d7e15fbe9917d474f3322846a41a25e66f4b2b1f758801879f4b",
+      "size": 26152
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-stdio-l1-1-0.dll",
+      "sha256Bytes": "a9c5a153d8c0286f9b41a2b1c65854ad9e6471b8755b7de87bae4470e60bcab6",
+      "size": 26168
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-string-l1-1-0.dll",
+      "sha256Bytes": "25b8f83a7767211b11132775a0e27a45aa4ec8ab4e6572599f9c172ae3606b40",
+      "size": 26176
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-time-l1-1-0.dll",
+      "sha256Bytes": "7c7f6393f06de11750adb09cc5698ae55cd9fb27b2e51e207286feb1b5b2b156",
+      "size": 22096
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\api-ms-win-crt-utility-l1-1-0.dll",
+      "sha256Bytes": "d8ba5f17b9ffcbf3aeaf3fa1da226832d2fa90f81acce0cd669464e76ce434ac",
+      "size": 21952
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\java.dll",
+      "sha256Bytes": "9b484b6a703e890292ab3bdb43c81c17eac1eecce585a28205d32ae42c3bc049",
+      "size": 122488
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\java.exe",
+      "sha256Bytes": "82051fdab26319d77d20cc0065045d05ec00b3e3d05f44935d7c06b96b621d55",
+      "size": 50304
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\javaw.exe",
+      "sha256Bytes": "0d0448174d811b743faed2c1600b6174f33e65506e196b177effe0cd7a04cdb2",
+      "size": 50296
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\jimage.dll",
+      "sha256Bytes": "8123408896077c9fcdcb0d5809d5bdf6e96a3e3a1a15bec2dc7432f68b42acf4",
+      "size": 34424
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\jli.dll",
+      "sha256Bytes": "1e189c727f043e924cb8779b673702ba836faa7c9e752e2743b69cde70a2c1fb",
+      "size": 89720
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\keytool.exe",
+      "sha256Bytes": "3576ba983634afd753814ea089a98be965ac5da270b3b83deb1e9a5ac53fa3d7",
+      "size": 24696
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\management.dll",
+      "sha256Bytes": "06c6f86f3e731f88361d7e670f84a80761a8fc80c6eebac914e8072e706c4385",
+      "size": 29816
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\management_ext.dll",
+      "sha256Bytes": "61fcd7c911af730d6bca121d91673fb57c8db077a9e29b6cdb6fa2770c11d22a",
+      "size": 36472
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\msvcp140.dll",
+      "sha256Bytes": "a4c2229bdc2a2a630acdc095b4d86008e5c3e3bc7773174354f3da4f5beb9cde",
+      "size": 575056
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\net.dll",
+      "sha256Bytes": "da8fe694d71e287cb1c74d478d8854f55d6ea26aba17e58050b772a0a7ef79d8",
+      "size": 60024
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\nio.dll",
+      "sha256Bytes": "50cddbcea627390ed9dee80da7ca9d1942c4c7b1e3f138276693d487a6dd589c",
+      "size": 80504
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\server\\jvm.dll",
+      "sha256Bytes": "3df13bd73c7dbeef26693cef664b4ede84649720f7a12f0203215a65656d25f4",
+      "size": 13919872
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\syslookup.dll",
+      "sha256Bytes": "0702917a944d3b779881b3c5da4cf50a6c94903a60883eac868696723e551221",
+      "size": 28792
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\ucrtbase.dll",
+      "sha256Bytes": "2e5fb14b7bf8540278f3614a12f0226e56a7cc9e64b81cbd976c6fcf2f71cbfb",
+      "size": 1361448
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\vcruntime140.dll",
+      "sha256Bytes": "02c6aa0e6e624411a9f19b0360a7865ab15908e26024510e5c38a9c08362c35a",
+      "size": 119888
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\vcruntime140_1.dll",
+      "sha256Bytes": "7dd9aa02e271c68ca6d5f18d651d23a15d7259715af43326578f7dde27f37637",
+      "size": 49640
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\verify.dll",
+      "sha256Bytes": "dd1d4af0d2c1348f29a143c358922be9d071addbf0d103d15910332cf3b74a58",
+      "size": 54912
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\bin\\zip.dll",
+      "sha256Bytes": "a9ae352e10a098403f497ea69442818be1148a737792a21a7d568a4836d2dc06",
+      "size": 87168
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\conf\\jaxp.properties",
+      "sha256Bytes": "7d95c49465d0c836d608d02856d3b097934dfb5dc4bd2279affaf337d045b708",
+      "size": 7302
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\conf\\logging.properties",
+      "sha256Bytes": "b62d2733ab99556b108a1951d894c5a8d76b1ac7a00c02c388f9eb9be046c56f",
+      "size": 2732
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\conf\\net.properties",
+      "sha256Bytes": "56dd1f6095c189c1052f6baa32e457efc09de4832e19cdb82bb236dc8abfee9f",
+      "size": 7504
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\conf\\security\\java.policy",
+      "sha256Bytes": "d51bcab7ed301caeff3779a5e777e6019864cecee5e2abc102ef991b0de77af2",
+      "size": 2294
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\conf\\security\\java.security",
+      "sha256Bytes": "7eff0eef66774d0c6a07f6c69fae02d8a7dff9b2ef3d7751af9af87a4dda33e6",
+      "size": 73067
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\conf\\security\\policy\\limited\\default_local.policy",
+      "sha256Bytes": "2b2627548e61316150d47ffc3e6cad465ca05b3cccd4785eb7d21aa7baa0f441",
+      "size": 647
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\conf\\security\\policy\\limited\\default_US_export.policy",
+      "sha256Bytes": "758b930a526fc670ab7537f8c26321527050a31f5f42149a2dda623c56a0a1a9",
+      "size": 146
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\conf\\security\\policy\\limited\\exempt_local.policy",
+      "sha256Bytes": "8c3d7648abcd95a272ce12db870082937f4d7f6878d730d83cb7fbb31eb8b2c9",
+      "size": 566
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\conf\\security\\policy\\README.txt",
+      "sha256Bytes": "6da0747334b0fea7592fd92614b2bbc8b126535e129b1fee483774d914e98eb5",
+      "size": 2390
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\conf\\security\\policy\\unlimited\\default_local.policy",
+      "sha256Bytes": "8d8a318e6d90dfd7e26612d2b6385aa704f686ca6134c551f8928418d92b851a",
+      "size": 193
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\conf\\security\\policy\\unlimited\\default_US_export.policy",
+      "sha256Bytes": "758b930a526fc670ab7537f8c26321527050a31f5f42149a2dda623c56a0a1a9",
+      "size": 146
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\ADDITIONAL_LICENSE_INFO",
+      "sha256Bytes": "a69bce275ba7a3570af6579cb0f55682cd75fedfcd49e0e8e9022270c447c916",
+      "size": 2114
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\aes.md",
+      "sha256Bytes": "45c6d4da48325edfbff3dcf71c704e504c057904435ed23c6d57046d551eb69d",
+      "size": 1444
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\asm.md",
+      "sha256Bytes": "683be15695bd248272d60f5b7fbe5e126a935ea6bf231a624a9aa164733e1d1d",
+      "size": 1582
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\ASSEMBLY_EXCEPTION",
+      "sha256Bytes": "75292f03bf23d3db7c985aecc191029b93883200721ed23ed34a2e601463df33",
+      "size": 1514
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\c-libutl.md",
+      "sha256Bytes": "bef40679922d6fdfb7e4ddb223ad6722300f6054ba737bbf6188d60fcec517f9",
+      "size": 1556
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\cldr.md",
+      "sha256Bytes": "19515e14a240e022640e95b61b5095127fa9690755950b4a2b0a02e783e08163",
+      "size": 9601
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\icu.md",
+      "sha256Bytes": "1bf28459c6e0af9f3429f4f8becd1668d6544055f8df240277456bc4b3d8a752",
+      "size": 30197
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\LICENSE",
+      "sha256Bytes": "4b9abebc4338048a7c2dc184e9f800deb349366bdf28eb23c2677a77b4c87726",
+      "size": 19274
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\public_suffix.md",
+      "sha256Bytes": "861de1e4992a7d28f1de25c73cd50d26a94779ebd749c0643fecfa56442c3429",
+      "size": 17783
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\siphash.md",
+      "sha256Bytes": "5a792b5a74ad2a5f3d6a7ad8b7a841116e58a772c18bc6e392320a365b222c76",
+      "size": 8256
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\unicode.md",
+      "sha256Bytes": "6f72f10d166b2c2e8a395e03e734c5afc852b59aeca73ced124f6b9c96268d53",
+      "size": 9078
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\wepoll.md",
+      "sha256Bytes": "3ac2992770080453b98c42afa807ba4b2c1738ef756b92a55c645f55e7df48f0",
+      "size": 1454
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.base\\zlib.md",
+      "sha256Bytes": "c9c70c36a1f0325e8788771906202d42ba6ab4205caca44ec0f665707e83226b",
+      "size": 1010
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.logging\\ADDITIONAL_LICENSE_INFO",
+      "sha256Bytes": "ebf9777bd307ed789ceabf282a9aca168c391c7f48e15a60939352efb3ea33f9",
+      "size": 49
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.logging\\ASSEMBLY_EXCEPTION",
+      "sha256Bytes": "b998cda101e5a1ebcfb5ff9cddd76ed43a2f2169676592d428b7c0d780665f2a",
+      "size": 44
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.logging\\LICENSE",
+      "sha256Bytes": "86e0516b888276a492b19f9a84f5a866ed36925fae1510b3a94a0b6213e69192",
+      "size": 33
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.management\\ADDITIONAL_LICENSE_INFO",
+      "sha256Bytes": "ebf9777bd307ed789ceabf282a9aca168c391c7f48e15a60939352efb3ea33f9",
+      "size": 49
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.management\\ASSEMBLY_EXCEPTION",
+      "sha256Bytes": "b998cda101e5a1ebcfb5ff9cddd76ed43a2f2169676592d428b7c0d780665f2a",
+      "size": 44
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.management\\LICENSE",
+      "sha256Bytes": "86e0516b888276a492b19f9a84f5a866ed36925fae1510b3a94a0b6213e69192",
+      "size": 33
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.sql\\ADDITIONAL_LICENSE_INFO",
+      "sha256Bytes": "ebf9777bd307ed789ceabf282a9aca168c391c7f48e15a60939352efb3ea33f9",
+      "size": 49
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.sql\\ASSEMBLY_EXCEPTION",
+      "sha256Bytes": "b998cda101e5a1ebcfb5ff9cddd76ed43a2f2169676592d428b7c0d780665f2a",
+      "size": 44
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.sql\\LICENSE",
+      "sha256Bytes": "86e0516b888276a492b19f9a84f5a866ed36925fae1510b3a94a0b6213e69192",
+      "size": 33
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.transaction.xa\\ADDITIONAL_LICENSE_INFO",
+      "sha256Bytes": "ebf9777bd307ed789ceabf282a9aca168c391c7f48e15a60939352efb3ea33f9",
+      "size": 49
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.transaction.xa\\ASSEMBLY_EXCEPTION",
+      "sha256Bytes": "b998cda101e5a1ebcfb5ff9cddd76ed43a2f2169676592d428b7c0d780665f2a",
+      "size": 44
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.transaction.xa\\LICENSE",
+      "sha256Bytes": "86e0516b888276a492b19f9a84f5a866ed36925fae1510b3a94a0b6213e69192",
+      "size": 33
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.xml\\ADDITIONAL_LICENSE_INFO",
+      "sha256Bytes": "ebf9777bd307ed789ceabf282a9aca168c391c7f48e15a60939352efb3ea33f9",
+      "size": 49
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.xml\\ASSEMBLY_EXCEPTION",
+      "sha256Bytes": "b998cda101e5a1ebcfb5ff9cddd76ed43a2f2169676592d428b7c0d780665f2a",
+      "size": 44
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.xml\\bcel.md",
+      "sha256Bytes": "cd578186ad93de46cca29ec8ace2b11f9da751987f3f140e6095c528596cc8c1",
+      "size": 11196
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.xml\\dom.md",
+      "sha256Bytes": "6686e8877667584a3a7c07344baadca1a03e29f677162d87c3c0811e990d1148",
+      "size": 3761
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.xml\\jcup.md",
+      "sha256Bytes": "8d5dcfdf50455a3c34c753a98f21e953248af200415a9084e3f102cb6c43b8bf",
+      "size": 1448
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.xml\\LICENSE",
+      "sha256Bytes": "86e0516b888276a492b19f9a84f5a866ed36925fae1510b3a94a0b6213e69192",
+      "size": 33
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.xml\\xalan.md",
+      "sha256Bytes": "c27eb875da4be683d4d7422be986e5e30f636ede31958ff1d39f9cd6109e7a00",
+      "size": 13477
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\java.xml\\xerces.md",
+      "sha256Bytes": "4a6bf6b367193ee68681cb2d9fed30ffc5d62dd2d477bd62e0271707d71b3244",
+      "size": 11848
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\jdk.management\\ADDITIONAL_LICENSE_INFO",
+      "sha256Bytes": "ebf9777bd307ed789ceabf282a9aca168c391c7f48e15a60939352efb3ea33f9",
+      "size": 49
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\jdk.management\\ASSEMBLY_EXCEPTION",
+      "sha256Bytes": "b998cda101e5a1ebcfb5ff9cddd76ed43a2f2169676592d428b7c0d780665f2a",
+      "size": 44
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\jdk.management\\LICENSE",
+      "sha256Bytes": "86e0516b888276a492b19f9a84f5a866ed36925fae1510b3a94a0b6213e69192",
+      "size": 33
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\jdk.unsupported\\ADDITIONAL_LICENSE_INFO",
+      "sha256Bytes": "ebf9777bd307ed789ceabf282a9aca168c391c7f48e15a60939352efb3ea33f9",
+      "size": 49
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\jdk.unsupported\\ASSEMBLY_EXCEPTION",
+      "sha256Bytes": "b998cda101e5a1ebcfb5ff9cddd76ed43a2f2169676592d428b7c0d780665f2a",
+      "size": 44
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\legal\\jdk.unsupported\\LICENSE",
+      "sha256Bytes": "86e0516b888276a492b19f9a84f5a866ed36925fae1510b3a94a0b6213e69192",
+      "size": 33
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\lib\\classlist",
+      "sha256Bytes": "bee5fb44a1db38097034c3e6f85af40c76df6da815f75d5fe782ff0d296081c0",
+      "size": 78927
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\lib\\jrt-fs.jar",
+      "sha256Bytes": "45fc41e80103af6ac9e9dd1403c9228271b77a9719f262e96a800486b9646952",
+      "size": 110124
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\lib\\jvm.cfg",
+      "sha256Bytes": "aa9efb969444c1484e29adecab55a122458090616e766b2f1230ef05bc3867e0",
+      "size": 29
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\lib\\jvm.lib",
+      "sha256Bytes": "58fbee0f29d91056c2b251a11627d1c090f19a877ec254eb02ecb02d1477d50a",
+      "size": 1190266
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\lib\\modules",
+      "sha256Bytes": "6e5d575ebd7dc34ca0d9d8d5c3cfcce871921ac51e7137636affcb417d0f5c09",
+      "size": 16771220
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\lib\\security\\blocked.certs",
+      "sha256Bytes": "583500b76965eb54b03493372989ab4d3426f85462d1db232c5ae6706a4d6c58",
+      "size": 2527
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\lib\\security\\cacerts",
+      "sha256Bytes": "98d34a90fca2688ef5674862d2a484e09e5ca25d2f07c5d654aa28f1581f3419",
+      "size": 153428
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\lib\\security\\default.policy",
+      "sha256Bytes": "69790a79bb9d4bef6b544c1878410bfa0c6a92171834c188772a0ba1ca8c0d95",
+      "size": 11380
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\lib\\security\\public_suffix_list.dat",
+      "sha256Bytes": "37e71e43c8605f29b9072f152d0ea4708735cdf335a5b68b2bc2f875760806c3",
+      "size": 229254
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\lib\\tzdb.dat",
+      "sha256Bytes": "5906b44e25a8a730131d7ba1beb5d15af27043f6536f1a169ca8a5d8b8bed8f8",
+      "size": 102956
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\lib\\tzmappings",
+      "sha256Bytes": "b41575b332809b37ad423bdca30c7c48cdef3d82f82fa9d534781a6f15d6a2ab",
+      "size": 22190
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\jw\\f3d99d27a55656ad\\r\\runtime\\release",
+      "sha256Bytes": "ef57db3438cf30e3873d748dfb9745f6156cdc2e6f027a583b00edb547bdd808",
+      "size": 145
+    }
+  ],
+  "declaredProductionFamilies": 3,
+  "newManual": 1,
+  "installedRoot": false
+}

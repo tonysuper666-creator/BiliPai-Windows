@@ -1,0 +1,41 @@
+{
+  "phase": 74,
+  "prepared": [
+    {
+      "label": "capabilities",
+      "raw": 144,
+      "sha256Frozen": "837b6ee79a39843c67a63304157015b34ba94952e9c6f1d767d6ca3dd989edb0",
+      "prospectiveProofPreserved": true
+    },
+    {
+      "label": "byte-recovery",
+      "raw": 103,
+      "sha256Frozen": "ab3eda364cdc3a85b812787ad99792e160ce18354de5808817a24d3b6b618499",
+      "prospectiveProofPreserved": true
+    }
+  ],
+  "newManual": 6,
+  "existingFamilies": 4,
+  "exactHunks": 17,
+  "sourceIdentityCount": 1169,
+  "resourceCount": 213,
+  "newIdentityCount": 0,
+  "newDependencyCount": 0,
+  "registryUnchanged": true,
+  "wholeClassesPassed": true,
+  "wholeTestSourcesCompiled": true,
+  "kotlinClasses": 15296,
+  "illegalJvmMethodNames": 0,
+  "installedRuntimeEntries": 101,
+  "installedNativeAssertions": 39,
+  "productionOverrides": 0,
+  "uniqueInstalledProductionClassOrigins": 14,
+  "installedSameSessionDecoderQueryAccepted": true,
+  "installedActual503BridgeDirectRecoveryAccepted": true,
+  "hardwareDecoderSelectedOrPhysicalMonitorAccepted": false,
+  "windowLeaseRuntimeAccepted": false,
+  "wholeRootVMOrMainShellAccepted": false,
+  "realAccountExternalHttpAccepted": false,
+  "desktopExeReplaced": false,
+  "diagnosticTextEncoding": "Native stdout/stderr stored after UTF-8 decoding with replacement; structured pass/observations are ASCII/UTF-8."
+}

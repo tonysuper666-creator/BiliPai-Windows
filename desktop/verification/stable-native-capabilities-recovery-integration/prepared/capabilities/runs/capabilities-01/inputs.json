@@ -1,0 +1,34 @@
+{
+  "snapshot": 73,
+  "entries": 101,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\manual\\com\\bilipai\\desktop\\player\\MpvDecoderCapabilities.kt",
+      "sha256Bytes": "7ec7e183daef014d78d56bb2adb7c633cb9667bcf99ff8802e9e48c1680b7a4b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalMpvPlaybackCapabilities.kt",
+      "sha256Bytes": "9c3e352b88a0690cc04cc00e2f4c5261ff7b62841e00e2024ca2312e3d2507e1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoWindowsWindowPort.kt",
+      "sha256Bytes": "21d8b181694685279affac5d4f09e86518b8256a6971b471e7129d21b460f2d7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoDisplayCapabilities.kt",
+      "sha256Bytes": "9c9474b87c9f11475c9bd036ea094e7c731c47bbb4ac7d102ada99e7c82c2085"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoWakeLease.kt",
+      "sha256Bytes": "bdba7c89df98fbd90fd8d305d801c2d19655c9940ac8eb1690d6f93bdffedc71"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\after\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256Bytes": "9717dbc8dfb106e1b2674e8b6c57b5f288f8a788fb78aab97bfaa0e1f3410c5c"
+    }
+  ],
+  "existingFamilyOverrides": [
+    "MpvPlayer.kt"
+  ],
+  "newManual": 5
+}

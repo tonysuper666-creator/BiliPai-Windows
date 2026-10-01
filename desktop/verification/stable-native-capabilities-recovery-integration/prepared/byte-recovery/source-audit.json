@@ -1,0 +1,196 @@
+{
+  "checks": [
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt inverse exact before-after",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt unique inverse 9",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt unique inverse 8",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt unique inverse 7",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt unique inverse 6",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt unique inverse 5",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt unique inverse 4",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt unique inverse 3",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt unique inverse 2",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt unique inverse 1",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt unique inverse 0",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt reconstructed baseline LF",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt Candidate source unmodified",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt inverse exact before-after",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt unique inverse 0",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt reconstructed baseline LF",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt Candidate source unmodified",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerPluginBridge.kt inverse exact before-after",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerPluginBridge.kt unique inverse 0",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerPluginBridge.kt reconstructed baseline LF",
+      "PASS": true
+    },
+    {
+      "label": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerPluginBridge.kt Candidate source unmodified",
+      "PASS": true
+    },
+    {
+      "label": "NativeFailure helper byte-for-byte unchanged",
+      "PASS": true
+    },
+    {
+      "label": "fun publish( original prefix preserved",
+      "PASS": true
+    },
+    {
+      "label": "fun adopt( original prefix preserved",
+      "PASS": true
+    },
+    {
+      "label": "fun acceptedMedia( original prefix preserved",
+      "PASS": true
+    },
+    {
+      "label": "capacity one AtomicReference event, no queue/SharedFlow",
+      "PASS": true
+    },
+    {
+      "label": "same owner CallerJob active checked before event admission",
+      "PASS": true
+    },
+    {
+      "label": "same CallerJob/frame checked inside existing Store-entry commit",
+      "PASS": true
+    },
+    {
+      "label": "exact stamp frame/version/publication/receipt",
+      "PASS": true
+    },
+    {
+      "label": "native metadata onlyIOException",
+      "PASS": true
+    },
+    {
+      "label": "cancellation caught before metadata IOException branch",
+      "PASS": true
+    },
+    {
+      "label": "native body onlyIOException",
+      "PASS": true
+    },
+    {
+      "label": "socket cancellation converted to actual caller/lease cancellation",
+      "PASS": true
+    },
+    {
+      "label": "prefetch and probe cannot publish native error",
+      "PASS": true
+    },
+    {
+      "label": "all event publication sites are native metadata/body only",
+      "PASS": true
+    },
+    {
+      "label": "retire clears bounded event",
+      "PASS": true
+    },
+    {
+      "label": "same actor and same Loopback",
+      "PASS": true
+    },
+    {
+      "label": "event contains no Throwable/URL/headers field",
+      "PASS": true
+    },
+    {
+      "label": "Store-entry-native admission order",
+      "PASS": true
+    },
+    {
+      "label": "actual Reader position and desired pause read inside native lock",
+      "PASS": true
+    },
+    {
+      "label": "no guessed position/autoplay from nullable nativePaused",
+      "PASS": true
+    },
+    {
+      "label": "native failure attempt not fabricated",
+      "PASS": true
+    },
+    {
+      "label": "direct source no cache retry",
+      "PASS": true
+    },
+    {
+      "label": "real immutable snapshot and same version",
+      "PASS": true
+    },
+    {
+      "label": "existing Bridge real consumer before mute observer",
+      "PASS": true
+    },
+    {
+      "label": "original postLoad plugin observer starts 1200ms without first-frame wait",
+      "PASS": true
+    },
+    {
+      "label": "observer precedes null dispatch, empty plugins and isPlaying checks",
+      "PASS": true
+    }
+  ],
+  "count": 47,
+  "nativeFailureHelperLfSha256": "0acf8aca805a0b07d09e8ac3a072f59ba4a7b8a093d71f0ac6c4bb8581a11824",
+  "originalRegistryRowsAdded": 0,
+  "CandidateWritten": false
+}

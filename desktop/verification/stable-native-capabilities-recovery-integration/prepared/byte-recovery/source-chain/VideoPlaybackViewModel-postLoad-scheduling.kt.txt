@@ -1,0 +1,13 @@
+
+                        scheduleDeferredPostLoadWork(
+                            loadedBvid = result.info.bvid,
+                            loadedCid = result.info.cid,
+                            loadedAid = result.info.aid,
+                            loadedOwnerMid = result.info.owner.mid,
+                            isLoggedIn = result.isLoggedIn,
+                            requestToken = requestToken
+                        )
+                        val videoNoteEnabled = appContext?.let {
+                            com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.getVideoNoteEnabledSync(it)
+                        } ?: true
+                        if (shouldLoadVideoNote(videoNoteEnabled, result.info.aid)) {

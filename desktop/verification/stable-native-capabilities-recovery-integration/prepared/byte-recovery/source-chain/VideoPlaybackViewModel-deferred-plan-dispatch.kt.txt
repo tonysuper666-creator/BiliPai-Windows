@@ -1,0 +1,23 @@
+                                loadedCid,
+                                loadedOwnerMid
+                            )
+                            PlaybackPostLoadTask.ONLINE_COUNT -> startOnlineCountPolling(
+                                loadedBvid,
+                                loadedCid
+                            )
+                            PlaybackPostLoadTask.HEARTBEAT -> startHeartbeat()
+                            PlaybackPostLoadTask.PLUGIN_ON_VIDEO_LOAD -> {
+                                sponsorContributionRequest = null
+                                _sponsorContributionUiState.value = SponsorContributionUiState()
+                                sponsorBlockLoadedVideo = null
+                                refreshSponsorContributionAvailability()
+                            }
+                            PlaybackPostLoadTask.START_PLUGIN_CHECK -> startPluginCheck()
+                        }
+                    }
+                }
+            }
+    }
+
+    /**
+     * 定期检查插件（约500ms一次）

@@ -1,0 +1,50 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+    "wholeBytesSha256": "6af5b637eb442be9fdde1803032e0d54f06c61c9bf7dbe011dc910e82b78be4e",
+    "wholeLfSha256": "6af5b637eb442be9fdde1803032e0d54f06c61c9bf7dbe011dc910e82b78be4e",
+    "candidateLfSha256": "58240f63c5c6ba06b80aaf33478401d59be681333818b73b5b2457a616c99f3c",
+    "baseline": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "6af5b637eb442be9fdde1803032e0d54f06c61c9bf7dbe011dc910e82b78be4e",
+      "size": 30758
+    },
+    "prepared": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "58240f63c5c6ba06b80aaf33478401d59be681333818b73b5b2457a616c99f3c",
+      "size": 33639
+    }
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+    "wholeBytesSha256": "ec052008c2261556543d437e28ce294d3d977132c394339179268efc3a0f5a03",
+    "wholeLfSha256": "ec052008c2261556543d437e28ce294d3d977132c394339179268efc3a0f5a03",
+    "candidateLfSha256": "7c096afc98856b9be17a5e1c66813938a8f656cd6071208e01fd41458f7971ce",
+    "baseline": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "ec052008c2261556543d437e28ce294d3d977132c394339179268efc3a0f5a03",
+      "size": 23903
+    },
+    "prepared": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "7c096afc98856b9be17a5e1c66813938a8f656cd6071208e01fd41458f7971ce",
+      "size": 27143
+    }
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerPluginBridge.kt",
+    "wholeBytesSha256": "7380e8ebb44ee12855ec24b93420d9f788f0d38a830454dc3f39e986aa1ca1ce",
+    "wholeLfSha256": "7380e8ebb44ee12855ec24b93420d9f788f0d38a830454dc3f39e986aa1ca1ce",
+    "candidateLfSha256": "d5231336c53881ee48d420f01a3e66752639a2b05e32c9679738717f2c2804d8",
+    "baseline": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerPluginBridge.kt",
+      "sha256Bytes": "7380e8ebb44ee12855ec24b93420d9f788f0d38a830454dc3f39e986aa1ca1ce",
+      "size": 11854
+    },
+    "prepared": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-byte-failure-recovery-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerPluginBridge.kt",
+      "sha256Bytes": "d5231336c53881ee48d420f01a3e66752639a2b05e32c9679738717f2c2804d8",
+      "size": 11987
+    }
+  }
+]

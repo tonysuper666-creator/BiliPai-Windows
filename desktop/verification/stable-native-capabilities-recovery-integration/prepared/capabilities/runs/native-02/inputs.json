@@ -1,0 +1,219 @@
+{
+  "snapshot": 73,
+  "entries": 101,
+  "snapshotManifest": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-73\\manifest.json",
+    "sha256Bytes": "4fe15a56b0a78bda5bf067e52f4e20ceb88244eee943a007db248e6f1bb9e829"
+  },
+  "orderedCp": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-73\\ordered-runtime-cp.json",
+    "sha256Bytes": "f71557c1952176118a9eba16479da2e244cacfb6cc419a65f43dc5501f822d31"
+  },
+  "native": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\libmpv-2.dll",
+    "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4"
+  },
+  "fixture": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\native-02\\MpvCapabilityProof.kt",
+    "sha256Bytes": "e890ab2b1d291d0940113d23a31260f706717993c9a1950b60db8c30297fe7f7"
+  },
+  "prospectiveInputs": {
+    "snapshot": 73,
+    "entries": 101,
+    "inputs": [
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\manual\\com\\bilipai\\desktop\\player\\MpvDecoderCapabilities.kt",
+        "sha256Bytes": "7ec7e183daef014d78d56bb2adb7c633cb9667bcf99ff8802e9e48c1680b7a4b"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalMpvPlaybackCapabilities.kt",
+        "sha256Bytes": "9c3e352b88a0690cc04cc00e2f4c5261ff7b62841e00e2024ca2312e3d2507e1"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoWindowsWindowPort.kt",
+        "sha256Bytes": "21d8b181694685279affac5d4f09e86518b8256a6971b471e7129d21b460f2d7"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoDisplayCapabilities.kt",
+        "sha256Bytes": "9c9474b87c9f11475c9bd036ea094e7c731c47bbb4ac7d102ada99e7c82c2085"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoWakeLease.kt",
+        "sha256Bytes": "bdba7c89df98fbd90fd8d305d801c2d19655c9940ac8eb1690d6f93bdffedc71"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\after\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+        "sha256Bytes": "9717dbc8dfb106e1b2674e8b6c57b5f288f8a788fb78aab97bfaa0e1f3410c5c"
+      }
+    ],
+    "existingFamilyOverrides": [
+      "MpvPlayer.kt"
+    ],
+    "newManual": 5
+  },
+  "prospectiveClassBytes": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "9b974d4f73d48385c5334275181186136c6bddb4940a228bdfe1601432ec8958"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvCallException.class",
+      "sha256Bytes": "9fa81b76d4917b697037dce7e92ba4d32b9cee02d7580df1c3c8a9c8ea42397d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvDecoderCapabilities$Available.class",
+      "sha256Bytes": "d5c65156b1d47c161a02d8fff50a3f91ff31235a32eb8ee9ca476a9da7cf1fbf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvDecoderCapabilities$Unavailable.class",
+      "sha256Bytes": "ec6a508286cffc32fabc1eac020da440fd103e6b8fa83cb9ccb5a0a3edc610da"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvDecoderCapabilities.class",
+      "sha256Bytes": "1a48c2f1fddf69a70535439b9c8979ece44d1b66b2720eb9caef4eb656796f23"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvDecoderCapabilitiesKt.class",
+      "sha256Bytes": "dbfff2215bd24ab75f300e7f8e177e45b8d5aab4033a50c9e25c05cd4334ee2a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvDecoderInfo.class",
+      "sha256Bytes": "456cd7f49c1089f16378e4b530d442f0516897a365c2f74973f7b70b2384dff7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Barrier.class",
+      "sha256Bytes": "ac85125d79caf9d8750d658ac8bd456994897458e3d2533e78b1e1177e00fc07"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Command.class",
+      "sha256Bytes": "c4c0cda0b093e89324d2544a858bf2e3a843fb00d56416b366221b154cf35265"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$HardwareDecoding.class",
+      "sha256Bytes": "39fabf94d8b875ce07dece1bd90751bd045381228576f140a18b5d9609b9a67f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Load.class",
+      "sha256Bytes": "4e5ab382cb2ae326bbe562b7d53ce37c9eebd6c95730b95a83607e7dafa14e7b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$OwnedMute.class",
+      "sha256Bytes": "6421f2ec93cb8e348a2a5f07c36a7a0ccee32dcbf7a93a47c4b354bf4cfbe30e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Property.class",
+      "sha256Bytes": "c3d520e4510b97bec131967692593de690b9ca22a4171e6389ae6f18976909f4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Screenshot.class",
+      "sha256Bytes": "cc1b07fb9564e51f1552ed916e0d5ec293b7dea776b5c328e827f1ce3b569465"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Seek.class",
+      "sha256Bytes": "999d32c8b13b67bf56994429e2ea77e634c8678f3c60dc6f57698ac0aad714bc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$SubtitleConfiguration.class",
+      "sha256Bytes": "9c5894a80601f301e228ddbadeb4e3f395fb30c80491cb309090b85585a5e1dd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Subtitles.class",
+      "sha256Bytes": "a47969c42960165d067eca88180d925d62b0ab94d22bc4b2ced1d0e83181671d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$VideoShaders.class",
+      "sha256Bytes": "5a109d80a9a4ff16306773958319afd61a5bfb22b2ac8841dd91326f1aced27c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action.class",
+      "sha256Bytes": "8dcaa829b2b0f527d75ddb5a5afdea6183d7814b988831c46fb37a614857df46"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$canvas$1.class",
+      "sha256Bytes": "7f00c6e49f700229d5e69489e225262fa5d0fcde4a36428f0bd219c2c89ec8a1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$captureScreenshot$1.class",
+      "sha256Bytes": "8913c1cb6d460d610e41b0b259dea32c77ef22df0f007af5e8654425da1fc7f6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$captureScreenshot$4.class",
+      "sha256Bytes": "cd494f9f015313ff675789f96f0cb0ce74bd92d7367a06cec9cbaec42a6eb261"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$drainSourceCommands$1.class",
+      "sha256Bytes": "a667a8651189fbd7ba18f7a61b1d4296cd3e8048b3ac6a138ce2b8866cc5cb61"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$drainSourceCommands$2.class",
+      "sha256Bytes": "9b0a0b367003f3948221cbe1aee5b04d515fcb5cfd842e20e4f872439a255973"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$ExternalSubtitle.class",
+      "sha256Bytes": "38f24fa462de5dd2d21efe39e228dc9fa0e17f26a1c4050becc4e667456befd2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Session.class",
+      "sha256Bytes": "59360f9679c66173fe5159fabb52fd0dc05875a85b2c15b32a6ea90245ab0e2c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer.class",
+      "sha256Bytes": "0d55ab803277a8de43fcf587ea50ade9f8ed35ab8ca594077af60911d3cc7807"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalMpvPlaybackCapabilities.class",
+      "sha256Bytes": "e9b1f9550c53737da4d45bbf6b64a63400144324bb4631209508141435d9dd72"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoWindowsWindowPort$event$1.class",
+      "sha256Bytes": "e4e74edf73285ba08e9d9ca177030f4da8c84f4f3e3610a74b181f0d11394871"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoWindowsWindowPort$presentation$1.class",
+      "sha256Bytes": "4554345b7cf9f55be697e213d8814524dd5cef7a55b9be922067310eaec66d5b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoWindowsWindowPort$Subject.class",
+      "sha256Bytes": "b3e96b01e15ebc8d5e59ee034eb49ca3c8b0d59d4dc6d611a2f6bb7e2dc3f30e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoWindowsWindowPort.class",
+      "sha256Bytes": "3a834668643302c83a3e717647810d4dbcdcdd4c0b954a35ffcd221ab4780313"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoDisplayCapabilities$DisplayApi.class",
+      "sha256Bytes": "de46ec9bccdbb0ea34eb674c538ca51dacf9336febe17d93c9fb6b31d6e9bfae"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoDisplayCapabilities$listener$1.class",
+      "sha256Bytes": "3491d1b370d9bb06124aa6421fc924cab3fe768b602d036e12356cbeca045987"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoDisplayCapabilities.class",
+      "sha256Bytes": "974a344dc4b8ec5c25f01761849354cb526fec849a2d1f624af435fdd8396276"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoDisplayCapability$Available.class",
+      "sha256Bytes": "787c18b04aae1c8754d4549a93736881a5b378fcdeb32226577a5ad70c245c5c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoDisplayCapability$Unavailable.class",
+      "sha256Bytes": "dc3b390a0dc9f9c6bc3ee8d9885928899358a955c6d24b2f52ecb183f0d3db7b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoDisplayCapability.class",
+      "sha256Bytes": "53a0d56a94d9c7926a65c4ba0d7f3007c51eb7fe4d9ca55b5498a605ae99c51b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoWakeLease$PowerApi.class",
+      "sha256Bytes": "1578f87dafeaeeeacd44687ef44885b2eaede73991a58bb9032fa4476a0a31cc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-capabilities-window-parity\\runs\\capabilities-01\\classes\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoWakeLease.class",
+      "sha256Bytes": "080ca52ae0e9f40de5f8e242007a147a12394cbec075189890c8813dc0b397de"
+    }
+  ],
+  "productionSourceOverrides": 1,
+  "MainShellAccepted": false,
+  "actualDisplayAccepted": false
+}
