@@ -1,0 +1,80 @@
+[
+  {
+    "label": "Captured SAME playback authorization API",
+    "before": "NetworkModule.playbackApi()",
+    "after": "environment.playbackApi",
+    "count": 4
+  },
+  {
+    "label": "Captured visitor-only original guest API",
+    "before": "NetworkModule.guestApi",
+    "after": "environment.guestApi",
+    "count": 1
+  },
+  {
+    "label": "Existing safe desktop diagnostics logger",
+    "before": "com.android.purebilibili.core.util.Logger",
+    "after": "Logger",
+    "count": 53
+  },
+  {
+    "label": "Exact original Android token platform supplied by same session port",
+    "before": "com.android.purebilibili.core.store.TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID",
+    "after": "environment.androidAccessTokenPlatform",
+    "count": 1
+  },
+  {
+    "label": "Captured primary account refresh admission",
+    "before": "applicationContext != null && playbackAccount() == null",
+    "after": "environment.canRefreshPrimaryToken() && playbackAccount() == null",
+    "count": 1
+  },
+  {
+    "label": "SAME session original refresh actor",
+    "before": "com.android.purebilibili.core.network.TokenRefreshHelper.refresh(applicationContext!!)",
+    "after": "environment.refreshPrimaryToken()",
+    "count": 1
+  },
+  {
+    "label": "Original exp_auto_1080p same-global read",
+    "before": "val auto1080pEnabled = try {\n            val context = NetworkModule.appContext\n            context?.getSharedPreferences(\"settings_prefs\", android.content.Context.MODE_PRIVATE)\n                ?.getBoolean(\"exp_auto_1080p\", true) ?: true\n        } catch (e: Exception) {\n            true\n        }",
+    "after": "val auto1080pEnabled = environment.auto1080pEnabled()",
+    "count": 1
+  },
+  {
+    "label": "Original exp_auto_1080p same-global read",
+    "before": "val auto1080pEnabled = try {\n                val context = com.android.purebilibili.core.network.NetworkModule.appContext\n                context?.getSharedPreferences(\"settings_prefs\", android.content.Context.MODE_PRIVATE)\n                    ?.getBoolean(\"exp_auto_1080p\", true) ?: true // 默认开启\n            } catch (e: Exception) {\n                true // 出错时默认开启\n            }",
+    "after": "val auto1080pEnabled = environment.auto1080pEnabled()",
+    "count": 1
+  },
+  {
+    "label": "Original flow same-global read",
+    "before": "val auto1080pEnabled = NetworkModule.appContext?.let { context ->\n            runCatching { SettingsManager.getAuto1080p(context).first() }.getOrDefault(true)\n        } ?: true",
+    "after": "val auto1080pEnabled = environment.auto1080pEnabled()",
+    "count": 1
+  },
+  {
+    "label": "Original directed traffic consent same-global",
+    "before": "NetworkModule.appContext?.let {\n                SettingsManager.getBiliDirectedTrafficEnabledSync(it)\n            } ?: false",
+    "after": "environment.directedTrafficEnabled()",
+    "count": 1
+  },
+  {
+    "label": "Real Windows WWAN query",
+    "before": "NetworkModule.appContext?.let {\n                NetworkUtils.isMobileData(it)\n            } ?: false",
+    "after": "environment.isMobileData()",
+    "count": 1
+  },
+  {
+    "label": "Sole existing Root playback cache port",
+    "before": "PlayUrlCache.",
+    "after": "environment.cache.",
+    "count": 4
+  },
+  {
+    "label": "Safe logging, no raw stdout exception",
+    "before": "e.printStackTrace()",
+    "after": "Logger.e(\"VideoRepo\", \"Original video detail failed\", e)",
+    "count": 1
+  }
+]

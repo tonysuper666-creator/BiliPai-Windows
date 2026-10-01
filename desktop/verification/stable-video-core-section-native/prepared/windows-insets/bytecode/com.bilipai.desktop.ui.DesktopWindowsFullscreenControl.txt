@@ -1,0 +1,435 @@
+Compiled from "DesktopWindowsFullscreenControl.kt"
+public final class com.bilipai.desktop.ui.DesktopWindowsFullscreenControl implements java.lang.AutoCloseable {
+  private final androidx.compose.ui.awt.ComposeWindow window;
+
+  private final androidx.compose.ui.window.WindowState state;
+
+  private boolean closed;
+
+  private long revision;
+
+  private java.awt.Rectangle floatingBounds;
+
+  private java.awt.GraphicsDevice floatingDevice;
+
+  private java.awt.Rectangle floatingMonitorBounds;
+
+  private java.awt.geom.AffineTransform floatingTransform;
+
+  private final com.bilipai.desktop.ui.DesktopWindowsFullscreenControl$listener$1 listener;
+
+  public static final int $stable;
+
+  public com.bilipai.desktop.ui.DesktopWindowsFullscreenControl(androidx.compose.ui.awt.ComposeWindow, androidx.compose.ui.window.WindowState);
+    Code:
+       0: aload_1
+       1: ldc           #11                 // String window
+       3: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_2
+       7: ldc           #19                 // String state
+       9: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      12: aload_0
+      13: invokespecial #22                 // Method java/lang/Object."<init>":()V
+      16: aload_0
+      17: aload_1
+      18: putfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+      21: aload_0
+      22: aload_2
+      23: putfield      #28                 // Field state:Landroidx/compose/ui/window/WindowState;
+      26: aload_0
+      27: new           #30                 // class com/bilipai/desktop/ui/DesktopWindowsFullscreenControl$listener$1
+      30: dup
+      31: aload_0
+      32: invokespecial #33                 // Method com/bilipai/desktop/ui/DesktopWindowsFullscreenControl$listener$1."<init>":(Lcom/bilipai/desktop/ui/DesktopWindowsFullscreenControl;)V
+      35: putfield      #37                 // Field listener:Lcom/bilipai/desktop/ui/DesktopWindowsFullscreenControl$listener$1;
+      38: nop
+      39: invokestatic  #43                 // Method javax/swing/SwingUtilities.isEventDispatchThread:()Z
+      42: ifne          55
+      45: new           #45                 // class java/lang/IllegalStateException
+      48: dup
+      49: ldc           #47                 // String Check failed.
+      51: invokespecial #50                 // Method java/lang/IllegalStateException."<init>":(Ljava/lang/String;)V
+      54: athrow
+      55: aload_0
+      56: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+      59: aload_0
+      60: getfield      #37                 // Field listener:Lcom/bilipai/desktop/ui/DesktopWindowsFullscreenControl$listener$1;
+      63: checkcast     #52                 // class java/awt/event/ComponentListener
+      66: invokevirtual #58                 // Method androidx/compose/ui/awt/ComposeWindow.addComponentListener:(Ljava/awt/event/ComponentListener;)V
+      69: nop
+      70: return
+    LineNumberTable:
+      line 21: 12
+      line 22: 16
+      line 23: 21
+      line 31: 26
+      line 37: 38
+      line 38: 39
+      line 39: 55
+      line 40: 69
+      line 21: 70
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      71     0  this   Lcom/bilipai/desktop/ui/DesktopWindowsFullscreenControl;
+          0      71     1 window   Landroidx/compose/ui/awt/ComposeWindow;
+          0      71     2 state   Landroidx/compose/ui/window/WindowState;
+
+  public final void setFullscreen(boolean);
+    Code:
+       0: invokestatic  #43                 // Method javax/swing/SwingUtilities.isEventDispatchThread:()Z
+       3: ifne          16
+       6: new           #45                 // class java/lang/IllegalStateException
+       9: dup
+      10: ldc           #47                 // String Check failed.
+      12: invokespecial #50                 // Method java/lang/IllegalStateException."<init>":(Ljava/lang/String;)V
+      15: athrow
+      16: aload_0
+      17: getfield      #68                 // Field closed:Z
+      20: ifeq          24
+      23: return
+      24: iload_1
+      25: ifeq          34
+      28: getstatic     #74                 // Field androidx/compose/ui/window/WindowPlacement.Fullscreen:Landroidx/compose/ui/window/WindowPlacement;
+      31: goto          37
+      34: getstatic     #77                 // Field androidx/compose/ui/window/WindowPlacement.Floating:Landroidx/compose/ui/window/WindowPlacement;
+      37: astore_2
+      38: aload_0
+      39: getfield      #28                 // Field state:Landroidx/compose/ui/window/WindowState;
+      42: invokeinterface #81,  1           // InterfaceMethod androidx/compose/ui/window/WindowState.getPlacement:()Landroidx/compose/ui/window/WindowPlacement;
+      47: aload_2
+      48: if_acmpne     52
+      51: return
+      52: aload_0
+      53: getfield      #85                 // Field revision:J
+      56: lstore_3
+      57: aload_0
+      58: lload_3
+      59: lconst_1
+      60: ladd
+      61: putfield      #85                 // Field revision:J
+      64: iload_1
+      65: ifeq          161
+      68: aload_0
+      69: aload_0
+      70: getfield      #28                 // Field state:Landroidx/compose/ui/window/WindowState;
+      73: invokeinterface #81,  1           // InterfaceMethod androidx/compose/ui/window/WindowState.getPlacement:()Landroidx/compose/ui/window/WindowPlacement;
+      78: getstatic     #77                 // Field androidx/compose/ui/window/WindowPlacement.Floating:Landroidx/compose/ui/window/WindowPlacement;
+      81: if_acmpne     111
+      84: aload_0
+      85: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+      88: invokevirtual #88                 // Method androidx/compose/ui/awt/ComposeWindow.isShowing:()Z
+      91: ifeq          111
+      94: new           #90                 // class java/awt/Rectangle
+      97: dup
+      98: aload_0
+      99: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+     102: invokevirtual #94                 // Method androidx/compose/ui/awt/ComposeWindow.getBounds:()Ljava/awt/Rectangle;
+     105: invokespecial #97                 // Method java/awt/Rectangle."<init>":(Ljava/awt/Rectangle;)V
+     108: goto          112
+     111: aconst_null
+     112: putfield      #101                // Field floatingBounds:Ljava/awt/Rectangle;
+     115: aload_0
+     116: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+     119: invokevirtual #105                // Method androidx/compose/ui/awt/ComposeWindow.getGraphicsConfiguration:()Ljava/awt/GraphicsConfiguration;
+     122: astore_3
+     123: aload_0
+     124: aload_3
+     125: invokevirtual #111                // Method java/awt/GraphicsConfiguration.getDevice:()Ljava/awt/GraphicsDevice;
+     128: putfield      #115                // Field floatingDevice:Ljava/awt/GraphicsDevice;
+     131: aload_0
+     132: new           #90                 // class java/awt/Rectangle
+     135: dup
+     136: aload_3
+     137: invokevirtual #116                // Method java/awt/GraphicsConfiguration.getBounds:()Ljava/awt/Rectangle;
+     140: invokespecial #97                 // Method java/awt/Rectangle."<init>":(Ljava/awt/Rectangle;)V
+     143: putfield      #119                // Field floatingMonitorBounds:Ljava/awt/Rectangle;
+     146: aload_0
+     147: new           #121                // class java/awt/geom/AffineTransform
+     150: dup
+     151: aload_3
+     152: invokevirtual #125                // Method java/awt/GraphicsConfiguration.getDefaultTransform:()Ljava/awt/geom/AffineTransform;
+     155: invokespecial #128                // Method java/awt/geom/AffineTransform."<init>":(Ljava/awt/geom/AffineTransform;)V
+     158: putfield      #132                // Field floatingTransform:Ljava/awt/geom/AffineTransform;
+     161: aload_0
+     162: getfield      #28                 // Field state:Landroidx/compose/ui/window/WindowState;
+     165: aload_2
+     166: invokeinterface #136,  2          // InterfaceMethod androidx/compose/ui/window/WindowState.setPlacement:(Landroidx/compose/ui/window/WindowPlacement;)V
+     171: iload_1
+     172: ifne          179
+     175: aload_0
+     176: invokevirtual #139                // Method placementChanged:()V
+     179: return
+    LineNumberTable:
+      line 43: 0
+      line 44: 16
+      line 45: 24
+      line 46: 38
+      line 47: 52
+      line 48: 64
+      line 49: 68
+      line 50: 94
+      line 49: 112
+      line 51: 115
+      line 52: 123
+      line 53: 131
+      line 54: 146
+      line 56: 161
+      line 57: 171
+      line 58: 179
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+        123      38     3 configuration   Ljava/awt/GraphicsConfiguration;
+         38     142     2 destination   Landroidx/compose/ui/window/WindowPlacement;
+          0     180     0  this   Lcom/bilipai/desktop/ui/DesktopWindowsFullscreenControl;
+          0     180     1 enabled   Z
+
+  public final void toggle();
+    Code:
+       0: aload_0
+       1: aload_0
+       2: getfield      #28                 // Field state:Landroidx/compose/ui/window/WindowState;
+       5: invokeinterface #81,  1           // InterfaceMethod androidx/compose/ui/window/WindowState.getPlacement:()Landroidx/compose/ui/window/WindowPlacement;
+      10: getstatic     #74                 // Field androidx/compose/ui/window/WindowPlacement.Fullscreen:Landroidx/compose/ui/window/WindowPlacement;
+      13: if_acmpeq     20
+      16: iconst_1
+      17: goto          21
+      20: iconst_0
+      21: invokevirtual #146                // Method setFullscreen:(Z)V
+      24: return
+    LineNumberTable:
+      line 60: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      25     0  this   Lcom/bilipai/desktop/ui/DesktopWindowsFullscreenControl;
+
+  public final void placementChanged();
+    Code:
+       0: invokestatic  #43                 // Method javax/swing/SwingUtilities.isEventDispatchThread:()Z
+       3: ifne          16
+       6: new           #45                 // class java/lang/IllegalStateException
+       9: dup
+      10: ldc           #47                 // String Check failed.
+      12: invokespecial #50                 // Method java/lang/IllegalStateException."<init>":(Ljava/lang/String;)V
+      15: athrow
+      16: aload_0
+      17: getfield      #101                // Field floatingBounds:Ljava/awt/Rectangle;
+      20: dup
+      21: ifnonnull     26
+      24: pop
+      25: return
+      26: astore_1
+      27: aload_0
+      28: getfield      #68                 // Field closed:Z
+      31: ifne          49
+      34: aload_0
+      35: getfield      #28                 // Field state:Landroidx/compose/ui/window/WindowState;
+      38: invokeinterface #81,  1           // InterfaceMethod androidx/compose/ui/window/WindowState.getPlacement:()Landroidx/compose/ui/window/WindowPlacement;
+      43: getstatic     #77                 // Field androidx/compose/ui/window/WindowPlacement.Floating:Landroidx/compose/ui/window/WindowPlacement;
+      46: if_acmpeq     50
+      49: return
+      50: aload_0
+      51: getfield      #85                 // Field revision:J
+      54: lstore_2
+      55: aload_0
+      56: lload_2
+      57: aload_1
+      58: invokedynamic #163,  0            // InvokeDynamic #0:run:(Lcom/bilipai/desktop/ui/DesktopWindowsFullscreenControl;JLjava/awt/Rectangle;)Ljava/lang/Runnable;
+      63: invokestatic  #167                // Method javax/swing/SwingUtilities.invokeLater:(Ljava/lang/Runnable;)V
+      66: return
+    LineNumberTable:
+      line 63: 0
+      line 64: 16
+      line 65: 27
+      line 66: 50
+      line 67: 55
+      line 84: 66
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+         27      40     1 captured   Ljava/awt/Rectangle;
+         55      12     2 capturedRevision   J
+          0      67     0  this   Lcom/bilipai/desktop/ui/DesktopWindowsFullscreenControl;
+
+  public void close();
+    Code:
+       0: invokestatic  #43                 // Method javax/swing/SwingUtilities.isEventDispatchThread:()Z
+       3: ifne          16
+       6: new           #45                 // class java/lang/IllegalStateException
+       9: dup
+      10: ldc           #47                 // String Check failed.
+      12: invokespecial #50                 // Method java/lang/IllegalStateException."<init>":(Ljava/lang/String;)V
+      15: athrow
+      16: aload_0
+      17: getfield      #68                 // Field closed:Z
+      20: ifeq          24
+      23: return
+      24: aload_0
+      25: iconst_1
+      26: putfield      #68                 // Field closed:Z
+      29: aload_0
+      30: getfield      #85                 // Field revision:J
+      33: lstore_1
+      34: aload_0
+      35: lload_1
+      36: lconst_1
+      37: ladd
+      38: putfield      #85                 // Field revision:J
+      41: aload_0
+      42: aconst_null
+      43: putfield      #101                // Field floatingBounds:Ljava/awt/Rectangle;
+      46: aload_0
+      47: aconst_null
+      48: putfield      #115                // Field floatingDevice:Ljava/awt/GraphicsDevice;
+      51: aload_0
+      52: aconst_null
+      53: putfield      #119                // Field floatingMonitorBounds:Ljava/awt/Rectangle;
+      56: aload_0
+      57: aconst_null
+      58: putfield      #132                // Field floatingTransform:Ljava/awt/geom/AffineTransform;
+      61: aload_0
+      62: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+      65: aload_0
+      66: getfield      #37                 // Field listener:Lcom/bilipai/desktop/ui/DesktopWindowsFullscreenControl$listener$1;
+      69: checkcast     #52                 // class java/awt/event/ComponentListener
+      72: invokevirtual #173                // Method androidx/compose/ui/awt/ComposeWindow.removeComponentListener:(Ljava/awt/event/ComponentListener;)V
+      75: return
+    LineNumberTable:
+      line 87: 0
+      line 88: 16
+      line 89: 24
+      line 90: 29
+      line 91: 41
+      line 92: 46
+      line 93: 51
+      line 94: 56
+      line 95: 61
+      line 96: 75
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      76     0  this   Lcom/bilipai/desktop/ui/DesktopWindowsFullscreenControl;
+
+  private static final void placementChanged$lambda$0(com.bilipai.desktop.ui.DesktopWindowsFullscreenControl, long, java.awt.Rectangle);
+    Code:
+       0: aload_0
+       1: getfield      #68                 // Field closed:Z
+       4: ifne          62
+       7: lload_1
+       8: aload_0
+       9: getfield      #85                 // Field revision:J
+      12: lcmp
+      13: ifne          62
+      16: aload_0
+      17: getfield      #101                // Field floatingBounds:Ljava/awt/Rectangle;
+      20: aload_3
+      21: if_acmpne     62
+      24: aload_0
+      25: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+      28: invokevirtual #88                 // Method androidx/compose/ui/awt/ComposeWindow.isShowing:()Z
+      31: ifeq          62
+      34: aload_0
+      35: getfield      #28                 // Field state:Landroidx/compose/ui/window/WindowState;
+      38: invokeinterface #81,  1           // InterfaceMethod androidx/compose/ui/window/WindowState.getPlacement:()Landroidx/compose/ui/window/WindowPlacement;
+      43: getstatic     #77                 // Field androidx/compose/ui/window/WindowPlacement.Floating:Landroidx/compose/ui/window/WindowPlacement;
+      46: if_acmpne     62
+      49: aload_0
+      50: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+      53: invokevirtual #174                // Method androidx/compose/ui/awt/ComposeWindow.getPlacement:()Landroidx/compose/ui/window/WindowPlacement;
+      56: getstatic     #77                 // Field androidx/compose/ui/window/WindowPlacement.Floating:Landroidx/compose/ui/window/WindowPlacement;
+      59: if_acmpeq     63
+      62: return
+      63: aload_0
+      64: aconst_null
+      65: putfield      #101                // Field floatingBounds:Ljava/awt/Rectangle;
+      68: aload_0
+      69: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+      72: invokevirtual #105                // Method androidx/compose/ui/awt/ComposeWindow.getGraphicsConfiguration:()Ljava/awt/GraphicsConfiguration;
+      75: astore        4
+      77: aload         4
+      79: invokevirtual #111                // Method java/awt/GraphicsConfiguration.getDevice:()Ljava/awt/GraphicsDevice;
+      82: aload_0
+      83: getfield      #115                // Field floatingDevice:Ljava/awt/GraphicsDevice;
+      86: if_acmpne     119
+      89: aload         4
+      91: invokevirtual #116                // Method java/awt/GraphicsConfiguration.getBounds:()Ljava/awt/Rectangle;
+      94: aload_0
+      95: getfield      #119                // Field floatingMonitorBounds:Ljava/awt/Rectangle;
+      98: invokestatic  #178                // Method kotlin/jvm/internal/Intrinsics.areEqual:(Ljava/lang/Object;Ljava/lang/Object;)Z
+     101: ifeq          119
+     104: aload         4
+     106: invokevirtual #125                // Method java/awt/GraphicsConfiguration.getDefaultTransform:()Ljava/awt/geom/AffineTransform;
+     109: aload_0
+     110: getfield      #132                // Field floatingTransform:Ljava/awt/geom/AffineTransform;
+     113: invokestatic  #178                // Method kotlin/jvm/internal/Intrinsics.areEqual:(Ljava/lang/Object;Ljava/lang/Object;)Z
+     116: ifne          120
+     119: return
+     120: new           #90                 // class java/awt/Rectangle
+     123: dup
+     124: aload_0
+     125: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+     128: invokevirtual #94                 // Method androidx/compose/ui/awt/ComposeWindow.getBounds:()Ljava/awt/Rectangle;
+     131: invokespecial #97                 // Method java/awt/Rectangle."<init>":(Ljava/awt/Rectangle;)V
+     134: astore        5
+     136: aload         5
+     138: getfield      #182                // Field java/awt/Rectangle.width:I
+     141: ifle          152
+     144: aload         5
+     146: getfield      #185                // Field java/awt/Rectangle.height:I
+     149: ifgt          153
+     152: return
+     153: aload_0
+     154: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+     157: new           #90                 // class java/awt/Rectangle
+     160: dup
+     161: aload         5
+     163: getfield      #188                // Field java/awt/Rectangle.x:I
+     166: iconst_1
+     167: iadd
+     168: aload         5
+     170: getfield      #191                // Field java/awt/Rectangle.y:I
+     173: iconst_1
+     174: iadd
+     175: aload         5
+     177: getfield      #182                // Field java/awt/Rectangle.width:I
+     180: iconst_1
+     181: iadd
+     182: aload         5
+     184: getfield      #185                // Field java/awt/Rectangle.height:I
+     187: iconst_1
+     188: iadd
+     189: invokespecial #194                // Method java/awt/Rectangle."<init>":(IIII)V
+     192: invokevirtual #197                // Method androidx/compose/ui/awt/ComposeWindow.setBounds:(Ljava/awt/Rectangle;)V
+     195: aload_0
+     196: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+     199: aload         5
+     201: invokevirtual #197                // Method androidx/compose/ui/awt/ComposeWindow.setBounds:(Ljava/awt/Rectangle;)V
+     204: aload_0
+     205: getfield      #25                 // Field window:Landroidx/compose/ui/awt/ComposeWindow;
+     208: invokevirtual #200                // Method androidx/compose/ui/awt/ComposeWindow.validate:()V
+     211: return
+    LineNumberTable:
+      line 68: 0
+      line 69: 24
+      line 70: 49
+      line 71: 63
+      line 72: 68
+      line 73: 77
+      line 74: 104
+      line 76: 120
+      line 77: 136
+      line 80: 153
+      line 81: 195
+      line 82: 204
+      line 83: 211
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+         77     135     4 configuration   Ljava/awt/GraphicsConfiguration;
+        136      76     5 desired   Ljava/awt/Rectangle;
+          0     212     0 this$0   Lcom/bilipai/desktop/ui/DesktopWindowsFullscreenControl;
+          0     212     1 $capturedRevision   J
+          0     212     3 $captured   Ljava/awt/Rectangle;
+
+  static {};
+    Code:
+       0: bipush        8
+       2: putstatic     #208                // Field $stable:I
+       5: return
+}

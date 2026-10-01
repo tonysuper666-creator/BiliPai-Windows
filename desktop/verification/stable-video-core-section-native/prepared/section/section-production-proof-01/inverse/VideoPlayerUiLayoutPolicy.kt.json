@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerUiLayoutPolicy.kt",
+  "sourceSha256LF": "426c9d2d1426b90e8e82f9c679979e65d242b90d4ce261bc3ed354c2bd8180a7",
+  "generatedSha256LF": "426c9d2d1426b90e8e82f9c679979e65d242b90d4ce261bc3ed354c2bd8180a7",
+  "inverseExactOriginal": true,
+  "lineChanges": [],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

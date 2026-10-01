@@ -1,0 +1,12 @@
+PASS Unchanged full original renderer owns exact local task and actual native first frame
+PASS Actual original landscape entry applies real fixture Window fullscreen placement
+WAITING_ROOT_SKY step=1 control=退出全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof51\runs\actual54-01-normal\fixture-owned-runtime\external-input-1.done
+PASS Original exit fullscreen control receives real HWND messages and changes original local state
+WAITING_ROOT_SKY step=2 control=全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof51\runs\actual54-01-normal\fixture-owned-runtime\external-input-2.done
+Exception in thread "main" java.lang.IllegalStateException: Actual foreground HWND press not delivered to AWT
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.waitFor(OfflineNativeFixture.kt:81)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.waitFor$default(OfflineNativeFixture.kt:78)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.clickOriginal(OfflineNativeFixture.kt:336)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.clickOriginal$default(OfflineNativeFixture.kt:286)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.run(OfflineNativeFixture.kt:439)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.main(OfflineNativeFixture.kt:535)

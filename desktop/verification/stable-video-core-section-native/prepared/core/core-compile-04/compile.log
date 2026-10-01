@@ -1,0 +1,30 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\protocol\com\android\purebilibili\data\repository\DesktopOriginalVideoLoadProtocol.kt:3:43: error: unresolved reference 'WbiUtils'.
+import com.android.purebilibili.core.util.WbiUtils
+                                          ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\protocol\com\android\purebilibili\data\repository\DesktopOriginalVideoLoadProtocol.kt:4:43: error: unresolved reference 'AppSignUtils'.
+import com.android.purebilibili.core.util.AppSignUtils
+                                          ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\protocol\com\android\purebilibili\data\repository\DesktopOriginalVideoLoadProtocol.kt:818:28: error: unresolved reference 'WbiUtils'.
+        val signedParams = WbiUtils.sign(params, imgKey, subKey)
+                           ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\protocol\com\android\purebilibili\data\repository\DesktopOriginalVideoLoadProtocol.kt:869:47: error: unresolved reference 'AppSignUtils'.
+            "appkey" to if (usesAndroidToken) AppSignUtils.ANDROID_APP_KEY else AppSignUtils.TV_APP_KEY,
+                                              ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\protocol\com\android\purebilibili\data\repository\DesktopOriginalVideoLoadProtocol.kt:869:81: error: unresolved reference 'AppSignUtils'.
+            "appkey" to if (usesAndroidToken) AppSignUtils.ANDROID_APP_KEY else AppSignUtils.TV_APP_KEY,
+                                                                                ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\protocol\com\android\purebilibili\data\repository\DesktopOriginalVideoLoadProtocol.kt:870:21: error: unresolved reference 'AppSignUtils'.
+            "ts" to AppSignUtils.getTimestamp().toString(),
+                    ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\protocol\com\android\purebilibili\data\repository\DesktopOriginalVideoLoadProtocol.kt:882:13: error: unresolved reference 'AppSignUtils'.
+            AppSignUtils.signForAndroidApi(params)
+            ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\protocol\com\android\purebilibili\data\repository\DesktopOriginalVideoLoadProtocol.kt:884:13: error: unresolved reference 'AppSignUtils'.
+            AppSignUtils.signForTvLogin(params)
+            ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\protocol\com\android\purebilibili\data\repository\DesktopOriginalVideoLoadProtocol.kt:941:39: error: unresolved reference 'emptyList'.
+            environment.assertOwned() emptyList() }
+                                      ^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\protocol\com\android\purebilibili\data\repository\DesktopOriginalVideoLoadProtocol.kt:941:49: error: syntax error: Expecting an expression.
+            environment.assertOwned() emptyList() }
+                                                ^

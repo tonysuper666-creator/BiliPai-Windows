@@ -1,0 +1,314 @@
+Compiled from "HardwareLayer.kt"
+public class org.jetbrains.skiko.HardwareLayer extends java.awt.Canvas {
+  public static final org.jetbrains.skiko.HardwareLayer$Companion Companion;
+
+  private final kotlin.jvm.functions.Function1<java.awt.Component, javax.accessibility.AccessibleContext> accessibleContextProvider;
+
+  public org.jetbrains.skiko.HardwareLayer(kotlin.jvm.functions.Function1<? super java.awt.Component, ? extends javax.accessibility.AccessibleContext>);
+    Code:
+       0: aload_0
+       1: invokespecial #11                 // Method java/awt/Canvas."<init>":()V
+       4: aload_0
+       5: aload_1
+       6: putfield      #15                 // Field accessibleContextProvider:Lkotlin/jvm/functions/Function1;
+       9: return
+    LineNumberTable:
+      line 12: 0
+      line 13: 4
+      line 12: 9
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      10     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+          0      10     1 accessibleContextProvider   Lkotlin/jvm/functions/Function1;
+
+  public org.jetbrains.skiko.HardwareLayer(kotlin.jvm.functions.Function1, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    Code:
+       0: iload_2
+       1: iconst_1
+       2: iand
+       3: ifeq          8
+       6: aconst_null
+       7: astore_1
+       8: aload_0
+       9: aload_1
+      10: invokespecial #20                 // Method "<init>":(Lkotlin/jvm/functions/Function1;)V
+      13: return
+    LineNumberTable:
+      line 12: 0
+      line 13: 6
+      line 12: 8
+      line 14: 13
+
+  public void paint(java.awt.Graphics);
+    Code:
+       0: aload_1
+       1: ldc           #25                 // String g
+       3: invokestatic  #31                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: return
+    LineNumberTable:
+      line 21: 6
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       7     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+          0       7     1     g   Ljava/awt/Graphics;
+
+  public void init();
+    Code:
+       0: aload_0
+       1: checkcast     #4                  // class java/awt/Canvas
+       4: new           #35                 // class org/jetbrains/skiko/HardwareLayer$init$1
+       7: dup
+       8: aload_0
+       9: invokespecial #38                 // Method org/jetbrains/skiko/HardwareLayer$init$1."<init>":(Ljava/lang/Object;)V
+      12: checkcast     #40                 // class kotlin/jvm/functions/Function1
+      15: invokestatic  #46                 // Method org/jetbrains/skiko/AWTKt.useDrawingSurfacePlatformInfo:(Ljava/awt/Canvas;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+      18: pop
+      19: return
+    LineNumberTable:
+      line 24: 0
+      line 25: 19
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      20     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+
+  public void dispose();
+    Code:
+       0: aload_0
+       1: invokespecial #50                 // Method nativeDispose:()V
+       4: return
+    LineNumberTable:
+      line 28: 0
+      line 29: 4
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       5     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+
+  public final void doProcessInputMethodEvent(java.awt.event.InputMethodEvent);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: invokevirtual #55                 // Method processInputMethodEvent:(Ljava/awt/event/InputMethodEvent;)V
+       5: return
+    LineNumberTable:
+      line 32: 0
+      line 33: 5
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       6     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+          0       6     1     e   Ljava/awt/event/InputMethodEvent;
+
+  private final native void nativeInit(long);
+
+  private final native void nativeDispose();
+
+  public final long getContentHandle();
+    Code:
+       0: aload_0
+       1: checkcast     #4                  // class java/awt/Canvas
+       4: new           #63                 // class org/jetbrains/skiko/HardwareLayer$contentHandle$1
+       7: dup
+       8: aload_0
+       9: invokespecial #64                 // Method org/jetbrains/skiko/HardwareLayer$contentHandle$1."<init>":(Ljava/lang/Object;)V
+      12: checkcast     #40                 // class kotlin/jvm/functions/Function1
+      15: invokestatic  #46                 // Method org/jetbrains/skiko/AWTKt.useDrawingSurfacePlatformInfo:(Ljava/awt/Canvas;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+      18: checkcast     #66                 // class java/lang/Number
+      21: invokevirtual #69                 // Method java/lang/Number.longValue:()J
+      24: lreturn
+    LineNumberTable:
+      line 39: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      25     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+
+  public final long getWindowHandle();
+    Code:
+       0: aload_0
+       1: checkcast     #4                  // class java/awt/Canvas
+       4: new           #72                 // class org/jetbrains/skiko/HardwareLayer$windowHandle$1
+       7: dup
+       8: aload_0
+       9: invokespecial #73                 // Method org/jetbrains/skiko/HardwareLayer$windowHandle$1."<init>":(Ljava/lang/Object;)V
+      12: checkcast     #40                 // class kotlin/jvm/functions/Function1
+      15: invokestatic  #46                 // Method org/jetbrains/skiko/AWTKt.useDrawingSurfacePlatformInfo:(Ljava/awt/Canvas;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+      18: checkcast     #66                 // class java/lang/Number
+      21: invokevirtual #69                 // Method java/lang/Number.longValue:()J
+      24: lreturn
+    LineNumberTable:
+      line 42: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      25     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+
+  public final int getCurrentDPI();
+    Code:
+       0: aload_0
+       1: checkcast     #4                  // class java/awt/Canvas
+       4: new           #77                 // class org/jetbrains/skiko/HardwareLayer$currentDPI$1
+       7: dup
+       8: aload_0
+       9: invokespecial #78                 // Method org/jetbrains/skiko/HardwareLayer$currentDPI$1."<init>":(Ljava/lang/Object;)V
+      12: checkcast     #40                 // class kotlin/jvm/functions/Function1
+      15: invokestatic  #46                 // Method org/jetbrains/skiko/AWTKt.useDrawingSurfacePlatformInfo:(Ljava/awt/Canvas;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+      18: checkcast     #66                 // class java/lang/Number
+      21: invokevirtual #81                 // Method java/lang/Number.intValue:()I
+      24: ireturn
+    LineNumberTable:
+      line 45: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      25     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+
+  public final boolean getFullscreen();
+    Code:
+       0: invokestatic  #89                 // Method org/jetbrains/skiko/PlatformOperationsKt.getPlatformOperations:()Lorg/jetbrains/skiko/PlatformOperations;
+       3: aload_0
+       4: checkcast     #91                 // class java/awt/Component
+       7: invokeinterface #97,  2           // InterfaceMethod org/jetbrains/skiko/PlatformOperations.isFullscreen:(Ljava/awt/Component;)Z
+      12: ireturn
+    LineNumberTable:
+      line 48: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      13     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+
+  public final void setFullscreen(boolean);
+    Code:
+       0: invokestatic  #89                 // Method org/jetbrains/skiko/PlatformOperationsKt.getPlatformOperations:()Lorg/jetbrains/skiko/PlatformOperations;
+       3: aload_0
+       4: checkcast     #91                 // class java/awt/Component
+       7: iload_1
+       8: invokeinterface #102,  3          // InterfaceMethod org/jetbrains/skiko/PlatformOperations.setFullscreen:(Ljava/awt/Component;Z)V
+      13: return
+    LineNumberTable:
+      line 49: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      14     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+          0      14     1 value   Z
+
+  public final void disableTitleBar(float);
+    Code:
+       0: invokestatic  #89                 // Method org/jetbrains/skiko/PlatformOperationsKt.getPlatformOperations:()Lorg/jetbrains/skiko/PlatformOperations;
+       3: aload_0
+       4: checkcast     #91                 // class java/awt/Component
+       7: fload_1
+       8: invokeinterface #109,  3          // InterfaceMethod org/jetbrains/skiko/PlatformOperations.disableTitleBar:(Ljava/awt/Component;F)V
+      13: return
+    LineNumberTable:
+      line 52: 0
+      line 53: 13
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      14     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+          0      14     1 customHeaderHeight   F
+
+  private final native long getContentHandle(long);
+
+  private final native long getWindowHandle(long);
+
+  private final native int getCurrentDPI(long);
+
+  public javax.accessibility.AccessibleContext getAccessibleContext();
+    Code:
+       0: aload_0
+       1: getfield      #15                 // Field accessibleContextProvider:Lkotlin/jvm/functions/Function1;
+       4: dup
+       5: ifnull        21
+       8: aload_0
+       9: invokeinterface #119,  2          // InterfaceMethod kotlin/jvm/functions/Function1.invoke:(Ljava/lang/Object;)Ljava/lang/Object;
+      14: checkcast     #121                // class javax/accessibility/AccessibleContext
+      17: dup
+      18: ifnonnull     32
+      21: pop
+      22: aload_0
+      23: invokespecial #123                // Method java/awt/Canvas.getAccessibleContext:()Ljavax/accessibility/AccessibleContext;
+      26: dup
+      27: ldc           #125                // String getAccessibleContext(...)
+      29: invokestatic  #128                // Method kotlin/jvm/internal/Intrinsics.checkNotNullExpressionValue:(Ljava/lang/Object;Ljava/lang/String;)V
+      32: areturn
+    LineNumberTable:
+      line 60: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      33     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+
+  public org.jetbrains.skiko.HardwareLayer();
+    Code:
+       0: aload_0
+       1: aconst_null
+       2: iconst_1
+       3: aconst_null
+       4: invokespecial #132                // Method "<init>":(Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+       7: return
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Lorg/jetbrains/skiko/HardwareLayer;
+
+  public static final void access$nativeInit(org.jetbrains.skiko.HardwareLayer, long);
+    Code:
+       0: aload_0
+       1: lload_1
+       2: invokespecial #136                // Method nativeInit:(J)V
+       5: return
+    LineNumberTable:
+      line 12: 2
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       6     0 $this   Lorg/jetbrains/skiko/HardwareLayer;
+          0       6     1 platformInfo   J
+
+  public static final long access$getContentHandle(org.jetbrains.skiko.HardwareLayer, long);
+    Code:
+       0: aload_0
+       1: lload_1
+       2: invokespecial #143                // Method getContentHandle:(J)J
+       5: lreturn
+    LineNumberTable:
+      line 12: 2
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       6     0 $this   Lorg/jetbrains/skiko/HardwareLayer;
+          0       6     1 platformInfo   J
+
+  public static final long access$getWindowHandle(org.jetbrains.skiko.HardwareLayer, long);
+    Code:
+       0: aload_0
+       1: lload_1
+       2: invokespecial #146                // Method getWindowHandle:(J)J
+       5: lreturn
+    LineNumberTable:
+      line 12: 2
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       6     0 $this   Lorg/jetbrains/skiko/HardwareLayer;
+          0       6     1 platformInfo   J
+
+  public static final int access$getCurrentDPI(org.jetbrains.skiko.HardwareLayer, long);
+    Code:
+       0: aload_0
+       1: lload_1
+       2: invokespecial #150                // Method getCurrentDPI:(J)I
+       5: ireturn
+    LineNumberTable:
+      line 12: 2
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       6     0 $this   Lorg/jetbrains/skiko/HardwareLayer;
+          0       6     1 platformInfo   J
+
+  static {};
+    Code:
+       0: new           #153                // class org/jetbrains/skiko/HardwareLayer$Companion
+       3: dup
+       4: aconst_null
+       5: invokespecial #156                // Method org/jetbrains/skiko/HardwareLayer$Companion."<init>":(Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+       8: putstatic     #160                // Field Companion:Lorg/jetbrains/skiko/HardwareLayer$Companion;
+      11: nop
+      12: getstatic     #166                // Field org/jetbrains/skiko/Library.INSTANCE:Lorg/jetbrains/skiko/Library;
+      15: invokevirtual #169                // Method org/jetbrains/skiko/Library.load:()V
+      18: return
+    LineNumberTable:
+      line 16: 11
+      line 17: 12
+      line 18: 18
+}

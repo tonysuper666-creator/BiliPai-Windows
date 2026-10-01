@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerDanmakuLoadPolicy.kt",
+  "sourceSha256LF": "883f579cb65942465f11b24bdbdc4a83155648ec82d99ca1d5cf286f025b126f",
+  "generatedSha256LF": "883f579cb65942465f11b24bdbdc4a83155648ec82d99ca1d5cf286f025b126f",
+  "inverseExactOriginal": true,
+  "lineChanges": [],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

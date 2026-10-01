@@ -1,0 +1,15 @@
+{
+  "preparedOnly": true,
+  "actual50": true,
+  "strictRuntimeEntries": 97,
+  "explicitCandidateJarSha": "11ef1db533d574c8211f2531a6ddc796ab02ace82912d2325c13449ac035523f",
+  "nativeFacadeCandidateSha": "8afda700dee26da035e2df85ef65c87cf187532af8d8e918075fa542a299f6e0",
+  "childContentCandidateSha": "f7ec9380b81737ed299bf49cecef412a1e9eb58b23f9fc5e80b7a969aaddc135",
+  "fixtureSha": "b1f5b9621338b17265ff190ae76f670e394ce901fb103c18d7f403b0160003a7",
+  "passed": false,
+  "noHttp": true,
+  "noHwnd": true,
+  "noAccountMutation": true,
+  "fullVmHolderAccepted": false,
+  "groups": 3
+}

@@ -1,0 +1,85 @@
+{
+  "applied": true,
+  "targets": [
+    {
+      "path": "desktop/tools/extract-upstream-video-state-core.py",
+      "baseSha256Bytes": null,
+      "installedSha256Bytes": "e433f7b674650bce23f1c1991607399552ed2d97576d900cb0240657ab125dc7",
+      "installedSha256LF": "e433f7b674650bce23f1c1991607399552ed2d97576d900cb0240657ab125dc7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoLoadPort.kt",
+      "baseSha256Bytes": null,
+      "installedSha256Bytes": "6f75841eb201c819d798bca3541d3afd18e383d4a123a006ea249fee1b5158a3",
+      "installedSha256LF": "6f75841eb201c819d798bca3541d3afd18e383d4a123a006ea249fee1b5158a3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoLoadProtocolEnvironment.kt",
+      "baseSha256Bytes": null,
+      "installedSha256Bytes": "616da54e666e05eacdc9edd66584a0993cf2cbc1d36fdc0b70b238ed48a1372a",
+      "installedSha256LF": "616da54e666e05eacdc9edd66584a0993cf2cbc1d36fdc0b70b238ed48a1372a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "baseSha256Bytes": null,
+      "installedSha256Bytes": "69d193e6a4fc190b3e82a3f0b27fb4866ead59e3b8847da830b9f1286b120a80",
+      "installedSha256LF": "69d193e6a4fc190b3e82a3f0b27fb4866ead59e3b8847da830b9f1286b120a80"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSupplementEnvironment.kt",
+      "baseSha256Bytes": null,
+      "installedSha256Bytes": "857d5138704c3ebb8a7dbadcf382cf53a1f8c8e3a6d4cb0dbc825b15e5f4188f",
+      "installedSha256LF": "857d5138704c3ebb8a7dbadcf382cf53a1f8c8e3a6d4cb0dbc825b15e5f4188f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-player-section-full.py",
+      "baseSha256Bytes": null,
+      "installedSha256Bytes": "3c9fa4d5115fdebed4fcd16f534bb0f9a30af4ae714ec2fb506ab385328ccc04",
+      "installedSha256LF": "3c9fa4d5115fdebed4fcd16f534bb0f9a30af4ae714ec2fb506ab385328ccc04"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState.kt",
+      "baseSha256Bytes": null,
+      "installedSha256Bytes": "957db9765b016779acf400555dce7089671ad1df7527c4f5971f9b3ebd4d84e2",
+      "installedSha256LF": "957db9765b016779acf400555dce7089671ad1df7527c4f5971f9b3ebd4d84e2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionPlatform.kt",
+      "baseSha256Bytes": null,
+      "installedSha256Bytes": "1257b1664e464d82a7f648ff23ff222b39bbb2d056be7b41ae6b49620e05cb3f",
+      "installedSha256LF": "1257b1664e464d82a7f648ff23ff222b39bbb2d056be7b41ae6b49620e05cb3f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvOverlayControl.kt",
+      "baseSha256Bytes": "7d59bf46b008c14a198ede73c63db2175fe5be957ee53965dc6545f35452f5c0",
+      "installedSha256Bytes": "82ecb87a9a449121825f6809ad76141b0a35f434713681baa82a973607552412",
+      "installedSha256LF": "82ecb87a9a449121825f6809ad76141b0a35f434713681baa82a973607552412"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+      "baseSha256Bytes": "24fb1ef1e9331e521e8b3a1e6ac61bf7eca1d891f28ba46540b9fe215f56e5ca",
+      "installedSha256Bytes": "3c935fa31ffcea15c0ce34bb930615b743c41f280efcca73d08750f8f139ee01",
+      "installedSha256LF": "3c935fa31ffcea15c0ce34bb930615b743c41f280efcca73d08750f8f139ee01"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "baseSha256Bytes": "7c10b11078b4dabeabe093e0988544249b7a5c4f0600a1c480b926ec898056c6",
+      "installedSha256Bytes": "ef5cd2fd92c70697069e589d840628a270c1219adb604c147398209d7046bf46",
+      "installedSha256LF": "ef5cd2fd92c70697069e589d840628a270c1219adb604c147398209d7046bf46"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "baseSha256Bytes": "2a5dbf2f795ce0f2170f740add1948c1515caba1c9ec226e8d555f760371ce60",
+      "installedSha256Bytes": "e10c69592460b5736943bfa2def94951c65e7417bae9b075638a90e3e04d27ae",
+      "installedSha256LF": "e10c69592460b5736943bfa2def94951c65e7417bae9b075638a90e3e04d27ae"
+    }
+  ],
+  "frozenCoreRawCount": 192,
+  "frozenSectionRawCount": 412,
+  "newSourceIdentities": 27,
+  "sourceIdentityCount": 1055,
+  "newDependencies": 0,
+  "fullOrdinaryVideoRootMountAccepted": false,
+  "wholeCompilationPending": true,
+  "originalBusinessHunks": 0
+}

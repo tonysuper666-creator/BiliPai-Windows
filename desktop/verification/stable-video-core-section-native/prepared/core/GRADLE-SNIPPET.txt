@@ -1,0 +1,17 @@
+// Append alongside existing original video producers; no new dependency or runtime artifact.
+val extractOriginalVideoStateCore by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalVideoContentFull)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-state-core.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-video-state-core").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-video-state-core.py", "tools/extract-upstream-dynamic-reply-protocol.py",
+        "tools/extract-upstream-video-detail-full-units.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
+    inputs.files(sources.filter { "stable-video-state-core" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-video-state-core"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-state-core")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalVideoStateCore) }
+// Production omits --standalone. DIRECT10 are copied solely by prepareUpstreamSources.
+// Install child Section's canonical native facade first/in same compile: this package references it.

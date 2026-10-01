@@ -1,0 +1,3082 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+  "sourceSha256LF": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e",
+  "generatedSha256LF": "aa7b720ad3b632418a67902f5015ae39b40d9ce7d9d78d1bd07e1bb2f6e08c33",
+  "inverseExactOriginal": true,
+  "lineChanges": [
+    {
+      "tag": "delete",
+      "originalStart": 19,
+      "originalEnd": 20,
+      "generatedStart": 19,
+      "generatedEnd": 19,
+      "originalLines": [
+        "import com.android.purebilibili.feature.video.danmaku.DanmakuManager\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "delete",
+      "originalStart": 21,
+      "originalEnd": 22,
+      "generatedStart": 20,
+      "generatedEnd": 20,
+      "originalLines": [
+        "import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 27,
+      "originalEnd": 30,
+      "generatedStart": 25,
+      "generatedEnd": 26,
+      "originalLines": [
+        "import com.android.purebilibili.feature.video.danmaku.configureAsPassiveDanmakuOverlay\n",
+        "import com.android.purebilibili.feature.video.player.MiniPlayerManager\n",
+        "import com.android.purebilibili.feature.video.state.VideoPlayerState\n"
+      ],
+      "generatedLines": [
+        "import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 82,
+      "originalEnd": 83,
+      "generatedStart": 78,
+      "generatedEnd": 78,
+      "originalLines": [
+        "import com.android.purebilibili.danmaku.engine.DanmakuRenderView\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 84,
+      "originalEnd": 96,
+      "generatedStart": 79,
+      "generatedEnd": 80,
+      "originalLines": [
+        "import android.app.Activity\n",
+        "import android.content.Context\n",
+        "import android.content.ContextWrapper\n",
+        "import android.content.pm.ActivityInfo\n",
+        "import android.view.LayoutInflater\n",
+        "import android.view.Surface\n",
+        "import android.view.SurfaceView\n",
+        "import android.view.TextureView\n",
+        "import android.view.View\n",
+        "import android.media.AudioManager\n",
+        "import android.provider.Settings\n",
+        "import android.widget.Toast\n"
+      ],
+      "generatedLines": [
+        "import com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback as Toast\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 145,
+      "originalEnd": 147,
+      "generatedStart": 129,
+      "generatedEnd": 131,
+      "originalLines": [
+        "import androidx.compose.ui.platform.LocalConfiguration\n",
+        "import androidx.compose.ui.platform.LocalContext\n"
+      ],
+      "generatedLines": [
+        "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration\n",
+        "import coil3.compose.LocalPlatformContext as LocalContext\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 154,
+      "originalEnd": 155,
+      "generatedStart": 138,
+      "generatedEnd": 138,
+      "originalLines": [
+        "import androidx.compose.ui.viewinterop.AndroidView\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 163,
+      "originalEnd": 167,
+      "generatedStart": 146,
+      "generatedEnd": 150,
+      "originalLines": [
+        "import androidx.media3.common.Player\n",
+        "import androidx.media3.common.PlaybackParameters\n",
+        "import androidx.media3.common.VideoSize\n",
+        "import androidx.media3.ui.PlayerView\n"
+      ],
+      "generatedLines": [
+        "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player\n",
+        "import com.bilipai.desktop.ui.DesktopOriginalPlaybackRate as PlaybackParameters\n",
+        "import com.bilipai.desktop.ui.DesktopOriginalNativeVideoSize as VideoSize\n",
+        "import com.bilipai.desktop.ui.DesktopOriginalPlayerViewportPort as PlayerView\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 168,
+      "originalEnd": 170,
+      "generatedStart": 151,
+      "generatedEnd": 151,
+      "originalLines": [
+        "import com.android.purebilibili.core.plugin.PluginManager\n",
+        "import com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 186,
+      "originalEnd": 188,
+      "generatedStart": 167,
+      "generatedEnd": 168,
+      "originalLines": [
+        "import com.android.purebilibili.core.util.Logger\n",
+        "import com.android.purebilibili.core.util.applyPlayerRequestedOrientation\n"
+      ],
+      "generatedLines": [
+        "import android.util.Log as Logger\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 189,
+      "originalEnd": 190,
+      "generatedStart": 169,
+      "generatedEnd": 169,
+      "originalLines": [
+        "import com.android.purebilibili.feature.screenshot.AppScreenshotGestureBlockState\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "delete",
+      "originalStart": 193,
+      "originalEnd": 194,
+      "generatedStart": 172,
+      "generatedEnd": 172,
+      "originalLines": [
+        "import com.android.purebilibili.feature.anime4k.isAnime4KGles3Available\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "delete",
+      "originalStart": 197,
+      "originalEnd": 199,
+      "generatedStart": 175,
+      "generatedEnd": 175,
+      "originalLines": [
+        "import com.android.purebilibili.feature.anime4k.gl.Anime4KGLSurfaceView\n",
+        "import com.android.purebilibili.feature.plugin.Anime4KPlugin\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "delete",
+      "originalStart": 218,
+      "originalEnd": 220,
+      "generatedStart": 194,
+      "generatedEnd": 194,
+      "originalLines": [
+        "import com.android.purebilibili.feature.video.util.captureAndSaveVideoScreenshot\n",
+        "import com.android.purebilibili.feature.video.util.captureVideoAmbientFrame\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "insert",
+      "originalStart": 239,
+      "originalEnd": 239,
+      "generatedStart": 213,
+      "generatedEnd": 215,
+      "originalLines": [],
+      "generatedLines": [
+        "import com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform\n",
+        "import kotlinx.coroutines.flow.map\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 434,
+      "originalEnd": 435,
+      "generatedStart": 410,
+      "generatedEnd": 411,
+      "originalLines": [
+        "    val context = LocalContext.current\n"
+      ],
+      "generatedLines": [
+        "    val context = LocalDesktopOriginalVideoSectionPlatform.current.settingsContext\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 600,
+      "originalEnd": 601,
+      "generatedStart": 576,
+      "generatedEnd": 577,
+      "originalLines": [
+        "                                    SettingsManager.setSubtitleVerticalOffsetFraction(\n"
+      ],
+      "generatedLines": [
+        "                                    com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setSubtitleVerticalOffsetFraction(\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 668,
+      "originalEnd": 669,
+      "generatedStart": 644,
+      "generatedEnd": 644,
+      "originalLines": [
+        "@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "delete",
+      "originalStart": 677,
+      "originalEnd": 678,
+      "generatedStart": 652,
+      "generatedEnd": 652,
+      "originalLines": [
+        "@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 797,
+      "originalEnd": 798,
+      "generatedStart": 771,
+      "generatedEnd": 773,
+      "originalLines": [
+        "    val context = LocalContext.current\n"
+      ],
+      "generatedLines": [
+        "    val platform = LocalDesktopOriginalVideoSectionPlatform.current\n",
+        "    val context = platform.settingsContext\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 801,
+      "originalEnd": 810,
+      "generatedStart": 776,
+      "generatedEnd": 779,
+      "originalLines": [
+        "    val hostLifecycleStarted = lifecycleState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)\n",
+        "    val registeredPlugins by PluginManager.pluginsFlow.collectAsStateWithLifecycle()\n",
+        "    val anime4kPluginInfo = registeredPlugins.firstOrNull { it.plugin.id == Anime4KPlugin.PLUGIN_ID }\n",
+        "    val anime4kPlugin = anime4kPluginInfo?.plugin as? Anime4KPlugin\n",
+        "    val anime4kConfig = if (anime4kPlugin == null) {\n",
+        "        Anime4KConfig()\n",
+        "    } else {\n",
+        "        anime4kPlugin.configState.collectAsStateWithLifecycle().value\n",
+        "    }\n"
+      ],
+      "generatedLines": [
+        "    val hostLifecycleStarted = lifecycleState.isAtLeast(Lifecycle.State.STARTED)\n",
+        "    val anime4kConfig by platform.enhancementConfig.collectAsStateWithLifecycle()\n",
+        "    val enhancementState by platform.enhancementState.collectAsStateWithLifecycle()\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 811,
+      "originalEnd": 850,
+      "generatedStart": 780,
+      "generatedEnd": 785,
+      "originalLines": [
+        "    val anime4kGlesAvailable = remember(context) { isAnime4KGles3Available(context) }\n",
+        "    var anime4kPipelineFailed by remember(playerState.player) { mutableStateOf(false) }\n",
+        "    var anime4kInputSurface by remember(playerState.player) { mutableStateOf<Surface?>(null) }\n",
+        "    var anime4kDisplayedFirstFrame by remember(bvid, playerState.player) { mutableStateOf(false) }\n",
+        "    var anime4kSurfaceViewRef by remember(playerState.player) { mutableStateOf<Anime4KGLSurfaceView?>(null) }\n",
+        "    var videoEnhancementSessionOverride by remember(bvid, playerState.player) {\n",
+        "        mutableStateOf<Boolean?>(null)\n",
+        "    }\n",
+        "    val videoEnhancementSessionRequested = videoEnhancementSessionOverride\n",
+        "        ?: resolveInitialVideoEnhancementEnabled(\n",
+        "            pluginEnabled = anime4kPluginInfo?.enabled == true,\n",
+        "            config = anime4kConfig\n",
+        "        )\n",
+        "    val videoEnhancementEnabled = anime4kPluginInfo?.enabled == true &&\n",
+        "        videoEnhancementSessionRequested\n",
+        "    LaunchedEffect(anime4kConfig.algorithm) {\n",
+        "        anime4kPipelineFailed = false\n",
+        "    }\n",
+        "    val anime4kOutputDecision = remember(\n",
+        "        videoEnhancementEnabled,\n",
+        "        anime4kGlesAvailable,\n",
+        "        anime4kPipelineFailed,\n",
+        "        videoInputFormat,\n",
+        "        isInPipMode,\n",
+        "        isAudioOnly,\n",
+        "        lifecycleState\n",
+        "    ) {\n",
+        "        resolveAnime4KOutputDecision(\n",
+        "            pluginEnabled = videoEnhancementEnabled,\n",
+        "            glAvailable = anime4kGlesAvailable && !anime4kPipelineFailed,\n",
+        "            colorTransfer = videoInputFormat?.colorInfo?.colorTransfer ?: 0,\n",
+        "            sampleMimeType = videoInputFormat?.sampleMimeType,\n",
+        "            isInPipMode = isInPipMode,\n",
+        "            isAudioOnly = isAudioOnly,\n",
+        "            hostLifecycleStarted = lifecycleState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)\n",
+        "        )\n",
+        "    }\n",
+        "    val shouldUseAnime4kPipeline = anime4kOutputDecision.shouldUsePipeline\n",
+        "    val anime4kBypassReason = anime4kOutputDecision.bypassReason\n"
+      ],
+      "generatedLines": [
+        "    val videoEnhancementSessionRequested = enhancementState.requested\n",
+        "    val videoEnhancementEnabled = enhancementState.requested\n",
+        "    val shouldUseAnime4kPipeline = enhancementState.active || enhancementState.pending\n",
+        "    val anime4kBypassReason = enhancementState.bypassReason\n",
+        "    val anime4kDisplayedFirstFrame = enhancementState.active && playerState.player.firstVideoFrameReady\n"
+      ]
+    },
+    {
+      "tag": "insert",
+      "originalStart": 851,
+      "originalEnd": 851,
+      "generatedStart": 786,
+      "generatedEnd": 787,
+      "originalLines": [],
+      "generatedLines": [
+        "    val latestAnime4kDisplayedFirstFrame by rememberUpdatedState(anime4kDisplayedFirstFrame)\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 852,
+      "originalEnd": 865,
+      "generatedStart": 788,
+      "generatedEnd": 788,
+      "originalLines": [
+        "    val latestAnime4kDisplayedFirstFrame by rememberUpdatedState(anime4kDisplayedFirstFrame)\n",
+        "    val videoOutputRouter = remember(playerState.player) { VideoOutputRouter(playerState.player) }\n",
+        "    DisposableEffect(videoOutputRouter) {\n",
+        "        onDispose { videoOutputRouter.release() }\n",
+        "    }\n",
+        "    LaunchedEffect(hostLifecycleStarted, shouldUseAnime4kPipeline, anime4kSurfaceViewRef) {\n",
+        "        val surfaceView = anime4kSurfaceViewRef ?: return@LaunchedEffect\n",
+        "        if (shouldUseAnime4kPipeline && hostLifecycleStarted) {\n",
+        "            surfaceView.onResume()\n",
+        "        } else {\n",
+        "            surfaceView.onPause()\n",
+        "        }\n",
+        "    }\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 901,
+      "originalEnd": 902,
+      "generatedStart": 824,
+      "generatedEnd": 825,
+      "originalLines": [
+        "    val audioManager = remember { context.getSystemService(Context.AUDIO_SERVICE) as AudioManager }\n"
+      ],
+      "generatedLines": [
+        "    val audioManager = platform.volume\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 904,
+      "originalEnd": 906,
+      "generatedStart": 827,
+      "generatedEnd": 828,
+      "originalLines": [
+        "    val playerInsightMode by com.android.purebilibili.core.store.SettingsManager\n",
+        "        .getPlayerInsightMode(context)\n"
+      ],
+      "generatedLines": [
+        "    val playerInsightMode by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInsightMode(context)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 907,
+      "originalEnd": 908,
+      "generatedStart": 829,
+      "generatedEnd": 830,
+      "originalLines": [
+        "            initialValue = com.android.purebilibili.core.store.SettingsManager.getPlayerInsightModeSync(context),\n"
+      ],
+      "generatedLines": [
+        "            initialValue = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInsightModeSync(context),\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 911,
+      "originalEnd": 913,
+      "generatedStart": 833,
+      "generatedEnd": 834,
+      "originalLines": [
+        "    val playbackSpeedOptions by SettingsManager\n",
+        "        .getPlaybackSpeedOptions(context)\n"
+      ],
+      "generatedLines": [
+        "    val playbackSpeedOptions by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getPlaybackSpeedOptions(context)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 917,
+      "originalEnd": 919,
+      "generatedStart": 838,
+      "generatedEnd": 839,
+      "originalLines": [
+        "    val playerInteractionSettings by com.android.purebilibili.core.store.SettingsManager\n",
+        "        .getPlayerInteractionSettings(context)\n"
+      ],
+      "generatedLines": [
+        "    val playerInteractionSettings by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 921,
+      "originalEnd": 935,
+      "generatedStart": 841,
+      "generatedEnd": 848,
+      "originalLines": [
+        "                longPressSpeedLockEnabled = com.android.purebilibili.core.store.SettingsManager\n",
+        "                    .getLongPressSpeedLockEnabledSync(context),\n",
+        "                longPressSpeedLockHintShown = com.android.purebilibili.core.store.SettingsManager\n",
+        "                    .getLongPressSpeedLockHintShownSync(context),\n",
+        "                longPressSpeedHintCloseEnabled = com.android.purebilibili.core.store.SettingsManager\n",
+        "                    .getLongPressSpeedHintCloseEnabledSync(context),\n",
+        "                longPressSpeedHintHidden = com.android.purebilibili.core.store.SettingsManager\n",
+        "                    .getLongPressSpeedHintHiddenSync(context),\n",
+        "                longPressSpeedHintScale = com.android.purebilibili.core.store.SettingsManager\n",
+        "                    .getLongPressSpeedHintScaleSync(context),\n",
+        "                longPressSpeedHintAlpha = com.android.purebilibili.core.store.SettingsManager\n",
+        "                    .getLongPressSpeedHintAlphaSync(context),\n",
+        "                hiResLongPressCompatHintShown = com.android.purebilibili.core.store.SettingsManager\n",
+        "                    .getHiResLongPressCompatHintShownSync(context)\n"
+      ],
+      "generatedLines": [
+        "                longPressSpeedLockEnabled = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedLockEnabledSync(context),\n",
+        "                longPressSpeedLockHintShown = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedLockHintShownSync(context),\n",
+        "                longPressSpeedHintCloseEnabled = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintCloseEnabledSync(context),\n",
+        "                longPressSpeedHintHidden = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintHiddenSync(context),\n",
+        "                longPressSpeedHintScale = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintScaleSync(context),\n",
+        "                longPressSpeedHintAlpha = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintAlphaSync(context),\n",
+        "                hiResLongPressCompatHintShown = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getHiResLongPressCompatHintShownSync(context)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 965,
+      "originalEnd": 967,
+      "generatedStart": 878,
+      "generatedEnd": 879,
+      "originalLines": [
+        "    val playbackCompletionBehavior by com.android.purebilibili.core.store.SettingsManager\n",
+        "        .getPlaybackCompletionBehavior(context)\n"
+      ],
+      "generatedLines": [
+        "    val playbackCompletionBehavior by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getPlaybackCompletionBehavior(context)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 990,
+      "originalEnd": 993,
+      "generatedStart": 902,
+      "generatedEnd": 903,
+      "originalLines": [
+        "            val hasPlaylistNext = com.android.purebilibili.feature.video.player.PlaylistManager\n",
+        "                .isExternalPlaylist.value &&\n",
+        "                com.android.purebilibili.feature.video.player.PlaylistManager.hasNext()\n"
+      ],
+      "generatedLines": [
+        "            val hasPlaylistNext = platform.hasPlaylistNext()\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1054,
+      "originalEnd": 1056,
+      "generatedStart": 964,
+      "generatedEnd": 965,
+      "originalLines": [
+        "            com.android.purebilibili.core.store.SettingsManager\n",
+        "                .getHiResLongPressCompatHintShownSync(context)\n"
+      ],
+      "generatedLines": [
+        "            com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getHiResLongPressCompatHintShownSync(context)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1062,
+      "originalEnd": 1064,
+      "generatedStart": 971,
+      "generatedEnd": 972,
+      "originalLines": [
+        "            com.android.purebilibili.core.store.SettingsManager\n",
+        "                .getLongPressSpeedLockHintShownSync(context)\n"
+      ],
+      "generatedLines": [
+        "            com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedLockHintShownSync(context)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1131,
+      "originalEnd": 1132,
+      "generatedStart": 1039,
+      "generatedEnd": 1040,
+      "originalLines": [
+        "                val now = android.os.SystemClock.elapsedRealtime()\n"
+      ],
+      "generatedLines": [
+        "                val now = (System.nanoTime() / 1_000_000L)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1287,
+      "originalEnd": 1289,
+      "generatedStart": 1195,
+      "generatedEnd": 1196,
+      "originalLines": [
+        "    val playerDiagnosticLoggingEnabled by SettingsManager\n",
+        "        .getPlayerDiagnosticLoggingEnabled(context)\n"
+      ],
+      "generatedLines": [
+        "    val playerDiagnosticLoggingEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerDiagnosticLoggingEnabled(context)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1306,
+      "originalEnd": 1307,
+      "generatedStart": 1213,
+      "generatedEnd": 1214,
+      "originalLines": [
+        "    var playerViewRef by remember { mutableStateOf<PlayerView?>(null) }\n"
+      ],
+      "generatedLines": [
+        "    val playerViewRef = platform.viewport\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1320,
+      "originalEnd": 1349,
+      "generatedStart": 1227,
+      "generatedEnd": 1229,
+      "originalLines": [
+        "        val shouldBlockAppScreenshot = isFullscreen && isScreenLocked\n",
+        "        val lockedActivity = if (shouldBlockAppScreenshot) {\n",
+        "            generateSequence(context) { current ->\n",
+        "                (current as? ContextWrapper)?.baseContext\n",
+        "            }.filterIsInstance<Activity>().firstOrNull()\n",
+        "        } else {\n",
+        "            null\n",
+        "        }\n",
+        "        val previousRequestedOrientation = lockedActivity?.requestedOrientation\n",
+        "\n",
+        "        if (shouldBlockAppScreenshot) {\n",
+        "            lockedActivity?.applyPlayerRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED)\n",
+        "        }\n",
+        "        AppScreenshotGestureBlockState.fullscreenPlayerLocked = shouldBlockAppScreenshot\n",
+        "        onDispose {\n",
+        "            // 因退出全屏而 dispose 时不得恢复快照的横屏方向：退出路径刚写入\n",
+        "            // PORTRAIT，恢复 SENSOR_LANDSCAPE 会让界面跳回横屏。只有仍在全屏内\n",
+        "            // （用户仅关闭锁定）才回滚到锁定前的方向。\n",
+        "            if (\n",
+        "                lockedActivity?.requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LOCKED &&\n",
+        "                previousRequestedOrientation != null &&\n",
+        "                latestFullscreenForOrientationRestore\n",
+        "            ) {\n",
+        "                lockedActivity.applyPlayerRequestedOrientation(previousRequestedOrientation)\n",
+        "            }\n",
+        "            if (shouldBlockAppScreenshot) {\n",
+        "                AppScreenshotGestureBlockState.fullscreenPlayerLocked = false\n",
+        "            }\n",
+        "        }\n"
+      ],
+      "generatedLines": [
+        "        val lease = platform.setScreenshotAndOrientationLock(isFullscreen && isScreenLocked)\n",
+        "        onDispose { lease.close() }\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1353,
+      "originalEnd": 1355,
+      "generatedStart": 1233,
+      "generatedEnd": 1234,
+      "originalLines": [
+        "    val statusBarHazeEnabled by SettingsManager\n",
+        "        .getHideVideoPageStatusBar(context)\n"
+      ],
+      "generatedLines": [
+        "    val statusBarHazeEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getHideVideoPageStatusBar(context)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1356,
+      "originalEnd": 1357,
+      "generatedStart": 1235,
+      "generatedEnd": 1236,
+      "originalLines": [
+        "            initialValue = SettingsManager.getHideVideoPageStatusBarSync(context),\n"
+      ],
+      "generatedLines": [
+        "            initialValue = com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getHideVideoPageStatusBarSync(context),\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1380,
+      "originalEnd": 1383,
+      "generatedStart": 1259,
+      "generatedEnd": 1261,
+      "originalLines": [
+        "                if (playerView.isAttachedToWindow && playerView.width > 0 && playerView.height > 0) {\n",
+        "                    statusBarAmbientFrame.value = captureVideoAmbientFrame(\n",
+        "                        playerView = playerView,\n"
+      ],
+      "generatedLines": [
+        "                if (platform.viewportAttached && playerView.width > 0 && playerView.height > 0) {\n",
+        "                    statusBarAmbientFrame.value = platform.captureAmbientFrame(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1385,
+      "originalEnd": 1386,
+      "generatedStart": 1263,
+      "generatedEnd": 1264,
+      "originalLines": [
+        "                    )?.asImageBitmap()\n"
+      ],
+      "generatedLines": [
+        "                    )\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1433,
+      "originalEnd": 1488,
+      "generatedStart": 1311,
+      "generatedEnd": 1317,
+      "originalLines": [
+        "    val anime4kSurfaceReady = shouldUseAnime4kPipeline && anime4kInputSurface != null\n",
+        "    val anime4kFrameVisible = anime4kSurfaceReady && anime4kDisplayedFirstFrame\n",
+        "    val shouldBindDirectPlayerView = shouldBindInlinePlayerView && !anime4kSurfaceReady\n",
+        "    // In-page collection switches replace the player/router while reusing the same PlayerView.\n",
+        "    // Key the effect by the router so the new player always receives the existing video surface.\n",
+        "    LaunchedEffect(\n",
+        "        videoOutputRouter,\n",
+        "        playerViewRef,\n",
+        "        anime4kInputSurface,\n",
+        "        shouldBindInlinePlayerView,\n",
+        "        shouldUseAnime4kPipeline\n",
+        "    ) {\n",
+        "        videoOutputRouter.update(\n",
+        "            playerView = playerViewRef,\n",
+        "            inputSurface = anime4kInputSurface,\n",
+        "            shouldBindDirectPlayerView = shouldBindInlinePlayerView,\n",
+        "            shouldUseAnime4K = shouldUseAnime4kPipeline\n",
+        "        )\n",
+        "    }\n",
+        "    LaunchedEffect(playerState.player, anime4kSurfaceReady, shouldUseAnime4kPipeline) {\n",
+        "        if (!anime4kSurfaceReady || !shouldUseAnime4kPipeline) return@LaunchedEffect\n",
+        "        var playbackIntentStartedAtMs: Long? = null\n",
+        "        while (isActive && shouldUseAnime4kPipeline && !anime4kDisplayedFirstFrame) {\n",
+        "            delay(120L)\n",
+        "            val player = playerState.player\n",
+        "            val hasPlaybackIntent = player.playWhenReady && player.mediaItemCount > 0\n",
+        "            if (!hasPlaybackIntent) {\n",
+        "                playbackIntentStartedAtMs = null\n",
+        "                continue\n",
+        "            }\n",
+        "            val nowMs = android.os.SystemClock.elapsedRealtime()\n",
+        "            val startedAtMs = playbackIntentStartedAtMs ?: nowMs.also {\n",
+        "                playbackIntentStartedAtMs = it\n",
+        "            }\n",
+        "            val elapsedMs = nowMs - startedAtMs\n",
+        "            if (\n",
+        "                shouldFallbackAnime4KBeforeFirstFrame(\n",
+        "                    pipelineRequested = shouldUseAnime4kPipeline,\n",
+        "                    inputSurfaceReady = anime4kInputSurface != null,\n",
+        "                    displayedFirstFrame = anime4kDisplayedFirstFrame,\n",
+        "                    playWhenReady = player.playWhenReady,\n",
+        "                    mediaItemCount = player.mediaItemCount,\n",
+        "                    elapsedMs = elapsedMs,\n",
+        "                )\n",
+        "            ) {\n",
+        "                Logger.w(\n",
+        "                    \"VideoPlayerSection\",\n",
+        "                    \"Anime4K first frame timed out after ${ANIME4K_FIRST_FRAME_FALLBACK_TIMEOUT_MS}ms; \" +\n",
+        "                        \"falling back to direct PlayerView output for bvid=$bvid\"\n",
+        "                )\n",
+        "                anime4kPipelineFailed = true\n",
+        "                anime4kInputSurface = null\n",
+        "                break\n",
+        "            }\n",
+        "        }\n"
+      ],
+      "generatedLines": [
+        "    val anime4kSurfaceReady = enhancementState.active || enhancementState.pending\n",
+        "    val anime4kFrameVisible = enhancementState.active && anime4kDisplayedFirstFrame\n",
+        "    val shouldBindDirectPlayerView = shouldBindInlinePlayerView && !enhancementState.active\n",
+        "    // Native enhancement and its first-frame timeout are the existing version-owned session.\n",
+        "    LaunchedEffect(shouldBindInlinePlayerView, hostLifecycleStarted, currentPlaybackIdentity) {\n",
+        "        platform.setViewportActive(shouldBindInlinePlayerView && hostLifecycleStarted)\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 1616,
+      "originalEnd": 1622,
+      "generatedStart": 1445,
+      "generatedEnd": 1445,
+      "originalLines": [
+        "    fun getActivity(): Activity? = when (context) {\n",
+        "        is Activity -> context\n",
+        "        is ContextWrapper -> context.baseContext as? Activity\n",
+        "        else -> null\n",
+        "    }\n",
+        "\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1648,
+      "originalEnd": 1649,
+      "generatedStart": 1471,
+      "generatedEnd": 1472,
+      "originalLines": [
+        "        onDispose { playerViewRef = null }\n"
+      ],
+      "generatedLines": [
+        "        onDispose { platform.releaseViewportForThisEntry() }\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1669,
+      "originalEnd": 1670,
+      "generatedStart": 1492,
+      "generatedEnd": 1493,
+      "originalLines": [
+        "    val danmakuManager = rememberDanmakuManager(bvid)\n"
+      ],
+      "generatedLines": [
+        "    val danmakuManager = platform.danmaku\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1680,
+      "originalEnd": 1682,
+      "generatedStart": 1503,
+      "generatedEnd": 1505,
+      "originalLines": [
+        "    LaunchedEffect(isFullscreen, configuration.orientation) {\n",
+        "        val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE\n"
+      ],
+      "generatedLines": [
+        "    LaunchedEffect(isFullscreen, (if (configuration.screenWidthDp > configuration.screenHeightDp) 2 else 1)) {\n",
+        "        val isLandscape = (if (configuration.screenWidthDp > configuration.screenHeightDp) 2 else 1) == 2\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1763,
+      "originalEnd": 1765,
+      "generatedStart": 1586,
+      "generatedEnd": 1587,
+      "originalLines": [
+        "                com.android.purebilibili.core.store.SettingsManager\n",
+        "                    .setLongPressSpeedLockHintShown(context, true)\n"
+      ],
+      "generatedLines": [
+        "                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setLongPressSpeedLockHintShown(context, true)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1781,
+      "originalEnd": 1783,
+      "generatedStart": 1603,
+      "generatedEnd": 1604,
+      "originalLines": [
+        "                com.android.purebilibili.core.store.SettingsManager\n",
+        "                    .setHiResLongPressCompatHintShown(context, true)\n"
+      ],
+      "generatedLines": [
+        "                com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setHiResLongPressCompatHintShown(context, true)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1788,
+      "originalEnd": 1789,
+      "generatedStart": 1609,
+      "generatedEnd": 1610,
+      "originalLines": [
+        "        longPressSpeedStartedAtMs = android.os.SystemClock.elapsedRealtime()\n"
+      ],
+      "generatedLines": [
+        "        longPressSpeedStartedAtMs = (System.nanoTime() / 1_000_000L)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1800,
+      "originalEnd": 1801,
+      "generatedStart": 1621,
+      "generatedEnd": 1622,
+      "originalLines": [
+        "        com.android.purebilibili.core.util.Logger.d(\"VideoPlayerSection\") {\n"
+      ],
+      "generatedLines": [
+        "        Logger.d(\"VideoPlayerSection\") {\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1812,
+      "originalEnd": 1813,
+      "generatedStart": 1633,
+      "generatedEnd": 1634,
+      "originalLines": [
+        "        longPressSpeedEndedAtMs = android.os.SystemClock.elapsedRealtime()\n"
+      ],
+      "generatedLines": [
+        "        longPressSpeedEndedAtMs = (System.nanoTime() / 1_000_000L)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1824,
+      "originalEnd": 1825,
+      "generatedStart": 1645,
+      "generatedEnd": 1646,
+      "originalLines": [
+        "        com.android.purebilibili.core.util.Logger.d(\"VideoPlayerSection\") {\n"
+      ],
+      "generatedLines": [
+        "        Logger.d(\"VideoPlayerSection\") {\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1842,
+      "originalEnd": 1843,
+      "generatedStart": 1663,
+      "generatedEnd": 1664,
+      "originalLines": [
+        "        longPressSpeedEndedAtMs = android.os.SystemClock.elapsedRealtime()\n"
+      ],
+      "generatedLines": [
+        "        longPressSpeedEndedAtMs = (System.nanoTime() / 1_000_000L)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1857,
+      "originalEnd": 1858,
+      "generatedStart": 1678,
+      "generatedEnd": 1679,
+      "originalLines": [
+        "        com.android.purebilibili.core.util.Logger.d(\"VideoPlayerSection\") {\n"
+      ],
+      "generatedLines": [
+        "        Logger.d(\"VideoPlayerSection\") {\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1904,
+      "originalEnd": 1905,
+      "generatedStart": 1725,
+      "generatedEnd": 1726,
+      "originalLines": [
+        "        .background(Color.Black)\n"
+      ],
+      "generatedLines": [
+        "        .background(Color.Transparent)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1951,
+      "originalEnd": 1956,
+      "generatedStart": 1772,
+      "generatedEnd": 1773,
+      "originalLines": [
+        "                        audioManager.adjustStreamVolume(\n",
+        "                            AudioManager.STREAM_MUSIC,\n",
+        "                            AudioManager.ADJUST_RAISE,\n",
+        "                            AudioManager.FLAG_SHOW_UI\n",
+        "                        )\n"
+      ],
+      "generatedLines": [
+        "                        audioManager.setStep((audioManager.currentStep() + 1).coerceAtMost(audioManager.maximumStep()))\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1959,
+      "originalEnd": 1964,
+      "generatedStart": 1776,
+      "generatedEnd": 1777,
+      "originalLines": [
+        "                        audioManager.adjustStreamVolume(\n",
+        "                            AudioManager.STREAM_MUSIC,\n",
+        "                            AudioManager.ADJUST_LOWER,\n",
+        "                            AudioManager.FLAG_SHOW_UI\n",
+        "                        )\n"
+      ],
+      "generatedLines": [
+        "                        audioManager.setStep((audioManager.currentStep() - 1).coerceAtLeast(0))\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1967,
+      "originalEnd": 1972,
+      "generatedStart": 1780,
+      "generatedEnd": 1781,
+      "originalLines": [
+        "                        audioManager.adjustStreamVolume(\n",
+        "                            AudioManager.STREAM_MUSIC,\n",
+        "                            AudioManager.ADJUST_TOGGLE_MUTE,\n",
+        "                            AudioManager.FLAG_SHOW_UI\n",
+        "                        )\n"
+      ],
+      "generatedLines": [
+        "                        audioManager.toggleMute()\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2007,
+      "originalEnd": 2010,
+      "generatedStart": 1816,
+      "generatedEnd": 1817,
+      "originalLines": [
+        "                                val success = captureAndSaveVideoScreenshot(\n",
+        "                                    context = context,\n",
+        "                                    playerView = targetView,\n"
+      ],
+      "generatedLines": [
+        "                                val success = platform.captureAndSaveScreenshot(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2012,
+      "originalEnd": 2013,
+      "generatedStart": 1819,
+      "generatedEnd": 1820,
+      "originalLines": [
+        "                                    videoTitle = (uiState as? VideoPlaybackUiState.Success)?.info?.title.orEmpty(),\n"
+      ],
+      "generatedLines": [
+        "                                    title = (uiState as? VideoPlaybackUiState.Success)?.info?.title.orEmpty(),\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2355,
+      "originalEnd": 2356,
+      "generatedStart": 2162,
+      "generatedEnd": 2163,
+      "originalLines": [
+        "                                startVolumeStep = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)\n"
+      ],
+      "generatedLines": [
+        "                                startVolumeStep = audioManager.currentStep()\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2363,
+      "originalEnd": 2379,
+      "generatedStart": 2170,
+      "generatedEnd": 2171,
+      "originalLines": [
+        "                                val attributes = getActivity()?.window?.attributes\n",
+        "                                val currentWindowBrightness = attributes?.screenBrightness ?: -1f\n",
+        "\n",
+        "                                if (currentWindowBrightness < 0) {\n",
+        "                                    try {\n",
+        "                                        val sysBrightness = Settings.System.getInt(\n",
+        "                                            context.contentResolver,\n",
+        "                                            Settings.System.SCREEN_BRIGHTNESS\n",
+        "                                        )\n",
+        "                                        startBrightness = sysBrightness / 255f\n",
+        "                                    } catch (e: Exception) {\n",
+        "                                        startBrightness = 0.5f\n",
+        "                                    }\n",
+        "                                } else {\n",
+        "                                    startBrightness = currentWindowBrightness\n",
+        "                                }\n"
+      ],
+      "generatedLines": [
+        "                                startBrightness = platform.readViewportBrightness()\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2443,
+      "originalEnd": 2444,
+      "generatedStart": 2235,
+      "generatedEnd": 2236,
+      "originalLines": [
+        "                                    com.android.purebilibili.core.util.Logger.d(\"VideoPlayerSection\") {\n"
+      ],
+      "generatedLines": [
+        "                                    Logger.d(\"VideoPlayerSection\") {\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2542,
+      "originalEnd": 2543,
+      "generatedStart": 2334,
+      "generatedEnd": 2335,
+      "originalLines": [
+        "                                    com.android.purebilibili.core.util.Logger.d(\"VideoPlayerSection\") {\n"
+      ],
+      "generatedLines": [
+        "                                    Logger.d(\"VideoPlayerSection\") {\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2579,
+      "originalEnd": 2580,
+      "generatedStart": 2371,
+      "generatedEnd": 2372,
+      "originalLines": [
+        "                                            val maxVolumeStep = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)\n"
+      ],
+      "generatedLines": [
+        "                                            val maxVolumeStep = audioManager.maximumStep()\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2597,
+      "originalEnd": 2598,
+      "generatedStart": 2389,
+      "generatedEnd": 2390,
+      "originalLines": [
+        "                                        com.android.purebilibili.core.util.Logger.d(\"VideoPlayerSection\") {\n"
+      ],
+      "generatedLines": [
+        "                                        Logger.d(\"VideoPlayerSection\") {\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2603,
+      "originalEnd": 2604,
+      "generatedStart": 2395,
+      "generatedEnd": 2396,
+      "originalLines": [
+        "                                    com.android.purebilibili.core.util.Logger.d(\"VideoPlayerSection\") {\n"
+      ],
+      "generatedLines": [
+        "                                    Logger.d(\"VideoPlayerSection\") {\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2662,
+      "originalEnd": 2663,
+      "generatedStart": 2454,
+      "generatedEnd": 2455,
+      "originalLines": [
+        "                                    val screenHeight = context.resources.displayMetrics.heightPixels\n"
+      ],
+      "generatedLines": [
+        "                                    val screenHeight = platform.viewportHeightPixels\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2669,
+      "originalEnd": 2684,
+      "generatedStart": 2461,
+      "generatedEnd": 2462,
+      "originalLines": [
+        "                                        getActivity()?.window?.attributes = getActivity()?.window?.attributes?.apply {\n",
+        "                                            screenBrightness = newBrightness\n",
+        "                                        }\n",
+        "                                        if (setSystemBrightnessEnabled) {\n",
+        "                                            runCatching {\n",
+        "                                                if (Settings.System.canWrite(context)) {\n",
+        "                                                    val value = (newBrightness * 255f).roundToInt().coerceIn(1, 255)\n",
+        "                                                    Settings.System.putInt(\n",
+        "                                                        context.contentResolver,\n",
+        "                                                        Settings.System.SCREEN_BRIGHTNESS,\n",
+        "                                                        value\n",
+        "                                                    )\n",
+        "                                                }\n",
+        "                                            }\n",
+        "                                        }\n"
+      ],
+      "generatedLines": [
+        "                                        platform.setViewportBrightness(newBrightness, requestSystemBrightness = setSystemBrightnessEnabled)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2693,
+      "originalEnd": 2694,
+      "generatedStart": 2471,
+      "generatedEnd": 2472,
+      "originalLines": [
+        "                                    val maxVolumeStep = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)\n"
+      ],
+      "generatedLines": [
+        "                                    val maxVolumeStep = audioManager.maximumStep()\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2698,
+      "originalEnd": 2699,
+      "generatedStart": 2476,
+      "generatedEnd": 2477,
+      "originalLines": [
+        "                                        screenHeightPx = context.resources.displayMetrics.heightPixels.toFloat(),\n"
+      ],
+      "generatedLines": [
+        "                                        screenHeightPx = platform.viewportHeightPixels.toFloat(),\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2701,
+      "originalEnd": 2706,
+      "generatedStart": 2479,
+      "generatedEnd": 2480,
+      "originalLines": [
+        "                                    audioManager.setStreamVolume(\n",
+        "                                        AudioManager.STREAM_MUSIC,\n",
+        "                                        newVolumeStep,\n",
+        "                                        0\n",
+        "                                    )\n"
+      ],
+      "generatedLines": [
+        "                                    audioManager.setStep(newVolumeStep)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2771,
+      "originalEnd": 2772,
+      "generatedStart": 2545,
+      "generatedEnd": 2546,
+      "originalLines": [
+        "                            android.os.SystemClock.elapsedRealtime() - longPressSpeedStartedAtMs\n"
+      ],
+      "generatedLines": [
+        "                            (System.nanoTime() / 1_000_000L) - longPressSpeedStartedAtMs\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2837,
+      "originalEnd": 2838,
+      "generatedStart": 2611,
+      "generatedEnd": 2612,
+      "originalLines": [
+        "                                nowMs = android.os.SystemClock.elapsedRealtime()\n"
+      ],
+      "generatedLines": [
+        "                                nowMs = (System.nanoTime() / 1_000_000L)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2883,
+      "originalEnd": 2884,
+      "generatedStart": 2657,
+      "generatedEnd": 2658,
+      "originalLines": [
+        "                                com.android.purebilibili.core.util.Logger.d(\"VideoPlayerSection\") {\n"
+      ],
+      "generatedLines": [
+        "                                Logger.d(\"VideoPlayerSection\") {\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2902,
+      "originalEnd": 2903,
+      "generatedStart": 2676,
+      "generatedEnd": 2677,
+      "originalLines": [
+        "                                com.android.purebilibili.core.util.Logger.d(\"VideoPlayerSection\") {\n"
+      ],
+      "generatedLines": [
+        "                                Logger.d(\"VideoPlayerSection\") {\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2908,
+      "originalEnd": 2909,
+      "generatedStart": 2682,
+      "generatedEnd": 2683,
+      "originalLines": [
+        "                                com.android.purebilibili.core.util.Logger.d(\"VideoPlayerSection\") {\n"
+      ],
+      "generatedLines": [
+        "                                Logger.d(\"VideoPlayerSection\") {\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2925,
+      "originalEnd": 2927,
+      "generatedStart": 2699,
+      "generatedEnd": 2700,
+      "originalLines": [
+        "        val danmakuSettings by com.android.purebilibili.core.store.SettingsManager\n",
+        "            .getDanmakuSettings(context, activeDanmakuScope)\n"
+      ],
+      "generatedLines": [
+        "        val danmakuSettings by platform.danmakuPreferences.getDanmakuSettings(activeDanmakuScope)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2928,
+      "originalEnd": 2929,
+      "generatedStart": 2701,
+      "generatedEnd": 2702,
+      "originalLines": [
+        "                initialValue = com.android.purebilibili.core.store.DanmakuSettings(),\n"
+      ],
+      "generatedLines": [
+        "                initialValue = platform.danmakuPreferences.currentSettings(activeDanmakuScope),\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2955,
+      "originalEnd": 2957,
+      "generatedStart": 2728,
+      "generatedEnd": 2729,
+      "originalLines": [
+        "        val danmakuFullscreenPanelWidthMode by com.android.purebilibili.core.store.SettingsManager\n",
+        "            .getDanmakuFullscreenPanelWidthMode(context)\n"
+      ],
+      "generatedLines": [
+        "        val danmakuFullscreenPanelWidthMode by platform.danmakuPreferences.getDanmakuSettings(activeDanmakuScope).map { it.fullscreenPanelWidthMode }\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2964,
+      "originalEnd": 2966,
+      "generatedStart": 2736,
+      "generatedEnd": 2737,
+      "originalLines": [
+        "        val danmakuCloudSyncEnabled by com.android.purebilibili.core.store.SettingsManager\n",
+        "            .getDanmakuCloudSyncEnabled(context)\n"
+      ],
+      "generatedLines": [
+        "        val danmakuCloudSyncEnabled by platform.danmakuPreferences.getDanmakuCloudSyncEnabled()\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 2972,
+      "originalEnd": 2984,
+      "generatedStart": 2743,
+      "generatedEnd": 2744,
+      "originalLines": [
+        "        var pendingDanmakuCloudSync by remember {\n",
+        "            mutableStateOf<com.android.purebilibili.data.repository.DanmakuCloudSyncSettings?>(null)\n",
+        "        }\n",
+        "        var danmakuCloudSyncUiState by remember {\n",
+        "            mutableStateOf(DanmakuCloudSyncUiState())\n",
+        "        }\n",
+        "        var danmakuManualSyncRequestVersion by remember {\n",
+        "            mutableStateOf<Long?>(null)\n",
+        "        }\n",
+        "        var lastHandledDanmakuManualSyncRequestVersion by remember {\n",
+        "            mutableStateOf<Long?>(null)\n",
+        "        }\n"
+      ],
+      "generatedLines": [
+        "        val danmakuCloudSyncUiState = platform.cloudSync.uiState\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3024,
+      "originalEnd": 3035,
+      "generatedStart": 2784,
+      "generatedEnd": 2787,
+      "originalLines": [
+        "            pendingDanmakuCloudSync = buildDanmakuCloudSyncSettings(\n",
+        "                enabled = enabled,\n",
+        "                allowScroll = allowScroll,\n",
+        "                allowTop = allowTop,\n",
+        "                allowBottom = allowBottom,\n",
+        "                allowColorful = allowColorful,\n",
+        "                allowSpecial = allowSpecial,\n",
+        "                opacity = opacity,\n",
+        "                displayAreaRatio = displayAreaRatio,\n",
+        "                speed = speed,\n",
+        "                fontScale = fontScale\n"
+      ],
+      "generatedLines": [
+        "            val requested = buildDanmakuCloudSyncSettings(\n",
+        "                enabled, allowScroll, allowTop, allowBottom, allowColorful,\n",
+        "                allowSpecial, opacity, displayAreaRatio, speed, fontScale\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3036,
+      "originalEnd": 3037,
+      "generatedStart": 2788,
+      "generatedEnd": 2789,
+      "originalLines": [
+        "            danmakuCloudSyncUiState = resolveDanmakuCloudSyncStateAfterQueued(danmakuCloudSyncUiState)\n"
+      ],
+      "generatedLines": [
+        "            platform.cloudSync.queueChange { requested }\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3038,
+      "originalEnd": 3045,
+      "generatedStart": 2790,
+      "generatedEnd": 2791,
+      "originalLines": [
+        "\n",
+        "        fun requestDanmakuCloudSyncNow() {\n",
+        "            if (!canSyncDanmakuCloud) return\n",
+        "            pendingDanmakuCloudSync = buildDanmakuCloudSyncSettings()\n",
+        "            danmakuManualSyncRequestVersion = android.os.SystemClock.elapsedRealtime()\n",
+        "            danmakuCloudSyncUiState = resolveDanmakuCloudSyncStateAfterQueued(danmakuCloudSyncUiState)\n",
+        "        }\n"
+      ],
+      "generatedLines": [
+        "        fun requestDanmakuCloudSyncNow() { if (canSyncDanmakuCloud) platform.cloudSync.requestNow() }\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3107,
+      "originalEnd": 3108,
+      "generatedStart": 2853,
+      "generatedEnd": 2854,
+      "originalLines": [
+        "            android.util.Log.d(\n"
+      ],
+      "generatedLines": [
+        "            Logger.d(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3114,
+      "originalEnd": 3370,
+      "generatedStart": 2860,
+      "generatedEnd": 2862,
+      "originalLines": [
+        "        //  横竖屏/小窗切换后，重绑 surface 并在需要时主动恢复播放。\n",
+        "        LaunchedEffect(\n",
+        "            isFullscreen,\n",
+        "            isInPipMode,\n",
+        "            playerViewRef,\n",
+        "            shouldBindInlinePlayerView\n",
+        "        ) {\n",
+        "            val player = playerState.player\n",
+        "            if (!shouldBindInlinePlayerView) {\n",
+        "                playerViewRef?.player = null\n",
+        "                return@LaunchedEffect\n",
+        "            }\n",
+        "            // 横竖屏/小窗切换始终重绑；短后台跳过只作用于 ON_RESUME 恢复路径。\n",
+        "            val shouldRebindSurface = shouldRebindPlayerSurfaceOnForeground(\n",
+        "                hasPlayerView = playerViewRef != null,\n",
+        "                isInPipMode = isInPipMode,\n",
+        "                videoWidth = player.videoSize.width,\n",
+        "                videoHeight = player.videoSize.height,\n",
+        "                needsSurfaceRecovery = false\n",
+        "            )\n",
+        "            if (shouldRebindSurface) {\n",
+        "                playerViewRef?.let { playerView ->\n",
+        "                    videoOutputRouter.rebindDirectSurfaceIfNeeded()\n",
+        "                    Logger.d(\"VideoPlayerSection\") {\n",
+        "                        \"🎬 Foreground surface rebind applied to avoid audio-only resume\"\n",
+        "                    }\n",
+        "                }\n",
+        "            }\n",
+        "        }\n",
+        "\n",
+        "        // 合集/页内换片：bvid 或 Success 媒体就绪后强制重绑 surface，避免只听声音、画面黑屏。\n",
+        "        val successPlaybackIdentity = (uiState as? VideoPlaybackUiState.Success)?.let { success ->\n",
+        "            \"${success.info.bvid}_${success.info.cid}_${success.playUrl.hashCode()}\"\n",
+        "        }\n",
+        "        LaunchedEffect(\n",
+        "            bvid,\n",
+        "            successPlaybackIdentity,\n",
+        "            playerState.player,\n",
+        "            videoOutputRouter,\n",
+        "            playerViewRef,\n",
+        "            shouldBindInlinePlayerView,\n",
+        "            isInPipMode\n",
+        "        ) {\n",
+        "            var waitAttempts = 0\n",
+        "            while (isActive) {\n",
+        "                val player = playerState.player\n",
+        "                when (\n",
+        "                    resolveMediaSwitchSurfaceRebindAction(\n",
+        "                        hasSuccessPlaybackIdentity = !successPlaybackIdentity.isNullOrBlank(),\n",
+        "                        shouldBindInlinePlayerView = shouldBindInlinePlayerView,\n",
+        "                        isInPipMode = isInPipMode,\n",
+        "                        hasPlayerView = playerViewRef != null,\n",
+        "                        mediaItemCount = player.mediaItemCount\n",
+        "                    )\n",
+        "                ) {\n",
+        "                    MediaSwitchSurfaceRebindAction.SKIP -> return@LaunchedEffect\n",
+        "                    MediaSwitchSurfaceRebindAction.WAIT_FOR_OUTPUT -> {\n",
+        "                        if (waitAttempts >= MEDIA_SWITCH_SURFACE_REBIND_ATTEMPTS) {\n",
+        "                            Logger.w(\n",
+        "                                \"VideoPlayerSection\",\n",
+        "                                \"⚠️ Media switch surface rebind timed out: \" +\n",
+        "                                    \"bvid=$bvid identity=$successPlaybackIdentity\"\n",
+        "                            )\n",
+        "                            return@LaunchedEffect\n",
+        "                        }\n",
+        "                        waitAttempts += 1\n",
+        "                        delay(MEDIA_SWITCH_SURFACE_REBIND_INTERVAL_MS)\n",
+        "                    }\n",
+        "                    MediaSwitchSurfaceRebindAction.REBIND -> break\n",
+        "                }\n",
+        "            }\n",
+        "            val player = playerState.player\n",
+        "            videoOutputRouter.update(\n",
+        "                playerView = playerViewRef,\n",
+        "                inputSurface = anime4kInputSurface,\n",
+        "                shouldBindDirectPlayerView = shouldBindInlinePlayerView,\n",
+        "                shouldUseAnime4K = shouldUseAnime4kPipeline\n",
+        "            )\n",
+        "            videoOutputRouter.rebindDirectSurfaceIfNeeded()\n",
+        "            if (\n",
+        "                shouldKickPlaybackAfterSurfaceRecovery(\n",
+        "                    playWhenReady = player.playWhenReady,\n",
+        "                    isPlaying = player.isPlaying,\n",
+        "                    playbackState = player.playbackState,\n",
+        "                    hasPlaybackResumeIntent = player.playWhenReady\n",
+        "                )\n",
+        "            ) {\n",
+        "                player.play()\n",
+        "            }\n",
+        "            Logger.d(\"VideoPlayerSection\") {\n",
+        "                \"🎬 In-page media switch surface rebind: bvid=$bvid identity=$successPlaybackIdentity\"\n",
+        "            }\n",
+        "\n",
+        "            // Some ROMs accept the first rebind while the new decoder output is not ready yet.\n",
+        "            // Audio and Compose gestures then continue normally, but no frame reaches PlayerView.\n",
+        "            // Retry only while the same keyed media identity is READY and still has no first-frame\n",
+        "            // callback. A new identity cancels this effect before it can touch the next video.\n",
+        "            repeat(MEDIA_SWITCH_SURFACE_RETRY_ATTEMPTS) { retryIndex ->\n",
+        "                delay(MEDIA_SWITCH_SURFACE_RETRY_INTERVAL_MS)\n",
+        "                val currentPlayer = playerState.player\n",
+        "                val hasRenderedFirstFrame = latestDebugInfo.value.firstFrame.equals(\n",
+        "                    \"rendered\",\n",
+        "                    ignoreCase = true\n",
+        "                )\n",
+        "                if (\n",
+        "                    !hasRenderedFirstFrame &&\n",
+        "                    currentPlayer.playWhenReady &&\n",
+        "                    currentPlayer.playbackState == Player.STATE_BUFFERING\n",
+        "                ) {\n",
+        "                    return@repeat\n",
+        "                }\n",
+        "                if (!shouldRetryMediaSwitchSurfaceRebind(\n",
+        "                        hasRenderedFirstFrame = hasRenderedFirstFrame,\n",
+        "                        shouldBindInlinePlayerView = shouldBindInlinePlayerView,\n",
+        "                        isInPipMode = isInPipMode,\n",
+        "                        hasPlayerView = playerViewRef != null,\n",
+        "                        playWhenReady = currentPlayer.playWhenReady,\n",
+        "                        playbackState = currentPlayer.playbackState\n",
+        "                    )\n",
+        "                ) {\n",
+        "                    return@LaunchedEffect\n",
+        "                }\n",
+        "                videoOutputRouter.update(\n",
+        "                    playerView = playerViewRef,\n",
+        "                    inputSurface = anime4kInputSurface,\n",
+        "                    shouldBindDirectPlayerView = shouldBindInlinePlayerView,\n",
+        "                    shouldUseAnime4K = shouldUseAnime4kPipeline\n",
+        "                )\n",
+        "                videoOutputRouter.rebindDirectSurfaceIfNeeded()\n",
+        "                Logger.w(\n",
+        "                    \"VideoPlayerSection\",\n",
+        "                    \"⚠️ Retrying media-switch surface rebind ${retryIndex + 1}/\" +\n",
+        "                        \"$MEDIA_SWITCH_SURFACE_RETRY_ATTEMPTS: identity=$successPlaybackIdentity\"\n",
+        "                )\n",
+        "            }\n",
+        "        }\n",
+        "\n",
+        "        LaunchedEffect(\n",
+        "            predictiveBackCancelRecoveryGeneration,\n",
+        "            playerViewRef,\n",
+        "            shouldBindInlinePlayerView,\n",
+        "            isInPipMode\n",
+        "        ) {\n",
+        "            if (!shouldRecoverInlinePlayerAfterPredictiveBackCancel(\n",
+        "                    recoveryGeneration = predictiveBackCancelRecoveryGeneration,\n",
+        "                    hasPlayerView = playerViewRef != null,\n",
+        "                    shouldBindInlinePlayerView = shouldBindInlinePlayerView,\n",
+        "                    isInPipMode = isInPipMode\n",
+        "                )\n",
+        "            ) {\n",
+        "                return@LaunchedEffect\n",
+        "            }\n",
+        "            val player = playerState.player\n",
+        "            playerViewRef?.let { playerView ->\n",
+        "                videoOutputRouter.rebindDirectSurfaceIfNeeded()\n",
+        "            }\n",
+        "            if (shouldKickPlaybackAfterSurfaceRecovery(\n",
+        "                    playWhenReady = player.playWhenReady,\n",
+        "                    isPlaying = player.isPlaying,\n",
+        "                    playbackState = player.playbackState,\n",
+        "                    hasPlaybackResumeIntent = true\n",
+        "                )\n",
+        "            ) {\n",
+        "                player.play()\n",
+        "            }\n",
+        "            danmakuManager.recoverAfterForeground(\n",
+        "                positionMs = player.currentPosition.coerceAtLeast(0L),\n",
+        "                playWhenReady = player.playWhenReady,\n",
+        "                playbackState = player.playbackState\n",
+        "            )\n",
+        "            Logger.d(\"VideoPlayerSection\") {\n",
+        "                \"↩️ Predictive back cancel restored current video surface: \" +\n",
+        "                    \"generation=$predictiveBackCancelRecoveryGeneration, pos=${player.currentPosition}\"\n",
+        "            }\n",
+        "        }\n",
+        "\n",
+        "        LaunchedEffect(\n",
+        "            foregroundRecoveryGeneration,\n",
+        "            playerViewRef,\n",
+        "            shouldBindInlinePlayerView,\n",
+        "            isInPipMode\n",
+        "        ) {\n",
+        "            if (foregroundRecoveryGeneration <= 0) return@LaunchedEffect\n",
+        "            if (!shouldStartForegroundSurfaceRecovery(\n",
+        "                    hasPlayerView = playerViewRef != null,\n",
+        "                    shouldBindInlinePlayerView = shouldBindInlinePlayerView,\n",
+        "                    isInPipMode = isInPipMode,\n",
+        "                    needsSurfaceRecovery = foregroundRecoveryNeedsSurface,\n",
+        "                    videoWidth = playerState.player.videoSize.width,\n",
+        "                    videoHeight = playerState.player.videoSize.height\n",
+        "                )\n",
+        "            ) {\n",
+        "                return@LaunchedEffect\n",
+        "            }\n",
+        "\n",
+        "            delay(FOREGROUND_SURFACE_RECOVERY_DELAY_MS)\n",
+        "            val player = playerState.player\n",
+        "            playerViewRef?.let { playerView ->\n",
+        "                videoOutputRouter.rebindDirectSurfaceIfNeeded()\n",
+        "                Logger.d(\"VideoPlayerSection\") {\n",
+        "                    \"🎬 Foreground recovery retry: surface=${playerView.videoSurfaceView?.javaClass?.simpleName}, \" +\n",
+        "                        \"pos=${player.currentPosition}, state=${player.playbackState}, playing=${player.isPlaying}\"\n",
+        "                }\n",
+        "            }\n",
+        "            if (shouldKickPlaybackAfterSurfaceRecovery(\n",
+        "                    playWhenReady = player.playWhenReady,\n",
+        "                    isPlaying = player.isPlaying,\n",
+        "                    playbackState = player.playbackState,\n",
+        "                    hasPlaybackResumeIntent = true\n",
+        "                )\n",
+        "            ) {\n",
+        "                player.play()\n",
+        "                Logger.d(\"VideoPlayerSection\") {\n",
+        "                    \"▶️ Foreground recovery kicked playback to rebuild render chain\"\n",
+        "                }\n",
+        "            }\n",
+        "            danmakuManager.recoverAfterForeground(\n",
+        "                positionMs = player.currentPosition.coerceAtLeast(0L),\n",
+        "                playWhenReady = player.playWhenReady,\n",
+        "                playbackState = player.playbackState\n",
+        "            )\n",
+        "\n",
+        "            delay(FOREGROUND_SURFACE_RECOVERY_TIMEOUT_MS)\n",
+        "            if (!shouldLogForegroundSurfaceRecoveryTimeout(\n",
+        "                    hasRenderedFirstFrameSinceRecovery = hasRenderedFirstFrameSinceForegroundRecovery,\n",
+        "                    playWhenReady = player.playWhenReady,\n",
+        "                    playbackState = player.playbackState\n",
+        "                )\n",
+        "            ) {\n",
+        "                return@LaunchedEffect\n",
+        "            }\n",
+        "\n",
+        "            val elapsedMs = (android.os.SystemClock.elapsedRealtime() - foregroundRecoveryStartedAtMs)\n",
+        "                .coerceAtLeast(0L)\n",
+        "            val advancedPositionMs = (player.currentPosition - foregroundRecoveryStartPositionMs)\n",
+        "                .coerceAtLeast(0L)\n",
+        "            Logger.w(\n",
+        "                \"VideoPlayerSection\",\n",
+        "                \"⚠️ Foreground recovery still missing first frame after ${elapsedMs}ms: \" +\n",
+        "                    \"state=${player.playbackState}, playing=${player.isPlaying}, playWhenReady=${player.playWhenReady}, \" +\n",
+        "                    \"pos=${player.currentPosition}, advanced=${advancedPositionMs}, buffered=${player.bufferedPosition}, \" +\n",
+        "                    \"surface=${playerViewRef?.videoSurfaceView?.javaClass?.simpleName}, viewAttached=${playerViewRef?.isAttachedToWindow}\"\n",
+        "            )\n",
+        "\n",
+        "            playerViewRef?.let { playerView ->\n",
+        "                videoOutputRouter.rebindDirectSurfaceIfNeeded()\n",
+        "            }\n",
+        "            if (shouldKickPlaybackAfterSurfaceRecovery(\n",
+        "                    playWhenReady = player.playWhenReady,\n",
+        "                    isPlaying = player.isPlaying,\n",
+        "                    playbackState = player.playbackState,\n",
+        "                    hasPlaybackResumeIntent = true\n",
+        "                )\n",
+        "            ) {\n",
+        "                player.play()\n",
+        "            }\n"
+      ],
+      "generatedLines": [
+        "        LaunchedEffect(currentPlaybackIdentity, isFullscreen, isInPipMode, predictiveBackCancelRecoveryGeneration) {\n",
+        "            platform.recoverViewport(currentPlaybackIdentity, isFullscreen, isInPipMode, predictiveBackCancelRecoveryGeneration)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3388,
+      "originalEnd": 3393,
+      "generatedStart": 2880,
+      "generatedEnd": 2882,
+      "originalLines": [
+        "        LaunchedEffect(canSyncDanmakuCloud, danmakuCloudSyncEnabled) {\n",
+        "            if (canSyncDanmakuCloud) return@LaunchedEffect\n",
+        "            pendingDanmakuCloudSync = null\n",
+        "            danmakuCloudSyncUiState = DanmakuCloudSyncUiState()\n",
+        "        }\n"
+      ],
+      "generatedLines": [
+        "        // Existing Root cloud actor remains outside transient UI. Root's unique native\n",
+        "        // Overlay attachment/lifecycle belongs to this same entry; no second owner here.\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 3394,
+      "originalEnd": 3541,
+      "generatedStart": 2883,
+      "generatedEnd": 2883,
+      "originalLines": [
+        "        // 账号云同步：用户修改弹幕设置后防抖上云，避免滑杆拖动时高频请求\n",
+        "        LaunchedEffect(pendingDanmakuCloudSync, canSyncDanmakuCloud, danmakuManualSyncRequestVersion) {\n",
+        "            val settings = pendingDanmakuCloudSync ?: return@LaunchedEffect\n",
+        "            if (!canSyncDanmakuCloud) return@LaunchedEffect\n",
+        "\n",
+        "            val manualSyncRequested = shouldRunDanmakuManualCloudSync(\n",
+        "                manualRequestVersion = danmakuManualSyncRequestVersion,\n",
+        "                lastHandledManualRequestVersion = lastHandledDanmakuManualSyncRequestVersion\n",
+        "            )\n",
+        "            if (!manualSyncRequested) {\n",
+        "                kotlinx.coroutines.delay(700)\n",
+        "            }\n",
+        "            danmakuCloudSyncUiState = resolveDanmakuCloudSyncStateAfterStarted(danmakuCloudSyncUiState)\n",
+        "            val result = com.android.purebilibili.data.repository.DanmakuRepository\n",
+        "                .syncDanmakuCloudConfig(settings)\n",
+        "            val completedAtMillis = System.currentTimeMillis()\n",
+        "            danmakuCloudSyncUiState = resolveDanmakuCloudSyncStateAfterResult(\n",
+        "                previous = danmakuCloudSyncUiState,\n",
+        "                result = result,\n",
+        "                completedAtMillis = completedAtMillis\n",
+        "            )\n",
+        "            if (manualSyncRequested) {\n",
+        "                lastHandledDanmakuManualSyncRequestVersion = danmakuManualSyncRequestVersion\n",
+        "            }\n",
+        "            if (pendingDanmakuCloudSync == settings) {\n",
+        "                pendingDanmakuCloudSync = null\n",
+        "            }\n",
+        "            if (result.isFailure) {\n",
+        "                android.util.Log.w(\n",
+        "                    \"VideoPlayerSection\",\n",
+        "                    \"Danmaku cloud sync failed: ${result.exceptionOrNull()?.message}\"\n",
+        "                )\n",
+        "            }\n",
+        "        }\n",
+        "        \n",
+        "        // 每个 Compose owner 严格成对绑定/解绑；SessionFactory 负责跨渲染目标复用。\n",
+        "        DisposableEffect(playerState.player, runDanmakuHostEffects) {\n",
+        "            val attachedPlayer = playerState.player.takeIf { runDanmakuHostEffects }\n",
+        "            if (attachedPlayer != null) {\n",
+        "                android.util.Log.d(\"VideoPlayerSection\", \" attachPlayer, isFullscreen=$isFullscreen\")\n",
+        "                danmakuManager.attachPlayer(attachedPlayer)\n",
+        "            }\n",
+        "            onDispose {\n",
+        "                attachedPlayer?.let { danmakuManager.detachPlayer(it) }\n",
+        "            }\n",
+        "        }\n",
+        "        \n",
+        "        // Activity 生命周期监听必须只跟随 LifecycleOwner。合集内换片会替换 Player，若把 Player\n",
+        "        // 作为 effect key，重新注册的 observer 会立刻收到当前 ON_RESUME，误触发前台 Surface 恢复。\n",
+        "        val lifecyclePlayer by rememberUpdatedState(playerState.player)\n",
+        "        val lifecycleIsPortraitFullscreen by rememberUpdatedState(isPortraitFullscreen)\n",
+        "        val lifecycleIsInPipMode by rememberUpdatedState(isInPipMode)\n",
+        "        val lifecyclePlayerView by rememberUpdatedState(playerViewRef)\n",
+        "        val lifecycleVideoOutputRouter by rememberUpdatedState(videoOutputRouter)\n",
+        "        val lifecycleDanmakuHostActive by rememberUpdatedState(danmakuHostActive)\n",
+        "        DisposableEffect(lifecycleOwner) {\n",
+        "            var hasObservedHostPause = false\n",
+        "            val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->\n",
+        "                when (event) {\n",
+        "                    androidx.lifecycle.Lifecycle.Event.ON_RESUME -> {\n",
+        "                        if (!lifecycleDanmakuHostActive) {\n",
+        "                            android.util.Log.d(\n",
+        "                                \"VideoPlayerSection\",\n",
+        "                                \" ON_RESUME: Skip danmaku binding for outgoing detail host\"\n",
+        "                            )\n",
+        "                            return@LifecycleEventObserver\n",
+        "                        }\n",
+        "                        android.util.Log.d(\"VideoPlayerSection\", \" ON_RESUME: Calibrating danmaku timeline\")\n",
+        "                        val player = lifecyclePlayer\n",
+        "                        if (!hasObservedHostPause) {\n",
+        "                            Logger.d(\"VideoPlayerSection\") {\n",
+        "                                \"ON_RESUME skipped foreground recovery (initial lifecycle sync)\"\n",
+        "                            }\n",
+        "                            return@LifecycleEventObserver\n",
+        "                        }\n",
+        "                        hasObservedHostPause = false\n",
+        "                        if (!shouldBindInlinePlayerViewToPlayer(\n",
+        "                                isPortraitFullscreen = lifecycleIsPortraitFullscreen,\n",
+        "                                hostLifecycleStarted = true,\n",
+        "                                isInPipMode = lifecycleIsInPipMode\n",
+        "                            )\n",
+        "                        ) {\n",
+        "                            return@LifecycleEventObserver\n",
+        "                        }\n",
+        "                        val needsSurfaceRecovery = MiniPlayerManager.getInstance(context)\n",
+        "                            .consumeForegroundSurfaceRecoveryNeed()\n",
+        "                        foregroundRecoveryNeedsSurface = needsSurfaceRecovery\n",
+        "                        foregroundRecoveryGeneration += 1\n",
+        "                        foregroundRecoveryStartedAtMs = android.os.SystemClock.elapsedRealtime()\n",
+        "                        foregroundRecoveryStartPositionMs = player.currentPosition.coerceAtLeast(0L)\n",
+        "                        hasRenderedFirstFrameSinceForegroundRecovery = false\n",
+        "                        Logger.d(\"VideoPlayerSection\") {\n",
+        "                            \"🌅 ON_RESUME recovery start: pos=${player.currentPosition}, buffered=${player.bufferedPosition}, \" +\n",
+        "                                \"state=${player.playbackState}, playing=${player.isPlaying}, playWhenReady=${player.playWhenReady}, \" +\n",
+        "                                \"needsSurfaceRecovery=$needsSurfaceRecovery, \" +\n",
+        "                                \"surface=${lifecyclePlayerView?.videoSurfaceView?.javaClass?.simpleName}\"\n",
+        "                        }\n",
+        "                        val shouldRebindSurface = shouldRebindPlayerSurfaceOnForeground(\n",
+        "                            hasPlayerView = lifecyclePlayerView != null,\n",
+        "                            isInPipMode = lifecycleIsInPipMode,\n",
+        "                            videoWidth = player.videoSize.width,\n",
+        "                            videoHeight = player.videoSize.height,\n",
+        "                            needsSurfaceRecovery = needsSurfaceRecovery\n",
+        "                        )\n",
+        "                        if (shouldRebindSurface) {\n",
+        "                            lifecyclePlayerView?.let {\n",
+        "                                lifecycleVideoOutputRouter.rebindDirectSurfaceIfNeeded()\n",
+        "                                Logger.d(\"VideoPlayerSection\") {\n",
+        "                                    \"🎬 ON_RESUME surface rebind applied\"\n",
+        "                                }\n",
+        "                            }\n",
+        "                        } else {\n",
+        "                            Logger.d(\"VideoPlayerSection\") {\n",
+        "                                \"🌅 ON_RESUME skipped surface rebind (short-background light mode)\"\n",
+        "                            }\n",
+        "                        }\n",
+        "                        if (shouldKickPlaybackAfterSurfaceRecovery(\n",
+        "                                playWhenReady = player.playWhenReady,\n",
+        "                                isPlaying = player.isPlaying,\n",
+        "                                playbackState = player.playbackState,\n",
+        "                                hasPlaybackResumeIntent = true\n",
+        "                            )\n",
+        "                        ) {\n",
+        "                            player.play()\n",
+        "                            Logger.d(\"VideoPlayerSection\") {\n",
+        "                                \"▶️ ON_RESUME kicked playback after surface recovery\"\n",
+        "                            }\n",
+        "                        }\n",
+        "                        danmakuManager.recoverAfterForeground(\n",
+        "                            positionMs = player.currentPosition.coerceAtLeast(0L),\n",
+        "                            playWhenReady = player.playWhenReady,\n",
+        "                            playbackState = player.playbackState\n",
+        "                        )\n",
+        "                    }\n",
+        "                    androidx.lifecycle.Lifecycle.Event.ON_PAUSE -> {\n",
+        "                        hasObservedHostPause = true\n",
+        "                    }\n",
+        "                    androidx.lifecycle.Lifecycle.Event.ON_DESTROY -> Unit\n",
+        "                    else -> {}\n",
+        "                }\n",
+        "            }\n",
+        "            lifecycleOwner.lifecycle.addObserver(observer)\n",
+        "            onDispose {\n",
+        "                lifecycleOwner.lifecycle.removeObserver(observer)\n",
+        "            }\n",
+        "        }\n",
+        "        \n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3546,
+      "originalEnd": 3549,
+      "generatedStart": 2888,
+      "generatedEnd": 2890,
+      "originalLines": [
+        "        val autoPlayOnOpenEnabled by SettingsManager\n",
+        "            .getClickToPlay(context)\n",
+        "            .collectAsStateWithLifecycle(initialValue = SettingsManager.getClickToPlaySync(context))\n"
+      ],
+      "generatedLines": [
+        "        val autoPlayOnOpenEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getClickToPlay(context)\n",
+        "            .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getClickToPlaySync(context))\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3687,
+      "originalEnd": 3757,
+      "generatedStart": 3028,
+      "generatedEnd": 3029,
+      "originalLines": [
+        "                AndroidView(\n",
+        "                    factory = { ctx ->\n",
+        "                        val basePlayerView = if (useTextureSurface) {\n",
+        "                            LayoutInflater.from(ctx)\n",
+        "                                .inflate(com.android.purebilibili.R.layout.view_player_texture, null, false) as PlayerView\n",
+        "                        } else {\n",
+        "                            PlayerView(ctx)\n",
+        "                        }\n",
+        "                        basePlayerView.apply {\n",
+        "                            playerViewRef = this\n",
+        "                            // 普通直出同步绑定 PlayerView；Anime4K 仅在输入 Surface 就绪后接管。\n",
+        "                            // 合集换片会替换 Player，不能等待后续 effect 才补绑，否则解码器可能无输出窗口。\n",
+        "                            player = if (shouldBindDirectPlayerView) playerState.player else null\n",
+        "                            setKeepContentOnPlayerReset(\n",
+        "                                shouldKeepInlinePlayerContentOnReset(\n",
+        "                                    isPortraitFullscreen = isPortraitFullscreen,\n",
+        "                                    forceCoverDuringReturnAnimation = forceCoverDuringReturnAnimation\n",
+        "                                )\n",
+        "                            )\n",
+        "                            setShutterBackgroundColor(android.graphics.Color.TRANSPARENT)\n",
+        "                            setShowBuffering(PlayerView.SHOW_BUFFERING_NEVER)\n",
+        "                            useController = false\n",
+        "                            keepScreenOn = keepVideoPlaybackAwake\n",
+        "                            // 仅在 sharedBounds 动画活动期（OPENING / RETURNING）将 TextureView 设为半透明，\n",
+        "                            // 允许底下的封面垫层透出防黑；动画落位后恢复为 opaque 提升正常播放性能与显存带宽。\n",
+        "                            (videoSurfaceView as? TextureView)?.isOpaque = !isTransitionActive\n",
+        "                            applyPlayerViewResizeMode(\n",
+        "                                playerView = this,\n",
+        "                                resizeMode = targetResizeMode,\n",
+        "                                forceRelayout = false,\n",
+        "                            )\n",
+        "                            visibility = if (!anime4kFrameVisible && shouldShowInlinePlayerView(\n",
+        "                                    isPortraitFullscreen = isPortraitFullscreen,\n",
+        "                                    forceCoverDuringReturnAnimation = forceCoverDuringReturnAnimation,\n",
+        "                                    shouldKeepCoverForManualStart = keepCoverForManualStart\n",
+        "                                )\n",
+        "                            ) {\n",
+        "                                View.VISIBLE\n",
+        "                            } else {\n",
+        "                                View.INVISIBLE\n",
+        "                            }\n",
+        "                        }\n",
+        "                    },\n",
+        "                    update = { playerView ->\n",
+        "                        playerViewRef = playerView\n",
+        "                        playerView.player = if (shouldBindDirectPlayerView) playerState.player else null\n",
+        "                        playerView.setKeepContentOnPlayerReset(\n",
+        "                            shouldKeepInlinePlayerContentOnReset(\n",
+        "                                isPortraitFullscreen = isPortraitFullscreen,\n",
+        "                                forceCoverDuringReturnAnimation = forceCoverDuringReturnAnimation\n",
+        "                            )\n",
+        "                        )\n",
+        "                        (playerView.videoSurfaceView as? TextureView)?.isOpaque = !isTransitionActive\n",
+        "                        applyPlayerViewResizeMode(\n",
+        "                            playerView = playerView,\n",
+        "                            resizeMode = targetResizeMode,\n",
+        "                            forceRelayout = false,\n",
+        "                        )\n",
+        "                        playerView.keepScreenOn = keepVideoPlaybackAwake\n",
+        "                        playerView.visibility = if (!anime4kFrameVisible && shouldShowInlinePlayerView(\n",
+        "                                isPortraitFullscreen = isPortraitFullscreen,\n",
+        "                                forceCoverDuringReturnAnimation = forceCoverDuringReturnAnimation,\n",
+        "                                shouldKeepCoverForManualStart = keepCoverForManualStart\n",
+        "                            )\n",
+        "                        ) {\n",
+        "                            View.VISIBLE\n",
+        "                        } else {\n",
+        "                            View.INVISIBLE\n",
+        "                        }\n",
+        "                    },\n"
+      ],
+      "generatedLines": [
+        "                platform.NativeViewport(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3758,
+      "originalEnd": 3770,
+      "generatedStart": 3030,
+      "generatedEnd": 3034,
+      "originalLines": [
+        "                        val sizeModifier = if (fillMaxViewport) {\n",
+        "                            Modifier.fillMaxSize()\n",
+        "                        } else {\n",
+        "                            Modifier.size(\n",
+        "                                width = viewportLayout.width.toDp(),\n",
+        "                                height = viewportLayout.height.toDp()\n",
+        "                            )\n",
+        "                        }\n",
+        "                        sizeModifier\n",
+        "                            .onSizeChanged { measuredPlayerViewportSize = it }\n",
+        "                            .alpha(playerSurfaceAlpha)\n",
+        "                            .graphicsLayer {\n"
+      ],
+      "generatedLines": [
+        "                        val sizeModifier = if (fillMaxViewport) Modifier.fillMaxSize() else Modifier.size(\n",
+        "                            width = viewportLayout.width.toDp(), height = viewportLayout.height.toDp())\n",
+        "                        sizeModifier.onSizeChanged { measuredPlayerViewportSize = it }\n",
+        "                            .alpha(playerSurfaceAlpha).graphicsLayer {\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3777,
+      "originalEnd": 3778,
+      "generatedStart": 3041,
+      "generatedEnd": 3048,
+      "originalLines": [
+        "                    }\n"
+      ],
+      "generatedLines": [
+        "                    },\n",
+        "                    layout = viewportLayout, resizeMode = targetResizeMode,\n",
+        "                    revealAlpha = playerSurfaceAlpha, revealScale = playerSurfaceScale,\n",
+        "                    freeScale = scale, panX = panX, panY = panY,\n",
+        "                    flipHorizontal = isFlippedHorizontal, flipVertical = isFlippedVertical,\n",
+        "                    visible = shouldShowInlinePlayerView(isPortraitFullscreen, forceCoverDuringReturnAnimation, keepCoverForManualStart),\n",
+        "                    keepAwake = keepVideoPlaybackAwake,\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 3779,
+      "originalEnd": 3841,
+      "generatedStart": 3049,
+      "generatedEnd": 3049,
+      "originalLines": [
+        "\n",
+        "                if (shouldUseAnime4kPipeline) {\n",
+        "                    AndroidView(\n",
+        "                        factory = { ctx ->\n",
+        "                            Anime4KGLSurfaceView(ctx, initialConfig = anime4kConfig).apply {\n",
+        "                                anime4kSurfaceViewRef = this\n",
+        "                                onInputSurfaceChanged = { surface ->\n",
+        "                                    anime4kInputSurface = surface\n",
+        "                                    if (surface == null) anime4kDisplayedFirstFrame = false\n",
+        "                                }\n",
+        "                                onFirstFrameRendered = {\n",
+        "                                    anime4kDisplayedFirstFrame = true\n",
+        "                                }\n",
+        "                                onPipelineError = { error ->\n",
+        "                                    Logger.e(\"VideoPlayerSection\", \"Anime4K 管线不可用，已回退原始视频输出\", error)\n",
+        "                                    anime4kPipelineFailed = true\n",
+        "                                    anime4kInputSurface = null\n",
+        "                                }\n",
+        "                                updateConfig(anime4kConfig)\n",
+        "                                updateInputSize(videoSizeState.first, videoSizeState.second)\n",
+        "                                updateFlip(isFlippedHorizontal, isFlippedVertical)\n",
+        "                                updateDisplayScaleMode(viewportAspectRatio.toAnime4KDisplayScaleMode())\n",
+        "                                visibility = View.VISIBLE\n",
+        "                            }\n",
+        "                        },\n",
+        "                        update = { surfaceView ->\n",
+        "                            anime4kSurfaceViewRef = surfaceView\n",
+        "                            surfaceView.onInputSurfaceChanged = { surface ->\n",
+        "                                anime4kInputSurface = surface\n",
+        "                                if (surface == null) anime4kDisplayedFirstFrame = false\n",
+        "                            }\n",
+        "                            surfaceView.onFirstFrameRendered = {\n",
+        "                                anime4kDisplayedFirstFrame = true\n",
+        "                            }\n",
+        "                            surfaceView.onPipelineError = { error ->\n",
+        "                                Logger.e(\"VideoPlayerSection\", \"Anime4K 管线不可用，已回退原始视频输出\", error)\n",
+        "                                anime4kPipelineFailed = true\n",
+        "                                anime4kInputSurface = null\n",
+        "                            }\n",
+        "                            surfaceView.updateConfig(anime4kConfig)\n",
+        "                            surfaceView.updateInputSize(videoSizeState.first, videoSizeState.second)\n",
+        "                            surfaceView.updateFlip(isFlippedHorizontal, isFlippedVertical)\n",
+        "                            surfaceView.updateDisplayScaleMode(viewportAspectRatio.toAnime4KDisplayScaleMode())\n",
+        "                            surfaceView.visibility = View.VISIBLE\n",
+        "                        },\n",
+        "                        modifier = with(density) {\n",
+        "                            Modifier\n",
+        "                                .size(\n",
+        "                                    width = viewportLayout.width.toDp(),\n",
+        "                                    height = viewportLayout.height.toDp()\n",
+        "                                )\n",
+        "                                .alpha(playerSurfaceAlpha)\n",
+        "                                .graphicsLayer {\n",
+        "                                    val revealAwareScale = scale * playerSurfaceScale\n",
+        "                                    scaleX = revealAwareScale\n",
+        "                                    scaleY = revealAwareScale\n",
+        "                                    translationX = panX\n",
+        "                                    translationY = panY\n",
+        "                                }\n",
+        "                        }\n",
+        "                    )\n",
+        "                }\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3853,
+      "originalEnd": 3854,
+      "generatedStart": 3061,
+      "generatedEnd": 3062,
+      "originalLines": [
+        "                android.util.Log.d(\"VideoPlayerCover\", \"🎬 onRenderedFirstFrame triggered\")\n"
+      ],
+      "generatedLines": [
+        "                Logger.d(\"VideoPlayerCover\", \"🎬 onRenderedFirstFrame triggered\")\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3859,
+      "originalEnd": 3860,
+      "generatedStart": 3067,
+      "generatedEnd": 3068,
+      "originalLines": [
+        "                    val costMs = (android.os.SystemClock.elapsedRealtime() - foregroundRecoveryStartedAtMs)\n"
+      ],
+      "generatedLines": [
+        "                    val costMs = ((System.nanoTime() / 1_000_000L) - foregroundRecoveryStartedAtMs)\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 3868,
+      "originalEnd": 3887,
+      "generatedStart": 3076,
+      "generatedEnd": 3076,
+      "originalLines": [
+        "            // 兼容性：同时也监听 Events\n",
+        "            override fun onEvents(player: Player, events: Player.Events) {\n",
+        "                if (events.contains(Player.EVENT_RENDERED_FIRST_FRAME)) {\n",
+        "                    android.util.Log.d(\"VideoPlayerCover\", \"🎬 EVENT_RENDERED_FIRST_FRAME triggered\")\n",
+        "                    if (!latestAnime4kPipelineRequested || latestAnime4kDisplayedFirstFrame) {\n",
+        "                        isFirstFrameRendered = true\n",
+        "                    }\n",
+        "                    if (!hasRenderedFirstFrameSinceForegroundRecovery) {\n",
+        "                        hasRenderedFirstFrameSinceForegroundRecovery = true\n",
+        "                        val costMs = (android.os.SystemClock.elapsedRealtime() - foregroundRecoveryStartedAtMs)\n",
+        "                            .coerceAtLeast(0L)\n",
+        "                        Logger.d(\"VideoPlayerSection\") {\n",
+        "                            \"✅ Foreground recovery first frame event received in ${costMs}ms: \" +\n",
+        "                                \"pos=${playerState.player.currentPosition}, buffered=${playerState.player.bufferedPosition}\"\n",
+        "                        }\n",
+        "                    }\n",
+        "                }\n",
+        "            }\n",
+        "\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3899,
+      "originalEnd": 3901,
+      "generatedStart": 3088,
+      "generatedEnd": 3090,
+      "originalLines": [
+        "        if (playerState.player.isPlaying && playerState.player.currentPosition > 0) {\n",
+        "             android.util.Log.d(\"VideoPlayerCover\", \"⚠️ Initial check: Already playing at ${playerState.player.currentPosition}, hiding cover. (Might be previous video?)\")\n"
+      ],
+      "generatedLines": [
+        "        if (playerState.player.firstVideoFrameReady) {\n",
+        "             Logger.d(\"VideoPlayerCover\", \"⚠️ Initial check: Already playing at ${playerState.player.currentPosition}, hiding cover. (Might be previous video?)\")\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3903,
+      "originalEnd": 3904,
+      "generatedStart": 3092,
+      "generatedEnd": 3093,
+      "originalLines": [
+        "             android.util.Log.d(\"VideoPlayerCover\", \"✅ Initial check: Not playing or at start. Keeping cover.\")\n"
+      ],
+      "generatedLines": [
+        "             Logger.d(\"VideoPlayerCover\", \"✅ Initial check: Not playing or at start. Keeping cover.\")\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 3965,
+      "originalEnd": 3966,
+      "generatedStart": 3154,
+      "generatedEnd": 3155,
+      "originalLines": [
+        "                android.util.Log.d(\n"
+      ],
+      "generatedLines": [
+        "                Logger.d(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4005,
+      "originalEnd": 4006,
+      "generatedStart": 3194,
+      "generatedEnd": 3195,
+      "originalLines": [
+        "            android.util.Log.d(\"VideoPlayerCover\", \"✨ Smooth cover reveal committed for bvid=$bvid\")\n"
+      ],
+      "generatedLines": [
+        "            Logger.d(\"VideoPlayerCover\", \"✨ Smooth cover reveal committed for bvid=$bvid\")\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4333,
+      "originalEnd": 4344,
+      "generatedStart": 3522,
+      "generatedEnd": 3524,
+      "originalLines": [
+        "            val statusBarHeightPx = remember(context) {\n",
+        "                val resourceId = context.resources.getIdentifier(\n",
+        "                    \"status_bar_height\", \"dimen\", \"android\"\n",
+        "                )\n",
+        "                if (resourceId > 0) {\n",
+        "                    context.resources.getDimensionPixelSize(resourceId)\n",
+        "                } else {\n",
+        "                    (24 * context.resources.displayMetrics.density).toInt()\n",
+        "                }\n",
+        "            }\n",
+        "            \n"
+      ],
+      "generatedLines": [
+        "            val statusBarHeightPx = platform.statusBarInsetPixels\n",
+        "\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4362,
+      "originalEnd": 4365,
+      "generatedStart": 3542,
+      "generatedEnd": 3543,
+      "originalLines": [
+        "                            Modifier.padding(top = with(LocalContext.current.resources.displayMetrics) {\n",
+        "                                (topOffset / density).dp\n",
+        "                            })\n"
+      ],
+      "generatedLines": [
+        "                            Modifier.padding(top = with(LocalDensity.current) { topOffset.toDp() })\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4395,
+      "originalEnd": 4441,
+      "generatedStart": 3573,
+      "generatedEnd": 3574,
+      "originalLines": [
+        "                AndroidView(\n",
+        "                    factory = { ctx ->\n",
+        "                        DanmakuRenderView(ctx).apply {\n",
+        "                            danmakuManager.updateViewport(viewport)\n",
+        "                            addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->\n",
+        "                                if (view.width > 0 && view.height > 0) danmakuManager.attachView(this)\n",
+        "                            }\n",
+        "                            setBackgroundColor(android.graphics.Color.TRANSPARENT)\n",
+        "                            configureAsPassiveDanmakuOverlay()\n",
+        "                            danmakuManager.attachView(this)\n",
+        "                            Logger.d(\"VideoPlayerSection\") {\n",
+        "                                \"DanmakuView (RenderEngine) created, isFullscreen=$isFullscreen\"\n",
+        "                            }\n",
+        "                        }\n",
+        "                    },\n",
+        "                    update = { view ->\n",
+        "                        danmakuManager.updateViewport(viewport)\n",
+        "                        //  [关键] 横竖屏切换后视图尺寸变化时，重新 attachView 确保弹幕正确显示\n",
+        "                        Logger.d(\"VideoPlayerSection\") {\n",
+        "                            \"DanmakuView update: size=${view.width}x${view.height}, isFullscreen=$isFullscreen\"\n",
+        "                        }\n",
+        "                        // 只有当视图有有效尺寸时才 re-attach\n",
+        "                        if (view.width > 0 && view.height > 0) {\n",
+        "                            val sizeTag = \"${view.width}x${view.height}\"\n",
+        "                            if (view.tag != sizeTag) {\n",
+        "                                view.tag = sizeTag\n",
+        "                                danmakuManager.attachView(view)\n",
+        "                            }\n",
+        "                        }\n",
+        "                    },\n",
+        "                    onRelease = { view ->\n",
+        "                        // 仅当本 view 仍是当前绑定的弹幕视图时才解绑；\n",
+        "                        // 相关推荐跳转后旧页面销毁不能清掉新页面已接管的 view/controller。\n",
+        "                        danmakuManager.detachView(view)\n",
+        "                    },\n",
+        "                    modifier = Modifier.fillMaxSize()\n",
+        "                )\n",
+        "                com.android.purebilibili.feature.video.ui.overlay.AdvancedDanmakuOverlay(\n",
+        "                    viewport = viewport,\n",
+        "                    danmakuList = advancedDanmakuList,\n",
+        "                    player = playerState.player,\n",
+        "                    opacity = danmakuOpacity,\n",
+        "                    fontScale = danmakuFontScale,\n",
+        "                    fontWeight = danmakuFontWeight,\n",
+        "                    modifier = Modifier.fillMaxSize()\n",
+        "                )\n"
+      ],
+      "generatedLines": [
+        "                platform.NativeDanmakuSurface(viewport, Modifier.fillMaxSize())\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4446,
+      "originalEnd": 4447,
+      "generatedStart": 3579,
+      "generatedEnd": 3580,
+      "originalLines": [
+        "                    player = playerState.player,\n"
+      ],
+      "generatedLines": [
+        "                    player = playerState.player.nativePlayer,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4455,
+      "originalEnd": 4456,
+      "generatedStart": 3588,
+      "generatedEnd": 3589,
+      "originalLines": [
+        "                                    val result = com.android.purebilibili.data.repository.DanmakuRepository.submitGradeDanmaku(\n"
+      ],
+      "generatedLines": [
+        "                                    val result = platform.submitGradeDanmaku(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4463,
+      "originalEnd": 4464,
+      "generatedStart": 3596,
+      "generatedEnd": 3597,
+      "originalLines": [
+        "                                        android.widget.Toast.makeText(\n"
+      ],
+      "generatedLines": [
+        "                                        Toast.makeText(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4466,
+      "originalEnd": 4467,
+      "generatedStart": 3599,
+      "generatedEnd": 3600,
+      "originalLines": [
+        "                                            android.widget.Toast.LENGTH_SHORT\n"
+      ],
+      "generatedLines": [
+        "                                            Toast.LENGTH_SHORT\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4473,
+      "originalEnd": 4474,
+      "generatedStart": 3606,
+      "generatedEnd": 3607,
+      "originalLines": [
+        "                                        val result = com.android.purebilibili.data.repository.DynamicVoteRepository.submitVote(\n"
+      ],
+      "generatedLines": [
+        "                                        val result = platform.submitVote(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4478,
+      "originalEnd": 4479,
+      "generatedStart": 3611,
+      "generatedEnd": 3612,
+      "originalLines": [
+        "                                            android.widget.Toast.makeText(\n"
+      ],
+      "generatedLines": [
+        "                                            Toast.makeText(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4481,
+      "originalEnd": 4482,
+      "generatedStart": 3614,
+      "generatedEnd": 3615,
+      "originalLines": [
+        "                                                android.widget.Toast.LENGTH_SHORT\n"
+      ],
+      "generatedLines": [
+        "                                                Toast.LENGTH_SHORT\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 4560,
+      "originalEnd": 4561,
+      "generatedStart": 3693,
+      "generatedEnd": 3694,
+      "originalLines": [
+        "            audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) <= 0\n"
+      ],
+      "generatedLines": [
+        "            audioManager.currentStep() <= 0\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5061,
+      "originalEnd": 5065,
+      "generatedStart": 4194,
+      "generatedEnd": 4196,
+      "originalLines": [
+        "                                    com.android.purebilibili.core.store.SettingsManager\n",
+        "                                        .setLongPressSpeedLockEnabled(context, true)\n",
+        "                                    com.android.purebilibili.core.store.SettingsManager\n",
+        "                                        .setLongPressSpeedLockHintShown(context, true)\n"
+      ],
+      "generatedLines": [
+        "                                    com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setLongPressSpeedLockEnabled(context, true)\n",
+        "                                    com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setLongPressSpeedLockHintShown(context, true)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5077,
+      "originalEnd": 5079,
+      "generatedStart": 4208,
+      "generatedEnd": 4209,
+      "originalLines": [
+        "                                    com.android.purebilibili.core.store.SettingsManager\n",
+        "                                        .setLongPressSpeedLockHintShown(context, true)\n"
+      ],
+      "generatedLines": [
+        "                                    com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setLongPressSpeedLockHintShown(context, true)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5151,
+      "originalEnd": 5154,
+      "generatedStart": 4281,
+      "generatedEnd": 4282,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuEnabled(\n",
+        "                            context,\n",
+        "                            newState,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuEnabled(newState,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5159,
+      "originalEnd": 5160,
+      "generatedStart": 4287,
+      "generatedEnd": 4288,
+      "originalLines": [
+        "                    com.android.purebilibili.core.util.AnalyticsHelper.logDanmakuToggle(newState)\n"
+      ],
+      "generatedLines": [
+        "                    platform.recordDanmakuToggle(newState)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5206,
+      "originalEnd": 5209,
+      "generatedStart": 4334,
+      "generatedEnd": 4335,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuOpacity(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuOpacity(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5217,
+      "originalEnd": 5220,
+      "generatedStart": 4343,
+      "generatedEnd": 4344,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuFontScale(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuFontScale(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5228,
+      "originalEnd": 5231,
+      "generatedStart": 4352,
+      "generatedEnd": 4353,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuFontWeight(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuFontWeight(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5238,
+      "originalEnd": 5241,
+      "generatedStart": 4360,
+      "generatedEnd": 4361,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuSpeed(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuSpeed(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5249,
+      "originalEnd": 5252,
+      "generatedStart": 4369,
+      "generatedEnd": 4370,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuArea(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuArea(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5260,
+      "originalEnd": 5263,
+      "generatedStart": 4378,
+      "generatedEnd": 4379,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuStrokeWidth(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuStrokeWidth(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5270,
+      "originalEnd": 5273,
+      "generatedStart": 4386,
+      "generatedEnd": 4387,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuLineHeight(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuLineHeight(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5280,
+      "originalEnd": 5283,
+      "generatedStart": 4394,
+      "generatedEnd": 4395,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuScrollDurationSeconds(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuScrollDurationSeconds(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5290,
+      "originalEnd": 5293,
+      "generatedStart": 4402,
+      "generatedEnd": 4403,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuStaticDurationSeconds(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuStaticDurationSeconds(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5300,
+      "originalEnd": 5303,
+      "generatedStart": 4410,
+      "generatedEnd": 4411,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuScrollFixedVelocity(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuScrollFixedVelocity(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5310,
+      "originalEnd": 5313,
+      "generatedStart": 4418,
+      "generatedEnd": 4419,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuStaticToScroll(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuStaticToScroll(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5320,
+      "originalEnd": 5323,
+      "generatedStart": 4426,
+      "generatedEnd": 4427,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuMassiveMode(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuMassiveMode(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5329,
+      "originalEnd": 5332,
+      "generatedStart": 4433,
+      "generatedEnd": 4434,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuMergeDuplicates(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuMergeDuplicates(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5338,
+      "originalEnd": 5341,
+      "generatedStart": 4440,
+      "generatedEnd": 4441,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuDuplicateMergeWindowMs(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuDuplicateMergeWindowMs(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5347,
+      "originalEnd": 5350,
+      "generatedStart": 4447,
+      "generatedEnd": 4448,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuDuplicateMergeCountThreshold(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuDuplicateMergeCountThreshold(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5356,
+      "originalEnd": 5358,
+      "generatedStart": 4454,
+      "generatedEnd": 4455,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager\n",
+        "                            .setDanmakuWeightFilterLevel(context, value)\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuWeightFilterLevel(value)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5362,
+      "originalEnd": 5365,
+      "generatedStart": 4459,
+      "generatedEnd": 4460,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuAllowScroll(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuAllowScroll(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5372,
+      "originalEnd": 5375,
+      "generatedStart": 4467,
+      "generatedEnd": 4468,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuAllowTop(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuAllowTop(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5382,
+      "originalEnd": 5385,
+      "generatedStart": 4475,
+      "generatedEnd": 4476,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuAllowBottom(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuAllowBottom(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5392,
+      "originalEnd": 5395,
+      "generatedStart": 4483,
+      "generatedEnd": 4484,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuAllowColorful(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuAllowColorful(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5402,
+      "originalEnd": 5405,
+      "generatedStart": 4491,
+      "generatedEnd": 4492,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuAllowSpecial(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuAllowSpecial(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5412,
+      "originalEnd": 5414,
+      "generatedStart": 4499,
+      "generatedEnd": 4500,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager\n",
+        "                            .setDanmakuHideInteractiveCommands(context, value)\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuHideInteractiveCommands(value)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5418,
+      "originalEnd": 5421,
+      "generatedStart": 4504,
+      "generatedEnd": 4505,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuSmartOcclusion(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuSmartOcclusion(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5427,
+      "originalEnd": 5428,
+      "generatedStart": 4511,
+      "generatedEnd": 4512,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuFullscreenPanelWidthMode(context, value)\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuFullscreenPanelWidthMode(value)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5432,
+      "originalEnd": 5434,
+      "generatedStart": 4516,
+      "generatedEnd": 4517,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager\n",
+        "                            .setPortraitDanmakuDisplayAreaMode(context, value)\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setPortraitDanmakuDisplayAreaMode(value)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5438,
+      "originalEnd": 5440,
+      "generatedStart": 4521,
+      "generatedEnd": 4522,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager\n",
+        "                            .setDanmakuCloudSyncEnabled(context, enabled)\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuCloudSyncEnabled(enabled)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5441,
+      "originalEnd": 5445,
+      "generatedStart": 4523,
+      "generatedEnd": 4524,
+      "originalLines": [
+        "                    if (!enabled) {\n",
+        "                        pendingDanmakuCloudSync = null\n",
+        "                        danmakuCloudSyncUiState = DanmakuCloudSyncUiState()\n",
+        "                    }\n"
+      ],
+      "generatedLines": [
+        "                    platform.cloudSync.onEnabledChange(enabled)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5451,
+      "originalEnd": 5454,
+      "generatedStart": 4530,
+      "generatedEnd": 4531,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager.setDanmakuBlockRulesRaw(\n",
+        "                            context,\n",
+        "                            value,\n"
+      ],
+      "generatedLines": [
+        "                        platform.danmakuPreferences.setDanmakuBlockRulesRaw(value,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5468,
+      "originalEnd": 5470,
+      "generatedStart": 4545,
+      "generatedEnd": 4546,
+      "originalLines": [
+        "                        com.android.purebilibili.core.store.SettingsManager\n",
+        "                            .setFullscreenAspectRatio(context, safeRatio.toFullscreenAspectRatio())\n"
+      ],
+      "generatedLines": [
+        "                        com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setFullscreenAspectRatio(context, safeRatio.toFullscreenAspectRatio())\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5522,
+      "originalEnd": 5523,
+      "generatedStart": 4598,
+      "generatedEnd": 4599,
+      "originalLines": [
+        "                        com.android.purebilibili.core.util.Logger.d(\n"
+      ],
+      "generatedLines": [
+        "                        Logger.d(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5529,
+      "originalEnd": 5530,
+      "generatedStart": 4605,
+      "generatedEnd": 4606,
+      "originalLines": [
+        "                        com.android.purebilibili.core.util.Logger.d(\n"
+      ],
+      "generatedLines": [
+        "                        Logger.d(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5547,
+      "originalEnd": 5548,
+      "generatedStart": 4623,
+      "generatedEnd": 4624,
+      "originalLines": [
+        "                        com.android.purebilibili.core.util.Logger.d(\n"
+      ],
+      "generatedLines": [
+        "                        Logger.d(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5555,
+      "originalEnd": 5556,
+      "generatedStart": 4631,
+      "generatedEnd": 4632,
+      "originalLines": [
+        "                            SettingsManager.setSubtitlePositionLocked(context, locked)\n"
+      ],
+      "generatedLines": [
+        "                            com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setSubtitlePositionLocked(context, locked)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5632,
+      "originalEnd": 5633,
+      "generatedStart": 4708,
+      "generatedEnd": 4709,
+      "originalLines": [
+        "                anime4kAvailable = anime4kGlesAvailable,\n"
+      ],
+      "generatedLines": [
+        "                anime4kAvailable = enhancementState.available,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5637,
+      "originalEnd": 5647,
+      "generatedStart": 4713,
+      "generatedEnd": 4714,
+      "originalLines": [
+        "                onAnime4kToggle = { enabled ->\n",
+        "                    anime4kPipelineFailed = false\n",
+        "                    videoEnhancementSessionOverride = enabled\n",
+        "                    settingsScope.launch {\n",
+        "                        if (enabled && anime4kPluginInfo?.enabled != true) {\n",
+        "                            PluginManager.setEnabled(Anime4KPlugin.PLUGIN_ID, true)\n",
+        "                        }\n",
+        "                        Anime4KPlugin.getInstance()?.rememberCurrentVideoEnabled(enabled)\n",
+        "                    }\n",
+        "                },\n"
+      ],
+      "generatedLines": [
+        "                onAnime4kToggle = { enabled -> platform.setCurrentVideoEnhancementEnabled(enabled) },\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5648,
+      "originalEnd": 5649,
+      "generatedStart": 4715,
+      "generatedEnd": 4716,
+      "originalLines": [
+        "                    anime4kPlugin?.setAlgorithm(algorithm)\n"
+      ],
+      "generatedLines": [
+        "                    platform.enhancementActions.setAlgorithm(algorithm)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5651,
+      "originalEnd": 5652,
+      "generatedStart": 4718,
+      "generatedEnd": 4719,
+      "originalLines": [
+        "                    anime4kPlugin?.setPreset(preset)\n"
+      ],
+      "generatedLines": [
+        "                    platform.enhancementActions.setPreset(preset)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5654,
+      "originalEnd": 5655,
+      "generatedStart": 4721,
+      "generatedEnd": 4722,
+      "originalLines": [
+        "                    anime4kPlugin?.setFsrSharpness(sharpness)\n"
+      ],
+      "generatedLines": [
+        "                    platform.enhancementActions.setFsrSharpness(sharpness)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5665,
+      "originalEnd": 5683,
+      "generatedStart": 4732,
+      "generatedEnd": 4735,
+      "originalLines": [
+        "                    val playerView = playerViewRef\n",
+        "                    if (playerView == null) {\n",
+        "                        Toast.makeText(context, \"截图失败：播放器未就绪\", Toast.LENGTH_SHORT).show()\n",
+        "                    } else {\n",
+        "                        scope.launch {\n",
+        "                            val success = captureAndSaveVideoScreenshot(\n",
+        "                                context = context,\n",
+        "                                playerView = playerView,\n",
+        "                                videoWidth = videoSizeState.first,\n",
+        "                                videoHeight = videoSizeState.second,\n",
+        "                                videoTitle = uiState.info.title,\n",
+        "                            )\n",
+        "                            Toast.makeText(\n",
+        "                                context,\n",
+        "                                if (success) \"截图已保存到相册（PNG）\" else \"截图失败，请稍后重试\",\n",
+        "                                Toast.LENGTH_SHORT\n",
+        "                            ).show()\n",
+        "                        }\n"
+      ],
+      "generatedLines": [
+        "                    scope.launch {\n",
+        "                        val success = platform.captureAndSaveScreenshot(videoSizeState.first, videoSizeState.second, uiState.info.title)\n",
+        "                        Toast.makeText(context, if (success) \"截图已保存（PNG）\" else \"截图失败，请稍后重试\", Toast.LENGTH_SHORT).show()\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5716,
+      "originalEnd": 5718,
+      "generatedStart": 4768,
+      "generatedEnd": 4770,
+      "originalLines": [
+        "                onDrawerVideoClick = { vid, options ->\n",
+        "                    onRelatedVideoClick(vid, options) \n"
+      ],
+      "generatedLines": [
+        "                onDrawerVideoClick = { vid, cid ->\n",
+        "                    onRelatedVideoClick(vid, cid, null) \n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5770,
+      "originalEnd": 5772,
+      "generatedStart": 4822,
+      "generatedEnd": 4823,
+      "originalLines": [
+        "                val poolSheetBlockRulesRaw by com.android.purebilibili.core.store.SettingsManager\n",
+        "                    .getDanmakuBlockRulesRaw(context, activeDanmakuScope)\n"
+      ],
+      "generatedLines": [
+        "                val poolSheetBlockRulesRaw by platform.danmakuPreferences.getDanmakuSettings(activeDanmakuScope).map { it.blockRulesRaw }\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 5802,
+      "originalEnd": 5805,
+      "generatedStart": 4853,
+      "generatedEnd": 4854,
+      "originalLines": [
+        "                            com.android.purebilibili.core.store.SettingsManager.setDanmakuBlockRulesRaw(\n",
+        "                                context,\n",
+        "                                updatedRules,\n"
+      ],
+      "generatedLines": [
+        "                            platform.danmakuPreferences.setDanmakuBlockRulesRaw(updatedRules,\n"
+      ]
+    },
+    {
+      "tag": "insert",
+      "originalStart": 5838,
+      "originalEnd": 5838,
+      "generatedStart": 4887,
+      "generatedEnd": 4890,
+      "originalLines": [],
+      "generatedLines": [
+        "\n",
+        "/** Lazy original diagnostic call shape on the existing local diagnostics bridge. */\n",
+        "private fun Logger.d(tag: String, message: () -> String) { Logger.d(tag, message()) }\n"
+      ]
+    }
+  ],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

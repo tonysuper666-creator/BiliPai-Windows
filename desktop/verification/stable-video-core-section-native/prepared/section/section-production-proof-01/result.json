@@ -1,0 +1,139 @@
+{
+  "passed": true,
+  "generation": [
+    {
+      "mode": "default",
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionContracts.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+        "com/android/purebilibili/core/store/DesktopOriginalPlayerSectionSettings.kt",
+        "com/android/purebilibili/core/store/DesktopOriginalPlayerInteractionSettings.kt",
+        "com/android/purebilibili/feature/video/playback/session/PlaybackSeekController.kt",
+        "com/android/purebilibili/feature/video/ui/overlay/FullscreenDoubleTapPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/DanmakuViewportHost.kt",
+        "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoPlayerSectionPolicy.kt",
+        "com/android/purebilibili/feature/video/state/DesktopOriginalApiDimensionPolicy.kt"
+      ],
+      "skippedDirectOutputs": [
+        "com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt",
+        "com/android/purebilibili/feature/video/ui/components/TwoFingerSpeedFeedbackOverlay.kt",
+        "com/android/purebilibili/feature/video/ui/components/VideoAspectRatioPreferenceMapper.kt",
+        "com/android/purebilibili/feature/video/subtitle/SubtitleFeaturePolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoPlayerUiLayoutPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoPlayerTopBarPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoPlayerDanmakuLoadPolicy.kt",
+        "com/android/purebilibili/core/ui/adaptive/InputDevicePolicy.kt"
+      ],
+      "byteIdentical": true
+    },
+    {
+      "mode": "standalone",
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionContracts.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+        "com/android/purebilibili/core/store/DesktopOriginalPlayerSectionSettings.kt",
+        "com/android/purebilibili/core/store/DesktopOriginalPlayerInteractionSettings.kt",
+        "com/android/purebilibili/feature/video/playback/session/PlaybackSeekController.kt",
+        "com/android/purebilibili/feature/video/ui/overlay/FullscreenDoubleTapPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt",
+        "com/android/purebilibili/feature/video/ui/components/TwoFingerSpeedFeedbackOverlay.kt",
+        "com/android/purebilibili/feature/video/ui/components/VideoAspectRatioPreferenceMapper.kt",
+        "com/android/purebilibili/feature/video/subtitle/SubtitleFeaturePolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoPlayerUiLayoutPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoPlayerTopBarPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoPlayerDanmakuLoadPolicy.kt",
+        "com/android/purebilibili/core/ui/adaptive/InputDevicePolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/DanmakuViewportHost.kt",
+        "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoPlayerSectionPolicy.kt",
+        "com/android/purebilibili/feature/video/state/DesktopOriginalApiDimensionPolicy.kt"
+      ],
+      "skippedDirectOutputs": [],
+      "byteIdentical": true
+    }
+  ],
+  "inverseAudits": [
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionContracts.kt",
+      "exactOriginalBytes": false,
+      "inverseExactOriginal": true,
+      "changes": 3
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "exactOriginalBytes": false,
+      "inverseExactOriginal": true,
+      "changes": 160
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/session/PlaybackSeekController.kt",
+      "exactOriginalBytes": false,
+      "inverseExactOriginal": true,
+      "changes": 1
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/FullscreenDoubleTapPolicy.kt",
+      "exactOriginalBytes": false,
+      "inverseExactOriginal": true,
+      "changes": 1
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt",
+      "exactOriginalBytes": true,
+      "inverseExactOriginal": true,
+      "changes": 0
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/TwoFingerSpeedFeedbackOverlay.kt",
+      "exactOriginalBytes": true,
+      "inverseExactOriginal": true,
+      "changes": 0
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/VideoAspectRatioPreferenceMapper.kt",
+      "exactOriginalBytes": true,
+      "inverseExactOriginal": true,
+      "changes": 0
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/subtitle/SubtitleFeaturePolicy.kt",
+      "exactOriginalBytes": true,
+      "inverseExactOriginal": true,
+      "changes": 0
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoPlayerUiLayoutPolicy.kt",
+      "exactOriginalBytes": true,
+      "inverseExactOriginal": true,
+      "changes": 0
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoPlayerTopBarPolicy.kt",
+      "exactOriginalBytes": true,
+      "inverseExactOriginal": true,
+      "changes": 0
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoPlayerDanmakuLoadPolicy.kt",
+      "exactOriginalBytes": true,
+      "inverseExactOriginal": true,
+      "changes": 0
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/adaptive/InputDevicePolicy.kt",
+      "exactOriginalBytes": true,
+      "inverseExactOriginal": true,
+      "changes": 0
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DanmakuViewportHost.kt",
+      "exactOriginalBytes": false,
+      "inverseExactOriginal": true,
+      "changes": 5
+    }
+  ],
+  "sourcePins": 17,
+  "producerSha256LF": "3c9fa4d5115fdebed4fcd16f534bb0f9a30af4ae714ec2fb506ab385328ccc04",
+  "noProductAcceptance": true,
+  "wholeRendererExplicitPlatformBlockEdits": 34,
+  "manualContractsRequired": true
+}

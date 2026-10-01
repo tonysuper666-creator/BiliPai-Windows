@@ -1,0 +1,146 @@
+Compiled from "PlatformOperations.kt"
+public final class org.jetbrains.skiko.FullscreenAdapter extends java.awt.event.ComponentAdapter {
+  private final org.jetbrains.skiko.HardwareLayer backedLayer;
+
+  private boolean localFullscreen;
+
+  private boolean isWindowShown;
+
+  public org.jetbrains.skiko.FullscreenAdapter(org.jetbrains.skiko.HardwareLayer);
+    Code:
+       0: aload_1
+       1: ldc           #9                  // String backedLayer
+       3: invokestatic  #15                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_0
+       7: invokespecial #18                 // Method java/awt/event/ComponentAdapter."<init>":()V
+      10: aload_0
+      11: aload_1
+      12: putfield      #21                 // Field backedLayer:Lorg/jetbrains/skiko/HardwareLayer;
+      15: return
+    LineNumberTable:
+      line 13: 6
+      line 14: 10
+      line 13: 15
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      16     0  this   Lorg/jetbrains/skiko/FullscreenAdapter;
+          0      16     1 backedLayer   Lorg/jetbrains/skiko/HardwareLayer;
+
+  public final org.jetbrains.skiko.HardwareLayer getBackedLayer();
+    Code:
+       0: aload_0
+       1: getfield      #21                 // Field backedLayer:Lorg/jetbrains/skiko/HardwareLayer;
+       4: areturn
+    LineNumberTable:
+      line 14: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       5     0  this   Lorg/jetbrains/skiko/FullscreenAdapter;
+
+  public final boolean getFullscreen();
+    Code:
+       0: aload_0
+       1: getfield      #31                 // Field isWindowShown:Z
+       4: ifeq          17
+       7: aload_0
+       8: getfield      #21                 // Field backedLayer:Lorg/jetbrains/skiko/HardwareLayer;
+      11: invokevirtual #35                 // Method org/jetbrains/skiko/HardwareLayer.getFullscreen:()Z
+      14: goto          21
+      17: aload_0
+      18: getfield      #38                 // Field localFullscreen:Z
+      21: ireturn
+    LineNumberTable:
+      line 31: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      22     0  this   Lorg/jetbrains/skiko/FullscreenAdapter;
+
+  public final void setFullscreen(boolean);
+    Code:
+       0: aload_0
+       1: iload_1
+       2: putfield      #38                 // Field localFullscreen:Z
+       5: aload_0
+       6: getfield      #31                 // Field isWindowShown:Z
+       9: ifeq          20
+      12: aload_0
+      13: getfield      #21                 // Field backedLayer:Lorg/jetbrains/skiko/HardwareLayer;
+      16: iload_1
+      17: invokevirtual #42                 // Method org/jetbrains/skiko/HardwareLayer.setFullscreen:(Z)V
+      20: return
+    LineNumberTable:
+      line 33: 0
+      line 34: 5
+      line 35: 12
+      line 37: 20
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      21     0  this   Lorg/jetbrains/skiko/FullscreenAdapter;
+          0      21     1 value   Z
+
+  public void componentShown(java.awt.event.ComponentEvent);
+    Code:
+       0: aload_1
+       1: ldc           #47                 // String e
+       3: invokestatic  #15                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_0
+       7: iconst_1
+       8: putfield      #31                 // Field isWindowShown:Z
+      11: aload_0
+      12: getfield      #21                 // Field backedLayer:Lorg/jetbrains/skiko/HardwareLayer;
+      15: aload_0
+      16: getfield      #38                 // Field localFullscreen:Z
+      19: invokevirtual #42                 // Method org/jetbrains/skiko/HardwareLayer.setFullscreen:(Z)V
+      22: return
+    LineNumberTable:
+      line 40: 6
+      line 41: 11
+      line 42: 22
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      23     0  this   Lorg/jetbrains/skiko/FullscreenAdapter;
+          0      23     1     e   Ljava/awt/event/ComponentEvent;
+
+  public void componentHidden(java.awt.event.ComponentEvent);
+    Code:
+       0: aload_0
+       1: iconst_0
+       2: putfield      #31                 // Field isWindowShown:Z
+       5: aload_0
+       6: aload_0
+       7: getfield      #21                 // Field backedLayer:Lorg/jetbrains/skiko/HardwareLayer;
+      10: invokevirtual #35                 // Method org/jetbrains/skiko/HardwareLayer.getFullscreen:()Z
+      13: putfield      #38                 // Field localFullscreen:Z
+      16: return
+    LineNumberTable:
+      line 45: 0
+      line 46: 5
+      line 47: 16
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      17     0  this   Lorg/jetbrains/skiko/FullscreenAdapter;
+          0      17     1     e   Ljava/awt/event/ComponentEvent;
+
+  public void componentResized(java.awt.event.ComponentEvent);
+    Code:
+       0: aload_1
+       1: ldc           #47                 // String e
+       3: invokestatic  #15                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_0
+       7: getfield      #31                 // Field isWindowShown:Z
+      10: ifeq          24
+      13: aload_0
+      14: aload_0
+      15: getfield      #21                 // Field backedLayer:Lorg/jetbrains/skiko/HardwareLayer;
+      18: invokevirtual #35                 // Method org/jetbrains/skiko/HardwareLayer.getFullscreen:()Z
+      21: putfield      #38                 // Field localFullscreen:Z
+      24: return
+    LineNumberTable:
+      line 50: 6
+      line 51: 13
+      line 53: 24
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      25     0  this   Lorg/jetbrains/skiko/FullscreenAdapter;
+          0      25     1     e   Ljava/awt/event/ComponentEvent;
+}

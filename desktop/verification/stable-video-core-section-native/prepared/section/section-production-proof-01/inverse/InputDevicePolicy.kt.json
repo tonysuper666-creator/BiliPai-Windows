@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/core/ui/adaptive/InputDevicePolicy.kt",
+  "sourceSha256LF": "5f1ce6f6dd43bba6603700d9e79d1c2802f6da81aef347e589f83d001b712e90",
+  "generatedSha256LF": "5f1ce6f6dd43bba6603700d9e79d1c2802f6da81aef347e589f83d001b712e90",
+  "inverseExactOriginal": true,
+  "lineChanges": [],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

@@ -1,0 +1,189 @@
+{
+  "status": "FROZEN_READONLY_SOURCE_FEASIBILITY_NOT_RUNTIME_ACCEPTANCE",
+  "schema": "path,sha256Bytes,size",
+  "rawArtifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\androidx.compose.ui.awt.ComposeWindow.txt",
+      "sha256Bytes": "aea498922bc696f1f321598e975db2ca57a3328e7b7ba591723e569382fe7079",
+      "size": 58155
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\androidx.compose.ui.awt.ComposeWindowPanel.txt",
+      "sha256Bytes": "694d0d983005d3c356444293c6e588d254fc3edaad635a64cc8014b52c810d69",
+      "size": 60192
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\com.bilipai.desktop.ui.DesktopWindowsFullscreenControl.txt",
+      "sha256Bytes": "2464b7c72358274d5ed4844358558fbeef5f4a41d3a03b831d5614267f1b7b25",
+      "size": 21281
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\org.jetbrains.skiko.FullscreenAdapter.txt",
+      "sha256Bytes": "9ee43ec13d51b7cd93e5adb2864c2976a3a1c5a69c82a2b8ffd4bb4e01206b7c",
+      "size": 6037
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\org.jetbrains.skiko.HardwareLayer.txt",
+      "sha256Bytes": "7f6757c1e68365090d5bc6d2a470f0c72e98a82cdf17631bad21d24637d2a5fc",
+      "size": 13562
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\org.jetbrains.skiko.PlatformOperations.txt",
+      "sha256Bytes": "43052ab3e3db0d2297f621b8b92e08fd7dfa1ed4d5c56b47676db07abaa65c64",
+      "size": 357
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\org.jetbrains.skiko.PlatformOperationsKt$platformOperations$2$2.txt",
+      "sha256Bytes": "a1168d3020daafbe00c82a7f3dafbeed92c9264a906082a3f32cdc6410f192b1",
+      "size": 5220
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\fetch_native.py",
+      "sha256Bytes": "0dac3d5832be23b1017a523904943a9b487811624e2dffc1b0daf3310c3f25cf",
+      "size": 1530
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\findings.json",
+      "sha256Bytes": "91b9dec5526a2f52b3284572b535f80a2435a9a662365297520d682497444a05",
+      "size": 10256
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\freeze.py",
+      "sha256Bytes": "7dd7e232210160150681bf8ae5fafe8879ffaa0e7d4016442370cacd5691b5fa",
+      "size": 5806
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\geometry-selected.json",
+      "sha256Bytes": "1a5ace269ffd638d8f9506bedf6ae803b75e9e54de32f75acf0d9974ce688969",
+      "size": 27646
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\inspect.py",
+      "sha256Bytes": "801844cfbf0b9d938e52f763ba3fdc871e36c5f3870c0eb95828b738098394da",
+      "size": 4384
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\java\\awt\\Component.java",
+      "sha256Bytes": "e29ec22827f47b8e0553231caf4463b4c79a85ce1f7bbef09442b43b5e667235",
+      "size": 391387
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\java\\awt\\Container.java",
+      "sha256Bytes": "1a08c9045743168b1823c701958050d60250c15d79642ef8f18f54f72cabd2c4",
+      "size": 196126
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\java\\awt\\Frame.java",
+      "sha256Bytes": "2e9460a08c858ebbd0089fa4641bd954424a21d27b091b04719f473eef5a51fe",
+      "size": 45890
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\java\\awt\\GraphicsDevice.java",
+      "sha256Bytes": "5c95d1698bdcca7287cb6b34296b882449c7ba860977137aad5e8b7318b9a68f",
+      "size": 24083
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\javax\\swing\\JFrame.java",
+      "sha256Bytes": "c4b0acf472ca741161eca42f965da3e09dcd7f78648f5f68db4e19d8d138bc0d",
+      "size": 34402
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\javax\\swing\\JRootPane.java",
+      "sha256Bytes": "7e9f80ee1f06fc0e7b05e8f6d298a5fb609341d8054d41f74db51aa86a9d6adf",
+      "size": 39479
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\Win32GraphicsDevice.java",
+      "sha256Bytes": "fe18285675feec3afd0627f7f52b61f699e1843d67f46d261edbcef1ebffd59d",
+      "size": 25048
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\windows\\WComponentPeer.java",
+      "sha256Bytes": "65e039c62a4356c94e8ad351c9106fb8f2423857d64551e9c13762e13a41c8fd",
+      "size": 39420
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\windows\\WFramePeer.java",
+      "sha256Bytes": "01b1a540ead4337bfdf28abb7f4ded89a2601333f2e3c8e4060c05ff466a5aa2",
+      "size": 8899
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\windows\\WPanelPeer.java",
+      "sha256Bytes": "10becb91880cde80f0d47bce14ed3dad36b895fac084bc04db4e6bf5e7a7d594",
+      "size": 3155
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\windows\\WWindowPeer.java",
+      "sha256Bytes": "48f8bfcf47f8f2de3fbe4cc8647a71d2605e84caa10fe5b946f5eaa978856621",
+      "size": 30931
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\java2d\\d3d\\D3DGraphicsDevice.java",
+      "sha256Bytes": "7b76e4136e4158f4698532f506008b3220ac4e24500d791b8c523f61d7baf9e1",
+      "size": 18349
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Component.cpp",
+      "sha256Bytes": "1b51a4d68c6acd4812a3711546d36edf567163c6de3b95ea64705a3fd345e59c",
+      "size": 249731
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Frame.cpp",
+      "sha256Bytes": "61891b9bfc79e1b85decb8be454354ed951045cd6741bd4a54a95933da746097",
+      "size": 65548
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Win32GraphicsDevice.cpp",
+      "sha256Bytes": "c0bc2e11167f30ff20551f770499af2d94b90f9a64c5c4f1bc7c10824b303566",
+      "size": 48033
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Window.cpp",
+      "sha256Bytes": "f1fb9e8676bf52f9a03336185991f887d5a30274c18fb5d31382baa12da34768",
+      "size": 121604
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Window.h",
+      "sha256Bytes": "4d38ad49cfe231b22a766a74fd5e74ff0e5ee89ec1d2f4cfed479257c84c29d2",
+      "size": 15464
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\source-provenance.json",
+      "sha256Bytes": "2606791555d13fd52fecb0bc09fc21b36b451d89910e532360676cc144adaddd",
+      "size": 3145
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\vendor-commit.json",
+      "sha256Bytes": "fdf89a7c56fff3ff06f0d48d7ce8bade7b9a0fdbc6cbd6c200b14a4edaf7243a",
+      "size": 57548
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\observed-source\\DesktopWindowsFullscreenControl.kt",
+      "sha256Bytes": "d5814fbdef5c564598a61cb107e85ab0bf7dd6b7f054d9d4ec1abd5d94ebb0d8",
+      "size": 4808
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\source-inputs.json",
+      "sha256Bytes": "f43111ffe94bd5027be270f681668409cc9457d1e8464f455c6ccf563c71f356",
+      "size": 10361
+    }
+  ],
+  "actualSnapshot": 53,
+  "runtimeEntries": 101,
+  "runtimeSourceCommit": "1c417fbfc2f70ab03a565b0af0a5a3c6f5e15ad6",
+  "sourceInputs": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\source-inputs.json",
+    "sha256Bytes": "f43111ffe94bd5027be270f681668409cc9457d1e8464f455c6ccf563c71f356",
+    "size": 10361
+  },
+  "findings": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\findings.json",
+    "sha256Bytes": "91b9dec5526a2f52b3284572b535f80a2435a9a662365297520d682497444a05",
+    "size": 10256
+  },
+  "candidateMutations": false,
+  "Gradle": false,
+  "nativeWindowExecuted": false,
+  "productionFixInstalled": false,
+  "historicalReceiptsModified": false
+}

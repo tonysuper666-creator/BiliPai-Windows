@@ -1,0 +1,41 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\core\cooldown\PlaybackCooldownManager.kt:74:20: error: unresolved reference 'w'.
+            Logger.w(TAG, "? ������Ƶ��ȴ: bvid=$bvid, ʧ�ܴ���=$currentCount")
+                   ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\core\cooldown\PlaybackCooldownManager.kt:76:20: error: unresolved reference 'w'.
+            Logger.w(TAG, "?? ��¼ʧ��: bvid=$bvid, ����=$currentCount/3")
+                   ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\core\cooldown\PlaybackCooldownManager.kt:85:16: error: unresolved reference 'w'.
+        Logger.w(TAG, "? ��¼ʧ��: bvid=$bvid, reason=$reason, ����ʧ��=$consecutiveFailures")
+               ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\core\cooldown\PlaybackCooldownManager.kt:90:20: error: unresolved reference 'w'.
+            Logger.w(TAG, " ����ȫ����ȴ������ $consecutiveFailures ����Ƶʧ��")
+                   ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\feature\video\usecase\DesktopOriginalVideoPlaybackUseCase.kt:27:21: error: redeclaration:
+enum class PlaybackBootstrapMode : Enum<PlaybackBootstrapMode>
+internal enum class PlaybackBootstrapMode {
+                    ^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\feature\video\usecase\DesktopOriginalVideoPlaybackUseCase.kt:32:21: error: redeclaration:
+enum class PlaybackBootstrapMode : Enum<PlaybackBootstrapMode>
+internal enum class PlaybackBootstrapMode {
+                    ^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\feature\video\usecase\DesktopOriginalVideoPlaybackUseCase.kt:123:42: error: unresolved reference 'content'.
+    fun initWithContext(context: android.content.Context) {
+                                         ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\feature\video\usecase\DesktopOriginalVideoPlaybackUseCase.kt:164:28: error: unresolved reference 'w'.
+                    Logger.w("VideoPlaybackUseCase", "? ȫ����ȴ�У���������: ${cooldownStatus.remainingMinutes}��${cooldownStatus.remainingSeconds}��")
+                           ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\feature\video\usecase\DesktopOriginalVideoPlaybackUseCase.kt:174:28: error: unresolved reference 'w'.
+                    Logger.w("VideoPlaybackUseCase", "? ��Ƶ��ȴ��: $videoIdentifier��ʣ�� ${cooldownStatus.remainingMinutes}��${cooldownStatus.remainingSeconds}��")
+                           ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\feature\video\usecase\DesktopOriginalVideoPlaybackUseCase.kt:815:17: error: named arguments are prohibited for function types.
+                targetPositionMs = position,
+                ^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\feature\video\usecase\DesktopOriginalVideoPlaybackUseCase.kt:816:17: error: named arguments are prohibited for function types.
+                currentPositionMs = player.currentPosition,
+                ^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\feature\video\usecase\DesktopOriginalVideoPlaybackUseCase.kt:817:17: error: named arguments are prohibited for function types.
+                bufferedPositionMs = player.bufferedPosition,
+                ^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-state-holder-parity\prepared\usecase\com\android\purebilibili\feature\video\usecase\DesktopOriginalVideoPlaybackUseCase.kt:818:17: error: named arguments are prohibited for function types.
+                durationMs = player.duration.coerceAtLeast(0L)
+                ^^^^^^^^^^

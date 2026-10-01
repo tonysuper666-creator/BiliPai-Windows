@@ -1,0 +1,218 @@
+{
+  "phase": 54,
+  "sourceIdentityCount": 1055,
+  "resourceRegistryCount": 213,
+  "actualRuntimeEntries": 101,
+  "wholeClassesPassed": true,
+  "wholeTestSourcesCompiled": true,
+  "actualProductStartupAndNormalClosePassed": true,
+  "unchangedProductMainStartup": {
+    "passed": true,
+    "actualProductSnapshot": 54,
+    "actualRuntimeEntries": 101,
+    "productionOverrides": 0,
+    "fixtureProductClassIntersections": [],
+    "fixtureClasses": 1,
+    "isolatedUserData": true,
+    "unchangedProductMain": true,
+    "physicalWindow": true,
+    "externalGuestHttpPossible": true,
+    "realAccountUsed": false,
+    "nativeAssets": {
+      "libmpv-2.dll": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+      "ffmpeg.exe": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea",
+      "ffprobe.exe": "67176fa62f89f94c3bcd379fd05677a25651569a2eb8880ec2194e62c82be412",
+      "bilipai-diagnostic-share.dll": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06"
+    },
+    "fullRouteOrPlayerAcceptance": false,
+    "newExeDeployed": false,
+    "processExitCode": 0,
+    "windowObservation": {
+      "startupHealthAcknowledged": true,
+      "visibleProductWindows": 1,
+      "width": 1360,
+      "height": 900,
+      "normalCloseRequested": true,
+      "imageSource": "owned-Skia-render-backing",
+      "windowClass": "androidx.compose.ui.awt.ComposeWindow"
+    },
+    "actualPackagedResourceVersion": "0.2.415.1",
+    "runtimeAndNativeAssetPinsBeforeAfterEqual": true
+  },
+  "originalVideoLoadCoreSourceIntegrated": true,
+  "fullOriginalVideoPlayerSectionSourceIntegrated": true,
+  "fullOrdinaryVideoRootMountAccepted": false,
+  "newJvmDependencies": 0,
+  "actual54RootVisualObservation": {
+    "actualProductSnapshot": 54,
+    "runtimeEntries": 101,
+    "productionOverrides": 0,
+    "attempts": [
+      {
+        "actualProductSnapshot": 54,
+        "attempt": "actual54-01-normal",
+        "runtimeEntries": 101,
+        "productionOverrides": 0,
+        "inputApi": "@oai/sky",
+        "uniqueTargetTitle": "BiliPai fixture-owned full Offline native acceptance",
+        "observedTargetWindowId": 75370070,
+        "actions": [
+          {
+            "step": 1,
+            "originalControl": "exit fullscreen",
+            "latestScreenshot": "screenshot-2",
+            "screenshotCoordinateLogical": [
+              2528,
+              1412
+            ],
+            "clickedAndImmediatelyRefreshed": true,
+            "actualOriginalCallbackAccepted": true
+          },
+          {
+            "step": 2,
+            "originalControl": "enter fullscreen",
+            "latestScreenshot": "screenshot-1",
+            "screenshotCoordinateLogical": [
+              854,
+              556
+            ],
+            "clickedAndImmediatelyRefreshed": true,
+            "actualOriginalCallbackAccepted": false
+          }
+        ],
+        "initialFullscreenVisualAccepted": true,
+        "initialFullscreenObservation": "Main, native video and both captured foreground layers filled2560x1440 logical pixels at150% scaling. Root observed no normal-window inset strip.",
+        "firstExitNormalGeometryAccepted": true,
+        "firstExitObservation": "Settled AWT Main900x620 at100,100; User32 outer1350x930 at150,150 and client1328x874. Native/foreground886x584 logical at107,130 match the normal client region. Root observed the complete original controls.",
+        "failedSecondInputObservation": "Root selected the latest related foreground screenshot886x584 at physical origin160,195 and clicked the visible full-screen button854,556. Sky returned success and an immediate refreshed normal screenshot, but the fixture received no AWT foreground press. Main remained Floating; no second fullscreen visual acceptance is claimed.",
+        "failure": "Actual foreground HWND press not delivered to AWT",
+        "inputsStoppedAfterFailure": true,
+        "closedByFixture": true,
+        "reenteredFullscreenVisualAccepted": false,
+        "requestedScopeFullyAccepted": false,
+        "arbitraryNavigationPlacementRestoreAccepted": false,
+        "OSSMTCButtonAccepted": false,
+        "actualMainShellMediaAccepted": false,
+        "scope": "Same original Offline native fixture on actual54/101; one observed150% display. Input API success is not original callback or native acceptance. Failed cohort is retained without further input or product changes."
+      },
+      {
+        "actualProductSnapshot": 54,
+        "attempt": "actual54-02-normal",
+        "runtimeEntries": 101,
+        "productionOverrides": 0,
+        "inputApi": "@oai/sky",
+        "uniqueTargetTitle": "BiliPai fixture-owned full Offline native acceptance",
+        "observedTargetWindowId": 7606982,
+        "actions": [
+          {
+            "step": 1,
+            "originalControl": "exit fullscreen",
+            "screenshot": "screenshot-2",
+            "coordinateLogical": [
+              2528,
+              1412
+            ],
+            "clickedAndImmediatelyRefreshed": true
+          },
+          {
+            "step": 2,
+            "originalControl": "enter fullscreen",
+            "screenshot": "screenshot-0",
+            "coordinateLogical": [
+              854,
+              586
+            ],
+            "clickedAndImmediatelyRefreshed": true
+          },
+          {
+            "step": 3,
+            "originalControl": "exit fullscreen",
+            "screenshot": "screenshot-0",
+            "coordinateLogical": [
+              2528,
+              1412
+            ],
+            "clickedAndImmediatelyRefreshed": true
+          },
+          {
+            "step": 4,
+            "originalControl": "next episode",
+            "screenshot": "screenshot-0",
+            "coordinateLogical": [
+              156,
+              538
+            ],
+            "clickedAndImmediatelyRefreshed": true
+          },
+          {
+            "step": 5,
+            "originalControl": "picture in picture",
+            "screenshot": "screenshot-0",
+            "coordinateLogical": [
+              840,
+              113
+            ],
+            "clickedAndImmediatelyRefreshed": true
+          },
+          {
+            "step": 6,
+            "originalControl": "return to main",
+            "screenshot": "screenshot-0",
+            "coordinateLogical": [
+              830,
+              112
+            ],
+            "clickedAndImmediatelyRefreshed": true
+          }
+        ],
+        "initialFullscreenVisualAccepted": true,
+        "normalWindowAfterFirstExitVisualAccepted": true,
+        "reenteredFullscreenVisualAccepted": true,
+        "normalWindowAfterSecondExitVisualAccepted": true,
+        "fullscreenObservation": "Both settled initial and reentered full-screen captures fill2560x1440 logical pixels. After reentry, request3 reports native Main2560x1440 and anchor2560x1440 at0,0, with all three Sky images2560x1440. Root observed no normal inset strip or displaced controls.",
+        "normalWindowObservation": "Both exits return to AWT Main900x620 at100,100 and complete visible original controls. The normal Main screenshot is888x614 and its related foreground886x584; captures and raw native geometry are labeled independently.",
+        "inputMappingObservation": "Attempt01 preserved its failed input delivery. In02, normal-window inputs use the latest Main screenshot0 and its observed control positions, including30 logical pixels of title bar. The app only returns the Main window object until native PiP appears; no popup handle was fabricated from fixture data.",
+        "pictureInPictureVisualAccepted": true,
+        "observedPictureInPictureWindow": {
+          "returnedWindowId": 99812154,
+          "title": "Offline Native 1",
+          "screenshotLogicalWidth": 322,
+          "screenshotLogicalHeight": 276
+        },
+        "pictureInPictureObservation": "Sky list_windows returned a separate actual native PiP window. Root captured that returned window and observed the colored test video at00:01.267 with its real return/previous/seek/pause/next controls. Main displays black video with the original return button while the Canvas is in PiP.",
+        "restoredMainPictureIndependentlyCaptured": false,
+        "restoredMainObservation": "Root clicked the observed Main return button and refreshed immediately. That point-in-time screenshot still displayed the black transition; the fixture then closed before a separate settled Main screenshot. Native handoff/restore assertions are evaluated in the closed fixture receipt.",
+        "OSSMTCButtonAccepted": false,
+        "arbitraryNavigationPlacementRestoreAccepted": false,
+        "actualMainShellMediaAccepted": false,
+        "requestedScopeFullyAccepted": false,
+        "scope": "Original full Offline renderer on unchanged actual54/101, one150% display, six real Root Sky controls and independently observed native PiP picture. This receipt does not extend acceptance to authenticated Main, arbitrary navigation, externalF11 or OS-generated SMTC events."
+      }
+    ],
+    "initialFullscreenVisualAccepted": true,
+    "reenteredFullscreenVisualAccepted": true,
+    "normalGeometryAfterBothExitsAccepted": true,
+    "pictureInPictureVisualAccepted": true,
+    "nativeLogicChecksPassed": 15,
+    "realSkyPressReleasePairs": 6,
+    "restoredMainPictureIndependentlyCaptured": false,
+    "requestedScopeFullyAccepted": false,
+    "arbitraryNavigationPlacementRestoreAccepted": false,
+    "actualMainShellMediaAccepted": false,
+    "OSSMTCButtonAccepted": false
+  },
+  "windowsFullscreenGeometryScope": "Full original Offline renderer on the actual54 graph, observed 150% display; see individual failed/accepted receipts",
+  "actualAccountAccepted": false,
+  "actualMainShellMediaAccepted": false,
+  "OSSMTCButtonAccepted": false,
+  "arbitraryNavigationPlacementRestoreAccepted": false,
+  "newExeDeployed": false,
+  "pending": [
+    "Full original Video VM and StateHolder",
+    "Same Repository raw cache/WBI/authorization bridge",
+    "One playback authority transition and full original ordinary video Root mount",
+    "Authenticated Main media/native/PiP route acceptance",
+    "Final portable EXE and updater validation"
+  ],
+  "sourceInventoryIsNotFunctionalOrReusePercentage": true
+}

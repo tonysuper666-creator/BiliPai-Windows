@@ -1,0 +1,33 @@
+desktop\.local\stable-video-player-section-parity\native-state-runs\02\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:8:51: error: cannot access 'val longPressSpeedPreferenceKey: DesktopPreferenceKey<Float>': it is private in file.
+import com.android.purebilibili.core.store.player.longPressSpeedPreferenceKey
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\native-state-runs\02\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:118:29: error: cannot access 'val longPressSpeedPreferenceKey: DesktopPreferenceKey<Float>': it is private in file.
+                preferences[longPressSpeedPreferenceKey] ?: DEFAULT_LONG_PRESS_SPEED
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\native-state-runs\02\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:125:39: error: unresolved reference 'normalizeLongPressSpeedHintScale'.
+            longPressSpeedHintScale = normalizeLongPressSpeedHintScale(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\native-state-runs\02\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:126:65: error: unresolved reference 'LONG_PRESS_SPEED_HINT_DEFAULT_SCALE'.
+                preferences[KEY_LONG_PRESS_SPEED_HINT_SCALE] ?: LONG_PRESS_SPEED_HINT_DEFAULT_SCALE
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\native-state-runs\02\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:128:39: error: unresolved reference 'normalizeLongPressSpeedHintAlpha'.
+            longPressSpeedHintAlpha = normalizeLongPressSpeedHintAlpha(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\native-state-runs\02\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:129:65: error: unresolved reference 'LONG_PRESS_SPEED_HINT_DEFAULT_ALPHA'.
+                preferences[KEY_LONG_PRESS_SPEED_HINT_ALPHA] ?: LONG_PRESS_SPEED_HINT_DEFAULT_ALPHA
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\native-state-runs\02\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:311:42: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+        return INLINE_SWIPE_SEEK_OPTIONS.minByOrNull { option -> abs(option - seconds) } ?: 30
+                                         ^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\native-state-runs\02\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:311:66: error: unresolved reference 'abs'.
+        return INLINE_SWIPE_SEEK_OPTIONS.minByOrNull { option -> abs(option - seconds) } ?: 30
+                                                                 ^^^
+desktop\.local\stable-video-player-section-parity\native-state-runs\02\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:317:46: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+        return FULLSCREEN_SWIPE_SEEK_OPTIONS.minByOrNull { option -> abs(option - seconds) } ?: 15
+                                             ^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\native-state-runs\02\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:317:70: error: unresolved reference 'abs'.
+        return FULLSCREEN_SWIPE_SEEK_OPTIONS.minByOrNull { option -> abs(option - seconds) } ?: 15
+                                                                     ^^^
+desktop\.local\stable-video-player-section-parity\native-state-runs\02\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:322:24: error: unresolved reference 'isLargeScreenOrFoldableConfiguration'.
+        return context.isLargeScreenOrFoldableConfiguration()
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

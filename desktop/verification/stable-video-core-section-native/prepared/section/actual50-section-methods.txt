@@ -1,0 +1,325 @@
+Compiled from "DesktopOriginalBgmDiscovery.kt"
+public final class com.android.purebilibili.feature.video.ui.section.DesktopOriginalBgmDiscoveryKt {
+  private static final long BGM_DISCOVERY_LOAD_DELAY_MS;
+  private static final int BGM_RECOMMEND_PAGE_SIZE;
+  private static final int BGM_RECOMMEND_ROW_START_INDEX;
+  private static final int AUDIO_NOW_PLAYING_BAR_CLEARANCE_DP;
+  private static final float BGM_DETAIL_CARD_HEIGHT;
+  public static final void DesktopOriginalInlineBgmSection(java.util.List<com.android.purebilibili.data.model.response.BgmInfo>, kotlin.jvm.functions.Function1<? super com.android.purebilibili.data.model.response.BgmInfo, kotlin.Unit>, kotlin.jvm.functions.Function2<? super java.lang.String, ? super java.lang.Long, kotlin.Unit>, androidx.compose.runtime.Composer, int, int);
+  public static final void BgmInfoRow(java.lang.String, java.lang.String, boolean, boolean, kotlin.jvm.functions.Function0<kotlin.Unit>, androidx.compose.runtime.Composer, int, int);
+  private static final void BgmSelectionSheet(java.lang.String, java.util.List<com.android.purebilibili.data.model.response.BgmInfo>, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function1<? super com.android.purebilibili.data.model.response.BgmInfo, kotlin.Unit>, kotlin.jvm.functions.Function2<? super java.lang.String, ? super java.lang.Long, kotlin.Unit>, androidx.compose.runtime.Composer, int);
+  private static final void BgmDiscoveryRelatedHeader(androidx.compose.runtime.Composer, int);
+  private static final void BgmRecommendVideoCardRow(java.util.List<com.android.purebilibili.data.model.response.BgmRecommendVideo>, int, kotlin.jvm.functions.Function1<? super com.android.purebilibili.data.model.response.BgmRecommendVideo, kotlin.Unit>, androidx.compose.runtime.Composer, int);
+  private static final void BgmRecommendVideoSkeletonRow(int, androidx.compose.runtime.Composer, int);
+  private static final com.android.purebilibili.data.model.response.VideoItem bgmRecommendVideoToVideoItem(com.android.purebilibili.data.model.response.BgmRecommendVideo);
+  private static final void BgmSelectionStrip(java.util.List<com.android.purebilibili.data.model.response.BgmInfo>, java.util.List<java.lang.String>, java.lang.String, kotlin.jvm.functions.Function1<? super java.lang.String, kotlin.Unit>, androidx.compose.runtime.Composer, int);
+  private static final void BgmDetailCard(com.android.purebilibili.data.model.response.BgmInfo, com.android.purebilibili.data.model.response.BgmDetailData, boolean, java.lang.String, kotlin.jvm.functions.Function0<kotlin.Unit>, androidx.compose.runtime.Composer, int);
+  private static final void BgmDetailCardSkeleton(androidx.compose.runtime.Composer, int);
+  private static final void BgmDetailCover(java.lang.String, java.lang.String, androidx.compose.runtime.Composer, int);
+  private static final java.lang.String resolveBgmScoreText(com.android.purebilibili.data.model.response.BgmDetailData);
+  private static final java.lang.String resolveBgmStatLine(com.android.purebilibili.data.model.response.BgmDetailData);
+  private static final java.lang.String resolveUnavailableBgmStatLine();
+  private static final java.lang.String resolveBgmCommentText(com.android.purebilibili.data.model.response.BgmDetailData);
+  private static final java.lang.String resolveBgmRecommendRowKey(int, java.util.List<com.android.purebilibili.data.model.response.BgmRecommendVideo>);
+  private static final int resolveBgmRecommendRowItemIndex(int);
+  private static final long resolveQueryLongParam(java.lang.String, java.lang.String);
+  public static final java.lang.String resolveBgmItemKey(int, com.android.purebilibili.data.model.response.BgmInfo);
+  public static final boolean shouldLoadBgmDiscoveryItem(com.android.purebilibili.feature.video.ui.section.BgmSheetItemState, java.lang.String, long, long);
+  public static final boolean shouldShowBgmDetailSkeleton(com.android.purebilibili.feature.video.ui.section.BgmSheetItemState);
+  public static final boolean shouldShowInitialBgmRecommendationPlaceholders(com.android.purebilibili.feature.video.ui.section.BgmSheetItemState);
+  public static final boolean shouldLoadMoreBgmRecommendations(com.android.purebilibili.feature.video.ui.section.BgmSheetItemState, java.lang.String, long, long);
+  private static final java.lang.Object loadMoreBgmRecommendations(java.util.Map<java.lang.String, com.android.purebilibili.feature.video.ui.section.BgmSheetItemState>, java.lang.String, com.android.purebilibili.data.model.response.BgmInfo, long, long, com.bilipai.desktop.audio.DesktopBgmDiscoveryRequests, kotlin.coroutines.Continuation<? super kotlin.Unit>);
+  private static final java.util.List<com.android.purebilibili.data.model.response.BgmRecommendVideo> mergeBgmRecommendedVideos(java.util.List<com.android.purebilibili.data.model.response.BgmRecommendVideo>, java.util.List<com.android.purebilibili.data.model.response.BgmRecommendVideo>);
+  private static final boolean DesktopOriginalInlineBgmSection$lambda$5(androidx.compose.runtime.MutableState<java.lang.Boolean>);
+  private static final void DesktopOriginalInlineBgmSection$lambda$6(androidx.compose.runtime.MutableState<java.lang.Boolean>, boolean);
+  private static final float BgmInfoRow$lambda$1(androidx.compose.runtime.State<java.lang.Float>);
+  private static final java.lang.String BgmSelectionSheet$lambda$5(androidx.compose.runtime.MutableState<java.lang.String>);
+  private static final void BgmSelectionSheet$lambda$6(androidx.compose.runtime.MutableState<java.lang.String>, java.lang.String);
+  private static final com.android.purebilibili.core.store.DesktopHomeCardSettings BgmRecommendVideoCardRow$lambda$0(androidx.compose.runtime.State<com.android.purebilibili.core.store.DesktopHomeCardSettings>);
+  private static final com.android.purebilibili.core.store.DesktopHomeCardSettings BgmRecommendVideoSkeletonRow$lambda$0(androidx.compose.runtime.State<com.android.purebilibili.core.store.DesktopHomeCardSettings>);
+  private static final kotlin.Unit DesktopOriginalInlineBgmSection$lambda$0$0(com.android.purebilibili.data.model.response.BgmInfo);
+  private static final kotlin.Unit DesktopOriginalInlineBgmSection$lambda$1$0(java.lang.String, long);
+  private static final kotlin.Unit DesktopOriginalInlineBgmSection$lambda$2(java.util.List, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit DesktopOriginalInlineBgmSection$lambda$8$0(java.util.List, kotlin.jvm.functions.Function1, com.android.purebilibili.data.model.response.BgmInfo, androidx.compose.runtime.MutableState);
+  private static final kotlin.Unit DesktopOriginalInlineBgmSection$lambda$9$0(androidx.compose.runtime.MutableState);
+  private static final kotlin.Unit DesktopOriginalInlineBgmSection$lambda$10$0(kotlin.jvm.functions.Function1, androidx.compose.runtime.MutableState, com.android.purebilibili.data.model.response.BgmInfo);
+  private static final kotlin.Unit DesktopOriginalInlineBgmSection$lambda$11(java.util.List, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmInfoRow$lambda$0$0();
+  private static final kotlin.Unit BgmInfoRow$lambda$2(boolean, java.lang.String, java.lang.String, androidx.compose.runtime.State, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmInfoRow$lambda$3(java.lang.String, java.lang.String, boolean, boolean, kotlin.jvm.functions.Function0, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmSelectionSheet$lambda$14$0$0$0(java.lang.String, kotlin.jvm.functions.Function0, androidx.compose.foundation.lazy.LazyItemScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmSelectionSheet$lambda$14$0$0$1$0$0(androidx.compose.runtime.MutableState, java.lang.String);
+  private static final kotlin.Unit BgmSelectionSheet$lambda$14$0$0$1(java.util.List, java.util.List, androidx.compose.runtime.MutableState, androidx.compose.foundation.lazy.LazyItemScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmSelectionSheet$lambda$14$0$0$2$0$0(kotlin.jvm.functions.Function1, com.android.purebilibili.data.model.response.BgmInfo);
+  private static final kotlin.Unit BgmSelectionSheet$lambda$14$0$0$2(com.android.purebilibili.data.model.response.BgmInfo, com.android.purebilibili.feature.video.ui.section.BgmSheetItemState, boolean, java.lang.String, kotlin.jvm.functions.Function1, androidx.compose.foundation.lazy.LazyItemScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmSelectionSheet$lambda$14$0$0$3$0(int, androidx.compose.foundation.lazy.LazyItemScope, androidx.compose.runtime.Composer, int);
+  private static final java.lang.Object BgmSelectionSheet$lambda$14$0$0$4(int, java.util.List);
+  private static final kotlin.Unit BgmSelectionSheet$lambda$14$0$0$6(com.android.purebilibili.feature.video.ui.section.BgmSheetItemState, androidx.compose.foundation.lazy.LazyItemScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmSelectionSheet$lambda$14$0$0$7(java.util.List, androidx.compose.foundation.lazy.LazyItemScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmSelectionSheet$lambda$14$0$0(java.util.List, boolean, com.android.purebilibili.feature.video.ui.section.BgmSheetItemState, java.util.List, java.lang.String, long, long, java.lang.String, kotlin.jvm.functions.Function0, java.util.List, androidx.compose.runtime.MutableState, com.android.purebilibili.data.model.response.BgmInfo, boolean, java.lang.String, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, androidx.compose.foundation.lazy.LazyListScope);
+  private static final kotlin.Unit BgmSelectionSheet$lambda$14(androidx.compose.foundation.lazy.LazyListState, java.lang.String, kotlin.jvm.functions.Function0, java.util.List, java.util.List, androidx.compose.runtime.MutableState, com.android.purebilibili.data.model.response.BgmInfo, com.android.purebilibili.feature.video.ui.section.BgmSheetItemState, boolean, java.lang.String, kotlin.jvm.functions.Function1, boolean, java.util.List, kotlin.jvm.functions.Function2, java.lang.String, long, long, androidx.compose.foundation.layout.ColumnScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmSelectionSheet$lambda$17(java.lang.String, java.util.List, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmDiscoveryRelatedHeader$lambda$1(int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmRecommendVideoCardRow$lambda$2$0$0$0(kotlin.jvm.functions.Function1, com.android.purebilibili.data.model.response.BgmRecommendVideo, java.lang.String, long);
+  private static final kotlin.Unit BgmRecommendVideoCardRow$lambda$3(java.util.List, int, kotlin.jvm.functions.Function1, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmRecommendVideoSkeletonRow$lambda$3(int, int, androidx.compose.runtime.Composer, int);
+  private static final java.lang.Object BgmSelectionStrip$lambda$1$0$0(java.util.List, int, com.android.purebilibili.data.model.response.BgmInfo);
+  private static final kotlin.Unit BgmSelectionStrip$lambda$1$0(java.util.List, java.util.List, java.lang.String, kotlin.jvm.functions.Function1, coil3.PlatformContext, int, androidx.compose.foundation.lazy.LazyListScope);
+  private static final kotlin.Unit BgmSelectionStrip$lambda$2(java.util.List, java.util.List, java.lang.String, kotlin.jvm.functions.Function1, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmDetailCard$lambda$4(boolean, com.android.purebilibili.data.model.response.BgmDetailData, com.android.purebilibili.data.model.response.BgmInfo, java.lang.String, java.lang.String, java.lang.String, kotlin.jvm.functions.Function0, java.lang.String, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmDetailCard$lambda$5(com.android.purebilibili.data.model.response.BgmInfo, com.android.purebilibili.data.model.response.BgmDetailData, boolean, java.lang.String, kotlin.jvm.functions.Function0, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmDetailCardSkeleton$lambda$0(int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BgmDetailCover$lambda$2(java.lang.String, java.lang.String, int, androidx.compose.runtime.Composer, int);
+  private static final java.lang.CharSequence resolveBgmRecommendRowKey$lambda$0(com.android.purebilibili.data.model.response.BgmRecommendVideo);
+  public static final void access$BgmDiscoveryRelatedHeader(androidx.compose.runtime.Composer, int);
+  public static final float access$getBGM_DETAIL_CARD_HEIGHT$p();
+  public static final java.lang.String access$BgmSelectionSheet$lambda$5(androidx.compose.runtime.MutableState);
+  public static final int access$resolveBgmRecommendRowItemIndex(int);
+  public static final java.lang.Object access$loadMoreBgmRecommendations(java.util.Map, java.lang.String, com.android.purebilibili.data.model.response.BgmInfo, long, long, com.bilipai.desktop.audio.DesktopBgmDiscoveryRequests, kotlin.coroutines.Continuation);
+  public static final void access$BgmRecommendVideoCardRow(java.util.List, int, kotlin.jvm.functions.Function1, androidx.compose.runtime.Composer, int);
+  static {};
+}
+Compiled from "DesktopOriginalBgmDisplay.kt"
+public final class com.android.purebilibili.feature.video.ui.section.DesktopOriginalBgmDisplayKt {
+  public static final java.util.List<com.android.purebilibili.data.model.response.BgmInfo> resolveDisplayBgmList(com.android.purebilibili.data.model.response.BgmInfo, java.util.List<com.android.purebilibili.data.model.response.BgmInfo>);
+}
+Compiled from "DesktopOriginalDanmakuScopePolicy.kt"
+public final class com.android.purebilibili.feature.video.ui.section.DesktopOriginalDanmakuScopePolicyKt {
+  public static final com.android.purebilibili.core.store.DanmakuSettingsScope resolveVideoPlayerDanmakuSettingsScope(boolean, boolean);
+}
+Compiled from "DesktopOriginalProfileTripleProgressIcon.kt"
+public final class com.android.purebilibili.feature.video.ui.section.DesktopOriginalProfileTripleProgressIconKt {
+  public static final void TripleProgressIcon-fWhpE4E(androidx.compose.ui.graphics.vector.ImageVector, java.lang.String, float, long, boolean, androidx.compose.ui.Modifier, androidx.compose.runtime.Composer, int, int);
+  private static final kotlin.Unit TripleProgressIcon_fWhpE4E$lambda$0$0$0$0(float, long, float, androidx.compose.ui.graphics.drawscope.DrawScope);
+  private static final kotlin.Unit TripleProgressIcon_fWhpE4E$lambda$1(androidx.compose.ui.graphics.vector.ImageVector, java.lang.String, float, long, boolean, androidx.compose.ui.Modifier, int, int, androidx.compose.runtime.Composer, int);
+}
+Compiled from "DesktopOriginalVideoActionSection.kt"
+public final class com.android.purebilibili.feature.video.ui.section.DesktopOriginalVideoActionSectionKt {
+  public static final boolean shouldStartTriplePress(boolean);
+  public static final boolean shouldCancelTriplePressOnRelease(boolean, boolean);
+  public static final java.lang.String resolveVideoDetailShareActionText(int);
+  public static final float resolveVideoDetailActionRowItemSpacing(int);
+  public static final float resolveVideoDetailActionButtonHorizontalPadding(int);
+  public static final void ActionButtonsRow(com.android.purebilibili.data.model.response.ViewInfo, boolean, boolean, boolean, int, float, boolean, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, boolean, androidx.compose.ui.Modifier, androidx.compose.runtime.Composer, int, int, int);
+  private static final void TripleProgressActionButton-4GKFtxM(androidx.compose.ui.graphics.vector.ImageVector, java.lang.String, boolean, long, float, kotlin.jvm.functions.Function0<kotlin.Unit>, androidx.compose.ui.Modifier, kotlin.jvm.functions.Function0<kotlin.Unit>, boolean, float, androidx.compose.runtime.Composer, int, int);
+  private static final void TripleLikeActionButton(boolean, java.lang.String, java.lang.String, boolean, java.lang.String, boolean, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function1<? super java.lang.Float, kotlin.Unit>, androidx.compose.ui.Modifier, androidx.compose.runtime.Composer, int, int);
+  private static final void BiliActionButton-lfJchBM(androidx.compose.ui.graphics.vector.ImageVector, java.lang.String, boolean, long, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, boolean, float, androidx.compose.runtime.Composer, int, int);
+  public static final void ActionButton-zSi9XkE(androidx.compose.ui.graphics.vector.ImageVector, java.lang.String, boolean, long, float, kotlin.jvm.functions.Function0<kotlin.Unit>, androidx.compose.runtime.Composer, int, int);
+  private static final boolean ActionButtonsRow$lambda$11(androidx.compose.runtime.MutableState<java.lang.Boolean>);
+  private static final void ActionButtonsRow$lambda$12(androidx.compose.runtime.MutableState<java.lang.Boolean>, boolean);
+  private static final boolean ActionButtonsRow$lambda$14(androidx.compose.runtime.MutableState<java.lang.Boolean>);
+  private static final void ActionButtonsRow$lambda$15(androidx.compose.runtime.MutableState<java.lang.Boolean>, boolean);
+  private static final float ActionButtonsRow$lambda$17(androidx.compose.runtime.MutableFloatState);
+  private static final void ActionButtonsRow$lambda$18(androidx.compose.runtime.MutableFloatState, float);
+  private static final float ActionButtonsRow$lambda$20(androidx.compose.runtime.State<java.lang.Float>);
+  private static final boolean TripleProgressActionButton_4GKFtxM$lambda$1(androidx.compose.runtime.State<java.lang.Boolean>);
+  private static final float TripleProgressActionButton_4GKFtxM$lambda$2(androidx.compose.runtime.State<java.lang.Float>);
+  private static final boolean TripleLikeActionButton$lambda$2(androidx.compose.runtime.MutableState<java.lang.Boolean>);
+  private static final void TripleLikeActionButton$lambda$3(androidx.compose.runtime.MutableState<java.lang.Boolean>, boolean);
+  private static final float TripleLikeActionButton$lambda$5(androidx.compose.runtime.MutableFloatState);
+  private static final void TripleLikeActionButton$lambda$6(androidx.compose.runtime.MutableFloatState, float);
+  private static final float TripleLikeActionButton$lambda$8(androidx.compose.runtime.State<java.lang.Float>);
+  private static final boolean BiliActionButton_lfJchBM$lambda$1(androidx.compose.runtime.State<java.lang.Boolean>);
+  private static final float BiliActionButton_lfJchBM$lambda$2(androidx.compose.runtime.State<java.lang.Float>);
+  private static final boolean BiliActionButton_lfJchBM$lambda$4(androidx.compose.runtime.MutableState<java.lang.Boolean>);
+  private static final void BiliActionButton_lfJchBM$lambda$5(androidx.compose.runtime.MutableState<java.lang.Boolean>, boolean);
+  private static final float BiliActionButton_lfJchBM$lambda$7(androidx.compose.runtime.State<java.lang.Float>);
+  private static final boolean ActionButton_zSi9XkE$lambda$2(androidx.compose.runtime.State<java.lang.Boolean>);
+  private static final float ActionButton_zSi9XkE$lambda$3(androidx.compose.runtime.State<java.lang.Float>);
+  private static final boolean ActionButton_zSi9XkE$lambda$5(androidx.compose.runtime.MutableState<java.lang.Boolean>);
+  private static final void ActionButton_zSi9XkE$lambda$6(androidx.compose.runtime.MutableState<java.lang.Boolean>, boolean);
+  private static final float ActionButton_zSi9XkE$lambda$8(androidx.compose.runtime.State<java.lang.Float>);
+  private static final kotlin.Unit ActionButtonsRow$lambda$0$0();
+  private static final kotlin.Unit ActionButtonsRow$lambda$1$0();
+  private static final kotlin.Unit ActionButtonsRow$lambda$2$0();
+  private static final kotlin.Unit ActionButtonsRow$lambda$3$0();
+  private static final kotlin.Unit ActionButtonsRow$lambda$4$0();
+  private static final kotlin.Unit ActionButtonsRow$lambda$5$0();
+  private static final kotlin.Unit ActionButtonsRow$lambda$6$0();
+  private static final kotlin.Unit ActionButtonsRow$lambda$7$0();
+  private static final kotlin.Unit ActionButtonsRow$lambda$8$0();
+  private static final kotlin.Unit ActionButtonsRow$lambda$19$0(kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, androidx.compose.runtime.MutableFloatState, androidx.compose.runtime.MutableState, androidx.compose.runtime.MutableState, float);
+  private static final kotlin.Unit ActionButtonsRow$lambda$24(com.android.purebilibili.data.model.response.ViewInfo, boolean, boolean, boolean, int, float, boolean, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, boolean, androidx.compose.ui.Modifier, int, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit TripleProgressActionButton_4GKFtxM$lambda$3$0(androidx.compose.runtime.State, androidx.compose.ui.graphics.GraphicsLayerScope);
+  private static final kotlin.Unit TripleProgressActionButton_4GKFtxM$lambda$4$0$0$0(long, float, androidx.compose.ui.graphics.drawscope.DrawScope);
+  private static final kotlin.Unit TripleProgressActionButton_4GKFtxM$lambda$5(androidx.compose.ui.graphics.vector.ImageVector, java.lang.String, boolean, long, float, kotlin.jvm.functions.Function0, androidx.compose.ui.Modifier, kotlin.jvm.functions.Function0, boolean, float, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit TripleLikeActionButton$lambda$0$0(float);
+  private static final kotlin.Unit TripleLikeActionButton$lambda$7$0(kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, androidx.compose.runtime.MutableState, float);
+  private static final kotlin.Unit TripleLikeActionButton$lambda$12$0(java.lang.String, boolean, androidx.compose.runtime.MutableFloatState, androidx.compose.animation.AnimatedVisibilityScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit TripleLikeActionButton$lambda$12$1(boolean, java.lang.String, androidx.compose.runtime.MutableFloatState, androidx.compose.animation.AnimatedVisibilityScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit TripleLikeActionButton$lambda$13(boolean, java.lang.String, java.lang.String, boolean, java.lang.String, boolean, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function1, androidx.compose.ui.Modifier, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit BiliActionButton_lfJchBM$lambda$6$0(androidx.compose.runtime.MutableState, float);
+  private static final kotlin.Unit BiliActionButton_lfJchBM$lambda$9$0(androidx.compose.runtime.State, androidx.compose.runtime.State, androidx.compose.ui.graphics.GraphicsLayerScope);
+  private static final kotlin.Unit BiliActionButton_lfJchBM$lambda$11(androidx.compose.ui.graphics.vector.ImageVector, java.lang.String, boolean, long, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, boolean, float, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit ActionButton_zSi9XkE$lambda$0$0();
+  private static final kotlin.Unit ActionButton_zSi9XkE$lambda$7$0(androidx.compose.runtime.MutableState, float);
+  private static final kotlin.Unit ActionButton_zSi9XkE$lambda$10$0(androidx.compose.runtime.State, androidx.compose.ui.graphics.GraphicsLayerScope);
+  private static final kotlin.Unit ActionButton_zSi9XkE$lambda$11$0(kotlin.jvm.functions.Function0);
+  private static final kotlin.Unit ActionButton_zSi9XkE$lambda$12$0$0(androidx.compose.runtime.State, androidx.compose.ui.graphics.GraphicsLayerScope);
+  private static final kotlin.Unit ActionButton_zSi9XkE$lambda$13(androidx.compose.ui.graphics.vector.ImageVector, java.lang.String, boolean, long, float, kotlin.jvm.functions.Function0, int, int, androidx.compose.runtime.Composer, int);
+  public static final void access$ActionButtonsRow$lambda$18(androidx.compose.runtime.MutableFloatState, float);
+  public static final float access$ActionButtonsRow$lambda$20(androidx.compose.runtime.State);
+  public static final boolean access$ActionButtonsRow$lambda$11(androidx.compose.runtime.MutableState);
+  public static final boolean access$ActionButtonsRow$lambda$14(androidx.compose.runtime.MutableState);
+  public static final void access$ActionButtonsRow$lambda$12(androidx.compose.runtime.MutableState, boolean);
+  public static final void access$ActionButtonsRow$lambda$15(androidx.compose.runtime.MutableState, boolean);
+  public static final void access$TripleLikeActionButton$lambda$6(androidx.compose.runtime.MutableFloatState, float);
+  public static final float access$TripleLikeActionButton$lambda$8(androidx.compose.runtime.State);
+  public static final boolean access$TripleLikeActionButton$lambda$2(androidx.compose.runtime.MutableState);
+  public static final void access$TripleLikeActionButton$lambda$3(androidx.compose.runtime.MutableState, boolean);
+  public static final float access$TripleLikeActionButton$lambda$5(androidx.compose.runtime.MutableFloatState);
+  public static final void access$BiliActionButton_lfJchBM$lambda$5(androidx.compose.runtime.MutableState, boolean);
+  public static final void access$ActionButton_zSi9XkE$lambda$6(androidx.compose.runtime.MutableState, boolean);
+}
+Compiled from "DesktopOriginalVideoBgmTag.kt"
+public final class com.android.purebilibili.feature.video.ui.section.DesktopOriginalVideoBgmTagKt {
+  public static final com.android.purebilibili.data.model.response.BgmInfo resolveBgmTagInfo(com.android.purebilibili.data.model.response.VideoTag);
+}
+Compiled from "DesktopOriginalVideoGestureMotion.kt"
+public final class com.android.purebilibili.feature.video.ui.section.DesktopOriginalVideoGestureMotionKt {
+  public static final com.android.purebilibili.feature.video.ui.section.VideoGestureMotionSpec resolveVideoGestureMotionSpec();
+}
+Compiled from "DesktopOriginalVideoInfoDisplayPolicy.kt"
+public final class com.android.purebilibili.feature.video.ui.section.DesktopOriginalVideoInfoDisplayPolicyKt {
+  private static final java.util.List<java.lang.String> CURRENT_AFFAIRS_PARTITION_KEYWORDS;
+  private static final java.util.List<java.lang.String> CURRENT_AFFAIRS_TITLE_KEYWORDS;
+  public static final int UP_INFO_COMPACT_WIDTH_THRESHOLD_DP;
+  private static final int SPONSOR_LABEL_INLINE_MAX_LENGTH;
+  public static final boolean shouldShowAiSummaryEntry(com.android.purebilibili.data.model.response.AiSummaryData, boolean);
+  public static final boolean hasAiSummaryContent(com.android.purebilibili.data.model.response.AiSummaryData);
+  public static final boolean shouldShowVideoNoteEntry(boolean, long);
+  public static final boolean shouldShowInlineOwnerIdentity(boolean);
+  public static final boolean shouldUseCompactUpInfoLayout(int);
+  public static final java.lang.String resolveVideoDetailOnlineCountText(boolean, java.lang.String);
+  public static final boolean shouldStackSponsorLabelAboveTitle(java.lang.String);
+  public static final boolean shouldEmphasizePrecisePublishTime(java.lang.String, java.lang.String);
+  public static final java.lang.String resolvePublishTimeRowText(long, java.lang.String, java.lang.String, long, java.util.Locale, java.util.TimeZone);
+  public static java.lang.String resolvePublishTimeRowText$default(long, java.lang.String, java.lang.String, long, java.util.Locale, java.util.TimeZone, int, java.lang.Object);
+  public static final java.lang.String resolveDynamicPublishTimeRowText(long, java.lang.String, long, java.util.Locale, java.util.TimeZone);
+  public static java.lang.String resolveDynamicPublishTimeRowText$default(long, java.lang.String, long, java.util.Locale, java.util.TimeZone, int, java.lang.Object);
+  static {};
+}
+Compiled from "DesktopOriginalVideoInfoSection.kt"
+public final class com.android.purebilibili.feature.video.ui.section.DesktopOriginalVideoInfoSectionKt {
+  public static final java.lang.String VIDEO_DESCRIPTION_URL_TAG;
+  private static final kotlin.text.Regex VIDEO_DESCRIPTION_URL_PATTERN;
+  private static final kotlin.text.Regex VIDEO_DESCRIPTION_INLINE_BVID_PATTERN;
+  private static final kotlin.text.Regex VIDEO_DESCRIPTION_TOPIC_PATTERN;
+  private static final kotlin.text.Regex VIDEO_DESCRIPTION_MENTION_PATTERN;
+  private static final boolean getUseMiuixSpring(androidx.compose.runtime.Composer, int);
+  public static final androidx.compose.ui.text.AnnotatedString buildVideoDescriptionAnnotatedString-bw27NRU(java.lang.String, long, androidx.compose.ui.text.LinkInteractionListener);
+  public static androidx.compose.ui.text.AnnotatedString buildVideoDescriptionAnnotatedString-bw27NRU$default(java.lang.String, long, androidx.compose.ui.text.LinkInteractionListener, int, java.lang.Object);
+  public static final androidx.compose.ui.text.AnnotatedString buildVideoDescriptionAnnotatedString-9LQNqLg(java.lang.String, java.util.List<com.android.purebilibili.data.model.response.VideoDescSegment>, long, androidx.compose.ui.text.LinkInteractionListener);
+  public static androidx.compose.ui.text.AnnotatedString buildVideoDescriptionAnnotatedString-9LQNqLg$default(java.lang.String, java.util.List, long, androidx.compose.ui.text.LinkInteractionListener, int, java.lang.Object);
+  private static final androidx.compose.ui.text.AnnotatedString buildRawDescriptionAnnotatedString-bw27NRU(java.lang.String, long, androidx.compose.ui.text.LinkInteractionListener);
+  public static final boolean resolveVideoInfoInitialExpandedState(boolean, boolean, boolean);
+  public static boolean resolveVideoInfoInitialExpandedState$default(boolean, boolean, boolean, int, java.lang.Object);
+  public static final void VideoTitleSection(com.android.purebilibili.data.model.response.ViewInfo, boolean, kotlin.jvm.functions.Function1<? super java.lang.Long, kotlin.Unit>, androidx.compose.runtime.Composer, int, int);
+  public static final void VideoDetailSponsorLabelChip(java.lang.String, androidx.compose.ui.Modifier, int, androidx.compose.runtime.Composer, int, int);
+  public static final void VideoTitleWithDesc(com.android.purebilibili.data.model.response.ViewInfo, java.util.List<com.android.purebilibili.data.model.response.VideoTag>, java.util.List<com.android.purebilibili.data.model.response.BgmInfo>, java.lang.String, boolean, boolean, boolean, java.lang.String, boolean, kotlin.jvm.functions.Function1<? super java.lang.String, kotlin.Unit>, kotlin.jvm.functions.Function1<? super com.android.purebilibili.data.model.response.BgmInfo, kotlin.Unit>, kotlin.jvm.functions.Function1<? super java.lang.String, kotlin.Unit>, kotlin.jvm.functions.Function2<? super java.lang.String, ? super java.lang.Long, kotlin.Unit>, java.lang.String, kotlin.jvm.functions.Function2<? super androidx.compose.runtime.Composer, ? super java.lang.Integer, kotlin.Unit>, androidx.compose.runtime.Composer, int, int, int);
+  public static final void UpInfoSection-ajgufuY(com.android.purebilibili.data.model.response.ViewInfo, boolean, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function1<? super java.lang.Long, kotlin.Unit>, boolean, java.lang.Integer, java.lang.Integer, boolean, boolean, java.lang.String, float, androidx.compose.ui.Modifier, kotlin.jvm.functions.Function3<? super androidx.compose.foundation.layout.RowScope, ? super androidx.compose.runtime.Composer, ? super java.lang.Integer, kotlin.Unit>, androidx.compose.runtime.Composer, int, int, int);
+  public static final void DescriptionSection(java.lang.String, androidx.compose.runtime.Composer, int);
+  private static final boolean VideoTitleSection$lambda$2(androidx.compose.runtime.MutableState<java.lang.Boolean>);
+  private static final void VideoTitleSection$lambda$3(androidx.compose.runtime.MutableState<java.lang.Boolean>, boolean);
+  private static final float VideoTitleWithDesc$lambda$14$1$2(androidx.compose.runtime.State<java.lang.Float>);
+  private static final com.android.purebilibili.core.ui.components.AppTagChipSize VideoTitleWithDesc$lambda$14$8$0(androidx.compose.runtime.State<? extends com.android.purebilibili.core.ui.components.AppTagChipSize>);
+  private static final boolean VideoTitleWithDesc$lambda$3(androidx.compose.runtime.State<java.lang.Boolean>);
+  private static final boolean VideoTitleWithDesc$lambda$4(androidx.compose.runtime.State<java.lang.Boolean>);
+  private static final boolean VideoTitleWithDesc$lambda$6(androidx.compose.runtime.MutableState<java.lang.Boolean>);
+  private static final void VideoTitleWithDesc$lambda$7(androidx.compose.runtime.MutableState<java.lang.Boolean>, boolean);
+  private static final long UpInfoSection_ajgufuY$lambda$4$1$0$3(androidx.compose.runtime.State<androidx.compose.ui.graphics.Color>);
+  private static final com.android.purebilibili.core.store.PlayerControlVisibilitySettings UpInfoSection_ajgufuY$lambda$2(androidx.compose.runtime.State<com.android.purebilibili.core.store.PlayerControlVisibilitySettings>);
+  private static final boolean DescriptionSection$lambda$1(androidx.compose.runtime.MutableState<java.lang.Boolean>);
+  private static final void DescriptionSection$lambda$2(androidx.compose.runtime.MutableState<java.lang.Boolean>, boolean);
+  private static final kotlin.Unit VideoTitleSection$lambda$0$0(long);
+  private static final kotlin.Unit VideoTitleSection$lambda$6$0(androidx.compose.runtime.MutableState);
+  private static final kotlin.Unit VideoTitleSection$lambda$7$0$0(com.android.purebilibili.data.model.response.ViewInfo, androidx.compose.runtime.MutableState, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoTitleSection$lambda$7$1(java.lang.String, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoTitleSection$lambda$8(com.android.purebilibili.data.model.response.ViewInfo, boolean, kotlin.jvm.functions.Function1, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoDetailSponsorLabelChip$lambda$0(java.lang.String, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoDetailSponsorLabelChip$lambda$1(java.lang.String, androidx.compose.ui.Modifier, int, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$0$0(com.android.purebilibili.data.model.response.BgmInfo);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$1$0(java.lang.String);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$2$0(java.lang.String, long);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$0$0(androidx.compose.runtime.MutableState);
+  private static final androidx.compose.animation.core.FiniteAnimationSpec VideoTitleWithDesc$lambda$14$1$0$0$0(com.android.purebilibili.core.ui.transition.VideoSharedTransitionMotionSpec, androidx.compose.ui.geometry.Rect, androidx.compose.ui.geometry.Rect);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$1$1(com.android.purebilibili.data.model.response.ViewInfo, kotlin.jvm.internal.Ref$ObjectRef, androidx.compose.runtime.MutableState, androidx.compose.runtime.Composer, int);
+  private static final androidx.compose.animation.core.FiniteAnimationSpec VideoTitleWithDesc$lambda$14$2$0$0$0$0$0(com.android.purebilibili.core.ui.transition.VideoSharedTransitionMotionSpec, androidx.compose.ui.geometry.Rect, androidx.compose.ui.geometry.Rect);
+  private static final androidx.compose.animation.core.FiniteAnimationSpec VideoTitleWithDesc$lambda$14$2$0$0$2$0$0(com.android.purebilibili.core.ui.transition.VideoSharedTransitionMotionSpec, androidx.compose.ui.geometry.Rect, androidx.compose.ui.geometry.Rect);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$2$0$1(java.lang.String, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$2$0(java.lang.String, java.lang.String, boolean, java.lang.String, boolean, androidx.compose.animation.SharedTransitionScope, com.android.purebilibili.data.model.response.ViewInfo, java.lang.String, androidx.compose.animation.AnimatedVisibilityScope, com.android.purebilibili.core.ui.transition.VideoSharedTransitionMotionSpec, androidx.compose.foundation.layout.FlowRowScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$3(com.android.purebilibili.data.model.response.ViewInfo, androidx.compose.animation.AnimatedVisibilityScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$4(java.util.List, androidx.compose.foundation.layout.FlowRowScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$6$0$0$0(kotlin.jvm.functions.Function1, java.lang.String);
+  private static final void VideoTitleWithDesc$lambda$14$7$0$0$0$0(kotlin.jvm.functions.Function1, androidx.compose.ui.text.LinkAnnotation);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$7$0$2(androidx.compose.ui.text.AnnotatedString, androidx.compose.ui.Modifier, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$7(kotlin.jvm.functions.Function1, com.android.purebilibili.data.model.response.ViewInfo, boolean, androidx.compose.animation.AnimatedVisibilityScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$8$1$0$0$0$0(com.android.purebilibili.data.model.response.VideoTag, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$8$1$0(java.util.List, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, com.android.purebilibili.core.ui.components.AppTagChipMetrics, androidx.compose.runtime.State, androidx.compose.foundation.layout.FlowRowScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$14$8(com.bilipai.desktop.plugins.DesktopPluginContext, java.util.List, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, androidx.compose.animation.AnimatedVisibilityScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoTitleWithDesc$lambda$15(com.android.purebilibili.data.model.response.ViewInfo, java.util.List, java.util.List, java.lang.String, boolean, boolean, boolean, java.lang.String, boolean, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, java.lang.String, kotlin.jvm.functions.Function2, int, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit UpInfoSection_ajgufuY$lambda$0$0();
+  private static final kotlin.Unit UpInfoSection_ajgufuY$lambda$1$0(long);
+  private static final androidx.compose.animation.core.FiniteAnimationSpec UpInfoSection_ajgufuY$lambda$4$0$0$0$0(com.android.purebilibili.core.ui.transition.VideoSharedTransitionMotionSpec, androidx.compose.ui.geometry.Rect, androidx.compose.ui.geometry.Rect);
+  private static final kotlin.Unit UpInfoSection_ajgufuY$lambda$4$0(boolean, boolean, boolean, androidx.compose.animation.SharedTransitionScope, com.android.purebilibili.data.model.response.ViewInfo, java.lang.String, androidx.compose.animation.AnimatedVisibilityScope, com.android.purebilibili.core.ui.transition.VideoSharedTransitionMotionSpec, androidx.compose.runtime.Composer, int);
+  private static final androidx.compose.animation.core.FiniteAnimationSpec UpInfoSection_ajgufuY$lambda$4$1$0$0$0$0(com.android.purebilibili.core.ui.transition.VideoSharedTransitionMotionSpec, androidx.compose.ui.geometry.Rect, androidx.compose.ui.geometry.Rect);
+  private static final kotlin.Unit UpInfoSection_ajgufuY$lambda$4$1$0$4(com.android.purebilibili.data.model.response.ViewInfo, kotlin.jvm.internal.Ref$ObjectRef, androidx.compose.runtime.State, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit UpInfoSection_ajgufuY$lambda$4$1(boolean, androidx.compose.animation.SharedTransitionScope, com.android.purebilibili.data.model.response.ViewInfo, boolean, com.bilipai.desktop.ui.DesktopOriginalVideoInfoBindings, java.lang.String, androidx.compose.animation.AnimatedVisibilityScope, com.android.purebilibili.core.ui.transition.VideoSharedTransitionMotionSpec, androidx.compose.ui.Modifier, androidx.compose.runtime.Composer, int);
+  private static final androidx.compose.animation.core.FiniteAnimationSpec UpInfoSection_ajgufuY$lambda$4$2$0$0$0(com.android.purebilibili.core.ui.transition.VideoSharedTransitionMotionSpec, androidx.compose.ui.geometry.Rect, androidx.compose.ui.geometry.Rect);
+  private static final kotlin.Unit UpInfoSection_ajgufuY$lambda$4$2$2(boolean, boolean, com.android.purebilibili.feature.video.ui.VideoFollowVisualPolicy, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit UpInfoSection_ajgufuY$lambda$4$2(boolean, boolean, androidx.compose.animation.SharedTransitionScope, boolean, kotlin.jvm.functions.Function0, com.android.purebilibili.data.model.response.ViewInfo, java.lang.String, androidx.compose.animation.AnimatedVisibilityScope, com.android.purebilibili.core.ui.transition.VideoSharedTransitionMotionSpec, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit UpInfoSection_ajgufuY$lambda$4$3$0$0(kotlin.jvm.functions.Function1, com.android.purebilibili.data.model.response.ViewInfo);
+  private static final kotlin.Unit UpInfoSection_ajgufuY$lambda$4$3$2$0(kotlin.jvm.functions.Function1, com.android.purebilibili.data.model.response.ViewInfo);
+  private static final kotlin.Unit UpInfoSection_ajgufuY$lambda$4(boolean, boolean, androidx.compose.animation.SharedTransitionScope, com.android.purebilibili.data.model.response.ViewInfo, java.lang.String, androidx.compose.animation.AnimatedVisibilityScope, com.android.purebilibili.core.ui.transition.VideoSharedTransitionMotionSpec, boolean, com.bilipai.desktop.ui.DesktopOriginalVideoInfoBindings, boolean, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function1, float, java.lang.String, kotlin.jvm.functions.Function3, androidx.compose.runtime.State, androidx.compose.foundation.layout.BoxWithConstraintsScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit UpInfoSection_ajgufuY$lambda$5(com.android.purebilibili.data.model.response.ViewInfo, boolean, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function1, boolean, java.lang.Integer, java.lang.Integer, boolean, boolean, java.lang.String, float, androidx.compose.ui.Modifier, kotlin.jvm.functions.Function3, int, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit DescriptionSection$lambda$3(java.lang.String, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit DescriptionSection$lambda$4$0$0(java.lang.String, androidx.compose.runtime.MutableState, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit DescriptionSection$lambda$4$0$1$0(androidx.compose.runtime.MutableState);
+  private static final kotlin.Unit DescriptionSection$lambda$4(java.lang.String, androidx.compose.runtime.MutableState, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit DescriptionSection$lambda$5(java.lang.String, int, androidx.compose.runtime.Composer, int);
+  static {};
+}
+Compiled from "DesktopOriginalVideoMetadata.kt"
+public final class com.android.purebilibili.feature.video.ui.section.DesktopOriginalVideoMetadataKt {
+  public static final void DesktopOriginalVideoHonors(com.android.purebilibili.data.model.response.ViewInfo, boolean, kotlin.jvm.functions.Function1<? super java.lang.String, kotlin.Unit>, androidx.compose.runtime.Composer, int);
+  public static final void VideoDetailBadgeChip(java.lang.String, boolean, androidx.compose.runtime.Composer, int);
+  public static final void VideoArgueMsgRow(java.lang.String, androidx.compose.runtime.Composer, int);
+  public static final void VideoHonorChip(java.lang.String, kotlin.jvm.functions.Function0<kotlin.Unit>, androidx.compose.runtime.Composer, int, int);
+  public static final void CreatorTeamSection(java.util.List<com.android.purebilibili.data.model.response.VideoStaff>, long, kotlin.jvm.functions.Function1<? super java.lang.Long, kotlin.Unit>, androidx.compose.runtime.Composer, int);
+  private static final void CreatorTeamMemberChip(com.android.purebilibili.data.model.response.VideoStaff, boolean, boolean, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<kotlin.Unit>, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit DesktopOriginalVideoHonors$lambda$1$0(java.util.List, androidx.compose.foundation.layout.FlowRowScope, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit DesktopOriginalVideoHonors$lambda$1$2$0$0$0(kotlin.jvm.functions.Function1, java.lang.String);
+  private static final kotlin.Unit DesktopOriginalVideoHonors$lambda$2(com.android.purebilibili.data.model.response.ViewInfo, boolean, kotlin.jvm.functions.Function1, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoDetailBadgeChip$lambda$0(java.lang.String, boolean, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoArgueMsgRow$lambda$1(java.lang.String, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoHonorChip$lambda$0$0();
+  private static final kotlin.Unit VideoHonorChip$lambda$1(java.lang.String, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit VideoHonorChip$lambda$2(java.lang.String, kotlin.jvm.functions.Function0, int, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit CreatorTeamSection$lambda$0(java.util.List, long, kotlin.jvm.functions.Function1, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit CreatorTeamSection$lambda$4$1$0$0$0(kotlinx.coroutines.CoroutineScope, androidx.compose.runtime.snapshots.SnapshotStateMap, com.android.purebilibili.data.model.response.VideoStaff, com.bilipai.desktop.ui.DesktopCreatorTeamBindings);
+  private static final kotlin.Unit CreatorTeamSection$lambda$4$1$0$1$0(kotlin.jvm.functions.Function1, com.android.purebilibili.data.model.response.VideoStaff);
+  private static final kotlin.Unit CreatorTeamSection$lambda$5(java.util.List, long, kotlin.jvm.functions.Function1, int, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit CreatorTeamMemberChip$lambda$2$2$0(boolean, com.android.purebilibili.feature.video.ui.VideoFollowVisualPolicy, androidx.compose.runtime.Composer, int);
+  private static final kotlin.Unit CreatorTeamMemberChip$lambda$3(com.android.purebilibili.data.model.response.VideoStaff, boolean, boolean, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, int, androidx.compose.runtime.Composer, int);
+}
+Compiled from "DesktopOriginalVideoMetadataPolicy.kt"
+public final class com.android.purebilibili.feature.video.ui.section.DesktopOriginalVideoMetadataPolicyKt {
+  public static final java.lang.String resolveVideoHonorChipText(int, java.lang.String, java.lang.String, int);
+  public static final java.lang.String resolveVideoHonorJumpUrl(int, java.lang.String, int, java.lang.String);
+  public static java.lang.String resolveVideoHonorJumpUrl$default(int, java.lang.String, int, java.lang.String, int, java.lang.Object);
+  public static final boolean shouldShowCreatorTeamSection(com.android.purebilibili.data.model.response.ViewInfo);
+  public static final java.util.List<java.lang.String> resolveVideoDetailBadges(com.android.purebilibili.data.model.response.ViewInfo);
+}
+Compiled from "OwnerDecoratedAvatar.kt"
+public final class com.android.purebilibili.feature.video.ui.section.OwnerDecoratedAvatarKt {
+  public static final void OwnerDecoratedAvatar-aA_HZ9I(java.lang.String, long, androidx.compose.ui.Modifier, float, java.lang.Integer, java.lang.Integer, androidx.compose.ui.Modifier, java.lang.String, androidx.compose.runtime.Composer, int, int);
+  private static final com.android.purebilibili.data.repository.CreatorCardStats OwnerDecoratedAvatar_aA_HZ9I$lambda$1(androidx.compose.runtime.MutableState<com.android.purebilibili.data.repository.CreatorCardStats>);
+  private static final void OwnerDecoratedAvatar_aA_HZ9I$lambda$2(androidx.compose.runtime.MutableState<com.android.purebilibili.data.repository.CreatorCardStats>, com.android.purebilibili.data.repository.CreatorCardStats);
+  private static final kotlin.Unit OwnerDecoratedAvatar_aA_HZ9I$lambda$5(java.lang.String, long, androidx.compose.ui.Modifier, float, java.lang.Integer, java.lang.Integer, androidx.compose.ui.Modifier, java.lang.String, int, int, androidx.compose.runtime.Composer, int);
+  public static final void access$OwnerDecoratedAvatar_aA_HZ9I$lambda$2(androidx.compose.runtime.MutableState, com.android.purebilibili.data.repository.CreatorCardStats);
+}
+Compiled from "VideoInfoDisplayPolicy.kt"
+public final class com.android.purebilibili.feature.video.ui.section.VideoInfoDisplayPolicyKt {
+  public static final java.lang.String resolveCompactPublishTimeRowText(long, long);
+  public static java.lang.String resolveCompactPublishTimeRowText$default(long, long, int, java.lang.Object);
+}

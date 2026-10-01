@@ -1,0 +1,22 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackSeekController.kt",
+  "sourceSha256LF": "6b829c2bc168d335c5775e4e2d994ff7eb1279e0c6539d9fdf5f7b0b3e81049b",
+  "generatedSha256LF": "70d20dd35db2f7c5156edfbec75fc778c0dfae5a9505d7ee38d25bc0fd190c23",
+  "inverseExactOriginal": true,
+  "lineChanges": [
+    {
+      "tag": "replace",
+      "originalStart": 2,
+      "originalEnd": 3,
+      "generatedStart": 2,
+      "generatedEnd": 3,
+      "originalLines": [
+        "import androidx.media3.common.Player\n"
+      ],
+      "generatedLines": [
+        "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player\n"
+      ]
+    }
+  ],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoAspectRatioPreferenceMapper.kt",
+  "sourceSha256LF": "880d8d7d3e2b8fc65877a5880745428cd27d94dee7a7da8d80a358f295945136",
+  "generatedSha256LF": "880d8d7d3e2b8fc65877a5880745428cd27d94dee7a7da8d80a358f295945136",
+  "inverseExactOriginal": true,
+  "lineChanges": [],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

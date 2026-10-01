@@ -1,0 +1,15 @@
+work\BiliPai\desktop\.local\stable-video-state-holder-parity\core-proof-01\fixture.kt:54:33: error: operator '==' cannot be applied to 'Long' and 'Int'.
+ prove(info.bvid=="BV1fixture"&&info.cid==12&&info.pages.size==2&&info.desc=="raw description","requested CID preserves whole ViewInfo")
+                                ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-state-holder-parity\core-proof-01\fixture.kt:95:74: error: no value passed for parameter 'ownerMid'.
+ val subject=VideoSubjectSnapshot(generation=1,bvid="BV1fixture",aid=123,cid=11)
+                                                                         ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-state-holder-parity\core-proof-01\fixture.kt:95:74: error: no value passed for parameter 'title'.
+ val subject=VideoSubjectSnapshot(generation=1,bvid="BV1fixture",aid=123,cid=11)
+                                                                         ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-state-holder-parity\core-proof-01\fixture.kt:95:74: error: no value passed for parameter 'coverUrl'.
+ val subject=VideoSubjectSnapshot(generation=1,bvid="BV1fixture",aid=123,cid=11)
+                                                                         ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-state-holder-parity\core-proof-01\fixture.kt:95:74: error: no value passed for parameter 'durationMs'.
+ val subject=VideoSubjectSnapshot(generation=1,bvid="BV1fixture",aid=123,cid=11)
+                                                                         ^^^^^^^

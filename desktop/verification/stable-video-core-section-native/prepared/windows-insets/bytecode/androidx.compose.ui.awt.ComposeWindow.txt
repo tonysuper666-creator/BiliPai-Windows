@@ -1,0 +1,1257 @@
+Compiled from "ComposeWindow.desktop.kt"
+public final class androidx.compose.ui.awt.ComposeWindow extends javax.swing.JFrame implements androidx.compose.ui.ComposeDesktopEntryPoint {
+  private final androidx.compose.ui.awt.ComposeWindowPanel composePanel;
+
+  private final androidx.compose.ui.window.UndecoratedWindowResizer undecoratedWindowResizer;
+
+  public static final int $stable;
+
+  public androidx.compose.ui.awt.ComposeWindow(java.awt.GraphicsConfiguration, org.jetbrains.skiko.SkiaLayerAnalytics, androidx.savedstate.SavedState, kotlin.coroutines.CoroutineContext);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: invokespecial #14                 // Method javax/swing/JFrame."<init>":(Ljava/awt/GraphicsConfiguration;)V
+       5: aload_0
+       6: new           #16                 // class androidx/compose/ui/awt/ComposeWindowPanel
+       9: dup
+      10: aload_0
+      11: checkcast     #18                 // class java/awt/Window
+      14: new           #20                 // class androidx/compose/ui/awt/ComposeWindow$composePanel$1
+      17: dup
+      18: aload_0
+      19: invokespecial #23                 // Method androidx/compose/ui/awt/ComposeWindow$composePanel$1."<init>":(Ljava/lang/Object;)V
+      22: checkcast     #25                 // class kotlin/jvm/functions/Function0
+      25: aload_2
+      26: aload_3
+      27: aload         4
+      29: invokespecial #28                 // Method androidx/compose/ui/awt/ComposeWindowPanel."<init>":(Ljava/awt/Window;Lkotlin/jvm/functions/Function0;Lorg/jetbrains/skiko/SkiaLayerAnalytics;Landroidx/savedstate/SavedState;Lkotlin/coroutines/CoroutineContext;)V
+      32: putfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+      35: aload_0
+      36: new           #34                 // class androidx/compose/ui/window/UndecoratedWindowResizer
+      39: dup
+      40: aload_0
+      41: checkcast     #18                 // class java/awt/Window
+      44: invokespecial #37                 // Method androidx/compose/ui/window/UndecoratedWindowResizer."<init>":(Ljava/awt/Window;)V
+      47: putfield      #41                 // Field undecoratedWindowResizer:Landroidx/compose/ui/window/UndecoratedWindowResizer;
+      50: aload_0
+      51: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+      54: pop
+      55: aload_0
+      56: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+      59: pop
+      60: aload_0
+      61: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+      64: pop
+      65: nop
+      66: aload_0
+      67: invokevirtual #45                 // Method getContentPane:()Ljava/awt/Container;
+      70: aload_0
+      71: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+      74: checkcast     #47                 // class java/awt/Component
+      77: invokevirtual #53                 // Method java/awt/Container.add:(Ljava/awt/Component;)Ljava/awt/Component;
+      80: pop
+      81: nop
+      82: aload_0
+      83: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+      86: pop
+      87: aload_0
+      88: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+      91: pop
+      92: aload_0
+      93: getfield      #41                 // Field undecoratedWindowResizer:Landroidx/compose/ui/window/UndecoratedWindowResizer;
+      96: pop
+      97: aload_0
+      98: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+     101: pop
+     102: return
+    LineNumberTable:
+      line 60: 0
+      line 66: 1
+      line 60: 2
+      line 77: 5
+      line 78: 10
+      line 79: 14
+      line 80: 25
+      line 81: 26
+      line 82: 27
+      line 77: 29
+      line 84: 35
+      line 86: 50
+      line 87: 55
+      line 105: 60
+      line 107: 65
+      line 108: 66
+      line 109: 81
+      line 135: 82
+      line 142: 87
+      line 194: 92
+      line 282: 97
+      line 61: 102
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0     103     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0     103     1 graphicsConfiguration   Ljava/awt/GraphicsConfiguration;
+          0     103     2 skiaLayerAnalytics   Lorg/jetbrains/skiko/SkiaLayerAnalytics;
+          0     103     3 savedState   Landroidx/savedstate/SavedState;
+          0     103     4 coroutineContext   Lkotlin/coroutines/CoroutineContext;
+
+  public androidx.compose.ui.awt.ComposeWindow(java.awt.GraphicsConfiguration, org.jetbrains.skiko.SkiaLayerAnalytics, androidx.savedstate.SavedState, kotlin.coroutines.CoroutineContext, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    Code:
+       0: iload         5
+       2: iconst_1
+       3: iand
+       4: ifeq          9
+       7: aconst_null
+       8: astore_1
+       9: iload         5
+      11: iconst_2
+      12: iand
+      13: ifeq          23
+      16: getstatic     #70                 // Field org/jetbrains/skiko/SkiaLayerAnalytics.Companion:Lorg/jetbrains/skiko/SkiaLayerAnalytics$Companion;
+      19: invokevirtual #76                 // Method org/jetbrains/skiko/SkiaLayerAnalytics$Companion.getEmpty:()Lorg/jetbrains/skiko/SkiaLayerAnalytics;
+      22: astore_2
+      23: iload         5
+      25: iconst_4
+      26: iand
+      27: ifeq          32
+      30: aconst_null
+      31: astore_3
+      32: iload         5
+      34: bipush        8
+      36: iand
+      37: ifeq          48
+      40: getstatic     #82                 // Field kotlin/coroutines/EmptyCoroutineContext.INSTANCE:Lkotlin/coroutines/EmptyCoroutineContext;
+      43: checkcast     #84                 // class kotlin/coroutines/CoroutineContext
+      46: astore        4
+      48: aload_0
+      49: aload_1
+      50: aload_2
+      51: aload_3
+      52: aload         4
+      54: invokespecial #86                 // Method "<init>":(Ljava/awt/GraphicsConfiguration;Lorg/jetbrains/skiko/SkiaLayerAnalytics;Landroidx/savedstate/SavedState;Lkotlin/coroutines/CoroutineContext;)V
+      57: return
+    LineNumberTable:
+      line 61: 0
+      line 62: 7
+      line 61: 9
+      line 63: 16
+      line 61: 23
+      line 64: 30
+      line 61: 32
+      line 65: 40
+      line 61: 48
+      line 66: 57
+
+  public androidx.compose.ui.awt.ComposeWindow(java.awt.GraphicsConfiguration);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: getstatic     #70                 // Field org/jetbrains/skiko/SkiaLayerAnalytics.Companion:Lorg/jetbrains/skiko/SkiaLayerAnalytics$Companion;
+       5: invokevirtual #76                 // Method org/jetbrains/skiko/SkiaLayerAnalytics$Companion.getEmpty:()Lorg/jetbrains/skiko/SkiaLayerAnalytics;
+       8: aconst_null
+       9: aconst_null
+      10: bipush        12
+      12: aconst_null
+      13: invokespecial #88                 // Method "<init>":(Ljava/awt/GraphicsConfiguration;Lorg/jetbrains/skiko/SkiaLayerAnalytics;Landroidx/savedstate/SavedState;Lkotlin/coroutines/CoroutineContext;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+      16: return
+    LineNumberTable:
+      line 75: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      17     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      17     1 graphicsConfiguration   Ljava/awt/GraphicsConfiguration;
+
+  public androidx.compose.ui.awt.ComposeWindow(java.awt.GraphicsConfiguration, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    Code:
+       0: iload_2
+       1: iconst_1
+       2: iand
+       3: ifeq          8
+       6: aconst_null
+       7: astore_1
+       8: aload_0
+       9: aload_1
+      10: invokespecial #90                 // Method "<init>":(Ljava/awt/GraphicsConfiguration;)V
+      13: return
+    LineNumberTable:
+      line 73: 0
+      line 74: 6
+      line 73: 8
+      line 75: 13
+
+  public final androidx.compose.ui.platform.PlatformWindowContext getWindowContext$ui();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #95                 // Method androidx/compose/ui/awt/ComposeWindowPanel.getWindowContext:()Landroidx/compose/ui/platform/PlatformWindowContext;
+       7: areturn
+    LineNumberTable:
+      line 86: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  private static java.lang.Object getWindowContext$ui$delegate(androidx.compose.ui.awt.ComposeWindow);
+    Code:
+       0: new           #99                 // class kotlin/jvm/internal/PropertyReference0Impl
+       3: dup
+       4: aload_0
+       5: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       8: ldc           #16                 // class androidx/compose/ui/awt/ComposeWindowPanel
+      10: ldc           #101                // String windowContext
+      12: ldc           #103                // String getWindowContext()Landroidx/compose/ui/platform/PlatformWindowContext;
+      14: iconst_0
+      15: invokespecial #106                // Method kotlin/jvm/internal/PropertyReference0Impl."<init>":(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V
+      18: areturn
+    LineNumberTable:
+      line 86: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      19     0 <this>   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final androidx.compose.ui.platform.PlatformContext$RootForTestListener getRootForTestListener$ui();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #112                // Method androidx/compose/ui/awt/ComposeWindowPanel.getRootForTestListener:()Landroidx/compose/ui/platform/PlatformContext$RootForTestListener;
+       7: areturn
+    LineNumberTable:
+      line 87: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final void setRootForTestListener$ui(androidx.compose.ui.platform.PlatformContext$RootForTestListener);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #117                // Method androidx/compose/ui/awt/ComposeWindowPanel.setRootForTestListener:(Landroidx/compose/ui/platform/PlatformContext$RootForTestListener;)V
+       8: return
+    LineNumberTable:
+      line 87: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 <set-?>   Landroidx/compose/ui/platform/PlatformContext$RootForTestListener;
+
+  private static java.lang.Object getRootForTestListener$ui$delegate(androidx.compose.ui.awt.ComposeWindow);
+    Code:
+       0: new           #122                // class kotlin/jvm/internal/MutablePropertyReference0Impl
+       3: dup
+       4: aload_0
+       5: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       8: ldc           #16                 // class androidx/compose/ui/awt/ComposeWindowPanel
+      10: ldc           #124                // String rootForTestListener
+      12: ldc           #126                // String getRootForTestListener()Landroidx/compose/ui/platform/PlatformContext$RootForTestListener;
+      14: iconst_0
+      15: invokespecial #127                // Method kotlin/jvm/internal/MutablePropertyReference0Impl."<init>":(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V
+      18: areturn
+    LineNumberTable:
+      line 87: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      19     0 <this>   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public java.util.Collection<androidx.compose.ui.semantics.SemanticsOwner> getSemanticsOwners();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #132                // Method androidx/compose/ui/awt/ComposeWindowPanel.getSemanticsOwners:()Ljava/util/Collection;
+       7: areturn
+    LineNumberTable:
+      line 99: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public static void getSemanticsOwners$annotations();
+    Code:
+       0: return
+
+  public final boolean isClearFocusOnMouseDownEnabled();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #139                // Method androidx/compose/ui/awt/ComposeWindowPanel.isClearFocusOnMouseDownEnabled:()Z
+       7: ireturn
+    LineNumberTable:
+      line 105: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final void setClearFocusOnMouseDownEnabled(boolean);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: iload_1
+       5: invokevirtual #143                // Method androidx/compose/ui/awt/ComposeWindowPanel.setClearFocusOnMouseDownEnabled:(Z)V
+       8: return
+    LineNumberTable:
+      line 105: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 <set-?>   Z
+
+  public static void isClearFocusOnMouseDownEnabled$annotations();
+    Code:
+       0: return
+
+  private static java.lang.Object isClearFocusOnMouseDownEnabled$delegate(androidx.compose.ui.awt.ComposeWindow);
+    Code:
+       0: new           #122                // class kotlin/jvm/internal/MutablePropertyReference0Impl
+       3: dup
+       4: aload_0
+       5: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       8: ldc           #16                 // class androidx/compose/ui/awt/ComposeWindowPanel
+      10: ldc           #147                // String isClearFocusOnMouseDownEnabled
+      12: ldc           #149                // String isClearFocusOnMouseDownEnabled()Z
+      14: iconst_0
+      15: invokespecial #127                // Method kotlin/jvm/internal/MutablePropertyReference0Impl."<init>":(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V
+      18: areturn
+    LineNumberTable:
+      line 105: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      19     0 <this>   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public java.awt.Component add(java.awt.Component);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #150                // Method androidx/compose/ui/awt/ComposeWindowPanel.add:(Ljava/awt/Component;)Ljava/awt/Component;
+       8: areturn
+    LineNumberTable:
+      line 111: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 component   Ljava/awt/Component;
+
+  public void remove(java.awt.Component);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #156                // Method androidx/compose/ui/awt/ComposeWindowPanel.remove:(Ljava/awt/Component;)V
+       8: return
+    LineNumberTable:
+      line 113: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 component   Ljava/awt/Component;
+
+  public void setComponentOrientation(java.awt.ComponentOrientation);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: invokespecial #160                // Method javax/swing/JFrame.setComponentOrientation:(Ljava/awt/ComponentOrientation;)V
+       5: aload_0
+       6: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       9: aload_0
+      10: checkcast     #47                 // class java/awt/Component
+      13: invokevirtual #163                // Method androidx/compose/ui/awt/ComposeWindowPanel.onChangeLayoutDirection:(Ljava/awt/Component;)V
+      16: return
+    LineNumberTable:
+      line 116: 0
+      line 118: 5
+      line 119: 16
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      17     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      17     1     o   Ljava/awt/ComponentOrientation;
+
+  public void setLocale(java.util.Locale);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: invokespecial #169                // Method javax/swing/JFrame.setLocale:(Ljava/util/Locale;)V
+       5: aload_0
+       6: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       9: dup
+      10: ifnull        23
+      13: aload_0
+      14: checkcast     #47                 // class java/awt/Component
+      17: invokevirtual #163                // Method androidx/compose/ui/awt/ComposeWindowPanel.onChangeLayoutDirection:(Ljava/awt/Component;)V
+      20: goto          24
+      23: pop
+      24: return
+    LineNumberTable:
+      line 122: 0
+      line 126: 5
+      line 127: 24
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      25     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      25     1     l   Ljava/util/Locale;
+
+  public final androidx.compose.ui.window.WindowExceptionHandler getExceptionHandler();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #175                // Method androidx/compose/ui/awt/ComposeWindowPanel.getExceptionHandler:()Landroidx/compose/ui/window/WindowExceptionHandler;
+       7: areturn
+    LineNumberTable:
+      line 135: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final void setExceptionHandler(androidx.compose.ui.window.WindowExceptionHandler);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #179                // Method androidx/compose/ui/awt/ComposeWindowPanel.setExceptionHandler:(Landroidx/compose/ui/window/WindowExceptionHandler;)V
+       8: return
+    LineNumberTable:
+      line 135: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 <set-?>   Landroidx/compose/ui/window/WindowExceptionHandler;
+
+  public static void getExceptionHandler$annotations();
+    Code:
+       0: return
+
+  private static java.lang.Object getExceptionHandler$delegate(androidx.compose.ui.awt.ComposeWindow);
+    Code:
+       0: new           #122                // class kotlin/jvm/internal/MutablePropertyReference0Impl
+       3: dup
+       4: aload_0
+       5: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       8: ldc           #16                 // class androidx/compose/ui/awt/ComposeWindowPanel
+      10: ldc           #184                // String exceptionHandler
+      12: ldc           #186                // String getExceptionHandler()Landroidx/compose/ui/window/WindowExceptionHandler;
+      14: iconst_0
+      15: invokespecial #127                // Method kotlin/jvm/internal/MutablePropertyReference0Impl."<init>":(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V
+      18: areturn
+    LineNumberTable:
+      line 135: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      19     0 <this>   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final androidx.compose.runtime.CompositionLocalContext getCompositionLocalContext();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #190                // Method androidx/compose/ui/awt/ComposeWindowPanel.getCompositionLocalContext:()Landroidx/compose/runtime/CompositionLocalContext;
+       7: areturn
+    LineNumberTable:
+      line 142: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final void setCompositionLocalContext(androidx.compose.runtime.CompositionLocalContext);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #194                // Method androidx/compose/ui/awt/ComposeWindowPanel.setCompositionLocalContext:(Landroidx/compose/runtime/CompositionLocalContext;)V
+       8: return
+    LineNumberTable:
+      line 142: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 <set-?>   Landroidx/compose/runtime/CompositionLocalContext;
+
+  private static java.lang.Object getCompositionLocalContext$delegate(androidx.compose.ui.awt.ComposeWindow);
+    Code:
+       0: new           #122                // class kotlin/jvm/internal/MutablePropertyReference0Impl
+       3: dup
+       4: aload_0
+       5: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       8: ldc           #16                 // class androidx/compose/ui/awt/ComposeWindowPanel
+      10: ldc           #198                // String compositionLocalContext
+      12: ldc           #200                // String getCompositionLocalContext()Landroidx/compose/runtime/CompositionLocalContext;
+      14: iconst_0
+      15: invokespecial #127                // Method kotlin/jvm/internal/MutablePropertyReference0Impl."<init>":(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V
+      18: areturn
+    LineNumberTable:
+      line 142: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      19     0 <this>   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final void setContent(kotlin.jvm.functions.Function3<? super androidx.compose.ui.window.FrameWindowScope, ? super androidx.compose.runtime.Composer, ? super java.lang.Integer, kotlin.Unit>);
+    Code:
+       0: aload_0
+       1: getstatic     #211                // Field androidx/compose/ui/awt/ComposeWindow$setContent$1.INSTANCE:Landroidx/compose/ui/awt/ComposeWindow$setContent$1;
+       4: checkcast     #213                // class kotlin/jvm/functions/Function1
+       7: getstatic     #218                // Field androidx/compose/ui/awt/ComposeWindow$setContent$2.INSTANCE:Landroidx/compose/ui/awt/ComposeWindow$setContent$2;
+      10: checkcast     #213                // class kotlin/jvm/functions/Function1
+      13: aload_1
+      14: invokevirtual #221                // Method setContent:(Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;)V
+      17: return
+    LineNumberTable:
+      line 152: 0
+      line 155: 13
+      line 152: 14
+      line 156: 17
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      18     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      18     1 content   Lkotlin/jvm/functions/Function3;
+
+  public final void setContent(kotlin.jvm.functions.Function1<? super androidx.compose.ui.input.key.KeyEvent, java.lang.Boolean>, kotlin.jvm.functions.Function1<? super androidx.compose.ui.input.key.KeyEvent, java.lang.Boolean>, kotlin.jvm.functions.Function3<? super androidx.compose.ui.window.FrameWindowScope, ? super androidx.compose.runtime.Composer, ? super java.lang.Integer, kotlin.Unit>);
+    Code:
+       0: new           #226                // class androidx/compose/ui/awt/ComposeWindow$setContent$scope$1
+       3: dup
+       4: aload_0
+       5: invokespecial #229                // Method androidx/compose/ui/awt/ComposeWindow$setContent$scope$1."<init>":(Landroidx/compose/ui/awt/ComposeWindow;)V
+       8: astore        4
+      10: aload_0
+      11: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+      14: aload_1
+      15: aload_2
+      16: aconst_null
+      17: ldc           #230                // int 501639021
+      19: iconst_1
+      20: aload_3
+      21: aload         4
+      23: aload_0
+      24: invokedynamic #250,  0            // InvokeDynamic #0:invoke:(Lkotlin/jvm/functions/Function3;Landroidx/compose/ui/awt/ComposeWindow$setContent$scope$1;Landroidx/compose/ui/awt/ComposeWindow;)Lkotlin/jvm/functions/Function2;
+      29: invokestatic  #256                // Method androidx/compose/runtime/internal/ComposableLambdaKt.composableLambdaInstance:(IZLjava/lang/Object;)Landroidx/compose/runtime/internal/ComposableLambda;
+      32: checkcast     #258                // class kotlin/jvm/functions/Function2
+      35: iconst_4
+      36: aconst_null
+      37: invokestatic  #262                // Method androidx/compose/ui/awt/ComposeWindowPanel.setContent$default:(Landroidx/compose/ui/awt/ComposeWindowPanel;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
+      40: return
+    LineNumberTable:
+      line 177: 0
+      line 180: 10
+      line 181: 14
+      line 182: 15
+      line 180: 16
+      line 183: 17
+      line 180: 35
+      line 189: 40
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+         10      31     4 scope   Landroidx/compose/ui/awt/ComposeWindow$setContent$scope$1;
+          0      41     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      41     1 onPreviewKeyEvent   Lkotlin/jvm/functions/Function1;
+          0      41     2 onKeyEvent   Lkotlin/jvm/functions/Function1;
+          0      41     3 content   Lkotlin/jvm/functions/Function3;
+
+  public static void setContent$default(androidx.compose.ui.awt.ComposeWindow, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function3, int, java.lang.Object);
+    Code:
+       0: iload         4
+       2: iconst_1
+       3: iand
+       4: ifeq          14
+       7: getstatic     #273                // Field androidx/compose/ui/awt/ComposeWindow$setContent$3.INSTANCE:Landroidx/compose/ui/awt/ComposeWindow$setContent$3;
+      10: checkcast     #213                // class kotlin/jvm/functions/Function1
+      13: astore_1
+      14: iload         4
+      16: iconst_2
+      17: iand
+      18: ifeq          28
+      21: getstatic     #278                // Field androidx/compose/ui/awt/ComposeWindow$setContent$4.INSTANCE:Landroidx/compose/ui/awt/ComposeWindow$setContent$4;
+      24: checkcast     #213                // class kotlin/jvm/functions/Function1
+      27: astore_2
+      28: aload_0
+      29: aload_1
+      30: aload_2
+      31: aload_3
+      32: invokevirtual #221                // Method setContent:(Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;)V
+      35: return
+    LineNumberTable:
+      line 172: 0
+      line 173: 7
+      line 172: 14
+      line 174: 21
+      line 172: 28
+
+  public final float getUndecoratedResizerThickness-D9Ej5fM();
+    Code:
+       0: aload_0
+       1: getfield      #41                 // Field undecoratedWindowResizer:Landroidx/compose/ui/window/UndecoratedWindowResizer;
+       4: invokevirtual #283                // Method androidx/compose/ui/window/UndecoratedWindowResizer."getResizerThickness-D9Ej5fM":()F
+       7: freturn
+    LineNumberTable:
+      line 194: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final void setUndecoratedResizerThickness-0680j_4(float);
+    Code:
+       0: aload_0
+       1: getfield      #41                 // Field undecoratedWindowResizer:Landroidx/compose/ui/window/UndecoratedWindowResizer;
+       4: fload_1
+       5: invokevirtual #288                // Method androidx/compose/ui/window/UndecoratedWindowResizer."setResizerThickness-0680j_4":(F)V
+       8: return
+    LineNumberTable:
+      line 194: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 <set-?>   F
+
+  private static java.lang.Object getUndecoratedResizerThickness-D9Ej5fM$delegate(androidx.compose.ui.awt.ComposeWindow);
+    Code:
+       0: new           #122                // class kotlin/jvm/internal/MutablePropertyReference0Impl
+       3: dup
+       4: aload_0
+       5: getfield      #41                 // Field undecoratedWindowResizer:Landroidx/compose/ui/window/UndecoratedWindowResizer;
+       8: ldc           #34                 // class androidx/compose/ui/window/UndecoratedWindowResizer
+      10: ldc_w         #292                // String resizerThickness
+      13: ldc_w         #294                // String getResizerThickness-D9Ej5fM()F
+      16: iconst_0
+      17: invokespecial #127                // Method kotlin/jvm/internal/MutablePropertyReference0Impl."<init>":(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V
+      20: areturn
+    LineNumberTable:
+      line 194: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      21     0 <this>   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final androidx.savedstate.SavedState saveState();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #298                // Method androidx/compose/ui/awt/ComposeWindowPanel.saveState:()Landroidx/savedstate/SavedState;
+       7: areturn
+    LineNumberTable:
+      line 204: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public void dispose();
+    Code:
+       0: aload_0
+       1: invokespecial #301                // Method javax/swing/JFrame.dispose:()V
+       4: aload_0
+       5: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       8: invokevirtual #302                // Method androidx/compose/ui/awt/ComposeWindowPanel.dispose:()V
+      11: return
+    LineNumberTable:
+      line 208: 0
+      line 209: 4
+      line 210: 11
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      12     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public void setUndecorated(boolean);
+    Code:
+       0: aload_0
+       1: iload_1
+       2: invokespecial #305                // Method javax/swing/JFrame.setUndecorated:(Z)V
+       5: aload_0
+       6: getfield      #41                 // Field undecoratedWindowResizer:Landroidx/compose/ui/window/UndecoratedWindowResizer;
+       9: aload_0
+      10: invokevirtual #308                // Method isUndecorated:()Z
+      13: ifeq          27
+      16: aload_0
+      17: invokevirtual #311                // Method isResizable:()Z
+      20: ifeq          27
+      23: iconst_1
+      24: goto          28
+      27: iconst_0
+      28: invokevirtual #314                // Method androidx/compose/ui/window/UndecoratedWindowResizer.setEnabled:(Z)V
+      31: return
+    LineNumberTable:
+      line 213: 0
+      line 214: 5
+      line 215: 31
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      32     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      32     1 value   Z
+
+  public void setResizable(boolean);
+    Code:
+       0: aload_0
+       1: iload_1
+       2: invokespecial #318                // Method javax/swing/JFrame.setResizable:(Z)V
+       5: aload_0
+       6: getfield      #41                 // Field undecoratedWindowResizer:Landroidx/compose/ui/window/UndecoratedWindowResizer;
+       9: aload_0
+      10: invokevirtual #308                // Method isUndecorated:()Z
+      13: ifeq          27
+      16: aload_0
+      17: invokevirtual #311                // Method isResizable:()Z
+      20: ifeq          27
+      23: iconst_1
+      24: goto          28
+      27: iconst_0
+      28: invokevirtual #314                // Method androidx/compose/ui/window/UndecoratedWindowResizer.setEnabled:(Z)V
+      31: return
+    LineNumberTable:
+      line 218: 0
+      line 219: 5
+      line 220: 31
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      32     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      32     1 value   Z
+
+  private final java.awt.Dimension actualize(java.awt.Dimension);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: aload_0
+       6: invokevirtual #324                // Method getInsets:()Ljava/awt/Insets;
+       9: invokevirtual #328                // Method androidx/compose/ui/awt/ComposeWindowPanel.actualizeSize:(Ljava/awt/Dimension;Ljava/awt/Insets;)Ljava/awt/Dimension;
+      12: areturn
+    LineNumberTable:
+      line 223: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      13     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      13     1 $this$actualize   Ljava/awt/Dimension;
+
+  public void setPreferredSize(java.awt.Dimension);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: invokespecial #334                // Method javax/swing/JFrame.setPreferredSize:(Ljava/awt/Dimension;)V
+       5: return
+    LineNumberTable:
+      line 236: 0
+      line 237: 5
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       6     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       6     1  size   Ljava/awt/Dimension;
+
+  public java.awt.Dimension getPreferredSize();
+    Code:
+       0: aload_0
+       1: invokevirtual #340                // Method isPreferredSizeSet:()Z
+       4: ifeq          14
+       7: aload_0
+       8: invokespecial #342                // Method javax/swing/JFrame.getPreferredSize:()Ljava/awt/Dimension;
+      11: goto          17
+      14: invokestatic  #347                // Method androidx/compose/ui/awt/AwtDimension_desktopKt.UnspecifiedDimension:()Ljava/awt/Dimension;
+      17: astore_1
+      18: aload_0
+      19: aload_1
+      20: invokespecial #349                // Method actualize:(Ljava/awt/Dimension;)Ljava/awt/Dimension;
+      23: areturn
+    LineNumberTable:
+      line 242: 0
+      line 243: 18
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+         18       6     1  size   Ljava/awt/Dimension;
+          0      24     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final boolean isTransparent();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #355                // Method androidx/compose/ui/awt/ComposeWindowPanel.isWindowTransparent:()Z
+       7: ireturn
+    LineNumberTable:
+      line 252: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final void setTransparent(boolean);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: iload_1
+       5: invokevirtual #359                // Method androidx/compose/ui/awt/ComposeWindowPanel.setWindowTransparent:(Z)V
+       8: aload_0
+       9: checkcast     #361                // class javax/swing/RootPaneContainer
+      12: iload_1
+      13: ifne          20
+      16: iconst_1
+      17: goto          21
+      20: iconst_0
+      21: invokestatic  #367                // Method androidx/compose/ui/awt/Utils_desktopKt.setHasMacOsShadow:(Ljavax/swing/RootPaneContainer;Z)V
+      24: return
+    LineNumberTable:
+      line 254: 0
+      line 255: 8
+      line 256: 24
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      25     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      25     1 value   Z
+
+  public final androidx.compose.ui.window.WindowPlacement getPlacement();
+    Code:
+       0: nop
+       1: aload_0
+       2: invokespecial #372                // Method isFullscreen:()Z
+       5: ifeq          14
+       8: getstatic     #378                // Field androidx/compose/ui/window/WindowPlacement.Fullscreen:Landroidx/compose/ui/window/WindowPlacement;
+      11: goto          30
+      14: aload_0
+      15: invokespecial #381                // Method isMaximized:()Z
+      18: ifeq          27
+      21: getstatic     #384                // Field androidx/compose/ui/window/WindowPlacement.Maximized:Landroidx/compose/ui/window/WindowPlacement;
+      24: goto          30
+      27: getstatic     #387                // Field androidx/compose/ui/window/WindowPlacement.Floating:Landroidx/compose/ui/window/WindowPlacement;
+      30: areturn
+    LineNumberTable:
+      line 259: 0
+      line 260: 1
+      line 261: 14
+      line 262: 27
+      line 263: 30
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      31     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final void setPlacement(androidx.compose.ui.window.WindowPlacement);
+    Code:
+       0: aload_1
+       1: getstatic     #395                // Field androidx/compose/ui/awt/ComposeWindow$WhenMappings.$EnumSwitchMapping$0:[I
+       4: swap
+       5: invokevirtual #399                // Method androidx/compose/ui/window/WindowPlacement.ordinal:()I
+       8: iaload
+       9: tableswitch   { // 1 to 3
+                     1: 36
+                     2: 44
+                     3: 52
+               default: 65
+          }
+      36: aload_0
+      37: iconst_1
+      38: invokespecial #402                // Method setFullscreen:(Z)V
+      41: goto          73
+      44: aload_0
+      45: iconst_1
+      46: invokespecial #405                // Method setMaximized:(Z)V
+      49: goto          73
+      52: aload_0
+      53: iconst_0
+      54: invokespecial #402                // Method setFullscreen:(Z)V
+      57: aload_0
+      58: iconst_0
+      59: invokespecial #405                // Method setMaximized:(Z)V
+      62: goto          73
+      65: new           #407                // class kotlin/NoWhenBranchMatchedException
+      68: dup
+      69: invokespecial #409                // Method kotlin/NoWhenBranchMatchedException."<init>":()V
+      72: athrow
+      73: return
+    LineNumberTable:
+      line 265: 0
+      line 267: 36
+      line 270: 44
+      line 273: 52
+      line 274: 57
+      line 265: 65
+      line 277: 73
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      74     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      74     1 value   Landroidx/compose/ui/window/WindowPlacement;
+
+  private final boolean isFullscreen();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #412                // Method androidx/compose/ui/awt/ComposeWindowPanel.getFullscreen:()Z
+       7: ireturn
+    LineNumberTable:
+      line 282: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  private final void setFullscreen(boolean);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: iload_1
+       5: invokevirtual #413                // Method androidx/compose/ui/awt/ComposeWindowPanel.setFullscreen:(Z)V
+       8: return
+    LineNumberTable:
+      line 282: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 <set-?>   Z
+
+  private static java.lang.Object isFullscreen$delegate(androidx.compose.ui.awt.ComposeWindow);
+    Code:
+       0: new           #122                // class kotlin/jvm/internal/MutablePropertyReference0Impl
+       3: dup
+       4: aload_0
+       5: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       8: ldc           #16                 // class androidx/compose/ui/awt/ComposeWindowPanel
+      10: ldc_w         #416                // String fullscreen
+      13: ldc_w         #418                // String getFullscreen()Z
+      16: iconst_0
+      17: invokespecial #127                // Method kotlin/jvm/internal/MutablePropertyReference0Impl."<init>":(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V
+      20: areturn
+    LineNumberTable:
+      line 282: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      21     0 <this>   Landroidx/compose/ui/awt/ComposeWindow;
+
+  private final boolean isMaximized();
+    Code:
+       0: aload_0
+       1: invokevirtual #421                // Method getExtendedState:()I
+       4: bipush        6
+       6: iand
+       7: ifeq          14
+      10: iconst_1
+      11: goto          15
+      14: iconst_0
+      15: ireturn
+    LineNumberTable:
+      line 288: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      16     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  private final void setMaximized(boolean);
+    Code:
+       0: aload_0
+       1: iload_1
+       2: ifeq          15
+       5: aload_0
+       6: invokevirtual #421                // Method getExtendedState:()I
+       9: bipush        6
+      11: ior
+      12: goto          22
+      15: aload_0
+      16: invokevirtual #421                // Method getExtendedState:()I
+      19: bipush        -7
+      21: iand
+      22: invokevirtual #425                // Method setExtendedState:(I)V
+      25: return
+    LineNumberTable:
+      line 290: 0
+      line 291: 5
+      line 293: 15
+      line 290: 22
+      line 295: 25
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      26     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      26     1 value   Z
+
+  public final boolean isMinimized();
+    Code:
+       0: aload_0
+       1: invokevirtual #421                // Method getExtendedState:()I
+       4: iconst_1
+       5: iand
+       6: ifeq          13
+       9: iconst_1
+      10: goto          14
+      13: iconst_0
+      14: ireturn
+    LineNumberTable:
+      line 301: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      15     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final void setMinimized(boolean);
+    Code:
+       0: aload_0
+       1: iload_1
+       2: ifeq          14
+       5: aload_0
+       6: invokevirtual #421                // Method getExtendedState:()I
+       9: iconst_1
+      10: ior
+      11: goto          21
+      14: aload_0
+      15: invokevirtual #421                // Method getExtendedState:()I
+      18: bipush        -2
+      20: iand
+      21: invokevirtual #425                // Method setExtendedState:(I)V
+      24: return
+    LineNumberTable:
+      line 303: 0
+      line 304: 5
+      line 306: 14
+      line 303: 21
+      line 308: 24
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      25     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0      25     1 value   Z
+
+  public final void onRenderApiChanged(kotlin.jvm.functions.Function0<kotlin.Unit>);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #432                // Method androidx/compose/ui/awt/ComposeWindowPanel.onRenderApiChanged:(Lkotlin/jvm/functions/Function0;)V
+       8: return
+    LineNumberTable:
+      line 314: 0
+      line 315: 8
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 action   Lkotlin/jvm/functions/Function0;
+
+  public final void renderImmediately();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #437                // Method androidx/compose/ui/awt/ComposeWindowPanel.renderImmediately:()V
+       7: return
+    LineNumberTable:
+      line 327: 0
+      line 328: 7
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final long getWindowHandle();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #441                // Method androidx/compose/ui/awt/ComposeWindowPanel.getWindowHandle:()J
+       7: lreturn
+    LineNumberTable:
+      line 335: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final org.jetbrains.skiko.GraphicsApi getRenderApi();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #445                // Method androidx/compose/ui/awt/ComposeWindowPanel.getRenderApi:()Lorg/jetbrains/skiko/GraphicsApi;
+       7: areturn
+    LineNumberTable:
+      line 342: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public void addMouseListener(java.awt.event.MouseListener);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #449                // Method androidx/compose/ui/awt/ComposeWindowPanel.addMouseListener:(Ljava/awt/event/MouseListener;)V
+       8: return
+    LineNumberTable:
+      line 349: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 listener   Ljava/awt/event/MouseListener;
+
+  public void removeMouseListener(java.awt.event.MouseListener);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #454                // Method androidx/compose/ui/awt/ComposeWindowPanel.removeMouseListener:(Ljava/awt/event/MouseListener;)V
+       8: return
+    LineNumberTable:
+      line 352: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 listener   Ljava/awt/event/MouseListener;
+
+  public void addMouseMotionListener(java.awt.event.MouseMotionListener);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #458                // Method androidx/compose/ui/awt/ComposeWindowPanel.addMouseMotionListener:(Ljava/awt/event/MouseMotionListener;)V
+       8: return
+    LineNumberTable:
+      line 355: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 listener   Ljava/awt/event/MouseMotionListener;
+
+  public void removeMouseMotionListener(java.awt.event.MouseMotionListener);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #462                // Method androidx/compose/ui/awt/ComposeWindowPanel.removeMouseMotionListener:(Ljava/awt/event/MouseMotionListener;)V
+       8: return
+    LineNumberTable:
+      line 358: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 listener   Ljava/awt/event/MouseMotionListener;
+
+  public void addMouseWheelListener(java.awt.event.MouseWheelListener);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #466                // Method androidx/compose/ui/awt/ComposeWindowPanel.addMouseWheelListener:(Ljava/awt/event/MouseWheelListener;)V
+       8: return
+    LineNumberTable:
+      line 361: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 listener   Ljava/awt/event/MouseWheelListener;
+
+  public void removeMouseWheelListener(java.awt.event.MouseWheelListener);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: aload_1
+       5: invokevirtual #470                // Method androidx/compose/ui/awt/ComposeWindowPanel.removeMouseWheelListener:(Ljava/awt/event/MouseWheelListener;)V
+       8: return
+    LineNumberTable:
+      line 364: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 listener   Ljava/awt/event/MouseWheelListener;
+
+  public final boolean getShowLayoutBounds();
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: invokevirtual #473                // Method androidx/compose/ui/awt/ComposeWindowPanel.getShowLayoutBounds:()Z
+       7: ireturn
+    LineNumberTable:
+      line 372: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       8     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  public final void setShowLayoutBounds(boolean);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: iload_1
+       5: invokevirtual #476                // Method androidx/compose/ui/awt/ComposeWindowPanel.setShowLayoutBounds:(Z)V
+       8: return
+    LineNumberTable:
+      line 375: 0
+      line 376: 8
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 value   Z
+
+  public static void getShowLayoutBounds$annotations();
+    Code:
+       0: return
+
+  public final long measureContent-ToXhtMw$ui(long);
+    Code:
+       0: aload_0
+       1: getfield      #32                 // Field composePanel:Landroidx/compose/ui/awt/ComposeWindowPanel;
+       4: lload_1
+       5: invokevirtual #483                // Method androidx/compose/ui/awt/ComposeWindowPanel."measureContent-ToXhtMw":(J)J
+       8: lreturn
+    LineNumberTable:
+      line 379: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       9     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+          0       9     1 constraints   J
+
+  private static final kotlin.Unit setContent$lambda$0(kotlin.jvm.functions.Function3, androidx.compose.ui.awt.ComposeWindow$setContent$scope$1, androidx.compose.ui.awt.ComposeWindow, androidx.compose.runtime.Composer, int);
+    Code:
+       0: aload_3
+       1: ldc_w         #497                // String C183@7583L9,184@7630L95:ComposeWindow.desktop.kt#ccs55x
+       4: invokestatic  #503                // Method androidx/compose/runtime/ComposerKt.sourceInformation:(Landroidx/compose/runtime/Composer;Ljava/lang/String;)V
+       7: aload_3
+       8: iload         4
+      10: iconst_3
+      11: iand
+      12: iconst_2
+      13: if_icmpeq     20
+      16: iconst_1
+      17: goto          21
+      20: iconst_0
+      21: iload         4
+      23: iconst_1
+      24: iand
+      25: invokeinterface #509,  3          // InterfaceMethod androidx/compose/runtime/Composer.shouldExecute:(ZI)Z
+      30: ifeq          97
+      33: invokestatic  #512                // Method androidx/compose/runtime/ComposerKt.isTraceInProgress:()Z
+      36: ifeq          50
+      39: ldc           #230                // int 501639021
+      41: iload         4
+      43: iconst_m1
+      44: ldc_w         #514                // String androidx.compose.ui.awt.ComposeWindow.setContent.<anonymous> (ComposeWindow.desktop.kt:183)
+      47: invokestatic  #518                // Method androidx/compose/runtime/ComposerKt.traceEventStart:(IIILjava/lang/String;)V
+      50: aload_0
+      51: aload_1
+      52: aload_3
+      53: iconst_0
+      54: invokestatic  #524                // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+      57: invokeinterface #529,  4          // InterfaceMethod kotlin/jvm/functions/Function3.invoke:(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      62: pop
+      63: aload_2
+      64: getfield      #41                 // Field undecoratedWindowResizer:Landroidx/compose/ui/window/UndecoratedWindowResizer;
+      67: getstatic     #534                // Field androidx/compose/ui/Modifier.Companion:Landroidx/compose/ui/Modifier$Companion;
+      70: checkcast     #531                // class androidx/compose/ui/Modifier
+      73: ldc_w         #536                // String UndecoratedWindowResizer
+      76: invokestatic  #542                // Method androidx/compose/ui/layout/LayoutIdKt.layoutId:(Landroidx/compose/ui/Modifier;Ljava/lang/Object;)Landroidx/compose/ui/Modifier;
+      79: aload_3
+      80: bipush        6
+      82: invokevirtual #546                // Method androidx/compose/ui/window/UndecoratedWindowResizer.Content:(Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+      85: invokestatic  #512                // Method androidx/compose/runtime/ComposerKt.isTraceInProgress:()Z
+      88: ifeq          103
+      91: invokestatic  #549                // Method androidx/compose/runtime/ComposerKt.traceEventEnd:()V
+      94: goto          103
+      97: aload_3
+      98: invokeinterface #552,  1          // InterfaceMethod androidx/compose/runtime/Composer.skipToGroupEnd:()V
+     103: getstatic     #557                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+     106: areturn
+    LineNumberTable:
+      line 184: 50
+      line 185: 63
+      line 186: 67
+      line 185: 82
+      line 183: 97
+      line 188: 103
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0     107     0 $content   Lkotlin/jvm/functions/Function3;
+          0     107     1 $scope   Landroidx/compose/ui/awt/ComposeWindow$setContent$scope$1;
+          0     107     2 this$0   Landroidx/compose/ui/awt/ComposeWindow;
+          0     107     3 $composer   Landroidx/compose/runtime/Composer;
+          0     107     4 $changed   I
+
+  public androidx.compose.ui.awt.ComposeWindow();
+    Code:
+       0: aload_0
+       1: aconst_null
+       2: aconst_null
+       3: aconst_null
+       4: aconst_null
+       5: bipush        15
+       7: aconst_null
+       8: invokespecial #88                 // Method "<init>":(Ljava/awt/GraphicsConfiguration;Lorg/jetbrains/skiko/SkiaLayerAnalytics;Landroidx/savedstate/SavedState;Lkotlin/coroutines/CoroutineContext;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+      11: return
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      12     0  this   Landroidx/compose/ui/awt/ComposeWindow;
+
+  static {};
+    Code:
+       0: bipush        8
+       2: putstatic     #568                // Field $stable:I
+       5: return
+}

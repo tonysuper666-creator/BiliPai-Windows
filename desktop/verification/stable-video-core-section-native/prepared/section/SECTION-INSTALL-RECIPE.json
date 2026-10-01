@@ -1,0 +1,190 @@
+{
+  "stage": "Full original VideoPlayerSection/Contracts renderer plus sole native-state/settings/helper closure",
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "baseline": "actual50/97 + explicitly prospective parent core03 + frozen Stage3; source-only",
+  "generator": "generate(repo,output,standalone=False)",
+  "soleTools": [
+    {
+      "path": "prepared/desktop/tools/extract-upstream-video-player-section-full.py",
+      "bytes": 42626,
+      "sha256Bytes": "3c9fa4d5115fdebed4fcd16f534bb0f9a30af4ae714ec2fb506ab385328ccc04",
+      "sha256LF": "3c9fa4d5115fdebed4fcd16f534bb0f9a30af4ae714ec2fb506ab385328ccc04"
+    }
+  ],
+  "generatedDirectory": "build/generated/original-video-player-section-full",
+  "directCopyOnce": [
+    {
+      "path": "com/android/purebilibili/core/ui/adaptive/InputDevicePolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/core/ui/adaptive/InputDevicePolicy.kt",
+      "sha256LF": "5f1ce6f6dd43bba6603700d9e79d1c2802f6da81aef347e589f83d001b712e90",
+      "lines": 25,
+      "mode": "direct-complete-original",
+      "installVia": "sole-sync"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/subtitle/SubtitleFeaturePolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/subtitle/SubtitleFeaturePolicy.kt",
+      "sha256LF": "3c63cc6ec1be30f3d90db92aa12ae57fc02481eb25f3d7ea3702d85acba16b20",
+      "lines": 5,
+      "mode": "direct-complete-original",
+      "installVia": "sole-sync"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt",
+      "sha256LF": "dc6c67fc857b950a914d6c6ffc48c328216c8531d6d534f936d0d079e43314f7",
+      "lines": 354,
+      "mode": "direct-complete-original",
+      "installVia": "sole-sync"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/TwoFingerSpeedFeedbackOverlay.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/TwoFingerSpeedFeedbackOverlay.kt",
+      "sha256LF": "d8b16fbabbe28ddc00a99eba5537df6e1b08fa11e59a9a1cddcf2a1054c5672e",
+      "lines": 130,
+      "mode": "direct-complete-original",
+      "installVia": "sole-sync"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/VideoAspectRatioPreferenceMapper.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoAspectRatioPreferenceMapper.kt",
+      "sha256LF": "880d8d7d3e2b8fc65877a5880745428cd27d94dee7a7da8d80a358f295945136",
+      "lines": 23,
+      "mode": "direct-complete-original",
+      "installVia": "sole-sync"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoPlayerDanmakuLoadPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerDanmakuLoadPolicy.kt",
+      "sha256LF": "883f579cb65942465f11b24bdbdc4a83155648ec82d99ca1d5cf286f025b126f",
+      "lines": 48,
+      "mode": "direct-complete-original",
+      "installVia": "sole-sync"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoPlayerTopBarPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerTopBarPolicy.kt",
+      "sha256LF": "af65cfb6af10178360684f9f6b6a76b39fbf7eabd811ec50707fee2ea3692144",
+      "lines": 8,
+      "mode": "direct-complete-original",
+      "installVia": "sole-sync"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoPlayerUiLayoutPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerUiLayoutPolicy.kt",
+      "sha256LF": "426c9d2d1426b90e8e82f9c679979e65d242b90d4ce261bc3ed354c2bd8180a7",
+      "lines": 69,
+      "mode": "direct-complete-original",
+      "installVia": "sole-sync"
+    }
+  ],
+  "selectedOutputs": [
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalPlayerInteractionSettings.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "a19d92c09e80dbed239e6244cba3b14894f643e070881fd2e4afc63654c81496",
+      "lines": 183,
+      "mode": "selected-platform",
+      "installVia": "sole-section-producer"
+    },
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalPlayerSectionSettings.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "b8497f21faaf52737f071f3ba5b62a2ce65485ae26f1a657f183665d2b3a3bc0",
+      "lines": 486,
+      "mode": "selected-platform",
+      "installVia": "sole-section-producer"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/state/DesktopOriginalApiDimensionPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/state/VideoPlayerState.kt",
+      "sha256LF": "a980e62d9000990bbcb22b1b12563cf48faa1fca6590c18e1307b8e0633ba1de",
+      "lines": 13,
+      "mode": "selected-platform",
+      "installVia": "sole-section-producer"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/session/PlaybackSeekController.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackSeekController.kt",
+      "sha256LF": "70d20dd35db2f7c5156edfbec75fc778c0dfae5a9505d7ee38d25bc0fd190c23",
+      "lines": 296,
+      "mode": "selected-platform",
+      "installVia": "sole-section-producer"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/overlay/FullscreenDoubleTapPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenDoubleTapPolicy.kt",
+      "sha256LF": "f3e08d5edf695188cbba5308993a3b62c38ff1b15edb7470a6a2b5f221fd7c47",
+      "lines": 61,
+      "mode": "selected-platform",
+      "installVia": "sole-section-producer"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DanmakuViewportHost.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/DanmakuViewportHost.kt",
+      "sha256LF": "e5f52181d190749437be6125758b35bb59df6ff09e35c34cf59b501e1cc244bf",
+      "lines": 33,
+      "mode": "selected-platform",
+      "installVia": "sole-section-producer"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoPlayerSectionPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "sha256LF": "6da691b7d86a431ec2c60218c672468c967999151e0053785d757692838c4ef2",
+      "lines": 1851,
+      "mode": "selected-platform",
+      "installVia": "sole-section-producer"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "sha256LF": "aa7b720ad3b632418a67902f5015ae39b40d9ce7d9d78d1bd07e1bb2f6e08c33",
+      "lines": 4890,
+      "mode": "selected-platform",
+      "installVia": "sole-section-producer"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionContracts.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionContracts.kt",
+      "sha256LF": "587b9fb1db8234865019b0110ee0a0075941075580c552882d034f26edc1b4b5",
+      "lines": 156,
+      "mode": "selected-platform",
+      "installVia": "sole-section-producer"
+    }
+  ],
+  "manualPayloads": [
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState.kt",
+      "bytes": 14682,
+      "sha256Bytes": "957db9765b016779acf400555dce7089671ad1df7527c4f5971f9b3ebd4d84e2",
+      "sha256LF": "957db9765b016779acf400555dce7089671ad1df7527c4f5971f9b3ebd4d84e2"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoSectionPlatform.kt",
+      "bytes": 5594,
+      "sha256Bytes": "1257b1664e464d82a7f648ff23ff222b39bbb2d056be7b41ae6b49620e05cb3f",
+      "sha256LF": "1257b1664e464d82a7f648ff23ff222b39bbb2d056be7b41ae6b49620e05cb3f"
+    }
+  ],
+  "existingSourceHunks": [
+    "overlay-control-local-hunks.json",
+    "settings-context-local-hunks.json"
+  ],
+  "doNotCopyWholeProofSources": true,
+  "registryDelta": "section-registry-delta.json",
+  "compilerEvidence": "section-runs/06/compile-result.json",
+  "symbolEvidence": "section-runs/06/symbol-audit.json",
+  "sourceProof": "section-production-proof-01/result.json",
+  "rootContract": "SECTION-ROOT-CONTRACT.md",
+  "sourceCounts": {
+    "identities": 17,
+    "standalone": 17,
+    "direct": 8,
+    "productionSelected": 9,
+    "manual": 2,
+    "compiled": 21
+  },
+  "noWholeOpsControllerListenShellMpvPayload": true,
+  "sourceOnlyRequiredRootBindings": true,
+  "acceptance": "No page/UI/native/HWND/fullscreen/HTTP/account runtime acceptance"
+}

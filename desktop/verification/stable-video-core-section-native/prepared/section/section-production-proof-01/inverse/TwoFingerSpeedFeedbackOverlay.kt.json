@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/TwoFingerSpeedFeedbackOverlay.kt",
+  "sourceSha256LF": "d8b16fbabbe28ddc00a99eba5537df6e1b08fa11e59a9a1cddcf2a1054c5672e",
+  "generatedSha256LF": "d8b16fbabbe28ddc00a99eba5537df6e1b08fa11e59a9a1cddcf2a1054c5672e",
+  "inverseExactOriginal": true,
+  "lineChanges": [],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

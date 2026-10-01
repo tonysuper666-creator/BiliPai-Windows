@@ -1,0 +1,47 @@
+[
+  {
+    "label": "Required same-root usecase environment replaces Android defaults",
+    "before": "class VideoPlaybackUseCase(\n    private var progressManager: PlaybackProgressManager = PlaybackProgressManager(),\n    private val qualityManager: QualityManager = QualityManager()\n) {",
+    "after": "class VideoPlaybackUseCase internal constructor(\n    private val environment: com.bilipai.desktop.ui.DesktopOriginalVideoPlaybackUseCaseEnvironment,\n    private val qualityManager: QualityManager = QualityManager()\n) : com.bilipai.desktop.ui.DesktopOriginalVideoLoadPort {\n    private val progressManager get() = environment.progress\n    private val VideoRepository get() = environment.repository\n    private val ActionRepository get() = environment.actions"
+  },
+  {
+    "label": "Actual context/progress authority, no second manager",
+    "before": "appContext = context.applicationContext\n        progressManager = PlaybackProgressManager.getInstance(context)",
+    "after": "require(context === environment.context) { \"Original video context must use the same global store\" }\n        appContext = context"
+  },
+  {
+    "label": "Task-owned entry admission before original cooldown/network work",
+    "before": "    ): VideoLoadResult {\n        try {",
+    "after": "    ): VideoLoadResult {\n        environment.assertOwned()\n        try {"
+  },
+  {
+    "label": "Retired task cannot apply original load result/cooldown success",
+    "before": "            return detailResult.fold(",
+    "after": "            environment.assertOwned()\n            return detailResult.fold("
+  },
+  {
+    "label": "Android media boundary createLegacyDashMediaSource",
+    "before": "        private fun createLegacyDashMediaSource(\n        videoUrl: String,\n        audioUrl: String?,\n        cdnCacheKeysByUrl: Map<String, String>\n    ): MediaSource {\n        val headers = mapOf(\n            \"Referer\" to \"https://www.bilibili.com\",\n            \"User-Agent\" to \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\"\n        )\n        val upstreamFactory = androidx.media3.datasource.okhttp.OkHttpDataSource.Factory(\n            NetworkModule.playbackOkHttpClient\n        ).setDefaultRequestProperties(headers)\n        val dataSourceFactory = buildCachedPlaybackDataSourceFactory(upstreamFactory, cdnCacheKeysByUrl)\n\n        val mediaSourceFactory = androidx.media3.exoplayer.source.ProgressiveMediaSource.Factory(dataSourceFactory)\n        val videoSource = mediaSourceFactory.createMediaSource(MediaItem.fromUri(videoUrl))\n\n        return if (audioUrl != null) {\n            val audioSource = mediaSourceFactory.createMediaSource(MediaItem.fromUri(audioUrl))\n            androidx.media3.exoplayer.source.MergingMediaSource(videoSource, audioSource)\n        } else {\n            videoSource\n        }\n    }",
+    "after": "private fun createLegacyDashMediaSource(videoUrl:String,audioUrl:String?,cdnCacheKeysByUrl:Map<String,String>):com.bilipai.desktop.player.PlaybackSource =\n        environment.media.prepareLegacyDash(videoUrl,audioUrl,cdnCacheKeysByUrl)"
+  },
+  {
+    "label": "Android media boundary createAdaptiveDashMediaSource",
+    "before": "        private fun createAdaptiveDashMediaSource(\n        adaptiveDashSource: AdaptiveDashPlaybackSource?,\n        cdnCacheKeysByUrl: Map<String, String>\n    ): MediaSource? {\n        val source = adaptiveDashSource ?: return null\n        val context = appContext ?: NetworkModule.appContext ?: return null\n        val manifestUri = writeAdaptiveDashManifest(context, source.manifest) ?: return null\n        val headers = mapOf(\n            \"Referer\" to \"https://www.bilibili.com\",\n            \"User-Agent\" to \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\"\n        )\n        val upstreamFactory = androidx.media3.datasource.okhttp.OkHttpDataSource.Factory(\n            NetworkModule.playbackOkHttpClient\n        ).setDefaultRequestProperties(headers)\n        val dataSourceFactory = androidx.media3.datasource.DefaultDataSource.Factory(\n            context,\n            PlaybackMediaCache.buildCdnOptimizedDataSourceFactory(\n                context = context,\n                upstreamFactory = upstreamFactory,\n                cacheKeysByUrl = cdnCacheKeysByUrl\n            )\n        )\n        val mediaItem = MediaItem.Builder()\n            .setUri(manifestUri)\n            .setMimeType(MimeTypes.APPLICATION_MPD)\n            .build()\n        return DashMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)\n    }",
+    "after": "private fun createAdaptiveDashMediaSource(adaptiveDashSource:AdaptiveDashPlaybackSource?,cdnCacheKeysByUrl:Map<String,String>):com.bilipai.desktop.player.PlaybackSource? =\n        adaptiveDashSource?.let { environment.media.prepareAdaptiveDash(it,cdnCacheKeysByUrl) }"
+  },
+  {
+    "label": "Android media boundary buildCachedPlaybackDataSourceFactory",
+    "before": "    private fun buildCachedPlaybackDataSourceFactory(\n        upstreamFactory: DataSource.Factory,\n        cdnCacheKeysByUrl: Map<String, String> = emptyMap()\n    ): DataSource.Factory {\n        val context = appContext ?: NetworkModule.appContext ?: return upstreamFactory\n        return PlaybackMediaCache.buildCdnOptimizedDataSourceFactory(\n            context = context,\n            upstreamFactory = upstreamFactory,\n            cacheKeysByUrl = cdnCacheKeysByUrl\n        )\n    }",
+    "after": ""
+  },
+  {
+    "label": "Android media boundary resolveDashSegmentRequestsEnabled",
+    "before": "    private fun resolveDashSegmentRequestsEnabled(): Boolean {\n        val context = appContext ?: NetworkModule.appContext ?: return true\n        return PlayerSettingsCache.isDashSegmentRequestsEnabled(context)\n    }",
+    "after": "private fun resolveDashSegmentRequestsEnabled():Boolean = environment.dashSegmentRequestsEnabled()"
+  },
+  {
+    "label": "Android media boundary writeAdaptiveDashManifest",
+    "before": "    private fun writeAdaptiveDashManifest(context: Context, manifest: String): Uri? {\n        return runCatching {\n            val manifestDir = File(context.cacheDir, \"dash_manifests\").apply { mkdirs() }\n            val manifestFile = File(manifestDir, resolveLocalDashManifestFileName(manifest))\n            if (!manifestFile.exists() || manifestFile.readText() != manifest) {\n                manifestFile.writeText(manifest)\n            }\n            Uri.fromFile(manifestFile)\n        }.onFailure { error ->\n            Logger.w(\"VideoPlaybackUseCase\", \" Failed to cache adaptive DASH manifest: ${error.message}\")\n        }.getOrNull()\n    }",
+    "after": ""
+  }
+]

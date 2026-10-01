@@ -1,0 +1,9 @@
+{
+  "passed": false,
+  "sources": 5,
+  "exitCode": 1,
+  "actual50RuntimeEntries": 97,
+  "productAcceptance": false,
+  "explicitProspectiveOverride": "DesktopOriginalMpvOverlayControl family with 3 access-only hunks",
+  "candidateJarSha256Bytes": null
+}

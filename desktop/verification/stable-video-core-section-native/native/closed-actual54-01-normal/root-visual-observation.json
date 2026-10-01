@@ -1,0 +1,27 @@
+{
+  "actualProductSnapshot": 54,
+  "attempt": "actual54-01-normal",
+  "runtimeEntries": 101,
+  "productionOverrides": 0,
+  "inputApi": "@oai/sky",
+  "uniqueTargetTitle": "BiliPai fixture-owned full Offline native acceptance",
+  "observedTargetWindowId": 75370070,
+  "actions": [
+    {"step": 1, "originalControl": "exit fullscreen", "latestScreenshot": "screenshot-2", "screenshotCoordinateLogical": [2528, 1412], "clickedAndImmediatelyRefreshed": true, "actualOriginalCallbackAccepted": true},
+    {"step": 2, "originalControl": "enter fullscreen", "latestScreenshot": "screenshot-1", "screenshotCoordinateLogical": [854, 556], "clickedAndImmediatelyRefreshed": true, "actualOriginalCallbackAccepted": false}
+  ],
+  "initialFullscreenVisualAccepted": true,
+  "initialFullscreenObservation": "Main, native video and both captured foreground layers filled2560x1440 logical pixels at150% scaling. Root observed no normal-window inset strip.",
+  "firstExitNormalGeometryAccepted": true,
+  "firstExitObservation": "Settled AWT Main900x620 at100,100; User32 outer1350x930 at150,150 and client1328x874. Native/foreground886x584 logical at107,130 match the normal client region. Root observed the complete original controls.",
+  "failedSecondInputObservation": "Root selected the latest related foreground screenshot886x584 at physical origin160,195 and clicked the visible full-screen button854,556. Sky returned success and an immediate refreshed normal screenshot, but the fixture received no AWT foreground press. Main remained Floating; no second fullscreen visual acceptance is claimed.",
+  "failure": "Actual foreground HWND press not delivered to AWT",
+  "inputsStoppedAfterFailure": true,
+  "closedByFixture": true,
+  "reenteredFullscreenVisualAccepted": false,
+  "requestedScopeFullyAccepted": false,
+  "arbitraryNavigationPlacementRestoreAccepted": false,
+  "OSSMTCButtonAccepted": false,
+  "actualMainShellMediaAccepted": false,
+  "scope": "Same original Offline native fixture on actual54/101; one observed150% display. Input API success is not original callback or native acceptance. Failed cohort is retained without further input or product changes."
+}

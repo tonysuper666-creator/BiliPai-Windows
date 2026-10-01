@@ -1,0 +1,12 @@
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\04\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2728:115: error: unresolved reference 'map'.
+        val danmakuFullscreenPanelWidthMode by platform.danmakuPreferences.getDanmakuSettings(activeDanmakuScope).map { it.fullscreenPanelWidthMode }
+                                                                                                                  ^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\04\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2728:121: error: unresolved reference 'it'.
+        val danmakuFullscreenPanelWidthMode by platform.danmakuPreferences.getDanmakuSettings(activeDanmakuScope).map { it.fullscreenPanelWidthMode }
+                                                                                                                        ^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\04\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4822:114: error: unresolved reference 'map'.
+                val poolSheetBlockRulesRaw by platform.danmakuPreferences.getDanmakuSettings(activeDanmakuScope).map { it.blockRulesRaw }
+                                                                                                                 ^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\04\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4822:120: error: unresolved reference 'it'.
+                val poolSheetBlockRulesRaw by platform.danmakuPreferences.getDanmakuSettings(activeDanmakuScope).map { it.blockRulesRaw }
+                                                                                                                       ^^

@@ -1,0 +1,192 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+    "sha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "extracted",
+    "existingIdentity": true,
+    "existingMode": "extracted",
+    "preserveExistingMode": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/model/VideoLoadError.kt",
+    "sha256LF": "d13abdfe7ad6ec158e4046f30ea1ad38d1c68202c08dba73df0936284695a3df",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "direct",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/dash/AdaptiveDashPlaybackSource.kt",
+    "sha256LF": "dcf96628f58f40d06d9a64608b82ccefc45ee4b3be4beda41fa402b5427ff405",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "direct",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
+    "sha256LF": "e266056182d40e924535401011071fc61fcfc59738e9263076717f49765c47fa",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "extracted",
+    "existingIdentity": true,
+    "existingMode": "policy-extract",
+    "preserveExistingMode": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+    "sha256LF": "377a74a359cc84eb2961f5ff022da12158345a677d14087ea1fc7d3991f148c8",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "extracted",
+    "existingIdentity": true,
+    "existingMode": "policy-extract",
+    "preserveExistingMode": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt",
+    "sha256LF": "e5fb1f278eba66228597dfc631b275b835b11a577c23c0eebfc460821b839918",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "extracted",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/loader/PlaybackRequest.kt",
+    "sha256LF": "ff75b5af9a8cd4cec42f393a40a3e45bff20d52c1dc821f333076da377b6eb4e",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "direct",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/loader/PlaybackLoadResult.kt",
+    "sha256LF": "a527931bc3236db1f4c103adfc1e193521423369e0bbbf9b5801764d254b2ed1",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "direct",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackSessionStore.kt",
+    "sha256LF": "09d952f46d7eaa505aa3d23dd6435a24e87d44b45fcd47dad0cf29185c868655",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "direct",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/coordinator/PlaybackCoordinator.kt",
+    "sha256LF": "1968820cd98d97cbe745363a799e0ae08e172b3ba7881a0d1696777b799a7454",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "direct",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/policy/ResumePlaybackPolicy.kt",
+    "sha256LF": "4f5d3bddd5281e611179aa6c93ae8c81e68a74cd64cd13e30ed6ae691a6b2fdd",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "direct",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/controller/QualityManager.kt",
+    "sha256LF": "4e2895dfd69d83c398b0e1719267513598fd3f3c33fd157f169d0c6f7b66a496",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "direct",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPresentationState.kt",
+    "sha256LF": "450cd98e1b0e6e03c87a1f6e0c0e38e85cd3955e82e7aec2387d711c2e066250",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "direct",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailRenderContracts.kt",
+    "sha256LF": "e9820ea7274bfce8993adadcafd6da519b8722ff3511a3a83c2be7476ebf17d1",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "direct",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/PlaybackCompletionPolicy.kt",
+    "sha256LF": "083a8ed64ab0f63bc7d86c96c1f55b453ce0df075a7acad4a47f7dd7edc1447d",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "extracted",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/loader/PlaybackLoader.kt",
+    "sha256LF": "ab9cce54896ecdb0a05c5632cc0e0db6730e0cf6a3589e3d3e665e160e7e6b49",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "extracted",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoPlaybackUseCase.kt",
+    "sha256LF": "518cac4c89acb92aa97c3945b16fe5662f678bff6dcd67a5803f70165e5ae63f",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "extracted",
+    "existingIdentity": true,
+    "existingMode": "policy-extract",
+    "preserveExistingMode": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/cooldown/PlaybackCooldownManager.kt",
+    "sha256LF": "f14bec14a699587e36fbaa7e94636f1274fcd0e69b3bbb3d0c8309aa0170e440",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "extracted",
+    "existingIdentity": false,
+    "existingMode": null,
+    "preserveExistingMode": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+    "sha256LF": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "feature": "stable-video-state-core",
+    "requestedMode": "extracted",
+    "existingIdentity": true,
+    "existingMode": "policy-extract",
+    "preserveExistingMode": true
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerTopBarPolicy.kt",
+  "sourceSha256LF": "af65cfb6af10178360684f9f6b6a76b39fbf7eabd811ec50707fee2ea3692144",
+  "generatedSha256LF": "af65cfb6af10178360684f9f6b6a76b39fbf7eabd811ec50707fee2ea3692144",
+  "inverseExactOriginal": true,
+  "lineChanges": [],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

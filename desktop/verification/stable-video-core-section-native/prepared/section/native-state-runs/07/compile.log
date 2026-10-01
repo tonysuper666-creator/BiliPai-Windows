@@ -1,0 +1,3 @@
+desktop\.local\stable-video-player-section-parity\native-state-runs\07\source-inputs\generated\com\android\purebilibili\core\store\DesktopOriginalPlayerSectionSettings.kt:446:20: error: unresolved reference 'DEFAULT_PLAYER_DIAGNOSTIC_LOGGING_ENABLED'.
+                ?: DEFAULT_PLAYER_DIAGNOSTIC_LOGGING_ENABLED
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

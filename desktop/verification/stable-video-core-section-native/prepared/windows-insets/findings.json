@@ -1,0 +1,181 @@
+{
+  "scope": "Post-closed actual53 readonly source analysis",
+  "runtimeSourceCommit": "1c417fbfc2f70ab03a565b0af0a5a3c6f5e15ad6",
+  "concreteAnchors": [
+    {
+      "path": "jdk/java.desktop/java/awt/Container.java",
+      "line": 413,
+      "finding": "Container returns a clone of peer cached Insets, not an immediate OS client query.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\java\\awt\\Container.java",
+        "sha256Bytes": "1a08c9045743168b1823c701958050d60250c15d79642ef8f18f54f72cabd2c4",
+        "size": 196126
+      }
+    },
+    {
+      "path": "jdk/java.desktop/sun/awt/windows/WPanelPeer.java",
+      "line": 62,
+      "finding": "getInsets directly returns existing insets_ cache.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\windows\\WPanelPeer.java",
+        "sha256Bytes": "10becb91880cde80f0d47bce14ed3dad36b895fac084bc04db4e6bf5e7a7d594",
+        "size": 3155
+      }
+    },
+    {
+      "path": "jdk/java.desktop/sun/awt/windows/WFramePeer.java",
+      "line": 143,
+      "finding": "A decorated Frame reshape uses native reshapeFrame.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\windows\\WFramePeer.java",
+        "sha256Bytes": "01b1a540ead4337bfdf28abb7f4ded89a2601333f2e3c8e4060c05ff466a5aa2",
+        "size": 8899
+      }
+    },
+    {
+      "path": "native/awt_Window.cpp",
+      "line": 2574,
+      "finding": "_ReshapeFrame dispatches WM_AWT_RESHAPE_COMPONENT to existing peer HWND.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Window.cpp",
+        "sha256Bytes": "f1fb9e8676bf52f9a03336185991f887d5a30274c18fb5d31382baa12da34768",
+        "size": 121604
+      }
+    },
+    {
+      "path": "native/awt_Component.cpp",
+      "line": 1896,
+      "finding": "Existing native message handler invokes virtual Reshape; no HWND replacement.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Component.cpp",
+        "sha256Bytes": "1b51a4d68c6acd4812a3711546d36edf567163c6de3b95ea64705a3fd345e59c",
+        "size": 249731
+      }
+    },
+    {
+      "path": "native/awt_Frame.cpp",
+      "line": 654,
+      "finding": "Normal noniconic/nonzoomed Frame follows AwtWindow.Reshape.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Frame.cpp",
+        "sha256Bytes": "61891b9bfc79e1b85decb8be454354ed951045cd6741bd4a54a95933da746097",
+        "size": 65548
+      }
+    },
+    {
+      "path": "native/awt_Window.cpp",
+      "line": 1220,
+      "finding": "AwtWindow.Reshape performs current monitor DPI conversion and calls ReshapeNoScale; a manager-rejected size can invoke WmSize manually.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Window.cpp",
+        "sha256Bytes": "f1fb9e8676bf52f9a03336185991f887d5a30274c18fb5d31382baa12da34768",
+        "size": 121604
+      }
+    },
+    {
+      "path": "native/awt_Component.cpp",
+      "line": 976,
+      "finding": "ReshapeNoScale calls SetWindowPos or DeferWindowPos with SWP_NOACTIVATE|SWP_NOZORDER; dimensions are supplied, no SWP_NOSIZE.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Component.cpp",
+        "sha256Bytes": "1b51a4d68c6acd4812a3711546d36edf567163c6de3b95ea64705a3fd345e59c",
+        "size": 249731
+      }
+    },
+    {
+      "path": "native/awt_Frame.cpp",
+      "line": 980,
+      "finding": "Noniconic normal WM_SIZE delegates to AwtWindow.WmSize.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Frame.cpp",
+        "sha256Bytes": "61891b9bfc79e1b85decb8be454354ed951045cd6741bd4a54a95933da746097",
+        "size": 65548
+      }
+    },
+    {
+      "path": "native/awt_Window.cpp",
+      "line": 1933,
+      "finding": "WmSize calls UpdateInsets(NULL) before writing target dimensions and WindowResized.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Window.cpp",
+        "sha256Bytes": "f1fb9e8676bf52f9a03336185991f887d5a30274c18fb5d31382baa12da34768",
+        "size": 121604
+      }
+    },
+    {
+      "path": "native/awt_Window.cpp",
+      "line": 1397,
+      "finding": "UpdateInsets computes native outside/client rectangles, scales down, and stores values in the existing Java peer Insets object.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Window.cpp",
+        "sha256Bytes": "f1fb9e8676bf52f9a03336185991f887d5a30274c18fb5d31382baa12da34768",
+        "size": 121604
+      }
+    },
+    {
+      "path": "native/awt_Window.cpp",
+      "line": 1474,
+      "finding": "Direct insets_ID object write refreshes existing WPanelPeer.inset_ used by Container.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Window.cpp",
+        "sha256Bytes": "f1fb9e8676bf52f9a03336185991f887d5a30274c18fb5d31382baa12da34768",
+        "size": 121604
+      }
+    },
+    {
+      "path": "native/awt_Window.cpp",
+      "line": 1969,
+      "finding": "Nonclient recalc also updates Insets when a valid rectangle exists.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Window.cpp",
+        "sha256Bytes": "f1fb9e8676bf52f9a03336185991f887d5a30274c18fb5d31382baa12da34768",
+        "size": 121604
+      }
+    },
+    {
+      "path": "native/awt_Window.h",
+      "line": 356,
+      "finding": "Setting FSEM flag does not itself refresh Insets; only flag and security-warning update.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Window.h",
+        "sha256Bytes": "4d38ad49cfe231b22a766a74fd5e74ff0e5ee89ec1d2f4cfed479257c84c29d2",
+        "size": 15464
+      }
+    },
+    {
+      "path": "jdk/java.desktop/sun/awt/Win32GraphicsDevice.java",
+      "line": 412,
+      "finding": "Superclass window bounds path precedes exclusive entry; Java follow-up updates GC, not explicit cached Insets.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\Win32GraphicsDevice.java",
+        "sha256Bytes": "fe18285675feec3afd0627f7f52b61f699e1843d67f46d261edbcef1ebffd59d",
+        "size": 25048
+      }
+    },
+    {
+      "path": "jdk/java.desktop/sun/java2d/d3d/D3DGraphicsDevice.java",
+      "line": 181,
+      "finding": "D3D overrides native entry; actual53 does not separately record selected graphics device subtype, so no D3D-only runtime cause claimed.",
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\java2d\\d3d\\D3DGraphicsDevice.java",
+        "sha256Bytes": "7b76e4136e4158f4698532f506008b3220ac4e24500d791b8c523f61d7baf9e1",
+        "size": 18349
+      }
+    }
+  ],
+  "publicAdapterRecommendation": "Extend sole existing placement actor with a per-revision fullscreen-entry ticket. After actual window.placement==Fullscreen on EDT and same captured graphics device/monitor/transform still holds, consume ticket once and apply current full Rectangle -> +1 on x/y/width/height -> current Rectangle -> validate. Existing Floating exit ticket remains independent. Never restore stale captured geometry or loop on the events caused by the repair.",
+  "sourceFeasibility": "The public bounds path has a concrete existing HWND -> WM_SIZE -> UpdateInsets -> cached Java peer Insets refresh path. A real dimension change is necessary; validate alone cannot guarantee cache refresh.",
+  "runtimeAcceptance": false,
+  "guaranteedWindowsResizeAcceptance": false,
+  "exactCppRootCauseObservedWithDebugger": false,
+  "requiredNextAcceptance": "Root actual54 unchanged full renderer and fresh Sky visual observation; require initial and settled re-entered fullscreen full anchor/client alignment, normal exits preserved, current media source unchanged.",
+  "knownActual53VisualFailure": "Settled re-entry: native Main client3840x2160, AWT anchor2546x1404 at7,30; Root fresh Sky saw inset border. The normal-Inset cache explanation is supported by sources and observed geometry, not a direct runtime peer-field read.",
+  "notProposed": [
+    "dispose/recreate HWND",
+    "private peer access",
+    "add-opens",
+    "new GraphicsDevice fullscreen setter",
+    "native input injection",
+    "multiply AWT screen coordinates by guessed DPI"
+  ]
+}

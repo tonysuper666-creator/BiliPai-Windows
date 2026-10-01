@@ -1,0 +1,144 @@
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:792:26: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val uiLayoutPolicy = remember(uiLayoutWidthDp) {
+                         ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:793:9: error: unresolved reference 'resolveVideoPlayerUiLayoutPolicy'.
+        resolveVideoPlayerUiLayoutPolicy(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1727:71: error: unresolved reference 'resolveInputDevicePolicy'.
+    val inputDevicePolicy = com.android.purebilibili.core.ui.adaptive.resolveInputDevicePolicy(
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1772:38: error: unresolved reference 'adjustStreamVolume'.
+                        audioManager.adjustStreamVolume(
+                                     ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1773:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.STREAM_MUSIC,
+                            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1774:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.ADJUST_RAISE,
+                            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1775:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.FLAG_SHOW_UI
+                            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1780:38: error: unresolved reference 'adjustStreamVolume'.
+                        audioManager.adjustStreamVolume(
+                                     ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1781:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.STREAM_MUSIC,
+                            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1782:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.ADJUST_LOWER,
+                            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1783:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.FLAG_SHOW_UI
+                            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1788:38: error: unresolved reference 'adjustStreamVolume'.
+                        audioManager.adjustStreamVolume(
+                                     ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1789:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.STREAM_MUSIC,
+                            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1790:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.ADJUST_TOGGLE_MUTE,
+                            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1791:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.FLAG_SHOW_UI
+                            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1828:47: error: unresolved reference 'captureAndSaveVideoScreenshot'.
+                                val success = captureAndSaveVideoScreenshot(
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2357:74: error: unresolved reference 'gestureBoundaryPaddingDp'.
+                                    val boundaryPadding = uiLayoutPolicy.gestureBoundaryPaddingDp.dp.toPx()
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2742:76: error: unresolved reference 'getDanmakuFullscreenPanelWidthMode'.
+        val danmakuFullscreenPanelWidthMode by platform.danmakuPreferences.getDanmakuFullscreenPanelWidthMode()
+                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2810:33: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val danmakuLoadPolicy = remember(cid, danmakuEnabled) {
+                                ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2811:13: error: unresolved reference 'resolveVideoPlayerDanmakuLoadPolicy'.
+            resolveVideoPlayerDanmakuLoadPolicy(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2818:37: error: unresolved reference 'shouldRunVideoPlayerDanmakuHostEffects'.
+        val runDanmakuHostEffects = shouldRunVideoPlayerDanmakuHostEffects(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2826:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!runDanmakuHostEffects) return@LaunchedEffect
+                ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2829:17: error: unresolved reference 'resolveVideoPlayerDanmakuEngineSyncAction'.
+                resolveVideoPlayerDanmakuEngineSyncAction(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2834:17: error: unresolved reference 'VideoPlayerDanmakuEngineSyncAction'.
+                VideoPlayerDanmakuEngineSyncAction.Enable -> {
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2837:17: error: unresolved reference 'VideoPlayerDanmakuEngineSyncAction'.
+                VideoPlayerDanmakuEngineSyncAction.DisableAndClear -> {
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2844:63: error: unresolved reference 'shouldLoadImmediately'.
+                    shouldLoadImmediately = danmakuLoadPolicy.shouldLoadImmediately
+                                                              ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2853:52: error: unresolved reference 'durationHintMs'.
+            var durationHintMs = danmakuLoadPolicy.durationHintMs
+                                                   ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3537:42: error: unresolved reference 'resources'.
+                val resourceId = context.resources.getIdentifier(
+                                         ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3541:29: error: unresolved reference 'resources'.
+                    context.resources.getDimensionPixelSize(resourceId)
+                            ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3543:35: error: unresolved reference 'resources'.
+                    (24 * context.resources.displayMetrics.density).toInt()
+                                  ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3565:52: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                            Modifier.padding(top = with(LocalContext.current.resources.displayMetrics) {
+                                                   ^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3565:78: error: unresolved reference 'resources'.
+                            Modifier.padding(top = with(LocalContext.current.resources.displayMetrics) {
+                                                                             ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3565:104: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                            Modifier.padding(top = with(LocalContext.current.resources.displayMetrics) {
+                                                                                                       ^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3566:46: error: unresolved reference 'density'.
+                                (topOffset / density).dp
+                                             ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3597:17: error: unresolved reference 'DanmakuViewportHost'.
+                DanmakuViewportHost(danmakuSurfaceModifier) { viewport ->
+                ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3597:63: error: cannot infer type for value parameter 'viewport'. Specify it explicitly.
+                DanmakuViewportHost(danmakuSurfaceModifier) { viewport ->
+                                                              ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3598:26: error: @Composable invocations can only happen from the context of a @Composable function
+                platform.NativeDanmakuSurface(viewport, Modifier.fillMaxSize())
+                         ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3599:67: error: @Composable invocations can only happen from the context of a @Composable function
+                com.android.purebilibili.feature.video.ui.overlay.CommandDanmakuOverlay(
+                                                                  ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3604:30: error: argument type mismatch: actual type is 'DesktopOriginalMpvSectionControl', but 'MpvPlayer' was expected.
+                    player = playerState.player,
+                             ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3987:42: error: unresolved reference 'seekFeedbackSizeDp'.
+                    .size(uiLayoutPolicy.seekFeedbackSizeDp.dp)
+                                         ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4013:50: error: unresolved reference 'restoreButtonBottomOffsetDp'.
+                .padding(bottom = uiLayoutPolicy.restoreButtonBottomOffsetDp.dp), // 避开底部进度条位置
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4029:49: error: unresolved reference 'restoreButtonHorizontalPaddingDp'.
+                    horizontal = uiLayoutPolicy.restoreButtonHorizontalPaddingDp.dp,
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4030:47: error: unresolved reference 'restoreButtonVerticalPaddingDp'.
+                    vertical = uiLayoutPolicy.restoreButtonVerticalPaddingDp.dp
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4037:61: error: unresolved reference 'restoreButtonIconSizeDp'.
+                    modifier = Modifier.size(uiLayoutPolicy.restoreButtonIconSizeDp.dp)
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4273:31: error: unresolved reference 'resolveVideoPlayerOverlayHomeClick'.
+                onHomeClick = resolveVideoPlayerOverlayHomeClick(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4793:38: error: argument type mismatch: actual type is '(String, Long, ??? (Unknown type for value parameter cover)) -> Unit', but '(String, Long) -> Unit' was expected.
+                onDrawerVideoClick = { vid, cid, cover ->
+                                     ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4793:50: error: cannot infer type for value parameter 'cover'. Specify it explicitly.
+                onDrawerVideoClick = { vid, cid, cover ->
+                                                 ^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\02\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4847:75: error: unresolved reference 'getDanmakuBlockRulesRaw'.
+                val poolSheetBlockRulesRaw by platform.danmakuPreferences.getDanmakuBlockRulesRaw(activeDanmakuScope)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^^^

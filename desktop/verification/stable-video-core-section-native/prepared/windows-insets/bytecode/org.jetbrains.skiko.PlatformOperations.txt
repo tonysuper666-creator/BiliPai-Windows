@@ -1,0 +1,10 @@
+Compiled from "PlatformOperations.kt"
+public interface org.jetbrains.skiko.PlatformOperations {
+  public abstract boolean isFullscreen(java.awt.Component);
+
+  public abstract void setFullscreen(java.awt.Component, boolean);
+
+  public abstract void disableTitleBar(java.awt.Component, float);
+
+  public abstract void orderEmojiAndSymbolsPopup();
+}

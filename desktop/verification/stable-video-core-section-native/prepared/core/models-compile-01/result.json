@@ -1,0 +1,30 @@
+{
+  "preparedOnly": true,
+  "scope": "canonical whole model/Success extensions only; full5464 holder NOT compiled",
+  "actual50Manifest": "d9803560314da73036a848cf1be86c5877ff24b3993584379a5e9516165de4eb",
+  "actual50Cp": "c4615263c430a5b75f86085499bcf3dae27239a005a59e258cdff172bbf75680",
+  "runtimeEntries": 97,
+  "explicitChildStage3JarSha": "f7ec9380b81737ed299bf49cecef412a1e9eb58b23f9fc5e80b7a969aaddc135",
+  "compileExit": 0,
+  "inputSources": 4,
+  "classes": 27,
+  "productOverlaps": [],
+  "sourceInputs": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\direct\\data\\model\\VideoLoadError.kt",
+      "sha256Bytes": "d13abdfe7ad6ec158e4046f30ea1ad38d1c68202c08dba73df0936284695a3df"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\direct\\feature\\video\\playback\\dash\\AdaptiveDashPlaybackSource.kt",
+      "sha256Bytes": "dcf96628f58f40d06d9a64608b82ccefc45ee4b3be4beda41fa402b5427ff405"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalVideoPlaybackUiState.kt",
+      "sha256Bytes": "6cfee432aa9fa5a3e8358ec6cc72c1d1280f91c8226501a0456807f7644159c2"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalVideoSuccessExtensions.kt",
+      "sha256Bytes": "fb17bdcb248aecaa0fe652db29459840d9de107bb2e83689cc345fbf24191af3"
+    }
+  ]
+}

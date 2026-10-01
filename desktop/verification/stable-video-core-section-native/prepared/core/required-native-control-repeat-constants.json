@@ -1,0 +1,9 @@
+{
+  "target": "DesktopOriginalMpvOverlayControl companion",
+  "source": "official Media3 Player.java 1.10.1 (existing desktop metadata)",
+  "required": {
+    "REPEAT_MODE_OFF": 0,
+    "REPEAT_MODE_ONE": 1
+  },
+  "noNewDecoder": true
+}

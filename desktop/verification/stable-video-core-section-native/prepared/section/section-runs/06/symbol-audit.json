@@ -1,0 +1,152 @@
+{
+  "passed": true,
+  "scope": "actual50 + explicit parent core03 + frozen Stage3. Only two exact whole proof families are declared overrides; installation applies 5+2 hunks, never copies their whole proof files.",
+  "candidateJarSha256Bytes": "923336c4f2706f1cf7aff116a27a821818021c7d19516c71342546c996f33909",
+  "candidateClasses": 278,
+  "referenceJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar",
+      "sha256Bytes": "8562f37d42a9ca7756ce716e673b61b273b23c2c03ba867749d9471d101ff118"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\core-compile-03\\candidate.jar",
+      "sha256Bytes": "dc69724548f0b720e61d9e313efe3cee7e553b99f1a0e8ec3d32d21b084f97d9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-page-parity\\content-runs\\06\\candidate.jar",
+      "sha256Bytes": "f7ec9380b81737ed299bf49cecef412a1e9eb58b23f9fc5e80b7a969aaddc135"
+    }
+  ],
+  "classOverlaps": [],
+  "topLevelMethodIntersections": [],
+  "declaredProofFamilyClassOverlaps": [
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalMpvOverlayControl.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalMpvOverlayControl$Companion.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext$Companion.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerPreferenceValues.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$1.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$2.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$2$1.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$edit$2.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerMirrorPreferences.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerMirrorPreferences$Editor.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    },
+    {
+      "classEntry": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+      "referenceOwners": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+      ]
+    }
+  ],
+  "declaredProofFamilyMethodIntersections": [
+    {
+      "package": "com.bilipai.desktop.ui",
+      "name": "getLocalDesktopOriginalPlayerSettingsContext",
+      "parameters": "()",
+      "candidateOwner": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+      "referenceOwner": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+      "referenceJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+    },
+    {
+      "package": "com.bilipai.desktop.ui",
+      "name": "playerBooleanPreferencesKey",
+      "parameters": "(Ljava/lang/String;)",
+      "candidateOwner": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+      "referenceOwner": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+      "referenceJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+    },
+    {
+      "package": "com.bilipai.desktop.ui",
+      "name": "playerFloatPreferencesKey",
+      "parameters": "(Ljava/lang/String;)",
+      "candidateOwner": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+      "referenceOwner": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+      "referenceJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+    },
+    {
+      "package": "com.bilipai.desktop.ui",
+      "name": "playerIntPreferencesKey",
+      "parameters": "(Ljava/lang/String;)",
+      "candidateOwner": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+      "referenceOwner": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+      "referenceJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+    },
+    {
+      "package": "com.bilipai.desktop.ui",
+      "name": "playerStringPreferencesKey",
+      "parameters": "(Ljava/lang/String;)",
+      "candidateOwner": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+      "referenceOwner": "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+      "referenceJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-50\\main-kotlin.jar"
+    }
+  ],
+  "illegalNonLocalReturnClasses": [],
+  "productAcceptance": false
+}

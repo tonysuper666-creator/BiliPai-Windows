@@ -1,0 +1,33 @@
+{
+  "copyOnly": [
+    {
+      "source": "install-packet/tools/extract-upstream-video-state-core.py",
+      "destination": "desktop/tools/extract-upstream-video-state-core.py",
+      "sha256Bytes": "e433f7b674650bce23f1c1991607399552ed2d97576d900cb0240657ab125dc7"
+    },
+    {
+      "source": "install-packet/manual/com/bilipai/desktop/ui/DesktopOriginalVideoLoadPort.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoLoadPort.kt",
+      "sha256Bytes": "6f75841eb201c819d798bca3541d3afd18e383d4a123a006ea249fee1b5158a3"
+    },
+    {
+      "source": "install-packet/manual/com/bilipai/desktop/ui/DesktopOriginalVideoLoadProtocolEnvironment.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoLoadProtocolEnvironment.kt",
+      "sha256Bytes": "616da54e666e05eacdc9edd66584a0993cf2cbc1d36fdc0b70b238ed48a1372a"
+    },
+    {
+      "source": "install-packet/manual/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "sha256Bytes": "69d193e6a4fc190b3e82a3f0b27fb4866ead59e3b8847da830b9f1286b120a80"
+    },
+    {
+      "source": "install-packet/manual/com/bilipai/desktop/ui/DesktopOriginalVideoSupplementEnvironment.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSupplementEnvironment.kt",
+      "sha256Bytes": "857d5138704c3ebb8a7dbadcf382cf53a1f8c8e3a6d4cb0dbc825b15e5f4188f"
+    }
+  ],
+  "noBinaries": true,
+  "noSharedSourceReplacement": true,
+  "registryUnion": "registry-merge-recipe.json",
+  "gradleInstructions": "GRADLE-SNIPPET.txt"
+}

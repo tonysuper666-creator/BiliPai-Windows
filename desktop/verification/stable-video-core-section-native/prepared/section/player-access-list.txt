@@ -1,0 +1,252 @@
+29:import com.android.purebilibili.feature.video.player.MiniPlayerManager
+216:import com.android.purebilibili.feature.video.player.PlayerKeyAction
+217:import com.android.purebilibili.feature.video.player.calculateSeekTargetPositionMs
+218:import com.android.purebilibili.feature.video.player.resolvePlayerKeyAction
+454:        player.currentPosition.coerceAtLeast(0L),
+461:        value = player.currentPosition.coerceAtLeast(0L)
+467:                value = player.currentPosition.coerceAtLeast(0L)
+468:                delay(if (player.isPlaying) 120L else 1500L)
+601:                                    SettingsManager.setSubtitleVerticalOffsetFraction(
+811:    val videoInputFormat by playerState.videoInputFormat.collectAsStateWithLifecycle()
+813:    var anime4kPipelineFailed by remember(playerState.player) { mutableStateOf(false) }
+814:    var anime4kInputSurface by remember(playerState.player) { mutableStateOf<Surface?>(null) }
+815:    var anime4kDisplayedFirstFrame by remember(bvid, playerState.player) { mutableStateOf(false) }
+816:    var anime4kSurfaceViewRef by remember(playerState.player) { mutableStateOf<Anime4KGLSurfaceView?>(null) }
+817:    var videoEnhancementSessionOverride by remember(bvid, playerState.player) {
+854:    val videoOutputRouter = remember(playerState.player) { VideoOutputRouter(playerState.player) }
+908:            initialValue = com.android.purebilibili.core.store.SettingsManager.getPlayerInsightModeSync(context),
+944:    // 📱 [优化] realResolution 现在从 playerState.videoSize 计算（见下方）
+991:            val hasPlaylistNext = com.android.purebilibili.feature.video.player.PlaylistManager
+993:                com.android.purebilibili.feature.video.player.PlaylistManager.hasNext()
+1072:    var previousPlayWhenReady by remember(playerState.player, bvid) {
+1073:        mutableStateOf(playerState.player.playWhenReady)
+1097:    var observedPlaybackSpeed by remember(playerState.player) {
+1098:        mutableFloatStateOf(playerState.player.playbackParameters.speed)
+1102:    var observedPlayWhenReady by remember(playerState.player) {
+1103:        mutableStateOf(playerState.player.playWhenReady)
+1105:    var observedIsPlaying by remember(playerState.player) {
+1106:        mutableStateOf(playerState.player.isPlaying)
+1108:    var keepVideoPlaybackAwake by remember(playerState.player) {
+1111:                playWhenReady = playerState.player.playWhenReady,
+1112:                isPlaying = playerState.player.isPlaying,
+1113:                playbackState = playerState.player.playbackState
+1117:    DisposableEffect(playerState.player) {
+1119:            val player = playerState.player
+1120:            observedPlayWhenReady = player.playWhenReady
+1121:            observedIsPlaying = player.isPlaying
+1123:                playWhenReady = player.playWhenReady,
+1124:                isPlaying = player.isPlaying,
+1125:                playbackState = player.playbackState
+1137:                            "🎬 Playback buffering started: pos=${playerState.player.currentPosition}, " +
+1138:                                "buffered=${playerState.player.bufferedPosition}, playWhenReady=${playerState.player.playWhenReady}"
+1145:                            playWhenReady = playerState.player.playWhenReady,
+1146:                            currentPositionMs = playerState.player.currentPosition
+1152:                                "state=$playbackState, pos=${playerState.player.currentPosition}, " +
+1153:                                "buffered=${playerState.player.bufferedPosition}, speed=${playerState.player.playbackParameters.speed}"
+1172:        playerState.player.addListener(listener)
+1174:        isBuffering = playerState.player.playbackState == Player.STATE_BUFFERING
+1175:        observedPlaybackSpeed = playerState.player.playbackParameters.speed
+1178:            playerState.player.removeListener(listener)
+1191:                playerState.player.playbackParameters = resolveSpeedSafePlaybackParameters(
+1199:    LaunchedEffect(playerState.player, currentAudioQuality) {
+1200:        val currentParameters = playerState.player.playbackParameters
+1209:            playerState.player.playbackParameters = safeParameters
+1219:        playerState.player,
+1227:        previousPlayWhenReady = playerState.player.playWhenReady
+1235:                        playWhenReady = playerState.player.playWhenReady,
+1245:                        playerState.player.playWhenReady &&
+1262:                        playbackState = playerState.player.playbackState,
+1276:        playerState.player.addListener(listener)
+1278:            playerState.player.removeListener(listener)
+1283:    val videoSizeState by playerState.videoSize.collectAsStateWithLifecycle()
+1284:    val debugInfo by playerState.debugInfo.collectAsStateWithLifecycle()
+1286:    val diagnosticEvents by playerState.diagnosticEvents.collectAsStateWithLifecycle()
+1287:    val pendingUserAction by playerState.pendingUserAction.collectAsStateWithLifecycle()
+1357:            initialValue = SettingsManager.getHideVideoPageStatusBarSync(context),
+1453:    LaunchedEffect(playerState.player, anime4kSurfaceReady, shouldUseAnime4kPipeline) {
+1458:            val player = playerState.player
+1459:            val hasPlaybackIntent = player.playWhenReady && player.mediaItemCount > 0
+1474:                    playWhenReady = player.playWhenReady,
+1475:                    mediaItemCount = player.mediaItemCount,
+1502:                playbackPositionMs = playerState.player.currentPosition.coerceAtLeast(0L)
+1549:    LaunchedEffect(playerState.player, bvid, currentSeekSessionCid, lifecycleOwner) {
+1562:                        playbackPositionMs = playerState.player.currentPosition.coerceAtLeast(0L),
+1563:                        hasPlaybackResumedAfterPendingSeek = playerState.player.isPlaying
+1573:        playerState.player.playWhenReady,
+1574:        playerState.player.isPlaying,
+1575:        playerState.player.playbackState
+1579:                playWhenReady = playerState.player.playWhenReady,
+1580:                isPlaying = playerState.player.isPlaying,
+1581:                playbackState = playerState.player.playbackState
+1587:        val player = playerState.player
+1592:                    playWhenReady = player.playWhenReady,
+1593:                    isPlaying = player.isPlaying,
+1594:                    playbackState = player.playbackState
+1599:            if (player.playbackState == Player.STATE_IDLE && player.mediaItemCount > 0) {
+1600:                player.prepare()
+1602:            player.playWhenReady = true
+1603:            player.play()
+1605:                "▶️ Seek recovery attempt=${attempt + 1}: state=${player.playbackState}, " +
+1606:                    "playWhenReady=${player.playWhenReady}, playing=${player.isPlaying}, pos=${player.currentPosition}"
+1609:        if (sharedSeekSession.pendingSeekPositionMs != null && !player.isPlaying) {
+1612:                playbackPositionMs = player.currentPosition,
+1717:            player = playerState.player,
+1722:            player = playerState.player,
+1732:        playerState.player.playbackParameters = parameters
+1745:        val player = playerState.player
+1747:            currentPlaybackParameters = player.playbackParameters,
+1799:            playbackPositionMs = player.currentPosition
+1855:                playbackPositionMs = playerState.player.currentPosition
+1895:            playerState.player.playbackParameters = resolveSpeedSafePlaybackParameters(
+1923:                        togglePlayerPlaybackFromUserAction(playerState.player)
+1928:                        val player = playerState.player ?: return@onKeyEvent false
+1930:                            currentPositionMs = player.currentPosition,
+1931:                            durationMs = player.duration,
+1940:                        val player = playerState.player ?: return@onKeyEvent false
+1942:                            currentPositionMs = player.currentPosition,
+1943:                            durationMs = player.duration,
+2132:                playerState.player,
+2149:                    var gestureStartSpeed = playerState.player.playbackParameters.speed
+2197:                                gestureStartSpeed = playerState.player.playbackParameters.speed
+2217:                            if (abs(playerState.player.playbackParameters.speed - effectiveSpeed) > 0.001f) {
+2268:                playerState.player,
+2359:                                    playbackPositionMs = playerState.player.currentPosition
+2391:                                    playbackPositionMs = playerState.player.currentPosition
+2396:                                val currentPosition = playerState.player.currentPosition
+2413:                                        player = playerState.player,
+2465:                                    playbackPositionMs = playerState.player.currentPosition
+2618:                                            player = playerState.player,
+2624:                                        playbackDurationMs = playerState.player.duration,
+2728:                playerState.player,
+2822:                playerState.player,
+2854:                        val player = playerState.player
+2864:                                playWhenReady = player.playWhenReady,
+2865:                                isPlaying = player.isPlaying,
+2866:                                playbackState = player.playbackState
+2872:                                    currentPositionMs = player.currentPosition,
+2874:                                    durationMs = player.duration
+2891:                                    currentPositionMs = player.currentPosition,
+2893:                                    durationMs = player.duration
+3050:        val danmakuDurationHintMs = playerState.player.duration.takeIf { it > 0 } ?: 0L
+3098:                    val currentDuration = playerState.player.duration
+3122:            val player = playerState.player
+3131:                videoWidth = player.videoSize.width,
+3132:                videoHeight = player.videoSize.height,
+3152:            playerState.player,
+3160:                val player = playerState.player
+3167:                        mediaItemCount = player.mediaItemCount
+3186:            val player = playerState.player
+3196:                    playWhenReady = player.playWhenReady,
+3197:                    isPlaying = player.isPlaying,
+3198:                    playbackState = player.playbackState,
+3199:                    hasPlaybackResumeIntent = player.playWhenReady
+3202:                player.play()
+3214:                val currentPlayer = playerState.player
+3267:            val player = playerState.player
+3272:                    playWhenReady = player.playWhenReady,
+3273:                    isPlaying = player.isPlaying,
+3274:                    playbackState = player.playbackState,
+3278:                player.play()
+3281:                positionMs = player.currentPosition.coerceAtLeast(0L),
+3282:                playWhenReady = player.playWhenReady,
+3283:                playbackState = player.playbackState
+3287:                    "generation=$predictiveBackCancelRecoveryGeneration, pos=${player.currentPosition}"
+3303:                    videoWidth = playerState.player.videoSize.width,
+3304:                    videoHeight = playerState.player.videoSize.height
+3311:            val player = playerState.player
+3316:                        "pos=${player.currentPosition}, state=${player.playbackState}, playing=${player.isPlaying}"
+3320:                    playWhenReady = player.playWhenReady,
+3321:                    isPlaying = player.isPlaying,
+3322:                    playbackState = player.playbackState,
+3326:                player.play()
+3332:                positionMs = player.currentPosition.coerceAtLeast(0L),
+3333:                playWhenReady = player.playWhenReady,
+3334:                playbackState = player.playbackState
+3340:                    playWhenReady = player.playWhenReady,
+3341:                    playbackState = player.playbackState
+3349:            val advancedPositionMs = (player.currentPosition - foregroundRecoveryStartPositionMs)
+3354:                    "state=${player.playbackState}, playing=${player.isPlaying}, playWhenReady=${player.playWhenReady}, " +
+3355:                    "pos=${player.currentPosition}, advanced=${advancedPositionMs}, buffered=${player.bufferedPosition}, " +
+3363:                    playWhenReady = player.playWhenReady,
+3364:                    isPlaying = player.isPlaying,
+3365:                    playbackState = player.playbackState,
+3369:                player.play()
+3431:        DisposableEffect(playerState.player, runDanmakuHostEffects) {
+3432:            val attachedPlayer = playerState.player.takeIf { runDanmakuHostEffects }
+3444:        val lifecyclePlayer by rememberUpdatedState(playerState.player)
+3484:                        foregroundRecoveryStartPositionMs = player.currentPosition.coerceAtLeast(0L)
+3487:                            "🌅 ON_RESUME recovery start: pos=${player.currentPosition}, buffered=${player.bufferedPosition}, " +
+3488:                                "state=${player.playbackState}, playing=${player.isPlaying}, playWhenReady=${player.playWhenReady}, " +
+3495:                            videoWidth = player.videoSize.width,
+3496:                            videoHeight = player.videoSize.height,
+3512:                                playWhenReady = player.playWhenReady,
+3513:                                isPlaying = player.isPlaying,
+3514:                                playbackState = player.playbackState,
+3518:                            player.play()
+3524:                            positionMs = player.currentPosition.coerceAtLeast(0L),
+3525:                            playWhenReady = player.playWhenReady,
+3526:                            playbackState = player.playbackState
+3549:            .collectAsStateWithLifecycle(initialValue = SettingsManager.getClickToPlaySync(context))
+3552:                playerState.player.mediaItemCount > 0 &&
+3558:                playerState.player.mediaItemCount > 0 &&
+3566:            playPlayerFromUserAction(playerState.player)
+3570:            currentPositionMs = playerState.player.currentPosition,
+3644:            val playerVideoSize = playerState.player.videoSize
+3700:                            player = if (shouldBindDirectPlayerView) playerState.player else null
+3733:                        playerView.player = if (shouldBindDirectPlayerView) playerState.player else null
+3851:        DisposableEffect(playerState.player) {
+3864:                            "pos=${playerState.player.currentPosition}, buffered=${playerState.player.bufferedPosition}"
+3882:                                "pos=${playerState.player.currentPosition}, buffered=${playerState.player.bufferedPosition}"
+3896:        playerState.player.addListener(listener)
+3900:        if (playerState.player.isPlaying && playerState.player.currentPosition > 0) {
+3901:             android.util.Log.d("VideoPlayerCover", "⚠️ Initial check: Already playing at ${playerState.player.currentPosition}, hiding cover. (Might be previous video?)")
+3908:            playerState.player.removeListener(listener)
+3952:    LaunchedEffect(playerState.player, bvid, forceCoverDuringReturnAnimation) {
+3955:            val player = playerState.player
+3959:                    playbackState = player.playbackState,
+3960:                    playWhenReady = player.playWhenReady,
+3961:                    currentPositionMs = player.currentPosition,
+3962:                    videoWidth = player.videoSize.width,
+3963:                    videoHeight = player.videoSize.height
+4062:        playerState.player.isPlaying,
+4069:                isPlaying = playerState.player.isPlaying,
+4100:        playerState.player.currentPosition,
+4436:                    player = playerState.player,
+4447:                    player = playerState.player,
+4562:        }.getOrDefault(false) || playerState.player.volume <= 0f
+4667:            player = playerState.player,
+4711:                            durationMs = playerState.player.duration,
+4721:                            durationMs = playerState.player.duration,
+5101:                player = playerState.player,
+5152:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuEnabled(
+5207:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuOpacity(
+5218:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuFontScale(
+5229:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuFontWeight(
+5239:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuSpeed(
+5250:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuArea(
+5261:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuStrokeWidth(
+5271:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuLineHeight(
+5281:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuScrollDurationSeconds(
+5291:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuStaticDurationSeconds(
+5301:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuScrollFixedVelocity(
+5311:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuStaticToScroll(
+5321:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuMassiveMode(
+5330:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuMergeDuplicates(
+5339:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuDuplicateMergeWindowMs(
+5348:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuDuplicateMergeCountThreshold(
+5363:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuAllowScroll(
+5373:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuAllowTop(
+5383:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuAllowBottom(
+5393:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuAllowColorful(
+5403:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuAllowSpecial(
+5419:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuSmartOcclusion(
+5428:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuFullscreenPanelWidthMode(context, value)
+5452:                        com.android.purebilibili.core.store.SettingsManager.setDanmakuBlockRulesRaw(
+5556:                            SettingsManager.setSubtitlePositionLocked(context, locked)
+5584:                        player = playerState.player,
+5603:                        player = playerState.player,
+5608:                        player = playerState.player,
+5776:                    currentPositionMs = playerState.player?.currentPosition ?: 0L,
+5780:                            player = playerState.player,
+5785:                            player = playerState.player,
+5803:                            com.android.purebilibili.core.store.SettingsManager.setDanmakuBlockRulesRaw(

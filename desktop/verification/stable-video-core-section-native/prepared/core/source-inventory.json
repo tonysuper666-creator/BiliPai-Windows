@@ -1,0 +1,44 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+    "sha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "lines": 9036
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/model/VideoLoadError.kt",
+    "sha256LF": "d13abdfe7ad6ec158e4046f30ea1ad38d1c68202c08dba73df0936284695a3df",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "lines": 127
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/dash/AdaptiveDashPlaybackSource.kt",
+    "sha256LF": "dcf96628f58f40d06d9a64608b82ccefc45ee4b3be4beda41fa402b5427ff405",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "lines": 12
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
+    "sha256LF": "e266056182d40e924535401011071fc61fcfc59738e9263076717f49765c47fa",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "lines": 37
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+    "sha256LF": "377a74a359cc84eb2961f5ff022da12158345a677d14087ea1fc7d3991f148c8",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "lines": 520
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt",
+    "sha256LF": "e5fb1f278eba66228597dfc631b275b835b11a577c23c0eebfc460821b839918",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "lines": 113
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+    "sha256LF": "4fe3b94adbd3a4f9eea165e68b8efdee0f06d74c78bc3de9269b2fa067ba8db3",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "lines": 5464
+  }
+]

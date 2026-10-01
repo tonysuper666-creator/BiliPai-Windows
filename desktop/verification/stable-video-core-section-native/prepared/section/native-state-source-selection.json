@@ -1,0 +1,9 @@
+{
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/state/VideoPlayerState.kt",
+  "sourceLF": "8a3e0cc7d1c7a4d32a3abf1698bd3e4ded06749279e97733c24ed553bcacc95b",
+  "selectedDeclaration": "resolveApiDimensionIsVertical",
+  "declarationLF": "bdea3c4d786f7430d183092db953d3b69a10cac3987f5af638028ac0d568be49",
+  "rendererStateScope": "Same page projection of installed native StateFlow; no new player/controller/client/store/poll",
+  "originalClassNotProduced": true
+}

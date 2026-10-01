@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/subtitle/SubtitleFeaturePolicy.kt",
+  "sourceSha256LF": "3c63cc6ec1be30f3d90db92aa12ae57fc02481eb25f3d7ea3702d85acba16b20",
+  "generatedSha256LF": "3c63cc6ec1be30f3d90db92aa12ae57fc02481eb25f3d7ea3702d85acba16b20",
+  "inverseExactOriginal": true,
+  "lineChanges": [],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

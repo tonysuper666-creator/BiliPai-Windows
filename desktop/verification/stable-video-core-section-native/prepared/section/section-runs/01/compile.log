@@ -1,0 +1,1082 @@
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalVideoSectionPlatform.kt:10:49: error: unresolved reference 'Anime4KAlgorithm'.
+import com.android.purebilibili.feature.anime4k.Anime4KAlgorithm
+                                                ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalVideoSectionPlatform.kt:56:29: error: unresolved reference 'Anime4KAlgorithm'.
+    fun setAlgorithm(value: Anime4KAlgorithm)
+                            ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoPlayerSectionPolicy.kt:15:64: error: unresolved reference 'PlaybackSeekSessionState'.
+import com.android.purebilibili.feature.video.playback.session.PlaybackSeekSessionState
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoPlayerSectionPolicy.kt:16:64: error: unresolved reference 'shouldUsePlaybackSeekSessionPosition'.
+import com.android.purebilibili.feature.video.playback.session.shouldUsePlaybackSeekSessionPosition
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoPlayerSectionPolicy.kt:455:18: error: unresolved reference 'PlaybackSeekSessionState'.
+    seekSession: PlaybackSeekSessionState,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoPlayerSectionPolicy.kt:463:16: error: unresolved reference 'shouldUsePlaybackSeekSessionPosition'.
+    return if (shouldUsePlaybackSeekSessionPosition(seekSession)) {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoPlayerSectionPolicy.kt:464:21: error: unresolved reference 'sliderPositionMs'.
+        seekSession.sliderPositionMs
+                    ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoPlayerSectionPolicy.kt:472:18: error: unresolved reference 'PlaybackSeekSessionState'.
+    seekSession: PlaybackSeekSessionState,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoPlayerSectionPolicy.kt:475:28: error: unresolved reference 'isSliderMoving'.
+    return if (seekSession.isSliderMoving) {
+                           ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\DesktopOriginalVideoPlayerSectionPolicy.kt:476:21: error: unresolved reference 'sliderPositionMs'.
+        seekSession.sliderPositionMs
+                    ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:28:58: error: unresolved reference 'FullscreenDoubleTapAction'.
+import com.android.purebilibili.feature.video.ui.overlay.FullscreenDoubleTapAction
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:32:58: error: unresolved reference 'nextFullscreenSeekFeedbackEvent'.
+import com.android.purebilibili.feature.video.ui.overlay.nextFullscreenSeekFeedbackEvent
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:33:58: error: unresolved reference 'resolveFullscreenDoubleTapAction'.
+import com.android.purebilibili.feature.video.ui.overlay.resolveFullscreenDoubleTapAction
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:41:61: error: unresolved reference 'SponsorSkipButton'.
+import com.android.purebilibili.feature.video.ui.components.SponsorSkipButton
+                                                            ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:42:61: error: unresolved reference 'SponsorContributionOverlay'.
+import com.android.purebilibili.feature.video.ui.components.SponsorContributionOverlay
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:45:61: error: unresolved reference 'TwoFingerSpeedFeedbackOverlay'.
+import com.android.purebilibili.feature.video.ui.components.TwoFingerSpeedFeedbackOverlay
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:56:61: error: unresolved reference 'toFullscreenAspectRatio'.
+import com.android.purebilibili.feature.video.ui.components.toFullscreenAspectRatio
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:57:61: error: unresolved reference 'toVideoAspectRatio'.
+import com.android.purebilibili.feature.video.ui.components.toVideoAspectRatio
+                                                            ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:168:31: error: unresolved reference 'DesktopPluginLogger'.
+import com.bilipai.desktop.ui.DesktopPluginLogger as Logger
+                              ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:179:56: error: unresolved reference 'isSubtitleFeatureEnabledForUser'.
+import com.android.purebilibili.feature.video.subtitle.isSubtitleFeatureEnabledForUser
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:195:64: error: unresolved reference 'PlaybackSeekSessionState'.
+import com.android.purebilibili.feature.video.playback.session.PlaybackSeekSessionState
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:196:64: error: unresolved reference 'SEEK_PLAYBACK_RECOVERY_DELAY_MS'.
+import com.android.purebilibili.feature.video.playback.session.SEEK_PLAYBACK_RECOVERY_DELAY_MS
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:197:64: error: unresolved reference 'shouldAttemptPlaybackRecoveryAfterSeek'.
+import com.android.purebilibili.feature.video.playback.session.shouldAttemptPlaybackRecoveryAfterSeek
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:198:64: error: unresolved reference 'cancelPlaybackSeekInteraction'.
+import com.android.purebilibili.feature.video.playback.session.cancelPlaybackSeekInteraction
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:199:64: error: unresolved reference 'commitPlaybackSeekInteraction'.
+import com.android.purebilibili.feature.video.playback.session.commitPlaybackSeekInteraction
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:200:64: error: unresolved reference 'expirePendingPlaybackSeek'.
+import com.android.purebilibili.feature.video.playback.session.expirePendingPlaybackSeek
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:201:64: error: unresolved reference 'finishPlaybackSeekInteraction'.
+import com.android.purebilibili.feature.video.playback.session.finishPlaybackSeekInteraction
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:202:64: error: unresolved reference 'resetPlaybackSeekSessionForActivePlayback'.
+import com.android.purebilibili.feature.video.playback.session.resetPlaybackSeekSessionForActivePlayback
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:203:64: error: unresolved reference 'startPlaybackSeekInteraction'.
+import com.android.purebilibili.feature.video.playback.session.startPlaybackSeekInteraction
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:204:64: error: unresolved reference 'syncPlaybackSeekSession'.
+import com.android.purebilibili.feature.video.playback.session.syncPlaybackSeekSession
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:205:64: error: unresolved reference 'updatePlaybackSeekInteraction'.
+import com.android.purebilibili.feature.video.playback.session.updatePlaybackSeekInteraction
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:338:22: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val changeMask = remember(previousPercent, percent) {
+                     ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:339:9: error: unresolved reference 'resolveGesturePercentDigitChangeMask'.
+        resolveGesturePercentDigitChangeMask(previousPercent, percent)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:418:26: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+    val videoInputFormat by playerState.videoInputFormat.collectAsStateWithLifecycle()
+                         ^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:418:29: error: unresolved reference 'playerState'.
+    val videoInputFormat by playerState.videoInputFormat.collectAsStateWithLifecycle()
+                            ^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:418:29: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val videoInputFormat by playerState.videoInputFormat.collectAsStateWithLifecycle()
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:418:58: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val videoInputFormat by playerState.videoInputFormat.collectAsStateWithLifecycle()
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:423:65: error: unresolved reference 'playerState'.
+    val anime4kDisplayedFirstFrame = enhancementState.active && playerState.player.firstVideoFrameReady
+                                                                ^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:555:73: error: unresolved reference 'density'.
+    val navigationBottomInsetPx = WindowInsets.navigationBars.getBottom(density)
+                                                                        ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:570:39: error: unresolved reference 'density'.
+                    density = density.density
+                                      ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:659:22: error: unresolved reference 'OptIn'.
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+                     ^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:659:28: error: annotation argument must be a compile-time constant.
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:659:37: error: unresolved reference 'media3'.
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+                                    ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:668:22: error: unresolved reference 'OptIn'.
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+                     ^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:668:28: error: annotation argument must be a compile-time constant.
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:668:37: error: unresolved reference 'media3'.
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+                                    ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:793:27: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+    val registeredPlugins by PluginManager.pluginsFlow.collectAsStateWithLifecycle()
+                          ^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:793:30: error: unresolved reference 'PluginManager'.
+    val registeredPlugins by PluginManager.pluginsFlow.collectAsStateWithLifecycle()
+                             ^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:793:30: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val registeredPlugins by PluginManager.pluginsFlow.collectAsStateWithLifecycle()
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:793:56: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val registeredPlugins by PluginManager.pluginsFlow.collectAsStateWithLifecycle()
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:794:61: error: unresolved reference 'it'.
+    val anime4kPluginInfo = registeredPlugins.firstOrNull { it.plugin.id == Anime4KPlugin.PLUGIN_ID }
+                                                            ^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:794:77: error: unresolved reference 'Anime4KPlugin'.
+    val anime4kPluginInfo = registeredPlugins.firstOrNull { it.plugin.id == Anime4KPlugin.PLUGIN_ID }
+                                                                            ^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:795:44: error: unresolved reference 'plugin'.
+    val anime4kPlugin = anime4kPluginInfo?.plugin as? Anime4KPlugin
+                                           ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:795:55: error: unresolved reference 'Anime4KPlugin'.
+    val anime4kPlugin = anime4kPluginInfo?.plugin as? Anime4KPlugin
+                                                      ^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:799:23: error: unresolved reference 'configState'.
+        anime4kPlugin.configState.collectAsStateWithLifecycle().value
+                      ^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:799:35: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        anime4kPlugin.configState.collectAsStateWithLifecycle().value
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:802:32: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val anime4kGlesAvailable = remember(context) { isAnime4KGles3Available(context) }
+                               ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:802:52: error: unresolved reference 'isAnime4KGles3Available'.
+    val anime4kGlesAvailable = remember(context) { isAnime4KGles3Available(context) }
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:804:32: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    var anime4kInputSurface by remember(playerState.player) { mutableStateOf<Surface?>(null) }
+                               ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:804:78: error: unresolved reference 'Surface'.
+    var anime4kInputSurface by remember(playerState.player) { mutableStateOf<Surface?>(null) }
+                                                                             ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:804:88: error: null cannot be a value of a non-null type 'uninferred T (of fun <T> mutableStateOf)'.
+    var anime4kInputSurface by remember(playerState.player) { mutableStateOf<Surface?>(null) }
+                                                                                       ^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:806:34: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    var anime4kSurfaceViewRef by remember(playerState.player) { mutableStateOf<Anime4KGLSurfaceView?>(null) }
+                                 ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:806:80: error: unresolved reference 'Anime4KGLSurfaceView'.
+    var anime4kSurfaceViewRef by remember(playerState.player) { mutableStateOf<Anime4KGLSurfaceView?>(null) }
+                                                                               ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:806:103: error: null cannot be a value of a non-null type 'uninferred T (of fun <T> mutableStateOf)'.
+    var anime4kSurfaceViewRef by remember(playerState.player) { mutableStateOf<Anime4KGLSurfaceView?>(null) }
+                                                                                                      ^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:812:48: error: unresolved reference 'enabled'.
+            pluginEnabled = anime4kPluginInfo?.enabled == true,
+                                               ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:815:54: error: unresolved reference 'enabled'.
+    val videoEnhancementEnabled = anime4kPluginInfo?.enabled == true &&
+                                                     ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:844:29: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val videoOutputRouter = remember(playerState.player) { VideoOutputRouter(playerState.player) }
+                            ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:844:60: error: unresolved reference 'VideoOutputRouter'.
+    val videoOutputRouter = remember(playerState.player) { VideoOutputRouter(playerState.player) }
+                                                           ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:846:39: error: unresolved reference 'release'.
+        onDispose { videoOutputRouter.release() }
+                                      ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:851:25: error: unresolved reference 'onResume'.
+            surfaceView.onResume()
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:853:25: error: unresolved reference 'onPause'.
+            surfaceView.onPause()
+                        ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:860:26: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val uiLayoutPolicy = remember(uiLayoutWidthDp) {
+                         ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:861:9: error: unresolved reference 'resolveVideoPlayerUiLayoutPolicy'.
+        resolveVideoPlayerUiLayoutPolicy(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:892:24: error: unresolved reference 'platform'.
+    val audioManager = platform.volume
+                       ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:895:124: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+    val playerInsightMode by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInsightMode(context)
+                                                                                                                           ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:897:126: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+            initialValue = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInsightModeSync(context),
+                                                                                                                             ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:901:129: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+    val playbackSpeedOptions by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getPlaybackSpeedOptions(context)
+                                                                                                                                ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:906:140: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+    val playerInteractionSettings by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context)
+                                                                                                                                           ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:909:151: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                longPressSpeedLockEnabled = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedLockEnabledSync(context),
+                                                                                                                                                      ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:910:155: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                longPressSpeedLockHintShown = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedLockHintShownSync(context),
+                                                                                                                                                          ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:911:161: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                longPressSpeedHintCloseEnabled = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintCloseEnabledSync(context),
+                                                                                                                                                                ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:912:149: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                longPressSpeedHintHidden = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintHiddenSync(context),
+                                                                                                                                                    ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:913:147: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                longPressSpeedHintScale = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintScaleSync(context),
+                                                                                                                                                  ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:914:147: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                longPressSpeedHintAlpha = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintAlphaSync(context),
+                                                                                                                                                  ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:915:159: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                hiResLongPressCompatHintShown = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getHiResLongPressCompatHintShownSync(context)
+                                                                                                                                                              ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:946:141: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+    val playbackCompletionBehavior by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getPlaybackCompletionBehavior(context)
+                                                                                                                                            ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:970:35: error: unresolved reference 'platform'.
+            val hasPlaylistNext = platform.hasPlaylistNext()
+                                  ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1032:123: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+            com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getHiResLongPressCompatHintShownSync(context)
+                                                                                                                          ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1039:121: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+            com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedLockHintShownSync(context)
+                                                                                                                        ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1111:25: error: unresolved reference 'Logger'.
+                        Logger.d("VideoPlayerSection") {
+                        ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1124:25: error: unresolved reference 'Logger'.
+                        Logger.w(
+                        ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1263:150: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+    val playerDiagnosticLoggingEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerDiagnosticLoggingEnabled(context)
+                                                                                                                                                     ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1281:25: error: unresolved reference 'platform'.
+    val playerViewRef = platform.viewport
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1295:21: error: unresolved reference 'platform'.
+        val lease = platform.setScreenshotAndOrientationLock(isFullscreen && isScreenLocked)
+                    ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1301:131: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+    val statusBarHazeEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getHideVideoPageStatusBar(context)
+                                                                                                                                  ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1303:130: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+            initialValue = com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getHideVideoPageStatusBarSync(context),
+                                                                                                                                 ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1327:21: error: unresolved reference 'platform'.
+                if (platform.viewportAttached && playerView.width > 0 && playerView.height > 0) {
+                    ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1328:51: error: unresolved reference 'platform'.
+                    statusBarAmbientFrame.value = platform.captureAmbientFrame(
+                                                  ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1379:31: error: unresolved reference 'enhancementState'.
+    val anime4kSurfaceReady = enhancementState.active || enhancementState.pending
+                              ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1379:58: error: unresolved reference 'enhancementState'.
+    val anime4kSurfaceReady = enhancementState.active || enhancementState.pending
+                                                         ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1380:31: error: unresolved reference 'enhancementState'.
+    val anime4kFrameVisible = enhancementState.active && anime4kDisplayedFirstFrame
+                              ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1381:68: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+    val shouldBindDirectPlayerView = shouldBindInlinePlayerView && !enhancementState.active
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1381:69: error: unresolved reference 'enhancementState'.
+    val shouldBindDirectPlayerView = shouldBindInlinePlayerView && !enhancementState.active
+                                                                    ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1384:9: error: unresolved reference 'platform'.
+        platform.setViewportActive(shouldBindInlinePlayerView && hostLifecycleStarted)
+        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1394:30: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    var sharedSeekSession by remember(bvid, currentSeekSessionCid) {
+                             ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1394:30: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    var sharedSeekSession by remember(bvid, currentSeekSessionCid) {
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1395:9: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        mutableStateOf(
+        ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1396:13: error: unresolved reference 'syncPlaybackSeekSession'.
+            syncPlaybackSeekSession(
+            ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1397:25: error: unresolved reference 'PlaybackSeekSessionState'.
+                state = PlaybackSeekSessionState(),
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1403:29: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val seekSliderMoving by remember(bvid, currentSeekSessionCid) {
+                            ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1403:29: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val seekSliderMoving by remember(bvid, currentSeekSessionCid) {
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1404:9: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        derivedStateOf { sharedSeekSession.isSliderMoving }
+        ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1404:44: error: unresolved reference 'isSliderMoving'.
+        derivedStateOf { sharedSeekSession.isSliderMoving }
+                                           ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1406:32: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val pendingSeekPosition by remember(bvid, currentSeekSessionCid) {
+                               ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1406:32: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val pendingSeekPosition by remember(bvid, currentSeekSessionCid) {
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1407:9: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        derivedStateOf { sharedSeekSession.pendingSeekPositionMs }
+        ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1407:44: error: unresolved reference 'pendingSeekPositionMs'.
+        derivedStateOf { sharedSeekSession.pendingSeekPositionMs }
+                                           ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1423:56: error: unresolved reference 'toVideoAspectRatio'.
+                preferred = fixedFullscreenAspectRatio.toVideoAspectRatio(),
+                                                       ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1452:53: error: unresolved reference 'isSliderMoving'.
+                    isSliderMoving = currentSession.isSliderMoving,
+                                                    ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1453:53: error: unresolved reference 'pendingSeekPositionMs'.
+                    hasPendingSeek = currentSession.pendingSeekPositionMs != null
+                                                    ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1456:41: error: unresolved reference 'syncPlaybackSeekSession'.
+                    sharedSeekSession = syncPlaybackSeekSession(
+                                        ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1473:13: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+        if (!shouldAttemptPlaybackRecoveryAfterSeek(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1473:14: error: unresolved reference 'shouldAttemptPlaybackRecoveryAfterSeek'.
+        if (!shouldAttemptPlaybackRecoveryAfterSeek(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1485:19: error: unresolved reference 'SEEK_PLAYBACK_RECOVERY_DELAY_MS'.
+            delay(SEEK_PLAYBACK_RECOVERY_DELAY_MS)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1486:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!shouldAttemptPlaybackRecoveryAfterSeek(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1486:18: error: unresolved reference 'shouldAttemptPlaybackRecoveryAfterSeek'.
+            if (!shouldAttemptPlaybackRecoveryAfterSeek(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1500:13: error: unresolved reference 'Logger'.
+            Logger.d("VideoPlayerSection") {
+            ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1505:31: error: unresolved reference 'pendingSeekPositionMs'.
+        if (sharedSeekSession.pendingSeekPositionMs != null && !player.isPlaying) {
+                              ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1506:33: error: unresolved reference 'expirePendingPlaybackSeek'.
+            sharedSeekSession = expirePendingPlaybackSeek(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1520:52: error: unresolved reference 'toVideoAspectRatio'.
+            preferred = fixedFullscreenAspectRatio.toVideoAspectRatio(),
+                                                   ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1539:21: error: unresolved reference 'platform'.
+        onDispose { platform.releaseViewportForThisEntry() }
+                    ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1560:26: error: unresolved reference 'platform'.
+    val danmakuManager = platform.danmaku
+                         ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1605:28: error: unresolved reference 'commitPlaybackSeekInteraction'.
+        val commitResult = commitPlaybackSeekInteraction(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1654:120: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setLongPressSpeedLockHintShown(context, true)
+                                                                                                                       ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1666:17: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                context,
+                ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1671:123: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setHiResLongPressCompatHintShown(context, true)
+                                                                                                                          ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1685:29: error: unresolved reference 'resetPlaybackSeekSessionForActivePlayback'.
+        sharedSeekSession = resetPlaybackSeekSessionForActivePlayback(
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1689:9: error: unresolved reference 'Logger'.
+        Logger.d("VideoPlayerSection") {
+        ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1709:13: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+            context,
+            ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1713:9: error: unresolved reference 'Logger'.
+        Logger.d("VideoPlayerSection") {
+        ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1741:33: error: unresolved reference 'resetPlaybackSeekSessionForActivePlayback'.
+            sharedSeekSession = resetPlaybackSeekSessionForActivePlayback(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1746:9: error: unresolved reference 'Logger'.
+        Logger.d("VideoPlayerSection") {
+        ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1795:71: error: unresolved reference 'resolveInputDevicePolicy'.
+    val inputDevicePolicy = com.android.purebilibili.core.ui.adaptive.resolveInputDevicePolicy(
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1841:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.STREAM_MUSIC,
+                            ^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1842:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.ADJUST_RAISE,
+                            ^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1843:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.FLAG_SHOW_UI
+                            ^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1849:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.STREAM_MUSIC,
+                            ^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1850:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.ADJUST_LOWER,
+                            ^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1851:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.FLAG_SHOW_UI
+                            ^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1857:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.STREAM_MUSIC,
+                            ^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1858:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.ADJUST_TOGGLE_MUTE,
+                            ^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1859:29: error: unresolved reference 'AudioManager'.
+                            AudioManager.FLAG_SHOW_UI
+                            ^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1870:29: error: cannot access 'fun WideNavigationRailValue.not(): WideNavigationRailValue': it is internal in file.
+                        if (!newState) {
+                            ^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1870:29: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+                        if (!newState) {
+                            ^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1873:40: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                        Toast.makeText(context, if (newState) "弹幕已开启" else "弹幕已关闭", Toast.LENGTH_SHORT).show()
+                                       ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1873:53: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+                        Toast.makeText(context, if (newState) "弹幕已开启" else "弹幕已关闭", Toast.LENGTH_SHORT).show()
+                                                    ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1896:47: error: unresolved reference 'captureAndSaveVideoScreenshot'.
+                                val success = captureAndSaveVideoScreenshot(
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1904:37: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                                    context,
+                                    ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1915:40: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                        Toast.makeText(context, if (isScreenLocked) "屏幕已锁定" else "屏幕已解锁", Toast.LENGTH_SHORT).show()
+                                       ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1924:44: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                            Toast.makeText(context, "切换至上一分P", Toast.LENGTH_SHORT).show()
+                                           ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1926:44: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                            Toast.makeText(context, "已经是第一分P了", Toast.LENGTH_SHORT).show()
+                                           ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1936:44: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                            Toast.makeText(context, "切换至下一分P", Toast.LENGTH_SHORT).show()
+                                           ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1938:44: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                            Toast.makeText(context, "已经是最后一分P了", Toast.LENGTH_SHORT).show()
+                                           ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1944:40: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                        Toast.makeText(context, "${action.speed}x 倍速", Toast.LENGTH_SHORT).show()
+                                       ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1966:42: error: unresolved reference 'shouldEnableLivePlayerSharedElement'.
+    val livePlayerSharedElementEnabled = shouldEnableLivePlayerSharedElement(
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2252:51: error: unresolved reference 'platform'.
+                                startBrightness = platform.readViewportBrightness()
+                                                  ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2262:53: error: unresolved reference 'resetPlaybackSeekSessionForActivePlayback'.
+                                sharedSeekSession = resetPlaybackSeekSessionForActivePlayback(
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2272:57: error: unresolved reference 'cancelPlaybackSeekInteraction'.
+                                    sharedSeekSession = cancelPlaybackSeekInteraction(sharedSeekSession)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2275:78: error: unresolved reference 'sliderPositionMs'.
+                                        targetPositionMs = sharedSeekSession.sliderPositionMs
+                                                                             ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2278:56: error: unresolved reference 'finishPlaybackSeekInteraction'.
+                                    val commitResult = finishPlaybackSeekInteraction(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2279:41: error: unresolved reference 'updatePlaybackSeekInteraction'.
+                                        updatePlaybackSeekInteraction(
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2281:76: error: unresolved reference 'sliderPositionMs'.
+                                            positionMs = sharedSeekSession.sliderPositionMs
+                                                                           ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2292:57: error: unresolved reference 'cancelPlaybackSeekInteraction'.
+                                    sharedSeekSession = cancelPlaybackSeekInteraction(sharedSeekSession)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2317:37: error: unresolved reference 'Logger'.
+                                    Logger.d("VideoPlayerSection") {
+                                    ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2336:53: error: unresolved reference 'resetPlaybackSeekSessionForActivePlayback'.
+                                sharedSeekSession = resetPlaybackSeekSessionForActivePlayback(
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2344:53: error: unresolved reference 'cancelPlaybackSeekInteraction'.
+                                sharedSeekSession = cancelPlaybackSeekInteraction(sharedSeekSession)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2386:41: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                                        context,
+                                        ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2416:37: error: unresolved reference 'Logger'.
+                                    Logger.d("VideoPlayerSection") {
+                                    ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2425:74: error: unresolved reference 'gestureBoundaryPaddingDp'.
+                                    val boundaryPadding = uiLayoutPolicy.gestureBoundaryPaddingDp.dp.toPx()
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2471:41: error: unresolved reference 'Logger'.
+                                        Logger.d("VideoPlayerSection") {
+                                        ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2477:37: error: unresolved reference 'Logger'.
+                                    Logger.d("VideoPlayerSection") {
+                                    ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2488:41: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+                                    if (!sharedSeekSession.isSliderMoving) {
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2488:60: error: unresolved reference 'isSliderMoving'.
+                                    if (!sharedSeekSession.isSliderMoving) {
+                                                           ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2489:61: error: unresolved reference 'startPlaybackSeekInteraction'.
+                                        sharedSeekSession = startPlaybackSeekInteraction(
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2528:61: error: unresolved reference 'updatePlaybackSeekInteraction'.
+                                        sharedSeekSession = updatePlaybackSeekInteraction(
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2536:56: error: unresolved reference 'platform'.
+                                    val screenHeight = platform.viewportHeightPixels
+                                                       ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2543:41: error: unresolved reference 'platform'.
+                                        platform.setViewportBrightness(newBrightness, requestSystemBrightness = setSystemBrightnessEnabled)
+                                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2558:58: error: unresolved reference 'platform'.
+                                        screenHeightPx = platform.viewportHeightPixels.toFloat(),
+                                                         ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2665:33: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                                context,
+                                ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2716:29: error: unresolved reference 'resolveFullscreenDoubleTapAction'.
+                            resolveFullscreenDoubleTapAction(
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2724:29: error: unresolved reference 'FullscreenDoubleTapAction'.
+                            FullscreenDoubleTapAction.SeekForward -> {
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2732:48: error: unresolved reference 'nextFullscreenSeekFeedbackEvent'.
+                                val feedback = nextFullscreenSeekFeedbackEvent(
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2739:33: error: unresolved reference 'Logger'.
+                                Logger.d("VideoPlayerSection") {
+                                ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2743:29: error: unresolved reference 'FullscreenDoubleTapAction'.
+                            FullscreenDoubleTapAction.SeekBackward -> {
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2751:48: error: unresolved reference 'nextFullscreenSeekFeedbackEvent'.
+                                val feedback = nextFullscreenSeekFeedbackEvent(
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2758:33: error: unresolved reference 'Logger'.
+                                Logger.d("VideoPlayerSection") {
+                                ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2762:29: error: unresolved reference 'FullscreenDoubleTapAction'.
+                            FullscreenDoubleTapAction.TogglePlayPause -> {
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2764:33: error: unresolved reference 'Logger'.
+                                Logger.d("VideoPlayerSection") {
+                                ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2781:29: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+        val danmakuSettings by platform.danmakuPreferences.getDanmakuSettings(activeDanmakuScope)
+                            ^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2781:32: error: unresolved reference 'platform'.
+        val danmakuSettings by platform.danmakuPreferences.getDanmakuSettings(activeDanmakuScope)
+                               ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2781:32: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val danmakuSettings by platform.danmakuPreferences.getDanmakuSettings(activeDanmakuScope)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2782:14: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            .collectAsStateWithLifecycle(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2783:32: error: unresolved reference 'platform'.
+                initialValue = platform.danmakuPreferences.currentSettings(activeDanmakuScope),
+                               ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2786:46: error: unresolved reference 'enabled'.
+        val danmakuEnabled = danmakuSettings.enabled
+                                             ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2787:46: error: unresolved reference 'opacity'.
+        val danmakuOpacity = danmakuSettings.opacity
+                                             ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2788:48: error: unresolved reference 'fontScale'.
+        val danmakuFontScale = danmakuSettings.fontScale
+                                               ^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2789:49: error: unresolved reference 'fontWeight'.
+        val danmakuFontWeight = danmakuSettings.fontWeight
+                                                ^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2790:44: error: unresolved reference 'speed'.
+        val danmakuSpeed = danmakuSettings.speed
+                                           ^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2791:50: error: unresolved reference 'displayArea'.
+        val danmakuDisplayArea = danmakuSettings.displayArea
+                                                 ^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2792:50: error: unresolved reference 'strokeWidth'.
+        val danmakuStrokeWidth = danmakuSettings.strokeWidth
+                                                 ^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2793:49: error: unresolved reference 'lineHeight'.
+        val danmakuLineHeight = danmakuSettings.lineHeight
+                                                ^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2794:60: error: unresolved reference 'scrollDurationSeconds'.
+        val danmakuScrollDurationSeconds = danmakuSettings.scrollDurationSeconds
+                                                           ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2795:60: error: unresolved reference 'staticDurationSeconds'.
+        val danmakuStaticDurationSeconds = danmakuSettings.staticDurationSeconds
+                                                           ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2796:58: error: unresolved reference 'scrollFixedVelocity'.
+        val danmakuScrollFixedVelocity = danmakuSettings.scrollFixedVelocity
+                                                         ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2797:53: error: unresolved reference 'staticDanmakuToScroll'.
+        val danmakuStaticToScroll = danmakuSettings.staticDanmakuToScroll
+                                                    ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2798:50: error: unresolved reference 'massiveMode'.
+        val danmakuMassiveMode = danmakuSettings.massiveMode
+                                                 ^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2799:54: error: unresolved reference 'mergeDuplicates'.
+        val danmakuMergeDuplicates = danmakuSettings.mergeDuplicates
+                                                     ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2800:61: error: unresolved reference 'duplicateMergeWindowMs'.
+        val danmakuDuplicateMergeWindowMs = danmakuSettings.duplicateMergeWindowMs
+                                                            ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2801:67: error: unresolved reference 'duplicateMergeCountThreshold'.
+        val danmakuDuplicateMergeCountThreshold = danmakuSettings.duplicateMergeCountThreshold
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2802:50: error: unresolved reference 'allowScroll'.
+        val danmakuAllowScroll = danmakuSettings.allowScroll
+                                                 ^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2803:47: error: unresolved reference 'allowTop'.
+        val danmakuAllowTop = danmakuSettings.allowTop
+                                              ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2804:50: error: unresolved reference 'allowBottom'.
+        val danmakuAllowBottom = danmakuSettings.allowBottom
+                                                 ^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2805:52: error: unresolved reference 'allowColorful'.
+        val danmakuAllowColorful = danmakuSettings.allowColorful
+                                                   ^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2806:51: error: unresolved reference 'allowSpecial'.
+        val danmakuAllowSpecial = danmakuSettings.allowSpecial
+                                                  ^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2807:62: error: unresolved reference 'hideInteractiveCommands'.
+        val danmakuHideInteractiveCommands = danmakuSettings.hideInteractiveCommands
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2808:53: error: unresolved reference 'smartOcclusion'.
+        val danmakuSmartOcclusion = danmakuSettings.smartOcclusion
+                                                    ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2809:62: error: unresolved reference 'portraitDisplayAreaMode'.
+        val portraitDanmakuDisplayAreaMode = danmakuSettings.portraitDisplayAreaMode
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2810:48: error: unresolved reference 'platform'.
+        val danmakuFullscreenPanelWidthMode by platform.danmakuPreferences.getDanmakuFullscreenPanelWidthMode()
+                                               ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2815:52: error: unresolved reference 'blockRulesRaw'.
+        val danmakuBlockRulesRaw = danmakuSettings.blockRulesRaw
+                                                   ^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2816:49: error: unresolved reference 'blockRules'.
+        val danmakuBlockRules = danmakuSettings.blockRules
+                                                ^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2818:40: error: unresolved reference 'platform'.
+        val danmakuCloudSyncEnabled by platform.danmakuPreferences.getDanmakuCloudSyncEnabled()
+                                       ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2825:39: error: unresolved reference 'platform'.
+        val danmakuCloudSyncUiState = platform.cloudSync.uiState
+                                      ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2870:13: error: unresolved reference 'platform'.
+            platform.cloudSync.queueChange { requested }
+            ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2872:69: error: unresolved reference 'platform'.
+        fun requestDanmakuCloudSyncNow() { if (canSyncDanmakuCloud) platform.cloudSync.requestNow() }
+                                                                    ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2878:33: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val danmakuLoadPolicy = remember(cid, danmakuEnabled) {
+                                ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2879:13: error: unresolved reference 'resolveVideoPlayerDanmakuLoadPolicy'.
+            resolveVideoPlayerDanmakuLoadPolicy(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2886:37: error: unresolved reference 'shouldRunVideoPlayerDanmakuHostEffects'.
+        val runDanmakuHostEffects = shouldRunVideoPlayerDanmakuHostEffects(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2894:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!runDanmakuHostEffects) return@LaunchedEffect
+                ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2897:17: error: unresolved reference 'resolveVideoPlayerDanmakuEngineSyncAction'.
+                resolveVideoPlayerDanmakuEngineSyncAction(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2902:17: error: unresolved reference 'VideoPlayerDanmakuEngineSyncAction'.
+                VideoPlayerDanmakuEngineSyncAction.Enable -> {
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2905:17: error: unresolved reference 'VideoPlayerDanmakuEngineSyncAction'.
+                VideoPlayerDanmakuEngineSyncAction.DisableAndClear -> {
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2912:63: error: unresolved reference 'shouldLoadImmediately'.
+                    shouldLoadImmediately = danmakuLoadPolicy.shouldLoadImmediately
+                                                              ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2921:52: error: unresolved reference 'durationHintMs'.
+            var durationHintMs = danmakuLoadPolicy.durationHintMs
+                                                   ^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2935:13: error: unresolved reference 'Logger'.
+            Logger.d(
+            ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2943:13: error: unresolved reference 'platform'.
+            platform.recoverViewport(currentPlaybackIdentity, isFullscreen, isInPipMode, predictiveBackCancelRecoveryGeneration)
+            ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2970:126: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+        val autoPlayOnOpenEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getClickToPlay(context)
+                                                                                                                             ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:2971:149: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+            .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getClickToPlaySync(context))
+                                                                                                                                                    ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3057:33: error: unresolved reference 'shouldUseTextureSurfaceForFlip'.
+        val useTextureSurface = shouldUseTextureSurfaceForFlip(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3110:17: error: unresolved reference 'platform'.
+                platform.NativeViewport(
+                ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3128:31: error: unresolved reference 'shouldShowInlinePlayerView'.
+                    visible = shouldShowInlinePlayerView(isPortraitFullscreen, forceCoverDuringReturnAnimation, keepCoverForManualStart),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3143:17: error: unresolved reference 'Logger'.
+                Logger.d("VideoPlayerCover", "? onRenderedFirstFrame triggered")
+                ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3151:21: error: unresolved reference 'Logger'.
+                    Logger.d("VideoPlayerSection") {
+                    ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3171:14: error: unresolved reference 'Logger'.
+             Logger.d("VideoPlayerCover", "?? Initial check: Already playing at ${playerState.player.currentPosition}, hiding cover. (Might be previous video?)")
+             ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3174:14: error: unresolved reference 'Logger'.
+             Logger.d("VideoPlayerCover", "? Initial check: Not playing or at start. Keeping cover.")
+             ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3236:17: error: unresolved reference 'Logger'.
+                Logger.d(
+                ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3269:13: error: unresolved reference 'shouldCommitSmoothCoverReveal'.
+            shouldCommitSmoothCoverReveal(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3276:13: error: unresolved reference 'Logger'.
+            Logger.d("VideoPlayerCover", "? Smooth cover reveal committed for bvid=$bvid")
+            ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3321:26: error: unresolved reference 'shouldLoadVideoPlayerCoverImage'.
+    val loadCoverImage = shouldLoadVideoPlayerCoverImage(
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3594:33: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+        val advancedDanmakuList by danmakuManager.advancedDanmakuFlow.collectAsStateWithLifecycle()
+                                ^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3594:36: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val advancedDanmakuList by danmakuManager.advancedDanmakuFlow.collectAsStateWithLifecycle()
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3594:71: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val advancedDanmakuList by danmakuManager.advancedDanmakuFlow.collectAsStateWithLifecycle()
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3595:32: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+        val commandDanmakuList by danmakuManager.commandDanmakuFlow.collectAsStateWithLifecycle()
+                               ^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3595:35: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val commandDanmakuList by danmakuManager.commandDanmakuFlow.collectAsStateWithLifecycle()
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3595:69: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val commandDanmakuList by danmakuManager.commandDanmakuFlow.collectAsStateWithLifecycle()
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3605:42: error: unresolved reference 'resources'.
+                val resourceId = context.resources.getIdentifier(
+                                         ^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3609:29: error: unresolved reference 'resources'.
+                    context.resources.getDimensionPixelSize(resourceId)
+                            ^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3611:35: error: unresolved reference 'resources'.
+                    (24 * context.resources.displayMetrics.density).toInt()
+                                  ^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3633:52: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                            Modifier.padding(top = with(LocalContext.current.resources.displayMetrics) {
+                                                   ^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3633:78: error: unresolved reference 'resources'.
+                            Modifier.padding(top = with(LocalContext.current.resources.displayMetrics) {
+                                                                             ^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3633:104: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                            Modifier.padding(top = with(LocalContext.current.resources.displayMetrics) {
+                                                                                                       ^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3634:46: error: unresolved reference 'density'.
+                                (topOffset / density).dp
+                                             ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3665:17: error: unresolved reference 'DanmakuViewportHost'.
+                DanmakuViewportHost(danmakuSurfaceModifier) { viewport ->
+                ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3665:63: error: cannot infer type for value parameter 'viewport'. Specify it explicitly.
+                DanmakuViewportHost(danmakuSurfaceModifier) { viewport ->
+                                                              ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3666:17: error: unresolved reference 'platform'.
+                platform.NativeDanmakuSurface(viewport, Modifier.fillMaxSize())
+                ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3667:67: error: @Composable invocations can only happen from the context of a @Composable function
+                com.android.purebilibili.feature.video.ui.overlay.CommandDanmakuOverlay(
+                                                                  ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3672:30: error: argument type mismatch: actual type is 'DesktopOriginalMpvSectionControl', but 'MpvPlayer' was expected.
+                    player = playerState.player,
+                             ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3681:50: error: unresolved reference 'platform'.
+                                    val result = platform.submitGradeDanmaku(
+                                                 ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3690:45: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                                            context,
+                                            ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3699:54: error: unresolved reference 'platform'.
+                                        val result = platform.submitVote(
+                                                     ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3705:49: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                                                context,
+                                                ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3723:38: error: unresolved reference 'isSubtitleFeatureEnabledForUser'.
+        val subtitleFeatureEnabled = isSubtitleFeatureEnabledForUser()
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3725:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!subtitleFeatureEnabled) return@remember false
+                ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3732:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!subtitleFeatureEnabled) return@remember false
+                ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3737:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!subtitleFeatureEnabled) return@remember false
+                ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3742:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!subtitleFeatureEnabled) return@remember false
+                ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3748:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!subtitleFeatureEnabled) return@remember false
+                ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3754:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!subtitleFeatureEnabled) return@remember false
+                ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3759:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!subtitleFeatureEnabled) return@remember false
+                ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3770:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!subtitleFeatureEnabled) {
+                ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3839:17: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if (!subtitleFeatureEnabled || !subtitleBelongsToCurrentVideo) {
+                ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4055:42: error: unresolved reference 'seekFeedbackSizeDp'.
+                    .size(uiLayoutPolicy.seekFeedbackSizeDp.dp)
+                                         ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4069:9: error: unresolved reference 'TwoFingerSpeedFeedbackOverlay'.
+        TwoFingerSpeedFeedbackOverlay(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4081:50: error: unresolved reference 'restoreButtonBottomOffsetDp'.
+                .padding(bottom = uiLayoutPolicy.restoreButtonBottomOffsetDp.dp), // 避开底部进度条位置
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4097:49: error: unresolved reference 'restoreButtonHorizontalPaddingDp'.
+                    horizontal = uiLayoutPolicy.restoreButtonHorizontalPaddingDp.dp,
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4098:47: error: unresolved reference 'restoreButtonVerticalPaddingDp'.
+                    vertical = uiLayoutPolicy.restoreButtonVerticalPaddingDp.dp
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4105:61: error: unresolved reference 'restoreButtonIconSizeDp'.
+                    modifier = Modifier.size(uiLayoutPolicy.restoreButtonIconSizeDp.dp)
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4287:138: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                                    com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setLongPressSpeedLockEnabled(context, true)
+                                                                                                                                         ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4288:140: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                                    com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setLongPressSpeedLockHintShown(context, true)
+                                                                                                                                           ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4301:140: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                                    com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setLongPressSpeedLockHintShown(context, true)
+                                                                                                                                           ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4341:31: error: unresolved reference 'resolveVideoPlayerOverlayHomeClick'.
+                onHomeClick = resolveVideoPlayerOverlayHomeClick(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4370:25: error: cannot access 'fun WideNavigationRailValue.not(): WideNavigationRailValue': it is internal in file.
+                    if (!newState) {
+                        ^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4370:25: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+                    if (!newState) {
+                        ^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4374:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuEnabled(newState,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4378:53: error: argument type mismatch: actual type is 'WideNavigationRailValue', but 'Boolean' was expected.
+                    queueDanmakuCloudSync(enabled = newState)
+                                                    ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4380:21: error: unresolved reference 'platform'.
+                    platform.recordDanmakuToggle(newState)
+                    ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4410:60: error: unresolved reference 'weightFilterLevel'.
+                danmakuWeightFilterLevel = danmakuSettings.weightFilterLevel,
+                                                           ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4427:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuOpacity(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4436:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuFontScale(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4445:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuFontWeight(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4453:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuSpeed(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4462:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuArea(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4471:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuStrokeWidth(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4479:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuLineHeight(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4487:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuScrollDurationSeconds(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4495:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuStaticDurationSeconds(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4503:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuScrollFixedVelocity(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4511:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuStaticToScroll(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4519:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuMassiveMode(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4526:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuMergeDuplicates(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4533:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuDuplicateMergeWindowMs(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4540:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuDuplicateMergeCountThreshold(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4547:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuWeightFilterLevel(value)
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4552:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuAllowScroll(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4560:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuAllowTop(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4568:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuAllowBottom(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4576:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuAllowColorful(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4584:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuAllowSpecial(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4592:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuHideInteractiveCommands(value)
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4597:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuSmartOcclusion(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4604:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuFullscreenPanelWidthMode(value)
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4609:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setPortraitDanmakuDisplayAreaMode(value)
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4614:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuCloudSyncEnabled(enabled)
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4616:21: error: unresolved reference 'platform'.
+                    platform.cloudSync.onEnabledChange(enabled)
+                    ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4623:25: error: unresolved reference 'platform'.
+                        platform.danmakuPreferences.setDanmakuBlockRulesRaw(value,
+                        ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4638:123: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                        com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setFullscreenAspectRatio(context, safeRatio.toFullscreenAspectRatio())
+                                                                                                                          ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4638:142: error: unresolved reference 'toFullscreenAspectRatio'.
+                        com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setFullscreenAspectRatio(context, safeRatio.toFullscreenAspectRatio())
+                                                                                                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4691:25: error: unresolved reference 'Logger'.
+                        Logger.d(
+                        ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4698:25: error: unresolved reference 'Logger'.
+                        Logger.d(
+                        ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4716:25: error: unresolved reference 'Logger'.
+                        Logger.d(
+                        ^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4724:128: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                            com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setSubtitlePositionLocked(context, locked)
+                                                                                                                               ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4750:41: error: unresolved reference 'startPlaybackSeekInteraction'.
+                    sharedSeekSession = startPlaybackSeekInteraction(
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4757:41: error: unresolved reference 'updatePlaybackSeekInteraction'.
+                    sharedSeekSession = updatePlaybackSeekInteraction(
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4763:41: error: unresolved reference 'cancelPlaybackSeekInteraction'.
+                    sharedSeekSession = cancelPlaybackSeekInteraction(sharedSeekSession)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4769:40: error: unresolved reference 'commitPlaybackSeekInteraction'.
+                    val commitResult = commitPlaybackSeekInteraction(
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4801:36: error: unresolved reference 'enhancementState'.
+                anime4kAvailable = enhancementState.available,
+                                   ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4806:48: error: unresolved reference 'platform'.
+                onAnime4kToggle = { enabled -> platform.setCurrentVideoEnhancementEnabled(enabled) },
+                                               ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4808:21: error: unresolved reference 'platform'.
+                    platform.enhancementActions.setAlgorithm(algorithm)
+                    ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4811:21: error: unresolved reference 'platform'.
+                    platform.enhancementActions.setPreset(preset)
+                    ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4814:21: error: unresolved reference 'platform'.
+                    platform.enhancementActions.setFsrSharpness(sharpness)
+                    ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4826:39: error: unresolved reference 'platform'.
+                        val success = platform.captureAndSaveScreenshot(videoSizeState.first, videoSizeState.second, uiState.info.title)
+                                      ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4827:40: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                        Toast.makeText(context, if (success) "截图已保存（PNG）" else "截图失败，请稍后重试", Toast.LENGTH_SHORT).show()
+                                       ^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4861:38: error: argument type mismatch: actual type is '(String, Long, ??? (Unknown type for value parameter cover)) -> Unit', but '(String, Long) -> Unit' was expected.
+                onDrawerVideoClick = { vid, cid, cover ->
+                                     ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4861:50: error: cannot infer type for value parameter 'cover'. Specify it explicitly.
+                onDrawerVideoClick = { vid, cid, cover ->
+                                                 ^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4889:13: error: unresolved reference 'SponsorSkipButton'.
+            SponsorSkipButton(
+            ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4899:13: error: unresolved reference 'SponsorContributionOverlay'.
+            SponsorContributionOverlay(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4915:47: error: unresolved reference 'platform'.
+                val poolSheetBlockRulesRaw by platform.danmakuPreferences.getDanmakuBlockRulesRaw(activeDanmakuScope)
+                                              ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4921:44: error: unresolved reference 'commitPlaybackSeekInteraction'.
+                        val commitResult = commitPlaybackSeekInteraction(
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4946:29: error: unresolved reference 'platform'.
+                            platform.danmakuPreferences.setDanmakuBlockRulesRaw(updatedRules,
+                            ^^^^^^^^
+desktop\.local\stable-video-player-section-parity\section-runs\01\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4951:29: error: argument type mismatch: actual type is 'PlatformContext', but 'DesktopOriginalPlayerSettingsContext' was expected.
+                            context,
+                            ^^^^^^^

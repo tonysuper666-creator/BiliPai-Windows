@@ -1,0 +1,83 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/DanmakuViewportHost.kt",
+  "sourceSha256LF": "10fbb53ca31a6629303ed425028e4c4e35e9179920befc01d8cc3e7400ee5d1e",
+  "generatedSha256LF": "e5f52181d190749437be6125758b35bb59df6ff09e35c34cf59b501e1cc244bf",
+  "inverseExactOriginal": true,
+  "lineChanges": [
+    {
+      "tag": "delete",
+      "originalStart": 2,
+      "originalEnd": 5,
+      "generatedStart": 2,
+      "generatedEnd": 2,
+      "originalLines": [
+        "import android.os.Build\n",
+        "import android.view.WindowManager\n",
+        "import android.view.WindowInsets\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "delete",
+      "originalStart": 14,
+      "originalEnd": 16,
+      "generatedStart": 11,
+      "generatedEnd": 11,
+      "originalLines": [
+        "import androidx.compose.ui.platform.LocalConfiguration\n",
+        "import androidx.compose.ui.platform.LocalContext\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "delete",
+      "originalStart": 17,
+      "originalEnd": 18,
+      "generatedStart": 12,
+      "generatedEnd": 12,
+      "originalLines": [
+        "import com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "delete",
+      "originalStart": 27,
+      "originalEnd": 29,
+      "generatedStart": 21,
+      "generatedEnd": 21,
+      "originalLines": [
+        "    val context = LocalContext.current\n",
+        "    val configuration = LocalConfiguration.current\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 30,
+      "originalEnd": 44,
+      "generatedStart": 22,
+      "generatedEnd": 23,
+      "originalLines": [
+        "    val display = LocalAppWindowAdaptiveInfo.current.displayContext\n",
+        "    val reference = remember(context, configuration, density.density, display) {\n",
+        "        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {\n",
+        "            val metrics = context.getSystemService(WindowManager::class.java).maximumWindowMetrics\n",
+        "            // Fullscreen hides system bars; only the display cutout constrains this reference.\n",
+        "            val safe = metrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.displayCutout())\n",
+        "            minOf(metrics.bounds.width() - safe.left - safe.right,\n",
+        "                metrics.bounds.height() - safe.top - safe.bottom).toFloat()\n",
+        "        } else {\n",
+        "            val width = display.maximumWindowWidthDp\n",
+        "            val height = display.maximumWindowHeightDp\n",
+        "            if (width != null && height != null) minOf(width, height) * density.density else 0f\n",
+        "        }\n",
+        "    }\n"
+      ],
+      "generatedLines": [
+        "    val reference = com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform.current.danmakuReferencePixels\n"
+      ]
+    }
+  ],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

@@ -1,0 +1,160 @@
+{
+  "scope": "Readonly post-closed53 JDK/Skiko/source analysis; no UI/actor execution",
+  "actualSnapshot": 53,
+  "manifest": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-53\\manifest.json",
+    "sha256Bytes": "d7a05a5ffe7457e7b25ad1d644d111ec6b58465fcd71db14ec0da22930361d2c",
+    "size": 145369
+  },
+  "orderedCp": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-53\\ordered-runtime-cp.json",
+    "sha256Bytes": "b1bc18718b6f4564bfa0c7f37658de2e01c3079d57bef20f7dc482061a98d97d",
+    "size": 38191
+  },
+  "jdkJava": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1\\bin\\java.exe",
+    "sha256Bytes": "82051fdab26319d77d20cc0065045d05ec00b3e3d05f44935d7c06b96b621d55",
+    "size": 50304
+  },
+  "jdkAwtNative": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1\\bin\\awt.dll",
+    "sha256Bytes": "6fd29b7267eb02df00229b44f34d561be1e56b313ada754bcea1acf7c3562a83",
+    "size": 1484928
+  },
+  "jdkRelease": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1\\release",
+    "sha256Bytes": "07117c72ce033949c14878e07fbf2fe23f59a1f8c90a6d1351b5c89099847ce7",
+    "size": 1664
+  },
+  "jdkSources": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1\\lib\\src.zip",
+    "sha256Bytes": "af5fc30b6bd9dd4510ea61cfff56cdc2f7a1dd847430984a8d0116eaa3c4e580",
+    "size": 53010580
+  },
+  "skikoJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.skiko\\skiko-awt\\0.150.1\\e03fd8140c0e331c3c7018b00a9710ec98d78fc1\\skiko-awt-0.150.1.jar",
+    "sha256Bytes": "bb610ada28509ebee3a623c0469aff3665689fbec73d118055f3dbf5a37211f5",
+    "size": 1261676
+  },
+  "composeUiJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-desktop\\1.12.1\\a6d765fb5086ca7046af0172a7fc2ff3b32a3e59\\ui-desktop-1.12.1.jar",
+    "sha256Bytes": "eaee42812c81cf1f1a925088bd7e847a343decbc3ccb1682f00f203123a51a17",
+    "size": 3715560
+  },
+  "productJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-53\\main-kotlin.jar",
+    "sha256Bytes": "d86cca20d0f4bf39f634e1e8df73c930d0682df7f1e8932573b9bb9c497ffa69",
+    "size": 37869952
+  },
+  "controllerObservedSource": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopWindowsFullscreenControl.kt",
+    "sha256Bytes": "d5814fbdef5c564598a61cb107e85ab0bf7dd6b7f054d9d4ec1abd5d94ebb0d8",
+    "size": 4808
+  },
+  "closedGeometry": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\owned-geometries.json",
+    "sha256Bytes": "10428618f1f7100ae865661a32c0eb7bc96a671bb5b915e9f5d51bd7e59fa12a",
+    "size": 42670
+  },
+  "rawArtifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\java\\awt\\Component.java",
+      "sha256Bytes": "e29ec22827f47b8e0553231caf4463b4c79a85ce1f7bbef09442b43b5e667235",
+      "size": 391387
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\java\\awt\\Container.java",
+      "sha256Bytes": "1a08c9045743168b1823c701958050d60250c15d79642ef8f18f54f72cabd2c4",
+      "size": 196126
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\java\\awt\\GraphicsDevice.java",
+      "sha256Bytes": "5c95d1698bdcca7287cb6b34296b882449c7ba860977137aad5e8b7318b9a68f",
+      "size": 24083
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\java\\awt\\Frame.java",
+      "sha256Bytes": "2e9460a08c858ebbd0089fa4641bd954424a21d27b091b04719f473eef5a51fe",
+      "size": 45890
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\windows\\WWindowPeer.java",
+      "sha256Bytes": "48f8bfcf47f8f2de3fbe4cc8647a71d2605e84caa10fe5b946f5eaa978856621",
+      "size": 30931
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\windows\\WFramePeer.java",
+      "sha256Bytes": "01b1a540ead4337bfdf28abb7f4ded89a2601333f2e3c8e4060c05ff466a5aa2",
+      "size": 8899
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\windows\\WPanelPeer.java",
+      "sha256Bytes": "10becb91880cde80f0d47bce14ed3dad36b895fac084bc04db4e6bf5e7a7d594",
+      "size": 3155
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\windows\\WComponentPeer.java",
+      "sha256Bytes": "65e039c62a4356c94e8ad351c9106fb8f2423857d64551e9c13762e13a41c8fd",
+      "size": 39420
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\awt\\Win32GraphicsDevice.java",
+      "sha256Bytes": "fe18285675feec3afd0627f7f52b61f699e1843d67f46d261edbcef1ebffd59d",
+      "size": 25048
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\javax\\swing\\JRootPane.java",
+      "sha256Bytes": "7e9f80ee1f06fc0e7b05e8f6d298a5fb609341d8054d41f74db51aa86a9d6adf",
+      "size": 39479
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\javax\\swing\\JFrame.java",
+      "sha256Bytes": "c4b0acf472ca741161eca42f965da3e09dcd7f78648f5f68db4e19d8d138bc0d",
+      "size": 34402
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\jdk\\java.desktop\\sun\\java2d\\d3d\\D3DGraphicsDevice.java",
+      "sha256Bytes": "7b76e4136e4158f4698532f506008b3220ac4e24500d791b8c523f61d7baf9e1",
+      "size": 18349
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\org.jetbrains.skiko.FullscreenAdapter.txt",
+      "sha256Bytes": "9ee43ec13d51b7cd93e5adb2864c2976a3a1c5a69c82a2b8ffd4bb4e01206b7c",
+      "size": 6037
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\org.jetbrains.skiko.PlatformOperationsKt$platformOperations$2$2.txt",
+      "sha256Bytes": "a1168d3020daafbe00c82a7f3dafbeed92c9264a906082a3f32cdc6410f192b1",
+      "size": 5220
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\org.jetbrains.skiko.HardwareLayer.txt",
+      "sha256Bytes": "7f6757c1e68365090d5bc6d2a470f0c72e98a82cdf17631bad21d24637d2a5fc",
+      "size": 13562
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\androidx.compose.ui.awt.ComposeWindow.txt",
+      "sha256Bytes": "aea498922bc696f1f321598e975db2ca57a3328e7b7ba591723e569382fe7079",
+      "size": 58155
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\androidx.compose.ui.awt.ComposeWindowPanel.txt",
+      "sha256Bytes": "694d0d983005d3c356444293c6e588d254fc3edaad635a64cc8014b52c810d69",
+      "size": 60192
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\bytecode\\com.bilipai.desktop.ui.DesktopWindowsFullscreenControl.txt",
+      "sha256Bytes": "2464b7c72358274d5ed4844358558fbeef5f4a41d3a03b831d5614267f1b7b25",
+      "size": 21281
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\observed-source\\DesktopWindowsFullscreenControl.kt",
+      "sha256Bytes": "d5814fbdef5c564598a61cb107e85ab0bf7dd6b7f054d9d4ec1abd5d94ebb0d8",
+      "size": 4808
+    }
+  ],
+  "all101RuntimePinsVerified": true,
+  "candidateMutation": false,
+  "Gradle": false,
+  "nativeWindowRun": false
+}

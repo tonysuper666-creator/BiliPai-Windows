@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "sources": 21,
+  "exitCode": 0,
+  "actual50RuntimeEntries": 97,
+  "productAcceptance": false,
+  "explicitProspectiveOverrides": [
+    "DesktopOriginalMpvOverlayControl access/constants/listener hunks",
+    "DesktopOriginalPlayerSettingsContext required device/build ports"
+  ],
+  "explicitPreparedDependencies": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\core-compile-03\\candidate.jar",
+      "sha256Bytes": "dc69724548f0b720e61d9e313efe3cee7e553b99f1a0e8ec3d32d21b084f97d9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-page-parity\\content-runs\\06\\candidate.jar",
+      "sha256Bytes": "f7ec9380b81737ed299bf49cecef412a1e9eb58b23f9fc5e80b7a969aaddc135"
+    }
+  ],
+  "candidateJarSha256Bytes": "5b34a0fc4f14a06f8a48c4aa50078a6265e51b1249be547f930493a3dd92a6d9"
+}

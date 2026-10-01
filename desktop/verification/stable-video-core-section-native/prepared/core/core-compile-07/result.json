@@ -1,0 +1,107 @@
+{
+  "preparedOnly": true,
+  "scope": "original canonical model/Success + full loader/session/coordinator/UseCase selection; full5464 Holder/VM not yet compiled",
+  "actual50Manifest": "d9803560314da73036a848cf1be86c5877ff24b3993584379a5e9516165de4eb",
+  "actual50Cp": "c4615263c430a5b75f86085499bcf3dae27239a005a59e258cdff172bbf75680",
+  "runtimeEntries": 97,
+  "explicitChildStage3JarSha": "f7ec9380b81737ed299bf49cecef412a1e9eb58b23f9fc5e80b7a969aaddc135",
+  "explicitNativeStateJarSha": "8afda700dee26da035e2df85ef65c87cf187532af8d8e918075fa542a299f6e0",
+  "compileExit": 0,
+  "inputSources": 23,
+  "classes": 138,
+  "productOverlaps": [],
+  "sourceInputs": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\core\\com\\android\\purebilibili\\feature\\video\\controller\\QualityManager.kt",
+      "sha256Bytes": "4e2895dfd69d83c398b0e1719267513598fd3f3c33fd157f169d0c6f7b66a496"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\core\\com\\android\\purebilibili\\feature\\video\\playback\\coordinator\\PlaybackCoordinator.kt",
+      "sha256Bytes": "1968820cd98d97cbe745363a799e0ae08e172b3ba7881a0d1696777b799a7454"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\core\\com\\android\\purebilibili\\feature\\video\\playback\\loader\\PlaybackLoader.kt",
+      "sha256Bytes": "fd3f9e03a1c85ca47697a5807d1d94c95f379eecbd21db2ca8d295f58f763308"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\core\\com\\android\\purebilibili\\feature\\video\\playback\\loader\\PlaybackLoadResult.kt",
+      "sha256Bytes": "a527931bc3236db1f4c103adfc1e193521423369e0bbbf9b5801764d254b2ed1"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\core\\com\\android\\purebilibili\\feature\\video\\playback\\loader\\PlaybackRequest.kt",
+      "sha256Bytes": "ff75b5af9a8cd4cec42f393a40a3e45bff20d52c1dc821f333076da377b6eb4e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\core\\com\\android\\purebilibili\\feature\\video\\playback\\session\\PlaybackSessionStore.kt",
+      "sha256Bytes": "09d952f46d7eaa505aa3d23dd6435a24e87d44b45fcd47dad0cf29185c868655"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\core\\com\\android\\purebilibili\\feature\\video\\policy\\ResumePlaybackPolicy.kt",
+      "sha256Bytes": "4f5d3bddd5281e611179aa6c93ae8c81e68a74cd64cd13e30ed6ae691a6b2fdd"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\core\\com\\android\\purebilibili\\feature\\video\\screen\\VideoDetailPresentationState.kt",
+      "sha256Bytes": "450cd98e1b0e6e03c87a1f6e0c0e38e85cd3955e82e7aec2387d711c2e066250"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\core\\com\\android\\purebilibili\\feature\\video\\screen\\VideoDetailRenderContracts.kt",
+      "sha256Bytes": "e9820ea7274bfce8993adadcafd6da519b8722ff3511a3a83c2be7476ebf17d1"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\core\\com\\android\\purebilibili\\feature\\video\\usecase\\DesktopOriginalVideoLoadModels.kt",
+      "sha256Bytes": "9ef04ed55677cb779b95a35d30658f1bebd4bae458eb1483687160b8de90027a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\core\\com\\android\\purebilibili\\feature\\video\\viewmodel\\PlaybackCompletionPolicy.kt",
+      "sha256Bytes": "f0e1d6537da8b5d4036d5c480902eb090eb0330e1bb73674180729ae0ab16a5f"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\direct\\data\\model\\VideoLoadError.kt",
+      "sha256Bytes": "d13abdfe7ad6ec158e4046f30ea1ad38d1c68202c08dba73df0936284695a3df"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\direct\\feature\\video\\playback\\dash\\AdaptiveDashPlaybackSource.kt",
+      "sha256Bytes": "dcf96628f58f40d06d9a64608b82ccefc45ee4b3be4beda41fa402b5427ff405"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoLoadPort.kt",
+      "sha256Bytes": "6f75841eb201c819d798bca3541d3afd18e383d4a123a006ea249fee1b5158a3"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoLoadProtocolEnvironment.kt",
+      "sha256Bytes": "616da54e666e05eacdc9edd66584a0993cf2cbc1d36fdc0b70b238ed48a1372a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "sha256Bytes": "a723d07b430f578a394c0f06f19370ee3cdd04beb2143df89d5d1786caa37018"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoSupplementEnvironment.kt",
+      "sha256Bytes": "857d5138704c3ebb8a7dbadcf382cf53a1f8c8e3a6d4cb0dbc825b15e5f4188f"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\protocol\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalVideoLoadProtocol.kt",
+      "sha256Bytes": "4820182ebfd2301845b17448233409a0bc763a08fd2db8ff96a65322a5b052b0"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalVideoPlaybackUiState.kt",
+      "sha256Bytes": "6cfee432aa9fa5a3e8358ec6cc72c1d1280f91c8226501a0456807f7644159c2"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalVideoSuccessExtensions.kt",
+      "sha256Bytes": "fb17bdcb248aecaa0fe652db29459840d9de107bb2e83689cc345fbf24191af3"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\supplement\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalVideoSupplementViewModel.kt",
+      "sha256Bytes": "376e4356b3c196b0323c7f132272a87849a844ddc928a5c8447a02e18c5e827c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\usecase\\com\\android\\purebilibili\\core\\cooldown\\PlaybackCooldownManager.kt",
+      "sha256Bytes": "62102a37824deac43b35a83b62e9b43252506f04e30a004673525e9e7dbcd7ec"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\prepared\\usecase\\com\\android\\purebilibili\\feature\\video\\usecase\\DesktopOriginalVideoPlaybackUseCase.kt",
+      "sha256Bytes": "a14d7c5a8094c5f1ada375a1d34d9126cf83e03762d7f73afab6e68dd0849e70"
+    }
+  ]
+}

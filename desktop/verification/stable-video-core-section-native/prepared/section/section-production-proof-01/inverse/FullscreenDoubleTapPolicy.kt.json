@@ -1,0 +1,22 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenDoubleTapPolicy.kt",
+  "sourceSha256LF": "9b989575ac7fee838218dc77e80520b2808fc98808cc5748e4015fedb2a73478",
+  "generatedSha256LF": "f3e08d5edf695188cbba5308993a3b62c38ff1b15edb7470a6a2b5f221fd7c47",
+  "inverseExactOriginal": true,
+  "lineChanges": [
+    {
+      "tag": "replace",
+      "originalStart": 2,
+      "originalEnd": 3,
+      "generatedStart": 2,
+      "generatedEnd": 3,
+      "originalLines": [
+        "import androidx.media3.common.Player\n"
+      ],
+      "generatedLines": [
+        "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player\n"
+      ]
+    }
+  ],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

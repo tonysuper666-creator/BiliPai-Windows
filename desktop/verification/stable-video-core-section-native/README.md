@@ -1,0 +1,10 @@
+Original Video load core and full PlayerSection source integration
+=================================================================
+
+Stable v0.2.3 stays pinned at 3d5d19a. The original load/session/coordinator/use-case/supplement source bodies and full original VideoPlayerSection/Contracts renderer are installed through their sole pinned producers. DIRECT originals are copied by the existing sync once; selected outputs preserve original algorithms with explicit required Windows platform ports. The registry gains27 original identities and remains1055 sources/213 resources. No additional JVM dependency is introduced.
+
+This is source integration, not a claim that the full ordinary video page is mounted. The full VideoPlaybackViewModel and VideoDetailScreenStateHolder, same Repository raw/WBI/authorization adapter, queue/plugins handoff and one-controller transition still need completion. Existing native ownership/event/settings adapters refer to the same accepted source and entry. No second HTTP client, player, cache or account is constructed by this source milestone.
+
+Whole classes and test sources54 compile, the frozen101-entry graph has zero illegal JVM method names, and actual unchanged Main starts and closes normally with empty stderr. Fullscreen entry and exit still use the same Main Compose placement authority. A revision-bound EDT refresh performs real bounds changes on the existing peer, preserving current user bounds and device/monitor/transform checks. The exact bundled JDK Java/native source route to cached insets is preserved as source evidence; individual closed native runs and Root observations determine physical acceptance, including failed input delivery attempts. They do not prove arbitrary navigation, externalF11, another display, authenticated Main playback, OS-generated media events or a newly deployed EXE.
+
+Frozen prepared packets, exact source deltas, actual graph/build/startup bytes and closed native runs are verified before copying. Rebuildable binaries, private fixture data, media and rendered images stay excluded. Source identity counts do not express functional parity or code reuse percentage.

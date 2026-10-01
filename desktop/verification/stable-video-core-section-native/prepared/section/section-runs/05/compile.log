@@ -1,0 +1,36 @@
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\components\SponsorSkipUI.kt:156:50: warning: 'val Icons.Outlined.Send: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.Send.
+                    imageVector = Icons.Outlined.Send,
+                                                 ^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:416:31: warning: no cast needed.
+        val success = uiState as? VideoPlaybackUiState.Success
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:423:31: warning: no cast needed.
+        val success = uiState as? VideoPlaybackUiState.Success ?: return@remember false
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:455:31: warning: no cast needed.
+        val success = uiState as? VideoPlaybackUiState.Success ?: return@remember null
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:469:31: warning: no cast needed.
+        val success = uiState as? VideoPlaybackUiState.Success ?: return@remember null
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1076:54: warning: the corresponding parameter in the supertype 'Listener' is named 'parameters'. This may cause problems when calling this function with named arguments.
+            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
+                                                     ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1257:40: warning: elvis operator (?:) always returns the left operand of non-nullable type 'DesktopOriginalPlayerViewportPort'.
+        val playerView = playerViewRef ?: return@LaunchedEffect
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1749:57: warning: elvis operator (?:) always returns the left operand of non-nullable type 'DesktopOriginalMpvSectionControl'.
+                        val player = playerState.player ?: return@onKeyEvent false
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1761:57: warning: elvis operator (?:) always returns the left operand of non-nullable type 'DesktopOriginalMpvSectionControl'.
+                        val player = playerState.player ?: return@onKeyEvent false
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:1815:29: warning: condition is always 'true'.
+                        if (targetView != null) {
+                            ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:3016:52: warning: elvis operator (?:) always returns the left operand of non-nullable type 'DesktopOriginalPlayerViewportPort'.
+                    val playerView = playerViewRef ?: return@LaunchedEffect
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-section-parity\section-runs\05\source-inputs\section-generated\com\android\purebilibili\feature\video\ui\section\VideoPlayerSection.kt:4827:59: warning: unnecessary safe call on a non-null receiver of type 'DesktopOriginalMpvSectionControl'.
+                    currentPositionMs = playerState.player?.currentPosition ?: 0L,
+                                                          ^^

@@ -1,0 +1,8 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt",
+  "sourceSha256LF": "dc6c67fc857b950a914d6c6ffc48c328216c8531d6d534f936d0d079e43314f7",
+  "generatedSha256LF": "dc6c67fc857b950a914d6c6ffc48c328216c8531d6d534f936d0d079e43314f7",
+  "inverseExactOriginal": true,
+  "lineChanges": [],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

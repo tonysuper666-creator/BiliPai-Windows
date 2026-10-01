@@ -1,0 +1,44 @@
+{
+  "repository": "adoptium/jdk21u",
+  "runtimeReleaseSourcePrefix": "1c417fbfc2f7",
+  "fullCommit": "1c417fbfc2f70ab03a565b0af0a5a3c6f5e15ad6",
+  "sourceAssociation": "Runtime release SOURCE=.:git:1c417fbfc2f7, SOURCE_REPO=https://github.com/adoptium/jdk21u.git",
+  "rawArtifacts": [
+    {
+      "url": "https://api.github.com/repos/adoptium/jdk21u/commits/1c417fbfc2f7",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\vendor-commit.json",
+      "sha256Bytes": "fdf89a7c56fff3ff06f0d48d7ce8bade7b9a0fdbc6cbd6c200b14a4edaf7243a",
+      "size": 57548
+    },
+    {
+      "url": "https://raw.githubusercontent.com/adoptium/jdk21u/1c417fbfc2f70ab03a565b0af0a5a3c6f5e15ad6/src/java.desktop/windows/native/libawt/windows/awt_Window.cpp",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Window.cpp",
+      "sha256Bytes": "f1fb9e8676bf52f9a03336185991f887d5a30274c18fb5d31382baa12da34768",
+      "size": 121604
+    },
+    {
+      "url": "https://raw.githubusercontent.com/adoptium/jdk21u/1c417fbfc2f70ab03a565b0af0a5a3c6f5e15ad6/src/java.desktop/windows/native/libawt/windows/awt_Frame.cpp",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Frame.cpp",
+      "sha256Bytes": "61891b9bfc79e1b85decb8be454354ed951045cd6741bd4a54a95933da746097",
+      "size": 65548
+    },
+    {
+      "url": "https://raw.githubusercontent.com/adoptium/jdk21u/1c417fbfc2f70ab03a565b0af0a5a3c6f5e15ad6/src/java.desktop/windows/native/libawt/windows/awt_Win32GraphicsDevice.cpp",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Win32GraphicsDevice.cpp",
+      "sha256Bytes": "c0bc2e11167f30ff20551f770499af2d94b90f9a64c5c4f1bc7c10824b303566",
+      "size": 48033
+    },
+    {
+      "url": "https://raw.githubusercontent.com/adoptium/jdk21u/1c417fbfc2f70ab03a565b0af0a5a3c6f5e15ad6/src/java.desktop/windows/native/libawt/windows/awt_Component.cpp",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Component.cpp",
+      "sha256Bytes": "1b51a4d68c6acd4812a3711546d36edf567163c6de3b95ea64705a3fd345e59c",
+      "size": 249731
+    },
+    {
+      "url": "https://raw.githubusercontent.com/adoptium/jdk21u/1c417fbfc2f70ab03a565b0af0a5a3c6f5e15ad6/src/java.desktop/windows/native/libawt/windows/awt_Window.h",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-windows-fullscreen-insets-audit\\native\\awt_Window.h",
+      "sha256Bytes": "4d38ad49cfe231b22a766a74fd5e74ff0e5ee89ec1d2f4cfed479257c84c29d2",
+      "size": 15464
+    }
+  ]
+}

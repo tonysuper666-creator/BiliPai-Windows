@@ -1,0 +1,29 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvOverlayControl.kt",
+  "baseLF": "7d59bf46b008c14a198ede73c63db2175fe5be957ee53965dc6545f35452f5c0",
+  "candidateLF": "82ecb87a9a449121825f6809ad76141b0a35f434713681baa82a973607552412",
+  "hunks": [
+    {
+      "before": "class DesktopOriginalMpvOverlayControl internal constructor(",
+      "after": "open class DesktopOriginalMpvOverlayControl internal constructor("
+    },
+    {
+      "before": "private fun snapshot(): PlayerState",
+      "after": "protected open fun snapshot(): PlayerState"
+    },
+    {
+      "before": "private fun write(block: () -> Unit)",
+      "after": "protected fun write(block: () -> Unit)"
+    },
+    {
+      "before": "        const val STATE_IDLE = 1",
+      "after": "        const val REPEAT_MODE_OFF = 0\n        const val REPEAT_MODE_ONE = 1\n        const val STATE_IDLE = 1"
+    },
+    {
+      "before": "    val diagnosticLoggingEnabled get() = diagnosticLoggingEnabledPort()",
+      "after": "    /** Events from the same native StateFlow; only the extended control with the\n     * required entry scope implements admission. This is not a Media3 decoder. */\n    interface Listener {\n        fun onPlaybackStateChanged(playbackState: Int) {}\n        fun onIsPlayingChanged(isPlaying: Boolean) {}\n        fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {}\n        fun onPlaybackParametersChanged(parameters: DesktopOriginalPlaybackRate) {}\n        fun onRenderedFirstFrame() {}\n        fun onTracksChanged(tracks: List<com.bilipai.desktop.player.PlayerTrack>) {}\n        fun onSourceTransition(sourceVersion: Long) {}\n        fun onPlayerError(error: DesktopOriginalNativePlaybackError) {}\n    }\n    open fun addListener(listener: Listener) {\n        error(\"The same-entry native event scope is required\")\n    }\n    open fun removeListener(listener: Listener) {\n        error(\"The same-entry native event scope is required\")\n    }\n    val diagnosticLoggingEnabled get() = diagnosticLoggingEnabledPort()"
+    }
+  ],
+  "applyOnlyExactHunks": true,
+  "neverCopyProofWholeSource": true
+}

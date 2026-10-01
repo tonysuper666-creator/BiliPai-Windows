@@ -28,6 +28,7 @@ internal class DesktopWindowsFullscreenControl(
     private var floatingDevice: GraphicsDevice? = null
     private var floatingMonitorBounds: Rectangle? = null
     private var floatingTransform: AffineTransform? = null
+    private var fullscreenRefreshRevision: Long? = null
     private val listener = object : ComponentAdapter() {
         override fun componentResized(event: ComponentEvent) = placementChanged()
         override fun componentMoved(event: ComponentEvent) = placementChanged()
@@ -45,6 +46,7 @@ internal class DesktopWindowsFullscreenControl(
         val destination = if (enabled) WindowPlacement.Fullscreen else WindowPlacement.Floating
         if (state.placement == destination) return
         revision++
+        fullscreenRefreshRevision = if (enabled && window.isShowing) revision else null
         if (enabled) {
             floatingBounds = if (state.placement == WindowPlacement.Floating && window.isShowing)
                 Rectangle(window.bounds) else null
@@ -61,6 +63,18 @@ internal class DesktopWindowsFullscreenControl(
 
     fun placementChanged() {
         check(SwingUtilities.isEventDispatchThread())
+        if (closed) return
+        if (state.placement == WindowPlacement.Fullscreen) {
+            val requestedRevision = fullscreenRefreshRevision ?: return
+            SwingUtilities.invokeLater {
+                if (closed || requestedRevision != revision || fullscreenRefreshRevision != requestedRevision ||
+                    !window.isShowing || state.placement != WindowPlacement.Fullscreen ||
+                    window.placement != WindowPlacement.Fullscreen) return@invokeLater
+                fullscreenRefreshRevision = null
+                if (matchesCapturedConfiguration()) reapplyCurrentPeerBounds()
+            }
+            return
+        }
         val captured = floatingBounds ?: return
         if (closed || state.placement != WindowPlacement.Floating) return
         val capturedRevision = revision
@@ -69,18 +83,26 @@ internal class DesktopWindowsFullscreenControl(
                 !window.isShowing || state.placement != WindowPlacement.Floating ||
                 window.placement != WindowPlacement.Floating) return@invokeLater
             floatingBounds = null
-            val configuration = window.graphicsConfiguration
-            if (configuration.device !== floatingDevice || configuration.bounds != floatingMonitorBounds ||
-                configuration.defaultTransform != floatingTransform) return@invokeLater
-            // A user move/resize accepted before this queued turn remains authoritative.
-            val desired = Rectangle(window.bounds)
-            if (desired.width <= 0 || desired.height <= 0) return@invokeLater
-            // This is native Window geometry only, not playback, source, account or input.
-            // AWT owns the current monitor's coordinate conversion; do not multiply screen coordinates.
-            window.bounds = Rectangle(desired.x + 1, desired.y + 1, desired.width + 1, desired.height + 1)
-            window.bounds = desired
-            window.validate()
+            if (matchesCapturedConfiguration()) reapplyCurrentPeerBounds()
         }
+    }
+
+    private fun matchesCapturedConfiguration(): Boolean {
+        val configuration = window.graphicsConfiguration
+        return configuration.device === floatingDevice && configuration.bounds == floatingMonitorBounds &&
+            configuration.defaultTransform == floatingTransform
+    }
+
+    private fun reapplyCurrentPeerBounds() {
+        // Preserve any user move/resize accepted before this queued EDT turn.
+        val desired = Rectangle(window.bounds)
+        if (desired.width <= 0 || desired.height <= 0) return
+        // A real same-peer resize updates cached AWT insets after native fullscreen entry,
+        // as well as reapplying the peer's DPI conversion after fullscreen exit.
+        window.bounds = Rectangle(desired.x + 1, desired.y + 1, desired.width + 1, desired.height + 1)
+        window.bounds = desired
+        window.invalidate()
+        window.validate()
     }
 
     override fun close() {
@@ -92,6 +114,7 @@ internal class DesktopWindowsFullscreenControl(
         floatingDevice = null
         floatingMonitorBounds = null
         floatingTransform = null
+        fullscreenRefreshRevision = null
         window.removeComponentListener(listener)
     }
 }

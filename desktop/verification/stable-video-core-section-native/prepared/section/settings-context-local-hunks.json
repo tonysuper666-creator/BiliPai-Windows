@@ -1,0 +1,18 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+  "baseSha256LF": "24fb1ef1e9331e521e8b3a1e6ac61bf7eca1d891f28ba46540b9fe215f56e5ca",
+  "candidateSha256LF": "3c935fa31ffcea15c0ce34bb930615b743c41f280efcca73d08750f8f139ee01",
+  "hunks": [
+    {
+      "before": "    private val videoOverlayPlatform: DesktopOriginalVideoOverlayPlatform? = null\n",
+      "after": "    private val videoOverlayPlatform: DesktopOriginalVideoOverlayPlatform? = null,\n    private val largeScreenOrFoldableConfiguration: (() -> Boolean)? = null,\n    private val isDebugBuild: (() -> Boolean)? = null\n"
+    },
+    {
+      "before": "    internal fun requireCurrent()",
+      "after": "    internal fun isLargeScreenOrFoldableConfiguration(): Boolean {\n        requireCurrent()\n        return checkNotNull(largeScreenOrFoldableConfiguration) { \"Root actual physical monitor device default is required\" }.invoke()\n    }\n    internal fun defaultPlayerDiagnosticLoggingEnabled(): Boolean {\n        requireCurrent()\n        return com.android.purebilibili.core.store.resolveDefaultPlayerDiagnosticLoggingEnabled(checkNotNull(isDebugBuild) { \"Root actual build type is required\" }.invoke())\n    }\n    internal fun requireCurrent()"
+    }
+  ],
+  "applyOnlyExactHunks": true,
+  "neverCopyProofWholeSource": true,
+  "rootBinding": "Pass the installed same Root DesktopHomeWindowsPreferencesPlatform.defaultTabletUseSidebar (actual monitor dimensions/DPI and exact original >=600 threshold). Hinge capability remains explicitly unavailable."
+}

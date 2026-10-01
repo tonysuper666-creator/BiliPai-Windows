@@ -1,0 +1,46 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionContracts.kt",
+  "sourceSha256LF": "1a42a990bd45b0d24ac6ec30346b68ccf6132880b3af81e7d79ab7573fed97b4",
+  "generatedSha256LF": "587b9fb1db8234865019b0110ee0a0075941075580c552882d034f26edc1b4b5",
+  "inverseExactOriginal": true,
+  "lineChanges": [
+    {
+      "tag": "delete",
+      "originalStart": 2,
+      "originalEnd": 3,
+      "generatedStart": 2,
+      "generatedEnd": 2,
+      "originalLines": [
+        "import android.os.Bundle\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 14,
+      "originalEnd": 15,
+      "generatedStart": 13,
+      "generatedEnd": 14,
+      "originalLines": [
+        "import com.android.purebilibili.feature.video.state.VideoPlayerState\n"
+      ],
+      "generatedLines": [
+        "import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 139,
+      "originalEnd": 140,
+      "generatedStart": 138,
+      "generatedEnd": 139,
+      "originalLines": [
+        "    val onRelatedVideoClick: (String, Bundle?) -> Unit = { _, _ -> },\n"
+      ],
+      "generatedLines": [
+        "    val onRelatedVideoClick: (String, Long, String?) -> Unit = { _, _, _ -> },\n"
+      ]
+    }
+  ],
+  "scope": "Full original source with explicit platform adaptations. This diff is an auditable reversal, not a claim every line is original."
+}

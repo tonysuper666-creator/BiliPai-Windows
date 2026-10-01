@@ -1,0 +1,15 @@
+{
+  "historicalResult": {
+    "path": "native-state-runs/06/compile-result.json",
+    "bytes": 314,
+    "sha256Bytes": "622c17220653b7f99338dad559a8df1c87469dfce28395808f072413ab323e29",
+    "sha256LF": "622c17220653b7f99338dad559a8df1c87469dfce28395808f072413ab323e29"
+  },
+  "preservedUnchanged": true,
+  "correction": "The historical description \"3 access-only hunks\" was stale. Actual captured inputs include OverlayControl access/repeat/listener family (five hunks) and SettingsContext family (two hunks). This corrects only scope metadata, not raw compile or Jar bytes.",
+  "historicalJarSha256Bytes": "91aefe3349fafb20502275ea188e2344e1196f202f36783e2646b4c7046c615d",
+  "currentFullClosure": "section-runs/06/compile-result.json",
+  "nativeControlManualUnchangedFromHistorical06": true,
+  "currentSettingsClosureExpandedFrom70To94Members": true,
+  "currentSettingsContextMayNotBeClaimedAsHistorical06Bytes": true
+}

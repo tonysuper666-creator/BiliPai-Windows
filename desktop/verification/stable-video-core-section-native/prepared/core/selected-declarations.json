@@ -1,0 +1,44 @@
+[
+  {
+    "name": "VideoPlaybackUiState",
+    "sha256LF": "c2057c3e1004a6a7d94e1de8e16846478a6b44a024ef0b2708c043fbf0f166d8",
+    "firstLine": 550,
+    "lastLine": 644
+  },
+  {
+    "name": "SponsorSkipUiState",
+    "sha256LF": "6715b2cc0419c99f145f7056c492a90aea91158c3b93663f7919beb3e333932b",
+    "firstLine": 197,
+    "lastLine": 202
+  },
+  {
+    "name": "SponsorContributionPhase",
+    "sha256LF": "005915363ae6e0c6afb2000d9b11c6210a94bb4a7a0914c113998c31ee74f109",
+    "firstLine": 204,
+    "lastLine": 211
+  },
+  {
+    "name": "SponsorContributionUiState",
+    "sha256LF": "b4cfe580f2434a5180d0a59658c77e89ced693370ead446ff229f8f59442cdac",
+    "firstLine": 213,
+    "lastLine": 229
+  },
+  {
+    "name": "QualitySwitchFailureDialogState",
+    "sha256LF": "a5cda2cb8ea5ee54e28ae2084ec718bc1ec23ac8456499547c524bf30e257d27",
+    "firstLine": 809,
+    "lastLine": 814
+  },
+  {
+    "name": "VideoSupplementSeed",
+    "sha256LF": "58b139da75b2f9b35c185a801169d7bfe9f41a91d97c21c7f1df32e40806e9c0",
+    "firstLine": 14,
+    "lastLine": 21
+  },
+  {
+    "name": "VideoSupplementUiState",
+    "sha256LF": "4f31866e47911a18ae6a7c895a710317e9fe182726c4fd8582c207770bb20198",
+    "firstLine": 23,
+    "lastLine": 32
+  }
+]

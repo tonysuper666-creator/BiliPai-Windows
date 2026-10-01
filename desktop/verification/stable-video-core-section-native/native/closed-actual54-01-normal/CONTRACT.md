@@ -1,0 +1,11 @@
+# Normal actual51 fixture readiness
+
+This is a new ignored fixture-only lane. Historical actual49/50 sources and frozen receipts are not changed. No prospective product classes, shadow helpers, Gradle tasks or dependency overrides are used.
+
+The real ComposeWindow remembers the actual `rememberDesktopWindowsFullscreenControl(window,state)` exactly as Main does. The original OfflineRootHost callback calls its actual setter; the fixture no longer directly writes WindowState.placement. Control and facade class origins must be the frozen Main Kotlin JAR. Original callback counters, task/native ownership, true WindowsMediaSession, same Canvas PiP, existing native clip, own-Skia-only captures and Root sky-only external input remain the prior normal cohort.
+
+Root supplies the actual51 manifest hash, ordered CP hash and exact entry count after the whole product compiles. The runner requires that exact count to equal the frozen ordered list and verifies every item before and after; it does not assume97 or introduce another runtime. No compile or native run is permitted before those inputs and the sole window slot are delivered.
+
+Per-step Root sky acknowledgement remains600 seconds. The fixture never writes an acknowledgement or creates user input. Root observes the unique title, clicks a visible original control once and immediately refreshes. All callback/source/placement observations are independent of geometry acceptance. The runner records logic completion separately and never promotes mathematical geometry or successful clicks into a visual acceptance; Root's fresh sky layout receipt is required. Programmatic route-disposal placement, external F11, actual MainShell navigation, real account, hardware input and OS media-button delivery remain separately stated boundaries.
+
+The actual51 WindowsMediaSession catches and logs its full Throwable and cause while keeping available=false on error. The unchanged product actor's logging is captured in runtime.log. A retained SMTC failure is not skipped or treated as successful publication. Subsequent actual ABI repair must be a separate Root-installed product change, followed by its own frozen graph; no diagnostic product override is allowed here.

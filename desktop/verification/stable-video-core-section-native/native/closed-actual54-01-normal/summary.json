@@ -1,0 +1,54 @@
+{
+  "status": "FAIL",
+  "snapshot": 54,
+  "runtimeEntries": 101,
+  "productionOverrides": 0,
+  "diagnosticBaselinesMounted": false,
+  "JDWPEnabled": false,
+  "originalEntryFullscreenAccepted": true,
+  "stableOriginalControlFullscreenAccepted": false,
+  "realSkyMousePairs": 1,
+  "checks": [
+    {
+      "name": "Unchanged full original renderer owns exact local task and actual native first frame",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual original landscape entry applies real fixture Window fullscreen placement",
+      "passed": true,
+      "requiredForIndependentControls": false
+    },
+    {
+      "name": "Original exit fullscreen control receives real HWND messages and changes original local state",
+      "passed": true,
+      "details": {}
+    }
+  ],
+  "assertions": 3,
+  "passedChecks": 3,
+  "failedChecks": 0,
+  "requestedScopeFullyAccepted": false,
+  "layoutAcceptedByRawGeometryAlone": false,
+  "rootVisualObservation": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\closed-actual54-01-normal\\root-visual-observation.json",
+    "sha256Bytes": "be4ae2b5cc978e2054dbfd3ffdd7c9cff560e41083305dc71a907839359d9f81",
+    "size": 2162
+  },
+  "rootVisualObservationSource": {
+    "path": "work\\BiliPai\\desktop\\.local\\upstream-v023-audit\\native54-01-root-observation.json",
+    "sha256Bytes": "be4ae2b5cc978e2054dbfd3ffdd7c9cff560e41083305dc71a907839359d9f81",
+    "size": 2162
+  },
+  "layoutAcceptanceBoundary": "Only the specific observations in the Root visual receipt are accepted; raw geometry alone does not imply layout acceptance.",
+  "failure": "java.lang.IllegalStateException: Actual foreground HWND press not delivered to AWT",
+  "SMTCFailedChecks": [],
+  "SMTCUnavailableCause": null,
+  "PiPAndSMTCCommandScopeCompleted": false,
+  "actualMainShellAccepted": false,
+  "hardwareMouseAccepted": false,
+  "realAccountAccepted": false,
+  "OSSMTCButtonAccepted": false,
+  "externalF11Accepted": false,
+  "arbitraryRouteDisposalPlacementRestorationAccepted": false
+}
