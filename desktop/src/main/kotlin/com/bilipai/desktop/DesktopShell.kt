@@ -352,6 +352,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     val emptyNativeState = remember { MutableStateFlow(com.bilipai.desktop.player.PlayerState()) }
     val native by (player?.state ?: emptyNativeState).collectAsState()
+    val commandVersion = player?.currentSourceVersion ?: 0L
+    val commandDetails = playing.details
+    val commandCid = commandDetails?.pages?.getOrNull(playing.currentPart)?.cid ?: 0L
+    val commandState = rememberDesktopVideoCommandVoteState(sessionEpoch, commandVersion,
+        commandDetails?.bvid.orEmpty(), commandCid)
     var subtitleDialog by remember { mutableStateOf(false) }
     var subtitleDialogTarget by remember { mutableStateOf<DesktopSubtitleDialogTarget?>(null) }
     var section by remember { mutableStateOf(DesktopSection.HOME) }
@@ -1080,6 +1085,27 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             surfaceOnly = section == DesktopSection.STORY,
                             viewPoints = if (playback.currentCastSource(initialized.currentSourceVersion) != null)
                                 chapterViewPoints else emptyList(),
+                            commandOverlay = if (initialized === player && danmaku != null &&
+                                (showVideo || section == DesktopSection.STORY) && commandDetails != null &&
+                                commandCid > 0 && initialized.ownsSourceVersion(commandVersion) &&
+                                playback.currentCastSource(commandVersion) != null && preferences.danmaku.enabled) ({
+                                val capturedEpoch = sessionEpoch
+                                val capturedInfo = commandDetails
+                                val capturedCid = commandCid
+                                val capturedVersion = commandVersion
+                                DesktopVideoCommandVoteContent(repository, initialized, capturedVersion,
+                                    capturedInfo.bvid, capturedInfo.aid, capturedCid, danmaku, commandState,
+                                    fontScale = preferences.danmaku.fontScale,
+                                    hideInteractiveCommands = preferences.danmaku.hideInteractiveCommands,
+                                    stillOwned = {
+                                        repository.sessionEpoch == capturedEpoch && initialized.ownsSourceVersion(capturedVersion) &&
+                                            playback.state.value.details?.bvid == capturedInfo.bvid &&
+                                            playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == capturedCid &&
+                                            playback.currentCastSource(capturedVersion) != null
+                                    }, submitGrade = { operations, aid, cid, progress, gradeId, score ->
+                                        operations.submitGradeDanmaku(aid, cid, progress, gradeId, score)
+                                    }, onFeedback = { error = it })
+                            }) else null,
                             onSeekTo = if ((showVideo || section == DesktopSection.STORY) && playing.details != null) playback::seekTo else null,
                             renderSurface = !pipActive, onPictureInPicture = if (pip != null && hostWindow != null) ({ pip.open(hostWindow, initialized.state.value.sourceTitle) }) else null)
                         if (section != DesktopSection.STORY) DesktopVideoEnhancementControls(enhancementState,
@@ -1116,16 +1142,22 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     DiscoveryUgcCollectionPanel(playing.details!!, ::openVideo, ::openQueue,
                                         currentCid = playing.details!!.pages[playing.currentPart].cid)
                                 } },
-                                onDownload = { scope.launch {
+                                onDownload = { requestedQuality, options ->
+                                    val expectedEpoch = repository.sessionEpoch
+                                    scope.launch {
                                     try {
                                         val info = playing.details!!
                                         val part = info.pages[playing.currentPart]
-                                        val source = repository.playback(info, playing.currentPart, playing.quality)
+                                        val source = repository.playback(info, playing.currentPart, requestedQuality)
+                                        kotlinx.coroutines.currentCoroutineContext().ensureActive()
+                                        if (repository.sessionEpoch != expectedEpoch) throw CancellationException("下载账号已切换")
                                         downloads.enqueue(com.bilipai.desktop.player.PlaybackSource(videoUrl = source.videoUrl, audioUrl = source.audioUrl,
                                             referer = source.referer, cookieHeader = source.cookieHeader, title = source.title,
                                             progressiveSegments = source.progressiveSegments), metadata = DownloadMetadata(
                                             aid = info.aid, bvid = info.bvid, cid = part.cid, cover = info.cover, author = info.author,
-                                            durationSeconds = part.duration.toInt(), quality = source.quality, episodeLabel = part.title))
+                                            durationSeconds = part.duration.toInt(), quality = source.quality,
+                                            qualityLabel = source.availableQualities.firstOrNull { it.id == source.quality }?.label.orEmpty(),
+                                            includeDanmaku = options.includeDanmaku, episodeLabel = part.title))
                                         error = "已加入下载队列"
                                     } catch (cancelled: CancellationException) { throw cancelled } catch (failure: Exception) { error = failure.message ?: "下载失败" }
                                 } })
@@ -1196,7 +1228,17 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku, retainedMedia)
                             section == DesktopSection.BANGUMI -> BangumiBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, downloads, onToggleFullscreen, playerContent, seasonId, danmaku,
                                 initialIsCourse = isCourse, initialEpisodeId = episodeId, initialProgressSeconds = seasonProgress, initialSeasonType = seasonType, retained = retainedMedia)
-                            section == DesktopSection.DOWNLOADS -> DownloadBrowserScreen(downloads, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, danmaku, retainedMedia)
+                            section == DesktopSection.DOWNLOADS -> DownloadBrowserScreen(downloads, player, playerError,
+                                { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, danmaku, retainedMedia,
+                                onOnlinePlay = { task ->
+                                    if (task.episodeId > 0) showSeason(task.seasonId, task.episodeId, task.isCourse,
+                                        task.item.lastPlaybackPositionMs.coerceAtLeast(0L) / 1000.0)
+                                    else if (task.item.bvid.startsWith("BV")) openVideo(VideoCard(task.item.bvid, task.title,
+                                        task.item.cover, task.item.ownerName, 0L, task.item.duration,
+                                        progressSeconds = (task.item.lastPlaybackPositionMs.coerceAtLeast(0L) / 1000L).toInt(),
+                                        preferredCid = task.item.cid))
+                                    else error = "缓存文件已失效，此任务没有可用的在线入口"
+                                })
                             section == DesktopSection.LISTEN -> if (listen != null) ListenBrowserScreen(listen, preferences, ::changePreferences, ::openVideo, { loginDialog = true })
                                 else Text(playerError ?: "音频播放器未能初始化")
                             section == DesktopSection.MUSIC -> {
@@ -1346,9 +1388,15 @@ private fun VideoDetails.asCard() = VideoCard(bvid, title, cover, author, playCo
 @Composable
 private fun DesktopVideoPage(playing: DesktopPlaybackState, player: MpvPlayer?, playerContent: @Composable (MpvPlayer) -> Unit,
     favorite: Boolean, onVideo: (VideoCard) -> Unit, onPart: (Int) -> Unit, onQuality: (Int) -> Unit, onFavorite: () -> Unit,
-    engagement: @Composable () -> Unit, onDownload: () -> Unit, onCast: () -> Unit, onStory: () -> Unit,
+    engagement: @Composable () -> Unit, onDownload: (Int, com.android.purebilibili.feature.download.DownloadOptions) -> Unit, onCast: () -> Unit, onStory: () -> Unit,
     blockedUps: DesktopBlockedUpRepository, onLogin: () -> Unit) {
     val info = playing.details ?: return
+    var showDownloadQuality by remember(info.bvid, playing.currentPart) { mutableStateOf(false) }
+    if (showDownloadQuality) com.android.purebilibili.feature.download.DownloadQualityDialog(
+        title = info.title, qualityOptions = playing.availableQualities.map { it.id to it.label },
+        currentQuality = playing.effectiveQuality.takeIf { it > 0 } ?: playing.quality,
+        onQualitySelected = { quality, options -> showDownloadQuality = false; onDownload(quality, options) },
+        onDismiss = { showDownloadQuality = false })
     Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             if (player != null) playerContent(player)
@@ -1358,7 +1406,7 @@ private fun DesktopVideoPage(playing: DesktopPlaybackState, player: MpvPlayer?, 
                     FilterChip(playing.effectiveQuality == option.id, { onQuality(option.id) }, label = { Text(option.label) })
                 }
                 OutlinedButton(onClick = onFavorite) { Text(if (favorite) "已存本地收藏" else "本地收藏") }
-                OutlinedButton(onClick = onDownload) { Text("下载本集") }
+                OutlinedButton(onClick = { showDownloadQuality = true }, enabled = playing.availableQualities.isNotEmpty()) { Text("下载本集") }
                 OutlinedButton(onClick = onCast) { Text("投屏") }
                 OutlinedButton(onClick = onStory) { Text("竖屏播放") }
             }

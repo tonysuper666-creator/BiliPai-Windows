@@ -4,7 +4,7 @@
 
 这是持续维护的 Windows 移植分支。APK 是 Android 安装包；更新流程跟踪作者发布的源码版本，再构建已经移植的 Windows 功能，并不会把任意 APK 自动转换成完整 Windows 程序。
 
-当前对齐目标是正式版 `v0.2.3`（国庆特别版），固定提交 `3d5d19a2f994daccd0e2f8b5f522b6d82f43d589`。正式版源码已进入隔离候选，新增功能与平台适配仍在迁移；目前已验收源码仍基于 alpha.9，不能将已有 Windows 包视为正式版功能已完成。进度边界见 `PARITY.md` 与 `upstream-target.json`。
+当前对齐目标是正式版 `v0.2.3`（国庆特别版），固定提交 `3d5d19a2f994daccd0e2f8b5f522b6d82f43d589`。正式版候选已通过实际 Kotlin/Java 整包编译，新增功能与平台适配继续迁移；目前已验收运行包仍基于 alpha.9，不能将已有 Windows 包视为正式版功能已完成。进度边界见 `PARITY.md` 与 `upstream-target.json`。
 
 ## 当前功能范围
 

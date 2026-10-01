@@ -1,0 +1,52 @@
+{
+  "status": "FROZEN prepared matching cancellation delta",
+  "sources": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail.py",
+      "baseSha256LF": "c4ff1fc6c8094c40ad8b1890dc818ea20c3a97130fd34c03c0d6fff453e051be",
+      "candidateSha256LF": "1b0706b4581b5cac36df33ae9fb90b0fedbc6c6f89012ed7ad812d39ea4f756c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "baseSha256LF": "08d90e18d71b27aedc951f010d6b08da02b0a2fc90d61ba1e164763e7234e447",
+      "candidateSha256LF": "95dd2763dac9a4f26ec1ad1bef9db3ccd2b8e04132113e93854b1443b1a676c0"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail-container.py",
+      "baseSha256LF": "aa81541c070d3662bc1c187735d4335b5af2795de3e46107272b64069d0e8ed8",
+      "candidateSha256LF": "2db34ab72df3a71bd9d31cdfe4361d04df5f1cce96a90d875d564f9dcffba9a5"
+    }
+  ],
+  "installation": [
+    "Apply necessary-source.patch only to siblingBiliPai-v023 if all three base LF pins match; otherwise inspect independent hunks.",
+    "The container producer patch is solely the actualLayout postComment call argument onSubmissionCancelled={onResult(false)}; preserve all parent-owned container bodies.",
+    "Regenerate dynamic-detail/dynamic-reply/dynamic-detail-container using existing source pipeline; optional completion arg changes Session ABI so recompile all consumers.",
+    "Do not copy generated proof classes into Main, do not change Ops or frozen109. Root performs whole stable acceptance."
+  ],
+  "contract": {
+    "postComment": "existing args + optional onSubmissionCancelled:()->Unit={} before original onResult; old trailing business callback source syntax retained",
+    "cancelCompletion": "only CancellationException, same current session/account/page owner, latest admitted submissionId, exactly-once resultDelivered CAS",
+    "businessCompletion": "existing original validation/upload/add/success flow untouched; existing callback routed through current owner/latest submit/once gateway",
+    "uiCompletion": "matching renderer activeSubmission object+platform owner guard before original success/busy changes",
+    "cancelConsumer": "Layout andPanel route cancellation solely to private composer onResult(false), bypassing original business feedback; retains text/attachments/target"
+  },
+  "proof": {
+    "compile": "4source PASS against first frozen109 prepared jar + actualMain04 92CP; explicit historical alpha9 dependency baseline",
+    "sourceAudit": "10PASS; full prior post/composer business/UI body reverse-normalized byteeq; public wrapper/upload map unchanged; entireLayout only1arg;all other container outputs byteeq",
+    "freshFixture04": "7cases/19assertions,7actualCodeSources including actual InlineKt fromdeltaJar,3actualoffscreenpointerpairs/2editorsemantics actions;same scenarios as03, onlyextra codeSource identity assertion",
+    "fixtures": "01 syntax failure and02 semantic node lookup failure retained;03 actualPASS7/18 retained;productioncompile01jarunchanged across03/04"
+  },
+  "scope": {
+    "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "priorFrozen109ManifestSha256Bytes": "a91a58a41674adb28b77fb39e9edd56208865536501a1ed9e1fa6720d907902f",
+    "noRootButtonChooserOrPhysicalImeE2E": true,
+    "offscreenImageComposeSceneNotHWND": true,
+    "declaredDeferredTransportAndStaleUiCallbackInjection": true,
+    "sameMidReplacementUsesActualTemporarySessionStore": true,
+    "noNewStoreModelTransportOrOpsOverride": true,
+    "noMainEdits": true,
+    "noGradle": true,
+    "noHTTP": true,
+    "noHWND": true
+  }
+}

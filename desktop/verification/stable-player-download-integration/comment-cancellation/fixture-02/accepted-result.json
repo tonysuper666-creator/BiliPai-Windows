@@ -1,0 +1,14 @@
+{
+  "status": "FAIL",
+  "exitCode": 1,
+  "preparedCandidateSha256Bytes": "57f06cd7ddfd96569ab67eb605b6ad55cb118e2b3679c8a7622b87ac2131b718",
+  "fixtureSha256Bytes": "d55b164e5e23420ae4720b343ddceae963aab76c054f35159c602a7b77ab2120",
+  "fixtureSourceSha256Bytes": "0b18af6b6d64f3d76d1ff4b57e60f28b84af593e2a821b1fea995959e14706ea",
+  "actualMain04CpCount": 92,
+  "declaredPreparedProductOverrides": true,
+  "noMainEdits": true,
+  "noGradle": true,
+  "noSocket": true,
+  "noHTTP": true,
+  "noHWND": true
+}

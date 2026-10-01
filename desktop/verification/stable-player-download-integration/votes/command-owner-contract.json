@@ -1,0 +1,12 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+  "baseSha256Lf": "76c5e6c8ace45c1f6c0d8da13746781796800b49a575d172d7bd9c898e5dfd2d",
+  "desiredSha256Lf": "ece907d1a9159883c8aa9219f61a5782cef08ccaf391f10fcb4d96c4e53800b2",
+  "parserChanged": false,
+  "schedulingChanged": false,
+  "listAuthority": "existing mutableCommands only",
+  "commandItemsFor": "synchronized(requestLock) read, same admitted CID, closed guard",
+  "publication": "same requestLock, existing request generation",
+  "MainChanged": false,
+  "candidateChanged": false
+}

@@ -1,0 +1,57 @@
+{
+  "candidateOnly": true,
+  "mainAcceptance": false,
+  "main04Classpath": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2",
+  "cpEntries": 92,
+  "candidateJarSha256Bytes": "fb89742cdcef7683457177bfe6174c7934f64e000745d49b6f7b0e079ae82610",
+  "compiler": "Kotlin 2.4.0 / Compose compiler 2.4.0",
+  "friendModule": "com_bilipai_desktop_bilipai_windows",
+  "sources": [
+    {
+      "path": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+      "sha256Bytes": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d"
+    },
+    {
+      "path": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+      "sha256Bytes": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce"
+    },
+    {
+      "path": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+      "sha256Bytes": "86c87a6a23d07a0bb39909de4b0cce92f571f36ab13e49d8005d13ff1b70342c"
+    },
+    {
+      "path": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+      "sha256Bytes": "e92c831b21a1e27d180cc7d5d9ef839a393669798f1df340bb83444dc67e2914"
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+      "sha256Bytes": "bad5cd21abc425e674c91175f38937a58e1fa694f3c3c72f24742cee97778e8f"
+    },
+    {
+      "path": "compile-references\\CommandDanmakuPolicy.kt",
+      "sha256Bytes": "91983c793c672b2147df8abdd3befcdbc51ff59f579d5b45912fcbfc8f7eea2d"
+    },
+    {
+      "path": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+      "sha256Bytes": "1daa952ad5eb24dfb68df23a6854e7e69c9d49b6215d40389f82b76bf3b53762"
+    },
+    {
+      "path": "compile-references\\StableReplyVoteModels.kt",
+      "sha256Bytes": "e8f64ecf10d419a3f294c51d6d84395ffb4f92e8eba1475505c01d765d2877f6"
+    }
+  ],
+  "productClassOverrides": [
+    "com/android/purebilibili/data/model/response/ReplyData.class",
+    "com/android/purebilibili/feature/dynamic/components/ComposableSingletons$DesktopOriginalDynamicVoteDialogKt.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicVoteDialogKt.class",
+    "com/android/purebilibili/feature/video/danmaku/CommandDanmakuItem.class",
+    "com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicyKt$WhenMappings.class",
+    "com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicyKt.class",
+    "com/android/purebilibili/feature/video/danmaku/CommandDanmakuType.class",
+    "com/android/purebilibili/feature/video/danmaku/VoteDanmakuKind.class",
+    "com/android/purebilibili/feature/video/danmaku/VoteDanmakuPayload.class",
+    "com/android/purebilibili/feature/video/danmaku/VoteOption.class"
+  ],
+  "nativeWindow": false,
+  "HTTP": false
+}

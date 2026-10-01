@@ -1,0 +1,74 @@
+--- a/desktop/tools/extract-upstream-dynamic-detail.py
++++ b/desktop/tools/extract-upstream-dynamic-detail.py
+@@ -132,6 +132,17 @@
+                         '        val replyTarget = _commentReplyTarget.value\n'
+                         '        launchOwned {', 1)
+     post = post.replace('                val replyTarget = _commentReplyTarget.value\n', '', 1)
++    # Windows-only completion of the exact admitted submission. Refresh/sort may
++    # retire its read generation while retaining the same mounted composer.
++    # Only cancellation releases busy; this seam emits no business receipt/toast.
++    post = post.replace('        onResult: (Boolean, String) -> Unit,',
++        '        onSubmissionCancelled: () -> Unit = {},\n        onResult: (Boolean, String) -> Unit,', 1)
++    post = post.replace('onResult(', 'deliverSubmissionResult(')
++    post = post.replace('        val replyTarget = _commentReplyTarget.value\n', '        val replyTarget = _commentReplyTarget.value\n        val submissionId = commentSubmissionSequence.incrementAndGet()\n        val resultDelivered = AtomicBoolean(false)\n        fun deliverSubmissionResult(success: Boolean, message: String) {\n            if (isOwned() && commentSubmissionSequence.get() == submissionId && resultDelivered.compareAndSet(false, true)) {\n                onResult(success, message)\n            }\n        }\n', 1)
++    post = post.replace('        launchOwned {', '        val submissionJob = launchOwned {', 1)
++    completion_marker = '        }\n    }\n\n    private suspend fun uploadCommentPictures'
++    assert post.count(completion_marker) == 1
++    post = post.replace(completion_marker, '        }\n        submissionJob.invokeOnCompletion { failure ->\n            if (failure is CancellationException && isOwned() && commentSubmissionSequence.get() == submissionId &&\n                resultDelivered.compareAndSet(false, true)) {\n                onSubmissionCancelled()\n            }\n        }\n    }\n\n    private suspend fun uploadCommentPictures', 1)
+     body = body[:post_start] + post + body[post_end:]
+     # The exact selected response is already checked for task ownership,
+     # current request id and current sort. Keep its original count assignment.
+@@ -165,6 +176,7 @@
+ import kotlinx.collections.immutable.toImmutableList
+ import kotlinx.collections.immutable.toImmutableSet
+ import java.util.concurrent.atomic.AtomicBoolean
++import java.util.concurrent.atomic.AtomicLong
+ import java.util.concurrent.ConcurrentHashMap
+ 
+ internal class DesktopOriginalDynamicReplySession(
+@@ -178,6 +190,7 @@
+     private val ownedJob = SupervisorJob(parentScope.coroutineContext[Job])
+     private val viewModelScope = CoroutineScope(parentScope.coroutineContext + ownedJob)
+     fun isOwned(): Boolean = alive.get() && ownedJob.isActive && stillOwned() && requests.isOwned()
++    private val commentSubmissionSequence = AtomicLong(0L)
+     private val replyMutationHolders = ConcurrentHashMap<Long, Any>()
+     private fun acquireReplyMutation(rpid: Long): Any? {
+         val holder = Any()
+--- a/desktop/tools/extract-upstream-dynamic-reply.py
++++ b/desktop/tools/extract-upstream-dynamic-reply.py
+@@ -244,6 +244,14 @@
+     declarations = declarations[:picker_begin] + '    val platform = LocalDesktopCommentBindings.current\n    val onImagesSelected by rememberUpdatedState<(List<String>) -> Unit> { uris ->\n        if (!isSending && onClearReplyTarget == null) {\n            selectedImages = (selectedImages + uris).distinct().take(9)\n        }\n    }\n    fun pickImages() {\n        if (!platform.isOwned()) return\n        platform.pickCommentImages(9) { uris ->\n            if (platform.isOwned()) onImagesSelected(uris)\n        }\n    }\n' + declarations[picker_end:]
+     declarations = replace_once(declarations,
+         'picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))', 'pickImages()')
++    # Keep the source's selection/send/success flow. A retired submit callback
++    # must never clear the replacement submit's busy/selected-image state.
++    declarations = replace_once(declarations,
++        '    var isSending by remember { mutableStateOf(false) }',
++        '    var isSending by remember { mutableStateOf(false) }\n    var activeSubmission by remember { mutableStateOf<Any?>(null) }')
++    declarations = replace_once(declarations,
++        '        isSending = true\n        onSubmit(value.trim(), selectedImages) { success ->',
++        '        isSending = true\n        val submission = Any()\n        activeSubmission = submission\n        onSubmit(value.trim(), selectedImages) { success ->\n            if (!platform.isOwned() || activeSubmission !== submission) return@onSubmit\n            activeSubmission = null')
+     declarations = declarations.replace('val keyboardController = LocalSoftwareKeyboardController.current',
+                                         '// Physical Windows keyboard; original focus and IME action are retained.')
+     declarations = declarations.replace('                keyboardController?.show()\n', '')
+@@ -392,6 +400,8 @@
+     end = original.index('                val floatingCommentComposer', begin)
+     body = original[begin:end]
+     body = body.replace('interactionViewModel', 'session').replace('state.item', 'item')
++    body = replace_once(body, 'session.postComment(item.id_str, message, images) {',
++        'session.postComment(item.id_str, message, images, onSubmissionCancelled = { onResult(false) }) {')
+     body = body.replace('com.android.purebilibili.core.store.TokenManager.midCache', 'currentMid')
+     body = body.replace('liquidGlassEnabled = liquidGlassEnabled,', 'liquidGlassEnabled = false,')
+     body = body.replace('backdrop = detailCommentBackdrop,', 'backdrop = null,')
+--- a/desktop/tools/extract-upstream-dynamic-detail-container.py
++++ b/desktop/tools/extract-upstream-dynamic-detail-container.py
+@@ -87,6 +87,9 @@
+         '                        desktopDynamicCommentSlotsMeasured(itemCount, comments.size, useSplitLayout) &&\n'
+         '                        shouldLoadMoreDynamicDetailComments(')
+     success=re.sub(r'android\.widget\.Toast\.makeText\(context,\s*(\w+),\s*android\.widget\.Toast\.LENGTH_SHORT\)\.show\(\)',r'if (platform.isOwned()) platform.showFeedback(\1)',success)
++    assert success.count('session.postComment(state.item.id_str, message, images) {') == 1
++    success=success.replace('session.postComment(state.item.id_str, message, images) {',
++        'session.postComment(state.item.id_str, message, images, onSubmissionCancelled = { onResult(false) }) {', 1)
+     assert 'android.widget.' not in success
+     success=success.replace('Build.VERSION.SDK_INT >= Build.VERSION_CODES.S','desktopDetailRenderEffectsSupported()')
+     success=success.replace('AndroidRenderEffect.createBlurEffect(', 'androidx.compose.ui.graphics.BlurEffect(')

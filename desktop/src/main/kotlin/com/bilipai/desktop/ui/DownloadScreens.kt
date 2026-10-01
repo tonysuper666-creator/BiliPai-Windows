@@ -14,6 +14,8 @@ import com.android.purebilibili.feature.download.DownloadStatus
 import com.android.purebilibili.feature.download.DownloadAssetStatus
 import com.android.purebilibili.feature.download.shouldPauseAllInclude
 import com.android.purebilibili.feature.download.shouldContinueAllInclude
+import com.android.purebilibili.feature.download.resolveDownloadTaskClickTarget
+import com.android.purebilibili.feature.download.DownloadTaskClickTarget
 import com.bilipai.desktop.download.DesktopDownloadManager
 import com.bilipai.desktop.download.DownloadTask
 import com.bilipai.desktop.player.MpvPlayer
@@ -30,6 +32,7 @@ fun DownloadBrowserScreen(
     onPlaybackActive: (Boolean) -> Unit, onToggleFullscreen: () -> Unit = {},
     playerContent: @Composable (MpvPlayer) -> Unit = { NativeMediaPlayer(it) },
     sharedDanmaku: DanmakuOverlay? = null, retained: DesktopRetainedMedia? = null,
+    onOnlinePlay: ((DownloadTask) -> Unit)? = null,
 ) {
     val pageScope = rememberCoroutineScope()
     val memory = retained?.offline ?: remember(player) { DesktopOfflinePageMemory(pageScope, player) }
@@ -103,6 +106,16 @@ fun DownloadBrowserScreen(
     }
     fun stop() { stopOwned(); current = null; error = null }
     fun play(task: DownloadTask) {
+        // Original routing policy; Windows interface state needs no HTTP probe.
+        when (resolveDownloadTaskClickTarget(task.item, desktopDownloadNetworkAvailable())) {
+            DownloadTaskClickTarget.OnlinePlayer -> {
+                if (onOnlinePlay != null) onOnlinePlay(task)
+                else error = "缓存文件已失效，请从视频页重新播放"
+                return
+            }
+            null -> { error = "缓存文件不可用，连接网络后可回退在线播放"; return }
+            DownloadTaskClickTarget.OfflinePlayer -> Unit
+        }
         retained?.acquire(memory)
         stopOwned(); current = null
         try {
@@ -209,7 +222,7 @@ private fun DownloadTaskCard(task: DownloadTask, onPause: () -> Unit, onResume: 
                     DownloadStatus.FAILED, DownloadStatus.PAUSED ->
                         FilledTonalButton(onClick = onResume, modifier = Modifier.heightIn(min = 48.dp)) { Text(if (task.status == DownloadStatus.FAILED) "重试" else "继续") }
                     DownloadStatus.COMPLETED ->
-                        FilledTonalButton(onClick = onPlay, modifier = Modifier.heightIn(min = 48.dp)) { Text("播放本地文件") }
+                        FilledTonalButton(onClick = onPlay, modifier = Modifier.heightIn(min = 48.dp)) { Text("播放") }
                 }
                 OutlinedButton(onClick = onRemove, modifier = Modifier.heightIn(min = 48.dp)) {
                     Text(if (task.status in setOf(DownloadStatus.QUEUED, DownloadStatus.PENDING, DownloadStatus.DOWNLOADING, DownloadStatus.MERGING)) "取消任务" else "移除")
@@ -228,3 +241,10 @@ private fun downloadBytes(value: Long): String {
         else -> "${safe.toLong()} B"
     }
 }
+
+/** Windows link availability only; the existing online player reports server failures. */
+private fun desktopDownloadNetworkAvailable(): Boolean = runCatching {
+    java.util.Collections.list(java.net.NetworkInterface.getNetworkInterfaces()).any { network ->
+        network.isUp && !network.isLoopback && java.util.Collections.list(network.inetAddresses).any { !it.isLoopbackAddress }
+    }
+}.getOrDefault(false)

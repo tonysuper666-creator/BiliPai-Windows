@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "candidateOnly": true,
+  "MainAcceptance": false,
+  "fixtureSha256Bytes": "6c197b18cee20ac141412e941e561c7e7a7aef285c60a926b3f62181f0d18bbf",
+  "candidateSha256Bytes": "19a49a8669a461130537eea19b6c5ab3cc4a3490e600f7fc1903664e9a1fcb15",
+  "main04CP": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2",
+  "HTTP": false,
+  "HWND": false,
+  "mpvNative": false
+}

@@ -1,0 +1,61 @@
+{
+  "preparedOnly": true,
+  "MainChanged": false,
+  "candidateChanged": false,
+  "originalTag": "v0.2.3",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalSourcePins": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentVoteCard.kt",
+      "sha256Lf": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt",
+      "sha256Lf": "a89141a1019a5257af51dfb76b6515a3811519dd2882f2ac71291055ba26b1fe"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayState.kt",
+      "sha256Lf": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "sha256Lf": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicy.kt",
+      "sha256Lf": "91983c793c672b2147df8abdd3befcdbc51ff59f579d5b45912fcbfc8f7eea2d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+      "sha256Lf": "fed6db98e75157fdfef5f9de3916a690808c506c10656747f90b504a1e95221f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicVoteDialog.kt",
+      "sha256Lf": "1a712834f8a9fd10ce731b840fd2aab758691f22e7f409e08195de3ddf061a01"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "sha256Lf": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicVoteRepository.kt",
+      "sha256Lf": "196c320a09ad12eb78daf455f43134499f356f5fb01ca91f92e4d8433291d4c4"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256Lf": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad"
+    }
+  ],
+  "candidateOpsBaseSha256Lf": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2",
+  "candidateOpsDesiredSha256Lf": "88507280b5fd82fceca08d19565aaea84e4dd45cd3d75e8fe5f1a259b549e9f7",
+  "opsMemberOnlyPatch": true,
+  "gradeOriginalSelectedSha256Lf": "c450ac13fe80c41831c2c6712016882c741b06021bdd9b8ba3aec48264a36602",
+  "errorMapperOriginalSha256Lf": "b8e10fb04499038c1e176aad423780de6f20816b895f9dbc6f7f7beea31eab58",
+  "compileReferencesAreNotInstallPayload": true,
+  "soleDialogProducer": "Existing extract-upstream-dynamic-card.py stable emitter",
+  "replyParsingOwner": "Root/dynamic_action_review existing reply producer",
+  "noHTTP": true,
+  "noStore": true,
+  "soleOpsMarker": "// STABLE_VIDEO_VOTE_GRADE_MEMBERS",
+  "strictOpsFragmentOutput": "platform/DesktopVideoGradeMembers.fragment"
+}

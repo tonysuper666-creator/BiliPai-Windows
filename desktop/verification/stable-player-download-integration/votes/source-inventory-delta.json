@@ -1,0 +1,66 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualCandidateRegistryCount": 628,
+  "records": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentVoteCard.kt",
+      "sha256": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d",
+      "mode": "direct",
+      "features": [
+        "stable-video-vote-parity",
+        "playback",
+        "comments"
+      ],
+      "operation": "append-new",
+      "producer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayState.kt",
+      "sha256": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce",
+      "mode": "direct",
+      "features": [
+        "stable-video-vote-parity",
+        "playback",
+        "comments"
+      ],
+      "operation": "append-new",
+      "producer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt",
+      "sha256": "a89141a1019a5257af51dfb76b6515a3811519dd2882f2ac71291055ba26b1fe",
+      "mode": "extracted",
+      "features": [
+        "stable-video-vote-parity",
+        "playback",
+        "comments"
+      ],
+      "operation": "append-new",
+      "producer": "extract-stable-video-votes.py"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "sha256": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5",
+      "mode": "extracted",
+      "features": [
+        "stable-video-vote-parity",
+        "playback",
+        "comments"
+      ],
+      "operation": "merge-existing",
+      "producer": "extract-stable-video-votes.py (additional grade output, existing identity)"
+    }
+  ],
+  "referencesOnly": [
+    "app/src/main/java/com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+    "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicVoteDialog.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/DynamicVoteRepository.kt",
+    "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"
+  ],
+  "resourcesAdded": [],
+  "dependenciesAdded": [],
+  "compileReferencesAreNotPayload": true,
+  "sourceRegistrationMustMergeAgainstCurrentRoot": true
+}

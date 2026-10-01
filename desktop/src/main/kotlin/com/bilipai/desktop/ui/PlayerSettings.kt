@@ -146,6 +146,7 @@ fun DanmakuSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: (
                 FilterChip(draft.allowColorful, { draft = draft.copy(allowColorful = !draft.allowColorful) }, label = { Text("彩色") })
                 FilterChip(draft.allowSpecial, { draft = draft.copy(allowSpecial = !draft.allowSpecial) }, label = { Text("高级 / BAS") })
             }
+            PlayerSwitch("屏蔽互动弹幕", draft.hideInteractiveCommands) { draft = draft.copy(hideInteractiveCommands = it) }
             PlayerSwitch("合并重复弹幕", draft.mergeDuplicates) { draft = draft.copy(mergeDuplicates = it) }
             if (draft.mergeDuplicates) {
                 PlayerSettingSlider("合并时间窗口", draft.duplicateMergeWindowMs.toFloat(), 50f..5_000f, "${draft.duplicateMergeWindowMs}毫秒") {

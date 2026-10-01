@@ -30,6 +30,8 @@ data class DanmakuSettings(
     val duplicateMergeWindowMs: Int = 500,
     val duplicateMergeCountThreshold: Int = 2,
     val allowSpecial: Boolean = true,
+    /** Same false default as upstream's interactive command preference. */
+    val hideInteractiveCommands: Boolean = false,
     /** Upstream supports keywords, regex:/re:/slash rules, and uid:/user:/hash: rules. */
     val blockedRules: List<String> = emptyList(),
 ) {

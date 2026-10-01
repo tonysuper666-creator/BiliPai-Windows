@@ -1,0 +1,41 @@
+{
+  "schema": "stable-player-download-integration-v1",
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "wholeCandidateClassesPassed": true,
+  "classesLog": "root/gradle-candidate-11.log",
+  "sourceRegistryCount": 631,
+  "resourceCount": 210,
+  "actualImmutableStableProductManifestSha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7",
+  "actualImmutableStableClasspathSha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "installed": [
+    "Original comment vote card and timed vote/grade command overlay",
+    "Atomic CID command ownership and request-version publication",
+    "Player-owned command UI and same original grade/vote protocols",
+    "Persistent hideInteractiveCommands default false preference",
+    "Matching same-page cancellation releases comment busy without clearing text or images",
+    "Direct original DownloadQualityDialog and per-quality original task identifiers",
+    "Completed missing cache files route to existing online video/season player with CID and saved position"
+  ],
+  "verification": [
+    "Vote 8 protocol checks, 12 original card/dialog checks, 5 actual Operations/session checks, 9 actual Overlay/source checks, 29 source checks",
+    "Comment cancellation 7 cases/19 assertions and 10 source checks against explicitly historical targeted graph",
+    "Download routing 2 cases/8 assertions against immutable actual whole stable classes11, zero product overrides",
+    "Whole classes11 success, strict generated detail/reply/grade/editor equality gates preserved"
+  ],
+  "pending": [
+    "Original BGM full UI/comments",
+    "Weekly original full screen",
+    "Collection drawer/honors/declarations/staff/full comment owner",
+    "Native vote Popup hit testing, blank-region input, focus, fullscreen and PiP",
+    "Non-vote attention/triple command actions",
+    "Windows download notification progress",
+    "Remaining original source parity and transitions",
+    "Whole stable application runtime, fresh launch/native player validation and portable desktop EXE deployment"
+  ],
+  "applicationRuntimeAccepted": false,
+  "desktopExeReplaced": false,
+  "realAccountMutation": false,
+  "physicalReceiverTested": false,
+  "notes": "Task JAR binaries are excluded. Earlier failed compile10 and prepared fixture histories remain exact; classes11 is the successful product build. Immutable actual product snapshot is local-only and is not a packaged EXE."
+}

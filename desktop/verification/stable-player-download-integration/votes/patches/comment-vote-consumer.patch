@@ -1,0 +1,29 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/VideoEngagementPanel.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/VideoEngagementPanel.kt
+@@ -118,7 +118,7 @@
+                 }
+             }
+             HorizontalDivider()
+-            VideoCommentPanel(details.aid, social, community, onUser, onLogin)
++            VideoCommentPanel(details.aid, repository, social, community, onUser, onLogin)
+         }
+     }
+     if (coins) VideoCoinDialog(details.aid, social, onLogin, onDismiss = { coins = false }, onComplete = { coins = false; refreshRelation() })
+@@ -175,7 +175,7 @@
+ }
+ 
+ @Composable
+-private fun VideoCommentPanel(aid: Long, social: DesktopSocialRepository, community: DesktopCommunityRepository,
++private fun VideoCommentPanel(aid: Long, repository: DesktopRepository, social: DesktopSocialRepository, community: DesktopCommunityRepository,
+     onUser: (Long) -> Unit, onLogin: () -> Unit) {
+     val scope = rememberCoroutineScope()
+     var sort by remember(aid) { mutableIntStateOf(1) }
+@@ -187,6 +187,8 @@
+     var posting by remember(aid) { mutableStateOf(false) }
+     var error by remember(aid) { mutableStateOf<Throwable?>(null) }
+     Text("评论", style = MaterialTheme.typography.titleLarge)
++    if (root == null) DesktopVideoCommentVoteSlot(repository, aid, mode = if (sort == 1) 3 else 2,
++        refreshKey = revision, onFeedback = { error = IllegalStateException(it) }, modifier = Modifier.fillMaxWidth())
+     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+         if (root != null) TextButton(onClick = { root = null; replyTo = null }) { Text("‹ 全部评论") }
+         else listOf(1 to "最热", 0 to "最新").forEach { (value, label) -> FilterChip(selected = sort == value, onClick = { sort = value }, label = { Text(label) }) }

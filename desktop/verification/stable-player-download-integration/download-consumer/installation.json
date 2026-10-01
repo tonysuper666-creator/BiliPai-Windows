@@ -1,0 +1,22 @@
+{
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "desktop/upstream-sources.json",
+      "baseSha256LF": "27fbd4706aa89942a472f72289e1e6530f6cb96d17c8e076cb25b87179f98c00",
+      "candidateSha256LF": "012763686098bc01d22275b93eae2101aa3288aff203c22666ac36d4164f73b5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+      "baseSha256LF": "5abe91a02e72bc27f556a221e7c3f26e031ad991d9b52f015f71fbacb7a99f35",
+      "candidateSha256LF": "95083f5ecc561289141982b03a632938e3947e31af67c4b1840da7c3007af7c8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseSha256LF": "8f6c3b59ebaef5aebde903b7e6ba5224831b895a44171f7f0c4b07ce7b6b884d",
+      "candidateSha256LF": "b9387596011cb98460b97da43e25e84ae3552618e3ca68bcac44d83918a36cd4"
+    }
+  ],
+  "compiled": false,
+  "runtimeAccepted": false
+}

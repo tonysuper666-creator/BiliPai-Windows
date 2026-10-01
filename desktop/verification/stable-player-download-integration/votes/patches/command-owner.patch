@@ -1,0 +1,78 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt
+@@ -65,6 +65,11 @@
+     val commentCount: StateFlow<Int> = mutableCount.asStateFlow()
+     private val mutableCommands = MutableStateFlow(emptyList<CommandDanmakuItem>())
+     val commandItems: StateFlow<List<CommandDanmakuItem>> = mutableCommands.asStateFlow()
++    // This is transport ownership only; the command list remains the sole list.
++    private var commandCid: Long? = null
++    fun commandItemsFor(cid: Long): List<CommandDanmakuItem> = synchronized(requestLock) {
++        if (!closed.get() && cid > 0 && commandCid == cid) mutableCommands.value else emptyList()
++    }
+     private val mutableFormat = MutableStateFlow<DanmakuFormat?>(null)
+     val format: StateFlow<DanmakuFormat?> = mutableFormat.asStateFlow()
+     @Volatile private var settings = DanmakuSettings()
+@@ -198,8 +203,9 @@
+     fun enterLive(): Long {
+         val version = synchronized(requestLock) {
+             generation.incrementAndGet().also { loadJob?.cancel(); windowJob?.cancel(); liveMode = true; pendingLive.clear() }
+-        }
+-        mutableError.value = null; mutableCommands.value = emptyList(); mutableFormat.value = null
++                .also { commandCid = null; mutableCommands.value = emptyList() }
++        }
++        mutableError.value = null; mutableFormat.value = null
+         SwingUtilities.invokeLater {
+             if (!closed.get() && version == generation.get() && liveMode) {
+                 liveRenderer.reset(); mutableCount.value = 0; panel.repaint()
+@@ -228,11 +234,12 @@
+ 
+     private suspend fun loadSource(playbackSource: DesktopDanmakuSource, cid: Long, aid: Long, durationSeconds: Double) {
+         val version = synchronized(requestLock) {
+-            generation.incrementAndGet().also { loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear() }
+-        }
+-        mutableError.value = null
+-        mutableCommands.value = emptyList()
+-        mutableFormat.value = null
++            generation.incrementAndGet().also {
++                loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear()
++                commandCid = cid; mutableCommands.value = emptyList()
++                mutableError.value = null; mutableFormat.value = null
++            }
++        }
+         installDocument(DanmakuDocument(), version)
+         val loading = requests.async {
+             val loader = DanmakuWindowLoader(playbackSource, cid, aid, (durationSeconds * 1000).toLong())
+@@ -268,11 +275,13 @@
+     }
+ 
+     private fun publish(result: DanmakuWindowResult, version: Long) {
+-        if (version != generation.get() || closed.get()) return
+-        mutableError.value = result.warning
+-        mutableCommands.value = result.commands
+-        mutableFormat.value = result.format
+-        installDocument(result.document, version)
++        synchronized(requestLock) {
++            if (version != generation.get() || closed.get()) return
++            mutableError.value = result.warning
++            mutableCommands.value = result.commands
++            mutableFormat.value = result.format
++            installDocument(result.document, version)
++        }
+     }
+ 
+     /** Also supports locally supplied documents and deterministic offline verification. */
+@@ -282,10 +291,12 @@
+ 
+     fun setDocument(document: DanmakuDocument) {
+         val version = synchronized(requestLock) {
+-            generation.incrementAndGet().also { loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear() }
++            generation.incrementAndGet().also {
++                loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear()
++                commandCid = null; mutableCommands.value = emptyList()
++            }
+         }
+         mutableError.value = null
+-        mutableCommands.value = emptyList()
+         mutableFormat.value = null
+         installDocument(document, version)
+     }

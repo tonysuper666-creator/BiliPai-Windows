@@ -6,6 +6,7 @@ import json
 
 COMMENT_MARKER = '// Paste inside existing DesktopDynamicCardOperations; no package/class/API/model producer.'
 DETAIL_MARKER = '// Additional members inside the existing DesktopDynamicCardOperations; no replacement Ops file.'
+GRADE_MARKER = '// STABLE_VIDEO_VOTE_GRADE_MEMBERS'
 
 
 def lf(path):
@@ -17,6 +18,7 @@ def main():
     cli.add_argument('--repo', type=Path, required=True)
     cli.add_argument('--comment-output', type=Path, required=True)
     cli.add_argument('--detail-output', type=Path, required=True)
+    cli.add_argument('--grade-output', type=Path, required=True)
     cli.add_argument('--output', type=Path, required=True)
     args = cli.parse_args()
     operations = args.repo / 'desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt'
@@ -25,14 +27,21 @@ def main():
     start, middle = actual.index(COMMENT_MARKER), actual.index(DETAIL_MARKER)
     assert start < middle
     end = actual.rfind('\n}')
-    assert end > middle and not actual[end + 2:].strip()
+    assert actual.count(GRADE_MARKER) == 1
+    grade_start = actual.index(GRADE_MARKER)
+    assert end > grade_start > middle and not actual[end + 2:].strip()
     fragments = {
         'comment': (args.comment_output / 'DesktopDynamicCommentOperations.fragment.kt', actual[start:middle]),
-        'detail': (args.detail_output / 'DesktopDynamicDetailOperations.fragment.kt', actual[middle:end]),
+        'detail': (args.detail_output / 'DesktopDynamicDetailOperations.fragment.kt', actual[middle:grade_start]),
+        'grade': (args.grade_output, actual[grade_start:end]),
     }
     hashes = {}
     for name, (path, selected) in fragments.items():
         expected = lf(path).rstrip('\n')
+        if name == 'grade':
+            raw = path.read_bytes()
+            assert hashlib.sha256(raw).hexdigest() == '46c54c11f7e8f1461dcf92989058eccd1497fd1da69e0fd7f6ca979f6814b3a3'
+            expected = expected.lstrip('\n')
         assert selected.rstrip('\n') == expected, f'{name} request members differ from their original-source producer.'
         hashes[name] = hashlib.sha256(expected.encode('utf-8')).hexdigest()
     assert actual.count('suspend fun getPublishedDynamicDetail') == 1
@@ -44,7 +53,7 @@ def main():
         'operationsSha256Lf': hashlib.sha256(actual.encode('utf-8')).hexdigest(),
         'authPublishVerificationPreserved': True,
     }, indent=2) + '\n', encoding='utf-8', newline='\n')
-    print('PASS original-source detail and reply request blocks in the existing Operations class')
+    print('PASS original-source detail, reply and grade request blocks in the existing Operations class')
 
 
 if __name__ == '__main__':

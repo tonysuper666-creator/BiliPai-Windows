@@ -1,0 +1,38 @@
+{
+  "candidateInstalled": true,
+  "mainInstalled": false,
+  "sourceRegistryCount": 631,
+  "installedCopy": [
+    {
+      "source": "prepared/desktop/tools/extract-stable-video-votes.py",
+      "target": "desktop/tools/extract-stable-video-votes.py",
+      "sha256Bytes": "99f00bc28ece1d3d89276373660f1536a318c8720cd706a96e0464f7813de1aa"
+    },
+    {
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt",
+      "sha256Bytes": "2b41147859cd507320885d1f12d9b26395d4caa9a424644ebf564223de50f9d4"
+    }
+  ],
+  "installedPatches": [
+    {
+      "source": "patches/ops-grade-member.patch",
+      "sha256Bytes": "385786c2f4472b199dba8f90b846ec8a755d7a104fdb162eca15b96ba6912d0b"
+    },
+    {
+      "source": "patches/player-overlay-slot.patch",
+      "sha256Bytes": "dbb26534b59ffe5d41f384f58e8546b4695d9baaefeeeeea9f02bfef538c3fa9"
+    },
+    {
+      "source": "patches/comment-vote-consumer.patch",
+      "sha256Bytes": "20afd0e2bfe27aac49be995919681ddf59b594f14c4685ac1ded34a47583a503"
+    },
+    {
+      "source": "patches/command-owner.patch",
+      "sha256Bytes": "591296c888c6c3e681a1026770bf2f9cbcfb37c5969ee5c65d5509dfbe4b1e0b"
+    }
+  ],
+  "wholeCompiled": false,
+  "rootBindingPending": true,
+  "nativePopupAccepted": false
+}

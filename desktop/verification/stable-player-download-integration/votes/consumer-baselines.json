@@ -1,0 +1,20 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+    "sha256Lf": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2",
+    "patch": "patches/ops-grade-member.patch",
+    "existingMembersKept": true
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+    "sha256Lf": "bef70d4837d3f78b44f7c0b2efb392cb178cd194458a77a30328440aa3a8c151",
+    "patch": "patches/player-overlay-slot.patch",
+    "chapterFieldsKept": true
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/VideoEngagementPanel.kt",
+    "sha256Lf": "a5970b25443fd93f3ba5456e540eac10cb3bb31ae15f0a28ba573c45e3df229c",
+    "patch": "patches/comment-vote-consumer.patch",
+    "legacyCommentsKept": true
+  }
+]

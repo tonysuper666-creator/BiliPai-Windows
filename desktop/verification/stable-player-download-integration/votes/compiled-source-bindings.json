@@ -1,0 +1,516 @@
+[
+  {
+    "compilation": "candidate-ui-01",
+    "sources": [
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "sourceSha256Bytes": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "sourceSha256Bytes": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "sourceSha256Bytes": "86c87a6a23d07a0bb39909de4b0cce92f571f36ab13e49d8005d13ff1b70342c",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "sourceSha256Bytes": "e92c831b21a1e27d180cc7d5d9ef839a393669798f1df340bb83444dc67e2914",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+        "sourceSha256Bytes": "bad5cd21abc425e674c91175f38937a58e1fa694f3c3c72f24742cee97778e8f",
+        "immutableSourceArtifact": "history\\candidate-proof-01-sources\\DesktopVideoVotes.kt",
+        "currentPathSameBytes": false
+      },
+      {
+        "compileArgumentPath": "compile-references\\CommandDanmakuPolicy.kt",
+        "sourceSha256Bytes": "91983c793c672b2147df8abdd3befcdbc51ff59f579d5b45912fcbfc8f7eea2d",
+        "immutableSourceArtifact": "compile-references\\CommandDanmakuPolicy.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "sourceSha256Bytes": "1daa952ad5eb24dfb68df23a6854e7e69c9d49b6215d40389f82b76bf3b53762",
+        "immutableSourceArtifact": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\StableReplyVoteModels.kt",
+        "sourceSha256Bytes": "e8f64ecf10d419a3f294c51d6d84395ffb4f92e8eba1475505c01d765d2877f6",
+        "immutableSourceArtifact": "compile-references\\StableReplyVoteModels.kt",
+        "currentPathSameBytes": true
+      }
+    ]
+  },
+  {
+    "compilation": "candidate-proof-01",
+    "sources": [
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "sourceSha256Bytes": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "sourceSha256Bytes": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "sourceSha256Bytes": "86c87a6a23d07a0bb39909de4b0cce92f571f36ab13e49d8005d13ff1b70342c",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "sourceSha256Bytes": "e92c831b21a1e27d180cc7d5d9ef839a393669798f1df340bb83444dc67e2914",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+        "sourceSha256Bytes": "bad5cd21abc425e674c91175f38937a58e1fa694f3c3c72f24742cee97778e8f",
+        "immutableSourceArtifact": "history\\candidate-proof-01-sources\\DesktopVideoVotes.kt",
+        "currentPathSameBytes": false
+      },
+      {
+        "compileArgumentPath": "compile-references\\CommandDanmakuPolicy.kt",
+        "sourceSha256Bytes": "91983c793c672b2147df8abdd3befcdbc51ff59f579d5b45912fcbfc8f7eea2d",
+        "immutableSourceArtifact": "compile-references\\CommandDanmakuPolicy.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "sourceSha256Bytes": "1daa952ad5eb24dfb68df23a6854e7e69c9d49b6215d40389f82b76bf3b53762",
+        "immutableSourceArtifact": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\StableReplyVoteModels.kt",
+        "sourceSha256Bytes": "e8f64ecf10d419a3f294c51d6d84395ffb4f92e8eba1475505c01d765d2877f6",
+        "immutableSourceArtifact": "compile-references\\StableReplyVoteModels.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "fixture\\Launcher.kt",
+        "sourceSha256Bytes": "a3348b7f2d241aaa24e85769bcdcfe7b472dc865abd77b029ac4097e4bd92083",
+        "immutableSourceArtifact": "fixture\\Launcher.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "fixture\\ProtocolFixture.kt",
+        "sourceSha256Bytes": "72b2ce2682882bcf33efd4ad0f8615473df433d65cf83989ad9ec661f61828e8",
+        "immutableSourceArtifact": "fixture\\ProtocolFixture.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "fixture\\UiFixture.kt",
+        "sourceSha256Bytes": "e7dd340dabd0fd78ac86cb6d68d43664011c1a627f7c17d2538ef319edc7654b",
+        "immutableSourceArtifact": "history\\candidate-proof-01-sources\\UiFixture.kt",
+        "currentPathSameBytes": false
+      }
+    ]
+  },
+  {
+    "compilation": "candidate-proof-02",
+    "sources": [
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "sourceSha256Bytes": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "sourceSha256Bytes": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "sourceSha256Bytes": "86c87a6a23d07a0bb39909de4b0cce92f571f36ab13e49d8005d13ff1b70342c",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "sourceSha256Bytes": "e92c831b21a1e27d180cc7d5d9ef839a393669798f1df340bb83444dc67e2914",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+        "sourceSha256Bytes": "29040fbb55bc93d9ad568bacf1191924667843c800d6d2f033005cb244fe8eab",
+        "immutableSourceArtifact": "history\\candidate-proof-02-sources\\DesktopVideoVotes.kt",
+        "currentPathSameBytes": false
+      },
+      {
+        "compileArgumentPath": "compile-references\\CommandDanmakuPolicy.kt",
+        "sourceSha256Bytes": "91983c793c672b2147df8abdd3befcdbc51ff59f579d5b45912fcbfc8f7eea2d",
+        "immutableSourceArtifact": "compile-references\\CommandDanmakuPolicy.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "sourceSha256Bytes": "1daa952ad5eb24dfb68df23a6854e7e69c9d49b6215d40389f82b76bf3b53762",
+        "immutableSourceArtifact": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\StableReplyVoteModels.kt",
+        "sourceSha256Bytes": "e8f64ecf10d419a3f294c51d6d84395ffb4f92e8eba1475505c01d765d2877f6",
+        "immutableSourceArtifact": "compile-references\\StableReplyVoteModels.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "fixture\\Launcher.kt",
+        "sourceSha256Bytes": "a3348b7f2d241aaa24e85769bcdcfe7b472dc865abd77b029ac4097e4bd92083",
+        "immutableSourceArtifact": "fixture\\Launcher.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "fixture\\ProtocolFixture.kt",
+        "sourceSha256Bytes": "72b2ce2682882bcf33efd4ad0f8615473df433d65cf83989ad9ec661f61828e8",
+        "immutableSourceArtifact": "fixture\\ProtocolFixture.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "fixture\\UiFixture.kt",
+        "sourceSha256Bytes": "abbb6f77924b50747c285e4f6cb9b390ef547838bfde281ab3950e2119c19d09",
+        "immutableSourceArtifact": "history\\candidate-proof-02-sources\\UiFixture.kt",
+        "currentPathSameBytes": false
+      }
+    ]
+  },
+  {
+    "compilation": "candidate-proof-03",
+    "sources": [
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "sourceSha256Bytes": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "sourceSha256Bytes": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "sourceSha256Bytes": "86c87a6a23d07a0bb39909de4b0cce92f571f36ab13e49d8005d13ff1b70342c",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "sourceSha256Bytes": "e92c831b21a1e27d180cc7d5d9ef839a393669798f1df340bb83444dc67e2914",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+        "sourceSha256Bytes": "29040fbb55bc93d9ad568bacf1191924667843c800d6d2f033005cb244fe8eab",
+        "immutableSourceArtifact": "history\\candidate-proof-02-sources\\DesktopVideoVotes.kt",
+        "currentPathSameBytes": false
+      },
+      {
+        "compileArgumentPath": "compile-references\\CommandDanmakuPolicy.kt",
+        "sourceSha256Bytes": "91983c793c672b2147df8abdd3befcdbc51ff59f579d5b45912fcbfc8f7eea2d",
+        "immutableSourceArtifact": "compile-references\\CommandDanmakuPolicy.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "sourceSha256Bytes": "1daa952ad5eb24dfb68df23a6854e7e69c9d49b6215d40389f82b76bf3b53762",
+        "immutableSourceArtifact": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\StableReplyVoteModels.kt",
+        "sourceSha256Bytes": "e8f64ecf10d419a3f294c51d6d84395ffb4f92e8eba1475505c01d765d2877f6",
+        "immutableSourceArtifact": "compile-references\\StableReplyVoteModels.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "fixture\\Launcher.kt",
+        "sourceSha256Bytes": "a3348b7f2d241aaa24e85769bcdcfe7b472dc865abd77b029ac4097e4bd92083",
+        "immutableSourceArtifact": "fixture\\Launcher.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "fixture\\ProtocolFixture.kt",
+        "sourceSha256Bytes": "72b2ce2682882bcf33efd4ad0f8615473df433d65cf83989ad9ec661f61828e8",
+        "immutableSourceArtifact": "fixture\\ProtocolFixture.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "fixture\\UiFixture.kt",
+        "sourceSha256Bytes": "3a6040603f3525f3281605622355893c9e0a7f6803a878e2e2804e00730734f1",
+        "immutableSourceArtifact": "fixture\\UiFixture.kt",
+        "currentPathSameBytes": true
+      }
+    ]
+  },
+  {
+    "compilation": "candidate-consumers-01",
+    "sources": [
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "sourceSha256Bytes": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "sourceSha256Bytes": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "sourceSha256Bytes": "86c87a6a23d07a0bb39909de4b0cce92f571f36ab13e49d8005d13ff1b70342c",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "sourceSha256Bytes": "e92c831b21a1e27d180cc7d5d9ef839a393669798f1df340bb83444dc67e2914",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+        "sourceSha256Bytes": "29040fbb55bc93d9ad568bacf1191924667843c800d6d2f033005cb244fe8eab",
+        "immutableSourceArtifact": "history\\candidate-proof-02-sources\\DesktopVideoVotes.kt",
+        "currentPathSameBytes": false
+      },
+      {
+        "compileArgumentPath": "compile-references\\CommandDanmakuPolicy.kt",
+        "sourceSha256Bytes": "91983c793c672b2147df8abdd3befcdbc51ff59f579d5b45912fcbfc8f7eea2d",
+        "immutableSourceArtifact": "compile-references\\CommandDanmakuPolicy.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "sourceSha256Bytes": "1daa952ad5eb24dfb68df23a6854e7e69c9d49b6215d40389f82b76bf3b53762",
+        "immutableSourceArtifact": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\StableReplyVoteModels.kt",
+        "sourceSha256Bytes": "e8f64ecf10d419a3f294c51d6d84395ffb4f92e8eba1475505c01d765d2877f6",
+        "immutableSourceArtifact": "compile-references\\StableReplyVoteModels.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\consumer-reference\\DesktopDynamicCardOperations.kt",
+        "sourceSha256Bytes": "5d1221bc645059942e4f84b9178139f530b59cc53d68a1fe5ece19a963066a8d",
+        "immutableSourceArtifact": "history\\candidate-consumers-02-sources\\DesktopDynamicCardOperations.kt",
+        "currentPathSameBytes": false
+      },
+      {
+        "compileArgumentPath": "prepared\\consumer-reference\\PlayerPanels.kt",
+        "sourceSha256Bytes": "64f417cd843ad5145aea259719a8269d3fabea3bd58437a8f9d6016d83575feb",
+        "immutableSourceArtifact": "prepared\\consumer-reference\\PlayerPanels.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\consumer-reference\\VideoEngagementPanel.kt",
+        "sourceSha256Bytes": "b4a52e1ffc681d41115b133357f2858b0491a0d3f7ddcba9721fa6ace0b6dc6a",
+        "immutableSourceArtifact": "prepared\\consumer-reference\\VideoEngagementPanel.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-chapter-references\\ViewPointSegmentBar.kt",
+        "sourceSha256Bytes": "bb239976cf19f1aa065f361fbe7e672d08541ee2b696b2e327e445c3bb1727d2",
+        "immutableSourceArtifact": "compile-chapter-references\\ViewPointSegmentBar.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-chapter-references\\ViewPointSegmentBarPolicy.kt",
+        "sourceSha256Bytes": "ce93dc0c1a8c138e30163951fddab3bf3fdf299e5325dced5630141bd56c9aba",
+        "immutableSourceArtifact": "compile-chapter-references\\ViewPointSegmentBarPolicy.kt",
+        "currentPathSameBytes": true
+      }
+    ]
+  },
+  {
+    "compilation": "candidate-consumers-02",
+    "sources": [
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "sourceSha256Bytes": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "sourceSha256Bytes": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "sourceSha256Bytes": "86c87a6a23d07a0bb39909de4b0cce92f571f36ab13e49d8005d13ff1b70342c",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "sourceSha256Bytes": "e92c831b21a1e27d180cc7d5d9ef839a393669798f1df340bb83444dc67e2914",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+        "sourceSha256Bytes": "2b41147859cd507320885d1f12d9b26395d4caa9a424644ebf564223de50f9d4",
+        "immutableSourceArtifact": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\consumer-reference\\DanmakuOverlay.kt",
+        "sourceSha256Bytes": "ece907d1a9159883c8aa9219f61a5782cef08ccaf391f10fcb4d96c4e53800b2",
+        "immutableSourceArtifact": "prepared\\consumer-reference\\DanmakuOverlay.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\CommandDanmakuPolicy.kt",
+        "sourceSha256Bytes": "91983c793c672b2147df8abdd3befcdbc51ff59f579d5b45912fcbfc8f7eea2d",
+        "immutableSourceArtifact": "compile-references\\CommandDanmakuPolicy.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "sourceSha256Bytes": "1daa952ad5eb24dfb68df23a6854e7e69c9d49b6215d40389f82b76bf3b53762",
+        "immutableSourceArtifact": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\StableReplyVoteModels.kt",
+        "sourceSha256Bytes": "e8f64ecf10d419a3f294c51d6d84395ffb4f92e8eba1475505c01d765d2877f6",
+        "immutableSourceArtifact": "compile-references\\StableReplyVoteModels.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\consumer-reference\\DesktopDynamicCardOperations.kt",
+        "sourceSha256Bytes": "5d1221bc645059942e4f84b9178139f530b59cc53d68a1fe5ece19a963066a8d",
+        "immutableSourceArtifact": "history\\candidate-consumers-02-sources\\DesktopDynamicCardOperations.kt",
+        "currentPathSameBytes": false
+      },
+      {
+        "compileArgumentPath": "prepared\\consumer-reference\\PlayerPanels.kt",
+        "sourceSha256Bytes": "64f417cd843ad5145aea259719a8269d3fabea3bd58437a8f9d6016d83575feb",
+        "immutableSourceArtifact": "prepared\\consumer-reference\\PlayerPanels.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\consumer-reference\\VideoEngagementPanel.kt",
+        "sourceSha256Bytes": "b4a52e1ffc681d41115b133357f2858b0491a0d3f7ddcba9721fa6ace0b6dc6a",
+        "immutableSourceArtifact": "prepared\\consumer-reference\\VideoEngagementPanel.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-chapter-references\\ViewPointSegmentBar.kt",
+        "sourceSha256Bytes": "bb239976cf19f1aa065f361fbe7e672d08541ee2b696b2e327e445c3bb1727d2",
+        "immutableSourceArtifact": "compile-chapter-references\\ViewPointSegmentBar.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-chapter-references\\ViewPointSegmentBarPolicy.kt",
+        "sourceSha256Bytes": "ce93dc0c1a8c138e30163951fddab3bf3fdf299e5325dced5630141bd56c9aba",
+        "immutableSourceArtifact": "compile-chapter-references\\ViewPointSegmentBarPolicy.kt",
+        "currentPathSameBytes": true
+      }
+    ]
+  },
+  {
+    "compilation": "owned-grade-fixture-01",
+    "sources": [
+      {
+        "compileArgumentPath": "fixture\\OwnedGradeFixture.kt",
+        "sourceSha256Bytes": "59cd5f532499ddbb51fad7f80838a11cbf82cf9924cb2442429d77acdae30a99",
+        "immutableSourceArtifact": "fixture\\OwnedGradeFixture.kt",
+        "currentPathSameBytes": true
+      }
+    ]
+  },
+  {
+    "compilation": "command-owner-candidate-01",
+    "sources": [
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "sourceSha256Bytes": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentVoteCard.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "sourceSha256Bytes": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce",
+        "immutableSourceArtifact": "direct\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\CommandDanmakuOverlayState.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "sourceSha256Bytes": "86c87a6a23d07a0bb39909de4b0cce92f571f36ab13e49d8005d13ff1b70342c",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopVideoGradeProtocol.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "sourceSha256Bytes": "e92c831b21a1e27d180cc7d5d9ef839a393669798f1df340bb83444dc67e2914",
+        "immutableSourceArtifact": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+        "sourceSha256Bytes": "2b41147859cd507320885d1f12d9b26395d4caa9a424644ebf564223de50f9d4",
+        "immutableSourceArtifact": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "prepared\\consumer-reference\\DanmakuOverlay.kt",
+        "sourceSha256Bytes": "ece907d1a9159883c8aa9219f61a5782cef08ccaf391f10fcb4d96c4e53800b2",
+        "immutableSourceArtifact": "prepared\\consumer-reference\\DanmakuOverlay.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\CommandDanmakuPolicy.kt",
+        "sourceSha256Bytes": "91983c793c672b2147df8abdd3befcdbc51ff59f579d5b45912fcbfc8f7eea2d",
+        "immutableSourceArtifact": "compile-references\\CommandDanmakuPolicy.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "sourceSha256Bytes": "1daa952ad5eb24dfb68df23a6854e7e69c9d49b6215d40389f82b76bf3b53762",
+        "immutableSourceArtifact": "compile-references\\DesktopOriginalDynamicVoteDialog.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "compile-references\\StableReplyVoteModels.kt",
+        "sourceSha256Bytes": "e8f64ecf10d419a3f294c51d6d84395ffb4f92e8eba1475505c01d765d2877f6",
+        "immutableSourceArtifact": "compile-references\\StableReplyVoteModels.kt",
+        "currentPathSameBytes": true
+      },
+      {
+        "compileArgumentPath": "fixture\\CommandOwnerFixture.kt",
+        "sourceSha256Bytes": "6c197b18cee20ac141412e941e561c7e7a7aef285c60a926b3f62181f0d18bbf",
+        "immutableSourceArtifact": "fixture\\CommandOwnerFixture.kt",
+        "currentPathSameBytes": true
+      }
+    ]
+  }
+]

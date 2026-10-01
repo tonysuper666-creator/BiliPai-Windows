@@ -1,0 +1,684 @@
+{
+  "schema": 1,
+  "frozen": true,
+  "preparedCandidateOnly": true,
+  "MainChanged": false,
+  "candidateChanged": false,
+  "scope": "stable original VideoCommentVoteCard + VOTE/GRADE overlay protocol/host + sole command CID ownership seam",
+  "originalTag": "v0.2.3",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "producer": "prepared/desktop/tools/extract-stable-video-votes.py",
+  "copyPayloads": 2,
+  "narrowPatches": 4,
+  "sourceIdentityNew": 3,
+  "sourceIdentityMerged": 1,
+  "sourceRegistryWholeFileForbidden": true,
+  "historicalMain04CP": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2",
+  "candidateExplicitOverrides": true,
+  "MainAcceptance": false,
+  "EXE": false,
+  "HWND": false,
+  "PiP": false,
+  "actualAccount": false,
+  "proof": {
+    "protocolGates": 8,
+    "originalCardDialogGates": 12,
+    "realOffscreenPointerPairs": 6,
+    "actualOperationsGates": 5,
+    "originalOverlayLoaderOwnershipGates": 9,
+    "sourceAuditGates": 29,
+    "fullConsumerCompile": true
+  },
+  "artifacts": [
+    {
+      "path": "audit-generated/com/android/purebilibili/data/repository/DesktopVideoGradeProtocol.kt",
+      "bytes": 3373,
+      "sha256Bytes": "86c87a6a23d07a0bb39909de4b0cce92f571f36ab13e49d8005d13ff1b70342c"
+    },
+    {
+      "path": "audit-generated/com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlay.kt",
+      "bytes": 29074,
+      "sha256Bytes": "e92c831b21a1e27d180cc7d5d9ef839a393669798f1df340bb83444dc67e2914"
+    },
+    {
+      "path": "audit-generated/platform/DesktopVideoGradeMembers.fragment",
+      "bytes": 448,
+      "sha256Bytes": "46c54c11f7e8f1461dcf92989058eccd1497fd1da69e0fd7f6ca979f6814b3a3"
+    },
+    {
+      "path": "audit-proof.json",
+      "bytes": 3151,
+      "sha256Bytes": "f152328cad077bb1da432af946ccc6c815332e9f70216a0abd00c4f25fd4ff08"
+    },
+    {
+      "path": "audit.py",
+      "bytes": 6208,
+      "sha256Bytes": "e1bd6ac9e7e399ae1282c7c59ab5c8cf98f47f75bdc11f1d24a86600bd7a5bbb"
+    },
+    {
+      "path": "baseline/DanmakuOverlay.kt.reference.txt",
+      "bytes": 23088,
+      "sha256Bytes": "76c5e6c8ace45c1f6c0d8da13746781796800b49a575d172d7bd9c898e5dfd2d"
+    },
+    {
+      "path": "baseline/DesktopDynamicCardOperations.kt.reference.txt",
+      "bytes": 34757,
+      "sha256Bytes": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2"
+    },
+    {
+      "path": "baseline/PlayerPanels.kt.reference.txt",
+      "bytes": 17477,
+      "sha256Bytes": "bef70d4837d3f78b44f7c0b2efb392cb178cd194458a77a30328440aa3a8c151"
+    },
+    {
+      "path": "baseline/VideoEngagementPanel.kt.reference.txt",
+      "bytes": 16426,
+      "sha256Bytes": "a5970b25443fd93f3ba5456e540eac10cb3bb31ae15f0a28ba573c45e3df229c"
+    },
+    {
+      "path": "candidate-consumers-01-evidence.json",
+      "bytes": 15817,
+      "sha256Bytes": "5dcaf8c4f922d7368c2ebd9085b8e001b3d80a018e4252d843c49f2d3794911d"
+    },
+    {
+      "path": "candidate-consumers-01.args",
+      "bytes": 25783,
+      "sha256Bytes": "c44b773346e55525fc54bc0e48b9719e91ccb77328a3546cc0b29014df7f51b9"
+    },
+    {
+      "path": "candidate-consumers-01.log",
+      "bytes": 1905,
+      "sha256Bytes": "64627a6de5688732e551934bb4e6ee8ae75a7ea5c93f09549bd36389fe1926a1"
+    },
+    {
+      "path": "candidate-consumers-02-evidence.json",
+      "bytes": 17143,
+      "sha256Bytes": "423c1d164d4c18617cc2ccf19c95aa92b30fa292097231cb25e5708b342c895b"
+    },
+    {
+      "path": "candidate-consumers-02.args",
+      "bytes": 25953,
+      "sha256Bytes": "6b996aa19265871fb921cc3ea2b2a0329ca041a36c6d62a0e9e883b631dc331b"
+    },
+    {
+      "path": "candidate-consumers-02.log",
+      "bytes": 1905,
+      "sha256Bytes": "64627a6de5688732e551934bb4e6ee8ae75a7ea5c93f09549bd36389fe1926a1"
+    },
+    {
+      "path": "candidate-proof-01-evidence.json",
+      "bytes": 3298,
+      "sha256Bytes": "894db5b0c3ce938b1e49faba2f3563977917bdd8f18b8c1b1ce5c6c07c3541cd"
+    },
+    {
+      "path": "candidate-proof-01-output/material3-vote-card-after.png",
+      "bytes": 10615,
+      "sha256Bytes": "92496be772e16c3474d36bfaad18d0fa028edc9c8c450660b2a723310a0be2b9"
+    },
+    {
+      "path": "candidate-proof-01-runtime.args",
+      "bytes": 22957,
+      "sha256Bytes": "29b55058a1af7aab40bd1ac8af4070e061a3cc89292b12efea4737f3f8ed65a4"
+    },
+    {
+      "path": "candidate-proof-01-runtime.log",
+      "bytes": 1714,
+      "sha256Bytes": "9e6406aae47e61af045761fe5461b9a19ddb4e0e68e8c04b4a2a7bfb7d920dd5"
+    },
+    {
+      "path": "candidate-proof-01.args",
+      "bytes": 25337,
+      "sha256Bytes": "1196746c77945381b0c5b6a6cd9c47dc957c8a15dd6535c75a1401aeb89ee06a"
+    },
+    {
+      "path": "candidate-proof-01.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "candidate-proof-02-evidence.json",
+      "bytes": 3298,
+      "sha256Bytes": "7178deb0ed4080b946a496bda2d49410c8513192864385b3f3f0dbae6ce788c2"
+    },
+    {
+      "path": "candidate-proof-02-output/material3-vote-card-after.png",
+      "bytes": 10615,
+      "sha256Bytes": "92496be772e16c3474d36bfaad18d0fa028edc9c8c450660b2a723310a0be2b9"
+    },
+    {
+      "path": "candidate-proof-02-output/material3-vote-dialog-before.png",
+      "bytes": 21128,
+      "sha256Bytes": "fa3942f9b92373adc3f8c700d5a69644cd9546cf518cbabba64a9a6a5ff41b66"
+    },
+    {
+      "path": "candidate-proof-02-output/miuix-vote-dialog-before.png",
+      "bytes": 16329,
+      "sha256Bytes": "45746f87a80f5d9158a0206c83603b30d1de2e8fcb4b61d07443f66c7bde2208"
+    },
+    {
+      "path": "candidate-proof-02-runtime.args",
+      "bytes": 23017,
+      "sha256Bytes": "6aa6a18f4670d3a258d6a7e8dfb4151dcb4fc329f8c40278577f3359d1508ba5"
+    },
+    {
+      "path": "candidate-proof-02-runtime.log",
+      "bytes": 1697,
+      "sha256Bytes": "ee11cfb19d5b4c489a2b7bc4e14eb7706384c033129d7835a58c837f45dccf45"
+    },
+    {
+      "path": "candidate-proof-02.args",
+      "bytes": 25337,
+      "sha256Bytes": "7566e77b5ba92e5dcf1e4b240b518809447dd42d7e64cff1bee001165d8cdfcc"
+    },
+    {
+      "path": "candidate-proof-02.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "candidate-proof-03-evidence.json",
+      "bytes": 3298,
+      "sha256Bytes": "62e121ff069399ae3101b4ab9a842fd28b6b7af703503dd632a6c35b17e495a4"
+    },
+    {
+      "path": "candidate-proof-03-output/material3-vote-card-after.png",
+      "bytes": 10615,
+      "sha256Bytes": "92496be772e16c3474d36bfaad18d0fa028edc9c8c450660b2a723310a0be2b9"
+    },
+    {
+      "path": "candidate-proof-03-output/material3-vote-dialog-before.png",
+      "bytes": 19496,
+      "sha256Bytes": "e064b95659cfc6568fee3f5ec9ae6e7a02a656e3cd8b37ac200af4600a3da553"
+    },
+    {
+      "path": "candidate-proof-03-output/miuix-vote-card-after.png",
+      "bytes": 10622,
+      "sha256Bytes": "8a6ef36c1fdae4bf4a49d36c4898605780f92c4f26993046abeee68ec0e12add"
+    },
+    {
+      "path": "candidate-proof-03-output/miuix-vote-dialog-before.png",
+      "bytes": 18766,
+      "sha256Bytes": "b02d59a1b1dc76dad68f3b1763ea3c5b612d6e7115b9d8bb1de40075aa19bf1a"
+    },
+    {
+      "path": "candidate-proof-03-output/proof.json",
+      "bytes": 1655,
+      "sha256Bytes": "e7aac4d0828b59623ddaf14050c190495371fc7fbe7dc2d01b63575943c58ff6"
+    },
+    {
+      "path": "candidate-proof-03-runtime-evidence.json",
+      "bytes": 36295,
+      "sha256Bytes": "0dc777f7fcb4e1a7e13bed1f079950f912644065803ea09019c383ed7b436df8"
+    },
+    {
+      "path": "candidate-proof-03-runtime.args",
+      "bytes": 23017,
+      "sha256Bytes": "54c788ab7b5be2e899caf1213f34475a2fa3c344fe066f51670458993757f884"
+    },
+    {
+      "path": "candidate-proof-03-runtime.log",
+      "bytes": 1656,
+      "sha256Bytes": "2307d8597e80ad6ada2689e2bdad9e60fad52537186d7046f959010cb58fd903"
+    },
+    {
+      "path": "candidate-proof-03.args",
+      "bytes": 25337,
+      "sha256Bytes": "d0bdbc0249495f9910d92ea9a5df02bcc6279c0b3c9684bbd2ed530e6b3770fa"
+    },
+    {
+      "path": "candidate-proof-03.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "candidate-ui-01-evidence.json",
+      "bytes": 2873,
+      "sha256Bytes": "ea44fc40b022784be560f6d8f94371d8c653d06a173c55fc94ce0db660c43713"
+    },
+    {
+      "path": "candidate-ui-01.args",
+      "bytes": 24894,
+      "sha256Bytes": "1da6b6522b74a1ac35272691440e99640353457f49cddedf0e36e07156595f2e"
+    },
+    {
+      "path": "candidate-ui-01.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "command-owner-candidate-01-evidence.json",
+      "bytes": 4349,
+      "sha256Bytes": "91e25133ef88fdca9619e2232f6a7650b2e026c058c59412370c179fabf27a76"
+    },
+    {
+      "path": "command-owner-candidate-01.args",
+      "bytes": 25230,
+      "sha256Bytes": "1ab629ad7b0d2609e7b4c14485fbf1bbd525c1b19bcd8b6939978736da77ce17"
+    },
+    {
+      "path": "command-owner-candidate-01.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "command-owner-contract.json",
+      "bytes": 575,
+      "sha256Bytes": "291b54a9c8ff37db3ae1cbbfbb8f94122789dc1e373618771c00c9eb9e8ef0be"
+    },
+    {
+      "path": "command-owner-proof.json",
+      "bytes": 896,
+      "sha256Bytes": "5ece88f948026f95bec307214ab71c58f6bece2aa243a770a67e46c7136216cc"
+    },
+    {
+      "path": "command-owner-runtime-evidence.json",
+      "bytes": 396,
+      "sha256Bytes": "eef697bb333951c658e0c5b85166f1943ef1eb77dc23f78ec6e7cd499b4d3341"
+    },
+    {
+      "path": "command-owner-runtime.args",
+      "bytes": 23034,
+      "sha256Bytes": "fe34856ea959416b3445e94dc5e7aa9320214e3755a4ddb1a8436547d47d1023"
+    },
+    {
+      "path": "command-owner-runtime.log",
+      "bytes": 897,
+      "sha256Bytes": "dba38646b363c37394fb6daeed479a84f74f1f6fcc9aa54b662b2fc3139e851c"
+    },
+    {
+      "path": "compile-chapter-references/ViewPointSegmentBar.kt",
+      "bytes": 4645,
+      "sha256Bytes": "bb239976cf19f1aa065f361fbe7e672d08541ee2b696b2e327e445c3bb1727d2"
+    },
+    {
+      "path": "compile-chapter-references/ViewPointSegmentBarPolicy.kt",
+      "bytes": 1864,
+      "sha256Bytes": "ce93dc0c1a8c138e30163951fddab3bf3fdf299e5325dced5630141bd56c9aba"
+    },
+    {
+      "path": "compile-references/CommandDanmakuPolicy.kt",
+      "bytes": 14480,
+      "sha256Bytes": "91983c793c672b2147df8abdd3befcdbc51ff59f579d5b45912fcbfc8f7eea2d"
+    },
+    {
+      "path": "compile-references/DesktopOriginalDynamicVoteDialog.kt",
+      "bytes": 9803,
+      "sha256Bytes": "1daa952ad5eb24dfb68df23a6854e7e69c9d49b6215d40389f82b76bf3b53762"
+    },
+    {
+      "path": "compile-references/StableReplyVoteModels.kt",
+      "bytes": 2589,
+      "sha256Bytes": "e8f64ecf10d419a3f294c51d6d84395ffb4f92e8eba1475505c01d765d2877f6"
+    },
+    {
+      "path": "compile.py",
+      "bytes": 3199,
+      "sha256Bytes": "a405b4546845babb8066f578d02529cadd1ca2d837b14e557775620a4569cb32"
+    },
+    {
+      "path": "compiled-source-bindings.json",
+      "bytes": 28549,
+      "sha256Bytes": "b736de51dd96c551aa1ad17f714d6576a946478cc7f26c110560e4c8c5917fac"
+    },
+    {
+      "path": "consumer-baselines.json",
+      "bytes": 783,
+      "sha256Bytes": "e00207d5bdd33e5812c854db8517c05232cc71299e9f331e1ebabface8a2db8a"
+    },
+    {
+      "path": "direct/com/android/purebilibili/feature/video/ui/components/VideoCommentVoteCard.kt",
+      "bytes": 5573,
+      "sha256Bytes": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d"
+    },
+    {
+      "path": "direct/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayState.kt",
+      "bytes": 1075,
+      "sha256Bytes": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce"
+    },
+    {
+      "path": "fixture/CommandOwnerFixture.kt",
+      "bytes": 6683,
+      "sha256Bytes": "6c197b18cee20ac141412e941e561c7e7a7aef285c60a926b3f62181f0d18bbf"
+    },
+    {
+      "path": "fixture/Launcher.kt",
+      "bytes": 882,
+      "sha256Bytes": "a3348b7f2d241aaa24e85769bcdcfe7b472dc865abd77b029ac4097e4bd92083"
+    },
+    {
+      "path": "fixture/OwnedGradeFixture.kt",
+      "bytes": 4570,
+      "sha256Bytes": "59cd5f532499ddbb51fad7f80838a11cbf82cf9924cb2442429d77acdae30a99"
+    },
+    {
+      "path": "fixture/ProtocolFixture.kt",
+      "bytes": 4996,
+      "sha256Bytes": "72b2ce2682882bcf33efd4ad0f8615473df433d65cf83989ad9ec661f61828e8"
+    },
+    {
+      "path": "fixture/UiFixture.kt",
+      "bytes": 7150,
+      "sha256Bytes": "3a6040603f3525f3281605622355893c9e0a7f6803a878e2e2804e00730734f1"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopVideoGradeProtocol.kt",
+      "bytes": 3373,
+      "sha256Bytes": "86c87a6a23d07a0bb39909de4b0cce92f571f36ab13e49d8005d13ff1b70342c"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlay.kt",
+      "bytes": 29074,
+      "sha256Bytes": "e92c831b21a1e27d180cc7d5d9ef839a393669798f1df340bb83444dc67e2914"
+    },
+    {
+      "path": "gradle.fragment.kts",
+      "bytes": 1011,
+      "sha256Bytes": "bf6570bb5633954dfb5b01ea184d3f218b2ec6c6e58a848cb8793a6aee0b73bd"
+    },
+    {
+      "path": "history/candidate-consumers-02-sources/DesktopDynamicCardOperations.kt",
+      "bytes": 35170,
+      "sha256Bytes": "5d1221bc645059942e4f84b9178139f530b59cc53d68a1fe5ece19a963066a8d"
+    },
+    {
+      "path": "history/candidate-proof-01-sources/DesktopVideoVotes.kt",
+      "bytes": 10082,
+      "sha256Bytes": "bad5cd21abc425e674c91175f38937a58e1fa694f3c3c72f24742cee97778e8f"
+    },
+    {
+      "path": "history/candidate-proof-01-sources/Launcher.kt",
+      "bytes": 882,
+      "sha256Bytes": "a3348b7f2d241aaa24e85769bcdcfe7b472dc865abd77b029ac4097e4bd92083"
+    },
+    {
+      "path": "history/candidate-proof-01-sources/ProtocolFixture.kt",
+      "bytes": 4996,
+      "sha256Bytes": "72b2ce2682882bcf33efd4ad0f8615473df433d65cf83989ad9ec661f61828e8"
+    },
+    {
+      "path": "history/candidate-proof-01-sources/UiFixture.kt",
+      "bytes": 6697,
+      "sha256Bytes": "e7dd340dabd0fd78ac86cb6d68d43664011c1a627f7c17d2538ef319edc7654b"
+    },
+    {
+      "path": "history/candidate-proof-02-sources/DesktopVideoVotes.kt",
+      "bytes": 10394,
+      "sha256Bytes": "29040fbb55bc93d9ad568bacf1191924667843c800d6d2f033005cb244fe8eab"
+    },
+    {
+      "path": "history/candidate-proof-02-sources/Launcher.kt",
+      "bytes": 882,
+      "sha256Bytes": "a3348b7f2d241aaa24e85769bcdcfe7b472dc865abd77b029ac4097e4bd92083"
+    },
+    {
+      "path": "history/candidate-proof-02-sources/ProtocolFixture.kt",
+      "bytes": 4996,
+      "sha256Bytes": "72b2ce2682882bcf33efd4ad0f8615473df433d65cf83989ad9ec661f61828e8"
+    },
+    {
+      "path": "history/candidate-proof-02-sources/UiFixture.kt",
+      "bytes": 6869,
+      "sha256Bytes": "abbb6f77924b50747c285e4f6cb9b390ef547838bfde281ab3950e2119c19d09"
+    },
+    {
+      "path": "history/candidate-proof-03-sources/DesktopVideoVotes.kt",
+      "bytes": 10394,
+      "sha256Bytes": "29040fbb55bc93d9ad568bacf1191924667843c800d6d2f033005cb244fe8eab"
+    },
+    {
+      "path": "history/candidate-proof-03-sources/Launcher.kt",
+      "bytes": 882,
+      "sha256Bytes": "a3348b7f2d241aaa24e85769bcdcfe7b472dc865abd77b029ac4097e4bd92083"
+    },
+    {
+      "path": "history/candidate-proof-03-sources/ProtocolFixture.kt",
+      "bytes": 4996,
+      "sha256Bytes": "72b2ce2682882bcf33efd4ad0f8615473df433d65cf83989ad9ec661f61828e8"
+    },
+    {
+      "path": "history/candidate-proof-03-sources/UiFixture.kt",
+      "bytes": 7150,
+      "sha256Bytes": "3a6040603f3525f3281605622355893c9e0a7f6803a878e2e2804e00730734f1"
+    },
+    {
+      "path": "install-plan.json",
+      "bytes": 1693,
+      "sha256Bytes": "7429d4cfa9ff22e0ea6b2cac5264d2ee6afe4d11c1dd305486c9ebb7e5c9c99d"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "bytes": 148935,
+      "sha256Bytes": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+      "bytes": 23482,
+      "sha256Bytes": "fed6db98e75157fdfef5f9de3916a690808c506c10656747f90b504a1e95221f"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "bytes": 45677,
+      "sha256Bytes": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/DynamicVoteRepository.kt",
+      "bytes": 2003,
+      "sha256Bytes": "196c320a09ad12eb78daf455f43134499f356f5fb01ca91f92e4d8433291d4c4"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicVoteDialog.kt",
+      "bytes": 9564,
+      "sha256Bytes": "1a712834f8a9fd10ce731b840fd2aab758691f22e7f409e08195de3ddf061a01"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicy.kt",
+      "bytes": 14480,
+      "sha256Bytes": "91983c793c672b2147df8abdd3befcdbc51ff59f579d5b45912fcbfc8f7eea2d"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentVoteCard.kt",
+      "bytes": 5573,
+      "sha256Bytes": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt",
+      "bytes": 28784,
+      "sha256Bytes": "a89141a1019a5257af51dfb76b6515a3811519dd2882f2ac71291055ba26b1fe"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayState.kt",
+      "bytes": 1075,
+      "sha256Bytes": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "bytes": 296288,
+      "sha256Bytes": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e"
+    },
+    {
+      "path": "owned-grade-fixture-01-evidence.json",
+      "bytes": 611,
+      "sha256Bytes": "1b5e590941fec776fa36f8eb2dc45a5dc0c58d4caab6403be12d53d68eb3521c"
+    },
+    {
+      "path": "owned-grade-fixture-01.args",
+      "bytes": 46573,
+      "sha256Bytes": "9fde03aa65ba99522119b6972c0045cb431cfce1bf1c86f0025e9b727077e9f4"
+    },
+    {
+      "path": "owned-grade-fixture-01.log",
+      "bytes": 45413,
+      "sha256Bytes": "de70c3d715543d1f0e6d3102a3333c04fb9d3657e8328246704bbfd108305e5d"
+    },
+    {
+      "path": "owned-grade-proof.json",
+      "bytes": 558,
+      "sha256Bytes": "0981bad3e95b0b8abde89234a62192b18554f0c41adfcf57b2e345fc27e7d287"
+    },
+    {
+      "path": "owned-grade-runtime-evidence.json",
+      "bytes": 626,
+      "sha256Bytes": "6f60d78a547ee0a640f7af6f387663128b17c40d3aff5dce0d0808aafd4faa76"
+    },
+    {
+      "path": "owned-grade-runtime.args",
+      "bytes": 23175,
+      "sha256Bytes": "794784afde112d803c96e98b69e23188b211b39f7b95158d6e35566668b4a4e5"
+    },
+    {
+      "path": "owned-grade-runtime.log",
+      "bytes": 559,
+      "sha256Bytes": "63e7c7c1bbd6265a2308b69067e593538a6bb3bf04604b2270de543a36e0fb18"
+    },
+    {
+      "path": "patches/command-owner.patch",
+      "bytes": 4037,
+      "sha256Bytes": "591296c888c6c3e681a1026770bf2f9cbcfb37c5969ee5c65d5509dfbe4b1e0b"
+    },
+    {
+      "path": "patches/comment-vote-consumer.patch",
+      "bytes": 1800,
+      "sha256Bytes": "20afd0e2bfe27aac49be995919681ddf59b594f14c4685ac1ded34a47583a503"
+    },
+    {
+      "path": "patches/ops-grade-member.fragment.kt",
+      "bytes": 448,
+      "sha256Bytes": "46c54c11f7e8f1461dcf92989058eccd1497fd1da69e0fd7f6ca979f6814b3a3"
+    },
+    {
+      "path": "patches/ops-grade-member.patch",
+      "bytes": 752,
+      "sha256Bytes": "385786c2f4472b199dba8f90b846ec8a755d7a104fdb162eca15b96ba6912d0b"
+    },
+    {
+      "path": "patches/player-overlay-slot.patch",
+      "bytes": 2642,
+      "sha256Bytes": "dbb26534b59ffe5d41f384f58e8546b4695d9baaefeeeeea9f02bfef538c3fa9"
+    },
+    {
+      "path": "preparation-contract.json",
+      "bytes": 3032,
+      "sha256Bytes": "af94df53c833c828a10ddc203015343bb269c016f7b167ef90714ef264b953ae"
+    },
+    {
+      "path": "prepare-command-owner.py",
+      "bytes": 4680,
+      "sha256Bytes": "8810548bf99f67c649d7e5c7a94cdc8926680b0d942111b7b70cbc6dde0e3275"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 13683,
+      "sha256Bytes": "56290da00ef822d2e597130df6861a52c3198ca98712f5a7f46ac37df8b99595"
+    },
+    {
+      "path": "prepared/consumer-reference/DanmakuOverlay.kt",
+      "bytes": 23625,
+      "sha256Bytes": "ece907d1a9159883c8aa9219f61a5782cef08ccaf391f10fcb4d96c4e53800b2"
+    },
+    {
+      "path": "prepared/consumer-reference/DesktopDynamicCardOperations.kt",
+      "bytes": 35205,
+      "sha256Bytes": "88507280b5fd82fceca08d19565aaea84e4dd45cd3d75e8fe5f1a259b549e9f7"
+    },
+    {
+      "path": "prepared/consumer-reference/PlayerPanels.kt",
+      "bytes": 18001,
+      "sha256Bytes": "64f417cd843ad5145aea259719a8269d3fabea3bd58437a8f9d6016d83575feb"
+    },
+    {
+      "path": "prepared/consumer-reference/VideoEngagementPanel.kt",
+      "bytes": 16687,
+      "sha256Bytes": "b4a52e1ffc681d41115b133357f2858b0491a0d3f7ddcba9721fa6ace0b6dc6a"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt",
+      "bytes": 10720,
+      "sha256Bytes": "2b41147859cd507320885d1f12d9b26395d4caa9a424644ebf564223de50f9d4"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-stable-video-votes.py",
+      "bytes": 3798,
+      "sha256Bytes": "99f00bc28ece1d3d89276373660f1536a318c8720cd706a96e0464f7813de1aa"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "bytes": 9493,
+      "sha256Bytes": "55fd17d2fb264201fdd87e27082054d5f93b5de8ae5ebb04806b2139c5c83da8"
+    },
+    {
+      "path": "root-player.fragment.kt",
+      "bytes": 1896,
+      "sha256Bytes": "7bf8e111b59b55abf67fe903f94f836c9d700ce5e965235333e87c525d8167ec"
+    },
+    {
+      "path": "run-command-proof.py",
+      "bytes": 1334,
+      "sha256Bytes": "3193f52713db4bc0c0055bcf6ab84c71f46e1d3a65b4b648670c6943484c7aa9"
+    },
+    {
+      "path": "run-owned-proof.py",
+      "bytes": 1741,
+      "sha256Bytes": "6a384614236dbfba0dccb7b00b1007d4153e20b74673289a32ed5d1d57210654"
+    },
+    {
+      "path": "run-proof.py",
+      "bytes": 1763,
+      "sha256Bytes": "3e3bfd7862e51a2c594627dbeea83052912a577b2892e0aab6b6692d2be44c3d"
+    },
+    {
+      "path": "source-inventory-delta.json",
+      "bytes": 2483,
+      "sha256Bytes": "57ce84f3ccaf76a04ce4c33239e251288f109127a9018d0aa6dd918a61dbaa24"
+    }
+  ],
+  "excludedRuntimeArtifacts": [
+    {
+      "path": "candidate-consumers-01.jar",
+      "bytes": 588097,
+      "sha256Bytes": "794095cc62f3171a5a01f71475e643e9f2c2fe8e19ec54590ccf07987865b29d",
+      "reason": "Task-only compiled/runtime binary; never install or commit as production."
+    },
+    {
+      "path": "candidate-consumers-02.jar",
+      "bytes": 633228,
+      "sha256Bytes": "9a4ffaf473918ccf86a8e964768947472f37410ee1559116388ff905810169e5",
+      "reason": "Task-only compiled/runtime binary; never install or commit as production."
+    },
+    {
+      "path": "candidate-proof-01.jar",
+      "bytes": 204357,
+      "sha256Bytes": "a8a77cc407e0e68f2042120a2dd6cd03a097fca546d871c0ad71f3ab497b086f",
+      "reason": "Task-only compiled/runtime binary; never install or commit as production."
+    },
+    {
+      "path": "candidate-proof-02.jar",
+      "bytes": 204725,
+      "sha256Bytes": "2bd08b58793882fc21172d9e1f1c6d0e3cc46b3bb558173a1530459975654d9c",
+      "reason": "Task-only compiled/runtime binary; never install or commit as production."
+    },
+    {
+      "path": "candidate-proof-03.jar",
+      "bytes": 205237,
+      "sha256Bytes": "a05ce204a4c89490e4b6eea096d6eaa6ab88465cb92a4c8d1140405d1447f827",
+      "reason": "Task-only compiled/runtime binary; never install or commit as production."
+    },
+    {
+      "path": "candidate-ui-01.jar",
+      "bytes": 171422,
+      "sha256Bytes": "fb89742cdcef7683457177bfe6174c7934f64e000745d49b6f7b0e079ae82610",
+      "reason": "Task-only compiled/runtime binary; never install or commit as production."
+    },
+    {
+      "path": "command-owner-candidate-01.jar",
+      "bytes": 239121,
+      "sha256Bytes": "19a49a8669a461130537eea19b6c5ab3cc4a3490e600f7fc1903664e9a1fcb15",
+      "reason": "Task-only compiled/runtime binary; never install or commit as production."
+    },
+    {
+      "path": "owned-grade-fixture-01.jar",
+      "bytes": 15114,
+      "sha256Bytes": "90a01a8bc5778e41eea13863f91cdeeebaeed6f112cff4c3e9957464dc38dd68",
+      "reason": "Task-only compiled/runtime binary; never install or commit as production."
+    }
+  ]
+}

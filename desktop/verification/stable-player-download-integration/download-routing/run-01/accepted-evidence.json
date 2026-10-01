@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "cases": 2,
+  "assertions": 8,
+  "externalHttp": 0,
+  "socketDns": 0,
+  "wholeStableRuntimeAccepted": false,
+  "actualImmutableWholeStableGraph": true,
+  "productClassOverrides": 0,
+  "snapshotManifestSha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7",
+  "fixtureSourceSha256Bytes": "9bf2dbfb6581449034e8918e73493245df98a69f293902de7358b63df2ef5654",
+  "fixtureJarSha256Bytes": "9b77a15a84c1957af04f9fd5467e5b50cbd1494f569937c358ff1151ea57fa44"
+}

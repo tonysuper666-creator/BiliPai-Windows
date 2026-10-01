@@ -1,0 +1,17 @@
+[
+  {
+    "path": "desktop/tools/extract-upstream-dynamic-detail.py",
+    "baseSha256LF": "c4ff1fc6c8094c40ad8b1890dc818ea20c3a97130fd34c03c0d6fff453e051be",
+    "candidateSha256LF": "1b0706b4581b5cac36df33ae9fb90b0fedbc6c6f89012ed7ad812d39ea4f756c"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+    "baseSha256LF": "08d90e18d71b27aedc951f010d6b08da02b0a2fc90d61ba1e164763e7234e447",
+    "candidateSha256LF": "95dd2763dac9a4f26ec1ad1bef9db3ccd2b8e04132113e93854b1443b1a676c0"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-dynamic-detail-container.py",
+    "baseSha256LF": "aa81541c070d3662bc1c187735d4335b5af2795de3e46107272b64069d0e8ed8",
+    "candidateSha256LF": "2db34ab72df3a71bd9d31cdfe4361d04df5f1cce96a90d875d564f9dcffba9a5"
+  }
+]

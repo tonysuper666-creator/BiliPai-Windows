@@ -1,0 +1,70 @@
+[
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\core\\store\\DesktopOriginalDetailLiquidReusePolicy.kt",
+    "sha256Bytes": "8a419b10edb90d8cada2fa79ca3211ba534e7beda9773b71338af603b813e157"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\core\\ui\\CommentWindowNavigation.kt",
+    "sha256Bytes": "47f3601acf14409111ffbefee9119303e031c3fef85a650bc8a642d227a64b53"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChrome.kt",
+    "sha256Bytes": "e272db226b385ea51bbc76573b2ea7430ea03ff57a0f10eaf216b00e62c5761c"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAppSheetComponents.kt",
+    "sha256Bytes": "cec77930d47d9b6d225044efaa25edf9681883bf9732feb15b9c44d3ba65e768"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\core\\ui\\ImmersiveAppScaffold.kt",
+    "sha256Bytes": "862a938eff9840f419d50f21fdefcf18c7dc0ee5ced87d14165aadf6c58c8650"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\core\\ui\\transition\\DesktopOriginalDetailPredictiveBlurPolicy.kt",
+    "sha256Bytes": "96383b8c4eebee6e6d022accdcde2d028de3a0c60a789aa89e7f3a28947fd711"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailDisplayModel.kt",
+    "sha256Bytes": "496e7576dffa0f1308af7f7d5ff8bf1a5cd62ca4e56d8a80d991fa15c891b823"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailHingeModel.kt",
+    "sha256Bytes": "adfc26a5d60cfa977ca19181f4e2a3bea55a706da5935e62ca46553656f4e6ac"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailResponsiveWidth.kt",
+    "sha256Bytes": "2494e4a248c6c771002a50e32ba1b64c07acb4a100738f5276e81cb4869df925"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailWindowModels.kt",
+    "sha256Bytes": "dfe006b44f8adc8dea5f8895ce1ebb7978bf55d02e2a685199b9ce3ef4107f78"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\feature\\dynamic\\components\\DynamicSubReplyPreviewHost.kt",
+    "sha256Bytes": "5b366817459536ad8a27ebf5d4ee579843bc81a77003359ce14c89f081f5fc6c"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicDetailLayout.kt",
+    "sha256Bytes": "779184f7c037aaed4ec5f36f8fc9b33df5c4da7cd295a64850b7f984d2e34771"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\feature\\dynamic\\DynamicLayoutPolicy.kt",
+    "sha256Bytes": "53e3f48200e01071801d4d483f1c35530e2e5b051ba324289814fe8931671f96"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChrome.kt",
+    "sha256Bytes": "fd25871eb8e1efb9d13a4bac425be523bc3e09bee157be6283e064b3bd9a7f85"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDetailInputPadding.kt",
+    "sha256Bytes": "57c4c445287af562ee752ecfe623c07716cc75c7f6052f21718cfdffe67e07fe"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDetailThreadPolicies.kt",
+    "sha256Bytes": "d2886665280719109d614ecfe84a34126845a833f16aa8af619ad7111a804fdc"
+  },
+  {
+    "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-image-cancel-completion-parity\\generated\\container\\com\\android\\purebilibili\\feature\\video\\ui\\components\\SubReplySheet.kt",
+    "sha256Bytes": "ad4dab5e895a4eacebefec7db35b211fa18e1687b85fee356fefa55fdb833c4b"
+  }
+]

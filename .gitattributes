@@ -42,3 +42,4 @@ desktop/verification/upstream-v023/** -text
 desktop/third-party/google-cast-v2/licenses/** -text
 desktop/src/main/resources/licenses/google-cast-v2/** -text
 desktop/verification/stable-source-integration/** -text
+desktop/verification/stable-player-download-integration/** -text

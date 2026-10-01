@@ -1,0 +1,18 @@
+{
+  "candidateOnly": true,
+  "mainAcceptance": false,
+  "main04Classpath": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2",
+  "cpEntries": 92,
+  "candidateJarSha256Bytes": "90a01a8bc5778e41eea13863f91cdeeebaeed6f112cff4c3e9957464dc38dd68",
+  "compiler": "Kotlin 2.4.0 / Compose compiler 2.4.0",
+  "friendModule": "com_bilipai_desktop_bilipai_windows",
+  "sources": [
+    {
+      "path": "fixture\\OwnedGradeFixture.kt",
+      "sha256Bytes": "59cd5f532499ddbb51fad7f80838a11cbf82cf9924cb2442429d77acdae30a99"
+    }
+  ],
+  "productClassOverrides": [],
+  "nativeWindow": false,
+  "HTTP": false
+}

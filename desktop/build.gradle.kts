@@ -639,18 +639,33 @@ val extractUpstreamDynamicDetailProtocol by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail-protocol"))
 }
 
+val extractStableVideoVotes by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-stable-video-votes.py",
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/video-votes").get().asFile.absolutePath)
+    inputs.files("tools/extract-stable-video-votes.py", "tools/sync-upstream.py", sourceManifest)
+    inputs.files(
+        File(repositoryRoot, "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt"),
+        File(repositoryRoot, "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt"),
+    )
+    outputs.dir(layout.buildDirectory.dir("generated/video-votes"))
+}
+
 val verifyUpstreamDynamicDetailReplyProtocol by tasks.registering(Exec::class) {
-    dependsOn(extractUpstreamDynamicReplyProtocol, extractUpstreamDynamicDetailProtocol)
+    dependsOn(extractUpstreamDynamicReplyProtocol, extractUpstreamDynamicDetailProtocol, extractStableVideoVotes)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-dynamic-detail-reply-protocol.py",
         "--repo", repositoryRoot.absolutePath,
         "--comment-output", layout.buildDirectory.dir("generated/dynamic-reply-protocol").get().asFile.absolutePath,
         "--detail-output", layout.buildDirectory.dir("generated/dynamic-detail-protocol").get().asFile.absolutePath,
+        "--grade-output", layout.buildDirectory.file("generated/video-votes/platform/DesktopVideoGradeMembers.fragment").get().asFile.absolutePath,
         "--output", layout.buildDirectory.file("generated/dynamic-detail-reply-verification.json").get().asFile.absolutePath)
     inputs.files("tools/verify-upstream-dynamic-detail-reply-protocol.py",
         "src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt")
     inputs.file(layout.buildDirectory.file("generated/dynamic-reply-protocol/DesktopDynamicCommentOperations.fragment.kt"))
     inputs.file(layout.buildDirectory.file("generated/dynamic-detail-protocol/DesktopDynamicDetailOperations.fragment.kt"))
+    inputs.file(layout.buildDirectory.file("generated/video-votes/platform/DesktopVideoGradeMembers.fragment"))
     outputs.file(layout.buildDirectory.file("generated/dynamic-detail-reply-verification.json"))
 }
 
@@ -947,6 +962,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-reply-protocol/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-detail-protocol/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-follow"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/video-votes"))
     kotlin.srcDir(nativeDiagnosticShareOutput.map { it.dir("kotlin") })
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }

@@ -1,0 +1,44 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt
+@@ -6,6 +6,8 @@
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.layout.onSizeChanged
++import androidx.compose.ui.unit.IntSize
+ import androidx.compose.ui.awt.SwingPanel
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.unit.dp
+@@ -54,8 +56,10 @@
+     onAutomaticSubtitleMode: ((SubtitleDisplayMode) -> Unit)? = null,
+     surfaceOnly: Boolean = false,
+     viewPoints: List<com.android.purebilibili.data.model.response.ViewPoint> = emptyList(),
++    commandOverlay: (@Composable () -> Unit)? = null,
+ ) {
+     val state by player.state.collectAsState()
++    var videoSurfaceSize by remember { mutableStateOf(IntSize.Zero) }
+     val scope = rememberCoroutineScope()
+     val latestPreferences by rememberUpdatedState(preferences)
+     var seeking by remember { mutableStateOf<Float?>(null) }
+@@ -72,17 +76,19 @@
+     fun seekTo(seconds: Double) { (onSeekTo ?: player::seekTo)(seconds.coerceAtLeast(0.0)) }
+ 
+     if (surfaceOnly) {
+-        Box(modifier.fillMaxSize().background(Color.Black)) {
++        Box(modifier.fillMaxSize().background(Color.Black).onSizeChanged { videoSurfaceSize = it }) {
+             if (renderSurface) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
+             else Text("正在浮窗播放", color = Color.White, modifier = Modifier.align(Alignment.Center))
++            if (renderSurface && commandOverlay != null) DesktopVideoCommandPopup(videoSurfaceSize, commandOverlay)
+         }
+         return
+     }
+ 
+     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+-        Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(Color.Black)) {
++        Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(Color.Black).onSizeChanged { videoSurfaceSize = it }) {
+             if (renderSurface) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
+             else Text("正在浮窗播放", color = Color.White, modifier = Modifier.align(Alignment.Center))
++            if (renderSurface && commandOverlay != null) DesktopVideoCommandPopup(videoSurfaceSize, commandOverlay)
+         }
+         DesktopSkinPlayerProgress(value = (seeking ?: state.positionSeconds.toFloat()).let { if (it.isFinite()) it.coerceIn(0f, duration) else 0f },
+             onValueChange = { seeking = it }, onValueChangeFinished = {

@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "postComment previous original-business body byte equality after only completion gateway reversal",
+      "status": "PASS",
+      "previousBodySha256LF": "759dee369e50a4f9a25e4a55920d452e3c19e88ed4d06c3adc4fe942cc143583",
+      "candidateBodySha256LF": "722d50b916b8f883951f007c1d9607eec2f767b65635525ba264a3974a813d06"
+    },
+    {
+      "name": "private composer previous complete original UI body byte equality after matching callback guard reversal",
+      "status": "PASS",
+      "previousBodySha256LF": "7cb51392ce771acf0539842e0c0f1a5be8ef3f540ce7a1d5ef56ec727ea73485",
+      "candidateBodySha256LF": "bb1b8efc5b9a15f84c6a43bddf5ce8f1c3f48e674acaf536eabf2908b5f4e2ab"
+    },
+    {
+      "name": "public wrapper unchanged including success-only text/target/focus clearing",
+      "status": "PASS"
+    },
+    {
+      "name": "original upload and pictures map unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "completion requires cancellation and current live owner/latest submit/once only",
+      "status": "PASS"
+    },
+    {
+      "name": "completion contains no business receipt or feedback",
+      "status": "PASS"
+    },
+    {
+      "name": "UI only matching owner/token clears actual busy",
+      "status": "PASS"
+    },
+    {
+      "name": "panel only cancellation callback argument differs",
+      "status": "PASS"
+    },
+    {
+      "name": "actual layout entire generated source differs only completion callback argument",
+      "status": "PASS"
+    },
+    {
+      "name": "all other container bodies unchanged",
+      "status": "PASS",
+      "generatedSources": 17
+    }
+  ],
+  "checkCount": 10,
+  "previous109ManifestSha256Bytes": "a91a58a41674adb28b77fb39e9edd56208865536501a1ed9e1fa6720d907902f",
+  "scope": "owned submission completion metadata only; no original model/store/math/config changes",
+  "preparedOnly": true
+}

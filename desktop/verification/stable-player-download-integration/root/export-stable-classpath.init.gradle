@@ -1,0 +1,17 @@
+import groovy.json.JsonOutput
+import org.gradle.api.tasks.SourceSetContainer
+
+gradle.projectsEvaluated {
+    rootProject.tasks.register('exportStableRuntimeClasspath') {
+        doLast {
+            def outputPath = System.getProperty('stableClasspathOutput')
+            assert outputPath
+            def sourceSets = rootProject.extensions.getByType(SourceSetContainer)
+            def files = sourceSets.getByName('main').runtimeClasspath.files.collect { it.canonicalPath }
+            def target = new File(outputPath)
+            target.parentFile.mkdirs()
+            target.setText(JsonOutput.prettyPrint(JsonOutput.toJson(files)) + '\n', 'UTF-8')
+            println("Exported ${files.size()} ordered actual stable runtime entries.")
+        }
+    }
+}

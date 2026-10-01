@@ -606,7 +606,10 @@
       "features": [
         "source-parity",
         "media",
-        "downloads"
+        "downloads",
+        "stable-video-vote-parity",
+        "playback",
+        "comments"
       ],
       "sha256": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5"
     },
@@ -5251,6 +5254,44 @@
         "downloads"
       ],
       "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadQualityDialog.kt",
+      "sha256": "185923db37396dcb349f860cfcfa5a143d7bab4b03fd4dd9ef0026580fc62d1a",
+      "features": [
+        "downloads"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentVoteCard.kt",
+      "sha256": "2053dc853a3482bf456ee7ecd2b7ac53aee70bf22d433643fb7bdc8f4522165d",
+      "mode": "direct",
+      "features": [
+        "stable-video-vote-parity",
+        "playback",
+        "comments"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayState.kt",
+      "sha256": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce",
+      "mode": "direct",
+      "features": [
+        "stable-video-vote-parity",
+        "playback",
+        "comments"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt",
+      "sha256": "a89141a1019a5257af51dfb76b6515a3811519dd2882f2ac71291055ba26b1fe",
+      "mode": "extracted",
+      "features": [
+        "stable-video-vote-parity",
+        "playback",
+        "comments"
+      ]
     }
   ],
   "featureCoverage": {

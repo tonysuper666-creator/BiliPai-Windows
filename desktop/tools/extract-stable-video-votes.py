@@ -1,0 +1,43 @@
+"""Source-preserving stable command overlay/grade extraction; direct UI is registry-owned."""
+from pathlib import Path
+import hashlib,importlib.util,sys,textwrap
+sys.dont_write_bytecode=True
+BASE="app/src/main/java/com/android/purebilibili/"
+PINS={'app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt': 'a89141a1019a5257af51dfb76b6515a3811519dd2882f2ac71291055ba26b1fe', 'app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt': 'd09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5'}
+OPS_FRAGMENT='\n// STABLE_VIDEO_VOTE_GRADE_MEMBERS\n// Desktop command vote grade binding. Standard vote continues through submitVote.\nsuspend fun submitGradeDanmaku(aid: Long, cid: Long, progress: Long, gradeId: String, gradeScore: Int): Result<Unit> = result {\n    mutate { csrf ->\n        com.android.purebilibili.data.repository.DesktopVideoGradeProtocol(api)\n            .submitGradeDanmaku(aid, cid, progress, gradeId, gradeScore, csrf).getOrThrow()\n    }\n}\n'
+def generate(repo:Path,output:Path):
+ spec=importlib.util.spec_from_file_location("video_vote_ast",repo/"desktop/tools/sync-upstream.py")
+ parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
+ def read(p):
+  s=(repo/p).read_text(encoding="utf-8").replace("\r\n","\n").replace("\r","\n")
+  assert hashlib.sha256(s.encode()).hexdigest()==PINS[p],p
+  return s
+ def function(s,anchor):
+  ts=parser.kotlin_tokens(s);a=s.index(anchor);start=next(i for i,t in enumerate(ts) if t[1]>=a);end=start
+  while ts[end][0]!="(":end+=1
+  d=1
+  while d:end+=1;d+=(ts[end][0]=="(")-(ts[end][0]==")")
+  while ts[end][0]!="{":end+=1
+  d=1
+  while d:end+=1;d+=(ts[end][0]=="{")-(ts[end][0]=="}")
+  return s[ts[start][1]:ts[end][2]]
+ def emit(p,path,body):
+  target=output/path;target.parent.mkdir(parents=True,exist_ok=True)
+  target.write_text("// GENERATED from "+p+"; do not edit.\n// LF-normalized SHA-256: "+PINS[p]+"\n"+body,encoding="utf-8",newline="\n")
+ p=BASE+"feature/video/ui/overlay/CommandDanmakuOverlay.kt";s=read(p)
+ s=s.replace("import androidx.media3.common.Player","import com.bilipai.desktop.player.MpvPlayer")
+ assert s.count("player: Player,")==1 and s.count("player.currentPosition")==2
+ s=s.replace("player: Player,","player: MpvPlayer,").replace("player.currentPosition","(player.state.value.positionSeconds * 1000.0).toLong()")
+ emit(p,"com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlay.kt",s)
+ p=BASE+"data/repository/DanmakuRepository.kt";s=read(p)
+ grade=function(s,"suspend fun submitGradeDanmaku(")
+ grade=grade.replace("gradeScore: Int\n    )","gradeScore: Int,\n        csrf: String\n    )",1)
+ line="            val csrf = com.android.purebilibili.core.store.TokenManager.csrfCache\n";assert grade.count(line)==1
+ grade=grade.replace(line,"",1)
+ grade=grade.replace("        } catch (e: Exception) {","        } catch (cancelled: kotlinx.coroutines.CancellationException) {\n            throw cancelled\n        } catch (e: Exception) {",1)
+ error=function(s,"internal fun mapSendDanmakuErrorMessage(").replace("internal fun","private fun",1)
+ body="package com.android.purebilibili.data.repository\nimport kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.withContext\n"+error+"\ninternal class DesktopVideoGradeProtocol(private val api: com.android.purebilibili.core.network.BilibiliApi) {\n"+textwrap.indent(grade,"    ")+"\n}\n"
+ emit(p,"com/android/purebilibili/data/repository/DesktopVideoGradeProtocol.kt",body)
+ target=output/"platform/DesktopVideoGradeMembers.fragment";target.parent.mkdir(parents=True,exist_ok=True)
+ target.write_text(OPS_FRAGMENT,encoding="utf-8",newline="\n")
+if __name__=="__main__":generate(Path(sys.argv[1]).resolve(),Path(sys.argv[2]).resolve())
