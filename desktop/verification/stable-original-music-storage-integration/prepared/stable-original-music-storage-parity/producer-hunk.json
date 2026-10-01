@@ -1,0 +1,12 @@
+{
+  "target": "desktop/tools/extract-upstream-music-player-full.py",
+  "baseSHA256LF": "eeabd6f0f1ed80f703470c4c99c1aba0cf234f1ad45c5fa22aa9ff2cf3e5808b",
+  "desiredSHA256LF": "1c8f7f2715fcb1f3ec45d2efe88f2d4fa86737b3acd411d15d42327fb8427a49",
+  "edits": [
+    {
+      "before": "CURRENT='data/repository/ExternalPlaylistRepository.kt';t=read(CURRENT)\ninner=t[t.index('object ExternalPlaylistRepository {')",
+      "after": "# The existing model producers remain sole owners. Emit the complete original\n# history/local-playlist objects separately, replacing only their object name\n# and consumed Android Context/preferences imports with the same Root Store view.\nfor originalName, desktopName in [('PlayHistoryStore', 'DesktopOriginalAudioHistoryStore'),\n                                  ('LocalPlaylistStore', 'DesktopOriginalLocalPlaylistStore')]:\n CURRENT='core/store/'+originalName+'.kt';t=read(CURRENT)\n selected=selector.declarations(parser,t,[originalName])\n originalObject=selected\n declaration='object '+originalName+' {'; adapted='object '+desktopName+' {'\n assert selected.count(declaration)==1\n selected=selected.replace(declaration,adapted,1)\n assert selected.replace(adapted,declaration,1)==originalObject\n header='package com.android.purebilibili.core.store\\n'\n header+='import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context\\n'\n header+='import com.bilipai.desktop.ui.playerStringPreferencesKey as stringPreferencesKey\\n'\n header+='import kotlinx.coroutines.flow.Flow\\nimport kotlinx.coroutines.flow.map\\n'\n header+='import kotlinx.serialization.encodeToString\\nimport kotlinx.serialization.json.Json\\n'\n emit('core/store/'+desktopName+'.kt',header+selected+'\\n',CURRENT,\n      {'declarations':[originalName], 'fullObjectBody':True, 'originalObjectSHA256LF':sha(originalObject),\n       'onlyObjectIdentifierRenamed':{'before':originalName,'after':desktopName}, 'exactWholeObjectInverse':True})\nCURRENT='data/repository/ExternalPlaylistRepository.kt';t=read(CURRENT)\ninner=t[t.index('object ExternalPlaylistRepository {')"
+    }
+  ],
+  "indexedInverse": true
+}

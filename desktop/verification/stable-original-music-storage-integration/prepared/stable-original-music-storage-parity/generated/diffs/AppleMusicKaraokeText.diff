@@ -1,0 +1,10 @@
+--- app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicKaraokeText.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-music-storage-parity\generated\com\android\purebilibili\feature\audio\lyrics\halcyon\AppleMusicKaraokeText.kt
+@@ -36,7 +36,6 @@
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.layout.Layout
+ import androidx.compose.ui.layout.onSizeChanged
+-import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.platform.LocalLayoutDirection
+ import androidx.compose.ui.text.TextLayoutResult

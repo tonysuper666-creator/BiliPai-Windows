@@ -1,0 +1,10 @@
+--- app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricLine.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-music-storage-parity\generated\com\android\purebilibili\feature\audio\lyrics\halcyon\AppleMusicLyricLine.kt
+@@ -44,7 +44,6 @@
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.input.pointer.changedToUpIgnoreConsumed
+ import androidx.compose.ui.platform.LocalDensity
+-import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.platform.LocalLayoutDirection
+ import androidx.compose.ui.text.TextStyle
+ import androidx.compose.ui.text.font.FontFamily

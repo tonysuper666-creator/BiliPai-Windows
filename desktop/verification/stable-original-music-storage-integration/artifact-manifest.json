@@ -1,0 +1,702 @@
+{
+  "artifacts": [
+    {
+      "path": "prepared/stable-original-settings-io-parity/baseline/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "sizeBytes": 16233
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "e749b7d0535d44f2ae66103caf6246ecc738b182b5d696a921079134531240c9",
+      "sizeBytes": 6771
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/exact-hunks.json",
+      "sha256Bytes": "1af40841c5f0d60dfc33e1ffb6f95cf0c6d4f25540122d84c942283aa213fb2a",
+      "sizeBytes": 7438
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/prepare.py",
+      "sha256Bytes": "d252b3f4fc13e6204f860c46a31360322fdbcb38aea47b324025d55a95fbf0c9",
+      "sizeBytes": 9143
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22",
+      "sizeBytes": 20329
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f",
+      "sizeBytes": 7757
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/run.py",
+      "sha256Bytes": "2e5b31157c3c83ee8f3691696f045884f861a935edbc67df883ffdab5f15ede5",
+      "sizeBytes": 5540
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/compile-command.json",
+      "sha256Bytes": "85ad65d335915d512bddca3f2bef666ba56232710903df636cc49346932ebb1d",
+      "sizeBytes": 2545
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/compile.args",
+      "sha256Bytes": "09ad18356ca401506e1c8ce3dabf776b9f80e4dde6bb23b079f3f2d9fc9afeb0",
+      "sizeBytes": 26190
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/inputs/DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f",
+      "sizeBytes": 7757
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/inputs/DesktopPluginStore.kt",
+      "sha256Bytes": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22",
+      "sizeBytes": 20329
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/inputs/SettingsIoProof.kt",
+      "sha256Bytes": "0f968d7f19d57245c65708acfa5fb169e1f43fcbf6bbafda1021673388c448e6",
+      "sizeBytes": 10464
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/overlap.json",
+      "sha256Bytes": "122f8edad1fd64dfcb0e4bd86c0a306ec9492a94ecbdfa70a92675cad42c2028",
+      "sizeBytes": 2148
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/pins-after.json",
+      "sha256Bytes": "f7d70dde6c1380f1001822b9e874906d72e3c625eb7d78c7891e1381422eaf82",
+      "sizeBytes": 44023
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/pins-before.json",
+      "sha256Bytes": "f7d70dde6c1380f1001822b9e874906d72e3c625eb7d78c7891e1381422eaf82",
+      "sizeBytes": 44023
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/result.json",
+      "sha256Bytes": "c3ef48870bd8d8ff5d8c2516ad188650133e12c99b1fdae0860b19e284ce1253",
+      "sizeBytes": 402
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/run-command.json",
+      "sha256Bytes": "7813331d6fdbe413064350d09a1a04cdaced198cf0fc326e8d5e00c6c737e414",
+      "sizeBytes": 27037
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/runs/01/run.log",
+      "sha256Bytes": "f9cda4fda239beeefc6a98e81780948d2e285b40d36bb0ae5d51a52978b2ca4e",
+      "sizeBytes": 368
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/scope.json",
+      "sha256Bytes": "74712f029fa17161ac244cf869e0cf36e5c8973e14a0759ca7bf3de5ced5ec9e",
+      "sizeBytes": 664
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/SettingsIoProof.kt",
+      "sha256Bytes": "0f968d7f19d57245c65708acfa5fb169e1f43fcbf6bbafda1021673388c448e6",
+      "sizeBytes": 10464
+    },
+    {
+      "path": "prepared/stable-original-settings-io-parity/frozen-handoff.json",
+      "sha256Bytes": "0c9daf306710df68f2af52aae9bf75c1b21b217fdd2b70b780e2fc2a585e0b83",
+      "sizeBytes": 4246
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/baseline/desktop/tools/extract-upstream-music-player-full.py",
+      "sha256Bytes": "eeabd6f0f1ed80f703470c4c99c1aba0cf234f1ad45c5fa22aa9ff2cf3e5808b",
+      "sizeBytes": 25312
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/core/store/DesktopOriginalAudioHistoryStore.kt",
+      "sha256Bytes": "6dc216428750c8b0abf3adb8b0cb44b0397a6b3321b2d6df227d5186e9deab8b",
+      "sizeBytes": 2740
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/core/store/DesktopOriginalLocalPlaylistModels.kt",
+      "sha256Bytes": "3699c2dd619d0127e00ee1c4c23a6d690b15c870c7b84760021d1908202e0ad4",
+      "sizeBytes": 505
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/core/store/DesktopOriginalLocalPlaylistStore.kt",
+      "sha256Bytes": "1455e31e5d89b8250e249c923ab99f4cbdab4e264ca66560cd13e7c19bfae595",
+      "sizeBytes": 2638
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/core/store/DesktopOriginalMusicUiSettings.kt",
+      "sha256Bytes": "d0e235a177f9f306c59ce9fe21f281a1063e3979e177dc18a47eab943a2e38ad",
+      "sizeBytes": 2287
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/core/store/DesktopOriginalPlayHistoryModels.kt",
+      "sha256Bytes": "b31b2156aa27872d87a1cc0ba5eb16d5e0093eb1b02c4e89528779925c4bcfe5",
+      "sizeBytes": 591
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/data/repository/DesktopOriginalExternalPlaylistSchema.kt",
+      "sha256Bytes": "32312dc86ce8bc3391080aa4587b5d283a8e21254ab75f8f93e6852985b82890",
+      "sizeBytes": 2903
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt",
+      "sha256Bytes": "067e050410d66e5d7a2bf6cf38c2abd85e2df1d1bacb1f4b6802ca1acc491cb0",
+      "sizeBytes": 16304
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicInterludes.kt",
+      "sha256Bytes": "625a065e021dcde08f9b1a0eb9595c17a33e893913e241a3b9b804cd5f852114",
+      "sizeBytes": 8561
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicKaraokeText.kt",
+      "sha256Bytes": "c419efe7e0acb834d851b6acb7bb73de70493f692d3e9042e47cdfe7ca5a3a18",
+      "sizeBytes": 60445
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricLine.kt",
+      "sha256Bytes": "d650ace0c00bd7554beda9bb5cb0e681a6fc85fa750a5fbda0d114b4f9071180",
+      "sizeBytes": 32092
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricsView.kt",
+      "sha256Bytes": "f876605d852fc1147693bce5fe173230b25b94e5d043f670fa27bb975674a8cb",
+      "sizeBytes": 29456
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricSettings.kt",
+      "sha256Bytes": "e6d0fee9d480937bd863d70da646ac256c9f4021c78b6b02d08ee1e90d97eeda",
+      "sizeBytes": 2122
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt",
+      "sha256Bytes": "58c1f909231ea355e0c066c3fadc003a2d838324ada69263f8607c0e3b01b3bc",
+      "sizeBytes": 14687
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt",
+      "sha256Bytes": "546eb6b1fc07225751019694127e0abdb02380ba02a7aecc5af78a9a99653fa1",
+      "sizeBytes": 3013
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerMiniLyrics.kt",
+      "sha256Bytes": "92299e6f66c8e3bf25ac0866eda05f364dcdf72d3f9d61a40d86bffaecefd98b",
+      "sizeBytes": 4986
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerPalette.kt",
+      "sha256Bytes": "0eccbd544460071cf7f9defe8d46b96f0daa58c0fea594be66c993406c4c504a",
+      "sizeBytes": 7551
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt",
+      "sha256Bytes": "aa2151d83bc839f6bd01ce13d12eddf6b77fb30d647ae0f14aa4c99698918bd1",
+      "sizeBytes": 28482
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/screen/Music3DCoverFlow.kt",
+      "sha256Bytes": "fea16146c8b3ff2ecca919e31f177330d59ff973703972eba6a162aac2b23392",
+      "sizeBytes": 28228
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt",
+      "sha256Bytes": "b99ba982c945e058fd2b9e367531bd9a1b1f79b6023a2a293491a2800ae33094",
+      "sizeBytes": 189726
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/screen/MusicPlayerVisualPolicy.kt",
+      "sha256Bytes": "4d76fac7122d0e371fd8710eab280f20921e6ce164a01b9773dfd3cadbfebb1b",
+      "sizeBytes": 5444
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/screen/MusicTopControlDragPolicy.kt",
+      "sha256Bytes": "8eb95f92c79b22446cdedc05a67566c328e3a01df750c58abbd144816e366d07",
+      "sizeBytes": 1791
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/screen/MusicWavyProgressPolicy.kt",
+      "sha256Bytes": "d310349e0081260e95353694f47ee498277db6da4622dac33eab5a36b0999ab3",
+      "sizeBytes": 1476
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/screen/MusicWavySlider.kt",
+      "sha256Bytes": "dd3d2b68a123e7af9d6cc9539802d815a22be0e544fc1970976f9e9e49fabd53",
+      "sizeBytes": 8228
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt",
+      "sha256Bytes": "15a0dff1b2f7500fc27052308bd877b48c1e1bca6e66992ac8f0cee7249ebff0",
+      "sizeBytes": 5145
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/AppleCoverFlowBackground.diff",
+      "sha256Bytes": "a8ad0f9b4bd2d30a5ab24d3ebf5dfc067db7f710ca998bc6dd24b3451b3d170a",
+      "sizeBytes": 2937
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/AppleMusicInterludes.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/AppleMusicKaraokeText.diff",
+      "sha256Bytes": "3532e53dbc840f8f922c6dd3dd56f9b859b8b8533128731d8682c2f1e7465045",
+      "sizeBytes": 706
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/AppleMusicLyricLine.diff",
+      "sha256Bytes": "16216d226292bc7c8f89f46f6e73db602a33aa10785a7649f3e997b3dc1316a0",
+      "sizeBytes": 721
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/AppleMusicLyricsView.diff",
+      "sha256Bytes": "df630d9dcc2c1d5b7224b3139ce1046e793fc1db6fc2267b4c0c2862e54c290b",
+      "sizeBytes": 683
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/DesktopOriginalAudioHistoryStore.diff",
+      "sha256Bytes": "90eeae3dd1446eb1503bbd6f2389c38a80cebb48fda85d835067196362cf29a5",
+      "sizeBytes": 1901
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/DesktopOriginalExternalPlaylistSchema.diff",
+      "sha256Bytes": "173f4e82d283d72603c9f621a3efe3360dff9fea6d37bd533b8fa8957edaa59d",
+      "sizeBytes": 13957
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/DesktopOriginalLocalPlaylistModels.diff",
+      "sha256Bytes": "e32cafb0f226eda5813b63586e5faae8374a249b35cdb7ffac658403ed14f40e",
+      "sizeBytes": 3381
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/DesktopOriginalLocalPlaylistStore.diff",
+      "sha256Bytes": "2980ea367efc96395558bfe51ecf893eca16377cca5c80e85fba430111673986",
+      "sizeBytes": 1798
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/DesktopOriginalMusicUiSettings.diff",
+      "sha256Bytes": "05d7dcd5097a4f6de187daa429b25a60df0637676819504b9f87061bde96ee39",
+      "sizeBytes": 404866
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/DesktopOriginalPlayHistoryModels.diff",
+      "sha256Bytes": "af36c2a9b55b62d3c251c93b1ff0e4899e2a96f79aa58a072ab472579bf96b41",
+      "sizeBytes": 3408
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/ExternalPlaylistImportDialog.diff",
+      "sha256Bytes": "1dadf15c0e8d03e9535b40c4bd6a941063429cb36a1940f12679895df29f9a32",
+      "sizeBytes": 7167
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/HalcyonLyricSettings.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/Music3DCoverFlow.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/MusicPlayerContent.diff",
+      "sha256Bytes": "f6b16f95da77e825dbdf1929e4ae6b00cd16ea1fc62b8fb52fb81f80658445b6",
+      "sizeBytes": 12805
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/MusicPlayerVisualPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/MusicTopControlDragPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/MusicWavyProgressPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/MusicWavySlider.diff",
+      "sha256Bytes": "29e668d898326dd9927b7e35c4625dfaceb156fe0c699b222a654a786c890323",
+      "sizeBytes": 1785
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/PlayerBlurBackground.diff",
+      "sha256Bytes": "7c30a435a54165a8e33e9b7442d3abee915825daec23749dbca1338e1bf94b48",
+      "sizeBytes": 1135
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/PlayerLyricPerspective.diff",
+      "sha256Bytes": "5443ddccdff8c4b682752d583586df1fa173e0ce70aaa5d9c3290856a6fb78ae",
+      "sizeBytes": 1326
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/PlayerMiniLyrics.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/PlayerPalette.diff",
+      "sha256Bytes": "0325b0e80027267eedde500b91620703d10668a4deee98e8b69350e1519854c2",
+      "sizeBytes": 728
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/diffs/PlayHistorySheet.diff",
+      "sha256Bytes": "6ba937361d07f2f2ecb45dd93dd9a15e557816affdd2905e5322e094e7718304",
+      "sizeBytes": 1302
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/music-adaptations.json",
+      "sha256Bytes": "75c6992cf6db0e6b8f97dba61adbf89b05c904412d4fade28b14ff2969582074",
+      "sizeBytes": 23022
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/music-outputs.json",
+      "sha256Bytes": "c98f88cf5b7ca1424fc8dffa4c63909a143164c953bdf16becb35e4592f44b28",
+      "sizeBytes": 13062
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/music-source-pins.json",
+      "sha256Bytes": "09183825d2f3c70ca4a6ed239d3be68a9b7d81f6a9ae2e5de7b4ccd72387fa0b",
+      "sizeBytes": 5366
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/core/store/LocalPlaylistStore.kt.txt",
+      "sha256Bytes": "40ee1a329c6a725f52f1450b7686d1e66eab320cf31acd9721d5e8bace414fdd",
+      "sizeBytes": 3263
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/core/store/PlayHistoryStore.kt.txt",
+      "sha256Bytes": "571161606f2dc9c287fcbdfc43699b46fca9e67384969598e38cbd4170efcf17",
+      "sizeBytes": 3400
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt.txt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "sizeBytes": 396158
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/data/repository/ExternalPlaylistRepository.kt.txt",
+      "sha256Bytes": "3fe9556d6701f34e7f0eb1731ad005acca7f2ef2f278f5bf3fc571911ae09288",
+      "sizeBytes": 15407
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt.txt",
+      "sha256Bytes": "466ae7e5dff23b97d4d3cddf7718855d57947c1998bae26a5570490f088b0599",
+      "sizeBytes": 16121
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicInterludes.kt.txt",
+      "sha256Bytes": "625a065e021dcde08f9b1a0eb9595c17a33e893913e241a3b9b804cd5f852114",
+      "sizeBytes": 8561
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicKaraokeText.kt.txt",
+      "sha256Bytes": "41765edebf44f4719b1e46e7c1efc5a82281d0d4db8eb18fe4e1c6ae28af1180",
+      "sizeBytes": 60494
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricLine.kt.txt",
+      "sha256Bytes": "1114516a2105245c0b108e2d4616636cbca4c56b9635105420962acadf2730f7",
+      "sizeBytes": 32141
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricsView.kt.txt",
+      "sha256Bytes": "deeaee2422f18c6f5bad05186235eccb900fe77e48d864751be0545f9974ff67",
+      "sizeBytes": 29505
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricSettings.kt.txt",
+      "sha256Bytes": "e6d0fee9d480937bd863d70da646ac256c9f4021c78b6b02d08ee1e90d97eeda",
+      "sizeBytes": 2122
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt.txt",
+      "sha256Bytes": "fbc253f246e873b3c8131d4fa4328d1932e63eb4e931b720264999718c8d8c84",
+      "sizeBytes": 14641
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt.txt",
+      "sha256Bytes": "31a860459d16f51b3c7d94147f0852a7ba7a62d06b073a7d8a8b8c373a908a59",
+      "sizeBytes": 2992
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerMiniLyrics.kt.txt",
+      "sha256Bytes": "92299e6f66c8e3bf25ac0866eda05f364dcdf72d3f9d61a40d86bffaecefd98b",
+      "sizeBytes": 4986
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerPalette.kt.txt",
+      "sha256Bytes": "dba4432bc86d36792ec75e67681bec25e512b6290471a6c66b68d1b8c210e43b",
+      "sizeBytes": 7499
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt.txt",
+      "sha256Bytes": "26cb46a8d744f16eb448c3242ade46d4edc9363c7109fdaf7b86d07c3fd91c97",
+      "sizeBytes": 28554
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/Music3DCoverFlow.kt.txt",
+      "sha256Bytes": "fea16146c8b3ff2ecca919e31f177330d59ff973703972eba6a162aac2b23392",
+      "sizeBytes": 28228
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt.txt",
+      "sha256Bytes": "96b8c9ac79136440418c75f0740f04845701e4d3b46342575d81ec79b3e0701c",
+      "sizeBytes": 191458
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerVisualPolicy.kt.txt",
+      "sha256Bytes": "4d76fac7122d0e371fd8710eab280f20921e6ce164a01b9773dfd3cadbfebb1b",
+      "sizeBytes": 5444
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicTopControlDragPolicy.kt.txt",
+      "sha256Bytes": "8eb95f92c79b22446cdedc05a67566c328e3a01df750c58abbd144816e366d07",
+      "sizeBytes": 1791
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavyProgressPolicy.kt.txt",
+      "sha256Bytes": "d310349e0081260e95353694f47ee498277db6da4622dac33eab5a36b0999ab3",
+      "sizeBytes": 1476
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavySlider.kt.txt",
+      "sha256Bytes": "d6de77651bbf9109b7e0f27dd72084e4b466f61d77d09e1a5f37f6121ca54e3f",
+      "sizeBytes": 8255
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt.txt",
+      "sha256Bytes": "85639fbe680f6f56868bf7b58126af26b921721ba876b670213344f57f6f2694",
+      "sizeBytes": 5173
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/generation.log",
+      "sha256Bytes": "7a2fcdcc48b05ce37ed059e1cec99cbcceb75e217a699bb6d19fb20560e4442d",
+      "sizeBytes": 63
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/manual/com/bilipai/desktop/ui/DesktopOriginalMusicStorageBinding.kt",
+      "sha256Bytes": "01942b085be5dc452c0f80ab74e987d4fdc67aad9e2cf5430e53e6936966cd6b",
+      "sizeBytes": 1979
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/MusicStorageProof.kt",
+      "sha256Bytes": "feaf66a886a20042514dffc3fef56ad0058e5261cba2a223d6f35b88e921c044",
+      "sizeBytes": 7752
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/prepare.py",
+      "sha256Bytes": "c73d319e95f04713c6573a4a0fccb53ce9234b106554165a5343b21c2acf9dfc",
+      "sizeBytes": 3186
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/prepared/desktop/tools/extract-upstream-music-player-full.py",
+      "sha256Bytes": "1c8f7f2715fcb1f3ec45d2efe88f2d4fa86737b3acd411d15d42327fb8427a49",
+      "sizeBytes": 26821
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/producer-hunk.json",
+      "sha256Bytes": "24cc56c61f654f58c183252a4cf4e67c50a8a677876694b27610ff1767b92b91",
+      "sizeBytes": 2130
+    },
+    {
+      "path": "prepared/stable-original-music-storage-parity/frozen-handoff.json",
+      "sha256Bytes": "f3a99438b304983ca7dd9806c507baeecd0baf292a63d9bd573c0807c71fece1",
+      "sizeBytes": 17586
+    },
+    {
+      "path": "root/install/after/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22",
+      "sizeBytes": 20329
+    },
+    {
+      "path": "root/install/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMusicStorageBinding.kt",
+      "sha256Bytes": "01942b085be5dc452c0f80ab74e987d4fdc67aad9e2cf5430e53e6936966cd6b",
+      "sizeBytes": 1979
+    },
+    {
+      "path": "root/install/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f",
+      "sizeBytes": 7757
+    },
+    {
+      "path": "root/install/after/desktop/tools/extract-upstream-music-player-full.py",
+      "sha256Bytes": "1c8f7f2715fcb1f3ec45d2efe88f2d4fa86737b3acd411d15d42327fb8427a49",
+      "sizeBytes": 26821
+    },
+    {
+      "path": "root/install/before/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "sizeBytes": 16233
+    },
+    {
+      "path": "root/install/before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "e749b7d0535d44f2ae66103caf6246ecc738b182b5d696a921079134531240c9",
+      "sizeBytes": 6771
+    },
+    {
+      "path": "root/install/before/desktop/tools/extract-upstream-music-player-full.py",
+      "sha256Bytes": "eeabd6f0f1ed80f703470c4c99c1aba0cf234f1ad45c5fa22aa9ff2cf3e5808b",
+      "sizeBytes": 25312
+    },
+    {
+      "path": "root/install/installed.json",
+      "sha256Bytes": "bbe93aaebd581d6c8987b7df93dba922402b577a56e77b1be159c937de943a82",
+      "sizeBytes": 2207
+    },
+    {
+      "path": "root/snapshot76/manifest.json",
+      "sha256Bytes": "65078b6029eeeaf44f9df605a884386b9f0495de7a76b28df1b616bd5c82176a",
+      "sizeBytes": 157114
+    },
+    {
+      "path": "root/snapshot76/ordered-runtime-cp.json",
+      "sha256Bytes": "b8f76524bb39b8d09e50ea8532cd8eae6ee94c569a2e8140d650b86b43f11507",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-76.log",
+      "sha256Bytes": "c3dcabe7a634bfa839332f02771aee0cdf857746dab98c1b52081f88bc7f3918",
+      "sizeBytes": 9044
+    },
+    {
+      "path": "root/classpath76.log",
+      "sha256Bytes": "14d906a8f04e2f67c803371959b75b9c40bc825ff5116510751ba879538e3030",
+      "sizeBytes": 290
+    },
+    {
+      "path": "root/jvm-method-name-audit-76.json",
+      "sha256Bytes": "7477d36c1fbc2e045913be1d30531e8c1e9ecc0e6282d7cdeca5b3e684805bbb",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/independent-source-review.json",
+      "sha256Bytes": "258d28e7eb3a8b942890bf27b99ff234d78c1ff42e267ea22188d9953a3c7419",
+      "sizeBytes": 3912
+    },
+    {
+      "path": "root/install-original-music-storage76.py",
+      "sha256Bytes": "18b39f82c8062f66167f3847701f12660f1e5a0497dfc1d730c1ba9bb51e09e4",
+      "sizeBytes": 3642
+    },
+    {
+      "path": "root/freeze-settings-music-prepared76.py",
+      "sha256Bytes": "e7fffafd7255b54aef51b586f8ba80c0501f65d89f6d0a0bafb6f7b0efd7c1d5",
+      "sizeBytes": 1431
+    },
+    {
+      "path": "root/freeze-original-music-storage76.py",
+      "sha256Bytes": "69d9fe5f16a7ad9385b96cdf94f0769d7a4d8b7317db4fb686c1d42445896fb4",
+      "sizeBytes": 8764
+    },
+    {
+      "path": "root/sole-generated-object-audit.json",
+      "sha256Bytes": "ee962f2f89f83acd7b2cec97465b5c9e249621862595ca9059071c17fad82d8d",
+      "sizeBytes": 800
+    },
+    {
+      "path": "root/installed-proof/run.py",
+      "sha256Bytes": "97cc4a9fd10498efa31b310a008e2204c3dc65490a4d0ebfa08751a99e0633d8",
+      "sizeBytes": 5809
+    },
+    {
+      "path": "root/installed-proof/runs/01/class-origins.json",
+      "sha256Bytes": "8f6231aa0aa648cb978b5749397203fa249d82aa541b470799657bffe5393b74",
+      "sizeBytes": 3846
+    },
+    {
+      "path": "root/installed-proof/runs/01/compile-command.json",
+      "sha256Bytes": "3b9dad3cef7acd5abdc57001a33edd76c710a1456687d57fd816f10f1f62b675",
+      "sizeBytes": 2555
+    },
+    {
+      "path": "root/installed-proof/runs/01/compile.args",
+      "sha256Bytes": "783b3b241859af0b571d4d8cbfe499f6e221305e740fc64c584174e88b8d9524",
+      "sizeBytes": 25718
+    },
+    {
+      "path": "root/installed-proof/runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/installed-proof/runs/01/inputs/MusicStorageProof.kt",
+      "sha256Bytes": "feaf66a886a20042514dffc3fef56ad0058e5261cba2a223d6f35b88e921c044",
+      "sizeBytes": 7752
+    },
+    {
+      "path": "root/installed-proof/runs/01/inputs/SettingsIoProof.kt",
+      "sha256Bytes": "0f968d7f19d57245c65708acfa5fb169e1f43fcbf6bbafda1021673388c448e6",
+      "sizeBytes": 10464
+    },
+    {
+      "path": "root/installed-proof/runs/01/MusicStorageProof-command.json",
+      "sha256Bytes": "f2e1475a1c66458eae9e110eaf79c8132f5450ef1cb99392154e7058957727b3",
+      "sizeBytes": 27045
+    },
+    {
+      "path": "root/installed-proof/runs/01/MusicStorageProof.log",
+      "sha256Bytes": "3bcd4b2d3cc2f365b84dca0fbe21f367f9b96278d8503fa4746e55370c8aaf75",
+      "sizeBytes": 216
+    },
+    {
+      "path": "root/installed-proof/runs/01/overlap.json",
+      "sha256Bytes": "ead19a27188449a9a0b83715b4878668c68a12e0383abff81d7843de7fd1191d",
+      "sizeBytes": 56
+    },
+    {
+      "path": "root/installed-proof/runs/01/pins-after.json",
+      "sha256Bytes": "4b1651e086811199d9ec5e5c4d4b1664dd4d8db79f03f786f1942784a6e790d8",
+      "sizeBytes": 43274
+    },
+    {
+      "path": "root/installed-proof/runs/01/pins-before.json",
+      "sha256Bytes": "4b1651e086811199d9ec5e5c4d4b1664dd4d8db79f03f786f1942784a6e790d8",
+      "sizeBytes": 43274
+    },
+    {
+      "path": "root/installed-proof/runs/01/result.json",
+      "sha256Bytes": "4e09c9fb2c641894fb9fe337968d4536237b440abdb62806195912cafe509f71",
+      "sizeBytes": 770
+    },
+    {
+      "path": "root/installed-proof/runs/01/SettingsIoProof-command.json",
+      "sha256Bytes": "99358bcb3eb7a1fdd91c392964ee8a7204de27aaa2f4d27337c1aaa0397ec3f2",
+      "sizeBytes": 27043
+    },
+    {
+      "path": "root/installed-proof/runs/01/SettingsIoProof.log",
+      "sha256Bytes": "9bc3bac98c90d65e66998671381212c3ca67daf0d84c2d61f3a127af07e35d14",
+      "sizeBytes": 370
+    },
+    {
+      "path": "root/installed-proof/excluded-artifacts.json",
+      "sha256Bytes": "389e8df4c3fef4fed8653b912a88494b20014d2d51a0b8885a24ebfd736ae71e",
+      "sizeBytes": 226
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "d0fb6b0d25ab4a337ea9823ec128e6dad0524d5a57e106765ee1cb6d82906904",
+      "sizeBytes": 1196
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "runs/01/fixture.jar",
+      "sha256Bytes": "2d494c0489e4b0031423ccabfeb6a9607d89a83c45335afb3f1c9c3f93b74448",
+      "sizeBytes": 78064,
+      "reason": "Rebuildable fixture output; not production payload."
+    }
+  ]
+}

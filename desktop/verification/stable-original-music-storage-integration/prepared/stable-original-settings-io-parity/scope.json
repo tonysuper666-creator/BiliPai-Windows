@@ -1,0 +1,19 @@
+{
+  "actualBase": 75,
+  "baseCommit": "87462d91b94d21a60b82c771fb75af339190841e",
+  "newStore": false,
+  "newActor": false,
+  "newDependencies": 0,
+  "newOriginalIdentities": 0,
+  "namespacesPreserved": true,
+  "diskAndBackingOutsideRootAdmission": true,
+  "acceptedGlobalCommitMayFinishAfterEntryRetires": true,
+  "suspendDataStoreCallerCancelledBeforePermitRejected": true,
+  "staleEntryBeforePermitRejected": true,
+  "CASConflictRechecksOwnership": true,
+  "freezeWinsFinalReplacement": true,
+  "synchronousMirrorApplyRemainsSynchronous": true,
+  "standaloneMirrorCallerCancellationClaimed": false,
+  "wholeRootAccepted": false,
+  "desktopExeReplaced": false
+}

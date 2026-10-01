@@ -1,0 +1,121 @@
+--- app/src/main/java/com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-music-storage-parity\generated\com\android\purebilibili\feature\audio\screen\ExternalPlaylistImportDialog.kt
+@@ -42,7 +42,7 @@
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopOriginalMusicUiPlatform
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+@@ -51,11 +51,9 @@
+ import coil3.compose.AsyncImage
+ import com.android.purebilibili.core.store.LocalPlaylist
+ import com.android.purebilibili.core.store.LocalPlaylistItem
+-import com.android.purebilibili.core.store.LocalPlaylistStore
+ import com.android.purebilibili.core.ui.AppShapes
+ import com.android.purebilibili.core.ui.ContainerLevel
+-import com.android.purebilibili.data.repository.ExternalPlaylistRepository
+-import com.android.purebilibili.data.repository.SearchRepository
++import com.android.purebilibili.data.repository.DesktopOriginalExternalPlaylistSchema as ExternalPlaylistRepository
+ import com.android.purebilibili.feature.home.components.LiquidGlassTuning
+ import com.android.purebilibili.feature.home.components.biliPaiFloatingDockShell
+ import com.android.purebilibili.feature.home.components.resolveLiquidGlassTuning
+@@ -77,7 +75,8 @@
+     glassEnabled: Boolean = false,
+     liquidGlassTuning: LiquidGlassTuning = resolveLiquidGlassTuning(progress = 0.5f),
+ ) {
+-    val context = LocalContext.current
++    val platform = LocalDesktopOriginalMusicUiPlatform.current
++    val context = platform.context
+     val scope = rememberCoroutineScope()
+ 
+     var inputText by remember { mutableStateOf("") }
+@@ -102,7 +101,7 @@
+     }
+ 
+     LaunchedEffect(context) {
+-        ExternalPlaylistRepository.loadImportCheckpoint(context)?.let { checkpoint ->
++        platform.externalPlaylist.loadImportCheckpoint(context)?.let { checkpoint ->
+             playlist = checkpoint.playlist
+             matchResults = checkpoint.outcomes.map { ExternalPlaylistRepository.MatchOutcome(it.track, it.video) }
+             matchTotal = checkpoint.playlist.tracks.size
+@@ -126,19 +125,19 @@
+             matchResults = meta.tracks.map { ExternalPlaylistRepository.MatchOutcome(it, null) }
+         }
+         scope.launch {
+-            ExternalPlaylistRepository.saveImportCheckpoint(
++            platform.externalPlaylist.saveImportCheckpoint(
+                 context,
+                 ExternalPlaylistRepository.ImportCheckpoint(meta, matchResults, matchCompleted),
+             )
+         }
+         matchJob = scope.launch {
+-            ExternalPlaylistRepository.matchTracks(meta.tracks, startIndex) { completed, _, outcome ->
++            platform.externalPlaylist.matchTracks(meta.tracks, startIndex) { completed, _, outcome ->
+                 matchCompleted = completed
+                 matchingTrackTitle = outcome.track.title
+                 matchResults = matchResults.toMutableList().also { list ->
+                     if (completed - 1 in list.indices) list[completed - 1] = outcome
+                 }
+-                ExternalPlaylistRepository.saveImportCheckpoint(
++                platform.externalPlaylist.saveImportCheckpoint(
+                     context,
+                     ExternalPlaylistRepository.ImportCheckpoint(meta, matchResults, completed),
+                 )
+@@ -168,8 +167,8 @@
+                 createdAtMs = System.currentTimeMillis(),
+                 items = items,
+             )
+-            LocalPlaylistStore.savePlaylist(context, local)
+-            ExternalPlaylistRepository.clearImportCheckpoint(context)
++            platform.savePlaylist(local)
++            platform.externalPlaylist.clearImportCheckpoint(context)
+             onSaved?.invoke(local)
+             onDismiss()
+         }
+@@ -181,7 +180,6 @@
+         onDismissRequest = onDismiss,
+         properties = DialogProperties(
+             usePlatformDefaultWidth = false,
+-            decorFitsSystemWindows = false,
+         ),
+     ) {
+         Surface(
+@@ -257,7 +255,7 @@
+                                 if (sourceAndId == null) {
+                                     fetchError = "无法识别链接，请粘贴网易云或 QQ 音乐的完整分享链接"
+                                 } else {
+-                                    ExternalPlaylistRepository.fetchPlaylist(sourceAndId.first, sourceAndId.second)
++                                    platform.externalPlaylist.fetchPlaylist(sourceAndId.first, sourceAndId.second)
+                                         .onSuccess { fetched ->
+                                             if (fetched.tracks.isEmpty()) fetchError = "歌单为空或为私密歌单"
+                                             else {
+@@ -267,7 +265,7 @@
+                                                 }
+                                                 matchCompleted = 0
+                                                 matchTotal = fetched.tracks.size
+-                                                ExternalPlaylistRepository.saveImportCheckpoint(
++                                                platform.externalPlaylist.saveImportCheckpoint(
+                                                     context,
+                                                     ExternalPlaylistRepository.ImportCheckpoint(
+                                                         fetched,
+@@ -443,7 +441,7 @@
+                                                 if (manualKeyword.isNotBlank() && !manualSearching) {
+                                                     scope.launch {
+                                                         manualSearching = true
+-                                                        SearchRepository.search(keyword = manualKeyword)
++                                                        platform.externalPlaylist.search(keyword = manualKeyword)
+                                                             .onSuccess { (items, _) ->
+                                                                 manualResults = items.take(8).map {
+                                                                     ExternalPlaylistRepository.MatchedVideo(
+@@ -471,7 +469,7 @@
+                                                     list[index] = ExternalPlaylistRepository.MatchOutcome(list[index].track, video)
+                                                 }
+                                                 scope.launch {
+-                                                    ExternalPlaylistRepository.saveImportCheckpoint(
++                                                    platform.externalPlaylist.saveImportCheckpoint(
+                                                         context,
+                                                         ExternalPlaylistRepository.ImportCheckpoint(
+                                                             meta,

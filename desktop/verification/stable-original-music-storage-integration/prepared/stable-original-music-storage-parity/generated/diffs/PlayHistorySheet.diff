@@ -1,0 +1,25 @@
+--- app/src/main/java/com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-music-storage-parity\generated\com\android\purebilibili\feature\audio\screen\PlayHistorySheet.kt
+@@ -26,10 +26,9 @@
+ import androidx.compose.ui.unit.dp
+ import coil3.compose.AsyncImage
+ import com.android.purebilibili.core.store.PlayHistoryEntry
+-import com.android.purebilibili.core.store.PlayHistoryStore
+ import com.android.purebilibili.core.ui.AppModalBottomSheet
+ import com.android.purebilibili.core.ui.components.AppText
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopOriginalMusicUiPlatform
+ 
+ /** 最近播放：按播放时间倒序展示，含播放次数。点击立即切歌。 */
+ @OptIn(ExperimentalMaterial3Api::class)
+@@ -38,8 +37,8 @@
+     onPlay: (PlayHistoryEntry) -> Unit,
+     onDismiss: () -> Unit
+ ) {
+-    val context = LocalContext.current
+-    val entries by PlayHistoryStore.recent(context, limit = 50)
++    val platform = LocalDesktopOriginalMusicUiPlatform.current
++    val entries by platform.history.recent(limit = 50)
+         .collectAsStateWithLifecycle(initialValue = emptyList())
+ 
+     AppModalBottomSheet(

@@ -1,0 +1,16 @@
+[
+  {
+    "originalObjectOnlyRename": true,
+    "actualGeneratedPath": "desktop/build/generated/music-player-full/com/android/purebilibili/core/store/DesktopOriginalAudioHistoryStore.kt",
+    "preparedSHA256LF": "6dc216428750c8b0abf3adb8b0cb44b0397a6b3321b2d6df227d5186e9deab8b",
+    "actualSHA256LF": "6dc216428750c8b0abf3adb8b0cb44b0397a6b3321b2d6df227d5186e9deab8b",
+    "sameByteBody": true
+  },
+  {
+    "originalObjectOnlyRename": true,
+    "actualGeneratedPath": "desktop/build/generated/music-player-full/com/android/purebilibili/core/store/DesktopOriginalLocalPlaylistStore.kt",
+    "preparedSHA256LF": "1455e31e5d89b8250e249c923ab99f4cbdab4e264ca66560cd13e7c19bfae595",
+    "actualSHA256LF": "1455e31e5d89b8250e249c923ab99f4cbdab4e264ca66560cd13e7c19bfae595",
+    "sameByteBody": true
+  }
+]

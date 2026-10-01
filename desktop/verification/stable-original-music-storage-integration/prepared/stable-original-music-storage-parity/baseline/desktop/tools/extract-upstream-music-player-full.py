@@ -99,26 +99,6 @@ CURRENT='core/store/PlayHistoryStore.kt';t=read(CURRENT);selected=selector.decla
 emit('core/store/DesktopOriginalPlayHistoryModels.kt','package com.android.purebilibili.core.store\nimport kotlinx.serialization.Serializable\n'+selected+'\n',CURRENT,{'declarations':['PlayHistoryEntry','PlayLastSession']})
 CURRENT='core/store/LocalPlaylistStore.kt';t=read(CURRENT);selected=selector.declarations(parser,t,['LocalPlaylistItem','LocalPlaylist'])
 emit('core/store/DesktopOriginalLocalPlaylistModels.kt','package com.android.purebilibili.core.store\nimport kotlinx.serialization.Serializable\n'+selected+'\n',CURRENT,{'declarations':['LocalPlaylistItem','LocalPlaylist']})
-# The existing model producers remain sole owners. Emit the complete original
-# history/local-playlist objects separately, replacing only their object name
-# and consumed Android Context/preferences imports with the same Root Store view.
-for originalName, desktopName in [('PlayHistoryStore', 'DesktopOriginalAudioHistoryStore'),
-                                  ('LocalPlaylistStore', 'DesktopOriginalLocalPlaylistStore')]:
- CURRENT='core/store/'+originalName+'.kt';t=read(CURRENT)
- selected=selector.declarations(parser,t,[originalName])
- originalObject=selected
- declaration='object '+originalName+' {'; adapted='object '+desktopName+' {'
- assert selected.count(declaration)==1
- selected=selected.replace(declaration,adapted,1)
- assert selected.replace(adapted,declaration,1)==originalObject
- header='package com.android.purebilibili.core.store\n'
- header+='import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context\n'
- header+='import com.bilipai.desktop.ui.playerStringPreferencesKey as stringPreferencesKey\n'
- header+='import kotlinx.coroutines.flow.Flow\nimport kotlinx.coroutines.flow.map\n'
- header+='import kotlinx.serialization.encodeToString\nimport kotlinx.serialization.json.Json\n'
- emit('core/store/'+desktopName+'.kt',header+selected+'\n',CURRENT,
-      {'declarations':[originalName], 'fullObjectBody':True, 'originalObjectSHA256LF':sha(originalObject),
-       'onlyObjectIdentifierRenamed':{'before':originalName,'after':desktopName}, 'exactWholeObjectInverse':True})
 CURRENT='data/repository/ExternalPlaylistRepository.kt';t=read(CURRENT)
 inner=t[t.index('object ExternalPlaylistRepository {')+len('object ExternalPlaylistRepository {'):t.rfind('}')]
 names=['Source','ExternalTrack','ExternalPlaylistMeta','MatchedVideo','MatchOutcome','ImportCheckpoint','parsePlaylistInput','extractId','buildSearchQueryForManualMatch']

@@ -1,0 +1,412 @@
+{
+  "frozen": true,
+  "actualBase": 75,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifacts": [
+    {
+      "path": "baseline/desktop/tools/extract-upstream-music-player-full.py",
+      "sha256Bytes": "eeabd6f0f1ed80f703470c4c99c1aba0cf234f1ad45c5fa22aa9ff2cf3e5808b",
+      "bytes": 25312
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/DesktopOriginalAudioHistoryStore.kt",
+      "sha256Bytes": "6dc216428750c8b0abf3adb8b0cb44b0397a6b3321b2d6df227d5186e9deab8b",
+      "bytes": 2740
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/DesktopOriginalLocalPlaylistModels.kt",
+      "sha256Bytes": "3699c2dd619d0127e00ee1c4c23a6d690b15c870c7b84760021d1908202e0ad4",
+      "bytes": 505
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/DesktopOriginalLocalPlaylistStore.kt",
+      "sha256Bytes": "1455e31e5d89b8250e249c923ab99f4cbdab4e264ca66560cd13e7c19bfae595",
+      "bytes": 2638
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/DesktopOriginalMusicUiSettings.kt",
+      "sha256Bytes": "d0e235a177f9f306c59ce9fe21f281a1063e3979e177dc18a47eab943a2e38ad",
+      "bytes": 2287
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/DesktopOriginalPlayHistoryModels.kt",
+      "sha256Bytes": "b31b2156aa27872d87a1cc0ba5eb16d5e0093eb1b02c4e89528779925c4bcfe5",
+      "bytes": 591
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalExternalPlaylistSchema.kt",
+      "sha256Bytes": "32312dc86ce8bc3391080aa4587b5d283a8e21254ab75f8f93e6852985b82890",
+      "bytes": 2903
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt",
+      "sha256Bytes": "067e050410d66e5d7a2bf6cf38c2abd85e2df1d1bacb1f4b6802ca1acc491cb0",
+      "bytes": 16304
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicInterludes.kt",
+      "sha256Bytes": "625a065e021dcde08f9b1a0eb9595c17a33e893913e241a3b9b804cd5f852114",
+      "bytes": 8561
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicKaraokeText.kt",
+      "sha256Bytes": "c419efe7e0acb834d851b6acb7bb73de70493f692d3e9042e47cdfe7ca5a3a18",
+      "bytes": 60445
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricLine.kt",
+      "sha256Bytes": "d650ace0c00bd7554beda9bb5cb0e681a6fc85fa750a5fbda0d114b4f9071180",
+      "bytes": 32092
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricsView.kt",
+      "sha256Bytes": "f876605d852fc1147693bce5fe173230b25b94e5d043f670fa27bb975674a8cb",
+      "bytes": 29456
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricSettings.kt",
+      "sha256Bytes": "e6d0fee9d480937bd863d70da646ac256c9f4021c78b6b02d08ee1e90d97eeda",
+      "bytes": 2122
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt",
+      "sha256Bytes": "58c1f909231ea355e0c066c3fadc003a2d838324ada69263f8607c0e3b01b3bc",
+      "bytes": 14687
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt",
+      "sha256Bytes": "546eb6b1fc07225751019694127e0abdb02380ba02a7aecc5af78a9a99653fa1",
+      "bytes": 3013
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerMiniLyrics.kt",
+      "sha256Bytes": "92299e6f66c8e3bf25ac0866eda05f364dcdf72d3f9d61a40d86bffaecefd98b",
+      "bytes": 4986
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerPalette.kt",
+      "sha256Bytes": "0eccbd544460071cf7f9defe8d46b96f0daa58c0fea594be66c993406c4c504a",
+      "bytes": 7551
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt",
+      "sha256Bytes": "aa2151d83bc839f6bd01ce13d12eddf6b77fb30d647ae0f14aa4c99698918bd1",
+      "bytes": 28482
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/screen/Music3DCoverFlow.kt",
+      "sha256Bytes": "fea16146c8b3ff2ecca919e31f177330d59ff973703972eba6a162aac2b23392",
+      "bytes": 28228
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt",
+      "sha256Bytes": "b99ba982c945e058fd2b9e367531bd9a1b1f79b6023a2a293491a2800ae33094",
+      "bytes": 189726
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/screen/MusicPlayerVisualPolicy.kt",
+      "sha256Bytes": "4d76fac7122d0e371fd8710eab280f20921e6ce164a01b9773dfd3cadbfebb1b",
+      "bytes": 5444
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/screen/MusicTopControlDragPolicy.kt",
+      "sha256Bytes": "8eb95f92c79b22446cdedc05a67566c328e3a01df750c58abbd144816e366d07",
+      "bytes": 1791
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/screen/MusicWavyProgressPolicy.kt",
+      "sha256Bytes": "d310349e0081260e95353694f47ee498277db6da4622dac33eab5a36b0999ab3",
+      "bytes": 1476
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/screen/MusicWavySlider.kt",
+      "sha256Bytes": "dd3d2b68a123e7af9d6cc9539802d815a22be0e544fc1970976f9e9e49fabd53",
+      "bytes": 8228
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt",
+      "sha256Bytes": "15a0dff1b2f7500fc27052308bd877b48c1e1bca6e66992ac8f0cee7249ebff0",
+      "bytes": 5145
+    },
+    {
+      "path": "generated/diffs/AppleCoverFlowBackground.diff",
+      "sha256Bytes": "a8ad0f9b4bd2d30a5ab24d3ebf5dfc067db7f710ca998bc6dd24b3451b3d170a",
+      "bytes": 2937
+    },
+    {
+      "path": "generated/diffs/AppleMusicInterludes.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "generated/diffs/AppleMusicKaraokeText.diff",
+      "sha256Bytes": "3532e53dbc840f8f922c6dd3dd56f9b859b8b8533128731d8682c2f1e7465045",
+      "bytes": 706
+    },
+    {
+      "path": "generated/diffs/AppleMusicLyricLine.diff",
+      "sha256Bytes": "16216d226292bc7c8f89f46f6e73db602a33aa10785a7649f3e997b3dc1316a0",
+      "bytes": 721
+    },
+    {
+      "path": "generated/diffs/AppleMusicLyricsView.diff",
+      "sha256Bytes": "df630d9dcc2c1d5b7224b3139ce1046e793fc1db6fc2267b4c0c2862e54c290b",
+      "bytes": 683
+    },
+    {
+      "path": "generated/diffs/DesktopOriginalAudioHistoryStore.diff",
+      "sha256Bytes": "90eeae3dd1446eb1503bbd6f2389c38a80cebb48fda85d835067196362cf29a5",
+      "bytes": 1901
+    },
+    {
+      "path": "generated/diffs/DesktopOriginalExternalPlaylistSchema.diff",
+      "sha256Bytes": "173f4e82d283d72603c9f621a3efe3360dff9fea6d37bd533b8fa8957edaa59d",
+      "bytes": 13957
+    },
+    {
+      "path": "generated/diffs/DesktopOriginalLocalPlaylistModels.diff",
+      "sha256Bytes": "e32cafb0f226eda5813b63586e5faae8374a249b35cdb7ffac658403ed14f40e",
+      "bytes": 3381
+    },
+    {
+      "path": "generated/diffs/DesktopOriginalLocalPlaylistStore.diff",
+      "sha256Bytes": "2980ea367efc96395558bfe51ecf893eca16377cca5c80e85fba430111673986",
+      "bytes": 1798
+    },
+    {
+      "path": "generated/diffs/DesktopOriginalMusicUiSettings.diff",
+      "sha256Bytes": "05d7dcd5097a4f6de187daa429b25a60df0637676819504b9f87061bde96ee39",
+      "bytes": 404866
+    },
+    {
+      "path": "generated/diffs/DesktopOriginalPlayHistoryModels.diff",
+      "sha256Bytes": "af36c2a9b55b62d3c251c93b1ff0e4899e2a96f79aa58a072ab472579bf96b41",
+      "bytes": 3408
+    },
+    {
+      "path": "generated/diffs/ExternalPlaylistImportDialog.diff",
+      "sha256Bytes": "1dadf15c0e8d03e9535b40c4bd6a941063429cb36a1940f12679895df29f9a32",
+      "bytes": 7167
+    },
+    {
+      "path": "generated/diffs/HalcyonLyricSettings.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "generated/diffs/Music3DCoverFlow.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "generated/diffs/MusicPlayerContent.diff",
+      "sha256Bytes": "f6b16f95da77e825dbdf1929e4ae6b00cd16ea1fc62b8fb52fb81f80658445b6",
+      "bytes": 12805
+    },
+    {
+      "path": "generated/diffs/MusicPlayerVisualPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "generated/diffs/MusicTopControlDragPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "generated/diffs/MusicWavyProgressPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "generated/diffs/MusicWavySlider.diff",
+      "sha256Bytes": "29e668d898326dd9927b7e35c4625dfaceb156fe0c699b222a654a786c890323",
+      "bytes": 1785
+    },
+    {
+      "path": "generated/diffs/PlayerBlurBackground.diff",
+      "sha256Bytes": "7c30a435a54165a8e33e9b7442d3abee915825daec23749dbca1338e1bf94b48",
+      "bytes": 1135
+    },
+    {
+      "path": "generated/diffs/PlayerLyricPerspective.diff",
+      "sha256Bytes": "5443ddccdff8c4b682752d583586df1fa173e0ce70aaa5d9c3290856a6fb78ae",
+      "bytes": 1326
+    },
+    {
+      "path": "generated/diffs/PlayerMiniLyrics.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "generated/diffs/PlayerPalette.diff",
+      "sha256Bytes": "0325b0e80027267eedde500b91620703d10668a4deee98e8b69350e1519854c2",
+      "bytes": 728
+    },
+    {
+      "path": "generated/diffs/PlayHistorySheet.diff",
+      "sha256Bytes": "6ba937361d07f2f2ecb45dd93dd9a15e557816affdd2905e5322e094e7718304",
+      "bytes": 1302
+    },
+    {
+      "path": "generated/music-adaptations.json",
+      "sha256Bytes": "75c6992cf6db0e6b8f97dba61adbf89b05c904412d4fade28b14ff2969582074",
+      "bytes": 23022
+    },
+    {
+      "path": "generated/music-outputs.json",
+      "sha256Bytes": "c98f88cf5b7ca1424fc8dffa4c63909a143164c953bdf16becb35e4592f44b28",
+      "bytes": 13062
+    },
+    {
+      "path": "generated/music-source-pins.json",
+      "sha256Bytes": "09183825d2f3c70ca4a6ed239d3be68a9b7d81f6a9ae2e5de7b4ccd72387fa0b",
+      "bytes": 5366
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/core/store/LocalPlaylistStore.kt.txt",
+      "sha256Bytes": "40ee1a329c6a725f52f1450b7686d1e66eab320cf31acd9721d5e8bace414fdd",
+      "bytes": 3263
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/core/store/PlayHistoryStore.kt.txt",
+      "sha256Bytes": "571161606f2dc9c287fcbdfc43699b46fca9e67384969598e38cbd4170efcf17",
+      "bytes": 3400
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt.txt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "bytes": 396158
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/data/repository/ExternalPlaylistRepository.kt.txt",
+      "sha256Bytes": "3fe9556d6701f34e7f0eb1731ad005acca7f2ef2f278f5bf3fc571911ae09288",
+      "bytes": 15407
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt.txt",
+      "sha256Bytes": "466ae7e5dff23b97d4d3cddf7718855d57947c1998bae26a5570490f088b0599",
+      "bytes": 16121
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicInterludes.kt.txt",
+      "sha256Bytes": "625a065e021dcde08f9b1a0eb9595c17a33e893913e241a3b9b804cd5f852114",
+      "bytes": 8561
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicKaraokeText.kt.txt",
+      "sha256Bytes": "41765edebf44f4719b1e46e7c1efc5a82281d0d4db8eb18fe4e1c6ae28af1180",
+      "bytes": 60494
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricLine.kt.txt",
+      "sha256Bytes": "1114516a2105245c0b108e2d4616636cbca4c56b9635105420962acadf2730f7",
+      "bytes": 32141
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricsView.kt.txt",
+      "sha256Bytes": "deeaee2422f18c6f5bad05186235eccb900fe77e48d864751be0545f9974ff67",
+      "bytes": 29505
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricSettings.kt.txt",
+      "sha256Bytes": "e6d0fee9d480937bd863d70da646ac256c9f4021c78b6b02d08ee1e90d97eeda",
+      "bytes": 2122
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt.txt",
+      "sha256Bytes": "fbc253f246e873b3c8131d4fa4328d1932e63eb4e931b720264999718c8d8c84",
+      "bytes": 14641
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt.txt",
+      "sha256Bytes": "31a860459d16f51b3c7d94147f0852a7ba7a62d06b073a7d8a8b8c373a908a59",
+      "bytes": 2992
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerMiniLyrics.kt.txt",
+      "sha256Bytes": "92299e6f66c8e3bf25ac0866eda05f364dcdf72d3f9d61a40d86bffaecefd98b",
+      "bytes": 4986
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerPalette.kt.txt",
+      "sha256Bytes": "dba4432bc86d36792ec75e67681bec25e512b6290471a6c66b68d1b8c210e43b",
+      "bytes": 7499
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt.txt",
+      "sha256Bytes": "26cb46a8d744f16eb448c3242ade46d4edc9363c7109fdaf7b86d07c3fd91c97",
+      "bytes": 28554
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/Music3DCoverFlow.kt.txt",
+      "sha256Bytes": "fea16146c8b3ff2ecca919e31f177330d59ff973703972eba6a162aac2b23392",
+      "bytes": 28228
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt.txt",
+      "sha256Bytes": "96b8c9ac79136440418c75f0740f04845701e4d3b46342575d81ec79b3e0701c",
+      "bytes": 191458
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerVisualPolicy.kt.txt",
+      "sha256Bytes": "4d76fac7122d0e371fd8710eab280f20921e6ce164a01b9773dfd3cadbfebb1b",
+      "bytes": 5444
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicTopControlDragPolicy.kt.txt",
+      "sha256Bytes": "8eb95f92c79b22446cdedc05a67566c328e3a01df750c58abbd144816e366d07",
+      "bytes": 1791
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavyProgressPolicy.kt.txt",
+      "sha256Bytes": "d310349e0081260e95353694f47ee498277db6da4622dac33eab5a36b0999ab3",
+      "bytes": 1476
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavySlider.kt.txt",
+      "sha256Bytes": "d6de77651bbf9109b7e0f27dd72084e4b466f61d77d09e1a5f37f6121ca54e3f",
+      "bytes": 8255
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt.txt",
+      "sha256Bytes": "85639fbe680f6f56868bf7b58126af26b921721ba876b670213344f57f6f2694",
+      "bytes": 5173
+    },
+    {
+      "path": "generation.log",
+      "sha256Bytes": "7a2fcdcc48b05ce37ed059e1cec99cbcceb75e217a699bb6d19fb20560e4442d",
+      "bytes": 63
+    },
+    {
+      "path": "manual/com/bilipai/desktop/ui/DesktopOriginalMusicStorageBinding.kt",
+      "sha256Bytes": "01942b085be5dc452c0f80ab74e987d4fdc67aad9e2cf5430e53e6936966cd6b",
+      "bytes": 1979
+    },
+    {
+      "path": "MusicStorageProof.kt",
+      "sha256Bytes": "feaf66a886a20042514dffc3fef56ad0058e5261cba2a223d6f35b88e921c044",
+      "bytes": 7752
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "c73d319e95f04713c6573a4a0fccb53ce9234b106554165a5343b21c2acf9dfc",
+      "bytes": 3186
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-music-player-full.py",
+      "sha256Bytes": "1c8f7f2715fcb1f3ec45d2efe88f2d4fa86737b3acd411d15d42327fb8427a49",
+      "bytes": 26821
+    },
+    {
+      "path": "producer-hunk.json",
+      "sha256Bytes": "24cc56c61f654f58c183252a4cf4e67c50a8a677876694b27610ff1767b92b91",
+      "bytes": 2130
+    }
+  ],
+  "excludedRebuildableOutputs": [],
+  "installOnlyExactHunksAndNewManual": true,
+  "generatedSourcesAreSoleProducerVerificationOnly": true,
+  "completeRootMounted": false,
+  "desktopExeReplaced": false
+}

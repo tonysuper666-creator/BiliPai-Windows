@@ -1,0 +1,51 @@
+{
+  "phase": 76,
+  "baseCommit": "87462d91b94d21a60b82c771fb75af339190841e",
+  "preparedPackets": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-settings-io-parity\\frozen-handoff.json",
+      "sha256Bytes": "0c9daf306710df68f2af52aae9bf75c1b21b217fdd2b70b780e2fc2a585e0b83",
+      "raw": 21
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\frozen-handoff.json",
+      "sha256Bytes": "f3a99438b304983ca7dd9806c507baeecd0baf292a63d9bd573c0807c71fece1",
+      "raw": 80
+    }
+  ],
+  "newManual": 1,
+  "existingFamilies": 3,
+  "exactHunks": 5,
+  "indexedInverse": true,
+  "sourceIdentityCount": 1170,
+  "resourceCount": 213,
+  "newSourceIdentities": 0,
+  "registryUnchanged": true,
+  "newDependencies": 0,
+  "newStoreOrActor": false,
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "beforeSha256Bytes": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "afterSha256Bytes": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+      "beforeSha256Bytes": "e749b7d0535d44f2ae66103caf6246ecc738b182b5d696a921079134531240c9",
+      "afterSha256Bytes": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-music-player-full.py",
+      "beforeSha256Bytes": "eeabd6f0f1ed80f703470c4c99c1aba0cf234f1ad45c5fa22aa9ff2cf3e5808b",
+      "afterSha256Bytes": "1c8f7f2715fcb1f3ec45d2efe88f2d4fa86737b3acd411d15d42327fb8427a49"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMusicStorageBinding.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "01942b085be5dc452c0f80ab74e987d4fdc67aad9e2cf5430e53e6936966cd6b"
+    }
+  ],
+  "fullOriginalHistoryAndPlaylistBodies": true,
+  "completeRootMounted": false,
+  "desktopExeReplaced": false
+}

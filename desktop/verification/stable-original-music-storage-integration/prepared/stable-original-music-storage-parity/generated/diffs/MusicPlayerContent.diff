@@ -1,0 +1,283 @@
+--- app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-music-storage-parity\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt
+@@ -7,10 +7,7 @@
+ 
+ import com.android.purebilibili.navigation.animatePagerSelection
+ 
+-import coil3.request.allowHardware
+-
+-import android.os.Build
+-import android.provider.Settings
++
+ import androidx.compose.animation.AnimatedVisibility
+ import androidx.compose.animation.Crossfade
+ import androidx.compose.animation.EnterTransition
+@@ -121,8 +118,6 @@
+ import androidx.compose.ui.graphics.ImageBitmap
+ import androidx.compose.ui.graphics.RectangleShape
+ import androidx.compose.ui.graphics.Shape
+-import androidx.compose.ui.graphics.asAndroidBitmap
+-import androidx.compose.ui.graphics.asImageBitmap
+ import androidx.compose.ui.graphics.luminance
+ import androidx.compose.ui.graphics.lerp
+ import androidx.compose.ui.graphics.takeOrElse
+@@ -131,7 +126,8 @@
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopOriginalMusicUiPlatform
++import com.bilipai.desktop.ui.asImageBitmap
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.text.AnnotatedString
+ import androidx.compose.ui.text.SpanStyle
+@@ -142,13 +138,10 @@
+ import androidx.compose.ui.unit.IntOffset
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+-import androidx.palette.graphics.Palette
+ import coil3.ImageLoader
+ import coil3.compose.AsyncImage
+-import coil3.imageLoader
+ import coil3.request.ImageRequest
+ import coil3.request.SuccessResult
+-import com.android.purebilibili.core.lifecycle.BackgroundManager
+ import com.android.purebilibili.core.util.AppHingeOrientation
+ import com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo
+ import com.android.purebilibili.feature.audio.lyrics.BiliSubtitleLyricsPolicy
+@@ -174,7 +167,7 @@
+ import com.android.purebilibili.feature.home.components.biliPaiFloatingDockShell
+ import com.android.purebilibili.feature.home.components.resolveLiquidGlassTuning
+ import com.android.purebilibili.core.store.HomeSettings
+-import com.android.purebilibili.core.store.SettingsManager
++import com.android.purebilibili.core.store.DesktopOriginalMusicUiSettings as SettingsManager
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ 
+ import com.android.purebilibili.feature.video.playback.audio.AudioQualityOption
+@@ -403,7 +396,8 @@
+     reduceMotion: Boolean = false,
+     modifier: Modifier = Modifier
+ ) {
+-    val context = LocalContext.current
++    val platform = LocalDesktopOriginalMusicUiPlatform.current
++    val context = platform.context
+     val themeSurfaceColor = MaterialTheme.colorScheme.surface
+     val adaptiveInfo = LocalAppWindowAdaptiveInfo.current
+     val density = LocalDensity.current
+@@ -469,21 +463,14 @@
+             state.currentQueueIndex.coerceIn(0, realQueue.lastIndex)
+         }
+     }
+-    val systemReduceMotion = remember(context) {
+-        Settings.Global.getFloat(
+-            context.contentResolver,
+-            Settings.Global.ANIMATOR_DURATION_SCALE,
+-            1f
+-        ) == 0f
+-    }
+-    val effectiveReduceMotion = reduceMotion || systemReduceMotion || BackgroundManager.isInBackground
++    val systemReduceMotion by platform.systemReduceMotion.collectAsStateWithLifecycle()
++    val isInBackground by platform.isInBackground.collectAsStateWithLifecycle()
++    val effectiveReduceMotion = reduceMotion || systemReduceMotion || isInBackground
+     val musicBackdropSource = rememberChromeBackdropSource()
+     // The source and all liquid overlays are siblings in this draw tree, so the content layer is
+     // recorded before the overlays sample it. Mount the glass chrome on the first composition.
+     val musicBackdrop = musicBackdropSource.backdrop
+-    val homeSettings by SettingsManager
+-        .getHomeSettings(context)
+-        .collectAsStateWithLifecycle(initialValue = HomeSettings())
++    val homeSettings by platform.homeSettings.collectAsStateWithLifecycle()
+     val settingsScope = rememberCoroutineScope()
+     val lyricsUiStyle by SettingsManager
+         .getMusicLyricsUiStyle(context)
+@@ -505,12 +492,14 @@
+         mutableStateOf(com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerPalette.Default)
+     }
+     LaunchedEffect(state.coverUrl, themeSurfaceColor) {
+-        val result = loadMusicArtwork(context.imageLoader, state.coverUrl, context)
+-        artworkBitmap = result?.bitmap
+-        paletteColor = result?.baseColor ?: themeSurfaceColor
+-        paletteAccent = result?.accentColor ?: (result?.baseColor ?: themeSurfaceColor)
+-        playerPalette = result?.palette
+-            ?: com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerPalette.Default
++        val result = loadMusicArtwork(platform, state.coverUrl)
++        platform.commitUi {
++            artworkBitmap = result?.bitmap
++            paletteColor = result?.baseColor ?: themeSurfaceColor
++            paletteAccent = result?.accentColor ?: (result?.baseColor ?: themeSurfaceColor)
++            playerPalette = result?.palette
++                ?: com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerPalette.Default
++        }
+     }
+ 
+     val backgroundColor by animateColorAsState(
+@@ -518,12 +507,8 @@
+         animationSpec = if (effectiveReduceMotion) snap() else AppMotionTokens.emphasizedSpec(),
+         label = "music_palette"
+     )
+-    val glassEnabled = resolveMusicLiquidGlassEnabled(
+-        sdkInt = Build.VERSION.SDK_INT,
+-        effectsEnabled = liquidGlassEffectsEnabled,
+-        isAppInBackground = BackgroundManager.isInBackground,
+-        reduceMotion = effectiveReduceMotion
+-    )
++    val glassEnabled = platform.blurEffectsAvailable && liquidGlassEffectsEnabled &&
++        !isInBackground && !effectiveReduceMotion
+     var coverStyle by remember { mutableStateOf(MusicCoverStyle.APPLE_MUSIC_CARD) }
+     val chromeSpec = resolveMusicPlayerChromeSpec(
+         uiStyle = LocalAppUiStyle.current,
+@@ -1873,7 +1858,7 @@
+     isPlaying: Boolean = false,
+     positionMs: Long = 0L,
+ ) {
+-    val coverBitmap = remember(bitmap) { bitmap?.toAndroidBitmapOrNull() }
++    val coverBitmap = remember(bitmap) { bitmap?.let { com.bilipai.desktop.ui.desktopMusicRasterCopy(it) } }
+     if (coverBitmap != null) {
+         // Halcyon default lyric/player backdrop: AppleCoverFlowBackground (three-layer
+         // oversaturated cover aurora). BeautifulLyrics is opt-in in Halcyon, not the default.
+@@ -1892,14 +1877,6 @@
+             animate = false,
+             modifier = Modifier.fillMaxSize(),
+         )
+-    }
+-}
+-
+-private fun ImageBitmap.toAndroidBitmapOrNull(): android.graphics.Bitmap? {
+-    return try {
+-        this.asAndroidBitmap()
+-    } catch (_: Throwable) {
+-        null
+     }
+ }
+ 
+@@ -2009,7 +1986,7 @@
+                 if (showLyricsPreview) {
+                     Spacer(Modifier.height(14.dp))
+                     val lyricsUiStyle by SettingsManager
+-                        .getMusicLyricsUiStyle(LocalContext.current)
++                        .getMusicLyricsUiStyle(LocalDesktopOriginalMusicUiPlatform.current.context)
+                         .collectAsStateWithLifecycle(
+                             initialValue = SettingsManager.MusicLyricsUiStyle.CLASSIC
+                         )
+@@ -2518,34 +2495,11 @@
+     isDarkEnvironment: Boolean = true,
+     modifier: Modifier = Modifier
+ ) {
+-    val context = androidx.compose.ui.platform.LocalContext.current
+-    val audioManager = remember {
+-        context.getSystemService(android.content.Context.AUDIO_SERVICE)
+-            as? android.media.AudioManager
+-    }
+-    val maxVolume = remember(audioManager) {
+-        audioManager?.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)?.coerceAtLeast(1) ?: 15
+-    }
+-    fun readVolume(): Float = audioManager
+-        ?.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
+-        ?.toFloat()?.div(maxVolume) ?: 0f
+-
+-    var volume by remember(audioManager) { mutableFloatStateOf(readVolume()) }
+-
+-    DisposableEffect(audioManager) {
+-        val observer = object : android.database.ContentObserver(android.os.Handler(android.os.Looper.getMainLooper())) {
+-            override fun onChange(selfChange: Boolean) {
+-                volume = readVolume()
+-            }
+-        }
+-        context.contentResolver.registerContentObserver(
+-            android.provider.Settings.System.CONTENT_URI,
+-            true,
+-            observer
+-        )
+-        onDispose { context.contentResolver.unregisterContentObserver(observer) }
+-    }
+-
++    val platform = LocalDesktopOriginalMusicUiPlatform.current
++    val actualVolume by platform.volume.collectAsStateWithLifecycle()
++    val maxVolume = platform.maximumVolumeStep.also { require(it > 0) }
++    var volume by remember(platform) { mutableFloatStateOf(actualVolume) }
++    LaunchedEffect(actualVolume) { volume = actualVolume }
+     val inactiveTrackColor = lerp(
+         glassTintColor.takeOrElse { MaterialTheme.colorScheme.surface },
+         MaterialTheme.colorScheme.onSurface,
+@@ -2575,11 +2529,7 @@
+                 value = volume,
+                 onValueChange = { volume = it },
+                 onValueChangeFinished = {
+-                    audioManager?.setStreamVolume(
+-                        android.media.AudioManager.STREAM_MUSIC,
+-                        (volume * maxVolume).roundToInt(),
+-                        0
+-                    )
++                    platform.setVolumeFraction(volume)
+                 },
+                 valueRange = 0f..1f,
+                 wavy = false,
+@@ -2851,11 +2801,8 @@
+         )
+     }
+     val currentIndex = stableCurrentIndex
+-    val blurEnabled = resolveMusicLyricsBlurEnabled(
+-        sdkInt = Build.VERSION.SDK_INT,
+-        effectsEnabled = blurEffectsEnabled,
+-        reduceMotion = reduceMotion
+-    )
++    val blurEnabled = LocalDesktopOriginalMusicUiPlatform.current.blurEffectsAvailable &&
++        blurEffectsEnabled && !reduceMotion
+     val listState = rememberLazyListState()
+     val isLyricsDragged by listState.interactionSource.collectIsDraggedAsState()
+     var showTranslations by remember { mutableStateOf(true) }
+@@ -3521,7 +3468,7 @@
+         transitionSpec = { if (reduceMotion) snap() else AppMotionTokens.standardSpec() },
+         label = "lyric_alpha"
+     ) { it.alphaPercent / 100f }
+-    val focusModifier = if (Build.VERSION.SDK_INT >= 31 && blurRadius.value > 0.dp) {
++    val focusModifier = if (LocalDesktopOriginalMusicUiPlatform.current.blurEffectsAvailable && blurRadius.value > 0.dp) {
+         Modifier.blur(blurRadius.value, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+     } else {
+         Modifier
+@@ -4221,31 +4168,20 @@
+ )
+ 
+ private suspend fun loadMusicArtwork(
+-    imageLoader: ImageLoader,
+-    coverUrl: String,
+-    context: android.content.Context
+-): MusicArtworkPalette? = withContext(Dispatchers.IO) {
+-    if (coverUrl.isBlank()) return@withContext null
+-    runCatching {
+-        val request = ImageRequest.Builder(context)
+-            .data(coverUrl)
+-            .allowHardware(false)
+-            .size(512, 512)
+-            .build()
+-        val result = imageLoader.execute(request) as SuccessResult
+-        val bitmap = (result.image as coil3.BitmapImage).bitmap
+-        val playerPalette =
+-            com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerPalette.fromCoverBackground(
+-                bitmap = bitmap,
+-                light = false,
+-            )
+-        MusicArtworkPalette(
+-            bitmap = bitmap.asImageBitmap(),
+-            baseColor = playerPalette.middle,
+-            accentColor = playerPalette.accent,
+-            palette = playerPalette,
+-        )
+-    }.getOrNull()
++    platform: com.bilipai.desktop.ui.DesktopOriginalMusicUiPlatform,
++    coverUrl: String
++): MusicArtworkPalette? = try {
++    val bitmap = platform.loadOwnedArtwork(coverUrl)
++    if (bitmap == null) null else {
++    try {
++        val palette = com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerPalette.fromCoverBackground(bitmap, light = false)
++        MusicArtworkPalette(bitmap.asImageBitmap(), palette.middle, palette.accent, palette)
++    } finally { bitmap.recycle() }
++    }
++} catch (cancelled: kotlinx.coroutines.CancellationException) {
++    throw cancelled
++} catch (_: Throwable) {
++    null // Preserve the original artwork failure palette fallback, never swallow cancellation.
+ }
+ 
+ internal fun formatMusicTime(ms: Long): String {

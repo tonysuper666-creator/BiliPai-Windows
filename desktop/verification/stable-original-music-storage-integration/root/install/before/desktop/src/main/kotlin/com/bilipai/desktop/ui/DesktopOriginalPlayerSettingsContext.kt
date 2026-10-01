@@ -42,14 +42,6 @@ class DesktopOriginalPlayerSettingsContext internal constructor(
         return com.android.purebilibili.core.store.resolveDefaultPlayerDiagnosticLoggingEnabled(checkNotNull(isDebugBuild) { "Root actual build type is required" }.invoke())
     }
     internal fun requireCurrent() { if (!isCurrent()) throw CancellationException("Original player settings owner retired") }
-    internal fun preferenceWritePermit(checkRequest: () -> Unit): com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit {
-        lateinit var permit: com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit
-        commit {
-            checkRequest()
-            permit = com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit(pluginContext.store)
-        }
-        return permit
-    }
     internal fun commit(block: () -> Unit) {
         requireCurrent()
         if (!commitIfCurrent { requireCurrent(); block() }) throw CancellationException("Original player settings owner retired")
@@ -87,16 +79,15 @@ internal class DesktopOriginalPlayerSettingsDataStore(private val context: Deskt
         val caller = currentCoroutineContext()
         caller.ensureActive()
         lateinit var result: DesktopOriginalPlayerPreferenceValues
-        fun checkRequest() {
+        context.commit {
             caller.ensureActive()
-            context.requireCurrent()
-            com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()
+            context.pluginContext.store.updateFromSnapshot("settings") { snapshot ->
+                result = DesktopOriginalPlayerPreferenceValues(snapshot).apply(block)
+                caller.ensureActive()
+                result.changes
+            }
         }
-        context.pluginContext.store.updateOriginalFromSnapshot("settings", ::checkRequest,
-            { context.preferenceWritePermit(::checkRequest) }) { snapshot ->
-            result = DesktopOriginalPlayerPreferenceValues(snapshot).apply(block)
-            result to result.changes.toMap()
-        }
+        result
     }
 }
 
@@ -119,15 +110,7 @@ internal class DesktopOriginalPlayerMirrorPreferences(private val context: Deskt
         fun putStringSet(key: String, value: Set<String>?) = apply {
             changes[key] = value?.let { JsonArray(it.map(::JsonPrimitive)) }
         }
-        fun apply() {
-            val edits = changes.toMap()
-            fun checkRequest() {
-                context.requireCurrent()
-                com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()
-            }
-            context.pluginContext.store.updateOriginalFromSnapshot(name, ::checkRequest,
-                { context.preferenceWritePermit(::checkRequest) }) { Unit to edits }
-        }
+        fun apply() { context.commit { context.pluginContext.store.update(name, changes) } }
         fun commit(): Boolean { apply(); return true }
     }
 }

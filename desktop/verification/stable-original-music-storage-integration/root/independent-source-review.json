@@ -1,0 +1,60 @@
+{
+  "scope": "Independent source-only read review. No build/test/GUI/Window/HTTP/account or Candidate mutation.",
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-settings-io-parity\\exact-hunks.json",
+      "sha256Bytes": "1af40841c5f0d60dfc33e1ffb6f95cf0c6d4f25540122d84c942283aa213fb2a",
+      "sha256LF": "1af40841c5f0d60dfc33e1ffb6f95cf0c6d4f25540122d84c942283aa213fb2a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-settings-io-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\plugins\\DesktopPluginStore.kt",
+      "sha256Bytes": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22",
+      "sha256LF": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-settings-io-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f",
+      "sha256LF": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-settings-io-parity\\SettingsIoProof.kt",
+      "sha256Bytes": "0f968d7f19d57245c65708acfa5fb169e1f43fcbf6bbafda1021673388c448e6",
+      "sha256LF": "0f968d7f19d57245c65708acfa5fb169e1f43fcbf6bbafda1021673388c448e6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-settings-io-parity\\runs\\01\\result.json",
+      "sha256Bytes": "c3ef48870bd8d8ff5d8c2516ad188650133e12c99b1fdae0860b19e284ce1253",
+      "sha256LF": "c3ef48870bd8d8ff5d8c2516ad188650133e12c99b1fdae0860b19e284ce1253"
+    }
+  ],
+  "sourceFindings": [
+    {
+      "status": "No concrete blocker in this narrow source scope",
+      "evidence": "Snapshot is read under same backing; pure edit/stage/fsync outside Root; mint is the only short admission; backing identity CAS and one-use permit consumption/rename publish outside Root; conflict discards temp/permit and starts fresh check; frozen backing rejects both before and after mint."
+    },
+    {
+      "status": "Explicit cancellation boundary",
+      "evidence": "suspend DataStore.edit captures caller coroutine Context and checks ensureActive through final mint. Non-suspend Mirror.Editor.apply checks fixed context ownership and Subscription TLS if present, but has no generic caller Job. Thus standalone synchronous mirror must not claim arbitrary coroutine cancellation retirement. Accepted original global edit is in-flight after mint; entry retirement can no longer revoke it, while global freeze still rejects."
+    }
+  ],
+  "readCompilerEvidence": {
+    "passed": true,
+    "exit": 0,
+    "assertions": 28,
+    "actualSnapshot": 75,
+    "runtimeEntries": 101,
+    "prospectiveProductFamilies": 2,
+    "exactHunks": 4,
+    "realSettingsBackingAndDisk": true,
+    "newStoreOrActor": false,
+    "allPinsUnchanged": true,
+    "unexpectedOverlap": [],
+    "actualInstalled": false,
+    "wholeRootAccepted": false,
+    "nativeOrWindowAccepted": false,
+    "desktopExeReplaced": false
+  },
+  "runtimeAcceptedByReviewer": false,
+  "necessaryRootContract": "commit callback must run its action synchronously and may only acquire existing Store->entry admission; edit callbacks are pure/retryable. Native/join/IO never enters that callback.",
+  "blockingFindings": []
+}

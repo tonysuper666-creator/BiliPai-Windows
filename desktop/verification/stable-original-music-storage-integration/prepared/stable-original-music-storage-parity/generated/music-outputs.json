@@ -1,0 +1,203 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsView.kt",
+    "sha256LF": "f876605d852fc1147693bce5fe173230b25b94e5d043f670fa27bb975674a8cb",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricsView.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricLine.kt",
+    "sha256LF": "d650ace0c00bd7554beda9bb5cb0e681a6fc85fa750a5fbda0d114b4f9071180",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricLine.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicKaraokeText.kt",
+    "sha256LF": "c419efe7e0acb834d851b6acb7bb73de70493f692d3e9042e47cdfe7ca5a3a18",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicKaraokeText.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicInterludes.kt",
+    "sha256LF": "625a065e021dcde08f9b1a0eb9595c17a33e893913e241a3b9b804cd5f852114",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicInterludes.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerMiniLyrics.kt",
+    "sha256LF": "92299e6f66c8e3bf25ac0866eda05f364dcdf72d3f9d61a40d86bffaecefd98b",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerMiniLyrics.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\HalcyonLyricSettings.kt",
+    "sha256LF": "e6d0fee9d480937bd863d70da646ac256c9f4021c78b6b02d08ee1e90d97eeda",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricSettings.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerLyricPerspective.kt",
+    "sha256LF": "546eb6b1fc07225751019694127e0abdb02380ba02a7aecc5af78a9a99653fa1",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerPalette.kt",
+    "sha256LF": "0eccbd544460071cf7f9defe8d46b96f0daa58c0fea594be66c993406c4c504a",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerPalette.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerBlurBackground.kt",
+    "sha256LF": "58c1f909231ea355e0c066c3fadc003a2d838324ada69263f8607c0e3b01b3bc",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleCoverFlowBackground.kt",
+    "sha256LF": "067e050410d66e5d7a2bf6cf38c2abd85e2df1d1bacb1f4b6802ca1acc491cb0",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerVisualPolicy.kt",
+    "sha256LF": "4d76fac7122d0e371fd8710eab280f20921e6ce164a01b9773dfd3cadbfebb1b",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerVisualPolicy.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicTopControlDragPolicy.kt",
+    "sha256LF": "8eb95f92c79b22446cdedc05a67566c328e3a01df750c58abbd144816e366d07",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicTopControlDragPolicy.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicWavyProgressPolicy.kt",
+    "sha256LF": "d310349e0081260e95353694f47ee498277db6da4622dac33eab5a36b0999ab3",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavyProgressPolicy.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicWavySlider.kt",
+    "sha256LF": "dd3d2b68a123e7af9d6cc9539802d815a22be0e544fc1970976f9e9e49fabd53",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavySlider.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\Music3DCoverFlow.kt",
+    "sha256LF": "fea16146c8b3ff2ecca919e31f177330d59ff973703972eba6a162aac2b23392",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/screen/Music3DCoverFlow.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings.kt",
+    "sha256LF": "d0e235a177f9f306c59ce9fe21f281a1063e3979e177dc18a47eab943a2e38ad",
+    "original": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "selected": {
+      "members": [
+        "KEY_AUDIO_NOW_PLAYING_BAR_ENABLED",
+        "KEY_MUSIC_LYRICS_UI_STYLE",
+        "MusicLyricsUiStyle",
+        "getAudioNowPlayingBarEnabled",
+        "getMusicLyricsUiStyle",
+        "getStartupAutoPlayEnabledSync",
+        "setMusicLyricsUiStyle"
+      ],
+      "enum": [
+        "MusicLyricsUiStyle"
+      ]
+    }
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalPlayHistoryModels.kt",
+    "sha256LF": "b31b2156aa27872d87a1cc0ba5eb16d5e0093eb1b02c4e89528779925c4bcfe5",
+    "original": "app/src/main/java/com/android/purebilibili/core/store/PlayHistoryStore.kt",
+    "selected": {
+      "declarations": [
+        "PlayHistoryEntry",
+        "PlayLastSession"
+      ]
+    }
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalLocalPlaylistModels.kt",
+    "sha256LF": "3699c2dd619d0127e00ee1c4c23a6d690b15c870c7b84760021d1908202e0ad4",
+    "original": "app/src/main/java/com/android/purebilibili/core/store/LocalPlaylistStore.kt",
+    "selected": {
+      "declarations": [
+        "LocalPlaylistItem",
+        "LocalPlaylist"
+      ]
+    }
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalAudioHistoryStore.kt",
+    "sha256LF": "6dc216428750c8b0abf3adb8b0cb44b0397a6b3321b2d6df227d5186e9deab8b",
+    "original": "app/src/main/java/com/android/purebilibili/core/store/PlayHistoryStore.kt",
+    "selected": {
+      "declarations": [
+        "PlayHistoryStore"
+      ],
+      "fullObjectBody": true,
+      "originalObjectSHA256LF": "e01bf0afba8ace9e86a644f54565cbf95e29c2ca2801f7b4493d1f33b4b5bed2",
+      "onlyObjectIdentifierRenamed": {
+        "before": "PlayHistoryStore",
+        "after": "DesktopOriginalAudioHistoryStore"
+      },
+      "exactWholeObjectInverse": true
+    }
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalLocalPlaylistStore.kt",
+    "sha256LF": "1455e31e5d89b8250e249c923ab99f4cbdab4e264ca66560cd13e7c19bfae595",
+    "original": "app/src/main/java/com/android/purebilibili/core/store/LocalPlaylistStore.kt",
+    "selected": {
+      "declarations": [
+        "LocalPlaylistStore"
+      ],
+      "fullObjectBody": true,
+      "originalObjectSHA256LF": "729a288b17193252428c9c9f889599862a5a2b1b4746f984ede5ff8a7fe69859",
+      "onlyObjectIdentifierRenamed": {
+        "before": "LocalPlaylistStore",
+        "after": "DesktopOriginalLocalPlaylistStore"
+      },
+      "exactWholeObjectInverse": true
+    }
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalExternalPlaylistSchema.kt",
+    "sha256LF": "32312dc86ce8bc3391080aa4587b5d283a8e21254ab75f8f93e6852985b82890",
+    "original": "app/src/main/java/com/android/purebilibili/data/repository/ExternalPlaylistRepository.kt",
+    "selected": {
+      "declarations": [
+        "Source",
+        "ExternalTrack",
+        "ExternalPlaylistMeta",
+        "MatchedVideo",
+        "MatchOutcome",
+        "ImportCheckpoint",
+        "parsePlaylistInput",
+        "extractId",
+        "buildSearchQueryForManualMatch"
+      ]
+    }
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\PlayHistorySheet.kt",
+    "sha256LF": "15a0dff1b2f7500fc27052308bd877b48c1e1bca6e66992ac8f0cee7249ebff0",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialog.kt",
+    "sha256LF": "aa2151d83bc839f6bd01ce13d12eddf6b77fb30d647ae0f14aa4c99698918bd1",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt",
+    "selected": null
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-music-storage-parity\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContent.kt",
+    "sha256LF": "b99ba982c945e058fd2b9e367531bd9a1b1f79b6023a2a293491a2800ae33094",
+    "original": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt",
+    "selected": null
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "actualSnapshot": 76,
+  "runtimeEntries": 101,
+  "productionOverrides": 0,
+  "fixtureSourceCount": 2,
+  "fixtureClasses": 29,
+  "uniqueInstalledProductClassOrigins": 9,
+  "assertions": 52,
+  "fixtures": [
+    {
+      "fixture": "SettingsIoProof",
+      "passed": true,
+      "exit": 0,
+      "assertions": 28
+    },
+    {
+      "fixture": "MusicStorageProof",
+      "passed": true,
+      "exit": 0,
+      "assertions": 24
+    }
+  ],
+  "pinsUnchanged": true,
+  "actualInstalledSettingsAndOriginalMusicStorage": true,
+  "fullOriginalStoreObjects": true,
+  "canonicalModelsRemainSoleOwners": true,
+  "standaloneMirrorCallerCancellationClaimed": false,
+  "completeRootMounted": false,
+  "nativeOrWindowAccepted": false,
+  "desktopExeReplaced": false
+}

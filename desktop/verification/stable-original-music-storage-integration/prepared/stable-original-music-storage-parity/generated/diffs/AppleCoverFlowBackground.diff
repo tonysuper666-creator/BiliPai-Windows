@@ -1,0 +1,60 @@
+--- app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-music-storage-parity\generated\com\android\purebilibili\feature\audio\lyrics\halcyon\AppleCoverFlowBackground.kt
+@@ -1,10 +1,10 @@
+ package com.android.purebilibili.feature.audio.lyrics.halcyon
+-import android.graphics.Bitmap
+-import android.graphics.Canvas
+-import android.graphics.ColorMatrix
+-import android.graphics.ColorMatrixColorFilter
+-import android.graphics.Matrix
+-import android.graphics.Paint
++import com.bilipai.desktop.ui.DesktopMusicRaster as Bitmap
++import com.bilipai.desktop.ui.DesktopMusicRasterCanvas as Canvas
++import com.bilipai.desktop.ui.DesktopMusicRasterColorMatrix as ColorMatrix
++import com.bilipai.desktop.ui.DesktopMusicRasterColorFilter as ColorMatrixColorFilter
++import com.bilipai.desktop.ui.DesktopMusicRasterMatrix as Matrix
++import com.bilipai.desktop.ui.DesktopMusicRasterPaint as Paint
+ import androidx.compose.foundation.Image
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+@@ -23,11 +23,10 @@
+ import androidx.compose.ui.draw.clipToBounds
+ import androidx.compose.ui.graphics.Brush
+ import androidx.compose.ui.graphics.Color
+-import androidx.compose.ui.graphics.asImageBitmap
++import com.bilipai.desktop.ui.asImageBitmap
+ import androidx.compose.ui.graphics.toArgb
+ import androidx.compose.ui.layout.ContentScale
+ import androidx.compose.ui.layout.onSizeChanged
+-import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.unit.IntSize
+ import androidx.compose.ui.unit.dp
+ import kotlinx.coroutines.Dispatchers
+@@ -85,9 +84,8 @@
+     blur: Float = 60f,
+     modifier: Modifier = Modifier
+ ) {
+-    val context = LocalContext.current
+-    val densityDpi = context.resources.displayMetrics.densityDpi
+-    val settingsManager = remember(context) { HalcyonLyricSettings }
++    val densityDpi = (androidx.compose.ui.platform.LocalDensity.current.density * 160f).roundToInt()
++    val settingsManager = remember { HalcyonLyricSettings }
+     val speed = HalcyonLyricSettings.playerAppleFlowSpeed
+ 
+     // Pre-scale the cover once to a small source; it is drawn into an even smaller frame canvas, so a
+@@ -244,6 +242,7 @@
+     val h = ((viewportH * 1.3f) / downsample).roundToInt().coerceAtLeast(1)
+     val frame = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+     val canvas = Canvas(frame)
++    try {
+ 
+     // Oversize the drawn cover so rotation never exposes canvas edges; the excess is cropped later.
+     val diagonal = (max(w, h) * 1.3f).roundToInt().coerceAtLeast(1).toFloat()
+@@ -293,6 +292,7 @@
+     if (result !== blurred) blurred.recycle()
+     if (frame !== blurred && frame !== result) frame.recycle()
+     return result
++    } finally { canvas.close() }
+ }
+ 
+ private fun drawFlowLayer(

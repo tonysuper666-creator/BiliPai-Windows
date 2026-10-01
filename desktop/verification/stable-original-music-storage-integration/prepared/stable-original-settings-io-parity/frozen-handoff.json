@@ -1,0 +1,124 @@
+{
+  "frozen": true,
+  "actualBase": 75,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifacts": [
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "bytes": 16233
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "e749b7d0535d44f2ae66103caf6246ecc738b182b5d696a921079134531240c9",
+      "bytes": 6771
+    },
+    {
+      "path": "exact-hunks.json",
+      "sha256Bytes": "1af40841c5f0d60dfc33e1ffb6f95cf0c6d4f25540122d84c942283aa213fb2a",
+      "bytes": 7438
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "d252b3f4fc13e6204f860c46a31360322fdbcb38aea47b324025d55a95fbf0c9",
+      "bytes": 9143
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22",
+      "bytes": 20329
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f",
+      "bytes": 7757
+    },
+    {
+      "path": "run.py",
+      "sha256Bytes": "2e5b31157c3c83ee8f3691696f045884f861a935edbc67df883ffdab5f15ede5",
+      "bytes": 5540
+    },
+    {
+      "path": "runs/01/compile-command.json",
+      "sha256Bytes": "85ad65d335915d512bddca3f2bef666ba56232710903df636cc49346932ebb1d",
+      "bytes": 2545
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "09ad18356ca401506e1c8ce3dabf776b9f80e4dde6bb23b079f3f2d9fc9afeb0",
+      "bytes": 26190
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/01/inputs/DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f",
+      "bytes": 7757
+    },
+    {
+      "path": "runs/01/inputs/DesktopPluginStore.kt",
+      "sha256Bytes": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22",
+      "bytes": 20329
+    },
+    {
+      "path": "runs/01/inputs/SettingsIoProof.kt",
+      "sha256Bytes": "0f968d7f19d57245c65708acfa5fb169e1f43fcbf6bbafda1021673388c448e6",
+      "bytes": 10464
+    },
+    {
+      "path": "runs/01/overlap.json",
+      "sha256Bytes": "122f8edad1fd64dfcb0e4bd86c0a306ec9492a94ecbdfa70a92675cad42c2028",
+      "bytes": 2148
+    },
+    {
+      "path": "runs/01/pins-after.json",
+      "sha256Bytes": "f7d70dde6c1380f1001822b9e874906d72e3c625eb7d78c7891e1381422eaf82",
+      "bytes": 44023
+    },
+    {
+      "path": "runs/01/pins-before.json",
+      "sha256Bytes": "f7d70dde6c1380f1001822b9e874906d72e3c625eb7d78c7891e1381422eaf82",
+      "bytes": 44023
+    },
+    {
+      "path": "runs/01/result.json",
+      "sha256Bytes": "c3ef48870bd8d8ff5d8c2516ad188650133e12c99b1fdae0860b19e284ce1253",
+      "bytes": 402
+    },
+    {
+      "path": "runs/01/run-command.json",
+      "sha256Bytes": "7813331d6fdbe413064350d09a1a04cdaced198cf0fc326e8d5e00c6c737e414",
+      "bytes": 27037
+    },
+    {
+      "path": "runs/01/run.log",
+      "sha256Bytes": "f9cda4fda239beeefc6a98e81780948d2e285b40d36bb0ae5d51a52978b2ca4e",
+      "bytes": 368
+    },
+    {
+      "path": "scope.json",
+      "sha256Bytes": "74712f029fa17161ac244cf869e0cf36e5c8973e14a0759ca7bf3de5ced5ec9e",
+      "bytes": 664
+    },
+    {
+      "path": "SettingsIoProof.kt",
+      "sha256Bytes": "0f968d7f19d57245c65708acfa5fb169e1f43fcbf6bbafda1021673388c448e6",
+      "bytes": 10464
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "runs/01/prospective.jar",
+      "sha256Bytes": "31bbabfa9bd108375d58999ae48bc90a34cbc724d33d64e36ba837d38cfbcfe6",
+      "bytes": 129177,
+      "reason": "Rebuildable verification output; not installation payload."
+    }
+  ],
+  "installOnlyExactHunksAndNewManual": true,
+  "generatedSourcesAreSoleProducerVerificationOnly": true,
+  "completeRootMounted": false,
+  "desktopExeReplaced": false
+}

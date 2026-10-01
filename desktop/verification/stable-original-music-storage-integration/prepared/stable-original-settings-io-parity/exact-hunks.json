@@ -1,0 +1,38 @@
+{
+  "baseCommit": "87462d91b94d21a60b82c771fb75af339190841e",
+  "families": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "baseSHA256LF": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "desiredSHA256LF": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22",
+      "edits": [
+        {
+          "before": "    /** Captured playback writes use the SAME backing. All staging and rename IO is outside Root gates. */",
+          "after": "    /** Accepted global preference commit. Its consumption never reacquires Root gates. */\n    internal class OriginalPreferenceWritePermit internal constructor(private val store: DesktopPluginStore) {\n        private val consumed = java.util.concurrent.atomic.AtomicBoolean()\n        internal fun consume(target: DesktopPluginStore) {\n            require(store === target) { \"Original preference permit belongs to a different Store\" }\n            check(consumed.compareAndSet(false, true)) { \"Original preference write permit already consumed\" }\n        }\n    }\n\n    /** Original read/edit callbacks are pure and may be retried after a document CAS conflict.\n     * The same global backing owns persistence. Snapshot reads, callback evaluation, staging,\n     * fsync and replacement all run outside Root admission. Only permit minting enters Root.\n     */\n    internal fun <T> updateOriginalFromSnapshot(\n        name: String,\n        checkRequest: () -> Unit,\n        acquirePermit: () -> OriginalPreferenceWritePermit,\n        edit: (DesktopPreferenceSnapshot) -> Pair<T, Map<String, JsonElement?>>,\n    ): T {\n        while (true) {\n            checkRequest()\n            val snapshot = synchronized(backing) {\n                check(!backing.writesFrozen) { \"插件已停止，不能写入旧设置实例\" }\n                require(backing.document[name] == null || backing.document[name] is JsonObject) { \"设置命名空间格式无效\" }\n                backing.document\n            }\n            val current = snapshot[name] as? JsonObject ?: JsonObject(emptyMap())\n            val (result, edits) = edit(DesktopPreferenceSnapshot(current))\n            checkRequest()\n            val updated = current.toMutableMap()\n            edits.forEach { (key, value) -> if (value == null) updated.remove(key) else updated[key] = value }\n            if (name == \"plugin_prefs\") {\n                updated[\"plugin_config_bilipai_feed_filter\"]?.let { value ->\n                    val encoded = (value as? JsonPrimitive)?.takeIf { it.isString }?.content ?: error(\"推荐流过滤配置格式无效\")\n                    validateFeedFilter(json.decodeFromString<BiliPaiFeedFilterConfig>(encoded))\n                }\n            }\n            val next = JsonObject(snapshot.toMutableMap().apply { put(name, JsonObject(updated)) })\n            Files.createDirectories(backing.root)\n            val temporary = Files.createTempFile(backing.root, \"plugin-settings-\", \".tmp\")\n            try {\n                Files.writeString(temporary, json.encodeToString(next))\n                FileChannel.open(temporary, StandardOpenOption.WRITE).use { it.force(true) }\n                val permit = acquirePermit()\n                val committed = synchronized(backing) {\n                    check(!backing.writesFrozen) { \"插件已停止，不能写入旧设置实例\" }\n                    if (backing.document !== snapshot) false\n                    else {\n                        permit.consume(this)\n                        try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }\n                        catch (_: java.nio.file.AtomicMoveNotSupportedException) {\n                            Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING)\n                        }\n                        backing.document = next\n                        backing.snapshots[name]?.value = DesktopPreferenceSnapshot(JsonObject(updated))\n                        if (name == \"plugin_prefs\") {\n                            backing.feedFilterConfig.value = decodeFeedFilter(next)\n                            backing.feedFilterEnabled.value = updated[\"plugin_enabled_bilipai_feed_filter\"]?.jsonPrimitive?.booleanOrNull ?: false\n                        }\n                        true\n                    }\n                }\n                if (committed) return result\n                // Conflict retires this unconsumed permit and owned temporary file; retry checks ownership afresh.\n            } finally { Files.deleteIfExists(temporary) }\n        }\n    }\n\n    /** Captured playback writes use the SAME backing. All staging and rename IO is outside Root gates. */"
+        }
+      ],
+      "indexedInverse": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+      "baseSHA256LF": "e749b7d0535d44f2ae66103caf6246ecc738b182b5d696a921079134531240c9",
+      "desiredSHA256LF": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f",
+      "edits": [
+        {
+          "before": "    internal fun commit(block: () -> Unit) {",
+          "after": "    internal fun preferenceWritePermit(checkRequest: () -> Unit): com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit {\n        lateinit var permit: com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit\n        commit {\n            checkRequest()\n            permit = com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit(pluginContext.store)\n        }\n        return permit\n    }\n    internal fun commit(block: () -> Unit) {"
+        },
+        {
+          "before": "        context.commit {\n            caller.ensureActive()\n            context.pluginContext.store.updateFromSnapshot(\"settings\") { snapshot ->\n                result = DesktopOriginalPlayerPreferenceValues(snapshot).apply(block)\n                caller.ensureActive()\n                result.changes\n            }\n        }\n        result",
+          "after": "        fun checkRequest() {\n            caller.ensureActive()\n            context.requireCurrent()\n            com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()\n        }\n        context.pluginContext.store.updateOriginalFromSnapshot(\"settings\", ::checkRequest,\n            { context.preferenceWritePermit(::checkRequest) }) { snapshot ->\n            result = DesktopOriginalPlayerPreferenceValues(snapshot).apply(block)\n            result to result.changes.toMap()\n        }"
+        },
+        {
+          "before": "        fun apply() { context.commit { context.pluginContext.store.update(name, changes) } }",
+          "after": "        fun apply() {\n            val edits = changes.toMap()\n            fun checkRequest() {\n                context.requireCurrent()\n                com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()\n            }\n            context.pluginContext.store.updateOriginalFromSnapshot(name, ::checkRequest,\n                { context.preferenceWritePermit(::checkRequest) }) { Unit to edits }\n        }"
+        }
+      ],
+      "indexedInverse": true
+    }
+  ],
+  "exactHunks": 4
+}

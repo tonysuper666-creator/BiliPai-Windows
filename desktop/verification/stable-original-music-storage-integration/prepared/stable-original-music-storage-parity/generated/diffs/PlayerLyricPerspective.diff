@@ -1,0 +1,23 @@
+--- app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-music-storage-parity\generated\com\android\purebilibili\feature\audio\lyrics\halcyon\PlayerLyricPerspective.kt
+@@ -4,7 +4,7 @@
+ import androidx.compose.ui.composed
+ import androidx.compose.ui.graphics.TransformOrigin
+ import androidx.compose.ui.graphics.graphicsLayer
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
+ import androidx.compose.ui.platform.LocalDensity
+ 
+ /**
+@@ -33,9 +33,8 @@
+         screenWidthDp = configuration.screenWidthDp,
+         screenHeightDp = configuration.screenHeightDp,
+     )
+-    val isLargeLandscape = configuration.orientation ==
+-        android.content.res.Configuration.ORIENTATION_LANDSCAPE &&
+-        (configuration.smallestScreenWidthDp >= 600 || ultraWideLandscape)
++    val isLargeLandscape = configuration.screenWidthDp > configuration.screenHeightDp &&
++        (minOf(configuration.screenWidthDp, configuration.screenHeightDp) >= 600 || ultraWideLandscape)
+     val effectiveAngle = if (isLargeLandscape) {
+         resolvedAngle.coerceIn(-14f, 14f)
+     } else {

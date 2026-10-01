@@ -1,0 +1,39 @@
+{
+  "phase": 76,
+  "preparedPackets": [
+    {
+      "raw": 21,
+      "sha256": "0c9daf306710df68f2af52aae9bf75c1b21b217fdd2b70b780e2fc2a585e0b83"
+    },
+    {
+      "raw": 80,
+      "sha256": "f3a99438b304983ca7dd9806c507baeecd0baf292a63d9bd573c0807c71fece1"
+    }
+  ],
+  "newManual": 1,
+  "existingFamilies": 3,
+  "exactHunks": 5,
+  "newSourceIdentities": 0,
+  "sourceIdentityCount": 1170,
+  "resourceCount": 213,
+  "registryUnchanged": true,
+  "newDependencies": 0,
+  "newGlobalStoreOrActor": false,
+  "wholeWindowsClassesPassed": true,
+  "kotlinClasses": 15347,
+  "illegalJvmMethodNames": 0,
+  "runtimeEntries": 101,
+  "installedAssertions": 52,
+  "productionOverrides": 0,
+  "uniqueInstalledProductClassOrigins": 9,
+  "fullOriginalHistoryAndLocalPlaylistObjects": true,
+  "canonicalModelsRemainSoleOwners": true,
+  "diskAndBackingOutsideRootAdmission": true,
+  "acceptedGlobalCommitMayFinishAfterEntryRetires": true,
+  "suspendDataStoreCallerCancelledBeforePermitRejected": true,
+  "standaloneMirrorCallerCancellationClaimed": false,
+  "synchronousMirrorApplyRemainsSynchronous": true,
+  "completeRootMounted": false,
+  "nativeWindowOrAccountAccepted": false,
+  "desktopExeReplaced": false
+}

@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "exit": 0,
+  "assertions": 28,
+  "actualSnapshot": 75,
+  "runtimeEntries": 101,
+  "prospectiveProductFamilies": 2,
+  "exactHunks": 4,
+  "realSettingsBackingAndDisk": true,
+  "newStoreOrActor": false,
+  "allPinsUnchanged": true,
+  "unexpectedOverlap": [],
+  "actualInstalled": false,
+  "wholeRootAccepted": false,
+  "nativeOrWindowAccepted": false,
+  "desktopExeReplaced": false
+}
