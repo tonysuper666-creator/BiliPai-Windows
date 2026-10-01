@@ -1,0 +1,15 @@
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\DynamicDetailProtocolFixture.kt:117:81: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DynamicBasic'.
+        assertEquals(11,full.basic!!.comment_type);assertEquals("900",full.basic!!.comment_id_str)
+                                                                                ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\DynamicDetailProtocolFixture.kt:118:99: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DynamicStatModule'.
+        assertTrue(full.modules.module_stat!!.like.status);assertEquals(9,full.modules.module_stat!!.like.count)
+                                                                                                  ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\DynamicDetailProtocolFixture.kt:120:92: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DynamicContentModule'.
+        assertEquals(listOf("https://fixture.invalid/seed.png"),full.modules.module_dynamic!!.major!!.opus!!.pics.map {it.url})
+                                                                                           ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\DynamicDetailProtocolFixture.kt:120:100: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DynamicMajor'.
+        assertEquals(listOf("https://fixture.invalid/seed.png"),full.modules.module_dynamic!!.major!!.opus!!.pics.map {it.url})
+                                                                                                   ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\DynamicDetailProtocolFixture.kt:120:107: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'OpusMajor'.
+        assertEquals(listOf("https://fixture.invalid/seed.png"),full.modules.module_dynamic!!.major!!.opus!!.pics.map {it.url})
+                                                                                                          ^^

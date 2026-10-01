@@ -1,0 +1,156 @@
+Prepared original raw comment protocol — source contract and integration boundary
+==============================================================================
+Location: desktop/.local/dynamic-detail-reply-parity/protocol
+Status: task-only member fragment + 3 helpers. Independent proof-attempt5 compiled
+6 sources against pinned 4e97/89CP + the exact Kotlin test jar, then a fresh JVM
+passed 12 grouped protocol assertions. See proof-attempt5/evidence.json,
+compile.log, run.log and result.json. This is an explicit prepared Operations
+overlay; no Main integration claim. Earlier failed attempts remain preserved.
+
+Original identity and pin
+- Tag v0.2.3-alpha.9, commit fcf84853b287662e8a9129ea0d38576c36522a34.
+- Five original source blobs equal the tag exactly. source-inventory.json records
+  Git blob identities, LF UTF-8 source/function hashes, line spans and model FQNs.
+- Main pin: native-share-main-product-snapshot-01/manifest.json
+  SHA-256 4e97c4c054a7ec0ed8f064319009bcfb9b68f9c191ef089a6bf677f163df959f.
+  ordered-runtime-cp.json: a733a3435e18c5dac83ff155023c36e6d0d1997822b0a6b77ba7d4efeff63fcc,
+  89 ordered entries. main-kotlin.jar:
+  a988ad58a727676e89b1d1dde3cb24c11f16e38988c4dec84ef330c0018c5b87.
+- CommentRepository.kt LF SHA:
+  80fe4b7dc2d388641b3b5a5cf0cb287567274d91379816131fd1c354707cd998.
+- CommentReadAccessPolicy.kt LF SHA:
+  c486a199ef6eaee6ec5a16d84c3a82688176e237c6a57519124d51bcee0d7a87.
+- CommentGrpcRepository.kt LF SHA:
+  eddc5e3b092e785944c66a70b5c26f788551fdcad0e1ab8d137f33b679f52d07.
+- ApiClient.kt LF SHA:
+  33e0d081fc70ab587d333eb52a21a193932be2dbc5835f409901139d7a8212dd.
+- ResponseModels.kt LF SHA:
+  0c4502996df04147f5b5dd98414ad53d0390d91a14aa8baa9099863623ffea1d.
+All paths above have prefix app/src/main/java/com/android/purebilibili/.
+
+One producer, existing state and models
+- produce.py masks Kotlin comments/strings before balanced token extraction:
+  23 original repository functions, full original read policy, full original
+  gRPC builders/parsers. Original function spans/hashes are in source-inventory.
+- Helper FQNs: data.repository.DesktopDynamicCommentProtocol and
+  DesktopDynamicCommentGrpc, original data.repository.CommentReadApiMode/
+  CommentReadPlan and DesktopOriginalCommentReadAccessPolicyKt. These five class
+  entries were absent from the pinned Main jar.
+- All imported original Reply* response model FQNs are present in the pin.
+  No REST API interface, response DTO, proto schema or parallel model is made.
+- Paste DesktopDynamicCommentOperations.fragment.kt inside the one existing
+  DesktopDynamicCardOperations. It delegates to existing read/mutate/result/
+  assertOwned, API + guestWeb, DesktopRepository.signWebParams, SessionStore
+  epoch and existing DesktopDynamicBiliGrpcClient. It creates no account/cache.
+- Session/catalog owns shared emotes and editor mention search. This fragment
+  does not produce searchMentionUsers/publish/edit or a second emote catalog.
+- uploadCommentImage calls the existing frozen editor private
+  uploadEditorCommentImage; the original upload body is produced once.
+- A helper's original calls are guarded before/after await. CancellationException
+  is rethrown instead of converted into fallback. Existing job/owner checks also
+  guard result return, mutation response and the optional record callback.
+
+REST main/count/sub contract
+- CommentRepository.kt:119–214,398–555; ApiClient.kt:1106–1133.
+  Modes 2/3 use WBI main: oid/type/mode/ps/plat=1/web_location=1315875.
+  First page pagination_str={"offset":""}; nonblank cursor becomes JSON offset.
+  Later page without cursor sends next=page. The original query builder feeds
+  the existing repository signer; no new WBI key manager/cache is produced.
+- If signing is unavailable or WBI response is a fallback code, candidates are
+  current identity /x/v2/reply/main, guest main, current identity /x/v2/reply,
+  guest legacy. A code=0 or renderable result wins. Legacy sort is mode2=>0,
+  otherwise1. Modes1 and4 directly use legacy sort2 and1, respectively.
+- CommentReadAccessPolicy.kt:17–35 chooses AUTH→GUEST when SESSDATA exists,
+  GUEST→AUTH otherwise. Identity fallback codes are -101,-111,-352,-403,-412.
+  HOT first page empty success, or positive total with no renderable reply/top,
+  uses the original guest main/identity/guest legacy HOT compatibility sequence;
+  valid totals survive wholly empty responses.
+- getCommentsForSubject first tries gRPC only for type !=17, mode2/3 and page<=1
+  or nonblank cursor. HOT empty and positive-total empty payloads go to REST.
+  Optional missing-location fallback retains a renderable gRPC payload and
+  restores it if REST subsequently fails or throws.
+- IMPORTANT count is different: CommentRepository.kt:557–575, ApiClient.kt:1134.
+  getCommentCountForSubject calls only the existing authenticated getReplyCount
+  with oid/type. It has NO original identity, WBI or legacy fallback.
+- Sorted sub (589–615) uses DetailList mode2/3 + opaque cursor + target rpid only.
+  REST pn pages are never mixed into its ranking. Unsupported mode fails locally.
+- Generic sub (617–713) defaults preferRestPaging=true and REST reply/reply with
+  oid/type/root/pn/ps. Optional gRPC branch is only first/cursor page; missing
+  location may trigger REST and restore the valid original gRPC on REST failure.
+  REST identity fallback follows the same five codes.
+- Dialog (715–742) uses only DialogList. Page>1 with blank cursor fails with the
+  original “对话列表缺少分页参数”; it does not infer a REST page.
+
+gRPC request bytes and raw Reply closure
+- Original CommentGrpcRepository.kt:35–248, existing ProtoWire and actual
+  DesktopDynamicBiliGrpcClient transport. Base:
+  /bilibili.main.community.reply.v1.Reply/
+- MainList request: 1 oid(int64),2 type(int64),9 mode(int32); nonblank cursor
+  10={1 ps=20,2 opaque offset,3 false}.
+- DetailList:1 oid,2 type,3 root,4 target rpid(int64),6 zero,7 mode(int32);
+  nonblank cursor8={1 ps=20,2 opaque offset,3 false}.
+- DialogList:1 oid,2 type,3 root,4 dialog(int64); cursor6 same pagination message.
+- TranslateReply:1 type,2 oid(int64),3 packed int64 rpid list. Response field1
+  map entry:1 target rpid,2 ReplyInfo; ReplyInfo17 translated Content1 message.
+  Original HtmlEntityUtils unescapes both main and translated text.
+- Main response fields:1 cursor,2 repeated ReplyInfo,3 subject,4 UP top,5 admin
+  top,6 vote top,14 topReplies,20 pagination.field1. Detail:1 cursor,2 subject,
+  3 root,8 pagination; root.replies is the returned list, root rcount/count wins
+  over subject total. Dialog:1 cursor,2 subject,3 repeated replies,5 pagination.
+- Subject:1 UP mid,11 show UP action,13 input disabled,14 root hint,15 child
+  hint,16 count,26 picture state. Cursor1 next,4 isEnd.
+- ReplyInfo:1 recursive replies;2 rpid,3 oid,4 type,5 mid,6 root,7 parent,
+  8 dialog,9 like,10 ctime,11 count;12 content,13 member,14 control.
+- Content:1 message;3 emote map,4 topics map,5 URL map,6 vote,7 @name→mid,
+  8 note/opus rich text,9 pictures. Emote URL prefers9 webp→7 gif→2 url.
+  URL keeps title/icon/app schema/PC URL; vote keeps id/title/count.
+  Rich text note keeps summary/click URL/mtime; opus keeps id/oid.
+  Picture fields1 src,2 width double,3 height double,4 size double.
+- Member keeps mid/name/avatar/level/official/vip type+status, pendant, fans medal,
+  senior state and all original garb card fields. Control keeps action, UP reply,
+  top state, card labels, location and translation switch. Original complete
+  parser bodies and private parser structures are retained.
+- This is original ReplyData/ReplyItem, not a reduced CommentPage wrapper.
+
+Mutations and original success/error boundary
+- CommentRepository.kt:836–912,1040–1070,1076–1106,1112–1142,
+  1156–1188,1197–1237; ApiClient.kt:1153–1250.
+- addCommentForSubject: oid/type/message; root and parent are omitted unless>0;
+  pictures omitted if empty. Each original ReplyPicture writes all four fields
+  img_src/img_width/img_height/img_size, including zero defaults. sync_to_dynamic
+  is1 only when true, otherwise omitted. Existing mutate supplies owned csrf.
+- Like/hate: original oid/type/rpid, action1 for true and0 for false, csrf.
+  Delete: oid/type/rpid/csrf. Top: action0 when currently top, otherwise1.
+  Report: oid/type/rpid/reason/content/csrf. Only server code0 is success.
+  Original per-operation Chinese error maps are token-preserved.
+- Add returns nullable original ReplyItem and invokes optional
+  onPublishedRecord(reply,oid,type,root,parent,message,postTime) only for valid
+  rpid>0, while owned. postTime=ctime*1000 if positive, otherwise currentMillis.
+  Original AppScope.ioScope/CommentFraudRepository.saveRecord async side effect
+  is explicitly unbound when callback is null; no fake fraud store/global scope.
+  Main has no CommentFraud consumer currently; UI read protocol is not blocked.
+
+Focused fixture (independent compile + fresh JVM PASS in proof-attempt5)
+- Compile existing Operations with frozen editor members + this fragment and
+  3 helpers; include ReplyProtocolTransportFixture.kt + RawReplyParserFixture.kt.
+  Main class com.bilipai.desktop.data.ReplyProtocolTransportFixtureKt; optional
+  first arg writes JSON result. Fixtures do not add production APIs/models.
+- Existing SessionStore uses persistent=false fake credentials and saveSpiCookies
+  for fixture buvid3 (normal saveAccount filters visitor keys). Existing Retrofit
+  BilibiliApi and actual gRPC transport have one terminal application interceptor
+  that never calls chain.proceed; no socket/real account/window is involved.
+- AUTH/GUEST marker headers choose fixture responses only; terminal interception
+  does not prove actual BridgeInterceptor cookie behavior.
+- Groups exercise count, all full raw Reply parser fields, sorted sub cursor/
+  target, Dialog/Translate bytes, original WBI query with actual nav signer,
+  identity/nonWBI legacy order, HOT compatibility, valid gRPC restoration,
+  add/root/parent/zero picture/sync/owned record, all mutation fields, existing
+  multipart upload, same-MID epoch replacement, closed owner and explicit job
+  cancellation with held requests and zero late result/record/fallback.
+
+Scope left to parent
+- Original full Reply UI/VM/source helper/native bindings and registry integration.
+- Optional CommentFraud record store and external native/image-export seams.
+- This protocol is compiled/executed; complete product/UI runtime remains parent
+  scope. The pin is immutable; no current Main/model/API override was invented.
+

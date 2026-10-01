@@ -1,0 +1,360 @@
+{
+  "formatVersion": 1,
+  "scope": "Prepared comment protocol member fragment and owned transport helpers; no Main integration or execution claim",
+  "originalTag": "v0.2.3-alpha.9",
+  "originalCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "snapshotManifestSha256Bytes": "4e97c4c054a7ec0ed8f064319009bcfb9b68f9c191ef089a6bf677f163df959f",
+  "orderedRuntimeCpSha256Bytes": "a733a3435e18c5dac83ff155023c36e6d0d1997822b0a6b77ba7d4efeff63fcc",
+  "orderedRuntimeCpCount": 89,
+  "mainKotlinSha256Bytes": "a988ad58a727676e89b1d1dde3cb24c11f16e38988c4dec84ef330c0018c5b87",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "tagBlob": "e1541bca3d243fef9a93497f460731a784127868",
+      "currentGitBlob": "e1541bca3d243fef9a93497f460731a784127868",
+      "sha256LfUtf8": "80fe4b7dc2d388641b3b5a5cf0cb287567274d91379816131fd1c354707cd998",
+      "matchesTag": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt",
+      "tagBlob": "026348d76eacb2e5b15e977b98c6ff88881d4a28",
+      "currentGitBlob": "026348d76eacb2e5b15e977b98c6ff88881d4a28",
+      "sha256LfUtf8": "c486a199ef6eaee6ec5a16d84c3a82688176e237c6a57519124d51bcee0d7a87",
+      "matchesTag": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt",
+      "tagBlob": "e15aa2ed8c2117ea4cff0bac34e340338742da06",
+      "currentGitBlob": "e15aa2ed8c2117ea4cff0bac34e340338742da06",
+      "sha256LfUtf8": "eddc5e3b092e785944c66a70b5c26f788551fdcad0e1ab8d137f33b679f52d07",
+      "matchesTag": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "tagBlob": "6dae77c3ee324c40003a311b0365773af6229547",
+      "currentGitBlob": "6dae77c3ee324c40003a311b0365773af6229547",
+      "sha256LfUtf8": "33e0d081fc70ab587d333eb52a21a193932be2dbc5835f409901139d7a8212dd",
+      "matchesTag": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+      "tagBlob": "abd81bdbe2797a2b61afb8e33fd5617fae5ca8d4",
+      "currentGitBlob": "abd81bdbe2797a2b61afb8e33fd5617fae5ca8d4",
+      "sha256LfUtf8": "0c4502996df04147f5b5dd98414ad53d0390d91a14aa8baa9099863623ffea1d",
+      "matchesTag": true
+    }
+  ],
+  "tokenExtractedFunctions": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "resolveReadApi",
+      "startLine": 112,
+      "endLine": 117,
+      "sha256LfUtf8": "61b710e2a80ae72badcf6afa676e390a833df107499361c529786de89e6ed130"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "fetchNonWbiCommentFallback",
+      "startLine": 119,
+      "endLine": 144,
+      "sha256LfUtf8": "2a5422f76e6df782b1c4abd3345a9fe8178ca39d36c7c526978e63b80d3bb13d"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "fetchCommentsByApi",
+      "startLine": 146,
+      "endLine": 214,
+      "sha256LfUtf8": "2c0963c9d9c7b6b34e5a24b1414ca36f1ac468aab0ba09456cecb64edf136455"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "fetchGuestHotCommentsCompat",
+      "startLine": 216,
+      "endLine": 233,
+      "sha256LfUtf8": "ae181a144bae01bddca8c14d96b0e2e4ca10136dfac52b7ff983faaa40eb712a"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "fetchLegacyHotCommentsCompat",
+      "startLine": 240,
+      "endLine": 271,
+      "sha256LfUtf8": "32d774c0026ff0cb81dcfadc66b472a28409320ee440924d01d84c96f3163bbf"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "fetchCommentEmptySuccessFallback",
+      "startLine": 273,
+      "endLine": 374,
+      "sha256LfUtf8": "895fcbee66f9156dd1e40269adc2e44c9bdbd2564e1aa83703949afbe9c10f7e"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "getCommentsForSubject",
+      "startLine": 398,
+      "endLine": 555,
+      "sha256LfUtf8": "3ef0337a9fed3b2722a7cececda95d733a54307e759c21c5d55cf24145be64eb"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "getCommentCountForSubject",
+      "startLine": 557,
+      "endLine": 572,
+      "sha256LfUtf8": "51c5076396f99ee443a84a2a7291e30e82007b4a6c5aff5a95c53f04bb437705"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "getSortedSubCommentsForSubject",
+      "startLine": 589,
+      "endLine": 615,
+      "sha256LfUtf8": "e87a2db7d2d1616a321b5836eb45e9e2fd0c74775567afcbc5a3ad9f3c746e35"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "getSubCommentsForSubject",
+      "startLine": 617,
+      "endLine": 713,
+      "sha256LfUtf8": "82cd0e17c0ac9aa5e96c24c1b9d7ce80af987c4c1b1b0d585a16e806e6798f28"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "getDialogCommentsForSubject",
+      "startLine": 715,
+      "endLine": 742,
+      "sha256LfUtf8": "89d438d2efd43dab8105297712dd8d2689ea9251722a18d54196a0d6c9853301"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "shouldTryGrpcMainList",
+      "startLine": 988,
+      "endLine": 1001,
+      "sha256LfUtf8": "3ed10fd96a65ad3c91966d3384a6083f91bec6058aa6b5f41aa2bede2019782a"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "resolveCommentMainListPaginationParameters",
+      "startLine": 1003,
+      "endLine": 1016,
+      "sha256LfUtf8": "f1ddb5c681f5ae8e1e4d6d8fd70443c78c936891fd0148968a317b330bc76e4e"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "resolveCommentMainListMode",
+      "startLine": 1018,
+      "endLine": 1024,
+      "sha256LfUtf8": "7add7a2f0ba48468c1606ed9ceaebb2377de8b365bea15331877b434996e341a"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "shouldTryGrpcPagedRequest",
+      "startLine": 1026,
+      "endLine": 1031,
+      "sha256LfUtf8": "993754c4a6cf90b72c3123ed746d5dfeed6bd8865107db1cc73536a61544fa14"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "addCommentForSubject",
+      "startLine": 836,
+      "endLine": 909,
+      "sha256LfUtf8": "76357645a88abd655dcb7452bcfadde7f2232f0eb7dffa19b2209f7a77e59276"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "likeCommentForSubject",
+      "startLine": 1040,
+      "endLine": 1068,
+      "sha256LfUtf8": "d524b6187dbb34d9322540f0a22a9cd61e62bfc5abacf98f3df5e36905fd2165"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "hateCommentForSubject",
+      "startLine": 1076,
+      "endLine": 1104,
+      "sha256LfUtf8": "ab3989e0ddfbf066e912733643da9d5cdd04b3ea42dbf0f9c536d4052f31ec8a"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "deleteCommentForSubject",
+      "startLine": 1112,
+      "endLine": 1143,
+      "sha256LfUtf8": "ab367a7ad62cd465d934b9623abed4bd1aef58f484aa4ee961a82893629e45b1"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "setCommentTopForSubject",
+      "startLine": 1156,
+      "endLine": 1184,
+      "sha256LfUtf8": "cde0eb4a9c29204d634fb6d0759c8cbac46df330548a125f9c946d35549e9755"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "reportCommentForSubject",
+      "startLine": 1197,
+      "endLine": 1232,
+      "sha256LfUtf8": "9234202b78bda49b2f175a8df87b310a2965ca4d992277d5f0a573a1af32e39b"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "resolveSyncToDynamicField",
+      "startLine": 984,
+      "endLine": 986,
+      "sha256LfUtf8": "336db7698c491d7df31b9f0927121c36cc2f13900531018fa33fc37d42f78da2"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "name": "resolveReplyTopActionField",
+      "startLine": 1186,
+      "endLine": 1188,
+      "sha256LfUtf8": "27f3f8bc3f69ccc2cfd3f05cc16197e2902ad23bdbd8ec62e85bc8a0d128c6ed"
+    }
+  ],
+  "newSoleProducers": [
+    "com.android.purebilibili.data.repository.DesktopDynamicCommentProtocol",
+    "com.android.purebilibili.data.repository.DesktopDynamicCommentGrpc",
+    "com.android.purebilibili.data.repository.CommentReadApiMode",
+    "com.android.purebilibili.data.repository.CommentReadPlan",
+    "com.android.purebilibili.data.repository.DesktopOriginalCommentReadAccessPolicyKt"
+  ],
+  "reusedModelFQNs": [
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyCardLabel",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyCardLabel.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyConfig",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyConfig.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyContent",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyContent.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyContentUrl",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyContentUrl.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyControl",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyControl.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyCursor",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyCursor.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyData",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyData.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyEmote",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyEmote.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.OfficialVerify",
+      "classEntry": "com/android/purebilibili/data/model/response/OfficialVerify.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyFansDetail",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyFansDetail.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplySailingPendant",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplySailingPendant.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyItem",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyItem.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyLevelInfo",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyLevelInfo.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyPage",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyPage.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyPageControl",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyPageControl.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyPicture",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyPicture.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyRichText",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyRichText.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyRichTextNote",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyRichTextNote.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyRichTextOpus",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyRichTextOpus.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyTop",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyTop.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyUpper",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyUpper.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyVipInfo",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyVipInfo.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyVote",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyVote.class",
+      "present": true
+    }
+  ],
+  "adaptations": [
+    "Existing owner/API/guest/WBI signer/visitor/grpc; no new account or WBI cache",
+    "Cancellation rethrown and post-await owner/job checked",
+    "Diagnostic Android logging omitted",
+    "Original addComment background fraud-store side effect becomes optional owned onPublishedRecord seam; null is explicitly unbound",
+    "Existing editor uploadEditorCommentImage is sole multipart body",
+    "Original ReplyPicture serializer with encodeDefaults emits original four picture keys without private parallel DTO"
+  ],
+  "produced": [
+    {
+      "path": "DesktopDynamicCommentOperations.fragment.kt",
+      "sha256Bytes": "bbf261a115892bbf8498f39e8edb953a17b5136063af3df216c9b5097b065fba"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc.kt",
+      "sha256Bytes": "1bf1572f1bcd398cb62d463015acf6e896edf4f03d92cb319e10d56f6849ea60"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol.kt",
+      "sha256Bytes": "04754105c3925f84d06c748242852b6bef330d51f1ecfbad7a8300ce193baef8"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalCommentReadAccessPolicy.kt",
+      "sha256Bytes": "a19be4bff131299d6d5b3abefd406393414d88580c0b0453d3235e98720a0da0"
+    }
+  ]
+}

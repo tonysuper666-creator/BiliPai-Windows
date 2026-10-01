@@ -1,0 +1,15 @@
+{
+  "purpose": "Additive immutable source retention for already frozen protocol proof-attempt5; original frozen 175 files unchanged",
+  "historicalCompilerInput": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations.kt",
+    "sha256Bytes": "8ce5bd07c4d52203bb7dafb4d171d04efa5cca124b265aa03a2d60bb0256f1b8"
+  },
+  "retainedCopy": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\historical-source-retention\\DesktopDynamicCardOperations.kt",
+    "sha256Bytes": "8ce5bd07c4d52203bb7dafb4d171d04efa5cca124b265aa03a2d60bb0256f1b8"
+  },
+  "frozenProtocolManifestSha256Bytes": "7823571e997d514383efbf2faf7244b42853f47afd2bcd82149b466c9d8f9d18",
+  "MainIntegration": false,
+  "productionOverrideChanged": false,
+  "recompiled": false
+}

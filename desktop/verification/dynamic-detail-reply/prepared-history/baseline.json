@@ -1,0 +1,13 @@
+{
+  "snapshot": "desktop\\.local\\dynamic-editor-main-product-snapshot-01",
+  "snapshotSha256Bytes": "bc6cf9ef064ba68f28f36c3bbf2b59721629405567c7ced7e4799a844ff7b062",
+  "orderedRuntimeCpSha256Bytes": "515bf598f56b27de45aa04d63493e1f8ad38b7e4710ef358fea97b9fc9d620c1",
+  "preparedEditorBaseSha256Bytes": "15465a9bf04fe3ac59839bfcf3717a3c35ac2ae45e4073d8452a29e2064c65a2",
+  "operationsBaseIsActualEditorMain": true,
+  "operationsBaseSha256Bytes": "8130c63b4554ed9970250588144955e6accf04e25223b7218dab7784ec585e53",
+  "preparedOperationsSha256Bytes": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+  "MainIntegration": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "realAccount": false
+}

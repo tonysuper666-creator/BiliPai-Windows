@@ -17,7 +17,15 @@ def main():
     actual = operations.read_text(encoding='utf-8').replace('\r\n', '\n')
     marker = '// GENERATED original editor members; do not hand-maintain a second request algorithm.'
     assert actual.count(marker) == 1
-    selected = actual[actual.index(marker):].rsplit('\n}', 1)[0].rstrip('\n')
+    reply_marker = '// Paste inside existing DesktopDynamicCardOperations; no package/class/API/model producer.'
+    assert actual.count(reply_marker) in (0, 1)
+    start = actual.index(marker)
+    if reply_marker in actual:
+        stop = actual.index(reply_marker)
+        assert stop > start, 'Reply members must follow the original editor block.'
+        selected = actual[start:stop].rstrip('\n')
+    else:
+        selected = actual[start:].rsplit('\n}', 1)[0].rstrip('\n')
     assert selected == expected, 'Editor request members differ from the original-source producer. Regenerate the existing Operations member block.'
     options.output.parent.mkdir(parents=True, exist_ok=True)
     options.output.write_text(json.dumps({'passed': True, 'soleOperationsProducer': True,

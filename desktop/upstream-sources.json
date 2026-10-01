@@ -114,7 +114,8 @@
       "path": "app/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
       "sha256": "0c4502996df04147f5b5dd98414ad53d0390d91a14aa8baa9099863623ffea1d",
       "features": [
-        "data-models"
+        "data-models",
+        "dynamic-detail-reply"
       ],
       "mode": "direct"
     },
@@ -145,7 +146,8 @@
         "playback",
         "search",
         "space-contributions",
-        "settings-network-proxy-parity"
+        "settings-network-proxy-parity",
+        "dynamic-detail-reply"
       ],
       "mode": "api-extract"
     },
@@ -621,7 +623,8 @@
       "mode": "direct",
       "sha256": "d486c186c42c0549a291f7fff35712167088e8d4ca5c30c5ac58885c5a6fe987",
       "features": [
-        "source-parity"
+        "source-parity",
+        "dynamic-detail-reply"
       ]
     },
     {
@@ -1702,7 +1705,8 @@
         "settings-home-card-parity",
         "settings-dynamic-tabs-parity",
         "home-full-card",
-        "settings-dynamic-full-card-parity"
+        "settings-dynamic-full-card-parity",
+        "dynamic-detail-reply"
       ],
       "mode": "policy-extract"
     },
@@ -3705,7 +3709,8 @@
       "features": [
         "settings-home-dynamic-parity",
         "settings-dynamic-tabs-parity",
-        "settings-dynamic-full-card-parity"
+        "settings-dynamic-full-card-parity",
+        "dynamic-detail-reply"
       ],
       "sha256": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b"
     },
@@ -3762,7 +3767,8 @@
         "dynamic-editor-detail-parity",
         "dynamic-follow-observer-parity",
         "settings-dynamic-tabs-parity",
-        "settings-home-dynamic-parity"
+        "settings-home-dynamic-parity",
+        "dynamic-detail-reply"
       ],
       "sha256": "9981e964c6b90b51b93bfc7808490043fe60b460a8cc6491027afbbe2d0d13f5"
     },
@@ -3820,7 +3826,8 @@
       "mode": "policy-extract",
       "features": [
         "settings-dynamic-tabs-parity",
-        "settings-dynamic-full-card-parity"
+        "settings-dynamic-full-card-parity",
+        "dynamic-detail-reply"
       ],
       "sha256": "0322b2835924409fbb3716524d292c040cdcdec15769b19e272e52bd7839b6f7"
     },
@@ -4844,7 +4851,8 @@
       "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
       "mode": "policy-extract",
       "features": [
-        "dynamic-editor-detail-parity"
+        "dynamic-editor-detail-parity",
+        "dynamic-detail-reply"
       ],
       "sha256": "80fe4b7dc2d388641b3b5a5cf0cb287567274d91379816131fd1c354707cd998"
     },
@@ -4852,7 +4860,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
       "mode": "reference-only",
       "features": [
-        "dynamic-editor-detail-parity"
+        "dynamic-editor-detail-parity",
+        "dynamic-detail-reply"
       ],
       "sha256": "eb0eefcbfb12d5ee5e06d312095797fcf67cbf7264fb32040cd4391f38d1d0cf"
     },
@@ -4860,7 +4869,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
       "mode": "policy-extract",
       "features": [
-        "dynamic-editor-detail-parity"
+        "dynamic-editor-detail-parity",
+        "dynamic-detail-reply"
       ],
       "sha256": "cbc5bbcabd8ef19c6c73fb13dca6ff7248bf208cc8128a6dd240fc9f93233c05"
     },
@@ -4868,7 +4878,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
       "mode": "policy-extract",
       "features": [
-        "dynamic-editor-detail-parity"
+        "dynamic-editor-detail-parity",
+        "dynamic-detail-reply"
       ],
       "sha256": "1a0194f25ecb50c38b100d2f3a7dacf8a09eecd22745a763dfb3519fb88dc909"
     },
@@ -4876,7 +4887,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt",
       "mode": "reference-only",
       "features": [
-        "dynamic-editor-detail-parity"
+        "dynamic-editor-detail-parity",
+        "dynamic-detail-reply"
       ],
       "sha256": "4dd624d29a99ad189234ed823fe3aeebd0613a49571b765f55e9bc79740a0821"
     },
@@ -4884,7 +4896,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
       "mode": "policy-extract",
       "features": [
-        "dynamic-editor-detail-parity"
+        "dynamic-editor-detail-parity",
+        "dynamic-detail-reply"
       ],
       "sha256": "8d637e44848bd3bfeaa29a2199d9d68aa3884665bb3650e932d405e4b220ee74"
     },
@@ -4911,6 +4924,118 @@
         "dynamic-editor-detail-parity"
       ],
       "sha256": "78b6de6cbe2e8f401d20fa43d3ae9a8d48d95bcd0f7f47c1d4a068e271316ef6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SkeletonSettingsStore.kt",
+      "sha256": "e13b562319d70a79dc5a41d7c6228feee49dd62fe06443dd8978f5c4c06b21c6",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/animation/ParticleDissolveEffect.kt",
+      "sha256": "f38fb8de539140729eb7beda30ddc9889a67eae15256c54f9a121bfa06cb76f7",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/common/Modifiers.kt",
+      "sha256": "ffb0a934822dc39744a56ec031875e813f8e2a055ed857f5dfc1db4e1e5a5fa2",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "sha256": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/SkeletonBreathing.kt",
+      "sha256": "fa072619c7ee3d3118834cebe1983d081a8efcf085512fb3d8ea4ee19a299b0a",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "sha256": "a04d5aaf29a8416304bc6198724247f86719b9d0e6984b6098d0a6c4732d5445",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt",
+      "sha256": "eddc5e3b092e785944c66a70b5c26f788551fdcad0e1ab8d137f33b679f52d07",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt",
+      "sha256": "c486a199ef6eaee6ec5a16d84c3a82688176e237c6a57519124d51bcee0d7a87",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicDetailFallbackPolicy.kt",
+      "sha256": "14eece47cbe4afbe048e6a782c72352734f2f419888c3c5fc6ab40b8dda227cc",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/aicu/AicuNavigationPolicy.kt",
+      "sha256": "0001fbdf81eb2a438935c898ae3d6f61760737ddeb8e71d895c176fd3a4ed160",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "sha256": "7c5951e2518ecc12162faa34e3e066a61ce4ea58e4713e3c5c67ff60587dcf52",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputBar.kt",
+      "sha256": "97c0a524fb6df7685dda7efa45ba10cb7a39d8456f4dfffa90e978d25a8403ea",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyCommentImageSaver.kt",
+      "sha256": "2c7ab6898c5bfe9b334ba2b71393fe69c0dbe77050b964e41a3892245119f19d",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt",
+      "sha256": "67d3e57c804671f100f3294048296e87aafd287035294aa455df5e6eca9934bc",
+      "mode": "selected",
+      "features": [
+        "dynamic-detail-reply"
+      ]
     }
   ],
   "featureCoverage": {

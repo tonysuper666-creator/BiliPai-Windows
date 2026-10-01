@@ -1,0 +1,2249 @@
+{
+  "formatVersion": 1,
+  "scope": "Prepared raw Reply/session/content/full detail protocol closure; original Chrome/thread/native integration still pending",
+  "actualMainSnapshotSha256Bytes": "bc6cf9ef064ba68f28f36c3bbf2b59721629405567c7ced7e4799a844ff7b062",
+  "actualOrdered89CpSha256Bytes": "515bf598f56b27de45aa04d63493e1f8ad38b7e4710ef358fea97b9fc9d620c1",
+  "compiledAttempt": 17,
+  "explicitProductOverride": [
+    "com.bilipai.desktop.data.DesktopDynamicCardOperations"
+  ],
+  "artifactCount": 445,
+  "artifacts": [
+    {
+      "path": "baseline.json",
+      "sha256Bytes": "7949c058a14cec0f5929da3560d747320fb3f4a2fac92c88a5accf94b4de8229",
+      "bytes": 714
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/DesktopOriginalReplySettings$getCommentCollapsedReplyPreviewLimit$$inlined$map$1$1.class",
+      "sha256Bytes": "bc70045d06148cb9520c8fe3e2106e7a7d35116a6987f79a1f0bbda4069a45b3",
+      "bytes": 1963
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/DesktopOriginalReplySettings$getCommentCollapsedReplyPreviewLimit$$inlined$map$1$2$1.class",
+      "sha256Bytes": "dc068380f401d16dca39789ba689def2e5eef107a8ff00bc709f7d7e66fd9ec3",
+      "bytes": 1958
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/DesktopOriginalReplySettings$getCommentCollapsedReplyPreviewLimit$$inlined$map$1$2.class",
+      "sha256Bytes": "feb7296e3941fe326c94efd3c605c0debb877595f41187178487a742150bc7cd",
+      "bytes": 4628
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/DesktopOriginalReplySettings$getCommentCollapsedReplyPreviewLimit$$inlined$map$1.class",
+      "sha256Bytes": "7f68cdeaa4ce19b460d2dfc4ceafc3da2b8a8ad9df8e6c0f0451d347a0dc8726",
+      "bytes": 4232
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/DesktopOriginalReplySettings$getSubReplyLoadedCountEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "d422dcff789496c923239ed4fda6504a19786e9c34e7fa115d50173c50d4324d",
+      "bytes": 1921
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/DesktopOriginalReplySettings$getSubReplyLoadedCountEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "b2bd0be59d1fb37a99466f4ba9e41d34b5133b732ac17643940eaa7f0260a0e7",
+      "bytes": 1916
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/DesktopOriginalReplySettings$getSubReplyLoadedCountEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "bf5261c9da856b2a70a817685c4b0e10da2f90072578d49ce867c1934d44a334",
+      "bytes": 4369
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/DesktopOriginalReplySettings$getSubReplyLoadedCountEnabled$$inlined$map$1.class",
+      "sha256Bytes": "0555bc1c8af7833742a1bc319385e4082f38725fa5f422bea928a41b329b659b",
+      "bytes": 4190
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/DesktopOriginalReplySettings$setCommentCollapsedReplyPreviewLimit$1.class",
+      "sha256Bytes": "bf58ca896537a2b653fe3166131a365c5254a01d8cefc977140858bff054eafa",
+      "bytes": 2163
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/DesktopOriginalReplySettings.class",
+      "sha256Bytes": "b0e9b152b247bb66c558e8e33d92626f74182ba22dc3fd156e41a62b13c4e90e",
+      "bytes": 10331
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/SkeletonSettingsStore$breathingEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "76c2b8c4a6d8c1a9b1f0c7cd03a6b40fd023893c497d9af8b055410f64b185cd",
+      "bytes": 1814
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/SkeletonSettingsStore$breathingEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "b1e3a8707b03652d19860b9c62cf2aa78a9196ef536dfad03e7be7ec26bb73ad",
+      "bytes": 1809
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/SkeletonSettingsStore$breathingEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "2e0d07d7c9ac9648b9269cb0aadc121ed6b0ee3146195467ee5a78172d42e183",
+      "bytes": 4223
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/SkeletonSettingsStore$breathingEnabled$$inlined$map$1.class",
+      "sha256Bytes": "95883c6c549a1d00346d9089ddf2d7c1bf81754ecf1470f134eceb2aede81311",
+      "bytes": 4070
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/store/SkeletonSettingsStore.class",
+      "sha256Bytes": "e6480c2ae33780a96a4e7acf7e5945feaf58e66229c776d5e0e41634e08165bc",
+      "bytes": 5900
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/ui/common/DesktopOriginalReplyClipboardKt.class",
+      "sha256Bytes": "3c5e0d9ed18a3e5e665533bd6a3b4f377b4268086005ac1908481b919ca7cf1d",
+      "bytes": 7006
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplyLoadingSkeletonsKt.class",
+      "sha256Bytes": "158e3d9be22e96f94930f9ee9bc932c787bc3676bedcf2706b6bf7cb5d8a81dc",
+      "bytes": 26762
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplySkeletonBreathingKt.class",
+      "sha256Bytes": "2612368e5e83f678bc14733f33f95036ca9a558d8a8bb11afca4be2cacc2dfbb",
+      "bytes": 7490
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/CommentReadApiMode.class",
+      "sha256Bytes": "9b90c83fec252716ad7c1db3946cf4626965129cfa115b8002ea037938ef0a60",
+      "bytes": 2017
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/CommentReadPlan.class",
+      "sha256Bytes": "3a69cda3c0a00ad9175df819b263b013e3328ddd1528554586e7387a3b900d54",
+      "bytes": 3741
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc$Companion.class",
+      "sha256Bytes": "438b79f471400401756884fe3c75038db56ecddb839b4890707d9b840f39c6eb",
+      "bytes": 1028
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc$getDetailList$1.class",
+      "sha256Bytes": "d64aae0800f0d59ec4d911272b3561d84b0d1f246eb9f8b041b954c225d5f182",
+      "bytes": 2435
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc$getDialogList$1.class",
+      "sha256Bytes": "c880b096cc009d062cfd49328d8450d04b5d74acbdfa42e7265bd84320692aeb",
+      "bytes": 2405
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc$getMainList$1.class",
+      "sha256Bytes": "98f7200ba8a5e029e0403659c3accac28f7816ddfc406229837fe78c794748aa",
+      "bytes": 2363
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc$GrpcReplyControl.class",
+      "sha256Bytes": "4dd686a8fec3c90d5f45bfa30f53614b77c187574ae30470af2869c4b312109c",
+      "bytes": 5215
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc$GrpcSubjectControl.class",
+      "sha256Bytes": "05ec585dba88f7fcbd6aa9710d65bfa33ebe87a4b52abf45c5ff847a4bbe8a5d",
+      "bytes": 5551
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc$request$1.class",
+      "sha256Bytes": "ec582a20fa0e0ca2e7c9467868caab45f8cd541a09a3d002d9ad065208317e87",
+      "bytes": 2157
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc$translateReply$1.class",
+      "sha256Bytes": "e794731c728aa728c5b2d522e3bea86e11afd1dbae22f0bd7efd1e9aa46ae1aa",
+      "bytes": 2286
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc$translateReply$2.class",
+      "sha256Bytes": "3cf37f0f900265f709609c412e35b0c041915e55f60619e31599d3aa54c3e2bb",
+      "bytes": 7400
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc.class",
+      "sha256Bytes": "776f4340984cf208617beb7bafd42a3fecc019ed36cbce073e92e1ed4cebe52c",
+      "bytes": 54213
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$fetchCommentEmptySuccessFallback$1.class",
+      "sha256Bytes": "a30e6e32029d7c8a3d395acb2c15b24c8e5aa0f0b6f432a11e0566747ae6d4b8",
+      "bytes": 2949
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$fetchCommentsByApi$1.class",
+      "sha256Bytes": "e6063cff2b2e07bf901545b7a00b06eb35b67187d8214b74e7c0ca06c2b4d134",
+      "bytes": 3322
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$fetchGuestHotCommentsCompat$1.class",
+      "sha256Bytes": "3470297dacd969ecac77c53ba3daf8d61fb648a8fc9fd3895351941b76a4194a",
+      "bytes": 2493
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$fetchLegacyHotCommentsCompat$1.class",
+      "sha256Bytes": "c01d95a2e86d2c9b40ceb50691cd2f4e68c6fad6b5e3b407478709017f7ab723",
+      "bytes": 2501
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$fetchNonWbiCommentFallback$1.class",
+      "sha256Bytes": "4ee1e11abd57ebb8871b7b8af9a69e80eaf61781397f91e8d09bf5767302759a",
+      "bytes": 3188
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$getCommentCountForSubject$1.class",
+      "sha256Bytes": "5c24d69c95da1924d446f87ed2a468cce677e58fce3a39c53bf7e03a6941fdb0",
+      "bytes": 2334
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$getCommentCountForSubject$2.class",
+      "sha256Bytes": "d44e3c4a36a6c17bcec35d6956e7ca601237ce24c8f7210d6508755e74b30d17",
+      "bytes": 8052
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$getCommentsForSubject$1.class",
+      "sha256Bytes": "5107f7fcec2e40c9b4097db34319f3aa4b49df19144491d45aaf6b8596da78ef",
+      "bytes": 2530
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$getCommentsForSubject$2.class",
+      "sha256Bytes": "c8904bea78e5173d50e9b80d9f99314856cf7cd367b7ad6fa0601e1251b183c2",
+      "bytes": 13598
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$getDialogCommentsForSubject$1.class",
+      "sha256Bytes": "7e02b62b77ee7c23b4e5d2b6ac5fdc39133c930b67946edd368eab927504b611",
+      "bytes": 2505
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$getDialogCommentsForSubject$2.class",
+      "sha256Bytes": "c87c1f0166a0d2c75b4c27052da7385051f80fe5b571f6721928f70f25345577",
+      "bytes": 7096
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$getSortedSubCommentsForSubject$1.class",
+      "sha256Bytes": "8246f1331a33396586d5cd168ef0bdf7a090f3967b9b2731a5cafc0951b2dd0f",
+      "bytes": 2522
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$getSortedSubCommentsForSubject$2.class",
+      "sha256Bytes": "227d8b98a79e616cdcf92f09aefc3107c3d51438a3c989c6a4779ee95f556ade",
+      "bytes": 7029
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$getSubCommentsForSubject$1.class",
+      "sha256Bytes": "f4b96041e7929959bec118391982b82820b9dbc6abf5c189185a32b8ec70e4fe",
+      "bytes": 2535
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$getSubCommentsForSubject$2.class",
+      "sha256Bytes": "8af0f8c8e752e49bd788201f6fd652a5fd161feeac1533d308b6dc3f95685b95",
+      "bytes": 13569
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol$WhenMappings.class",
+      "sha256Bytes": "8e8801c2b24979958a68dbd873358ce8df741f2d5888bcd75aac4eec5112dcdb",
+      "bytes": 942
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol.class",
+      "sha256Bytes": "47c71d6f9e48996b4cda5a6a48467899f146236d10cf42d661f3029ff8fd2eac",
+      "bytes": 48416
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol$fetchOpusArticleBlocks$1.class",
+      "sha256Bytes": "33c28fd317cdb902966a87955c41fdcae50e32ef664aad805facd00b84fa5950",
+      "bytes": 2535
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol$getArticleDetail$1.class",
+      "sha256Bytes": "52089ac543db22bd7e35873d4f9adeb5e1a69978fd1d04fcf6bfc3394a243938",
+      "bytes": 2326
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol$getArticleDetail$2.class",
+      "sha256Bytes": "608e5668a3ab77374c3fdf190f20af20782d50e9673d9b756ef7ef6bd80578b1",
+      "bytes": 14212
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.class",
+      "sha256Bytes": "457c4e21e1acef75c50c1f53e72e240d38d768b8e544a19a1d3f25658e204061",
+      "bytes": 17557
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol$fetchDesktopDetailItem$1.class",
+      "sha256Bytes": "44125983c483e0f831087a42702b417929ab6eaa9a2c7e7268adcfa79ae6d5b6",
+      "bytes": 2349
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol$fetchOpusDetail$1.class",
+      "sha256Bytes": "9128e714fb08f3ad64eb907ba58165048a4e979afcfb1672876676a4de04851d",
+      "bytes": 2389
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol$fetchWebDetailItem$1.class",
+      "sha256Bytes": "64f24bb2c0269ab401f769c48abe64a6d2c2e9db4624eb5d1c15ab3d1512bafa",
+      "bytes": 2457
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol$getDynamicDetail$1.class",
+      "sha256Bytes": "2b0b1fecdd4e482a2615af1d664644b127cf606ed157f66f1eeaaf4df42055e9",
+      "bytes": 2369
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol$getDynamicDetail$2.class",
+      "sha256Bytes": "e0108bf6c06441858826d5d52aba7a0266d44170fea1485f5af44cde0b91b3d0",
+      "bytes": 16956
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol$OpusDetailFetch.class",
+      "sha256Bytes": "d01917efe91f515d4fba0487b6a56dc13c026963d9deef6614705d5500b00438",
+      "bytes": 3672
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol.class",
+      "sha256Bytes": "604117c251c7fb92bc1818f26233cec79ac3f6dd3b6ff94c0482d59bcb6b99e3",
+      "bytes": 21913
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopOriginalCommentReadAccessPolicyKt.class",
+      "sha256Bytes": "bd84f2cc232dfb9f91faea38b55f10ef91452d08aabfcfe9d15b0ec8687792b5",
+      "bytes": 7834
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopOriginalDynamicDetailFallbackPolicyKt$mergeRicherOpusDetailContent$candidateEmojiNodes$2.class",
+      "sha256Bytes": "2a05d8113c6e0ecb2d22b973f71da89432ceba47a97a0fb1ccb6602b22a841a0",
+      "bytes": 2257
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopOriginalDynamicDetailFallbackPolicyKt$mergeRicherOpusDetailContent$candidateItems$1$1.class",
+      "sha256Bytes": "7b9e9feff3954a21228c2df728da2d29c2c7a7adae9c2582575e02c745277484",
+      "bytes": 5397
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/data/repository/DesktopOriginalDynamicDetailFallbackPolicyKt.class",
+      "sha256Bytes": "274c1d32480c81a2ff40232be3b76188621018c19bf03e79038cba4f6bc4462c",
+      "bytes": 54557
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/aicu/DesktopOriginalReplyAicuNavigationKt.class",
+      "sha256Bytes": "c9f0d287b3cb3f44411ec32443346bedf764e47164456577decac73077a9d597",
+      "bytes": 1867
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/ComposableSingletons$DesktopOriginalDynamicInlineReplyUiKt.class",
+      "sha256Bytes": "a1d6cce1cb27fe343b440310e76015c74ae1bbddd0f26a8a739e81bdd8dc6ed4",
+      "bytes": 16627
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$DynamicInlineCommentComposer$2$1.class",
+      "sha256Bytes": "93f14c3a07a831e5b9d64b9496e89e825a23cc90e2791c43e124169663eaa449",
+      "bytes": 4320
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$$inlined$items$default$1.class",
+      "sha256Bytes": "25f724b6ca73623fa966764ffed2a934429021f29aafc474838ce553e0f16c51",
+      "bytes": 2297
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$$inlined$items$default$2.class",
+      "sha256Bytes": "4d9afaa667b114a8d70f5e6efbed59f796243e70a21242b6c6ddc0cb3b52ad64",
+      "bytes": 2504
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$$inlined$items$default$3.class",
+      "sha256Bytes": "53f3aaf6c1e8114268ed7543ae8d0433b33fd05b3cb2ff1b71f67d47572bec3c",
+      "bytes": 2512
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$$inlined$items$default$4.class",
+      "sha256Bytes": "f77d92722e6ff498d2c68fd7d8178dee9cdf34c61c31fcaa015254833ba7ae24",
+      "bytes": 16728
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$8$1$1.class",
+      "sha256Bytes": "5c3f6e5aa27ca23c40f610af494ab8e8f9f9285bad0896e98d3b9468373d79cd",
+      "bytes": 2187
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$8$2$1.class",
+      "sha256Bytes": "6776852585e7e3d27e230aacce73380b99270fcd83a27fa95b2e49b51384db6c",
+      "bytes": 2511
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$8$3$1.class",
+      "sha256Bytes": "fcffdcea428a0c5d7d932b0acd63ddb911531dee7398ba0e9f58c4d5d33a43cd",
+      "bytes": 2180
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$8$4$1.class",
+      "sha256Bytes": "1ee7a3cf8be17bf3f0c9ba56367774de7d1fdfd683b7e0bd118e020cb72f2511",
+      "bytes": 2180
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$8$5$1.class",
+      "sha256Bytes": "c2da96677dac067004aea9d7a55bff7419834e2573bcf200ddf601bb677b7b88",
+      "bytes": 2181
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$8$6$1.class",
+      "sha256Bytes": "96766c59ba31839351bb908c6be47740cbb152402682621c3e155575c0b0d15b",
+      "bytes": 2182
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$8$7$1.class",
+      "sha256Bytes": "5d514c2e31e7021bf8895015ed1deaabe010198f17101481786b7a3dcf042004",
+      "bytes": 2470
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$8$8$1.class",
+      "sha256Bytes": "85c643a8ab3badd984af7a1598fa9b77de0d05bb54d29ba192b3c6f9bd7b1392",
+      "bytes": 2185
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt$dynamicInlineCommentItems$8$9$1.class",
+      "sha256Bytes": "c06b02b4f8e1bbe906e8a5f6080e769b4b0d684d9a52e2b5b5cd0c5424f755df",
+      "bytes": 2249
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUiKt.class",
+      "sha256Bytes": "ca1905da33250b09627f2ace733348d3532d1ee6818efcba45150af4539fd0a4",
+      "bytes": 49106
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplyPagingGuardKt.class",
+      "sha256Bytes": "6b51c008e2518e4b4cbd187748bc7bc952f926ed52b73d5ad14bfc49b3f10618",
+      "bytes": 1633
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$deleteDynamicComment$2.class",
+      "sha256Bytes": "927e571b96c94089b9aef5ac2f1632c3aa4e0e3db93b33f74d860b0c3d49f44b",
+      "bytes": 10811
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$hateComment$mutationJob$1.class",
+      "sha256Bytes": "fef4fdecad216c736986deded6a667ae6ef9a63ba855125173963314e73df1ab",
+      "bytes": 8555
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$launchOwned$1.class",
+      "sha256Bytes": "a9f9a23e8981b70c83f455da373413a248faa5e3572f7fed98c14a65758062a3",
+      "bytes": 4855
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$likeComment$mutationJob$1.class",
+      "sha256Bytes": "237a86223e1e9e2cced22e3f036485525440f0a749205df8ead3c16d59a58c37",
+      "bytes": 8862
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$loadCommentsForDynamic$2.class",
+      "sha256Bytes": "a17beca7b92891f923320d5c38b75ed647fdb9ed0b41be93931fbe43502a57b0",
+      "bytes": 19183
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$loadMoreComments$1.class",
+      "sha256Bytes": "2465c23a1a8052af3ce49dc7d147a25c1259774274306bc0551d81122db38fda",
+      "bytes": 11814
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$loadRoutedSubReplyFromRemote$1.class",
+      "sha256Bytes": "ec41a7c6d5d43791c4b1f634f624701a727cf1d3e2610d4062b01d16f9d507d7",
+      "bytes": 7525
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$loadSubReplies$1.class",
+      "sha256Bytes": "85a858f828ce640b2feb2df3dceb6d6b554decfe2c93a44c74a92d4ef503edf0",
+      "bytes": 11744
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$postComment$1.class",
+      "sha256Bytes": "266288811272eb6f771b06864540442b5030ba5bc193fb80948e393b43e7e46f",
+      "bytes": 8170
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$ReplyTaskScope.class",
+      "sha256Bytes": "9e96a2405f11f52767cda5bcafdb23ade5b9fca9d82722862471a49527ed91dd",
+      "bytes": 2312
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$reportDynamicComment$1.class",
+      "sha256Bytes": "cc60eee95df12cea172634ce9bb8a9421dce681a789fb328cff04a5df7174a31",
+      "bytes": 5953
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$special$$inlined$map$1$1.class",
+      "sha256Bytes": "95457f1fca589eae4c7bdf7a2b309b18200cb49fdd6717a27935c91c596cedfa",
+      "bytes": 1861
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$special$$inlined$map$1$2$1.class",
+      "sha256Bytes": "d454a73eed6e2d448aedba02ad0052cc75ba28d85b09e0177809d327735fc464",
+      "bytes": 1856
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$special$$inlined$map$1$2.class",
+      "sha256Bytes": "c608d8680ca212a5d8ff272553ea9eb7b11897d2d30fd659b78334241f99d03c",
+      "bytes": 3978
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$special$$inlined$map$1.class",
+      "sha256Bytes": "2062cc754a2f859c3bf0eb6d2a396231ee72dbfa1690a8cdf0d3079bc53e12e7",
+      "bytes": 4203
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession$toggleDynamicCommentTop$1.class",
+      "sha256Bytes": "d614b792d46eb0a7229f964256c8ea83af9b4345b931523148f6b5350b64400e",
+      "bytes": 8443
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession.class",
+      "sha256Bytes": "d4193ac625269074d1d3afcef9738d71d17d2ac5ec0ac6803dbf06e6136d3583",
+      "bytes": 49972
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/home/components/DesktopOriginalReplyCapsuleShapeKt.class",
+      "sha256Bytes": "05c874ebfcb0c6b4b21d0d01d0c61b34ecc684b3f4e57e3accf96dcc4ab33eca",
+      "bytes": 874
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/ComposableSingletons$DesktopOriginalReplyComponentsKt.class",
+      "sha256Bytes": "0b43b2795d79640802b3dda69d90db86dbd10a562c306cc70f5435b46f0f6cf6",
+      "bytes": 15340
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/ComposableSingletons$DesktopOriginalReplyReportReasonDialogKt.class",
+      "sha256Bytes": "fcec46d25e8dd41cee63b397aca4e6d35775d53c6e86719eb340f0f8a2014162",
+      "bytes": 6274
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/ComposableSingletons$DesktopOriginalSubReplyDetailComponentsKt.class",
+      "sha256Bytes": "27c914d3524cf74c9e7a1b2c987195922c4a5caf8b3811cff7568daff31aa314",
+      "bytes": 6942
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyCommentImageSpecKt.class",
+      "sha256Bytes": "a6374a56f02fde86b9dad31db8c4a57446c26a75dd1fbc1100945d0cd77b5784",
+      "bytes": 5893
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponentsKt$ReplyItemView$22$1$1$2$8$2$1$1.class",
+      "sha256Bytes": "75c3f2e63906c63505e1104cf1b64c8b13c85fdb592b57850ebb7a16d42d40b7",
+      "bytes": 7258
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponentsKt$ReplyItemView$blockReplyUser$1.class",
+      "sha256Bytes": "ad08cd2365525ba2f6866bdc405817e1a4167414df3c747ab5c0fbf43b5ab530",
+      "bytes": 5416
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponentsKt$ReplyItemView$launchSaveReplyCommentImage$1.class",
+      "sha256Bytes": "08e9930acb80ba46b0ee7dd45647a5e8006e0588fd6e29c666f50ab633131385",
+      "bytes": 5327
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponentsKt$ReplyMessageText$1$1$1.class",
+      "sha256Bytes": "ef3834f1f82cd35b8cad6d94362214b2efc10af206f20532e12dd6607442d6f1",
+      "bytes": 3764
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponentsKt$ReplyMessageText$1$1.class",
+      "sha256Bytes": "49efd92622cd43910680f7dcdf614b4b21b9550f1a22dc5c083e5f5eacd92698",
+      "bytes": 6114
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponentsKt$ReplyVideoReferenceText$modifier$1$1.class",
+      "sha256Bytes": "4085b5ecb89739071d0c34cf65f8128b5792bfa0ba86bf7589f9a357516e8b44",
+      "bytes": 5951
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponentsKt$replyVideoTitleCache$1.class",
+      "sha256Bytes": "b9dd01f14a95728d5fec7c3afadec64e299874f37b6ace8d9510e4bd9c2a37b7",
+      "bytes": 4788
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponentsKt$RichCommentText$content$1$textModifier$1$1.class",
+      "sha256Bytes": "e1e8fb087f041f231c93c039359ba74c1ece74d0e61f9508bbccd1c9fcbd16c2",
+      "bytes": 3128
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponentsKt$WhenMappings.class",
+      "sha256Bytes": "1858d5491f237a43d225c99debf11fa3195729426bdd0c0d52b0af188a24b6eb",
+      "bytes": 1880
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponentsKt.class",
+      "sha256Bytes": "6f0d4380cd9f45593d513b2a4478d0a3bac641880409dc008674e929510e519d",
+      "bytes": 378845
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyImageRendererKt.class",
+      "sha256Bytes": "a6e60c8a641716474822c3b0f07de7679bf1d79f21a45022701b62810b8536ec",
+      "bytes": 11152
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyReportReasonDialogKt.class",
+      "sha256Bytes": "f0e2c63b6b08bd6d76541e7813ea857ca46a840037c6c00196fa23a562ee6507",
+      "bytes": 19196
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$1$1.class",
+      "sha256Bytes": "d065f5827d5d75a1e4cf898cc05bb28e7d1a0a270db1b5c654fbec916d3af7ec",
+      "bytes": 4740
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$2$1.class",
+      "sha256Bytes": "b4987f14a1dc30ca9e0db915a23d0d2b4078f7cebb618d5c56e35a8542436fc0",
+      "bytes": 4749
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$3$1$WhenMappings.class",
+      "sha256Bytes": "c9ee582fb28ed5ddea422615c928c45b5302036a960b5b4a9f3923665b3d495b",
+      "bytes": 1158
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$3$1.class",
+      "sha256Bytes": "756504ec899445126c585133438556133b432c8dad3479d2a6b534dbe2ca3ad4",
+      "bytes": 8780
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$4$1.class",
+      "sha256Bytes": "77c65bc1324fca11afa97a346eabca28468c62b7ce8800b1369896fb69e1f927",
+      "bytes": 6749
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$5$2$1$3$1$1.class",
+      "sha256Bytes": "fc34b3fe2a6edbce91da2a62966314e3cf605d5b77bbfeab2fae15a3804b2929",
+      "bytes": 2835
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$5$2$1$3$2$1$1.class",
+      "sha256Bytes": "c419873cb88df4d15fbd1dc59b4edfd9cb1d62bccd869d64bfc75074dd50039f",
+      "bytes": 1926
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$5$2$1$3$2$2$1.class",
+      "sha256Bytes": "d2e896bd26aef8330571d6df24f5253e2f866a867d5f834ac949cdff80709115",
+      "bytes": 2003
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$5$2$1$3$2$3$1.class",
+      "sha256Bytes": "1a6083c6631f16a2a9b28c1f30ba7c990a1a20ed03f939a5da2c32840e429593",
+      "bytes": 1896
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$5$2$1$3$2$4$1.class",
+      "sha256Bytes": "e12cb59d8be062a4cd10f225aa5c226150c01ad186235093c93778f6290a10b4",
+      "bytes": 2001
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$5$2$1$3$2$5$1.class",
+      "sha256Bytes": "bf070c5c5d006c4b4675fbc5cd5d5050a53da34a25a63770d5e8fc9187e16a93",
+      "bytes": 2001
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$5$2$1$3$2$6$1$1.class",
+      "sha256Bytes": "9b98723b6fe329deb51de121ff0b2206c4b4d2988aac8946cd41ba3c1429a6c5",
+      "bytes": 2239
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$5$2$1$3$2$7$1.class",
+      "sha256Bytes": "7997eee72109ca992f601f48649631ba10bb30a9a5da16ba781ab81e536e8238",
+      "bytes": 1838
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$5$2$1$3$2$8$1.class",
+      "sha256Bytes": "59e492d947b73aa821149a0f354488d49d684587940e893a37a9ea0dfa40b179",
+      "bytes": 2822
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$5$2$1$3$2.class",
+      "sha256Bytes": "16c346d5a9e43e17089a6daad512f3c25c50d6f0b3348a72725f459792cd6b33",
+      "bytes": 19512
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$lambda$30$1$0$$inlined$itemsIndexed$default$1.class",
+      "sha256Bytes": "8319e524fe877571d8c449330edba526a97fcc6891dd3414de731fc3784e820d",
+      "bytes": 3254
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$lambda$30$1$0$$inlined$itemsIndexed$default$2.class",
+      "sha256Bytes": "8baaa92fcf5ffb4c7141e2d2113d028a54c9a3cc4c2481849f9b30acbba153d4",
+      "bytes": 3197
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailContent$lambda$30$1$0$$inlined$itemsIndexed$default$3.class",
+      "sha256Bytes": "ed06a8b855b0c48edb190bbec0723179edbc27f7396b02761cc9787dc1f32402",
+      "bytes": 12001
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailItem$22$1$2$3$1$1$1.class",
+      "sha256Bytes": "8fa11bb651d9d3b82527f649c896c3ecf8b3ae2128e3cc285a92447690f7dba8",
+      "bytes": 7407
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailItem$blockReplyUser$1.class",
+      "sha256Bytes": "1a7ca0d2a3fec8807892cf9e4f704b1d08ef09e041635c763cccb2e84a90d628",
+      "bytes": 5495
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailItem$launchSaveReplyCommentImage$1.class",
+      "sha256Bytes": "cd896798257247b780528093169a82f8f527e250753fbe8fced768f580a6ef2a",
+      "bytes": 5406
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt$SubReplyDetailStaggeredReveal$1$1.class",
+      "sha256Bytes": "66a0cc73029576ec93198edbd1f432b30638cf71165e2b9dbb53b2e4ca0ab23d",
+      "bytes": 4376
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponentsKt.class",
+      "sha256Bytes": "5b4b114f9643991ca38598ffd54cf062020fcbe12deb5d3bab91f97a49a27e20",
+      "bytes": 341774
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/ReplyCommentImageSpec.class",
+      "sha256Bytes": "fe69061b4fd86083d53e9afc09f781bca5deca228dfef80bc372918e9d31a4f9",
+      "bytes": 5225
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/SubReplyAuxiliaryBadgeVisualSpec.class",
+      "sha256Bytes": "161b2e5e529abf79779aab80befa8643f54a03250f7551ff0cb879eb9a7c4bb6",
+      "bytes": 4049
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/SubReplyAuxiliaryDecoration.class",
+      "sha256Bytes": "8d6b755bbd47ee9e762f0edd19c362ee6ba208ba577a28a2cf02e6eb322e3e3b",
+      "bytes": 3363
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/SubReplyDetailLayoutPolicy.class",
+      "sha256Bytes": "46cf724b0dbd6ef56726f84854574f071be048412aee93b078ff27924dac0475",
+      "bytes": 3407
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/SubReplyDetailListScrollResetKey.class",
+      "sha256Bytes": "e1b3b2255ce979fa10006e0c566e1f049ff90175acfa8bd449ec04a03fb11c66",
+      "bytes": 3793
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/SubReplyDetailRevealSpec.class",
+      "sha256Bytes": "618ec0137282113f4353fdc2417f1c3a0d4ef81c2467edbdc0d693d30a428df7",
+      "bytes": 3730
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/SubReplyDetailSavedScrollPosition.class",
+      "sha256Bytes": "06aa6ec01e2a2e03f2d0c4a808ad412ce9b15ddf2ca4f733da8f45e5721086f9",
+      "bytes": 2972
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/ui/components/SubReplyDetailScrollRestoreAction.class",
+      "sha256Bytes": "b93534d61319fda0931c958f138fc3090216a8cf257209d9a1548abdf5631534",
+      "bytes": 2224
+    },
+    {
+      "path": "classes-ui-17/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDynamicReplyCountPoliciesKt.class",
+      "sha256Bytes": "b8ef968488585d643ca55347c74b2ef8e6e90f23bba326c301b37d192f937d79",
+      "bytes": 7099
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$addCommentForSubject$1.class",
+      "sha256Bytes": "a5428091ba0f9d7d1c20f85b2d708f5f69ea7afa6a8c7a11eee0fe74c912508a",
+      "bytes": 2467
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$addCommentForSubject$2$1.class",
+      "sha256Bytes": "80ba60b51ed34b8e2ad315c950a36af2f0a9a68b1f37abd9fde6c8a2953307b0",
+      "bytes": 10062
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$addCommentForSubject$2.class",
+      "sha256Bytes": "1c2407bef5842820d12bbd3d0d60c13a4ef46c340fc5253850da0c4c010cf32e",
+      "bytes": 4754
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$addWatchLater$2.class",
+      "sha256Bytes": "ff8c4e7f69e2631b6c6931e7e04b7f0d969b462e3d5ed75912c1672fca359862",
+      "bytes": 4266
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$commentGrpc$1.class",
+      "sha256Bytes": "f5aeedbad05626b8ae6250559f5e9c88ef67b7d396e5bb48cf974fae2a43151a",
+      "bytes": 2055
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$commentGrpc$2.class",
+      "sha256Bytes": "677e556f50886efc5cd1cbd49c9a3412f2543f70f7eeb6ea85bcbf80932f5640",
+      "bytes": 1455
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$commentProtocol$2.class",
+      "sha256Bytes": "fbc146bf38112b6c6b2d7dfe5fe6594ec6c6ccc41ce5ec8bcadf1bba54c12431",
+      "bytes": 4854
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$commentProtocol$3.class",
+      "sha256Bytes": "5fa8c4453dde874ccf5ad01cdb773bdb39c5780e55e42754a0082d27422915ed",
+      "bytes": 1463
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$1.class",
+      "sha256Bytes": "5c53c8b86b3e5b18805923139effbb8eedc1188d3454f56f42dabb4811720a0e",
+      "bytes": 2223
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$2$1.class",
+      "sha256Bytes": "f9db3661131b5a814cc1d6aec6b267f93fcec612f5cfc3b263846baaf0d72f98",
+      "bytes": 6484
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$2.class",
+      "sha256Bytes": "0fbef603878577ddc38994a472709fb3c7b21933267db5e4a61166ba8df84392",
+      "bytes": 3852
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$1.class",
+      "sha256Bytes": "73cfbe525dd1aba666130d27abbede75efeba2381546882a459fd567cff57dec",
+      "bytes": 2305
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$2$1.class",
+      "sha256Bytes": "1fa62c532af45c9258150fbcf75eb3de013b134e5659c31778e96b8166cd5920",
+      "bytes": 10518
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$2.class",
+      "sha256Bytes": "97fb9d614fff553adcd4859419bbd1364ddef6d9e6cf9ec500f65bc03b072a18",
+      "bytes": 4145
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$delete$2.class",
+      "sha256Bytes": "f27a526718581a0b80951fd21f12b2fb9147e52a4bd11917df5ce72443e6c033",
+      "bytes": 5221
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteCommentForSubject$1.class",
+      "sha256Bytes": "49d33a7fb7c981deebf4552d0321b21a348ac0bf16b7b0eeec6c38eef15bda5a",
+      "bytes": 2221
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteCommentForSubject$2$1.class",
+      "sha256Bytes": "cd0e58f7a02e9ba2b716a2248e758743ec6497c56d4c914591b40170b7f5e4b4",
+      "bytes": 5595
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteCommentForSubject$2.class",
+      "sha256Bytes": "85645656a06977f1ad6329dd85041d55ed8b4c4117f702588925373612290967",
+      "bytes": 3524
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$1.class",
+      "sha256Bytes": "a017bbf5ca6e5538b25788a20424a1aa52761d1b60f25ced444bd6cd3942208f",
+      "bytes": 2298
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$2$1.class",
+      "sha256Bytes": "023cfa86e44b893ac1795300ac0197b0d4900af7bb0f273c4d3c765651b9ca4c",
+      "bytes": 17926
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$2.class",
+      "sha256Bytes": "e74ffd260c5e4d5be9ebefb03990aa538747550c7b3d40820391514b50720236",
+      "bytes": 4443
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$emotes$3.class",
+      "sha256Bytes": "52f12eb9df82555a5070ec95a68eec9552a5c9f2e409b5d8dd4296da38d35da9",
+      "bytes": 1399
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$fetchMessageUserInfo$2.class",
+      "sha256Bytes": "5d8045a250cd0b4e05936da975628e62046e3fc3ed165354addc08a623aad258",
+      "bytes": 3490
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentCountForSubject$1.class",
+      "sha256Bytes": "e5b9a520dc4170795d7ebe03c83b5dfd7f6d5def7d74f267a0975e86c3bcce84",
+      "bytes": 2197
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentCountForSubject$2$1.class",
+      "sha256Bytes": "6d5b54dc335bd72a4843835d046632886304fe7e022e487dadf64f0096bae99c",
+      "bytes": 3583
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentCountForSubject$2.class",
+      "sha256Bytes": "0f554e52396a989992579ccf2cf14fd0ea7ecb2010cdddb572b0d04cbfe051c8",
+      "bytes": 3453
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentsForSubject$1.class",
+      "sha256Bytes": "dc8e95f384a55a59f284337b504cd2ecab07bd920b5b94be637121d0f42a22c7",
+      "bytes": 2393
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentsForSubject$2$1.class",
+      "sha256Bytes": "3b24e8f503f7ed8d292155c9784fee2af6c02c3996408c4fa734205da49ae4b9",
+      "bytes": 4061
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentsForSubject$2.class",
+      "sha256Bytes": "3d1a2bdf7e210b6b4261c44dcb58a5a5f02bb6ec2690f3920d50d8a4ad02f821",
+      "bytes": 3933
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getDialogCommentsForSubject$1.class",
+      "sha256Bytes": "ef2a99a4f9c6d22781df7418fab8c1050dc88f597ef0428ad5f90a0072cbce77",
+      "bytes": 2368
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getDialogCommentsForSubject$2$1.class",
+      "sha256Bytes": "d334a1753c0c34db89ad81335020dd6bb87290e122a3ab7d3cff436af9ab94a4",
+      "bytes": 4027
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getDialogCommentsForSubject$2.class",
+      "sha256Bytes": "46ad1bb617c12b7abf6d1d6eb896d5e7115f9b6fffa7bf895b2825c088acfce1",
+      "bytes": 3899
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$1.class",
+      "sha256Bytes": "c0e88e3bb1c76f0a45c0f69ba475e9ddd96f658b27d5d77094fd9fa169b95e44",
+      "bytes": 2315
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$articleProtocol$1.class",
+      "sha256Bytes": "837f2cbef6dc70c6cd139d5fac73dc26a4c9d370e624e930b874f84988f9d8b2",
+      "bytes": 2422
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$articleProtocol$2.class",
+      "sha256Bytes": "88a9c29fdbc1302f7ae24e15f10acef90ce58c3d259bca1a888be5375bd8fda6",
+      "bytes": 1608
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$protocol$1.class",
+      "sha256Bytes": "402c47f7e1e95181381fa73d1ef3088e6a16f7e3bb80c2b868f6662811f8fb02",
+      "bytes": 2408
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$protocol$2.class",
+      "sha256Bytes": "4e1715be628d27b63fc2f3a6a776b4e6b550364ed41c7ef432d75f7fe34e43b1",
+      "bytes": 4131
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$protocol$3.class",
+      "sha256Bytes": "9c26f5432931f00b49314b8ed5a58d9a06e5551c30ecb7bf64489c151f4eafd5",
+      "bytes": 1594
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1.class",
+      "sha256Bytes": "212d5feb61cce7baa7e2243a7f2499f57208139d5820bdf6eb71e5d77f3a613b",
+      "bytes": 6461
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2.class",
+      "sha256Bytes": "c139cb50a7ae223f3d89f460d296d59474dfaf206a318c1991b73d22936556db",
+      "bytes": 4189
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$1.class",
+      "sha256Bytes": "2c6046071277199a8c8b560ff563aabe330a559d8ac712b99d872464323196f1",
+      "bytes": 2134
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$2$1.class",
+      "sha256Bytes": "7b1f4a96804e8726835608d8c8d207df6de21ad3cdaff8ebb15c636304a6bb8b",
+      "bytes": 3733
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$2.class",
+      "sha256Bytes": "388de8258e50540f3f76eaa247c1298b182550e53eb7fce1fdedabe41aac505f",
+      "bytes": 3502
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getPublishedDynamicDetail$2.class",
+      "sha256Bytes": "fa5aa19bd74ca81d905b80d54cfa445ce7a50f4de0acd3207fdf71c5ab047659",
+      "bytes": 3974
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$1.class",
+      "sha256Bytes": "46b813cbec7ea686557f2936523509edf48f3fb714dd7bd80b707736debd419c",
+      "bytes": 2122
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$2$1.class",
+      "sha256Bytes": "73cc9ce517c1033866d05ae33f5d8b24d00dbcc81628d60f7bbc07795d678d3b",
+      "bytes": 3675
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$2.class",
+      "sha256Bytes": "668c3bfacee7ca8c360739c270da01ba387bc974fa3775bbaee9dd98926d3f23",
+      "bytes": 3534
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getSortedSubCommentsForSubject$1.class",
+      "sha256Bytes": "295630fc71b0a2d060d4a04dd8413d4e4820a124b4b06be0bfa3101eeabcce9a",
+      "bytes": 2385
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getSortedSubCommentsForSubject$2$1.class",
+      "sha256Bytes": "69e224425a0d55154c561c4de691b655bf4752f88e3ec782233c688f163fb838",
+      "bytes": 4050
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getSortedSubCommentsForSubject$2.class",
+      "sha256Bytes": "83ba6a12213ab1aee23776489b3976c0a0be5e2d47b4ca66c9df4f5287c5dad7",
+      "bytes": 3922
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getSubCommentsForSubject$1.class",
+      "sha256Bytes": "98a1e53886c7d078d9218c7d9606cfcf7979a31374de346a60c9f7928cc192fd",
+      "bytes": 2398
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getSubCommentsForSubject$2$1.class",
+      "sha256Bytes": "ae125db0c425781ba03f856945369c7a484511179efab67bc19103cc9375f50b",
+      "bytes": 4072
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getSubCommentsForSubject$2.class",
+      "sha256Bytes": "78f4a50d15f4b35d7957cd43b846ea24c854f6e7386f599c4b6dea4f16dfaf0a",
+      "bytes": 3944
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$1.class",
+      "sha256Bytes": "ee4fc29a06d68b75c9a538ec473a67961dbf91fdd241f62b1e05ae25a719ccea",
+      "bytes": 2112
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$2$1.class",
+      "sha256Bytes": "22502bb6a9891c601df9b5723ee70bc8d8847ccc3e4e958af13932ceae10c196",
+      "bytes": 3584
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$2.class",
+      "sha256Bytes": "feb5dd5a3c18c0607eb2aa32ef645f5a1883b31e2bb2e2256b077c828f586436",
+      "bytes": 3467
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$grpc$4.class",
+      "sha256Bytes": "b3ae46fdaaa939f590160eaee0b051d666b7439712b286b6702417d5fae8e542",
+      "bytes": 1395
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$guardedClient$lambda$0$$inlined$-addNetworkInterceptor$1.class",
+      "sha256Bytes": "9c62056c1bc9100914312001a836fe2c96452264a961ad1bdd14331979db35c4",
+      "bytes": 2551
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$hateCommentForSubject$1.class",
+      "sha256Bytes": "38f4b66ff756ef3e3944032fa813548d69f6ad9811ec6f73be08004f8401d7bc",
+      "bytes": 2249
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$hateCommentForSubject$2$1.class",
+      "sha256Bytes": "393ac96f092571f3ac4a3b089c3185a3b5ce90605d739b379c33e0a2f5d6fdda",
+      "bytes": 5561
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$hateCommentForSubject$2.class",
+      "sha256Bytes": "9b46aa68daa617da8e57f86a50fbe443765c131274202304a87c5e319e9aa806",
+      "bytes": 3569
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$isPubliclyVisible$2.class",
+      "sha256Bytes": "1f9d53423bbf0b42ff80a5c9183dfb03cbd774034f8d80cafbdb2b9430cc64d3",
+      "bytes": 4718
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$jar$1.class",
+      "sha256Bytes": "9795bf4fe972482e6eeb2e2bbbbd769b8b3751128125d1e5a4ea65237037d0b1",
+      "bytes": 2739
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$likeCommentForSubject$1.class",
+      "sha256Bytes": "5ff5baefef177e4d83a7b997df8508f234283a67f065c8dcc397d47ac6dbf89e",
+      "bytes": 2249
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$likeCommentForSubject$2$1.class",
+      "sha256Bytes": "162417bb41620e7f5d80ed9e478dbb780dd882ed8c3042907d3e03af8cb74ed2",
+      "bytes": 5561
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$likeCommentForSubject$2.class",
+      "sha256Bytes": "937197be0c4491b91706a2fd8cb5a84f53c41251254aba1df16f1148d838409e",
+      "bytes": 3569
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$loadReplyInteraction$2.class",
+      "sha256Bytes": "d477b6969a232b568f0d7931e5ad90f3f9b7c05022a41f6c82e9bf903391ca21",
+      "bytes": 4249
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$messageShare$1.class",
+      "sha256Bytes": "d54070fb58a1e450303614e349e77e9b1449965323e848d60901009acd3c63bc",
+      "bytes": 2057
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$modifyReplySubject$2.class",
+      "sha256Bytes": "fbcdcd9af07e5f8614fa8fe6f7adfb91a5d1b9b2f3929b49ca170eda5a32ccca",
+      "bytes": 4772
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$mutate$1.class",
+      "sha256Bytes": "5ebb1b49a62f5d0a4415010c2e06844a191e730048ec156cf5ccff1db1e24826",
+      "bytes": 2204
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$mutate$2$1.class",
+      "sha256Bytes": "adbec8eed91bd51835ab7b5d7ccf8cc4b3148754e9939a58ee25d791390dd34d",
+      "bytes": 3818
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$postSourceComment$1.class",
+      "sha256Bytes": "ac73ac17970b3183e9e8f9e1eec8dfe3c5f408c84fdbcb3e569c2a5a7be50994",
+      "bytes": 2019
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$postSourceComment$2.class",
+      "sha256Bytes": "7226f3d48ae933402ec561cdfd53f97324fd2281ed595f86688142fa1f2505c5",
+      "bytes": 5020
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$1.class",
+      "sha256Bytes": "a0e437135c8a6ccd8c025cb8fd9e28d8c43c9c07ff6b8aa156d712898ab2d9ba",
+      "bytes": 2256
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$2$1.class",
+      "sha256Bytes": "22ce91ec7712bb1d070f5f51e4fc773cb348e90d041acf73be7d72ba48c05d3d",
+      "bytes": 16295
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$2.class",
+      "sha256Bytes": "86eb338ea6481ae3a44a5750b8b5e1c1446b0f9367d7cdfc1c0b5542d2a4854c",
+      "bytes": 4123
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$read$2.class",
+      "sha256Bytes": "60c8d08dcc80688a8bfb47e77c7efad5705791dfa278e16e2505fad3727e444e",
+      "bytes": 5093
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$report$2.class",
+      "sha256Bytes": "18cab9a60ba9cc47fecd1deff1ef6ad3f6b6a9e42ef4230e737da1230ca1ea48",
+      "bytes": 5224
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$reportCommentForSubject$1.class",
+      "sha256Bytes": "799caa01f4b99fc63b9869bbbc90f950af0a34cac3bef1204f3f234fabff9cfd",
+      "bytes": 2307
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$reportCommentForSubject$2$1.class",
+      "sha256Bytes": "49a7de070f6fcb04f20e71b6ccf8af77eac4d65ce3aa29ec106710676163dcb9",
+      "bytes": 5762
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$reportCommentForSubject$2.class",
+      "sha256Bytes": "9d25e245561bf3a46c4c67d73d38cad454e532f6e28162d042e58e2bca3ce0e3",
+      "bytes": 3707
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$repost$2.class",
+      "sha256Bytes": "2b82ba56aba3d20c0bb582f7f21ac8242920c7102f664ea80f43d6c5b1a47a0f",
+      "bytes": 5048
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$1.class",
+      "sha256Bytes": "3db8ac1712c0929bd73373053ca759eddfcaa998acd85e0921fa5a4921b07a90",
+      "bytes": 2165
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$2$1.class",
+      "sha256Bytes": "f7c831040a339942b292c298e251903903365c1b6f70e16bc60582d829df9d81",
+      "bytes": 5414
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$2.class",
+      "sha256Bytes": "454dfa486cc14a7c563ec256c446a4ff9c7ea3aa51a64965ccfdc6d079ea6692",
+      "bytes": 4408
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$result$1.class",
+      "sha256Bytes": "72f8c723ea358bb5eec3fbdff56d8409c171cc4ee84bb3689591df2dca5ba5b1",
+      "bytes": 2371
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$1.class",
+      "sha256Bytes": "4c036bed5c1582676d52628e2b3cbdf9de90f30e5ab007cdb46cf83be50adaad",
+      "bytes": 2154
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$2$1.class",
+      "sha256Bytes": "322c3f3bc5b726eb1f4c50bfdd5054d097ffc9995571627697e5f003cd31a5fc",
+      "bytes": 9087
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$2.class",
+      "sha256Bytes": "ae9848b58c74649ffcd0b872cb55dc61f97726d4a00976023289ee34c9665def",
+      "bytes": 3636
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$1.class",
+      "sha256Bytes": "e9958e4017313ffbf6a38a9dca4582fdd0859bad489e09cb1904e91844e34b86",
+      "bytes": 2158
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$2$1.class",
+      "sha256Bytes": "9a0028cfd31bf835805af18c9f4b903aeabcc85300c3a6b7d230bca5c44c5cdc",
+      "bytes": 7994
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$2.class",
+      "sha256Bytes": "c592a15c073a3f839243f45330445c097a3c601c46705ef4d52ca94638165fcc",
+      "bytes": 3657
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$1.class",
+      "sha256Bytes": "0d02f78b6c0b6414847744846ef6e56eca40fa572a877156626ee1a03dc2464c",
+      "bytes": 2111
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$2$1.class",
+      "sha256Bytes": "7c026abe7101c56543e9c2e8bcfe59b1fe7fdc87b276ea39c3ec100959e4c706",
+      "bytes": 4404
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$2.class",
+      "sha256Bytes": "93b346c977dc69d27ae589064d671920b92438903ec6a5168a3018bedd9c5618",
+      "bytes": 4024
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$1.class",
+      "sha256Bytes": "a274bc62ff8e1f3e3ddaed0341ee98364719ccca82cbc7b88d712e9d95b60173",
+      "bytes": 2188
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$2$1.class",
+      "sha256Bytes": "5aa7871926f8f76d77b1a2141dec7270a6a6215b7b902feb47ce9ce7dfa0184c",
+      "bytes": 3861
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$2.class",
+      "sha256Bytes": "161b8a8e1973ba1c867d5d6d9b69b077f04de5ff2c2e9da728f2ba33ffca3fcd",
+      "bytes": 3513
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$setCommentTopForSubject$1.class",
+      "sha256Bytes": "5f88aa62a4a1dea0ac62e08c449a5841dac8cffce029e5c4e464541265366dfe",
+      "bytes": 2267
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$setCommentTopForSubject$2$1.class",
+      "sha256Bytes": "2a73c76b01fd758a91a35de567045446710bef7831bebd3ef44cc101d347f9b0",
+      "bytes": 5647
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$setCommentTopForSubject$2.class",
+      "sha256Bytes": "7776bc5cb025a72a9e7e686baa70b0347c9752efd0b9361957b229fff23f8946",
+      "bytes": 3591
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$setLike$2.class",
+      "sha256Bytes": "7db0c1125803cc6f5f942bdec1b274e9991c36c3cfea1650b8dd63bfd1f4c40d",
+      "bytes": 5035
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$setTop$2.class",
+      "sha256Bytes": "518bba62dd9419825908b557a9040f23cb2fadfbd33348ad1d3d261b37290785",
+      "bytes": 5457
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$setVisibility$2.class",
+      "sha256Bytes": "9a5783592ccfaadbfb9c4c026df6488765db443ef002f5dc81cd1571ae3cc4c3",
+      "bytes": 5466
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$signOriginalDetailParams$1.class",
+      "sha256Bytes": "5783e5ddb131831e488b2ae6124eb0dfff99e5f3ebda6fb96af3017fb16d31ed",
+      "bytes": 2086
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$1.class",
+      "sha256Bytes": "2bd6f2ee8503d2925f99a4525a84482b28c6932ed1e560c488f4652eb6f0b8e3",
+      "bytes": 2253
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$2$1.class",
+      "sha256Bytes": "4c85f5c1544d46c43451fea3be9976f1de4af7d433e738e2eab5d82ef0e94576",
+      "bytes": 4207
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$2.class",
+      "sha256Bytes": "ea75b9258bcd273fd050df7509850ed84449eea80efaa4db17075ff92fd6cf28",
+      "bytes": 3880
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$translateReply$1.class",
+      "sha256Bytes": "a0eb5eef198aa0ff0186d5eb5219b5edf3f6c4e0f83d5ff637066bee361b1e39",
+      "bytes": 2185
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$translateReply$2$1.class",
+      "sha256Bytes": "4e60999de0c98377507855c8a41ae6bbc1de0feb0ee380c834c0ae974dbea4f6",
+      "bytes": 3558
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$translateReply$2.class",
+      "sha256Bytes": "cb86248447142eac715f3c3bd0ae33100a119956dc31ead0a96326d8e5bf060a",
+      "bytes": 3440
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImage$1.class",
+      "sha256Bytes": "deb559fa40e442da13d933ecd4b866a4154c60a1415f282e148b990b56309c7f",
+      "bytes": 2242
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImage$2$1.class",
+      "sha256Bytes": "cc3038adc14938df9a621b764b576194e3138107bcf96968a95ad07c80fdf7e9",
+      "bytes": 4044
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImage$2.class",
+      "sha256Bytes": "3be5082776234792d602af7603b802f9b63a3aea67aa62c8c0492f7dfb4ef65b",
+      "bytes": 3777
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadEditorCommentImage$1.class",
+      "sha256Bytes": "88724ee4909ce3dbac0bb61a7b45eb72ba63c2693e56c1efb98d54842122348c",
+      "bytes": 2508
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadEditorImage$1.class",
+      "sha256Bytes": "7bfc38698b0a3b78d912bef980997f673c57ac16e932484a73660b92421c786e",
+      "bytes": 2219
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$upSearch$1.class",
+      "sha256Bytes": "ad0165f1011d43a8ea95bcdf8a47d00662f16991412fc00bb1f603a27bef9b91",
+      "bytes": 4805
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations$userInfo$1.class",
+      "sha256Bytes": "237144ad97fd98046d9e20bfd95c02ea17c905f0c05832f3b9b3c7656a2f0c58",
+      "bytes": 4805
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/data/DesktopDynamicCardOperations.class",
+      "sha256Bytes": "be7a52ae938460131e32062df67e7505d398830cb74521ecb834fa725cbc64b5",
+      "bytes": 88822
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopCommentCanvas.class",
+      "sha256Bytes": "e5615f63e26110cc08292c75ead59e9a1d4b37112879123d5023936b085439a6",
+      "bytes": 5109
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopCommentColors.class",
+      "sha256Bytes": "90a54becf46bf78d93b55ccfdddcec65cab1d0dfee1d6b70676f80ed2bdba0c8",
+      "bytes": 1496
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopCommentImageCanvasKt$writeDesktopReplyCommentImage$2.class",
+      "sha256Bytes": "de646dcc8034179c7ecc838db6f15e2c50771a5978a77c6e2287dc684183cc4a",
+      "bytes": 6845
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopCommentImageCanvasKt.class",
+      "sha256Bytes": "2c39800a76d53ef6a3216d795c4cb5b7ed47a2484956d32c64a96b8955d12c02",
+      "bytes": 2513
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopCommentPaint$Companion.class",
+      "sha256Bytes": "e371b80a26c9a7186d2a15b564338647ef3fa1899304c776f648fde785ec78a0",
+      "bytes": 928
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopCommentPaint.class",
+      "sha256Bytes": "2509ebd6c1fefcaee0fa40b38520d86371830f272b1678cb1afbf04fe78b5ba5",
+      "bytes": 3678
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopCommentPlatform.class",
+      "sha256Bytes": "d002b40b254febc315348440ca2fb9de77ee3c09cfaa06f48a4e484db92c389b",
+      "bytes": 3597
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopCommentPlatformKt.class",
+      "sha256Bytes": "910288b43b313c6a6e64786c2dbf50f9a7934c1509eebc7c08847e6eaf34e100",
+      "bytes": 2007
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopCommentRect.class",
+      "sha256Bytes": "a07c3c8743d7691741169c843eab8e11828d50aeb8a1bbe60870dd012d582fa4",
+      "bytes": 3352
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyOperationsBinding$addCommentForSubject$1.class",
+      "sha256Bytes": "8d14daf570df1029119b69e9582ef77acb75c54efc28464d9a61db993719a0f0",
+      "bytes": 2342
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyOperationsBinding$deleteCommentForSubject$1.class",
+      "sha256Bytes": "9f73ec03321c6abdb2b2448007c9838817b8674c303cded226f837ef5aaa21e4",
+      "bytes": 2268
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyOperationsBinding$getCommentCountForSubject$1.class",
+      "sha256Bytes": "9927aed2cbe3c91c9c683ab6eac1cf5514e982a3f205b5216bd30d1df264e0f1",
+      "bytes": 2244
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyOperationsBinding$getCommentsForSubject$1.class",
+      "sha256Bytes": "a53dd6f3cb023b4fdd4c78afc830320f18c9db554be6d9da29064afa5ef923ad",
+      "bytes": 2440
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyOperationsBinding$getDynamicDetail$1.class",
+      "sha256Bytes": "e10a8a451f314c9ce64df235bdd27b141ccc57d11cd1933b3acf8ffd87def2c4",
+      "bytes": 2188
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyOperationsBinding$getSortedSubCommentsForSubject$1.class",
+      "sha256Bytes": "fc6bbc4eec374aafee388f6d56fd0dbebbffb6afcb8300895505ca24217b6009",
+      "bytes": 2432
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyOperationsBinding$hateCommentForSubject$1.class",
+      "sha256Bytes": "4a49fcc4b9ae32fbfcda1f52ee04d9dee6496d3e180167ea2ff8aabb67f8ccf9",
+      "bytes": 2296
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyOperationsBinding$likeCommentForSubject$1.class",
+      "sha256Bytes": "d993d8099680e08923bb2b4837adc8f9ada016be59f65f439339b84d4e400940",
+      "bytes": 2296
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyOperationsBinding$reportCommentForSubject$1.class",
+      "sha256Bytes": "41486bfa68f53ec35e16416b044176d9be00d26c3246b63e2991ab8ca398aeeb",
+      "bytes": 2302
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyOperationsBinding$setCommentTopForSubject$1.class",
+      "sha256Bytes": "073f879f86b2007912bf2bc6d5052a4acb8236641692e58f53d5d29d65c79e09",
+      "bytes": 2314
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyOperationsBinding.class",
+      "sha256Bytes": "53cdba924adea599cfe2b78c956e82a6ecbfc2222e0febfc6b64fdb5176af136",
+      "bytes": 13858
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyRequests$DefaultImpls.class",
+      "sha256Bytes": "4940d0f6788cca67b595e81fdc11b3f23a47c6386a3d1e36d9db17334326132c",
+      "bytes": 1209
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.class",
+      "sha256Bytes": "09a61c5b1b90e77a31025d23b6d2698d68e40e89a64384588df9cdb2ec40c031",
+      "bytes": 6055
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalDynamicCommentPanelKt$DesktopOriginalDynamicCommentPanel$commentComposer$1$2$1.class",
+      "sha256Bytes": "e2e36a7322dacc6fd8399379fc6c0069caeab38f51e166bf3def85169d444765",
+      "bytes": 1753
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalDynamicCommentPanelKt$DesktopOriginalDynamicCommentPanel$commentContent$1$1$1$1$1.class",
+      "sha256Bytes": "8869f2c0eddd82de3466b63ae4aaa64f8cf7f1b9f914762e5399baba3d18db9a",
+      "bytes": 2274
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalDynamicCommentPanelKt$WhenMappings.class",
+      "sha256Bytes": "679962aebe7da6681cbe54fec39e55d0f50155deadb5485a28e2d50dad8c4dd1",
+      "bytes": 891
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalDynamicCommentPanelKt.class",
+      "sha256Bytes": "6e6b0710e086f26b50c5b3c4338d7682ef0fa629386d65ddd74b8bdda6c12f7f",
+      "bytes": 52562
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalDynamicThreadContentKt$DesktopOriginalDynamicThreadContent$2$1.class",
+      "sha256Bytes": "ea25dbc3519ce841896faedf349b69ddbf953490d974e64e73db699ef2ed8d02",
+      "bytes": 5175
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalDynamicThreadContentKt$DesktopOriginalDynamicThreadContent$onDismiss$1$1.class",
+      "sha256Bytes": "24f87176e0046270d12e49531baa421fb789be81deb228414fc654d8d17e0899",
+      "bytes": 1683
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalDynamicThreadContentKt$DesktopOriginalDynamicThreadContent$onDissolveStart$1$1.class",
+      "sha256Bytes": "9c4862855a560597e18a53c7740d8f57f5767b91fe51fa474cd4f8614af2cbda",
+      "bytes": 1829
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalDynamicThreadContentKt$DesktopOriginalDynamicThreadContent$onLoadMore$1$1.class",
+      "sha256Bytes": "487f1f6d17b22b42362c2142c8b25b63cdc045069563f2ba5b4e8def3173620d",
+      "bytes": 1695
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalDynamicThreadContentKt$DesktopOriginalDynamicThreadContent$onSortModeChange$1$1.class",
+      "sha256Bytes": "96bcd9c41b97086905c271815cf2aa294cfad2ae7e37f719e915cb659615a0ef",
+      "bytes": 2225
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalDynamicThreadContentKt.class",
+      "sha256Bytes": "d58cc2cf58bd2fb41848e882e504b08d29464c7888a1ae0034c8582d4c4e21e7",
+      "bytes": 24469
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalReplyFailedCaptureDissolveKt$DissolvableVideoCard$1$1.class",
+      "sha256Bytes": "c7b903430ab4c5e20d9afb1b23d6cf2e5dc168a0d6de2fdb6fcee2b1662b88d3",
+      "bytes": 5184
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalReplyFailedCaptureDissolveKt$DissolvableVideoCard$lambda$18$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "dfa9131ae24dfd446cf7f8355f32920c824ef232336c4854fff8c129c5d25ee0",
+      "bytes": 2927
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalReplyFailedCaptureDissolveKt$WhenMappings.class",
+      "sha256Bytes": "827fedb461e56f0a8ba31a2dac9e03dfb510f1e96410e248d93a704da062099e",
+      "bytes": 918
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopOriginalReplyFailedCaptureDissolveKt.class",
+      "sha256Bytes": "86c0523fb8447b34fcb359b8e0f2b53ba96c51492acf6fef5023cfc471c2f727",
+      "bytes": 40862
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DesktopReplyTransparentBoundsCropTransformation.class",
+      "sha256Bytes": "360ef263635943b52517b8487648dd6827a16b3b3042217238cd3af8bccc0c9d",
+      "bytes": 3670
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DissolveAnimationManager.class",
+      "sha256Bytes": "60b68e0a1cc22b7e8e591dfa71eccb3af8a165fbd27ed680ff8438d3f2c6c7f2",
+      "bytes": 2957
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DissolveAnimationParams.class",
+      "sha256Bytes": "14a51632020951487712804a29e33293b31987f6ac2a9d35d5872de60d230a17",
+      "bytes": 3702
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/DissolveAnimationPreset.class",
+      "sha256Bytes": "bbb9548e4d9e3eb195de511ff03c4b797f00b4d555539d3b32d4b58ccf0fce48",
+      "bytes": 1940
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/FixtureReplyRequests$addCommentForSubject$1.class",
+      "sha256Bytes": "a6f3c901a4d71491b8523f9087fc02d11b066be053b391a7989bb51b11c57e78",
+      "bytes": 2201
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/FixtureReplyRequests$deleteCommentForSubject$1.class",
+      "sha256Bytes": "0a260c2e19b54f9892fdc4df2e6855da3dd6760289a7610f7ec7ce7405b0eda6",
+      "bytes": 2127
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/FixtureReplyRequests$getCommentsForSubject$1.class",
+      "sha256Bytes": "46af62667d5d60289015d354a87464464639a6a71f9df8804f45356e4f46a87a",
+      "bytes": 2299
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/FixtureReplyRequests$getSortedSubCommentsForSubject$1.class",
+      "sha256Bytes": "8c8bc1d5a11f1c030c458749fec62f9ae6c3b95c0817a0b10343ba9fd4a02b78",
+      "bytes": 2291
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/FixtureReplyRequests$hateCommentForSubject$1.class",
+      "sha256Bytes": "553970fbb88a832aae82e809a3911e92fbaff967bc7c8ad6f2bfd79033370696",
+      "bytes": 2231
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/FixtureReplyRequests$likeCommentForSubject$1.class",
+      "sha256Bytes": "ac2301bca9d8156098d3aa6bdf2b6b9f6abc138f84ddd7328b2b3aeda1e49fe5",
+      "bytes": 2231
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/FixtureReplyRequests$main$1.class",
+      "sha256Bytes": "27a33469fd593874856d9b827b9f6ad907d48b0e0c32d18d40eafa3fd8e7c4ef",
+      "bytes": 3738
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/FixtureReplyRequests$mutation$1.class",
+      "sha256Bytes": "4d86cb5a513c989b09696d1d5ce0bb20ae6c3988fdf5da1872473331e51b3753",
+      "bytes": 2792
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/FixtureReplyRequests$sub$1.class",
+      "sha256Bytes": "cc2c6c2733d27d0586f35b016e8dc682d857d81256799ce25283a3834dd37c8d",
+      "bytes": 3394
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/FixtureReplyRequests.class",
+      "sha256Bytes": "f2bd4f1e85ba0c7cd3fb896bab9763e730991c95ab7d58d39f729f0879bcc91f",
+      "bytes": 17405
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/PngLuminance.class",
+      "sha256Bytes": "8356041fc019f7afeb64f47fcc1abe5f281af446bff7f37e478e6c0c8c8edef2",
+      "bytes": 2412
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyImageFixtureKt$main$1.class",
+      "sha256Bytes": "b55663983f2c614534e48f53738eed85a5f12593fba3c10f6da3d01550974704",
+      "bytes": 21596
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyImageFixtureKt.class",
+      "sha256Bytes": "16efe9952f51bac2f31afb07109cbd87940366a4f0b1ccccacfa9e287b9e950e",
+      "bytes": 1175
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyLifecycleFixtureKt$main$1$3$1.class",
+      "sha256Bytes": "134ea541091294fd4828f81b2f3d1db8d8757e7464baea9e946ea20ae08dd96b",
+      "bytes": 3353
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyLifecycleFixtureKt$main$1$3$4.class",
+      "sha256Bytes": "094da657d170fbcaa797a8fa7a0c1354467d5167d2340ca5e3ae6a2bc61ad996",
+      "bytes": 3270
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyLifecycleFixtureKt$main$1$4$1$1.class",
+      "sha256Bytes": "34af808def19a0e2a402e3470570fac6e0d36212ad7c8556b7890a2b372cbbb4",
+      "bytes": 3643
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyLifecycleFixtureKt$main$1$4$1.class",
+      "sha256Bytes": "81824ad6583458dfe22594fb36ed85404bdb6ce1fdf1a950f663e0e2eeefd43b",
+      "bytes": 3778
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyLifecycleFixtureKt$main$1$4$2.class",
+      "sha256Bytes": "0374a9d4cc4bcfa15693f266c889e31c665d75c6245a07b844b64f2434717699",
+      "bytes": 4761
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyLifecycleFixtureKt$main$1$invokeSuspend$scope$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "6c7e29596097df4165e3b09f5fcfa9dcc91791b17dd16aa5d5a92d6294d5f9d2",
+      "bytes": 2969
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyLifecycleFixtureKt$main$1.class",
+      "sha256Bytes": "a7bf13ed8893ce0cb1c58a21b522460162eba3f062b038f1043ef0e20143622b",
+      "bytes": 21383
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyLifecycleFixtureKt.class",
+      "sha256Bytes": "860f6bbd82ae7b58f0b460c99c5c2f466499e77d0b144438f7fd6e77a5474d06",
+      "bytes": 6040
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyPlatform$emotes$1.class",
+      "sha256Bytes": "5043339ad40bc8218d5ae34e28611f5a6f0276d6bed37f1d7c0645e6ddfc2d78",
+      "bytes": 1646
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyPlatform.class",
+      "sha256Bytes": "74b8a8201ab5ad6501860abab798d000f9cec56572e40033865584fa48e8218c",
+      "bytes": 9338
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyQueue.class",
+      "sha256Bytes": "2587c0fde8299f8bd879a086a36a8749b6af32f4d65b8abcd17c003e6ad93988",
+      "bytes": 2708
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyScene$await$1.class",
+      "sha256Bytes": "851e8dbfa8a92d36ae9280d804f8dba33b50be21a5fac0dadd0cb74e699895fb",
+      "bytes": 1819
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyScene$await$2.class",
+      "sha256Bytes": "d63adb63de32c2f0d5279c8d2e81b8a43fd09802a3a4ceed2eabc38060467760",
+      "bytes": 3587
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyScene$press$1.class",
+      "sha256Bytes": "fda355ad03210b06b81fe834a2b2e9d4691eca1fadf9bbef30265efde5af26cd",
+      "bytes": 1786
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyScene$setText$1.class",
+      "sha256Bytes": "e94d1c61c5a0f19e1b743176d862e9669fc3c34a8c4d09a83f999357d5b5ab14",
+      "bytes": 1843
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyScene.class",
+      "sha256Bytes": "46b5508d6d7d6cc276c2a7c0516b70065629cd1c85cb3f4fd260dbb6f80bb5dc",
+      "bytes": 19282
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$10.class",
+      "sha256Bytes": "55df9e03ec24f89f679005be358cc19028d04d4e67b252af3e0ac0d1b3cfd501",
+      "bytes": 3673
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$12.class",
+      "sha256Bytes": "31487f8b2acddd5fe69ebe43153442afa74f971456bf4d9f53f0dcdcd8965c25",
+      "bytes": 3673
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$15.class",
+      "sha256Bytes": "f050766871b63d6d3a7be3f94136d3bfe7d93f79b8e077c85625978049bfbd69",
+      "bytes": 3419
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$16.class",
+      "sha256Bytes": "32b01d1dd43f77be2cd6beb0f6e88118ce0fd30cb8fca2567479b19c3e5cc308",
+      "bytes": 3673
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$18.class",
+      "sha256Bytes": "9fb1064674f644d2640d4b5f253ba5f27b54db2ec73d82686b4ea089d65e19b4",
+      "bytes": 3426
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$19.class",
+      "sha256Bytes": "ba0d2313c28c7e80018eb3514be861947f8aa445c170a841e59a028f232b6275",
+      "bytes": 3610
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$2.class",
+      "sha256Bytes": "08b2cd1766437515f9ade218f70bc02a723dc45268da5c1e42422e7476a53423",
+      "bytes": 3631
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$20.class",
+      "sha256Bytes": "b2f1e94da3bca3bf77688aec73ce26b66d0ce30265d83f0a4cd2a94beae4b49e",
+      "bytes": 3780
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$21.class",
+      "sha256Bytes": "ec2293dc89c3e147be079dfefcb04f0242cc7be995c484c350904009d8743599",
+      "bytes": 2797
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$23.class",
+      "sha256Bytes": "e7043c6fd3ee34654c36761681130fa78f43813fcf1a94aed128a8d8cca6ab12",
+      "bytes": 3343
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$25.class",
+      "sha256Bytes": "db3ff5fc9bc88373ab1e66541be9f129f78d3822d948b92e12deb3a449537369",
+      "bytes": 3345
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$27.class",
+      "sha256Bytes": "f8a4d69df1f7997e81e7395f80a98f75f682f0b75bf345dd04e0ca1f3d54f601",
+      "bytes": 3345
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$30.class",
+      "sha256Bytes": "740dd56f2c86c6d78f322c453d5b3cc8520ff59b3ba71a7eb763f9ca575b01c7",
+      "bytes": 3346
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$31$1.class",
+      "sha256Bytes": "3a7dd62db739f056689de3fd70cc8fae9b676879af371864f933c75e189411c6",
+      "bytes": 3624
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$31.class",
+      "sha256Bytes": "8488e56466164eb4c985ced977e7d4394c05aa8f7e1d58a07b3b3e631d4cb193",
+      "bytes": 3723
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$6.class",
+      "sha256Bytes": "0b6b1972a6ee875cd3190929031e02120641738ff8db7e921283ed55873a3ed8",
+      "bytes": 3669
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$8.class",
+      "sha256Bytes": "ffcea8e9941688214715e31662c18db2af280f328cd6cf8a984410f724f3ac0e",
+      "bytes": 3669
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$invokeSuspend$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "31f77ed0d02365e22ccf8c61469d150829013b7e46587d51f6a98be800cea634",
+      "bytes": 2895
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1$ready$2.class",
+      "sha256Bytes": "3c2aa0456f625f4ffa408d66cb104ff8f4448e8308a719d568b21c7ba215ae84",
+      "bytes": 3898
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt$main$1.class",
+      "sha256Bytes": "1f73060e922b2015331a2407a6a59758d9076063cb720458fb390a1073a34fbe",
+      "bytes": 36590
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplySessionFixtureKt.class",
+      "sha256Bytes": "8ce0d10f86800f25c3342d2cb69f4fcbdd62c8378d5375f4b6ab80679521d66a",
+      "bytes": 7769
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyUiFixtureKt$main$1$1.class",
+      "sha256Bytes": "c9dfd9de67a74540582fedc0cb28c8b1f1f12473403fc8a9715fe3b1a2847886",
+      "bytes": 6110
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyUiFixtureKt$main$1$19.class",
+      "sha256Bytes": "bdaaa48f85a6429e27227d78c1382037a12d9beaad6a10d3bc0b6d0ba06bfd72",
+      "bytes": 4356
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyUiFixtureKt$main$1$loader$1$1.class",
+      "sha256Bytes": "620cceb5a4198f0bea874d66cea4943cf8d95251478f2f0b10e697210d76652b",
+      "bytes": 1809
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyUiFixtureKt$main$1.class",
+      "sha256Bytes": "f82de84f55b82a86acc648efc9daf185e39b8e526220c037878700848e388621",
+      "bytes": 85281
+    },
+    {
+      "path": "classes-ui-17/com/bilipai/desktop/ui/ReplyUiFixtureKt.class",
+      "sha256Bytes": "34c651f17d54a460fc9b4bc493c1b185f9030cc537bf8894aaee20c66be8b498",
+      "bytes": 1287
+    },
+    {
+      "path": "classes-ui-17/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "3ebdfd0c674ff3beb6306f604c775f75eee08f6001976495a062fa774aaef4af",
+      "bytes": 1346
+    },
+    {
+      "path": "compile-ui-17.log",
+      "sha256Bytes": "a724ac1d0a9d3922652d552a60a90a621f3f7af77ba35067339f97a87d1ca8c4",
+      "bytes": 2824
+    },
+    {
+      "path": "compile-ui-evidence.json",
+      "sha256Bytes": "43f6d8367e55d3f7b2fabfc89aaf703460c9954b4a5f22115632aeae4661c1dc",
+      "bytes": 13481
+    },
+    {
+      "path": "compile-ui.py",
+      "sha256Bytes": "d67a6d642074e36433a0fcf9ea0893143987c5c372e2ee862e5fe4f426a1e41d",
+      "bytes": 3386
+    },
+    {
+      "path": "compiler-ui-17.args",
+      "sha256Bytes": "22c662d0773ca7fc9bcbf7707023ab871f7564d408fe763eb04e3537c3cfbb62",
+      "bytes": 30302
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "02e11258a059707900bf57e6e33574c477cbc5181f12758a3e4102a4b022a7f8",
+      "bytes": 33692
+    },
+    {
+      "path": "freeze-raw-handoff.py",
+      "sha256Bytes": "9ed355f808d8ad0426eab47abf1ea652ba2a7dc6fc6b0b9cd5e0b115d71bc8cc",
+      "bytes": 16016
+    },
+    {
+      "path": "generated/detail/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplyPagingGuard.kt",
+      "sha256Bytes": "a577efbe673a821abf08cbd09a1fe2cf5f916e52812a3861026e32b8baef0378",
+      "bytes": 720
+    },
+    {
+      "path": "generated/detail/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession.kt",
+      "sha256Bytes": "a971854ce15fdaacb86620a814c0b5f770f4763b418361a1ee379709dc425c1e",
+      "bytes": 36271
+    },
+    {
+      "path": "generated/detail/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDynamicReplyCountPolicies.kt",
+      "sha256Bytes": "fee71436e462930401a9ad5e50226ff3dc115ceb4424c64f19b0b9e0ce77975d",
+      "bytes": 1738
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/core/store/DesktopOriginalReplySettings.kt",
+      "sha256Bytes": "c329eec975d698c394fc723cf0e62811367179f9cff63b9b628c036a262cc18b",
+      "bytes": 3040
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/core/store/DesktopOriginalReplySkeletonSettingsStore.kt",
+      "sha256Bytes": "a04fbc6a5094b14cb0173d3fd33e2182058cbf75589a57dd515a267997711cd6",
+      "bytes": 898
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/core/ui/common/DesktopOriginalReplyClipboard.kt",
+      "sha256Bytes": "2a767ac4af4a5f097470ab0f6c9e475cb35fecc0d96a37a2951f75a449808438",
+      "bytes": 1216
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplyLoadingSkeletons.kt",
+      "sha256Bytes": "159cfcdbba32b227ec9dd63317d327c067544787395c3ca26f0f59a5ffed9958",
+      "bytes": 4949
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplySkeletonBreathing.kt",
+      "sha256Bytes": "0f403f52431998f06e91695469b470ec0466c701485be118353e731a0664e36d",
+      "bytes": 1852
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/aicu/DesktopOriginalReplyAicuNavigation.kt",
+      "sha256Bytes": "64ab4e1518681db26626551fcdd4bf0a25c2f6b472afef140756b673a040f26c",
+      "bytes": 400
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUi.kt",
+      "sha256Bytes": "2f5dce3859aa61a08aa3b8d14f8585b03466a7ac1e12d9418a1b422ec6b11118",
+      "bytes": 11530
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/home/components/DesktopOriginalReplyCapsuleShape.kt",
+      "sha256Bytes": "e282bfb39af977553f1d9f8b934a7c9c69a219c7e29aef2ee37ccbe132206955",
+      "bytes": 451
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyCommentImageSpec.kt",
+      "sha256Bytes": "66ee63530154e4951451f4abbf4de67a93ddc8fab45c3625e053555c0f8d45fe",
+      "bytes": 1524
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponents.kt",
+      "sha256Bytes": "8f2eb4a6be6e49ac383408a84866c0f3118f014b100b8b31be58e701f69788fb",
+      "bytes": 87026
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyImageRenderer.kt",
+      "sha256Bytes": "e2ea6c85cec672b8edd7914b95bbb51cf975f26c69101c2d3c5c8e289bece533",
+      "bytes": 4781
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyReportReasonDialog.kt",
+      "sha256Bytes": "15ea696907c032994162e84b4a25df1c572f4d86bc5307f1faed180e36b7ff63",
+      "bytes": 1988
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponents.kt",
+      "sha256Bytes": "fe099a81965129a2d77fc8542f98ef4c07e47c0b1b5eaac91b949192652ca8b5",
+      "bytes": 67808
+    },
+    {
+      "path": "generated/ui/com/bilipai/desktop/ui/DesktopOriginalDynamicCommentPanel.kt",
+      "sha256Bytes": "f73c642e4c5e968fa7a22c699294f0b9c1044ffa7fa976075df63bc1eb0dad4d",
+      "bytes": 6268
+    },
+    {
+      "path": "generated/ui/com/bilipai/desktop/ui/DesktopOriginalDynamicThreadContent.kt",
+      "sha256Bytes": "2622aca6fcda5c7520e094a707debca4c4c4fd3be5a7348dc6f7357a4b8d9c65",
+      "bytes": 3929
+    },
+    {
+      "path": "generated/ui/com/bilipai/desktop/ui/DesktopOriginalReplyFailedCaptureDissolve.kt",
+      "sha256Bytes": "4864474c76c50b581c304a4c789d2b8be1edbfce0bcc09112af780504fa70c5f",
+      "bytes": 8605
+    },
+    {
+      "path": "image-result-17.json",
+      "sha256Bytes": "5c09bcd8b971beb096ae70cbe203931852cd48d3100593804133dbf6e37b22a1",
+      "bytes": 239
+    },
+    {
+      "path": "image-run-17.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "lifecycle-result-17.json",
+      "sha256Bytes": "9c00dd0f3cccaac9170626781b876df74564044df9055f1b5df47fd28e2f0a94",
+      "bytes": 563
+    },
+    {
+      "path": "lifecycle-run-17.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "material3-original-comment-panel.png",
+      "sha256Bytes": "2acb33082469f6b657e0bab4ed415144a316206defad720c48cc1fa99a9a98b2",
+      "bytes": 26267
+    },
+    {
+      "path": "material3-original-reply.png",
+      "sha256Bytes": "16e8c8b0b2282a7031299f7acc39fa302d91600ba09dbcb26b6e963ba9e59070",
+      "bytes": 22075
+    },
+    {
+      "path": "material3-original-thread.png",
+      "sha256Bytes": "4dcfb06349f8bab55c0910c274d4cf15c1124a04b84deb66e1c14dac81ec3fa7",
+      "bytes": 20881
+    },
+    {
+      "path": "material3-sort-diagnostic.txt",
+      "sha256Bytes": "3a77f61e84694ed149168d1fb044b22dfb1746b86e2e94d8cb559f21f40a358b",
+      "bytes": 3008
+    },
+    {
+      "path": "material3-thread-before-sort.png",
+      "sha256Bytes": "7d2c5e512ee919e66a34b347c71d88ae4dcb0e0bb24dc4f857ca8d3c20a477eb",
+      "bytes": 20784
+    },
+    {
+      "path": "miuix-original-comment-panel.png",
+      "sha256Bytes": "24cc202c45a2532cf2251629850f8efc66485c57c7b77081819f5de6b6cc9d6e",
+      "bytes": 25431
+    },
+    {
+      "path": "miuix-original-reply.png",
+      "sha256Bytes": "0db2b96a682bf79a4ac31c5d721710e38387b5ee1158ac359eb078913dcf5350",
+      "bytes": 20150
+    },
+    {
+      "path": "miuix-original-thread.png",
+      "sha256Bytes": "e28820a86e0687be2303c38a52b3738f585409c9d08c42959a78e59a576f434d",
+      "bytes": 21652
+    },
+    {
+      "path": "miuix-sort-diagnostic.txt",
+      "sha256Bytes": "1d05967728f94345780f03be84cee9dd9b4a59d28b1127b1e040c8fa2798f735",
+      "bytes": 3008
+    },
+    {
+      "path": "miuix-thread-before-sort.png",
+      "sha256Bytes": "ce3197250d11467a2965a8f07fca88808c6fe6b57438979e52854fce1424a3c0",
+      "bytes": 21634
+    },
+    {
+      "path": "original-reply-comment-export.png",
+      "sha256Bytes": "0094482d0c7ee3407b0277253e82a529be34090b2543033d9eb8a1d633d7c0b4",
+      "bytes": 45615
+    },
+    {
+      "path": "prepare-production-protocol.py",
+      "sha256Bytes": "d71f5230a29c91f49d49214bb7cd1a2c5f0a47c706785e2693436516a1dcd025",
+      "bytes": 4431
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "f687128bdfaeb7e10f5badf0dee7852b291278925ba3ab461793a7130244899c",
+      "bytes": 3294
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+      "bytes": 33869
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentImageCanvas.kt",
+      "sha256Bytes": "ef2d5cd9e9dcacd2f59177ae9ec0947c916618eaf1ad124e880f2701edf2c06d",
+      "bytes": 5127
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt",
+      "sha256Bytes": "3a899c08cfb6a17ae6d2e2efcc1e69cedc78ee10450a22614ab79318c4966849",
+      "bytes": 1422
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt",
+      "sha256Bytes": "1babe9e62147f48eb40c12696283b168a77ba5f8be6ec7b6d873a254c527a181",
+      "bytes": 3754
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReplyTransparentBoundsCropTransformation.kt",
+      "sha256Bytes": "16c8e1e27d61b5335ae9dc31d28360a4e45b988a8e2ca60f01759c680bf3e30a",
+      "bytes": 1596
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+      "sha256Bytes": "8c90755dcde0a4ae19a286bbcc1fbea302bdf4596d422b548ec157a6e1d2956b",
+      "bytes": 10685
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-detail.py",
+      "sha256Bytes": "7d026f334f3769a9f0a61f179ca78732c6e7ec155dc151061c827a2f51660eca",
+      "bytes": 13274
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "sha256Bytes": "5822d0d10dc29365b42e7a5e0f009530bc12e3bffc7cb4142d42273f1a73d0ce",
+      "bytes": 20318
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-reply.py",
+      "sha256Bytes": "06d9806747c801f7ec3f23a82f3564473bd58fce56baa97cd5aba7018c08217c",
+      "bytes": 35521
+    },
+    {
+      "path": "production-equivalence/comment/DesktopDynamicCommentOperations.fragment.kt",
+      "sha256Bytes": "bbf261a115892bbf8498f39e8edb953a17b5136063af3df216c9b5097b065fba",
+      "bytes": 9061
+    },
+    {
+      "path": "production-equivalence/comment/generated/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc.kt",
+      "sha256Bytes": "1bf1572f1bcd398cb62d463015acf6e896edf4f03d92cb319e10d56f6849ea60",
+      "bytes": 29391
+    },
+    {
+      "path": "production-equivalence/comment/generated/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol.kt",
+      "sha256Bytes": "04754105c3925f84d06c748242852b6bef330d51f1ecfbad7a8300ce193baef8",
+      "bytes": 22551
+    },
+    {
+      "path": "production-equivalence/comment/generated/com/android/purebilibili/data/repository/DesktopOriginalCommentReadAccessPolicy.kt",
+      "sha256Bytes": "a19be4bff131299d6d5b3abefd406393414d88580c0b0453d3235e98720a0da0",
+      "bytes": 3533
+    },
+    {
+      "path": "production-equivalence/detail/DesktopDynamicDetailOperations.fragment.kt",
+      "sha256Bytes": "feaddb448c71ee4b15838dbf49d83e6aa133dc0aa3727617617412b2e8e1c1c4",
+      "bytes": 1357
+    },
+    {
+      "path": "production-equivalence/detail/generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt",
+      "sha256Bytes": "398db1a7f5f427d2a1a30a0cb7a93eeaf6f0adefb8df83b83e465986dedfa163",
+      "bytes": 3947
+    },
+    {
+      "path": "production-equivalence/detail/generated/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol.kt",
+      "sha256Bytes": "d2660b7233603c35daa84bbc0c5adc0ed99518257019250cac3a94500d251e1d",
+      "bytes": 6426
+    },
+    {
+      "path": "production-equivalence/detail/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicDetailFallbackPolicy.kt",
+      "sha256Bytes": "1929a1d230f324dcf6e7d9353eae1c1cbf574818411ee8e8cc99cf02ad649ee4",
+      "bytes": 18742
+    },
+    {
+      "path": "production-equivalence/evidence.json",
+      "sha256Bytes": "5a6faa4eddf0ff176c18e8c1070f4faca45e0acdb76bd13fbc46b7b51085ad7c",
+      "bytes": 2170
+    },
+    {
+      "path": "protocol/detail-chrome-thread-review/review.txt",
+      "sha256Bytes": "c7a265fe909d2b7db35013f7b33759229512a8e7a6b566a895aa9656ce300974",
+      "bytes": 8237
+    },
+    {
+      "path": "protocol/detail-prepared/detail-contract.txt",
+      "sha256Bytes": "d2e561b5aaccfe266fa1fc6fc3b93f40665b084849804a624aec5be95674d0ac",
+      "bytes": 7170
+    },
+    {
+      "path": "protocol/detail-prepared/frozen-manifest.json",
+      "sha256Bytes": "c885806ab7b20245868ccca190812663afd35fcc9803469ee340512c773a33fb",
+      "bytes": 48116
+    },
+    {
+      "path": "protocol/detail-prepared/source-inventory.json",
+      "sha256Bytes": "9b6827d7b475e01b29335fd1d1bf8d361e9399355667c107111005bf86ed34e7",
+      "bytes": 6769
+    },
+    {
+      "path": "protocol/frozen-manifest.json",
+      "sha256Bytes": "7823571e997d514383efbf2faf7244b42853f47afd2bcd82149b466c9d8f9d18",
+      "bytes": 43378
+    },
+    {
+      "path": "protocol/historical-source-retention/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "8ce5bd07c4d52203bb7dafb4d171d04efa5cca124b265aa03a2d60bb0256f1b8",
+      "bytes": 32125
+    },
+    {
+      "path": "protocol/historical-source-retention/retention.json",
+      "sha256Bytes": "5e8b760301ee0c1cd38073407f91d383f9ce4f6305f1d1e991ecae1ff8b50377",
+      "bytes": 1065
+    },
+    {
+      "path": "protocol/source-inventory.json",
+      "sha256Bytes": "ede0885752a25ef6f6479294b3c11762ebe1e683309aaca6104d3e2ac3380cf7",
+      "bytes": 15375
+    },
+    {
+      "path": "raw-handoff-final/installation-payloads.json",
+      "sha256Bytes": "4f485db979f544c6038097ab95c4927596e3a220bdb1b430850435e54473c3fa",
+      "bytes": 3858
+    },
+    {
+      "path": "raw-handoff-final/operations.patch",
+      "sha256Bytes": "e340fa5def272f47c26155824500e4bd0f5a0e487be87a5da51f06a2be3bc408",
+      "bytes": 10907
+    },
+    {
+      "path": "raw-handoff-final/original-source-inventory.json",
+      "sha256Bytes": "835e8425e6dea3db22e37f53e94fcecec59fdd54a0d646ca7065c93e0e67afc7",
+      "bytes": 12799
+    },
+    {
+      "path": "raw-handoff-final/producer-manifest.json",
+      "sha256Bytes": "a30490d78c70add6ae9ad9ad9604b8e3070bd749a73cc5abb8e3f507bff65b32",
+      "bytes": 13668
+    },
+    {
+      "path": "raw-handoff-final/ROOT-INTEGRATION.txt",
+      "sha256Bytes": "5b353c0dd3b6efca1d2cadb419fe982bf1f6fbca07370c88ed0cf31390902eb0",
+      "bytes": 6846
+    },
+    {
+      "path": "ReplyImageFixture.kt",
+      "sha256Bytes": "9b9e89184a6df59637caf23295837c3c8b7ddb1d7c09923265af58c090b2060d",
+      "bytes": 4253
+    },
+    {
+      "path": "ReplyLifecycleFixture.kt",
+      "sha256Bytes": "d9a92e2111cea331840614f6ecd02abda1f7ba32a8557e2131f8c735f34059b4",
+      "bytes": 6861
+    },
+    {
+      "path": "ReplySessionFixture.kt",
+      "sha256Bytes": "0e84448573e77259cfbda80a4f68448fadad291c425990a321a6dd9cec688311",
+      "bytes": 10068
+    },
+    {
+      "path": "ReplyUiFixture.kt",
+      "sha256Bytes": "028ab976cd41b250d78e7127f7ed98866bc044fedd5dd5c3edbf91d015e1d828",
+      "bytes": 14456
+    },
+    {
+      "path": "run-fixtures.py",
+      "sha256Bytes": "f77074a05b15efc3168125ed6473a6d78aefa57162610e6f1cad4718fb61927d",
+      "bytes": 1439
+    },
+    {
+      "path": "session-result-17.json",
+      "sha256Bytes": "3f390fd09e3c5b1632b786c70ba3f45280b91673ef5f69484f7a5959472fb26a",
+      "bytes": 648
+    },
+    {
+      "path": "session-run-17.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "source-baseline/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "8130c63b4554ed9970250588144955e6accf04e25223b7218dab7784ec585e53",
+      "bytes": 23448
+    },
+    {
+      "path": "ui-result-17.json",
+      "sha256Bytes": "127e527362c320c13f279c12ec1bc6abb9c088752c92f2e8d120f238afff3a56",
+      "bytes": 502
+    },
+    {
+      "path": "ui-run-17.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ],
+  "sourceCount": 27,
+  "newSources": 14,
+  "MainIntegration": false,
+  "sharedGradle": false,
+  "HTTP": false,
+  "HWND": false,
+  "realAccount": false,
+  "actualNativeClipboardOrSHARE": false,
+  "fullDetailParity": false,
+  "childProtocolHistoricalFreezeSha256Bytes": "7823571e997d514383efbf2faf7244b42853f47afd2bcd82149b466c9d8f9d18",
+  "childDetailFreezeSha256Bytes": "c885806ab7b20245868ccca190812663afd35fcc9803469ee340512c773a33fb"
+}

@@ -1,0 +1,679 @@
+{
+  "prepared": true,
+  "compilePassed": true,
+  "snapshotManifestSha256Bytes": "4e97c4c054a7ec0ed8f064319009bcfb9b68f9c191ef089a6bf677f163df959f",
+  "orderedRuntimeCpSha256Bytes": "a733a3435e18c5dac83ff155023c36e6d0d1997822b0a6b77ba7d4efeff63fcc",
+  "orderedRuntimeCpCount": 89,
+  "extraTestDependency": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-test\\2.4.0\\c9a0c254adade886172cb021c0b099d8be1a5fc4\\kotlin-test-2.4.0.jar",
+    "sha256Bytes": "38099e38d81f394d7ae3eb73ad0a2b6379629a293ba8cfe5485ee7f836124943"
+  },
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentGrpc.kt",
+      "sha256Bytes": "1bf1572f1bcd398cb62d463015acf6e896edf4f03d92cb319e10d56f6849ea60"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol.kt",
+      "sha256Bytes": "04754105c3925f84d06c748242852b6bef330d51f1ecfbad7a8300ce193baef8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalCommentReadAccessPolicy.kt",
+      "sha256Bytes": "a19be4bff131299d6d5b3abefd406393414d88580c0b0453d3235e98720a0da0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "8ce5bd07c4d52203bb7dafb4d171d04efa5cca124b265aa03a2d60bb0256f1b8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\ReplyProtocolTransportFixture.kt",
+      "sha256Bytes": "c25a3b70972cd16c3efef2fbbc6076e97a95bb5fda222c8e1b59bd288a671a0b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\RawReplyParserFixture.kt",
+      "sha256Bytes": "c10bb86e0b3618405aa672700251f7da3155d80e6a5053bed4cda2db8cdfed07"
+    }
+  ],
+  "classesPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes",
+  "MainIntegration": false,
+  "explicitPreparedProductOverride": [
+    "com.bilipai.desktop.data.DesktopDynamicCardOperations"
+  ],
+  "copiedOperations": false,
+  "editorMultipartBodyComesFromPreparedParentOperations": true,
+  "sharedGradle": false,
+  "networkSockets": false,
+  "HWND": false,
+  "realAccount": false,
+  "executed": true,
+  "runtimePassed": true,
+  "compileLogSha256Bytes": "f1db9a7f92fadf3636952e989a63917f522c13739c659d9466f64e157529a5ac",
+  "runLogSha256Bytes": "1ab724fdcc90d79c65c281900b0cf898dc748c344e88a6ba54b1624e12055472",
+  "resultSha256Bytes": "e389019ffa2e2cb8f739529edfb727030b009ff2619d9816324445a337163536",
+  "classes": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\CommentReadApiMode.class",
+      "sha256Bytes": "9b90c83fec252716ad7c1db3946cf4626965129cfa115b8002ea037938ef0a60"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\CommentReadPlan.class",
+      "sha256Bytes": "3a69cda3c0a00ad9175df819b263b013e3328ddd1528554586e7387a3b900d54"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentGrpc$Companion.class",
+      "sha256Bytes": "438b79f471400401756884fe3c75038db56ecddb839b4890707d9b840f39c6eb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentGrpc$getDetailList$1.class",
+      "sha256Bytes": "d64aae0800f0d59ec4d911272b3561d84b0d1f246eb9f8b041b954c225d5f182"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentGrpc$getDialogList$1.class",
+      "sha256Bytes": "c880b096cc009d062cfd49328d8450d04b5d74acbdfa42e7265bd84320692aeb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentGrpc$getMainList$1.class",
+      "sha256Bytes": "98f7200ba8a5e029e0403659c3accac28f7816ddfc406229837fe78c794748aa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentGrpc$GrpcReplyControl.class",
+      "sha256Bytes": "4dd686a8fec3c90d5f45bfa30f53614b77c187574ae30470af2869c4b312109c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentGrpc$GrpcSubjectControl.class",
+      "sha256Bytes": "05ec585dba88f7fcbd6aa9710d65bfa33ebe87a4b52abf45c5ff847a4bbe8a5d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentGrpc$request$1.class",
+      "sha256Bytes": "ec582a20fa0e0ca2e7c9467868caab45f8cd541a09a3d002d9ad065208317e87"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentGrpc$translateReply$1.class",
+      "sha256Bytes": "e794731c728aa728c5b2d522e3bea86e11afd1dbae22f0bd7efd1e9aa46ae1aa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentGrpc$translateReply$2.class",
+      "sha256Bytes": "3cf37f0f900265f709609c412e35b0c041915e55f60619e31599d3aa54c3e2bb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentGrpc.class",
+      "sha256Bytes": "776f4340984cf208617beb7bafd42a3fecc019ed36cbce073e92e1ed4cebe52c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$fetchCommentEmptySuccessFallback$1.class",
+      "sha256Bytes": "a30e6e32029d7c8a3d395acb2c15b24c8e5aa0f0b6f432a11e0566747ae6d4b8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$fetchCommentsByApi$1.class",
+      "sha256Bytes": "e6063cff2b2e07bf901545b7a00b06eb35b67187d8214b74e7c0ca06c2b4d134"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$fetchGuestHotCommentsCompat$1.class",
+      "sha256Bytes": "3470297dacd969ecac77c53ba3daf8d61fb648a8fc9fd3895351941b76a4194a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$fetchLegacyHotCommentsCompat$1.class",
+      "sha256Bytes": "c01d95a2e86d2c9b40ceb50691cd2f4e68c6fad6b5e3b407478709017f7ab723"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$fetchNonWbiCommentFallback$1.class",
+      "sha256Bytes": "4ee1e11abd57ebb8871b7b8af9a69e80eaf61781397f91e8d09bf5767302759a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$getCommentCountForSubject$1.class",
+      "sha256Bytes": "5c24d69c95da1924d446f87ed2a468cce677e58fce3a39c53bf7e03a6941fdb0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$getCommentCountForSubject$2.class",
+      "sha256Bytes": "d44e3c4a36a6c17bcec35d6956e7ca601237ce24c8f7210d6508755e74b30d17"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$getCommentsForSubject$1.class",
+      "sha256Bytes": "5107f7fcec2e40c9b4097db34319f3aa4b49df19144491d45aaf6b8596da78ef"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$getCommentsForSubject$2.class",
+      "sha256Bytes": "c8904bea78e5173d50e9b80d9f99314856cf7cd367b7ad6fa0601e1251b183c2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$getDialogCommentsForSubject$1.class",
+      "sha256Bytes": "7e02b62b77ee7c23b4e5d2b6ac5fdc39133c930b67946edd368eab927504b611"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$getDialogCommentsForSubject$2.class",
+      "sha256Bytes": "c87c1f0166a0d2c75b4c27052da7385051f80fe5b571f6721928f70f25345577"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$getSortedSubCommentsForSubject$1.class",
+      "sha256Bytes": "8246f1331a33396586d5cd168ef0bdf7a090f3967b9b2731a5cafc0951b2dd0f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$getSortedSubCommentsForSubject$2.class",
+      "sha256Bytes": "227d8b98a79e616cdcf92f09aefc3107c3d51438a3c989c6a4779ee95f556ade"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$getSubCommentsForSubject$1.class",
+      "sha256Bytes": "f4b96041e7929959bec118391982b82820b9dbc6abf5c189185a32b8ec70e4fe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$getSubCommentsForSubject$2.class",
+      "sha256Bytes": "8af0f8c8e752e49bd788201f6fd652a5fd161feeac1533d308b6dc3f95685b95"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol$WhenMappings.class",
+      "sha256Bytes": "8e8801c2b24979958a68dbd873358ce8df741f2d5888bcd75aac4eec5112dcdb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicCommentProtocol.class",
+      "sha256Bytes": "47c71d6f9e48996b4cda5a6a48467899f146236d10cf42d661f3029ff8fd2eac"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalCommentReadAccessPolicyKt.class",
+      "sha256Bytes": "bd84f2cc232dfb9f91faea38b55f10ef91452d08aabfcfe9d15b0ec8687792b5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$addCommentForSubject$1.class",
+      "sha256Bytes": "1ffee452008c91b5e220e719e16f8b62713b7bbecb1d281430e2bab67a927399"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$addCommentForSubject$2$1.class",
+      "sha256Bytes": "9561757b98d4f6a0c4c636743499b9749d6bf5116ea7b2215d21a68a27f4d35d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$addCommentForSubject$2.class",
+      "sha256Bytes": "74cfdd3adf076fc628d7122815db16ce40e58d0d2b6e1e3d0c9a7900f9ff02f6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$addWatchLater$2.class",
+      "sha256Bytes": "46a9b0bacb8bd69a340f883f2dc48b4a14f338cf191a8af2ca1401eab967e998"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$commentGrpc$1.class",
+      "sha256Bytes": "a2354233ce471c9a36c08b8c31d7a0a066e9a6c564cd10477d23f6e8adc490ac"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$commentGrpc$2.class",
+      "sha256Bytes": "0d811c1a5e23ae6a4d3faaf64de748bdce01fc8488de884c4c77e273c6d36a7a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$commentProtocol$2.class",
+      "sha256Bytes": "729d4e136c02d253362ea6e513778deffda4cb56736e025a3c4964289ef3441d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$commentProtocol$3.class",
+      "sha256Bytes": "7dbdf830672e62b2bbae7b5054a90971baa879ce28bddd3161c3aceb2050f07f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$createReserve$1.class",
+      "sha256Bytes": "3ee7d0f7bf6b3169011d53cef0979277f2d13d75ec26360f433b2982d8fc1bb4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$createReserve$2$1.class",
+      "sha256Bytes": "24a0d8ebab4ea05e764fa0b729471e221b66165fccc5e8af101bc9096d737813"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$createReserve$2.class",
+      "sha256Bytes": "52ce923336cd8977d89105fe23df13b11c7d6e70f7f05bf5b459e7faf0e34402"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$createVote$1.class",
+      "sha256Bytes": "5251449774ee51f4f21e1f87e4d53905a6da751a5bba6fbe5f53883dcc233b7d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$createVote$2$1.class",
+      "sha256Bytes": "0ede7abf019deb441c97e04997f4ab3840269c4d2f075a725b1c365c44a33018"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$createVote$2.class",
+      "sha256Bytes": "11fa06bce7210b0db280d4be32bf44561878bfdf18a67247fc91472df9648a52"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$delete$2.class",
+      "sha256Bytes": "ef20a38bed5a4792606c1337e8251e506098808fccbb9ceba136a2eb39e6484b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$deleteCommentForSubject$1.class",
+      "sha256Bytes": "8143c061b3593a2d7a1891e0f2374e48a3acef70913ed46b668032bd756b8d92"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$deleteCommentForSubject$2$1.class",
+      "sha256Bytes": "d1919413519daa775362b45dfcc9c87920b04262f0f13d491135359cbc183de1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$deleteCommentForSubject$2.class",
+      "sha256Bytes": "d3a45090f4996e7f68beb9fa294d4fe47f7be84b3791e4739c3c0601933c9aa3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$editDynamic$1.class",
+      "sha256Bytes": "551ba7e77a3c5491de5b5f75cde44cde4a24ae43e28d709550b26e045989429e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$editDynamic$2$1.class",
+      "sha256Bytes": "838f0998627bf3ae6f543415de761a2438e93e45444eadfac4329d2e73c52d6e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$editDynamic$2.class",
+      "sha256Bytes": "ca9fe87cc30f702ed575598d9a5b6632076da6c0c394817579e5c36cb1765e7c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$emotes$3.class",
+      "sha256Bytes": "dba485bd7e92dfeea5bb43afaac3834ec7ffc9969adaa7ee4a5f29eef6575ad9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$fetchMessageUserInfo$2.class",
+      "sha256Bytes": "644067cfb92fed16f2eb0197ff03adaea45cf210588f10cf6e767fdc98489689"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getCommentCountForSubject$1.class",
+      "sha256Bytes": "77737ca1259e457961dac7b625b0e91c73ab674fc22902818e6baa9edf956cbf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getCommentCountForSubject$2$1.class",
+      "sha256Bytes": "8609b705f6b286d915a05cbdb263cde391b77cec3f08ccecd92c7d2fd89f2063"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getCommentCountForSubject$2.class",
+      "sha256Bytes": "9b3afbe8c027012ecdfa171d6247fb0a44a73343b02289bb2f5f7e635522c725"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getCommentsForSubject$1.class",
+      "sha256Bytes": "e5e11bb4a0af213588020afb7407dba7d5fabc03da4c6ab62bbef5b3d12b9aee"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getCommentsForSubject$2$1.class",
+      "sha256Bytes": "36a3aa7604467ad3da342509f9c3ff2afcc8bb2457b7128cf88d09a8362e72c0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getCommentsForSubject$2.class",
+      "sha256Bytes": "98140ff092da71a41750aa49541d0b927d007dedd68b381513aa0f6cbd50f9f7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getDialogCommentsForSubject$1.class",
+      "sha256Bytes": "54c2d099d67925e05da9ad7bf2ebbade5d29906e4d79d0712b270dc55c14cfaf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getDialogCommentsForSubject$2$1.class",
+      "sha256Bytes": "7e6288c00eb0bb61a24f48d8ac8b8416bb97475b66eda9a730970bc02488b7a8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getDialogCommentsForSubject$2.class",
+      "sha256Bytes": "f728e43c6130e48578fe5cfeae24c0267ce06b6cc326f94491a1dabf02b7aea5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getMessageSessions$1.class",
+      "sha256Bytes": "b2a137f27ec93b22d05c01475468faf652f5c333cfa17fbc3fa531dca5d6000c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getMessageSessions$2$1.class",
+      "sha256Bytes": "82b994380630ae9f04d3cedbd04cca77c69c6c5c72283e0bf65f9c75bd279d1a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getMessageSessions$2.class",
+      "sha256Bytes": "d28b7b1fc6d721208a2b1499eac4b71c741bdbed1a35db6154bd12ff35c2573b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getShareTargets$1.class",
+      "sha256Bytes": "fa14af0e143dface2aa0b568dfdb84499025137938f408f9c94adea9e7c5c4c5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getShareTargets$2$1.class",
+      "sha256Bytes": "c8452f271c8882d1124a5a247b250fd4b59585f06032e910b57c2334614cffc1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getShareTargets$2.class",
+      "sha256Bytes": "e4d4c01c8719e200d6fc9fd98453918074739377b99799f0f024da3f81449d88"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getSortedSubCommentsForSubject$1.class",
+      "sha256Bytes": "72badb6c2337e16706e18b8cbfced0567f533fe2ba5649e49fa0538ec1a87189"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getSortedSubCommentsForSubject$2$1.class",
+      "sha256Bytes": "c1ea1f91a2682d5d2a8281da8714987fabc34c08efa3b9853b397928479fc96d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getSortedSubCommentsForSubject$2.class",
+      "sha256Bytes": "0b4997bf84709a0700eb7414dd8b1656cd7e7dd9a5f9ac29c3abd063e6611874"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getSubCommentsForSubject$1.class",
+      "sha256Bytes": "f8a3e75f4ed991ca081c9033710fcd6ab655a109c2ab4608edb309c5c53758e9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getSubCommentsForSubject$2$1.class",
+      "sha256Bytes": "f2627cbc1c57fb8df24955a06b0b07b3134ed04d66686bc784c968619ef34fdb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getSubCommentsForSubject$2.class",
+      "sha256Bytes": "22fc3f84b0b213c24d33835debaac1d087611c6e527d8f8a8eace814411424ce"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getVoteInfo$1.class",
+      "sha256Bytes": "08cb6e17102cd383e299f7edf0678a9a32ffc20532366b4adc2cd80631ee379e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getVoteInfo$2$1.class",
+      "sha256Bytes": "139b415f8db88114d4d7584918d6bb2e34d2a67326ce050eb83267d9379d937d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$getVoteInfo$2.class",
+      "sha256Bytes": "a6d48e3cc50b2e65dce19844d6d9b9246dcf88786feaedef4d1628df03092062"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$grpc$4.class",
+      "sha256Bytes": "0b6e70455bf731d27d5e5b319a3f1f90d92aa5f282baa9d6d1ecf60f8c4cfd2e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$guardedClient$lambda$0$$inlined$-addNetworkInterceptor$1.class",
+      "sha256Bytes": "1a089a14aaaa72cd38eb7e9fcc7eb1a940eba4e25c20aad18e71aa61452d297a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$hateCommentForSubject$1.class",
+      "sha256Bytes": "cacdd6431d6b3b7118c589edd8ffd0d1dca7a2ce7a20187edbcc3eed4a8f3069"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$hateCommentForSubject$2$1.class",
+      "sha256Bytes": "070c9da1a7b64de60067448055a8c654302c03300f7d0d5df81239823295e36a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$hateCommentForSubject$2.class",
+      "sha256Bytes": "a2427e030c2007aba0ed35c19bae00af7823985eba3c5d31f2961f705e5f76ac"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$isPubliclyVisible$2.class",
+      "sha256Bytes": "749851138de774daec356f2ae4a3f92452f27d92a1789ef332200ef3d1b9cb76"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$jar$1.class",
+      "sha256Bytes": "b2c5c57dcf44ffb67b7c86eb82a8ce6fb035a0e34a90b2f926b1e439095ef976"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$likeCommentForSubject$1.class",
+      "sha256Bytes": "7d312ca0577019d2eca4b6595e025da3d14ed0c06b5950913bff80429b287de5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$likeCommentForSubject$2$1.class",
+      "sha256Bytes": "8a55a2e3b238d496dc0d77caa4b1874455cf997809937e4e9b189db38507fdbd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$likeCommentForSubject$2.class",
+      "sha256Bytes": "1ceb1f380e68b6ef97d7914ffc926c446873f6feecd0e5069f00672d0fb4da26"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$loadReplyInteraction$2.class",
+      "sha256Bytes": "93b64d6857b2cfe32005ce7aa19eebf9b050edef5e0a85b18b9a4f37f9adc0b3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$messageShare$1.class",
+      "sha256Bytes": "cd1eb4b12b225e5fba928e6481d87350c561fdaed6bd607b8484037ac3a7a907"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$modifyReplySubject$2.class",
+      "sha256Bytes": "47d1047ed293da81615384cdf70dcbb5b9de73f0fa4951d875a8c56269b4def8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$mutate$1.class",
+      "sha256Bytes": "1b3b1f19e40a4ffa11e650d6dd8de0186af9519f9aeec206d2ce20c54ac4e692"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$mutate$2$1.class",
+      "sha256Bytes": "c2aaaa2618d00eb61be82b15c350ef8eac4e40ecfbb89fdd9df051238f92db78"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$postSourceComment$1.class",
+      "sha256Bytes": "da82d69856dd9ce602eb9f3886a1b7fff8d7b2a9f4a25d0ec0d06c1378867054"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$postSourceComment$2.class",
+      "sha256Bytes": "cab5134af593f923b5475a81c82d2d843c339ea06e62dc5ef22e58a3a8057b7c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$publishDynamic$1.class",
+      "sha256Bytes": "ba02f515cb551ed87f7f006c32dde3cfeac408e96e423d992e776bdeb596169c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$publishDynamic$2$1.class",
+      "sha256Bytes": "2d201be96c6dc826d6ef294165122e4f35fff4aa84d9eaaf963070a28af25d19"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$publishDynamic$2.class",
+      "sha256Bytes": "a1e1746b6cb264b0217c4054df9d383bfb48c2fd4cf09c459d4b20a5f7445820"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$read$2.class",
+      "sha256Bytes": "68734c2dd53a8fd3b6d15d8533d9a30f751939c615dd9acfb35428f776f42c98"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$report$2.class",
+      "sha256Bytes": "10bbe18de54d2a0098742525362db1cf139425d3fe3b3ca230f0bc9a053805f0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$reportCommentForSubject$1.class",
+      "sha256Bytes": "c5897dbab84684583b30531c33f95b46a6ac56ce3f1dedc2d4645d4e68400973"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$reportCommentForSubject$2$1.class",
+      "sha256Bytes": "498bd7faa3dd2fc3c80b6630c9921de73474cfc63dd047b5b7a0c9324e4be779"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$reportCommentForSubject$2.class",
+      "sha256Bytes": "548e3c145a649c3d210af94ef577a9b85058ce2f90be142542062176e99b937a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$repost$2.class",
+      "sha256Bytes": "fbe4b0aedf3f3969f8a4744df531f515c58f3157159077153fcffd204183b1fc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$reserve$1.class",
+      "sha256Bytes": "6fcd35114c5d5e75e4af2eebf87294f3eb20cc0c2b2cae8fa7d95b4b040af8ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$reserve$2$1.class",
+      "sha256Bytes": "a6f8119ef18cf4213903068413258783911bb4c6183df6faf7090874dcecf6a6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$reserve$2.class",
+      "sha256Bytes": "55d73cb9912ca5e21fc07b81d416ae68bd7361bce1a4e556932b827420e12f2c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$result$1.class",
+      "sha256Bytes": "674bbefcd662e0dbd4db0f05af2b74dd81b834599dc97645463706a467444df5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$searchMentionUsers$1.class",
+      "sha256Bytes": "8c418a5b2c067025e003c2bf810fc33d72cba30f3ff2ac5d67f7eb21def622fb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$searchMentionUsers$2$1.class",
+      "sha256Bytes": "2de3e3ce093b2d031c8a00f75c6bfa23959c6aa6cfeff8f0e780fc2e8af2d61f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$searchMentionUsers$2.class",
+      "sha256Bytes": "cf007c034d9894294def9d189814a6daa23892bed59b736b1d95c8648da1b1f6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$searchPublishTopics$1.class",
+      "sha256Bytes": "77e8304351381ee77f3f7ee54ca1c7b3a556cc2fde8de392e2f9c6b64ad9e687"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$searchPublishTopics$2$1.class",
+      "sha256Bytes": "cb3f8ef4462c8c2bc6a6561f5d7ac711d16aa1fad63c3690213ef4f49a98aa57"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$searchPublishTopics$2.class",
+      "sha256Bytes": "da05f8a4aa9e845b554868a315a2b26297aadd0574d57f9cb0267fa3df12f697"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$searchUp$1.class",
+      "sha256Bytes": "79ce35be47d55b9b32426da73af923f4c7763a535fe58a2b586dc127a7957219"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$searchUp$2$1.class",
+      "sha256Bytes": "e196eb3af8c8d0f041f7b252702713f7ebc0ad7e9aaa088406e5bf19993eb699"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$searchUp$2.class",
+      "sha256Bytes": "2e92b3484e7e5e07f0fcc760c684d72f294b52aa6a13cd9efa3c3b909d789306"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$sendDynamicShare$1.class",
+      "sha256Bytes": "cc8ba72a8eb4c2070b2ad7a9b05b610404774a66150b207c4b715fa1b3cc801d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$sendDynamicShare$2$1.class",
+      "sha256Bytes": "59dd9dc65d14ab1fe4814a6454e5ad46724988d0d6baa0b6f7f43a12f865ff9a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$sendDynamicShare$2.class",
+      "sha256Bytes": "338ca21134112f279900c1ceaddf0480be22b89af79a1ed4e26734319b51db65"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$setCommentTopForSubject$1.class",
+      "sha256Bytes": "99639fecdcc4cc1827d642b72e19a2d68b1540377fe4f341a58ca99bf5e77721"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$setCommentTopForSubject$2$1.class",
+      "sha256Bytes": "c6a668b4e35ee9e4125992e6fe9496a95dcb52ef1096a415b653ac1d5f7cde4d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$setCommentTopForSubject$2.class",
+      "sha256Bytes": "f6a7925e50e38502f9d7bd0662a375760a871a9ec8397dad63c2eb50cbba05df"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$setLike$2.class",
+      "sha256Bytes": "fdde0a71321ca881d1e725e77042d159938aecaf5f145810c7e417ee0e20d384"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$setTop$2.class",
+      "sha256Bytes": "9e314996d65c8183e076428804af7b641a32095d8f594e2cfb25e2e031f2c702"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$setVisibility$2.class",
+      "sha256Bytes": "23f623ec87ad797e45fb241566ade9cf6922b8b65e9e964761150d5469d83847"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$submitVote$1.class",
+      "sha256Bytes": "8e57dac00503bae3a7a856fe55243732b90e210e3679ec384e5906dcf0b86f1d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$submitVote$2$1.class",
+      "sha256Bytes": "2457e33499f7248b2673fae30df2b9f355b90558c7271cd74dfcadf4bebd4c01"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$submitVote$2.class",
+      "sha256Bytes": "4c724d72869dbf4798a53ba3fd9afc938ac28a74141910c8a93527737312b83b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$translateReply$1.class",
+      "sha256Bytes": "a3f4d91bcb4b01ba089f97cecf29b7409a703d28c234c3615bf4a6be6e677613"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$translateReply$2$1.class",
+      "sha256Bytes": "d45cef559cbf2cd15df211973ce68d88a898d91e80ce102a4a6c7a4435d24a4f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$translateReply$2.class",
+      "sha256Bytes": "c81b7f5d22b60f319e672d32edaf82978fa694027095a2e8e431b91fc8f14b5f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$uploadCommentImage$1.class",
+      "sha256Bytes": "af52f1b55d66a1fb0c9c0841ac9f9f90602eb300c6aa49d5497dbfa30271e513"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$uploadCommentImage$2$1.class",
+      "sha256Bytes": "192ffdfbcb947fba36a1cf179ac516ffa8e0f4a2cf9d7ebe95533d5b113d5955"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$uploadCommentImage$2.class",
+      "sha256Bytes": "3ce3a3941d7591992c3934fd1cd4516a3284c14405d687400c89cba025627138"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$uploadEditorCommentImage$1.class",
+      "sha256Bytes": "d1c11925f0be3d101bbfdf7427b975021db045e8ff25927ed8c3f7038e82f04f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$uploadEditorImage$1.class",
+      "sha256Bytes": "a971578af86a60c25104e58033a36b6b8717b2e71786b48f32dcef5474a55d1f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$upSearch$1.class",
+      "sha256Bytes": "d39b225de885a643ae56f9da0e38f83deeae3e28377fd3536848e2670a63e9e7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations$userInfo$1.class",
+      "sha256Bytes": "a545fea8a99db82c98c60dee82af23749fa29fb2e91dc0f9cdea26faddf2e94e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations.class",
+      "sha256Bytes": "36ca2e6d5f62c9b10ed987dbd721b7a1c0ed923b719190261101225e892b3e24"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\RawReplyParserFixtureKt.class",
+      "sha256Bytes": "6daf6fcad03016543f46353c07e2be4d1d70b4c5460dfe866eceb64f4b516885"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$28.class",
+      "sha256Bytes": "5bfd3fcbeb86e9bdf148813e2b1e133df10398615cc73ab38dff9a99edbd0db6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$31.class",
+      "sha256Bytes": "0b930e23f9792b570d341769195d42228c12020618d0c58b23f54eff688ab266"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$32.class",
+      "sha256Bytes": "7b2f16fd28755690faa1ed779ffa1b126f38ff3fb04098c9a86d212ae9ccb4c9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$34.class",
+      "sha256Bytes": "af160c95a755c6a812a18b689c90d9e651eed046c29486d16eaaa0d2626e8128"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$cancelledRead$1.class",
+      "sha256Bytes": "2c4d790cfdfe3d0106edd464d8c43b2f45c4d65af9410ad78d27babf01d54dd5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$invokeSuspend$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "3dcf697f6ac8ea68d204de9b21d8f399293c1dff9fef9c580786caf0992f0d5c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$newOperations$protocol$2.class",
+      "sha256Bytes": "0e7949d47e5bc7afcb427e32cdda3ee5d590f595e72397a800ed93503e3518ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$newOperations$protocol$3.class",
+      "sha256Bytes": "c19d7e3fe8d1c1b67415629d78e9a4c54f16dfd087318f082ba4d0ccd3fe7b50"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$newOperations$rawGrpc$1.class",
+      "sha256Bytes": "120b425ebd3760776c27b2e33d5327e9f89eebe113267e1c0d1bd931d8e7ee0f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$newOperations$rawGrpc$2.class",
+      "sha256Bytes": "43990d4a4f0a1d3adcbad5ebd4dfd091de2f868ca67b3ccfad5a3a3bdc6b1165"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$retired$1.class",
+      "sha256Bytes": "0e6ecb1c13df383758f1c61d494d2b5439edfadea47ac5dd825d22a7ca70215c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$retired$2.class",
+      "sha256Bytes": "c0ceb609137dddd44fe63d41bed2694796482f9152cac7f3ca111d1bb7ae7019"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$retired$4.class",
+      "sha256Bytes": "81a5e775de5e83fa4f15b4c610e94ab80cff3e324d9d223d9bf7084b1bbfab82"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1$retired$job$1.class",
+      "sha256Bytes": "0f3fa140c4e8188866cdddc2b2b4386d12e4da44e2987c9b76a43170cff7cfe9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt$main$1.class",
+      "sha256Bytes": "8f309f6100e2263d411548cdc63de39fe2db3ded6a464469fec380e113de767e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\protocol\\proof-attempt5\\classes\\com\\bilipai\\desktop\\data\\ReplyProtocolTransportFixtureKt.class",
+      "sha256Bytes": "c308ae5996080c0492f77ffa31d37d180e5f1ab3b055167468641f20a4649d34"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+Independent source-only review: original DynamicDetailScreen chrome / thread container
+Reviewer: /root/player_parity/dynamic_action_review
+No UI producer, Main, frozen protocol/editor payload, Gradle, window or network operations.
+This is an additive review artifact outside frozen comment175 and detail194.
+Original identity: v0.2.3-alpha.9, commit fcf84853b287662e8a9129ea0d38576c36522a34.
+All twelve source Git blobs below were compared with that exact tag and match.
+This review does not compile or execute the pending chrome/window container.
+
+Minimum original screen contract
+- feature/dynamic/DynamicDetailScreen.kt:209-244: ImmersiveAppScaffold owns top chrome; AppTopBar owns title/back and an item-dependent expanded/grid image-layout toggle. The toggle is a remembered per-dynamic override over SettingsManager.DynamicDetailImageLayout; do not change the original item eligibility policy.
+- :483-490 / :516-669: floating composer follows the shared liquid-glass reuse switch. Original content padding is 112dp floating / 96dp otherwise (BottomInputBar.kt:100-125), with no action-button fallback. Split ratio is 0.5; keep distinct detail/comment LazyListState, sibling overlay composer, imePadding and consumed scaffold insets. The scroll layer alone records detailCommentBackdrop (:165-169); controls remain sibling overlays.
+- :492-514 / :673-702: thread covered-progress feeds a separate underlying-detail graphicsLayer blur. Original Android RenderEffect is API31+, Shader.TileMode.CLAMP, and original resolvePredictiveBackBlurFrame. Thread callback explicitly resets covered progress on disposal; no constant fake progress proves this contract.
+
+Minimum top-chrome closure
+SELECTED root: app core/ui/ImmersiveAppScaffold.kt:31-152.
+  -> design-system core/ui/AdaptiveChrome.kt:184-228 AdaptiveScaffold, :233 onward AdaptiveTopAppBar, :466-520 AppScaffold/AppTopBar facades, original scaffold/top-chrome policy and icon/token dependencies.
+  -> design-system core/ui/TopReadabilityChromePolicy.kt:28-38 resolveTopChromeRenderMode: requested header haze has priority; missing renderer/source resolves SOLID. Never make a surface transparent only because a preference requested blur.
+  -> app feature/home/components/ProgressiveTopChrome.kt:44-49 SDK33 gate, :79-138 progressive texture modifier, :141 onward BiliPaiImmersiveTopBar; includes opaque fallback and fade policy.
+  -> app core/ui/blur/ChromeBackdropSource.kt:20-70 actual LayerBackdrop + separately recorded graphics-layer source. Readiness is published after real first recording, never by a delay; do not record the replay layer into itself.
+  -> existing original theme/wallpaper/visual guard/Haze consumers: LocalAppThemeConfig, globalWallpaperAwareChromeColor/globalWallpaperAwareBackground, isLowBlurBudgetForced, rememberRecoverableHazeState/recoverableBlurEnabled/hazeSourceCompat/unifiedBlur/shouldAllowRenderEffectBackedHazeEffect.
+The final group is a renderer boundary, not permission to create a false HomeSettings or an arbitrary Android SDK value. Windows needs real desktop capability/admission and settings bindings for supported branches. Android Build/RenderEffect defaults cannot be claimed as executed on Windows merely by retaining pure numeric policies.
+
+Minimum standalone thread closure
+SELECTED host: DynamicSubReplyPreviewHost.kt:19-90.
+  Shared owner/session emote catalog, remembered image preview state and ImagePreviewDialog callback; SubReplySheet receives original state and root/target/sort/load/delete/like/hate/avatar callbacks.
+SELECTED container: SubReplySheet.kt:51-130.
+  NavigationEventState -> InProgress.latestEvent.progress; snap during gesture / tween180 when no gesture; max(backProgress, threadDrag.revealProgress); covered progress SideEffect + onDispose(0f); AppModalBottomSheet(dismissOnBackPress=false); scrim 0.32*(1-max); graphicsLayer translation; CommentWindowNavigation plus one NavigationBackHandler(onBackCompleted=onDismiss).
+DIRECT/SELECTED Compose drag: CommentThreadDrag.kt:31-168.
+  Dismiss at abs(offset)>=0.22*height, reverse gesture first returns to rest, both top/bottom list edges route remaining nested scroll into drag, velocity-preserving critically damped spring, rootReplyId-keyed state, header draggable and container onSizeChanged/nestedScroll.
+SELECTED pure functions only: VideoCommentSheetHost.kt:210-217.
+  resolveCommentThreadPredictiveBackOffsetY(progress,height)=clamp(progress)*height.
+  resolveCommentThreadCoveredBlurProgress(progress)=(1-clamp(progress))^2.
+  Do not pull the entire video host/ViewModel/player closure just for these functions.
+CONTENT already prepared: DesktopOriginalDynamicThreadContent -> complete original SubReplyDetailContent/ReplyItemView. Its own headerDragModifier=Modifier and absence of the modal/back/drag wrapper are declared container boundaries. It is not evidence that original SubReplySheet or image-preview window integration has executed.
+
+Android window boundary (explicit pending adapter)
+- app core/ui/CommentWindowNavigation.kt:11-16 requires LocalView.current.findViewTreeNavigationEventDispatcherOwner() and provides that actual owner through LocalNavigationEventDispatcherOwner; the comment Dialog must supply it. Binding to the underlying route changes which window receives system/predictive Back.
+- design-system core/ui/AppSheetComponents.kt:197-218 ModalSheetNavigationHost also rebinds the current dialog owner. :237-369 AppModalBottomSheet chooses compact bottom sheet versus centered dialog from LocalConfiguration / original modal-layout policies; Dialog/ModalBottomSheet back dismissal is disabled to avoid a second handler, and the caller explicitly owns Back.
+- app DynamicDetailScreen.kt:498-509 uses Android RenderEffect and Shader; this is separate from pure covered-progress/blur-radius policies and from desktop Compose graphicsLayer rendering.
+- app core/ui/SplitLayout.kt:157 onward uses Android adaptive/fold providers. Existing Main generated com.android.purebilibili.core.ui.components.AppAdaptiveSplitLayout is the actual low-level row/column renderer; original folding/pane history providers must be explicitly adapted if the full AppSplitLayout facade is selected. A low-level desktop row with ratio0.5 alone does not prove fold navigation parity.
+
+Suggested smallest next implementation boundary
+Keep already compiled raw reply/session/content and frozen detail fallback intact. Add the original two thread formulas and CommentThreadDrag as selected Compose source; retain full original state/callback contract. Bind a real desktop dialog/navigation event owner and dismiss/scrim handling at the container seam, and report Android-only predictive system gesture/RenderEffect capability separately. Top chrome may use original AdaptiveScaffold/AdaptiveTopAppBar/pure readiness policies, while actual renderer and window size/settings bindings remain explicit. Reuse the existing editor shared controls/dock and catalog rather than reproducing their FQN.
+
+Exact original Git blob inventory (app paths below use app/src/main/java/com/android/purebilibili/ prefix; design-system paths use design-system/src/main/java/com/android/purebilibili/ prefix)
+app feature/dynamic/DynamicDetailScreen.kt 322015d8710c4163e08dbb6ad3f845687a3cd353
+app core/ui/ImmersiveAppScaffold.kt 8624354e80e274451887e543463333849bc4954f
+design-system core/ui/AdaptiveChrome.kt 215ce945f7ac7e444f0934249ae3e0855b5781d8
+design-system core/ui/TopReadabilityChromePolicy.kt a73d627ee10df5518dd77dbb927bf0e7cfde9dd4
+app feature/home/components/ProgressiveTopChrome.kt cc7330cf299ca8608794b037b5ae94125747639b
+app core/ui/blur/ChromeBackdropSource.kt b995fb8d32f664f33e7fd04f2f91a8b892400e3f
+app feature/dynamic/components/DynamicSubReplyPreviewHost.kt b50b7df1477e3cf50986522c0145001ba52f7145
+app feature/video/ui/components/SubReplySheet.kt 69f02084e787df06a09abb876a1b7451d32fa0a5
+app feature/video/ui/components/CommentThreadDrag.kt 167287cd43f9386c6a105949a7b126dddc60d73f
+app core/ui/CommentWindowNavigation.kt f67cb84af2c4effd37b238d70c29a9a8eb30c119
+design-system core/ui/AppSheetComponents.kt 1981052e4738616ab46fb43305749ce23269208b
+app feature/video/ui/components/VideoCommentSheetHost.kt e2cb803413b9417b389e132f8ddb459508664c87

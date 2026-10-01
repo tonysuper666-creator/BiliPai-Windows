@@ -1,0 +1,30 @@
+desktop\.local\dynamic-detail-reply-parity\ReplyUiFixture.kt:89:36: warning: this declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+    }.build();SingletonImageLoader.setUnsafe(loader)
+                                   ^^^^^^^^^
+desktop\.local\dynamic-detail-reply-parity\generated\detail\com\android\purebilibili\feature\dynamic\DesktopOriginalDynamicReplySession.kt:547:49: warning: unnecessary safe call on a non-null receiver of type 'DynamicCommentTarget'.
+                    target?.oid != oid || target?.type != type || current.sortMode != sortMode
+                                                ^^
+desktop\.local\dynamic-detail-reply-parity\generated\detail\com\android\purebilibili\feature\dynamic\DesktopOriginalDynamicReplySession.kt:578:49: warning: unnecessary safe call on a non-null receiver of type 'DynamicCommentTarget'.
+                    target?.oid != oid || target?.type != type
+                                                ^^
+desktop\.local\dynamic-detail-reply-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopDynamicCardOperations.kt:548:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\dynamic-detail-reply-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopDynamicCardOperations.kt:572:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\dynamic-detail-reply-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopDynamicCardOperations.kt:594:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\dynamic-detail-reply-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopDynamicCardOperations.kt:623:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\dynamic-detail-reply-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopDynamicCardOperations.kt:649:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\generated\com\android\purebilibili\data\repository\DesktopOriginalDynamicDetailFallbackPolicy.kt:237:32: warning: unnecessary safe call on a non-null receiver of type 'DynamicMajor'.
+            detailContent.major?.copy(
+                               ^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\generated\com\android\purebilibili\data\repository\DesktopOriginalDynamicDetailFallbackPolicy.kt:238:48: warning: unnecessary safe call on a non-null receiver of type 'OpusMajor'.
+                opus = detailContent.major.opus?.copy(summary = mergedSummary)
+                                               ^^

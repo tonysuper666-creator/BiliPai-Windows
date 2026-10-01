@@ -1,0 +1,95 @@
+{
+  "payloads": [
+    {
+      "target": "desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+      "source": {
+        "path": "prepared/desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+        "sha256Bytes": "8c90755dcde0a4ae19a286bbcc1fbea302bdf4596d422b548ec157a6e1d2956b",
+        "bytes": 10685
+      },
+      "operation": "newFile"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-dynamic-detail.py",
+      "source": {
+        "path": "prepared/desktop/tools/extract-upstream-dynamic-detail.py",
+        "sha256Bytes": "7d026f334f3769a9f0a61f179ca78732c6e7ec155dc151061c827a2f51660eca",
+        "bytes": 13274
+      },
+      "operation": "newFile"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "source": {
+        "path": "prepared/desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+        "sha256Bytes": "5822d0d10dc29365b42e7a5e0f009530bc12e3bffc7cb4142d42273f1a73d0ce",
+        "bytes": 20318
+      },
+      "operation": "newFile"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "source": {
+        "path": "prepared/desktop/tools/extract-upstream-dynamic-reply.py",
+        "sha256Bytes": "06d9806747c801f7ec3f23a82f3564473bd58fce56baa97cd5aba7018c08217c",
+        "bytes": 35521
+      },
+      "operation": "newFile"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentImageCanvas.kt",
+      "source": {
+        "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentImageCanvas.kt",
+        "sha256Bytes": "ef2d5cd9e9dcacd2f59177ae9ec0947c916618eaf1ad124e880f2701edf2c06d",
+        "bytes": 5127
+      },
+      "operation": "newFile"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt",
+      "source": {
+        "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt",
+        "sha256Bytes": "3a899c08cfb6a17ae6d2e2efcc1e69cedc78ee10450a22614ab79318c4966849",
+        "bytes": 1422
+      },
+      "operation": "newFile"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt",
+      "source": {
+        "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt",
+        "sha256Bytes": "1babe9e62147f48eb40c12696283b168a77ba5f8be6ec7b6d873a254c527a181",
+        "bytes": 3754
+      },
+      "operation": "newFile"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReplyTransparentBoundsCropTransformation.kt",
+      "source": {
+        "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReplyTransparentBoundsCropTransformation.kt",
+        "sha256Bytes": "16c8e1e27d61b5335ae9dc31d28360a4e45b988a8e2ca60f01759c680bf3e30a",
+        "bytes": 1596
+      },
+      "operation": "newFile"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "baseSha256Bytes": "8130c63b4554ed9970250588144955e6accf04e25223b7218dab7784ec585e53",
+      "desiredSha256Bytes": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+      "operation": "appendMemberFragmentsOnly",
+      "patch": {
+        "path": "raw-handoff-final/operations.patch",
+        "sha256Bytes": "e340fa5def272f47c26155824500e4bd0f5a0e487be87a5da51f06a2be3bc408",
+        "bytes": 10907
+      },
+      "compiledDesired": {
+        "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+        "sha256Bytes": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+        "bytes": 33869
+      },
+      "retainOriginalEditor": true
+    }
+  ],
+  "RootOwnsShellConsumerGradleRegistry": true,
+  "noWholeRootConsumerOverwrite": true
+}

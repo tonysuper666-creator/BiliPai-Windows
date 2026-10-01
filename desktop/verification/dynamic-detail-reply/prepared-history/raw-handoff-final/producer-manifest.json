@@ -1,0 +1,260 @@
+{
+  "generatedCount": 25,
+  "generated": [
+    {
+      "path": "generated/detail/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplyPagingGuard.kt",
+      "sha256Bytes": "a577efbe673a821abf08cbd09a1fe2cf5f916e52812a3861026e32b8baef0378",
+      "bytes": 720
+    },
+    {
+      "path": "generated/detail/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession.kt",
+      "sha256Bytes": "a971854ce15fdaacb86620a814c0b5f770f4763b418361a1ee379709dc425c1e",
+      "bytes": 36271
+    },
+    {
+      "path": "generated/detail/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDynamicReplyCountPolicies.kt",
+      "sha256Bytes": "fee71436e462930401a9ad5e50226ff3dc115ceb4424c64f19b0b9e0ce77975d",
+      "bytes": 1738
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/core/store/DesktopOriginalReplySettings.kt",
+      "sha256Bytes": "c329eec975d698c394fc723cf0e62811367179f9cff63b9b628c036a262cc18b",
+      "bytes": 3040
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/core/store/DesktopOriginalReplySkeletonSettingsStore.kt",
+      "sha256Bytes": "a04fbc6a5094b14cb0173d3fd33e2182058cbf75589a57dd515a267997711cd6",
+      "bytes": 898
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/core/ui/common/DesktopOriginalReplyClipboard.kt",
+      "sha256Bytes": "2a767ac4af4a5f097470ab0f6c9e475cb35fecc0d96a37a2951f75a449808438",
+      "bytes": 1216
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplyLoadingSkeletons.kt",
+      "sha256Bytes": "159cfcdbba32b227ec9dd63317d327c067544787395c3ca26f0f59a5ffed9958",
+      "bytes": 4949
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplySkeletonBreathing.kt",
+      "sha256Bytes": "0f403f52431998f06e91695469b470ec0466c701485be118353e731a0664e36d",
+      "bytes": 1852
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/aicu/DesktopOriginalReplyAicuNavigation.kt",
+      "sha256Bytes": "64ab4e1518681db26626551fcdd4bf0a25c2f6b472afef140756b673a040f26c",
+      "bytes": 400
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUi.kt",
+      "sha256Bytes": "2f5dce3859aa61a08aa3b8d14f8585b03466a7ac1e12d9418a1b422ec6b11118",
+      "bytes": 11530
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/home/components/DesktopOriginalReplyCapsuleShape.kt",
+      "sha256Bytes": "e282bfb39af977553f1d9f8b934a7c9c69a219c7e29aef2ee37ccbe132206955",
+      "bytes": 451
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyCommentImageSpec.kt",
+      "sha256Bytes": "66ee63530154e4951451f4abbf4de67a93ddc8fab45c3625e053555c0f8d45fe",
+      "bytes": 1524
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponents.kt",
+      "sha256Bytes": "8f2eb4a6be6e49ac383408a84866c0f3118f014b100b8b31be58e701f69788fb",
+      "bytes": 87026
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyImageRenderer.kt",
+      "sha256Bytes": "e2ea6c85cec672b8edd7914b95bbb51cf975f26c69101c2d3c5c8e289bece533",
+      "bytes": 4781
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyReportReasonDialog.kt",
+      "sha256Bytes": "15ea696907c032994162e84b4a25df1c572f4d86bc5307f1faed180e36b7ff63",
+      "bytes": 1988
+    },
+    {
+      "path": "generated/ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponents.kt",
+      "sha256Bytes": "fe099a81965129a2d77fc8542f98ef4c07e47c0b1b5eaac91b949192652ca8b5",
+      "bytes": 67808
+    },
+    {
+      "path": "generated/ui/com/bilipai/desktop/ui/DesktopOriginalDynamicCommentPanel.kt",
+      "sha256Bytes": "f73c642e4c5e968fa7a22c699294f0b9c1044ffa7fa976075df63bc1eb0dad4d",
+      "bytes": 6268
+    },
+    {
+      "path": "generated/ui/com/bilipai/desktop/ui/DesktopOriginalDynamicThreadContent.kt",
+      "sha256Bytes": "2622aca6fcda5c7520e094a707debca4c4c4fd3be5a7348dc6f7357a4b8d9c65",
+      "bytes": 3929
+    },
+    {
+      "path": "generated/ui/com/bilipai/desktop/ui/DesktopOriginalReplyFailedCaptureDissolve.kt",
+      "sha256Bytes": "4864474c76c50b581c304a4c789d2b8be1edbfce0bcc09112af780504fa70c5f",
+      "bytes": 8605
+    },
+    {
+      "path": "production-equivalence/comment/generated/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc.kt",
+      "sha256Bytes": "1bf1572f1bcd398cb62d463015acf6e896edf4f03d92cb319e10d56f6849ea60",
+      "bytes": 29391
+    },
+    {
+      "path": "production-equivalence/comment/generated/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol.kt",
+      "sha256Bytes": "04754105c3925f84d06c748242852b6bef330d51f1ecfbad7a8300ce193baef8",
+      "bytes": 22551
+    },
+    {
+      "path": "production-equivalence/comment/generated/com/android/purebilibili/data/repository/DesktopOriginalCommentReadAccessPolicy.kt",
+      "sha256Bytes": "a19be4bff131299d6d5b3abefd406393414d88580c0b0453d3235e98720a0da0",
+      "bytes": 3533
+    },
+    {
+      "path": "production-equivalence/detail/generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt",
+      "sha256Bytes": "398db1a7f5f427d2a1a30a0cb7a93eeaf6f0adefb8df83b83e465986dedfa163",
+      "bytes": 3947
+    },
+    {
+      "path": "production-equivalence/detail/generated/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol.kt",
+      "sha256Bytes": "d2660b7233603c35daa84bbc0c5adc0ed99518257019250cac3a94500d251e1d",
+      "bytes": 6426
+    },
+    {
+      "path": "production-equivalence/detail/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicDetailFallbackPolicy.kt",
+      "sha256Bytes": "1929a1d230f324dcf6e7d9353eae1c1cbf574818411ee8e8cc99cf02ad649ee4",
+      "bytes": 18742
+    }
+  ],
+  "explicitProductOverride": "com.bilipai.desktop.data.DesktopDynamicCardOperations",
+  "actualMainOverlapClassEntries": [
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$addWatchLater$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$delete$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$emotes$3.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$fetchMessageUserInfo$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$getPublishedDynamicDetail$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$grpc$4.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$guardedClient$lambda$0$$inlined$-addNetworkInterceptor$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$isPubliclyVisible$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$jar$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$loadReplyInteraction$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$messageShare$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$modifyReplySubject$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$mutate$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$mutate$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$postSourceComment$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$postSourceComment$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$read$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$report$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$repost$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$result$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$setLike$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$setTop$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$setVisibility$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$2$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$2.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$upSearch$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadEditorCommentImage$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadEditorImage$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations$userInfo$1.class",
+    "com/bilipai/desktop/data/DesktopDynamicCardOperations.class"
+  ],
+  "unexpectedClassOverlap": [],
+  "newAPIModelStoreCache": false,
+  "generators": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+      "source": {
+        "path": "prepared/desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+        "sha256Bytes": "8c90755dcde0a4ae19a286bbcc1fbea302bdf4596d422b548ec157a6e1d2956b",
+        "bytes": 10685
+      }
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail.py",
+      "source": {
+        "path": "prepared/desktop/tools/extract-upstream-dynamic-detail.py",
+        "sha256Bytes": "7d026f334f3769a9f0a61f179ca78732c6e7ec155dc151061c827a2f51660eca",
+        "bytes": 13274
+      }
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "source": {
+        "path": "prepared/desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+        "sha256Bytes": "5822d0d10dc29365b42e7a5e0f009530bc12e3bffc7cb4142d42273f1a73d0ce",
+        "bytes": 20318
+      }
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "source": {
+        "path": "prepared/desktop/tools/extract-upstream-dynamic-reply.py",
+        "sha256Bytes": "06d9806747c801f7ec3f23a82f3564473bd58fce56baa97cd5aba7018c08217c",
+        "bytes": 35521
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "tool": "extract-upstream-dynamic-reply.py",
+      "kotlinSourceDir": "<taskOutput>",
+      "owns": 16
+    },
+    {
+      "tool": "extract-upstream-dynamic-detail.py",
+      "kotlinSourceDir": "<taskOutput>",
+      "owns": 3
+    },
+    {
+      "tool": "extract-upstream-dynamic-reply-protocol.py",
+      "kotlinSourceDir": "<taskOutput>/generated",
+      "owns": 3,
+      "fragmentOutsideSourceDir": true
+    },
+    {
+      "tool": "extract-upstream-dynamic-detail-protocol.py",
+      "kotlinSourceDir": "<taskOutput>/generated",
+      "owns": 3,
+      "fragmentOutsideSourceDir": true
+    }
+  ]
+}

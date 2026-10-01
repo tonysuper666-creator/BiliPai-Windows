@@ -1,0 +1,91 @@
+Raw original DynamicDetail/Reply closure — staged integration, not whole detail acceptance
+
+Base actual Main: dynamic-editor-main-product-snapshot-01 bc6cf9ef / ordered89CP515bf598.
+Main Kotlin47d866dc. Current Ops8130c63b is byte-identical to this base; Root navigation
+44b9f672 changes no Ops/Reply sources. Final attempt17 uses only this Ops as product
+override; all editor/card/policies/models/APIs/shared controls come from actual Main.
+
+Install 4 new generators + 4 new thin platform files; append operations.patch members
+to unique existing Ops. Do not replace Community/Shell/editor verifier/global source
+manifest/build. Producer task source dirs/counts are in producer-manifest.json; 25
+generated Kotlin files, no new dependency or asset. Merge source identities once.
+CommentReadAccessPolicy and DynamicDetailFallbackPolicy generated full pure bodies
+are selected identities, never also copied as direct sources. Existing editor policy
+functions and all raw Reply models are reused. Compile class overlap is exclusively Ops.
+
+Verify editor body boundary before appending: its verifier currently spans editor
+marker to class tail. End that span at the comment fragment's unique first line
+"// Paste inside existing DesktopDynamicCardOperations". The next unique detail
+fragment starts "// Additional members inside the existing DesktopDynamicCardOperations".
+Root may wrap each unchanged fragment in independent begin/end comments. No original
+editor API/forEditor/auth published-check/upload body may be lost or regenerated twice.
+
+Required route owner setup (same Root repository/session/context; no new account/cache):
+  capture immutable epoch = collected accountEpoch; item id key; alive=AtomicBoolean.
+  reuse LocalDesktopDynamicCardSession and its .emotes; require matches(repo,epoch).
+  operations=DesktopDynamicCardOperations(repo,epoch,{alive.get() && cardSession.isOwned()},cardSession.emotes).
+  binding=DesktopDynamicReplyOperationsBinding(operations,
+      csrfAvailable={ repo.authCookies()["bili_jct"].orEmpty().isNotBlank() },
+      detailLoader={ id -> operations.getDynamicDetail(id, latestCurrentRawItem) }).
+  replySession=DesktopOriginalDynamicReplySession(id,parentScope,binding,
+      seedItem={latestCurrentRawItem},stillOwned={alive.get() && cardSession.isOwned()}).
+  DisposableEffect: alive=false BEFORE close replySession; owns predicate also depends
+  on actual repository sessionEpoch. Preserve Root like/repost/delete/unfold version
+  counters and mergeDesktopDynamicDetailReadback for pending detail reads; never
+  propagate a whole stale detail item into the Root registry/cache.
+
+Ops full getDynamicDetail(id,seed,onArticleViewed?) implements original web/opus/
+desktop/rid-type2/article fallback and interaction/media merge. Seed must be current
+existing original raw item. Replace web-only community.dynamicDetail+ad hoc opus
+sequence with this read and merge DynamicDetailData(item=result) through existing
+version guard. Optional existing DesktopArticleHistoryReporter callback may be bound
+with captured epoch; null explicitly leaves original article-history side effect unbound.
+Inherited plain WORD ranking ties and repeated placeholder desktop read are preserved.
+
+Mount LocalDesktopCommentBindings with ONE DesktopPluginContext from current global
+prefs.context; collapsed limit is actual DesktopOriginalReplySettings sync value,
+loaded-count flow is its same settings backing. emotes=cardSession.emotes. Feedback,
+clipboard and native SHARE are explicit Root user actions; this proof only records
+synthetic callbacks. videoTitle=existing repo.videoDetails(bvid).title under owner.
+translateReply=operations.translateReply; blockUser=community.blockedUps original
+COMMENT relation same store; it is not a fake false/no-op. saveCommentImage must first
+select a real user target, then writeDesktopReplyCommentImage(spec,path,owned).
+This produces PNG; Windows gallery/native picker/SHARE has not been tested here.
+The preserved original save toast says 相册; Root may give truthful Windows feedback
+at its platform message boundary rather than claiming a Photos gallery write.
+
+@Composable DesktopOriginalDynamicCommentPanel(item,session,currentMid:Long?,onUserClick,modifier)
+requires finite height. It uses exact original LazyListScope commentContent + header,
+original raw row/actions/image preview + original bottom input/composer. Open comment
+session once for current raw subject; do not reload on each stat mutation/recomposition.
+@Composable DesktopOriginalDynamicThreadContent(session,currentMid:Long,onUserClick,
+onImagePreview?,modifier) is complete original thread CONTENT; observe .subReplyState
+visible and mount it in a real finite dialog. It handles original counts/cursor/sort/
+target highlighting/prefetch/loading, full raw decorations and comment actions.
+Main raw list callbacks preserve root,parent/rpid and original ReportReason codes.
+Thread window drag/predictive back/scrim/underlying blur remain NEXT original container
+closure, not a tested AppModalBottomSheet replacement. Do not call content-only full parity.
+
+Session owner fixes retain source reducers and API bodies: foreign id guard before
+state writes; actual parent Job active; main-generation refresh retires old thread;
+same-rpid like/hate synchronous admission+unique completion holder prevents stale
+rollback and queued disposal lock leak; all post-await owner/epoch checks. UI platform
+ordinary failure is contained, cancellation rethrown, translation finally releases row.
+
+Proof: final attempt17 compiled; Session8 groups + lifecycle5 deterministic groups +
+PNG/QR/max14line/global-store/cancellation actual files + M3/Miuix21 pointer pairs each,
+including translation/save adapter failure then retry, raw actions, thread actual
+TIME2/HOT3 request and original IME/root-parent post fields. No socket/account mutation,
+native clipboard/SHARE/HWND/sharedGradle/Main installation was exercised in parent.
+Historical child protocol175 proof12 and detail194 proof6 include actual Retrofit Java
+Proxy/raw gRPC fixtures; their freeze manifests remain unchanged. Protocol175's
+historical Ops8ce5 input is resolved by additive historical-source-retention, not by
+pretending today's parent Ops still has that byte hash.
+
+Remaining full Detail scope: original ImmersiveScaffold/Adaptive top chrome+readiness,
+AppSplitLayout/fold host and separate detail/comment scroll, full liquid dock,
+CommentThreadDrag+actual dialog/back dispatcher/scrim/predictive blur, Android GL
+particles (only exact original failed-capture collapse is adapted now), full conversation
+gRPC composer host, comment anti-fraud Room record callback (unbound optional seam),
+Windows gallery/picker/SHARE/clipboard owner integration and native acceptance.
+No feature count or passing source/isolated tests imply these remaining parts work.

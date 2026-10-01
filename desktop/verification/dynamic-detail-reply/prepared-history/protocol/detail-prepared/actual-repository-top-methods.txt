@@ -1,0 +1,265 @@
+Compiled from "DesktopBlockedCreatorPolicy.kt"
+public final class com.android.purebilibili.data.repository.DesktopBlockedCreatorPolicyKt {
+  private static final int BILIBILI_RELATION_ACT_BLOCK;
+  private static final int BILIBILI_RELATION_ACT_UNBLOCK;
+  private static final int BILIBILI_RELATION_PROFILE_BLOCK_RE_SRC;
+  private static final int BILIBILI_RELATION_COMMENT_BLOCK_RE_SRC;
+  public static final int resolveBlockedUpRelationReSrc(com.android.purebilibili.data.repository.BlockedUpRelationSource);
+  public static final java.lang.String buildBlockedUpWriteMessage(boolean, com.android.purebilibili.data.repository.BilibiliBlockedListRemoteStatus, java.lang.String);
+  public static java.lang.String buildBlockedUpWriteMessage$default(boolean, com.android.purebilibili.data.repository.BilibiliBlockedListRemoteStatus, java.lang.String, int, java.lang.Object);
+  public static final kotlin.Pair<java.lang.Integer, java.lang.Integer> desktopBlockedRelationArguments(boolean, com.android.purebilibili.data.repository.BlockedUpRelationSource);
+}
+Compiled from "DesktopBlockedUpImportSharePolicy.kt"
+public final class com.android.purebilibili.data.repository.DesktopBlockedUpImportSharePolicyKt {
+  private static final int BILIBILI_RELATION_ACT_BLOCK;
+  private static final int BILIBILI_RELATION_ACT_UNBLOCK;
+  private static final int BILIBILI_RELATION_PROFILE_BLOCK_RE_SRC;
+  private static final int BILIBILI_RELATION_COMMENT_BLOCK_RE_SRC;
+  private static final long BLOCKED_UP_PROFILE_REFRESH_DELAY_MS;
+  private static final java.lang.String BLOCKED_UP_SHARE_MARKER;
+  private static final kotlinx.serialization.json.Json blockedUpShareJson;
+  public static final com.android.purebilibili.data.repository.BlockedUpImportPlan buildBlockedUpImportPlan(java.util.Set<java.lang.Long>, java.util.List<com.android.purebilibili.data.repository.BlockedUpImportItem>);
+  public static final java.lang.String buildBlockedUpImportMessage(int, int, int);
+  public static final java.lang.String buildBlockedUpMetadataRefreshMessage(int, int, int);
+  public static final java.lang.String buildBlockedUpShareText(java.util.List<com.android.purebilibili.core.database.entity.BlockedUp>);
+  public static final java.lang.String buildBlockedUpShareJson(java.util.List<com.android.purebilibili.core.database.entity.BlockedUp>);
+  public static final java.util.List<com.android.purebilibili.data.repository.BlockedUpImportItem> parseBlockedUpShareText(java.lang.String);
+  private static final com.android.purebilibili.data.repository.BlockedUpSharePayload buildBlockedUpSharePayload(java.util.List<com.android.purebilibili.core.database.entity.BlockedUp>);
+  private static final com.android.purebilibili.data.repository.BlockedUpSharePayload parseBlockedUpSharePayload(java.lang.String);
+  private static final java.util.List<com.android.purebilibili.data.repository.BlockedUpImportItem> toImportItems(com.android.purebilibili.data.repository.BlockedUpSharePayload);
+  private static final kotlin.Unit blockedUpShareJson$lambda$0(kotlinx.serialization.json.JsonBuilder);
+  private static final com.android.purebilibili.data.repository.BlockedUpImportItem parseBlockedUpShareText$lambda$2(kotlin.text.MatchResult);
+  static {};
+}
+Compiled from "DesktopBlockedUpRemoteImportPolicy.kt"
+public final class com.android.purebilibili.data.repository.DesktopBlockedUpRemoteImportPolicyKt {
+  public static final java.util.List<com.android.purebilibili.data.repository.BlockedUpImportItem> buildBlockedUpImportItemsFromRemoteBlacks(java.util.List<com.android.purebilibili.data.model.response.FollowingUser>);
+}
+Compiled from "DesktopDanmakuSegmentPolicy.kt"
+public final class com.android.purebilibili.data.repository.DesktopDanmakuSegmentPolicyKt {
+  public static final long DANMAKU_SEGMENT_DURATION_MS;
+  public static final int DANMAKU_SEGMENT_SAFE_FALLBACK_COUNT;
+  public static final int resolveDanmakuSegmentCount(long, java.lang.Integer);
+}
+Compiled from "DesktopDiscoveryVideoRepository.kt"
+public final class com.android.purebilibili.data.repository.DesktopDiscoveryVideoRepositoryKt {
+  private static final java.util.Set<java.lang.Integer> UGC_MAIN_REGION_TIDS;
+  private static final java.util.Map<java.lang.Integer, java.lang.Integer> REGION_TID_TO_RANKING_RID;
+  public static final boolean shouldFallbackRegionLatestToRanking(int, int, int, int);
+  public static final java.lang.Integer resolveRegionRankingRid(int);
+  public static final java.util.Map<java.lang.String, java.lang.String> buildDesktopWebRecommendParams(int, int);
+  static {};
+}
+Compiled from "DesktopDynamicMessageShareRepository.kt"
+public final class com.android.purebilibili.data.repository.DesktopDynamicMessageShareRepositoryKt {
+  public static final byte[] buildDynamicShareSendRequest(long, long, java.lang.String, long, java.lang.String);
+  public static final java.util.List<com.android.purebilibili.data.repository.MessageShareTarget> parseMessageShareTargets(byte[]);
+  private static final boolean parseMessageShareTargets$lambda$0(com.android.purebilibili.core.network.grpc.ProtoWire$Field);
+  private static final com.android.purebilibili.data.repository.MessageShareTarget parseMessageShareTargets$lambda$1(com.android.purebilibili.core.network.grpc.ProtoWire$Field);
+}
+Compiled from "DesktopHistoryCursorPolicy.kt"
+public final class com.android.purebilibili.data.repository.DesktopHistoryCursorPolicyKt {
+  public static final com.android.purebilibili.data.repository.HistoryCursorQuery resolveHistoryCursorQuery(long, long, java.lang.String);
+}
+Compiled from "DesktopLiveHosts.kt"
+public final class com.android.purebilibili.data.repository.DesktopLiveHostsKt {
+  public static final java.util.List<java.lang.String> resolveDesktopLiveDanmakuHosts(java.util.List<com.android.purebilibili.data.model.response.LiveDanmuHost>);
+}
+Compiled from "DesktopLivePolicies.kt"
+public final class com.android.purebilibili.data.repository.DesktopLivePoliciesKt {
+  private static final int DEFAULT_LIVE_HEARTBEAT_INTERVAL_SEC;
+  private static final int DEFAULT_LIVE_DANMAKU_MAX_LENGTH;
+  private static final kotlinx.serialization.json.Json liveRepositoryJson;
+  public static final boolean hasPlayableLiveUrl(com.android.purebilibili.data.model.response.LivePlayUrlData);
+  public static final java.lang.Object parseLiveDanmakuHistoryItems(java.lang.String);
+  public static final java.util.Map<java.lang.String, java.lang.String> buildLiveHeartbeatQuery(long, int);
+  public static java.util.Map buildLiveHeartbeatQuery$default(long, int, int, java.lang.Object);
+  public static final int parseLiveHeartbeatNextInterval(java.lang.String);
+  public static final com.android.purebilibili.data.repository.LiveDanmakuPermission parseLiveDanmakuPermission(java.lang.String);
+  public static final java.lang.Object parseLiveShieldInfo(java.lang.String);
+  private static final java.util.List<com.android.purebilibili.data.repository.LiveShieldKeyword> parseLiveShieldKeywords(org.json.JSONArray);
+  private static final java.util.List<com.android.purebilibili.data.repository.LiveShieldUser> parseLiveShieldUsers(org.json.JSONArray);
+  private static final int firstPositiveInt(org.json.JSONObject, java.lang.String...);
+  private static final long firstPositiveLong(org.json.JSONObject, java.lang.String...);
+  public static final com.android.purebilibili.data.repository.LiveRedPocketInfo parseLiveRedPocketInfo(java.lang.String);
+  public static final com.android.purebilibili.data.repository.LiveVoteInfo parseLiveVotePanel(java.lang.String);
+  public static final java.util.List<com.android.purebilibili.data.repository.LiveVoteInfo> parseLiveVoteHistory(java.lang.String);
+  private static final com.android.purebilibili.data.repository.LiveVoteInfo parseLiveVoteInfo(org.json.JSONObject);
+  private static final java.lang.String formatLiveRedPocketAwards(kotlinx.serialization.json.JsonArray);
+  private static final java.lang.String string(kotlinx.serialization.json.JsonObject, java.lang.String);
+  private static final int int(kotlinx.serialization.json.JsonObject, java.lang.String, int);
+  static int int$default(kotlinx.serialization.json.JsonObject, java.lang.String, int, int, java.lang.Object);
+  private static final long long(kotlinx.serialization.json.JsonObject, java.lang.String);
+  private static final kotlinx.serialization.json.JsonObject obj(kotlinx.serialization.json.JsonObject, java.lang.String);
+  private static final kotlinx.serialization.json.JsonArray array(kotlinx.serialization.json.JsonObject, java.lang.String);
+  private static final kotlin.Unit liveRepositoryJson$lambda$0(kotlinx.serialization.json.JsonBuilder);
+  static {};
+}
+Compiled from "DesktopMediaPgcPolicies.kt"
+public final class com.android.purebilibili.data.repository.DesktopMediaPgcPoliciesKt {
+  public static final boolean shouldFallbackToLegacyBangumiPlayUrl(com.android.purebilibili.data.repository.BangumiPlayUrlPayload);
+  public static final java.lang.Object validateBangumiPlayableVideoInfo(com.android.purebilibili.data.model.response.BangumiVideoInfo);
+  private static final boolean hasPlayableWebStream(com.android.purebilibili.data.model.response.BangumiVideoInfo);
+  public static final com.android.purebilibili.data.repository.BangumiPlayUrlPayload decodeBangumiPlayUrlPayload(java.lang.String, kotlinx.serialization.json.Json);
+  public static com.android.purebilibili.data.repository.BangumiPlayUrlPayload decodeBangumiPlayUrlPayload$default(java.lang.String, kotlinx.serialization.json.Json, int, java.lang.Object);
+  public static final boolean shouldLoadBangumiSections(com.android.purebilibili.data.model.response.BangumiDetail);
+  public static final com.android.purebilibili.data.model.response.BangumiDetail mergeBangumiDetailSections(com.android.purebilibili.data.model.response.BangumiDetail, com.android.purebilibili.data.model.response.BangumiSectionResult);
+  private static final java.util.List<com.android.purebilibili.data.model.response.BangumiEpisode> mergeBangumiEpisodes(java.util.List<com.android.purebilibili.data.model.response.BangumiEpisode>, java.util.List<com.android.purebilibili.data.model.response.BangumiEpisode>);
+  private static final java.util.List<com.android.purebilibili.data.model.response.BangumiSection> mergeBangumiSections(java.util.List<com.android.purebilibili.data.model.response.BangumiSection>, java.util.List<com.android.purebilibili.data.model.response.BangumiSection>);
+  private static final kotlin.Unit decodeBangumiPlayUrlPayload$lambda$0(kotlinx.serialization.json.JsonBuilder);
+}
+Compiled from "DesktopOriginalDynamicFollowedLiveUsers.kt"
+public final class com.android.purebilibili.data.repository.DesktopOriginalDynamicFollowedLiveUsersKt {
+  public static final java.util.List<com.android.purebilibili.data.model.response.LiveRoom> desktopOriginalDynamicFollowedLiveUsers(com.android.purebilibili.data.model.response.FollowedLiveResponse);
+}
+Compiled from "DesktopOriginalDynamicTimelineRepository.kt"
+public final class com.android.purebilibili.data.repository.DesktopOriginalDynamicTimelineRepositoryKt {
+  public static final boolean shouldUseDynamicIncrementalRefresh(boolean, boolean, java.lang.String);
+  public static final com.android.purebilibili.data.repository.DynamicPaginationState resolveDynamicPaginationStateAfterPage(com.android.purebilibili.data.repository.DynamicPaginationState, java.lang.String, java.lang.String, boolean, boolean, int);
+  public static com.android.purebilibili.data.repository.DynamicPaginationState resolveDynamicPaginationStateAfterPage$default(com.android.purebilibili.data.repository.DynamicPaginationState, java.lang.String, java.lang.String, boolean, boolean, int, int, java.lang.Object);
+}
+Compiled from "DesktopRecommendationAppParams.kt"
+public final class com.android.purebilibili.data.repository.DesktopRecommendationAppParamsKt {
+  public static final java.util.Map<java.lang.String, java.lang.String> buildDesktopMobileRecommendParams(int, int, java.lang.String);
+  public static final java.util.Map<java.lang.String, java.lang.String> buildDesktopMergedWebRecommendParams(int, int);
+  public static final java.util.Map<java.lang.String, java.lang.String> buildDesktopMergedMobileRecommendParams(int);
+}
+Compiled from "DesktopRecommendationFeedbackRequests.kt"
+public final class com.android.purebilibili.data.repository.DesktopRecommendationFeedbackRequestsKt {
+  public static final com.android.purebilibili.data.repository.RecommendationFeedbackRequest buildRecommendationFeedbackRequest(com.android.purebilibili.data.model.response.RecommendationFeedbackMetadata, com.android.purebilibili.data.model.response.RecommendationFeedbackReason);
+  public static final java.util.Map<java.lang.String, java.lang.String> buildRecommendationFeedbackParams(com.android.purebilibili.data.repository.RecommendationFeedbackRequest, java.lang.String, long);
+}
+Compiled from "DesktopSearchDeclarations.kt"
+public final class com.android.purebilibili.data.repository.DesktopSearchDeclarationsKt {
+  public static final java.util.Map<java.lang.String, java.lang.String> desktopSearchTypeParams(java.lang.String, java.lang.String, int, java.util.Map<java.lang.String, java.lang.String>);
+  public static java.util.Map desktopSearchTypeParams$default(java.lang.String, java.lang.String, int, java.util.Map, int, java.lang.Object);
+  public static final java.util.Map<java.lang.String, java.lang.String> desktopVideoSearchParams(java.lang.String, com.android.purebilibili.data.repository.SearchOrder, com.android.purebilibili.data.repository.SearchDuration, int, int, java.lang.Long, java.lang.Long);
+  public static final java.util.List<java.lang.String> desktopSearchFallbackKeywords();
+}
+Compiled from "DesktopUpstreamBlockedListPacing.kt"
+public final class com.android.purebilibili.data.repository.DesktopUpstreamBlockedListPacingKt {
+  private static final long BLOCKED_UP_PROFILE_REFRESH_DELAY_MS;
+  private static final int BLOCKED_LIST_PAGE_SIZE;
+  private static final int BLOCKED_LIST_MAX_PAGES;
+  private static final long BLOCKED_LIST_PAGE_DELAY_MS;
+  public static final long originalBlockedProfileRefreshDelay();
+  public static final int originalBlockedListPageSize();
+  public static final int originalBlockedListMaxPages();
+  public static final long originalBlockedListPageDelay();
+}
+Compiled from "DesktopUpstreamPolicies.kt"
+public final class com.android.purebilibili.data.repository.DesktopUpstreamPoliciesKt {
+  public static final java.util.Map<java.lang.String, java.lang.String> buildBangumiPlayUrlParams(long, long, int, java.lang.String, java.lang.Long, long, boolean, boolean);
+  public static java.util.Map buildBangumiPlayUrlParams$default(long, long, int, java.lang.String, java.lang.Long, long, boolean, boolean, int, java.lang.Object);
+}
+Compiled from "DynamicFeedFetchPolicy.kt"
+public final class com.android.purebilibili.data.repository.DynamicFeedFetchPolicyKt {
+  public static final int DYNAMIC_EMPTY_PAGE_FETCH_LIMIT;
+  public static final boolean shouldContinueDynamicFetchAfterFilter(int, boolean, java.lang.String, java.lang.String, int, int);
+  public static boolean shouldContinueDynamicFetchAfterFilter$default(int, boolean, java.lang.String, java.lang.String, int, int, int, java.lang.Object);
+  public static final boolean shouldContinueDynamicIncrementalFetch(int, int, boolean, java.lang.String, java.lang.String);
+  public static final java.lang.String resolveDynamicFeedUpdateBaseline(java.lang.String, java.lang.String, int);
+}
+Compiled from "DynamicFetchRetryPolicy.kt"
+public final class com.android.purebilibili.data.repository.DynamicFetchRetryPolicyKt {
+  public static final int DYNAMIC_FETCH_MAX_ATTEMPTS;
+  public static final boolean isDynamicRiskControlApiError(int, java.lang.String);
+  public static final boolean isDynamicRateLimitApiError(int, java.lang.String);
+  public static final boolean isRetryableDynamicApiError(int, java.lang.String);
+  public static final boolean isRetryableDynamicException(java.lang.Throwable);
+  public static final long resolveDynamicRetryDelayMs(int);
+  public static final java.lang.String resolveDynamicFriendlyErrorMessage(int, java.lang.String);
+}
+Compiled from "LiveInteractionModels.kt"
+public final class com.android.purebilibili.data.repository.LiveInteractionModelsKt {
+  private static final java.util.List<com.android.purebilibili.data.repository.LiveReportReason> DefaultLiveReportReasons;
+  public static final java.util.List<com.android.purebilibili.data.repository.LiveReportReason> getDefaultLiveReportReasons();
+  static {};
+}
+Compiled from "PlaybackHeartbeatPolicy.kt"
+public final class com.android.purebilibili.data.repository.PlaybackHeartbeatPolicyKt {
+  public static final int resolvePlaybackHeartbeatPlayType(long, long);
+  public static final java.util.Map<java.lang.String, java.lang.String> buildPlaybackHeartbeatFields(java.lang.String, long, long, long, long, java.lang.Long, long, long, long, java.lang.String, int, java.lang.Integer);
+  public static java.util.Map buildPlaybackHeartbeatFields$default(java.lang.String, long, long, long, long, java.lang.Long, long, long, long, java.lang.String, int, java.lang.Integer, int, java.lang.Object);
+}
+Compiled from "SearchLoadPolicy.kt"
+public final class com.android.purebilibili.data.repository.SearchLoadPolicyKt {
+  public static final com.android.purebilibili.data.repository.SearchRepository$SearchPageInfo resolveVideoSearchPageInfo(int, int, int, int, int, int);
+  public static final int resolveSearchLoadedPage(int, int);
+  public static final boolean shouldApplySearchResult(long, long, java.lang.String, java.lang.String, com.android.purebilibili.data.model.response.SearchType, com.android.purebilibili.data.model.response.SearchType);
+  public static final <T, K> java.util.List<T> mergeSearchPageResults(java.util.List<? extends T>, java.util.List<? extends T>, kotlin.jvm.functions.Function1<? super T, ? extends K>);
+  public static final java.util.List<com.android.purebilibili.data.repository.SearchDuration> resolveSearchDurationRequests(java.util.Set<? extends com.android.purebilibili.data.repository.SearchDuration>);
+  public static final java.util.Set<com.android.purebilibili.data.repository.SearchDuration> toggleSearchDurationSelection(java.util.Set<? extends com.android.purebilibili.data.repository.SearchDuration>, com.android.purebilibili.data.repository.SearchDuration);
+  public static final java.lang.String resolveSearchDurationFilterLabel(java.util.Set<? extends com.android.purebilibili.data.repository.SearchDuration>);
+  public static final kotlin.Pair<java.util.List<com.android.purebilibili.data.model.response.VideoItem>, com.android.purebilibili.data.repository.SearchRepository$SearchPageInfo> mergeSearchDurationResultPages(java.util.List<? extends kotlin.Pair<? extends java.util.List<com.android.purebilibili.data.model.response.VideoItem>, com.android.purebilibili.data.repository.SearchRepository$SearchPageInfo>>);
+  private static final java.lang.String resolveSearchVideoMergeKey(com.android.purebilibili.data.model.response.VideoItem);
+  public static final java.lang.String access$resolveSearchVideoMergeKey(com.android.purebilibili.data.model.response.VideoItem);
+}
+Compiled from "SearchRecommendPolicy.kt"
+public final class com.android.purebilibili.data.repository.SearchRecommendPolicyKt {
+  private static final java.lang.String HISTORY_RECOMMEND_REASON;
+  private static final java.lang.String FOLLOWED_UP_RECOMMEND_REASON;
+  private static final int MAX_CONSECUTIVE_FOLLOWED_RECOMMENDATIONS;
+  public static final java.util.List<com.android.purebilibili.data.model.response.HotItem> buildSearchRecommendItems(java.util.List<java.lang.String>, java.util.List<java.lang.String>, java.util.List<com.android.purebilibili.data.model.response.HotItem>, java.util.List<com.android.purebilibili.data.model.response.HotItem>, java.util.List<java.lang.String>, int);
+  public static java.util.List buildSearchRecommendItems$default(java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, int, int, java.lang.Object);
+  private static final com.android.purebilibili.data.model.response.HotItem buildSearchRecommendItems$normalize(java.util.Set<java.lang.String>, com.android.purebilibili.data.model.response.HotItem);
+  private static final void buildSearchRecommendItems$addDirect(java.util.Set<java.lang.String>, java.util.List<com.android.purebilibili.data.model.response.HotItem>, com.android.purebilibili.data.model.response.HotItem);
+  private static final void buildSearchRecommendItems$addToPool(java.util.Set<java.lang.String>, java.util.List<com.android.purebilibili.data.model.response.HotItem>, com.android.purebilibili.data.model.response.HotItem);
+}
+Compiled from "SponsorBlockRepository.kt"
+public final class com.android.purebilibili.data.repository.SponsorBlockRepositoryKt {
+  public static final okhttp3.OkHttpClient buildSponsorBlockHttpClient(okhttp3.OkHttpClient);
+  public static final java.lang.String buildSponsorBlockSegmentsUrl(java.lang.String, java.lang.String, long, java.util.List<java.lang.String>);
+  public static java.lang.String buildSponsorBlockSegmentsUrl$default(java.lang.String, java.lang.String, long, java.util.List, int, java.lang.Object);
+}
+Compiled from "VideoCastPolicy.kt"
+public final class com.android.purebilibili.data.repository.VideoCastPolicyKt {
+  public static final int TV_CAST_DEFAULT_QUALITY;
+  public static final java.util.Map<java.lang.String, java.lang.String> buildTvCastPlayUrlParams(long, long, int, java.lang.String);
+  public static final java.lang.String extractTvCastPlayableUrl(com.android.purebilibili.data.model.response.PlayUrlData);
+  public static final com.android.purebilibili.data.model.response.DashVideo selectCastDashVideo(java.util.List<com.android.purebilibili.data.model.response.DashVideo>, int);
+  public static final com.android.purebilibili.data.model.response.DashAudio selectCastDashAudio(java.util.List<com.android.purebilibili.data.model.response.DashAudio>, com.android.purebilibili.data.model.response.Dolby, com.android.purebilibili.data.model.response.Flac);
+  public static final boolean isCastDashManifestAvailable(com.android.purebilibili.data.model.response.Dash);
+  private static final int selectCastDashVideo$codecFamily(java.lang.String);
+  private static final com.android.purebilibili.data.model.response.DashVideo selectCastDashVideo$bestInQuality(java.util.List<com.android.purebilibili.data.model.response.DashVideo>);
+  private static final com.android.purebilibili.data.model.response.DashVideo selectCastDashVideo$pickBestInFamily(int, java.util.List<com.android.purebilibili.data.model.response.DashVideo>);
+}
+Compiled from "VideoLoadPolicy.kt"
+public final class com.android.purebilibili.data.repository.VideoLoadPolicyKt {
+  public static final boolean isStrictPremiumQualityRequest(com.android.purebilibili.data.repository.PlayUrlRequestKind, int);
+  public static final com.android.purebilibili.data.repository.VideoInfoLookupInput resolveVideoInfoLookupInput(java.lang.String, long);
+  public static final long resolveRequestedVideoCid(long, long, java.util.List<com.android.purebilibili.data.model.response.Page>);
+  public static final int resolveInitialStartQuality(java.lang.Integer, boolean, boolean, boolean, boolean);
+  public static final boolean resolveVideoPlaybackAuthState(boolean, boolean);
+  public static final boolean shouldSkipPlayUrlCache(boolean, boolean, java.lang.String);
+  public static final boolean shouldAcceptCachedPlayUrlForAutoHighest(boolean, boolean, java.util.List<java.lang.Integer>, int);
+  public static boolean shouldAcceptCachedPlayUrlForAutoHighest$default(boolean, boolean, java.util.List, int, int, java.lang.Object);
+  public static final java.util.List<java.lang.Integer> buildDashAttemptQualities(int);
+  public static final java.util.List<java.lang.Long> resolveDashRetryDelays(int, boolean);
+  public static java.util.List resolveDashRetryDelays$default(int, boolean, int, java.lang.Object);
+  public static final boolean shouldRetryOnlyTransientEmptyDashResponse(int, boolean);
+  public static final boolean shouldRetryDashTrackRecovery(int, int, java.util.List<java.lang.Integer>, java.util.List<java.lang.Integer>);
+  public static final java.lang.String buildStartQualityDecisionSummary(java.lang.String, long, java.lang.Integer, int, boolean, boolean, boolean, boolean, java.lang.String);
+  public static final java.lang.String buildPlayUrlFetchSummary(java.lang.String, long, com.android.purebilibili.data.repository.PlayUrlSource, int, int, java.util.List<java.lang.Integer>, java.util.List<java.lang.Integer>, boolean, boolean, boolean, java.lang.String);
+  public static final boolean shouldCallAccessTokenApi(long, long, boolean);
+  public static final boolean shouldTryAppApiForTargetQuality(int, boolean, boolean);
+  public static boolean shouldTryAppApiForTargetQuality$default(int, boolean, boolean, int, java.lang.Object);
+  public static final boolean shouldEnableDirectedTrafficMode(boolean, boolean);
+  public static final java.util.Map<java.lang.String, java.lang.String> buildDirectedTrafficWbiOverrides(boolean, boolean);
+  public static final java.util.Map<java.lang.String, java.lang.String> buildPlayUrlWbiBaseParams(java.lang.String, long, int, java.lang.String, boolean);
+  public static java.util.Map buildPlayUrlWbiBaseParams$default(java.lang.String, long, int, java.lang.String, boolean, int, java.lang.Object);
+  public static final boolean shouldRequestPlayUrlTryLook(boolean, boolean);
+  public static final java.util.List<com.android.purebilibili.data.repository.PlayUrlSource> buildLoggedInPlaybackFallbackOrder();
+  public static final java.util.List<com.android.purebilibili.data.repository.PlayUrlSource> buildGuestPlaybackFallbackOrder();
+  public static final boolean shouldAcceptAppApiResultForTargetQuality(com.android.purebilibili.data.repository.PlayUrlRequestKind, int, int, java.util.List<java.lang.Integer>);
+  public static final java.util.List<java.lang.Integer> buildGuestFallbackQualities();
+  public static final boolean shouldCachePlayUrlResult(com.android.purebilibili.data.repository.PlayUrlSource, java.lang.String, int, int, java.util.List<java.lang.Integer>);
+  public static boolean shouldCachePlayUrlResult$default(com.android.purebilibili.data.repository.PlayUrlSource, java.lang.String, int, int, java.util.List, int, java.lang.Object);
+  public static final boolean isRequestedQualitySatisfied(int, int, java.util.List<java.lang.Integer>);
+  public static final boolean hasExactPlayableRequestedTrack(int, java.util.List<com.android.purebilibili.data.model.response.DashVideo>);
+  public static final boolean isExactRequestedQualitySelected(int, int);
+  public static final boolean shouldScheduleHdrAutoUpgrade(boolean, boolean, boolean, boolean, boolean, java.util.List<java.lang.Integer>, boolean, boolean);
+  public static final boolean shouldFetchCommentEmoteMapOnVideoLoad();
+  public static final boolean shouldRefreshVipStatusOnVideoLoad();
+  public static final boolean shouldFetchInteractionStatusOnVideoLoad();
+}

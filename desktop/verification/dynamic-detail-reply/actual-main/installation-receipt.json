@@ -1,0 +1,21 @@
+{
+  "handoffSha256Bytes": "4a7950229a7bf2eed938f9c9979b395696714634e2b690003adb062c66460852",
+  "verifiedArtifacts": 445,
+  "installedNewSources": [
+    "desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+    "desktop/tools/extract-upstream-dynamic-detail.py",
+    "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+    "desktop/tools/extract-upstream-dynamic-reply.py",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentImageCanvas.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReplyTransparentBoundsCropTransformation.kt"
+  ],
+  "existingOperationsPreserved": true,
+  "opsSha256Bytes": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+  "originalIdentitiesMerged": 13,
+  "originalIdentitiesAdded": 14,
+  "registryCount": 602,
+  "compiledClassesInstalled": false,
+  "mainConsumerIntegrated": false
+}

@@ -1,0 +1,334 @@
+{
+  "originalTag": "v0.2.3-alpha.9",
+  "originalCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256": "33e0d081fc70ab587d333eb52a21a193932be2dbc5835f409901139d7a8212dd",
+      "tagBlob": "6dae77c3ee324c40003a311b0365773af6229547",
+      "matchesTag": true,
+      "mode": "api-extract",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010",
+      "tagBlob": "5bc8cef319d12f3977b1a439be4a24547969471c",
+      "matchesTag": true,
+      "mode": "policy-extract",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SkeletonSettingsStore.kt",
+      "sha256": "e13b562319d70a79dc5a41d7c6228feee49dd62fe06443dd8978f5c4c06b21c6",
+      "tagBlob": "f07ae690246634f4b0fae2213cb97ddb68ad28dc",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/animation/ParticleDissolveEffect.kt",
+      "sha256": "f38fb8de539140729eb7beda30ddc9889a67eae15256c54f9a121bfa06cb76f7",
+      "tagBlob": "86eebe41fad0d28a4bd3f7e1ba044ab2ae35010e",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/common/Modifiers.kt",
+      "sha256": "ffb0a934822dc39744a56ec031875e813f8e2a055ed857f5dfc1db4e1e5a5fa2",
+      "tagBlob": "24e6b81e179fb0f778b2212e8f9fa7554ab5c57e",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "sha256": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2",
+      "tagBlob": "4020b07ae4a3f840c9d7865c93be76ceeb3306d1",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/SkeletonBreathing.kt",
+      "sha256": "fa072619c7ee3d3118834cebe1983d081a8efcf085512fb3d8ea4ee19a299b0a",
+      "tagBlob": "eae17d5c2e247be9eeda7c6d78e3ef76257c48c1",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+      "sha256": "0c4502996df04147f5b5dd98414ad53d0390d91a14aa8baa9099863623ffea1d",
+      "tagBlob": "abd81bdbe2797a2b61afb8e33fd5617fae5ca8d4",
+      "matchesTag": true,
+      "mode": "direct",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "sha256": "a04d5aaf29a8416304bc6198724247f86719b9d0e6984b6098d0a6c4732d5445",
+      "tagBlob": "835b61c21c45c4c4dee5652acbb1b10a4d220925",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt",
+      "sha256": "eddc5e3b092e785944c66a70b5c26f788551fdcad0e1ab8d137f33b679f52d07",
+      "tagBlob": "e15aa2ed8c2117ea4cff0bac34e340338742da06",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt",
+      "sha256": "c486a199ef6eaee6ec5a16d84c3a82688176e237c6a57519124d51bcee0d7a87",
+      "tagBlob": "026348d76eacb2e5b15e977b98c6ff88881d4a28",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256": "80fe4b7dc2d388641b3b5a5cf0cb287567274d91379816131fd1c354707cd998",
+      "tagBlob": "e1541bca3d243fef9a93497f460731a784127868",
+      "matchesTag": true,
+      "mode": "policy-extract",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicDetailFallbackPolicy.kt",
+      "sha256": "14eece47cbe4afbe048e6a782c72352734f2f419888c3c5fc6ab40b8dda227cc",
+      "tagBlob": "3813bad824d50df4c4339a614d5b710a7ed044e5",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "sha256": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b",
+      "tagBlob": "e343c21510d6519a63def7b9906ac9400087bc11",
+      "matchesTag": true,
+      "mode": "policy-extract",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/aicu/AicuNavigationPolicy.kt",
+      "sha256": "0001fbdf81eb2a438935c898ae3d6f61760737ddeb8e71d895c176fd3a4ed160",
+      "tagBlob": "ece721883f3b5b3cd1a726e1364e0ddf6277686e",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleContentLoadPolicy.kt",
+      "sha256": "d486c186c42c0549a291f7fff35712167088e8d4ca5c30c5ac58885c5a6fe987",
+      "tagBlob": "de3a2658e9db7d6f0a6fd681e5b5bee65dd3edff",
+      "matchesTag": true,
+      "mode": "direct",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "sha256": "eb0eefcbfb12d5ee5e06d312095797fcf67cbf7264fb32040cd4391f38d1d0cf",
+      "tagBlob": "322015d8710c4163e08dbb6ad3f845687a3cd353",
+      "matchesTag": true,
+      "mode": "reference-only",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicInteractionPolicy.kt",
+      "sha256": "0322b2835924409fbb3716524d292c040cdcdec15769b19e272e52bd7839b6f7",
+      "tagBlob": "2b0af12c8d0239ce7642c824953a541b1e1e12d1",
+      "matchesTag": true,
+      "mode": "policy-extract",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "sha256": "9981e964c6b90b51b93bfc7808490043fe60b460a8cc6491027afbbe2d0d13f5",
+      "tagBlob": "d3566c26a7e063f3b629c822a5abfdf5deecd9d1",
+      "matchesTag": true,
+      "mode": "policy-extract",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
+      "sha256": "cbc5bbcabd8ef19c6c73fb13dca6ff7248bf208cc8128a6dd240fc9f93233c05",
+      "tagBlob": "66ee54786e89476530b9d55f87651797a146efc3",
+      "matchesTag": true,
+      "mode": "policy-extract",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "sha256": "7c5951e2518ecc12162faa34e3e066a61ce4ea58e4713e3c5c67ff60587dcf52",
+      "tagBlob": "d92f2eafd8adba7acbc5a55c4f86fea3d2666a64",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputBar.kt",
+      "sha256": "97c0a524fb6df7685dda7efa45ba10cb7a39d8456f4dfffa90e978d25a8403ea",
+      "tagBlob": "b259bb1c85338ca78baa5cf562e2a0f1e1baf048",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyCommentImageSaver.kt",
+      "sha256": "2c7ab6898c5bfe9b334ba2b71393fe69c0dbe77050b964e41a3892245119f19d",
+      "tagBlob": "ad00e64f2df02e4fa621cf0064162495d06490b4",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+      "sha256": "1a0194f25ecb50c38b100d2f3a7dacf8a09eecd22745a763dfb3519fb88dc909",
+      "tagBlob": "8dc6f65bf4b47768cc6768287e6f212fed24e362",
+      "matchesTag": true,
+      "mode": "policy-extract",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt",
+      "sha256": "4dd624d29a99ad189234ed823fe3aeebd0613a49571b765f55e9bc79740a0821",
+      "tagBlob": "dd2f0292d14f0575fcaa21b41bebfa6740e35c4f",
+      "matchesTag": true,
+      "mode": "reference-only",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt",
+      "sha256": "67d3e57c804671f100f3294048296e87aafd287035294aa455df5e6eca9934bc",
+      "tagBlob": "69f02084e787df06a09abb876a1b7451d32fa0a5",
+      "matchesTag": true,
+      "mode": "selected",
+      "existingIdentity": false,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "appendSelectedIdentity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "sha256": "8d637e44848bd3bfeaa29a2199d9d68aa3884665bb3650e932d405e4b220ee74",
+      "tagBlob": "028bfe4f87c08abdbe05e97b9801b7be5e6e14d7",
+      "matchesTag": true,
+      "mode": "policy-extract",
+      "existingIdentity": true,
+      "mergeFeatures": [
+        "dynamic-detail-reply"
+      ],
+      "registryAction": "mergeExistingFeatures"
+    }
+  ],
+  "resourcesAdded": [],
+  "runtimeDependenciesAdded": [],
+  "directProducerWarning": "Every new whole pure policy is registered selected because its renamed generated file is the sole producer; never direct-copy it again.",
+  "existingEditorAndCardPolicyBodiesReused": true
+}

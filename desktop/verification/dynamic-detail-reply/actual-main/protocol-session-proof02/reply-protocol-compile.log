@@ -1,0 +1,21 @@
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\ReplyProtocolTransportFixture.kt:56:81: error: unresolved reference 'rawReplyMainFixture'.
+                    "MainList" -> if(scenario.get() in setOf("grpc","restore")) rawReplyMainFixture(scenario.get()!="restore") else {status="13";byteArrayOf()}
+                                                                                ^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\ReplyProtocolTransportFixture.kt:57:37: error: unresolved reference 'rawReplyDetailFixture'.
+                    "DetailList" -> rawReplyDetailFixture()
+                                    ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\ReplyProtocolTransportFixture.kt:58:37: error: unresolved reference 'rawReplyDialogFixture'.
+                    "DialogList" -> rawReplyDialogFixture()
+                                    ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\ReplyProtocolTransportFixture.kt:59:41: error: unresolved reference 'rawReplyTranslateFixture'.
+                    "TranslateReply" -> rawReplyTranslateFixture(701)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\ReplyProtocolTransportFixture.kt:133:9: error: unresolved reference 'assertRawReplyFixture'.
+        assertRawReplyFixture(directGrpc.parseMainListReply(rawReplyMainFixture()).replies!!.single())
+        ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\ReplyProtocolTransportFixture.kt:133:61: error: unresolved reference 'rawReplyMainFixture'.
+        assertRawReplyFixture(directGrpc.parseMainListReply(rawReplyMainFixture()).replies!!.single())
+                                                            ^^^^^^^^^^^^^^^^^^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof02\ReplyProtocolTransportFixture.kt:137:9: error: unresolved reference 'assertRawReplyFixture'.
+        assertRawReplyFixture(data.replies!!.single())
+        ^^^^^^^^^^^^^^^^^^^^^

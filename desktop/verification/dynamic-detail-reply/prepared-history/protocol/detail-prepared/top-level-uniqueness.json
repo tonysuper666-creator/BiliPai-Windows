@@ -1,0 +1,29 @@
+{
+  "mainKotlinSha256Bytes": "47d866dc71544bf4dcc4ee39da7c6de3f0121fce90e7baca77c8e88e46ee45ed",
+  "repositoryKtOwners": 26,
+  "originalInternalPolicyFunctions": 17,
+  "originalFunctionNames": [
+    "shouldFetchStandardDetailForPlainTextDynamic",
+    "mergeDynamicDetailWithLongerDesc",
+    "isFoldedDynamicLinkPlaceholder",
+    "shouldFallbackForDynamicDetail",
+    "shouldFetchDynamicDetailByRid",
+    "resolvePreferredDynamicDetailItem",
+    "resolveDynamicOpusContentScore",
+    "mergeRicherOpusDetailContent",
+    "mergeDynamicDetailInteractionMetadata",
+    "mergeDynamicDetailContentWithSeedMedia",
+    "collectDynamicDetailSeedEmojiNodes",
+    "mergeDynamicDetailRichTextNodes",
+    "shouldFetchOpusDetailForDynamicDetail",
+    "shouldRequestOpusDetailForDynamicDetail",
+    "resolveOpusArticleFallbackCvId",
+    "articleContentBlocksToOpusBlocks",
+    "mergeArticleDetailIntoOpus"
+  ],
+  "existingPublicStaticNameMatches": [],
+  "conflicts": 0,
+  "strongerThanDescriptorCheckBecauseNamesHaveNoIntersection": true,
+  "javapSha256Bytes": "92c84d4e056a236653bb19846253e5014543508b6db18d79996b25a8856fb797",
+  "originalPolicyLfSha256": "14eece47cbe4afbe048e6a782c72352734f2f419888c3c5fc6ab40b8dda227cc"
+}

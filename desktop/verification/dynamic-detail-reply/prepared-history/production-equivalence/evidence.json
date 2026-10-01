@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "helpers": 6,
+  "fragments": 2,
+  "records": [
+    {
+      "family": "comment",
+      "path": "generated/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc.kt",
+      "sha256Bytes": "1bf1572f1bcd398cb62d463015acf6e896edf4f03d92cb319e10d56f6849ea60",
+      "equalFrozenBytes": true
+    },
+    {
+      "family": "comment",
+      "path": "generated/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol.kt",
+      "sha256Bytes": "04754105c3925f84d06c748242852b6bef330d51f1ecfbad7a8300ce193baef8",
+      "equalFrozenBytes": true
+    },
+    {
+      "family": "comment",
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalCommentReadAccessPolicy.kt",
+      "sha256Bytes": "a19be4bff131299d6d5b3abefd406393414d88580c0b0453d3235e98720a0da0",
+      "equalFrozenBytes": true
+    },
+    {
+      "family": "comment",
+      "path": "DesktopDynamicCommentOperations.fragment.kt",
+      "sha256Bytes": "bbf261a115892bbf8498f39e8edb953a17b5136063af3df216c9b5097b065fba",
+      "equalFrozenBytes": true
+    },
+    {
+      "family": "detail",
+      "path": "generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt",
+      "sha256Bytes": "398db1a7f5f427d2a1a30a0cb7a93eeaf6f0adefb8df83b83e465986dedfa163",
+      "equalFrozenBytes": true
+    },
+    {
+      "family": "detail",
+      "path": "generated/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol.kt",
+      "sha256Bytes": "d2660b7233603c35daa84bbc0c5adc0ed99518257019250cac3a94500d251e1d",
+      "equalFrozenBytes": true
+    },
+    {
+      "family": "detail",
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicDetailFallbackPolicy.kt",
+      "sha256Bytes": "1929a1d230f324dcf6e7d9353eae1c1cbf574818411ee8e8cc99cf02ad649ee4",
+      "equalFrozenBytes": true
+    },
+    {
+      "family": "detail",
+      "path": "DesktopDynamicDetailOperations.fragment.kt",
+      "sha256Bytes": "feaddb448c71ee4b15838dbf49d83e6aa133dc0aa3727617617412b2e8e1c1c4",
+      "equalFrozenBytes": true
+    }
+  ],
+  "MainIntegration": false,
+  "HTTP": false,
+  "sharedGradle": false
+}

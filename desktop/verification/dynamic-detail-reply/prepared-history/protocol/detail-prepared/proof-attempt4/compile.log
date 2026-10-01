@@ -1,0 +1,36 @@
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\DynamicDetailProtocolFixture.kt:117:81: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DynamicBasic'.
+        assertEquals(11,full.basic!!.comment_type);assertEquals("900",full.basic!!.comment_id_str)
+                                                                                ^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\DynamicDetailProtocolFixture.kt:118:99: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DynamicStatModule'.
+        assertTrue(full.modules.module_stat!!.like.status);assertEquals(9,full.modules.module_stat!!.like.count)
+                                                                                                  ^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\DynamicDetailProtocolFixture.kt:120:92: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DynamicContentModule'.
+        assertEquals(listOf("https://fixture.invalid/seed.png"),full.modules.module_dynamic!!.major!!.opus!!.pics.map {it.url})
+                                                                                           ^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\DynamicDetailProtocolFixture.kt:120:100: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DynamicMajor'.
+        assertEquals(listOf("https://fixture.invalid/seed.png"),full.modules.module_dynamic!!.major!!.opus!!.pics.map {it.url})
+                                                                                                   ^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\DynamicDetailProtocolFixture.kt:120:107: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'OpusMajor'.
+        assertEquals(listOf("https://fixture.invalid/seed.png"),full.modules.module_dynamic!!.major!!.opus!!.pics.map {it.url})
+                                                                                                          ^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\generated\com\android\purebilibili\data\repository\DesktopOriginalDynamicDetailFallbackPolicy.kt:237:32: warning: unnecessary safe call on a non-null receiver of type 'DynamicMajor'.
+            detailContent.major?.copy(
+                               ^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\generated\com\android\purebilibili\data\repository\DesktopOriginalDynamicDetailFallbackPolicy.kt:238:48: warning: unnecessary safe call on a non-null receiver of type 'OpusMajor'.
+                opus = detailContent.major.opus?.copy(summary = mergedSummary)
+                                               ^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\proof-attempt4\inputs\DesktopDynamicCardOperations.kt:548:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\proof-attempt4\inputs\DesktopDynamicCardOperations.kt:572:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\proof-attempt4\inputs\DesktopDynamicCardOperations.kt:594:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\proof-attempt4\inputs\DesktopDynamicCardOperations.kt:623:17: warning: expression is unused.
+                Unit
+                ^^^^
+desktop\.local\dynamic-detail-reply-parity\protocol\detail-prepared\proof-attempt4\inputs\DesktopDynamicCardOperations.kt:649:17: warning: expression is unused.
+                Unit
+                ^^^^

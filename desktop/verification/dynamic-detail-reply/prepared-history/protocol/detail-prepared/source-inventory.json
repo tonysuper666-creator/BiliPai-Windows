@@ -1,0 +1,146 @@
+{
+  "prepared": true,
+  "MainIntegration": false,
+  "executed": false,
+  "snapshotManifestSha256Bytes": "bc6cf9ef064ba68f28f36c3bbf2b59721629405567c7ced7e4799a844ff7b062",
+  "orderedRuntimeCpSha256Bytes": "515bf598f56b27de45aa04d63493e1f8ad38b7e4710ef358fea97b9fc9d620c1",
+  "originalTag": "v0.2.3-alpha.9",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "tagBlob": "e343c21510d6519a63def7b9906ac9400087bc11",
+      "currentGitBlob": "e343c21510d6519a63def7b9906ac9400087bc11",
+      "sha256LfUtf8": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b",
+      "matchesTag": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "tagBlob": "835b61c21c45c4c4dee5652acbb1b10a4d220925",
+      "currentGitBlob": "835b61c21c45c4c4dee5652acbb1b10a4d220925",
+      "sha256LfUtf8": "a04d5aaf29a8416304bc6198724247f86719b9d0e6984b6098d0a6c4732d5445",
+      "matchesTag": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicDetailFallbackPolicy.kt",
+      "tagBlob": "3813bad824d50df4c4339a614d5b710a7ed044e5",
+      "currentGitBlob": "3813bad824d50df4c4339a614d5b710a7ed044e5",
+      "sha256LfUtf8": "14eece47cbe4afbe048e6a782c72352734f2f419888c3c5fc6ab40b8dda227cc",
+      "matchesTag": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleContentLoadPolicy.kt",
+      "tagBlob": "de3a2658e9db7d6f0a6fd681e5b5bee65dd3edff",
+      "currentGitBlob": "de3a2658e9db7d6f0a6fd681e5b5bee65dd3edff",
+      "sha256LfUtf8": "d486c186c42c0549a291f7fff35712167088e8d4ca5c30c5ac58885c5a6fe987",
+      "matchesTag": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "tagBlob": "6dae77c3ee324c40003a311b0365773af6229547",
+      "currentGitBlob": "6dae77c3ee324c40003a311b0365773af6229547",
+      "sha256LfUtf8": "33e0d081fc70ab587d333eb52a21a193932be2dbc5835f409901139d7a8212dd",
+      "matchesTag": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "tagBlob": "322015d8710c4163e08dbb6ad3f845687a3cd353",
+      "currentGitBlob": "322015d8710c4163e08dbb6ad3f845687a3cd353",
+      "sha256LfUtf8": "eb0eefcbfb12d5ee5e06d312095797fcf67cbf7264fb32040cd4391f38d1d0cf",
+      "matchesTag": true
+    }
+  ],
+  "tokenExtractedFunctions": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "name": "getDynamicDetail",
+      "startLine": 277,
+      "endLine": 350,
+      "sha256LfUtf8": "a5ff61adec1f886d0541d2468cc7829c72c2314ec2aa0fc351200eb60754419c"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "name": "signDynamicWbi",
+      "startLine": 400,
+      "endLine": 414,
+      "sha256LfUtf8": "2fd2145a0ca7f98dd4b72dd7ef7699ef965ca353e4feaccd42d239dbd34efc71"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "name": "fetchWebDetailItem",
+      "startLine": 352,
+      "endLine": 365,
+      "sha256LfUtf8": "42773b6aecf65207f2bd656018e50513bd494a434c206f9f98e6b3ff8318a9a8"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "name": "fetchOpusDetail",
+      "startLine": 372,
+      "endLine": 398,
+      "sha256LfUtf8": "71470e4fd7b408eb3ff8ee0368db5d90723fda4ffaa8b4321dfc1cfc375fe6a8"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "name": "fetchDesktopDetailItem",
+      "startLine": 416,
+      "endLine": 421,
+      "sha256LfUtf8": "651e9021e4681d409284985219c9addd12aaedb7422d5fd2c07675487c68bc96"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "name": "getArticleDetail",
+      "startLine": 31,
+      "endLine": 61,
+      "sha256LfUtf8": "a0ee8cc1fa1f1df02e4703dbf6eb21f0ff3546dbd01a32459d03962db76e528b"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "name": "fetchOpusArticleBlocks",
+      "startLine": 63,
+      "endLine": 81,
+      "sha256LfUtf8": "d3599a6f2c1f497ebff853247f3986154ef639291b1c22db3da717dfc3715a96"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "name": "ArticleViewData.toUiModel",
+      "startLine": 83,
+      "endLine": 117,
+      "sha256LfUtf8": "8ec03c6c3a31f9728a2942a488d581146a3783c9d7d08765331b7d97944dee5c"
+    }
+  ],
+  "newSoleProducers": [
+    "com.android.purebilibili.data.repository.DesktopDynamicDetailProtocol",
+    "com.android.purebilibili.data.repository.DesktopDynamicDetailArticleProtocol",
+    "com.android.purebilibili.data.repository.DesktopOriginalDynamicDetailFallbackPolicyKt"
+  ],
+  "reusedOriginalClassEntries": [
+    "com/android/purebilibili/feature/article/ArticleContentLoadPolicyKt.class",
+    "com/android/purebilibili/feature/article/ArticleContentBlock.class"
+  ],
+  "adaptations": [
+    "Original caller-supplied seed replaces lookup only; no new cache",
+    "Existing owner/read/dynamic API and repository WBI signer, unsigned-query fallback retained",
+    "Cancellation rethrown and job/owner guarded around awaits",
+    "Original Article algorithm retained with only consumed title+blocks returned as existing Pair; no DTO",
+    "Article history is optional owned best-effort callback; null explicitly unbound"
+  ],
+  "existingDesktopArticleDifference": "DesktopCommunityRepository.articleDetail secondary opus error fails overall; original preserves successful article view.",
+  "frozenCommentProtocolManifestSha256Bytes": "7823571e997d514383efbf2faf7244b42853f47afd2bcd82149b466c9d8f9d18",
+  "produced": [
+    {
+      "path": "DesktopDynamicDetailOperations.fragment.kt",
+      "sha256Bytes": "feaddb448c71ee4b15838dbf49d83e6aa133dc0aa3727617617412b2e8e1c1c4"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt",
+      "sha256Bytes": "398db1a7f5f427d2a1a30a0cb7a93eeaf6f0adefb8df83b83e465986dedfa163"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol.kt",
+      "sha256Bytes": "d2660b7233603c35daa84bbc0c5adc0ed99518257019250cac3a94500d251e1d"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicDetailFallbackPolicy.kt",
+      "sha256Bytes": "1929a1d230f324dcf6e7d9353eae1c1cbf574818411ee8e8cc99cf02ad649ee4"
+    }
+  ]
+}

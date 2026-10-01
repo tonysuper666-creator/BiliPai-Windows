@@ -526,6 +526,71 @@ val verifyUpstreamDynamicEditorProtocol by tasks.registering(Exec::class) {
     outputs.file(layout.buildDirectory.file("generated/dynamic-editor-protocol/verification.json"))
 }
 
+val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-reply.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/dynamic-reply").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-dynamic-reply.py", "tools/extract-upstream-plugins.py",
+        "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
+    inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-reply"))
+}
+
+val extractUpstreamDynamicDetail by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-detail.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/dynamic-detail").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-dynamic-detail.py", "tools/extract-upstream-plugins.py",
+        "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
+    inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail"))
+}
+
+val extractUpstreamDynamicReplyProtocol by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-reply-protocol.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/dynamic-reply-protocol").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-dynamic-reply-protocol.py")
+    inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-reply-protocol"))
+}
+
+val extractUpstreamDynamicDetailProtocol by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-detail-protocol.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/dynamic-detail-protocol").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-dynamic-detail-protocol.py", "tools/extract-upstream-dynamic-reply-protocol.py")
+    inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail-protocol"))
+}
+
+val verifyUpstreamDynamicDetailReplyProtocol by tasks.registering(Exec::class) {
+    dependsOn(extractUpstreamDynamicReplyProtocol, extractUpstreamDynamicDetailProtocol)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-dynamic-detail-reply-protocol.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--comment-output", layout.buildDirectory.dir("generated/dynamic-reply-protocol").get().asFile.absolutePath,
+        "--detail-output", layout.buildDirectory.dir("generated/dynamic-detail-protocol").get().asFile.absolutePath,
+        "--output", layout.buildDirectory.file("generated/dynamic-detail-reply-verification.json").get().asFile.absolutePath)
+    inputs.files("tools/verify-upstream-dynamic-detail-reply-protocol.py",
+        "src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt")
+    inputs.file(layout.buildDirectory.file("generated/dynamic-reply-protocol/DesktopDynamicCommentOperations.fragment.kt"))
+    inputs.file(layout.buildDirectory.file("generated/dynamic-detail-protocol/DesktopDynamicDetailOperations.fragment.kt"))
+    outputs.file(layout.buildDirectory.file("generated/dynamic-detail-reply-verification.json"))
+}
+
 val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamComponents,
         extractUpstreamAppearance, extractUpstreamSettingsCategories)
@@ -775,6 +840,10 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-tabs"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-full-card"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-editor"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-reply"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-detail"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-reply-protocol/generated"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-detail-protocol/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-follow"))
     kotlin.srcDir(nativeDiagnosticShareOutput.map { it.dir("kotlin") })
 }
@@ -792,6 +861,8 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeCards, extractUpstre
 tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeFullCard) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicFullCard) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicEditor, verifyUpstreamDynamicEditorProtocol) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicReply, extractUpstreamDynamicDetail,
+    extractUpstreamDynamicReplyProtocol, extractUpstreamDynamicDetailProtocol, verifyUpstreamDynamicDetailReplyProtocol) }
 
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicFollow) }
 tasks.named("compileKotlin") { dependsOn(prepareNativeDiagnosticShare) }

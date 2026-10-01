@@ -1,0 +1,104 @@
+Original DynamicDetail fallback contract — prepared owned fragment
+==============================================================
+Status: proof-attempt4 independently compiled 8 source files and passed a fresh
+JVM with 6 grouped protocol cases. No socket, real account, HWND, Gradle or Main
+write. This is an explicit prepared Operations overlay. Parent owns UI/session
+integration and optional history binding.
+
+Pin and source identity
+- Actual editor Main snapshot:
+  desktop/.local/dynamic-editor-main-product-snapshot-01/manifest.json
+  SHA bc6cf9ef064ba68f28f36c3bbf2b59721629405567c7ced7e4799a844ff7b062.
+  Ordered CP SHA515bf598f56b27de45aa04d63493e1f8ad38b7e4710ef358fea97b9fc9d620c1,
+  89 entries; only additional dependency is the pinned original Kotlin test jar.
+  Main Kotlin SHA47d866dc71544bf4dcc4ee39da7c6de3f0121fce90e7baca77c8e88e46ee45ed.
+- Read-only Main Operations source SHA
+  8130c63b4554ed9970250588144955e6accf04e25223b7218dab7784ec585e53.
+  proof-attempt4 retains operations-base.kt and its own assembled Operations
+  (only original comment fragment + new detail fragment added). Runtime/compiler
+  source hashes and output classes are recorded in its evidence.json.
+- Six original source files match v0.2.3-alpha.9 exactly; source-inventory.json
+  has blob identities/LF hashes. Eight original function spans/hashes are retained,
+  including signDynamicWbi source identity. No duplicate API/model is generated.
+- New sole helpers: data.repository.DesktopDynamicDetailProtocol and
+  DesktopDynamicDetailArticleProtocol. Full original pure policy has wrapper
+  DesktopOriginalDynamicDetailFallbackPolicyKt. ArticleContentLoadPolicyKt,
+  ArticleContentBlock, Dynamic/Article models and API interfaces already exist
+  in Main and are reused. No ArticleDetailUiModel producer is introduced.
+- review-top-level.py checks all 26 actual Main data.repository *Kt class public
+  static methods: none has any of the 17 original internal detail policy function
+  names. It records actual jar bytes and javap output; absence of a Kotlin filename
+  alone is not used as a duplicate declaration proof.
+
+Original screen and request contract
+- Original feature/dynamic/DynamicDetailScreen.kt:145–163 captures the existing
+  original seed once for dynamicId, renders seed Success initially or Loading,
+  then produceState keyed dynamicId/retryToken reads getDynamicDetail and updates
+  Success/Error. This detail read is screen-owned; no new fake detail VM is needed.
+- DynamicRepository.kt:277–348:
+  trim id; reject empty; read captured seed; web id detail; request opus if web
+  absent/unrenderable/opus/draw/commentType11 or seed has that media; prefer richer
+  candidate; attempt desktop longer desc for nonblank WORD; attempt desktop for
+  missing/unrenderable current; web rid/type2 if seed rid exists and still empty;
+  add original seed; prefer renderable highest Opus score; merge rich blocks/
+  pictures/metadata; optional article fallback; merge feed interaction/basic/
+  emoji/media metadata. Empty final candidates fail with original 动态详情为空.
+- Exact renderer/ranking policies are retained wholesale in
+  DynamicDetailFallbackPolicy.kt, including draw→opus pictures, orig media,
+  rich_text_nodes metadata union, comment target basic and module_stat restoration.
+- Inherited WORD edge: all plain WORD candidates have Opus score 0; maxByOrNull
+  keeps the first web candidate even after longer-desc candidate was appended.
+  The fixture proves original "short" survives while desktop was actually called.
+  A WORD desc equal 网页链接 enters both plain-text and unrenderable desktop
+  branches, so it requests desktop twice. These original behaviors are retained.
+- ApiClient.kt:1785–1809 uses existing DynamicApi:
+  GET x/polymer/web-dynamic/v1/detail: id or rid/type, original default features,
+  timezone_offset=-480, gaia_source=Athena, web_location=333.1330.
+  GET x/polymer/web-dynamic/desktop/v1/detail: id/default features/timezone.
+  GET x/polymer/web-dynamic/v1/opus/detail: original signed map
+  id/timezone_offset=-480/features=htmlNewStyle.
+- Original signDynamicWbi (400–414) returns original unsigned params if nav/key/
+  signing fails. The fragment uses existing repository.signWebParams and retains
+  this unsigned fallback while propagating cancellation and owner retirement.
+  It creates no parallel nav API/WBI key cache.
+
+Article closure and explicit side effect
+- Original ArticleRepository.kt:37–74,77–95,98–137:
+  view id/gaia_source=main_web/web_location=333.976, then optional dynamic opus.
+  Successful view survives secondary opus failure, richer original article blocks
+  win, title falls through title→opus.title→summary→专栏详情. Original parser and
+  richer-block policies are reused from Main.
+- Current DesktopCommunityRepository.articleDetail:479–490 differs: fetchOpus
+  throws through the whole read. Reusing it directly would lose a valid view on
+  secondary error, so this focused helper retains original best-effort behavior.
+- Dynamic detail consumes only title/blocks. Helper returns those original
+  consumed fields using existing Pair; it does not invent another Article DTO.
+- Article fallback id: positive opus fallback id first; otherwise original
+  comment_type12 positive comment_id_str. An explicit opus fallback id forces
+  article fetch; otherwise sparse/empty opus content is scored by the original
+  ArticleContentLoadPolicy. Article merges back through the original policy.
+- Original best-effort HistoryRepository.reportArticleView uses response article
+  id after merge. Optional onArticleViewed(suspend(Long)->Unit) seam is guarded
+  before/after and errors remain best effort; null is explicitly unbound.
+  Parent can bind the existing DesktopArticleHistoryReporter with the captured
+  owner epoch/account and existing shared search preferences. No default false
+  setting/store/cache/globalScope is created.
+
+Fragment and proof
+- getDynamicDetail(dynamicId:String,seedItem:DynamicItem?,
+  onArticleViewed:(suspend(Long)->Unit)?=null):Result<DynamicItem>
+  runs inside the existing Operations result/read boundary and guarded web/API.
+  Caller injects an original seed for the matching id; no new seed cache is made.
+- Original fallback helpers use cancellation-safe ownedCatching and post-await
+  job/owner assertions. A retired epoch cannot return stale detail, run later
+  article/history work or convert cancellation to fallback.
+- DynamicDetailProtocolFixture.kt terminal interceptor uses actual original
+  Retrofit DynamicApi/ArticleApi/BilibiliApi and Main response/parser models.
+  Six cases prove original web/default query and desktop tie, full raw opus blocks
+  + seed picture/basic/stat merge, rid/type2/duplicate desktop/seed/empty failure,
+  article surviving secondary opus failure plus title and richer blocks/history,
+  unsigned WBI failure query, same-MID epoch retirement with zero late work.
+- proof-attempt1 assembler precheck and failed fixture attempts2/3 remain intact.
+  No production helper was changed to satisfy those expectations; only fixture
+  expectations were corrected to the original ranking/request behavior.
+

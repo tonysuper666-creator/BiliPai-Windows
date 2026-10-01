@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "soleOperationsProducer": true,
+  "memberSha256Lf": "8d85bd9a0ba09125a9391089fef43e621576f587bae9d887993ee000b231a71d",
+  "producerSha256Lf": "85efcbef79934a5444fa53f417a9f2f949d4ea4ee38e8b232418c07f95fcaaae",
+  "operationsSha256Lf": "8130c63b4554ed9970250588144955e6accf04e25223b7218dab7784ec585e53",
+  "businessRequestsSelectedFromUpstream": true
+}

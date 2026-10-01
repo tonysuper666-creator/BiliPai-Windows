@@ -1,0 +1,27 @@
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof03\RawReplyParserFixture.kt:74:35: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'List<ReplyItem>'.
+    assertEquals(700L,item.replies!!.single().parent);assertEquals(700L,item.replies!!.single().root)
+                                  ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof03\RawReplyParserFixture.kt:74:85: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'List<ReplyItem>'.
+    assertEquals(700L,item.replies!!.single().parent);assertEquals(700L,item.replies!!.single().root)
+                                                                                    ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof03\RawReplyParserFixture.kt:79:40: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'List<ReplyCardLabel>'.
+    assertEquals("#fff",item.cardLabels!!.single().labelColor)
+                                       ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof03\RawReplyParserFixture.kt:80:65: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'List<ReplyCardLabel>'.
+    assertEquals("https://fixture.invalid/label",item.cardLabels!!.single().jumpUrl)
+                                                                ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof03\RawReplyParserFixture.kt:90:70: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ReplyRichTextNote'.
+    assertEquals("https://fixture.invalid/note",content.richText.note!!.clickUrl)
+                                                                     ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof03\RawReplyParserFixture.kt:91:47: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ReplyRichTextNote'.
+    assertEquals("today",content.richText.note!!.lastMtimeText)
+                                              ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof03\RawReplyParserFixture.kt:97:67: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ReplyVipInfo'.
+    assertEquals(2,member.vip!!.vipType);assertEquals(1,member.vip!!.vipStatus)
+                                                                  ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof03\RawReplyParserFixture.kt:99:89: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ReplyFansDetail'.
+    assertEquals("medal",member.fansDetail!!.medalName);assertEquals(7,member.fansDetail!!.level)
+                                                                                        ^^
+desktop\.local\dynamic-detail-reply-main-integration\protocol-session-proof03\ReplyProtocolTransportFixture.kt:167:84: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'List<ReplyItem>'.
+        assertEquals(810L,read.replies!!.single().rpid);assertEquals(2,read.replies!!.single().action);assertEquals("rest-next",read.grpcNextOffset)
+                                                                                   ^^

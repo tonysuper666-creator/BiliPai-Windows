@@ -1,0 +1,69 @@
+{
+  "passed": true,
+  "protocolAndSessionMainIntegrated": true,
+  "actualMainSnapshotSha256Bytes": "8286563186e5d5be2495a598e1e32fb15091b7a459a5bbbc3d7e65243557e290",
+  "orderedCpSha256Bytes": "06316248361f2fae9d8eb53976ba1dc6936c5bd6416f98d2b6026c207ef9a217",
+  "groupCount": 31,
+  "fixtures": [
+    {
+      "fixture": "com.bilipai.desktop.ui.ReplySessionFixtureKt",
+      "passed": true,
+      "groups": 8,
+      "resultSha256Bytes": "3f390fd09e3c5b1632b786c70ba3f45280b91673ef5f69484f7a5959472fb26a",
+      "classLoadingLogSha256Bytes": "64e40a67b3d22f17100d94ede6ee14d7bc4e9624c0da26816bbb4ef8da6840c2",
+      "actualMainLoadedProductClass": "com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicReplySession",
+      "actualMainLoadedProductSource": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-detail-reply-main-integration/main-product-snapshot-01/main-kotlin.jar",
+      "taskPrivateStore": true,
+      "realAccount": false,
+      "productOverrides": 0,
+      "originalFixtureMainIntegrationMetadata": false
+    },
+    {
+      "fixture": "com.bilipai.desktop.ui.ReplyLifecycleFixtureKt",
+      "passed": true,
+      "groups": 5,
+      "resultSha256Bytes": "9c00dd0f3cccaac9170626781b876df74564044df9055f1b5df47fd28e2f0a94",
+      "classLoadingLogSha256Bytes": "df1c58386ba75e1be5850691d051d3cf3b42ff7325bae4e0a7319b332c75fbc6",
+      "actualMainLoadedProductClass": "com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicReplySession",
+      "actualMainLoadedProductSource": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-detail-reply-main-integration/main-product-snapshot-01/main-kotlin.jar",
+      "taskPrivateStore": true,
+      "realAccount": false,
+      "productOverrides": 0,
+      "originalFixtureMainIntegrationMetadata": false
+    },
+    {
+      "fixture": "com.bilipai.desktop.data.ReplyProtocolTransportFixtureKt",
+      "passed": true,
+      "groups": 12,
+      "resultSha256Bytes": "e389019ffa2e2cb8f739529edfb727030b009ff2619d9816324445a337163536",
+      "classLoadingLogSha256Bytes": "2a4888993501e14645edadfe040857b207849f1afac25a89193af5c0d80c3b10",
+      "actualMainLoadedProductClass": "com.android.purebilibili.data.repository.DesktopDynamicCommentProtocol",
+      "actualMainLoadedProductSource": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-detail-reply-main-integration/main-product-snapshot-01/main-kotlin.jar",
+      "taskPrivateStore": true,
+      "realAccount": false,
+      "productOverrides": 0,
+      "originalFixtureMainIntegrationMetadata": false
+    },
+    {
+      "fixture": "com.bilipai.desktop.data.DynamicDetailProtocolFixtureKt",
+      "passed": true,
+      "groups": 6,
+      "resultSha256Bytes": "e365387513bab1ecfd85b5879d91ed99e46956c5bad171a33239c08a58c13dc6",
+      "classLoadingLogSha256Bytes": "fcb154ce78dab008e211596b5c1222656e2fe4d354ccddbe926ce2bc61fca8e6",
+      "actualMainLoadedProductClass": "com.android.purebilibili.data.repository.DesktopDynamicDetailProtocol",
+      "actualMainLoadedProductSource": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-detail-reply-main-integration/main-product-snapshot-01/main-kotlin.jar",
+      "taskPrivateStore": true,
+      "realAccount": false,
+      "productOverrides": 0,
+      "originalFixtureMainIntegrationMetadata": false
+    }
+  ],
+  "productOverrides": 0,
+  "mainConsumerIntegrated": false,
+  "mainWindowExecuted": false,
+  "fullDetailParity": false,
+  "actualSockets": false,
+  "realAccount": false,
+  "nativePickerOrClipboard": false,
+  "packaged": false
+}
