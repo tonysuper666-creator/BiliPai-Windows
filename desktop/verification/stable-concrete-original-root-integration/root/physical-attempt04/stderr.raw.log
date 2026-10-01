@@ -1,0 +1,4 @@
+java.lang.IllegalStateException: Product page missing ‘›Œﬁª∫¥Ê ”∆µ
+	at PhysicalRootRoutesFixture.observePage(PhysicalRootRoutesFixture.java:64)
+	at PhysicalRootRoutesFixture.lambda$main$4(PhysicalRootRoutesFixture.java:125)
+	at java.base/java.lang.Thread.run(Thread.java:1583)

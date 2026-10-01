@@ -22,6 +22,8 @@ internal class DesktopHomeGalleryBindings private constructor(
     private val feedback: (String) -> Unit,
 ) : DesktopDynamicCardPlatform, AutoCloseable {
     override val emotes get() = session.emotes
+    /** Read-only access to the SAME assets actor for original Profile gallery saves. */
+    internal val imageAssets: DesktopDynamicImageAssets get() = assets
     override fun isOwned() = lifetime.owns() && session.isOwned()
     private fun commit(block: () -> Unit) { lifetime.commit { if (session.isOwned()) block() } }
     private suspend fun <T> owned(block: suspend () -> T): T {

@@ -1,0 +1,23 @@
+{
+  "actualSnapshot": 44,
+  "actualRuntimeEntries": 97,
+  "sources": 2,
+  "classes": 17,
+  "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\compile-01\\offline-task-player.jar",
+  "jarSha256Bytes": "370ce6339986b04f7a749063a55f51ec42c5cf137fbc52644eac9e4c1868481e",
+  "declaredProspectiveOverrideFamilies": [],
+  "newFqnDuplicate": 0,
+  "sourcePins": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOfflineTaskPlayerBinding.kt",
+      "sha256Bytes": "745b78101b10a22b705abc907b3e0a05c0f6fc1be01f5dfc2ef83ba1c122bb56"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOfflineTaskPlayerHost.kt",
+      "sha256Bytes": "f8dcbc6810168630f61eccfa9ccfb7ad29f0bf22638b923d1091eb7a6568d261"
+    }
+  ],
+  "sharedGradleRun": false,
+  "rootMounted": false,
+  "rootRuntimeAccepted": false
+}

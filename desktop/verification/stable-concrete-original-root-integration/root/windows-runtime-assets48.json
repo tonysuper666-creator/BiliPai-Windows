@@ -1,0 +1,30 @@
+{
+  "assets": [
+    {
+      "name": "libmpv-2.dll",
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\resources\\common\\native\\windows-x64\\libmpv-2.dll",
+      "target": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\resources\\common\\native\\windows-x64\\libmpv-2.dll",
+      "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+      "bytes": 120342528,
+      "reusesExistingRuntime": true
+    },
+    {
+      "name": "ffmpeg.exe",
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\resources\\common\\native\\windows-x64\\ffmpeg.exe",
+      "target": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\resources\\common\\native\\windows-x64\\ffmpeg.exe",
+      "sha256Bytes": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea",
+      "bytes": 113981440,
+      "reusesExistingRuntime": true
+    },
+    {
+      "name": "ffprobe.exe",
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\resources\\common\\native\\windows-x64\\ffprobe.exe",
+      "target": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\resources\\common\\native\\windows-x64\\ffprobe.exe",
+      "sha256Bytes": "67176fa62f89f94c3bcd379fd05677a25651569a2eb8880ec2194e62c82be412",
+      "bytes": 113775616,
+      "reusesExistingRuntime": true
+    }
+  ],
+  "newRuntimeDependencies": 0,
+  "reason": "Reuse previously bundled Windows media assets for actual candidate Window startup and eventual packaging; source classes/immutable47 unchanged."
+}

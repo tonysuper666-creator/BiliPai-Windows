@@ -1,0 +1,5 @@
+// No new dependency, producer or task.
+// Four manual .kt payloads are in existing desktop/src/main/kotlin.
+// Merge source-inventory's one new DIRECT row + three existing feature references.
+// prepareUpstreamSources copies DynamicBackToTopPolicy.kt exactly once into existing upstream source set.
+// Do NOT add prepared/direct as another sourceDir. Offline3146's two normal manuals are already installed.

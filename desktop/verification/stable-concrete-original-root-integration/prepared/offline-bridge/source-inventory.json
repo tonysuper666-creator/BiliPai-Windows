@@ -1,0 +1,140 @@
+{
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "482dbb03fca8e1efad4d565fe54ea5081ec32fd3",
+      "sha256Bytes": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226",
+      "sha256LF": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226",
+      "lineCount": 1225,
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\retained-original\\feature\\download\\OfflineVideoPlayerScreen.kt",
+      "anchors": [
+        {
+          "line": 92,
+          "text": "private enum class GestureMode { None, Brightness, Volume, Seek }"
+        },
+        {
+          "line": 101,
+          "text": "fun OfflineVideoPlayerScreen("
+        },
+        {
+          "line": 1112,
+          "text": "private data class ProgressInfo("
+        },
+        {
+          "line": 1122,
+          "text": "private fun OfflineProgressBar("
+        }
+      ],
+      "installedByThisPacket": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlaybackPolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "0e1f06332bf509ad53f738a02d06c7fa1ccafd0e",
+      "sha256Bytes": "d0557a25563a5a5362917680a6233123aba5abd82df96abe325696d281ba07ba",
+      "sha256LF": "d0557a25563a5a5362917680a6233123aba5abd82df96abe325696d281ba07ba",
+      "lineCount": 97,
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\retained-original\\feature\\download\\OfflineVideoPlaybackPolicy.kt",
+      "anchors": [],
+      "installedByThisPacket": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/OfflinePlaybackSessionPolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "60c05afeee12158730718991de721f8dbb337bd4",
+      "sha256Bytes": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6",
+      "sha256LF": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6",
+      "lineCount": 45,
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\retained-original\\feature\\download\\OfflinePlaybackSessionPolicy.kt",
+      "anchors": [],
+      "installedByThisPacket": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/OfflineEpisodeQueuePolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "a3361625fb4e8dbeab857fee4dc5458cfbd96944",
+      "sha256Bytes": "52eb215ef6f9db38ca1790a683d190523e31a7b9d1f7815b9d163c2e9e8c8334",
+      "sha256LF": "52eb215ef6f9db38ca1790a683d190523e31a7b9d1f7815b9d163c2e9e8c8334",
+      "lineCount": 39,
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\retained-original\\feature\\download\\OfflineEpisodeQueuePolicy.kt",
+      "anchors": [],
+      "installedByThisPacket": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoRoutingPolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "d9b1e144a7b4e80b11351f0d1b62a1568a66dc54",
+      "sha256Bytes": "5b1f4e72c8db8f2b49b007a15745622cd1b9e1f08825e9838ed0011261b354e0",
+      "sha256LF": "5b1f4e72c8db8f2b49b007a15745622cd1b9e1f08825e9838ed0011261b354e0",
+      "lineCount": 27,
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\retained-original\\feature\\download\\OfflineVideoRoutingPolicy.kt",
+      "anchors": [],
+      "installedByThisPacket": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/DownloadListNavigationPolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "8ab86cff73d11ad259433021afb031468102f48c",
+      "sha256Bytes": "767f1778a03e02c99ca75d9dd29546c9b238e2c4649cfa3246f5069bbf39964d",
+      "sha256LF": "767f1778a03e02c99ca75d9dd29546c9b238e2c4649cfa3246f5069bbf39964d",
+      "lineCount": 34,
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\retained-original\\feature\\download\\DownloadListNavigationPolicy.kt",
+      "anchors": [
+        {
+          "line": 10,
+          "text": "internal fun resolveDownloadTaskClickTarget("
+        }
+      ],
+      "installedByThisPacket": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "5d7d94840a93e4a393c9091e625a62df06345e6c",
+      "sha256Bytes": "ef589577cc3c4a7f533016e76b6a89bb2d9fb394c9bfd5710fba8f9cf3f05a15",
+      "sha256LF": "ef589577cc3c4a7f533016e76b6a89bb2d9fb394c9bfd5710fba8f9cf3f05a15",
+      "lineCount": 534,
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\retained-original\\feature\\download\\DownloadListScreen.kt",
+      "anchors": [
+        {
+          "line": 202,
+          "text": "when (resolveDownloadTaskClickTarget(task, isNetworkAvailable = isNetworkAvailable)) {"
+        },
+        {
+          "line": 316,
+          "text": "private fun DownloadTaskItem("
+        }
+      ],
+      "installedByThisPacket": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "gitBlob": "3b0618edad17d4001bb3f0191539567f38810b4d",
+      "sha256Bytes": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "sha256LF": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "lineCount": 4778,
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\retained-original\\navigation\\AppNavigation.kt",
+      "anchors": [
+        {
+          "line": 350,
+          "text": "private fun BiliPaiNavKey.toPrivacyNavigationTarget(): PrivacyNavigationTarget {"
+        },
+        {
+          "line": 1207,
+          "text": "pushNavigation3Route(ScreenRoutes.OfflineVideoPlayer.createRoute(offlineTask.id))"
+        },
+        {
+          "line": 3425,
+          "text": "BiliPaiNavEntryContentRole.OFFLINE_VIDEO_PLAYER -> {"
+        }
+      ],
+      "installedByThisPacket": false
+    }
+  ],
+  "originalUiDeclaredParity": false,
+  "registryDelta": [],
+  "note": "These whole Git blobs are retained review-only. This packet installs only two Windows navigation consumers of existing original policies and actors."
+}

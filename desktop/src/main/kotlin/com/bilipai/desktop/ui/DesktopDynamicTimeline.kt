@@ -15,6 +15,8 @@ import com.android.purebilibili.data.repository.*
 import com.android.purebilibili.feature.dynamic.*
 import com.bilipai.desktop.settings.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.collections.immutable.toImmutableList
@@ -39,6 +41,7 @@ internal class DesktopDynamicTimelineState(
     var busy by mutableStateOf(false);private set
     var error by mutableStateOf<Throwable?>(null);private set
     val isAllTimeline: Boolean get() = type == "all"
+    internal fun currentUpdateBaseline(): String = original.currentUpdateBaseline(type = type)
     fun persistCurrentItems() { if (isAllTimeline && stillOwned()) onAllTimelineChanged(page.items) }
     override fun mutateDynamicItems(transform: (List<DynamicItem>) -> List<DynamicItem>) {
         if (!stillOwned()) return
@@ -112,6 +115,7 @@ internal fun DesktopDynamicTimelineFeed(
     row:@Composable (DynamicItem)->Unit,
 ) {
     val scope=rememberCoroutineScope()
+    val rootScroll = LocalDesktopRootDynamicScroll.current
     val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
     val incremental by preferences.incrementalRefresh.collectAsState(false)
     val displayed=remember(state.page.items,transform){transform(state.page.items)}
@@ -133,6 +137,11 @@ internal fun DesktopDynamicTimelineFeed(
     // must not cancel that request by retiring this threshold-observation effect.
     LaunchedEffect(shouldLoadMore,state){if(shouldLoadMore)scope.launch{state.loadMore(incremental)}}
     fun fetch(refresh:Boolean) {if(!state.busy)scope.launch{state.fetch(refresh,incremental)}}
+    LaunchedEffect(rootScroll, state) {
+        rootScroll?.receiveAsFlow()?.collectLatest { request ->
+            applyDesktopRootDynamicScroll(request, state.scroll) { state.fetch(true, incremental) }
+        }
+    }
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(horizontal=20.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween) {
             Text("${displayed.size} 项",style=MaterialTheme.typography.labelLarge)

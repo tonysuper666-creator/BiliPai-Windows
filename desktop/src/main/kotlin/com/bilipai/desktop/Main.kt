@@ -208,7 +208,12 @@ fun main(args: Array<String>) {
                 }, hostWindow = window, registerShutdown = shutdown::set, onRestart = { closeApp(restart = true) },
                 applicationPluginStore = applicationPluginStore, isClosing = closing::get,
                 diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError,
-                danmakuPresentation = danmakuPresentation)
+                danmakuPresentation = danmakuPresentation,
+                isFullscreen = { windowState.placement == WindowPlacement.Fullscreen },
+                setFullscreen = { enabled ->
+                    val destination = if(enabled) WindowPlacement.Fullscreen else WindowPlacement.Floating
+                    if(windowState.placement != destination) windowState.placement = destination
+                })
             }
             restartFailure?.let { message ->
                 androidx.compose.material3.AlertDialog(onDismissRequest = { restartFailure = null },

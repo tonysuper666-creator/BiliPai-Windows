@@ -1,0 +1,22 @@
+{
+  "prepared": true,
+  "mainIntegration": false,
+  "actualRootMounted": false,
+  "actualWindow": false,
+  "exeAccepted": false,
+  "actualBasis": {
+    "snapshot": "stable-product-snapshot-47",
+    "manifestSha": "72e862d74e18c2b388853634f0ef47c48ca1adba25b5d074ecd23fc6ecb7c3e0",
+    "cpSha": "9fecec31b818a1b1d8be25f628ff6ec69e354a5c179ca42445aa1a1db3d52e94",
+    "entries": 97
+  },
+  "finalCompile": "compile-14",
+  "sourceInputs": 19,
+  "classes": 456,
+  "declaredOverrides": 236,
+  "proof": "proof-03",
+  "fixtureGroups": 4,
+  "noSocket": true,
+  "noAccountDisk": true,
+  "noSharedGradle": true
+}

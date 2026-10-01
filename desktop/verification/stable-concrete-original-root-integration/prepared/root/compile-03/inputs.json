@@ -1,0 +1,48 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-45",
+  "manifestSha": "61b8233a766542366bf6a72868434e9effbf2f0c6458ae0f77326168a50f3fec",
+  "orderedCpSha": "946d0f272d696310a60b8814cbc4a0ed6ae30617ba047dbfe10d729583234419",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopReadyHomeFactoryBinding.kt",
+      "sha256Bytes": "4f0e9dd35905a4c2c3b770b00d6f1e30d868ef7f703fbd910164c390281aa050"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopReadyNativeTargetDispatch.kt",
+      "sha256Bytes": "1dcf3083388bba9e79871f3883e37b23f2baa86cc71a64dd417790a8b277a4b0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "00a4de7005afe1139d375fbb1fda0b1d262f954aced1a23af88104b1a6db0bd5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeGalleryBindings.kt",
+      "sha256Bytes": "6e98ae95e3a3abb056bd0a6b22e0ecb732521060a38a264512649451e41a5538"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeReturnNavigationOwner.kt",
+      "sha256Bytes": "630610167745273208ea43220077be84e8b58f3a85b7c996e4f14161f48d8739"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeRootFactory.kt",
+      "sha256Bytes": "a2930d269a5c0f08a6ef266385c129fc3882d3f939c2fa8be5cd84f07c58f163"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootStack.kt",
+      "sha256Bytes": "0639e4fa400b7479afbe49f85dbbb7b343ebebe5d88c0da2fd61aa7eb731f1f6"
+    }
+  ],
+  "prospectiveA87": {
+    "original": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\compile-11\\candidate.jar",
+    "sha256Bytes": "06bd6406ddfa4e7cfce5372e102334a3536fce0f39f75704d0b024f44bf61043",
+    "filtered": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\compile-03\\explicit-A87.jar",
+    "filteredSha": "f93ac313c5ce944deae461c5e55d86a5fd2b1f7a66bf1890eaffcfa965df94f0",
+    "excluded": "DesktopOriginalRootChromeRevealKt: same canonical function supplied by actual Main45"
+  },
+  "prepared": true,
+  "rootMounted": false,
+  "mainIntegration": false,
+  "productOverrides": "EXPLICIT A87 families + captured media factory + assets readonly access + per-entry Stack background/SaveableStateHolder",
+  "exit": 0
+}

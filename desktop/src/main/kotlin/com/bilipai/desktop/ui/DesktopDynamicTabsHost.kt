@@ -14,6 +14,8 @@ import com.android.purebilibili.feature.dynamic.*
 import com.bilipai.desktop.settings.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -95,6 +97,12 @@ import kotlinx.coroutines.sync.withLock
     val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
     val rows=transform(state.visibleItems())
     val grid=remember(state.selectedUid){LazyStaggeredGridState()}
+    val rootScroll = LocalDesktopRootDynamicScroll.current
+    LaunchedEffect(rootScroll, state, state.selectedUid) {
+        rootScroll?.receiveAsFlow()?.collectLatest { request ->
+            applyDesktopRootDynamicScroll(request, grid) { state.refreshUser() }
+        }
+    }
     val allowAutomaticLoadMore=shouldAutoLoadMoreForUserContentFilter(
         isSelectedUserFeed=true,filter=state.filter,visibleItemCount=rows.size)
     val shouldLoadMore by remember(grid,state.userLoading,state.hasUserMore,allowAutomaticLoadMore) {

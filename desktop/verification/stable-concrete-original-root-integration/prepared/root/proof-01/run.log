@@ -1,0 +1,5 @@
+PASS actual prepared enter and return: checkpoint before Store/entry mutation, single effect
+PASS rejected checkpoint and retired owner never mutate or dispatch
+ORIGIN owner=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-home-concrete-mount-parity/compile-12/candidate.jar
+ORIGIN originalClock=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar
+RESULT prepared2 groups; actualWindow=false actualMainMount=false actualStoreLock=false

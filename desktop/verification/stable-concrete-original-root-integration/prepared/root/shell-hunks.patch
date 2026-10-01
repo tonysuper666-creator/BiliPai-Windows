@@ -1,0 +1,837 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -6,6 +6,8 @@
+ import com.bilipai.desktop.appearance.DesktopStrings
+ import com.bilipai.desktop.appearance.LocalDesktopStrings
+ import com.bilipai.desktop.appearance.WindowsTextClipboard
++import com.android.purebilibili.navigation3.BiliPaiNavKey
++import com.android.purebilibili.navigation3.toLegacyRoute
+ 
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+@@ -99,6 +101,7 @@
+ import com.bilipai.desktop.update.*
+ import kotlinx.coroutines.*
+ import kotlinx.coroutines.flow.MutableStateFlow
++import kotlinx.coroutines.channels.Channel
+ import kotlinx.coroutines.flow.collect
+ 
+ private enum class DesktopSection(val label: String, val symbol: String) {
+@@ -109,7 +112,7 @@
+     HISTORY("本地历史", "◷"), FAVORITES("本地收藏", "♡"), SEARCH("搜索", "⌕"), USER("UP 主空间", "♧"),
+     ARTICLE("专栏", "▤"), NOTES("视频笔记", "✎"), COLLECTION("合集与系列", "▣"),
+     JS_CONTENT("JS 插件内容", "◇"), EXTERNAL_MEDIA("外部媒体", "▷"), APPEARANCE("外观设置", "◐"), MUSIC("音乐详情", "♫"), BGM("背景音乐详情", "♫"),
+-    STORY("竖屏播放", "▯"), TOPIC("话题", "#"), SETTINGS("设置", "⚙")
++    STORY("竖屏播放", "▯"), TOPIC("话题", "#"), SETTINGS("设置", "⚙"), UNSUPPORTED("待接入页面", "…")
+ }
+ 
+ private fun DesktopSection.localizedLabel(strings: DesktopStrings): String = when (this) {
+@@ -136,7 +139,8 @@
+     registerShutdown: ((suspend () -> Unit) -> Unit)? = null, onRestart: (() -> Unit)? = null,
+     applicationPluginStore: DesktopPluginStore? = null, isClosing: () -> Boolean = { false },
+     diagnosticLifecycle: DesktopDiagnosticLifecycle? = null, diagnosticStartupError: String? = null,
+-    danmakuPresentation: DesktopDanmakuPresentationBinding) {
++    danmakuPresentation: DesktopDanmakuPresentationBinding,
++    isFullscreen: () -> Boolean, setFullscreen: (Boolean) -> Unit) {
+     val applicationImages = LocalDesktopApplicationImageLoader.current
+     val pluginStore = remember(applicationPluginStore) {
+         (applicationPluginStore ?: DesktopPluginStore(DesktopLibrary.directoryForAccount(null))).also { store ->
+@@ -186,7 +190,7 @@
+             registerShutdown, onRestart, pluginStore, discovery, closeDiscoveryStorage,
+             isClosing = { rootClosing.get() || latestIsClosing() },
+             diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError,
+-            danmakuPresentation = danmakuPresentation)
++            danmakuPresentation = danmakuPresentation, isFullscreen = isFullscreen, setFullscreen = setFullscreen)
+     }
+     diagnosticLifecycle?.crashPrompt?.let { prompt ->
+         DesktopAppearanceTheme(startupTheme) {
+@@ -202,7 +206,8 @@
+     pluginStore: DesktopPluginStore, discovery: DesktopDiscoveryRepository,
+     closeDiscoveryStorage: () -> Unit, isClosing: () -> Boolean,
+     diagnosticLifecycle: DesktopDiagnosticLifecycle?, diagnosticStartupError: String?,
+-    danmakuPresentation: DesktopDanmakuPresentationBinding) {
++    danmakuPresentation: DesktopDanmakuPresentationBinding,
++    isFullscreen: () -> Boolean, setFullscreen: (Boolean) -> Unit) {
+     val applicationImages = LocalDesktopApplicationImageLoader.current
+     val diagnostics = diagnosticLifecycle?.diagnostics
+     val account by repository.account.collectAsState()
+@@ -216,7 +221,7 @@
+     val latestPreferences by rememberUpdatedState(preferences)
+     val scope = rememberCoroutineScope()
+     // App/window reference, independent of drawing, section and account MID.
+-    val homeRootRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<DesktopHomeRootRetainer?>() }
++    val homeRootRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<DesktopReadyOriginalRootHandle?>() }
+     val favoritesEntryRef = remember(repository, sessionEpoch) { java.util.concurrent.atomic.AtomicReference<DesktopFavoritesRootEntry?>() }
+     val favoritesQueueRef = remember(repository, sessionEpoch) { java.util.concurrent.atomic.AtomicReference<DesktopFavoriteQueueBridge?>() }
+     val social = remember(repository) { DesktopSocialRepository(repository) }
+@@ -402,8 +407,13 @@
+     var subtitleDialog by remember { mutableStateOf(false) }
+     var subtitleDialogTarget by remember { mutableStateOf<DesktopSubtitleDialogTarget?>(null) }
+     var section by remember { mutableStateOf(DesktopSection.HOME) }
++    var physicalDestination by remember { mutableStateOf<BiliPaiNavKey>(BiliPaiNavKey.Home) }
++    var rootNowPlayingDismissed by remember { mutableStateOf(false) }
++    var initialVideoConsumed by remember { mutableStateOf(initialVideo==null) }
++    val musicOverlay = remember { MutableStateFlow(false) }
++    fun rootRoutes() = homeRootRef.get()?.route?.get()?.takeIf { it.owns() }
+     var jsSettingsOrigin by remember { mutableStateOf(false) }
+-    var showVideo by remember { mutableStateOf(initialVideo != null) }
++    var showVideo by remember { mutableStateOf(false) }
+     var favoritesEntry by remember(repository, sessionEpoch) { mutableStateOf<DesktopFavoritesRootEntry?>(null) }
+     var favoritesAudioCover by remember(repository, sessionEpoch) { mutableStateOf(false) }
+     val favoritesSaveable = androidx.compose.runtime.saveable.rememberSaveableStateHolder()
+@@ -592,6 +602,21 @@
+     var updateJob by remember { mutableStateOf<Job?>(null) }
+     var manuallyRequested by remember { mutableStateOf(false) }
+     var activatingUpdate by remember { mutableStateOf(false) }
++    // Store's nav invalidation callback only enqueues. Never start inline coroutine cleanup
++    // or dispatcher cancellation while that original Store callback owns its monitor.
++    val authenticationInvalidations = remember(repository) { Channel<Pair<Long,Long>>(Channel.UNLIMITED) }
++    DisposableEffect(authenticationInvalidations) { onDispose { authenticationInvalidations.close() } }
++    LaunchedEffect(repository, authenticationInvalidations) {
++        for ((expectedEpoch, expectedMid) in authenticationInvalidations) {
++            if (isClosing() || activatingUpdate || !scope.isActive) continue
++            try {
++                if(repository.logoutHomeAuthenticationInvalidated(expectedEpoch,expectedMid,
++                    {!isClosing() && !activatingUpdate && scope.isActive}))
++                    error="登录信息已失效，请重新登录"
++            } catch(cancelled: CancellationException) { throw cancelled }
++            catch(failure: Exception) { error="登录失效状态无法保存，请重试" }
++        }
++    }
+     var hostDisplayable by remember(hostWindow) { mutableStateOf(hostWindow?.isDisplayable == true) }
+     var hostVisible by remember(hostWindow) { mutableStateOf(hostWindow?.isShowing == true) }
+     DisposableEffect(hostWindow) {
+@@ -687,42 +712,76 @@
+                     true
+                 }
+             },
+-            revealVideo = { showVideo = true; mediaActive = false; playerFocused = false },
+-            revealAudio = { showVideo = false; playerFocused = false; mediaActive = false
+-                favoritesAudioCover = true; section = DesktopSection.LISTEN })
++            revealVideo = {
++                val item = playback.state.value.queue.getOrNull(playback.state.value.queueIndex)
++                if (item != null) rootRoutes()?.video(BiliPaiNavKey.VideoDetail(item.bvid, item.preferredCid, item.cover,
++                    sourceRoute = "favorite"))
++            },
++            revealAudio = {
++                val item = listen?.state?.value?.current
++                if (item != null) { favoritesAudioCover = true; rootRoutes()?.push(BiliPaiNavKey.AudioMode(item.bvid, item.cid,
++                    ((listen.player.state.value.positionSeconds) * 1000L).toLong())) }
++            })
+         favoritesEntryRef.set(entry); favoritesQueueRef.set(queue); favoritesEntry = entry
+         return entry
+     }
+     fun navigate(target: DesktopSection, commit: () -> Unit = {}): Boolean {
+-        if (activatingUpdate || !checkpointForNavigation()) return false
+-        if (target == DesktopSection.CLOUD_FAVORITES) {
+-            val entry = ensureFavoritesEntry()
+-            if (section == target && !showVideo) entry.scrollToTopChannel.trySend(Unit)
+-            favoritesAudioCover = false
+-        } else retireFavoritesEntry()
+-        if (target != DesktopSection.STORY) storyHost.retire()
+-        if (target == DesktopSection.DYNAMIC) dynamicRoute = null
++        val routes = rootRoutes() ?: return false
++        if (activatingUpdate) return false
+         commit()
+-        if ((section == DesktopSection.SETTINGS || jsSettingsOrigin) &&
+-            target !in listOf(DesktopSection.SETTINGS, DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA)) {
+-            settingsNavigator.leave()
+-            jsSettingsOrigin = false
+-        }
+-        showVideo = false; playerFocused = false; section = target; page = 1; error = null
+-        if (target == DesktopSection.HISTORY) cards = library.history()
+-        if (target == DesktopSection.FAVORITES) cards = library.favorites()
+-        return true
++        val key: BiliPaiNavKey = when (target) {
++            DesktopSection.HOME -> BiliPaiNavKey.Home
++            DesktopSection.POPULAR, DesktopSection.RANKING, DesktopSection.PRECIOUS -> {
++                routes.root.entry.viewModel.switchPopularSubCategory(when(target) { DesktopSection.RANKING -> com.android.purebilibili.feature.home.PopularSubCategory.RANKING; DesktopSection.PRECIOUS -> com.android.purebilibili.feature.home.PopularSubCategory.PRECIOUS; else -> com.android.purebilibili.feature.home.PopularSubCategory.COMPREHENSIVE })
++                routes.root.entry.viewModel.switchCategory(com.android.purebilibili.feature.home.HomeCategory.POPULAR); BiliPaiNavKey.Home
++            }
++            DesktopSection.REGION -> BiliPaiNavKey.Partition
++            DesktopSection.WEEKLY -> BiliPaiNavKey.WeeklySeries(weeklyInitialNumber)
++            DesktopSection.DYNAMIC -> dynamicRoute?.let { BiliPaiNavKey.DynamicDetail(it.dynamicId,it.rootReplyId,it.targetReplyId) } ?: BiliPaiNavKey.Dynamic
++            DesktopSection.LIVE -> if(roomId>0) BiliPaiNavKey.Live(roomId=roomId.toString()) else BiliPaiNavKey.LiveList
++            DesktopSection.BANGUMI -> if(seasonId>0||episodeId>0) BiliPaiNavKey.BangumiPlayer(seasonId,episodeId,(seasonProgress*1000).toLong(),isCourse) else BiliPaiNavKey.Bangumi(seasonType)
++            DesktopSection.PLUGINS -> BiliPaiNavKey.PluginsSettings()
++            DesktopSection.CLOUD_HISTORY, DesktopSection.HISTORY -> BiliPaiNavKey.History
++            DesktopSection.CLOUD_FAVORITES, DesktopSection.FAVORITES -> BiliPaiNavKey.Favorite
++            DesktopSection.WATCH_LATER -> BiliPaiNavKey.WatchLater
++            DesktopSection.FOLLOWINGS -> BiliPaiNavKey.Following(account?.mid ?: 0)
++            DesktopSection.LIKED -> BiliPaiNavKey.LikedVideos(account?.mid ?: 0)
++            DesktopSection.LISTEN -> BiliPaiNavKey.ListenVideo
++            DesktopSection.DOWNLOADS -> BiliPaiNavKey.DownloadList
++            DesktopSection.MESSAGES -> BiliPaiNavKey.Inbox
++            DesktopSection.SEARCH -> BiliPaiNavKey.Search(submitted)
++            DesktopSection.USER -> BiliPaiNavKey.Space(userId)
++            DesktopSection.ARTICLE -> BiliPaiNavKey.ArticleDetail(articleId)
++            DesktopSection.UNSUPPORTED -> return false
++            DesktopSection.NOTES -> { error="视频笔记的原版导航入口仍待接入"; return false }
++            DesktopSection.COLLECTION -> BiliPaiNavKey.SeasonSeriesDetail(collectionType,collectionId,collectionMid,collectionTitle)
++            DesktopSection.JS_CONTENT -> BiliPaiNavKey.JsPluginContent(jsPluginId)
++            DesktopSection.EXTERNAL_MEDIA -> { error="外部媒体必须从原授权 launchId 进入"; return false }
++            DesktopSection.APPEARANCE -> BiliPaiNavKey.AppearanceSettings
++            DesktopSection.MUSIC -> when(val value=musicSource) {
++                is MusicPlaybackSource.AudioSong -> BiliPaiNavKey.MusicDetail(value.sid)
++                is MusicPlaybackSource.VideoAudio -> BiliPaiNavKey.NativeMusic(value.title,value.bvid,value.cid)
++                null -> return false
++            }
++            DesktopSection.BGM -> bgmRequest?.let{BiliPaiNavKey.BgmDetail(it.musicId,it.aid,it.cid,it.showVideos)} ?: return false
++            DesktopSection.STORY -> BiliPaiNavKey.Story(storySeed.bvid,storySeed.cid,storySeed.cover,storySeed.title)
++            DesktopSection.TOPIC -> BiliPaiNavKey.TopicDetail(topicId)
++            DesktopSection.SETTINGS -> BiliPaiNavKey.Settings
++        }
++        return routes.push(key)
+     }
+     fun openVideo(card: VideoCard) {
+-        if (activatingUpdate || !checkpointForNavigation()) return
+-        storyHost.retire(); retainedMedia.stop(); listen?.pause(); systemTargetAudio = false
+-        showVideo = true; mediaActive = false; playback.open(card)
++        rootRoutes()?.video(BiliPaiNavKey.VideoDetail(card.bvid,card.preferredCid,card.cover,
++            resumePositionMs=(card.progressSeconds?.coerceAtLeast(0)?.toLong() ?: 0L)*1000L,
++            sourceRoute=physicalDestination.toLegacyRoute()))
+     }
+     fun openQueue(videos: List<VideoCard>, selected: VideoCard) {
+         if (activatingUpdate || videos.isEmpty() || !checkpointForNavigation()) return
+         val index = videos.indexOfFirst { it.bvid == selected.bvid && it.preferredCid == selected.preferredCid }.takeIf { it >= 0 } ?: 0
+         storyHost.retire(); retainedMedia.stop(); listen?.pause(); systemTargetAudio = false
+-        showVideo = true; mediaActive = false; playback.openQueue(videos, index)
++        playback.openQueue(videos, index)
++        rootRoutes()?.video(BiliPaiNavKey.VideoDetail(selected.bvid,selected.preferredCid,selected.cover,
++            sourceRoute=physicalDestination.toLegacyRoute()))
+     }
+     fun openVideoHonorLink(url: String) {
+         val target = com.android.purebilibili.core.util.BilibiliNavigationTargetParser.parse(url)
+@@ -738,47 +797,15 @@
+             runCatching { java.awt.Desktop.getDesktop().browse(uri) }.onFailure { error = "无法打开荣誉链接" }
+         }
+     }
+-    fun closeWeeklySeries() {
+-        val returnVideo = weeklyReturnVideo
+-        if (navigate(if (returnVideo) weeklyReturnSection else DesktopSection.POPULAR) && returnVideo && playing.details != null)
+-            showVideo = true
+-        weeklyReturnVideo = false
+-    }
+-    fun openUser(id: Long) { navigate(DesktopSection.USER) { userId = id } }
+-    fun openDynamicRoute(route: DesktopDynamicDetailRoute) { navigate(DesktopSection.DYNAMIC) { dynamicRoute = route } }
++    fun closeWeeklySeries() { rootRoutes()?.back() }
++    fun openUser(id: Long) { rootRoutes()?.push(BiliPaiNavKey.Space(id)) }
++    fun openDynamicRoute(route: DesktopDynamicDetailRoute) { rootRoutes()?.push(BiliPaiNavKey.DynamicDetail(route.dynamicId,route.rootReplyId,route.targetReplyId)) }
+     fun openDynamic(id: String) { openDynamicRoute(DesktopDynamicDetailRoute(id)) }
+-    fun openTopic(id: Long) {
+-        if (activatingUpdate || id <= 0) return
+-        navigate(DesktopSection.TOPIC) {
+-            if (section != DesktopSection.TOPIC) {
+-                topicReturnSection = section; topicReturnDynamicRoute = dynamicRoute; topicStack = listOf(id)
+-            } else if (topicStack.lastOrNull() != id) topicStack = topicStack + id
+-            topicId = id
+-        }
+-    }
+-    fun openTopicKeyword(keyword: String) {
+-        if (activatingUpdate || keyword.isBlank()) return
+-        navigate(DesktopSection.SEARCH) { query = keyword; submitted = keyword }
+-    }
+-    fun openStory(card: VideoCard? = null) {
+-        if (activatingUpdate) return
+-        navigate(DesktopSection.STORY) {
+-            if (section != DesktopSection.STORY) storyReturnSection = section
+-            storySeed = card?.let { DesktopStorySeed(it.bvid, it.preferredCid, it.cover, it.title) } ?: DesktopStorySeed()
+-        }
+-    }
+-    fun openBgm(request: DesktopBgmMusicTarget.Detail) {
+-        if (activatingUpdate || request.musicId.isBlank()) return
+-        navigate(DesktopSection.BGM) {
+-            if (section != DesktopSection.BGM) { bgmReturnSection = section; bgmReturnVideo = showVideo }
+-            bgmRequest = request
+-        }
+-    }
+-    fun closeBgm() {
+-        val request = bgmRequest
+-        if (request?.showVideos == true) bgmRequest = request.copy(showVideos = false)
+-        else if (navigate(bgmReturnSection) && bgmReturnVideo && playing.details != null) showVideo = true
+-    }
++    fun openTopic(id: Long) { if(id>0) rootRoutes()?.push(BiliPaiNavKey.TopicDetail(id)) }
++    fun openTopicKeyword(keyword: String) { if(keyword.isNotBlank()) rootRoutes()?.push(BiliPaiNavKey.Search(keyword)) }
++    fun openStory(card: VideoCard? = null) { rootRoutes()?.push(BiliPaiNavKey.Story(card?.bvid.orEmpty(),card?.preferredCid ?: 0,card?.cover.orEmpty(),card?.title.orEmpty(),sourceRoute=physicalDestination.toLegacyRoute())) }
++    fun openBgm(request: DesktopBgmMusicTarget.Detail) { rootRoutes()?.push(BiliPaiNavKey.BgmDetail(request.musicId,request.aid,request.cid,request.showVideos)) }
++    fun closeBgm() { rootRoutes()?.back() }
+     LaunchedEffect(sessionEpoch) {
+         if (section == DesktopSection.BGM && bgmRequest == null) navigate(bgmReturnSection)
+     }
+@@ -806,24 +833,13 @@
+         }
+     }
+     fun openMusic(sid: Long) { if (sid > 0) openMusicSource(MusicPlaybackSource.AudioSong(sid)) }
+-    fun closeMusic() {
+-        val source = musicSource
+-        if (musicReturnVideo && source is MusicPlaybackSource.VideoAudio && listen != null) {
+-            openVideo(nativeMusicVideoReturnCard(source, listen.state.value, listen.player.state.value,
+-                listen.ownedPlaybackSourceVersion != null))
+-        } else {
+-            if (navigate(musicReturnSection) && musicReturnVideo && playing.details != null) showVideo = true
+-        }
+-    }
++    fun closeMusic() { rootRoutes()?.back() }
+     LaunchedEffect(sessionEpoch) {
+         if (section == DesktopSection.MUSIC && musicSource == null) navigate(DesktopSection.LISTEN)
+     }
+-    fun openArticle(id: Long) { navigate(DesktopSection.ARTICLE) { articleId = id } }
++    fun openArticle(id: Long) { rootRoutes()?.push(BiliPaiNavKey.ArticleDetail(id)) }
+     fun openNotes(info: VideoDetails) { navigate(DesktopSection.NOTES) { noteVideo = info } }
+-    fun openJsPlugin(id: String) { navigate(DesktopSection.JS_CONTENT) {
+-        if (section != DesktopSection.JS_CONTENT) jsSettingsOrigin = section == DesktopSection.SETTINGS
+-        jsPluginId = id
+-    } }
++    fun openJsPlugin(id: String) { rootRoutes()?.push(BiliPaiNavKey.JsPluginContent(id)) }
+     fun openJsMedia(launchId: String, revision: Long) {
+         val host = pluginRuntime.jsPlugins.host
+         if (activatingUpdate) { host.releaseExternalLaunch(launchId); return }
+@@ -836,22 +852,18 @@
+             retainedMedia.external.open(launchId, authorizationCurrent = {
+                 host.executionRevision.value == revision && repository.sessionEpoch == epoch
+             }, releaseRequest = host::releaseExternalLaunch)
+-            showVideo = false; section = DesktopSection.EXTERNAL_MEDIA; lastMediaSection = section
++            rootRoutes()?.push(BiliPaiNavKey.ExternalMedia(launchId))
+         } catch (failure: Exception) {
+             host.releaseExternalLaunch(launchId)
+             error = failure.message ?: "外部媒体无法播放"
+         }
+     }
+-    fun openLive(id: Long) { navigate(DesktopSection.LIVE) { roomId = id } }
++    fun openLive(id: Long) { if(id>0) rootRoutes()?.push(BiliPaiNavKey.Live(roomId=id.toString())) }
+     fun showSeason(id: Long, epId: Long = 0, course: Boolean = false, progress: Double = 0.0) {
+-        navigate(DesktopSection.BANGUMI) {
+-            seasonId = id; episodeId = epId; isCourse = course; seasonProgress = progress
+-        }
++        rootRoutes()?.push(BiliPaiNavKey.BangumiPlayer(id,epId,(progress.coerceAtLeast(0.0)*1000L).toLong(),course))
+     }
+     fun openBangumi(id: Long) { showSeason(id) }
+-    fun openCollection(mid: Long, id: Long, type: String) {
+-        navigate(DesktopSection.COLLECTION) { collectionMid = mid; collectionId = id; collectionType = type; collectionTitle = "" }
+-    }
++    fun openCollection(mid: Long, id: Long, type: String) { rootRoutes()?.push(BiliPaiNavKey.SeasonSeriesDetail(type,id,mid)) }
+     fun openDynamicWeb(url: String, title: String) {
+         runCatching { java.net.URI(imageUrl(url)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let { uri ->
+             runCatching { java.awt.Desktop.getDesktop().browse(uri) }.onFailure { error = it.message ?: "无法打开$title" }
+@@ -1000,6 +1012,7 @@
+             else -> Unit
+         }
+     }
++    LaunchedEffect(listening.current?.bvid,listening.current?.cid,sessionEpoch) { rootNowPlayingDismissed=false }
+     val capturedFavoritesUiEpoch = sessionEpoch
+     LaunchedEffect(capturedFavoritesUiEpoch, section) {
+         if (section == DesktopSection.CLOUD_FAVORITES && repository.sessionEpoch == capturedFavoritesUiEpoch &&
+@@ -1040,7 +1053,7 @@
+             if (googleCastDialog) pluginRuntime.googleCast.startRouteDiscovery(pluginRuntime.context)
+         }
+     }
+-    LaunchedEffect(Unit) { runCatching { repository.refreshAccount() }; initialVideo?.let { playback.open(it) } }
++    LaunchedEffect(Unit) { runCatching { repository.refreshAccount() } }
+     LaunchedEffect(playing.details?.bvid, playing.currentPart) {
+         while (playing.details != null) {
+             delay(5000)
+@@ -1231,6 +1244,9 @@
+         Box(Modifier.fillMaxSize()) {
+         // libmpv's audio worker needs a retained native host even when its screen is not visible.
+         if (audioPlayer != null) SwingPanel(factory = { audioPlayer.surface }, background = Color.Transparent, modifier = Modifier.size(1.dp))
++        // Native AO keeps the same actual source while ordinary Video is covered by Home.
++        if(player!=null && !showVideo && section!=DesktopSection.STORY && retainedMedia.current==null && !pipActive && playing.details!=null)
++            SwingPanel(factory={player.surface},background=Color.Transparent,modifier=Modifier.size(1.dp))
+         Surface(Modifier.fillMaxSize().onGloballyPositioned { liquidBackgroundBounds = it.boundsInWindow() }
+             .drawWithContent {
+                 if (captureLiquidBackground) liquidEnvironment.recordBackground {
+@@ -1239,114 +1255,15 @@
+                 drawContent()
+             }.onKeyEvent { event ->
+             if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { onToggleFullscreen(); true }
++            else if (event.type == KeyEventType.KeyDown && event.key == Key.Escape && !searchFocused) {
++                if (isFullscreen()) setFullscreen(false) else homeRootRef.get()?.navigation?.requestBack()
++                true
++            }
+             else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused && !searchFocused && player != null) {
+                 // Shortcuts are scoped to the focused player; comment and search editors keep their keys.
+                 performPlayerKey(resolvePlayerKeyAction(event, isTextInputActive = searchFocused))
+             } else false
+         }, color = scheme.background) {
+-            Row(Modifier.fillMaxSize().padding(18.dp), horizontalArrangement = Arrangement.spacedBy(20.dp)) {
+-                Box(Modifier.width(180.dp).fillMaxHeight()) {
+-                DesktopUiSkinDecoration(UiSkinSurface.HOME_DRAWER, { it.homeSideBackground }, Modifier.fillMaxSize(),
+-                    onError = { error = it })
+-                DesktopUiSkinDecoration(UiSkinSurface.HOME_DRAWER, { it.drawerBottomTrim },
+-                    Modifier.fillMaxWidth().height(84.dp).align(Alignment.BottomCenter), onError = { error = it })
+-                Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+-                    Text("BiliPai", Modifier.padding(12.dp), style = MaterialTheme.typography.headlineSmall, color = scheme.primary, fontWeight = FontWeight.Bold)
+-                    Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+-                        DesktopSection.entries.filter { it !in listOf(DesktopSection.SEARCH, DesktopSection.USER, DesktopSection.ARTICLE, DesktopSection.NOTES, DesktopSection.COLLECTION,
+-                            DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA, DesktopSection.APPEARANCE, DesktopSection.MUSIC, DesktopSection.BGM, DesktopSection.TOPIC) }.forEach { item ->
+-                            Surface(Modifier.fillMaxWidth().height(48.dp).clickable { if (item == DesktopSection.STORY) openStory() else navigate(item) {
+-                                if (item == DesktopSection.SETTINGS) settingsNavigator.openRoot()
+-                            } }, shape = RoundedCornerShape(24.dp),
+-                                color = if (section == item && !showVideo) scheme.primaryContainer else Color.Transparent) {
+-                                Row(Modifier.padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+-                                    Text(item.symbol, style = MaterialTheme.typography.titleLarge); Text(item.localizedLabel(strings))
+-                                }
+-                            }
+-                        }
+-                    }
+-                    TextButton(onClick = { navigate(DesktopSection.SETTINGS) { settingsNavigator.openDetail(SettingsSearchTarget.PLAYBACK, null) } }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text(strings["playback_settings_title"]) }
+-                    TextButton(onClick = { combinedBackupSettings = true }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("WebDAV 与备份") }
+-                    TextButton(onClick = { navigate(DesktopSection.SETTINGS) { settingsNavigator.openCategory(SettingsRootCategory.APPEARANCE_THEME) } }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text(strings["appearance_settings_title"]) }
+-                    Box(Modifier.fillMaxWidth().height(64.dp)) {
+-                        DesktopUiSkinDecoration(UiSkinSurface.PROFILE,
+-                            { it.homeProfileVideoBackground ?: it.homeProfileSquaredBackground ?: it.homeProfileBackground },
+-                            Modifier.fillMaxSize(), playing = hostVisible, onError = { error = it })
+-                        TextButton(onClick = { loginDialog = true }, modifier = Modifier.fillMaxSize()) { Text(account?.name ?: "扫码登录", maxLines = 1) }
+-                    }
+-                    TextButton(onClick = { updatesDialog = true; scope.launch { updater.check() } }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("Windows 更新") }
+-                }
+-                }
+-                Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+-                    diagnosticStartupError?.let { Text(it, color = scheme.error) }
+-                    Box(Modifier.fillMaxWidth()) {
+-                    DesktopUiSkinDecoration(UiSkinSurface.HOME_TOP_CHROME, { it.topAtmosphere }, Modifier.matchParentSize(), onError = { error = it })
+-                    DesktopUiSkinDecoration(UiSkinSurface.HOME_TOP_CHROME, { it.searchCapsuleBackground }, Modifier.matchParentSize(), onError = { error = it })
+-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+-                        if (showVideo) OutlinedButton(onClick = { if (checkpointForNavigation()) { showVideo = false; playerFocused = false } }, modifier = Modifier.height(52.dp)) { Text("‹ ${strings["common_back"]}") }
+-                        OutlinedTextField(query, { query = it }, singleLine = true, placeholder = { Text("搜索视频、UP 主、番剧、专栏，或粘贴 BV / 链接") },
+-                            shape = RoundedCornerShape(26.dp), modifier = Modifier.weight(1f).onFocusChanged { searchFocused = it.hasFocus },
+-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { submitSearch() }))
+-                        Button(onClick = ::submitSearch, modifier = Modifier.height(52.dp)) { Text("搜索") }
+-                    }
+-                    }
+-                    (error ?: playing.error ?: clipboardFailure?.let { when (strings.languageTag) {
+-                        "en" -> "Could not write to the clipboard. Please try again."
+-                        "zh-TW" -> "無法寫入系統剪貼簿，請稍後重試"
+-                        else -> it
+-                    } })?.let { text ->
+-                        Surface(color = scheme.errorContainer, shape = RoundedCornerShape(14.dp)) {
+-                            Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+-                                Text(text, Modifier.weight(1f)); TextButton(onClick = { error = null; playback.dismissError(); WindowsTextClipboard.clearFailure() }) { Text("收起") }
+-                            }
+-                        }
+-                    }
+-                    if (listen != null && section != DesktopSection.LISTEN) ListenNowPlayingBar(listen, {
+-                        val source = nativeMusicSourceForListenItem(listen.state.value.current)
+-                        if (source is MusicPlaybackSource.AudioSong) openMusicSource(source)
+-                        else navigate(DesktopSection.LISTEN)
+-                    })
+-                    if (casting.isActive) TextButton(onClick = { dlnaDialog = true }) { Text("投屏：${casting.deviceLabel.ifBlank { "播放设备" }} · 打开控制") }
+-                    if (googleCasting.isActive) TextButton(onClick = { googleCastDialog = true }) { Text("Google Cast：${googleCasting.deviceLabel.ifBlank { "播放设备" }} · 打开控制") }
+-                    if (playing.recovering) Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+-                        LinearProgressIndicator(Modifier.fillMaxWidth())
+-                        playing.recoveryMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
+-                    }
+-                    playing.manualSkip?.let { action -> Button(onClick = playback::executeManualSkip) { Text(action.label) } }
+-                    if (!showVideo && section != DesktopSection.STORY && playing.details != null && player != null) {
+-                        Surface(color = scheme.surfaceVariant, shape = RoundedCornerShape(14.dp)) {
+-                            Row(Modifier.fillMaxWidth().height(118.dp).padding(8.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+-                                if (!pipActive) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.width(180.dp).fillMaxHeight())
+-                                else Text("画中画播放中", Modifier.width(180.dp))
+-                                Text(playing.details!!.title, Modifier.weight(1f), maxLines = 2, overflow = TextOverflow.Ellipsis)
+-                                TextButton(onClick = { player.togglePause() }) { Text(if (native.paused) "播放" else "暂停") }
+-                                TextButton(onClick = { showVideo = true }) { Text("回到视频") }
+-                                TextButton(onClick = { pip?.close(); playback.stop() }) { Text("关闭") }
+-                            }
+-                        }
+-                    }
+-                    val retainedOwner = retainedMedia.current
+-                    if (retainedOwner != null && retainedOwner !== retainedMedia.offline) TextButton(onClick = { castDialog = true }) { Text("投屏当前媒体") }
+-                    val retainedPage = when (retainedOwner) {
+-                        retainedMedia.live -> DesktopSection.LIVE
+-                        retainedMedia.bangumi -> DesktopSection.BANGUMI
+-                        retainedMedia.offline -> DesktopSection.DOWNLOADS
+-                        retainedMedia.external -> DesktopSection.EXTERNAL_MEDIA
+-                        else -> null
+-                    }
+-                    if (retainedOwner != null && retainedPage != null && section != retainedPage && player != null && !showVideo) {
+-                        Surface(color = scheme.surfaceVariant, shape = RoundedCornerShape(14.dp)) {
+-                            Row(Modifier.fillMaxWidth().height(118.dp).padding(8.dp), verticalAlignment = Alignment.CenterVertically,
+-                                horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+-                                if (!pipActive) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.width(180.dp).fillMaxHeight())
+-                                else Text("画中画播放中", Modifier.width(180.dp))
+-                                Text(retainedMedia.title, Modifier.weight(1f), maxLines = 2, overflow = TextOverflow.Ellipsis)
+-                                TextButton(onClick = { player.togglePause() }) { Text(if (native.paused) "播放" else "暂停") }
+-                                TextButton(onClick = { section = retainedPage }) { Text("回到播放") }
+-                                TextButton(onClick = { pip?.close(); retainedOwner.stopPlayback() }) { Text("关闭") }
+-                            }
+-                        }
+-                    }
+                     val playerContent: @Composable (MpvPlayer) -> Unit = { initialized ->
+                         Column(Modifier.fillMaxWidth()) {
+                         PlayerPanel(initialized, preferences.copy(danmaku = rendererDanmakuSettings), ::changePreferences, onToggleFullscreen,
+@@ -1403,7 +1320,108 @@
+                             onSettings = { enhancementSettings = true })
+                         }
+                     }
+-                    Box(Modifier.weight(1f).fillMaxWidth()) {
++
++            DesktopDetailWindow {
++            val actualWindow = hostWindow
++            if(actualWindow==null) Text("原版导航需要实际应用窗口，尚未创建") else {
++                val ffprobe = com.bilipai.desktop.download.WindowsFfmpegMuxer.locateFfmpeg()?.resolveSibling("ffprobe.exe")
++                    ?: java.nio.file.Path.of(requireNotNull(System.getProperty("compose.application.resources.dir")),"native","windows-x64","ffprobe.exe")
++                SideEffect { musicOverlay.value = listening.current != null && !rootNowPlayingDismissed }
++                val services = DesktopReadyOriginalRootServices(repository,discovery,community,pluginRuntime,dynamicCardSession,
++                    appearance,actualWindow,imageSaveLocations,imageSaveLifetime,diagnostics,nativeTextShare,rootTextShareBindings,
++                    musicOverlay,{downloads.tasks.value.map{it.item}},listen,playerError,
++                    { !isClosing() && !activatingUpdate },{pip?.active?.value==true},
++                    { !isClosing() && !activatingUpdate && appearanceReady },
++                    { action -> if(!isClosing()&&!activatingUpdate&&checkpointForNavigation()){action();true}else false },
++                    { old,new ->
++                        if(old is BiliPaiNavKey.Story && new !is BiliPaiNavKey.Story) storyHost.retire()
++                        if(new is BiliPaiNavKey.VideoDetail) {
++                            storyHost.retire();retainedMedia.stop();listen?.pause();systemTargetAudio=false
++                            playback.openVideoDetail(VideoCard(new.bvid,new.bvid,new.coverUrl,"",0,0,preferredCid=new.cid),
++                                new.resumePositionMs,keepMatchingSource=!new.startAudio)
++                            if(new.fullscreen && !isFullscreen()) setFullscreen(true)
++                        } else if(old is BiliPaiNavKey.VideoDetail && old.fullscreen && isFullscreen()) setFullscreen(false)
++                    },
++                    { destination -> if(physicalDestination!=destination) playerFocused=false
++                        physicalDestination=destination;section=desktopReadySection(destination)
++                        showVideo=destination is BiliPaiNavKey.VideoDetail
++                        if(!initialVideoConsumed && initialVideo!=null) {
++                            initialVideoConsumed=true;rootRoutes()?.video(BiliPaiNavKey.VideoDetail(initialVideo,sourceRoute="home"))
++                        } },
++                    {error=it}, {raw->openDynamicWeb(raw,"链接")},
++                    { expectedEpoch,expectedMid -> authenticationInvalidations.trySend(expectedEpoch to expectedMid); Unit },
++                    { gate -> DesktopProfileAccountsBinding(repository,gate.epoch,gate.mid,
++                        requireNotNull(gate.scope.coroutineContext[Job]),gate::owns,gate::commit) },
++                    { onExit() },{loginDialog=true},if(account!=null)({repository.logout()})else null,
++                    dynamicCardRegistry::currentAllUpdateBaseline,null,favoritesEntry?.searchChannel,null,
++                    { rootNowPlayingDismissed=true;listen?.pause() },
++                    { DesktopOriginalNowPlayingVisibility(listening.current!=null&&!rootNowPlayingDismissed,
++                        physicalDestination is BiliPaiNavKey.AudioMode,pipActive,true,false,
++                        physicalDestination is BiliPaiNavKey.VideoDetail,actualWindow.width>actualWindow.height,
++                        physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe)
++                DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted ->
++                    CompositionLocalProvider(LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable)) {
++
++                val section = desktopReadySection(entryKey)
++                val videoEntry = entryKey as? BiliPaiNavKey.VideoDetail
++                LaunchedEffect(videoEntry,active,native.ready,player?.currentSourceVersion) {
++                    if(active && videoEntry!=null && native.ready && playing.details?.bvid==videoEntry.bvid &&
++                        (videoEntry.cid<=0 || playing.details?.pages?.getOrNull(playing.currentPart)?.cid==videoEntry.cid) &&
++                        playback.currentCastSource(player?.currentSourceVersion ?: 0L)!=null)
++                        player?.setAudioOnly(videoEntry.startAudio || preferences.audioOnly)
++                }
++                LaunchedEffect(entryKey,active) {
++                    if(active) when(entryKey) {
++                        BiliPaiNavKey.Settings -> settingsNavigator.openRoot()
++                        is BiliPaiNavKey.SettingsCategory -> settingsNavigator.openCategory(entryKey.category)
++                        BiliPaiNavKey.SettingsSearch -> settingsNavigator.openSearch()
++                        BiliPaiNavKey.PlaybackSettings -> settingsNavigator.openDetail(SettingsSearchTarget.PLAYBACK,null)
++                        BiliPaiNavKey.HomeSettings -> settingsNavigator.openCategory(SettingsRootCategory.HOME_RECOMMENDATION)
++                        BiliPaiNavKey.PermissionSettings -> settingsNavigator.openCategory(SettingsRootCategory.PRIVACY_PERMISSION)
++                        BiliPaiNavKey.WebDavBackup -> settingsNavigator.openDetail(SettingsSearchTarget.DATA_BACKUP,null)
++                        is BiliPaiNavKey.AudioMode -> if(listen!=null && entryKey.sourceBvid.isNotBlank() && entryKey.sourceCid>0) {
++                            val current=listen.state.value.current
++                            if(current?.bvid!=entryKey.sourceBvid || current.cid!=entryKey.sourceCid) {
++                                val info=repository.videoDetails(entryKey.sourceBvid)
++                                ensureActive()
++                                if(homeRootRef.get()?.route?.get()?.currentKey==entryKey) {
++                                    listen.playStartingAt(listOf(com.android.purebilibili.feature.video.player.PlaylistItem(
++                                        info.bvid,entryKey.sourceCid,info.title,info.cover,info.author)),0,
++                                        entryKey.sourceResumePositionMs.coerceAtLeast(0L)/1000.0)
++                                }
++                            }
++                        }
++                        else -> Unit
++                    }
++                }
++                val showVideo = entryKey is BiliPaiNavKey.VideoDetail
++                val userId = (entryKey as? BiliPaiNavKey.Space)?.mid ?: (entryKey as? BiliPaiNavKey.Following)?.mid ?: 0L
++                val submitted = (entryKey as? BiliPaiNavKey.Search)?.keyword.orEmpty()
++                val articleId = (entryKey as? BiliPaiNavKey.ArticleDetail)?.articleId ?: 0L
++                val dynamicRoute = (entryKey as? BiliPaiNavKey.DynamicDetail)?.let { DesktopDynamicDetailRoute(it.dynamicId,it.commentRootRpid,it.commentTargetRpid) }
++                val topicId = (entryKey as? BiliPaiNavKey.TopicDetail)?.topicId ?: 0L
++                val roomId = (entryKey as? BiliPaiNavKey.Live)?.roomId?.toLongOrNull() ?: 0L
++                val bgmRequest = (entryKey as? BiliPaiNavKey.BgmDetail)?.let {DesktopBgmMusicTarget.Detail(it.musicId,it.aid,it.cid,it.showVideos)}
++                val musicSource = when(entryKey) {is BiliPaiNavKey.MusicDetail->MusicPlaybackSource.AudioSong(entryKey.sid);is BiliPaiNavKey.NativeMusic->MusicPlaybackSource.VideoAudio(entryKey.bvid,entryKey.cid,entryKey.title);else->null}
++                val musicStartPosition = if(entryKey is BiliPaiNavKey.AudioMode) entryKey.sourceResumePositionMs/1000.0 else 0.0
++                val seasonId = when(entryKey){is BiliPaiNavKey.BangumiPlayer->entryKey.seasonId;is BiliPaiNavKey.BangumiDetail->entryKey.seasonId;else->0L}
++                val episodeId = when(entryKey){is BiliPaiNavKey.BangumiPlayer->entryKey.epId;is BiliPaiNavKey.BangumiDetail->entryKey.epId;else->0L}
++                val isCourse = (entryKey as? BiliPaiNavKey.BangumiPlayer)?.isCourse ?: false
++                val seasonProgress = (entryKey as? BiliPaiNavKey.BangumiPlayer)?.resumePositionMs?.div(1000.0) ?: 0.0
++                val seasonType = (entryKey as? BiliPaiNavKey.Bangumi)?.initialType ?: 1
++                val jsPluginId = (entryKey as? BiliPaiNavKey.JsPluginContent)?.pluginId.orEmpty()
++                val storySeed = (entryKey as? BiliPaiNavKey.Story)?.let{DesktopStorySeed(it.seedBvid,it.seedCid,it.seedCover,it.seedTitle)} ?: DesktopStorySeed()
++                val collectionMid = (entryKey as? BiliPaiNavKey.SeasonSeriesDetail)?.mid ?: 0L
++                val collectionId = (entryKey as? BiliPaiNavKey.SeasonSeriesDetail)?.id ?: 0L
++                val collectionType = (entryKey as? BiliPaiNavKey.SeasonSeriesDetail)?.type.orEmpty()
++                val collectionTitle = (entryKey as? BiliPaiNavKey.SeasonSeriesDetail)?.title.orEmpty()
++
++                    Column(Modifier.fillMaxSize()) {
++                        if(!pagerHosted && (entryKey is BiliPaiNavKey.VideoDetail || entryKey is BiliPaiNavKey.Search || entryKey == BiliPaiNavKey.Settings))
++                            com.android.purebilibili.core.ui.components.AppTextButton(onClick={commands.back()}) {
++                                com.android.purebilibili.core.ui.components.AppText("返回")
++                            }
++                        Box(Modifier.weight(1f).fillMaxWidth()) {
+                         when {
+                             showVideo && playing.opening -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
+                             showVideo && playing.details != null -> DesktopVideoPage(playing, player, playerContent, favorite,
+@@ -1452,6 +1470,9 @@
+                                                     playback.seek(commentCid, timestampMs.coerceAtLeast(0L) / 1000.0)
+                                             }, onUserClick = ::openUser, onLinkClick = ::openVideoHonorLink,
+                                             onLogin = { loginDialog = true }, modifier = Modifier.fillMaxWidth().height(440.dp),
++                                            initialCommentRootRpid = (entryKey as? BiliPaiNavKey.VideoDetail)?.commentRootRpid ?: 0L,
++                                            initialCommentTargetRpid = (entryKey as? BiliPaiNavKey.VideoDetail)?.commentTargetRpid ?: 0L,
++                                            commentRouteOpenId = (entryKey as? BiliPaiNavKey.VideoDetail)?.openId ?: 0L,
+                                             auxiliaryContent = if (player != null && danmaku != null && hostWindow != null && commentCid > 0L) ({ owner ->
+                                                 val viewport = com.android.purebilibili.core.util.LocalWindowSizeClass.current
+                                                 DesktopOriginalDanmakuRootHost(owner, repository, pluginStore, danmaku, commentCid,
+@@ -1529,7 +1550,7 @@
+                                     } catch (cancelled: CancellationException) { throw cancelled } catch (failure: Exception) { error = failure.message ?: "下载失败" }
+                                 } })
+                             section == DesktopSection.CLOUD_FAVORITES -> {
+-                                val entry = favoritesEntry
++                                val entry = ensureFavoritesEntry()
+                                 val queue = favoritesQueueRef.get()
+                                 if (entry == null || queue == null || !entry.isOwned()) {
+                                     TextButton(onClick = { if (!isClosing() && !activatingUpdate) ensureFavoritesEntry() }) { Text("重新打开收藏") }
+@@ -1549,19 +1570,19 @@
+                                             setBackToTopOffset = { x, y -> if (entry.isOwned()) prefs.setBackToTopOffset(x, y) },
+                                             updateBackToTopOffset = { x, y -> if (entry.isOwned()) prefs.updateBackToTopOffset(x, y) })
+                                     }
+-                                    val detail = entry.currentDetail
++                                    val detail = (entryKey as? BiliPaiNavKey.SeasonSeriesDetail)?.let {
++                                        com.android.purebilibili.feature.list.FavoriteCollectionRoute(it.type,it.id,it.mid,it.title,it.ownerName)
++                                    }
+                                     favoritesSaveable.SaveableStateProvider(entry.stateKey(detail)) {
+                                         DesktopOriginalFavoritesHost(entry.environment, bindings,
+-                                            onBack = { if (entry.isOwned()) {
+-                                                if (entry.currentDetail != null) entry.currentDetail = null else navigate(DesktopSection.HOME)
+-                                            } },
++                                            onBack = { if (entry.isOwned()) commands.back() },
+                                             onVideoClick = { bvid, cid, cover, _ ->
+                                                 if (entry.isOwned() && !queue.revealIfOwned(bvid, cid, false))
+                                                     openVideo(VideoCard(bvid, bvid, cover, "", 0, 0, preferredCid = cid))
+                                             }, onUpClick = { if (entry.isOwned()) openUser(it) },
+-                                            onCollectionClick = { if (entry.isOwned()) entry.currentDetail = it },
++                                            onCollectionClick = { if (entry.isOwned()) commands.push(BiliPaiNavKey.SeasonSeriesDetail(it.type,it.id,it.mid,it.title,it.ownerName)) },
+                                             onFolderClick = { mediaId, ownerMid, title, ownerName ->
+-                                                if (entry.isOwned()) entry.currentDetail = com.android.purebilibili.feature.list.FavoriteCollectionRoute("favorite", mediaId, ownerMid, title, ownerName) },
++                                                if (entry.isOwned()) commands.push(BiliPaiNavKey.SeasonSeriesDetail("favorite",mediaId,ownerMid,title,ownerName)) },
+                                             onBangumi = { if (entry.isOwned()) openBangumi(it) },
+                                             onArticle = { id, _ -> if (entry.isOwned()) openArticle(id) },
+                                             onTopic = { if (entry.isOwned()) openTopic(it) },
+@@ -1575,9 +1596,14 @@
+                                                 }
+                                             }, detail = detail,
+                                             listScopedSearchChannel = entry.searchChannel, scrollToTopChannel = entry.scrollToTopChannel,
+-                                            isCurrentPage = !showVideo && !activatingUpdate,
++                                            isCurrentPage = active && !activatingUpdate,
+                                             retainedViewModel = detail?.let(entry::detailViewModel) ?: entry.viewModel,
+-                                            loadFavoriteViewModelOnEnter = false)
++                                            loadFavoriteViewModelOnEnter = false,
++                                            initialSearchQuery = (entryKey as? BiliPaiNavKey.FavoriteSearch)?.query.orEmpty(),
++                                            initialSearchScope = (entryKey as? BiliPaiNavKey.FavoriteSearch)?.scope ?: com.android.purebilibili.data.model.response.FavoriteSearchScope.CURRENT_FOLDER,
++                                            initialSubscribed = entryKey == BiliPaiNavKey.FavoriteSubscribed,
++                                            isSearchDestination = entryKey is BiliPaiNavKey.FavoriteSearch,
++                                            onOpenSearchDestination = { value -> commands.push(BiliPaiNavKey.FavoriteSearch(value,(entryKey as? BiliPaiNavKey.FavoriteSearch)?.scope ?: com.android.purebilibili.data.model.response.FavoriteSearchScope.CURRENT_FOLDER)) })
+                                     }
+                                     }
+                                 }
+@@ -1626,55 +1652,61 @@
+                             section == DesktopSection.APPEARANCE -> DesktopAppearanceSettings(appearance,
+                                 onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } })
+                             section == DesktopSection.JS_CONTENT -> Column(Modifier.fillMaxSize()) {
+-                                TextButton(onClick = { navigate(if (jsSettingsOrigin) DesktopSection.SETTINGS else DesktopSection.PLUGINS) }) { Text("返回插件") }
++                                TextButton(onClick = { commands.back() }) { Text("返回插件") }
+                                 Box(Modifier.weight(1f).fillMaxWidth()) {
+                                     DesktopJsPluginContentScreen(pluginRuntime.jsPlugins, jsPluginId,
+                                         onPlayMedia = ::openJsMedia, onFeedModule = { _, _ -> jsSubscriptionReader = true })
+                                 }
+                             }
+                             section == DesktopSection.EXTERNAL_MEDIA -> DesktopExternalMediaScreen(retainedMedia.external, player, playerContent,
+-                                onBack = { navigate(DesktopSection.JS_CONTENT) })
+-                            section in listOf(DesktopSection.HOME, DesktopSection.POPULAR, DesktopSection.REGION, DesktopSection.RANKING, DesktopSection.PRECIOUS, DesktopSection.WEEKLY) ->
+-                                DiscoveryContentScreen(when (section) {
+-                                    DesktopSection.HOME -> DiscoverySection.RECOMMEND
+-                                    DesktopSection.POPULAR -> DiscoverySection.POPULAR
+-                                    DesktopSection.REGION -> DiscoverySection.REGION
+-                                    DesktopSection.RANKING -> DiscoverySection.RANKING
+-                                    DesktopSection.PRECIOUS -> DiscoverySection.PRECIOUS
+-                                    else -> DiscoverySection.WEEKLY
+-                                }, discovery, repository, pluginStore, ::openVideo, ::openUser, { loginDialog = true },
+-                                    onBangumiPartition = { type -> seasonType = type; showSeason(0) }, onPlayQueue = ::openQueue, runtime = pluginRuntime,
+-                                    onRestart = onRestart, isClosing = isClosing,
+-                                    onWeeklyBack = ::closeWeeklySeries,
+-                                    initialWeeklyNumber = if (section == DesktopSection.WEEKLY) weeklyInitialNumber else null)
++                                onBack = { commands.back() })
+                             section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku, retainedMedia)
+                             section == DesktopSection.BANGUMI -> BangumiBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, downloads, onToggleFullscreen, playerContent, seasonId, danmaku,
+                                 initialIsCourse = isCourse, initialEpisodeId = episodeId, initialProgressSeconds = seasonProgress, initialSeasonType = seasonType, retained = retainedMedia, community = community)
+-                            section == DesktopSection.DOWNLOADS -> DownloadBrowserScreen(downloads, player, playerError,
+-                                { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, danmaku, retainedMedia,
+-                                onOnlinePlay = { task ->
+-                                    if (task.episodeId > 0) showSeason(task.seasonId, task.episodeId, task.isCourse,
+-                                        task.item.lastPlaybackPositionMs.coerceAtLeast(0L) / 1000.0)
+-                                    else if (task.item.bvid.startsWith("BV")) openVideo(VideoCard(task.item.bvid, task.title,
+-                                        task.item.cover, task.item.ownerName, 0L, task.item.duration,
+-                                        progressSeconds = (task.item.lastPlaybackPositionMs.coerceAtLeast(0L) / 1000L).toInt(),
+-                                        preferredCid = task.item.cid))
+-                                    else error = "缓存文件已失效，此任务没有可用的在线入口"
+-                                })
++                            entryKey == BiliPaiNavKey.DownloadList -> {
++                                val owner = requireNotNull(homeRootRef.get()?.retainer?.current()).entry.gate
++                                val binding = remember(owner) { DesktopOriginalDownloadListBindings(globalPluginContext,downloads,owner.scope,
++                                    owner::owns,owner::commit,::desktopDownloadNetworkAvailable,{error=it}) }
++                                DesktopOriginalDownloadListHost(binding,{commands.back()},
++                                    {bvid->commands.video(BiliPaiNavKey.VideoDetail(bvid,sourceRoute="download_list"))},
++                                    {taskId->commands.push(BiliPaiNavKey.OfflineVideoPlayer(taskId))})
++                            }
++                            entryKey is BiliPaiNavKey.OfflineVideoPlayer -> {
++                                val owner = requireNotNull(homeRootRef.get()?.retainer?.current()).entry.gate
++                                val binding = remember(owner,entryKey.taskId) { DesktopOfflineTaskPlayerBinding(downloads,retainedMedia,danmaku,
++                                    owner.scope,owner.epoch,{repository.sessionEpoch},owner::owns,owner::commit,
++                                    ::desktopDownloadNetworkAvailable,{playerError}) }
++                                DesktopOfflineTaskPlayerHost(entryKey.taskId,binding,{commands.back()},
++                                    {task->if(task.episodeId>0) commands.push(BiliPaiNavKey.BangumiPlayer(task.seasonId,task.episodeId,
++                                        task.item.lastPlaybackPositionMs.coerceAtLeast(0L),task.isCourse))
++                                    else commands.video(BiliPaiNavKey.VideoDetail(task.item.bvid,task.item.cid,task.item.cover,
++                                        resumePositionMs=task.item.lastPlaybackPositionMs.coerceAtLeast(0L),sourceRoute="offline_video"))},
++                                    onToggleFullscreen,playerContent)
++                            }
++                            entryKey is BiliPaiNavKey.WeeklySeries -> DesktopWeeklySeriesScreen(discovery.weeklySeriesRequests(),repository,entryKey.number,{commands.back()},
++                                {video,list -> val cards=list.map{VideoCard(it.bvid,it.title,it.pic,it.owner.name,it.stat.view.toLong(),it.duration,preferredCid=it.cid)};
++                                    openQueue(cards,cards.firstOrNull{it.bvid==video.bvid} ?: VideoCard(video.bvid,video.title,video.pic,video.owner.name,video.stat.view.toLong(),video.duration,preferredCid=video.cid))},isClosing=isClosing)
++                            entryKey == BiliPaiNavKey.Login -> Column(Modifier.fillMaxSize()) {
++                                TextButton(onClick={commands.back()}) {Text("返回")}
++                                AdvancedLoginDialog(repository,onDismiss={commands.back()},onComplete={commands.back()})
++                            }
++                            entryKey is BiliPaiNavKey.Web -> Column {
++                                Text(entryKey.title);TextButton(onClick={openDynamicWeb(entryKey.url,entryKey.title)}){Text("在浏览器打开")}
++                            }
+                             section == DesktopSection.LISTEN -> if (listen != null) ListenBrowserScreen(listen, preferences, ::changePreferences, ::openVideo, { loginDialog = true })
+                                 else Text(playerError ?: "音频播放器未能初始化")
+                             section == DesktopSection.BGM -> bgmRequest?.let { request ->
+                                 DesktopBgmDetailRootHost(request, repository, community, commentFraud,
+                                     nowPlayingBarOverlayVisible = listen?.state?.value?.current != null,
+                                     onBack = ::closeBgm,
+-                                    onVideosClick = { bgmRequest = request.copy(showVideos = true) },
++                                    onVideosClick = { commands.push(BiliPaiNavKey.BgmDetail(request.musicId,request.aid,request.cid,true)) },
+                                     onVideoClick = { bvid, cid, cover -> openVideo(VideoCard(bvid, "", cover, "", 0, 0, preferredCid = cid)) },
+                                     onUserClick = ::openUser, onLinkClick = { raw ->
+                                         runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let {
+                                             runCatching { java.awt.Desktop.getDesktop().browse(it) }
+                                         }
+                                     }, onLogin = { loginDialog = true },
+-                                    onMediaSearch = { _, _, _ -> false })
++                                    onMediaSearch = { _, title, _ -> commands.push(BiliPaiNavKey.Search(title)) })
+                             }
+                             section == DesktopSection.MUSIC -> {
+                                 val source = musicSource
+@@ -1683,15 +1715,15 @@
+                                 else Text(playerError ?: "请从个人空间的音频栏目打开歌曲")
+                             }
+                             section == DesktopSection.STORY -> DesktopStoryScreen(storyTopic, storySeed,
+-                                isActive = !showVideo && !activatingUpdate,
++                                isActive = active && !activatingUpdate,
+                                 playback = storyHost.snapshot(playing, native, playerError),
+-                                onPlaybackRequest = { storyHost.request(it, section == DesktopSection.STORY && !showVideo && !activatingUpdate) },
+-                                onReleasePlayback = { storyHost.release(it) }, onBack = { navigate(storyReturnSection) },
++                                onPlaybackRequest = { storyHost.request(it, active && !activatingUpdate) },
++                                onReleasePlayback = { storyHost.release(it) }, onBack = { commands.back() },
+                                 onUser = ::openUser, onSearch = { navigate(DesktopSection.SEARCH) },
+-                                onRetryPlayback = { storyHost.retry(it, section == DesktopSection.STORY && !showVideo && !activatingUpdate) },
++                                onRetryPlayback = { storyHost.retry(it, active && !activatingUpdate) },
+                                 nativeInput = player?.let { nativePlayer -> DesktopStoryNativeInputBinding(nativePlayer.surface,
+                                     sourceVersion = { nativePlayer.currentSourceVersion },
+-                                    owns = { owner -> section == DesktopSection.STORY && !showVideo && !activatingUpdate && storyHost.owns(owner) },
++                                    owns = { owner -> active && !activatingUpdate && storyHost.owns(owner) },
+                                     onPlayerKey = { action, version ->
+                                         nativePlayer.ownsSourceVersion(version) && playback.currentCastSource(version) != null && performPlayerKey(action)
+                                     }) },
+@@ -1702,14 +1734,7 @@
+                             section == DesktopSection.TOPIC -> DesktopTopicDetailScreen(topicId, storyTopic, community,
+                                 CommunityNavigation(::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword,
+                                     onDynamicRoute=::openDynamicRoute),
+-                                onBack = {
+-                                    if (topicStack.size > 1) {
+-                                        if (checkpointForNavigation()) { topicStack = topicStack.dropLast(1); topicId = topicStack.last() }
+-                                    } else navigate(topicReturnSection) {
+-                                        topicStack = emptyList()
+-                                        if (topicReturnSection == DesktopSection.DYNAMIC) dynamicRoute = topicReturnDynamicRoute
+-                                    }
+-                                }, onTopic = ::openTopic)
++                                onBack = { commands.back() }, onTopic = ::openTopic)
+                             section == DesktopSection.USER -> {
+                                 val spaceTargetMid = userId
+                                 val spaceTargetEpoch = repository.sessionEpoch
+@@ -1725,7 +1750,7 @@
+                                             runCatching { java.awt.Desktop.getDesktop().browse(uri) }
+                                         }
+                                     }, progressByBvid = progress, localPositionMs = { bvid -> ((history.firstOrNull { it.bvid == bvid }?.progressSeconds ?: 0) * 1000L) },
+-                                    locateBvid = playing.details?.takeIf { it.authorMid == userId }?.bvid ?: history.firstOrNull()?.bvid, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword, onImagePreviewFeedback = { error = it })
++                                    locateBvid = (entryKey as? BiliPaiNavKey.Space)?.targetBvid?.takeIf{it.isNotBlank()} ?: playing.details?.takeIf { it.authorMid == userId }?.bvid ?: history.firstOrNull()?.bvid, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword, onImagePreviewFeedback = { error = it })
+                             }
+                             section in listOf(DesktopSection.DYNAMIC, DesktopSection.SEARCH, DesktopSection.MESSAGES, DesktopSection.ARTICLE, DesktopSection.NOTES) ->
+                                 CommunityContentScreen(when(section) {
+@@ -1740,25 +1765,17 @@
+                                     initialDynamicId = dynamicRoute?.dynamicId.takeIf { section == DesktopSection.DYNAMIC }, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword,
+                                     defaultSearchHintEnabled = defaultSearchHintEnabled,
+                                     initialCommentRootRpid=dynamicRoute?.rootReplyId?:0L,initialCommentTargetRpid=dynamicRoute?.targetReplyId?:0L)
+-                            else -> Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+-                                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+-                                    Text(section.localizedLabel(strings), Modifier.weight(1f), style = MaterialTheme.typography.titleLarge)
+-                                    TextButton(onClick = { refresh++ }, enabled = !feedLoading) { Text(strings["common_refresh"]) }
+-                                    if (section in listOf(DesktopSection.HOME, DesktopSection.POPULAR)) {
+-                                        TextButton(onClick = { page = (page - 1).coerceAtLeast(1) }, enabled = page > 1 && !feedLoading) { Text("上一页") }
+-                                        Text("$page"); TextButton(onClick = { page++ }, enabled = !feedLoading) { Text("下一页") }
+-                                    }
+-                                }
+-                                if (feedLoading) LinearProgressIndicator(Modifier.fillMaxWidth())
+-                                if (cards.isEmpty() && !feedLoading) Text("这里暂时还没有视频", color = scheme.onSurfaceVariant)
+-                                LazyVerticalGrid(GridCells.Adaptive(240.dp), modifier = Modifier.fillMaxSize(),
+-                                    horizontalArrangement = Arrangement.spacedBy(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+-                                    items(cards, key = { it.bvid }) { card -> FeedCard(card) { openVideo(card) } }
+-                                }
++                            else -> Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.Center,horizontalAlignment=Alignment.CenterHorizontally) {
++                                Text("该原版页面的平台闭包仍在接入中：${entryKey.toLegacyRoute()}")
++                                TextButton(onClick={commands.back()}) { Text("返回") }
+                             }
+                         }
++
++                        }
++                    }
+                     }
+                 }
++            }
+             }
+         }
+         if (eyePaint.dimAlpha > 0f) Box(Modifier.fillMaxSize().background(Color.Black.copy(alpha = eyePaint.dimAlpha)))
+@@ -1894,3 +1911,34 @@
+         }
+     })
+ }
++
++private fun desktopReadySection(key:BiliPaiNavKey):DesktopSection = when(key) {
++    is BiliPaiNavKey.VideoDetail -> DesktopSection.HOME
++    BiliPaiNavKey.Dynamic,is BiliPaiNavKey.DynamicDetail -> DesktopSection.DYNAMIC
++    is BiliPaiNavKey.Search -> DesktopSection.SEARCH
++    is BiliPaiNavKey.Space -> DesktopSection.USER
++    is BiliPaiNavKey.ArticleDetail -> DesktopSection.ARTICLE
++    is BiliPaiNavKey.TopicDetail -> DesktopSection.TOPIC
++    is BiliPaiNavKey.Story -> DesktopSection.STORY
++    is BiliPaiNavKey.BgmDetail -> DesktopSection.BGM
++    is BiliPaiNavKey.MusicDetail,is BiliPaiNavKey.NativeMusic -> DesktopSection.MUSIC
++    BiliPaiNavKey.ListenVideo,is BiliPaiNavKey.AudioMode -> DesktopSection.LISTEN
++    is BiliPaiNavKey.Live -> DesktopSection.LIVE
++    is BiliPaiNavKey.Bangumi,is BiliPaiNavKey.BangumiDetail,is BiliPaiNavKey.BangumiPlayer -> DesktopSection.BANGUMI
++    BiliPaiNavKey.DownloadList,is BiliPaiNavKey.OfflineVideoPlayer -> DesktopSection.DOWNLOADS
++    BiliPaiNavKey.Favorite,BiliPaiNavKey.FavoriteSubscribed,is BiliPaiNavKey.FavoriteSearch,is BiliPaiNavKey.SeasonSeriesDetail -> DesktopSection.CLOUD_FAVORITES
++    BiliPaiNavKey.History,is BiliPaiNavKey.HistorySearch -> DesktopSection.CLOUD_HISTORY
++    BiliPaiNavKey.WatchLater,is BiliPaiNavKey.WatchLaterSearch -> DesktopSection.WATCH_LATER
++    is BiliPaiNavKey.Following -> DesktopSection.FOLLOWINGS
++    is BiliPaiNavKey.LikedVideos -> DesktopSection.LIKED
++    BiliPaiNavKey.Inbox,BiliPaiNavKey.ReplyMe,BiliPaiNavKey.AtMe,BiliPaiNavKey.LikeMe,BiliPaiNavKey.SystemNotice,is BiliPaiNavKey.Chat -> DesktopSection.MESSAGES
++    is BiliPaiNavKey.PluginsSettings -> DesktopSection.PLUGINS
++    is BiliPaiNavKey.JsPluginContent -> DesktopSection.JS_CONTENT
++    is BiliPaiNavKey.ExternalMedia -> DesktopSection.EXTERNAL_MEDIA
++    BiliPaiNavKey.AppearanceSettings -> DesktopSection.APPEARANCE
++    BiliPaiNavKey.Settings,is BiliPaiNavKey.SettingsCategory,BiliPaiNavKey.SettingsSearch,
++        BiliPaiNavKey.HomeSettings,BiliPaiNavKey.IconSettings,BiliPaiNavKey.AnimationSettings,
++        BiliPaiNavKey.PlaybackSettings,BiliPaiNavKey.PermissionSettings,BiliPaiNavKey.MessageNotificationSettings,
++        BiliPaiNavKey.BottomBarSettings,BiliPaiNavKey.SettingsShare,BiliPaiNavKey.WebDavBackup -> DesktopSection.SETTINGS
++    else -> DesktopSection.UNSUPPORTED // Explicit unsupported leaf; never Home or Notes.
++}

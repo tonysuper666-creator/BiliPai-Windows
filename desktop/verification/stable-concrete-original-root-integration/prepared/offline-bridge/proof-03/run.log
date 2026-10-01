@@ -1,0 +1,26 @@
+PASS Every candidate class loads without initialization
+PASS TaskId selects exact quality, not the first bvid match
+PASS The existing original policy selects a real completed local file
+PASS Missing completed file with actual network state keeps original online routing
+PASS Missing file without network does not fabricate an online success
+PASS Incomplete tasks cannot route to online or offline players
+PASS Online callback retains exact authoritative task fields
+PASS Actual native initialization failure is visible and does not open a task chooser
+PASS Task-specific failure surface renders a real return action
+PASS The taskId route cannot return the unrelated task-selection list
+PASS The actual task-specific return button invokes the required navigation action once
+PASS Task surface disposal retires its navigation binding
+PASS InitialTaskId publishes into the same retained offline memory and actual native source version
+PASS The existing manager restores the selected task's actual title and playback position
+PASS Actual MPV decodes a real first frame belonging to the selected task version
+PASS The sole retained media actor acquires only the actual offline memory
+PASS Original episode queue switching replaces the actual native token
+PASS Disposing the owning task entry clears its exact native source and memory
+PASS A delayed superseded file-validation request cannot publish or acquire native playback
+PASS Supersession preserves cancellation and clears the actual entry loading state
+PASS A changed account epoch rejects player commands and new task requests
+PASS Old task binding disposal cannot stop an independent native source
+PASS Entry-job cancellation rejects late file validation and leaves a foreign native owner intact
+PASS Playback does not replace task storage or remove local files
+PASS All task routing and native validation use local files without HTTP
+OFFLINE_TASK_PROOF {"status":"PASS","groups":4,"assertions":25,"pointerPairs":1,"loadedCandidateClasses":17,"HTTPCalls":0,"nativeFirstFrame":true,"sameRetainedOfflineMemory":true,"fullOriginalOfflineUi":false,"rootMounted":false,"actualRootRuntimeAccepted":false,"chooserOpened":false,"nativeOverlayPaintAccepted":false}

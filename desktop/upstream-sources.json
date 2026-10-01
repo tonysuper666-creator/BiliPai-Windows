@@ -3781,7 +3781,8 @@
         "settings-dynamic-tabs-parity",
         "settings-dynamic-full-card-parity",
         "dynamic-detail-reply",
-        "home-viewmodel"
+        "home-viewmodel",
+        "stable-home-concrete-mount"
       ],
       "sha256": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b"
     },
@@ -3810,7 +3811,8 @@
       "features": [
         "settings-home-dynamic-parity",
         "settings-dynamic-tabs-parity",
-        "settings-dynamic-full-card-parity"
+        "settings-dynamic-full-card-parity",
+        "stable-home-concrete-mount"
       ],
       "sha256": "f3f74942a9ce57a2dfcbbc0312fdd0ae45ffb92add60e8ce67411cc9a28c2a44"
     },
@@ -4395,7 +4397,8 @@
         "live-home-list",
         "stable-home-return-navigation",
         "live-sub-navigation",
-        "stable-root-home-navigation"
+        "stable-root-home-navigation",
+        "stable-home-concrete-mount"
       ],
       "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59"
     },
@@ -7885,6 +7888,14 @@
         "stable-download-list-original"
       ],
       "mode": "platform-adapter-reference"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicBackToTopPolicy.kt",
+      "sha256": "26ff4b850aa9409d68b57d55aba917d6e3eae9bfbdaa7773a09c325ff51e4b30",
+      "features": [
+        "stable-home-concrete-mount"
+      ],
+      "mode": "direct"
     }
   ],
   "featureCoverage": {

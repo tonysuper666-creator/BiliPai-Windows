@@ -600,6 +600,24 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         sessions.logout()
     }
 
+    /** AUTH Home nav invalidation: account mutation under the SAME Store admission only.
+     * The caller drains its event outside the Store callback; HTTP cancellation occurs after
+     * admission releases the Store monitor. Retired/foreign events never log out an account. */
+    internal fun logoutHomeAuthenticationInvalidated(expectedEpoch: Long, expectedMid: Long,
+        stillOwned: () -> Boolean): Boolean {
+        val applied = try {
+            sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) {
+                if (expectedMid <= 0L || sessions.account.value?.mid != expectedMid) false
+                else { sessions.logout(); true }
+            }
+        } catch (failure: BiliApiException) {
+            if (failure.apiCode == -101) return false
+            throw failure
+        }
+        if (applied) resetAuthentication()
+        return applied
+    }
+
     private suspend fun ensureVisitorSession(expectedEpoch: Long? = null,
         stillOwned: () -> Boolean = { true }, callFactory: okhttp3.Call.Factory = client,
         visitorApi: BuvidApi = buvidApi) = visitorMutex.withLock {

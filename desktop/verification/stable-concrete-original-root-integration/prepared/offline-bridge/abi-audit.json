@@ -1,0 +1,10 @@
+{
+  "actualSnapshot": 44,
+  "actualRuntimeEntries": 97,
+  "candidateClasses": 17,
+  "candidateMethods": 128,
+  "newClassOverlap": [],
+  "samePackagePublicStaticMethodOverlap": [],
+  "invalidJvmMethodNames": [],
+  "prospectiveExistingClassOverrides": []
+}

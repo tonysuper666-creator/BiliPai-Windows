@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1540:158: error: unresolved reference 'FavoriteSearchScope'.
+                                            initialSearchScope = (entryKey as? BiliPaiNavKey.FavoriteSearch)?.scope ?: com.android.purebilibili.feature.list.FavoriteSearchScope.CURRENT_FOLDER,
+                                                                                                                                                             ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1543:223: error: unresolved reference 'FavoriteSearchScope'.
+                                            onOpenSearchDestination = { value -> commands.push(BiliPaiNavKey.FavoriteSearch(value,(entryKey as? BiliPaiNavKey.FavoriteSearch)?.scope ?: com.android.purebilibili.feature.list.FavoriteSearchScope.CURRENT_FOLDER)) })
+                                                                                                                                                                                                                              ^^^^^^^^^^^^^^^^^^^

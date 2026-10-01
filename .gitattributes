@@ -69,3 +69,4 @@ desktop/verification/stable-application-image-profile-platform-integration/** -t
 desktop/verification/stable-playback-account-publication-integration/** -text
 desktop/verification/stable-original-root-navigation-integration/** -text
 desktop/verification/stable-download-profile-video-entry-integration/** -text
+desktop/verification/stable-concrete-original-root-integration/** -text

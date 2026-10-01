@@ -1,0 +1,327 @@
+{
+  "status": "FROZEN_SOURCE_ONLY",
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "snapshot": 44,
+  "runtimeEntries": 97,
+  "payloadCount": 2,
+  "sharedHunks": 0,
+  "originalIdentityDelta": 0,
+  "compile": {
+    "sources": 2,
+    "classes": 17,
+    "methods": 128,
+    "jarSha256Bytes": "83f16baaadb10d0c2e7a840516202d547a16a9c0a512a7ba55bba9878139bd82",
+    "newClassOverlap": 0,
+    "topMethodOverlap": 0,
+    "invalidJvmMethods": 0
+  },
+  "proof": {
+    "groups": 4,
+    "assertions": 25,
+    "pointerPairs": 1,
+    "actualNativeLocalFirstFrame": true,
+    "sameRetainedOfflineMemory": true,
+    "HTTPCalls": 0,
+    "chooserOpened": false
+  },
+  "boundaries": {
+    "fullOriginalOfflineUi": false,
+    "actualRootMounted": false,
+    "actualRootRuntimeAccepted": false,
+    "nativeRootWindowOrOverlayPaintAccepted": false,
+    "rawOriginalUiReviewOnly": true,
+    "productionExistingClassOverrides": 0,
+    "sharedGradleRun": false
+  },
+  "installContract": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\install-contract.json",
+    "sha256Bytes": "dde2c91979a08c95246968ceb6d21c70a9d72156b4254b3dd47e37df367d10b4"
+  },
+  "files": [
+    {
+      "path": "abi-audit.json",
+      "sha256Bytes": "47e9f2269dddd1ea5f117f367caf99c670a3b925c6c776688fe4276bcca9d9b7",
+      "size": 255
+    },
+    {
+      "path": "audit-freeze.py",
+      "sha256Bytes": "56000970d5a77bda3ce5ffe4260fb0ffd762466f7a228b78557c661b3cdbd48f",
+      "size": 6564
+    },
+    {
+      "path": "compile-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "ebcac55478ab4b540d5c9b165736dcf83dddc3c54f6d88de021239d57b66e7c3",
+      "size": 82
+    },
+    {
+      "path": "compile-01/compile-result.json",
+      "sha256Bytes": "7b16b9c91c3b53725ddb1e0d27743b2f72f230975f2e9aeb091f864e2af54759",
+      "size": 1316
+    },
+    {
+      "path": "compile-01/kotlin.args",
+      "sha256Bytes": "f1b77f6d3a1276b091217762ddd82ca6118238ffa4b1b283d24acee1b9fc5e3a",
+      "size": 25127
+    },
+    {
+      "path": "compile-01/kotlin.log",
+      "sha256Bytes": "25255d30de0808441dad922197e7d50e660997823e71c7805db7c5b67d7d7694",
+      "size": 798
+    },
+    {
+      "path": "compile-01/offline-task-player.jar",
+      "sha256Bytes": "370ce6339986b04f7a749063a55f51ec42c5cf137fbc52644eac9e4c1868481e",
+      "size": 48424
+    },
+    {
+      "path": "compile-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "ebcac55478ab4b540d5c9b165736dcf83dddc3c54f6d88de021239d57b66e7c3",
+      "size": 82
+    },
+    {
+      "path": "compile-02/compile-result.json",
+      "sha256Bytes": "b59d04ce8b44c0bb900d102229bee55db17a8ba06b82c3999a92215ea2e3a8b3",
+      "size": 1316
+    },
+    {
+      "path": "compile-02/kotlin.args",
+      "sha256Bytes": "39d59df62bcddfc9a6abbd3bcc202ee54fef8ba8ea8658ee310ef7d891a8f236",
+      "size": 25127
+    },
+    {
+      "path": "compile-02/kotlin.log",
+      "sha256Bytes": "7ca5c0ece0cfbe19703a46d3c6abd13e415164fdffa4896dd125f5f452aec3ed",
+      "size": 800
+    },
+    {
+      "path": "compile-02/offline-task-player.jar",
+      "sha256Bytes": "439348ed6c18d52f23f286f6c0afb024ffac48376aacc0fb318829203904f4f0",
+      "size": 49318
+    },
+    {
+      "path": "compile-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "ebcac55478ab4b540d5c9b165736dcf83dddc3c54f6d88de021239d57b66e7c3",
+      "size": 82
+    },
+    {
+      "path": "compile-03/compile-result.json",
+      "sha256Bytes": "85ec41ed61d93316af685153ecf2ae6a9d6a7a445618e5d3b819e49122186fed",
+      "size": 1316
+    },
+    {
+      "path": "compile-03/kotlin.args",
+      "sha256Bytes": "903de23f5424e4b369d00c8c83bf534134138893adc1e396b44b1c123db1bb19",
+      "size": 25127
+    },
+    {
+      "path": "compile-03/kotlin.log",
+      "sha256Bytes": "7ca5c0ece0cfbe19703a46d3c6abd13e415164fdffa4896dd125f5f452aec3ed",
+      "size": 800
+    },
+    {
+      "path": "compile-03/offline-task-player.jar",
+      "sha256Bytes": "83f16baaadb10d0c2e7a840516202d547a16a9c0a512a7ba55bba9878139bd82",
+      "size": 50395
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "0574d8701630a83875c325b783088a0b0b9cbaa2e5474f90fca3c1d900946507",
+      "size": 3130
+    },
+    {
+      "path": "input-audit.json",
+      "sha256Bytes": "8273af9ac0d7702074eeb2d01026d11dfc7bc71a890df923a0379f343e95c9b4",
+      "size": 38023
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "dde2c91979a08c95246968ceb6d21c70a9d72156b4254b3dd47e37df367d10b4",
+      "size": 1839
+    },
+    {
+      "path": "OfflineTaskPlayerFixture.kt",
+      "sha256Bytes": "b2baa21b811d527a78a29df32f35b9750e3ecf011bf3dd6f34fc7979e8346b41",
+      "size": 15007
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineTaskPlayerBinding.kt",
+      "sha256Bytes": "29a47115d6eb7e340c38907ea5b12766ad70e2c3877c504341d4a2fe7d7e473c",
+      "size": 9846
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineTaskPlayerHost.kt",
+      "sha256Bytes": "fac05aaeddf932c741dea972d41ba9423927cf190e3bf4dd44b14b21065d9d74",
+      "size": 2814
+    },
+    {
+      "path": "proof-01/classes/META-INF/offline_task_fixture.kotlin_module",
+      "sha256Bytes": "6d126bd581fb388a976da4caff81241968200cdbf7aab6f469b025f972e73e95",
+      "size": 78
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "63db0949356e6ab6fc4433b2dc03219e3b5093f7d7b2cef9bd9d2bc9e5787c8e",
+      "size": 799
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sha256Bytes": "1d042095fd46af36ef339bb59838ee7d2b3633e56d94ddc00dda4cd0c985ca02",
+      "size": 25155
+    },
+    {
+      "path": "proof-01/offline-task-fixture.jar",
+      "sha256Bytes": "7bc4fc5115bad0dfd0cf363af4b690b8018f5764e9120d1aad06c2adaa07a552",
+      "size": 33991
+    },
+    {
+      "path": "proof-01/proof-result.json",
+      "sha256Bytes": "fc3bbcbf0373ee9e211de6c5441b992bd3d689f7cf561ac8fb4b574602fd1e04",
+      "size": 1323
+    },
+    {
+      "path": "proof-01/run.log",
+      "sha256Bytes": "052c286f448a2674286e02ae60f38071f59ad043f517c9d9d937950e8a189c35",
+      "size": 1773
+    },
+    {
+      "path": "proof-02/classes/META-INF/offline_task_fixture.kotlin_module",
+      "sha256Bytes": "6d126bd581fb388a976da4caff81241968200cdbf7aab6f469b025f972e73e95",
+      "size": 78
+    },
+    {
+      "path": "proof-02/compile.log",
+      "sha256Bytes": "223cc71edb12b5812ef7d40e8e889613ca6c789c6083d99cf38381374b75825d",
+      "size": 799
+    },
+    {
+      "path": "proof-02/compiler.args",
+      "sha256Bytes": "fbdbbcf0a81717d39df1fef4b957cfef6bfae3489f6117db9c5adb9b00900268",
+      "size": 25155
+    },
+    {
+      "path": "proof-02/offline-task-fixture.jar",
+      "sha256Bytes": "47ab50f4d26c842e89c778f3d2d02506912700f25d55ac5a095ff8efa94db221",
+      "size": 45202
+    },
+    {
+      "path": "proof-02/run.log",
+      "sha256Bytes": "3977bb72fa5d4792b01984399cb1510dd7abaac52ff2f32f4d83510167d88efd",
+      "size": 2469
+    },
+    {
+      "path": "proof-03/classes/META-INF/offline_task_fixture.kotlin_module",
+      "sha256Bytes": "6d126bd581fb388a976da4caff81241968200cdbf7aab6f469b025f972e73e95",
+      "size": 78
+    },
+    {
+      "path": "proof-03/compile.log",
+      "sha256Bytes": "223cc71edb12b5812ef7d40e8e889613ca6c789c6083d99cf38381374b75825d",
+      "size": 799
+    },
+    {
+      "path": "proof-03/compiler.args",
+      "sha256Bytes": "3586980521aa060cfe8b9f8d307c007780df160537cf93df3ecf8a760de680cc",
+      "size": 25155
+    },
+    {
+      "path": "proof-03/offline-task-fixture.jar",
+      "sha256Bytes": "6fe63cb201a16c2e9528ad10ac476cd803cce2365d67b269d7f0352f50a985c3",
+      "size": 45589
+    },
+    {
+      "path": "proof-03/proof-result.json",
+      "sha256Bytes": "a098c3c1c8088659f766e44ff83ed18f28bcb0f8e903425aeff064cd8b4c9998",
+      "size": 1345
+    },
+    {
+      "path": "proof-03/run.log",
+      "sha256Bytes": "9f5f1d4051e1a47898e500eca6ab362c0629fdcb9c01cd41f397a210f3bef61f",
+      "size": 2235
+    },
+    {
+      "path": "proof-04/classes/META-INF/offline_task_fixture.kotlin_module",
+      "sha256Bytes": "6d126bd581fb388a976da4caff81241968200cdbf7aab6f469b025f972e73e95",
+      "size": 78
+    },
+    {
+      "path": "proof-04/compile.log",
+      "sha256Bytes": "223cc71edb12b5812ef7d40e8e889613ca6c789c6083d99cf38381374b75825d",
+      "size": 799
+    },
+    {
+      "path": "proof-04/compiler.args",
+      "sha256Bytes": "92f2e5467f364af22161a82c676236f8ec890a6c6bbe8d9b4c60d762992c53c3",
+      "size": 25155
+    },
+    {
+      "path": "proof-04/offline-task-fixture.jar",
+      "sha256Bytes": "de67c93c4a8b6e3aad05d11b26b9996bf588724a7bb0b9133b04699bb558d760",
+      "size": 46034
+    },
+    {
+      "path": "proof-04/proof-result.json",
+      "sha256Bytes": "ad19b02569506e7ed2bbfcad7233de9911e9d4bd7867f845a88f0469a577dab3",
+      "size": 1345
+    },
+    {
+      "path": "proof-04/run.log",
+      "sha256Bytes": "9f5f1d4051e1a47898e500eca6ab362c0629fdcb9c01cd41f397a210f3bef61f",
+      "size": 2235
+    },
+    {
+      "path": "retained-original/feature/download/DownloadListNavigationPolicy.kt",
+      "sha256Bytes": "767f1778a03e02c99ca75d9dd29546c9b238e2c4649cfa3246f5069bbf39964d",
+      "size": 1195
+    },
+    {
+      "path": "retained-original/feature/download/DownloadListScreen.kt",
+      "sha256Bytes": "ef589577cc3c4a7f533016e76b6a89bb2d9fb394c9bfd5710fba8f9cf3f05a15",
+      "size": 24008
+    },
+    {
+      "path": "retained-original/feature/download/OfflineEpisodeQueuePolicy.kt",
+      "sha256Bytes": "52eb215ef6f9db38ca1790a683d190523e31a7b9d1f7815b9d163c2e9e8c8334",
+      "size": 1324
+    },
+    {
+      "path": "retained-original/feature/download/OfflinePlaybackSessionPolicy.kt",
+      "sha256Bytes": "dc3c9707a5daf573d7d1475b4ed954066f8e188092715bfdc9fd5e461e8a79f6",
+      "size": 1213
+    },
+    {
+      "path": "retained-original/feature/download/OfflineVideoPlaybackPolicy.kt",
+      "sha256Bytes": "d0557a25563a5a5362917680a6233123aba5abd82df96abe325696d281ba07ba",
+      "size": 3096
+    },
+    {
+      "path": "retained-original/feature/download/OfflineVideoPlayerScreen.kt",
+      "sha256Bytes": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226",
+      "size": 53249
+    },
+    {
+      "path": "retained-original/feature/download/OfflineVideoRoutingPolicy.kt",
+      "sha256Bytes": "5b1f4e72c8db8f2b49b007a15745622cd1b9e1f08825e9838ed0011261b354e0",
+      "size": 724
+    },
+    {
+      "path": "retained-original/navigation/AppNavigation.kt",
+      "sha256Bytes": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "size": 291157
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "ec72533825b82c805bfe7ba25e8d30f07b28ae147580e53bda075f668330e16f",
+      "size": 8757
+    },
+    {
+      "path": "run-proof.py",
+      "sha256Bytes": "4acfc4b819bcd56758ac446def813755bfe55efd024db9db5d7ce30410599538",
+      "size": 3584
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "058cc73899620316364071f767932f0ce5cad11b909583cbacacf3769345419f",
+      "size": 7356
+    }
+  ]
+}

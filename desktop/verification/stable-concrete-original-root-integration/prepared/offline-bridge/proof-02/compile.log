@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-offline-task-player-parity\OfflineTaskPlayerFixture.kt:89:49: warning: unnecessary safe call on a non-null receiver of type 'DownloadTask'.
+        prove(online?.id == missing.id && online?.item?.cid == 3L && online?.item?.quality == 80, "Online callback retains exact authoritative task fields")
+                                                ^^
+work\BiliPai\desktop\.local\stable-offline-task-player-parity\OfflineTaskPlayerFixture.kt:89:76: warning: unnecessary safe call on a non-null receiver of type 'DownloadTask'.
+        prove(online?.id == missing.id && online?.item?.cid == 3L && online?.item?.quality == 80, "Online callback retains exact authoritative task fields")
+                                                                           ^^

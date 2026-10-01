@@ -1,0 +1,93 @@
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:718:70: error: argument type mismatch: actual type is 'String', but 'PopularSubCategory' was expected.
+                routes.root.entry.viewModel.switchPopularSubCategory(when(target) { DesktopSection.RANKING -> "rank"; DesktopSection.PRECIOUS -> "precious"; else -> "popular" })
+                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:719:60: error: argument type mismatch: actual type is 'String', but 'HomeCategory' was expected.
+                routes.root.entry.viewModel.switchCategory("popular"); BiliPaiNavKey.Home
+                                                           ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:742:56: error: unresolved reference 'SettingsAppearance'.
+            DesktopSection.APPEARANCE -> BiliPaiNavKey.SettingsAppearance
+                                                       ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:754:6: error: syntax error: Unexpected tokens (use ';' to separate expressions on the same line).
+    }): Boolean {
+     ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:755:61: error: 'return' is prohibited here.
+        if (activatingUpdate || !checkpointForNavigation()) return false
+                                                            ^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:755:68: error: return type mismatch: expected 'Unit', actual 'Boolean'.
+        if (activatingUpdate || !checkpointForNavigation()) return false
+                                                                   ^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:756:13: error: unresolved reference 'target'.
+        if (target == DesktopSection.CLOUD_FAVORITES) {
+            ^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:758:28: error: unresolved reference 'target'.
+            if (section == target && !showVideo) entry.scrollToTopChannel.trySend(Unit)
+                           ^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:761:13: error: unresolved reference 'target'.
+        if (target != DesktopSection.STORY) storyHost.retire()
+            ^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:762:13: error: unresolved reference 'target'.
+        if (target == DesktopSection.DYNAMIC) dynamicRoute = null
+            ^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:763:9: error: unresolved reference 'commit'.
+        commit()
+        ^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:765:13: error: unresolved reference 'target'.
+            target !in listOf(DesktopSection.SETTINGS, DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA)) {
+            ^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:769:61: error: unresolved reference 'target'.
+        showVideo = false; playerFocused = false; section = target; page = 1; error = null
+                                                            ^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:770:13: error: unresolved reference 'target'.
+        if (target == DesktopSection.HISTORY) cards = library.history()
+            ^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:771:13: error: unresolved reference 'target'.
+        if (target == DesktopSection.FAVORITES) cards = library.favorites()
+            ^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:772:9: error: 'return' is prohibited here.
+        return true
+        ^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:772:16: error: return type mismatch: expected 'Unit', actual 'Boolean'.
+        return true
+               ^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1558:66: error: argument type mismatch: actual type is 'String?', but 'String' was expected.
+                                            initialSearchQuery = (entryKey as? BiliPaiNavKey.FavoriteSearch)?.query,
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1559:66: error: argument type mismatch: actual type is 'FavoriteSearchScope?', but 'FavoriteSearchScope' was expected.
+                                            initialSearchScope = (entryKey as? BiliPaiNavKey.FavoriteSearch)?.scope,
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1562:131: error: unresolved reference 'query'.
+                                            onOpenSearchDestination = { value -> commands.push(BiliPaiNavKey.FavoriteSearch(value.query,value.scope)) })
+                                                                                                                                  ^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1562:143: error: unresolved reference 'scope'.
+                                            onOpenSearchDestination = { value -> commands.push(BiliPaiNavKey.FavoriteSearch(value.query,value.scope)) })
+                                                                                                                                              ^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1892:19: error: unresolved reference 'SettingsAppearance'.
+    BiliPaiNavKey.SettingsAppearance -> DesktopSection.APPEARANCE
+                  ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1894:23: error: unresolved reference 'SettingsHome'.
+        BiliPaiNavKey.SettingsHome,BiliPaiNavKey.SettingsIcon,BiliPaiNavKey.SettingsAnimation,
+                      ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1894:50: error: unresolved reference 'SettingsIcon'.
+        BiliPaiNavKey.SettingsHome,BiliPaiNavKey.SettingsIcon,BiliPaiNavKey.SettingsAnimation,
+                                                 ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1894:77: error: unresolved reference 'SettingsAnimation'.
+        BiliPaiNavKey.SettingsHome,BiliPaiNavKey.SettingsIcon,BiliPaiNavKey.SettingsAnimation,
+                                                                            ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1895:23: error: unresolved reference 'SettingsPlayback'.
+        BiliPaiNavKey.SettingsPlayback,BiliPaiNavKey.SettingsPermission,BiliPaiNavKey.SettingsMessageNotification,
+                      ^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1895:54: error: unresolved reference 'SettingsPermission'.
+        BiliPaiNavKey.SettingsPlayback,BiliPaiNavKey.SettingsPermission,BiliPaiNavKey.SettingsMessageNotification,
+                                                     ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1895:87: error: unresolved reference 'SettingsMessageNotification'.
+        BiliPaiNavKey.SettingsPlayback,BiliPaiNavKey.SettingsPermission,BiliPaiNavKey.SettingsMessageNotification,
+                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\manual\com\bilipai\desktop\ui\DesktopReadyOriginalRootMount.kt:280:17: error: argument type mismatch: actual type is 'Long', but 'String' was expected.
+                root.capturedEpoch, root::isCurrentOwner)
+                ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\manual\com\bilipai\desktop\ui\DesktopReadyOriginalRootMount.kt:280:37: error: no value passed for parameter 'stillOwned'.
+                root.capturedEpoch, root::isCurrentOwner)
+                                    ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\manual\com\bilipai\desktop\ui\DesktopReadyOriginalRootMount.kt:280:43: error: inapplicable candidate(s): fun isCurrentOwner(): Boolean
+                root.capturedEpoch, root::isCurrentOwner)
+                                          ^^^^^^^^^^^^^^

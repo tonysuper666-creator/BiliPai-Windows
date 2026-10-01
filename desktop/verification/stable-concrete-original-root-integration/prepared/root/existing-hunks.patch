@@ -1,0 +1,276 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt
+@@ -40,7 +40,7 @@
+     val musicOverlayVisible: StateFlow<Boolean>,
+     val sourceForMediaUrl: (String) -> PlaybackSource,
+     val isVideoWallpaper: (String) -> Boolean,
+-    val imageWallpaper: @Composable (String, Any, Boolean, Modifier) -> Unit,
++    val imageWallpaper: @Composable (DesktopHomeMediaLifetime, String, Any, Boolean, Modifier) -> Unit,
+     val clipboard: (String) -> Unit,
+     val externalLink: (String) -> Unit,
+     val feedback: (String) -> Unit,
+@@ -146,7 +146,7 @@
+             val mediaOwner = DesktopHomeMediaLifetime(gate.scope, gate::owns, gate::commit, window.sourceForMediaUrl)
+             media = mediaOwner
+             val mediaPorts = DesktopHomeActualMediaPorts(mediaOwner, window.isVideoWallpaper,
+-                window.imageWallpaper, window.musicOverlayVisible,
++                { uri, model, playing, modifier -> window.imageWallpaper(mediaOwner, uri, model, playing, modifier) }, window.musicOverlayVisible,
+                 { message -> gate.commit { window.feedback(message) } }).ports
+             val lottie = DesktopHomeLottieBinding(repository.httpClient, gate::owns, gate::commit,
+                 { message -> gate.commit { window.feedback(message) } })
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt
+@@ -22,6 +22,8 @@
+     private val feedback: (String) -> Unit,
+ ) : DesktopDynamicCardPlatform, AutoCloseable {
+     override val emotes get() = session.emotes
++    /** Read-only access to the SAME assets actor for original Profile gallery saves. */
++    internal val imageAssets: DesktopDynamicImageAssets get() = assets
+     override fun isOwned() = lifetime.owns() && session.isOwned()
+     private fun commit(block: () -> Unit) { lifetime.commit { if (session.isOwned()) block() } }
+     private suspend fun <T> owned(block: suspend () -> T): T {
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt
+@@ -1,7 +1,7 @@
+ package com.bilipai.desktop.ui
+ 
+ import androidx.compose.runtime.*
+-import androidx.compose.runtime.saveable.rememberSaveableStateHolder
++import androidx.compose.runtime.saveable.SaveableStateHolder
+ import androidx.compose.foundation.pager.rememberPagerState
+ import androidx.compose.foundation.layout.PaddingValues
+ import androidx.compose.ui.Modifier
+@@ -29,7 +29,6 @@
+     val bottomBarVisible: () -> Boolean,
+     val bottomBarContentPadding: () -> Dp,
+     val setBottomBarVisible: (Boolean) -> Unit,
+-    val transitionBackground: VideoCardTransitionBackgroundState,
+     val transitionClock: VideoCardTransitionClock,
+     val homeGraphicsLayerCaptureReady: () -> Boolean,
+     val liveScrollRequestId: () -> Int,
+@@ -60,6 +59,8 @@
+     onRelatedVideoDetailReturned: () -> Unit,
+     modifier: Modifier,
+     chrome: DesktopOriginalRootChromeBindings,
++    onActiveDestination: (BiliPaiNavKey) -> Unit,
++    saveableState: SaveableStateHolder,
+     leafContent: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean) -> Unit,
+ ) {
+     if (!routes.owns() || !environment.isCurrent()) return
+@@ -73,7 +74,6 @@
+     }
+     val pagerState = rememberPagerState(pageCount = { visibleItems.size.coerceAtLeast(1) })
+     val mainPager = rememberMainBottomPagerState(pagerState)
+-    val saveableState = rememberSaveableStateHolder()
+     var contentReady by remember { mutableStateOf(false) }
+     LaunchedEffect(Unit) { withFrameNanos { }; contentReady = true }
+     LaunchedEffect(pagerState.currentPage, mainPager) { mainPager.syncPage() }
+@@ -115,6 +115,7 @@
+     val aggregate = root.entry.embeddedPages as DesktopOriginalHomeEmbeddedAggregate
+     val returnState = returning
+     val renderPage: @Composable (BiliPaiNavKey, Boolean, Boolean) -> Unit = { key, active, pagerHosted ->
++        if (active && routes.owns()) SideEffect { onActiveDestination(key) }
+         if (routes.owns()) CompositionLocalProvider(
+             LocalDesktopHomeEnvironment provides root.environment,
+             LocalDesktopHomeMediaPorts provides root.media,
+@@ -123,7 +124,6 @@
+             LocalDesktopHomeMetricHolder provides pages.window.resources.metrics.holder,
+             LocalDesktopHomeErrorAnimation provides { url, size, count -> root.ErrorAnimation(url, size, count) },
+             LocalSetBottomBarVisible provides pages.setBottomBarVisible,
+-            LocalVideoCardTransitionBackgroundState provides pages.transitionBackground,
+             LocalVideoCardTransitionClock provides pages.transitionClock,
+             LocalDesktopDynamicCardBindings provides aggregate.gallery,
+         ) {
+@@ -131,7 +131,7 @@
+                 BiliPaiNavKey.Home -> DesktopRetainedHomePage(root, pages.window, homeNavigation,
+                     pages.scrollOffset, pages.feedScrollInProgress, pages.homeScroll,
+                     LocalBottomBarVisible.current, LocalBottomBarContentPadding.current, pages.setBottomBarVisible,
+-                    pages.transitionBackground, pages.transitionClock, pages.window.globalHaze(),
++                    LocalVideoCardTransitionBackgroundState.current, pages.transitionClock, pages.window.globalHaze(),
+                     isTopLevelActive = active && (routes.currentKey == BiliPaiNavKey.MainHost || routes.currentKey == key),
+                     homeGraphicsLayerCaptureReady = pages.homeGraphicsLayerCaptureReady())
+                 BiliPaiNavKey.Profile -> DesktopOriginalProfileHost(pages.profile, profileNavigation,
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt
+@@ -17,7 +17,7 @@
+  * admission. A video covering Home retains this owner; account/entry/restore/window retirement
+  * closes it before the original owner and requests are destroyed.
+  *
+- * Lock order is existing SessionStore/entry admission -> this projection. close never obtains
++ * Navigation checkpoint runs before SessionStore/entry admission; then this projection. close never obtains
+  * the Store. Root navigation admission must invoke the supplied block exactly once iff accepted;
+  * it must not invoke the block then return false. Its checkpoint occurs before invocation. */
+ internal class DesktopHomeReturnNavigationOwner(
+@@ -61,11 +61,11 @@
+         visibleBottomBarRoutes: Set<String>,
+         performNavigation: (BiliPaiVideoSource, VideoCardTransitionSession) -> Unit,
+     ): Boolean {
+-        if (bvid.isBlank()) return false
++        if (!owns() || bvid.isBlank()) return false
+         var navigated = false
+-        mutate {
+-            admitRootNavigation {
+-                if (!owns()) return@admitRootNavigation
++        admitRootNavigation {
++            mutate {
++                if (!owns()) return@mutate
+                 val matchedVisibleCardRoute = resolveVideoCardSourceRouteForNavigation(
+                     currentRoute = currentKey?.toLegacyRoute(), videoBvid = bvid,
+                     lastClickedVideoSourceKey = CardPositionManager.lastClickedVideoSourceKey,
+@@ -99,10 +99,11 @@
+         isRelatedDetailPop: Boolean,
+         performBack: () -> Unit,
+     ): Boolean {
++        if (!owns()) return false
+         var returned = false
+-        mutate {
+-            admitRootNavigation {
+-                if (!owns()) return@admitRootNavigation
++        admitRootNavigation {
++            mutate {
++                if (!owns()) return@mutate
+                 if (isVideoDetailRoute(currentKey.toLegacyRoute()) &&
+                     isVideoCardReturnTargetRoute(targetKey?.toLegacyRoute()))
+                     mutableSession.value = mutableSession.value.markReturning(monotonicMillis())
+@@ -115,6 +116,17 @@
+             }
+         }
+         return returned
++    }
++
++    /** Original AppNavigation's markNavigation3VideoReturnBeforeBackAction: invoked at
++     * the actual NavDisplay return commit, before the physical back pop. */
++    fun prepareReturnBeforeBack(currentKey: BiliPaiNavKey, targetKey: BiliPaiNavKey?): Boolean {
++        mutate {
++            if (isVideoDetailRoute(currentKey.toLegacyRoute()) &&
++                isVideoCardReturnTargetRoute(targetKey?.toLegacyRoute()))
++                mutableSession.value = mutableSession.value.markReturning(monotonicMillis())
++        }
++        return owns() && mutableSession.value.isQuickReturnFromDetail
+     }
+ 
+     fun consumeReturning(): Boolean = mutate {
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt
+@@ -42,6 +42,8 @@
+         }
+         return result
+     }
++    /** Synchronous admission retirement only; the actual owner remains available for drain. */
++    fun retire() { closed.set(true) }
+     override fun close() {
+         closed.set(true)
+         val old = synchronized(lock) { mutableRoot.value.also { mutableRoot.value = null } }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt
+@@ -23,6 +23,7 @@
+     private val job = SupervisorJob(parentScope.coroutineContext[Job])
+     val scope = CoroutineScope(parentScope.coroutineContext + job)
+     val epoch: Long get() = capturedOwner.epoch
++    val mid: Long? get() = capturedOwner.mid.takeIf { it > 0L }
+     fun owns(): Boolean = !closed && job.isActive && rootAlive() && currentEpoch() == epoch &&
+         (currentMid()?.takeIf { it > 0L } ?: 0L) == capturedOwner.mid
+     fun assertOwned() { if (!owns()) throw CancellationException("Home entry retired") }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt
+@@ -15,6 +15,8 @@
+ import com.android.purebilibili.feature.dynamic.*
+ import com.bilipai.desktop.settings.*
+ import kotlinx.coroutines.*
++import kotlinx.coroutines.flow.receiveAsFlow
++import kotlinx.coroutines.flow.collectLatest
+ import kotlinx.coroutines.sync.Mutex
+ import kotlinx.coroutines.sync.withLock
+ import kotlinx.collections.immutable.toImmutableList
+@@ -39,6 +41,7 @@
+     var busy by mutableStateOf(false);private set
+     var error by mutableStateOf<Throwable?>(null);private set
+     val isAllTimeline: Boolean get() = type == "all"
++    internal fun currentUpdateBaseline(): String = original.currentUpdateBaseline(type = type)
+     fun persistCurrentItems() { if (isAllTimeline && stillOwned()) onAllTimelineChanged(page.items) }
+     override fun mutateDynamicItems(transform: (List<DynamicItem>) -> List<DynamicItem>) {
+         if (!stillOwned()) return
+@@ -112,6 +115,7 @@
+     row:@Composable (DynamicItem)->Unit,
+ ) {
+     val scope=rememberCoroutineScope()
++    val rootScroll = LocalDesktopRootDynamicScroll.current
+     val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
+     val incremental by preferences.incrementalRefresh.collectAsState(false)
+     val displayed=remember(state.page.items,transform){transform(state.page.items)}
+@@ -133,6 +137,11 @@
+     // must not cancel that request by retiring this threshold-observation effect.
+     LaunchedEffect(shouldLoadMore,state){if(shouldLoadMore)scope.launch{state.loadMore(incremental)}}
+     fun fetch(refresh:Boolean) {if(!state.busy)scope.launch{state.fetch(refresh,incremental)}}
++    LaunchedEffect(rootScroll, state) {
++        rootScroll?.receiveAsFlow()?.collectLatest { request ->
++            applyDesktopRootDynamicScroll(request, state.scroll) { state.fetch(true, incremental) }
++        }
++    }
+     Column(Modifier.fillMaxSize()) {
+         Row(Modifier.fillMaxWidth().padding(horizontal=20.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween) {
+             Text("${displayed.size} 项",style=MaterialTheme.typography.labelLarge)
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt
+@@ -14,6 +14,8 @@
+ import com.bilipai.desktop.settings.*
+ import kotlinx.coroutines.*
+ import kotlinx.coroutines.flow.first
++import kotlinx.coroutines.flow.receiveAsFlow
++import kotlinx.coroutines.flow.collectLatest
+ import kotlinx.coroutines.sync.Mutex
+ import kotlinx.coroutines.sync.withLock
+ 
+@@ -95,6 +97,12 @@
+     val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
+     val rows=transform(state.visibleItems())
+     val grid=remember(state.selectedUid){LazyStaggeredGridState()}
++    val rootScroll = LocalDesktopRootDynamicScroll.current
++    LaunchedEffect(rootScroll, state, state.selectedUid) {
++        rootScroll?.receiveAsFlow()?.collectLatest { request ->
++            applyDesktopRootDynamicScroll(request, grid) { state.refreshUser() }
++        }
++    }
+     val allowAutomaticLoadMore=shouldAutoLoadMoreForUserContentFilter(
+         isSelectedUserFeed=true,filter=state.filter,visibleItemCount=rows.size)
+     val shouldLoadMore by remember(grid,state.userLoading,state.hasUserMore,allowAutomaticLoadMore) {
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt
+@@ -48,6 +48,10 @@
+             if (model is DesktopDynamicTimelineState && model.isAllTimeline) currentAll = WeakReference(model)
+         }
+     }
++    /** Read only: the same registered All timeline remains the sole pagination authority. */
++    internal fun currentAllUpdateBaseline(): String = synchronized(models) {
++        if (alive.get() && stillOwned()) currentAll?.get()?.currentUpdateBaseline().orEmpty() else ""
++    }
+     fun isCurrentAll(model: DesktopDynamicTimelineState): Boolean = synchronized(models) {
+         alive.get() && stillOwned() && currentAll?.get() === model
+     }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
+@@ -600,6 +600,24 @@
+         sessions.logout()
+     }
+ 
++    /** AUTH Home nav invalidation: account mutation under the SAME Store admission only.
++     * The caller drains its event outside the Store callback; HTTP cancellation occurs after
++     * admission releases the Store monitor. Retired/foreign events never log out an account. */
++    internal fun logoutHomeAuthenticationInvalidated(expectedEpoch: Long, expectedMid: Long,
++        stillOwned: () -> Boolean): Boolean {
++        val applied = try {
++            sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) {
++                if (expectedMid <= 0L || sessions.account.value?.mid != expectedMid) false
++                else { sessions.logout(); true }
++            }
++        } catch (failure: BiliApiException) {
++            if (failure.apiCode == -101) return false
++            throw failure
++        }
++        if (applied) resetAuthentication()
++        return applied
++    }
++
+     private suspend fun ensureVisitorSession(expectedEpoch: Long? = null,
+         stillOwned: () -> Boolean = { true }, callFactory: okhttp3.Call.Factory = client,
+         visitorApi: BuvidApi = buvidApi) = visitorMutex.withLock {

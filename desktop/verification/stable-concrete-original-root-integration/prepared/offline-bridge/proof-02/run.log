@@ -1,0 +1,29 @@
+PASS Every candidate class loads without initialization
+PASS TaskId selects exact quality, not the first bvid match
+PASS The existing original policy selects a real completed local file
+PASS Missing completed file with actual network state keeps original online routing
+PASS Missing file without network does not fabricate an online success
+PASS Incomplete tasks cannot route to online or offline players
+PASS Online callback retains exact authoritative task fields
+PASS Actual native initialization failure is visible and does not open a task chooser
+PASS Task-specific failure surface renders a real return action
+PASS The taskId route cannot return the unrelated task-selection list
+Exception in thread "main" java.lang.IllegalStateException: The actual task-specific return button invokes the required navigation action once
+	at com.bilipai.desktop.ui.OfflineTaskPlayerFixtureKt.prove(OfflineTaskPlayerFixture.kt:28)
+	at com.bilipai.desktop.ui.OfflineTaskPlayerFixtureKt.access$prove(OfflineTaskPlayerFixture.kt:1)
+	at com.bilipai.desktop.ui.OfflineTaskPlayerFixtureKt$main$1.invokeSuspend(OfflineTaskPlayerFixture.kt:109)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTaskKt.resume(DispatchedTask.kt:233)
+	at kotlinx.coroutines.DispatchedTaskKt.dispatch(DispatchedTask.kt:152)
+	at kotlinx.coroutines.CancellableContinuationImpl.dispatchResume(CancellableContinuationImpl.kt:470)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core(CancellableContinuationImpl.kt:504)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core$default(CancellableContinuationImpl.kt:493)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeUndispatched(CancellableContinuationImpl.kt:596)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedResumeTask.run(EventLoop.common.kt:497)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.OfflineTaskPlayerFixtureKt.main(OfflineTaskPlayerFixture.kt:32)

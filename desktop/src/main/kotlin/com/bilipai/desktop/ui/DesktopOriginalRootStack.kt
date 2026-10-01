@@ -1,7 +1,7 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.Modifier
@@ -29,7 +29,6 @@ internal class DesktopOriginalRootPageBindings(
     val bottomBarVisible: () -> Boolean,
     val bottomBarContentPadding: () -> Dp,
     val setBottomBarVisible: (Boolean) -> Unit,
-    val transitionBackground: VideoCardTransitionBackgroundState,
     val transitionClock: VideoCardTransitionClock,
     val homeGraphicsLayerCaptureReady: () -> Boolean,
     val liveScrollRequestId: () -> Int,
@@ -60,6 +59,8 @@ internal class DesktopOriginalRootPageBindings(
     onRelatedVideoDetailReturned: () -> Unit,
     modifier: Modifier,
     chrome: DesktopOriginalRootChromeBindings,
+    onActiveDestination: (BiliPaiNavKey) -> Unit,
+    saveableState: SaveableStateHolder,
     leafContent: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean) -> Unit,
 ) {
     if (!routes.owns() || !environment.isCurrent()) return
@@ -73,7 +74,6 @@ internal class DesktopOriginalRootPageBindings(
     }
     val pagerState = rememberPagerState(pageCount = { visibleItems.size.coerceAtLeast(1) })
     val mainPager = rememberMainBottomPagerState(pagerState)
-    val saveableState = rememberSaveableStateHolder()
     var contentReady by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { withFrameNanos { }; contentReady = true }
     LaunchedEffect(pagerState.currentPage, mainPager) { mainPager.syncPage() }
@@ -115,6 +115,7 @@ internal class DesktopOriginalRootPageBindings(
     val aggregate = root.entry.embeddedPages as DesktopOriginalHomeEmbeddedAggregate
     val returnState = returning
     val renderPage: @Composable (BiliPaiNavKey, Boolean, Boolean) -> Unit = { key, active, pagerHosted ->
+        if (active && routes.owns()) SideEffect { onActiveDestination(key) }
         if (routes.owns()) CompositionLocalProvider(
             LocalDesktopHomeEnvironment provides root.environment,
             LocalDesktopHomeMediaPorts provides root.media,
@@ -123,7 +124,6 @@ internal class DesktopOriginalRootPageBindings(
             LocalDesktopHomeMetricHolder provides pages.window.resources.metrics.holder,
             LocalDesktopHomeErrorAnimation provides { url, size, count -> root.ErrorAnimation(url, size, count) },
             LocalSetBottomBarVisible provides pages.setBottomBarVisible,
-            LocalVideoCardTransitionBackgroundState provides pages.transitionBackground,
             LocalVideoCardTransitionClock provides pages.transitionClock,
             LocalDesktopDynamicCardBindings provides aggregate.gallery,
         ) {
@@ -131,7 +131,7 @@ internal class DesktopOriginalRootPageBindings(
                 BiliPaiNavKey.Home -> DesktopRetainedHomePage(root, pages.window, homeNavigation,
                     pages.scrollOffset, pages.feedScrollInProgress, pages.homeScroll,
                     LocalBottomBarVisible.current, LocalBottomBarContentPadding.current, pages.setBottomBarVisible,
-                    pages.transitionBackground, pages.transitionClock, pages.window.globalHaze(),
+                    LocalVideoCardTransitionBackgroundState.current, pages.transitionClock, pages.window.globalHaze(),
                     isTopLevelActive = active && (routes.currentKey == BiliPaiNavKey.MainHost || routes.currentKey == key),
                     homeGraphicsLayerCaptureReady = pages.homeGraphicsLayerCaptureReady())
                 BiliPaiNavKey.Profile -> DesktopOriginalProfileHost(pages.profile, profileNavigation,

@@ -1,0 +1,15 @@
+{
+  "fixtureSha": "cdb8cfc78fd5e0fa32369f9d56248ab4bd70c8ba8b9497b9ff7f32db4afa3dbd",
+  "authFixtureSha": "78e7a36e27d997610367c79e96e61f04c8f1d295fa857ae2d4cedd411eb06a73",
+  "candidateJarSha": "9b58b09e78511b2d92f1b1418a3da082ab1f3ab09de476c21562fcac90a91987",
+  "productKotlinSha": "6c67aade3e1862046237409101cff747c0f0913f5a868ed10b5955e3410dda2a",
+  "manifestSha": "72e862d74e18c2b388853634f0ef47c48ca1adba25b5d074ecd23fc6ecb7c3e0",
+  "orderedCpSha": "9fecec31b818a1b1d8be25f628ff6ec69e354a5c179ca42445aa1a1db3d52e94",
+  "prepared": true,
+  "mainMounted": false,
+  "realRootStoreLock": false,
+  "syntheticAdmissionOrder": true,
+  "realProductInMemoryStoreAndDispatcher": true,
+  "syntheticTerminalInterceptorNoSocket": true,
+  "exit": 0
+}

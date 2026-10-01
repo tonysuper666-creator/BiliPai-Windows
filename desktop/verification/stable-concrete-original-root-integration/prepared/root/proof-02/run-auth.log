@@ -1,0 +1,3 @@
+����: ���� com.bilipai.desktop.data.AuthInvalidationFixtureKt ���Ҳ��� main ����, �뽫 main ��������Ϊ:
+   public static void main(String[] args)
+���� JavaFX Ӧ�ó����������չjavafx.application.Application

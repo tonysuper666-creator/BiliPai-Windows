@@ -1,0 +1,45 @@
+{
+  "target": "v0.2.3",
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "newIdentities": 1,
+  "rows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicBackToTopPolicy.kt",
+      "sha256": "26ff4b850aa9409d68b57d55aba917d6e3eae9bfbdaa7773a09c325ff51e4b30",
+      "features": [
+        "stable-home-concrete-mount"
+      ],
+      "mode": "direct",
+      "operation": "append-new-identity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "features": [
+        "stable-home-concrete-mount"
+      ],
+      "mode": "policy-extract",
+      "operation": "merge-feature-preserve-mode"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt",
+      "sha256": "f3f74942a9ce57a2dfcbbc0312fdd0ae45ffb92add60e8ce67411cc9a28c2a44",
+      "features": [
+        "stable-home-concrete-mount"
+      ],
+      "mode": "policy-extract",
+      "operation": "merge-feature-preserve-mode"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "sha256": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b",
+      "features": [
+        "stable-home-concrete-mount"
+      ],
+      "mode": "policy-extract",
+      "operation": "merge-feature-preserve-mode"
+    }
+  ],
+  "soleDirectProducer": "existing prepareUpstreamSources Sync; no new extractor/task",
+  "reuse": "All complete Home/Profile/Category/Live/Partition/Bangumi/Subscription/Navigation/Dock families come from actual47. No original UI is re-emitted."
+}

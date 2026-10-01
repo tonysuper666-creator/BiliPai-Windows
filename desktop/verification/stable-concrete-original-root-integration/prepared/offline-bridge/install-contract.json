@@ -1,0 +1,29 @@
+{
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualCompileSnapshot": 44,
+  "actualRuntimeEntries": 97,
+  "payloads": [
+    {
+      "prepared": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOfflineTaskPlayerBinding.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineTaskPlayerBinding.kt",
+      "sha256Bytes": "29a47115d6eb7e340c38907ea5b12766ad70e2c3877c504341d4a2fe7d7e473c",
+      "kind": "new-Windows-navigation-consumer"
+    },
+    {
+      "prepared": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOfflineTaskPlayerHost.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineTaskPlayerHost.kt",
+      "sha256Bytes": "fac05aaeddf932c741dea972d41ba9423927cf190e3bf4dd44b14b21065d9d74",
+      "kind": "new-Windows-navigation-consumer"
+    }
+  ],
+  "sharedHunks": [],
+  "originalRegistryDelta": [],
+  "existingProducerChanges": [],
+  "requiresRootLeaf": "BiliPaiNavKey.OfflineVideoPlayer(taskId)",
+  "requiredRecipe": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\ROOT-INTEGRATION.md",
+  "actualRootRuntimeAccepted": false,
+  "fullOriginalOfflineUi": false,
+  "installProofJar": false,
+  "store": "same existing DesktopDownloadManager task queue and SessionStore admission",
+  "player": "same existing DesktopRetainedMedia.offline and Root MpvPlayer; no production player construction"
+}

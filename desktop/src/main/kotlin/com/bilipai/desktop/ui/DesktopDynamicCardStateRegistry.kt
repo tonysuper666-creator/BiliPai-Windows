@@ -48,6 +48,10 @@ internal class DesktopDynamicCardStateRegistry(
             if (model is DesktopDynamicTimelineState && model.isAllTimeline) currentAll = WeakReference(model)
         }
     }
+    /** Read only: the same registered All timeline remains the sole pagination authority. */
+    internal fun currentAllUpdateBaseline(): String = synchronized(models) {
+        if (alive.get() && stillOwned()) currentAll?.get()?.currentUpdateBaseline().orEmpty() else ""
+    }
     fun isCurrentAll(model: DesktopDynamicTimelineState): Boolean = synchronized(models) {
         alive.get() && stillOwned() && currentAll?.get() === model
     }

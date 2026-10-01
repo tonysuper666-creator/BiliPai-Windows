@@ -23,6 +23,7 @@ internal class DesktopHomeRetainedGate(
     private val job = SupervisorJob(parentScope.coroutineContext[Job])
     val scope = CoroutineScope(parentScope.coroutineContext + job)
     val epoch: Long get() = capturedOwner.epoch
+    val mid: Long? get() = capturedOwner.mid.takeIf { it > 0L }
     fun owns(): Boolean = !closed && job.isActive && rootAlive() && currentEpoch() == epoch &&
         (currentMid()?.takeIf { it > 0L } ?: 0L) == capturedOwner.mid
     fun assertOwned() { if (!owns()) throw CancellationException("Home entry retired") }

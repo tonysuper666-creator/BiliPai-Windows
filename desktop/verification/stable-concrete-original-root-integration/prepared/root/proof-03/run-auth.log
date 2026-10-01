@@ -1,0 +1,5 @@
+PASS retired epoch, foreign primary MID and retired caller preserve same account and dispatcher
+PASS real original Store invalidation enqueues under lock; accepted logout cancels existing dispatcher only after unlock
+ORIGIN repository=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-home-concrete-mount-parity/compile-14/candidate.jar
+ORIGIN sameStore=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar
+RESULT prepared2 groups; socket=false realRootUI=false diskAccount=false

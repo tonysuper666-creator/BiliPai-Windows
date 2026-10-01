@@ -1,0 +1,4 @@
+{
+  "reason": "Long-path helper checked an incorrect one-backslash prefix and doubled an already-prefixed prepared path. Reuse one explicitly constructed canonical prefix. Preflight failed before any product writes.",
+  "productMutated": false
+}

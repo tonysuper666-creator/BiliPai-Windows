@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\manual\com\bilipai\desktop\ui\DesktopReadyOriginalRootMount.kt:163:17: error: unresolved reference 'rememberVideoCardTransitionClock'.
+    val clock = rememberVideoCardTransitionClock()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-concrete-mount-parity\prepared\manual\com\bilipai\desktop\ui\DesktopReadyOriginalRootMount.kt:267:85: error: unresolved reference 'bottomPagerNavKeyForItem'.
+        val actions = DesktopOriginalFrostedNavigationActions({ item -> routes.push(bottomPagerNavKeyForItem(item)) },
+                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^

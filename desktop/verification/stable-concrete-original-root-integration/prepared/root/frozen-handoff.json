@@ -1,0 +1,442 @@
+{
+  "scope": "prepared concrete original Root/Home/MainHost/NavDisplay mount + same existing leaf owners; actual product Window pending",
+  "artifacts": [
+    {
+      "path": "GRADLE-SNIPPET.txt",
+      "sha256Bytes": "f9f8b03e20c65e3109587d7c29014fdb8bd69b2c840cca0059df7b967374c1c4"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "88d68a359f62572c899d651e82562febc3de131d18086fc4572a791362a04828"
+    },
+    {
+      "path": "compile-01/compile.args",
+      "sha256Bytes": "f9223caaaaad324f6bb78537c0563927e28e7ef10d376dff9e85c843622b1222"
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "f077b3c2c929f2b89fc5acd737412bb3c141d3aa9657f3dbbab6fad9998b1f82"
+    },
+    {
+      "path": "compile-01/inputs.json",
+      "sha256Bytes": "e4a3923e8b964bcb2c20f30770ca85cacad05c9a25464d31b61c51a9aa843eee"
+    },
+    {
+      "path": "compile-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "0b662a6d2dfe2e177d42bbd57a43d4329f1735f921e4c7f8531b3d8908f8c5c5"
+    },
+    {
+      "path": "compile-02/compile.args",
+      "sha256Bytes": "f32ef7579e055de11e5a550974f9a6ec6a840b065a1d0ef58f84d4aca4a39b7e"
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "d991bb066e9a2b053819ee3b5fcf6dd7000dd679e12267f32aeb68234094d386"
+    },
+    {
+      "path": "compile-02/inputs.json",
+      "sha256Bytes": "c2d284f0ef50111146482d99550d3792fd8d5ffc66eb9813645ee2c692b5aeee"
+    },
+    {
+      "path": "compile-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "0b662a6d2dfe2e177d42bbd57a43d4329f1735f921e4c7f8531b3d8908f8c5c5"
+    },
+    {
+      "path": "compile-03/compile.args",
+      "sha256Bytes": "9518da93c39d52b1a37987d8d240b80d4a2344758755f21c02f8eb3957c24704"
+    },
+    {
+      "path": "compile-03/compile.log",
+      "sha256Bytes": "d991bb066e9a2b053819ee3b5fcf6dd7000dd679e12267f32aeb68234094d386"
+    },
+    {
+      "path": "compile-03/inputs.json",
+      "sha256Bytes": "f5ebee4cc6f0086751c1ab40fbea0ae3eac2892a811972672e67ec5d866b0158"
+    },
+    {
+      "path": "compile-04/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "0b662a6d2dfe2e177d42bbd57a43d4329f1735f921e4c7f8531b3d8908f8c5c5"
+    },
+    {
+      "path": "compile-04/compile.args",
+      "sha256Bytes": "4e08f6ef0e81adb31c09646e1a6a2b417c211ab938528700662d202e583c5b61"
+    },
+    {
+      "path": "compile-04/compile.log",
+      "sha256Bytes": "d991bb066e9a2b053819ee3b5fcf6dd7000dd679e12267f32aeb68234094d386"
+    },
+    {
+      "path": "compile-04/inputs.json",
+      "sha256Bytes": "f4ee37c3b3a40c941b79677fd261e5ce07e5c5331273b1cda253938b2d1ea241"
+    },
+    {
+      "path": "compile-05/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "0b662a6d2dfe2e177d42bbd57a43d4329f1735f921e4c7f8531b3d8908f8c5c5"
+    },
+    {
+      "path": "compile-05/compile.args",
+      "sha256Bytes": "9a8051ea9848dec40c505e0e8b2e419bb57f3ddf7646da2674bff19ab56445a8"
+    },
+    {
+      "path": "compile-05/compile.log",
+      "sha256Bytes": "d991bb066e9a2b053819ee3b5fcf6dd7000dd679e12267f32aeb68234094d386"
+    },
+    {
+      "path": "compile-05/inputs.json",
+      "sha256Bytes": "95b0b30b2fa234df5b15b00ce5b552b86ee0bfa0dfdcfda096825bb5b7896938"
+    },
+    {
+      "path": "compile-06/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "07877e86c7544f98a787d76e2e132f0bdd9711c8337b23a24ce28aff5b378f77"
+    },
+    {
+      "path": "compile-06/compile.args",
+      "sha256Bytes": "1179ea44656dec9f41121bab0f93a5b08556922f11ea29884e533a6a0679d2a3"
+    },
+    {
+      "path": "compile-06/compile.log",
+      "sha256Bytes": "d991bb066e9a2b053819ee3b5fcf6dd7000dd679e12267f32aeb68234094d386"
+    },
+    {
+      "path": "compile-06/inputs.json",
+      "sha256Bytes": "9a223e6e2fcb006cbb9e3f15aa0d4ac371369cef0f029a4554ab75c1ecb0a497"
+    },
+    {
+      "path": "compile-07/compile.args",
+      "sha256Bytes": "f733006d36924da290327b7c157c6a5cc15e0b5387cfeeaa62942712ca61851f"
+    },
+    {
+      "path": "compile-07/compile.log",
+      "sha256Bytes": "6bbb954b26ee303d831649a7335cc6a9452c124f5f1c490c60e18545430d2f75"
+    },
+    {
+      "path": "compile-07/inputs.json",
+      "sha256Bytes": "00d333adf0204ffc5eac762157335458d3597408af09562e26606220705c3424"
+    },
+    {
+      "path": "compile-08/compile.args",
+      "sha256Bytes": "3bd9d885177a3ad3a34ada614d34c3cd7977a0715f63c9637eca3a05541a7c3e"
+    },
+    {
+      "path": "compile-08/compile.log",
+      "sha256Bytes": "a65cd5821a593642e5e168d8a7e78eb8dcf6604cffe9e8c1834dd474883ede50"
+    },
+    {
+      "path": "compile-08/inputs.json",
+      "sha256Bytes": "90ece9b84f63d287793959115ef05d53552b62c5ab2cce692a4929557426bd2a"
+    },
+    {
+      "path": "compile-09/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "53e9df320bcc2439325425d96826a0a9ab680c08c4abe5d5d66c38b48a8f6b82"
+    },
+    {
+      "path": "compile-09/compile.args",
+      "sha256Bytes": "8a5757d7dd26f554564e0335a38255ef29d398e833136ad6b5ad88fffeb08c72"
+    },
+    {
+      "path": "compile-09/compile.log",
+      "sha256Bytes": "b0849fbdfc2ecc8b58e1dd019ac72d17003412c1d46bfb6707df078b1af3d3d7"
+    },
+    {
+      "path": "compile-09/inputs.json",
+      "sha256Bytes": "c82dad6b5d0d95aeb767763f03ece5b5d33522daab864b359cf2966863b1f6e8"
+    },
+    {
+      "path": "compile-10/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "53e9df320bcc2439325425d96826a0a9ab680c08c4abe5d5d66c38b48a8f6b82"
+    },
+    {
+      "path": "compile-10/compile.args",
+      "sha256Bytes": "2a676e8e14e5cd99274de37c5d3eb4daa4d2fa42e05aeee04d189e53b30849dc"
+    },
+    {
+      "path": "compile-10/compile.log",
+      "sha256Bytes": "3215ca058209d868edf20b783160df45afbf2a3a66d977c4ba027e5efb3f4fe1"
+    },
+    {
+      "path": "compile-10/inputs.json",
+      "sha256Bytes": "1b963ff7027d283fa68bb3157b794c2991ff58fc02c9f1c0df5cf4b53dbd33ce"
+    },
+    {
+      "path": "compile-11/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "7552b1b26414b891e8e8e5a446de31a5a12b2889e429699734389fadfa8bc6ac"
+    },
+    {
+      "path": "compile-11/compile.args",
+      "sha256Bytes": "dab67f7a9684effdd9be78d8496346e154d2f05cb3b05cfb103e9f11c7cb79b4"
+    },
+    {
+      "path": "compile-11/compile.log",
+      "sha256Bytes": "3ae9f39cb083b8d4f8b9c72ad380ecd993ee66d0bba3e82ce9eb3af94bd306f6"
+    },
+    {
+      "path": "compile-11/inputs.json",
+      "sha256Bytes": "307bdee35ee458dd7758afddb5bf35843d60a9b5d41dc08752738ccb6033d6c3"
+    },
+    {
+      "path": "compile-12/class-audit-failed-enum-static-scope.json",
+      "sha256Bytes": "558834977a8957a439e9b630812784b8c4a966b22d7b7d4dce54f434bb94fd80"
+    },
+    {
+      "path": "compile-12/class-audit-failed-sourcefile-only.json",
+      "sha256Bytes": "29d54b270773b6ba3d420b99c85d1bb9d5088fed66b4724102e170963cd1a2ec"
+    },
+    {
+      "path": "compile-12/class-audit.json",
+      "sha256Bytes": "2d33338a8d9462b81512501a23196a058517844847490666edeb4fa4c19a8df0"
+    },
+    {
+      "path": "compile-12/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "7552b1b26414b891e8e8e5a446de31a5a12b2889e429699734389fadfa8bc6ac"
+    },
+    {
+      "path": "compile-12/compile.args",
+      "sha256Bytes": "8ca924f77718bb7d8ec600a9e64d10313e2aaec299c6d9b9bd3e0efcb422b182"
+    },
+    {
+      "path": "compile-12/compile.log",
+      "sha256Bytes": "3ae9f39cb083b8d4f8b9c72ad380ecd993ee66d0bba3e82ce9eb3af94bd306f6"
+    },
+    {
+      "path": "compile-12/inputs.json",
+      "sha256Bytes": "867c09d9ca658aa16e5929dc68c25fb0b58ae6c0c994d489642305410df73b66"
+    },
+    {
+      "path": "compile-13/compile.args",
+      "sha256Bytes": "5ede6c33a7fb908caa31d6731baf7fc55392f1235447c6cac8d842451af8518f"
+    },
+    {
+      "path": "compile-13/compile.log",
+      "sha256Bytes": "d39e9831760373e3b8217ff8383901c7200b75d6c096b314705001df6e295e04"
+    },
+    {
+      "path": "compile-13/inputs.json",
+      "sha256Bytes": "63c76123f88a9bc0ff7d2527295d9b6c362faa33b10e5f09cc4f3de47d748010"
+    },
+    {
+      "path": "compile-14/class-audit.json",
+      "sha256Bytes": "e2a2f3990397a119acc42aed4dc8de099883dce4fa94c4ea276cbd461cf16265"
+    },
+    {
+      "path": "compile-14/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "7552b1b26414b891e8e8e5a446de31a5a12b2889e429699734389fadfa8bc6ac"
+    },
+    {
+      "path": "compile-14/compile.args",
+      "sha256Bytes": "8c145e3e9df4c586c77a709f8769cf53d2b9110dfdea036c89315f30b48adb25"
+    },
+    {
+      "path": "compile-14/compile.log",
+      "sha256Bytes": "d7050c109582a0b3fa67e7e07dd03dff50382f4505a0fc5ecbeb08f1e2b82684"
+    },
+    {
+      "path": "compile-14/inputs.json",
+      "sha256Bytes": "165eb99ff9ef33aca873aba5b9ca8f964838f5e2662ee715b14ead10c52bd855"
+    },
+    {
+      "path": "compile_candidate.py",
+      "sha256Bytes": "1da400b32886fd864038ece29aa09e69b8f2f7f89aa9b9119d7d8882527606ac"
+    },
+    {
+      "path": "excluded-runtime-artifacts.json",
+      "sha256Bytes": "cc4b8ea41a7056d083a577280e0f907a27aa85f28cdd5a2f9ccc177421e67cc9"
+    },
+    {
+      "path": "existing-hunks-pins.json",
+      "sha256Bytes": "401999e1af5b2d90c7627c892415fadf786ed1b8e58cb5bcbd6c85f3c547d9a9"
+    },
+    {
+      "path": "existing-hunks.patch",
+      "sha256Bytes": "13e523923b8700a8cc658e649f2c064a15837392f95f3afc711e271cb55c4206"
+    },
+    {
+      "path": "fixtures/AuthInvalidationFixture.kt",
+      "sha256Bytes": "78e7a36e27d997610367c79e96e61f04c8f1d295fa857ae2d4cedd411eb06a73"
+    },
+    {
+      "path": "fixtures/ReturnAdmissionFixture.kt",
+      "sha256Bytes": "cdb8cfc78fd5e0fa32369f9d56248ab4bd70c8ba8b9497b9ff7f32db4afa3dbd"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "e950c147ce2bbf13fd59091bba8608506a5d069890cb5e678a983be9c6911ca7"
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "d06e268bcc40587390d76c227a8a0f8d99c1a6a90cb088a51f2ee8ebe01591f4"
+    },
+    {
+      "path": "main-fullscreen-hunk-pins.json",
+      "sha256Bytes": "de532014394a0a7d8716d4f17a404f14b175b27c7c76b4e91f26384521f4cc79"
+    },
+    {
+      "path": "main-fullscreen-hunk.patch",
+      "sha256Bytes": "403fe05957f75561dc0e2d31f18725cfc507d1d58e9c01d683a267c4711aae04"
+    },
+    {
+      "path": "prepare_deltas.py",
+      "sha256Bytes": "fb26e2eeec585197f41f64ce287e32dba8f1f812ba8647de3257e90f1ec58a83"
+    },
+    {
+      "path": "prepare_shell.py",
+      "sha256Bytes": "2be3d90acaf99a748f89b03a7b6238da0d946ac273db01e4d81f3651e3d1bdac"
+    },
+    {
+      "path": "prepared/direct/com/android/purebilibili/feature/dynamic/DynamicBackToTopPolicy.kt",
+      "sha256Bytes": "5c6899e4c7b0037e2348c70eb07e10bdf6e960c7cce93b2dc15b19dc68b55ad8"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "c5b4794222c30640a2096a9756a3b2c37b4c735ff631138a77586245bae30baa"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "72333cb621530df28e45381e9fd09e7a0ec180132c5a77a6dd3df30323c7125a"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "1bf4ec5e91b3ef7a644622b92a7102c9e5ae2b8f9a1a20751c2ba2f327359e84"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "55a437d02ef3ac112b9dd1774cee0eae39165f98551d331bc8f509e553739923"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+      "sha256Bytes": "6b22b71aacadfdde697d7a6bf5d32bca01fa2e07a061882b581fb8e05c76167b"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "c78fa9d335821b8706cfb8a2a6e9cc7454ca785701977ee9a1579295ab76285f"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "sha256Bytes": "6e98ae95e3a3abb056bd0a6b22e0ecb732521060a38a264512649451e41a5538"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt",
+      "sha256Bytes": "4f94da0207569c7fb91abaee2cf80772fe56ca094393cb971846de3ef205f7a4"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+      "sha256Bytes": "9c126591842179bee020a74bacb45830788ba320bd0f3cde488c8d2dfdf56396"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "sha256Bytes": "a2930d269a5c0f08a6ef266385c129fc3882d3f939c2fa8be5cd84f07c58f163"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "993c46eebeb8a00b0b429a1364e4b701ef0059f41efbc4c193696ff0af173edb"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "sha256Bytes": "67d40d6cebda75d7908c0e3e08bff41307af9df3403d5e4e959d64dca861e474"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopReadyDynamicScroll.kt",
+      "sha256Bytes": "b2552e4def1295a85034ede94ab61d7f612d870f4f99531b6864300f676eb5ea"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt",
+      "sha256Bytes": "4f0e9dd35905a4c2c3b770b00d6f1e30d868ef7f703fbd910164c390281aa050"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopReadyNativeTargetDispatch.kt",
+      "sha256Bytes": "1dcf3083388bba9e79871f3883e37b23f2baa86cc71a64dd417790a8b277a4b0"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "fd56e193528ec1916fd72b303e2bf68039f50437efdcd7102d464d7b63ac48d5"
+    },
+    {
+      "path": "proof-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "85100c54c747114cef1de7afeb4ea812ea408eda528eca94bc1803f0f68802a9"
+    },
+    {
+      "path": "proof-01/compile.args",
+      "sha256Bytes": "9f8bf5d196c226315a3bbc427e8b8e6f0ea218eed1301743852cc0e759d3e430"
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-01/proof.json",
+      "sha256Bytes": "d123ae0beb019b93aaf278a107184ffd941a19959909cbe0ba726bac0f7077f2"
+    },
+    {
+      "path": "proof-01/run.log",
+      "sha256Bytes": "36593fcdda40984ce0c70902cb7bd5ed3c842185d4c82897441dc8b158aa63bb"
+    },
+    {
+      "path": "proof-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "bf3b90d9647e4f7c4524abd5b4b6072f348da1049b5e2cf39a3154de455ff323"
+    },
+    {
+      "path": "proof-02/compile.args",
+      "sha256Bytes": "3dfb5d2d64703d33d8ddcdcf9e253cda4c3f8de14b42e0770846a7fc57997d91"
+    },
+    {
+      "path": "proof-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-02/run-auth.log",
+      "sha256Bytes": "f96dc5fdf0b39ea6d03e27b7c4009ac60934ff9740c02e8c059a861da4c5f0a7"
+    },
+    {
+      "path": "proof-02/run.log",
+      "sha256Bytes": "5cad9692905eae23d4150e214f7b9f17dd627ac21587143879b4b72d01422e68"
+    },
+    {
+      "path": "proof-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "bf3b90d9647e4f7c4524abd5b4b6072f348da1049b5e2cf39a3154de455ff323"
+    },
+    {
+      "path": "proof-03/compile.args",
+      "sha256Bytes": "65c3222aafd061ea173803940c3c226a5db52a35e1dd07ba7723018e0ae86213"
+    },
+    {
+      "path": "proof-03/compile.log",
+      "sha256Bytes": "0eb349a18a97b2592b008c3b2c6a019cd77337ebcd0f7dc2554972b6b8286aba"
+    },
+    {
+      "path": "proof-03/proof.json",
+      "sha256Bytes": "f5323ce7bfc208fb1b5d76d5c360ac06a2e24b982a32bc423ebfa956e5598a28"
+    },
+    {
+      "path": "proof-03/run-auth.log",
+      "sha256Bytes": "29d1f99fe710463963b1a2b8095a9af8336d6f85b2254fed0b6b36c72eb91d37"
+    },
+    {
+      "path": "proof-03/run.log",
+      "sha256Bytes": "5cad9692905eae23d4150e214f7b9f17dd627ac21587143879b4b72d01422e68"
+    },
+    {
+      "path": "prove_candidate.py",
+      "sha256Bytes": "2948324b7713b17dc65fae2da8d0249ba7af676a140203662779e3577e733722"
+    },
+    {
+      "path": "scope.json",
+      "sha256Bytes": "0c4abb07baa3ef5a959ecb8975b56bb691f32ceb40d9bd7ce51f698cf6fef74d"
+    },
+    {
+      "path": "shell-hunks-pins.json",
+      "sha256Bytes": "9777f69fe1cb1632f5f1b986aa68db2eaa7772165caa69788c94a1244780b6fa"
+    },
+    {
+      "path": "shell-hunks.patch",
+      "sha256Bytes": "7bbd24dfb765517749aa9283dafc7854133d8a5d42d9cfbab4d1fe623f625ca3"
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "3b109cc5e4ca10e1b34d0f749277df6e19d77f593b8d521cbcee7ba53baf68ac"
+    }
+  ],
+  "installWhitelist": "install-whitelist.json",
+  "sourceInventory": "source-inventory.json",
+  "finalCompile": "compile-14/inputs.json",
+  "classAudit": "compile-14/class-audit.json",
+  "narrowProof": "proof-03/proof.json"
+}

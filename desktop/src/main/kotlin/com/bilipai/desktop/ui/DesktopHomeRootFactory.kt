@@ -40,7 +40,7 @@ internal class DesktopHomeRootWindowBindings(
     val musicOverlayVisible: StateFlow<Boolean>,
     val sourceForMediaUrl: (String) -> PlaybackSource,
     val isVideoWallpaper: (String) -> Boolean,
-    val imageWallpaper: @Composable (String, Any, Boolean, Modifier) -> Unit,
+    val imageWallpaper: @Composable (DesktopHomeMediaLifetime, String, Any, Boolean, Modifier) -> Unit,
     val clipboard: (String) -> Unit,
     val externalLink: (String) -> Unit,
     val feedback: (String) -> Unit,
@@ -146,7 +146,7 @@ internal class DesktopHomeRootFactory(
             val mediaOwner = DesktopHomeMediaLifetime(gate.scope, gate::owns, gate::commit, window.sourceForMediaUrl)
             media = mediaOwner
             val mediaPorts = DesktopHomeActualMediaPorts(mediaOwner, window.isVideoWallpaper,
-                window.imageWallpaper, window.musicOverlayVisible,
+                { uri, model, playing, modifier -> window.imageWallpaper(mediaOwner, uri, model, playing, modifier) }, window.musicOverlayVisible,
                 { message -> gate.commit { window.feedback(message) } }).ports
             val lottie = DesktopHomeLottieBinding(repository.httpClient, gate::owns, gate::commit,
                 { message -> gate.commit { window.feedback(message) } })

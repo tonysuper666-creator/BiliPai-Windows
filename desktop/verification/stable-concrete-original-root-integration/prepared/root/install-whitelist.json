@@ -1,0 +1,104 @@
+{
+  "newManualPayloads": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopReadyDynamicScroll.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyDynamicScroll.kt",
+      "sha256LF": "b2552e4def1295a85034ede94ab61d7f612d870f4f99531b6864300f676eb5ea"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt",
+      "sha256LF": "4f0e9dd35905a4c2c3b770b00d6f1e30d868ef7f703fbd910164c390281aa050"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopReadyNativeTargetDispatch.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyNativeTargetDispatch.kt",
+      "sha256LF": "1dcf3083388bba9e79871f3883e37b23f2baa86cc71a64dd417790a8b277a4b0"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "sha256LF": "89dff1ee1b2e12848b53e0ec1325bef6440108e94dd677c560b27c3904e2fb90"
+    }
+  ],
+  "existingExactHunkTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "baseSha256LF": "8946105ca929671198ece690a061c5ca45b3449e0c8c22f0921c59228669cb80",
+      "desiredSha256LF": "63172c96a60460c5e34a1643028b3278ee56e090fb277e0ab834f0dd6e3f4c4d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "baseSha256LF": "8d3fae0ec31c64e4d6160525efd5eaefb94f56716957dae728c1857d5db752f3",
+      "desiredSha256LF": "4f6a7c78303cac721fc74b60d9e1660d51a1db557156270d55f230c685ea155a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "baseSha256LF": "a238c5ef299b9bede7c21d245c2674bd9be4705073760447df0068d9fb1953bd",
+      "desiredSha256LF": "72a5ab184155346fa3f12f1d4a3882bce04b36ead89b11f7d462e7b027c12e92"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+      "baseSha256LF": "d1e47198740351f9985cae9e5a305901b9ad394cb8c053bd0b06633714cc9073",
+      "desiredSha256LF": "a1dd6709e5c4368a8021e5ae35e056c6c0e825a15ec9b92a4f09243fbfb13eb9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "baseSha256LF": "0e5e00d9afd8fba3049d6fc85ced4cc5fe8776eea9e09ac70172192e6c7ccc12",
+      "desiredSha256LF": "489ba6e3b21dbe704cdf1d000d0c12c6173d1ad4344ca44cf6d353fb72fff596"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt",
+      "baseSha256LF": "981b50e08be45ae2f9f6dd2b56b6c672704e1aacb485b066e74d0404190273a6",
+      "desiredSha256LF": "8cda26afece27cf4f63b496bb976ee28b6a773ba793782ecd4d29f9b53bb2d27"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "baseSha256LF": "9418ad69a23d0e750f02984999d1d61b062b507767e4b6c92e15f22fcdb926e3",
+      "desiredSha256LF": "7737ea80d97c6082e48f9129eacda9d055b04ed5d58335d5086016aca5b9f4cb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+      "baseSha256LF": "d2e6ef977bc13d6e1128df77f01f72d58f5e03801105ab133a46886a3b491087",
+      "desiredSha256LF": "56c8eea9ffee7e6f558e55606bab12554f395b24eda71a9c3abc28aee3da5123"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "baseSha256LF": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6",
+      "desiredSha256LF": "45cc6e1e11e7a650d10ace44c4f50c171689bd6735c6c27ca3b215020c3edf12"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseSha256LF": "3cb16a47b96b6d86297abcfdbaad1ed009e47089b264fd5b156f82487d2caeae",
+      "desiredSha256LF": "4c070d707650b57e2688df25ee4beb7ceb53d8d74adee032f6aa5cd244be65dc"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseSha256LF": "66695e0748c40bad16073a66ca3882e09bc60c24e208be3e0310f19c7ace6225",
+      "desiredSha256LF": "9f2ee694ac6df39da28c4dd459b94bdec356630f47fffcf2f7ef080093f6cece",
+      "preparedOnly": true,
+      "mountedAcceptance": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "baseSha256LF": "dcaa277454a90930b0603d53d7ccf651a08202bcc0d73ff5124275a26c5421fd",
+      "desiredSha256LF": "0bd47ae05705cd0cb104a8be527cbc8281c5f2d7aa89113c24d107b811c05a3d"
+    }
+  ],
+  "patchOrder": [
+    "existing-hunks.patch",
+    "shell-hunks.patch",
+    "main-fullscreen-hunk.patch"
+  ],
+  "originalSourceDelta": "source-inventory.json",
+  "existingFullCopies": "Compilation proof only. Apply exact hunks; do not replace unrelated Root files.",
+  "offlineBridge": "Two separately frozen3146 sources already installed by Root; only explicit compile inputs here, not another payload.",
+  "noInstall": [
+    "classes",
+    "JAR",
+    "DLL",
+    "temporary Store data",
+    "prepared/direct (Sync is sole producer)",
+    "frozen historical compile source copies"
+  ]
+}

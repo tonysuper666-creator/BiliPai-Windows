@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
  * admission. A video covering Home retains this owner; account/entry/restore/window retirement
  * closes it before the original owner and requests are destroyed.
  *
- * Lock order is existing SessionStore/entry admission -> this projection. close never obtains
+ * Navigation checkpoint runs before SessionStore/entry admission; then this projection. close never obtains
  * the Store. Root navigation admission must invoke the supplied block exactly once iff accepted;
  * it must not invoke the block then return false. Its checkpoint occurs before invocation. */
 internal class DesktopHomeReturnNavigationOwner(
@@ -61,11 +61,11 @@ internal class DesktopHomeReturnNavigationOwner(
         visibleBottomBarRoutes: Set<String>,
         performNavigation: (BiliPaiVideoSource, VideoCardTransitionSession) -> Unit,
     ): Boolean {
-        if (bvid.isBlank()) return false
+        if (!owns() || bvid.isBlank()) return false
         var navigated = false
-        mutate {
-            admitRootNavigation {
-                if (!owns()) return@admitRootNavigation
+        admitRootNavigation {
+            mutate {
+                if (!owns()) return@mutate
                 val matchedVisibleCardRoute = resolveVideoCardSourceRouteForNavigation(
                     currentRoute = currentKey?.toLegacyRoute(), videoBvid = bvid,
                     lastClickedVideoSourceKey = CardPositionManager.lastClickedVideoSourceKey,
@@ -99,10 +99,11 @@ internal class DesktopHomeReturnNavigationOwner(
         isRelatedDetailPop: Boolean,
         performBack: () -> Unit,
     ): Boolean {
+        if (!owns()) return false
         var returned = false
-        mutate {
-            admitRootNavigation {
-                if (!owns()) return@admitRootNavigation
+        admitRootNavigation {
+            mutate {
+                if (!owns()) return@mutate
                 if (isVideoDetailRoute(currentKey.toLegacyRoute()) &&
                     isVideoCardReturnTargetRoute(targetKey?.toLegacyRoute()))
                     mutableSession.value = mutableSession.value.markReturning(monotonicMillis())
@@ -115,6 +116,17 @@ internal class DesktopHomeReturnNavigationOwner(
             }
         }
         return returned
+    }
+
+    /** Original AppNavigation's markNavigation3VideoReturnBeforeBackAction: invoked at
+     * the actual NavDisplay return commit, before the physical back pop. */
+    fun prepareReturnBeforeBack(currentKey: BiliPaiNavKey, targetKey: BiliPaiNavKey?): Boolean {
+        mutate {
+            if (isVideoDetailRoute(currentKey.toLegacyRoute()) &&
+                isVideoCardReturnTargetRoute(targetKey?.toLegacyRoute()))
+                mutableSession.value = mutableSession.value.markReturning(monotonicMillis())
+        }
+        return owns() && mutableSession.value.isQuickReturnFromDetail
     }
 
     fun consumeReturning(): Boolean = mutate {

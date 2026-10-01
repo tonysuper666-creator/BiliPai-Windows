@@ -1,0 +1,7 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+  "baseSha256LF": "66695e0748c40bad16073a66ca3882e09bc60c24e208be3e0310f19c7ace6225",
+  "desiredSha256LF": "9f2ee694ac6df39da28c4dd459b94bdec356630f47fffcf2f7ef080093f6cece",
+  "preparedOnly": true,
+  "mountedAcceptance": false
+}

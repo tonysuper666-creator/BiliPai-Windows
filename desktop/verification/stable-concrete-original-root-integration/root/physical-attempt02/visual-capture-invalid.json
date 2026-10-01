@@ -1,0 +1,1 @@
+{"startupAndNormalExitPassed": true, "visualAcceptancePassed": false, "reason": "Rectangle screen capture can observe unrelated foreground pixels. Invalid image discarded; replace with product-owned Skia backing only. Product48 unchanged."}

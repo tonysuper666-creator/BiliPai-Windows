@@ -1,0 +1,159 @@
+package com.bilipai.desktop.ui
+
+import androidx.compose.ui.geometry.Offset
+import com.android.purebilibili.core.ui.transition.VideoCardTransitionClock
+import com.android.purebilibili.core.ui.transition.VideoCardTransitionExposure
+import com.android.purebilibili.core.util.CardPositionManager
+import com.android.purebilibili.navigation.isVideoCardReturnTargetRoute
+import com.android.purebilibili.navigation.isVideoDetailRoute
+import com.android.purebilibili.navigation.resolveVideoCardSourceRouteForNavigation
+import com.android.purebilibili.navigation3.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+
+/** One original return/source session per retained Home entry. No route stack, feed, account or
+ * geometry store is added. Root supplies its actual current key/ancestor state and checkpoint
+ * admission. A video covering Home retains this owner; account/entry/restore/window retirement
+ * closes it before the original owner and requests are destroyed.
+ *
+ * Navigation checkpoint runs before SessionStore/entry admission; then this projection. close never obtains
+ * the Store. Root navigation admission must invoke the supplied block exactly once iff accepted;
+ * it must not invoke the block then return false. Its checkpoint occurs before invocation. */
+internal class DesktopHomeReturnNavigationOwner(
+    private val stillOwned: () -> Boolean,
+    private val commitIfCurrent: ((() -> Unit) -> Boolean),
+    private val admitRootNavigation: ((() -> Unit) -> Boolean),
+    private val hostOriginInRoot: () -> Offset,
+    private val monotonicMillis: () -> Long,
+    private val clock: VideoCardTransitionClock,
+    private val sharedCardTransitionEnabled: () -> Boolean,
+    private val relatedCardTransitionEnabled: () -> Boolean,
+    private val reduceMotion: () -> Boolean,
+) : AutoCloseable {
+    private val lock = Any()
+    @Volatile private var closed = false
+    private val mutableSession = MutableStateFlow(BiliPaiReturnSessionState())
+    val session: StateFlow<BiliPaiReturnSessionState> = mutableSession.asStateFlow()
+    private var relatedRestorePending = false
+    private var relatedTransitionObserved = false
+
+    private fun owns(): Boolean = !closed && stillOwned()
+    private fun mutate(block: () -> Unit): Boolean {
+        if (!owns()) return false
+        var accepted = false
+        commitIfCurrent {
+            synchronized(lock) { if (owns()) { block(); accepted = true } }
+        }
+        return accepted
+    }
+
+    /** Call after original Story/offline/vertical dispatch has resolved to a genuine VideoDetail.
+     * currentKey and hasVideoDetailAncestor come from Root's real navigation state, not defaults.
+     * performNavigation uses the original full VideoRoute/intent, preserving CID/resume/source.
+     * This call captures CardPositionManager before destination composition or async playback. */
+    fun enterVideo(
+        bvid: String,
+        explicitSourceRoute: String?,
+        coverIdentity: String?,
+        currentKey: BiliPaiNavKey?,
+        hasVideoDetailAncestor: Boolean,
+        visibleBottomBarRoutes: Set<String>,
+        performNavigation: (BiliPaiVideoSource, VideoCardTransitionSession) -> Unit,
+    ): Boolean {
+        if (!owns() || bvid.isBlank()) return false
+        var navigated = false
+        admitRootNavigation {
+            mutate {
+                if (!owns()) return@mutate
+                val matchedVisibleCardRoute = resolveVideoCardSourceRouteForNavigation(
+                    currentRoute = currentKey?.toLegacyRoute(), videoBvid = bvid,
+                    lastClickedVideoSourceKey = CardPositionManager.lastClickedVideoSourceKey,
+                    visibleBottomBarRoutes = visibleBottomBarRoutes,
+                )
+                val source = resolveBiliPaiVideoSource(bvid,
+                    explicitSourceRoute ?: matchedVisibleCardRoute, currentKey,
+                    mutableSession.value.lastVideoSourceRoute)
+                val captured = desktopOriginalHomeTransitionSession(bvid, source, coverIdentity,
+                    hostOriginInRoot())
+                mutableSession.value = mutableSession.value.recordTransitionSession(
+                    captured, preserveCurrentSession = hasVideoDetailAncestor)
+                    .markDetailEntered(monotonicMillis())
+                relatedRestorePending = false
+                relatedTransitionObserved = false
+                desktopOriginalHomePrearmOpening(captured, sharedCardTransitionEnabled(),
+                    relatedCardTransitionEnabled(), reduceMotion(), clock)
+                performNavigation(source, captured)
+                navigated = true
+            }
+        }
+        return navigated
+    }
+
+    /** Real accepted back action only. Full original target-route policy decides which returns
+     * affect Home/Category flags; it is not equivalent to any showVideo=false transition.
+     * Root's playback-leave/mini/audio ownership action belongs in performBack before pop. */
+    fun returnFromVideo(
+        currentKey: BiliPaiNavKey,
+        targetKey: BiliPaiNavKey?,
+        isRelatedDetailPop: Boolean,
+        performBack: () -> Unit,
+    ): Boolean {
+        if (!owns()) return false
+        var returned = false
+        admitRootNavigation {
+            mutate {
+                if (!owns()) return@mutate
+                if (isVideoDetailRoute(currentKey.toLegacyRoute()) &&
+                    isVideoCardReturnTargetRoute(targetKey?.toLegacyRoute()))
+                    mutableSession.value = mutableSession.value.markReturning(monotonicMillis())
+                relatedRestorePending = isRelatedDetailPop &&
+                    (mutableSession.value.previousTransitionSessions.isNotEmpty() ||
+                        mutableSession.value.previousVideoSources.isNotEmpty())
+                relatedTransitionObserved = false
+                performBack()
+                returned = true
+            }
+        }
+        return returned
+    }
+
+    /** Original AppNavigation's markNavigation3VideoReturnBeforeBackAction: invoked at
+     * the actual NavDisplay return commit, before the physical back pop. */
+    fun prepareReturnBeforeBack(currentKey: BiliPaiNavKey, targetKey: BiliPaiNavKey?): Boolean {
+        mutate {
+            if (isVideoDetailRoute(currentKey.toLegacyRoute()) &&
+                isVideoCardReturnTargetRoute(targetKey?.toLegacyRoute()))
+                mutableSession.value = mutableSession.value.markReturning(monotonicMillis())
+        }
+        return owns() && mutableSession.value.isQuickReturnFromDetail
+    }
+
+    fun consumeReturning(): Boolean = mutate {
+        mutableSession.value = mutableSession.value.clearReturning()
+    }
+
+    /** Actual navigation/clock exposure, never an elapsed timer or pretend immediate idle. */
+    fun onRelatedReturnExposure(animated: Boolean, exposure: VideoCardTransitionExposure): Boolean = mutate {
+        val decision = resolveRelatedReturnSourceRestoreDecision(relatedRestorePending,
+            relatedTransitionObserved, animated, exposure)
+        relatedTransitionObserved = decision.transitionObserved
+        if (decision.shouldRestore) {
+            relatedRestorePending = false
+            relatedTransitionObserved = false
+            mutableSession.value = mutableSession.value.restorePreviousVideoSourceAfterRelatedReturn()
+            CardPositionManager.restoreVideoSourceKey(mutableSession.value.lastVideoSourceKey)
+        }
+    }
+
+    /** The original click snapshot determines host-local geometry. No return-time feed reads. */
+    fun sourceMetadata(): BiliPaiNavSourceMetadata = synchronized(lock) {
+        desktopOriginalHomeSourceMetadata(mutableSession.value)
+    }
+    fun sourceMetadataInCapturedHost(): BiliPaiNavSourceMetadata = synchronized(lock) {
+        desktopOriginalHomeSourceMetadata(mutableSession.value).relativeToHost(
+            mutableSession.value.transitionSession?.hostOriginInRoot ?: Offset.Zero)
+    }
+
+    override fun close() { synchronized(lock) { closed = true } }
+}

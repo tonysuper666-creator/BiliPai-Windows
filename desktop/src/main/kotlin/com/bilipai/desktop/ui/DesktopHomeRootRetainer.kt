@@ -42,6 +42,8 @@ internal class DesktopHomeRootRetainer(
         }
         return result
     }
+    /** Synchronous admission retirement only; the actual owner remains available for drain. */
+    fun retire() { closed.set(true) }
     override fun close() {
         closed.set(true)
         val old = synchronized(lock) { mutableRoot.value.also { mutableRoot.value = null } }

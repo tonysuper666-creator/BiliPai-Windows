@@ -1,0 +1,10 @@
+Concrete original Home and Window navigation
+==========================================
+
+The stable v0.2.3 source base stays pinned at 3d5d19a. Actual Shell now mounts the complete original retained Home/Profile/Category/Live pager, original NavDisplay/stack/Dock and installed typed leaves. Four new thin Windows bindings, twelve existing source-family deltas and one DIRECT original policy use the same repository, account Store, global image owner, Window lifecycle and native media actors. The separate taskId Offline bridge opens the existing retained offline source; complete original player controls are a subsequent slice.
+
+Whole classes48 and test-source compilation pass with939 source identities,213 resources and97 existing runtime entries. Actual unchanged product main has passed native startup health and normal Window close with zero product-class replacements and fresh isolated application data. Product-owned Skia render images show the full guest Home and Profile. Three real production semantic actions verify Home to Profile, original guest download service to Login, and dialog close back to Profile. Original LoggedOut Profile intentionally requires login for download; no fake user account or successful authenticated Download route is claimed. These actions do not prove physical mouse input or native player routes.
+
+History is preserved: first runtime pin preflight needed wide Windows paths; an initial rectangle screen image was invalid because other foreground pixels could be captured and was discarded; the subsequent own-Skia capture succeeds. The first route fixture expected guest DownloadList but observed the original guest login behavior. Its failure remains unchanged; the corrected fixture follows the original source. No product source was altered for these fixture corrections. Private user data, recommendation-label dumps, render images and rebuildable binaries are excluded.
+
+The selected native assets reuse previously bundled libmpv/FFmpeg/ffprobe and the existing JNI actor. Full Video/Offline controls, remaining original personal pages, real account/native/PiP/focus interaction and desktop portable EXE remain pending.

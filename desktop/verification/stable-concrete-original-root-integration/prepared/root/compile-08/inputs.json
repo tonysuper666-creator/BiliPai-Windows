@@ -1,0 +1,81 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-47",
+  "manifestSha": "72e862d74e18c2b388853634f0ef47c48ca1adba25b5d074ecd23fc6ecb7c3e0",
+  "orderedCpSha": "9fecec31b818a1b1d8be25f628ff6ec69e354a5c179ca42445aa1a1db3d52e94",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOfflineTaskPlayerBinding.kt",
+      "sha256Bytes": "29a47115d6eb7e340c38907ea5b12766ad70e2c3877c504341d4a2fe7d7e473c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-task-player-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOfflineTaskPlayerHost.kt",
+      "sha256Bytes": "fac05aaeddf932c741dea972d41ba9423927cf190e3bf4dd44b14b21065d9d74"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopReadyDynamicScroll.kt",
+      "sha256Bytes": "b2552e4def1295a85034ede94ab61d7f612d870f4f99531b6864300f676eb5ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopReadyHomeFactoryBinding.kt",
+      "sha256Bytes": "4f0e9dd35905a4c2c3b770b00d6f1e30d868ef7f703fbd910164c390281aa050"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopReadyNativeTargetDispatch.kt",
+      "sha256Bytes": "1dcf3083388bba9e79871f3883e37b23f2baa86cc71a64dd417790a8b277a4b0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "fd56e193528ec1916fd72b303e2bf68039f50437efdcd7102d464d7b63ac48d5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\direct\\com\\android\\purebilibili\\feature\\dynamic\\DynamicBackToTopPolicy.kt",
+      "sha256Bytes": "5c6899e4c7b0037e2348c70eb07e10bdf6e960c7cce93b2dc15b19dc68b55ad8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256Bytes": "4259f187b207c3e856dc98872d4735f5600568b0a6d4b4dc3c493d8d7b3da912"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "55a437d02ef3ac112b9dd1774cee0eae39165f98551d331bc8f509e553739923"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicTabsHost.kt",
+      "sha256Bytes": "6b22b71aacadfdde697d7a6bf5d32bca01fa2e07a061882b581fb8e05c76167b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicTimeline.kt",
+      "sha256Bytes": "c78fa9d335821b8706cfb8a2a6e9cc7454ca785701977ee9a1579295ab76285f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeGalleryBindings.kt",
+      "sha256Bytes": "6e98ae95e3a3abb056bd0a6b22e0ecb732521060a38a264512649451e41a5538"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeRetainedEntry.kt",
+      "sha256Bytes": "4f94da0207569c7fb91abaee2cf80772fe56ca094393cb971846de3ef205f7a4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeReturnNavigationOwner.kt",
+      "sha256Bytes": "630610167745273208ea43220077be84e8b58f3a85b7c996e4f14161f48d8739"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeRootFactory.kt",
+      "sha256Bytes": "a2930d269a5c0f08a6ef266385c129fc3882d3f939c2fa8be5cd84f07c58f163"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "993c46eebeb8a00b0b429a1364e4b701ef0059f41efbc4c193696ff0af173edb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-concrete-mount-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootStack.kt",
+      "sha256Bytes": "67d40d6cebda75d7908c0e3e08bff41307af9df3403d5e4e959d64dca861e474"
+    }
+  ],
+  "prepared": true,
+  "rootMounted": false,
+  "mainIntegration": false,
+  "productOverrides": "Explicit existing families + concrete Shell; actual47 A/Profile/Download reused, two Offline new sources",
+  "exit": 1
+}
