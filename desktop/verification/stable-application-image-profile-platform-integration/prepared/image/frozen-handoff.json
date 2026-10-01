@@ -1,0 +1,199 @@
+{
+  "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifacts": [
+    {
+      "path": "ImageLoaderFixture.kt",
+      "sha256Bytes": "7788fbcbefde825813d8c76dee25898ea4282ccf711f9eeb412d410809521511"
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "sha256Bytes": "c9e00bc2f34dd5f7dbc39a3f03e9651719b14ded6aa30df45b04b3e0f4c2da78"
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-01/result.json",
+      "sha256Bytes": "9c61837745dfea57f79e7bcaec1a71903c334f0e6667f95b33f818db69339ebf"
+    },
+    {
+      "path": "compile-02/compiler.args",
+      "sha256Bytes": "f2b5b1ff8bf47cad0a5105580b340914685f89f749bf9e5de3b4ae83abcc3c22"
+    },
+    {
+      "path": "compile-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-02/result.json",
+      "sha256Bytes": "25086fbd2c63c122e32c36d0fbb1f0a8543dcd0a684a0be0074406422d23cbf9"
+    },
+    {
+      "path": "compile-03/compiler.args",
+      "sha256Bytes": "94c3c772ce91cc17fd39fbe2a2ef6cc5d7bb0bf2b1c782cd8c376d4faa0e0099"
+    },
+    {
+      "path": "compile-03/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-03/result.json",
+      "sha256Bytes": "8254a83ce3a03be08a121b720bd063d9c4b11a490c4e3a5e9d7153b693e752f7"
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "2f2fc01e61df603b3e90e27db4c334c9b32e8d88a6cbbaaa8b2147745ffd8dbf"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "95f4216c42ca127189d0f353f41c072b1403dd4876604c23ea6effd03a6c8a12"
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "77553ed948dd7d684c65049ebbee6c1df9bc266c19c6c6f9a7aab5673b36eb78"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/app/PureApplication.kt",
+      "sha256Bytes": "0fea2f786cb09c6d3abb856e23eba25bfdc73573f37d746d247fa3dd9f9721b4"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/app/PureApplicationRuntimeConfig.kt",
+      "sha256Bytes": "b332821a90253f2cfee7dbdd1845d4708dad8e584878ac53da4f4dccdc9f2582"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/lifecycle/BackgroundMemoryTrimPolicy.kt",
+      "sha256Bytes": "d4a95f3372db9b4434f21cdeeed67f96eac0ab456379d280e040c527b8452d88"
+    },
+    {
+      "path": "prepare-handoff.py",
+      "sha256Bytes": "621bc0d7f47b10638092c5179fae7b248fe467b72a2a786855c9ec37a4c9a19f"
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "654f60ad7a7e1b6b7dfa84b047d57001029b59dcbd8a378a8f198fcdff09c44e"
+    },
+    {
+      "path": "prepared/coil-upstream/commonMain/coil3/network/cachecontrol/CacheControlCacheStrategy.kt",
+      "sha256Bytes": "205af3830d3bfcef597bccdc6554c7f2abb69483b3e649abfcdf75498af4e87b"
+    },
+    {
+      "path": "prepared/coil-upstream/commonMain/coil3/network/cachecontrol/internal/CacheControl.kt",
+      "sha256Bytes": "f3abb5f309c53dff0c566a9a9fcf7231c319fcdc6753afdf6cdd8bd7d9ffe2f7"
+    },
+    {
+      "path": "prepared/coil-upstream/commonMain/coil3/network/cachecontrol/internal/utils.kt",
+      "sha256Bytes": "f7347cf633951e964a77649de86761b1dbdab7bac5d1e4470a80f265dce98a79"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/app/DesktopOriginalApplicationImageLoader.kt",
+      "sha256Bytes": "2fad9964d238f1e5fc61014e99f476feab01b2654e6c0584512ed8900c752ded"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/lifecycle/DesktopOriginalBackgroundImageTrimPolicy.kt",
+      "sha256Bytes": "50574739b28bd0242b4773fd386bdc8f68d2e7be1007d8a6b50492a3df759b8d"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopApplicationImageCacheTrim.kt",
+      "sha256Bytes": "9b93059fec4183f7e8ad6b2397ebb9462951030e1a633ff99e51ab511c5020a9"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopApplicationImageLoader.kt",
+      "sha256Bytes": "28e2562b4a0039bf292303f8459640c5a4c13ac8f2ea3de577076e50daa13b21"
+    },
+    {
+      "path": "prepared/resources/coil-cache-control-LICENSE.txt",
+      "sha256Bytes": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "prepared/resources/coil-cache-control-NOTICE.txt",
+      "sha256Bytes": "6bd1d0d8cc005df39496f6be8618eb6c5714cf3c9839fb631f053ead00e41c9c"
+    },
+    {
+      "path": "prepared/tools/extract-upstream-application-image-loader.py",
+      "sha256Bytes": "7d8d7dde625dad262fec46be18718dc3a707f83b864cc396854cee77159c4368"
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sha256Bytes": "c8b8f78d36677a5234959356a9304366719984e798b51c424d54b2470bceefda"
+    },
+    {
+      "path": "proof-01/compiler.log",
+      "sha256Bytes": "810a05a711589e1bba5d6bb4a4e8ba2d53562bc352976e7238696d106728163e"
+    },
+    {
+      "path": "proof-01/invoked-fixture.kt",
+      "sha256Bytes": "f7329d139bd3b05a951f34e1a8c895d8194d5b51ca95eee6f17e90fa88274212"
+    },
+    {
+      "path": "proof-02/ImageLoaderFixture.kt",
+      "sha256Bytes": "7788fbcbefde825813d8c76dee25898ea4282ccf711f9eeb412d410809521511"
+    },
+    {
+      "path": "proof-02/compiler.args",
+      "sha256Bytes": "2174f6635c81ed66054b71aa7c57b3ac46488df65d391288d6848f5bcbbb3719"
+    },
+    {
+      "path": "proof-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-02/runtime.log",
+      "sha256Bytes": "ba1b136e12e3798cbfe302f31cb9a0109c9837108efb0b1c64cee5d4e5d5a380"
+    },
+    {
+      "path": "proof-03/ImageLoaderFixture.kt",
+      "sha256Bytes": "7788fbcbefde825813d8c76dee25898ea4282ccf711f9eeb412d410809521511"
+    },
+    {
+      "path": "proof-03/compiler.args",
+      "sha256Bytes": "abc7f62b96e1dee083e4814e0f63396580be315c6e540ecd7e2039a43a73ff0a"
+    },
+    {
+      "path": "proof-03/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-03/runtime.log",
+      "sha256Bytes": "ba1b136e12e3798cbfe302f31cb9a0109c9837108efb0b1c64cee5d4e5d5a380"
+    },
+    {
+      "path": "prove.py",
+      "sha256Bytes": "2ccf3d14dfaa21b3c60134dd683875dd691668cbfa9ebfe9aa649a2a4530f6a5"
+    },
+    {
+      "path": "replay-generated/com/android/purebilibili/app/DesktopOriginalApplicationImageLoader.kt",
+      "sha256Bytes": "2fad9964d238f1e5fc61014e99f476feab01b2654e6c0584512ed8900c752ded"
+    },
+    {
+      "path": "replay-generated/com/android/purebilibili/core/lifecycle/DesktopOriginalBackgroundImageTrimPolicy.kt",
+      "sha256Bytes": "50574739b28bd0242b4773fd386bdc8f68d2e7be1007d8a6b50492a3df759b8d"
+    },
+    {
+      "path": "replay-generated/producer-receipt.json",
+      "sha256Bytes": "42ace421bc87f79e8751c642dcb95019bc0fbe1a194f02b753ca471fee7e05b0"
+    },
+    {
+      "path": "reverse-audit.json",
+      "sha256Bytes": "589e203959b02b19f5caf2fe6b293236ebe2f6b4d1015db21e605470a80ff6ca"
+    },
+    {
+      "path": "source-receipt.json",
+      "sha256Bytes": "d0b5f66fadc1d4c2448ed42075ed2170681eacec51da44a358343028daeacc37"
+    },
+    {
+      "path": "excluded-artifacts.json",
+      "sha256Bytes": "40caa6da3d1c7015fa43598ed70e5d0e3f5d4312f5ac9c93a3bd72e33e569131"
+    }
+  ],
+  "prospectiveOriginalSourceCount": 3,
+  "installPayloadCount": 8,
+  "narrowSources": 7,
+  "narrowClasses": 14,
+  "actual43RuntimeEntries": 97,
+  "newFqnOverlaps": 0,
+  "proofGroups": 3,
+  "proofAssertions": 22,
+  "wholeProductAccepted": false,
+  "fullRootAccepted": false
+}

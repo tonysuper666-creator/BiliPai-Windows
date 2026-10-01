@@ -126,6 +126,17 @@ fun main(args: Array<String>) {
             java.util.concurrent.atomic.AtomicReference<suspend () -> Unit>({ diagnosticLifecycle?.shutdownForRestore() })
         }
         val closing = remember { java.util.concurrent.atomic.AtomicBoolean() }
+        // Configure the original singleton before any Window renderer asks Coil for an image.
+        val applicationImages = remember(repository, closing) {
+            com.bilipai.desktop.ui.DesktopApplicationImageLoader(repository,
+                DesktopLibrary.directoryForAccount(null).resolve("cache"), rootAlive = { !closing.get() })
+        }
+        DisposableEffect(applicationImages) {
+            onDispose {
+                applicationImages.stopAccepting()
+                applicationScope.launch(kotlinx.coroutines.NonCancellable + Dispatchers.IO) { applicationImages.close() }
+            }
+        }
         var restartFailure by remember { mutableStateOf<String?>(null) }
         fun closeApp(restart: Boolean = false) {
             val restartPlan = if (restart) try { DesktopApplicationRestart.prepare() }
@@ -134,6 +145,7 @@ fun main(args: Array<String>) {
             if (closing.compareAndSet(false, true)) applicationScope.launch {
                 try {
                     shutdown.get().invoke()
+                    withContext(Dispatchers.IO) { applicationImages.close() }
                     if (restartPlan != null) withContext(Dispatchers.IO) { restartPlan.launch() }
                     playerResult.getOrNull()?.close()
                     exitApplication()
@@ -187,6 +199,9 @@ fun main(args: Array<String>) {
                 }
             }
             val danmakuPresentation = com.bilipai.desktop.ui.rememberDesktopWindowsDanmakuPresentation(window, windowState)
+            androidx.compose.runtime.CompositionLocalProvider(
+                com.bilipai.desktop.ui.LocalDesktopApplicationImageLoader provides applicationImages,
+            ) {
             DesktopApp(repository, playerResult.getOrNull(), playerResult.exceptionOrNull()?.message, initialVideo,
                 onExit = { closeApp() }, onToggleFullscreen = {
                     windowState.placement = if (windowState.placement == WindowPlacement.Fullscreen) WindowPlacement.Floating else WindowPlacement.Fullscreen
@@ -194,6 +209,7 @@ fun main(args: Array<String>) {
                 applicationPluginStore = applicationPluginStore, isClosing = closing::get,
                 diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError,
                 danmakuPresentation = danmakuPresentation)
+            }
             restartFailure?.let { message ->
                 androidx.compose.material3.AlertDialog(onDismissRequest = { restartFailure = null },
                     title = { androidx.compose.material3.Text("客户端重启") },

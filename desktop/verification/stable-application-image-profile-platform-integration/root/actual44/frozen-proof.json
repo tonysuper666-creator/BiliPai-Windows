@@ -1,0 +1,271 @@
+{
+  "actualSnapshot": 44,
+  "actualRuntimeEntries": 97,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersection": 0,
+  "cpPrePostByteEqual": true,
+  "groups": 6,
+  "businessAssertions": 77,
+  "actualLoadedOrigins": {
+    "image": 8,
+    "profile": 11,
+    "unique": 17
+  },
+  "originalBusinessAssertionsPreserved": true,
+  "fixtureOnlyExtraChecks": "CodeSource and loaded class bytes equal actual44 main-kotlin.jar",
+  "acceptedRun": "run-02",
+  "failedRunRetained": "run-01",
+  "scope": "Image/cache policy and Profile physical helpers with private local synthetic media and temporary Stores",
+  "notClaimed": [
+    "Root mounted UI",
+    "user account or user files",
+    "chooser/HWND/DWM",
+    "HTTP",
+    "Profile navigation end-to-end"
+  ],
+  "rootCopyRule": "Copy only artifacts listed here; no candidate JAR, class, private media or Store",
+  "resultSha256Bytes": "8a8a36fef11e3c2918ad40303f346a68a691084bc7f6755e70466106ba91d449",
+  "artifacts": [
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "ed928e8d1f5591081eae1839a42b97cc8bd066de7a65510e5c58bef54a15945a"
+    },
+    {
+      "path": "result.json",
+      "sha256Bytes": "8a8a36fef11e3c2918ad40303f346a68a691084bc7f6755e70466106ba91d449"
+    },
+    {
+      "path": "run-01/compiler-tool-pins.json",
+      "sha256Bytes": "08b7abe9b6a1a0a58e0393b9cb136074511282efe1273b04f8601fa4e5fa8263"
+    },
+    {
+      "path": "run-01/cp-pins-before.json",
+      "sha256Bytes": "3f5e51475fbd5f8500f376485d2fb03a5cdce3397c02d167815edfee708fd743"
+    },
+    {
+      "path": "run-01/image/actual-origins.json",
+      "sha256Bytes": "8f816b115d4d058d0a0c4cfa8314dc3c7ef6449aa798be088ac742c675fa4f93"
+    },
+    {
+      "path": "run-01/image/Actual44Origins.kt",
+      "sha256Bytes": "e5bb55c56dda4a9c99c7426f5a455e0f9f66b0c69532f7faac3f1cff10881568"
+    },
+    {
+      "path": "run-01/image/class-intersection.json",
+      "sha256Bytes": "9bdf5bc25139eb1012716c832d11bd2e3599660b89ac558577c657ca0ec07897"
+    },
+    {
+      "path": "run-01/image/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/image/compiler.args",
+      "sha256Bytes": "a9de90d32b19bc0c2c660bc2fa54274f24840140394a231fbee2de62f8f26e71"
+    },
+    {
+      "path": "run-01/image/fixture-adaptation.json",
+      "sha256Bytes": "5aecb109f42f47f7a37770900c247dd4cd29c8c84df0080a19a28073d61216f0"
+    },
+    {
+      "path": "run-01/image/ImageLoaderFixture.kt",
+      "sha256Bytes": "f6c375dcfc2c3dcb139649981590b1f8bb844bdca6e93f7767bab2abc6f3aae6"
+    },
+    {
+      "path": "run-01/image/result.json",
+      "sha256Bytes": "5a8075e5ee96409ec79c11fb3c756edb17c39208e1c5c55665489418d149fb74"
+    },
+    {
+      "path": "run-01/image/runtime-command.json",
+      "sha256Bytes": "2b34ef822887f4e2da66a393d118a72b2076eb571fe369f89a9ba3586d70d033"
+    },
+    {
+      "path": "run-01/image/runtime.log",
+      "sha256Bytes": "261822d164bc8de4563626fff0a6f81721ea9485939c8e78018d76b47147b932"
+    },
+    {
+      "path": "run-01/input-manifest.json",
+      "sha256Bytes": "e5ba1d8de17cd400dde006ab3a75a1d5facdd68b8dba4bb52c9c51db52e5f31a"
+    },
+    {
+      "path": "run-01/input-ordered-runtime-cp.json",
+      "sha256Bytes": "b4d72f39a19b3704e657a9edb8c8e8d18c10a1a352481c34a96f0ad208e17141"
+    },
+    {
+      "path": "run-01/profile/Actual44Origins.kt",
+      "sha256Bytes": "e5bb55c56dda4a9c99c7426f5a455e0f9f66b0c69532f7faac3f1cff10881568"
+    },
+    {
+      "path": "run-01/profile/class-intersection.json",
+      "sha256Bytes": "2114aae1f417d627605c56f735e97b893b7426fcc722819c426e5081d8d87d27"
+    },
+    {
+      "path": "run-01/profile/compile.log",
+      "sha256Bytes": "1138f309096c18c7ac9808b029e3e8db71f2318e7031be5d1f1aa1ea6709e9b9"
+    },
+    {
+      "path": "run-01/profile/compiler.args",
+      "sha256Bytes": "4e2e300465f8f28c789c308556202c38c70e5bd0716f76ae7dd38e3118607b28"
+    },
+    {
+      "path": "run-01/profile/fixture-adaptation.json",
+      "sha256Bytes": "f4f5c6238549c14f45a09f330b922c83d994692d77414dcfbb01e5fea1ee1738"
+    },
+    {
+      "path": "run-01/profile/media-generator.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/profile/media-pins.json",
+      "sha256Bytes": "908bd369cfb52dfff9d5ba61b151a8e0a0a5ce31dbd0646a6b0ae3ca5316a454"
+    },
+    {
+      "path": "run-01/profile/ProfilePlatformFixture.kt",
+      "sha256Bytes": "59206327f41b2eee37e502bd76bf0449bdbdb4d0eb12509328d416f81ce11384"
+    },
+    {
+      "path": "run-01/profile/runtime-command.json",
+      "sha256Bytes": "410967ac568175f1467959b4738b2c8cb9b188a99129a98f20e2e64687e4bbc6"
+    },
+    {
+      "path": "run-01/runner-failure.json",
+      "sha256Bytes": "2425e46e758e22033d743838e116118996c1e13df295fc9d36c15f8266d40637"
+    },
+    {
+      "path": "run-02/compiler-tool-pins.json",
+      "sha256Bytes": "08b7abe9b6a1a0a58e0393b9cb136074511282efe1273b04f8601fa4e5fa8263"
+    },
+    {
+      "path": "run-02/cp-pins-after.json",
+      "sha256Bytes": "3f5e51475fbd5f8500f376485d2fb03a5cdce3397c02d167815edfee708fd743"
+    },
+    {
+      "path": "run-02/cp-pins-before.json",
+      "sha256Bytes": "3f5e51475fbd5f8500f376485d2fb03a5cdce3397c02d167815edfee708fd743"
+    },
+    {
+      "path": "run-02/image/actual-origins.json",
+      "sha256Bytes": "8f816b115d4d058d0a0c4cfa8314dc3c7ef6449aa798be088ac742c675fa4f93"
+    },
+    {
+      "path": "run-02/image/Actual44Origins.kt",
+      "sha256Bytes": "e5bb55c56dda4a9c99c7426f5a455e0f9f66b0c69532f7faac3f1cff10881568"
+    },
+    {
+      "path": "run-02/image/class-intersection.json",
+      "sha256Bytes": "9bdf5bc25139eb1012716c832d11bd2e3599660b89ac558577c657ca0ec07897"
+    },
+    {
+      "path": "run-02/image/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-02/image/compiler.args",
+      "sha256Bytes": "eb5611fe48700813c228e129522dbd706c24eaa6f9176191c23a118812815dc0"
+    },
+    {
+      "path": "run-02/image/fixture-adaptation.json",
+      "sha256Bytes": "5aecb109f42f47f7a37770900c247dd4cd29c8c84df0080a19a28073d61216f0"
+    },
+    {
+      "path": "run-02/image/ImageLoaderFixture.kt",
+      "sha256Bytes": "f6c375dcfc2c3dcb139649981590b1f8bb844bdca6e93f7767bab2abc6f3aae6"
+    },
+    {
+      "path": "run-02/image/result.json",
+      "sha256Bytes": "5a8075e5ee96409ec79c11fb3c756edb17c39208e1c5c55665489418d149fb74"
+    },
+    {
+      "path": "run-02/image/runtime-command.json",
+      "sha256Bytes": "09307a548fb5b395246a8a298c9c4b8b0318a12802bf5a2709da67d45f56d30d"
+    },
+    {
+      "path": "run-02/image/runtime-stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-02/image/runtime-stdout.raw.log",
+      "sha256Bytes": "261822d164bc8de4563626fff0a6f81721ea9485939c8e78018d76b47147b932"
+    },
+    {
+      "path": "run-02/image/runtime.log",
+      "sha256Bytes": "80993d0fc3ffe26b3dcc0ec4aec5970a4ff435930c64a2ff828bbba1e519c1bc"
+    },
+    {
+      "path": "run-02/input-manifest.json",
+      "sha256Bytes": "e5ba1d8de17cd400dde006ab3a75a1d5facdd68b8dba4bb52c9c51db52e5f31a"
+    },
+    {
+      "path": "run-02/input-ordered-runtime-cp.json",
+      "sha256Bytes": "b4d72f39a19b3704e657a9edb8c8e8d18c10a1a352481c34a96f0ad208e17141"
+    },
+    {
+      "path": "run-02/profile/actual-origins.json",
+      "sha256Bytes": "dcc97d88c57fd3dff7a2689a866efd1acb02531273816e9a53cc76efdd6af3c4"
+    },
+    {
+      "path": "run-02/profile/Actual44Origins.kt",
+      "sha256Bytes": "e5bb55c56dda4a9c99c7426f5a455e0f9f66b0c69532f7faac3f1cff10881568"
+    },
+    {
+      "path": "run-02/profile/class-intersection.json",
+      "sha256Bytes": "2114aae1f417d627605c56f735e97b893b7426fcc722819c426e5081d8d87d27"
+    },
+    {
+      "path": "run-02/profile/compile.log",
+      "sha256Bytes": "858131b424cf8d2ebf87b6a06831646aaf3312bb141cf1e524571ea98d67531c"
+    },
+    {
+      "path": "run-02/profile/compiler.args",
+      "sha256Bytes": "7c3ca557bbfcc8f09417a4dce6843886481bdb0508e8291507c36d2fd0c8364f"
+    },
+    {
+      "path": "run-02/profile/fixture-adaptation.json",
+      "sha256Bytes": "f4f5c6238549c14f45a09f330b922c83d994692d77414dcfbb01e5fea1ee1738"
+    },
+    {
+      "path": "run-02/profile/media-generator.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-02/profile/media-pins.json",
+      "sha256Bytes": "103b1732dfe9e4b43df0cf3646441fa5afd959beab0bfc8ad0c04d1e0bcdbcd2"
+    },
+    {
+      "path": "run-02/profile/ProfilePlatformFixture.kt",
+      "sha256Bytes": "59206327f41b2eee37e502bd76bf0449bdbdb4d0eb12509328d416f81ce11384"
+    },
+    {
+      "path": "run-02/profile/result.json",
+      "sha256Bytes": "e296bc7c720defa8c719ec6271733ae30153ccab318dc77736ab0fe6fd1a7f30"
+    },
+    {
+      "path": "run-02/profile/runtime-command.json",
+      "sha256Bytes": "e8cf85ba708021f35db3eb856077a236714e61bc5d4af069f4cfe7fd45e53c0e"
+    },
+    {
+      "path": "run-02/profile/runtime-stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-02/profile/runtime-stdout.raw.log",
+      "sha256Bytes": "9a57d6c26e636c2490493d9416bdbeba925bc2cbd8b024641d568ab7af86fdc5"
+    },
+    {
+      "path": "run-02/profile/runtime.log",
+      "sha256Bytes": "c03fd7861c3acc90ec4844f26ea0de30e43b51179866a031e0e180fe979bc2bc"
+    },
+    {
+      "path": "run-02/result.json",
+      "sha256Bytes": "7e62c454dda80513b3efbbad110c9cff99ea6ed9383dfb07466a654789f8508f"
+    },
+    {
+      "path": "run.py",
+      "sha256Bytes": "516689fdddc6a89a12325e4e4cac69f5ae006826058354621e1f13a2dd8a9b6a"
+    },
+    {
+      "path": "excluded-artifacts.json",
+      "sha256Bytes": "616cac3a844b37f5d1e775ed96700cbd8dfd87a0a7dea09b7143e2e86d38ef12"
+    }
+  ],
+  "excludedArtifacts": 30
+}

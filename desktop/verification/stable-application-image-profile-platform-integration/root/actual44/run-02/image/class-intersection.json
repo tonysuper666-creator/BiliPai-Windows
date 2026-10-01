@@ -1,0 +1,10 @@
+{
+  "fixtureClasses": [
+    "com/bilipai/desktop/ui/Actual44OriginsKt.class",
+    "com/bilipai/desktop/ui/ImageLoaderFixtureKt$main$1$application$1.class",
+    "com/bilipai/desktop/ui/ImageLoaderFixtureKt$main$1.class",
+    "com/bilipai/desktop/ui/ImageLoaderFixtureKt.class"
+  ],
+  "overlaps": [],
+  "productionOverrides": 0
+}

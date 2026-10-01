@@ -1,0 +1,996 @@
+{
+  "artifacts": [
+    {
+      "path": "prepared/image/frozen-handoff.json",
+      "sha256Bytes": "0740783057cdccbcc5b5d65ee09b74ec9c8e017a9e9fb6b940888d78dcaf293d",
+      "sizeBytes": 7699
+    },
+    {
+      "path": "prepared/image/ImageLoaderFixture.kt",
+      "sha256Bytes": "7788fbcbefde825813d8c76dee25898ea4282ccf711f9eeb412d410809521511",
+      "sizeBytes": 5680
+    },
+    {
+      "path": "prepared/image/compile-01/compiler.args",
+      "sha256Bytes": "c9e00bc2f34dd5f7dbc39a3f03e9651719b14ded6aa30df45b04b3e0f4c2da78",
+      "sizeBytes": 26310
+    },
+    {
+      "path": "prepared/image/compile-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/image/compile-01/result.json",
+      "sha256Bytes": "9c61837745dfea57f79e7bcaec1a71903c334f0e6667f95b33f818db69339ebf",
+      "sizeBytes": 1771
+    },
+    {
+      "path": "prepared/image/compile-02/compiler.args",
+      "sha256Bytes": "f2b5b1ff8bf47cad0a5105580b340914685f89f749bf9e5de3b4ae83abcc3c22",
+      "sizeBytes": 26310
+    },
+    {
+      "path": "prepared/image/compile-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/image/compile-02/result.json",
+      "sha256Bytes": "25086fbd2c63c122e32c36d0fbb1f0a8543dcd0a684a0be0074406422d23cbf9",
+      "sizeBytes": 1771
+    },
+    {
+      "path": "prepared/image/compile-03/compiler.args",
+      "sha256Bytes": "94c3c772ce91cc17fd39fbe2a2ef6cc5d7bb0bf2b1c782cd8c376d4faa0e0099",
+      "sizeBytes": 26310
+    },
+    {
+      "path": "prepared/image/compile-03/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/image/compile-03/result.json",
+      "sha256Bytes": "8254a83ce3a03be08a121b720bd063d9c4b11a490c4e3a5e9d7153b693e752f7",
+      "sizeBytes": 1771
+    },
+    {
+      "path": "prepared/image/compile.py",
+      "sha256Bytes": "2f2fc01e61df603b3e90e27db4c334c9b32e8d88a6cbbaaa8b2147745ffd8dbf",
+      "sizeBytes": 2277
+    },
+    {
+      "path": "prepared/image/freeze.py",
+      "sha256Bytes": "95f4216c42ca127189d0f353f41c072b1403dd4876604c23ea6effd03a6c8a12",
+      "sizeBytes": 4663
+    },
+    {
+      "path": "prepared/image/install-contract.json",
+      "sha256Bytes": "77553ed948dd7d684c65049ebbee6c1df9bc266c19c6c6f9a7aab5673b36eb78",
+      "sizeBytes": 4171
+    },
+    {
+      "path": "prepared/image/original-stable/app/src/main/java/com/android/purebilibili/app/PureApplication.kt",
+      "sha256Bytes": "0fea2f786cb09c6d3abb856e23eba25bfdc73573f37d746d247fa3dd9f9721b4",
+      "sizeBytes": 38054
+    },
+    {
+      "path": "prepared/image/original-stable/app/src/main/java/com/android/purebilibili/app/PureApplicationRuntimeConfig.kt",
+      "sha256Bytes": "b332821a90253f2cfee7dbdd1845d4708dad8e584878ac53da4f4dccdc9f2582",
+      "sizeBytes": 2216
+    },
+    {
+      "path": "prepared/image/original-stable/app/src/main/java/com/android/purebilibili/core/lifecycle/BackgroundMemoryTrimPolicy.kt",
+      "sha256Bytes": "d4a95f3372db9b4434f21cdeeed67f96eac0ab456379d280e040c527b8452d88",
+      "sizeBytes": 2908
+    },
+    {
+      "path": "prepared/image/prepare-handoff.py",
+      "sha256Bytes": "621bc0d7f47b10638092c5179fae7b248fe467b72a2a786855c9ec37a4c9a19f",
+      "sizeBytes": 2726
+    },
+    {
+      "path": "prepared/image/prepare.py",
+      "sha256Bytes": "654f60ad7a7e1b6b7dfa84b047d57001029b59dcbd8a378a8f198fcdff09c44e",
+      "sizeBytes": 5923
+    },
+    {
+      "path": "prepared/image/prepared/coil-upstream/commonMain/coil3/network/cachecontrol/CacheControlCacheStrategy.kt",
+      "sha256Bytes": "205af3830d3bfcef597bccdc6554c7f2abb69483b3e649abfcdf75498af4e87b",
+      "sizeBytes": 11598
+    },
+    {
+      "path": "prepared/image/prepared/coil-upstream/commonMain/coil3/network/cachecontrol/internal/CacheControl.kt",
+      "sha256Bytes": "f3abb5f309c53dff0c566a9a9fcf7231c319fcdc6753afdf6cdd8bd7d9ffe2f7",
+      "sizeBytes": 7810
+    },
+    {
+      "path": "prepared/image/prepared/coil-upstream/commonMain/coil3/network/cachecontrol/internal/utils.kt",
+      "sha256Bytes": "f7347cf633951e964a77649de86761b1dbdab7bac5d1e4470a80f265dce98a79",
+      "sizeBytes": 3988
+    },
+    {
+      "path": "prepared/image/prepared/generated/com/android/purebilibili/app/DesktopOriginalApplicationImageLoader.kt",
+      "sha256Bytes": "2fad9964d238f1e5fc61014e99f476feab01b2654e6c0584512ed8900c752ded",
+      "sizeBytes": 2553
+    },
+    {
+      "path": "prepared/image/prepared/generated/com/android/purebilibili/core/lifecycle/DesktopOriginalBackgroundImageTrimPolicy.kt",
+      "sha256Bytes": "50574739b28bd0242b4773fd386bdc8f68d2e7be1007d8a6b50492a3df759b8d",
+      "sizeBytes": 880
+    },
+    {
+      "path": "prepared/image/prepared/manual/com/bilipai/desktop/ui/DesktopApplicationImageCacheTrim.kt",
+      "sha256Bytes": "9b93059fec4183f7e8ad6b2397ebb9462951030e1a633ff99e51ab511c5020a9",
+      "sizeBytes": 3374
+    },
+    {
+      "path": "prepared/image/prepared/manual/com/bilipai/desktop/ui/DesktopApplicationImageLoader.kt",
+      "sha256Bytes": "28e2562b4a0039bf292303f8459640c5a4c13ac8f2ea3de577076e50daa13b21",
+      "sizeBytes": 2997
+    },
+    {
+      "path": "prepared/image/prepared/resources/coil-cache-control-LICENSE.txt",
+      "sha256Bytes": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sizeBytes": 11358
+    },
+    {
+      "path": "prepared/image/prepared/resources/coil-cache-control-NOTICE.txt",
+      "sha256Bytes": "6bd1d0d8cc005df39496f6be8618eb6c5714cf3c9839fb631f053ead00e41c9c",
+      "sizeBytes": 558
+    },
+    {
+      "path": "prepared/image/prepared/tools/extract-upstream-application-image-loader.py",
+      "sha256Bytes": "7d8d7dde625dad262fec46be18718dc3a707f83b864cc396854cee77159c4368",
+      "sizeBytes": 5375
+    },
+    {
+      "path": "prepared/image/proof-01/compiler.args",
+      "sha256Bytes": "c8b8f78d36677a5234959356a9304366719984e798b51c424d54b2470bceefda",
+      "sizeBytes": 24867
+    },
+    {
+      "path": "prepared/image/proof-01/compiler.log",
+      "sha256Bytes": "810a05a711589e1bba5d6bb4a4e8ba2d53562bc352976e7238696d106728163e",
+      "sizeBytes": 1821
+    },
+    {
+      "path": "prepared/image/proof-01/invoked-fixture.kt",
+      "sha256Bytes": "f7329d139bd3b05a951f34e1a8c895d8194d5b51ca95eee6f17e90fa88274212",
+      "sizeBytes": 5212
+    },
+    {
+      "path": "prepared/image/proof-02/ImageLoaderFixture.kt",
+      "sha256Bytes": "7788fbcbefde825813d8c76dee25898ea4282ccf711f9eeb412d410809521511",
+      "sizeBytes": 5680
+    },
+    {
+      "path": "prepared/image/proof-02/compiler.args",
+      "sha256Bytes": "2174f6635c81ed66054b71aa7c57b3ac46488df65d391288d6848f5bcbbb3719",
+      "sizeBytes": 24876
+    },
+    {
+      "path": "prepared/image/proof-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/image/proof-02/runtime.log",
+      "sha256Bytes": "ba1b136e12e3798cbfe302f31cb9a0109c9837108efb0b1c64cee5d4e5d5a380",
+      "sizeBytes": 180
+    },
+    {
+      "path": "prepared/image/proof-03/ImageLoaderFixture.kt",
+      "sha256Bytes": "7788fbcbefde825813d8c76dee25898ea4282ccf711f9eeb412d410809521511",
+      "sizeBytes": 5680
+    },
+    {
+      "path": "prepared/image/proof-03/compiler.args",
+      "sha256Bytes": "abc7f62b96e1dee083e4814e0f63396580be315c6e540ecd7e2039a43a73ff0a",
+      "sizeBytes": 24876
+    },
+    {
+      "path": "prepared/image/proof-03/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/image/proof-03/runtime.log",
+      "sha256Bytes": "ba1b136e12e3798cbfe302f31cb9a0109c9837108efb0b1c64cee5d4e5d5a380",
+      "sizeBytes": 180
+    },
+    {
+      "path": "prepared/image/prove.py",
+      "sha256Bytes": "2ccf3d14dfaa21b3c60134dd683875dd691668cbfa9ebfe9aa649a2a4530f6a5",
+      "sizeBytes": 2031
+    },
+    {
+      "path": "prepared/image/replay-generated/com/android/purebilibili/app/DesktopOriginalApplicationImageLoader.kt",
+      "sha256Bytes": "2fad9964d238f1e5fc61014e99f476feab01b2654e6c0584512ed8900c752ded",
+      "sizeBytes": 2553
+    },
+    {
+      "path": "prepared/image/replay-generated/com/android/purebilibili/core/lifecycle/DesktopOriginalBackgroundImageTrimPolicy.kt",
+      "sha256Bytes": "50574739b28bd0242b4773fd386bdc8f68d2e7be1007d8a6b50492a3df759b8d",
+      "sizeBytes": 880
+    },
+    {
+      "path": "prepared/image/replay-generated/producer-receipt.json",
+      "sha256Bytes": "42ace421bc87f79e8751c642dcb95019bc0fbe1a194f02b753ca471fee7e05b0",
+      "sizeBytes": 2681
+    },
+    {
+      "path": "prepared/image/reverse-audit.json",
+      "sha256Bytes": "589e203959b02b19f5caf2fe6b293236ebe2f6b4d1015db21e605470a80ff6ca",
+      "sizeBytes": 348
+    },
+    {
+      "path": "prepared/image/source-receipt.json",
+      "sha256Bytes": "d0b5f66fadc1d4c2448ed42075ed2170681eacec51da44a358343028daeacc37",
+      "sizeBytes": 3938
+    },
+    {
+      "path": "prepared/image/excluded-artifacts.json",
+      "sha256Bytes": "40caa6da3d1c7015fa43598ed70e5d0e3f5d4312f5ac9c93a3bd72e33e569131",
+      "sizeBytes": 1245
+    },
+    {
+      "path": "prepared/profileWindows/frozen-handoff.json",
+      "sha256Bytes": "15aa4e1197a7b804f8bdb9f6942972761c7864a8d552dbbdef72a33930f03db6",
+      "sizeBytes": 13421
+    },
+    {
+      "path": "prepared/profileWindows/ProfilePlatformFixture.kt",
+      "sha256Bytes": "5373933f573c720776216bef6c18b3c2899fdecccbae2408b99b4e9397cd45d7",
+      "sizeBytes": 15790
+    },
+    {
+      "path": "prepared/profileWindows/ROOT-INTEGRATION.md",
+      "sha256Bytes": "7a57bb8016cd9da44ae4389eae44847946bf0fe10677be5d418fa66e6cd2f356",
+      "sizeBytes": 12862
+    },
+    {
+      "path": "prepared/profileWindows/abi-audit.json",
+      "sha256Bytes": "f13e109607ac55d5338a5f08aa570ceb9f587192fff47bba08ab7fe9af168073",
+      "sizeBytes": 5075
+    },
+    {
+      "path": "prepared/profileWindows/classload-proof/ProfilePlatformClassLoadProof.java",
+      "sha256Bytes": "71c717246ae6b484af9a03c4f8ebf654f5c61b48f7448c6bdc3edc6b4cd6c19f",
+      "sizeBytes": 466
+    },
+    {
+      "path": "prepared/profileWindows/classload-proof/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/profileWindows/classload-proof/run.log",
+      "sha256Bytes": "b7954d9492ae6f9dd99aca2ba46d4b90b687c4079b66a55fc38f7e40e77f850d",
+      "sizeBytes": 34
+    },
+    {
+      "path": "prepared/profileWindows/compile-09/compile-result.json",
+      "sha256Bytes": "b0f0adfc8dc3327c715b83648b7c2d08c953fbd9b3746d41e1f40648f0e875f8",
+      "sizeBytes": 4088
+    },
+    {
+      "path": "prepared/profileWindows/compile-09/kotlin.log",
+      "sha256Bytes": "0db71eae62519c6bb033059741500151b2e09a9d969c23153f0625ade7802134",
+      "sizeBytes": 2041
+    },
+    {
+      "path": "prepared/profileWindows/compile.py",
+      "sha256Bytes": "0a2d041572590d02f453d7f86f8abb1d4e945c9b1153ce681f789bdc751fd822",
+      "sizeBytes": 4299
+    },
+    {
+      "path": "prepared/profileWindows/finish.py",
+      "sha256Bytes": "56d78b80e952f708913fbd3346fa23a3883e39d6954899f2a1c0e5166a2acf99",
+      "sizeBytes": 17431
+    },
+    {
+      "path": "prepared/profileWindows/freeze.py",
+      "sha256Bytes": "bf73d1de7fe1668f4b48009ee97a8d5908364f629a85e23171c3d923cc0142a5",
+      "sizeBytes": 6011
+    },
+    {
+      "path": "prepared/profileWindows/gradle-task.snippet.kts",
+      "sha256Bytes": "7c9087c39025540dde72b88448c8941430598b2eb36b49f67153e39b1f0338f2",
+      "sizeBytes": 881
+    },
+    {
+      "path": "prepared/profileWindows/input-audit.json",
+      "sha256Bytes": "927304a97ab1e1eb0dd6b1202e5784b516a6292429b332e53cb2aad7a7dbd9d6",
+      "sizeBytes": 38132
+    },
+    {
+      "path": "prepared/profileWindows/install-contract.json",
+      "sha256Bytes": "89e26cf5687a2bf20c4fa7def9c066914477847bbf40083f23c3209c3f6b7be9",
+      "sizeBytes": 4711
+    },
+    {
+      "path": "prepared/profileWindows/original-import-reverse.json",
+      "sha256Bytes": "f3f9a2ceb115cc2083cabb6c8f5c0baf5248d7fe20f52817f0158edc4b5f237b",
+      "sizeBytes": 8241
+    },
+    {
+      "path": "prepared/profileWindows/original-stable-selected/SettingsManager.setDarkThemeStyle.kt.txt",
+      "sha256Bytes": "9d419ec3363641d9082cdb226623982803d215b6aec38508c13c3b6a521e8020",
+      "sizeBytes": 459
+    },
+    {
+      "path": "prepared/profileWindows/original-stable-selected/SettingsManager.setThemeMode.kt.txt",
+      "sha256Bytes": "94b6bf9563ea93f878b1380f4d3563227f0501f556a0b20cf5f1e4265577ae78",
+      "sizeBytes": 1383
+    },
+    {
+      "path": "prepared/profileWindows/original-stable/app/src/main/java/com/android/purebilibili/feature/profile/WallpaperImageImport.kt",
+      "sha256Bytes": "9d1d439a42738a9e1b92340e1b5c3e9c2abe5cf578cf3f605a43388f178cbc91",
+      "sizeBytes": 4483
+    },
+    {
+      "path": "prepared/profileWindows/original-theme-methods.json",
+      "sha256Bytes": "82ef0f8f652c4763f6541ead437ecbf58e21c28232555efd1fbfa41530bcf6f0",
+      "sizeBytes": 939
+    },
+    {
+      "path": "prepared/profileWindows/pins.json",
+      "sha256Bytes": "98ce09903737bf6a0664f953dd1b43606be5140ae22efc555b0f0cc05a366b47",
+      "sizeBytes": 369
+    },
+    {
+      "path": "prepared/profileWindows/prepare.py",
+      "sha256Bytes": "b2f659a31c6f7d56ab5ccc0faae2679b8d2e0a6bd8b73cfc09268fa20d69d00d",
+      "sizeBytes": 13961
+    },
+    {
+      "path": "prepared/profileWindows/prepared/generated/com/android/purebilibili/feature/profile/WallpaperImageImport.kt",
+      "sha256Bytes": "0379e92e67bee566f47832e741ffe117c4186f9d17a0979cf552bcc59d329aec",
+      "sizeBytes": 4462
+    },
+    {
+      "path": "prepared/profileWindows/prepared/manual/com/bilipai/desktop/ui/DesktopProfileOwnedFiles.kt",
+      "sha256Bytes": "eb63417cc60a9b4fbfa7217b263a18ce76f3d7259343c4ff32843909e4203117",
+      "sizeBytes": 10924
+    },
+    {
+      "path": "prepared/profileWindows/prepared/manual/com/bilipai/desktop/ui/DesktopProfileVideoMetadata.kt",
+      "sha256Bytes": "9dcce91c7692cc8295e6e1255f4944f90212fc19bc6eaedaca1956f5192e72f5",
+      "sizeBytes": 2631
+    },
+    {
+      "path": "prepared/profileWindows/prepared/manual/com/bilipai/desktop/ui/DesktopProfileWindowChrome.kt",
+      "sha256Bytes": "50852b3a790463323dbc509c438520558973f5f6b856f159f37ad3ea313b629d",
+      "sizeBytes": 2834
+    },
+    {
+      "path": "prepared/profileWindows/prepared/manual/com/bilipai/desktop/ui/DesktopProfileWindowsBindingFactory.kt",
+      "sha256Bytes": "f8efeaf706f94202919b1a7be097390dd03252209cf50432991b029feb585a24",
+      "sizeBytes": 2766
+    },
+    {
+      "path": "prepared/profileWindows/prepared/manual/com/bilipai/desktop/ui/DesktopProfileWindowsPlatform.kt",
+      "sha256Bytes": "b2e6f64ba7ac5287d8d0582b54b510f93ecb99224284636aacd72ae4d6efb530",
+      "sizeBytes": 5781
+    },
+    {
+      "path": "prepared/profileWindows/prepared/shared-candidates/desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "sha256Bytes": "49bf473b17a2e11fcee5ffd1cbed1df4dfcf036ce77f66f010a1df0c7aa3d945",
+      "sizeBytes": 13078
+    },
+    {
+      "path": "prepared/profileWindows/prepared/shared-candidates/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "72f2ce5d5197cc1b4342db39d569f67f6f5967064703ce09db101510e3b95f5c",
+      "sizeBytes": 12578
+    },
+    {
+      "path": "prepared/profileWindows/prepared/shared-candidates/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "ff38bb9451fdbc0f4515c0199b0cde1b7da4187e78f232f0c0ffe19297f3b80d",
+      "sizeBytes": 18119
+    },
+    {
+      "path": "prepared/profileWindows/prepared/shared-candidates/desktop/tools/extract-upstream-profile-main.py",
+      "sha256Bytes": "490ceb994ee7a8c358daaea871c707cf850d3a900e74b195fa8f67f3db26f75e",
+      "sizeBytes": 27441
+    },
+    {
+      "path": "prepared/profileWindows/prepared/tools/extract-upstream-profile-wallpaper-import.py",
+      "sha256Bytes": "f74d6fe884bfc2ace829a2fc536f15d07a63c8ae9caa32c6b085cdedd2435855",
+      "sizeBytes": 8541
+    },
+    {
+      "path": "prepared/profileWindows/proof-01/run.log",
+      "sha256Bytes": "bfa20fcc1bbbd2643e286823866ebe2ac6b4003145626a0951d16d4a390e7386",
+      "sizeBytes": 1291
+    },
+    {
+      "path": "prepared/profileWindows/proof-02/local-fixture/io/home_wallpaper/.profile-metadata-17493302768103190519.tmp",
+      "sha256Bytes": "2cd9e8f8fa311f2869128074c77fc3e713bdfdd1cb7d3ba3ff4a2325ac88ed3f",
+      "sizeBytes": 333
+    },
+    {
+      "path": "prepared/profileWindows/proof-02/run.log",
+      "sha256Bytes": "ab1ca9b2e13ca5e2e4b5b3a4f6f01b09095fc3155f73ca0a6be3f8a6ac12fc71",
+      "sizeBytes": 1194
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/compile.log",
+      "sha256Bytes": "1a2289b15919c023c7637dcdb799ffbcd3bac2b99152fc5f464e24ab7bc45f82",
+      "sizeBytes": 452
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/local-fixture/fixture-pictures/BiliPai/profile-fixture (1).jpg",
+      "sha256Bytes": "805d1fbd85e22b9aa3dc77843d50979fc72d35726bcd5ab014e67fb74ffd899c",
+      "sizeBytes": 9
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/local-fixture/fixture-pictures/BiliPai/profile-fixture.jpg",
+      "sha256Bytes": "805d1fbd85e22b9aa3dc77843d50979fc72d35726bcd5ab014e67fb74ffd899c",
+      "sizeBytes": 9
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/local-fixture/invalid.mp4",
+      "sha256Bytes": "787c798e39a5bc1910355bae6d0cd87a36b2e10fd0202a83e3bb6b005da83472",
+      "sizeBytes": 3
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/local-fixture/invalid.png",
+      "sha256Bytes": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81",
+      "sizeBytes": 3
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/local-fixture/io/home_wallpaper/wallpaper_a21ba85c-1824-44bb-8427-a34cfebf0ea9.mp4",
+      "sha256Bytes": "5071d99b3e943ee06e292cab9edb3f58cb67573e0c08df35d72cfdd5d37403a8",
+      "sizeBytes": 1311
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/local-fixture/io/home_wallpaper/wallpaper_bea15539-fe51-49e8-9a6e-7d4e70f5208a.img",
+      "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35",
+      "sizeBytes": 101
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/local-fixture/io/profile_wallpaper/wallpaper_dccc8983-17a2-45af-89cf-6b630e9b45f7.img",
+      "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35",
+      "sizeBytes": 101
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/local-fixture/io/splash/wallpaper_2c8a81ce-251e-4767-b6eb-860a893166cf.img",
+      "sha256Bytes": "f2d993f565409b3a8582f21e81abcbbb73f5365a62318f60d4b110a7f3c17a9e",
+      "sizeBytes": 72
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/local-fixture/synthetic.gif",
+      "sha256Bytes": "f2d993f565409b3a8582f21e81abcbbb73f5365a62318f60d4b110a7f3c17a9e",
+      "sizeBytes": 72
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/local-fixture/synthetic.png",
+      "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35",
+      "sizeBytes": 101
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/local-fixture/theme/plugin-settings.json",
+      "sha256Bytes": "733538974a6ff672efc5199a3a8aa6f302ea8348ee1b98fbb2c88f04bb77aa5b",
+      "sizeBytes": 200
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/media-generator.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/media-inputs.json",
+      "sha256Bytes": "b4d96676552aad559363f1c132e82c44204ac0c85a1149f61efb1abe0bf3210d",
+      "sizeBytes": 863
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/proof-result.json",
+      "sha256Bytes": "fda7574d275d60fd4effd985a739e3b2017aff9084e07948b9fcad6e164b6722",
+      "sizeBytes": 4425
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/run.log",
+      "sha256Bytes": "053b9cf27e21a874e81f83755740c1abead9f804d5821263d29c657c9137e689",
+      "sizeBytes": 1647
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/synthetic-local.mp4",
+      "sha256Bytes": "5071d99b3e943ee06e292cab9edb3f58cb67573e0c08df35d72cfdd5d37403a8",
+      "sizeBytes": 1311
+    },
+    {
+      "path": "prepared/profileWindows/registry-merge-recipe.json",
+      "sha256Bytes": "c0d9b332cd37881bf24a3c2c0b26c058ee0a562ee285bba091dc480d75082a04",
+      "sizeBytes": 745
+    },
+    {
+      "path": "prepared/profileWindows/replay-production.log",
+      "sha256Bytes": "7f3a93def2bd1c997c3eb86234f1f190eac101e1c7d9afc19d99c073a380c070",
+      "sizeBytes": 77
+    },
+    {
+      "path": "prepared/profileWindows/replay-production/com/android/purebilibili/feature/profile/WallpaperImageImport.kt",
+      "sha256Bytes": "0379e92e67bee566f47832e741ffe117c4186f9d17a0979cf552bcc59d329aec",
+      "sizeBytes": 4462
+    },
+    {
+      "path": "prepared/profileWindows/replay-production/profile-wallpaper-import-proof.json",
+      "sha256Bytes": "c9a4277a62ec0e92763a8f5673469fb7bbd079d1296a47663c290f528bb8dd1b",
+      "sizeBytes": 446
+    },
+    {
+      "path": "prepared/profileWindows/run-proof.py",
+      "sha256Bytes": "9806673ea6fd00663565ddd8e2a71d7545203541de43d7e509e59657dacac80e",
+      "sizeBytes": 3959
+    },
+    {
+      "path": "prepared/profileWindows/shared-bases/desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "sha256Bytes": "f06fb3593cd954f553dcdf900b32438cbcf4976be056a8238dd17c5efd01700e",
+      "sizeBytes": 11592
+    },
+    {
+      "path": "prepared/profileWindows/shared-bases/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c",
+      "sizeBytes": 10725
+    },
+    {
+      "path": "prepared/profileWindows/shared-bases/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "sizeBytes": 16116
+    },
+    {
+      "path": "prepared/profileWindows/shared-bases/desktop/tools/extract-upstream-profile-main.py",
+      "sha256Bytes": "f1f770072220a9d29e20cb77c3f4f5fd6d30c6decea0a0c83129114fe16942d4",
+      "sizeBytes": 27324
+    },
+    {
+      "path": "prepared/profileWindows/shared-hunks-replay.json",
+      "sha256Bytes": "46e9f87095d6233af6ebcba8ecfb1907d2fd5c1b9d3672aeef22c3d5ce827775",
+      "sizeBytes": 844
+    },
+    {
+      "path": "prepared/profileWindows/shared-local-hunks.json",
+      "sha256Bytes": "01a038da2a53b8fc2c5f90bc49c3e543ce3b104bafc535bdc4338ecc50286d0f",
+      "sizeBytes": 10685
+    },
+    {
+      "path": "prepared/profileWindows/source-audit.json",
+      "sha256Bytes": "cca9835740caf5fc4eb0401bc5763d0f8d11c9727a092a168660cd279ac248c8",
+      "sizeBytes": 3138
+    },
+    {
+      "path": "root/actual44/frozen-proof.json",
+      "sha256Bytes": "67b1f30c5f3097b2aa4c5ca274c93ff301accada3b4c01d13c9d25b19cf18db8",
+      "sizeBytes": 10195
+    },
+    {
+      "path": "root/actual44/freeze.py",
+      "sha256Bytes": "ed928e8d1f5591081eae1839a42b97cc8bd066de7a65510e5c58bef54a15945a",
+      "sizeBytes": 2645
+    },
+    {
+      "path": "root/actual44/result.json",
+      "sha256Bytes": "8a8a36fef11e3c2918ad40303f346a68a691084bc7f6755e70466106ba91d449",
+      "sizeBytes": 2009
+    },
+    {
+      "path": "root/actual44/run-01/compiler-tool-pins.json",
+      "sha256Bytes": "08b7abe9b6a1a0a58e0393b9cb136074511282efe1273b04f8601fa4e5fa8263",
+      "sizeBytes": 3710
+    },
+    {
+      "path": "root/actual44/run-01/cp-pins-before.json",
+      "sha256Bytes": "3f5e51475fbd5f8500f376485d2fb03a5cdce3397c02d167815edfee708fd743",
+      "sizeBytes": 36607
+    },
+    {
+      "path": "root/actual44/run-01/image/actual-origins.json",
+      "sha256Bytes": "8f816b115d4d058d0a0c4cfa8314dc3c7ef6449aa798be088ac742c675fa4f93",
+      "sizeBytes": 2856
+    },
+    {
+      "path": "root/actual44/run-01/image/Actual44Origins.kt",
+      "sha256Bytes": "e5bb55c56dda4a9c99c7426f5a455e0f9f66b0c69532f7faac3f1cff10881568",
+      "sizeBytes": 1393
+    },
+    {
+      "path": "root/actual44/run-01/image/class-intersection.json",
+      "sha256Bytes": "9bdf5bc25139eb1012716c832d11bd2e3599660b89ac558577c657ca0ec07897",
+      "sizeBytes": 338
+    },
+    {
+      "path": "root/actual44/run-01/image/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual44/run-01/image/compiler.args",
+      "sha256Bytes": "a9de90d32b19bc0c2c660bc2fa54274f24840140394a231fbee2de62f8f26e71",
+      "sizeBytes": 25021
+    },
+    {
+      "path": "root/actual44/run-01/image/fixture-adaptation.json",
+      "sha256Bytes": "5aecb109f42f47f7a37770900c247dd4cd29c8c84df0080a19a28073d61216f0",
+      "sizeBytes": 690
+    },
+    {
+      "path": "root/actual44/run-01/image/ImageLoaderFixture.kt",
+      "sha256Bytes": "f6c375dcfc2c3dcb139649981590b1f8bb844bdca6e93f7767bab2abc6f3aae6",
+      "sizeBytes": 5806
+    },
+    {
+      "path": "root/actual44/run-01/image/result.json",
+      "sha256Bytes": "5a8075e5ee96409ec79c11fb3c756edb17c39208e1c5c55665489418d149fb74",
+      "sizeBytes": 326
+    },
+    {
+      "path": "root/actual44/run-01/image/runtime-command.json",
+      "sha256Bytes": "2b34ef822887f4e2da66a393d118a72b2076eb571fe369f89a9ba3586d70d033",
+      "sizeBytes": 26846
+    },
+    {
+      "path": "root/actual44/run-01/image/runtime.log",
+      "sha256Bytes": "261822d164bc8de4563626fff0a6f81721ea9485939c8e78018d76b47147b932",
+      "sizeBytes": 2919
+    },
+    {
+      "path": "root/actual44/run-01/input-manifest.json",
+      "sha256Bytes": "e5ba1d8de17cd400dde006ab3a75a1d5facdd68b8dba4bb52c9c51db52e5f31a",
+      "sizeBytes": 132762
+    },
+    {
+      "path": "root/actual44/run-01/input-ordered-runtime-cp.json",
+      "sha256Bytes": "b4d72f39a19b3704e657a9edb8c8e8d18c10a1a352481c34a96f0ad208e17141",
+      "sizeBytes": 36694
+    },
+    {
+      "path": "root/actual44/run-01/profile/Actual44Origins.kt",
+      "sha256Bytes": "e5bb55c56dda4a9c99c7426f5a455e0f9f66b0c69532f7faac3f1cff10881568",
+      "sizeBytes": 1393
+    },
+    {
+      "path": "root/actual44/run-01/profile/class-intersection.json",
+      "sha256Bytes": "2114aae1f417d627605c56f735e97b893b7426fcc722819c426e5081d8d87d27",
+      "sizeBytes": 3661
+    },
+    {
+      "path": "root/actual44/run-01/profile/compile.log",
+      "sha256Bytes": "1138f309096c18c7ac9808b029e3e8db71f2318e7031be5d1f1aa1ea6709e9b9",
+      "sizeBytes": 451
+    },
+    {
+      "path": "root/actual44/run-01/profile/compiler.args",
+      "sha256Bytes": "4e2e300465f8f28c789c308556202c38c70e5bd0716f76ae7dd38e3118607b28",
+      "sizeBytes": 25031
+    },
+    {
+      "path": "root/actual44/run-01/profile/fixture-adaptation.json",
+      "sha256Bytes": "f4f5c6238549c14f45a09f330b922c83d994692d77414dcfbb01e5fea1ee1738",
+      "sizeBytes": 770
+    },
+    {
+      "path": "root/actual44/run-01/profile/media-generator.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual44/run-01/profile/media-pins.json",
+      "sha256Bytes": "908bd369cfb52dfff9d5ba61b151a8e0a0a5ce31dbd0646a6b0ae3ca5316a454",
+      "sizeBytes": 1232
+    },
+    {
+      "path": "root/actual44/run-01/profile/ProfilePlatformFixture.kt",
+      "sha256Bytes": "59206327f41b2eee37e502bd76bf0449bdbdb4d0eb12509328d416f81ce11384",
+      "sizeBytes": 16024
+    },
+    {
+      "path": "root/actual44/run-01/profile/runtime-command.json",
+      "sha256Bytes": "410967ac568175f1467959b4738b2c8cb9b188a99129a98f20e2e64687e4bbc6",
+      "sizeBytes": 27335
+    },
+    {
+      "path": "root/actual44/run-01/runner-failure.json",
+      "sha256Bytes": "2425e46e758e22033d743838e116118996c1e13df295fc9d36c15f8266d40637",
+      "sizeBytes": 588
+    },
+    {
+      "path": "root/actual44/run-02/compiler-tool-pins.json",
+      "sha256Bytes": "08b7abe9b6a1a0a58e0393b9cb136074511282efe1273b04f8601fa4e5fa8263",
+      "sizeBytes": 3710
+    },
+    {
+      "path": "root/actual44/run-02/cp-pins-after.json",
+      "sha256Bytes": "3f5e51475fbd5f8500f376485d2fb03a5cdce3397c02d167815edfee708fd743",
+      "sizeBytes": 36607
+    },
+    {
+      "path": "root/actual44/run-02/cp-pins-before.json",
+      "sha256Bytes": "3f5e51475fbd5f8500f376485d2fb03a5cdce3397c02d167815edfee708fd743",
+      "sizeBytes": 36607
+    },
+    {
+      "path": "root/actual44/run-02/image/actual-origins.json",
+      "sha256Bytes": "8f816b115d4d058d0a0c4cfa8314dc3c7ef6449aa798be088ac742c675fa4f93",
+      "sizeBytes": 2856
+    },
+    {
+      "path": "root/actual44/run-02/image/Actual44Origins.kt",
+      "sha256Bytes": "e5bb55c56dda4a9c99c7426f5a455e0f9f66b0c69532f7faac3f1cff10881568",
+      "sizeBytes": 1393
+    },
+    {
+      "path": "root/actual44/run-02/image/class-intersection.json",
+      "sha256Bytes": "9bdf5bc25139eb1012716c832d11bd2e3599660b89ac558577c657ca0ec07897",
+      "sizeBytes": 338
+    },
+    {
+      "path": "root/actual44/run-02/image/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual44/run-02/image/compiler.args",
+      "sha256Bytes": "eb5611fe48700813c228e129522dbd706c24eaa6f9176191c23a118812815dc0",
+      "sizeBytes": 25021
+    },
+    {
+      "path": "root/actual44/run-02/image/fixture-adaptation.json",
+      "sha256Bytes": "5aecb109f42f47f7a37770900c247dd4cd29c8c84df0080a19a28073d61216f0",
+      "sizeBytes": 690
+    },
+    {
+      "path": "root/actual44/run-02/image/ImageLoaderFixture.kt",
+      "sha256Bytes": "f6c375dcfc2c3dcb139649981590b1f8bb844bdca6e93f7767bab2abc6f3aae6",
+      "sizeBytes": 5806
+    },
+    {
+      "path": "root/actual44/run-02/image/result.json",
+      "sha256Bytes": "5a8075e5ee96409ec79c11fb3c756edb17c39208e1c5c55665489418d149fb74",
+      "sizeBytes": 326
+    },
+    {
+      "path": "root/actual44/run-02/image/runtime-command.json",
+      "sha256Bytes": "09307a548fb5b395246a8a298c9c4b8b0318a12802bf5a2709da67d45f56d30d",
+      "sizeBytes": 26846
+    },
+    {
+      "path": "root/actual44/run-02/image/runtime-stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual44/run-02/image/runtime-stdout.raw.log",
+      "sha256Bytes": "261822d164bc8de4563626fff0a6f81721ea9485939c8e78018d76b47147b932",
+      "sizeBytes": 2919
+    },
+    {
+      "path": "root/actual44/run-02/image/runtime.log",
+      "sha256Bytes": "80993d0fc3ffe26b3dcc0ec4aec5970a4ff435930c64a2ff828bbba1e519c1bc",
+      "sizeBytes": 2929
+    },
+    {
+      "path": "root/actual44/run-02/input-manifest.json",
+      "sha256Bytes": "e5ba1d8de17cd400dde006ab3a75a1d5facdd68b8dba4bb52c9c51db52e5f31a",
+      "sizeBytes": 132762
+    },
+    {
+      "path": "root/actual44/run-02/input-ordered-runtime-cp.json",
+      "sha256Bytes": "b4d72f39a19b3704e657a9edb8c8e8d18c10a1a352481c34a96f0ad208e17141",
+      "sizeBytes": 36694
+    },
+    {
+      "path": "root/actual44/run-02/profile/actual-origins.json",
+      "sha256Bytes": "dcc97d88c57fd3dff7a2689a866efd1acb02531273816e9a53cc76efdd6af3c4",
+      "sizeBytes": 3871
+    },
+    {
+      "path": "root/actual44/run-02/profile/Actual44Origins.kt",
+      "sha256Bytes": "e5bb55c56dda4a9c99c7426f5a455e0f9f66b0c69532f7faac3f1cff10881568",
+      "sizeBytes": 1393
+    },
+    {
+      "path": "root/actual44/run-02/profile/class-intersection.json",
+      "sha256Bytes": "2114aae1f417d627605c56f735e97b893b7426fcc722819c426e5081d8d87d27",
+      "sizeBytes": 3661
+    },
+    {
+      "path": "root/actual44/run-02/profile/compile.log",
+      "sha256Bytes": "858131b424cf8d2ebf87b6a06831646aaf3312bb141cf1e524571ea98d67531c",
+      "sizeBytes": 451
+    },
+    {
+      "path": "root/actual44/run-02/profile/compiler.args",
+      "sha256Bytes": "7c3ca557bbfcc8f09417a4dce6843886481bdb0508e8291507c36d2fd0c8364f",
+      "sizeBytes": 25031
+    },
+    {
+      "path": "root/actual44/run-02/profile/fixture-adaptation.json",
+      "sha256Bytes": "f4f5c6238549c14f45a09f330b922c83d994692d77414dcfbb01e5fea1ee1738",
+      "sizeBytes": 770
+    },
+    {
+      "path": "root/actual44/run-02/profile/media-generator.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual44/run-02/profile/media-pins.json",
+      "sha256Bytes": "103b1732dfe9e4b43df0cf3646441fa5afd959beab0bfc8ad0c04d1e0bcdbcd2",
+      "sizeBytes": 1232
+    },
+    {
+      "path": "root/actual44/run-02/profile/ProfilePlatformFixture.kt",
+      "sha256Bytes": "59206327f41b2eee37e502bd76bf0449bdbdb4d0eb12509328d416f81ce11384",
+      "sizeBytes": 16024
+    },
+    {
+      "path": "root/actual44/run-02/profile/result.json",
+      "sha256Bytes": "e296bc7c720defa8c719ec6271733ae30153ccab318dc77736ab0fe6fd1a7f30",
+      "sizeBytes": 606
+    },
+    {
+      "path": "root/actual44/run-02/profile/runtime-command.json",
+      "sha256Bytes": "e8cf85ba708021f35db3eb856077a236714e61bc5d4af069f4cfe7fd45e53c0e",
+      "sizeBytes": 27335
+    },
+    {
+      "path": "root/actual44/run-02/profile/runtime-stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual44/run-02/profile/runtime-stdout.raw.log",
+      "sha256Bytes": "9a57d6c26e636c2490493d9416bdbeba925bc2cbd8b024641d568ab7af86fdc5",
+      "sizeBytes": 5193
+    },
+    {
+      "path": "root/actual44/run-02/profile/runtime.log",
+      "sha256Bytes": "c03fd7861c3acc90ec4844f26ea0de30e43b51179866a031e0e180fe979bc2bc",
+      "sizeBytes": 5385
+    },
+    {
+      "path": "root/actual44/run-02/result.json",
+      "sha256Bytes": "7e62c454dda80513b3efbbad110c9cff99ea6ed9383dfb07466a654789f8508f",
+      "sizeBytes": 1739
+    },
+    {
+      "path": "root/actual44/run.py",
+      "sha256Bytes": "516689fdddc6a89a12325e4e4cac69f5ae006826058354621e1f13a2dd8a9b6a",
+      "sizeBytes": 12135
+    },
+    {
+      "path": "root/actual44/excluded-artifacts.json",
+      "sha256Bytes": "616cac3a844b37f5d1e775ed96700cbd8dfd87a0a7dea09b7143e2e86d38ef12",
+      "sizeBytes": 8827
+    },
+    {
+      "path": "root/application-image-loader-install44/baseline/desktop/build.gradle.kts",
+      "sha256Bytes": "a0b1aa9a8cb15359dab7786bf3256f5cf47c9f4bc7da4ee87b67669328d7b88d",
+      "sizeBytes": 106897
+    },
+    {
+      "path": "root/application-image-loader-install44/baseline/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "0c55221c2901400973e4c96e3f762a7cee52496988a2fb06019350243c84c80c",
+      "sizeBytes": 141279
+    },
+    {
+      "path": "root/application-image-loader-install44/baseline/desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "914897f017c79d3ed46bbda59be80802a36de25ce69ba489ec4ba2746aa51d25",
+      "sizeBytes": 12259
+    },
+    {
+      "path": "root/application-image-loader-install44/baseline/desktop/upstream-sources.json",
+      "sha256Bytes": "af78adf11c31c10a385fcdbe827222a70ffbe034c9cbec5d0000cc8d256666a5",
+      "sizeBytes": 334606
+    },
+    {
+      "path": "root/application-image-loader-install44/build-repair.json",
+      "sha256Bytes": "0aff983fb7a25db3f2e5bb40322a132e698d44c0d16d5b127eb0adca133c1835",
+      "sizeBytes": 152
+    },
+    {
+      "path": "root/application-image-loader-install44/installed.json",
+      "sha256Bytes": "bd5c84c7481e0c73f773675fcc363246dd767c1dfc85e27b43b378672651784f",
+      "sizeBytes": 7180
+    },
+    {
+      "path": "root/profile-windows-install44/baseline/desktop/build.gradle.kts",
+      "sha256Bytes": "17e958bf712cefa57b3e3813dd46cfa1d3e79ff6f3681c66d02e23721947f1d0",
+      "sizeBytes": 109781
+    },
+    {
+      "path": "root/profile-windows-install44/baseline/desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "sha256Bytes": "aded1fd355339d8bb2daa8c1a1357c11f29e5e61a279feb39b7ddb66f1457bea",
+      "sizeBytes": 11757
+    },
+    {
+      "path": "root/profile-windows-install44/baseline/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c",
+      "sizeBytes": 10725
+    },
+    {
+      "path": "root/profile-windows-install44/baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "sizeBytes": 16116
+    },
+    {
+      "path": "root/profile-windows-install44/baseline/desktop/tools/extract-upstream-profile-main.py",
+      "sha256Bytes": "f1f770072220a9d29e20cb77c3f4f5fd6d30c6decea0a0c83129114fe16942d4",
+      "sizeBytes": 27324
+    },
+    {
+      "path": "root/profile-windows-install44/baseline/desktop/upstream-sources.json",
+      "sha256Bytes": "7d774ba67e1298140e6690ba603cfcfe339daba627b3ce7de776cfa50eaf69b2",
+      "sizeBytes": 335493
+    },
+    {
+      "path": "root/profile-windows-install44/installed.json",
+      "sha256Bytes": "a8b50c12b479711fe895099d771dd13e4aab59ea3106a314b51eac2e6462d734",
+      "sizeBytes": 13142
+    },
+    {
+      "path": "root/install-application-image-loader44.py",
+      "sha256Bytes": "75b9d996332eaa41f75c11af04fdaa6284c20b91998c4d537aef2224fa2f5f94",
+      "sizeBytes": 8851
+    },
+    {
+      "path": "root/install-profile-windows44.py",
+      "sha256Bytes": "2d0a6fe7ffb90f9893227d22559c7ae1eb958ed0a3a3c098777a1705d1a0955d",
+      "sizeBytes": 4572
+    },
+    {
+      "path": "root/freeze-image-profile44.py",
+      "sha256Bytes": "43a3023256218bca19ac31e7adfe1c33bde7b645ba2298f2e180bd4b00d608c4",
+      "sizeBytes": 6437
+    },
+    {
+      "path": "root/jvm-method-name-audit-44.json",
+      "sha256Bytes": "b56e22489cb4bfae676bbe8f14b4be0e0faa7aa461b5c6b402df9fd053d5835e",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/snapshot44/manifest.json",
+      "sha256Bytes": "e5ba1d8de17cd400dde006ab3a75a1d5facdd68b8dba4bb52c9c51db52e5f31a",
+      "sizeBytes": 132762
+    },
+    {
+      "path": "root/snapshot44/ordered-runtime-cp.json",
+      "sha256Bytes": "b4d72f39a19b3704e657a9edb8c8e8d18c10a1a352481c34a96f0ad208e17141",
+      "sizeBytes": 36694
+    },
+    {
+      "path": "root/classes-44-attempt01.log",
+      "sha256Bytes": "95a67efea47f9690bfa41702632120d25554b306049d18e20129d47520b0fb2b",
+      "sizeBytes": 1316
+    },
+    {
+      "path": "root/classes-44.log",
+      "sha256Bytes": "11a4a4e4395eaa1bf55c4350a76a24dc8d4a64b4a3b642a30894a86ecbf3c467",
+      "sizeBytes": 13375
+    },
+    {
+      "path": "root/export-44.log",
+      "sha256Bytes": "d96e23c61819335c7179336cdea1d0832ed1e10ab6460a5648bd8f167f35d1e8",
+      "sizeBytes": 289
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "2449bef2b726761ce22d694d740af9dd5e69ff7f0779feec7fd413442898276d",
+      "sizeBytes": 3355
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "prepared/profileWindows/compile-09/original-profile-platform.jar",
+      "sha256Bytes": "ce8c0a854ce6bfe501e8b4030eec0412248fd22cc6edd20c5c023335482bfd78",
+      "reason": "Rebuildable compiler output"
+    },
+    {
+      "path": "prepared/profileWindows/proof-09/profile-platform-fixture.jar",
+      "sha256Bytes": "389082542ad3eed0d87b7f6e95f146b0b9f259c3d7fc4a016830c1470d90beb5",
+      "reason": "Rebuildable compiler output"
+    }
+  ]
+}

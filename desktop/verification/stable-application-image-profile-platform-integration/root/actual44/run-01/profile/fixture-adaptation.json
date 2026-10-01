@@ -1,0 +1,12 @@
+{
+  "originalFixture": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\ProfilePlatformFixture.kt",
+  "originalFixtureSha256Bytes": "5373933f573c720776216bef6c18b3c2899fdecccbae2408b99b4e9397cd45d7",
+  "frozenManifestSha256Bytes": "15aa4e1197a7b804f8bdb9f6942972761c7864a8d552dbbdef72a33930f03db6",
+  "adaptedFixtureSha256Bytes": "59206327f41b2eee37e502bd76bf0449bdbdb4d0eb12509328d416f81ce11384",
+  "inverseLfByteEqual": true,
+  "businessAssertionsUnchanged": 55,
+  "changes": [
+    "Add actual Main44 code-source and class-byte verification before business assertions",
+    "Update printed prospectiveOverrideFiles metadata from 3 to actual 0"
+  ]
+}

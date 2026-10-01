@@ -1,0 +1,30 @@
+{
+  "hunks": 5,
+  "targets": [
+    {
+      "path": "desktop/tools/extract-upstream-profile-main.py",
+      "forwardExact": true,
+      "reverseRecovered": true,
+      "fullOverwriteRequired": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "forwardExact": true,
+      "reverseRecovered": true,
+      "fullOverwriteRequired": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "forwardExact": true,
+      "reverseRecovered": true,
+      "fullOverwriteRequired": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "forwardExact": true,
+      "reverseRecovered": true,
+      "fullOverwriteRequired": false
+    }
+  ],
+  "baselineReadOnly": true
+}

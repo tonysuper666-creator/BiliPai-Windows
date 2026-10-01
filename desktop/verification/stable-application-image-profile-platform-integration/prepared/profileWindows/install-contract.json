@@ -1,0 +1,72 @@
+{
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\tools\\extract-upstream-profile-wallpaper-import.py",
+      "target": "desktop/tools/extract-upstream-profile-wallpaper-import.py",
+      "sha256Bytes": "f74d6fe884bfc2ace829a2fc536f15d07a63c8ae9caa32c6b085cdedd2435855",
+      "sha256LF": "f74d6fe884bfc2ace829a2fc536f15d07a63c8ae9caa32c6b085cdedd2435855"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileOwnedFiles.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileOwnedFiles.kt",
+      "sha256Bytes": "eb63417cc60a9b4fbfa7217b263a18ce76f3d7259343c4ff32843909e4203117",
+      "sha256LF": "eb63417cc60a9b4fbfa7217b263a18ce76f3d7259343c4ff32843909e4203117"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileVideoMetadata.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileVideoMetadata.kt",
+      "sha256Bytes": "9dcce91c7692cc8295e6e1255f4944f90212fc19bc6eaedaca1956f5192e72f5",
+      "sha256LF": "9dcce91c7692cc8295e6e1255f4944f90212fc19bc6eaedaca1956f5192e72f5"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileWindowChrome.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileWindowChrome.kt",
+      "sha256Bytes": "50852b3a790463323dbc509c438520558973f5f6b856f159f37ad3ea313b629d",
+      "sha256LF": "50852b3a790463323dbc509c438520558973f5f6b856f159f37ad3ea313b629d"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileWindowsBindingFactory.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileWindowsBindingFactory.kt",
+      "sha256Bytes": "f8efeaf706f94202919b1a7be097390dd03252209cf50432991b029feb585a24",
+      "sha256LF": "f8efeaf706f94202919b1a7be097390dd03252209cf50432991b029feb585a24"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileWindowsPlatform.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileWindowsPlatform.kt",
+      "sha256Bytes": "b2e6f64ba7ac5287d8d0582b54b510f93ecb99224284636aacd72ae4d6efb530",
+      "sha256LF": "b2e6f64ba7ac5287d8d0582b54b510f93ecb99224284636aacd72ae4d6efb530"
+    }
+  ],
+  "sharedHunks": "shared-local-hunks.json",
+  "sharedHunkCount": 5,
+  "sharedTargets": [
+    {
+      "path": "desktop/tools/extract-upstream-profile-main.py",
+      "baseSha256LF": "f1f770072220a9d29e20cb77c3f4f5fd6d30c6decea0a0c83129114fe16942d4",
+      "candidateSha256LF": "490ceb994ee7a8c358daaea871c707cf850d3a900e74b195fa8f67f3db26f75e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "baseSha256LF": "f06fb3593cd954f553dcdf900b32438cbcf4976be056a8238dd17c5efd01700e",
+      "candidateSha256LF": "49bf473b17a2e11fcee5ffd1cbed1df4dfcf036ce77f66f010a1df0c7aa3d945"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "baseSha256LF": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c",
+      "candidateSha256LF": "72f2ce5d5197cc1b4342db39d569f67f6f5967064703ce09db101510e3b95f5c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "baseSha256LF": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "candidateSha256LF": "ff38bb9451fdbc0f4515c0199b0cde1b7da4187e78f232f0c0ffe19297f3b80d"
+    }
+  ],
+  "wholeSharedCandidateOverwrite": false,
+  "newRegistryRows": 1,
+  "existingSettingsFeatureMerge": true,
+  "generatedOriginalSources": 1,
+  "newDependencies": 0,
+  "sameActorPortsRequired": true,
+  "gradleRecipeOnly": true,
+  "actualRootRuntime": false
+}

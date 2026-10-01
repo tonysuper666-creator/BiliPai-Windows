@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "actualSnapshot": 44,
+  "manifestSha256Bytes": "e5ba1d8de17cd400dde006ab3a75a1d5facdd68b8dba4bb52c9c51db52e5f31a",
+  "orderedRuntimeCpSha256Bytes": "b4d72f39a19b3704e657a9edb8c8e8d18c10a1a352481c34a96f0ad208e17141",
+  "runtimeEntries": 97,
+  "productionOverrides": 0,
+  "totalBusinessAssertions": 77,
+  "groups": [
+    {
+      "name": "image",
+      "passed": true,
+      "business": {
+        "groups": 3,
+        "assertions": 22
+      },
+      "actualOriginCount": 8,
+      "fixtureClassCount": 4,
+      "fixtureJarSha256Bytes": "2c0a4c9b476b14e010e5032c6d7f209b068e9a55a4f12d7b56cae72a0e5ae192",
+      "productionOverrides": 0,
+      "businessAssertionsUnchanged": true
+    },
+    {
+      "name": "profile",
+      "passed": true,
+      "business": {
+        "groups": 3,
+        "assertions": 55,
+        "originalImport": true,
+        "realLocalSkia": true,
+        "realBundledFfprobe": true,
+        "sameStoreTheme": true,
+        "prospectiveOverrideFiles": 0,
+        "rootMounted": false,
+        "actualChooserOpened": false,
+        "actualDwmWindow": false,
+        "externalHttp": false
+      },
+      "actualOriginCount": 11,
+      "fixtureClassCount": 45,
+      "fixtureJarSha256Bytes": "821e17ad1736b9105169f910f3c62ac94368329c645a65aacaa9c427cd8e8bf0",
+      "productionOverrides": 0,
+      "businessAssertionsUnchanged": true
+    }
+  ],
+  "cpPrePostByteEqual": true,
+  "scope": "Same installed image and Profile platform helpers, temporary fixture Stores and synthetic local media only",
+  "notClaimed": [
+    "Root mounted UI",
+    "user account or user files",
+    "chooser/HWND/DWM",
+    "HTTP",
+    "Profile navigation end-to-end"
+  ],
+  "historicalFailure": {
+    "run": "run-01",
+    "stage": "Profile subprocess log decoding",
+    "businessResultAccepted": false,
+    "retained": "run-01/runner-failure.json",
+    "correction": "Only runner byte capture; original business claims unchanged"
+  }
+}

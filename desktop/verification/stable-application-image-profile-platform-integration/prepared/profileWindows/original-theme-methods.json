@@ -1,0 +1,16 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "method": "setThemeMode",
+    "sourceSha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "selectedBodySha256LF": "94b6bf9563ea93f878b1380f4d3563227f0501f556a0b20cf5f1e4265577ae78",
+    "platformDelta": "same Windows appearance Flow replaces AppCompatDelegate; sameStore atomic document mirrors settings/theme_cache; no copied logger"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "method": "setDarkThemeStyle",
+    "sourceSha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "selectedBodySha256LF": "9d419ec3363641d9082cdb226623982803d215b6aec38508c13c3b6a521e8020",
+    "platformDelta": "same Windows appearance Flow replaces AppCompatDelegate; sameStore atomic document mirrors settings/theme_cache; no copied logger"
+  }
+]

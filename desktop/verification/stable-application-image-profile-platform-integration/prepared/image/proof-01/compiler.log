@@ -1,0 +1,21 @@
+desktop\.local\stable-application-image-loader-parity\ImageLoaderFixture.kt:17:33: error: cannot access 'data class DesktopSessionEpoch : Any': it is private in file.
+import com.bilipai.desktop.data.DesktopSessionEpoch
+                                ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-application-image-loader-parity\ImageLoaderFixture.kt:44:40: error: cannot access 'data class DesktopSessionEpoch : Any': it is private in file.
+        val stamp = call.request().tag(DesktopSessionEpoch::class.java)!!
+                                       ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-application-image-loader-parity\ImageLoaderFixture.kt:45:22: error: cannot access 'data class DesktopSessionEpoch : Any': it is private in file.
+        verify(stamp.value == repository.sessionEpoch)
+                     ^^^^^
+desktop\.local\stable-application-image-loader-parity\ImageLoaderFixture.kt:46:22: error: cannot access 'data class DesktopSessionEpoch : Any': it is private in file.
+        verify(stamp.guestBuvid3 != null && stamp.stillOwned())
+                     ^^^^^^^^^^^
+desktop\.local\stable-application-image-loader-parity\ImageLoaderFixture.kt:46:51: error: cannot access 'data class DesktopSessionEpoch : Any': it is private in file.
+        verify(stamp.guestBuvid3 != null && stamp.stillOwned())
+                                                  ^^^^^^^^^^
+desktop\.local\stable-application-image-loader-parity\ImageLoaderFixture.kt:83:16: error: unresolved reference 'not' for operator '!'.
+        verify(!stamp.stillOwned())
+               ^
+desktop\.local\stable-application-image-loader-parity\ImageLoaderFixture.kt:83:23: error: cannot access 'data class DesktopSessionEpoch : Any': it is private in file.
+        verify(!stamp.stillOwned())
+                      ^^^^^^^^^^

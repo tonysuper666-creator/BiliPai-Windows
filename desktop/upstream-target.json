@@ -186,12 +186,12 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 927,
+    "candidateSourceIdentityCount": 931,
     "candidateResourceCount": 213,
     "all907CurrentSourceAndResourcePinsVerified": true,
-    "actualClassesEvidence": "verification/stable-palette-home-window-integration/root/classes-43.log",
+    "actualClassesEvidence": "verification/stable-application-image-profile-platform-integration/root/classes-44.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-palette-home-window-integration/root/classes-43.log",
+    "latestCandidateClassesLog": "verification/stable-application-image-profile-platform-integration/root/classes-44.log",
     "liveGuestBackendPassed": false,
     "liveGuestBackendFailure": "HTTP 412 at video details after popular/search passed",
     "liveGuestBackendEvidence": "verification/stable-comments-sharing-integration/root/actual-guest-backend/run-01/accepted-evidence.json",
@@ -219,7 +219,7 @@
     "fullDanmakuPanelPointerAccepted": false,
     "fullDanmakuAndroidRendererParityAccepted": false,
     "danmakuSettingsRootEvidence": "verification/stable-danmaku-settings-root-integration/integration-report.json",
-    "latestCandidateClassesPhase": 43,
+    "latestCandidateClassesPhase": 44,
     "danmakuActualProduct27Assertions": 61,
     "danmakuSettingsIsolatedPanelPointerAccepted": true,
     "danmakuSettingsIsolatedPanelUiAssertions": 32,
@@ -319,7 +319,15 @@
     "rootWindowActual43UnfocusedAssertions": 17,
     "paletteHomeWindowActual43ProductOrigins": 14,
     "paletteHomeWindowActual43ProductionOverrides": 0,
-    "paletteHomeWindowIntegrationEvidence": "verification/stable-palette-home-window-integration/integration-report.json"
+    "paletteHomeWindowIntegrationEvidence": "verification/stable-palette-home-window-integration/integration-report.json",
+    "originalApplicationImageLoaderCompiled": true,
+    "actualRootImageSingletonConfigured": true,
+    "originalBackgroundImageTrimMounted": false,
+    "originalProfileWindowsPlatformCompiled": true,
+    "originalWallpaperImageImportCompiled": true,
+    "sameGlobalProfileThemeBacking": true,
+    "imageProfileActual44ProductionOverrides": 0,
+    "imageProfileIntegrationEvidence": "verification/stable-application-image-profile-platform-integration/integration-report.json"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -351,6 +359,7 @@
     "verification/stable-category-return-integration/integration-report.json",
     "verification/stable-profile-live-aggregate-integration/integration-report.json",
     "verification/stable-navigation-share-integration/integration-report.json",
-    "verification/stable-palette-home-window-integration/integration-report.json"
+    "verification/stable-palette-home-window-integration/integration-report.json",
+    "verification/stable-application-image-profile-platform-integration/integration-report.json"
   ]
 }

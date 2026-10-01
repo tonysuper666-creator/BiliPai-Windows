@@ -697,6 +697,60 @@ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.named("compileKotlin") { dependsOn(extractOriginalWallpaperPalette) }
 // New manual Java sources live in existing desktop/src/main/java; default Java task compiles them.
 
+// Full original application Coil configuration and original background image budgets.
+val extractOriginalApplicationImageLoader by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-application-image-loader.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-application-image-loader").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-application-image-loader.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "original-application-image-loader" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-application-image-loader"))
+}
+val verifyCoilCacheControlSources by tasks.registering {
+    val pins = mapOf(
+            "third-party/coil-cache-control/upstream/commonMain/coil3/network/cachecontrol/CacheControlCacheStrategy.kt" to "205af3830d3bfcef597bccdc6554c7f2abb69483b3e649abfcdf75498af4e87b",
+            "third-party/coil-cache-control/upstream/commonMain/coil3/network/cachecontrol/internal/CacheControl.kt" to "f3abb5f309c53dff0c566a9a9fcf7231c319fcdc6753afdf6cdd8bd7d9ffe2f7",
+            "third-party/coil-cache-control/upstream/commonMain/coil3/network/cachecontrol/internal/utils.kt" to "f7347cf633951e964a77649de86761b1dbdab7bac5d1e4470a80f265dce98a79",
+            "resources/common/licenses/coil-cache-control-LICENSE.txt" to "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+            "resources/common/licenses/coil-cache-control-NOTICE.txt" to "6bd1d0d8cc005df39496f6be8618eb6c5714cf3c9839fb631f053ead00e41c9c"
+    )
+    inputs.files(pins.keys)
+    doLast {
+        pins.forEach { (name, expected) ->
+            val actual = MessageDigest.getInstance("SHA-256")
+                .digest(File(projectDir, name).readBytes()).joinToString("") { "%02x".format(it) }
+            check(actual == expected) { "Original Coil cache-control source/license changed: $name" }
+        }
+        logger.lifecycle("Verified three unchanged Coil3.5.0 cache-control sources and two Apache notices.")
+    }
+}
+kotlin.sourceSets.named("main") {
+    kotlin.srcDir(layout.buildDirectory.dir("generated/original-application-image-loader"))
+    kotlin.srcDir("third-party/coil-cache-control/upstream/commonMain")
+}
+tasks.named("compileKotlin") { dependsOn(extractOriginalApplicationImageLoader, verifyCoilCacheControlSources) }
+tasks.named("processResources") { dependsOn(verifyCoilCacheControlSources) }
+
+// Full original Profile image/video import on the retained Windows entry.
+val extractUpstreamProfileWallpaperImport by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-profile-wallpaper-import.py",
+        "--source-repo", repositoryRoot.absolutePath,
+        "--output-dir", layout.buildDirectory.dir("generated/profile-wallpaper-import").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-profile-wallpaper-import.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-profile-windows-platform" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/profile-wallpaper-import"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/profile-wallpaper-import")) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamProfileWallpaperImport) }
+
 val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories, extractUpstreamHomeCards, extractOriginalHomePage)
     workingDir(projectDir)
@@ -1468,6 +1522,8 @@ dependencies {
     // Expose the same saved-state runtime modules already present in the pinned runtime97 graph.
     implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate:2.11.0")
     implementation("androidx.savedstate:savedstate-compose:1.4.0")
+    // Existing runtime97 datetime module used by unchanged Coil CacheControl source.
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
     implementation("org.jetbrains.compose.material3:material3:1.12.0-alpha03")
     // Original comment sheets use this API directly; Material3 only brings its
     // desktop implementation onto runtimeClasspath transitively.

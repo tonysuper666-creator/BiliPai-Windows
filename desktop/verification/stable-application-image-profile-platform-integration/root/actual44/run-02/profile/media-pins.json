@@ -1,0 +1,24 @@
+{
+  "ffprobe": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\resources\\common\\native\\windows-x64\\ffprobe.exe",
+  "ffprobeSha256Bytes": "67176fa62f89f94c3bcd379fd05677a25651569a2eb8880ec2194e62c82be412",
+  "ffmpeg": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\resources\\common\\native\\windows-x64\\ffmpeg.exe",
+  "ffmpegSha256Bytes": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea",
+  "privateSyntheticMediaSha256Bytes": "5071d99b3e943ee06e292cab9edb3f58cb67573e0c08df35d72cfdd5d37403a8",
+  "command": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\resources\\common\\native\\windows-x64\\ffmpeg.exe",
+    "-hide_banner",
+    "-loglevel",
+    "error",
+    "-f",
+    "lavfi",
+    "-i",
+    "color=c=blue:s=160x90:r=15",
+    "-t",
+    "0.4",
+    "-an",
+    "-c:v",
+    "mpeg4",
+    "-y",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-profile-actual44-proof\\run-02\\profile\\private-synthetic-local.mp4"
+  ]
+}

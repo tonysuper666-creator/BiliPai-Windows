@@ -1,0 +1,32 @@
+[
+  {
+    "path": "coil-network-cache-control-jvm-3.5.0-sources.jar",
+    "sha256Bytes": "bc0d4c05573187c53a32f0b31a05a73f5af734a576814d52b3e227e0b71ea9db",
+    "reason": "Rebuildable source artifact or compiler output"
+  },
+  {
+    "path": "compile-01/candidate.jar",
+    "sha256Bytes": "23a5fc0f527ac672d6e2dc099a2ccd1188d56e60f4f2db595ad7f211bee4192d",
+    "reason": "Rebuildable source artifact or compiler output"
+  },
+  {
+    "path": "compile-02/candidate.jar",
+    "sha256Bytes": "6696cc551c31900cbb730c1ba1448c34fdb4c702304f4354e0aa4b8f69af7791",
+    "reason": "Rebuildable source artifact or compiler output"
+  },
+  {
+    "path": "compile-03/candidate.jar",
+    "sha256Bytes": "0645cc8b77fa2d4b7d1adc12e92cc051f913aa4870506b31dd94dc56fe81cf7b",
+    "reason": "Rebuildable source artifact or compiler output"
+  },
+  {
+    "path": "proof-02/fixture.jar",
+    "sha256Bytes": "2f1f189cd16bedc400ffc5be30d886e699606d51065df639360ab7ec8a416104",
+    "reason": "Rebuildable source artifact or compiler output"
+  },
+  {
+    "path": "proof-03/fixture.jar",
+    "sha256Bytes": "2f1f189cd16bedc400ffc5be30d886e699606d51065df639360ab7ec8a416104",
+    "reason": "Rebuildable source artifact or compiler output"
+  }
+]

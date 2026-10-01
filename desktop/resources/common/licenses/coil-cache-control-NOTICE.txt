@@ -1,0 +1,6 @@
+Coil Cache Control 3.5.0, unchanged Kotlin source-built component.
+Copyright (C) 2013, 2019 Square, Inc. Apache License 2.0.
+Original source and notices are preserved in all three files.
+Source artifact: https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-network-cache-control-jvm/3.5.0/coil-network-cache-control-jvm-3.5.0-sources.jar
+SHA-256: bc0d4c05573187c53a32f0b31a05a73f5af734a576814d52b3e227e0b71ea9db
+Compiled against the existing Coil3.5.0 and kotlinx-datetime0.7.1 runtime. No source behavior changes or additional runtime dependency JAR.

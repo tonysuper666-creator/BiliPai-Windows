@@ -1,0 +1,29 @@
+suspend fun setThemeMode(context: Context, mode: AppThemeMode) {
+    var resolvedDarkThemeStyle = DarkThemeStyle.DEFAULT
+    val success = editSettingsAndCommitPrefs(
+        context, "theme_cache",
+        editSettings = {
+            resolvedDarkThemeStyle = resolveDarkThemeStylePreference(
+                darkThemeStyleValue = this[KEY_DARK_THEME_STYLE],
+                legacyThemeModeValue = this[KEY_THEME_MODE]
+            )
+            if (this[KEY_DARK_THEME_STYLE] == null) {
+                this[KEY_DARK_THEME_STYLE] = resolvedDarkThemeStyle.value
+            }
+            this[KEY_THEME_MODE] = mode.value
+        },
+        editPrefs = {
+            putInt("theme_mode", mode.value)
+            putInt("dark_theme_style", resolvedDarkThemeStyle.value)
+        }
+    )
+    com.android.purebilibili.core.util.Logger.d("SettingsManager", " Theme mode saved: ${mode.value} (${mode.label}), success=$success")
+
+    //  同时应用到 AppCompatDelegate，使当前运行时生效
+    val nightMode = when (mode) {
+        AppThemeMode.FOLLOW_SYSTEM -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        AppThemeMode.LIGHT -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+        AppThemeMode.DARK -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+    }
+    androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(nightMode)
+}

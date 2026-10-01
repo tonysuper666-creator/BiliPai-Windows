@@ -1,0 +1,11 @@
+suspend fun setDarkThemeStyle(context: Context, style: DarkThemeStyle) {
+    val success = editSettingsAndCommitPrefs(
+        context, "theme_cache",
+        editSettings = { this[KEY_DARK_THEME_STYLE] = style.value },
+        editPrefs = { putInt("dark_theme_style", style.value) },
+    )
+    com.android.purebilibili.core.util.Logger.d(
+        "SettingsManager",
+        " Dark theme style saved: ${style.value} (${style.label}), success=$success"
+    )
+}

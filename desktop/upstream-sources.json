@@ -1749,7 +1749,8 @@
         "home-page",
         "home-protocol-platform-reference",
         "live-sub-navigation",
-        "stable-navigation3-host"
+        "stable-navigation3-host",
+        "stable-profile-windows-platform"
       ],
       "mode": "policy-extract"
     },
@@ -7788,6 +7789,38 @@
       "features": [
         "home-wallpaper-palette-original"
       ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/app/PureApplication.kt",
+      "sha256": "0fea2f786cb09c6d3abb856e23eba25bfdc73573f37d746d247fa3dd9f9721b4",
+      "mode": "policy-extract",
+      "features": [
+        "original-application-image-loader"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/app/PureApplicationRuntimeConfig.kt",
+      "sha256": "b332821a90253f2cfee7dbdd1845d4708dad8e584878ac53da4f4dccdc9f2582",
+      "mode": "policy-extract",
+      "features": [
+        "original-application-image-loader"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/lifecycle/BackgroundMemoryTrimPolicy.kt",
+      "sha256": "d4a95f3372db9b4434f21cdeeed67f96eac0ab456379d280e040c527b8452d88",
+      "mode": "policy-extract",
+      "features": [
+        "original-application-image-loader"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/WallpaperImageImport.kt",
+      "sha256": "9d1d439a42738a9e1b92340e1b5c3e9c2abe5cf578cf3f605a43388f178cbc91",
+      "features": [
+        "stable-profile-windows-platform"
+      ],
+      "mode": "policy-extract"
     }
   ],
   "featureCoverage": {

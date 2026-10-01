@@ -1,0 +1,152 @@
+[
+  {
+    "path": "run-01/image/fixture.jar",
+    "sha256Bytes": "2c0a4c9b476b14e010e5032c6d7f209b068e9a55a4f12d7b56cae72a0e5ae192",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/image/private-local-fixture/synthetic-wide-strip.png",
+    "sha256Bytes": "2f7393d1477242f1ffb44d9e1a9ca73bff3f86f4652500d432afe750535afd73",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/fixture.jar",
+    "sha256Bytes": "821e17ad1736b9105169f910f3c62ac94368329c645a65aacaa9c427cd8e8bf0",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-local-fixture/fixture-pictures/BiliPai/profile-fixture (1).jpg",
+    "sha256Bytes": "805d1fbd85e22b9aa3dc77843d50979fc72d35726bcd5ab014e67fb74ffd899c",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-local-fixture/fixture-pictures/BiliPai/profile-fixture.jpg",
+    "sha256Bytes": "805d1fbd85e22b9aa3dc77843d50979fc72d35726bcd5ab014e67fb74ffd899c",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-local-fixture/invalid.mp4",
+    "sha256Bytes": "787c798e39a5bc1910355bae6d0cd87a36b2e10fd0202a83e3bb6b005da83472",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-local-fixture/invalid.png",
+    "sha256Bytes": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-local-fixture/io/home_wallpaper/wallpaper_26d7b0c5-aed0-460a-b0ba-df56e97adc1e.mp4",
+    "sha256Bytes": "5071d99b3e943ee06e292cab9edb3f58cb67573e0c08df35d72cfdd5d37403a8",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-local-fixture/io/home_wallpaper/wallpaper_7498fa6c-2b56-4626-aa74-6625d0556484.img",
+    "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-local-fixture/io/profile_wallpaper/wallpaper_84e92d87-2375-4380-b447-eb553076def4.img",
+    "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-local-fixture/io/splash/wallpaper_8d0ce446-fc25-4cf4-90e6-a5757d99cf8f.img",
+    "sha256Bytes": "f2d993f565409b3a8582f21e81abcbbb73f5365a62318f60d4b110a7f3c17a9e",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-local-fixture/synthetic.gif",
+    "sha256Bytes": "f2d993f565409b3a8582f21e81abcbbb73f5365a62318f60d4b110a7f3c17a9e",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-local-fixture/synthetic.png",
+    "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-local-fixture/theme/plugin-settings.json",
+    "sha256Bytes": "733538974a6ff672efc5199a3a8aa6f302ea8348ee1b98fbb2c88f04bb77aa5b",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-01/profile/private-synthetic-local.mp4",
+    "sha256Bytes": "5071d99b3e943ee06e292cab9edb3f58cb67573e0c08df35d72cfdd5d37403a8",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/image/fixture.jar",
+    "sha256Bytes": "2c0a4c9b476b14e010e5032c6d7f209b068e9a55a4f12d7b56cae72a0e5ae192",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/image/private-local-fixture/synthetic-wide-strip.png",
+    "sha256Bytes": "2f7393d1477242f1ffb44d9e1a9ca73bff3f86f4652500d432afe750535afd73",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/fixture.jar",
+    "sha256Bytes": "821e17ad1736b9105169f910f3c62ac94368329c645a65aacaa9c427cd8e8bf0",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-local-fixture/fixture-pictures/BiliPai/profile-fixture (1).jpg",
+    "sha256Bytes": "805d1fbd85e22b9aa3dc77843d50979fc72d35726bcd5ab014e67fb74ffd899c",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-local-fixture/fixture-pictures/BiliPai/profile-fixture.jpg",
+    "sha256Bytes": "805d1fbd85e22b9aa3dc77843d50979fc72d35726bcd5ab014e67fb74ffd899c",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-local-fixture/invalid.mp4",
+    "sha256Bytes": "787c798e39a5bc1910355bae6d0cd87a36b2e10fd0202a83e3bb6b005da83472",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-local-fixture/invalid.png",
+    "sha256Bytes": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-local-fixture/io/home_wallpaper/wallpaper_9d92fd73-2502-420f-89cc-0982a4ead02b.img",
+    "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-local-fixture/io/home_wallpaper/wallpaper_d6ade150-48d5-419c-b7f4-21b011929114.mp4",
+    "sha256Bytes": "5071d99b3e943ee06e292cab9edb3f58cb67573e0c08df35d72cfdd5d37403a8",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-local-fixture/io/profile_wallpaper/wallpaper_c831b7bb-73b4-421d-9ba3-3529c1f3eb8f.img",
+    "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-local-fixture/io/splash/wallpaper_b37cb6d1-2ac2-4d0c-87b6-670855bdc14c.img",
+    "sha256Bytes": "f2d993f565409b3a8582f21e81abcbbb73f5365a62318f60d4b110a7f3c17a9e",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-local-fixture/synthetic.gif",
+    "sha256Bytes": "f2d993f565409b3a8582f21e81abcbbb73f5365a62318f60d4b110a7f3c17a9e",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-local-fixture/synthetic.png",
+    "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-local-fixture/theme/plugin-settings.json",
+    "sha256Bytes": "733538974a6ff672efc5199a3a8aa6f302ea8348ee1b98fbb2c88f04bb77aa5b",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  },
+  {
+    "path": "run-02/profile/private-synthetic-local.mp4",
+    "sha256Bytes": "5071d99b3e943ee06e292cab9edb3f58cb67573e0c08df35d72cfdd5d37403a8",
+    "reason": "Compiled fixture or private synthetic media/temporary Store; not copied into Root raw evidence"
+  }
+]

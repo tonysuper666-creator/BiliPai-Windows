@@ -1,0 +1,90 @@
+{
+  "payloads": [
+    {
+      "source": "prepared/tools/extract-upstream-application-image-loader.py",
+      "target": "desktop/tools/extract-upstream-application-image-loader.py",
+      "sha256Bytes": "7d8d7dde625dad262fec46be18718dc3a707f83b864cc396854cee77159c4368"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopApplicationImageCacheTrim.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopApplicationImageCacheTrim.kt",
+      "sha256Bytes": "9b93059fec4183f7e8ad6b2397ebb9462951030e1a633ff99e51ab511c5020a9"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopApplicationImageLoader.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopApplicationImageLoader.kt",
+      "sha256Bytes": "28e2562b4a0039bf292303f8459640c5a4c13ac8f2ea3de577076e50daa13b21"
+    },
+    {
+      "source": "prepared/coil-upstream/commonMain/coil3/network/cachecontrol/CacheControlCacheStrategy.kt",
+      "target": "desktop/third-party/coil-cache-control/upstream/commonMain/coil3/network/cachecontrol/CacheControlCacheStrategy.kt",
+      "sha256Bytes": "205af3830d3bfcef597bccdc6554c7f2abb69483b3e649abfcdf75498af4e87b"
+    },
+    {
+      "source": "prepared/coil-upstream/commonMain/coil3/network/cachecontrol/internal/CacheControl.kt",
+      "target": "desktop/third-party/coil-cache-control/upstream/commonMain/coil3/network/cachecontrol/internal/CacheControl.kt",
+      "sha256Bytes": "f3abb5f309c53dff0c566a9a9fcf7231c319fcdc6753afdf6cdd8bd7d9ffe2f7"
+    },
+    {
+      "source": "prepared/coil-upstream/commonMain/coil3/network/cachecontrol/internal/utils.kt",
+      "target": "desktop/third-party/coil-cache-control/upstream/commonMain/coil3/network/cachecontrol/internal/utils.kt",
+      "sha256Bytes": "f7347cf633951e964a77649de86761b1dbdab7bac5d1e4470a80f265dce98a79"
+    },
+    {
+      "source": "prepared/resources/coil-cache-control-LICENSE.txt",
+      "target": "desktop/resources/common/licenses/coil-cache-control-LICENSE.txt",
+      "sha256Bytes": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "source": "prepared/resources/coil-cache-control-NOTICE.txt",
+      "target": "desktop/resources/common/licenses/coil-cache-control-NOTICE.txt",
+      "sha256Bytes": "6bd1d0d8cc005df39496f6be8618eb6c5714cf3c9839fb631f053ead00e41c9c"
+    }
+  ],
+  "newOriginalRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/app/PureApplication.kt",
+      "sha256": "0fea2f786cb09c6d3abb856e23eba25bfdc73573f37d746d247fa3dd9f9721b4",
+      "mode": "policy-extract",
+      "features": [
+        "original-application-image-loader"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/app/PureApplicationRuntimeConfig.kt",
+      "sha256": "b332821a90253f2cfee7dbdd1845d4708dad8e584878ac53da4f4dccdc9f2582",
+      "mode": "policy-extract",
+      "features": [
+        "original-application-image-loader"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/lifecycle/BackgroundMemoryTrimPolicy.kt",
+      "sha256": "d4a95f3372db9b4434f21cdeeed67f96eac0ab456379d280e040c527b8452d88",
+      "mode": "policy-extract",
+      "features": [
+        "original-application-image-loader"
+      ]
+    }
+  ],
+  "newRuntimeArtifacts": 0,
+  "rootAppLifetimeRequiresMainAndShellHunks": true,
+  "windowTrimRequiresSameRootBackgroundAndPalette": true,
+  "unmodifiedExternalSources": [
+    {
+      "path": "commonMain/coil3/network/cachecontrol/CacheControlCacheStrategy.kt",
+      "sha256Bytes": "205af3830d3bfcef597bccdc6554c7f2abb69483b3e649abfcdf75498af4e87b",
+      "modified": false
+    },
+    {
+      "path": "commonMain/coil3/network/cachecontrol/internal/CacheControl.kt",
+      "sha256Bytes": "f3abb5f309c53dff0c566a9a9fcf7231c319fcdc6753afdf6cdd8bd7d9ffe2f7",
+      "modified": false
+    },
+    {
+      "path": "commonMain/coil3/network/cachecontrol/internal/utils.kt",
+      "sha256Bytes": "f7347cf633951e964a77649de86761b1dbdab7bac5d1e4470a80f265dce98a79",
+      "modified": false
+    }
+  ]
+}

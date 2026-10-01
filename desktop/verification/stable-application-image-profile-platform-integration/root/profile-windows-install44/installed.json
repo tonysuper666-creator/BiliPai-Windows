@@ -1,0 +1,89 @@
+{
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\tools\\extract-upstream-profile-wallpaper-import.py",
+      "target": "desktop/tools/extract-upstream-profile-wallpaper-import.py",
+      "sha256Bytes": "f74d6fe884bfc2ace829a2fc536f15d07a63c8ae9caa32c6b085cdedd2435855",
+      "sha256LF": "f74d6fe884bfc2ace829a2fc536f15d07a63c8ae9caa32c6b085cdedd2435855"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileOwnedFiles.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileOwnedFiles.kt",
+      "sha256Bytes": "eb63417cc60a9b4fbfa7217b263a18ce76f3d7259343c4ff32843909e4203117",
+      "sha256LF": "eb63417cc60a9b4fbfa7217b263a18ce76f3d7259343c4ff32843909e4203117"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileVideoMetadata.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileVideoMetadata.kt",
+      "sha256Bytes": "9dcce91c7692cc8295e6e1255f4944f90212fc19bc6eaedaca1956f5192e72f5",
+      "sha256LF": "9dcce91c7692cc8295e6e1255f4944f90212fc19bc6eaedaca1956f5192e72f5"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileWindowChrome.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileWindowChrome.kt",
+      "sha256Bytes": "50852b3a790463323dbc509c438520558973f5f6b856f159f37ad3ea313b629d",
+      "sha256LF": "50852b3a790463323dbc509c438520558973f5f6b856f159f37ad3ea313b629d"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileWindowsBindingFactory.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileWindowsBindingFactory.kt",
+      "sha256Bytes": "f8efeaf706f94202919b1a7be097390dd03252209cf50432991b029feb585a24",
+      "sha256LF": "f8efeaf706f94202919b1a7be097390dd03252209cf50432991b029feb585a24"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileWindowsPlatform.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileWindowsPlatform.kt",
+      "sha256Bytes": "b2e6f64ba7ac5287d8d0582b54b510f93ecb99224284636aacd72ae4d6efb530",
+      "sha256LF": "b2e6f64ba7ac5287d8d0582b54b510f93ecb99224284636aacd72ae4d6efb530"
+    }
+  ],
+  "hunks": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "before": "    /** All facades for this old file generation become read-only before restoration. */",
+      "after": "    /** Same backing, one atomic document publication for original canonical theme + startup cache. */\n    internal fun updateThemeFromSnapshot(checkPublication: () -> Unit, edit: (JsonObject, JsonObject) -> Map<String, Map<String, JsonElement?>>) = synchronized(backing) {\n        check(!backing.writesFrozen) { \"\u63d2\u4ef6\u5df2\u505c\u6b62\uff0c\u4e0d\u80fd\u5199\u5165\u65e7\u8bbe\u7f6e\u5b9e\u4f8b\" }\n        requireObjectNamespace(\"settings\"); requireObjectNamespace(\"theme_cache\")\n        val updates = edit(preferences(\"settings\"), preferences(\"theme_cache\"))\n        require(updates.keys.all { it in setOf(\"settings\", \"theme_cache\") })\n        val document = backing.document.toMutableMap()\n        for ((name, edits) in updates) {\n            val values = preferences(name).toMutableMap()\n            edits.forEach { (key, value) -> if (value == null) values.remove(key) else values[key] = value }\n            document[name] = JsonObject(values)\n        }\n        val next = JsonObject(document)\n        Files.createDirectories(backing.root)\n        val temporary = Files.createTempFile(backing.root, \"plugin-settings-\", \".tmp\")\n        try {\n            Files.writeString(temporary, json.encodeToString(next))\n            FileChannel.open(temporary, StandardOpenOption.WRITE).use { it.force(true) }\n            DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()\n            checkPublication()\n            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }\n            catch (_: java.nio.file.AtomicMoveNotSupportedException) { Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING) }\n        } finally { Files.deleteIfExists(temporary) }\n        backing.document = next\n        for (name in updates.keys) backing.snapshots[name]?.value = DesktopPreferenceSnapshot(preferences(name))\n    }\n\n    /** All facades for this old file generation become read-only before restoration. */",
+      "beforeSha256LF": "e3d0f0bf8f4f48c310340d915b3ebb4e3f45d36f5fd402b832108800999463be",
+      "afterSha256LF": "3010e621f85e72c4dc63890956ae4c7e59cc30d86c12b979767e0aaa406c277b",
+      "reason": "one existing backing atomic original theme/cache transaction"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "before": "    suspend fun setThemeMode(mode: AppThemeMode) = withContext(Dispatchers.IO) {\n        val current = store.preferences(NAMESPACE)\n        val edits = linkedMapOf<String, JsonElement?>(\"theme_mode_v2\" to JsonPrimitive(mode.value))\n        if (current.int(\"dark_theme_style_v1\") == null) {\n            edits[\"dark_theme_style_v1\"] = JsonPrimitive(resolveDarkThemeStylePreference(null, current.int(\"theme_mode_v2\")).value)\n        }\n        store.update(NAMESPACE, edits)\n    }\n\n    suspend fun setDarkThemeStyle(style: DarkThemeStyle) = save(\"dark_theme_style_v1\", JsonPrimitive(style.value))\n",
+      "after": "    suspend fun setThemeMode(mode: AppThemeMode) = withContext(Dispatchers.IO) {\n        val caller = kotlinx.coroutines.currentCoroutineContext()\n        caller.ensureActive()\n        writeOriginalThemeMode(mode) { caller.ensureActive() }\n    }\n\n    suspend fun setThemeModeOwned(mode: AppThemeMode, owns: () -> Boolean,\n        withOwnedAdmission: ((() -> Unit) -> Boolean)) = withContext(Dispatchers.IO) {\n        val caller = kotlinx.coroutines.currentCoroutineContext()\n        caller.ensureActive()\n        if (!owns()) throw kotlinx.coroutines.CancellationException(\"Profile theme entry retired\")\n        if (!withOwnedAdmission { caller.ensureActive();writeOriginalThemeMode(mode) { caller.ensureActive();if(!owns())throw kotlinx.coroutines.CancellationException(\"Profile theme entry retired\") } })\n            throw kotlinx.coroutines.CancellationException(\"Profile theme entry retired\")\n    }\n\n    private fun writeOriginalThemeMode(mode: AppThemeMode, checkPublication: () -> Unit) {\n        store.updateThemeFromSnapshot(checkPublication) { current, _ ->\n            val darkStyle = resolveDarkThemeStylePreference(current.int(\"dark_theme_style_v1\"), current.int(\"theme_mode_v2\"))\n            val canonical = linkedMapOf<String, JsonElement?>(\"theme_mode_v2\" to JsonPrimitive(mode.value))\n            if (current.int(\"dark_theme_style_v1\") == null) canonical[\"dark_theme_style_v1\"] = JsonPrimitive(darkStyle.value)\n            mapOf(\"settings\" to canonical, \"theme_cache\" to mapOf(\"theme_mode\" to JsonPrimitive(mode.value), \"dark_theme_style\" to JsonPrimitive(darkStyle.value)))\n        }\n    }\n\n    suspend fun setDarkThemeStyle(style: DarkThemeStyle) = withContext(Dispatchers.IO) {\n        val caller = kotlinx.coroutines.currentCoroutineContext()\n        caller.ensureActive()\n        store.updateThemeFromSnapshot({caller.ensureActive()}) { _, _ -> mapOf(\"settings\" to mapOf(\"dark_theme_style_v1\" to JsonPrimitive(style.value)),\n            \"theme_cache\" to mapOf(\"dark_theme_style\" to JsonPrimitive(style.value))) }\n    }\n",
+      "beforeSha256LF": "923ee82e9b225aa29e50d3f010b3697b9eee1f4662fd44a3b35e0c6769d8e49b",
+      "afterSha256LF": "4d278b85fa238b26f95d27608c37830c39ab41e0bdb0d36dc77c09b805d7a8bc",
+      "reason": "complete original setThemeMode/setDarkThemeStyle migration, startup cache and existing global live flow"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "before": "import kotlinx.coroutines.withContext",
+      "after": "import kotlinx.coroutines.withContext\nimport kotlinx.coroutines.ensureActive",
+      "beforeSha256LF": "ca7a70ed53da84f4c33d4ec8467b62ccb89b7354d8998610dbf12d6c9ffb4664",
+      "afterSha256LF": "7d5a9be78269384ef9444573e4549143088e1839e51ffdb8d7bd6fce982fe7ca",
+      "reason": "real caller cancellation"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "before": "    suspend fun saveLivePhotoVideo(rawUrl: String): Boolean = saveMutex.withLock {",
+      "after": "    /** Original Profile gallery writes its supplied bytes with JPEG display name. Reuse this sole save actor. */\n    suspend fun saveProfileGalleryBytes(bytes: ByteArray, fileName: String, profileOwns: () -> Boolean,\n        profileCommit: ((() -> Unit) -> Boolean)): Boolean = saveMutex.withLock {\n        suspend fun profileCheckpoint() {checkpoint();if(!profileOwns())throw CancellationException(\"Profile gallery entry retired\")}\n        profileCheckpoint();require(bytes.size.toLong() in 1..MAX_IMAGE_BYTES)\n        val profileCaller=currentCoroutineContext()\n        fun commitProfileOwned(block: () -> Unit): Boolean = commitOwned {\n            if(!profileCommit {profileCaller.ensureActive();if(!profileOwns())throw CancellationException(\"Profile gallery entry retired\");block()})\n                throw CancellationException(\"Profile gallery entry retired\")\n        }\n        require(fileName == Path.of(fileName).fileName.toString() && fileName.isNotBlank())\n        suspend fun write(target: DesktopDynamicSaveTarget): Boolean = withContext(Dispatchers.IO) {\n            profileCheckpoint();val parent=validateTarget(target)\n            val stage=Files.createTempFile(parent,\".bilipai-profile-gallery-\",\".tmp\")\n            try {\n                Files.newOutputStream(stage).use { output ->\n                    var offset=0\n                    while(offset<bytes.size) {profileCheckpoint();val count=minOf(64*1024,bytes.size-offset);output.write(bytes,offset,count);offset+=count}\n                }\n                if(!commitProfileOwned {validateTarget(target);Files.move(stage,target.path.toAbsolutePath().normalize())})\n                    throw CancellationException(\"Profile gallery owner retired\")\n                true\n            } finally {Files.deleteIfExists(stage)}\n        }\n        if(imageSaveLocations==null)write(selectTarget(fileName,\"image/jpeg\") ?: return@withLock false)\n        else imageSaveLocations.save(fileName,::profileCheckpoint,::commitProfileOwned,::write)\n    }\n\n    suspend fun saveLivePhotoVideo(rawUrl: String): Boolean = saveMutex.withLock {",
+      "beforeSha256LF": "8819b820e967bb48675bce069f09e57649e1426ef694885a42d6a337b29f48e6",
+      "afterSha256LF": "9b9e9faae9acd76115f617569208b5c7193b77d0bee0ee058e6f9a850d48c200",
+      "reason": "sole Assets/Locations actor consumes original Profile raw gallery bytes"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-profile-main.py",
+      "before": " s=s.replace('saveImageToGallery(context, bytes,','saveImageToGallery(bytes,')\n emit(p,s)",
+      "after": " s=s.replace('saveImageToGallery(context, bytes,','saveImageToGallery(bytes,')\n s=s.replace('File(imagesDir, \"profile_bg.jpg\")','File(imagesDir, \"profile_bg_${java.util.UUID.randomUUID()}.jpg\")')\n emit(p,s)",
+      "beforeSha256LF": "b616709e43c5fba958f87932cbe17001146f9e132d535034fcc36270aa38bc93",
+      "afterSha256LF": "3cf9f7985163cb9889ae7d772c17b00d72d129f18849384b302a9b48012fceae",
+      "reason": "explicit Windows no-clobber physical path; original savedUri/prefs/delete legacy behavior preserved"
+    }
+  ],
+  "sourceCountBefore": 930,
+  "sourceCountAfter": 931,
+  "sourcePacketSha256Bytes": "15aa4e1197a7b804f8bdb9f6942972761c7864a8d552dbbdef72a33930f03db6",
+  "newRuntimeArtifacts": 0,
+  "profileRootMounted": false,
+  "actualWindowAccepted": false,
+  "newExeDeployed": false
+}

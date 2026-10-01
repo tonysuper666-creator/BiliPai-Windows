@@ -1,0 +1,61 @@
+{
+  "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalRegistryRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/app/PureApplication.kt",
+      "sha256": "0fea2f786cb09c6d3abb856e23eba25bfdc73573f37d746d247fa3dd9f9721b4",
+      "mode": "policy-extract",
+      "features": [
+        "original-application-image-loader"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/app/PureApplicationRuntimeConfig.kt",
+      "sha256": "b332821a90253f2cfee7dbdd1845d4708dad8e584878ac53da4f4dccdc9f2582",
+      "mode": "policy-extract",
+      "features": [
+        "original-application-image-loader"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/lifecycle/BackgroundMemoryTrimPolicy.kt",
+      "sha256": "d4a95f3372db9b4434f21cdeeed67f96eac0ab456379d280e040c527b8452d88",
+      "mode": "policy-extract",
+      "features": [
+        "original-application-image-loader"
+      ]
+    }
+  ],
+  "exactMethodReplacements": [
+    {
+      "before": "override fun newImageLoader(context: android.content.Context): ImageLoader {",
+      "after": "internal fun newImageLoader(context: coil3.PlatformContext, ownedCallFactory: okhttp3.Call.Factory, cacheDir: java.io.File): ImageLoader {"
+    },
+    {
+      "before": "PureApplicationRuntimeConfig.resolveImageMemoryCachePercent()",
+      "after": "resolveOriginalImageMemoryCachePercent()"
+    },
+    {
+      "before": "ImageLoader.Builder(this)",
+      "after": "ImageLoader.Builder(context)"
+    },
+    {
+      "before": "callFactory = { NetworkModule.okHttpClient }",
+      "after": "callFactory = { ownedCallFactory }"
+    },
+    {
+      "before": "if (Build.VERSION.SDK_INT >= 28) {\n                    add(AnimatedImageDecoder.Factory())\n                } else {\n                    add(GifDecoder.Factory())\n                }",
+      "after": "// The existing Coil/Skia decoder provides Windows still images.\n                // Animated wallpaper/preview callers use the existing owned Skia GIF actor;\n                // neither Android decoder is a Windows service."
+    },
+    {
+      "before": "            //  允许适用图片使用 RGB_565，降低内存占用\n            .allowRgb565(true)\n",
+      "after": "            // RGB_565 is an Android bitmap allocation hint; Skia owns Windows pixels.\n"
+    },
+    {
+      "before": "            .also { _imageLoader = it }  // 保存引用",
+      "after": "            // The one Windows application owner retains this returned exact loader."
+    }
+  ],
+  "newClients": 0,
+  "fullAndroidApplicationPorted": false
+}

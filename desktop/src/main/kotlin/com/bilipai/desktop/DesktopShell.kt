@@ -137,6 +137,7 @@ internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playe
     applicationPluginStore: DesktopPluginStore? = null, isClosing: () -> Boolean = { false },
     diagnosticLifecycle: DesktopDiagnosticLifecycle? = null, diagnosticStartupError: String? = null,
     danmakuPresentation: DesktopDanmakuPresentationBinding) {
+    val applicationImages = LocalDesktopApplicationImageLoader.current
     val pluginStore = remember(applicationPluginStore) {
         (applicationPluginStore ?: DesktopPluginStore(DesktopLibrary.directoryForAccount(null))).also { store ->
             com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store))
@@ -165,6 +166,7 @@ internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playe
         registerShutdown?.invoke {
             closeDiscoveryStorage()
             withContext(NonCancellable) {
+                withContext(Dispatchers.IO) { applicationImages.close() }
                 diagnosticLifecycle?.shutdownForRestore()
                 withContext(Dispatchers.IO) { pluginStore.freezeWrites() }
             }
@@ -201,6 +203,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     closeDiscoveryStorage: () -> Unit, isClosing: () -> Boolean,
     diagnosticLifecycle: DesktopDiagnosticLifecycle?, diagnosticStartupError: String?,
     danmakuPresentation: DesktopDanmakuPresentationBinding) {
+    val applicationImages = LocalDesktopApplicationImageLoader.current
     val diagnostics = diagnosticLifecycle?.diagnostics
     val account by repository.account.collectAsState()
     val sessionEpoch by repository.sessionEpochFlow.collectAsState()
@@ -277,6 +280,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         DesktopPluginRuntime(pluginStore, repository, community, discovery,
             beforeStoreFreeze = {
                 homeRootRef.getAndSet(null)?.closeAndJoin()
+                withContext(Dispatchers.IO) { applicationImages.close() }
                 favoritesQueueRef.getAndSet(null)?.close()
                 favoritesEntryRef.getAndSet(null)?.shutdownForRestore()
                 imageSaveLifetime.close()
@@ -485,6 +489,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement, diagnosticLifecycle, nativeTextShare) {
         DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {
             homeRootRef.getAndSet(null)?.closeAndJoin()
+            withContext(Dispatchers.IO) { applicationImages.close() }
             closeDiscoveryStorage()
             favoritesQueueRef.getAndSet(null)?.close()
             favoritesEntryRef.getAndSet(null)?.shutdownForRestore()
@@ -503,6 +508,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         registerShutdown?.invoke {
             withContext(NonCancellable) {
                 homeRootRef.getAndSet(null)?.closeAndJoin()
+                withContext(Dispatchers.IO) { applicationImages.close() }
                 closeDiscoveryStorage()
                 favoritesQueueRef.getAndSet(null)?.close()
                 favoritesEntryRef.getAndSet(null)?.shutdownForRestore()

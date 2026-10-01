@@ -1,0 +1,1 @@
+{"repair":"Existing Gradle java extension shadows fully-qualified java.security; use the existing MessageDigest import","sourceBehaviorChanged":false}

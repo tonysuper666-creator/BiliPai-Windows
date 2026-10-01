@@ -1,0 +1,11 @@
+{
+  "originalFixture": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-application-image-loader-parity\\ImageLoaderFixture.kt",
+  "originalFixtureSha256Bytes": "7788fbcbefde825813d8c76dee25898ea4282ccf711f9eeb412d410809521511",
+  "frozenManifestSha256Bytes": "0740783057cdccbcc5b5d65ee09b74ec9c8e017a9e9fb6b940888d78dcaf293d",
+  "adaptedFixtureSha256Bytes": "f6c375dcfc2c3dcb139649981590b1f8bb844bdca6e93f7767bab2abc6f3aae6",
+  "inverseLfByteEqual": true,
+  "businessAssertionsUnchanged": 22,
+  "changes": [
+    "Add actual Main44 code-source and class-byte verification before business assertions"
+  ]
+}

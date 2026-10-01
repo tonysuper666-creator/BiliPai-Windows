@@ -1,0 +1,26 @@
+ACTUAL_ORIGIN {"class":"com.bilipai.desktop.data.DesktopSessionStore","codeSource":"C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-44\\main-kotlin.jar","classSha256Bytes":"c5a06f1af0ca5df01c5cf5c7173912093319ab96d5e3720d529acb83951aee50"}
+ACTUAL_ORIGIN {"class":"com.bilipai.desktop.data.DesktopRepository","codeSource":"C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-44\\main-kotlin.jar","classSha256Bytes":"23612330d2f1003dcbbdb44ed6336dc6877f35818c3146400d2d8a7acf7d2965"}
+ACTUAL_ORIGIN {"class":"com.bilipai.desktop.ui.DesktopProfileOwnedFiles","codeSource":"C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-44\\main-kotlin.jar","classSha256Bytes":"86f472153f255717a57199587c70c4699556db06ea80a58d8ec93e66798c9040"}
+ACTUAL_ORIGIN {"class":"com.bilipai.desktop.ui.DesktopProfileFfprobeWidth","codeSource":"C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-44\\main-kotlin.jar","classSha256Bytes":"32c866457931ff61205d06255e31ba9b354c5fae11de42e7b72e7aad94100de4"}
+ACTUAL_ORIGIN {"class":"com.bilipai.desktop.ui.DesktopOriginalProfilePreferences","codeSource":"C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-44\\main-kotlin.jar","classSha256Bytes":"bead863e563bc3d32ab2ced72f90053b6b07250456771d3374f38fe715215f5b"}
+ACTUAL_ORIGIN {"class":"com.bilipai.desktop.appearance.DesktopThemePrefs","codeSource":"C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-44\\main-kotlin.jar","classSha256Bytes":"f8ab1367c1a0b22b07d84737ef2639fab1a649e7f6da2ca6cd310b0bea772095"}
+ACTUAL_ORIGIN {"class":"com.bilipai.desktop.plugins.DesktopPluginStore","codeSource":"C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-44\\main-kotlin.jar","classSha256Bytes":"7a94181cde639fd7813cba5d361431d192778bcd75eddd18eafca4bba41c1710"}
+ACTUAL_ORIGIN {"class":"com.bilipai.desktop.settings.DesktopImageSaveLocationPreferences","codeSource":"C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-44\\main-kotlin.jar","classSha256Bytes":"aa53b38ca61d5afef0cba4dc2d82ed536391ec1cf32122a9a50fe1baa01c5321"}
+ACTUAL_ORIGIN {"class":"com.bilipai.desktop.ui.DesktopImageSaveLocations","codeSource":"C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-44\\main-kotlin.jar","classSha256Bytes":"a83c18912e2d5559a1a50fe15f4581b3e08587ea14b7d2e28c5a3cf438aef863"}
+ACTUAL_ORIGIN {"class":"com.bilipai.desktop.ui.DesktopDynamicImageAssets","codeSource":"C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-44\\main-kotlin.jar","classSha256Bytes":"7bb760d056ebc85c24b2056229572e3dd69426598dc4e58fde849edd7bc6d2d7"}
+ACTUAL_ORIGIN {"class":"com.android.purebilibili.feature.profile.WallpaperImageImportKt","codeSource":"C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-44\\main-kotlin.jar","classSha256Bytes":"24626531b7b9328ac0180b8ea5b1f8f39fd7e3047f6ba39ad8b3ceb15c07d147"}
+EXPECTED_REJECTION java.util.concurrent.CancellationException: Profile settings owner retired
+EXPECTED_REJECTION kotlinx.coroutines.JobCancellationException: Job was cancelled
+EXPECTED_REJECTION java.util.concurrent.CancellationException: Publication fixture cancelled
+EXPECTED_REJECTION java.lang.IllegalStateException: �����ֹͣ������д�������ʵ��
+EXPECTED_REJECTION java.io.IOException: ͼƬΪ�ա����𻵻��ʽ����֧�֣���ѡ������ͼƬ
+EXPECTED_REJECTION java.lang.IllegalArgumentException: ��Ƶ�𻵻��ʽ����֧��
+EXPECTED_REJECTION java.lang.IllegalArgumentException: Ŀ���ļ��Ѵ���
+EXPECTED_REJECTION java.lang.IllegalArgumentException: Failed requirement.
+EXPECTED_REJECTION java.lang.IllegalArgumentException: ��ֽĿ¼����֧��
+EXPECTED_REJECTION java.util.concurrent.CancellationException: Profile import entry retired
+EXPECTED_REJECTION java.util.concurrent.CancellationException: Profile file request retired
+EXPECTED_REJECTION kotlinx.coroutines.JobCancellationException: DeferredCoroutine was cancelled
+EXPECTED_REJECTION java.util.concurrent.CancellationException: Profile gallery entry retired
+EXPECTED_REJECTION java.util.concurrent.CancellationException: ͼƬ�����ѽ����������´�Ԥ��
+PROFILE_PLATFORM_PROOF {"groups":3,"assertions":55,"originalImport":true,"realLocalSkia":true,"realBundledFfprobe":true,"sameStoreTheme":true,"prospectiveOverrideFiles":0,"rootMounted":false,"actualChooserOpened":false,"actualDwmWindow":false,"externalHttp":false}

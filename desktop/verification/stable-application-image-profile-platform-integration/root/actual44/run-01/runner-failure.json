@@ -1,0 +1,9 @@
+{
+  "stage": "Profile subprocess log decoding",
+  "passed": false,
+  "imageBusinessAssertions": 22,
+  "imagePassed": true,
+  "profileBusinessResultAccepted": false,
+  "reason": "Python subprocess UTF-8 reader raised UnicodeDecodeError on byte 0xb2, then stdout was None. Original Profile assertions were not modified. Profile run had started; no outcome is claimed because stdout was not retained by the failed reader.",
+  "runnerCorrection": "Capture subprocess stdout/stderr as raw bytes, retain raw logs, decode display copy with replacement only. Business assertion JSON is ASCII."
+}

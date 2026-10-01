@@ -1,0 +1,103 @@
+{
+  "payloads": [
+    {
+      "source": "prepared/tools/extract-upstream-application-image-loader.py",
+      "target": "desktop/tools/extract-upstream-application-image-loader.py",
+      "sha256Bytes": "7d8d7dde625dad262fec46be18718dc3a707f83b864cc396854cee77159c4368"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopApplicationImageCacheTrim.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopApplicationImageCacheTrim.kt",
+      "sha256Bytes": "9b93059fec4183f7e8ad6b2397ebb9462951030e1a633ff99e51ab511c5020a9"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopApplicationImageLoader.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopApplicationImageLoader.kt",
+      "sha256Bytes": "28e2562b4a0039bf292303f8459640c5a4c13ac8f2ea3de577076e50daa13b21"
+    },
+    {
+      "source": "prepared/coil-upstream/commonMain/coil3/network/cachecontrol/CacheControlCacheStrategy.kt",
+      "target": "desktop/third-party/coil-cache-control/upstream/commonMain/coil3/network/cachecontrol/CacheControlCacheStrategy.kt",
+      "sha256Bytes": "205af3830d3bfcef597bccdc6554c7f2abb69483b3e649abfcdf75498af4e87b"
+    },
+    {
+      "source": "prepared/coil-upstream/commonMain/coil3/network/cachecontrol/internal/CacheControl.kt",
+      "target": "desktop/third-party/coil-cache-control/upstream/commonMain/coil3/network/cachecontrol/internal/CacheControl.kt",
+      "sha256Bytes": "f3abb5f309c53dff0c566a9a9fcf7231c319fcdc6753afdf6cdd8bd7d9ffe2f7"
+    },
+    {
+      "source": "prepared/coil-upstream/commonMain/coil3/network/cachecontrol/internal/utils.kt",
+      "target": "desktop/third-party/coil-cache-control/upstream/commonMain/coil3/network/cachecontrol/internal/utils.kt",
+      "sha256Bytes": "f7347cf633951e964a77649de86761b1dbdab7bac5d1e4470a80f265dce98a79"
+    },
+    {
+      "source": "prepared/resources/coil-cache-control-LICENSE.txt",
+      "target": "desktop/resources/common/licenses/coil-cache-control-LICENSE.txt",
+      "sha256Bytes": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "source": "prepared/resources/coil-cache-control-NOTICE.txt",
+      "target": "desktop/resources/common/licenses/coil-cache-control-NOTICE.txt",
+      "sha256Bytes": "6bd1d0d8cc005df39496f6be8618eb6c5714cf3c9839fb631f053ead00e41c9c"
+    }
+  ],
+  "sourceCountBefore": 927,
+  "sourceCountAfter": 930,
+  "sourceManifestSha256Bytes": "0740783057cdccbcc5b5d65ee09b74ec9c8e017a9e9fb6b940888d78dcaf293d",
+  "exactRootHunks": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "before": "        val closing = remember { java.util.concurrent.atomic.AtomicBoolean() }",
+      "after": "        val closing = remember { java.util.concurrent.atomic.AtomicBoolean() }\n        // Configure the original singleton before any Window renderer asks Coil for an image.\n        val applicationImages = remember(repository, closing) {\n            com.bilipai.desktop.ui.DesktopApplicationImageLoader(repository,\n                DesktopLibrary.directoryForAccount(null).resolve(\"cache\"), rootAlive = { !closing.get() })\n        }\n        DisposableEffect(applicationImages) {\n            onDispose {\n                applicationImages.stopAccepting()\n                applicationScope.launch(kotlinx.coroutines.NonCancellable + Dispatchers.IO) { applicationImages.close() }\n            }\n        }"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "before": "                    shutdown.get().invoke()",
+      "after": "                    shutdown.get().invoke()\n                    withContext(Dispatchers.IO) { applicationImages.close() }"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "before": "            DesktopApp(repository, playerResult.getOrNull(), playerResult.exceptionOrNull()?.message, initialVideo,",
+      "after": "            androidx.compose.runtime.CompositionLocalProvider(\n                com.bilipai.desktop.ui.LocalDesktopApplicationImageLoader provides applicationImages,\n            ) {\n            DesktopApp(repository, playerResult.getOrNull(), playerResult.exceptionOrNull()?.message, initialVideo,"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "before": "                danmakuPresentation = danmakuPresentation)\n            restartFailure?.let",
+      "after": "                danmakuPresentation = danmakuPresentation)\n            }\n            restartFailure?.let"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "before": "    val pluginStore = remember(applicationPluginStore) {",
+      "after": "    val applicationImages = LocalDesktopApplicationImageLoader.current\n    val pluginStore = remember(applicationPluginStore) {"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "before": "    val diagnostics = diagnosticLifecycle?.diagnostics",
+      "after": "    val applicationImages = LocalDesktopApplicationImageLoader.current\n    val diagnostics = diagnosticLifecycle?.diagnostics"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "before": "                diagnosticLifecycle?.shutdownForRestore()\n                withContext(Dispatchers.IO) { pluginStore.freezeWrites() }",
+      "after": "                withContext(Dispatchers.IO) { applicationImages.close() }\n                diagnosticLifecycle?.shutdownForRestore()\n                withContext(Dispatchers.IO) { pluginStore.freezeWrites() }"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "before": "                homeRootRef.getAndSet(null)?.closeAndJoin()\n                favoritesQueueRef.getAndSet(null)?.close()",
+      "after": "                homeRootRef.getAndSet(null)?.closeAndJoin()\n                withContext(Dispatchers.IO) { applicationImages.close() }\n                favoritesQueueRef.getAndSet(null)?.close()"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "before": "            homeRootRef.getAndSet(null)?.closeAndJoin()\n            closeDiscoveryStorage()",
+      "after": "            homeRootRef.getAndSet(null)?.closeAndJoin()\n            withContext(Dispatchers.IO) { applicationImages.close() }\n            closeDiscoveryStorage()"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "before": "                homeRootRef.getAndSet(null)?.closeAndJoin()\n                closeDiscoveryStorage()",
+      "after": "                homeRootRef.getAndSet(null)?.closeAndJoin()\n                withContext(Dispatchers.IO) { applicationImages.close() }\n                closeDiscoveryStorage()"
+    }
+  ],
+  "newRuntimeArtifacts": 0,
+  "actualSingletonConfiguredInMain": true,
+  "actualBackgroundTrimNotMounted": true,
+  "newExeDeployed": false
+}

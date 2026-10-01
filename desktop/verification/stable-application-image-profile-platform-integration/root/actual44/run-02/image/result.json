@@ -1,0 +1,13 @@
+{
+  "name": "image",
+  "passed": true,
+  "business": {
+    "groups": 3,
+    "assertions": 22
+  },
+  "actualOriginCount": 8,
+  "fixtureClassCount": 4,
+  "fixtureJarSha256Bytes": "2c0a4c9b476b14e010e5032c6d7f209b068e9a55a4f12d7b56cae72a0e5ae192",
+  "productionOverrides": 0,
+  "businessAssertionsUnchanged": true
+}

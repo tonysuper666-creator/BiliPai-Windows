@@ -1,0 +1,28 @@
+
+> Configure project :
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build.gradle.kts:724:31: Unresolved reference 'security'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build.gradle.kts:725:94: Unresolved reference 'it'.
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build.gradle.kts' line: 724
+
+* What went wrong:
+Script compilation errors:
+
+  Line 724:             val actual = java.security.MessageDigest.getInstance("SHA-256")
+                                          ^ Unresolved reference 'security'.
+
+  Line 725:                 .digest(File(projectDir, name).readBytes()).joinToString("") { "%02x".format(it) }
+                                                                                                         ^ Unresolved reference 'it'.
+
+2 errors
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 2s

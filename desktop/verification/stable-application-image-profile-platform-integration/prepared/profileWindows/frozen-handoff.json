@@ -1,0 +1,332 @@
+{
+  "scope": "Full original WallpaperImageImport with actual Windows Profile physical effects, concrete retained factory, same global theme/cache and sole gallery admission",
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualSnapshot": 42,
+  "actualRuntimeEntries": 97,
+  "actualOrderedRuntimeCpSha256Bytes": "6fb3e971ee12e0f77c7a7dd6e54a4af64456b3e8bab8446660c1f10947b2d63c",
+  "sourceProduction": {
+    "manualSources": 5,
+    "generatedOriginalSources": 1,
+    "newOriginalRegistryRows": 1,
+    "sharedLocalHunks": 5,
+    "sharedTargets": 4,
+    "newDependencies": 0,
+    "wholeSharedCandidateInstall": false
+  },
+  "compile": {
+    "sources": 9,
+    "classes": 106,
+    "methods": 649,
+    "jarSha256Bytes": "ce8c0a854ce6bfe501e8b4030eec0412248fd22cc6edd20c5c023335482bfd78",
+    "prospectiveSharedSourceOverrides": 3,
+    "prospectiveExistingClassOverrides": 61,
+    "newClassAndPublicTopMethodOverlap": 0,
+    "invalidJvmMethodNames": 0,
+    "loadedWithoutInitialization": 106,
+    "existingPublicCoreAbiPreserved": 14,
+    "actualModule": "com_bilipai_desktop_bilipai_windows"
+  },
+  "proof": {
+    "groups": 3,
+    "assertions": 55,
+    "sourceChecks": 49,
+    "wholeOriginalImportRecovered": true,
+    "originalThemeMethods": 2,
+    "physicalLocalSkia": true,
+    "trustedBundledFfprobe": true,
+    "sameActualPluginStoreTheme": true,
+    "fixtureOnlyAdmissionAndGallerySessionOwner": true,
+    "actualChooserOpened": false,
+    "actualRootWindowOrDwmAccepted": false,
+    "externalHttp": false,
+    "userWallpaperOrAccountsRead": false
+  },
+  "ownerContracts": {
+    "all16PlatformEffectsConcrete": true,
+    "factoryAllRequired": true,
+    "sameGlobalAppearance": true,
+    "sameStoreAndEntry": true,
+    "soleAssetsAndLocations": true,
+    "sameOwnedCallFactory": true,
+    "sameExistingMediaLifetime": true
+  },
+  "rootMounted": false,
+  "sharedSourcesModified": false,
+  "sharedGradleRun": false,
+  "nativeRebuilt": false,
+  "deployed": false,
+  "rootRequiredAcceptance": [
+    "Serial shared hunk install plus full product generation/compile",
+    "Retained Profile main navigation mount with actual services",
+    "Actual Root Window dimensions/capabilities/icon and chooser/clipboard/chrome",
+    "Owned HTTP/download and real user experience"
+  ],
+  "installContractSha256Bytes": "89e26cf5687a2bf20c4fa7def9c066914477847bbf40083f23c3209c3f6b7be9",
+  "rootRecipeSha256Bytes": "7a57bb8016cd9da44ae4389eae44847946bf0fe10677be5d418fa66e6cd2f356",
+  "artifacts": [
+    {
+      "path": "ProfilePlatformFixture.kt",
+      "sha256Bytes": "5373933f573c720776216bef6c18b3c2899fdecccbae2408b99b4e9397cd45d7"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "7a57bb8016cd9da44ae4389eae44847946bf0fe10677be5d418fa66e6cd2f356"
+    },
+    {
+      "path": "abi-audit.json",
+      "sha256Bytes": "f13e109607ac55d5338a5f08aa570ceb9f587192fff47bba08ab7fe9af168073"
+    },
+    {
+      "path": "classload-proof/ProfilePlatformClassLoadProof.java",
+      "sha256Bytes": "71c717246ae6b484af9a03c4f8ebf654f5c61b48f7448c6bdc3edc6b4cd6c19f"
+    },
+    {
+      "path": "classload-proof/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "classload-proof/run.log",
+      "sha256Bytes": "b7954d9492ae6f9dd99aca2ba46d4b90b687c4079b66a55fc38f7e40e77f850d"
+    },
+    {
+      "path": "compile-09/compile-result.json",
+      "sha256Bytes": "b0f0adfc8dc3327c715b83648b7c2d08c953fbd9b3746d41e1f40648f0e875f8"
+    },
+    {
+      "path": "compile-09/kotlin.log",
+      "sha256Bytes": "0db71eae62519c6bb033059741500151b2e09a9d969c23153f0625ade7802134"
+    },
+    {
+      "path": "compile-09/original-profile-platform.jar",
+      "sha256Bytes": "ce8c0a854ce6bfe501e8b4030eec0412248fd22cc6edd20c5c023335482bfd78"
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "0a2d041572590d02f453d7f86f8abb1d4e945c9b1153ce681f789bdc751fd822"
+    },
+    {
+      "path": "finish.py",
+      "sha256Bytes": "56d78b80e952f708913fbd3346fa23a3883e39d6954899f2a1c0e5166a2acf99"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "bf73d1de7fe1668f4b48009ee97a8d5908364f629a85e23171c3d923cc0142a5"
+    },
+    {
+      "path": "gradle-task.snippet.kts",
+      "sha256Bytes": "7c9087c39025540dde72b88448c8941430598b2eb36b49f67153e39b1f0338f2"
+    },
+    {
+      "path": "input-audit.json",
+      "sha256Bytes": "927304a97ab1e1eb0dd6b1202e5784b516a6292429b332e53cb2aad7a7dbd9d6"
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "89e26cf5687a2bf20c4fa7def9c066914477847bbf40083f23c3209c3f6b7be9"
+    },
+    {
+      "path": "original-import-reverse.json",
+      "sha256Bytes": "f3f9a2ceb115cc2083cabb6c8f5c0baf5248d7fe20f52817f0158edc4b5f237b"
+    },
+    {
+      "path": "original-stable-selected/SettingsManager.setDarkThemeStyle.kt.txt",
+      "sha256Bytes": "9d419ec3363641d9082cdb226623982803d215b6aec38508c13c3b6a521e8020"
+    },
+    {
+      "path": "original-stable-selected/SettingsManager.setThemeMode.kt.txt",
+      "sha256Bytes": "94b6bf9563ea93f878b1380f4d3563227f0501f556a0b20cf5f1e4265577ae78"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/WallpaperImageImport.kt",
+      "sha256Bytes": "9d1d439a42738a9e1b92340e1b5c3e9c2abe5cf578cf3f605a43388f178cbc91"
+    },
+    {
+      "path": "original-theme-methods.json",
+      "sha256Bytes": "82ef0f8f652c4763f6541ead437ecbf58e21c28232555efd1fbfa41530bcf6f0"
+    },
+    {
+      "path": "pins.json",
+      "sha256Bytes": "98ce09903737bf6a0664f953dd1b43606be5140ae22efc555b0f0cc05a366b47"
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "b2f659a31c6f7d56ab5ccc0faae2679b8d2e0a6bd8b73cfc09268fa20d69d00d"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/WallpaperImageImport.kt",
+      "sha256Bytes": "0379e92e67bee566f47832e741ffe117c4186f9d17a0979cf552bcc59d329aec"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopProfileOwnedFiles.kt",
+      "sha256Bytes": "eb63417cc60a9b4fbfa7217b263a18ce76f3d7259343c4ff32843909e4203117"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopProfileVideoMetadata.kt",
+      "sha256Bytes": "9dcce91c7692cc8295e6e1255f4944f90212fc19bc6eaedaca1956f5192e72f5"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopProfileWindowChrome.kt",
+      "sha256Bytes": "50852b3a790463323dbc509c438520558973f5f6b856f159f37ad3ea313b629d"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopProfileWindowsBindingFactory.kt",
+      "sha256Bytes": "f8efeaf706f94202919b1a7be097390dd03252209cf50432991b029feb585a24"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopProfileWindowsPlatform.kt",
+      "sha256Bytes": "b2e6f64ba7ac5287d8d0582b54b510f93ecb99224284636aacd72ae4d6efb530"
+    },
+    {
+      "path": "prepared/shared-candidates/desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "sha256Bytes": "49bf473b17a2e11fcee5ffd1cbed1df4dfcf036ce77f66f010a1df0c7aa3d945"
+    },
+    {
+      "path": "prepared/shared-candidates/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "72f2ce5d5197cc1b4342db39d569f67f6f5967064703ce09db101510e3b95f5c"
+    },
+    {
+      "path": "prepared/shared-candidates/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "ff38bb9451fdbc0f4515c0199b0cde1b7da4187e78f232f0c0ffe19297f3b80d"
+    },
+    {
+      "path": "prepared/shared-candidates/desktop/tools/extract-upstream-profile-main.py",
+      "sha256Bytes": "490ceb994ee7a8c358daaea871c707cf850d3a900e74b195fa8f67f3db26f75e"
+    },
+    {
+      "path": "prepared/tools/extract-upstream-profile-wallpaper-import.py",
+      "sha256Bytes": "f74d6fe884bfc2ace829a2fc536f15d07a63c8ae9caa32c6b085cdedd2435855"
+    },
+    {
+      "path": "proof-01/run.log",
+      "sha256Bytes": "bfa20fcc1bbbd2643e286823866ebe2ac6b4003145626a0951d16d4a390e7386"
+    },
+    {
+      "path": "proof-02/local-fixture/io/home_wallpaper/.profile-metadata-17493302768103190519.tmp",
+      "sha256Bytes": "2cd9e8f8fa311f2869128074c77fc3e713bdfdd1cb7d3ba3ff4a2325ac88ed3f"
+    },
+    {
+      "path": "proof-02/run.log",
+      "sha256Bytes": "ab1ca9b2e13ca5e2e4b5b3a4f6f01b09095fc3155f73ca0a6be3f8a6ac12fc71"
+    },
+    {
+      "path": "proof-09/compile.log",
+      "sha256Bytes": "1a2289b15919c023c7637dcdb799ffbcd3bac2b99152fc5f464e24ab7bc45f82"
+    },
+    {
+      "path": "proof-09/local-fixture/fixture-pictures/BiliPai/profile-fixture (1).jpg",
+      "sha256Bytes": "805d1fbd85e22b9aa3dc77843d50979fc72d35726bcd5ab014e67fb74ffd899c"
+    },
+    {
+      "path": "proof-09/local-fixture/fixture-pictures/BiliPai/profile-fixture.jpg",
+      "sha256Bytes": "805d1fbd85e22b9aa3dc77843d50979fc72d35726bcd5ab014e67fb74ffd899c"
+    },
+    {
+      "path": "proof-09/local-fixture/invalid.mp4",
+      "sha256Bytes": "787c798e39a5bc1910355bae6d0cd87a36b2e10fd0202a83e3bb6b005da83472"
+    },
+    {
+      "path": "proof-09/local-fixture/invalid.png",
+      "sha256Bytes": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81"
+    },
+    {
+      "path": "proof-09/local-fixture/io/home_wallpaper/wallpaper_a21ba85c-1824-44bb-8427-a34cfebf0ea9.mp4",
+      "sha256Bytes": "5071d99b3e943ee06e292cab9edb3f58cb67573e0c08df35d72cfdd5d37403a8"
+    },
+    {
+      "path": "proof-09/local-fixture/io/home_wallpaper/wallpaper_bea15539-fe51-49e8-9a6e-7d4e70f5208a.img",
+      "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35"
+    },
+    {
+      "path": "proof-09/local-fixture/io/profile_wallpaper/wallpaper_dccc8983-17a2-45af-89cf-6b630e9b45f7.img",
+      "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35"
+    },
+    {
+      "path": "proof-09/local-fixture/io/splash/wallpaper_2c8a81ce-251e-4767-b6eb-860a893166cf.img",
+      "sha256Bytes": "f2d993f565409b3a8582f21e81abcbbb73f5365a62318f60d4b110a7f3c17a9e"
+    },
+    {
+      "path": "proof-09/local-fixture/synthetic.gif",
+      "sha256Bytes": "f2d993f565409b3a8582f21e81abcbbb73f5365a62318f60d4b110a7f3c17a9e"
+    },
+    {
+      "path": "proof-09/local-fixture/synthetic.png",
+      "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35"
+    },
+    {
+      "path": "proof-09/local-fixture/theme/plugin-settings.json",
+      "sha256Bytes": "733538974a6ff672efc5199a3a8aa6f302ea8348ee1b98fbb2c88f04bb77aa5b"
+    },
+    {
+      "path": "proof-09/media-generator.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-09/media-inputs.json",
+      "sha256Bytes": "b4d96676552aad559363f1c132e82c44204ac0c85a1149f61efb1abe0bf3210d"
+    },
+    {
+      "path": "proof-09/profile-platform-fixture.jar",
+      "sha256Bytes": "389082542ad3eed0d87b7f6e95f146b0b9f259c3d7fc4a016830c1470d90beb5"
+    },
+    {
+      "path": "proof-09/proof-result.json",
+      "sha256Bytes": "fda7574d275d60fd4effd985a739e3b2017aff9084e07948b9fcad6e164b6722"
+    },
+    {
+      "path": "proof-09/run.log",
+      "sha256Bytes": "053b9cf27e21a874e81f83755740c1abead9f804d5821263d29c657c9137e689"
+    },
+    {
+      "path": "proof-09/synthetic-local.mp4",
+      "sha256Bytes": "5071d99b3e943ee06e292cab9edb3f58cb67573e0c08df35d72cfdd5d37403a8"
+    },
+    {
+      "path": "registry-merge-recipe.json",
+      "sha256Bytes": "c0d9b332cd37881bf24a3c2c0b26c058ee0a562ee285bba091dc480d75082a04"
+    },
+    {
+      "path": "replay-production.log",
+      "sha256Bytes": "7f3a93def2bd1c997c3eb86234f1f190eac101e1c7d9afc19d99c073a380c070"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/profile/WallpaperImageImport.kt",
+      "sha256Bytes": "0379e92e67bee566f47832e741ffe117c4186f9d17a0979cf552bcc59d329aec"
+    },
+    {
+      "path": "replay-production/profile-wallpaper-import-proof.json",
+      "sha256Bytes": "c9a4277a62ec0e92763a8f5673469fb7bbd079d1296a47663c290f528bb8dd1b"
+    },
+    {
+      "path": "run-proof.py",
+      "sha256Bytes": "9806673ea6fd00663565ddd8e2a71d7545203541de43d7e509e59657dacac80e"
+    },
+    {
+      "path": "shared-bases/desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "sha256Bytes": "f06fb3593cd954f553dcdf900b32438cbcf4976be056a8238dd17c5efd01700e"
+    },
+    {
+      "path": "shared-bases/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "9b7021eb958d9be18bb84c3111cd3b0bc4d56b050d7d348131de26b8c1502a3c"
+    },
+    {
+      "path": "shared-bases/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4"
+    },
+    {
+      "path": "shared-bases/desktop/tools/extract-upstream-profile-main.py",
+      "sha256Bytes": "f1f770072220a9d29e20cb77c3f4f5fd6d30c6decea0a0c83129114fe16942d4"
+    },
+    {
+      "path": "shared-hunks-replay.json",
+      "sha256Bytes": "46e9f87095d6233af6ebcba8ecfb1907d2fd5c1b9d3672aeef22c3d5ce827775"
+    },
+    {
+      "path": "shared-local-hunks.json",
+      "sha256Bytes": "01a038da2a53b8fc2c5f90bc49c3e543ce3b104bafc535bdc4338ecc50286d0f"
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "cca9835740caf5fc4eb0401bc5763d0f8d11c9727a092a168660cd279ac248c8"
+    }
+  ]
+}

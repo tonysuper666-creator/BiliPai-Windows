@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-profile-windows-platform-parity\ProfilePlatformFixture.kt:173:51: warning: the corresponding parameter in the supertype 'DesktopDynamicCacheSessionGuard' is named 'owner'. This may cause problems when calling this function with named arguments.
+        override fun withCurrentDynamicCacheOwner(expected:DesktopDynamicCacheOwner,block:()->Unit):Boolean {
+                                                  ^^^^^^^^

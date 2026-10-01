@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "sourceCount": 7,
+  "classCount": 14,
+  "newFqnCollisions": 0,
+  "actual43RuntimeEntries": 97,
+  "productionOverrides": 0,
+  "sourceInputs": [
+    {
+      "path": "prepared\\coil-upstream\\commonMain\\coil3\\network\\cachecontrol\\CacheControlCacheStrategy.kt",
+      "sha256Bytes": "205af3830d3bfcef597bccdc6554c7f2abb69483b3e649abfcdf75498af4e87b"
+    },
+    {
+      "path": "prepared\\coil-upstream\\commonMain\\coil3\\network\\cachecontrol\\internal\\CacheControl.kt",
+      "sha256Bytes": "f3abb5f309c53dff0c566a9a9fcf7231c319fcdc6753afdf6cdd8bd7d9ffe2f7"
+    },
+    {
+      "path": "prepared\\coil-upstream\\commonMain\\coil3\\network\\cachecontrol\\internal\\utils.kt",
+      "sha256Bytes": "f7347cf633951e964a77649de86761b1dbdab7bac5d1e4470a80f265dce98a79"
+    },
+    {
+      "path": "prepared\\generated\\com\\android\\purebilibili\\app\\DesktopOriginalApplicationImageLoader.kt",
+      "sha256Bytes": "2fad9964d238f1e5fc61014e99f476feab01b2654e6c0584512ed8900c752ded"
+    },
+    {
+      "path": "prepared\\generated\\com\\android\\purebilibili\\core\\lifecycle\\DesktopOriginalBackgroundImageTrimPolicy.kt",
+      "sha256Bytes": "50574739b28bd0242b4773fd386bdc8f68d2e7be1007d8a6b50492a3df759b8d"
+    },
+    {
+      "path": "prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopApplicationImageCacheTrim.kt",
+      "sha256Bytes": "9b93059fec4183f7e8ad6b2397ebb9462951030e1a633ff99e51ab511c5020a9"
+    },
+    {
+      "path": "prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopApplicationImageLoader.kt",
+      "sha256Bytes": "28e2562b4a0039bf292303f8459640c5a4c13ac8f2ea3de577076e50daa13b21"
+    }
+  ],
+  "candidateJarSha256Bytes": "0645cc8b77fa2d4b7d1adc12e92cc051f913aa4870506b31dd94dc56fe81cf7b"
+}

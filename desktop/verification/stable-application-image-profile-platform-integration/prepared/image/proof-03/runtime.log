@@ -1,0 +1,2 @@
+PASS application image loader / 3 groups / 22 assertions
+LIMIT generated image and same temporary Store only; no HTTP, personal cache, Window background timer or Root acceptance

@@ -1,0 +1,15 @@
+EXPECTED_REJECTION java.util.concurrent.CancellationException: Profile settings owner retired
+EXPECTED_REJECTION kotlinx.coroutines.JobCancellationException: Job was cancelled
+EXPECTED_REJECTION java.util.concurrent.CancellationException: Publication fixture cancelled
+EXPECTED_REJECTION java.lang.IllegalStateException: �����ֹͣ������д�������ʵ��
+EXPECTED_REJECTION java.io.IOException: ͼƬΪ�ա����𻵻��ʽ����֧�֣���ѡ������ͼƬ
+EXPECTED_REJECTION java.lang.IllegalArgumentException: ��Ƶ�𻵻��ʽ����֧��
+EXPECTED_REJECTION java.lang.IllegalArgumentException: Ŀ���ļ��Ѵ���
+EXPECTED_REJECTION java.lang.IllegalArgumentException: Failed requirement.
+EXPECTED_REJECTION java.lang.IllegalArgumentException: ��ֽĿ¼����֧��
+EXPECTED_REJECTION java.util.concurrent.CancellationException: Profile import entry retired
+EXPECTED_REJECTION java.util.concurrent.CancellationException: Profile file request retired
+EXPECTED_REJECTION kotlinx.coroutines.JobCancellationException: DeferredCoroutine was cancelled
+EXPECTED_REJECTION java.util.concurrent.CancellationException: Profile gallery entry retired
+EXPECTED_REJECTION java.util.concurrent.CancellationException: ͼƬ�����ѽ����������´�Ԥ��
+PROFILE_PLATFORM_PROOF {"groups":3,"assertions":55,"originalImport":true,"realLocalSkia":true,"realBundledFfprobe":true,"sameStoreTheme":true,"prospectiveOverrideFiles":3,"rootMounted":false,"actualChooserOpened":false,"actualDwmWindow":false,"externalHttp":false}

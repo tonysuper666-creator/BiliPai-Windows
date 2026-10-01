@@ -1,0 +1,63 @@
+{
+  "groups": 3,
+  "assertions": 55,
+  "originalImport": true,
+  "realLocalSkia": true,
+  "realBundledFfprobe": true,
+  "sameStoreTheme": true,
+  "prospectiveOverrideFiles": 3,
+  "rootMounted": false,
+  "actualChooserOpened": false,
+  "actualDwmWindow": false,
+  "externalHttp": false,
+  "fixtureJarSha256Bytes": "389082542ad3eed0d87b7f6e95f146b0b9f259c3d7fc4a016830c1470d90beb5",
+  "candidateJarSha256Bytes": "ce8c0a854ce6bfe501e8b4030eec0412248fd22cc6edd20c5c023335482bfd78",
+  "actual97PinsVerified": true,
+  "localFixture": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\proof-09\\local-fixture\\invalid.mp4",
+      "sha256Bytes": "787c798e39a5bc1910355bae6d0cd87a36b2e10fd0202a83e3bb6b005da83472"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\proof-09\\local-fixture\\invalid.png",
+      "sha256Bytes": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\proof-09\\local-fixture\\synthetic.gif",
+      "sha256Bytes": "f2d993f565409b3a8582f21e81abcbbb73f5365a62318f60d4b110a7f3c17a9e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\proof-09\\local-fixture\\synthetic.png",
+      "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\proof-09\\local-fixture\\theme\\plugin-settings.json",
+      "sha256Bytes": "733538974a6ff672efc5199a3a8aa6f302ea8348ee1b98fbb2c88f04bb77aa5b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\proof-09\\local-fixture\\fixture-pictures\\BiliPai\\profile-fixture (1).jpg",
+      "sha256Bytes": "805d1fbd85e22b9aa3dc77843d50979fc72d35726bcd5ab014e67fb74ffd899c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\proof-09\\local-fixture\\fixture-pictures\\BiliPai\\profile-fixture.jpg",
+      "sha256Bytes": "805d1fbd85e22b9aa3dc77843d50979fc72d35726bcd5ab014e67fb74ffd899c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\proof-09\\local-fixture\\io\\home_wallpaper\\wallpaper_a21ba85c-1824-44bb-8427-a34cfebf0ea9.mp4",
+      "sha256Bytes": "5071d99b3e943ee06e292cab9edb3f58cb67573e0c08df35d72cfdd5d37403a8"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\proof-09\\local-fixture\\io\\home_wallpaper\\wallpaper_bea15539-fe51-49e8-9a6e-7d4e70f5208a.img",
+      "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\proof-09\\local-fixture\\io\\profile_wallpaper\\wallpaper_dccc8983-17a2-45af-89cf-6b630e9b45f7.img",
+      "sha256Bytes": "542573ae5477c87b1a5b0ec7b1f65e73277859919a014f8447c162da25efdc35"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-windows-platform-parity\\proof-09\\local-fixture\\io\\splash\\wallpaper_2c8a81ce-251e-4767-b6eb-860a893166cf.img",
+      "sha256Bytes": "f2d993f565409b3a8582f21e81abcbbb73f5365a62318f60d4b110a7f3c17a9e"
+    }
+  ],
+  "sharedGradleRun": false
+}
