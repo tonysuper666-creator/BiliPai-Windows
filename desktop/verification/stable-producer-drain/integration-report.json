@@ -1,0 +1,56 @@
+{
+  "phase": 59,
+  "sourceIdentityCount": 1057,
+  "resourceRegistryCount": 213,
+  "runtimeEntries": 101,
+  "wholeClassesPassed": true,
+  "wholeTestSourcesCompiled": true,
+  "illegalJvmMethodNames": 0,
+  "sameExistingHeartbeatReporterJoinInstalled": true,
+  "sameExistingAutomaticSubtitleJoinInstalled": true,
+  "originalCloseSemanticsPreserved": true,
+  "joinsAwaitedOutsideStoreEntrySubtitleLocks": true,
+  "timeoutReturnsFalseAndProhibitsReplacementProducer": true,
+  "noGlobalAssetsClosed": true,
+  "newPlayers": 0,
+  "newProducers": 0,
+  "newDependencies": 0,
+  "fixtureAssertions": 15,
+  "installedProductFixture": {
+    "passed": true,
+    "compileExitCode": 0,
+    "runExitCode": 0,
+    "actualProductSnapshot": 59,
+    "runtimeEntries": 101,
+    "fixtureClasses": 17,
+    "productionOverrides": 0,
+    "fixtureProductClassIntersections": [],
+    "fixtureJarSha256Bytes": "921dc85af45937a3c0c148f4b196a536c64f742b5cc4eba5572ae0343555f462",
+    "byteVerifiedProductOrigins": [
+      {
+        "class": "com.bilipai.desktop.player.DesktopHeartbeatReporter",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-59/main-kotlin.jar",
+        "sha256ClassBytes": "5708d2d3ee19c851ca466840d3b03df58d6ba78664c00a3b751e11550ced4907"
+      },
+      {
+        "class": "com.bilipai.desktop.player.DesktopAutomaticSubtitles",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-59/main-kotlin.jar",
+        "sha256ClassBytes": "e4c0ddb0088d02c3ded2a6d23021b6924d84eba7063f7c0e12bfe9a80ad994e1"
+      }
+    ],
+    "fixtureSourceUnchanged": true,
+    "fixtureIsRootOwned": true,
+    "sameSocketFreeChecksReplayed": true,
+    "actualAccountUsed": false,
+    "nativeExecuted": false,
+    "fullOrdinaryVideoRootMountAccepted": false,
+    "fullControllerDrainAccepted": false,
+    "memoryWorkOnly": true
+  },
+  "memoryWorkOnly": true,
+  "realAccountUsed": false,
+  "fullOrdinaryVideoRootMountAccepted": false,
+  "fullControllerDrainAccepted": false,
+  "newExeDeployed": false,
+  "sourceInventoryIsNotFunctionalOrReusePercentage": true
+}

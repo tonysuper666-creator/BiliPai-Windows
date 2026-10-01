@@ -261,14 +261,4 @@ internal class DesktopAutomaticSubtitles(
         binding = null
         mutableState.value = mutableState.value.copy(loading = false)
     }
-
-    /** Join outside the subtitle/Store/entry locks before enabling a new downloader.
-     * Current MPV tracks and the Root-owned subtitle asset files remain retained. */
-    internal suspend fun closeAndJoin(): Boolean {
-        close()
-        return withTimeoutOrNull(3_000L) {
-            requireNotNull(scope.coroutineContext[Job]).join()
-            true
-        } ?: false
-    }
 }

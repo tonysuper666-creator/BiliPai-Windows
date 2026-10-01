@@ -81,3 +81,4 @@ desktop/verification/stable-video-repository-core-ports/** -text
 desktop/verification/stable-video-owned-token-refresh/** -text
 desktop/verification/stable-video-playback-invocation/** -text
 desktop/verification/stable-native-publication-adoption/** -text
+desktop/verification/stable-producer-drain/** -text

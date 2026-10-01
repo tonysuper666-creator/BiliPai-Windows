@@ -1,0 +1,121 @@
+{
+  "artifacts": [
+    {
+      "path": "root/source-packet/ProducerDrainFixture.kt",
+      "sha256Bytes": "2143dfa393a664898846efc2ee943b9806fd193b01c4283106f3ae651ff7b4c3",
+      "sizeBytes": 7580
+    },
+    {
+      "path": "root/source-packet/after/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopAutomaticSubtitles.kt",
+      "sha256Bytes": "ed686f9b585b1bd5f228be2817a4cd104ca9250e9ee070008980d44516d480bd",
+      "sizeBytes": 16086
+    },
+    {
+      "path": "root/source-packet/after/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackHeartbeat.kt",
+      "sha256Bytes": "3e1303297a36189ec78e30212dd92c21e0b77a2480bd47a3bcc1858e17c24634",
+      "sizeBytes": 7797
+    },
+    {
+      "path": "root/source-packet/before/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopAutomaticSubtitles.kt",
+      "sha256Bytes": "6bd1bda74e7584791c3aaeedadb5b0be6ae38ab720c402226762e176eab661dc",
+      "sizeBytes": 15424
+    },
+    {
+      "path": "root/source-packet/before/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackHeartbeat.kt",
+      "sha256Bytes": "bfdf9a22a6ca240cf3940e9fa7276a6ec7f598a2e4f2e00bab08a97e4de5f054",
+      "sizeBytes": 7180
+    },
+    {
+      "path": "root/source-packet/source-delta.json",
+      "sha256Bytes": "3c5b920a7354cb1c8bce2b71ba79bfd5b67efb5c0e16c2e0bcace04bb07560ee",
+      "sizeBytes": 984
+    },
+    {
+      "path": "root/actual59-producer-drain-fixture01/ProducerDrainFixture.kt",
+      "sha256Bytes": "2143dfa393a664898846efc2ee943b9806fd193b01c4283106f3ae651ff7b4c3",
+      "sizeBytes": 7580
+    },
+    {
+      "path": "root/actual59-producer-drain-fixture01/compile.args",
+      "sha256Bytes": "1a4bf0b1e1540b639b5bee98283000a86bd4b6e66ae5dfd531599d00f1a63a6b",
+      "sizeBytes": 25533
+    },
+    {
+      "path": "root/actual59-producer-drain-fixture01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual59-producer-drain-fixture01/pins-after.json",
+      "sha256Bytes": "245be18552cd044e4d4cc9e8ffe4c92ef975f321feba1b5dd41e6163d398c4f0",
+      "sizeBytes": 42522
+    },
+    {
+      "path": "root/actual59-producer-drain-fixture01/pins-before.json",
+      "sha256Bytes": "245be18552cd044e4d4cc9e8ffe4c92ef975f321feba1b5dd41e6163d398c4f0",
+      "sizeBytes": 42522
+    },
+    {
+      "path": "root/actual59-producer-drain-fixture01/result.json",
+      "sha256Bytes": "66962693474537b1e7123f19e23041852dd2d97c3dab0296ec70011c9134c293",
+      "sizeBytes": 1867
+    },
+    {
+      "path": "root/actual59-producer-drain-fixture01/run.log",
+      "sha256Bytes": "2c78c1252fab3ec6c3d00ddf1f4fe737b2018b6addb275a36e9306403b5084ba",
+      "sizeBytes": 51
+    },
+    {
+      "path": "root/actual59-producer-drain-fixture01/runner-result.json",
+      "sha256Bytes": "3454738fa9c375145f897701dc3f314bf6ad299bdb1dcb68067c7d1e38495c21",
+      "sizeBytes": 1325
+    },
+    {
+      "path": "root/snapshot59/manifest.json",
+      "sha256Bytes": "92a2b4ac0576fe52878d3957b14e438ebe78067b87c77e42fee424efc960bd5a",
+      "sizeBytes": 147578
+    },
+    {
+      "path": "root/snapshot59/ordered-runtime-cp.json",
+      "sha256Bytes": "b8cf1abf30f86d3433efc18db36a0eef6e7436692f417f8d1883e896417c7bbc",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-59.log",
+      "sha256Bytes": "34e35c09483946766f9feb693211af71fc86499ffe1d26751eab964dfe482ea1",
+      "sizeBytes": 8812
+    },
+    {
+      "path": "root/classpath-59.log",
+      "sha256Bytes": "7c162df127e6e77117fbaa124774a5dc00a562d0ef4fd8adfca638e66ec2c51d",
+      "sizeBytes": 287
+    },
+    {
+      "path": "root/run-actual59-producer-drain-fixture.py",
+      "sha256Bytes": "13149bf101e25848c19e9c186658b6b88a47864c58949c8c1144e50f7abce5c8",
+      "sizeBytes": 4900
+    },
+    {
+      "path": "root/freeze-producer-drain59.py",
+      "sha256Bytes": "5aa11fbd1d9e1b79bf690e309c89c90239139c59dd5344a2b6c27e3cda63ea43",
+      "sizeBytes": 5547
+    },
+    {
+      "path": "root/jvm-method-name-audit-59.json",
+      "sha256Bytes": "cec3fee25c5cbaec14b930bb8619d3232cb8a3c03f9d29ce23d89c60c021e155",
+      "sizeBytes": 240
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "a8198832e7a89fcafb0b3af1c44001378fc8ec8ed1ca69ae320cd6b9a6e65d8b",
+      "sizeBytes": 2234
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "root/actual59-producer-drain-fixture01/fixture.jar",
+      "sha256Bytes": "921dc85af45937a3c0c148f4b196a536c64f742b5cc4eba5572ae0343555f462",
+      "reason": "Rebuildable binary or private rendered output"
+    }
+  ]
+}

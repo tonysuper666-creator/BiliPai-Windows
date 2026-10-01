@@ -1,0 +1,23 @@
+{
+  "baselineCommit": "301da625e8bb85c61996ffe081248067846eb498",
+  "sources": [
+    {
+      "sourcePath": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackHeartbeat.kt",
+      "baselineLFsha256": "bfdf9a22a6ca240cf3940e9fa7276a6ec7f598a2e4f2e00bab08a97e4de5f054",
+      "candidateLFsha256": "ca8de93f4496e90c574e5624af5dad6c1744a9a335bedabebd3b2b79df900bbe"
+    },
+    {
+      "sourcePath": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopAutomaticSubtitles.kt",
+      "baselineLFsha256": "6bd1bda74e7584791c3aaeedadb5b0be6ae38ab720c402226762e176eab661dc",
+      "candidateLFsha256": "5215fbc2f3461b3697f4912a14d6e00b2812b727fb514031c90a2a47beeebc2c"
+    }
+  ],
+  "existingCloseSemanticsPreserved": true,
+  "joinOutsideStoreEntrySubtitleLocks": true,
+  "timeoutReturnsFalse": true,
+  "noReplacementProducerBeforeTrue": true,
+  "rootOwnedAssetsNotClosed": true,
+  "newSourceIdentities": 0,
+  "newDependencies": 0,
+  "fullControllerDrainAccepted": false
+}

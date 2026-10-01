@@ -145,14 +145,4 @@ internal class DesktopHeartbeatReporter(
         reports.close()
         scope.launch { delay(closeTimeoutMs); scope.cancel() }
     }
-
-    /** Ownership transfer waits outside Store/entry locks. False means this existing
-     * producer has not drained; the caller must not start a replacement reporter. */
-    internal suspend fun closeAndJoin(finalReport: DesktopHeartbeatReport? = null): Boolean {
-        close(finalReport)
-        return withTimeoutOrNull(closeTimeoutMs + 1_000L) {
-            requireNotNull(scope.coroutineContext[Job]).join()
-            true
-        } ?: false
-    }
 }
