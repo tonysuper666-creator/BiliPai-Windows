@@ -1,0 +1,107 @@
+{
+  "phase": 72,
+  "baseCommit": "5507a44a2085be09f52ff8e4561beb71713c9a97",
+  "preparedRawArtifacts": 120,
+  "preparedManifestSha256Bytes": "829c748364219b1458151c546bbdae62d8cd053f613d877b94285f9b9143f5cb",
+  "payloadCount": 2,
+  "existingFamilyCount": 3,
+  "childExactHunks": 7,
+  "rootExactHunks": 1,
+  "rootHelperAndChildOrderIndependent": true,
+  "patchRecords": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "hunks": 2,
+      "beforeSha256LF": "39eb118b090cb83b2a8dc5e3e592f598c29350c59974c9e7c21b23ec9b3384ca",
+      "afterSha256LF": "34e300311854c65aaf4b3afda26e0b7e11aef2754c0c7746f5a02f002dda7da4",
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "hunks": 3,
+      "beforeSha256LF": "72f2ce5d5197cc1b4342db39d569f67f6f5967064703ce09db101510e3b95f5c",
+      "afterSha256LF": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "hunks": 2,
+      "beforeSha256LF": "f80863ef7eadb13be51e6b2c4cb744475666b0799a4d7df613f7ade4d8276fbc",
+      "afterSha256LF": "d7f369cead1c538a2e4fe6f785ee321c0f804b51141fdf5b6f38c5b2a60aacb9",
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "hunks": 1,
+      "rootRequestHelper": true,
+      "orderIndependentExactReplay": true,
+      "combinedSha256LF": "2b33a3c46c0e28d41542a2b54cba4180c7e41a7b89c7ab29bdbe14c11a3d65d0"
+    }
+  ],
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.kt",
+      "sha256Bytes": "307eea214e4b8efc7d67db6b853861ace3a35697c6b2ea7bc5463fa202731162",
+      "sha256LF": "307eea214e4b8efc7d67db6b853861ace3a35697c6b2ea7bc5463fa202731162"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerPluginBridge.kt",
+      "sha256Bytes": "b8fda017d24d46ec4efc07b6592722229e4cbd1b3b26560ec1f715455a08e26d",
+      "sha256LF": "b8fda017d24d46ec4efc07b6592722229e4cbd1b3b26560ec1f715455a08e26d"
+    }
+  ],
+  "changedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "beforeSha256Bytes": "39eb118b090cb83b2a8dc5e3e592f598c29350c59974c9e7c21b23ec9b3384ca",
+      "afterSha256Bytes": "2b33a3c46c0e28d41542a2b54cba4180c7e41a7b89c7ab29bdbe14c11a3d65d0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "beforeSha256Bytes": "72f2ce5d5197cc1b4342db39d569f67f6f5967064703ce09db101510e3b95f5c",
+      "afterSha256Bytes": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "beforeSha256Bytes": "f80863ef7eadb13be51e6b2c4cb744475666b0799a4d7df613f7ade4d8276fbc",
+      "afterSha256Bytes": "d7f369cead1c538a2e4fe6f785ee321c0f804b51141fdf5b6f38c5b2a60aacb9"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "7ee3c3ac044449a10289ed6ecd4a36817b05c931e081dd31430c59e18ed7f1cf",
+      "afterSha256Bytes": "6e4e61cbb89b1a9dde88c0b1ca83500d94608a09850daf7eee05c3f5f7120f46"
+    }
+  ],
+  "featureUnions": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+      "sha256": "d0e1c74436524d943c6b044ea984ad5564b6f3b4ee1b686883ead67a095094b9",
+      "modeUnchanged": true,
+      "beforeFeatures": [
+        "plugins"
+      ],
+      "afterFeatures": [
+        "plugins",
+        "stable-original-video-plugin-owner"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt",
+      "sha256": "981179d2b0828afc35df97bedb6b7d6c8283f7c7f9a1762415f40eb2b55fd113",
+      "modeUnchanged": true,
+      "beforeFeatures": [
+        "plugins"
+      ],
+      "afterFeatures": [
+        "plugins",
+        "stable-original-video-plugin-owner"
+      ]
+    }
+  ],
+  "newIdentityCount": 0,
+  "newDependencyCount": 0,
+  "fullRootMounted": false,
+  "actualNativePluginCompletedSeekAccepted": false,
+  "publicSponsorTransportClosurePending": true,
+  "desktopExeReplaced": false
+}

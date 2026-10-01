@@ -1,0 +1,6 @@
+desktop\.local\stable-player-plugin-final-write-parity\runs\04\FinalWriteFixture.kt:171:116: error: unresolved reference 'errorCount'.
+            withTimeout(5000) { while ((CdnRegionPluginStore.read(runtime.context).healthByHost["memory.invalid"]?.errorCount ?: 0) != 1) delay(5) }
+                                                                                                                   ^^^^^^^^^^
+desktop\.local\stable-player-plugin-final-write-parity\runs\04\FinalWriteFixture.kt:172:94: error: unresolved reference 'errorCount'.
+            prove(CdnRegionPluginStore.read(runtime.context).healthByHost["memory.invalid"]?.errorCount == 1, "original CDN record event AppScope launch returned through captured Runtime mutex and same Store")
+                                                                                             ^^^^^^^^^^

@@ -1,0 +1,15 @@
+desktop\.local\stable-player-plugin-final-write-parity\compile\01\inputs\SponsorBlockInsightPolicy.kt:325:16: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+        return runCatching {
+               ^^^^^^^^^^^
+desktop\.local\stable-player-plugin-final-write-parity\compile\01\inputs\SponsorBlockInsightPolicy.kt:326:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            json.decodeFromString(
+                 ^^^^^^^^^^^^^^^^
+desktop\.local\stable-player-plugin-final-write-parity\compile\01\inputs\SponsorBlockInsightPolicy.kt:327:17: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                ListSerializer(SponsorBlockSkipRecord.serializer()),
+                ^^^^^^^^^^^^^^
+desktop\.local\stable-player-plugin-final-write-parity\compile\01\inputs\SponsorBlockInsightPolicy.kt:327:55: error: unresolved reference 'serializer'.
+                ListSerializer(SponsorBlockSkipRecord.serializer()),
+                                                      ^^^^^^^^^^
+desktop\.local\stable-player-plugin-final-write-parity\compile\01\inputs\SponsorBlockInsightPolicy.kt:348:59: error: unresolved reference 'serializer'.
+                    ListSerializer(SponsorBlockSkipRecord.serializer()),
+                                                          ^^^^^^^^^^

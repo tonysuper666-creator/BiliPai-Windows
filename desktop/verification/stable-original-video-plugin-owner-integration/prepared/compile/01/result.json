@@ -1,0 +1,14 @@
+{
+  "passed": false,
+  "exitCode": 1,
+  "sourceInputs": 5,
+  "prospectiveOnly": true,
+  "productionOverridesExplicit": [
+    "DesktopPluginRuntime family",
+    "DesktopPluginStore family",
+    "CdnRegionPlugin family",
+    "SponsorBlockInsightPolicy family"
+  ],
+  "newManualHelper": "DesktopPlayerPluginWriteAdmission",
+  "actual69CPEntries": 101
+}

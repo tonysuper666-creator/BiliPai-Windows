@@ -1,0 +1,6 @@
+desktop\.local\stable-player-plugin-final-write-parity\runs\05\FinalWriteFixture.kt:65:30: warning: the corresponding parameter in the supertype 'Call' is named 'responseCallback'. This may cause problems when calling this function with named arguments.
+        override fun enqueue(callback: Callback) = error("probe must use original synchronous execute in IO")
+                             ^^^^^^^^
+desktop\.local\stable-player-plugin-final-write-parity\runs\05\FinalWriteFixture.kt:145:27: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Job'.
+            prove(!delayed!!.isCancelled && PluginStore.getDataJson(runtime.context, plugin.id, "delayed") == "done", "normal completed origin remains valid for same accepted source")
+                          ^^

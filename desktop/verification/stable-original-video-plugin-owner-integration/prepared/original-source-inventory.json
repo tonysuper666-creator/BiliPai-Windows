@@ -1,0 +1,14 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LF": "d0e1c74436524d943c6b044ea984ad5564b6f3b4ee1b686883ead67a095094b9",
+    "bytesLF": 38900
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LF": "981179d2b0828afc35df97bedb6b7d6c8283f7c7f9a1762415f40eb2b55fd113",
+    "bytesLF": 11725
+  }
+]

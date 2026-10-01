@@ -1,0 +1,27 @@
+ASSERT 1 only explicit fixture provider enabled; Sponsor/CDN initialization disabled
+ASSERT 2 original suspending history callback outside Root gate
+ASSERT 3 original Sponsor append/read schema persisted through captured final permit
+ASSERT 4 accepted history commit leaves no stage
+ASSERT 5 retired memory native-completion ticket rejects append
+ASSERT 6 retired ticket did not add history
+ASSERT 7 cancellation after staging rejects final permit
+ASSERT 8 stage existed but canceled operation preserved target bytes
+ASSERT 9 canceled stage cleaned up
+ASSERT 10 conflict injection before permit runs outside Root gate
+ASSERT 11 backing snapshot conflict discarded permit/temp and retried fixed operation
+ASSERT 12 retry preserved competing field and original plugin data key
+ASSERT 13 conflict retry leaves no temp
+ASSERT 14 original sync mutation remains inside short Root gate
+ASSERT 15 origin Job completed normally before delayed write
+ASSERT 16 delayed task retains captured Runtime Context
+ASSERT 17 normal completed origin remains valid for same accepted source
+ASSERT 18 entry retired after deferred await rejects write
+ASSERT 19 retired deferred source writes no key/stage
+ASSERT 20 original probe Range request retained
+ASSERT 21 original CDN probe uses required captured memory Call.Factory once; no client/socket
+ASSERT 22 original CDN health config persisted on same Store
+ASSERT 23 original CDN record event AppScope launch returned through captured Runtime mutex and same Store
+ASSERT 24 original deferred CDN event finished without private temp leak
+ASSERT 25 three-argument ABI cannot silently fall back for captured probe
+ASSERT 26 caller cancellation immediately canceled original blocking Call
+ASSERT 27 canceled probe did not persist health/fallback or leak stage

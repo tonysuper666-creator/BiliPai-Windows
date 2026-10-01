@@ -1,0 +1,37 @@
+ASSERT 1 only explicit fixture provider enabled; Sponsor/CDN initialization disabled
+ASSERT 2 original suspending history callback outside Root gate
+ASSERT 3 original Sponsor append/read schema persisted through captured final permit
+ASSERT 4 accepted history commit leaves no stage
+ASSERT 5 retired memory native-completion ticket rejects append
+ASSERT 6 retired ticket did not add history
+ASSERT 7 cancellation after staging rejects final permit
+ASSERT 8 stage existed but canceled operation preserved target bytes
+ASSERT 9 canceled stage cleaned up
+ASSERT 10 conflict injection before permit runs outside Root gate
+ASSERT 11 backing snapshot conflict discarded permit/temp and retried fixed operation
+ASSERT 12 retry preserved competing field and original plugin data key
+ASSERT 13 conflict retry leaves no temp
+ASSERT 14 original sync mutation remains inside short Root gate
+ASSERT 15 origin Job completed normally before delayed write
+ASSERT 16 delayed task retains captured Runtime Context
+ASSERT 17 normal completed origin remains valid for same accepted source
+ASSERT 18 entry retired after deferred await rejects write
+ASSERT 19 retired deferred source writes no key/stage
+Plugin CdnRegionPlugin warning
+java.lang.IllegalStateException: original CDN probe uses required captured memory Call.Factory once; no client/socket
+	at fixture.finalwrite.FinalWriteFixtureKt.prove(FinalWriteFixture.kt:20)
+	at fixture.finalwrite.FinalWriteFixtureKt.access$prove(FinalWriteFixture.kt:1)
+	at fixture.finalwrite.FinalWriteFixtureKt$main$1.invokeSuspend(FinalWriteFixture.kt:166)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:266)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at fixture.finalwrite.FinalWriteFixtureKt.main(FinalWriteFixture.kt:78)
+	at fixture.finalwrite.FinalWriteFixtureKt.main(FinalWriteFixture.kt)

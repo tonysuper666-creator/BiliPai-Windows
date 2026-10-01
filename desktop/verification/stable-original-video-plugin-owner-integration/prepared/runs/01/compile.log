@@ -1,0 +1,7 @@
+desktop\.local\stable-player-plugin-final-write-parity\runs\01\FinalWriteFixture.kt:50:52: error: class '<anonymous>' is not abstract and does not implement abstract members:
+fun <T : Any> tag(type: KClass<T>): T?
+fun <T> tag(type: Class<out T>): T?
+fun <T : Any> tag(type: KClass<T>, computeIfAbsent: () -> T): T
+fun <T : Any> tag(type: Class<T>, computeIfAbsent: () -> T): T
+    override fun newCall(request: Request): Call = object : Call {
+                                                   ^^^^^^

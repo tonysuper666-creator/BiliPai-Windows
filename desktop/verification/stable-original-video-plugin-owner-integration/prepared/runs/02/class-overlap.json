@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "fixtureClasses": [
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$2.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$3$1.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$4$1.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$5.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$6$1.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$6$job$1.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$7.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$8$1.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$9.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$canceledOp$3.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$capture$1.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$capture$2.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$capture$3.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$conflictOp$3.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$original$1$1$1.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$original$1.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$pending$1$1.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1$pending$1.class",
+    "fixture/finalwrite/FinalWriteFixtureKt$main$1.class",
+    "fixture/finalwrite/FinalWriteFixtureKt.class",
+    "fixture/finalwrite/FixturePlugin.class",
+    "fixture/finalwrite/Lease.class",
+    "fixture/finalwrite/MemoryCalls$newCall$1.class",
+    "fixture/finalwrite/MemoryCalls.class"
+  ],
+  "actualRuntimeEntries": 101,
+  "prospectiveOverrideJarSHA256Bytes": "622007e1a27d849ddc85ac8e4cc4ab60f157bc0b342be4975ee882ee3a708443",
+  "productionClassIntersection": [],
+  "productionOverrides": 4
+}

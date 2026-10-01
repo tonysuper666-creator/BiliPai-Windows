@@ -1,0 +1,17 @@
+{
+  "frozen": true,
+  "artifacts": [
+    {
+      "path": "review.json",
+      "sha256Bytes": "b1845d882d10c440e1d6c17381cb6dba8103114df96f120ae336ec6c4d27489f",
+      "bytes": 5849
+    },
+    {
+      "path": "runtime-replay-contract.json",
+      "sha256Bytes": "c8256904c681681b0702c71e9e64c7ae42e42785832478fc60c5360f32a35353",
+      "bytes": 724
+    }
+  ],
+  "rawRows": 2,
+  "scope": "source-only; one remaining community transport boundary explicitly recorded"
+}

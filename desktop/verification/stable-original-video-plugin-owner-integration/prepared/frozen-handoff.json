@@ -1,0 +1,927 @@
+{
+  "frozen": true,
+  "scope": "source-only final-write captured plugin candidate; no actual product/fullRoot/native completion acceptance",
+  "baseActual69ManifestSHA256Bytes": "4524b0c8b5e4e97bb88223a6a6f71c126bc17586111d50a10fb49f186a3d695d",
+  "actualRuntimeEntries": 101,
+  "prospectiveExistingFamilyOverrides": 4,
+  "sourceInputs": 5,
+  "compilePassed": true,
+  "focusedAssertions": 27,
+  "sourceAuditChecks": 27,
+  "httpAccountsNativeGui": false,
+  "rawRows": 120,
+  "artifacts": [
+    {
+      "path": "DesktopPlayerPluginWriteAdmission.kt",
+      "sha256Bytes": "307eea214e4b8efc7d67db6b853861ace3a35697c6b2ea7bc5463fa202731162",
+      "bytes": 5083
+    },
+    {
+      "path": "FinalWriteFixture.kt",
+      "sha256Bytes": "a223857db311b5a4e14d872a70a754766cf7efce5f36acf8e30762ac09dbfba0",
+      "bytes": 15592
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "eaaf9d7d7db425f4b19434477930d025a86e38fe62af6e991ba067f51cb9f147",
+      "bytes": 5758
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+      "sha256Bytes": "dbdf2c9f39d9bd17b532e4995c519f4ab95e5ffa8c9b56a6cf92baafc0d90d67",
+      "bytes": 22326
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt",
+      "sha256Bytes": "928fd2f8eefcfd9ad9863614f256a952b5ea46d6ff175d4ea8ae65f46eb32aba",
+      "bytes": 12324
+    },
+    {
+      "path": "audit.py",
+      "sha256Bytes": "5ec031fdc16e5dcb6f7bceb38fcf532198dafd5a82aa78068c3a10f8c98df3ab",
+      "bytes": 6683
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "39eb118b090cb83b2a8dc5e3e592f598c29350c59974c9e7c21b23ec9b3384ca",
+      "bytes": 30038
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "72f2ce5d5197cc1b4342db39d569f67f6f5967064703ce09db101510e3b95f5c",
+      "bytes": 12578
+    },
+    {
+      "path": "baseline/desktop/tools/extract-upstream-plugins.py",
+      "sha256Bytes": "f80863ef7eadb13be51e6b2c4cb744475666b0799a4d7df613f7ade4d8276fbc",
+      "bytes": 33593
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "bb1307c509399eae799659268230b49b31232ba19541f1b75ec2263c0a66ee2a",
+      "bytes": 3774
+    },
+    {
+      "path": "compile/01/compile.args",
+      "sha256Bytes": "6246d2e493af1104b0cd8f6068eee7880a72ef107487af954caba76f0a8136b8",
+      "bytes": 26597
+    },
+    {
+      "path": "compile/01/compile.log",
+      "sha256Bytes": "45fe477031c545726bdda77fb74f0b6aa129f379d434004dd7e1890ab8728688",
+      "bytes": 1366
+    },
+    {
+      "path": "compile/01/inputs/CdnRegionPlugin.kt",
+      "sha256Bytes": "e266084a330b097746d6a874ca8765e49ec2d7cbce600b7170bda5fd2c6d1ddf",
+      "bytes": 23015
+    },
+    {
+      "path": "compile/01/inputs/DesktopPlayerPluginWriteAdmission.kt",
+      "sha256Bytes": "3c32ff9c5010ac543ac41abe768104f565e04b4ce82a26e7c81a9c48b7c9b403",
+      "bytes": 4944
+    },
+    {
+      "path": "compile/01/inputs/DesktopPluginRuntime.kt",
+      "sha256Bytes": "34e300311854c65aaf4b3afda26e0b7e11aef2754c0c7746f5a02f002dda7da4",
+      "bytes": 32085
+    },
+    {
+      "path": "compile/01/inputs/DesktopPluginStore.kt",
+      "sha256Bytes": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "bytes": 16233
+    },
+    {
+      "path": "compile/01/inputs/SponsorBlockInsightPolicy.kt",
+      "sha256Bytes": "fe75d81bb5665bbaa502b340d2880de20b4822134059a96ef6955951ed09d71a",
+      "bytes": 12424
+    },
+    {
+      "path": "compile/01/pins-after.json",
+      "sha256Bytes": "8829da278d6df982169bff393cb211d104ec68ded209ac727a35c8c54ad496c2",
+      "bytes": 44725
+    },
+    {
+      "path": "compile/01/pins-before.json",
+      "sha256Bytes": "8829da278d6df982169bff393cb211d104ec68ded209ac727a35c8c54ad496c2",
+      "bytes": 44725
+    },
+    {
+      "path": "compile/01/result.json",
+      "sha256Bytes": "12e3a88585f9ee68591d01439e4230d403d38a54d213951e47d05cb2c7703118",
+      "bytes": 350
+    },
+    {
+      "path": "compile/02/compile.args",
+      "sha256Bytes": "eeebc8dc9c442a531d09196cba7a2c90e7779ec0c0f23049cf0a64a8450def82",
+      "bytes": 26911
+    },
+    {
+      "path": "compile/02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile/02/inputs/CdnRegionPlugin.kt",
+      "sha256Bytes": "e266084a330b097746d6a874ca8765e49ec2d7cbce600b7170bda5fd2c6d1ddf",
+      "bytes": 23015
+    },
+    {
+      "path": "compile/02/inputs/DesktopPlayerPluginWriteAdmission.kt",
+      "sha256Bytes": "3c32ff9c5010ac543ac41abe768104f565e04b4ce82a26e7c81a9c48b7c9b403",
+      "bytes": 4944
+    },
+    {
+      "path": "compile/02/inputs/DesktopPluginRuntime.kt",
+      "sha256Bytes": "34e300311854c65aaf4b3afda26e0b7e11aef2754c0c7746f5a02f002dda7da4",
+      "bytes": 32085
+    },
+    {
+      "path": "compile/02/inputs/DesktopPluginStore.kt",
+      "sha256Bytes": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "bytes": 16233
+    },
+    {
+      "path": "compile/02/inputs/SponsorBlockInsightPolicy.kt",
+      "sha256Bytes": "fe75d81bb5665bbaa502b340d2880de20b4822134059a96ef6955951ed09d71a",
+      "bytes": 12424
+    },
+    {
+      "path": "compile/02/pins-after.json",
+      "sha256Bytes": "43e8471539750795a14b51db632d8f4fc713c3552ab6e8e761de9456cac29642",
+      "bytes": 45163
+    },
+    {
+      "path": "compile/02/pins-before.json",
+      "sha256Bytes": "43e8471539750795a14b51db632d8f4fc713c3552ab6e8e761de9456cac29642",
+      "bytes": 45163
+    },
+    {
+      "path": "compile/02/result.json",
+      "sha256Bytes": "08fe44704f550622eb297d08476fa3dea48f46ce395153c42a01b3e06664c1f3",
+      "bytes": 9119
+    },
+    {
+      "path": "compile/03/compile.args",
+      "sha256Bytes": "5c1b7f0b22664f620d313a75a8bda713f05645ea5c19c45246315d1ece579bea",
+      "bytes": 26911
+    },
+    {
+      "path": "compile/03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile/03/inputs/CdnRegionPlugin.kt",
+      "sha256Bytes": "e266084a330b097746d6a874ca8765e49ec2d7cbce600b7170bda5fd2c6d1ddf",
+      "bytes": 23015
+    },
+    {
+      "path": "compile/03/inputs/DesktopPlayerPluginWriteAdmission.kt",
+      "sha256Bytes": "f70be2b3443afedacf0495f6af7ec1a2a2e4c7b07b199f23c6790b27edaf0772",
+      "bytes": 4966
+    },
+    {
+      "path": "compile/03/inputs/DesktopPluginRuntime.kt",
+      "sha256Bytes": "34e300311854c65aaf4b3afda26e0b7e11aef2754c0c7746f5a02f002dda7da4",
+      "bytes": 32085
+    },
+    {
+      "path": "compile/03/inputs/DesktopPluginStore.kt",
+      "sha256Bytes": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "bytes": 16233
+    },
+    {
+      "path": "compile/03/inputs/SponsorBlockInsightPolicy.kt",
+      "sha256Bytes": "fe75d81bb5665bbaa502b340d2880de20b4822134059a96ef6955951ed09d71a",
+      "bytes": 12424
+    },
+    {
+      "path": "compile/03/pins-after.json",
+      "sha256Bytes": "6c8f4c0fd2ec8cc810f1a7c04a9edb72f67cf6581a80a113852b303509db5bf8",
+      "bytes": 45163
+    },
+    {
+      "path": "compile/03/pins-before.json",
+      "sha256Bytes": "6c8f4c0fd2ec8cc810f1a7c04a9edb72f67cf6581a80a113852b303509db5bf8",
+      "bytes": 45163
+    },
+    {
+      "path": "compile/03/result.json",
+      "sha256Bytes": "9cf2aacb1f855898dd33721c4aa2ae8164d658fa2ce4ab5b5a16d5d65cd6ca9b",
+      "bytes": 9119
+    },
+    {
+      "path": "compile/04/compile.args",
+      "sha256Bytes": "43438893557605c813f097b42428327c2105f5378a4df49f08feb12cea9b3c7e",
+      "bytes": 26911
+    },
+    {
+      "path": "compile/04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile/04/inputs/CdnRegionPlugin.kt",
+      "sha256Bytes": "e6696ed79b6b7f34f134c2a6beba0726200c7399a21aa194be258931b6c7371d",
+      "bytes": 23018
+    },
+    {
+      "path": "compile/04/inputs/DesktopPlayerPluginWriteAdmission.kt",
+      "sha256Bytes": "307eea214e4b8efc7d67db6b853861ace3a35697c6b2ea7bc5463fa202731162",
+      "bytes": 5083
+    },
+    {
+      "path": "compile/04/inputs/DesktopPluginRuntime.kt",
+      "sha256Bytes": "34e300311854c65aaf4b3afda26e0b7e11aef2754c0c7746f5a02f002dda7da4",
+      "bytes": 32085
+    },
+    {
+      "path": "compile/04/inputs/DesktopPluginStore.kt",
+      "sha256Bytes": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "bytes": 16233
+    },
+    {
+      "path": "compile/04/inputs/SponsorBlockInsightPolicy.kt",
+      "sha256Bytes": "fe75d81bb5665bbaa502b340d2880de20b4822134059a96ef6955951ed09d71a",
+      "bytes": 12424
+    },
+    {
+      "path": "compile/04/pins-after.json",
+      "sha256Bytes": "784f541fb22fc03dc3c67397902500ebc03713fe5a394691d6a950f036c9c196",
+      "bytes": 45163
+    },
+    {
+      "path": "compile/04/pins-before.json",
+      "sha256Bytes": "784f541fb22fc03dc3c67397902500ebc03713fe5a394691d6a950f036c9c196",
+      "bytes": 45163
+    },
+    {
+      "path": "compile/04/result.json",
+      "sha256Bytes": "33c9cb403db12366b0b46a53527c233d3950c6417493b906c804bb8194ada595",
+      "bytes": 9119
+    },
+    {
+      "path": "exact-hunks.json",
+      "sha256Bytes": "d2c598459a6d0ea3797e92f38a3c5f3771052966b358f6f817f81c60cbe0ca60",
+      "bytes": 17935
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "57565de6d80a5da1b158469dd5b436cf6f471ee75ec4ccb649c0b0666015ff8a",
+      "bytes": 3047
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+      "sha256Bytes": "e6696ed79b6b7f34f134c2a6beba0726200c7399a21aa194be258931b6c7371d",
+      "bytes": 23018
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt",
+      "sha256Bytes": "fe75d81bb5665bbaa502b340d2880de20b4822134059a96ef6955951ed09d71a",
+      "bytes": 12424
+    },
+    {
+      "path": "install-exact-hunks.json",
+      "sha256Bytes": "f4e4780f5eabf9c38989f38bf40fd7ffb50c79b56cf1ae19c25ab80d154fc0ad",
+      "bytes": 18578
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "101d21c373665d0a408e563410478952bdf565bf00f849e688a121b565d0037f",
+      "bytes": 604
+    },
+    {
+      "path": "local.patch",
+      "sha256Bytes": "12c74cc960a08d4d6203df062f5fdd0e7ec04dc6d36fe9d6624a0bcbe8a734f0",
+      "bytes": 13969
+    },
+    {
+      "path": "original-source-inventory.json",
+      "sha256Bytes": "2a665789613d7837e5f4f7bf62109a8b39f2890c39bd61d7854b8cefb82873cf",
+      "bytes": 541
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+      "sha256Bytes": "d0e1c74436524d943c6b044ea984ad5564b6f3b4ee1b686883ead67a095094b9",
+      "bytes": 38900
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt",
+      "sha256Bytes": "981179d2b0828afc35df97bedb6b7d6c8283f7c7f9a1762415f40eb2b55fd113",
+      "bytes": 11725
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "86f79c1ce4788dd1e1806ee13ebe5f9257664a780fdb960ab468195a6fbba2b4",
+      "bytes": 15230
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.kt",
+      "sha256Bytes": "307eea214e4b8efc7d67db6b853861ace3a35697c6b2ea7bc5463fa202731162",
+      "bytes": 5083
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "34e300311854c65aaf4b3afda26e0b7e11aef2754c0c7746f5a02f002dda7da4",
+      "bytes": 32085
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "bytes": 16233
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-plugins.py",
+      "sha256Bytes": "d7f369cead1c538a2e4fe6f785ee321c0f804b51141fdf5b6f38c5b2a60aacb9",
+      "bytes": 35860
+    },
+    {
+      "path": "run.py",
+      "sha256Bytes": "78ddda5879fb7b2f0f4c81cbb427324ad9fa670f3f941cff5a8f81cbd4d05a49",
+      "bytes": 5925
+    },
+    {
+      "path": "runs/01/FinalWriteFixture.kt",
+      "sha256Bytes": "c81e776e3713c71b4961e1aa35785d08eedb67aeb6fbcfce5f987fbba4411350",
+      "bytes": 14272
+    },
+    {
+      "path": "runs/01/compile-result.json",
+      "sha256Bytes": "b2de0a3a8165e93630f27a4c71f3ae948972a18f9dde858376fff02f383e9308",
+      "bytes": 98
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "3a82ceaf46dcd8889145b3bd92cf4401b9bd3aa197bf006aa0a2e04f9a1825ea",
+      "bytes": 26144
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "d9b3dafb86473a74e8ae2b28d47d7a6085eeadb8c097843ddd517a4ae68d6f3b",
+      "bytes": 505
+    },
+    {
+      "path": "runs/01/pins-after.json",
+      "sha256Bytes": "4f5c07b0f921f6252aa9833e6dd09b3fbdcb60e2faafbbbc0cecb344887107fa",
+      "bytes": 43501
+    },
+    {
+      "path": "runs/01/pins-before.json",
+      "sha256Bytes": "4f5c07b0f921f6252aa9833e6dd09b3fbdcb60e2faafbbbc0cecb344887107fa",
+      "bytes": 43501
+    },
+    {
+      "path": "runs/02/FinalWriteFixture.kt",
+      "sha256Bytes": "0122c4de5215634009571c1cd7dea3cacbd61eb104356d980b1bc37e7c0848c7",
+      "bytes": 14919
+    },
+    {
+      "path": "runs/02/actual-code-origins.json",
+      "sha256Bytes": "f34cc5dea4995d4b3b1ecf4fc91f8ca74a7042ec7a63582ccfc843f612d4b567",
+      "bytes": 2821
+    },
+    {
+      "path": "runs/02/class-overlap.json",
+      "sha256Bytes": "33399fa28603da4ac12ad34d83d141f83832cb0638c558742f2fc6283e9a2631",
+      "bytes": 1741
+    },
+    {
+      "path": "runs/02/compile-result.json",
+      "sha256Bytes": "4783b6eb892a3b08916810c7c6a3d734981680d29483594192197d47a8715202",
+      "bytes": 97
+    },
+    {
+      "path": "runs/02/compile.args",
+      "sha256Bytes": "141a00f6f52963b81cfb080ae74a4d2402a9c2b0dbd94f87755984e60a1725b3",
+      "bytes": 26144
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "7e1891a31ef3ac7aed96d1aff4c81ea354ba22b04334ece1714a9000e953c4f7",
+      "bytes": 796
+    },
+    {
+      "path": "runs/02/pins-after.json",
+      "sha256Bytes": "088fb00c50e53dc3384f36dccba5a4a023f6c574de08fe80e473ebd26e2489bd",
+      "bytes": 43501
+    },
+    {
+      "path": "runs/02/pins-before.json",
+      "sha256Bytes": "088fb00c50e53dc3384f36dccba5a4a023f6c574de08fe80e473ebd26e2489bd",
+      "bytes": 43501
+    },
+    {
+      "path": "runs/02/result.json",
+      "sha256Bytes": "edd17a8534d415b2ae82156b81f03bca07b6ae5e974b0bddc2764d538d397f95",
+      "bytes": 3390
+    },
+    {
+      "path": "runs/02/run-command.json",
+      "sha256Bytes": "172f70ff1f364925f13270c7a2f8296c4ad93a470ad1700e68e0303b02290d88",
+      "bytes": 27601
+    },
+    {
+      "path": "runs/02/run.log",
+      "sha256Bytes": "85a1e3a05942834000e9e87015fef1ac56f5ef4cf615846b7965ce23323fb967",
+      "bytes": 2603
+    },
+    {
+      "path": "runs/02/runtime/result.json",
+      "sha256Bytes": "2d8ea6785b5dcfad5a4b3f1d4eeae42341f3dda54e2ac19eea4abd87bf196640",
+      "bytes": 3406
+    },
+    {
+      "path": "runs/03/FinalWriteFixture.kt",
+      "sha256Bytes": "0122c4de5215634009571c1cd7dea3cacbd61eb104356d980b1bc37e7c0848c7",
+      "bytes": 14919
+    },
+    {
+      "path": "runs/03/actual-code-origins.json",
+      "sha256Bytes": "9b68588d2ed316a5f8b7ce7990c87a9735285a86fa19af56d3d684f715ffe9cc",
+      "bytes": 2821
+    },
+    {
+      "path": "runs/03/class-overlap.json",
+      "sha256Bytes": "afe83cb625b052b8de1ee2093e058375a7f9abc292b1cf59deb97017dcccd3e8",
+      "bytes": 1741
+    },
+    {
+      "path": "runs/03/compile-result.json",
+      "sha256Bytes": "4783b6eb892a3b08916810c7c6a3d734981680d29483594192197d47a8715202",
+      "bytes": 97
+    },
+    {
+      "path": "runs/03/compile.args",
+      "sha256Bytes": "cf49774ed87d6c8819d5a955b7dd327bc74fb584fbe2848d9ea6999de340594c",
+      "bytes": 26144
+    },
+    {
+      "path": "runs/03/compile.log",
+      "sha256Bytes": "05879b2351f9c736abafec21b5579e27e838a3fb9382827cafd18a7c71f37bdc",
+      "bytes": 796
+    },
+    {
+      "path": "runs/03/pins-after.json",
+      "sha256Bytes": "a4725ec61bad9b7894472a510ea5de908073588e15645f53830d2c4014476d2c",
+      "bytes": 43501
+    },
+    {
+      "path": "runs/03/pins-before.json",
+      "sha256Bytes": "a4725ec61bad9b7894472a510ea5de908073588e15645f53830d2c4014476d2c",
+      "bytes": 43501
+    },
+    {
+      "path": "runs/03/result.json",
+      "sha256Bytes": "eac32768d6230d4c300d0725a0bf3bd5fce676567cbdb7eb4e36a78669bf1d38",
+      "bytes": 3274
+    },
+    {
+      "path": "runs/03/run-command.json",
+      "sha256Bytes": "5adffc426382138e4353158ea6c74579e6e2c41f8b96b73c0ffc88d81f92b082",
+      "bytes": 27601
+    },
+    {
+      "path": "runs/03/run.log",
+      "sha256Bytes": "5a3e8d578eb4ef16ed1c6e9c44d6097fa6d56653b2b8b699c42da427935e11fd",
+      "bytes": 1630
+    },
+    {
+      "path": "runs/03/runner.py",
+      "sha256Bytes": "78ddda5879fb7b2f0f4c81cbb427324ad9fa670f3f941cff5a8f81cbd4d05a49",
+      "bytes": 5925
+    },
+    {
+      "path": "runs/03/runtime/result.json",
+      "sha256Bytes": "e590d69e3b2a594d4e0ee97e85cd07078088f24641e85f7e9daead3f5aea296a",
+      "bytes": 3290
+    },
+    {
+      "path": "runs/04/FinalWriteFixture.kt",
+      "sha256Bytes": "a899a63e636c7986ef908ae7bee8df915f45e74ad11390180ec5819ba58193b0",
+      "bytes": 15576
+    },
+    {
+      "path": "runs/04/compile-result.json",
+      "sha256Bytes": "b2de0a3a8165e93630f27a4c71f3ae948972a18f9dde858376fff02f383e9308",
+      "bytes": 98
+    },
+    {
+      "path": "runs/04/compile.args",
+      "sha256Bytes": "106937f53adbcf40363cd7de0386caa97734fc59b4031e53650d50f21e354ee0",
+      "bytes": 26144
+    },
+    {
+      "path": "runs/04/compile.log",
+      "sha256Bytes": "13548ee63d798ac6f741c420c151807185efea855a2cb50ce1a7ca916abc9cc0",
+      "bytes": 864
+    },
+    {
+      "path": "runs/04/pins-after.json",
+      "sha256Bytes": "ae842541353e941916fceb237840ac15b813f7e4e404f5a1240dfede663b01a8",
+      "bytes": 43501
+    },
+    {
+      "path": "runs/04/pins-before.json",
+      "sha256Bytes": "ae842541353e941916fceb237840ac15b813f7e4e404f5a1240dfede663b01a8",
+      "bytes": 43501
+    },
+    {
+      "path": "runs/04/runner.py",
+      "sha256Bytes": "78ddda5879fb7b2f0f4c81cbb427324ad9fa670f3f941cff5a8f81cbd4d05a49",
+      "bytes": 5925
+    },
+    {
+      "path": "runs/05/FinalWriteFixture.kt",
+      "sha256Bytes": "a223857db311b5a4e14d872a70a754766cf7efce5f36acf8e30762ac09dbfba0",
+      "bytes": 15592
+    },
+    {
+      "path": "runs/05/actual-code-origins.json",
+      "sha256Bytes": "9b68588d2ed316a5f8b7ce7990c87a9735285a86fa19af56d3d684f715ffe9cc",
+      "bytes": 2821
+    },
+    {
+      "path": "runs/05/class-overlap.json",
+      "sha256Bytes": "7dba7563080ee9670d195b738fb96e8db56340746df9bfc3d13b6f3dd8d0e2e0",
+      "bytes": 1804
+    },
+    {
+      "path": "runs/05/compile-result.json",
+      "sha256Bytes": "4783b6eb892a3b08916810c7c6a3d734981680d29483594192197d47a8715202",
+      "bytes": 97
+    },
+    {
+      "path": "runs/05/compile.args",
+      "sha256Bytes": "c5447fbaac0937584407889ff35d590bd0776a917e321f23fec702cb6c902567",
+      "bytes": 26144
+    },
+    {
+      "path": "runs/05/compile.log",
+      "sha256Bytes": "eddbaa6f4fcf15460357564781f1199e4b6bddb0391ca0e39621a1ad89322dea",
+      "bytes": 796
+    },
+    {
+      "path": "runs/05/pins-after.json",
+      "sha256Bytes": "cbd5110304861f7daccfc0ad69eec812b6a58845a105c8939d85244e5e2cc278",
+      "bytes": 43501
+    },
+    {
+      "path": "runs/05/pins-before.json",
+      "sha256Bytes": "cbd5110304861f7daccfc0ad69eec812b6a58845a105c8939d85244e5e2cc278",
+      "bytes": 43501
+    },
+    {
+      "path": "runs/05/result.json",
+      "sha256Bytes": "366b2fb5c32e7cfe40c7154bc33dd6854c4f26fc4330cbfca3f073b0f1617461",
+      "bytes": 3274
+    },
+    {
+      "path": "runs/05/run-command.json",
+      "sha256Bytes": "9d932fe003df3ba29379e81e6f583d2be6e3cb16ec8dbd295a17f364428422f7",
+      "bytes": 27601
+    },
+    {
+      "path": "runs/05/run.log",
+      "sha256Bytes": "5ebfee7fefce8bf6eb3e264b053d5bd1bfb6a88118582741ed3bfdb7dba92341",
+      "bytes": 1812
+    },
+    {
+      "path": "runs/05/runner.py",
+      "sha256Bytes": "78ddda5879fb7b2f0f4c81cbb427324ad9fa670f3f941cff5a8f81cbd4d05a49",
+      "bytes": 5925
+    },
+    {
+      "path": "runs/05/runtime/result.json",
+      "sha256Bytes": "ebe56bcd10c4b27184f07ff3c27bc9a8c43c80562ad58ed9a743ec920f4e8be5",
+      "bytes": 3290
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "87acd79bc41478f21cdbfeb602fe1fcc64a42d5d8ab1f4d2b54fbe81ec5e685c",
+      "bytes": 7543
+    },
+    {
+      "path": "source-checks.json",
+      "sha256Bytes": "5745ef47ede17088ce672b44c6a1421a382dcdc0eda6a4a2fca921b7b8811c27",
+      "bytes": 278
+    },
+    {
+      "path": "worker-resource-identity.json",
+      "sha256Bytes": "130646a5e7cccd22072a5924b76228f5db4f3ce3e09ec0234b43166e341cefed",
+      "bytes": 50359
+    }
+  ],
+  "excluded": [
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/plugin/CastPluginApi.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/plugin/PluginManager.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/plugin/PluginStore.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/plugin/feed/FeedTitleResolver.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/plugin/json/JsonPluginManager.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/plugin/json/JsonPluginStatsNotificationPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/plugin/json/RuleEngine.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/core/store/TodayWatchProfileStore.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/anime4k/Anime4KOutputPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/anime4k/gl/DesktopAnime4KShaderList.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/home/DesktopTodayWatchModels.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/home/DesktopTodayWatchPlanConversion.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/plugin/DanmakuEnhancePlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/plugin/EyeProtectionPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/video/danmaku/DesktopPluginDanmakuPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/android/purebilibili/feature/video/ui/components/Anime4KSettingsUi.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/bilipai/desktop/player/DesktopFsrShaderLicense.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/bilipai/desktop/player/platform/DesktopMedia3ColorTransfers.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/bilipai/desktop/plugins/DesktopPluginAssetHashes.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "audit-baseline-generated/com/bilipai/desktop/ui/DesktopVideoEnhancementSettingsContent.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "compile/02/candidate.jar",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "compile/03/candidate.jar",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "compile/04/candidate.jar",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/CastPluginApi.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/PluginManager.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/PluginStore.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/feed/FeedTitleResolver.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/json/JsonPluginManager.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/json/JsonPluginStatsNotificationPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/json/RuleEngine.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/TodayWatchProfileStore.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/anime4k/Anime4KOutputPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/anime4k/gl/DesktopAnime4KShaderList.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/DesktopTodayWatchModels.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/DesktopTodayWatchPlanConversion.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/DanmakuEnhancePlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/EyeProtectionPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/danmaku/DesktopPluginDanmakuPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/components/Anime4KSettingsUi.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/player/DesktopFsrShaderLicense.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/player/platform/DesktopMedia3ColorTransfers.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/plugins/DesktopPluginAssetHashes.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/ui/DesktopVideoEnhancementSettingsContent.kt",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "runs/02/fixture.jar",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "runs/02/runtime/private-store/plugin-settings.json",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "runs/03/fixture.jar",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "runs/03/runtime/private-store/plugin-settings.json",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "runs/05/fixture.jar",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    },
+    {
+      "path": "runs/05/runtime/private-store/plugin-settings.json",
+      "reason": "binary/private fixture Store/unchanged sole producer output not installed"
+    }
+  ],
+  "install": {
+    "newManual": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.kt",
+    "exactHunks": "install-exact-hunks.json",
+    "replaceWholeFiles": false,
+    "regenerateWithExistingSoleProducer": "desktop/tools/extract-upstream-plugins.py",
+    "existingOriginalIdentityFeatureMerge": [
+      "app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+      "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt"
+    ],
+    "originalPluginStoreIdentityUnchanged": true,
+    "rootIndependentNewRuntimeMemberPreserved": true
+  },
+  "limitations": [
+    "real native completed-seek ticket supplied by Root, fixture memory only",
+    "Root typed plugin/source ownership integration not executed",
+    "accepted final permit is in-flight and cannot be revoked before rename",
+    "existing CDN IP/global initialization and legacy callbacks retain original behavior"
+  ]
+}

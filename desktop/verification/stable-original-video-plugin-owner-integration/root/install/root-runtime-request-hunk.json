@@ -1,0 +1,15 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+  "baseSha256LF": "39eb118b090cb83b2a8dc5e3e592f598c29350c59974c9e7c21b23ec9b3384ca",
+  "candidateSha256LF": "11bd224bbe3209ea752b7bc44c0cebbf05f8b36494ab4e071d0e7be5ef6038fc",
+  "hunks": [
+    {
+      "before": "    /** Cleanup cannot depend on the canceled VM scope or current native entry.\n",
+      "after": "    /** A NEW immutable playback request has no accepted native source yet.\n     * Waiting uses this Runtime's existing playerMutex; original pure candidate\n     * rewriting/diagnostics run in the supplied captured request admission.\n     * Caller captures its request and provider before waiting, never latest state.\n     */\n    internal suspend fun <T> mutateCapturedPlaybackPluginRequest(plugin: Plugin,\n        stillOwned: () -> Boolean, admission: ((() -> Unit) -> Boolean), action: () -> T): T = playerMutex.withLock {\n        val caller = currentCoroutineContext()\n        fun checkRequest() {\n            caller.ensureActive()\n            if (closing.get() || !stillOwned() || plugins.value.none { it.plugin === plugin && it.enabled })\n                throw CancellationException(\"Captured playback plugin request retired\")\n        }\n        checkRequest()\n        var result: Result<T>? = null\n        if (!admission { checkRequest(); result = runCatching(action) })\n            throw CancellationException(\"Playback plugin request admission rejected\")\n        checkRequest()\n        (result ?: throw CancellationException(\"Playback request admission did not execute\")).getOrThrow()\n    }\n\n    /** Cleanup cannot depend on the canceled VM scope or current native entry.\n"
+    }
+  ],
+  "wholeReferenceNotInstaller": true,
+  "newPlayerMutex": false,
+  "newScopeOrAuthority": false,
+  "onlyPureSyncRequestActions": true
+}

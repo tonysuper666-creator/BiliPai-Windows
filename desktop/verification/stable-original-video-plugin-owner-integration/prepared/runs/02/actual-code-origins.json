@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "productionOverrides": 4,
+  "loaded": [
+    {
+      "class": "com.bilipai.desktop.plugins.DesktopPluginRuntime",
+      "entry": "com/bilipai/desktop/plugins/DesktopPluginRuntime.class",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-player-plugin-final-write-parity\\compile\\03\\candidate.jar",
+      "classSHA256Bytes": "f62fcb458b23d0f38e8dc59461f7ff41f742fd08c30b33ae4f132ab494ac2cc2"
+    },
+    {
+      "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+      "entry": "com/bilipai/desktop/plugins/DesktopPluginStore.class",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-player-plugin-final-write-parity\\compile\\03\\candidate.jar",
+      "classSHA256Bytes": "8493bb2af4e020dea4ebce70a7ce70f3c17a1698605b781c81028d00b5c78569"
+    },
+    {
+      "class": "com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission",
+      "entry": "com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.class",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-player-plugin-final-write-parity\\compile\\03\\candidate.jar",
+      "classSHA256Bytes": "fc6a214efe0632f978aeaf41576f6f0505cd92262023f14eb532ff441e612a6c"
+    },
+    {
+      "class": "com.android.purebilibili.feature.plugin.CdnRegionPlugin",
+      "entry": "com/android/purebilibili/feature/plugin/CdnRegionPlugin.class",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-player-plugin-final-write-parity\\compile\\03\\candidate.jar",
+      "classSHA256Bytes": "e264da0ebb465e18625eeb0c44093abe12954c252a1db4bbdcd65b87c9a28cac"
+    },
+    {
+      "class": "com.android.purebilibili.feature.plugin.SponsorBlockInsightStore",
+      "entry": "com/android/purebilibili/feature/plugin/SponsorBlockInsightStore.class",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-player-plugin-final-write-parity\\compile\\03\\candidate.jar",
+      "classSHA256Bytes": "5c2d5f3fc11a19505523e84f5f5030438c3e6f22d1fe27b13c8425be51645184"
+    },
+    {
+      "class": "com.android.purebilibili.core.plugin.PluginManager",
+      "entry": "com/android/purebilibili/core/plugin/PluginManager.class",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-69\\main-kotlin.jar",
+      "classSHA256Bytes": "14a56fe449010762fa28a95f4ad191129bf5f51fe6235d3fe6801e6e8cd5fb2f"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "scope": "independent read-only prepared Root PluginBridge vs frozen final-write120; no compilation/runtime/network/native/UI",
+  "passedWithinLocalWriteAndCdnScope": true,
+  "checks": [
+    {
+      "passed": true,
+      "evidence": "Actual enabled provider list is the Runtime plugins instances, including DesktopPlaybackCdnPlugin wrapper; capture freezes actual object identity"
+    },
+    {
+      "passed": true,
+      "evidence": "newRequestMutation captures exact invocation repository and required admission before playerMutex await; current compares identity and original Invocation asserts same continuation"
+    },
+    {
+      "passed": true,
+      "evidence": "CDN probe captures dispatch and required accepted Call.Factory once before Runtime await; calls four-argument overload"
+    },
+    {
+      "passed": true,
+      "evidence": "Sponsor history checks bvid/cid/version/positive operation ID, waits existing native StateFlow at most15s, then exact completedSeekPositionMs ticket remains in additionalCurrent to final permit"
+    },
+    {
+      "passed": true,
+      "evidence": "Original Runtime three-argument ABI retained; requesthelper pure action cannot suspend; no extra mutex/Scope/Store/client"
+    },
+    {
+      "passed": true,
+      "evidence": "Final-write saveCdnConfiguration takes configurationMutex then same playerMutex, matching existing Sponsor lifecycle order"
+    },
+    {
+      "passed": true,
+      "evidence": "Captured context tests origin.isCancelled rather than requiring completed Job.isActive; deferred child still checks own actual Job"
+    },
+    {
+      "passed": true,
+      "evidence": "Root unique request helper and final-write Runtime hunks commute exactly; existing retirement tail unchanged"
+    }
+  ],
+  "findings": [
+    {
+      "id": "community-transport-boundary",
+      "severity": "remaining-owner-transport-boundary",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-plugin-owner-bridge-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerPluginBridge.kt",
+      "line": 145,
+      "trigger": "appendRecord suspends for filesystem IO; source or exact seek ticket can retire before optional consented upload starts",
+      "evidence": "runPlaybackPluginCallback only postchecks after action. SponsorBlockRepository.postJson uses original public client newCall/execute without captured final permit or current Job cancellation.",
+      "minimum": "Recheck the fixed exact dispatch/ticket after append before optional upload. For transport closure, bind original public Call execution to captured source final admission plus caller cancellation; keep original public transport, do not route community requests through Bilibili playback factory.",
+      "otherPaths": "vote/submit use the same original public postJson transport; do not claim them newly transport-owned by this packet"
+    }
+  ],
+  "inputPins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-plugin-owner-bridge-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerPluginBridge.kt",
+      "sha256LF": "68ec2f0881a0e38fc8c62e543b475910c71c8a7a43e2aed12c897901f61a335d",
+      "bytesLF": 11508
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-plugin-owner-bridge-parity\\runtime-request-hunk.json",
+      "sha256LF": "3dc4c18b9d027099c7c3a7f15864170303ece7261d8ae44e04d12449c58afef2",
+      "bytesLF": 1860
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-player-plugin-final-write-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\plugins\\DesktopPlayerPluginWriteAdmission.kt",
+      "sha256LF": "307eea214e4b8efc7d67db6b853861ace3a35697c6b2ea7bc5463fa202731162",
+      "bytesLF": 5083
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-player-plugin-final-write-parity\\install-exact-hunks.json",
+      "sha256LF": "f4e4780f5eabf9c38989f38bf40fd7ffb50c79b56cf1ae19c25ab80d154fc0ad",
+      "bytesLF": 18578
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNativeOwner.kt",
+      "sha256LF": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a",
+      "bytesLF": 21900
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoPlaybackInvocation.kt",
+      "sha256LF": "3f6ce4b3b48441a05d7021a4d1228a64b3d0dbeef92aed4dfd0cce04693accea",
+      "bytesLF": 9342
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\plugins\\com\\android\\purebilibili\\data\\repository\\SponsorBlockRepository.kt",
+      "sha256LF": "03cd9020f7c9516281e9da519a70e149f4a041288e81f95fb8c4c5ea58f36ae7",
+      "bytesLF": 13016
+    }
+  ],
+  "replayContract": "runtime-replay-contract.json",
+  "rootRequiredPorts": [
+    "currentRuntimeGeneration(expected) reads real inherited/loaded Runtime token",
+    "captureCurrentRequestAdmission captures the exact invocation repository/Job before await",
+    "acceptedPlaybackCalls(expected) supplies same Repository/receipt/accepted lease transport before await"
+  ],
+  "noCandidateOrFrozenPayloadChanges": true
+}

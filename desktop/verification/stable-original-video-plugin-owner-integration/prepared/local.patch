@@ -1,0 +1,194 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt
+@@ -196,12 +196,14 @@
+     }
+ 
+     internal suspend fun saveCdnConfiguration(config: CdnRegionPluginCache) = configurationChange {
++        playerMutex.withLock {
+         validateCdnCustomRules(config.customRules).firstOrNull { it.error != null }?.let { error(it.error!!) }
+         // Adaptive prefetch needs a cache served to mpv; its settings are introduced with that adapter.
+         CdnRegionPluginStore.write(context, config.copy(prefetchEnabled = false))
+         if (plugins.value.any { it.plugin.id == CDN_REGION_PLUGIN_ID && it.enabled }) {
+             PluginManager.setEnabled(CDN_REGION_PLUGIN_ID, false)
+             PluginManager.setEnabled(CDN_REGION_PLUGIN_ID, true)
++        }
+         }
+     }
+ 
+@@ -305,30 +307,57 @@
+ 
+     /** Wait for the SAME playerMutex outside Store/entry/native gates. Synchronous
+      * provider mutations then use Root's short captured-source atomic admission. */
++    private suspend fun playbackPluginWriteOperation(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
++        allowDisabledSponsor: Boolean, playbackCalls: okhttp3.Call.Factory?): DesktopPlayerPluginWriteAdmission.Operation {
++        val origin = currentCoroutineContext()[Job] ?: error("Playback plugin requires a caller Job")
++        return DesktopPlayerPluginWriteAdmission.Operation(context, origin, playbackCalls,
++            checkCaptured = { requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor) },
++            admission = dispatch.admission,
++            serializedDeferred = { captured, block ->
++                playerMutex.withLock {
++                    currentCoroutineContext().ensureActive(); captured.check()
++                    if (!dispatch.admission { captured.check() })
++                        throw CancellationException("Deferred playback plugin admission retired")
++                    DesktopPlayerPluginWriteAdmission.withCaptured(captured, block)
++                    currentCoroutineContext().ensureActive(); captured.check()
++                }
++            })
++    }
++
+     internal suspend fun <T> mutatePlaybackPlugin(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
+         allowDisabledSponsor: Boolean, action: () -> T): T = playerMutex.withLock {
+         currentCoroutineContext().ensureActive()
+         requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor)
+-        var result: Result<T>? = null
+-        if (!dispatch.admission {
++        val captured = playbackPluginWriteOperation(dispatch, plugin, allowDisabledSponsor, null)
++        DesktopPlayerPluginWriteAdmission.withCaptured(captured) {
++            var result: Result<T>? = null
++            if (!dispatch.admission {
++                requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor)
++                result = runCatching { DesktopPlayerPluginWriteAdmission.inSynchronousAdmission(captured, action) }
++            }) throw CancellationException("Playback plugin mutation admission retired")
++            currentCoroutineContext().ensureActive()
+             requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor)
+-            result = runCatching(action)
+-        }) throw CancellationException("Playback plugin mutation admission retired")
+-        currentCoroutineContext().ensureActive()
+-        requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor)
+-        (result ?: throw CancellationException("Playback plugin admission did not execute")).getOrThrow()
+-    }
+-
+-    /** Suspending original callbacks/HTTP stay outside short admission monitors.
+-     * A newer video cannot run a provider callback until this mutex is released;
+-     * cancellation/retirement prevents the old result from being published. */
++            (result ?: throw CancellationException("Playback plugin admission did not execute")).getOrThrow()
++        }
++    }
++
++    /** Original three-argument ABI remains for callbacks which do not probe playback URLs. */
+     internal suspend fun <T> runPlaybackPluginCallback(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
+-        action: suspend () -> T): T = playerMutex.withLock {
++        action: suspend () -> T): T = runPlaybackPluginCallbackOwned(dispatch, plugin, null, action)
++
++    /** Root captures this SAME accepted lease Call.Factory before the callback's first await. */
++    internal suspend fun <T> runPlaybackPluginCallback(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
++        playbackCalls: okhttp3.Call.Factory, action: suspend () -> T): T =
++        runPlaybackPluginCallbackOwned(dispatch, plugin, playbackCalls, action)
++
++    private suspend fun <T> runPlaybackPluginCallbackOwned(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
++        playbackCalls: okhttp3.Call.Factory?, action: suspend () -> T): T = playerMutex.withLock {
+         currentCoroutineContext().ensureActive()
+         requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor = false)
+         if (!dispatch.admission { requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor = false) })
+             throw CancellationException("Playback plugin callback admission retired")
+-        val result = action()
++        val captured = playbackPluginWriteOperation(dispatch, plugin, false, playbackCalls)
++        val result = DesktopPlayerPluginWriteAdmission.withCaptured(captured, action)
+         currentCoroutineContext().ensureActive()
+         requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor = false)
+         if (!dispatch.admission { requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor = false) })
+--- desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt
+@@ -3,6 +3,9 @@
+ import com.android.purebilibili.feature.plugin.BiliPaiFeedFilterConfig
+ import com.android.purebilibili.feature.plugin.DesktopFeedFilterEditor
+ import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.ensureActive
++import kotlinx.coroutines.currentCoroutineContext
++import kotlinx.coroutines.Job
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.StateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+@@ -81,6 +84,56 @@
+         if (name == "plugin_prefs") {
+             backing.feedFilterConfig.value = decodeFeedFilter(next)
+             backing.feedFilterEnabled.value = updated["plugin_enabled_bilipai_feed_filter"]?.jsonPrimitive?.booleanOrNull ?: false
++        }
++    }
++
++    /** Captured playback writes use the SAME backing. All staging and rename IO is outside Root gates. */
++    internal fun updateCapturedPlayback(name: String, values: Map<String, JsonElement?>,
++        operation: DesktopPlayerPluginWriteAdmission.Operation, callerJob: kotlinx.coroutines.Job) {
++        require(operation.context.store === this) { "Captured playback plugin has a different Store" }
++        while (true) {
++            callerJob.ensureActive(); operation.check()
++            val snapshot = synchronized(backing) {
++                check(!backing.writesFrozen) { "插件已停止，不能写入旧设置实例" }
++                backing.document
++            }
++            val updated = (snapshot[name] as? JsonObject ?: JsonObject(emptyMap())).toMutableMap()
++            values.forEach { (key, value) -> if (value == null) updated.remove(key) else updated[key] = value }
++            if (name == "plugin_prefs") {
++                updated["plugin_config_bilipai_feed_filter"]?.let { value ->
++                    val encoded = (value as? JsonPrimitive)?.takeIf { it.isString }?.content ?: error("推荐流过滤配置格式无效")
++                    validateFeedFilter(json.decodeFromString<BiliPaiFeedFilterConfig>(encoded))
++                }
++            }
++            val next = JsonObject(snapshot.toMutableMap().apply { put(name, JsonObject(updated)) })
++            Files.createDirectories(backing.root)
++            val temporary = Files.createTempFile(backing.root, "plugin-settings-", ".tmp")
++            try {
++                Files.writeString(temporary, json.encodeToString(next))
++                FileChannel.open(temporary, StandardOpenOption.WRITE).use { it.force(true) }
++                // Linearization only mints a permit. No backing monitor, rename or IO is held inside admission.
++                val permit = operation.permit(this, callerJob)
++                val committed = synchronized(backing) {
++                    check(!backing.writesFrozen) { "插件已停止，不能写入旧设置实例" }
++                    if (backing.document !== snapshot) false
++                    else {
++                        permit.consume()
++                        try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }
++                        catch (_: java.nio.file.AtomicMoveNotSupportedException) {
++                            Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING)
++                        }
++                        backing.document = next
++                        backing.snapshots[name]?.value = DesktopPreferenceSnapshot(JsonObject(updated))
++                        if (name == "plugin_prefs") {
++                            backing.feedFilterConfig.value = decodeFeedFilter(next)
++                            backing.feedFilterEnabled.value = updated["plugin_enabled_bilipai_feed_filter"]?.jsonPrimitive?.booleanOrNull ?: false
++                        }
++                        true
++                    }
++                }
++                if (committed) return
++                // Snapshot conflict discards this permit/temp and rechecks fixed ownership before retry.
++            } finally { Files.deleteIfExists(temporary) }
+         }
+     }
+ 
+@@ -179,7 +232,10 @@
+     val data: StateFlow<DesktopPreferenceSnapshot> get() = store.snapshot("plugin_prefs")
+     suspend fun edit(block: (DesktopPreferenceEditor) -> Unit) = withContext(Dispatchers.IO) {
+         val editor = DesktopPreferenceEditor().apply(block)
+-        store.update("plugin_prefs", editor.values)
++        val operation = DesktopPlayerPluginWriteAdmission.currentOrNull()
++        if (operation == null) store.update("plugin_prefs", editor.values)
++        else store.updateCapturedPlayback("plugin_prefs", editor.values, operation,
++            currentCoroutineContext()[Job] ?: error("Playback plugin write requires a caller Job"))
+     }
+ }
+ 
+--- desktop/tools/extract-upstream-plugins.py
++++ desktop/tools/extract-upstream-plugins.py
+@@ -317,7 +317,9 @@
+ 
+     path = BASE + "feature/plugin/SponsorBlockInsightPolicy.kt"
+     source = read(repo, path)
+-    generated.append(write(output, path, source, platform_context(source)))
++    original = source
++    source = substitute(source, "        writeMutex.withLock {\n            val nextRecords =", "        writeMutex.withLock {\n            com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.checkCurrentOrOriginal()\n            val nextRecords =", 1)
++    generated.append(write(output, path, original, platform_context(source)))
+ 
+     path = BASE + "feature/video/danmaku/DanmakuManager.kt"
+     source = read(repo, path)
+@@ -499,6 +501,10 @@
+     body = substitute(body, 'NetworkModule.api.getIpZone()', 'com.bilipai.desktop.plugins.DesktopPluginRepositoryBinding.api.getIpZone()')
+     body = substitute(body, 'context.resources.openRawResource(R.raw.cdn_region_catalog)',
+         'com.bilipai.desktop.plugins.DesktopPluginResource.open("plugin/cdn_region_catalog.json")')
++    body = substitute(body, "        val context = PluginManager.getContext()\n        val now = System.currentTimeMillis()\n        val current = CdnRegionPluginStore.read(context).also { cache = it }", "        val context = com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { PluginManager.getContext() }\n        val now = System.currentTimeMillis()\n        val current = CdnRegionPluginStore.read(context).also { value -> com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal { cache = value } }", 1)
++    body = substitute(body, "        cache = next\n        CdnRegionPluginStore.write(context, next)", "        com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal { cache = next }\n        CdnRegionPluginStore.write(context, next)", 1)
++    body = substitute(body, "        cache = next\n        com.bilipai.desktop.plugins.DesktopPluginApplicationScope.ioScope.launch {\n            CdnRegionPluginStore.write(PluginManager.getContext(), next)\n        }", "        com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal { cache = next }\n        com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.launchOrOriginal(com.bilipai.desktop.plugins.DesktopPluginApplicationScope.ioScope) {\n            CdnRegionPluginStore.write(com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { PluginManager.getContext() }, next)\n        }", 1)
++    body = substitute(body, "                com.bilipai.desktop.plugins.DesktopPluginRepositoryBinding.playbackClient.newCall(request).execute().use { response ->", "                val call = com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.playbackCallsOrOriginal { com.bilipai.desktop.plugins.DesktopPluginRepositoryBinding.playbackClient }.newCall(request)\n                com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.executeOrOriginal(call) { response ->", 1)
+     generated.append(write(output, path, original, platform_logger(platform_context(body))))
+ 
+     spec = importlib.util.spec_from_file_location('video_enhancement_platform', repo / 'desktop/tools/extract-video-enhancement.py')

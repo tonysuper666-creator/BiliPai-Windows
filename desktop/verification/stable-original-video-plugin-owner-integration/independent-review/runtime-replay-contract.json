@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "baseLF": "39eb118b090cb83b2a8dc5e3e592f598c29350c59974c9e7c21b23ec9b3384ca",
+  "rootRequestOnlyLF": "11bd224bbe3209ea752b7bc44c0cebbf05f8b36494ab4e071d0e7be5ef6038fc",
+  "finalWriteOnlyLF": "34e300311854c65aaf4b3afda26e0b7e11aef2754c0c7746f5a02f002dda7da4",
+  "desiredCombinedLF": "2b33a3c46c0e28d41542a2b54cba4180c7e41a7b89c7ab29bdbe14c11a3d65d0",
+  "rootRequestThenFinalWriteEqualsFinalWriteThenRootRequest": true,
+  "originalThreeArgABI": true,
+  "newFourArgABI": "runPlaybackPluginCallback(dispatch, plugin, playbackCalls:okhttp3.Call.Factory, action:suspend()->T)",
+  "rootUniqueMember": "mutateCapturedPlaybackPluginRequest",
+  "retireCleanupUnchanged": true,
+  "newPlayerMutexOrScope": false
+}

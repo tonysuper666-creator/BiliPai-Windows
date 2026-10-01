@@ -1,0 +1,9 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerPluginBridge.kt",
+  "beforeSha256Bytes": "b8fda017d24d46ec4efc07b6592722229e4cbd1b3b26560ec1f715455a08e26d",
+  "afterSha256Bytes": "7380e8ebb44ee12855ec24b93420d9f788f0d38a830454dc3f39e986aa1ca1ce",
+  "exactHunks": 1,
+  "reason": "Root bridge missed canonical original response.SponsorSegment import",
+  "originalInstalledRecordPreserved": true,
+  "originalBusinessLogicChanged": false
+}

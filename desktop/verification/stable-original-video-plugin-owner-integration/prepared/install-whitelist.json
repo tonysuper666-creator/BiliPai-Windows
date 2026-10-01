@@ -1,0 +1,12 @@
+{
+  "newManual": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.kt",
+  "exactHunks": "install-exact-hunks.json",
+  "replaceWholeFiles": false,
+  "regenerateWithExistingSoleProducer": "desktop/tools/extract-upstream-plugins.py",
+  "existingOriginalIdentityFeatureMerge": [
+    "app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+    "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt"
+  ],
+  "originalPluginStoreIdentityUnchanged": true,
+  "rootIndependentNewRuntimeMemberPreserved": true
+}

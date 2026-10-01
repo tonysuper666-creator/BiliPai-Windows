@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "producerDefaultGenerationPassed": true,
+  "legacyStoreUpdateUnchanged": true,
+  "oldRuntimeThreeArgumentAbiPreserved": true,
+  "CDNIpInitializationUnchanged": true,
+  "stageAndAllFilesMovesOutsideRootAdmission": true,
+  "newStoreOrClientOrActor": false
+}

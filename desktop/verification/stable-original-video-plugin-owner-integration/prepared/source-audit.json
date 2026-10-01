@@ -1,0 +1,169 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "passed": true,
+      "label": "inverse adaptation exists com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { PluginManager.getContext() }"
+    },
+    {
+      "passed": true,
+      "label": "inverse adaptation exists .also { value -> com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal { cache = value } }"
+    },
+    {
+      "passed": true,
+      "label": "inverse adaptation exists com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal { cache = next }"
+    },
+    {
+      "passed": true,
+      "label": "inverse adaptation exists com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.launchOrOriginal(com.bilipai.desktop.plugins.DesktopPluginApplicationScope.ioScope) {"
+    },
+    {
+      "passed": true,
+      "label": "inverse adaptation exists                 val call = com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.playbackCallsOrOriginal { com.bilipai.desktop.plugins.DesktopPluginRepositoryBinding.playbackClient }.newCall(request)\n                com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.executeOrOriginal(call) { response ->"
+    },
+    {
+      "passed": true,
+      "label": "full generated source inverse byte-equals current sole baseline com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt"
+    },
+    {
+      "passed": true,
+      "label": "original SHA header unchanged com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt"
+    },
+    {
+      "passed": true,
+      "label": "full generated source inverse byte-equals current sole baseline com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt"
+    },
+    {
+      "passed": true,
+      "label": "original SHA header unchanged com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt"
+    },
+    {
+      "passed": true,
+      "label": "whole source LF pin desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt"
+    },
+    {
+      "passed": true,
+      "label": "exact replacement unique desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt"
+    },
+    {
+      "passed": true,
+      "label": "exact replacement unique desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt"
+    },
+    {
+      "passed": true,
+      "label": "exact replacement replay byte-equals prepared desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt"
+    },
+    {
+      "passed": true,
+      "label": "whole source LF pin desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt"
+    },
+    {
+      "passed": true,
+      "label": "exact replacement unique desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt"
+    },
+    {
+      "passed": true,
+      "label": "exact replacement unique desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt"
+    },
+    {
+      "passed": true,
+      "label": "exact replacement unique desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt"
+    },
+    {
+      "passed": true,
+      "label": "exact replacement replay byte-equals prepared desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt"
+    },
+    {
+      "passed": true,
+      "label": "whole source LF pin desktop/tools/extract-upstream-plugins.py"
+    },
+    {
+      "passed": true,
+      "label": "exact replacement unique desktop/tools/extract-upstream-plugins.py"
+    },
+    {
+      "passed": true,
+      "label": "exact replacement unique desktop/tools/extract-upstream-plugins.py"
+    },
+    {
+      "passed": true,
+      "label": "exact replacement replay byte-equals prepared desktop/tools/extract-upstream-plugins.py"
+    },
+    {
+      "passed": true,
+      "label": "Runtime admission bodies contain no file IO"
+    },
+    {
+      "passed": true,
+      "label": "permit checks actual callerJob plus fixed captured origin/source under short gate"
+    },
+    {
+      "passed": true,
+      "label": "origin cancellation rejects; normal origin completion does not retire accepted lease"
+    },
+    {
+      "passed": true,
+      "label": "same original backing document identity checked before rename"
+    },
+    {
+      "passed": true,
+      "label": "legacy no-captured Store path exact bytes preserved"
+    }
+  ],
+  "checkCount": 27,
+  "generatedOutputs": 34,
+  "changedOutputs": [
+    "com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+    "com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt"
+  ],
+  "unchangedOutputs": [
+    "com/android/purebilibili/core/plugin/CastPluginApi.kt",
+    "com/android/purebilibili/core/plugin/PluginManager.kt",
+    "com/android/purebilibili/core/plugin/PluginStore.kt",
+    "com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
+    "com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
+    "com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+    "com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+    "com/android/purebilibili/core/plugin/feed/FeedTitleResolver.kt",
+    "com/android/purebilibili/core/plugin/json/JsonPluginManager.kt",
+    "com/android/purebilibili/core/plugin/json/JsonPluginStatsNotificationPolicy.kt",
+    "com/android/purebilibili/core/plugin/json/RuleEngine.kt",
+    "com/android/purebilibili/core/store/TodayWatchProfileStore.kt",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+    "com/android/purebilibili/feature/anime4k/Anime4KOutputPolicy.kt",
+    "com/android/purebilibili/feature/anime4k/gl/DesktopAnime4KShaderList.kt",
+    "com/android/purebilibili/feature/home/DesktopTodayWatchModels.kt",
+    "com/android/purebilibili/feature/home/DesktopTodayWatchPlanConversion.kt",
+    "com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt",
+    "com/android/purebilibili/feature/plugin/AdFilterPlugin.kt",
+    "com/android/purebilibili/feature/plugin/Anime4KPlugin.kt",
+    "com/android/purebilibili/feature/plugin/DanmakuEnhancePlugin.kt",
+    "com/android/purebilibili/feature/plugin/EyeProtectionPlugin.kt",
+    "com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt",
+    "com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt",
+    "com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt",
+    "com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt",
+    "com/android/purebilibili/feature/video/danmaku/DesktopPluginDanmakuPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/Anime4KSettingsUi.kt",
+    "com/bilipai/desktop/player/DesktopFsrShaderLicense.kt",
+    "com/bilipai/desktop/player/platform/DesktopMedia3ColorTransfers.kt",
+    "com/bilipai/desktop/plugins/DesktopPluginAssetHashes.kt",
+    "com/bilipai/desktop/ui/DesktopVideoEnhancementSettingsContent.kt"
+  ],
+  "sameOriginalAlgorithmsAndSchemas": true,
+  "noNewStoreClientCacheActorScope": true,
+  "originalRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d0e1c74436524d943c6b044ea984ad5564b6f3b4ee1b686883ead67a095094b9",
+      "bytesLF": 38900
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "981179d2b0828afc35df97bedb6b7d6c8283f7c7f9a1762415f40eb2b55fd113",
+      "bytesLF": 11725
+    }
+  ]
+}

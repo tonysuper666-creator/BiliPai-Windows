@@ -1,0 +1,11 @@
+{
+  "path": "desktop/gradle.properties",
+  "beforeSha256Bytes": "e24afed08e876b10e9d8aeb8f495f86832a673e40cd515f1a4ed54a34f2b1354",
+  "afterSha256Bytes": "5f70070fc1e0df3bd19c2f3ea26964053c660a7bf2520b66a0e76edaec1d2301",
+  "exactHunks": 1,
+  "compilerMaxHeap": "5g",
+  "runtimeMemoryChanged": false,
+  "reason": "Full original Compose backend exhausted the inherited 3g compiler heap; explicit 5g retry passed",
+  "initialFailureLogSha256Bytes": "071df62a6b14e8e15d7367827e56f7e0e3c5272b2670e785e66a1f7a0f46377c",
+  "successfulRetryLogSha256Bytes": "f70de79d7ae259a1c7b2048ca9cce1bf35b5032a58d9df858f2ebb402f666863"
+}
