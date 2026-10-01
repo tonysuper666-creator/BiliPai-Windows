@@ -1,0 +1,40 @@
+{
+  "scope": "prepared stable detail/reply producer rebase only",
+  "sourceCandidates": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "baseLfSha256": "5822d0d10dc29365b42e7a5e0f009530bc12e3bffc7cb4142d42273f1a73d0ce",
+      "candidateLfSha256": "4bea60a6059c1a8f7b9e42caa8ef825ef84c0c59802d852e61f41130fd07c0e7",
+      "changed": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+      "baseLfSha256": "8c90755dcde0a4ae19a286bbcc1fbea302bdf4596d422b548ec157a6e1d2956b",
+      "candidateLfSha256": "16971528080ffe72d67453d5276b3cbe3583c394477b8e5a5144546f3a9433ce",
+      "changed": true
+    },
+    {
+      "path": "desktop/tools/verify-upstream-dynamic-detail-reply-protocol.py",
+      "baseLfSha256": "86908d69e6386ae3b186af123321270722ec72fbd61a631ea264011e8f0cd208",
+      "candidateLfSha256": "86908d69e6386ae3b186af123321270722ec72fbd61a631ea264011e8f0cd208",
+      "changed": false
+    }
+  ],
+  "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceManifestSha256Lf": "82b9f2499a4a9ac6474107260f89d5f2d159a7434d2111f67cffb9d7c721b403",
+  "generatorPythonPassed": true,
+  "soleOperationsFragmentVerifierPassed": true,
+  "MainChanged": false,
+  "MainKotlinCompiled": false,
+  "editorUploadStillSeparate": true,
+  "generatedKotlinFiles": 6,
+  "selectedBodyCount": 31,
+  "changedSelectedBodies": [
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "getCommentsForSubject",
+      "tokenStatus": "changed"
+    }
+  ]
+}

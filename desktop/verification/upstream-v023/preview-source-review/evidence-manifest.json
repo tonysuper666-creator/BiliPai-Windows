@@ -1,0 +1,162 @@
+{
+  "schema": "frozen-v023-stable-preview-source-review-v1",
+  "frozen": true,
+  "sourceOnly": true,
+  "review": "review.json",
+  "reviewSha256Bytes": "2df85e7d730757e1f3f6a0166b77f63d9a9379538451c08d9edd1790f9bff2c3",
+  "stableTag": "v0.2.3",
+  "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifactCount": 30,
+  "artifacts": [
+    {
+      "path": "capture.py",
+      "sha256Bytes": "c4447386f5f7a4da2f38968ae596d694f3db6d6522270adc710d578ba862c64d",
+      "byteCount": 9294
+    },
+    {
+      "path": "current-main04-extract-upstream-dynamic-card.py",
+      "sha256Bytes": "e4d18c733e69290352a159953bdc000e08e9e964b5229803da8a561b8d43f449",
+      "byteCount": 32262
+    },
+    {
+      "path": "diffs/DrawGrid.patch",
+      "sha256Bytes": "1bdddd63c8a2b24a8a4486e7abde8ec2c7768693c33d8b01d164c610fe98b87b",
+      "byteCount": 3343
+    },
+    {
+      "path": "diffs/DynamicCard.patch",
+      "sha256Bytes": "f357788aff1a19adb22dd40bdc7b0142cd50bb5db86d64d2ed202341161b4e2b",
+      "byteCount": 5843
+    },
+    {
+      "path": "diffs/ImagePreviewDecodePolicy.patch",
+      "sha256Bytes": "1bd1b013e1b07306209019dc920647f18fb4e1cccc31f4789f6c697246744ae3",
+      "byteCount": 1171
+    },
+    {
+      "path": "diffs/ImagePreviewDialog.patch",
+      "sha256Bytes": "260d712f52558597b41bfd3e8d0d262620bc8071e1084c5efa75bfa745d1be3b",
+      "byteCount": 65262
+    },
+    {
+      "path": "diffs/ImagePreviewFeedbackPolicy.patch",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byteCount": 0
+    },
+    {
+      "path": "diffs/ImagePreviewSourceAnchor.patch",
+      "sha256Bytes": "323f080c3e363ff69660626bf86d2acabcea5aa77ce443694d32bf4d6f404b11",
+      "byteCount": 844
+    },
+    {
+      "path": "diffs/ImagePreviewTransitionPolicy.patch",
+      "sha256Bytes": "a03d627226865f6653932f80ce74a19187eecd9ca83741c598889b265b7459dd",
+      "byteCount": 8321
+    },
+    {
+      "path": "diffs/SpaceScreen.patch",
+      "sha256Bytes": "cbf09c794a7173aaab4cc352ac5030ddd7f39e6689dd06fdd65d8ef7181875a0",
+      "byteCount": 15992
+    },
+    {
+      "path": "diffs/ZoomableImage.patch",
+      "sha256Bytes": "914cdaab3b2dfdfebf69bafbe2238b8e1f2e6738a9bffc5675dedaf305374596",
+      "byteCount": 5180
+    },
+    {
+      "path": "original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DrawGrid.kt",
+      "sha256Bytes": "30e38696c88e7dc1a0634d2630fa663a5b2e0caf3c8a3932438b36cf9cb4b462",
+      "byteCount": 12218
+    },
+    {
+      "path": "original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCard.kt",
+      "sha256Bytes": "1b972841b2f27bfd15bf3d60bacc4f19ba2570c5833327df2b9ac51977c1e361",
+      "byteCount": 137919
+    },
+    {
+      "path": "original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "sha256Bytes": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a",
+      "byteCount": 1083
+    },
+    {
+      "path": "original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "sha256Bytes": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb",
+      "byteCount": 145795
+    },
+    {
+      "path": "original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewFeedbackPolicy.kt",
+      "sha256Bytes": "04f61c4635b4032e118f37ae60fe9f343ef99173dd7cf256b350dc865ac4c4c4",
+      "byteCount": 364
+    },
+    {
+      "path": "original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "sha256Bytes": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395",
+      "byteCount": 1915
+    },
+    {
+      "path": "original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "sha256Bytes": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5",
+      "byteCount": 21375
+    },
+    {
+      "path": "original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "sha256Bytes": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0",
+      "byteCount": 16409
+    },
+    {
+      "path": "original/v0.2.3/app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "sha256Bytes": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca",
+      "byteCount": 248431
+    },
+    {
+      "path": "original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DrawGrid.kt",
+      "sha256Bytes": "42fecf6d2b5f5075553315b735f0b0a324a70c2613963eb7da23370adf5caf7a",
+      "byteCount": 11278
+    },
+    {
+      "path": "original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCard.kt",
+      "sha256Bytes": "1e7f4239132196b0e67e678dda9508b7bec5357a7a1135d30632e899c207d08a",
+      "byteCount": 136932
+    },
+    {
+      "path": "original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "sha256Bytes": "b5df989c98b1694ca07b741cd759a73e7dc814f90d2bee0ba90ad3e2ad8cbbad",
+      "byteCount": 1090
+    },
+    {
+      "path": "original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "sha256Bytes": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+      "byteCount": 128708
+    },
+    {
+      "path": "original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewFeedbackPolicy.kt",
+      "sha256Bytes": "04f61c4635b4032e118f37ae60fe9f343ef99173dd7cf256b350dc865ac4c4c4",
+      "byteCount": 364
+    },
+    {
+      "path": "original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "sha256Bytes": "810c4e6b30a4e339de5567807a7713d10c3a5ef5a71fc25224899417f5f67769",
+      "byteCount": 1759
+    },
+    {
+      "path": "original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "sha256Bytes": "5043b00a5fa2e368ed056e517c666c7e52217207926ba17f24724013de20eacd",
+      "byteCount": 17220
+    },
+    {
+      "path": "original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "sha256Bytes": "9c11a03055c8588aef74591ed5f9465b0ade290ced8249eefa7902dbf9f8fbee",
+      "byteCount": 13992
+    },
+    {
+      "path": "original/v0.2.3-alpha.9/app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "sha256Bytes": "a2c297f8da21d8956d4ca23c0671fe727e809a3b9848384ecc5a93fa9a1fc597",
+      "byteCount": 244793
+    },
+    {
+      "path": "review.json",
+      "sha256Bytes": "2df85e7d730757e1f3f6a0166b77f63d9a9379538451c08d9edd1790f9bff2c3",
+      "byteCount": 15215
+    }
+  ]
+}

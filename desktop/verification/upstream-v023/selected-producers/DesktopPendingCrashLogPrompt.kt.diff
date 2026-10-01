@@ -1,0 +1,37 @@
+--- alpha9-selected
++++ stable-selected
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili
+ import androidx.compose.runtime.Composable
+-import androidx.compose.material3.Text
++import com.android.purebilibili.core.ui.components.AppText
+ import com.android.purebilibili.core.ui.AppAlertDialog
+ import com.android.purebilibili.core.ui.AppDialogAction
+ @Composable
+@@ -11,22 +11,22 @@
+                                 onAction(CrashLogPromptAction.DISMISS)
+                             },
+                             title = {
+-                                Text(text = "检测到上次闪退日志")
++                                AppText(text = "检测到上次闪退日志")
+                             },
+                             text = {
+-                                Text(
++                                AppText(
+                                     text = "应用已在私有目录保存一份脱敏后的崩溃快照，不会自动上传或写入公共下载目录。现在可以主动分享给开发者排查，也可以关闭提示。"
+                                 )
+                             },
+                             confirmButton = {
+                                 AppDialogAction(onClick = {
+                                     onAction(CrashLogPromptAction.SHARE)
+-                                }) { Text("分享") }
++                                }) { AppText("分享") }
+                             },
+                             dismissButton = {
+                                 AppDialogAction(onClick = {
+                                     onAction(CrashLogPromptAction.DISMISS)
+-                                }) { Text("关闭") }
++                                }) { AppText("关闭") }
+                             }
+                         )
+     }

@@ -1,0 +1,12 @@
+--- alpha9-original-packing
++++ windows-xmp-unique-attributes-packing
+@@ -12,9 +12,6 @@
+         Camera:MotionPhoto="1"
+         Camera:MotionPhotoVersion="1"
+         Camera:MotionPhotoPresentationTimestampUs="0"
+-        GCamera:MotionPhoto="1"
+-        GCamera:MotionPhotoVersion="1"
+-        GCamera:MotionPhotoPresentationTimestampUs="0"
+         GCamera:MicroVideo="1"
+         GCamera:MicroVideoVersion="1"
+         GCamera:MicroVideoOffset="$videoSize"

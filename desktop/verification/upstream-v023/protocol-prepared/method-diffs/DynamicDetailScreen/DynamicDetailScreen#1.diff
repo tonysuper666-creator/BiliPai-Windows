@@ -1,0 +1,23 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt:DynamicDetailScreen#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt:DynamicDetailScreen#1
+@@ -347,9 +347,10 @@
+                 }
+                 val commentComposer: @Composable (Modifier) -> Unit = { modifier ->
+                     DynamicInlineCommentComposer(
+-                        onPostComment = { message ->
+-                            interactionViewModel.postComment(state.item.id_str, message) { _, toastMessage ->
++                        onPostComment = { message, images, onResult ->
++                            interactionViewModel.postComment(state.item.id_str, message, images) { success, toastMessage ->
+                                 android.widget.Toast.makeText(context, toastMessage, android.widget.Toast.LENGTH_SHORT).show()
++                                onResult(success)
+                             }
+                         },
+                         replyTargetUname = commentReplyTarget?.uname,
+@@ -586,6 +587,7 @@
+                         initialIndex = previewInitialIndex,
+                         sourceRect = previewSourceRect?.rect,
+                         sourceRects = previewSourceRect?.galleryRects.orEmpty(),
++                        sourceKey = previewSourceRect?.sourceKey,
+                         sourceCornerRadiusDp = previewSourceRect?.cornerRadiusDp
+                             ?: AppShapes.containerCornerDp(ContainerLevel.Field).value,
+                         textContent = previewTextContent,

@@ -1,0 +1,58 @@
+{
+  "schema": "selected-stable-source-producer-rebase-v1",
+  "oldTag": "v0.2.3-alpha.9",
+  "newTag": "v0.2.3",
+  "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceOnly": true,
+  "mainInstalled": false,
+  "candidateInstalled": true,
+  "compiled": false,
+  "runtimeAccepted": false,
+  "payloads": [
+    {
+      "path": "desktop/tools/extract-upstream-crash-prompt.py",
+      "preparedSha256Lf": "c33d47e5766ad9ef2adcb8cd7ea9673f40c5ab9bc93d3b9c5e58633ac682b808",
+      "comparedGenerated": [
+        {
+          "path": "com/android/purebilibili/DesktopCrashLogPromptPolicy.kt",
+          "exactBodyAfterPackageEqual": true,
+          "originalStableAppTextMigrationOnly": false,
+          "originalGeneratedSha256Lf": "34840fb910cdf6d842cb422b4af9146eafb0192692851794e6e1d4f25265b31b",
+          "candidateGeneratedSha256Lf": "ffc5fe4fe346af2a903bcdb742a0f768f9e9dcdf11f729364970e03bc2713779",
+          "unchangedBodySha256Lf": "95266b056dc096d28e0ee16057b1f1e41fe5729c6e71302838824e5bd874d36f"
+        },
+        {
+          "path": "com/android/purebilibili/DesktopPendingCrashLogPrompt.kt",
+          "exactBodyAfterPackageEqual": false,
+          "originalStableAppTextMigrationOnly": true,
+          "originalGeneratedSha256Lf": "839bf14ee4a19dce2fd3d65970623e1abb1c903f959e4a075a98dce312bfbb91",
+          "candidateGeneratedSha256Lf": "6c9c3ef2cd3f7c94a1db23d198ff76a2bd60b850a6c73bf61bad74f4d886185b",
+          "unchangedBodySha256Lf": "739ce24e66eadf915bc8f0759d4e7bf0909ac113ee5378b2bcfd38df82cef0fd"
+        }
+      ]
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-gallery-motion-photo.py",
+      "preparedSha256Lf": "e4f2910d5e8751e8ceeba3ca0593bf04b7d8ba80f42017c0ce332bd4eb49f9f2",
+      "comparedGenerated": [
+        {
+          "path": "com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt",
+          "exactBodyAfterPackageEqual": true,
+          "originalStableAppTextMigrationOnly": false,
+          "originalGeneratedSha256Lf": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+          "candidateGeneratedSha256Lf": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+          "unchangedBodySha256Lf": "c160bcf14c8dba47610265df9b209756020e7f0ee3a70fb4474cee3230538733"
+        },
+        {
+          "path": "com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt",
+          "exactBodyAfterPackageEqual": true,
+          "originalStableAppTextMigrationOnly": false,
+          "originalGeneratedSha256Lf": "5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d",
+          "candidateGeneratedSha256Lf": "52f013d2128d8689cc55e685d1a1c6e5aebaedfb5066b2bae61025bb748207a2",
+          "unchangedBodySha256Lf": "12cda0429687e9fc9bebe06ebaba3e772445f5ea59cb53acff4f6d2e83ef5b92"
+        }
+      ]
+    }
+  ]
+}

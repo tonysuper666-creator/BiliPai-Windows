@@ -1,0 +1,322 @@
+{
+  "schema": "v023-stable-preview-source-delta-review-v1",
+  "sourceOnly": true,
+  "tags": {
+    "v0.2.3-alpha.9": "fcf84853b287662e8a9129ea0d38576c36522a34",
+    "v0.2.3": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+  },
+  "sourceRows": [
+    {
+      "tag": "v0.2.3-alpha.9",
+      "commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "sha256Bytes": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+      "sha256Lf": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+      "lines": 2675
+    },
+    {
+      "tag": "v0.2.3-alpha.9",
+      "commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "sha256Bytes": "810c4e6b30a4e339de5567807a7713d10c3a5ef5a71fc25224899417f5f67769",
+      "sha256Lf": "810c4e6b30a4e339de5567807a7713d10c3a5ef5a71fc25224899417f5f67769",
+      "lines": 45
+    },
+    {
+      "tag": "v0.2.3-alpha.9",
+      "commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "sha256Bytes": "5043b00a5fa2e368ed056e517c666c7e52217207926ba17f24724013de20eacd",
+      "sha256Lf": "5043b00a5fa2e368ed056e517c666c7e52217207926ba17f24724013de20eacd",
+      "lines": 505
+    },
+    {
+      "tag": "v0.2.3-alpha.9",
+      "commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "sha256Bytes": "b5df989c98b1694ca07b741cd759a73e7dc814f90d2bee0ba90ad3e2ad8cbbad",
+      "sha256Lf": "b5df989c98b1694ca07b741cd759a73e7dc814f90d2bee0ba90ad3e2ad8cbbad",
+      "lines": 30
+    },
+    {
+      "tag": "v0.2.3-alpha.9",
+      "commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewFeedbackPolicy.kt",
+      "sha256Bytes": "04f61c4635b4032e118f37ae60fe9f343ef99173dd7cf256b350dc865ac4c4c4",
+      "sha256Lf": "04f61c4635b4032e118f37ae60fe9f343ef99173dd7cf256b350dc865ac4c4c4",
+      "lines": 11
+    },
+    {
+      "tag": "v0.2.3-alpha.9",
+      "commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "sha256Bytes": "9c11a03055c8588aef74591ed5f9465b0ade290ced8249eefa7902dbf9f8fbee",
+      "sha256Lf": "9c11a03055c8588aef74591ed5f9465b0ade290ced8249eefa7902dbf9f8fbee",
+      "lines": 311
+    },
+    {
+      "tag": "v0.2.3-alpha.9",
+      "commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DrawGrid.kt",
+      "sha256Bytes": "42fecf6d2b5f5075553315b735f0b0a324a70c2613963eb7da23370adf5caf7a",
+      "sha256Lf": "42fecf6d2b5f5075553315b735f0b0a324a70c2613963eb7da23370adf5caf7a",
+      "lines": 276
+    },
+    {
+      "tag": "v0.2.3-alpha.9",
+      "commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCard.kt",
+      "sha256Bytes": "1e7f4239132196b0e67e678dda9508b7bec5357a7a1135d30632e899c207d08a",
+      "sha256Lf": "1e7f4239132196b0e67e678dda9508b7bec5357a7a1135d30632e899c207d08a",
+      "lines": 2756
+    },
+    {
+      "tag": "v0.2.3-alpha.9",
+      "commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "sha256Bytes": "a2c297f8da21d8956d4ca23c0671fe727e809a3b9848384ecc5a93fa9a1fc597",
+      "sha256Lf": "a2c297f8da21d8956d4ca23c0671fe727e809a3b9848384ecc5a93fa9a1fc597",
+      "lines": 5450
+    },
+    {
+      "tag": "v0.2.3",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "sha256Bytes": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb",
+      "sha256Lf": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb",
+      "lines": 2957
+    },
+    {
+      "tag": "v0.2.3",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "sha256Bytes": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395",
+      "sha256Lf": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395",
+      "lines": 47
+    },
+    {
+      "tag": "v0.2.3",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "sha256Bytes": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5",
+      "sha256Lf": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5",
+      "lines": 598
+    },
+    {
+      "tag": "v0.2.3",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "sha256Bytes": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a",
+      "sha256Lf": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a",
+      "lines": 30
+    },
+    {
+      "tag": "v0.2.3",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewFeedbackPolicy.kt",
+      "sha256Bytes": "04f61c4635b4032e118f37ae60fe9f343ef99173dd7cf256b350dc865ac4c4c4",
+      "sha256Lf": "04f61c4635b4032e118f37ae60fe9f343ef99173dd7cf256b350dc865ac4c4c4",
+      "lines": 11
+    },
+    {
+      "tag": "v0.2.3",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "sha256Bytes": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0",
+      "sha256Lf": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0",
+      "lines": 355
+    },
+    {
+      "tag": "v0.2.3",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DrawGrid.kt",
+      "sha256Bytes": "30e38696c88e7dc1a0634d2630fa663a5b2e0caf3c8a3932438b36cf9cb4b462",
+      "sha256Lf": "30e38696c88e7dc1a0634d2630fa663a5b2e0caf3c8a3932438b36cf9cb4b462",
+      "lines": 294
+    },
+    {
+      "tag": "v0.2.3",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCard.kt",
+      "sha256Bytes": "1b972841b2f27bfd15bf3d60bacc4f19ba2570c5833327df2b9ac51977c1e361",
+      "sha256Lf": "1b972841b2f27bfd15bf3d60bacc4f19ba2570c5833327df2b9ac51977c1e361",
+      "lines": 2772
+    },
+    {
+      "tag": "v0.2.3",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "sha256Bytes": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca",
+      "sha256Lf": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca",
+      "lines": 5502
+    }
+  ],
+  "currentProducerSha256Bytes": "e4d18c733e69290352a159953bdc000e08e9e964b5229803da8a561b8d43f449",
+  "anchorAudit": [
+    {
+      "anchor": "// 辅助数据类",
+      "alpha9Count": 1,
+      "stableCount": 0
+    },
+    {
+      "anchor": "data class Quad(",
+      "alpha9Count": 1,
+      "stableCount": 0
+    },
+    {
+      "anchor": "ImagePreviewBlurEffectCache",
+      "alpha9Count": 2,
+      "stableCount": 0
+    },
+    {
+      "anchor": "            val dialogView = LocalView.current",
+      "alpha9Count": 1,
+      "stableCount": 1
+    },
+    {
+      "anchor": "    //  获取 Activity 和 Window",
+      "alpha9Count": 1,
+      "stableCount": 1
+    },
+    {
+      "anchor": "    //  动画状态控制",
+      "alpha9Count": 1,
+      "stableCount": 1
+    },
+    {
+      "anchor": "    var pendingSaveAction",
+      "alpha9Count": 1,
+      "stableCount": 1
+    },
+    {
+      "anchor": "    // 当前页的图片 URL",
+      "alpha9Count": 1,
+      "stableCount": 1
+    },
+    {
+      "anchor": "    val backEventState =",
+      "alpha9Count": 1,
+      "stableCount": 1
+    }
+  ],
+  "unchangedSaveAndUrlBodies": [
+    {
+      "function": "saveImageToGallery",
+      "bodyByteEqual": true,
+      "alpha9Sha256": "debcc98aa87d43b8bf4367256edcccd70d878c5b32567e73dbef207c388a9167",
+      "stableSha256": "debcc98aa87d43b8bf4367256edcccd70d878c5b32567e73dbef207c388a9167"
+    },
+    {
+      "function": "saveMotionPhotoToGallery",
+      "bodyByteEqual": true,
+      "alpha9Sha256": "f44312f8a4beceb21c5d3d0039b9dd8bbe88f016af6a2164e566d6e568caa8ee",
+      "stableSha256": "f44312f8a4beceb21c5d3d0039b9dd8bbe88f016af6a2164e566d6e568caa8ee"
+    },
+    {
+      "function": "saveLivePhotoVideoToGallery",
+      "bodyByteEqual": true,
+      "alpha9Sha256": "3e0fbda97912a1b885df89e138e9c8288b99dc5b5a93d209fb0a83edbb81f0fb",
+      "stableSha256": "3e0fbda97912a1b885df89e138e9c8288b99dc5b5a93d209fb0a83edbb81f0fb"
+    },
+    {
+      "function": "normalizeImageUrl",
+      "bodyByteEqual": true,
+      "alpha9Sha256": "4568defced2e70312c7acc975680f9b7c80a242abb9b4247f67fdca016e7311c",
+      "stableSha256": "4568defced2e70312c7acc975680f9b7c80a242abb9b4247f67fdca016e7311c"
+    },
+    {
+      "function": "resolveImageShareMimeType",
+      "bodyByteEqual": true,
+      "alpha9Sha256": "f48b5b4aa654da7bea18223b0019056ddfe4549d019b19c88eebec6c5411f842",
+      "stableSha256": "f48b5b4aa654da7bea18223b0019056ddfe4549d019b19c88eebec6c5411f842"
+    }
+  ],
+  "mustAdoptStableBehavior": [
+    {
+      "source": "ImagePreviewDialog.kt",
+      "lines": "180–287,295–329,520–529,729–785",
+      "behavior": "Source identity key, staged source transition, committed-request hide published by first overlay SideEffect, and reveal source before removal with two display-frame handoff. Request admission changes from LaunchedEffect to DisposableEffect. Source hide now favors stable URL identity over rect geometry."
+    },
+    {
+      "source": "ImagePreviewDialog.kt",
+      "lines": "461–470,697–719,735–784,872–982",
+      "behavior": "Freeze open display rect and dismiss source/starting progress; clip rect flight while pager counters nonuniform scaling and uses per-axis counter-scaled round corners. Reset zoom to fit before dismissal, observe it up to450ms, retain rect/no-rect content alpha behavior."
+    },
+    {
+      "source": "ImagePreviewDialog.kt / ZoomableImage.kt",
+      "lines": "1089–1183 /49–60,94–125,238–263,318–322",
+      "behavior": "Vertical-dismiss drag callback now Offset, ends with releaseVelocityY Float and resetZoomTrigger Int. Horizontal drift follows the finger, both axes spring back; original velocity EMA0.6/0.4 and cap±3000 are retained."
+    },
+    {
+      "source": "ImagePreviewTransitionPolicy.kt",
+      "lines": "18–21,201–231,304–322,413–472",
+      "behavior": "Open300ms easeOut, opaque hero, critically damped close Spring.StiffnessMediumLow with velocity, linear quantized blur policy, no-anchor dismiss fade, earlier chrome fade; counter-scale corner math and gradual3D/live-alpha policies. Retain original equations and constants."
+    },
+    {
+      "source": "ImagePreviewDialog.kt / ImagePreviewDecodePolicy.kt",
+      "lines": "1042–1069,2201–2212 /15–18",
+      "behavior": "New resolveImagePreviewPlaceholderCacheKey normalizes scheme while retaining sized URL suffix as source memory identity; preview uses placeholderMemoryCacheKey and crossfade(false). Original-quality cap changes8192→4608. No new allowHardware flag was observed."
+    },
+    {
+      "source": "DrawGrid.kt / SpaceScreen.kt / DynamicCard.kt",
+      "lines": "168–213 /748–757,873–881,2804–2828 /1437,1567",
+      "behavior": "Callers must stage transition on click and carry sourceKey (grid URL where present); thumbnail memoryCacheKey matches placeholder and crossfade(false). Space avatar rawURL/single-image/corner/save defaults remain, but click now prepares transition and thumbnail cache identity."
+    },
+    {
+      "source": "ImagePreviewDialog.kt",
+      "lines": "1217–1240",
+      "behavior": "Live photo composes only after progress0.7 and fades in by original resolveImagePreviewLivePhotoAlpha; preserve real desktop playback platform seam and do not claim native receiver behavior."
+    }
+  ],
+  "immediateProducerBlockers": [
+    {
+      "line": 198,
+      "issue": "s.index('// 辅助数据类') fails: marker removed in stable."
+    },
+    {
+      "line": 203,
+      "issue": "s.index('data class Quad(') fails: Quad removed."
+    },
+    {
+      "line": 206,
+      "issue": "decl(ImagePreviewBlurEffectCache) fails: class removed, replaced by pure CounterScaledCornerShape."
+    },
+    {
+      "line": 197,
+      "issue": "URL policy omits new original resolveImagePreviewPlaceholderCacheKey, referenced by new renderer and source thumbnails."
+    },
+    {
+      "line": 199,
+      "issue": "After Android imports are filtered, new animateWindowNavigationBarColor(Window?, ValueAnimator) remains in renderer prefix; must remove this explicit Android-only helper with its already removed Activity/window lifecycle."
+    },
+    {
+      "line": null,
+      "issue": "New stable renderer cannot be combined with old direct ZoomableImage callback signatures or old Transition/Anchor/Decode files. Update their unique original owners; do not add duplicate FQNs."
+    }
+  ],
+  "minimalSelectedClosure": [
+    "Existing unique card extractor preview+URLpolicy outputs",
+    "Unique direct ImagePreviewSourceAnchor.kt",
+    "Unique direct ImagePreviewTransitionPolicy.kt",
+    "Unique direct ImagePreviewDecodePolicy.kt",
+    "Unique direct ZoomableImage.kt",
+    "Existing selected DrawGrid/DynamicCard callers",
+    "Original selected Space avatar caller + Root owned facade"
+  ],
+  "platformBoundary": [
+    "Android Window.navigationBarColor/ValueAnimator, FLAG_DIM_BEHIND and Window animations have no existing desktop equivalent in this slice; do not retain unresolved Android calls or pretend the effect ran.",
+    "Existing root OverlayHost/Compose Dialog remain unique; preserve its dismissal triggers and captured owned platform. Android predictive scrub still requires an explicit platform provider and cannot be claimed by old constant0.",
+    "Existing Assets/global prefs/cancellation/source staging and three save helper bodies are unchanged in stable, so their frozen proofs remain historical alpha9 input evidence until actual stable Main is recompiled and reverified."
+  ],
+  "boundaries": {
+    "MainChanged": false,
+    "GradleInvoked": false,
+    "producerExecuted": false,
+    "compiled": false,
+    "testsExecuted": false,
+    "HTTP": false,
+    "HWND": false,
+    "oldMain05FixtureStarted": false,
+    "stableMainInstalled": false
+  }
+}

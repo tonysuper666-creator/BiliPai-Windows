@@ -1,0 +1,157 @@
+{
+  "schema": "stable-preview-existing-owner-inventory-v1",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "originalTag": "v0.2.3",
+      "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Lf": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb",
+      "existingMain04RegistryRow": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+        "mode": "policy-extract",
+        "features": [
+          "settings-dynamic-full-card-parity",
+          "dynamic-media-export-parity",
+          "dynamic-static-image-save-parity"
+        ],
+        "sha256": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0"
+      },
+      "stableMode": "policy-extract",
+      "existingOwnerReplacementOnly": true,
+      "outputs": [
+        {
+          "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRenderer.kt",
+          "sha256Bytes": "ba5665c13bb2eddeae4f9a3a126dc229231b7e310a26634c8de4d7d0dbc004fb",
+          "sha256Lf": "5b1c1967b179f3ff6f3ffd2fb09cbdc1a04081a9c038593d6f9d635999e2c1e6"
+        },
+        {
+          "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImageUrlPolicy.kt",
+          "sha256Bytes": "5ed1711bf4eff2b489bba13c44d6842187684bbea25f2cf66d56516996865be9",
+          "sha256Lf": "b194788ea69cb85094826bd715a7c1158329903573cf42d633100676a59b6b0a"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "originalTag": "v0.2.3",
+      "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Lf": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395",
+      "existingMain04RegistryRow": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+        "mode": "direct",
+        "features": [
+          "settings-dynamic-full-card-parity"
+        ],
+        "sha256": "810c4e6b30a4e339de5567807a7713d10c3a5ef5a71fc25224899417f5f67769"
+      },
+      "stableMode": "direct",
+      "existingOwnerReplacementOnly": true,
+      "outputs": [
+        {
+          "path": "direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+          "sha256Bytes": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395",
+          "sha256Lf": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "originalTag": "v0.2.3",
+      "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Lf": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5",
+      "existingMain04RegistryRow": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+        "mode": "direct",
+        "features": [
+          "settings-dynamic-full-card-parity"
+        ],
+        "sha256": "5043b00a5fa2e368ed056e517c666c7e52217207926ba17f24724013de20eacd"
+      },
+      "stableMode": "direct",
+      "existingOwnerReplacementOnly": true,
+      "outputs": [
+        {
+          "path": "direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+          "sha256Bytes": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5",
+          "sha256Lf": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "originalTag": "v0.2.3",
+      "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Lf": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a",
+      "existingMain04RegistryRow": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+        "mode": "direct",
+        "features": [
+          "settings-dynamic-full-card-parity"
+        ],
+        "sha256": "b5df989c98b1694ca07b741cd759a73e7dc814f90d2bee0ba90ad3e2ad8cbbad"
+      },
+      "stableMode": "direct",
+      "existingOwnerReplacementOnly": true,
+      "outputs": [
+        {
+          "path": "direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+          "sha256Bytes": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a",
+          "sha256Lf": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "originalTag": "v0.2.3",
+      "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Lf": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0",
+      "existingMain04RegistryRow": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+        "mode": "direct",
+        "features": [
+          "settings-dynamic-full-card-parity"
+        ],
+        "sha256": "9c11a03055c8588aef74591ed5f9465b0ade290ced8249eefa7902dbf9f8fbee"
+      },
+      "stableMode": "direct",
+      "existingOwnerReplacementOnly": true,
+      "outputs": [
+        {
+          "path": "direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+          "sha256Bytes": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0",
+          "sha256Lf": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0"
+        }
+      ]
+    }
+  ],
+  "newRegistryPaths": [],
+  "noSpaceCallerOrSecondDialog": true,
+  "previousRegistryInputSha256Bytes": "3252d9ef11a0cb36a98f0c44b64b799597465785d4954b60da514acb6b860c1d",
+  "toolInputs": [
+    {
+      "source": "desktop/tools/sync-upstream.py",
+      "retainedCopy": "tool-inputs\\sync-upstream.py",
+      "sha256Bytes": "65a1a3bf226fb1093395833d168e7a35b0ba4c04b9d8bb84e5909b02b1df5e0f"
+    },
+    {
+      "source": "desktop/tools/extract-upstream-media.py",
+      "retainedCopy": "tool-inputs\\extract-upstream-media.py",
+      "sha256Bytes": "cf2067ad47f38dc9f54e3e37be463a4fe61f91599e209f7a314323392c88cf78"
+    },
+    {
+      "source": "desktop/tools/extract-upstream-plugins.py",
+      "retainedCopy": "tool-inputs\\extract-upstream-plugins.py",
+      "sha256Bytes": "a118c2da5c4cd43a0796f8f4d4ce7acfacbe4ed22809f2685a5bd0c7ce2e09d4"
+    },
+    {
+      "source": "desktop/tools/extract-appearance-platform.py",
+      "retainedCopy": "tool-inputs\\extract-appearance-platform.py",
+      "sha256Bytes": "e00ed701f172467fafe4c580c558943335f00ccc5eeca36f9e012818a68a6e92"
+    },
+    {
+      "source": "desktop/.local/source9-appearance/compile-miuix.py",
+      "retainedCopy": "tool-inputs\\compile-miuix.py",
+      "sha256Bytes": "1721b77c3e3c453eb609fe68408cc5853da923c59468368ec71fc0ce3bca3cbc"
+    }
+  ]
+}

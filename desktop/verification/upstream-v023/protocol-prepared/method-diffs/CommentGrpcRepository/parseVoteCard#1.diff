@@ -1,0 +1,34 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt:parseVoteCard#1
++++ v023:app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt:parseVoteCard#1
+@@ -0,0 +1,31 @@
++    private fun parseVoteCard(bytes: ByteArray): ReplyVoteCard? {
++        var voteId = 0L
++        var title = ""
++        var count = 0L
++        var myVoteOption: Long? = null
++        val options = mutableListOf<ReplyVoteCardOption>()
++        ProtoWire.parseFields(bytes).forEach { field ->
++            when (field.number) {
++                1 -> voteId = field.varint
++                2 -> title = ProtoWire.stringValue(field)
++                3 -> count = field.varint
++                4 -> {
++                    var index = 0L
++                    var description = ""
++                    var optionCount = 0L
++                    ProtoWire.parseFields(field.bytes).forEach { optionField ->
++                        when (optionField.number) {
++                            1 -> index = optionField.varint
++                            2 -> description = ProtoWire.stringValue(optionField)
++                            3 -> optionCount = optionField.varint
++                        }
++                    }
++                    options += ReplyVoteCardOption(index, description, optionCount)
++                }
++                5 -> myVoteOption = field.varint
++            }
++        }
++        return voteId.takeIf { it > 0L }?.let {
++            ReplyVoteCard(it, title, count, options, myVoteOption)
++        }
++    }

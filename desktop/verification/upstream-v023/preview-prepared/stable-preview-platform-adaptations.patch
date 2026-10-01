@@ -1,0 +1,445 @@
+--- original-v023-selected-prefix
++++ prepared-unique-desktop-preview-renderer
+@@ -17,16 +17,6 @@
+ import com.android.purebilibili.core.ui.AppShapes
+ import com.android.purebilibili.core.ui.ContainerLevel
+ 
+-import android.animation.ValueAnimator
+-import android.content.ContentValues
+-import android.content.Context
+-import android.content.Intent
+-import android.net.Uri
+-import android.os.Build
+-import android.provider.MediaStore
+-import android.util.Log
+-import android.view.Window
+-import android.widget.Toast
+ import androidx.compose.animation.AnimatedContent
+ import androidx.compose.animation.fadeIn
+ import androidx.compose.animation.fadeOut
+@@ -60,18 +50,15 @@
+ import androidx.compose.ui.graphics.vector.ImageVector
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.compose.ui.platform.LocalContext
++import coil3.compose.LocalPlatformContext as LocalContext
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.platform.LocalLayoutDirection
+-import androidx.compose.ui.platform.LocalView
+ import androidx.compose.ui.platform.testTag
+ import androidx.compose.ui.zIndex
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.window.Dialog
+ import androidx.compose.ui.window.DialogProperties
+-import androidx.compose.ui.window.DialogWindowProvider
+ import coil3.compose.AsyncImage
+-import coil3.imageLoader
+ import coil3.request.ImageRequest
+ import coil3.request.SuccessResult
+ import kotlinx.coroutines.Dispatchers
+@@ -82,20 +69,11 @@
+ import kotlinx.coroutines.withContext
+ import kotlinx.coroutines.withTimeoutOrNull
+ import kotlin.math.abs
+-import android.app.Activity
+-import android.content.ClipData
+-import android.content.ClipboardManager
+-import android.content.ContextWrapper
+-import androidx.core.content.FileProvider
+-import androidx.core.view.WindowCompat
+ import androidx.compose.ui.graphics.toArgb
+-import com.android.purebilibili.core.ui.LocalPredictiveBackGestureEnabled
+ import com.android.purebilibili.core.ui.rememberAppShareIcon
+-import com.android.purebilibili.core.ui.setWindowNavigationBarColor
+ import com.android.purebilibili.core.ui.rememberAppLikeFilledIcon
+ import com.android.purebilibili.core.ui.rememberAppLikeIcon
+ import androidx.compose.ui.geometry.Offset
+-import androidx.media3.common.Player
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.automirrored.filled.VolumeUp
+ import androidx.compose.material.icons.automirrored.filled.VolumeOff
+@@ -110,15 +88,10 @@
+ import com.android.purebilibili.core.ui.motion.emphasizedEnterTween
+ import com.android.purebilibili.core.ui.motion.emphasizedExitTween
+ import com.android.purebilibili.core.ui.motion.interactiveSnapSpring
+-import com.android.purebilibili.core.store.SettingsManager
++import com.android.purebilibili.core.store.DesktopDynamicCardSettings as SettingsManager
+ import com.android.purebilibili.core.util.FormatUtils
+-import com.android.purebilibili.core.util.rememberHapticFeedback
+ import java.io.File
+-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import androidx.navigationevent.NavigationEventInfo
+-import androidx.navigationevent.NavigationEventTransitionState
+-import androidx.navigationevent.compose.NavigationBackHandler
+-import androidx.navigationevent.compose.rememberNavigationEventState
++import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle
+ 
+ /**
+  *  图片预览对话框 - 支持左右滑动切换和3D立体动画
+@@ -161,19 +134,11 @@
+ }
+ 
+ /** 导航栏颜色用短动画过渡，替代进出场瞬间的硬切。Android 15+ 强制透明时自动短路。 */
+-private fun animateWindowNavigationBarColor(window: Window?, targetColor: Int, durationMillis: Long = 180L) {
+-    if (window == null) return
+-    val from = window.navigationBarColor
+-    if (from == targetColor) return
+-    ValueAnimator.ofArgb(from, targetColor).apply {
+-        this.duration = durationMillis
+-        addUpdateListener { setWindowNavigationBarColor(window, it.animatedValue as Int) }
+-        start()
+-    }
+-}
++
+ 
+ private data class ImagePreviewOverlayRequest(
+     val token: Long,
++    val platform: com.bilipai.desktop.ui.DesktopDynamicCardPlatform,
+     val images: List<String>,
+     val livePhotoVideos: Map<String, String>,
+     val initialIndex: Int,
+@@ -302,6 +267,7 @@
+     onImageLongPress: ((String) -> Unit)? = null,
+     onDismiss: () -> Unit
+ ) {
++    val platform = com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings.current
+     val latestOnDismiss by rememberUpdatedState(onDismiss)
+     val requestToken = remember(images, initialIndex, sourceRect, sourceRects, sourceCornerRadiusDp, livePhotoVideos) { System.nanoTime() }
+ 
+@@ -309,6 +275,7 @@
+         ImagePreviewOverlayController.show(
+             ImagePreviewOverlayRequest(
+                 token = requestToken,
++                platform = platform,
+                 images = images,
+                 livePhotoVideos = livePhotoVideos,
+                 initialIndex = initialIndex,
+@@ -341,23 +308,10 @@
+             },
+             properties = DialogProperties(
+                 usePlatformDefaultWidth = false,
+-                decorFitsSystemWindows = false
++
+             )
+         ) {
+-            val dialogView = LocalView.current
+-            SideEffect {
+-                // The image itself already performs the return morph. The platform Dialog
+-                // window animation would scale it a second time when the window is removed.
+-                ((dialogView.parent as? DialogWindowProvider) ?: (dialogView as? DialogWindowProvider))
+-                    ?.window?.let { window ->
+-                        window.setWindowAnimations(0)
+-                        // 平台 Dialog 默认 FLAG_DIM_BEHIND 会在窗口挂上时把整个屏幕压暗、
+-                        // 关闭时瞬间变亮；画廊自带进度 scrim，这层额外 dim 表现为点击
+-                        // 放大/返回时的变暗闪烁，必须清掉。
+-                        window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+-                        window.setDimAmount(0f)
+-                    }
+-            }
++            CompositionLocalProvider(com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings provides request.platform) {
+             ImagePreviewOverlayContent(
+                 images = request.images,
+                 livePhotoVideos = request.livePhotoVideos,
+@@ -381,6 +335,7 @@
+             )
+         }
+     }
++    }
+ }
+ 
+ @Composable
+@@ -404,7 +359,8 @@
+     val density = LocalDensity.current
+     val layoutDirection = LocalLayoutDirection.current
+     val scope = rememberCoroutineScope()
+-    val haptic = rememberHapticFeedback()
++    val platform = com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings.current
++    val haptic = com.bilipai.desktop.ui.rememberDynamicPlatformHaptic()
+     val shareIcon = rememberAppShareIcon()
+     val likeIcon = rememberAppLikeIcon()
+     val likeFilledIcon = rememberAppLikeFilledIcon()
+@@ -415,46 +371,10 @@
+     var isSharing by remember { mutableStateOf(false) }
+     var showOrdinaryImageActions by remember { mutableStateOf(false) }
+     
+-    //  获取 Activity 和 Window 用于沉浸式控制
+-    val activity = remember {
+-        var ctx = context
+-        while (ctx is ContextWrapper) {
+-            if (ctx is Activity) return@remember ctx
+-            ctx = ctx.baseContext
+-        }
+-        null
+-    }
+-    val window = remember { activity?.window }
+-    val insetsController = remember {
+-        window?.let { WindowCompat.getInsetsController(it, it.decorView) }
+-    }
+-    
+-    //  保存原始导航栏颜色
+-    val originalNavBarColor = remember { window?.navigationBarColor ?: android.graphics.Color.BLACK }
+-    
+-    //  进入时动画过渡到沉浸式导航栏（透明黑色），退出时动画恢复，避免颜色瞬间跳变
+-    DisposableEffect(Unit) {
+-        animateWindowNavigationBarColor(window, Color.Transparent.toArgb())
+-        insetsController?.isAppearanceLightNavigationBars = false
+-
+-        onDispose {
+-            animateWindowNavigationBarColor(window, originalNavBarColor)
+-        }
+-    }
+-    
+     //  动画状态控制
+     // 0f = 关闭/初始状态 (at sourceRect), 1f = 打开状态 (Fullscreen)
+     val animateTrigger = remember { androidx.compose.animation.core.Animatable(0f) }
+-    val backEventState = rememberNavigationEventState(NavigationEventInfo.None)
+-    val predictiveBackGestureEnabled = LocalPredictiveBackGestureEnabled.current
+-    val backProgress = if (predictiveBackGestureEnabled) {
+-        (backEventState.transitionState as? NavigationEventTransitionState.InProgress)
+-            ?.latestEvent
+-            ?.progress
+-            ?: 0f
+-    } else {
+-        0f
+-    }
++    val backProgress = 0f // Android predictive back has no Windows gesture provider.
+     var isDismissing by remember { mutableStateOf(false) }
+     var dismissBackdropStartAlpha by remember { mutableFloatStateOf(1f) }
+     var currentImageDisplayRect by remember { mutableStateOf<androidx.compose.ui.geometry.Rect?>(null) }
+@@ -469,10 +389,10 @@
+     // 放大态退出: 先把 ZoomableImage 子层缩放回弹到 fit,再开始飞回。
+     var zoomResetTrigger by remember { mutableIntStateOf(0) }
+     var isVerticalDismissDragging by remember { mutableStateOf(false) }
+-    val longPressSaveEnabled by SettingsManager.getImagePreviewLongPressSaveEnabled(context)
+-        .collectAsStateWithLifecycle(initialValue = true)
+-    val gallery3dPageEnabled by SettingsManager.getImagePreview3dPageEnabled(context)
+-        .collectAsStateWithLifecycle(initialValue = false)
++    val longPressSaveEnabled by SettingsManager.getImagePreviewLongPressSaveEnabled(platform.context)
++        .collectAsStateWithLifecycle(initial = true)
++    val gallery3dPageEnabled by SettingsManager.getImagePreview3dPageEnabled(platform.context)
++        .collectAsStateWithLifecycle(initial = false)
+     var imagePreviewTextVisible by remember(textContent, defaultTextVisible) {
+         mutableStateOf(
+             resolveImagePreviewInitialTextVisibility(
+@@ -491,22 +411,18 @@
+ 
+     fun handleImageSaveResult(success: Boolean, successMessage: String = "图片已保存到相册") {
+         haptic(resolveImagePreviewSaveFeedback(success))
+-        Toast.makeText(
+-            context,
+-            if (success) successMessage else "保存失败，请重试",
+-            Toast.LENGTH_SHORT
+-        ).show()
++        platform.showFeedback(if (success) successMessage else "保存失败，请重试")
+     }
+ 
+     fun handleImageShareResult(success: Boolean) {
+         haptic(resolveImagePreviewSaveFeedback(success))
+         if (!success) {
+-            Toast.makeText(context, "分享失败，请重试", Toast.LENGTH_SHORT).show()
++            platform.showFeedback("分享失败，请重试")
+         }
+     }
+ 
+     //  GIF 图片加载器
+-    val gifImageLoader = context.imageLoader
++    val gifImageLoader = coil3.SingletonImageLoader.get(context)
+ 
+     //  使用 HorizontalPager 实现滑动切换
+     val pagerState = rememberPagerState(
+@@ -552,100 +468,36 @@
+     var isLivePhotoEnabled by remember(pagerState.currentPage) { mutableStateOf(true) }
+     var isLivePhotoMuted by remember(pagerState.currentPage) { mutableStateOf(false) }
+     var showLivePhotoMenu by remember(pagerState.currentPage) { mutableStateOf(false) }
+-    var livePhotoPlayer by remember { mutableStateOf<Player?>(null) }
+-
+-    var pendingSaveAction by remember { mutableStateOf<(() -> Unit)?>(null) }
+-    val storagePermission = com.android.purebilibili.core.util.rememberStoragePermissionState { granted ->
+-        if (granted) {
+-            val action = pendingSaveAction
+-            pendingSaveAction = null
+-            action?.invoke()
++    var livePhotoPlayer by remember { mutableStateOf<com.bilipai.desktop.ui.DesktopDynamicLivePhotoPlayer?>(null) }
++
++    fun saveOwned(operation:suspend ()->Boolean,successMessage:String="图片已保存到所选文件") {
++        if(isSaving)return
++        isSaving=true
++        scope.launch {
++            try{handleImageSaveResult(operation(),successMessage)}
++            catch(cancelled:kotlinx.coroutines.CancellationException){throw cancelled}
++            catch(error:Exception){platform.showFeedback(error.message?:"保存失败，请重试")}
++            finally{isSaving=false}
+         }
+     }
+-
+-    fun requestSaveCurrentImage(imageUrl: String) {
+-        if (imageUrl.isEmpty() || isSaving) return
+-        if (onImageLongPress != null) {
+-            onImageLongPress(imageUrl)
+-            return
++    fun requestSaveCurrentImage(imageUrl:String) {
++        if(imageUrl.isEmpty()||isSaving)return
++        if(onImageLongPress!=null){onImageLongPress(imageUrl);return}
++        saveOwned({platform.saveImage(imageUrl)})
++    }
++    fun requestSaveMotionPhoto(imageUrl:String,videoUrl:String) = saveOwned({platform.saveMotionPhoto(imageUrl,videoUrl)},"实况照片已保存到所选文件")
++    fun requestSaveLivePhotoVideo(videoUrl:String) = saveOwned({platform.saveLivePhotoVideo(videoUrl)},"实况视频已保存到所选文件")
++    fun requestSaveAllImages()=saveOwned({platform.saveImages(images.map(::normalizeImageUrl).filter(String::isNotEmpty))})
++    fun requestShareCurrentImage(imageUrl:String) {
++        if(imageUrl.isEmpty()||isSharing)return
++        isSharing=true
++        scope.launch {
++            try{handleImageShareResult(platform.shareImage(imageUrl))}
++            catch(cancelled:kotlinx.coroutines.CancellationException){throw cancelled}
++            catch(error:Exception){platform.showFeedback(error.message?:"分享失败，请重试")}
++            finally{isSharing=false}
+         }
+-        if (storagePermission.isGranted) {
+-            isSaving = true
+-            scope.launch {
+-                val success = saveImageToGallery(context, imageUrl)
+-                isSaving = false
+-                withContext(Dispatchers.Main.immediate) {
+-                    handleImageSaveResult(success)
+-                }
+-            }
+-        } else {
+-            pendingSaveAction = { requestSaveCurrentImage(imageUrl) }
+-            storagePermission.request()
+-        }
+-    }
+-
+-    fun requestSaveMotionPhoto(imageUrl: String, videoUrl: String) {
+-        if (imageUrl.isEmpty() || videoUrl.isEmpty() || isSaving) return
+-        if (storagePermission.isGranted) {
+-            isSaving = true
+-            scope.launch {
+-                val success = saveMotionPhotoToGallery(context, imageUrl, videoUrl)
+-                isSaving = false
+-                withContext(Dispatchers.Main.immediate) {
+-                    handleImageSaveResult(success, successMessage = "实况照片已保存到相册")
+-                }
+-            }
+-        } else {
+-            pendingSaveAction = { requestSaveMotionPhoto(imageUrl, videoUrl) }
+-            storagePermission.request()
+-        }
+-    }
+-
+-    fun requestSaveLivePhotoVideo(videoUrl: String) {
+-        if (videoUrl.isEmpty() || isSaving) return
+-        if (storagePermission.isGranted) {
+-            isSaving = true
+-            scope.launch {
+-                val success = saveLivePhotoVideoToGallery(context, videoUrl)
+-                isSaving = false
+-                withContext(Dispatchers.Main.immediate) {
+-                    handleImageSaveResult(success, successMessage = "实况视频已保存到相册")
+-                }
+-            }
+-        } else {
+-            pendingSaveAction = { requestSaveLivePhotoVideo(videoUrl) }
+-            storagePermission.request()
+-        }
+-    }
+-
+-    fun requestSaveAllImages() {
+-        if (images.isEmpty() || isSaving) return
+-        val urls = images.map(::normalizeImageUrl).filter(String::isNotEmpty)
+-        if (storagePermission.isGranted) {
+-            isSaving = true
+-            scope.launch {
+-                val success = urls.map { saveImageToGallery(context, it) }.all { it }
+-                isSaving = false
+-                withContext(Dispatchers.Main.immediate) { handleImageSaveResult(success) }
+-            }
+-        } else {
+-            pendingSaveAction = { requestSaveAllImages() }
+-            storagePermission.request()
+-        }
+-    }
+-
+-    fun requestShareCurrentImage(imageUrl: String) {
+-        if (imageUrl.isEmpty() || isSharing) return
+-        isSharing = true
+-        scope.launch {
+-            val success = shareImageFromPreview(context, imageUrl)
+-            isSharing = false
+-            withContext(Dispatchers.Main.immediate) {
+-                handleImageShareResult(success)
+-            }
+-        }
+-    }
+-    
++    }
+     // 当前页的图片 URL
+     val currentImageUrl = remember(pagerState.currentPage, images) {
+         normalizeImageUrl(images.getOrNull(pagerState.currentPage) ?: "")
+@@ -789,47 +641,7 @@
+                 if (dismissRequestCount > 0) triggerDismiss()
+             }
+ 
+-            NavigationBackHandler(
+-                state = backEventState,
+-                isBackEnabled = !isDismissing,
+-                onBackCancelled = {
+-                    if (!isDismissing) {
+-                        scope.launch {
+-                            if (isDismissing) return@launch
+-                            backRecoverEpoch += 1
+-                            val epoch = backRecoverEpoch
+-                            backRecovering = true
+-                            try {
+-                                val dismissMotion = imagePreviewDismissMotion()
+-                                animateTrigger.snapTo(lastScrubRawProgress)
+-                                animateTrigger.animateTo(
+-                                    targetValue = 1f,
+-                                    animationSpec = emphasizedEnterTween(
+-                                        durationMillis = dismissMotion.cancelRecoverDurationMillis
+-                                    ),
+-                                )
+-                            } finally {
+-                                // animateTo 被新的 dismiss / scrub 动画取消时(CancellationException)
+-                                // 也必须复位,否则 currentTransitionProgress 的读口残留
+-                                // backRecovering=true,后续 scrub 进度错乱、画面跳变。
+-                                // 纪元不匹配说明已被接管,状态由接管方负责。
+-                                if (backRecoverEpoch == epoch) {
+-                                    backRecovering = false
+-                                    lastScrubRawProgress = animateTrigger.value.coerceIn(0f, 1f)
+-                                }
+-                            }
+-                        }
+-                    }
+-                },
+-                onBackCompleted = {
+-                    scope.launch {
+-                        if (isDismissing) return@launch
+-                        backRecovering = false
+-                        animateTrigger.snapTo(lastScrubRawProgress)
+-                        triggerDismiss()
+-                    }
+-                },
+-            )
++
+ 
+             // 新一轮预测返回 scrub 开始时立即交还进度读口:
+             // 恢复动画若还在跑,backProgress 分支必须优先,否则恢复动画与手势双驱动跳变。
+@@ -1229,7 +1041,7 @@
+                             !isDismissing &&
+                             livePhotoProgressReady && activeZoomScale <= 1.05f
+                         ) {
+-                            LivePhotoPlayback(
++                            com.bilipai.desktop.ui.DesktopDynamicLivePhotoPlayback(
+                                 videoUrl = liveVideoUrl,
+                                 modifier = Modifier
+                                     .fillMaxSize()
+@@ -1877,8 +1689,7 @@
+                         label = "复制链接",
+                         onClick = {
+                             showOrdinaryImageActions = false
+-                            val clipboard = context.getSystemService(ClipboardManager::class.java)
+-                            clipboard?.setPrimaryClip(ClipData.newPlainText("图片链接", currentImageUrl))
++                            platform.copyText(currentImageUrl)
+                         }
+                     )
+                     ImagePreviewActionButton(

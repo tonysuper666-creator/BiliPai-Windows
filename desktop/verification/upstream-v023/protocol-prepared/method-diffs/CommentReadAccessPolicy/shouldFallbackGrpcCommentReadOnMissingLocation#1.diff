@@ -1,0 +1,9 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt:shouldFallbackGrpcCommentReadOnMissingLocation#1
++++ v023:app/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt:shouldFallbackGrpcCommentReadOnMissingLocation#1
+@@ -1,5 +1,5 @@
+ internal fun shouldFallbackGrpcCommentReadOnMissingLocation(data: ReplyData?): Boolean {
+     return data != null &&
+-        hasRenderableCommentPayload(data) &&
++        collectRenderableComments(data).any() &&
+         !hasAnyReplyLocation(data)
+ }

@@ -1,0 +1,8 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt:updateBgmWish#1
++++ v023:app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt:updateBgmWish#1
+@@ -0,0 +1,5 @@
++    suspend fun updateBgmWish(
++        @retrofit2.http.Field("music_id") musicId: String,
++        @retrofit2.http.Field("state") state: Int,
++        @retrofit2.http.Field("csrf") csrf: String
++    ): SimpleApiResponse

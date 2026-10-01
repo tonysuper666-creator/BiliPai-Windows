@@ -1,0 +1,10 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt:hasRenderableCommentPayload#1
++++ v023:app/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt:hasRenderableCommentPayload#1
+@@ -2,5 +2,6 @@
+     if (data == null) return false
+     return data.replies.orEmpty().isNotEmpty() ||
+         data.hots.orEmpty().isNotEmpty() ||
+-        data.collectTopReplies().isNotEmpty()
++        data.collectTopReplies().isNotEmpty() ||
++        data.voteCard != null
+ }

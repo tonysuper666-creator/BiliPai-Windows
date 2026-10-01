@@ -1,0 +1,406 @@
+{
+  "schema": "independently-reviewed-exact-preview-platform-adaptation-pairs-v1",
+  "scope": "Full stable selected renderer prefix; all source changes classified as existing Windows platform boundary or the new Android-only navbar helper removal.",
+  "originalTag": "v0.2.3",
+  "originalImagePreviewDialogLfSha256": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb",
+  "reviewedRows": [
+    {
+      "label": "Android-only imports removed",
+      "shape": [
+        "delete",
+        20,
+        10,
+        20,
+        0
+      ],
+      "originalLfSha256": "e7789894ba2af28d79efa15caa83f63f37b07924a74eea3053c9e8de82e28637",
+      "preparedLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "Compose Desktop platform context alias",
+      "shape": [
+        "replace",
+        63,
+        1,
+        53,
+        1
+      ],
+      "originalLfSha256": "fd13cbbd3ea84e40b123fd2e828296b35eed3c9af7a2db75c13bf809aa450ae8",
+      "preparedLfSha256": "c5fbadcfe7322521e0f1bcb4f102ff8907e56e3a921292aeddfea1cc299ba076"
+    },
+    {
+      "label": "Android LocalView removed",
+      "shape": [
+        "delete",
+        66,
+        1,
+        56,
+        0
+      ],
+      "originalLfSha256": "b2644b9fbcecf6492d24668ddf67f157ed4d1e14e66f45dd38e05464f94c17f4",
+      "preparedLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "Android DialogWindowProvider removed",
+      "shape": [
+        "delete",
+        72,
+        1,
+        61,
+        0
+      ],
+      "originalLfSha256": "ac90df1b5a144ead21e33a113301af56b8aab4fc4eef9dc2dc622cffcfaae211",
+      "preparedLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "Coil platform loader extension removed",
+      "shape": [
+        "delete",
+        74,
+        1,
+        62,
+        0
+      ],
+      "originalLfSha256": "507cca737c1a10b73d08908eba32d5e5a6fc9d02de8145debfc2a91634bac466",
+      "preparedLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "Android/AndroidX window, activity and file-provider imports removed",
+      "shape": [
+        "delete",
+        85,
+        6,
+        72,
+        0
+      ],
+      "originalLfSha256": "29c516e3d7afe09ea33a4e2f1dcace71c440738d5061f9ce1e3dee7cb45f80b9",
+      "preparedLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "Android predictive gesture local import removed",
+      "shape": [
+        "delete",
+        92,
+        1,
+        73,
+        0
+      ],
+      "originalLfSha256": "f04df373f479753a032640e3d6a2253a153b1fd98adddfb034c51f2cd9d7cc36",
+      "preparedLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "Android navigation bar helper import removed",
+      "shape": [
+        "delete",
+        94,
+        1,
+        74,
+        0
+      ],
+      "originalLfSha256": "eeacad57f2b76199a1e54eefe2273aa48cec59bb2b5dd13323583fb16224dea1",
+      "preparedLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "Android Media3 player import removed",
+      "shape": [
+        "delete",
+        98,
+        1,
+        77,
+        0
+      ],
+      "originalLfSha256": "03f8dfdce07a54d03f192f8c6a1a1573319fd4916ec568c76e262441d0bfb8eb",
+      "preparedLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "Existing same-global-store DesktopDynamicCardSettings alias",
+      "shape": [
+        "replace",
+        113,
+        1,
+        91,
+        1
+      ],
+      "originalLfSha256": "1f7ff1995a8995a8f9258b49a8d6c3ae13f41db160cca55c54f7c2f88b266615",
+      "preparedLfSha256": "014856612681723d02bcb719929140e9546ce8e04e10c8cfbf88026481adfedc"
+    },
+    {
+      "label": "Original Android haptic import removed",
+      "shape": [
+        "delete",
+        115,
+        1,
+        93,
+        0
+      ],
+      "originalLfSha256": "037457af4989afae64aa94fa4d528318b2433aab6249fa26b7c29a15aab6c2dc",
+      "preparedLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "Existing Compose collection alias and Android NavigationEvent imports removed",
+      "shape": [
+        "replace",
+        117,
+        5,
+        94,
+        1
+      ],
+      "originalLfSha256": "a09dd7b05f4791665f9685ddab972529e8a445ab2abee444abbefbf5d61104f0",
+      "preparedLfSha256": "f0d8214e3ca5eba62e378f07a624c0b09826c39c8e21b0f70a4c2b485b2e6f86"
+    },
+    {
+      "label": "New original Android Window/ValueAnimator helper removed",
+      "shape": [
+        "replace",
+        164,
+        10,
+        137,
+        1
+      ],
+      "originalLfSha256": "c010a316e9f2ec7830a676f69abd4edc213148aea0ae22ff006164c3ded6778e",
+      "preparedLfSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "label": "Captured existing platform owner in request",
+      "shape": [
+        "insert",
+        177,
+        0,
+        141,
+        1
+      ],
+      "originalLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "preparedLfSha256": "8c74df2e5d567f8ce90ed5ab0fa9f7c21694b6d524651f0e61cd44c3c1c37d97"
+    },
+    {
+      "label": "Read captured platform bindings at source request",
+      "shape": [
+        "insert",
+        305,
+        0,
+        270,
+        1
+      ],
+      "originalLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "preparedLfSha256": "2d1b17caf1122a97bc45409f770f58184d18acc556b78851e2bc8decaf9cb500"
+    },
+    {
+      "label": "Pass captured platform owner into request",
+      "shape": [
+        "insert",
+        312,
+        0,
+        278,
+        1
+      ],
+      "originalLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "preparedLfSha256": "6d7a4362b582ebf6d1f44bbe84002cd2848924b0c5357843aa55b923957a4a89"
+    },
+    {
+      "label": "Android decorFitsSystemWindows property excluded",
+      "shape": [
+        "replace",
+        344,
+        1,
+        311,
+        1
+      ],
+      "originalLfSha256": "b2db833fb4a2fa46f7f5669a3bfb958a8be6456a9d53d7203d12b48cef319771",
+      "preparedLfSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "label": "Existing unique OverlayHost provides captured owner; Android animation/dim property block excluded",
+      "shape": [
+        "replace",
+        347,
+        14,
+        314,
+        1
+      ],
+      "originalLfSha256": "394abf9825820b99a6dd34b9e9a5780f17dfe18b52a924094ec05901db269233",
+      "preparedLfSha256": "bce21ff96ed235bc468e2d5a2a953785efb5cbbac89cebf08c6a1a56634f612b"
+    },
+    {
+      "label": "Close only the captured provider scope",
+      "shape": [
+        "insert",
+        383,
+        0,
+        337,
+        1
+      ],
+      "originalLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "preparedLfSha256": "4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413"
+    },
+    {
+      "label": "Existing desktop haptic callback and platform owner",
+      "shape": [
+        "replace",
+        407,
+        1,
+        362,
+        2
+      ],
+      "originalLfSha256": "27dd17b4d95da7a9acdf4856ade4f9f4a66c2239622215a1dcbb80f03e020c6e",
+      "preparedLfSha256": "5f73740d4111160a2a8659e64d7226d1e441d0d5250a094afc60d788beafe199"
+    },
+    {
+      "label": "Android Activity/window/navigation-bar lifecycle excluded",
+      "shape": [
+        "delete",
+        418,
+        27,
+        374,
+        0
+      ],
+      "originalLfSha256": "dc9ff9353889bc129e5ffcf2afc3c99b58d0bbbd029232cd9dbe8adcf42860fb",
+      "preparedLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "Android predictive scrub provider explicit unavailable boundary",
+      "shape": [
+        "replace",
+        448,
+        10,
+        377,
+        1
+      ],
+      "originalLfSha256": "135616ce06e009c180f6223369f799f041dc81df2014c8f14c64d0ad0a993123",
+      "preparedLfSha256": "f2b7230b6e7ee906e354a80c09a0ce9e8d136142cf60074e0a97bf57cb899513"
+    },
+    {
+      "label": "Settings access through same existing platform store; Compose collectAsState initial name",
+      "shape": [
+        "replace",
+        472,
+        4,
+        392,
+        4
+      ],
+      "originalLfSha256": "eaca4c50ec5b885642621e4863771c3f056ed1b01de0a3578e07fa72fae3cd1d",
+      "preparedLfSha256": "156d3db0edfeef50bd34917b4bef4d4c3630f858c84724091515f3f73e66d746"
+    },
+    {
+      "label": "Existing platform save feedback callback",
+      "shape": [
+        "replace",
+        494,
+        5,
+        414,
+        1
+      ],
+      "originalLfSha256": "ca5e7a276f1d3c17e7c69330d90931a16d37d0411ffafaf3512f8a39bfe8b309",
+      "preparedLfSha256": "07ef71d43c5b2411366f85db555ab4518b2a4964d827cb41de4a9903eb8d0962"
+    },
+    {
+      "label": "Existing platform share feedback callback",
+      "shape": [
+        "replace",
+        504,
+        1,
+        420,
+        1
+      ],
+      "originalLfSha256": "34229889e5da7a3a1d4cacd2fb09079aca1025351134d378234ba05092ac948d",
+      "preparedLfSha256": "4eaf5be81469ba60b0e3de810b083534d7c9e845b9cb32ef9712d21a47a4785f"
+    },
+    {
+      "label": "Coil SingletonImageLoader platform lookup",
+      "shape": [
+        "replace",
+        509,
+        1,
+        425,
+        1
+      ],
+      "originalLfSha256": "e3154b6904f91323c23600e17d93a9710cea013bc15dd7cdc9f75ae8d9bf0c5a",
+      "preparedLfSha256": "b0f0798cab5c74276b9ba15c7335470e2c77a3daaac477eeeef0725d57a170dd"
+    },
+    {
+      "label": "Existing desktop live-photo player type",
+      "shape": [
+        "replace",
+        555,
+        1,
+        471,
+        1
+      ],
+      "originalLfSha256": "19ef61af340c4fa02b44dc9fae7246cb2dd378b61e4c04492f9d71086c1fbeea",
+      "preparedLfSha256": "8f790af3460f5af922c8da8a8540ece3115b7ee0c59edf3e1b25996bd5be5cbd"
+    },
+    {
+      "label": "Existing owned save coroutine/cancellation/finally backend adapter",
+      "shape": [
+        "replace",
+        557,
+        6,
+        473,
+        8
+      ],
+      "originalLfSha256": "c17a383736ff979f9e993fedb2966bc52381e1c0954ee2803fdb455758076344",
+      "preparedLfSha256": "607279238e30a763a794f67d6ee4583aeebae44f060ad07d2176a320056d4a89"
+    },
+    {
+      "label": "Existing owned image/motion/video/all/share operations adapter",
+      "shape": [
+        "replace",
+        565,
+        19,
+        483,
+        16
+      ],
+      "originalLfSha256": "4c4d34ffcea235f396ea72122ada1c1be09f2891102f7bf53ecada1d5b624238",
+      "preparedLfSha256": "f54fe6c251fb772795d9944391d816e30bc4c25a66100ae0cc7398300bfbf278"
+    },
+    {
+      "label": "Remaining original Android permission/MediaStore/share backend excluded",
+      "shape": [
+        "delete",
+        586,
+        63,
+        501,
+        0
+      ],
+      "originalLfSha256": "f38e7f375f22bc68a9c7baf5fa9eaba7df97649c7110c1438d2184e0d8241942",
+      "preparedLfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "Android NavigationBackHandler provider excluded; retained original dismiss/drag flight",
+      "shape": [
+        "replace",
+        792,
+        41,
+        644,
+        1
+      ],
+      "originalLfSha256": "103f99702233738faa1c01f456a5d8f58bf5ec7d08e0cb71bccd212616de1e3e",
+      "preparedLfSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "label": "Existing desktop live-photo playback adapter",
+      "shape": [
+        "replace",
+        1232,
+        1,
+        1044,
+        1
+      ],
+      "originalLfSha256": "53837352c5fde2731eb5d2311e998cee6b13d3ad96d59a5ec321c694178bea30",
+      "preparedLfSha256": "2a65aadaabc92c8cab383db2a28f8ed1d416daedc6ad5b25d61ca58de99042df"
+    },
+    {
+      "label": "Existing platform clipboard callback",
+      "shape": [
+        "replace",
+        1880,
+        2,
+        1692,
+        1
+      ],
+      "originalLfSha256": "248ab2ddd35bd64a9e018afbf7525e157f3142d1a48aa5495ecbd7c936c0b2f7",
+      "preparedLfSha256": "dd263889fe8f112d63088d2604d969bf9266aa91ce5b7aff7495e57137137a7c"
+    }
+  ],
+  "preparedRendererSha256Bytes": "ba5665c13bb2eddeae4f9a3a126dc229231b7e310a26634c8de4d7d0dbc004fb",
+  "preparedRendererLfSha256": "5b1c1967b179f3ff6f3ffd2fb09cbdc1a04081a9c038593d6f9d635999e2c1e6"
+}

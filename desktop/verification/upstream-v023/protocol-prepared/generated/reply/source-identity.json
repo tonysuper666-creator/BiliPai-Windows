@@ -1,0 +1,47 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+    "currentGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+    "sha256LfUtf8": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "a200d4b7a017ca7ae4f92c402a69cd6e4e45b558",
+    "currentGitBlob": "a200d4b7a017ca7ae4f92c402a69cd6e4e45b558",
+    "sha256LfUtf8": "0e0d126dfaaa4684a5d97af698b7fabe0898868ce1e36ad48433449ec079a394",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "2a2ecd2d07bc8879ac6692affda38234c668855f",
+    "currentGitBlob": "2a2ecd2d07bc8879ac6692affda38234c668855f",
+    "sha256LfUtf8": "f9e73c36e47e4ec329f7bf2dcda2984210a3f4f41376519ec111b84ea71318d3",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "c8fddc1d08933deed87784474ce12c464ca49a1f",
+    "currentGitBlob": "c8fddc1d08933deed87784474ce12c464ca49a1f",
+    "sha256LfUtf8": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "8d5fdfd4285d467b27e27c2610f79ff34f392b68",
+    "currentGitBlob": "8d5fdfd4285d467b27e27c2610f79ff34f392b68",
+    "sha256LfUtf8": "fed6db98e75157fdfef5f9de3916a690808c506c10656747f90b504a1e95221f",
+    "matchesPinnedCommit": true
+  }
+]

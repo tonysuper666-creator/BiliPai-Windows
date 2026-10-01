@@ -1,0 +1,122 @@
+{
+  "schema": "prepared-stable-preview-narrow-compile-v1",
+  "status": "PASS",
+  "exitCode": 0,
+  "actualSnapshotManifestSha256Bytes": "7bc5ac8875dadf38510120db6619bd6e748e7f790a47afc11374e14114f25865",
+  "orderedRuntimeCpSha256Bytes": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2",
+  "runtimeEntries": 92,
+  "sourceInputs": [
+    {
+      "preparedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\direct-original\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\dynamic\\components\\ImagePreviewSourceAnchor.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\compile-01\\source-inputs\\ImagePreviewSourceAnchor.kt",
+      "sha256Bytes": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395"
+    },
+    {
+      "preparedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\direct-original\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\dynamic\\components\\ImagePreviewTransitionPolicy.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\compile-01\\source-inputs\\ImagePreviewTransitionPolicy.kt",
+      "sha256Bytes": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5"
+    },
+    {
+      "preparedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\direct-original\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\dynamic\\components\\ImagePreviewDecodePolicy.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\compile-01\\source-inputs\\ImagePreviewDecodePolicy.kt",
+      "sha256Bytes": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a"
+    },
+    {
+      "preparedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\direct-original\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\dynamic\\components\\ZoomableImage.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\compile-01\\source-inputs\\ZoomableImage.kt",
+      "sha256Bytes": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0"
+    },
+    {
+      "preparedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalImagePreviewRenderer.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\compile-01\\source-inputs\\DesktopOriginalImagePreviewRenderer.kt",
+      "sha256Bytes": "ba5665c13bb2eddeae4f9a3a126dc229231b7e310a26634c8de4d7d0dbc004fb"
+    },
+    {
+      "preparedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalImageUrlPolicy.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\compile-01\\source-inputs\\DesktopOriginalImageUrlPolicy.kt",
+      "sha256Bytes": "5ed1711bf4eff2b489bba13c44d6842187684bbea25f2cf66d56516996865be9"
+    }
+  ],
+  "preparedOnly": true,
+  "originalTag": "v0.2.3",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "compiledAgainst": "Actual immutable Main04 alpha.9 ABI; stable callers require coordinated recompilation.",
+  "noMainEdits": true,
+  "noRegistryEdits": true,
+  "noGradle": true,
+  "noHTTP": true,
+  "noRuntime": true,
+  "noHWND": true,
+  "artifactSha256Bytes": "31a9d946f9d64a441e9c5f33c5647bccb63df94dabb37080a4e763d8d2adc37f",
+  "ownClassCount": 62,
+  "declaredSameOwnerClassOverrides": [
+    "com/android/purebilibili/feature/dynamic/components/CommentImagePreviewPageTransform.class",
+    "com/android/purebilibili/feature/dynamic/components/ComposableSingletons$DesktopOriginalImagePreviewRendererKt.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$2$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$2$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$3$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$4$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$triggerDismiss$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$requestSaveAllImages$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$requestSaveCurrentImage$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$requestSaveLivePhotoVideo$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$requestSaveMotionPhoto$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$requestShareCurrentImage$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$saveOwned$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$WhenMappings.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImageUrlPolicyKt.class",
+    "com/android/purebilibili/feature/dynamic/components/ImageDecodeSize.class",
+    "com/android/purebilibili/feature/dynamic/components/ImageDecodeTarget.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewCommentContext.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicyKt$WhenMappings.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicyKt.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewDismissMotion.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewDismissRectFrame.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewDismissTransform.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewGalleryPageTransform.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewOverlayController.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewOverlayPadding.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewOverlayRequest.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewResolvedText.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchorKt.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewTextContent.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewTextPlacement.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewTextTransform.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionFrame.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicyKt.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewVerticalDismissDecision.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewVerticalDragFrame.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewVisualFrame.class",
+    "com/android/purebilibili/feature/dynamic/components/ZoomableImageKt$ZoomableImage$10$1.class",
+    "com/android/purebilibili/feature/dynamic/components/ZoomableImageKt$ZoomableImage$14$1.class",
+    "com/android/purebilibili/feature/dynamic/components/ZoomableImageKt.class"
+  ],
+  "newOriginalOrCompilerClasses": [
+    "com/android/purebilibili/feature/dynamic/components/CounterScaledCornerShape.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewDialog$lambda$2$0$$inlined$onDispose$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$6$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$7$3$2$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$7$3$3$3$1$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$7$3$3$5$1$1$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$7$3$3$5$1$1$2.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$7$3$3$5$1$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$7$3$3$6$1$1$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$7$3$3$6$1$1$2.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$7$3$3$6$1$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$9$11$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$triggerDismiss$1$1$2.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$triggerDismiss$1$1.class",
+    "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt$ImagePreviewOverlayContent$3$triggerDismiss$2.class",
+    "com/android/purebilibili/feature/dynamic/components/ImagePreviewCounterScaledCornerRadii.class",
+    "com/android/purebilibili/feature/dynamic/components/ZoomableImageKt$ZoomableImage$11$1.class",
+    "com/android/purebilibili/feature/dynamic/components/ZoomableImageKt$ZoomableImage$15$1$1$WhenMappings.class",
+    "com/android/purebilibili/feature/dynamic/components/ZoomableImageKt$ZoomableImage$15$1$1.class",
+    "com/android/purebilibili/feature/dynamic/components/ZoomableImageKt$ZoomableImage$15$1.class"
+  ],
+  "productAuthorityOverrides": [
+    "Existing original preview renderer/URL policy and four original preview helpers only."
+  ],
+  "noStoreOpsAssetsRepositoryOverrides": true
+}

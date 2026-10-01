@@ -1,0 +1,64 @@
+{
+  "schema": "v023-candidate-source-rebase-report-v1",
+  "targetTag": "v0.2.3",
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "candidateBranch": "desktop/v023-parity",
+  "sourceAndResourcePinsVerified": 832,
+  "originalProductionSourceFiles": 1534,
+  "targetProductionSourceFiles": 1547,
+  "changedUpstreamFiles": 269,
+  "changedRegisteredSources": 87,
+  "changedRegisteredResources": 0,
+  "localApkMatchesOfficialPublishedAsset": true,
+  "initialClassTaskPassed": false,
+  "initialFailedTasks": [
+    "verifyGoogleCastSources",
+    "extractUpstreamCrashPrompt",
+    "extractUpstreamDynamicDetailProtocol",
+    "extractUpstreamDynamicEditor",
+    "extractUpstreamDynamicFullCard",
+    "extractUpstreamDynamicReplyProtocol",
+    "prepareNativeDiagnosticShare",
+    "verifyUpstreamDynamicEditorProtocol",
+    "extractUpstreamDynamicGalleryMotionPhoto"
+  ],
+  "resolvedSourceAndBuildTasks": [
+    "verifyGoogleCastSources",
+    "prepareNativeDiagnosticShare",
+    "extractUpstreamCrashPrompt",
+    "extractUpstreamDynamicGalleryMotionPhoto",
+    "extractUpstreamDynamicReplyProtocol",
+    "extractUpstreamDynamicDetailProtocol",
+    "extractUpstreamDynamicFullCard"
+  ],
+  "selectedDetailReplyVerifierPassed": true,
+  "remainingInitialFailures": [
+    "extractUpstreamDynamicEditor",
+    "verifyUpstreamDynamicEditorProtocol"
+  ],
+  "windowsCheckoutFixes": [
+    "Raw Cast notices remain byte-identical in new checkouts.",
+    "Native atomic stage writes use Windows extended paths."
+  ],
+  "nativeDllSha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514",
+  "acceptedMainSourceStillAlpha9": true,
+  "wholeStableKotlinCompiled": false,
+  "stableRuntimeAccepted": false,
+  "newFeaturesRuntimeAccepted": false,
+  "packaged": false,
+  "desktopFolderDeployed": false,
+  "autoPublicationAccepted": false,
+  "preparedOnlyBoundaries": [
+    "Preview narrow compile uses declared Main04 product-class overrides.",
+    "No full stable renderer/caller/window E2E.",
+    "Stream upload and new feature consumers remain to align."
+  ],
+  "excludedRuntimeReferences": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\compile-01\\prepared-stable-preview.jar",
+      "sha256Bytes": "31a9d946f9d64a441e9c5f33c5647bccb63df94dabb37080a4e763d8d2adc37f",
+      "bytes": 256808,
+      "why": "immutable runtime reference, not Git source evidence"
+    }
+  ]
+}

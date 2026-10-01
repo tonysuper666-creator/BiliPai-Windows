@@ -1,0 +1,317 @@
+{
+  "scope": "detail/reply only, no editor upload completeness claim",
+  "sourceCandidates": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "baseLfSha256": "5822d0d10dc29365b42e7a5e0f009530bc12e3bffc7cb4142d42273f1a73d0ce",
+      "candidateLfSha256": "4bea60a6059c1a8f7b9e42caa8ef825ef84c0c59802d852e61f41130fd07c0e7",
+      "changed": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+      "baseLfSha256": "8c90755dcde0a4ae19a286bbcc1fbea302bdf4596d422b548ec157a6e1d2956b",
+      "candidateLfSha256": "16971528080ffe72d67453d5276b3cbe3583c394477b8e5a5144546f3a9433ce",
+      "changed": true
+    },
+    {
+      "path": "desktop/tools/verify-upstream-dynamic-detail-reply-protocol.py",
+      "baseLfSha256": "86908d69e6386ae3b186af123321270722ec72fbd61a631ea264011e8f0cd208",
+      "candidateLfSha256": "86908d69e6386ae3b186af123321270722ec72fbd61a631ea264011e8f0cd208",
+      "changed": false
+    }
+  ],
+  "selectedBodyCount": 31,
+  "selectedBodies": [
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "resolveReadApi",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "61b710e2a80ae72badcf6afa676e390a833df107499361c529786de89e6ed130",
+      "stableLfSha256": "61b710e2a80ae72badcf6afa676e390a833df107499361c529786de89e6ed130",
+      "generatedSelectedSha256Lf": "61b710e2a80ae72badcf6afa676e390a833df107499361c529786de89e6ed130"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "fetchNonWbiCommentFallback",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "2a5422f76e6df782b1c4abd3345a9fe8178ca39d36c7c526978e63b80d3bb13d",
+      "stableLfSha256": "2a5422f76e6df782b1c4abd3345a9fe8178ca39d36c7c526978e63b80d3bb13d",
+      "generatedSelectedSha256Lf": "2a5422f76e6df782b1c4abd3345a9fe8178ca39d36c7c526978e63b80d3bb13d"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "fetchCommentsByApi",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "2c0963c9d9c7b6b34e5a24b1414ca36f1ac468aab0ba09456cecb64edf136455",
+      "stableLfSha256": "2c0963c9d9c7b6b34e5a24b1414ca36f1ac468aab0ba09456cecb64edf136455",
+      "generatedSelectedSha256Lf": "2c0963c9d9c7b6b34e5a24b1414ca36f1ac468aab0ba09456cecb64edf136455"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "fetchGuestHotCommentsCompat",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "ae181a144bae01bddca8c14d96b0e2e4ca10136dfac52b7ff983faaa40eb712a",
+      "stableLfSha256": "ae181a144bae01bddca8c14d96b0e2e4ca10136dfac52b7ff983faaa40eb712a",
+      "generatedSelectedSha256Lf": "ae181a144bae01bddca8c14d96b0e2e4ca10136dfac52b7ff983faaa40eb712a"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "fetchLegacyHotCommentsCompat",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "32d774c0026ff0cb81dcfadc66b472a28409320ee440924d01d84c96f3163bbf",
+      "stableLfSha256": "32d774c0026ff0cb81dcfadc66b472a28409320ee440924d01d84c96f3163bbf",
+      "generatedSelectedSha256Lf": "32d774c0026ff0cb81dcfadc66b472a28409320ee440924d01d84c96f3163bbf"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "fetchCommentEmptySuccessFallback",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "895fcbee66f9156dd1e40269adc2e44c9bdbd2564e1aa83703949afbe9c10f7e",
+      "stableLfSha256": "895fcbee66f9156dd1e40269adc2e44c9bdbd2564e1aa83703949afbe9c10f7e",
+      "generatedSelectedSha256Lf": "895fcbee66f9156dd1e40269adc2e44c9bdbd2564e1aa83703949afbe9c10f7e"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "getCommentsForSubject",
+      "tokenStatus": "changed",
+      "alpha9LfSha256": "3ef0337a9fed3b2722a7cececda95d733a54307e759c21c5d55cf24145be64eb",
+      "stableLfSha256": "43e88c587bb2ac67e14b994de93e634779f54c5cfa93b0c8cc3eeb75cacda1e7",
+      "generatedSelectedSha256Lf": "43e88c587bb2ac67e14b994de93e634779f54c5cfa93b0c8cc3eeb75cacda1e7"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "getCommentCountForSubject",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "51c5076396f99ee443a84a2a7291e30e82007b4a6c5aff5a95c53f04bb437705",
+      "stableLfSha256": "51c5076396f99ee443a84a2a7291e30e82007b4a6c5aff5a95c53f04bb437705",
+      "generatedSelectedSha256Lf": "51c5076396f99ee443a84a2a7291e30e82007b4a6c5aff5a95c53f04bb437705"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "getSortedSubCommentsForSubject",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "e87a2db7d2d1616a321b5836eb45e9e2fd0c74775567afcbc5a3ad9f3c746e35",
+      "stableLfSha256": "e87a2db7d2d1616a321b5836eb45e9e2fd0c74775567afcbc5a3ad9f3c746e35",
+      "generatedSelectedSha256Lf": "e87a2db7d2d1616a321b5836eb45e9e2fd0c74775567afcbc5a3ad9f3c746e35"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "getSubCommentsForSubject",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "82cd0e17c0ac9aa5e96c24c1b9d7ce80af987c4c1b1b0d585a16e806e6798f28",
+      "stableLfSha256": "82cd0e17c0ac9aa5e96c24c1b9d7ce80af987c4c1b1b0d585a16e806e6798f28",
+      "generatedSelectedSha256Lf": "82cd0e17c0ac9aa5e96c24c1b9d7ce80af987c4c1b1b0d585a16e806e6798f28"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "getDialogCommentsForSubject",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "89d438d2efd43dab8105297712dd8d2689ea9251722a18d54196a0d6c9853301",
+      "stableLfSha256": "89d438d2efd43dab8105297712dd8d2689ea9251722a18d54196a0d6c9853301",
+      "generatedSelectedSha256Lf": "89d438d2efd43dab8105297712dd8d2689ea9251722a18d54196a0d6c9853301"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "shouldTryGrpcMainList",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "3ed10fd96a65ad3c91966d3384a6083f91bec6058aa6b5f41aa2bede2019782a",
+      "stableLfSha256": "3ed10fd96a65ad3c91966d3384a6083f91bec6058aa6b5f41aa2bede2019782a",
+      "generatedSelectedSha256Lf": "3ed10fd96a65ad3c91966d3384a6083f91bec6058aa6b5f41aa2bede2019782a"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "resolveCommentMainListPaginationParameters",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "f1ddb5c681f5ae8e1e4d6d8fd70443c78c936891fd0148968a317b330bc76e4e",
+      "stableLfSha256": "f1ddb5c681f5ae8e1e4d6d8fd70443c78c936891fd0148968a317b330bc76e4e",
+      "generatedSelectedSha256Lf": "f1ddb5c681f5ae8e1e4d6d8fd70443c78c936891fd0148968a317b330bc76e4e"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "resolveCommentMainListMode",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "7add7a2f0ba48468c1606ed9ceaebb2377de8b365bea15331877b434996e341a",
+      "stableLfSha256": "7add7a2f0ba48468c1606ed9ceaebb2377de8b365bea15331877b434996e341a",
+      "generatedSelectedSha256Lf": "7add7a2f0ba48468c1606ed9ceaebb2377de8b365bea15331877b434996e341a"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "shouldTryGrpcPagedRequest",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "993754c4a6cf90b72c3123ed746d5dfeed6bd8865107db1cc73536a61544fa14",
+      "stableLfSha256": "993754c4a6cf90b72c3123ed746d5dfeed6bd8865107db1cc73536a61544fa14",
+      "generatedSelectedSha256Lf": "993754c4a6cf90b72c3123ed746d5dfeed6bd8865107db1cc73536a61544fa14"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "addCommentForSubject",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "76357645a88abd655dcb7452bcfadde7f2232f0eb7dffa19b2209f7a77e59276",
+      "stableLfSha256": "76357645a88abd655dcb7452bcfadde7f2232f0eb7dffa19b2209f7a77e59276",
+      "generatedSelectedSha256Lf": "76357645a88abd655dcb7452bcfadde7f2232f0eb7dffa19b2209f7a77e59276"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "likeCommentForSubject",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "d524b6187dbb34d9322540f0a22a9cd61e62bfc5abacf98f3df5e36905fd2165",
+      "stableLfSha256": "d524b6187dbb34d9322540f0a22a9cd61e62bfc5abacf98f3df5e36905fd2165",
+      "generatedSelectedSha256Lf": "d524b6187dbb34d9322540f0a22a9cd61e62bfc5abacf98f3df5e36905fd2165"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "hateCommentForSubject",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "ab3989e0ddfbf066e912733643da9d5cdd04b3ea42dbf0f9c536d4052f31ec8a",
+      "stableLfSha256": "ab3989e0ddfbf066e912733643da9d5cdd04b3ea42dbf0f9c536d4052f31ec8a",
+      "generatedSelectedSha256Lf": "ab3989e0ddfbf066e912733643da9d5cdd04b3ea42dbf0f9c536d4052f31ec8a"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "deleteCommentForSubject",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "ab367a7ad62cd465d934b9623abed4bd1aef58f484aa4ee961a82893629e45b1",
+      "stableLfSha256": "ab367a7ad62cd465d934b9623abed4bd1aef58f484aa4ee961a82893629e45b1",
+      "generatedSelectedSha256Lf": "ab367a7ad62cd465d934b9623abed4bd1aef58f484aa4ee961a82893629e45b1"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "setCommentTopForSubject",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "cde0eb4a9c29204d634fb6d0759c8cbac46df330548a125f9c946d35549e9755",
+      "stableLfSha256": "cde0eb4a9c29204d634fb6d0759c8cbac46df330548a125f9c946d35549e9755",
+      "generatedSelectedSha256Lf": "cde0eb4a9c29204d634fb6d0759c8cbac46df330548a125f9c946d35549e9755"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "reportCommentForSubject",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "9234202b78bda49b2f175a8df87b310a2965ca4d992277d5f0a573a1af32e39b",
+      "stableLfSha256": "9234202b78bda49b2f175a8df87b310a2965ca4d992277d5f0a573a1af32e39b",
+      "generatedSelectedSha256Lf": "9234202b78bda49b2f175a8df87b310a2965ca4d992277d5f0a573a1af32e39b"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "resolveSyncToDynamicField",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "336db7698c491d7df31b9f0927121c36cc2f13900531018fa33fc37d42f78da2",
+      "stableLfSha256": "336db7698c491d7df31b9f0927121c36cc2f13900531018fa33fc37d42f78da2",
+      "generatedSelectedSha256Lf": "336db7698c491d7df31b9f0927121c36cc2f13900531018fa33fc37d42f78da2"
+    },
+    {
+      "producer": "reply",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "function": "resolveReplyTopActionField",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "27f3f8bc3f69ccc2cfd3f05cc16197e2902ad23bdbd8ec62e85bc8a0d128c6ed",
+      "stableLfSha256": "27f3f8bc3f69ccc2cfd3f05cc16197e2902ad23bdbd8ec62e85bc8a0d128c6ed",
+      "generatedSelectedSha256Lf": "27f3f8bc3f69ccc2cfd3f05cc16197e2902ad23bdbd8ec62e85bc8a0d128c6ed"
+    },
+    {
+      "producer": "detail",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "function": "getDynamicDetail",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "a5ff61adec1f886d0541d2468cc7829c72c2314ec2aa0fc351200eb60754419c",
+      "stableLfSha256": "a5ff61adec1f886d0541d2468cc7829c72c2314ec2aa0fc351200eb60754419c",
+      "generatedSelectedSha256Lf": "a5ff61adec1f886d0541d2468cc7829c72c2314ec2aa0fc351200eb60754419c"
+    },
+    {
+      "producer": "detail",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "function": "signDynamicWbi",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "2fd2145a0ca7f98dd4b72dd7ef7699ef965ca353e4feaccd42d239dbd34efc71",
+      "stableLfSha256": "2fd2145a0ca7f98dd4b72dd7ef7699ef965ca353e4feaccd42d239dbd34efc71",
+      "generatedSelectedSha256Lf": "2fd2145a0ca7f98dd4b72dd7ef7699ef965ca353e4feaccd42d239dbd34efc71"
+    },
+    {
+      "producer": "detail",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "function": "fetchWebDetailItem",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "42773b6aecf65207f2bd656018e50513bd494a434c206f9f98e6b3ff8318a9a8",
+      "stableLfSha256": "42773b6aecf65207f2bd656018e50513bd494a434c206f9f98e6b3ff8318a9a8",
+      "generatedSelectedSha256Lf": "42773b6aecf65207f2bd656018e50513bd494a434c206f9f98e6b3ff8318a9a8"
+    },
+    {
+      "producer": "detail",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "function": "fetchOpusDetail",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "71470e4fd7b408eb3ff8ee0368db5d90723fda4ffaa8b4321dfc1cfc375fe6a8",
+      "stableLfSha256": "71470e4fd7b408eb3ff8ee0368db5d90723fda4ffaa8b4321dfc1cfc375fe6a8",
+      "generatedSelectedSha256Lf": "71470e4fd7b408eb3ff8ee0368db5d90723fda4ffaa8b4321dfc1cfc375fe6a8"
+    },
+    {
+      "producer": "detail",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "function": "fetchDesktopDetailItem",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "651e9021e4681d409284985219c9addd12aaedb7422d5fd2c07675487c68bc96",
+      "stableLfSha256": "651e9021e4681d409284985219c9addd12aaedb7422d5fd2c07675487c68bc96",
+      "generatedSelectedSha256Lf": "651e9021e4681d409284985219c9addd12aaedb7422d5fd2c07675487c68bc96"
+    },
+    {
+      "producer": "detail",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "function": "getArticleDetail",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "a0ee8cc1fa1f1df02e4703dbf6eb21f0ff3546dbd01a32459d03962db76e528b",
+      "stableLfSha256": "a0ee8cc1fa1f1df02e4703dbf6eb21f0ff3546dbd01a32459d03962db76e528b",
+      "generatedSelectedSha256Lf": "a0ee8cc1fa1f1df02e4703dbf6eb21f0ff3546dbd01a32459d03962db76e528b"
+    },
+    {
+      "producer": "detail",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "function": "fetchOpusArticleBlocks",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "d3599a6f2c1f497ebff853247f3986154ef639291b1c22db3da717dfc3715a96",
+      "stableLfSha256": "d3599a6f2c1f497ebff853247f3986154ef639291b1c22db3da717dfc3715a96",
+      "generatedSelectedSha256Lf": "d3599a6f2c1f497ebff853247f3986154ef639291b1c22db3da717dfc3715a96"
+    },
+    {
+      "producer": "detail",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "function": "ArticleViewData.toUiModel",
+      "tokenStatus": "unchanged",
+      "alpha9LfSha256": "8ec03c6c3a31f9728a2942a488d581146a3783c9d7d08765331b7d97944dee5c",
+      "stableLfSha256": "8ec03c6c3a31f9728a2942a488d581146a3783c9d7d08765331b7d97944dee5c",
+      "generatedSelectedSha256Lf": "8ec03c6c3a31f9728a2942a488d581146a3783c9d7d08765331b7d97944dee5c"
+    }
+  ],
+  "fullCopiedPolicies": [
+    "DynamicDetailFallbackPolicy (unchanged)",
+    "CommentReadAccessPolicy (two stable behavior changes)"
+  ],
+  "fullCopiedGrpc": "Stable CommentGrpcRepository includes parseMainListReply field23 + added parseVoteCard and exact ReplyVoteCard model references",
+  "modelOwner": "ResponseModels.kt pinned/imported by Root; no second model producer",
+  "detailContextSources": "ApiClient selected detail endpoints unchanged; DynamicDetailScreen changed outside these protocol bodies and remains other UI producer responsibility",
+  "soleOperationsFragments": "Existing Operations comment/detail blocks already exactly equal to stable generated fragments; verifier passed without Operations edits",
+  "generatedKotlinFiles": 6,
+  "MainChanged": false,
+  "sharedGradle": false,
+  "newDependencies": false
+}

@@ -1,0 +1,245 @@
+{
+  "schema": "prepared-stable-preview-frozen-evidence-v1",
+  "frozen": true,
+  "preparedOnly": true,
+  "sourceTag": "v0.2.3",
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifactRows": 47,
+  "artifacts": [
+    {
+      "path": "audit-preview.py",
+      "bytes": 8544,
+      "sha256Bytes": "e14afb91f35bed6c6ec76cf85551fdfc6ba6df125ed23c3b0927edbf5e816f3a"
+    },
+    {
+      "path": "compile-01/compile-result.json",
+      "bytes": 12070,
+      "sha256Bytes": "b64ec1ca8d16256c3b902a387e2c5ff480699c215bed8b783eb660a28a9809cd"
+    },
+    {
+      "path": "compile-01/compiler-inputs.json",
+      "bytes": 3668,
+      "sha256Bytes": "92030b82f997e9ab037836ca9d56ec8da9f2ff39d46a4d4394e074173179078b"
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "bytes": 24543,
+      "sha256Bytes": "5ebdfde882880b07fc99e5efdde509ddac8ae4f53fbdd25315e4c1a72b18aa2e"
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-01/input-main04-manifest.json",
+      "bytes": 253558,
+      "sha256Bytes": "7bc5ac8875dadf38510120db6619bd6e748e7f790a47afc11374e14114f25865"
+    },
+    {
+      "path": "compile-01/input-ordered-runtime-cp.json",
+      "bytes": 34464,
+      "sha256Bytes": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2"
+    },
+    {
+      "path": "compile-01/prepared-stable-preview.jar",
+      "bytes": 256808,
+      "sha256Bytes": "31a9d946f9d64a441e9c5f33c5647bccb63df94dabb37080a4e763d8d2adc37f"
+    },
+    {
+      "path": "compile-01/runtime-pins-after.json",
+      "bytes": 41526,
+      "sha256Bytes": "41c6e737d68e91d261071ad5f7a60e02ce9bb1d43b6fb946a6829446f292b4ad"
+    },
+    {
+      "path": "compile-01/runtime-pins-before.json",
+      "bytes": 41526,
+      "sha256Bytes": "41c6e737d68e91d261071ad5f7a60e02ce9bb1d43b6fb946a6829446f292b4ad"
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopOriginalImagePreviewRenderer.kt",
+      "bytes": 109276,
+      "sha256Bytes": "ba5665c13bb2eddeae4f9a3a126dc229231b7e310a26634c8de4d7d0dbc004fb"
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopOriginalImageUrlPolicy.kt",
+      "bytes": 1706,
+      "sha256Bytes": "5ed1711bf4eff2b489bba13c44d6842187684bbea25f2cf66d56516996865be9"
+    },
+    {
+      "path": "compile-01/source-inputs/ImagePreviewDecodePolicy.kt",
+      "bytes": 1083,
+      "sha256Bytes": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a"
+    },
+    {
+      "path": "compile-01/source-inputs/ImagePreviewSourceAnchor.kt",
+      "bytes": 1915,
+      "sha256Bytes": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395"
+    },
+    {
+      "path": "compile-01/source-inputs/ImagePreviewTransitionPolicy.kt",
+      "bytes": 21375,
+      "sha256Bytes": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5"
+    },
+    {
+      "path": "compile-01/source-inputs/ZoomableImage.kt",
+      "bytes": 16409,
+      "sha256Bytes": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0"
+    },
+    {
+      "path": "compile-preview.py",
+      "bytes": 6000,
+      "sha256Bytes": "74eb8bf6e6b9dcca41f99c382efe212daead500f2efa916e20bc5a2289c4f00d"
+    },
+    {
+      "path": "direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "bytes": 1083,
+      "sha256Bytes": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a"
+    },
+    {
+      "path": "direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "bytes": 1915,
+      "sha256Bytes": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395"
+    },
+    {
+      "path": "direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "bytes": 21375,
+      "sha256Bytes": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5"
+    },
+    {
+      "path": "direct-original/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "bytes": 16409,
+      "sha256Bytes": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0"
+    },
+    {
+      "path": "freeze.py",
+      "bytes": 9761,
+      "sha256Bytes": "d2dfedcdcf91d0d71b5c056811abf7ebd8cbca668424619abfb178ea8573ae04"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRenderer.kt",
+      "bytes": 109276,
+      "sha256Bytes": "ba5665c13bb2eddeae4f9a3a126dc229231b7e310a26634c8de4d7d0dbc004fb"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImageUrlPolicy.kt",
+      "bytes": 1706,
+      "sha256Bytes": "5ed1711bf4eff2b489bba13c44d6842187684bbea25f2cf66d56516996865be9"
+    },
+    {
+      "path": "handoff.json",
+      "bytes": 1691,
+      "sha256Bytes": "b6d77aee0aa13c78401f03d3a25b3c370624e1035a7e7bd11d5a6ffd7c3d9d8c"
+    },
+    {
+      "path": "integration-notes.txt",
+      "bytes": 3663,
+      "sha256Bytes": "0697880c48e7d402df2f0c616c7f4f4757878d043621aa20025bc6703193a7e5"
+    },
+    {
+      "path": "original-selected-preview-prefix.kt",
+      "bytes": 114428,
+      "sha256Bytes": "00665134006288a96749ded8281d617fad6dca5f599ffab4c40e0dc479bf091d"
+    },
+    {
+      "path": "original-v023/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+      "bytes": 1083,
+      "sha256Bytes": "595f2c56efb323e6f7900a81bb7e54317018e54c49750e59103430cea6b9123a"
+    },
+    {
+      "path": "original-v023/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "bytes": 145795,
+      "sha256Bytes": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb"
+    },
+    {
+      "path": "original-v023/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.kt",
+      "bytes": 1915,
+      "sha256Bytes": "33d5e2365bd461fac6fd9673abc1cb0753cd2b9cd9df9016c11bdbfe3ec04395"
+    },
+    {
+      "path": "original-v023/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+      "bytes": 21375,
+      "sha256Bytes": "1351d357753b1e3f56433cc96d5e2b09c1d80f43ce3fb988cd6a1b7b363edac5"
+    },
+    {
+      "path": "original-v023/app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "bytes": 16409,
+      "sha256Bytes": "53b284eb4e569c9fe6e903998a7bf4b1893e6ca23d0ec35289f2970e01bc5bc0"
+    },
+    {
+      "path": "platform-diff-rows.json",
+      "bytes": 20322,
+      "sha256Bytes": "df069cd0d55c7f578e7acb032e114864fe8b9851987c4925023bb0034b30634f"
+    },
+    {
+      "path": "preparation-contract.json",
+      "bytes": 2681,
+      "sha256Bytes": "9cefbc1c4bb6cb8e5b1cf99f7bea82cc49c4c887ca0bcaa2c1a942de93a68695"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 7030,
+      "sha256Bytes": "f55be613a7f7c4753f7c5f2f3816efc81d57ba34cc7f09c68ab59131a9a2bc0c"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-card.py",
+      "bytes": 32035,
+      "sha256Bytes": "c101a060f42b86f918cf724f365e6908cfd3e5582457412290aec88e79cbc1ae"
+    },
+    {
+      "path": "probe-same-producer-block.py",
+      "bytes": 7994,
+      "sha256Bytes": "37d02e8354ecffdebbe028cbbbe7926a5b7ee979a550795f3ebe21e16f103c14"
+    },
+    {
+      "path": "producer.patch",
+      "bytes": 3991,
+      "sha256Bytes": "cc1067b0d9bdcbb8e79aaefff31a5fb35a6167ca56bf61070c307f0aef8bf8ec"
+    },
+    {
+      "path": "reviewed-platform-adaptation-contract.json",
+      "bytes": 12541,
+      "sha256Bytes": "a0f6a768e2fdd5d45b37f0a4657e56d1aab220f8807c4b3205935f620c160366"
+    },
+    {
+      "path": "source-contract-result.json",
+      "bytes": 8893,
+      "sha256Bytes": "d6086e0de576ccd6ff0d855769c06013f6725b1e431163d06b0aa224f77b7268"
+    },
+    {
+      "path": "stable-preview-platform-adaptations.patch",
+      "bytes": 20414,
+      "sha256Bytes": "c2b3aef2bae5d3e667c39ae8c66c1a2be6410ced65d6ae7beb14c6a9b388d1e2"
+    },
+    {
+      "path": "stable-source-owner-inventory.json",
+      "bytes": 7287,
+      "sha256Bytes": "ce0279275adfaf4abdc031a75ea4c20198c4bbe3f40bf6f1a80134b87685139b"
+    },
+    {
+      "path": "tool-inputs/compile-miuix.py",
+      "bytes": 5045,
+      "sha256Bytes": "1721b77c3e3c453eb609fe68408cc5853da923c59468368ec71fc0ce3bca3cbc"
+    },
+    {
+      "path": "tool-inputs/extract-appearance-platform.py",
+      "bytes": 7078,
+      "sha256Bytes": "e00ed701f172467fafe4c580c558943335f00ccc5eeca36f9e012818a68a6e92"
+    },
+    {
+      "path": "tool-inputs/extract-upstream-media.py",
+      "bytes": 12009,
+      "sha256Bytes": "cf2067ad47f38dc9f54e3e37be463a4fe61f91599e209f7a314323392c88cf78"
+    },
+    {
+      "path": "tool-inputs/extract-upstream-plugins.py",
+      "bytes": 34124,
+      "sha256Bytes": "a118c2da5c4cd43a0796f8f4d4ce7acfacbe4ed22809f2685a5bd0c7ce2e09d4"
+    },
+    {
+      "path": "tool-inputs/sync-upstream.py",
+      "bytes": 28670,
+      "sha256Bytes": "65a1a3bf226fb1093395833d168e7a35b0ba4c04b9d8bb84e5909b02b1df5e0f"
+    }
+  ]
+}

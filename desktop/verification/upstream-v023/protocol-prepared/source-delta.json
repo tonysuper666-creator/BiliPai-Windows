@@ -1,0 +1,144 @@
+{
+  "alpha9Commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "allSelectedSourceFilesPinned": true,
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "alpha9LfSha256": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b",
+      "stableLfSha256": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b",
+      "pinnedGitBlob": "e343c21510d6519a63def7b9906ac9400087bc11",
+      "currentGitBlob": "e343c21510d6519a63def7b9906ac9400087bc11",
+      "fullFileTokenEqual": true,
+      "stableOriginalFunctions": 35,
+      "changedOrAddedFunctions": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "alpha9LfSha256": "a04d5aaf29a8416304bc6198724247f86719b9d0e6984b6098d0a6c4732d5445",
+      "stableLfSha256": "a04d5aaf29a8416304bc6198724247f86719b9d0e6984b6098d0a6c4732d5445",
+      "pinnedGitBlob": "835b61c21c45c4c4dee5652acbb1b10a4d220925",
+      "currentGitBlob": "835b61c21c45c4c4dee5652acbb1b10a4d220925",
+      "fullFileTokenEqual": true,
+      "stableOriginalFunctions": 4,
+      "changedOrAddedFunctions": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicDetailFallbackPolicy.kt",
+      "alpha9LfSha256": "14eece47cbe4afbe048e6a782c72352734f2f419888c3c5fc6ab40b8dda227cc",
+      "stableLfSha256": "14eece47cbe4afbe048e6a782c72352734f2f419888c3c5fc6ab40b8dda227cc",
+      "pinnedGitBlob": "3813bad824d50df4c4339a614d5b710a7ed044e5",
+      "currentGitBlob": "3813bad824d50df4c4339a614d5b710a7ed044e5",
+      "fullFileTokenEqual": true,
+      "stableOriginalFunctions": 20,
+      "changedOrAddedFunctions": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "alpha9LfSha256": "80fe4b7dc2d388641b3b5a5cf0cb287567274d91379816131fd1c354707cd998",
+      "stableLfSha256": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "pinnedGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "currentGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "fullFileTokenEqual": false,
+      "stableOriginalFunctions": 53,
+      "changedOrAddedFunctions": [
+        "contentLength#1",
+        "contentType#1",
+        "getCommentsForSubject#1",
+        "isOneShot#1",
+        "queryContentImageSize#1",
+        "uploadCommentImage#1",
+        "uploadCommentImage#2",
+        "uploadCommentImagePart#1",
+        "writeTo#1"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt",
+      "alpha9LfSha256": "c486a199ef6eaee6ec5a16d84c3a82688176e237c6a57519124d51bcee0d7a87",
+      "stableLfSha256": "0e0d126dfaaa4684a5d97af698b7fabe0898868ce1e36ad48433449ec079a394",
+      "pinnedGitBlob": "a200d4b7a017ca7ae4f92c402a69cd6e4e45b558",
+      "currentGitBlob": "a200d4b7a017ca7ae4f92c402a69cd6e4e45b558",
+      "fullFileTokenEqual": false,
+      "stableOriginalFunctions": 10,
+      "changedOrAddedFunctions": [
+        "hasRenderableCommentPayload#1",
+        "shouldFallbackGrpcCommentReadOnMissingLocation#1"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt",
+      "alpha9LfSha256": "eddc5e3b092e785944c66a70b5c26f788551fdcad0e1ab8d137f33b679f52d07",
+      "stableLfSha256": "f9e73c36e47e4ec329f7bf2dcda2984210a3f4f41376519ec111b84ea71318d3",
+      "pinnedGitBlob": "2a2ecd2d07bc8879ac6692affda38234c668855f",
+      "currentGitBlob": "2a2ecd2d07bc8879ac6692affda38234c668855f",
+      "fullFileTokenEqual": false,
+      "stableOriginalFunctions": 29,
+      "changedOrAddedFunctions": [
+        "parseMainListReply#1",
+        "parseVoteCard#1"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "alpha9LfSha256": "f204c21e0e5a21e83b5b2b20ce59d822f8ac74cc8f109663da408e250506a373",
+      "stableLfSha256": "2f85544e1e973dd0e7178077ef5c1f439b798a1d86b46701803adeb2a7c0364f",
+      "pinnedGitBlob": "9288ff19be144f051ef2dfe1917685289538e897",
+      "currentGitBlob": "9288ff19be144f051ef2dfe1917685289538e897",
+      "fullFileTokenEqual": false,
+      "stableOriginalFunctions": 8,
+      "changedOrAddedFunctions": [
+        "uploadImage#1"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleContentLoadPolicy.kt",
+      "alpha9LfSha256": "d486c186c42c0549a291f7fff35712167088e8d4ca5c30c5ac58885c5a6fe987",
+      "stableLfSha256": "d486c186c42c0549a291f7fff35712167088e8d4ca5c30c5ac58885c5a6fe987",
+      "pinnedGitBlob": "de3a2658e9db7d6f0a6fd681e5b5bee65dd3edff",
+      "currentGitBlob": "de3a2658e9db7d6f0a6fd681e5b5bee65dd3edff",
+      "fullFileTokenEqual": true,
+      "stableOriginalFunctions": 7,
+      "changedOrAddedFunctions": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "alpha9LfSha256": "33e0d081fc70ab587d333eb52a21a193932be2dbc5835f409901139d7a8212dd",
+      "stableLfSha256": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "pinnedGitBlob": "c8fddc1d08933deed87784474ce12c464ca49a1f",
+      "currentGitBlob": "c8fddc1d08933deed87784474ce12c464ca49a1f",
+      "fullFileTokenEqual": false,
+      "stableOriginalFunctions": 342,
+      "changedOrAddedFunctions": [
+        "addDanmakuFilterRule#1",
+        "deleteDanmakuFilterRule#1",
+        "getAllBgmRecommendList#1",
+        "getBgmDetail#1",
+        "getDanmakuFilterRules#1",
+        "updateBgmWish#1"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+      "alpha9LfSha256": "0c4502996df04147f5b5dd98414ad53d0390d91a14aa8baa9099863623ffea1d",
+      "stableLfSha256": "fed6db98e75157fdfef5f9de3916a690808c506c10656747f90b504a1e95221f",
+      "pinnedGitBlob": "8d5fdfd4285d467b27e27c2610f79ff34f392b68",
+      "currentGitBlob": "8d5fdfd4285d467b27e27c2610f79ff34f392b68",
+      "fullFileTokenEqual": false,
+      "stableOriginalFunctions": 15,
+      "changedOrAddedFunctions": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "alpha9LfSha256": "eb0eefcbfb12d5ee5e06d312095797fcf67cbf7264fb32040cd4391f38d1d0cf",
+      "stableLfSha256": "ab0d6cf956ba9915445f421f299ea48e14a7561edd2a609973700531bf0f67b4",
+      "pinnedGitBlob": "6c099b54477ede53ffad412f05ebbd61aa098bea",
+      "currentGitBlob": "6c099b54477ede53ffad412f05ebbd61aa098bea",
+      "fullFileTokenEqual": false,
+      "stableOriginalFunctions": 2,
+      "changedOrAddedFunctions": [
+        "DynamicDetailScreen#1"
+      ]
+    }
+  ]
+}

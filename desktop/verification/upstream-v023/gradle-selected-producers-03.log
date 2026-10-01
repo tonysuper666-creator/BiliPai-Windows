@@ -1,0 +1,15 @@
+> Task :prepareUpstreamSources UP-TO-DATE
+> Task :extractUpstreamCrashPrompt
+
+> Task :extractUpstreamDynamicGalleryMotionPhoto
+PASS original packing with approved three-line XMP attribute fix and unchanged gallery policy; generated 2 Kotlin sources
+
+> Task :extractUpstreamDynamicReplyProtocol
+> Task :extractUpstreamDynamicDetailProtocol
+
+> Task :verifyUpstreamDynamicDetailReplyProtocol
+PASS original-source detail and reply request blocks in the existing Operations class
+
+BUILD SUCCESSFUL in 3s
+6 actionable tasks: 5 executed, 1 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html
