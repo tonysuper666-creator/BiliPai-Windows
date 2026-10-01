@@ -1,0 +1,10 @@
+--- app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricsView.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\frozen-music-slice\generation-proof\com\android\purebilibili\feature\audio\lyrics\halcyon\AppleMusicLyricsView.kt
+@@ -30,7 +30,6 @@
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.layout.onSizeChanged
+ import androidx.compose.ui.platform.LocalDensity
+-import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.text.TextStyle
+ import androidx.compose.ui.text.font.FontFamily
+ import androidx.compose.ui.text.font.FontWeight

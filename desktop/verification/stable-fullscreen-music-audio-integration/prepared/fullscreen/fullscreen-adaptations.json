@@ -1,0 +1,428 @@
+{
+  "originalSHA256LF": "62e28947eccd2a5dd70d1e0ee9458475001c9411af5a02d86c462c7ff7528feb",
+  "candidateSHA256LF": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033",
+  "edits": [
+    {
+      "label": "Same-player six-field owner replaces Android singleton",
+      "before": "import com.android.purebilibili.feature.video.player.MiniPlayerManager",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalFullscreenMiniOwner as MiniPlayerManager"
+    },
+    {
+      "label": "Windows required owner remains internal until actual assembly",
+      "before": "fun FullscreenPlayerOverlay(",
+      "after": "internal fun FullscreenPlayerOverlay("
+    },
+    {
+      "label": "Required same entry Window/Section owner",
+      "before": "    val context = LocalContext.current",
+      "after": "    val platform = LocalDesktopOriginalFullscreenPlatform.current\n    val section = platform.section\n    val context = section.settingsContext"
+    },
+    {
+      "label": "Real owned MPV volume",
+      "before": "    val audioManager = remember { context.getSystemService(Context.AUDIO_SERVICE) as AudioManager }",
+      "after": "    val audioManager = section.volume"
+    },
+    {
+      "label": "Actual volume scale",
+      "before": "    val maxVolume = remember { audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) }",
+      "after": "    val maxVolume = remember(audioManager) { audioManager.maximumStep() }"
+    },
+    {
+      "label": "Sole actual native viewport",
+      "before": "    var playerViewRef by remember { mutableStateOf<PlayerView?>(null) }",
+      "after": "    val playerViewRef = section.viewport"
+    },
+    {
+      "label": "Sole original Overlay document owner",
+      "before": "    val danmakuManager = rememberDanmakuManager(miniPlayerManager.currentBvid ?: player ?: miniPlayerManager)",
+      "after": "    val danmakuManager = section.danmaku"
+    },
+    {
+      "label": "Actual owned viewport brightness, not guessed physical Windows brightness",
+      "before": "    var currentBrightness by remember { \n        mutableFloatStateOf(\n            try {\n                Settings.System.getInt(context.contentResolver, Settings.System.SCREEN_BRIGHTNESS) / 255f\n            } catch (e: Exception) { 0.5f }\n        )\n    }\n\n",
+      "after": "    var currentBrightness by remember(section) {\n        mutableFloatStateOf(section.readViewportBrightness())\n    }\n\n"
+    },
+    {
+      "label": "Original video-size listener reads the same native StateFlow, without another poll actor",
+      "before": "    DisposableEffect(player) {\n        val exoPlayer = player\n        if (exoPlayer == null) {\n            isVerticalContent = false\n            onDispose { }\n        } else {\n            fun updateVerticalContent() {\n                val size = exoPlayer.videoSize\n                isVerticalContent = size.width > 0 && size.height > size.width\n            }\n            updateVerticalContent()\n            val listener = object : Player.Listener {\n                override fun onVideoSizeChanged(videoSize: androidx.media3.common.VideoSize) {\n                    isVerticalContent = videoSize.width > 0 && videoSize.height > videoSize.width\n                }\n            }\n            exoPlayer.addListener(listener)\n            onDispose { exoPlayer.removeListener(listener) }\n        }\n    }\n\n",
+      "after": "    LaunchedEffect(player) {\n        if (player == null) {\n            isVerticalContent = false\n        } else {\n            player.state.collectLatest { _ ->\n                val size = player.videoSize\n                isVerticalContent = size.width > 0 && size.height > size.width\n            }\n        }\n    }\n\n"
+    },
+    {
+      "label": "Required existing Window fullscreen/recovery/keep-awake leases; no new presentation authority",
+      "before": "    // 进入全屏时设置横屏和沉浸式\n    DisposableEffect(lifecycleOwner, player, playerViewRef) {\n        val activity = (context as? Activity) ?: return@DisposableEffect onDispose {}\n        val window = activity.window\n        val originalOrientation = activity.requestedOrientation\n        val originalSystemUi = AppWindowSystemUiController.capture(window)\n        val desktopFullscreenRequested =\n            AppWindowSystemUiController.requestDesktopFullscreen(activity, enter = true)\n\n        // 设置横屏\n        activity.applyPlayerRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)\n        \n        //  首次进入时应用沉浸式\n        AppWindowSystemUiController.enterImmersive(window)\n        \n        //  [关键修复] 生命周期观察器：返回前台时重新应用沉浸式模式\n        val lifecycleObserver = androidx.lifecycle.LifecycleEventObserver { _, event ->\n            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {\n                AppWindowSystemUiController.enterImmersive(window)\n                val view = playerViewRef\n                val exoPlayer = player\n                if (shouldRebindFullscreenSurfaceOnResume(\n                        hasPlayerView = view != null,\n                        hasPlayer = exoPlayer != null\n                    )\n                ) {\n                    rebindPlayerSurfaceIfNeeded(\n                        playerView = view!!,\n                        player = exoPlayer!!\n                    )\n                    Logger.d(\"FullscreenPlayer\", \"🎬 ON_RESUME fullscreen surface rebind applied\")\n                }\n            }\n        }\n        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)\n        \n        onDispose {\n            //  移除生命周期观察器\n            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)\n            \n            activity.applyPlayerRequestedOrientation(\n                resolveFullscreenOverlayExitRequestedOrientation(\n                    originalRequestedOrientation = originalOrientation\n                )\n            )\n            \n            AppWindowSystemUiController.restore(window, originalSystemUi)\n            if (desktopFullscreenRequested) {\n                AppWindowSystemUiController.requestDesktopFullscreen(activity, enter = false)\n            }\n            \n            // 取消屏幕常亮\n            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)\n        }\n    }\n\n    DisposableEffect(context, keepFullscreenPlaybackAwake) {\n        val hostWindow = (context as? Activity)?.window\n        if (keepFullscreenPlaybackAwake) {\n            hostWindow?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)\n        } else {\n            hostWindow?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)\n        }\n        onDispose {\n            if (keepFullscreenPlaybackAwake) {\n                hostWindow?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)\n            }\n        }\n    }\n    \n",
+      "after": "    // Actual Window presentation lease replaces Android orientation/system bars.\n    DisposableEffect(lifecycleOwner, player, playerViewRef) {\n        val lease = platform.acquireFullscreen(player)\n        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->\n            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME && player != null &&\n                shouldRebindFullscreenSurfaceOnResume(section.viewportAttached, true)) {\n                platform.recoverSurface(player)\n            }\n        }\n        lifecycleOwner.lifecycle.addObserver(observer)\n        onDispose {\n            lifecycleOwner.lifecycle.removeObserver(observer)\n            lease.close()\n        }\n    }\n    DisposableEffect(context, keepFullscreenPlaybackAwake) {\n        val lease = platform.acquireKeepAwake(keepFullscreenPlaybackAwake)\n        onDispose { lease.close() }\n    }\n\n"
+    },
+    {
+      "label": "Original volume read through same MPV port",
+      "before": "audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)",
+      "after": "audioManager.currentStep()",
+      "count": 2
+    },
+    {
+      "label": "Same volume mute action",
+      "before": "audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, AudioManager.FLAG_SHOW_UI)",
+      "after": "audioManager.setStep(0)"
+    },
+    {
+      "label": "Same volume mute action",
+      "before": "audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume / 3, AudioManager.FLAG_SHOW_UI)",
+      "after": "audioManager.setStep(maxVolume / 3)"
+    },
+    {
+      "label": "Original gesture target applies to actual MPV volume",
+      "before": "audioManager.setStreamVolume(\n                                    AudioManager.STREAM_MUSIC,\n                                    (gestureValue * maxVolume).toInt(),\n                                    0\n                                )",
+      "after": "audioManager.setStep((gestureValue * maxVolume).toInt())"
+    },
+    {
+      "label": "Actual source-owned viewport dim replaces Android window brightness",
+      "before": "                                (context as? Activity)?.window?.let { window ->\n                                    val params = window.attributes\n                                    params.screenBrightness = gestureValue\n                                    window.attributes = params\n                                }\n",
+      "after": "                                section.setViewportBrightness(gestureValue, requestSystemBrightness = false)\n"
+    },
+    {
+      "label": "Existing Overlay source binding lease replaces attach/detach Android player",
+      "before": "        // 播放器 owner 成对绑定；渲染 View 由 AndroidView.onRelease 独立解绑。\n        DisposableEffect(player) {\n            player?.let { danmakuManager.attachPlayer(it) }\n            onDispose {\n                player?.let(danmakuManager::detachPlayer)\n            }\n        }\n        \n",
+      "after": "        DisposableEffect(player) {\n            val lease = player?.let(platform::acquireDanmakuPlayer)\n            onDispose { lease?.close() }\n        }\n\n"
+    },
+    {
+      "label": "Original measured viewport uses the sole same-source native transport",
+      "before": "                AndroidView(\n                    factory = { ctx ->\n                        PlayerView(ctx).apply {\n                            this.player = exoPlayer\n                            useController = false\n                            keepScreenOn = keepFullscreenPlaybackAwake\n                            setShowBuffering(PlayerView.SHOW_BUFFERING_NEVER)\n                            resizeMode = aspectRatio.playerResizeMode\n                            playerViewRef = this\n                        }\n                    },\n                    update = { playerView ->\n                        playerView.player = exoPlayer\n                        playerView.keepScreenOn = keepFullscreenPlaybackAwake\n                        playerView.resizeMode = aspectRatio.playerResizeMode\n                        playerViewRef = playerView\n                    },\n                    modifier = viewportModifier\n                )",
+      "after": "                section.NativeViewport(\n                    modifier = viewportModifier, layout = viewportLayout,\n                    resizeMode = aspectRatio.playerResizeMode,\n                    revealAlpha = 1f, revealScale = 1f, freeScale = 1f,\n                    panX = 0f, panY = 0f, flipHorizontal = false, flipVertical = false,\n                    visible = true, keepAwake = keepFullscreenPlaybackAwake,\n                )"
+    },
+    {
+      "label": "Original sized ordinary danmaku view maps existing native Overlay carrier",
+      "before": "                    AndroidView(\n                        factory = { ctx ->\n                            DanmakuRenderView(ctx).apply {\n                                setBackgroundColor(android.graphics.Color.TRANSPARENT)\n                                configureAsPassiveDanmakuOverlay()\n                                danmakuManager.attachView(this)\n                                com.android.purebilibili.core.util.Logger.d(\"FullscreenDanmaku\", \" DanmakuView (RenderEngine) created for fullscreen\")\n                            }\n                        },\n                        update = { view ->\n                            if (view.width > 0 && view.height > 0) {\n                                val sizeTag = \"${view.width}x${view.height}\"\n                                if (view.tag != sizeTag) {\n                                    view.tag = sizeTag\n                                    danmakuManager.attachView(view)\n                                    com.android.purebilibili.core.util.Logger.d(\"FullscreenDanmaku\", \" DanmakuView update: size=${view.width}x${view.height}\")\n                                }\n                            }\n                        },\n                        onRelease = { view -> danmakuManager.detachView(view) },\n                        modifier = viewportModifier\n                    )",
+      "after": "                    com.android.purebilibili.feature.video.danmaku.resolveDanmakuViewport(\n                        viewportLayout.width, viewportLayout.height,\n                        density.density, section.danmakuReferencePixels,\n                    )?.let { viewport ->\n                        section.NativeDanmakuSurface(viewport, viewportModifier)\n                    }"
+    },
+    {
+      "label": "Actual sole settings consumer keeps the original weight update",
+      "before": "                    danmakuManager.weightFilterLevel = it",
+      "after": "                    danmakuManager.updateSettings(danmakuSettings.copy(weightFilterLevel = it))"
+    },
+    {
+      "label": "Same global preference snapshot seeds exact original scope",
+      "before": "initialValue = DanmakuSettings(),",
+      "after": "initialValue = section.danmakuPreferences.currentSettings(danmakuScope),",
+      "count": 1
+    },
+    {
+      "label": "Sole native HWND foreground carrier encloses the original full controls",
+      "before": "    Box(\n        modifier = Modifier",
+      "after": "    platform.Surface(player) {\n    Box(\n        modifier = Modifier",
+      "count": 1
+    },
+    {
+      "label": "Close sole carrier around original foreground",
+      "before": "\n}\n\n@Composable\nprivate fun GestureIndicator",
+      "after": "\n    }\n}\n\n@Composable\nprivate fun GestureIndicator"
+    },
+    {
+      "label": "Only native foreground root becomes transparent; original scrims remain",
+      "before": ".background(Color.Black)\n            .hazeSourceCompat",
+      "after": ".background(Color.Transparent)\n            .hazeSourceCompat"
+    },
+    {
+      "label": "Reuse sole original interaction mapper: fixedFullscreenAspectRatio",
+      "before": "SettingsManager\n        .getFullscreenAspectRatio(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.fixedFullscreenAspectRatio }"
+    },
+    {
+      "label": "Reuse sole original interaction mapper: fullscreenSwipeSeekSeconds",
+      "before": "SettingsManager.getFullscreenSwipeSeekSeconds(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.fullscreenSwipeSeekSeconds }"
+    },
+    {
+      "label": "Reuse sole original interaction mapper: doubleTapSeekEnabled",
+      "before": "SettingsManager\n        .getDoubleTapSeekEnabled(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.doubleTapSeekEnabled }"
+    },
+    {
+      "label": "Reuse sole original interaction mapper: seekForwardSeconds",
+      "before": "SettingsManager\n        .getSeekForwardSeconds(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.seekForwardSeconds }"
+    },
+    {
+      "label": "Reuse sole original interaction mapper: seekBackwardSeconds",
+      "before": "SettingsManager\n        .getSeekBackwardSeconds(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.seekBackwardSeconds }"
+    },
+    {
+      "label": "Same global original danmaku member getDanmakuSettings",
+      "before": "SettingsManager\n            .getDanmakuSettings(context, ",
+      "after": "section.danmakuPreferences.getDanmakuSettings("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuAllowBottom",
+      "before": "SettingsManager.setDanmakuAllowBottom(context, ",
+      "after": "section.danmakuPreferences.setDanmakuAllowBottom("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuAllowColorful",
+      "before": "SettingsManager.setDanmakuAllowColorful(context, ",
+      "after": "section.danmakuPreferences.setDanmakuAllowColorful("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuAllowScroll",
+      "before": "SettingsManager.setDanmakuAllowScroll(context, ",
+      "after": "section.danmakuPreferences.setDanmakuAllowScroll("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuAllowSpecial",
+      "before": "SettingsManager.setDanmakuAllowSpecial(context, ",
+      "after": "section.danmakuPreferences.setDanmakuAllowSpecial("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuAllowTop",
+      "before": "SettingsManager.setDanmakuAllowTop(context, ",
+      "after": "section.danmakuPreferences.setDanmakuAllowTop("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuArea",
+      "before": "SettingsManager.setDanmakuArea(context, ",
+      "after": "section.danmakuPreferences.setDanmakuArea("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuBlockRulesRaw",
+      "before": "SettingsManager.setDanmakuBlockRulesRaw(context, ",
+      "after": "section.danmakuPreferences.setDanmakuBlockRulesRaw("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuDuplicateMergeCountThreshold",
+      "before": "SettingsManager.setDanmakuDuplicateMergeCountThreshold(context, ",
+      "after": "section.danmakuPreferences.setDanmakuDuplicateMergeCountThreshold("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuDuplicateMergeWindowMs",
+      "before": "SettingsManager.setDanmakuDuplicateMergeWindowMs(context, ",
+      "after": "section.danmakuPreferences.setDanmakuDuplicateMergeWindowMs("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuEnabled",
+      "before": "SettingsManager.setDanmakuEnabled(context, ",
+      "after": "section.danmakuPreferences.setDanmakuEnabled("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuFontScale",
+      "before": "SettingsManager.setDanmakuFontScale(context, ",
+      "after": "section.danmakuPreferences.setDanmakuFontScale("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuFontWeight",
+      "before": "SettingsManager.setDanmakuFontWeight(context, ",
+      "after": "section.danmakuPreferences.setDanmakuFontWeight("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuFullscreenPanelWidthMode",
+      "before": "SettingsManager.setDanmakuFullscreenPanelWidthMode(context, ",
+      "after": "section.danmakuPreferences.setDanmakuFullscreenPanelWidthMode("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuHideInteractiveCommands",
+      "before": "SettingsManager.setDanmakuHideInteractiveCommands(context, ",
+      "after": "section.danmakuPreferences.setDanmakuHideInteractiveCommands("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuLineHeight",
+      "before": "SettingsManager.setDanmakuLineHeight(context, ",
+      "after": "section.danmakuPreferences.setDanmakuLineHeight("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuMassiveMode",
+      "before": "SettingsManager.setDanmakuMassiveMode(context, ",
+      "after": "section.danmakuPreferences.setDanmakuMassiveMode("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuMergeDuplicates",
+      "before": "SettingsManager.setDanmakuMergeDuplicates(context, ",
+      "after": "section.danmakuPreferences.setDanmakuMergeDuplicates("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuOpacity",
+      "before": "SettingsManager.setDanmakuOpacity(context, ",
+      "after": "section.danmakuPreferences.setDanmakuOpacity("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuScrollDurationSeconds",
+      "before": "SettingsManager.setDanmakuScrollDurationSeconds(context, ",
+      "after": "section.danmakuPreferences.setDanmakuScrollDurationSeconds("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuScrollFixedVelocity",
+      "before": "SettingsManager.setDanmakuScrollFixedVelocity(context, ",
+      "after": "section.danmakuPreferences.setDanmakuScrollFixedVelocity("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuSmartOcclusion",
+      "before": "SettingsManager.setDanmakuSmartOcclusion(context, ",
+      "after": "section.danmakuPreferences.setDanmakuSmartOcclusion("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuSpeed",
+      "before": "SettingsManager.setDanmakuSpeed(context, ",
+      "after": "section.danmakuPreferences.setDanmakuSpeed("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuStaticDurationSeconds",
+      "before": "SettingsManager.setDanmakuStaticDurationSeconds(context, ",
+      "after": "section.danmakuPreferences.setDanmakuStaticDurationSeconds("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuStaticToScroll",
+      "before": "SettingsManager.setDanmakuStaticToScroll(context, ",
+      "after": "section.danmakuPreferences.setDanmakuStaticToScroll("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuStrokeWidth",
+      "before": "SettingsManager.setDanmakuStrokeWidth(context, ",
+      "after": "section.danmakuPreferences.setDanmakuStrokeWidth("
+    },
+    {
+      "label": "Same global original danmaku member setDanmakuWeightFilterLevel",
+      "before": "SettingsManager.setDanmakuWeightFilterLevel(context, ",
+      "after": "section.danmakuPreferences.setDanmakuWeightFilterLevel("
+    },
+    {
+      "label": "Same original settings member setFullscreenAspectRatio",
+      "before": "SettingsManager.setFullscreenAspectRatio",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setFullscreenAspectRatio"
+    },
+    {
+      "label": "Same original settings member setLastPlaybackSpeed",
+      "before": "SettingsManager.setLastPlaybackSpeed",
+      "after": "com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings.setLastPlaybackSpeed"
+    },
+    {
+      "label": "Same global original danmaku member setPortraitDanmakuDisplayAreaMode",
+      "before": "SettingsManager.setPortraitDanmakuDisplayAreaMode(context, ",
+      "after": "section.danmakuPreferences.setPortraitDanmakuDisplayAreaMode("
+    },
+    {
+      "label": "Existing platform alias: import androidx.compose.ui.platform.LocalConfiguration",
+      "before": "import androidx.compose.ui.platform.LocalConfiguration",
+      "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration",
+      "count": 1
+    },
+    {
+      "label": "Existing platform alias: import androidx.media3.common.Player",
+      "before": "import androidx.media3.common.Player",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player",
+      "count": 1
+    },
+    {
+      "label": "Existing platform alias: androidx.media3.common.PlaybackParameters",
+      "before": "androidx.media3.common.PlaybackParameters",
+      "after": "com.bilipai.desktop.ui.DesktopOriginalPlaybackRate",
+      "count": 1
+    },
+    {
+      "label": "Existing platform alias: import com.android.purebilibili.core.util.Logger",
+      "before": "import com.android.purebilibili.core.util.Logger",
+      "after": "import android.util.Log as Logger",
+      "count": 1
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import com.android.purebilibili.feature.video.danmaku.configureAsPassiveDanmakuOverlay\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import com.android.purebilibili.feature.video.ui.section.rebindPlayerSurfaceIfNeeded\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import com.android.purebilibili.danmaku.engine.DanmakuRenderView\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import android.app.Activity\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import android.content.Context\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import android.content.pm.ActivityInfo\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import android.media.AudioManager\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import android.provider.Settings\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import android.view.WindowManager\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import androidx.compose.ui.viewinterop.AndroidView\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import com.android.purebilibili.core.ui.AppWindowSystemUiController\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import androidx.media3.ui.PlayerView\n",
+      "after": ""
+    },
+    {
+      "label": "Consumed Android-only import",
+      "before": "import com.android.purebilibili.core.util.applyPlayerRequestedOrientation\n",
+      "after": ""
+    },
+    {
+      "label": "Android annotation boundary",
+      "before": "@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n",
+      "after": ""
+    },
+    {
+      "label": "Required owner/sole mapper imports",
+      "before": "import androidx.compose.runtime.*\n",
+      "after": "import androidx.compose.runtime.*\nimport com.bilipai.desktop.ui.LocalDesktopOriginalFullscreenPlatform\nimport kotlinx.coroutines.flow.map\n"
+    },
+    {
+      "label": "Unused upstream import; own complete GestureIndicator remains below",
+      "before": "import com.android.purebilibili.feature.video.ui.gesture.GestureMode\n",
+      "after": ""
+    },
+    {
+      "label": "Unused upstream import; own complete GestureIndicator remains below",
+      "before": "import com.android.purebilibili.feature.video.ui.gesture.GestureIndicator\n",
+      "after": ""
+    },
+    {
+      "label": "Unused upstream import; own complete GestureIndicator remains below",
+      "before": "import com.android.purebilibili.feature.video.ui.gesture.rememberPlayerGestureState\n",
+      "after": ""
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+  "originalSHA256LF": "927d1eb0ef4b75e5f2467392d22b9fd5f067e0016b7628d97decf59ababcdd56",
+  "candidateSHA256LF": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91",
+  "completeOriginalFile": true,
+  "orderedExactReplay": true,
+  "edits": [
+    {
+      "label": "REFERENCE actual55 sole two DesktopOriginalDetailThreadPolicies declarations",
+      "before": "internal fun resolveCommentThreadPredictiveBackOffsetY(\n    progress: Float,\n    heightPx: Float,\n): Float = progress.coerceIn(0f, 1f) * heightPx\n\ninternal fun resolveCommentThreadCoveredBlurProgress(threadBackProgress: Float): Float {\n    val coveredDepth = (1f - threadBackProgress.coerceIn(0f, 1f))\n    return coveredDepth * coveredDepth\n}",
+      "after": ""
+    },
+    {
+      "label": "Actual same-owner comment VM visibility",
+      "before": "fun VideoCommentSheetHost(",
+      "after": "internal fun VideoCommentSheetHost("
+    },
+    {
+      "label": "Windows render/feedback/global settings binding",
+      "before": "import android.graphics.RenderEffect as AndroidRenderEffect\n",
+      "after": ""
+    },
+    {
+      "label": "Windows render/feedback/global settings binding",
+      "before": "import android.graphics.Shader\n",
+      "after": ""
+    },
+    {
+      "label": "Windows render/feedback/global settings binding",
+      "before": "import android.os.Build\n",
+      "after": ""
+    },
+    {
+      "label": "Windows render/feedback/global settings binding",
+      "before": "import android.widget.Toast\n",
+      "after": ""
+    },
+    {
+      "label": "Windows render/feedback/global settings binding",
+      "before": "import androidx.compose.ui.graphics.asComposeRenderEffect\n",
+      "after": ""
+    },
+    {
+      "label": "Windows render/feedback/global settings binding",
+      "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+      "after": ""
+    },
+    {
+      "label": "Windows render/feedback/global settings binding",
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": ""
+    },
+    {
+      "label": "Reuse sole comment page owner, gallery and global settings",
+      "before": "val context = LocalContext.current",
+      "after": "val platform = com.bilipai.desktop.ui.LocalDesktopCommentBindings.current\n    val context = platform.context",
+      "count": 2
+    },
+    {
+      "label": "Same canonical original comment settings",
+      "before": "SettingsManager.setCommentDefaultSortMode",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoCommentSheetSettings.setCommentDefaultSortMode",
+      "count": 1
+    },
+    {
+      "label": "Same canonical original comment settings",
+      "before": "com.android.purebilibili.core.store.SettingsManager\n        .getCommentDefaultSortMode",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentDefaultSortMode",
+      "count": 1
+    },
+    {
+      "label": "Same canonical original comment settings",
+      "before": "com.android.purebilibili.core.store.SettingsManager\n        .getCommentMemberDecorationsEnabled",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentMemberDecorationsEnabled",
+      "count": 1
+    },
+    {
+      "label": "Same canonical original comment settings",
+      "before": "com.android.purebilibili.core.store.SettingsManager.getCommentDefaultSortModeSync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentDefaultSortModeSync",
+      "count": 1
+    },
+    {
+      "label": "Root owned feedback preserves original message",
+      "before": "Toast.makeText(context, lightMessage, Toast.LENGTH_SHORT).show()",
+      "after": "platform.showFeedback(lightMessage)"
+    },
+    {
+      "label": "Actual Compose rendering capability",
+      "before": "Build.VERSION.SDK_INT >= Build.VERSION_CODES.S",
+      "after": "com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()"
+    },
+    {
+      "label": "Actual Compose/Skia blur, original predictive radius",
+      "before": "AndroidRenderEffect.createBlurEffect(\n                                                    blurFrame.blurRadiusPx,\n                                                    blurFrame.blurRadiusPx,\n                                                    Shader.TileMode.CLAMP,\n                                                )",
+      "after": "androidx.compose.ui.graphics.BlurEffect(\n                                                    radiusX = blurFrame.blurRadiusPx,\n                                                    radiusY = blurFrame.blurRadiusPx,\n                                                )"
+    },
+    {
+      "label": "Compose effect already typed",
+      "before": ").asComposeRenderEffect()",
+      "after": ")"
+    }
+  ]
+}

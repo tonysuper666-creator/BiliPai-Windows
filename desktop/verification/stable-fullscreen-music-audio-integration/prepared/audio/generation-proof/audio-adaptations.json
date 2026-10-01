@@ -1,0 +1,438 @@
+{
+  "feature/video/screen/AudioModeScreen.kt": [
+    {
+      "label": "Actual same Windows/native owner replaces Android entry android.app.Activity",
+      "before": "import android.app.Activity\n",
+      "after": "",
+      "index": 55
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry android.app.PictureInPictureParams",
+      "before": "import android.app.PictureInPictureParams\n",
+      "after": "",
+      "index": 55
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry android.content.Context",
+      "before": "import android.content.Context\n",
+      "after": "",
+      "index": 55
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry android.content.ContextWrapper",
+      "before": "import android.content.ContextWrapper\n",
+      "after": "",
+      "index": 55
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry android.content.pm.ActivityInfo",
+      "before": "import android.content.pm.ActivityInfo\n",
+      "after": "",
+      "index": 55
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry com.android.purebilibili.core.util.applyPlayerRequestedOrientation",
+      "before": "import com.android.purebilibili.core.util.applyPlayerRequestedOrientation\n",
+      "after": "",
+      "index": 55
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry android.content.res.Configuration",
+      "before": "import android.content.res.Configuration\n",
+      "after": "",
+      "index": 55
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry android.os.Build",
+      "before": "import android.os.Build\n",
+      "after": "",
+      "index": 55
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry android.util.Rational",
+      "before": "import android.util.Rational\n",
+      "after": "",
+      "index": 55
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry androidx.compose.ui.platform.LocalContext",
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "",
+      "index": 1489
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry androidx.compose.ui.platform.LocalConfiguration",
+      "before": "import androidx.compose.ui.platform.LocalConfiguration\n",
+      "after": "",
+      "index": 1489
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry com.android.purebilibili.feature.audio.player.AudioNowPlayingSession",
+      "before": "import com.android.purebilibili.feature.audio.player.AudioNowPlayingSession\n",
+      "after": "",
+      "index": 1943
+    },
+    {
+      "label": "Actual same Windows/native owner replaces Android entry com.android.purebilibili.feature.video.state.rememberVideoPlayerState",
+      "before": "import com.android.purebilibili.feature.video.state.rememberVideoPlayerState\n",
+      "after": "",
+      "index": 2005
+    },
+    {
+      "label": "Same actual MPV command/readback facade",
+      "before": "import androidx.media3.common.Player",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl as Player\nimport com.bilipai.desktop.ui.*",
+      "index": 1720
+    },
+    {
+      "label": "Required current global preferences",
+      "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+      "after": "",
+      "index": 1881
+    },
+    {
+      "label": "Required view of parent sole original full VM",
+      "before": "import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalAudioVideoOwner as VideoPlaybackViewModel",
+      "index": 2091
+    },
+    {
+      "label": "Original native state policies use actual same-source facts",
+      "before": "Player.STATE_",
+      "after": "DesktopOriginalPlaybackStates.STATE_",
+      "index": 3414
+    },
+    {
+      "label": "Original native state policies use actual same-source facts",
+      "before": "Player.STATE_",
+      "after": "DesktopOriginalPlaybackStates.STATE_",
+      "index": 3394
+    },
+    {
+      "label": "Original native state policies use actual same-source facts",
+      "before": "Player.STATE_",
+      "after": "DesktopOriginalPlaybackStates.STATE_",
+      "index": 3321
+    },
+    {
+      "label": "Original native state policies use actual same-source facts",
+      "before": "Player.STATE_",
+      "after": "DesktopOriginalPlaybackStates.STATE_",
+      "index": 3243
+    },
+    {
+      "label": "Explicit actual Windows presentation intent; not fabricated Activity orientation integer",
+      "before": "internal fun resolveAudioModeRequestedOrientation(isLandscape: Boolean): Int =\n    if (isLandscape) {\n        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT\n    } else {\n        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE\n    }",
+      "after": "internal fun resolveAudioModeRequestedOrientation(isLandscape: Boolean): DesktopOriginalAudioOrientation =\n    if (isLandscape) {\n        DesktopOriginalAudioOrientation.PORTRAIT\n    } else {\n        DesktopOriginalAudioOrientation.LANDSCAPE\n    }",
+      "index": 4090
+    },
+    {
+      "label": "Android SDK clause replaced by actual Root PiP capability",
+      "before": "internal fun shouldShowAudioModePipButton(sdkInt: Int): Boolean = sdkInt >= Build.VERSION_CODES.O",
+      "after": "",
+      "index": 4339
+    },
+    {
+      "label": "No fake Android Context/Activity lookup",
+      "before": "private tailrec fun Context.findHostActivity(): Activity? = when (this) {\n    is Activity -> this\n    is ContextWrapper -> baseContext.findHostActivity()\n    else -> null\n}\n\n",
+      "after": "",
+      "index": 5466
+    },
+    {
+      "label": "Actual same Root PiP effect is required",
+      "before": "private fun enterAudioModePip(activity: Activity?) {\n    if (activity == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return\n    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInPictureInPictureMode) return\n    val paramsBuilder = PictureInPictureParams.Builder().setAspectRatio(Rational(1, 1))\n    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {\n        paramsBuilder.setSeamlessResizeEnabled(true)\n    }\n    activity.enterPictureInPictureMode(paramsBuilder.build())\n}\n\n",
+      "after": "",
+      "index": 6035
+    },
+    {
+      "label": "Internal actual typed platform API; entire original UI body preserved",
+      "before": "fun AudioModeScreen(",
+      "after": "internal fun AudioModeScreen(",
+      "index": 6047
+    },
+    {
+      "label": "Same original entry engagement VM",
+      "before": "engagementViewModel: com.android.purebilibili.feature.video.viewmodel.VideoEngagementViewModel =\n        androidx.lifecycle.viewmodel.compose.viewModel(),",
+      "after": "engagementViewModel: com.android.purebilibili.feature.video.viewmodel.VideoEngagementViewModel =\n        LocalDesktopOriginalAudioModePlatform.current.engagement,",
+      "index": 6120
+    },
+    {
+      "label": "Same original composer subject owner",
+      "before": "composerViewModel: com.android.purebilibili.feature.video.viewmodel.VideoComposerViewModel =\n        androidx.lifecycle.viewmodel.compose.viewModel(),",
+      "after": "composerViewModel: DesktopOriginalAudioComposerPort =\n        LocalDesktopOriginalAudioModePlatform.current.composer,",
+      "index": 6287
+    },
+    {
+      "label": "Same original supplement subject owner",
+      "before": "supplementViewModel: com.android.purebilibili.feature.video.viewmodel.VideoSupplementViewModel =\n        androidx.lifecycle.viewmodel.compose.viewModel(),",
+      "after": "supplementViewModel: com.android.purebilibili.feature.video.viewmodel.VideoSupplementViewModel =\n        LocalDesktopOriginalAudioModePlatform.current.supplement,",
+      "index": 6409
+    },
+    {
+      "label": "Actual Root presentation lease and same global settings current state",
+      "before": "    val context = LocalContext.current\n    val configuration = LocalConfiguration.current\n    val activity = context.findHostActivity()\n    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE\n    val orientationActionLabel = resolveAudioModeOrientationActionLabel(isLandscape)\n    DisposableEffect(activity) {\n        val originalOrientation = activity?.requestedOrientation\n            ?: ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED\n        onDispose {\n            activity?.applyPlayerRequestedOrientation(originalOrientation)\n        }\n    }\n    val homeSettings by SettingsManager.getHomeSettings(context).collectAsStateWithLifecycle(\n        initialValue = HomeSettings(),\n        context = kotlin.coroutines.EmptyCoroutineContext\n    )\n",
+      "after": "    val platform = LocalDesktopOriginalAudioModePlatform.current\n    val musicPlatform = LocalDesktopOriginalMusicUiPlatform.current\n    val context = musicPlatform.context\n    val isLandscape by platform.window.isLandscape.collectAsStateWithLifecycle()\n    val orientationActionLabel = resolveAudioModeOrientationActionLabel(isLandscape)\n    DisposableEffect(platform.window) {\n        val lease = platform.window.orientationLease()\n        onDispose { lease.close() }\n    }\n    val homeSettings by musicPlatform.homeSettings.collectAsStateWithLifecycle()\n",
+      "index": 7048
+    },
+    {
+      "label": "Original standalone admission uses SAME native player/VM factory, no new actor",
+      "before": "rememberVideoPlayerState(\n            context = context,",
+      "after": "platform.standalonePlayerState(",
+      "index": 9054
+    },
+    {
+      "label": "Same current Listen/session publication",
+      "before": "AudioNowPlayingSession.markListening()",
+      "after": "platform.session.markListening()",
+      "index": 9873
+    },
+    {
+      "label": "Same actual Root PiP effect",
+      "before": "val enterPip = remember(context) { { enterAudioModePip(context.findHostActivity()) } }",
+      "after": "val enterPip = remember(platform.window) { { platform.window.enterPip() } }",
+      "index": 10241
+    },
+    {
+      "label": "Actual capability, no fabricated Android SDK",
+      "before": "showPipButton = shouldShowAudioModePipButton(Build.VERSION.SDK_INT)",
+      "after": "showPipButton = platform.window.pipAvailable",
+      "index": 10549
+    },
+    {
+      "label": "Same actual Windows window/presentation actor",
+      "before": "activity?.applyPlayerRequestedOrientation(resolveAudioModeRequestedOrientation(isLandscape))",
+      "after": "platform.window.setRequestedOrientation(resolveAudioModeRequestedOrientation(isLandscape))",
+      "index": 10822
+    }
+  ],
+  "feature/video/screen/AudioModeMusicPlayer.kt": [
+    {
+      "label": "Same existing owned actor replaces androidx.media3.exoplayer.ExoPlayer",
+      "before": "import androidx.media3.exoplayer.ExoPlayer\n",
+      "after": "",
+      "index": 1147
+    },
+    {
+      "label": "Same existing owned actor replaces com.android.purebilibili.core.player.PlayerVolumeController",
+      "before": "import com.android.purebilibili.core.player.PlayerVolumeController\n",
+      "after": "",
+      "index": 1147
+    },
+    {
+      "label": "Same existing owned actor replaces com.android.purebilibili.feature.audio.player.AudioNowPlayingSession",
+      "before": "import com.android.purebilibili.feature.audio.player.AudioNowPlayingSession\n",
+      "after": "",
+      "index": 1460
+    },
+    {
+      "label": "Same existing owned actor replaces com.android.purebilibili.feature.video.player.MiniPlayerManager",
+      "before": "import com.android.purebilibili.feature.video.player.MiniPlayerManager\n",
+      "after": "",
+      "index": 1820
+    },
+    {
+      "label": "Same existing owned actor replaces com.android.purebilibili.core.store.PlayHistoryStore",
+      "before": "import com.android.purebilibili.core.store.PlayHistoryStore\n",
+      "after": "",
+      "index": 1880
+    },
+    {
+      "label": "Same existing owned actor replaces com.android.purebilibili.feature.video.player.PlaylistManager",
+      "before": "import com.android.purebilibili.feature.video.player.PlaylistManager\n",
+      "after": "",
+      "index": 2005
+    },
+    {
+      "label": "Same existing owned actor replaces androidx.lifecycle.viewmodel.compose.viewModel",
+      "before": "import androidx.lifecycle.viewmodel.compose.viewModel\n",
+      "after": "",
+      "index": 1056
+    },
+    {
+      "label": "Media3-only annotation has no Windows decoder",
+      "before": "@file:androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n\n",
+      "after": "",
+      "index": 0
+    },
+    {
+      "label": "Same actual native player facade",
+      "before": "import androidx.media3.common.Player",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl as Player\nimport com.bilipai.desktop.ui.*",
+      "index": 975
+    },
+    {
+      "label": "Required same original platform context",
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "",
+      "index": 864
+    },
+    {
+      "label": "Same canonical original keys through existing preferences actor",
+      "before": "import com.android.purebilibili.core.store.SettingsManager",
+      "after": "import com.android.purebilibili.core.store.DesktopOriginalMusicUiSettings as SettingsManager",
+      "index": 1031
+    },
+    {
+      "label": "Required same lyrics owner; no new VM/client",
+      "before": "import com.android.purebilibili.feature.audio.viewmodel.MusicViewModel",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalAudioLyricsPort as MusicViewModel",
+      "index": 1667
+    },
+    {
+      "label": "Parent sole original full VM view",
+      "before": "import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalAudioVideoOwner as VideoPlaybackViewModel",
+      "index": 2882
+    },
+    {
+      "label": "Same original engagement owner",
+      "before": "engagementViewModel: VideoEngagementViewModel = viewModel()",
+      "after": "engagementViewModel: VideoEngagementViewModel = LocalDesktopOriginalAudioModePlatform.current.engagement",
+      "index": 4902
+    },
+    {
+      "label": "Required same owned context/session/library",
+      "before": "    val context = LocalContext.current",
+      "after": "    val platform = LocalDesktopOriginalAudioModePlatform.current\n    val musicPlatform = LocalDesktopOriginalMusicUiPlatform.current\n    val context = musicPlatform.context",
+      "index": 5363
+    },
+    {
+      "label": "Same actual native queue view",
+      "before": "PlaylistManager",
+      "after": "platform.playlist",
+      "index": 18599
+    },
+    {
+      "label": "Same actual native queue view",
+      "before": "PlaylistManager",
+      "after": "platform.playlist",
+      "index": 18536
+    },
+    {
+      "label": "Same actual native queue view",
+      "before": "PlaylistManager",
+      "after": "platform.playlist",
+      "index": 17535
+    },
+    {
+      "label": "Same actual native queue view",
+      "before": "PlaylistManager",
+      "after": "platform.playlist",
+      "index": 16959
+    },
+    {
+      "label": "Same actual native queue view",
+      "before": "PlaylistManager",
+      "after": "platform.playlist",
+      "index": 8524
+    },
+    {
+      "label": "Same actual native queue view",
+      "before": "PlaylistManager",
+      "after": "platform.playlist",
+      "index": 8292
+    },
+    {
+      "label": "Same actual native queue view",
+      "before": "PlaylistManager",
+      "after": "platform.playlist",
+      "index": 6022
+    },
+    {
+      "label": "Same actual native queue view",
+      "before": "PlaylistManager",
+      "after": "platform.playlist",
+      "index": 5941
+    },
+    {
+      "label": "Same actual native queue view",
+      "before": "PlaylistManager",
+      "after": "platform.playlist",
+      "index": 5862
+    },
+    {
+      "label": "Same actual native queue view",
+      "before": "PlaylistManager",
+      "after": "platform.playlist",
+      "index": 5782
+    },
+    {
+      "label": "Same lyrics owner view, no second VM",
+      "before": "val lyricsViewModel = androidx.lifecycle.viewmodel.compose.viewModel<MusicViewModel>(\n        key = \"audio_mode_lyrics\"\n    )",
+      "after": "val lyricsViewModel = platform.lyrics",
+      "index": 6152
+    },
+    {
+      "label": "Same actual library publication",
+      "before": "PlayHistoryStore.record(\n            context = context,",
+      "after": "musicPlatform.history.record(",
+      "index": 6852
+    },
+    {
+      "label": "Same actual library checkpoint",
+      "before": "PlayHistoryStore.saveLastSession(\n                context,",
+      "after": "musicPlatform.history.saveLastSession(",
+      "index": 7454
+    },
+    {
+      "label": "Same actual library checkpoint read",
+      "before": "PlayHistoryStore.lastSession(context)",
+      "after": "musicPlatform.history.lastSession()",
+      "index": 8257
+    },
+    {
+      "label": "Same original generic comment owner",
+      "before": "val commentViewModel: VideoCommentViewModel = viewModel()",
+      "after": "val commentViewModel: VideoCommentViewModel = platform.comments",
+      "index": 9040
+    },
+    {
+      "label": "Use actual same native source control for Mini metadata",
+      "before": "val exoPlayer = player as? ExoPlayer ?: return@LaunchedEffect",
+      "after": "val ownedPlayer = player ?: return@LaunchedEffect",
+      "index": 12422
+    },
+    {
+      "label": "Same Root native publication actor",
+      "before": "MiniPlayerManager.getInstance(context).setVideoInfo(",
+      "after": "platform.mini.setVideoInfo(",
+      "index": 12480
+    },
+    {
+      "label": "Same Root actual native source",
+      "before": "externalPlayer = exoPlayer",
+      "after": "externalPlayer = ownedPlayer",
+      "index": 12707
+    },
+    {
+      "label": "Same existing original favorite interaction preferences",
+      "before": "com.android.purebilibili.core.store.FavoriteInteractionSettingsStore\n        .getQuickSaveDefaultFolder(LocalContext.current)",
+      "after": "platform.favoriteInteraction\n        .getQuickSaveDefaultFolder()",
+      "index": 13128
+    },
+    {
+      "label": "Same actual preferred/native volume authority",
+      "before": "player?.let(PlayerVolumeController::applyPreferredVolume)",
+      "after": "player?.let(platform::applyPreferredVolume)",
+      "index": 16498
+    },
+    {
+      "label": "Same current native Listen session",
+      "before": "AudioNowPlayingSession.dismiss()",
+      "after": "platform.session.dismiss()",
+      "index": 19247
+    },
+    {
+      "label": "Actual same source decoder facts",
+      "before": "Player.STATE_",
+      "after": "DesktopOriginalPlaybackStates.STATE_",
+      "index": 26071
+    },
+    {
+      "label": "Actual owned StateFlow listener events replace Media3 combined-events callback",
+      "before": "object : Player.Listener {\n            override fun onEvents(player: Player, events: Player.Events) {\n                snapshot = player.readAudioPlaybackSnapshot()\n            }\n        }",
+      "after": "object : DesktopOriginalMpvOverlayControl.Listener {\n            override fun onIsPlayingChanged(isPlaying: Boolean) { snapshot = player.readAudioPlaybackSnapshot() }\n            override fun onPlaybackStateChanged(playbackState: Int) { snapshot = player.readAudioPlaybackSnapshot() }\n            override fun onPlaybackParametersChanged(parameters: DesktopOriginalPlaybackRate) { snapshot = player.readAudioPlaybackSnapshot() }\n            override fun onSourceTransition(sourceVersion: Long) { snapshot = player.readAudioPlaybackSnapshot() }\n        }",
+      "index": 25341
+    }
+  ]
+}

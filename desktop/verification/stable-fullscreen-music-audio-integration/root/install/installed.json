@@ -1,0 +1,109 @@
+{
+  "applied": true,
+  "payloadCount": 8,
+  "rawPacketArtifactsVerified": 723,
+  "targets": [
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "sha256Bytes": "8ce884f47fe8f508f0b36f3b345f686e1c0c124485e5004fbcc2886ca6a44be8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "sha256Bytes": "1c751a856baeca8b382f3f4f0f037d331a94547febb6448d3ff5d5dc0a5ad267"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-music-player-full.py",
+      "sha256Bytes": "eeabd6f0f1ed80f703470c4c99c1aba0cf234f1ad45c5fa22aa9ff2cf3e5808b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMusicUiPlatform.kt",
+      "sha256Bytes": "2ce04e5a057a8438edc2c9f4ad3c7b1ff62c54cc8d57cac17ae5c45da14b1819"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMusicRaster.kt",
+      "sha256Bytes": "d5a3dc4ac55d37fa591c7389db9658bb30df25dede63fa960049f0145acb18ff"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-audio-full.py",
+      "sha256Bytes": "7686a6c595aa6edd96f56ebc9fbb28147152530ba43d6034a6b52d15d34ef2e6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalAudioModePlatform.kt",
+      "sha256Bytes": "09772e987e12753b4069fca378f3f3883869640deb66c5cdc357c07567f7b75b"
+    }
+  ],
+  "coreSingleAnchorAppend": true,
+  "wholeCoreReplacement": false,
+  "generatedReferencesInstalled": false,
+  "sourceIdentityCount": 1115,
+  "newSourceIdentities": [
+    "app/src/main/java/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricsView.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricLine.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicKaraokeText.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicInterludes.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerMiniLyrics.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricSettings.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerPalette.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerVisualPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicTopControlDragPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavyProgressPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavySlider.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/screen/Music3DCoverFlow.kt",
+    "app/src/main/java/com/android/purebilibili/core/store/PlayHistoryStore.kt",
+    "app/src/main/java/com/android/purebilibili/core/store/LocalPlaylistStore.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/ExternalPlaylistRepository.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeScreen.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeMusicPlayer.kt"
+  ],
+  "mergedSourceIdentities": [
+    "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+    "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
+  ],
+  "dependenciesAdded": 0,
+  "directSourcesCopiedOnlyByRegistrySync": true,
+  "wholeOrdinaryVideoMounted": false,
+  "audioMusicRootMounted": false,
+  "wholeCompilationPending": true
+}

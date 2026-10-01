@@ -1,0 +1,1 @@
+PASS {cpu={frame=[20, 12], initialHash=f6d82362cecfff45dc68e0eef1f024c6c60732e2cac35408a904b21337cf3b31, laterHash=c48358d13f517b8153526041abc54297e3f8f5d087d24d78f156c96739e636db}, assertions=26, httpCalls=0, windowOrAccount=false, actualRootMounted=false}

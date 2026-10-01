@@ -1,0 +1,23 @@
+{
+  "settingsManagerSHA256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+  "selectedMembers": [
+    "KEY_AUDIO_QUALITY",
+    "KEY_AUTO_PLAY",
+    "KEY_EXTERNAL_PLAYLIST_AUTO_CONTINUE",
+    "KEY_PREFETCH_VIDEO",
+    "KEY_SUBTITLE_PORTRAIT_VERTICAL_OFFSET_FRACTION",
+    "KEY_SUBTITLE_POSITION_LOCKED",
+    "getAutoPlay",
+    "getExternalPlaylistAutoContinue",
+    "getPortraitLetterboxAmbientHazeSync",
+    "getPrefetchVideo",
+    "getSubtitlePortraitVerticalOffsetFraction",
+    "getSubtitlePositionLocked",
+    "setAudioQuality",
+    "setSubtitlePortraitVerticalOffsetFraction"
+  ],
+  "settingsCacheOriginalSHA256LF": "220e03ed1ab747373ffc8252c774f72c65821961de440fcf442d6a83753d4329",
+  "settingsCacheCandidateSHA256LF": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97",
+  "cacheWriterWholeFile": true,
+  "platformAliasesOnly": true
+}

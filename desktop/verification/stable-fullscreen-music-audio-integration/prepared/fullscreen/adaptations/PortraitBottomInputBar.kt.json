@@ -1,0 +1,15 @@
+{
+  "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+  "originalSHA256LF": "8e52f5641a61ce40c874a0610170fa57782293f4ff25d908bf7330b7d32ee6a7",
+  "candidateSHA256LF": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089",
+  "completeOriginalFile": true,
+  "orderedExactReplay": true,
+  "edits": [
+    {
+      "label": "Actual root window metrics",
+      "before": "androidx.compose.ui.platform.LocalConfiguration",
+      "after": "com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration",
+      "count": 1
+    }
+  ]
+}

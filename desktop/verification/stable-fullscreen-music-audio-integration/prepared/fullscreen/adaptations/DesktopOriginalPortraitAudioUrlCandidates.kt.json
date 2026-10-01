@@ -1,0 +1,7 @@
+{
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+  "originalSHA256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+  "declaration": "buildPlaybackAudioUrlCandidates",
+  "originalDeclarationSHA256LF": "4e8b23201e121b4831f943e9cb0500d20fcd6aaf9cc3c0643d86d673288716bf",
+  "selectedWholeDeclaration": true
+}

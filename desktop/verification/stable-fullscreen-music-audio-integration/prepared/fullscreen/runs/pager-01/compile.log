@@ -1,0 +1,238 @@
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:3:16: error: unresolved reference 'graphics'.
+import android.graphics.RenderEffect as AndroidRenderEffect
+               ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:4:16: error: unresolved reference 'graphics'.
+import android.graphics.Shader
+               ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:5:16: error: unresolved reference 'os'.
+import android.os.Build
+               ^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:6:16: error: unresolved reference 'widget'.
+import android.widget.Toast
+               ^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:37:50: error: unresolved reference 'CommentListSkeleton'.
+import com.android.purebilibili.core.ui.skeleton.CommentListSkeleton
+                                                 ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:49:44: error: unresolved reference 'SettingsManager'.
+import com.android.purebilibili.core.store.SettingsManager
+                                           ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:66:37: error: unresolved reference 'LocalContext'.
+import androidx.compose.ui.platform.LocalContext
+                                    ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:90:54: error: unresolved reference 'CommentUrlNavigationTarget'.
+import com.android.purebilibili.feature.video.screen.CommentUrlNavigationTarget
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:91:54: error: unresolved reference 'resolveCommentUrlNavigationTarget'.
+import com.android.purebilibili.feature.video.screen.resolveCommentUrlNavigationTarget
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:341:5: error: 'public' function exposes its 'internal' parameter type 'VideoCommentViewModel'.
+    commentViewModel: VideoCommentViewModel,
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:362:19: error: unresolved reference 'LocalContext'.
+    val context = LocalContext.current
+                  ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:366:25: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+    val defaultSortMode by com.android.purebilibili.core.store.SettingsManager
+                        ^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:366:28: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val defaultSortMode by com.android.purebilibili.core.store.SettingsManager
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:366:64: error: unresolved reference 'SettingsManager'.
+    val defaultSortMode by com.android.purebilibili.core.store.SettingsManager
+                                                               ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:368:10: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.SettingsManager.getCommentDefaultSortModeSync(context),
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:368:89: error: unresolved reference 'SettingsManager'.
+        .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.SettingsManager.getCommentDefaultSortModeSync(context),
+                                                                                        ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:371:80: error: unresolved reference 'SettingsManager'.
+    val commentMemberDecorationsEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                               ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:592:17: error: unresolved reference 'Toast'.
+                Toast.makeText(context, lightMessage, Toast.LENGTH_SHORT).show()
+                ^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:592:55: error: unresolved reference 'Toast'.
+                Toast.makeText(context, lightMessage, Toast.LENGTH_SHORT).show()
+                                                      ^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:625:28: error: unresolved reference 'resolveCommentUrlNavigationTarget'.
+        when (val target = resolveCommentUrlNavigationTarget(url)) {
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:626:16: error: unresolved reference 'CommentUrlNavigationTarget'.
+            is CommentUrlNavigationTarget.Video -> {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:628:41: error: unresolved reference 'videoId'.
+                    onVideoClick(target.videoId)
+                                        ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:633:16: error: unresolved reference 'CommentUrlNavigationTarget'.
+            is CommentUrlNavigationTarget.Search -> {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:635:49: error: unresolved reference 'keyword'.
+                    onSearchKeywordClick(target.keyword)
+                                                ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:640:16: error: unresolved reference 'CommentUrlNavigationTarget'.
+            is CommentUrlNavigationTarget.Space -> {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:641:36: error: unresolved reference 'mid'.
+                onUserClick(target.mid)
+                                   ^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:775:45: error: unresolved reference 'Build'.
+                                            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                                            ^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:775:70: error: unresolved reference 'Build'.
+                                            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                                                                     ^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:781:49: error: unresolved reference 'AndroidRenderEffect'.
+                                                AndroidRenderEffect.createBlurEffect(
+                                                ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:784:53: error: unresolved reference 'Shader'.
+                                                    Shader.TileMode.CLAMP,
+                                                    ^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:896:19: error: unresolved reference 'LocalContext'.
+    val context = LocalContext.current
+                  ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:921:13: error: unresolved reference 'CommentListSkeleton'.
+            CommentListSkeleton(
+            ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:933:36: error: unresolved reference 'SettingsManager'.
+                    scope.launch { SettingsManager.setCommentDefaultSortMode(context, mode.apiMode) }
+                                   ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitFullscreenOverlay.kt:167:25: error: unresolved reference 'LocalConfiguration'.
+    val configuration = LocalConfiguration.current
+                        ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitFullscreenOverlay.kt:227:17: error: unresolved reference 'PortraitInteractionBar'.
+                PortraitInteractionBar(
+                ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitFullscreenOverlay.kt:342:17: error: unresolved reference 'PortraitBottomInputBar'.
+                PortraitBottomInputBar(
+                ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitSubtitleOverlay.kt:213:25: error: unresolved reference 'LocalConfiguration'.
+    val configuration = LocalConfiguration.current
+                        ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitSubtitleOverlay.kt:293:33: error: unresolved reference 'SettingsManager'.
+    val storedPortraitOffset by SettingsManager
+                                ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitSubtitleOverlay.kt:296:35: error: unresolved reference 'SettingsManager'.
+    val subtitlePositionLocked by SettingsManager
+                                  ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitSubtitleOverlay.kt:342:117: error: unresolved reference 'setSubtitlePortraitVerticalOffsetFraction'.
+                                            com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setSubtitlePortraitVerticalOffsetFraction(
+                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitSubtitleOverlay.kt:350:62: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                                        val screenHeightPx = with(density) {
+                                                             ^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitSubtitleOverlay.kt:429:97: error: unresolved reference 'setSubtitlePositionLocked'.
+                        com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setSubtitlePositionLocked(context, locked)
+                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitSubtitleOverlay.kt:435:97: error: unresolved reference 'setSubtitlePortraitVerticalOffsetFraction'.
+                        com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.setSubtitlePortraitVerticalOffsetFraction(context, 0f)
+                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitCommentSheet.kt:16:5: error: 'public' function exposes its 'internal' parameter type 'VideoCommentViewModel'.
+    commentViewModel: VideoCommentViewModel,
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitDetailSheet.kt:171:55: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                            val blockedUpRepository = remember { com.android.purebilibili.data.repository.BlockedUpRepository(context) }
+                                                      ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitDetailSheet.kt:171:107: error: unresolved reference 'BlockedUpRepository'.
+                            val blockedUpRepository = remember { com.android.purebilibili.data.repository.BlockedUpRepository(context) }
+                                                                                                          ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitDetailSheet.kt:172:66: error: unresolved reference 'isBlocked'.
+                            val isBlocked by blockedUpRepository.isBlocked(info.owner.mid).collectAsStateWithLifecycle(initialValue = false
+                                                                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitDetailSheet.kt:187:90: error: unresolved reference 'unblockUpWithBilibiliSync'.
+                                                        val result = blockedUpRepository.unblockUpWithBilibiliSync(info.owner.mid)
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitDetailSheet.kt:188:65: error: unresolved reference 'widget'.
+                                                        android.widget.Toast.makeText(context, result.message, android.widget.Toast.LENGTH_SHORT).show()
+                                                                ^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitDetailSheet.kt:188:120: error: unresolved reference 'widget'.
+                                                        android.widget.Toast.makeText(context, result.message, android.widget.Toast.LENGTH_SHORT).show()
+                                                                                                                       ^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitDetailSheet.kt:190:90: error: unresolved reference 'blockUpWithBilibiliSync'.
+                                                        val result = blockedUpRepository.blockUpWithBilibiliSync(info.owner.mid, info.owner.name, info.owner.face)
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitDetailSheet.kt:191:65: error: unresolved reference 'widget'.
+                                                        android.widget.Toast.makeText(context, result.message, android.widget.Toast.LENGTH_SHORT).show()
+                                                                ^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitDetailSheet.kt:191:120: error: unresolved reference 'widget'.
+                                                        android.widget.Toast.makeText(context, result.message, android.widget.Toast.LENGTH_SHORT).show()
+                                                                                                                       ^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoLoadPolicy.kt:12:57: error: unresolved reference 'buildPlaybackAudioUrlCandidates'.
+import com.android.purebilibili.feature.video.viewmodel.buildPlaybackAudioUrlCandidates
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoLoadPolicy.kt:309:24: error: unresolved reference 'buildPlaybackAudioUrlCandidates'.
+    val rawAudioUrls = buildPlaybackAudioUrlCandidates(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:32:43: error: unresolved reference 'statusBarsIgnoringVisibility'.
+import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:150:61: error: unresolved reference 'UpPreviewSheet'.
+import com.android.purebilibili.feature.video.ui.components.UpPreviewSheet
+                                                            ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:151:61: error: unresolved reference 'UP_PREVIEW_SHEET_HEIGHT_FRACTION'.
+import com.android.purebilibili.feature.video.ui.components.UP_PREVIEW_SHEET_HEIGHT_FRACTION
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:152:61: error: unresolved reference 'resolvePortraitOverlaySheetExpansion'.
+import com.android.purebilibili.feature.video.ui.components.resolvePortraitOverlaySheetExpansion
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:186:48: error: unresolved reference 'DanmakuRenderView'.
+import com.android.purebilibili.danmaku.engine.DanmakuRenderView
+                                               ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:267:79: error: unresolved reference 'FavoriteInteractionSettingsStore'.
+    val favoriteQuickSaveDefaultFolder by com.android.purebilibili.core.store.FavoriteInteractionSettingsStore
+                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:436:13: error: no value passed for parameter 'isVerticalVideo'.
+            enabled = onlyVerticalRecommendations,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:498:13: error: no value passed for parameter 'isVerticalVideo'.
+            enabled = onlyVerticalRecommendations,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:531:13: error: no value passed for parameter 'isVerticalVideo'.
+            enabled = onlyVerticalRecommendations,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:1305:41: error: no value passed for parameter 'isVerticalVideo'.
+                                        enabled = onlyVerticalRecommendations,
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:1320:37: error: no value passed for parameter 'isVerticalVideo'.
+                                    enabled = onlyVerticalRecommendations,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:1645:58: error: unresolved reference 'CoinDialog'.
+    com.android.purebilibili.feature.video.ui.components.CoinDialog(
+                                                         ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:1650:23: error: cannot infer type for value parameter 'count'. Specify it explicitly.
+        onConfirm = { count, alsoLike ->
+                      ^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:1650:30: error: cannot infer type for value parameter 'alsoLike'. Specify it explicitly.
+        onConfirm = { count, alsoLike ->
+                             ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:1983:33: error: unresolved reference 'resolvePortraitOverlaySheetExpansion'.
+    val overlaySheetExpansion = resolvePortraitOverlaySheetExpansion(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:1987:40: error: unresolved reference 'UP_PREVIEW_SHEET_HEIGHT_FRACTION'.
+        upPreviewSheetHeightFraction = UP_PREVIEW_SHEET_HEIGHT_FRACTION,
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:2218:101: error: unresolved reference 'getPortraitLetterboxAmbientHazeSync'.
+            initialValue = com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPortraitLetterboxAmbientHazeSync(context),
+                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:2521:34: error: unresolved reference 'statusBarsIgnoringVisibility'.
+                    WindowInsets.statusBarsIgnoringVisibility.getTop(this),
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:3529:13: error: unresolved reference 'UpPreviewSheet'.
+            UpPreviewSheet(
+            ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:3541:34: error: cannot infer type for value parameter 'mid'. Specify it explicitly.
+                onEnterSpace = { mid ->
+                                 ^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:3547:34: error: cannot infer type for value parameter 'targetBvid'. Specify it explicitly.
+                onVideoClick = { targetBvid, _ ->
+                                 ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:3547:46: error: cannot infer type for implicit value parameter 'it'. Specify it explicitly.
+                onVideoClick = { targetBvid, _ ->
+                                             ^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:3552:48: error: cannot infer type for value parameter 'progress'. Specify it explicitly.
+                onVisibilityProgressChange = { progress ->
+                                               ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-01\source-inputs\proof-only\com\android\purebilibili\data\repository\DesktopOriginalVideoLoadProtocol.kt:1118:17: error: no value passed for parameter 'audioLang'.
+                targetQuality = targetQuality
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

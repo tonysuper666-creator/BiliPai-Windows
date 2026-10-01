@@ -1,0 +1,24 @@
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-02\source-inputs\prepared\generated\com\android\purebilibili\core\ui\skeleton\DesktopOriginalVideoCommentListSkeleton.kt:8:5: error: functions which invoke @Composable functions must be marked with the @Composable annotation
+fun CommentListSkeleton(
+    ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-02\source-inputs\prepared\generated\com\android\purebilibili\core\ui\skeleton\DesktopOriginalVideoCommentListSkeleton.kt:13:17: error: @Composable invocations can only happen from the context of a @Composable function
+    val pulse = rememberContentSkeletonPulse()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-02\source-inputs\prepared\generated\com\android\purebilibili\core\ui\skeleton\DesktopOriginalVideoCommentListSkeleton.kt:14:22: error: @Composable invocations can only happen from the context of a @Composable function
+    val blockColor = rememberContentSkeletonBlockColor(pulse)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-02\source-inputs\prepared\generated\com\android\purebilibili\core\ui\skeleton\DesktopOriginalVideoCommentListSkeleton.kt:16:5: error: @Composable invocations can only happen from the context of a @Composable function
+    LazyColumn(
+    ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:84:54: error: unresolved reference 'resolveCommentUrlNavigationTarget'.
+import com.android.purebilibili.feature.video.screen.resolveCommentUrlNavigationTarget
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\VideoCommentSheetHost.kt:617:28: error: unresolved reference 'resolveCommentUrlNavigationTarget'.
+        when (val target = resolveCommentUrlNavigationTarget(url)) {
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitDetailSheet.kt:188:117: error: @Composable invocations can only happen from the context of a @Composable function
+                                                        com.bilipai.desktop.ui.LocalDesktopOriginalPortraitPlatform.current.showFeedback(result.message)
+                                                                                                                    ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitDetailSheet.kt:191:117: error: @Composable invocations can only happen from the context of a @Composable function
+                                                        com.bilipai.desktop.ui.LocalDesktopOriginalPortraitPlatform.current.showFeedback(result.message)
+                                                                                                                    ^^^^^^^

@@ -1,0 +1,59 @@
+{
+  "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+  "originalSHA256LF": "ee0802a25e20f2b9b6ede65ffd6e5b35590b2457e80318d874489dcc98a13dc0",
+  "candidateSHA256LF": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485",
+  "completeOriginalFile": true,
+  "orderedExactReplay": true,
+  "edits": [
+    {
+      "label": "Original selected audio/video URLs publish through same source/receipt actor, retain position/readiness",
+      "before": "    val videoSource = mediaSourceFactory.createMediaSource(\n        MediaItem.Builder()\n            .setUri(resolvedUrls.videoUrl)\n            .setMediaId(mediaId)\n            .build()\n    )\n    val audioSource = mediaSourceFactory.createMediaSource(\n        MediaItem.Builder()\n            .setUri(resolvedAudioUrl)\n            .setMediaId(\"audio_$mediaId\")\n            .build()\n    )\n    val currentPosition = player.currentPosition.coerceAtLeast(0L)\n    val playWhenReady = player.playWhenReady\n\n    player.setMediaSource(MergingMediaSource(videoSource, audioSource), false)\n    player.prepare()\n    player.seekTo(currentPosition)\n    player.playWhenReady = playWhenReady\n",
+      "after": "    val currentPosition = player.currentPosition.coerceAtLeast(0L)\n    val playWhenReady = player.playWhenReady\n    if (!mediaSourceFactory.replaceAudioSource(player, resolvedUrls.videoUrl,\n            resolvedAudioUrl, mediaId, currentPosition, playWhenReady)) return null\n"
+    },
+    {
+      "label": "Same native capability type",
+      "before": "import androidx.media3.exoplayer.ExoPlayer",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl as ExoPlayer"
+    },
+    {
+      "label": "Same native capability type",
+      "before": "import androidx.media3.exoplayer.source.DefaultMediaSourceFactory",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalPortraitMediaFactory as DefaultMediaSourceFactory"
+    },
+    {
+      "label": "Android native annotation",
+      "before": "@androidx.annotation.OptIn(UnstableApi::class)\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped native import",
+      "before": "import androidx.media3.common.MediaItem\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped native import",
+      "before": "import androidx.media3.common.util.UnstableApi\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped native import",
+      "before": "import androidx.media3.exoplayer.source.MergingMediaSource\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped native import",
+      "before": "import com.android.purebilibili.core.util.MediaUtils\n",
+      "after": ""
+    },
+    {
+      "label": "Actual MPV capability is required, not false/default",
+      "before": "Boolean = MediaUtils.isDolbyAtmosAudioSupported()",
+      "after": "Boolean"
+    },
+    {
+      "label": "Actual MPV software Dolby capability is required",
+      "before": "Boolean = MediaUtils.isDolbySoftwareAudioDecoderRequired()",
+      "after": "Boolean"
+    }
+  ]
+}

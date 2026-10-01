@@ -1,0 +1,9 @@
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitProgressBar.kt:29:37: error: unresolved reference 'LocalConfiguration'.
+import androidx.compose.ui.platform.LocalConfiguration
+                                    ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitProgressBar.kt:60:25: error: unresolved reference 'LocalConfiguration'.
+    val configuration = LocalConfiguration.current
+                        ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\PortraitProgressBar.kt:122:25: error: unresolved reference 'LocalConfiguration'.
+    val configuration = LocalConfiguration.current
+                        ^^^^^^^^^^^^^^^^^^

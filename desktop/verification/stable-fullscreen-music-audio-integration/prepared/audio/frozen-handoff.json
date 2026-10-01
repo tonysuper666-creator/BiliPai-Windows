@@ -1,0 +1,1915 @@
+{
+  "status": "FROZEN_FULL_ORIGINAL_AUDIO_SOURCE_READY_REQUIRED_ROOT_PORTS",
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualSnapshot": 61,
+  "entries": 101,
+  "installPayloadCount": 2,
+  "originalOutputCount": 2,
+  "rawArtifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\compile\\compile-result.json",
+      "sha256Bytes": "9f233db3194b985b4617b60e38db8d98b23caece510648bc861e4b6ef07d22eb",
+      "size": 24565
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\compile\\compile.log",
+      "sha256Bytes": "724e49443a6194a7f41ac20982a73298aa8eb2a825408d155e84c1bc34d1d393",
+      "size": 5451
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\compile\\compiler.args",
+      "sha256Bytes": "6c87eeefd09810e21bcde2bfec67fcb442b33c34bdd8c3e9529d35dfedde64e6",
+      "size": 33883
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\compile\\source-inputs.json",
+      "sha256Bytes": "46ebbe16eb6ab48f60927baeff0cd3d765cfa3cb6d59b6d1ee5abd79387ce13c",
+      "size": 23506
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\compile\\source-symbol-audit.json",
+      "sha256Bytes": "196b8c845f399544c8f7a16cc80c74b321a1de64702a09e6e321495c87b48316",
+      "size": 443286
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\exact-source-adaptations.json",
+      "sha256Bytes": "9f974dfbf814a8f01b2f5c07b0befc81ae558d0e0b10c878d5175bb20dad4839",
+      "size": 19898
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\failed-prior-compile\\compile-result.json",
+      "sha256Bytes": "d93db2147342f37c3fa06701adcf2aee887090a69551c1e62ad7d1263351d179",
+      "size": 23426
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\failed-prior-compile\\compile.log",
+      "sha256Bytes": "aeb48e5e4bc554cc976067d61d1e548fb02951704f3e29998659a41c06ed2579",
+      "size": 748
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\failed-prior-compile\\source-inputs.json",
+      "sha256Bytes": "20ef0d10b1add285ef738312b3621a3a718376df71c9464a1a1a16eb0cd4af18",
+      "size": 22735
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\focused-proof\\compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\focused-proof\\compiler.args",
+      "sha256Bytes": "35f976df57f915944cfa9eda34dd7860111771fdf33365b45938e22ef5609664",
+      "size": 26538
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\focused-proof\\original-retained\\AudioModePlaybackPolicyTest.kt.txt",
+      "sha256Bytes": "5430492765ab2221d1b3d725a06073627fdfd9a91648ecd46a82c8b2429a1fd0",
+      "size": 3308
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\focused-proof\\original-retained\\AudioModeSleepTimerPolicyTest.kt.txt",
+      "sha256Bytes": "85574320c51e52c5216b88bc51c2fc4aa0e4319bf1b2d43695389815c31d19c5",
+      "size": 1664
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\focused-proof\\result.json",
+      "sha256Bytes": "566059f15a1fbc6d31670008b8e354a6dd43fb97b29460c8e2949da42d775d2b",
+      "size": 2526
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\focused-proof\\runtime.log",
+      "sha256Bytes": "91c61fc9dc4de76d09ed7a1a173f245921ae5677e5b2015cd15642071eded3ab",
+      "size": 1543
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\focused-proof\\source-inputs\\AudioModePlaybackPolicyTest.kt",
+      "sha256Bytes": "61a6eed535810116b742274c2072da4202a0b02e84cfd89fae9a544771241c4b",
+      "size": 3207
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\focused-proof\\source-inputs\\AudioModeSleepTimerPolicyTest.kt",
+      "sha256Bytes": "132d76febd72db72307d4b8d5d74ee51d7376f6470aabb0364c0d6cc4560150c",
+      "size": 1590
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\focused-proof\\source-inputs\\AudioPolicyProof.kt",
+      "sha256Bytes": "4ef060371ff99991eb73b22bc868171c8ef6cb4a4b403addc74e57e59247ef84",
+      "size": 1028
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\generation-proof\\audio-adaptations.json",
+      "sha256Bytes": "9f974dfbf814a8f01b2f5c07b0befc81ae558d0e0b10c878d5175bb20dad4839",
+      "size": 19898
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\generation-proof\\audio-outputs.json",
+      "sha256Bytes": "2d973d74e5613c1ab01462466977531b8c1145d19708ccebc101ed9181e2829d",
+      "size": 945
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\generation-proof\\audio-source-pins.json",
+      "sha256Bytes": "d9e5a55a70dc597c53e2349fbefe5c430dc95f1ecfc74f18308f0d3bbe492d4d",
+      "size": 482
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\generation-proof\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayer.kt",
+      "sha256Bytes": "521bf64bd22d8465900a76fb81a2435d411ec46a634aa12337b0f6f30f4a538b",
+      "size": 27048
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\generation-proof\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreen.kt",
+      "sha256Bytes": "2755c1800bb59d12c2d7b480330956261d34d29711856e642e883d026c6502e9",
+      "size": 16699
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\generation-proof\\diffs\\AudioModeMusicPlayer.diff",
+      "sha256Bytes": "7cccaceb734dd87b0f8fa13323b67aeb917fe8230c8ee85516d67f73f7224e46",
+      "size": 11841
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\generation-proof\\diffs\\AudioModeScreen.diff",
+      "sha256Bytes": "ba7cc4ffdac1db9d4c1c4fee022cd229f62b1cfe547933c032166ff0cc2e1bbf",
+      "size": 9239
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\generation-proof\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayer.kt.txt",
+      "sha256Bytes": "4aa801e622630315ff95d9ba5bb4c277ecee524055ef4f5ccc5c71e648f136ea",
+      "size": 27157
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\generation-proof\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreen.kt.txt",
+      "sha256Bytes": "8be4fda06237bf87601aa55f844bc501991a426fbde778f3abe6b264fd87ce2d",
+      "size": 18239
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\generation-receipt.json",
+      "sha256Bytes": "998be839735956f71b8b1c752f5de8fd349e08737eb93d9d99d2cc32165528c8",
+      "size": 1078
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\generation.log",
+      "sha256Bytes": "d6c2dbdc6f47fba3bf76c7010ecd5e8da6f47da00308457eeca484c3970b8d34",
+      "size": 46
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayer.kt.txt",
+      "sha256Bytes": "4aa801e622630315ff95d9ba5bb4c277ecee524055ef4f5ccc5c71e648f136ea",
+      "size": 27157
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreen.kt.txt",
+      "sha256Bytes": "8be4fda06237bf87601aa55f844bc501991a426fbde778f3abe6b264fd87ce2d",
+      "size": 18239
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioModePlatform.kt",
+      "sha256Bytes": "09772e987e12753b4069fca378f3f3883869640deb66c5cdc357c07567f7b75b",
+      "size": 4624
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\prepared\\desktop\\tools\\extract-upstream-video-audio-full.py",
+      "sha256Bytes": "7686a6c595aa6edd96f56ebc9fbb28147152530ba43d6034a6b52d15d34ef2e6",
+      "size": 14897
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reference-retained\\child-comment\\DesktopOriginalPortraitVideoViewport.kt.txt",
+      "sha256Bytes": "d53f7dafcf76f029347d2820c17473107b33927b75b2f24f4be86ce29db1695d",
+      "size": 1097
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reference-retained\\child-comment\\DesktopOriginalVideoCommentListSkeleton.kt.txt",
+      "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a",
+      "size": 1059
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reference-retained\\child-comment\\DesktopOriginalVideoCommentSheetSettings.kt.txt",
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67",
+      "size": 889
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reference-retained\\child-comment\\PortraitCommentPresentationPolicy.kt.txt",
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f",
+      "size": 8723
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reference-retained\\child-comment\\VideoCommentSheetHost.kt.txt",
+      "sha256Bytes": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91",
+      "size": 48084
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\registry-feature-merge.json",
+      "sha256Bytes": "0b8ebbd10177ef6913101bee2f90941583a35f37427143783a5875c98eb0dc32",
+      "size": 634
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reproduction-tools\\audit-audio.py",
+      "sha256Bytes": "11c6d986bfc3c345ac21728ffc9a941227066958efa3157121ae548310820131",
+      "size": 4141
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reproduction-tools\\compile-audio.py",
+      "sha256Bytes": "1ce8723dec8659a1b767bd77cad40defec773f62e5ef32706a89bc7641cd6964",
+      "size": 5244
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reproduction-tools\\run-audio-policy-proof.py",
+      "sha256Bytes": "27b3f5036b3f96edbcafe35f8002747cfd16b2f570710dda700f16e69ce2d91c",
+      "size": 5855
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\ROOT-INTEGRATION.md",
+      "sha256Bytes": "81b5f3fe172f96a0a63caad3abe35e636513bc136caf26dc68229f2fedaab2f4",
+      "size": 5251
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\selected\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayer.kt",
+      "sha256Bytes": "521bf64bd22d8465900a76fb81a2435d411ec46a634aa12337b0f6f30f4a538b",
+      "size": 27048
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\selected\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreen.kt",
+      "sha256Bytes": "2755c1800bb59d12c2d7b480330956261d34d29711856e642e883d026c6502e9",
+      "size": 16699
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\source-pins.json",
+      "sha256Bytes": "d9e5a55a70dc597c53e2349fbefe5c430dc95f1ecfc74f18308f0d3bbe492d4d",
+      "size": 482
+    }
+  ],
+  "excludedArtifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\META-INF\\full_audio_source_parity.kotlin_module",
+      "sha256Bytes": "dc52125472378e980d699af1517784691c09816ede3a3b7d6f1b08a1ffa503c8",
+      "size": 1070,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$getAudioNowPlayingBarEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "e5a44fc7aef0a2863725e3bd59202e12583859109ca4f2f8ae29504800f4a108",
+      "size": 1929,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$getAudioNowPlayingBarEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "4f6b6d24abd8519b68ea61b241cd864c48afe0d6338b9d51febe95ad2f584f9e",
+      "size": 1924,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$getAudioNowPlayingBarEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "dfad31e035a5d97596cd087782058f77fa5ef6eba712c5bb3556301875912270",
+      "size": 4398,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$getAudioNowPlayingBarEnabled$$inlined$map$1.class",
+      "sha256Bytes": "e8359f818de67260536e2349940e2c7d48f066c3f52b5e41a3f728e61578da73",
+      "size": 4207,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$getAudioNowPlayingBarEnabled$2.class",
+      "sha256Bytes": "425f8c09a8ffbe02dd2cda031ef09cd4d0b3c679f814a66a6781f8a94f674e63",
+      "size": 4137,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$getMusicLyricsUiStyle$$inlined$map$1$1.class",
+      "sha256Bytes": "b213dcdc2b52084b219f13d28a03d5a6e89ec2bf66e20ec7e6eff64df79298a0",
+      "size": 1887,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$getMusicLyricsUiStyle$$inlined$map$1$2$1.class",
+      "sha256Bytes": "62dbebb8e6b876ffdf3c902f5ae56731eb1b827595f35552519c7a10f787d55d",
+      "size": 1882,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$getMusicLyricsUiStyle$$inlined$map$1$2.class",
+      "sha256Bytes": "09bc133a309265d4a291f54dc49dd31fffc85332a8085dfe97d7ecf4a4db3748",
+      "size": 4888,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$getMusicLyricsUiStyle$$inlined$map$1.class",
+      "sha256Bytes": "20a606bd02f3a502194244cdff05ba2721ead0c8d63d808ab6724a6a0c05c1ea",
+      "size": 4233,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$MusicLyricsUiStyle$Companion.class",
+      "sha256Bytes": "8893cce16b38441a9d29facf1aaa231f83efcdb8a37f5b142111542c0d8cd49f",
+      "size": 1595,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$MusicLyricsUiStyle$WhenMappings.class",
+      "sha256Bytes": "9269fde06c9af17eadedc35f8f83b3f3fbdb26bca3540bed7dd262d1d8c69ff5",
+      "size": 1068,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$MusicLyricsUiStyle.class",
+      "sha256Bytes": "cffb103f657b664c42947b2bba1ccc1460abd2584fa6a4ad984002b6b3383cd1",
+      "size": 3630,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings$setMusicLyricsUiStyle$1.class",
+      "sha256Bytes": "eff732cc49e3e825075c05c5fa1f820f634692fa79c3bc08ad9799bf296d7400",
+      "size": 2302,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings.class",
+      "sha256Bytes": "eec956024977a7a7fe76d001313f3d55fe919ba6e09003454ee493fdd98d95c2",
+      "size": 9809,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalVideoCommentSheetSettings$setCommentDefaultSortMode$1.class",
+      "sha256Bytes": "19cb84f2597fd2b66d9aabb37c81e70556d9f26cc3c2b3af117cf6b199fe7b95",
+      "size": 2227,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\DesktopOriginalVideoCommentSheetSettings.class",
+      "sha256Bytes": "04823bd250c7e7dfcf0eafcb8c3a3155563b3e1de37ffd7c1d45e10f44cbd748",
+      "size": 5371,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\LocalPlaylist.class",
+      "sha256Bytes": "2abbd06cda797cb7477babfe5551d98a7e1f57ead1f0a70f0a0f0abb9a6dac25",
+      "size": 6081,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\LocalPlaylistItem.class",
+      "sha256Bytes": "3b1c4ec85bb154a357770e03d0afce0784af9dd95a68ef547e00f503b5176a38",
+      "size": 4846,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\PlayHistoryEntry.class",
+      "sha256Bytes": "a94809408227d22c2f4a40a6a5cc96dad0388988a4497b1b19931724214ebc75",
+      "size": 5953,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\store\\PlayLastSession.class",
+      "sha256Bytes": "5e62585e29086fa08b7129d7c4856135ff16a77cc01510d333835948b5f1fa9f",
+      "size": 5530,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalVideoCommentListSkeletonKt$CommentListSkeleton$lambda$1$0$$inlined$items$1.class",
+      "sha256Bytes": "aff507c82450599dbbe6e4b4033bf12487ce8f870e82a092ae19828907a5d5e9",
+      "size": 2221,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalVideoCommentListSkeletonKt$CommentListSkeleton$lambda$1$0$$inlined$items$2.class",
+      "sha256Bytes": "44df9e89e69e18f11b8e9781f30bc72123ff5c22b5ef26cd38c11619132664b9",
+      "size": 2229,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalVideoCommentListSkeletonKt$CommentListSkeleton$lambda$1$0$$inlined$items$3.class",
+      "sha256Bytes": "26025979cdadb07ea7d04b7720902278ce447264dff62a6a67798fb1e312dab5",
+      "size": 4634,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalVideoCommentListSkeletonKt.class",
+      "sha256Bytes": "8be5c899d94e52ce1004c2db18ff3d3c785e9dc103133e77c55f36dffe755503",
+      "size": 10868,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalExternalPlaylistSchema$ExternalPlaylistMeta.class",
+      "sha256Bytes": "521c66e71380c02f368487cbb2c1e21f0954ce1f464da323e6bf2ac837c54bf7",
+      "size": 7737,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalExternalPlaylistSchema$ExternalTrack.class",
+      "sha256Bytes": "69ddc831d7f5a39713db0a6c835c7f588f42990ae9b946f26bdc4610f5905520",
+      "size": 6346,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalExternalPlaylistSchema$ImportCheckpoint.class",
+      "sha256Bytes": "7c0f93f1db969b0fc67aed6d3f14130ef418d667311482a4c5b4e06bcde28a07",
+      "size": 5730,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalExternalPlaylistSchema$MatchedVideo.class",
+      "sha256Bytes": "5559bf62259f4bfafc7543ee268b33b99f4bafc10f1e92985aaf1ec223b2da0d",
+      "size": 5146,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalExternalPlaylistSchema$MatchOutcome.class",
+      "sha256Bytes": "09645a2aaf30de065bca73c26e7d800eb67ea0bb1dfbde0b4de162999db86cbb",
+      "size": 4816,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalExternalPlaylistSchema$Source.class",
+      "sha256Bytes": "7f31b9b1ef2283c6e7abb789450596e08fdf038827f77b20bda45e4c5bbb3755",
+      "size": 2636,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalExternalPlaylistSchema.class",
+      "sha256Bytes": "1bbfa64edcbf8afab60975fe9a81de4268afeb11e8a535072b8046bb7db54029",
+      "size": 9376,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ComposableSingletons$ExternalPlaylistImportDialogKt.class",
+      "sha256Bytes": "239c3ffe4e5aad36977a22ecf4081985fcd05b07a22688b30b1d50bc3db1cda1",
+      "size": 7851,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ComposableSingletons$MusicPlayerContentKt.class",
+      "sha256Bytes": "cb7934c8d4db059642f87b709375a8c7791c2ac5663deb39a4eb76feaed52312",
+      "size": 10627,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$1$1.class",
+      "sha256Bytes": "af65774b1cc27b926e9d2925405f5fb744c1fd985e7fa06f51779753f507365d",
+      "size": 9959,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$2$1$1$4$1$1.class",
+      "sha256Bytes": "301fbd18c232b1a09335c5a9b5b41fea832fcc9088b3ccacca02d7c7636d2d15",
+      "size": 14056,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$2$1$1$9$1$1$1$1$1.class",
+      "sha256Bytes": "8f26421b09ad692556cdefb0e3572833fe660271821150cd726ba2b8ae1b16b8",
+      "size": 5090,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$2$1$1$9$1$1$1$2$1$4$1.class",
+      "sha256Bytes": "056c4b15a6b806ca0422bac414f62d80fae9ab51a5ccd3f1d13b7150907e6f30",
+      "size": 4453,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$2$1$1$9$1$1$1$2.class",
+      "sha256Bytes": "faeb65a1af381e5f073776a508f1c66a99a77cd9228030905e6deacd6adddd6a",
+      "size": 25408,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$2$1$1$9$1$1$1$3$1$1.class",
+      "sha256Bytes": "1fc6b75db2970c51572a607f95f503743a5f8adc1eaf2430011abd5c9dd08536",
+      "size": 2042,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$2$1$1$9$1$1$1$3$2$1$1.class",
+      "sha256Bytes": "b96328eb70e8bf45b7f8b765ccef12ad773db6a15c03550e8c0a28984d59df04",
+      "size": 8787,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$2$1$1$9$1$1$1$3$2$1.class",
+      "sha256Bytes": "d68f09c6c5c59641b8bec3ece38535e3c94412237063cdb11247186089535c32",
+      "size": 3933,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$2$1$1$9$1$1$1$3$3.class",
+      "sha256Bytes": "67d0e820e93493c65e50dfc89d9c9f5e1611a44e333c444d136afef48830f20b",
+      "size": 3951,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$2$1$1$9$1$1$1$4$1$1$2.class",
+      "sha256Bytes": "96749385f4302d619e35181b3916924d071d0a3e6f314422727d8a12d36bef2d",
+      "size": 6242,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$2$1$1$9$1$1$1$4$1$1.class",
+      "sha256Bytes": "ab1f455725125e458cd03c34db3fd7fe833e5e5654d07f0031ceb14f601c96cf",
+      "size": 6847,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$2$1$1$9$1$1$1$4$2.class",
+      "sha256Bytes": "4ead299474e28e884872f80c5cfdc3af1d56ce379daeb37ec08574bf1f8a57e4",
+      "size": 16600,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$lambda$46$0$0$9$0$$inlined$itemsIndexed$default$1.class",
+      "sha256Bytes": "5e93f729dc60e081f4fca4c4f3f6248fafdae99ce5c2cf7428c00b9f8d0ec2be",
+      "size": 2548,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$lambda$46$0$0$9$0$$inlined$itemsIndexed$default$2.class",
+      "sha256Bytes": "fd04d6d2daeb27929171804c001f3f43e44729cf179e00a8dcf1c2db9cace4d5",
+      "size": 2491,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$lambda$46$0$0$9$0$$inlined$itemsIndexed$default$3.class",
+      "sha256Bytes": "53b93765d43497193d6ee7d77f10693184af8b61edc8e41a0547c675460727d3",
+      "size": 30140,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$savePlaylist$1.class",
+      "sha256Bytes": "2f643c02a6d867824844c7bd7bc11cebf78be503bb48f90ab9b1bf6b5d89445b",
+      "size": 7361,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$startMatching$2.class",
+      "sha256Bytes": "77b096a836488f6a651d3f52f1fe83a58064a6590d28af1b836edd41a14db16d",
+      "size": 6539,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$startMatching$3$1.class",
+      "sha256Bytes": "756ec3c665e3da381b514e7d1ec3be4fe01ba6ffdbc86c977052e2f245fde73f",
+      "size": 7957,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt$ExternalPlaylistImportDialog$startMatching$3.class",
+      "sha256Bytes": "22316aa9e45746d8b1e72fc1b79ab44c7579a4c45b578c1297338b2bc1754cdd",
+      "size": 7179,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialogKt.class",
+      "sha256Bytes": "4a3d4318590a577c72a20fb73dbb1f8a31d0864b0928b715518239582e71554b",
+      "size": 96096,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\Music3DCoverFlowKt$Music3DCoverFlow$3$1.class",
+      "sha256Bytes": "57779ffa775b8b47cb24a9540d1f426bbab874be5492f845859e1ccb9727534e",
+      "size": 5594,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\Music3DCoverFlowKt$Music3DCoverFlow$4$1.class",
+      "sha256Bytes": "4e12de9bcad44056774780fe954fa43790773dd39f9edd67efe934912e87b5d8",
+      "size": 4717,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\Music3DCoverFlowKt$Music3DCoverFlow$5$1$shelf$1$1$1$2$1$1$1.class",
+      "sha256Bytes": "c5cfa1424f36181f1bbdd7c859703fad034b2eabaa11f6fb3e74b009ad049570",
+      "size": 4395,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\Music3DCoverFlowKt.class",
+      "sha256Bytes": "72b12077ab0c3065e6db27ce445802c0aa3d37fe57c581312de8b2138cb17ce9",
+      "size": 87521,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicArtworkPalette.class",
+      "sha256Bytes": "d8d74b3f91366010815ab5c7c3da64e60943ec6d042a5feceaa5dc3c3cfa9524",
+      "size": 5051,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicGlassMaterialMode.class",
+      "sha256Bytes": "e6acece50a435e6749daed286e40895b876108f891d07aa2dd4ce33fc632b919",
+      "size": 2114,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicLyricFocusStyle.class",
+      "sha256Bytes": "eb99b3c0596445cb479b7b825f12fa1303431b0b4d16e8895421dc1a4da02cd8",
+      "size": 2853,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ExpandedQueuePane$2$1$4$1$2$1$1.class",
+      "sha256Bytes": "616eb7d6b752a2ed7712c79fa412a743b9f261cef05bea0c14b5bbae35055aa4",
+      "size": 1948,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ExpandedQueuePane_7uKoTdw$lambda$4$0$3$0$$inlined$itemsIndexed$default$1.class",
+      "sha256Bytes": "2e330fc7a440bb49cd4efe8db3d672df1892e37b71566b255ac4f27faf869b2d",
+      "size": 2684,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ExpandedQueuePane_7uKoTdw$lambda$4$0$3$0$$inlined$itemsIndexed$default$2.class",
+      "sha256Bytes": "22f89986b8366d950efc1cb6a6ccec1629c75fed10093ca0b65b32b5b025cfa6",
+      "size": 2627,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ExpandedQueuePane_7uKoTdw$lambda$4$0$3$0$$inlined$itemsIndexed$default$3.class",
+      "sha256Bytes": "5dbedcc733b89cb7dd695147b6cd1c41310ee99945b21970ff63c1a7306bf29e",
+      "size": 23268,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$GlassIconButton$2$1$1$1$1.class",
+      "sha256Bytes": "a27208e678782ef9ba24f13021cb26d98a525e38b9947fe038c43b32bcb22d0c",
+      "size": 4367,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$GlassIconButton$2$1$1$1$2.class",
+      "sha256Bytes": "9c32cea6b9954ef0c84d0e1e21d00ec1b14ad31730fd69440c97d4021dcfc3ea",
+      "size": 4367,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$GlassIconButton$2$1$1$1.class",
+      "sha256Bytes": "e1b2245ebdb640153d9b587d83d2337b7c6b22ad8405576f120a64f45b050f84",
+      "size": 4761,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$GlassIconButton$2$1$2$1$1.class",
+      "sha256Bytes": "d085a07dac7f9c612bd1eba14dbfdfdd13007b3e16a748111e908925a2af466f",
+      "size": 4367,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$GlassIconButton$2$1$2$1$2.class",
+      "sha256Bytes": "a35ec10d44304e159530874a16c305606bec8b03db85eacefc7ca36c2ecf2912",
+      "size": 4367,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$GlassIconButton$2$1$2$1.class",
+      "sha256Bytes": "4d4055192d5274016223e9459aebc926a8d429da510e27313836a79be1a4abcc",
+      "size": 4761,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$GlassIconButton$2$1$3$1.class",
+      "sha256Bytes": "2cad60a91bf0c34d509b35ad5d3dab148924b8bfcce3c1084e7701ce050babe5",
+      "size": 6513,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$GlassIconButton$2$1.class",
+      "sha256Bytes": "7c3fb1419a4efd70a1b2bc5a6effa873269fde193db350704daf1897ea5d8898",
+      "size": 6140,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ImmersiveBottomQueueShelf$5$1$1$1$1.class",
+      "sha256Bytes": "1586461b647c330d3d651dba0329d9ee3fa58cec5a18c71b7e9dbfbc1d029a41",
+      "size": 4853,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ImmersiveBottomQueueShelf$5$1$1$1$2.class",
+      "sha256Bytes": "24b4156f40d77252c6de4c6ed8ed6861c9a67aefc1e6f5ba23d81739d83bccca",
+      "size": 4333,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ImmersiveBottomQueueShelf$5$1$1$2$1.class",
+      "sha256Bytes": "f44fa287c06fb408938fdb6452df877f79767771c83fb2a0ebcf3208ea385daf",
+      "size": 4333,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ImmersiveBottomQueueShelf$5$1$1$3$1.class",
+      "sha256Bytes": "1c21f88c553f5cf1c9736974aa0c37bdab6fa0a7e6aebb693ffef5e13b4ee3f2",
+      "size": 4132,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ImmersiveBottomQueueShelf$5$1$1.class",
+      "sha256Bytes": "cc8dd91f184c6f0eb718a8e660f46fc63ce65ee01a48ae9c791f02f6e0894068",
+      "size": 6216,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ImmersiveBottomQueueShelf$5$2$3$1$2$1$1.class",
+      "sha256Bytes": "819db31fc96bfdcae583934ea699ce5b69869e266ea77ee5d0da591ef6465f6d",
+      "size": 2049,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ImmersiveBottomQueueShelf_YWLbeFo$lambda$6$1$2$0$$inlined$itemsIndexed$default$1.class",
+      "sha256Bytes": "55330be3166bfb6d7f1e5819bc168bfeb435aea9c23cd33e2af0d609af705971",
+      "size": 2773,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ImmersiveBottomQueueShelf_YWLbeFo$lambda$6$1$2$0$$inlined$itemsIndexed$default$2.class",
+      "sha256Bytes": "95ab863c5172e262182dff80ad807b614e9335a7dd7e0004251a4feebccca910",
+      "size": 2716,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$ImmersiveBottomQueueShelf_YWLbeFo$lambda$6$1$2$0$$inlined$itemsIndexed$default$3.class",
+      "sha256Bytes": "8bfd9c4d38d69ddcfa784ebc1e4a1b34ea5a91c019e30a8312169a4f738b3ecb",
+      "size": 21665,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$loadMusicArtwork$1.class",
+      "sha256Bytes": "cf3eea121e3b405103dbc9a9cfbbee03f84571c1dfad08a29af1a36b1b95cd1f",
+      "size": 1819,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricLineContent$$inlined$animateDp$1.class",
+      "sha256Bytes": "20aeba87af2606c4307c5ff328b3b30fdfa1a4ecf344b098bf1e8d0f19a6b761",
+      "size": 2259,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricLineContent$$inlined$animateDp$2.class",
+      "sha256Bytes": "eace29901cbf1266d7eee108fc371fba179a3f5c6a4d4297f2d0b0fb71a25322",
+      "size": 2569,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricLineContent$$inlined$animateFloat$1.class",
+      "sha256Bytes": "413c835a3b123cc3f15a544f1f2a7a654da297c217f60f963d4de8bf44a93a72",
+      "size": 2265,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricLineContent$$inlined$animateFloat$2.class",
+      "sha256Bytes": "616753da6168d02267edf33a2280c749006c5fa2a5c3d5cbb67ded61f6441694",
+      "size": 2575,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricsPage$1$1.class",
+      "sha256Bytes": "953a65e53a11f022740d7e3bc07201e05b89a429a23bb37a2f008f6d828eec97",
+      "size": 5172,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricsPage$2$1.class",
+      "sha256Bytes": "e67a6841b2250b162cd7d991232873c3271c96e3e3aaac58e42ee388e371116e",
+      "size": 4289,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricsPage$3$1.class",
+      "sha256Bytes": "a338a279a8094b425383c9349778138046abff781c7514e5328d6b4e1c3b18d8",
+      "size": 4563,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricsPage$4$1.class",
+      "sha256Bytes": "80a1d370ebdb1e2526bd10f07cf17d6f89bb2b4164749f1f6e525d5dd20d2fcd",
+      "size": 6748,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricsPage$6$3$1$2$1$1.class",
+      "sha256Bytes": "0e8ae1f2db3f8951f05027b51a9f831441c917a0381af924df9d4ebf84e7c5d1",
+      "size": 3863,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricsPage_vFcDDEY$lambda$18$4$0$$inlined$itemsIndexed$default$1.class",
+      "sha256Bytes": "e3d675f0a16df9b86694f593eb7558b91fcf577220b42f5f3311510733fce6a6",
+      "size": 2896,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricsPage_vFcDDEY$lambda$18$4$0$$inlined$itemsIndexed$default$2.class",
+      "sha256Bytes": "dcb7fd6deac8de4d897c983e843c470046fb80ecc83f24d3ff840fe4b504dd8b",
+      "size": 2839,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$LyricsPage_vFcDDEY$lambda$18$4$0$$inlined$itemsIndexed$default$3.class",
+      "sha256Bytes": "b3a3b59fd8ff5e23285bb13df6f2e204d8b3da23b6c31ef8c860391855a13f1c",
+      "size": 8770,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicPlayerContent$10$1.class",
+      "sha256Bytes": "42bf69a63a83952a91c97ffd1fd9aa684c04d9aabb93435ea3aa30190b46e4cd",
+      "size": 5467,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicPlayerContent$12$1.class",
+      "sha256Bytes": "7d873a0fa795f6c241655ae0f72fd020e2490c4e4211e6b9dcf2f0a15f9bce40",
+      "size": 9189,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicPlayerContent$13$1$14$2$1$2$1$1.class",
+      "sha256Bytes": "d8941761b706404b52b2f54560c424862d2ef7928906110b2ed98eaa8195eded",
+      "size": 5388,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicPlayerContent$13$1$3$1$2$4$1$1.class",
+      "sha256Bytes": "6299ea18254365d1b0c7615e567a06a6750587235636e9fe42a387108a282987",
+      "size": 4776,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicPlayerContent$13$1$3$4$1$1$1.class",
+      "sha256Bytes": "f3fe4f5cdd10d1735edca5df498468d2fa8338668c1a15a96d56e8774284b0ac",
+      "size": 4837,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicPlayerContent$13$1$openCoverPage$1$1$1.class",
+      "sha256Bytes": "21db5252105ed38c58260fd204799f026d0e04f38fb00bb9becd37f8a5da8998",
+      "size": 4808,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicPlayerContent$13$9$2$1$1$1$1.class",
+      "sha256Bytes": "efcc96fe59dcf223285e22f3bf8ec2f8e7bdef61f6f64434c0bfebe252e35afd",
+      "size": 3088,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicPlayerContent$9$1.class",
+      "sha256Bytes": "716a33b47e830a6aa7d8121daff66302641385a5f942ce621b080b8c2d7ad6e8",
+      "size": 5230,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicPlayerContent$lambda$87$8$1$0$$inlined$itemsIndexed$default$1.class",
+      "sha256Bytes": "f704f24317f657580885724ea5d71af1c7ee4ed588bbfa423c2519241d92055e",
+      "size": 3410,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicPlayerContent$lambda$87$8$1$0$$inlined$itemsIndexed$default$2.class",
+      "sha256Bytes": "9b1ba071be465e6b95799b6caf1c1bef28554f36e64feb857e88953e6b270c5e",
+      "size": 3353,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicPlayerContent$lambda$87$8$1$0$$inlined$itemsIndexed$default$3.class",
+      "sha256Bytes": "d70d4f2de0719ce533f80fd32249978a05bdf9c12f076b64286d3bb402d91915",
+      "size": 15882,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$MusicVolumeSlider$1$1.class",
+      "sha256Bytes": "9b1cd3b24811284f081825792f9e79b4322e2b4b8609a21d94c9ea30a7e96995",
+      "size": 3761,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$PlayerPage$2$1$1.class",
+      "sha256Bytes": "f6cb73bfa6ce0e953918dcb7ce70b13906aa4c53981f6f39968fe2b26fdaac6b",
+      "size": 3500,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$PlayerPage$2$3$1.class",
+      "sha256Bytes": "aef2167fab8b649fbd58eeff5cccbeeb4e8f0e35e8f273dd167c451b3e7ccea0",
+      "size": 3500,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$PlayerPage$2$4$2$1.class",
+      "sha256Bytes": "d3f70a292e62f0fa24b0d22dfc61e7ff95852fbaa3a106706cf62739e73019e7",
+      "size": 5080,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt$WhenMappings.class",
+      "sha256Bytes": "8313e77b48b5df3ea886bfbd2527a3ad16b037a32aabd090670814c7bc1ade48",
+      "size": 1874,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContentKt.class",
+      "sha256Bytes": "4daad6322ae85589a15b5096a560f7ee3fa94d25737075ca932e90d940e7d6c1",
+      "size": 715457,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerMaterial.class",
+      "sha256Bytes": "6f65d6ce82727b2eeb3860507da3fb0b2d5ba8c13b16b4f8c8cdd87e8ed4e38c",
+      "size": 6547,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerVisualPolicyKt$WhenMappings.class",
+      "sha256Bytes": "8a71ed537a568f75213e2410e06b2375dac681cd599771a5e0070c37ccef1931",
+      "size": 1031,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerVisualPolicyKt.class",
+      "sha256Bytes": "837654188d21a2f16bc2fb57577a49b90b02704ed136f601e97d564f4062f9b6",
+      "size": 7861,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicRepeatGlyph.class",
+      "sha256Bytes": "bf6ac4cb9dab4eb0704cf67b907345710d87f357f6f6a2cfe057d470674874b1",
+      "size": 2066,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicSecondaryTransportState.class",
+      "sha256Bytes": "7d5bbb3238c8a234c1bc319beb432ba1fb7f297401e72e9f121362fe2422dc96",
+      "size": 3585,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicTopControlDragPolicyKt.class",
+      "sha256Bytes": "d7a22b25eca8b0656fcf923e730238d41aeffd4587436520b5502bccc89a38d6",
+      "size": 1952,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicTopControlTransform.class",
+      "sha256Bytes": "b0f34f46d0a40087aa33228659f795e3e117b5189c7e5d8b70250b2480a995b5",
+      "size": 3515,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicWavyProgressPolicyKt.class",
+      "sha256Bytes": "c517528154d381b8686e93d929a18d9976fcdbdda3a53cd91d5678b50f5b643d",
+      "size": 2418,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicWavySliderKt$MusicWavySlider$2$1.class",
+      "sha256Bytes": "be526c358cc52d61d7012561c76878c6fd7ddd4fbfcfbc179ac57649ce22aac7",
+      "size": 7754,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicWavySliderKt$MusicWavySlider$3$1.class",
+      "sha256Bytes": "839ba1fdacaea109bb553da6081676cdf01bc00ecc4994206cb55c40428f2000",
+      "size": 8673,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicWavySliderKt.class",
+      "sha256Bytes": "3b04e9f66dbbd472b6a666f02ea4db0ff812dac04f9e37bfaafac69795dfdf04",
+      "size": 33046,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\screen\\PlayHistorySheetKt.class",
+      "sha256Bytes": "40497e92f6d602b0a653cd3a5353a0cf8b7a60ab9b46fd8cfb330048ab2674af",
+      "size": 31137,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleCoverFlowBackgroundKt$AppleCoverFlowBackground$1$1$next$1.class",
+      "sha256Bytes": "ef19ea60acaf284392be11e23387de52e628498be87f644cc56c7d035825ef8e",
+      "size": 4044,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleCoverFlowBackgroundKt$AppleCoverFlowBackground$1$1.class",
+      "sha256Bytes": "47f7f0e0ed7b7be33933517c1d6cd52b70552829874bd76a79b02a7c00e65e51",
+      "size": 7359,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleCoverFlowBackgroundKt$appleFlowBlurScratch$1.class",
+      "sha256Bytes": "a57174953abb2f15e672f29744417862af95bfebbc0bccc6477cea199362bd2d",
+      "size": 1413,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleCoverFlowBackgroundKt$appleFlowPaint$1.class",
+      "sha256Bytes": "fa39ab77e14b9e5f4ec82ca929ce71135b3d5ad28617a4bd76e688cd9cbf8526",
+      "size": 2698,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleCoverFlowBackgroundKt$rememberThrottledFlowTimeMs$1$1.class",
+      "sha256Bytes": "6cb49e936322baf916ea059de1abc9d68afd0ea1ab374f7a00c95689cc593f40",
+      "size": 4701,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleCoverFlowBackgroundKt.class",
+      "sha256Bytes": "72784b35c8120644deae435100dff669842bfc2a54497555b2c229f8adf1ead9",
+      "size": 39080,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleFlowBlurScratch.class",
+      "sha256Bytes": "5e32a07f44a64492aa4cd451a3975225f9206404170154ff729faae807541c87",
+      "size": 1653,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicInterlude.class",
+      "sha256Bytes": "cdefac237a1e9cd7d339d61e181868526d4ff73b515f61240118ebde9a3eaea0",
+      "size": 3415,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicInterludeGroupState.class",
+      "sha256Bytes": "3a0e87d3b1d3724fd1dfe4319bc7a9cf501bbad0b62f22178f84d0932544650c",
+      "size": 2954,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicInterludesKt.class",
+      "sha256Bytes": "5a661a007efa252756a67dc7b4d89b7940b8845c22092180dbbd72b71da1e06a",
+      "size": 31928,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicKaraokeTextKt$AppleMusicFocusedTimedRow$1$1$1.class",
+      "sha256Bytes": "c4f6697f7f281eeab76d95c10639d383f21623925fd2d9ba5f928bc90210b0cc",
+      "size": 4666,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicKaraokeTextKt$AppleMusicKaraokeGlyphs$2$1.class",
+      "sha256Bytes": "71c7685c3fffbb54756940c1090d04939994a2d4e14d4a9964aae80e83e9a8f7",
+      "size": 8321,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicKaraokeTextKt$AppleMusicKaraokeWord$1$1.class",
+      "sha256Bytes": "f20fbeabbedd50e3a0b9d5da43b14b06f7ca9bb30527fba6614f578fc1b74df2",
+      "size": 5087,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicKaraokeTextKt$AppleMusicTimedWordRows$1$1.class",
+      "sha256Bytes": "23586b9d58f3a0f54bd185cd90659d1f84b2734b69fdde3b0c93e51730ff4442",
+      "size": 12422,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicKaraokeTextKt$assignRubySpansToWords$lambda$2$$inlined$compareBy$1.class",
+      "sha256Bytes": "eb0e15fa5eddef927ea385006b150d4f3ef61f289a7946373cb347c83703f0b3",
+      "size": 2913,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicKaraokeTextKt$assignRubySpansToWords$lambda$2$$inlined$thenBy$1.class",
+      "sha256Bytes": "b7d638fb40cd50c5e9d6dc942242f6b9d9b48fdcf78d854519d951e81626c359",
+      "size": 3053,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicKaraokeTextKt.class",
+      "sha256Bytes": "ddd2d64e96ace9af142f4df9ebf5612e775d8403dcad5266613260446b37a795",
+      "size": 139052,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricLineKt$appleMusicTouchRipple$2$1$3$1.class",
+      "sha256Bytes": "9929fba7f9c3e0b0c0f652201186d44b5dfc74e4761a269d6d7f3e8b7733aa8c",
+      "size": 4787,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricLineKt$appleMusicTouchRipple$2$1$3.class",
+      "sha256Bytes": "b287fa3cd91a5de2f724702169466fd662c168b2750a6d3155bb259b0d9e55c5",
+      "size": 5326,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricLineKt$appleMusicTouchRipple$2$1$5$1.class",
+      "sha256Bytes": "be5e78d0f45143f6716dc0ac2dcef4bfbfc9eaf49ad3725797917857277cd14b",
+      "size": 4787,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricLineKt$appleMusicTouchRipple$2$1$5$longPressJob$1$1.class",
+      "sha256Bytes": "7134a9b09d509652e247b2a16cdf052ac1fd4a47080a997f8b887f0d30fe41ae",
+      "size": 4695,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricLineKt$appleMusicTouchRipple$2$1$5.class",
+      "sha256Bytes": "4a9e3b300e128a041fab46ed307f91c5277de98bbdbfe4a94c426827442370b1",
+      "size": 12847,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricLineKt$appleMusicTouchRipple$2$1.class",
+      "sha256Bytes": "fa1826ffff969486e31657161b52ebc80c13c62b3786ddad6944771ee33ec6b0",
+      "size": 8572,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricLineKt.class",
+      "sha256Bytes": "1772724b3529aefe4ac83ef3724e79642648edbc5120161730182fa384f13bc8",
+      "size": 104223,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsViewKt$AppleMusicLyricsView$10$1$invokeSuspend$$inlined$filter$1$1.class",
+      "sha256Bytes": "4d6453bca7b4d9cb2342de777d86626fc217fa04cdb105c63f21ee823a48896a",
+      "size": 2063,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsViewKt$AppleMusicLyricsView$10$1$invokeSuspend$$inlined$filter$1$2$1.class",
+      "sha256Bytes": "97a474dd3340018abf90fc3cd7feb5af778bd181134e7524e3ad3590ce7a661b",
+      "size": 2061,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsViewKt$AppleMusicLyricsView$10$1$invokeSuspend$$inlined$filter$1$2.class",
+      "sha256Bytes": "7fba0f46a86402e710e2850c306c640bc12aeb9600a82f30907d4bcf60528c66",
+      "size": 4093,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsViewKt$AppleMusicLyricsView$10$1$invokeSuspend$$inlined$filter$1.class",
+      "sha256Bytes": "e63900085bf383b71ce81d7cecb052d790620127182541dab2e07e0a030a3e73",
+      "size": 4258,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsViewKt$AppleMusicLyricsView$10$1.class",
+      "sha256Bytes": "f08d6408c407ec23cbd2927a5ab2981935ecb4efec33eab46ba329eb8dfdc7a5",
+      "size": 15135,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsViewKt$AppleMusicLyricsView$5$1.class",
+      "sha256Bytes": "744ed43b0edf1f08e3b759aeb5d6a5411e83be8b1f5ed39b1cbfe8a05379f302",
+      "size": 4615,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsViewKt$AppleMusicLyricsView$6$1.class",
+      "sha256Bytes": "7a796a15409eb4147449c6d70d9535b37b0165e8e61898daae50cad4057307d7",
+      "size": 4578,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsViewKt$AppleMusicLyricsView$7$1.class",
+      "sha256Bytes": "f2d1910ceadbfdae4e465dc65cadea468f3bc698933630e3a2000993c972aa73",
+      "size": 4053,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsViewKt$AppleMusicLyricsView$8$1.class",
+      "sha256Bytes": "80b07bfe821ee1b3c041575838b0d50f3a34869a55669422a84c5a7d2e99b297",
+      "size": 7008,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsViewKt$AppleMusicLyricsView$9$1.class",
+      "sha256Bytes": "4584cdbbbe8735ecef2c8d9935825661a46a722e69ba24169131be84f568131a",
+      "size": 6225,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsViewKt.class",
+      "sha256Bytes": "603bbb9c1c4cdce08a91a0b9b0b883fc5c9ffb0a5a9b60fa6941fac980dc8294",
+      "size": 100839,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicRenderWord.class",
+      "sha256Bytes": "f322e4c2c10f9c6efa3f7f99e564d4ab15168acc16fb3c5319aee67f3b411d3a",
+      "size": 4073,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\HalcyonLyricSettings.class",
+      "sha256Bytes": "b62e9ec1bc6608a7ddebc4c4e68c4c1524d75da7d69763a372c37c0a9523f37e",
+      "size": 1877,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\HalcyonLyricSettingsKt.class",
+      "sha256Bytes": "dc5c10ab44d51546759023018b51e6409993b650701648513e98970ece1fc7b5",
+      "size": 661,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\KaraokeGlyphLayout.class",
+      "sha256Bytes": "3fe1f75a6c5c19de744a1beddc208718ae4fa17de163093bdce67c5ab906daa9",
+      "size": 1159,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerBlurBackgroundKt.class",
+      "sha256Bytes": "8e1636a9c838f157075d66e0ab047293e7b76c0185b1702a94e82ddb4ac97985",
+      "size": 47510,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerLyricPerspectiveKt.class",
+      "sha256Bytes": "dcbf0b25feb23142ce06b2d1801887f51e0e7a4c2f776110ef788c9b200032ad",
+      "size": 9298,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerMiniLyricsKt.class",
+      "sha256Bytes": "7e43b8759c2975c9fe99e356a0f053134e39e054fc5254827e37ff7ac500d569",
+      "size": 21389,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerPalette$Companion.class",
+      "sha256Bytes": "f443355a18bacf5d55b3329cfafaed3d72383a1c82cdfdfafafb3e5340f78ba7",
+      "size": 10280,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerPalette.class",
+      "sha256Bytes": "b626284772c344afe57069df695f32935df30cd86b2d1e2c1914c8cbdf5bcb09",
+      "size": 6284,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerPaletteKt.class",
+      "sha256Bytes": "46c99f6e6497e46c7e58e671902cbb78773c3976e162b938dfe2407924fcd20f",
+      "size": 3892,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeLyricMetadata.class",
+      "sha256Bytes": "31fa8cf679050ac908fd1443c3d0b8d740df8d7388b13eddcc7183ee3e34ce90",
+      "size": 3294,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$12$1.class",
+      "sha256Bytes": "6669ecec066e9d236f43986a814b353948e599923d19bdc9570415a19df94a30",
+      "size": 2525,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$13$1.class",
+      "sha256Bytes": "10580e49285abe516556d4fc5d65fdaf59c6009843602cb59d1573b0f9d5a1ec",
+      "size": 2211,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$14$1.class",
+      "sha256Bytes": "7b6c43fe7b0b608cf948a5c4162f4091c0c798df86d4e30a19372ca31c6c5626",
+      "size": 2062,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$15$1.class",
+      "sha256Bytes": "5a3c0880a84a28b2ed5cdafc5fb078d895abacaee098b7fcad89dbc3492faf09",
+      "size": 2335,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$16$1.class",
+      "sha256Bytes": "92398f510d6f92f79d70a77d7b6c566af0108c292c49b5a1cfcdc39c6959c2e4",
+      "size": 2212,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$19$1.class",
+      "sha256Bytes": "c0cc8e96df7a9d4471a80f8db9fe82131c95602f881cefea016dc3630bc83718",
+      "size": 2200,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$3$1.class",
+      "sha256Bytes": "13cffb06e41ac9799f0adf57fbb6ba0ff8aa6ca77ec82bc2b9863f733424a84f",
+      "size": 5351,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$4$1.class",
+      "sha256Bytes": "0da5da52d1dd86c7084831b1cf70025397b41e1e5df601c85ec62db7ef444b84",
+      "size": 5889,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$40$1.class",
+      "sha256Bytes": "a7295d9379545a2ba6f2554b979947bdedcce977a0c81bff25838e3ac7ca0f3f",
+      "size": 5337,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$5$1.class",
+      "sha256Bytes": "e1991d23fb82806dc3bbdb6248f116c3d29e200dbf989e73f7585340fea237f6",
+      "size": 7432,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$6$1$1.class",
+      "sha256Bytes": "95be768f281174d511c284888f702a184cf29376b15b597b4f0c29919b910754",
+      "size": 2206,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$6$1.class",
+      "sha256Bytes": "f8c50e9b05c17f07762c22a3505903e49b1fe29b883a0a51c20dd70e4cc6251b",
+      "size": 4854,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$7$1.class",
+      "sha256Bytes": "ccf86b1ba1100aa1668ac00ea49b535a578ae5af46354e7c1818bfc0c30585f7",
+      "size": 4357,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$8$1.class",
+      "sha256Bytes": "8c22dcc4b4c93defa3503f7c65713b96b51b45d7c60dced3287d1e1aee0f2655",
+      "size": 4967,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$AudioModeMusicPlayer$9$1.class",
+      "sha256Bytes": "0886b7cd8e68730d832d31bdc976b2c873d4d8597de93482a701bf8b04189bbd",
+      "size": 5810,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$rememberAudioPlaybackSnapshot$1$1$listener$1.class",
+      "sha256Bytes": "c39f45df63ba3df0b679d8564e5f98da9fb6ab519c01b8e116f71a83aedd6aaa",
+      "size": 3802,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$rememberAudioPlaybackSnapshot$2$1.class",
+      "sha256Bytes": "efce73f5194eabf615efd99c224ba47cc42d335931a8722494a347ed9c7fe9e0",
+      "size": 4652,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$rememberAudioPlaybackSnapshot$lambda$3$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "c6217f176b20787189d62adf276545dbf1aa8e6e0b7742009041d3043e4336ee",
+      "size": 2872,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt$WhenMappings.class",
+      "sha256Bytes": "29a51097471b6ef91ee7460aa860ddb21b8505b0924bb36ef3a35483eba5eb19",
+      "size": 971,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeMusicPlayerKt.class",
+      "sha256Bytes": "86a20d553f85be1203a3baf5ad0fab9f51d3a339986907838ddabc2558c66a32",
+      "size": 168036,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModePlayPauseAction.class",
+      "sha256Bytes": "6a6da39701a001f13b4a5d7c8d824c1d5a4325af3d26d560dda54b8a0cad92c2",
+      "size": 2210,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreenKt$AudioModeScreen$2$1.class",
+      "sha256Bytes": "2b43d167849f2243d00b072d90a003456c9cee98d4ab6659c0303c91ff4f5e66",
+      "size": 6888,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreenKt$AudioModeScreen$3$1.class",
+      "sha256Bytes": "19d73ed18327aefc0fd1742a427cf1b17e0b308ce3693436c9d36fbcc7ecb50b",
+      "size": 4921,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreenKt$AudioModeScreen$4$1.class",
+      "sha256Bytes": "e73b142fbcb41c1e75fc8a1d86f178b89a88208e10230d202bccdf4e6046eb0b",
+      "size": 4831,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreenKt$AudioModeScreen$lambda$13$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "06ad5a1bc6b4348dbd279dd13728b5ac2a4e483777baf8a91e3e53c1146933f0",
+      "size": 2565,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreenKt$AudioModeScreen$lambda$4$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "24c0efe3f8a5c77c13d810cd281d157f79d5d059f6482cd65c1ab255f79bd636",
+      "size": 2454,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreenKt$WhenMappings.class",
+      "sha256Bytes": "a9287fbcc053a6eae48b2abb210f02adf5ca997fa651af871903b41998219dbb",
+      "size": 1514,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreenKt.class",
+      "sha256Bytes": "488bf767107dd53919325297802b2164bad3b73b57c08c23653ddd9e6eb4985c",
+      "size": 78479,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioPlaybackSnapshot.class",
+      "sha256Bytes": "49e04086cdda13a3adfb89acde7225d58c1d0fbab21737686ce53ba3f069a6c5",
+      "size": 4045,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioStartupAutoPlayGuard.class",
+      "sha256Bytes": "68bfccbc03d5141c8468805e3695f1d027f9173c5cfae2fcf61305c1d2eb3efc",
+      "size": 1226,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\ComposableSingletons$AudioModeScreenKt.class",
+      "sha256Bytes": "a26d36fa9931daf92a57f98574ee40ef5a72a3e18a7bf6cac92418924cc54b3a",
+      "size": 8431,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentPredictiveBackTarget.class",
+      "sha256Bytes": "5e8df5e92fa84af39009bcca78b4a63473229c3a3040f4493a41c7e8c35a04e7",
+      "size": 2259,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostContent.class",
+      "sha256Bytes": "bd24a402087f40439f7302784313da2f453092b5ef51aafcc16c27efbc7b73c3",
+      "size": 2216,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$2$1.class",
+      "sha256Bytes": "8cf117c5a0e00c06874d28ee342467a01b6f91c42581dea576ba8241981929af",
+      "size": 4574,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$3$1$1$1.class",
+      "sha256Bytes": "9904909e44530856e960851d2db7043cdbc385812023c2c2028d07d5dcab01a8",
+      "size": 4486,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$3$3$1$1$5$1$1.class",
+      "sha256Bytes": "fcf76304a1a16608415060ff58a5733b959ba92a6a8511e30d33564babfc98e2",
+      "size": 1566,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$3$3$1$1$5$2$1.class",
+      "sha256Bytes": "2c58ecd57ac876df2e89a246c92dd9020b53d82f52671f929e1800b845720fad",
+      "size": 2567,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$3$3$1$1$5$3$1.class",
+      "sha256Bytes": "89f73cd8fe990b425e4a5dfae7a070e3768ae4a9e84ae47478712ea5f1b8ad11",
+      "size": 2058,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$3$3$1$1$5$4$1.class",
+      "sha256Bytes": "e4ba9c8fe66ac32bce4f4b4f8c9826e6f69e5ef21c70ebe4356b6e36d5d189b3",
+      "size": 2058,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$3$3$1$1$5$5$1.class",
+      "sha256Bytes": "b8760490dc847ec4ab2069d377677aeba11b69271704cd7e412279ef05f20ef7",
+      "size": 2348,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$3$3$1$1$5$6$1.class",
+      "sha256Bytes": "bf02584fcec990d88f842a2372c4294bb2958a70f342e980a7dcc5b34113cefe",
+      "size": 2341,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$3$3$1$1$5$7$1.class",
+      "sha256Bytes": "9a106ef0e254d8dd6eea02afbb29eeed54e09b006fcffbe8e12ede3a1c79cfac",
+      "size": 2029,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$3$3$1$1$5$8$1.class",
+      "sha256Bytes": "345daf37f24a8bd795000399a46259b606386822b5a9f0a515521d7035e53fd2",
+      "size": 2226,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$3$3$1$1$6$1$1.class",
+      "sha256Bytes": "35dbe2d0fb926c1f6e05417dc44ba11a5c2d95f117063f8da45374df24c5baf4",
+      "size": 3935,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$3$3$2$1$1.class",
+      "sha256Bytes": "36510f6b9fc873439314b32858315ce6eee9933ae39495c66b17f73cdb2fb605",
+      "size": 4038,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$lambda$9$2$0$0$$inlined$items$1.class",
+      "sha256Bytes": "19a3f4b9b108bbb773d8a7dd00eb7daf0f45a531827271b5de00c8ff7c7a6d93",
+      "size": 2493,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$lambda$9$2$0$0$$inlined$items$2.class",
+      "sha256Bytes": "d31dcd4f9cdd22cdce17628a6c9be0e7cd0d8ee0d04278976ae91ea27f7d7ee8",
+      "size": 2501,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentMainList$lambda$9$2$0$0$$inlined$items$3.class",
+      "sha256Bytes": "d98eec7c007731acf4de001ddb3d4f8786e76399d3906bb3befc00d5c839b9d1",
+      "size": 16423,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$10$1.class",
+      "sha256Bytes": "5f4d24ed21bbe9a7efaa4c82f5e3b8ef3968ed5df6696413644e3908a32df2b1",
+      "size": 4665,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$14$1.class",
+      "sha256Bytes": "760903d3bf12d11270a2dbc5329c06dca9e78e0ef41654b33628567088cd817d",
+      "size": 4884,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$15$1$1.class",
+      "sha256Bytes": "43cabafca18d07394bb830a375e68d4dd92c6667543ba32aa5bb67cc0131cdcd",
+      "size": 3068,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$15$1.class",
+      "sha256Bytes": "e0c7a7eb0491b4d2df78cc1ab9ed2536f0adfaf7d4d21d37c53a1d6f18f8dda1",
+      "size": 5305,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$17$3$1$3$1.class",
+      "sha256Bytes": "6754ca13720c68b2595a80fc0e657394a28331d184cd1028543c86def99df354",
+      "size": 7909,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$17$3$1$6$1$5$2$1$1.class",
+      "sha256Bytes": "e53ae1bbc6cd98b689cfa2a9b11824b9907f06ebeabd7b415d63397a118296c0",
+      "size": 2550,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$17$3$1$6$1$5$2$2$1.class",
+      "sha256Bytes": "09cb6ef7c7302d6af2078c8f0341ecfced9f56532b42b0f846e64f0309881485",
+      "size": 2505,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$17$3$1$6$1$5$2$3$1.class",
+      "sha256Bytes": "ffefb6487e765280808e905606eb6fc919113c8c23e297975491390c76f4e4ab",
+      "size": 2046,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$17$3$1$6$1$5$2$4$1.class",
+      "sha256Bytes": "78ffc858d025ed10584cf53be94e2cb52176be2b7d8350e976ac4ec0191ea068",
+      "size": 2491,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$17$3$1$6$1$5$2$5$1.class",
+      "sha256Bytes": "894c5f7308addf1fd0e71942bf014d8dd85fa3d9103d33f1e94f33b056bac6b9",
+      "size": 2146,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$17$3$1$6$1$5$2$6$1.class",
+      "sha256Bytes": "4113f9be4bbd7432f62546ce1242338e9472ed960c89fb8d835c1e998302c5b1",
+      "size": 2146,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$17$3$1$6$1$5$2$7$1.class",
+      "sha256Bytes": "51ccfd28af554de022fb07524617d844870d802e6f7a783566cd5650a116d2f1",
+      "size": 2421,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$5$1.class",
+      "sha256Bytes": "05b3decd62afa9f0831be6709fe661a114b92ccd0e0769e245d8ef5f70dc00ec",
+      "size": 4287,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$7$1.class",
+      "sha256Bytes": "d4e1647292f8cdce6af946c4e471e1ea0bbf45a3c8fc97202e1a34c32ebafe85",
+      "size": 6040,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$8$1.class",
+      "sha256Bytes": "65cb3315fc30d9e184f3bf5632d918f3d6a417cbfe4c34a8555239fb65700bee",
+      "size": 5284,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$lambda$56$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "c4461dcfac957740a04556ff7209eae616daba32781ef7e26e415d61118b5b46",
+      "size": 2910,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$VideoCommentSheetHost$threadDrag$1$1.class",
+      "sha256Bytes": "1d4de51b0ea0a0c3dca8a95f94a8cf191287b3105f842d0e8c73e24bc607e3c4",
+      "size": 2014,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt$WhenMappings.class",
+      "sha256Bytes": "c1db0e3d58331ab865edad5bcf0a024a917ffb80ebaf2dc9e29f8b98493c541b",
+      "size": 1575,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHostKt.class",
+      "sha256Bytes": "225fcc5064cdc7f23a5d02ab119a9c616d891dfa7bb4726f22b129ad817bcd31",
+      "size": 207498,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\DesktopOriginalPortraitVideoViewportKt.class",
+      "sha256Bytes": "8f4a9253c37b5a17712970c3c8d52495e45010aacdbd9623470b23918fc9f83c",
+      "size": 1557,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\PortraitCommentPlayerTransform.class",
+      "sha256Bytes": "7a094781b0e3f0fe28cd5544172245fd59577bc79dc9057202a8901f2fee8145",
+      "size": 4407,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\PortraitCommentPresentationPolicyKt.class",
+      "sha256Bytes": "eaad13c156ed073efee38b59ca26a4f32262011e4e629364a07db374761e3fc1",
+      "size": 7344,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\PortraitCommentSheetVisibility.class",
+      "sha256Bytes": "16315ce3ff0729f0e9f395584759cd8f12b0bfd124c84cbfce9e8a58faf60155",
+      "size": 2972,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\PortraitVideoViewportSize.class",
+      "sha256Bytes": "30cd2a4d18c95884ac6d057a1a71dd1e47073a36b3b706bb97b5e889da0df3ae",
+      "size": 2867,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopMusicRaster$Companion.class",
+      "sha256Bytes": "bc79a9902c89b223c4e6a6b75c443848a70eca2fbb20b416e92709e542cf3749",
+      "size": 4245,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopMusicRaster$Config.class",
+      "sha256Bytes": "fac64b26ce9f3db102ca91fdb441283b03651cc632fe81d3140f606f006ca7f0",
+      "size": 1942,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopMusicRaster.class",
+      "sha256Bytes": "07cd7049e27f3f2e826ce8c14f822d2570da25ae52f61cefe62b1b4869cbd0ba",
+      "size": 3126,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopMusicRasterCanvas.class",
+      "sha256Bytes": "7060c953eb0167041b9d95883b78a1fd02e8b5d7a8e85f9e01acc8c53933c80d",
+      "size": 5813,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopMusicRasterColor.class",
+      "sha256Bytes": "ae61bd3d2e81c50d7205cf7c8e5ca37cac53baf4743ca7e4588de8397c30f97b",
+      "size": 1995,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopMusicRasterColorFilter.class",
+      "sha256Bytes": "bc0f7d617a2087ba7b5aeaf5b2c89d6d8c3e936c3457fe3c50493eb4bc90fa71",
+      "size": 1438,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopMusicRasterColorMatrix.class",
+      "sha256Bytes": "e00cf1615d1c5e5b5aa84d0579693db3cd3bd084fb06b8eadf4bc09dc36befc7",
+      "size": 1307,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopMusicRasterKt.class",
+      "sha256Bytes": "e7fe33757982636f61e08a1fd4f913134f57613fd38de789f079d8030a91246e",
+      "size": 2110,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopMusicRasterMatrix.class",
+      "sha256Bytes": "60f691dc25d72fb05a3becaa8f718adc7465cef4b299cc7e881c796aec71226f",
+      "size": 2105,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopMusicRasterPaint$Companion.class",
+      "sha256Bytes": "756848f64299732af0e73a7eae130e3133b4adbd67f0ed3fd50b34a23fcadd27",
+      "size": 922,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopMusicRasterPaint.class",
+      "sha256Bytes": "43560234d786bbabde0ad7df7fc6f8c0e4c06c24e3f6c6858fc2951e9af5a221",
+      "size": 2288,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioComposerPort.class",
+      "sha256Bytes": "3d73e1577b9fa4308b537f41d495f5fc87e1716c095657d82bf406673d47ff9f",
+      "size": 763,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioHistoryPort.class",
+      "sha256Bytes": "2bc7c60c5d2f0cfa3726325cb6ecd8bf67d11f8402efaea8e697a1f8bd386e67",
+      "size": 1891,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioLyricsPort.class",
+      "sha256Bytes": "5ff509e20b6447cce0f1aeca6b61263fe655c16f883b6c74b55f91862fc7f3b0",
+      "size": 1663,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioMiniPort.class",
+      "sha256Bytes": "335ead518607bd6a26a2dc5809482b23d4610f08879478a9456571170fb820b9",
+      "size": 968,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioModePlatform.class",
+      "sha256Bytes": "c88d510b5521e84f56d237767d76c986f541f4460fb024c4ad785fa6b09903e1",
+      "size": 3717,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioModePlatformKt.class",
+      "sha256Bytes": "954a51b3a97fccd59777f667544ba10506e6a5e52591574a8ac7a1b1674d645b",
+      "size": 2133,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioOrientation.class",
+      "sha256Bytes": "b2eedf458410c91683182e5169d8e38f2386b11626cf2affdc26198b6f3e5255",
+      "size": 1969,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioPlaylistPort.class",
+      "sha256Bytes": "f22c39d2df9adcb2d69b1c14c6b736ec48be3a3bb9f26e3b6a43d753e8352216",
+      "size": 2237,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioSessionPort.class",
+      "sha256Bytes": "6d2b8ba75b70243a9b5ac477f83ee19e53a83580a5b1d2b16a650ce5e12cb261",
+      "size": 529,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioVideoOwner$DefaultImpls.class",
+      "sha256Bytes": "8e0a27fac3794e4797a4d3e35cf9a547c45b6e0fe9cd947b953187283674e4a9",
+      "size": 632,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioVideoOwner.class",
+      "sha256Bytes": "86220bf68acc9b84c269d20f0092e626544dadf743ac3c2c69af5bfab8aa8002",
+      "size": 3376,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioWindowPort.class",
+      "sha256Bytes": "a9fa9baf96d9b8e2a1e6d1cbab82e5ac6cd3dc80dcd808bf06e1938d3159f7db",
+      "size": 1287,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalExternalPlaylistActions$DefaultImpls.class",
+      "sha256Bytes": "ac9c469420aa99a407b55280cf5a29328c4ea905910ef4f15881128fedb7978c",
+      "size": 1044,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalExternalPlaylistActions.class",
+      "sha256Bytes": "7c1da37b2bc5128470bb77bfb8896b8afbf8908d1d28ac87fd41be21e6f8d394",
+      "size": 6364,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalMusicArtworkLoader$load$2.class",
+      "sha256Bytes": "f84649993fb2811167b2a48e879ef9cf7836bd346d21680f940cc21dd976a838",
+      "size": 7526,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalMusicArtworkLoader.class",
+      "sha256Bytes": "f4bc9414bad0c1ac4930e3392ca6ef55f4242246a4500299bbdc4881bbc42d2e",
+      "size": 5212,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalMusicUiPlatform.class",
+      "sha256Bytes": "5d12a2bb4030ec5b74f5b45e8a9de29f68a0ea52238eea9a0ec17bfbb6b59a3b",
+      "size": 3391,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\classes\\com\\bilipai\\desktop\\ui\\DesktopOriginalMusicUiPlatformKt.class",
+      "sha256Bytes": "890a4aac57402e10948e062daf55f084706bfc8bd7277320085ebb5bff9d666c",
+      "size": 4197,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\full-audio-source-candidate.jar",
+      "sha256Bytes": "50191b76197d7b7c661867d3fbd499d4163ca42fe46a9d782ce85f7e60b71c69",
+      "size": 1099232,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\audio-policy-proof-02\\classes\\META-INF\\audio_policy_fixture.kotlin_module",
+      "sha256Bytes": "b18b7a9d28f7f5b40740017df6e357f3b0b9c7079ea90b8e35d3bc65deba0038",
+      "size": 93,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\audio-policy-proof-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModePlaybackPolicyTest.class",
+      "sha256Bytes": "c86b9f7ea206a255b31aac3fc21299db93960f8ce568e8fb0f207b590321c3b6",
+      "size": 3499,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\audio-policy-proof-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeSleepTimerPolicyTest.class",
+      "sha256Bytes": "78a6a530fc662a4c02928cba9b350118432a94d5a380496f5d64fc49cfdfbb5d",
+      "size": 2284,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\audio-policy-proof-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioPolicyProofKt$main$$inlined$sortedBy$1.class",
+      "sha256Bytes": "097d95b990d9d9bcbd1ffdfc8e05b919591fa16955ff8c6e7298c263f1b3da7a",
+      "size": 2083,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\audio-policy-proof-02\\classes\\com\\android\\purebilibili\\feature\\video\\screen\\AudioPolicyProofKt.class",
+      "sha256Bytes": "0b3a7fb3123268d7972a61a049bb8c6fa3cdd3ed8b6cbd196d00a6bf489d030b",
+      "size": 5545,
+      "reason": "Rebuildable fixture/candidate class/JAR; exact sources/compiler args/raw logs retained; never install proof overlay as a dependency"
+    }
+  ],
+  "rawCount": 46,
+  "excludedCount": 277,
+  "wholeBodyExactInverse": true,
+  "productClassOverlap": 0,
+  "topMethodOverlap": 0,
+  "productionOverrides": 0,
+  "originalPolicyCases": 16,
+  "originalPolicyAssertions": 27,
+  "wholeCandidateOrRootMounted": false,
+  "dependenciesAdded": 0,
+  "httpAccountWindow": false
+}

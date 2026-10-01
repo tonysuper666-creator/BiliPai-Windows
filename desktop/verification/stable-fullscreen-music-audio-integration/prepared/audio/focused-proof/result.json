@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "processExitCode": 0,
+  "actualSnapshot": 61,
+  "runtimeEntries": 101,
+  "candidateJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-audio-02\\full-audio-source-candidate.jar",
+    "sha256Bytes": "50191b76197d7b7c661867d3fbd499d4163ca42fe46a9d782ce85f7e60b71c69"
+  },
+  "sourceTests": [
+    {
+      "original": "app/src/test/java/com/android/purebilibili/feature/video/screen/AudioModePlaybackPolicyTest.kt",
+      "sha256LF": "5430492765ab2221d1b3d725a06073627fdfd9a91648ecd46a82c8b2429a1fd0",
+      "gitBlob": "b15185342dbc2d90338aa914d64f4497af732506",
+      "compileCopy": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\audio-policy-proof-02\\source-inputs\\AudioModePlaybackPolicyTest.kt",
+      "sha256Bytes": "61a6eed535810116b742274c2072da4202a0b02e84cfd89fae9a544771241c4b",
+      "adaptations": [
+        "Remove test annotation only; no new JUnit dependency",
+        "Map Media3 state constants to actual source states"
+      ]
+    },
+    {
+      "original": "app/src/test/java/com/android/purebilibili/feature/video/screen/AudioModeSleepTimerPolicyTest.kt",
+      "sha256LF": "85574320c51e52c5216b88bc51c2fc4aa0e4319bf1b2d43695389815c31d19c5",
+      "gitBlob": "40154daf03df075fef3bf3b46d47ff4e0fd085d3",
+      "compileCopy": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\audio-policy-proof-02\\source-inputs\\AudioModeSleepTimerPolicyTest.kt",
+      "sha256Bytes": "132d76febd72db72307d4b8d5d74ee51d7376f6470aabb0364c0d6cc4560150c",
+      "adaptations": [
+        "Remove test annotation only; no new JUnit dependency",
+        "Map Media3 state constants to actual source states"
+      ]
+    }
+  ],
+  "testSupportJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-test\\2.4.0\\c9a0c254adade886172cb021c0b099d8be1a5fc4\\kotlin-test-2.4.0.jar",
+    "sha256Bytes": "38099e38d81f394d7ae3eb73ad0a2b6379629a293ba8cfe5485ee7f836124943"
+  },
+  "originalCases": 16,
+  "originalAssertionsEvaluated": 27,
+  "rendererAbiClasses": 3,
+  "productionOverrides": 0,
+  "httpOrAccountOrWindow": false,
+  "actualRootMounted": false
+}

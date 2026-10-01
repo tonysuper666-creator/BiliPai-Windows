@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "snapshot": 54,
+  "entries": 101,
+  "productionOverrides": 0,
+  "explicitProspectiveJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-07\\tablet-audio-candidate.jar",
+    "sha256Bytes": "aa83c9f637d48eaf5b25d158f4d7076cbfa485e0c33b991df688260566174c30"
+  },
+  "sourceSha256LF": "c85c1377c32e1dc8ad441bafba8916aff3da5e494c3717444bff3016a2ff3e4a",
+  "windowOrAccount": false,
+  "notRootAcceptance": true
+}

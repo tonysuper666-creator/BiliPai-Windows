@@ -1,0 +1,10 @@
+{
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+  "originalSHA256LF": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9",
+  "declarations": [
+    "PortraitVideoViewportSize",
+    "resolvePortraitVideoViewportSize"
+  ],
+  "originalDeclarations": "internal data class PortraitVideoViewportSize(\n    val width: Int,\n    val height: Int\n)\n\ninternal fun resolvePortraitVideoViewportSize(\n    containerWidth: Int,\n    containerHeight: Int,\n    currentVideoAspect: Float,\n    fillContainer: Boolean\n): PortraitVideoViewportSize {\n    val safeWidth = containerWidth.coerceAtLeast(1)\n    val safeHeight = containerHeight.coerceAtLeast(1)\n    if (fillContainer) {\n        return PortraitVideoViewportSize(width = safeWidth, height = safeHeight)\n    }\n    val safeAspect = currentVideoAspect.coerceAtLeast(0.1f)\n    val containerAspect = safeWidth.toFloat() / safeHeight.toFloat()\n    return if (safeAspect > containerAspect) {\n        PortraitVideoViewportSize(\n            width = safeWidth,\n            height = (safeWidth / safeAspect).roundToInt().coerceIn(1, safeHeight)\n        )\n    } else {\n        PortraitVideoViewportSize(\n            width = (safeHeight * safeAspect).roundToInt().coerceIn(1, safeWidth),\n            height = safeHeight\n        )\n    }\n}",
+  "selectedWholeDeclaration": true
+}

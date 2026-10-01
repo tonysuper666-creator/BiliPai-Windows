@@ -1,0 +1,15 @@
+{
+  "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+  "originalSHA256LF": "1a155295c162521a3d860f341a12cbc1f94ca08dd0d1be25d1dfd8a0f2562263",
+  "candidateSHA256LF": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f",
+  "completeOriginalFile": true,
+  "orderedExactReplay": true,
+  "edits": [
+    {
+      "label": "Actual root window metrics",
+      "before": "androidx.compose.ui.platform.LocalConfiguration",
+      "after": "com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration",
+      "count": 1
+    }
+  ]
+}

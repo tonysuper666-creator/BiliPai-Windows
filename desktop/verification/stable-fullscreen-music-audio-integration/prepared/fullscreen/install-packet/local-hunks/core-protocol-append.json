@@ -1,0 +1,14 @@
+{
+  "path": "desktop/tools/extract-upstream-video-state-core.py",
+  "baseSHA256LF": "e433f7b674650bce23f1c1991607399552ed2d97576d900cb0240657ab125dc7",
+  "candidateSHA256LF": "8c38d325e260e589c8ef3d7419dc6fd3b1060fd27b6246ffaf86db361cd5087a",
+  "hunks": [
+    {
+      "before": "p.put(H/'prepared/protocol/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt',header+s+'\\n}\\n')",
+      "after": "pager=mod('original_portrait_protocol_members',REPO/'desktop/tools/extract-upstream-video-fullscreen-pager.py')\nheader=header.replace('import kotlinx.coroutines.*','import kotlinx.coroutines.*\\nimport com.android.purebilibili.feature.video.ui.pager.PORTRAIT_PLAYBACK_TARGET_QUALITY\\nimport com.android.purebilibili.feature.video.ui.pager.shouldUsePortraitParallelPlaybackBootstrap')\ns+='\\n'+pager.protocol_members(REPO)\np.put(H/'prepared/protocol/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt',header+s+'\\n}\\n')"
+    }
+  ],
+  "noWholeFileInstall": true,
+  "sourceModesPreserved": true,
+  "proofOnlyCoreNotInstalled": true
+}

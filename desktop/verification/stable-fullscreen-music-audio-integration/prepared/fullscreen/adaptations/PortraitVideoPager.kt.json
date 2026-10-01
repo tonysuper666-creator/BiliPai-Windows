@@ -1,0 +1,646 @@
+{
+  "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+  "originalSHA256LF": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9",
+  "candidateSHA256LF": "4cda773fac87eb413ccaedb35d5ded586dc21501631e9d43968a72eb3becd0d1",
+  "completeOriginalFile": true,
+  "orderedExactReplay": true,
+  "edits": [
+    {
+      "label": "Required Windows full-owner interface",
+      "before": "fun PortraitVideoPager(",
+      "after": "internal fun PortraitVideoPager("
+    },
+    {
+      "label": "Same page Entry/Section platform",
+      "before": "    val context = LocalContext.current",
+      "after": "    val platform = LocalDesktopOriginalPortraitPlatform.current\n    val section = platform.section\n    val context = section.settingsContext",
+      "count": 2
+    },
+    {
+      "label": "Android system bars and ViewModel acquisition become required same retained owner capabilities",
+      "before": "    val view = LocalView.current\n    val favoriteQuickSaveDefaultFolder by com.android.purebilibili.core.store.FavoriteInteractionSettingsStore\n        .getQuickSaveDefaultFolder(context)\n        .collectAsStateWithLifecycle(initialValue = false)\n    val activity = remember(context) { context.findActivity() }\n    val window = activity?.window\n    val insetsController = remember(window, view) {\n        if (window != null) WindowInsetsControllerCompat(window, view) else null\n    }\n    // Immersive: hide status + nav bars while portrait pager is active (Story + detail overlay).\n    LaunchedEffect(isActive, window, insetsController) {\n        if (!isActive || window == null || insetsController == null) return@LaunchedEffect\n        AppWindowSystemUiController.ensureEdgeToEdge(window)\n        val immersiveSpec = resolveVideoDetailSystemBarsApplySpec(\n            visibilityPolicy = resolveVideoDetailSystemBarsVisibilityPolicy(\n                isFullscreenMode = false,\n                hideVideoPageStatusBar = false,\n                isInPipMode = false,\n                isScreenActive = true,\n                isPortraitFullscreen = true\n            ),\n            useTabletLayout = false,\n            isLightBackground = false,\n            backgroundColor = ComposeColor.Black.toArgb(),\n            transparentColor = ComposeColor.Transparent.toArgb(),\n            blackColor = ComposeColor.Black.toArgb(),\n            transientBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE\n        )\n        applyVideoDetailSystemBarsSpec(window, insetsController, immersiveSpec)\n    }\n    DisposableEffect(isActive, window, insetsController) {\n        onDispose {\n            if (window == null || insetsController == null) return@onDispose\n            // Restore bars when leaving portrait immersive (detail returns to inline / Story pops).\n            val restoreSpec = VideoDetailSystemBarsApplySpec(\n                hiddenBars = VideoDetailHiddenSystemBars.NONE,\n                systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT,\n                statusBarColor = ComposeColor.Transparent.toArgb(),\n                navigationBarColor = ComposeColor.Transparent.toArgb(),\n                lightStatusBars = false,\n                lightNavigationBars = false\n            )\n            applyVideoDetailSystemBarsSpec(window, insetsController, restoreSpec)\n            insetsController.show(WindowInsetsCompat.Type.systemBars())\n        }\n    }\n    val composerViewModel: VideoComposerViewModel =\n        androidx.lifecycle.viewmodel.compose.viewModel(key = \"portrait_composer_$initialBvid\")\n    val supplementViewModel: VideoSupplementViewModel =\n        androidx.lifecycle.viewmodel.compose.viewModel(key = \"portrait_supplement_$initialBvid\")\n    val commentViewModel: VideoCommentViewModel =\n        androidx.lifecycle.viewmodel.compose.viewModel(\n            key = \"portrait_comments_$initialBvid\"\n        )\n",
+      "after": "    val favoriteQuickSaveDefaultFolder by platform.favoriteQuickSaveDefaultFolder\n        .collectAsStateWithLifecycle(initialValue = false)\n    DisposableEffect(platform, isActive) {\n        val lease = platform.acquirePresentation(isActive)\n        onDispose { lease.close() }\n    }\n    val composerViewModel = platform.composer\n    val supplementViewModel = platform.supplement\n    val commentViewModel = platform.comments\n"
+    },
+    {
+      "label": "Sole source/CID document owner; no isolated second parser/session",
+      "before": "    val danmakuManager = rememberIsolatedDanmakuManager(\n        sessionKey = \"portrait_danmaku_$initialBvid\"\n    )",
+      "after": "    val danmakuManager = platform.danmaku"
+    },
+    {
+      "label": "Existing queue coordinator readback",
+      "before": "    val isExternalPlaylist by PlaylistManager.isExternalPlaylist.collectAsStateWithLifecycle()",
+      "after": "    val isExternalPlaylist by platform.externalPlaylist.collectAsStateWithLifecycle()"
+    },
+    {
+      "label": "Actual preferred connection/quality policy from existing same global settings/authorization",
+      "before": "NetworkUtils.getPlayableDefaultQualityId(\n                context = context,\n                isLoggedIn = VideoRepository.isPlaybackLoggedIn(),\n                isVip = VideoRepository.isPlaybackVip()\n            )",
+      "after": "platform.playableDefaultQuality(\n                isLoggedIn = platform.requests.isPlaybackLoggedIn(),\n                isVip = platform.requests.isPlaybackVip(),\n            )"
+    },
+    {
+      "label": "Existing source publication/cache transport, not Media3 decoder/cache",
+      "before": "    val portraitMediaSourceFactory = remember(context) {\n        buildPortraitCachedMediaSourceFactory(context)\n    }",
+      "after": "    val portraitMediaSourceFactory = remember(platform) { platform.mediaFactory }"
+    },
+    {
+      "label": "Existing enabled plugin owner",
+      "before": "    val portraitPlaybackCdnPlugin = remember {\n        PluginManager.getEnabledPlugins(PlaybackCdnPlugin::class).firstOrNull()\n    }",
+      "after": "    val portraitPlaybackCdnPlugin = platform.playbackCdnPlugin"
+    },
+    {
+      "label": "Actual main cookie availability, no second account cache",
+      "before": "TokenManager.sessDataCache.isNullOrEmpty()",
+      "after": "!platform.requests.hasPrimarySessionCookie()"
+    },
+    {
+      "label": "Same owned existing WatchLater API",
+      "before": "NetworkModule.api.getWatchLaterList()",
+      "after": "platform.requests.getWatchLaterList()"
+    },
+    {
+      "label": "Same MPV instance is required; Android fallback decoder construction is not available",
+      "before": "    val exoPlayer = sharedPlayer ?: remember(context) {\n        val audioFocusEnabled = SettingsManager.getAudioFocusEnabledSync(context)\n        ExoPlayer.Builder(context)\n            .setRenderersFactory(\n                HiResCompatibleRenderersFactory(context)\n                    .setExtensionRendererMode(\n                        androidx.media3.exoplayer.DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON\n                    )\n            )\n            .setAudioAttributes(\n                androidx.media3.common.AudioAttributes.Builder()\n                    .setUsage(androidx.media3.common.C.USAGE_MEDIA)\n                    .setContentType(androidx.media3.common.C.AUDIO_CONTENT_TYPE_MOVIE)\n                    .build(),\n                resolveHandleAudioFocusByPolicy(audioFocusEnabled = audioFocusEnabled)\n            )\n            .build()\n            .apply {\n                repeatMode = resolvePortraitPagerRepeatMode()\n                volume = com.android.purebilibili.core.player.PlayerVolumeController\n                    .preferredVolumeSync()\n                setPlaybackSpeed(SettingsManager.getPreferredPlaybackSpeedSync(context))\n            }\n    }\n",
+      "after": "    val exoPlayer = sharedPlayer ?: platform.player\n    require(exoPlayer === platform.player) { \"Portrait pager must share the installed MPV source owner\" }\n"
+    },
+    {
+      "label": "Disposal retires this lease only, never the shared native player",
+      "before": "                exoPlayer.release()",
+      "after": "                platform.releasePagerLease(exoPlayer)"
+    },
+    {
+      "label": "Same document/native source lease replaces Android player attach/detach",
+      "before": "    DisposableEffect(exoPlayer) {\n        danmakuManager.attachPlayer(exoPlayer)\n        onDispose { danmakuManager.detachPlayer(exoPlayer) }\n    }\n\n",
+      "after": "    DisposableEffect(exoPlayer) {\n        val lease = platform.acquireDanmakuPlayer(exoPlayer)\n        onDispose { lease.close() }\n    }\n\n"
+    },
+    {
+      "label": "Real accepted BVID/CID media identity instead of Media3 item",
+      "before": "exoPlayer.currentMediaItem?.mediaId",
+      "after": "platform.currentMediaId(exoPlayer)",
+      "count": 3
+    },
+    {
+      "label": "Source-owned stop/clear existing actor; no other current source touched",
+      "before": "        exoPlayer.stop()\n        exoPlayer.clearMediaItems()",
+      "after": "        platform.clearPlaybackForReplacement(exoPlayer)"
+    },
+    {
+      "label": "Immutable request Job/receipt captured once for info/playurl/source publication",
+      "before": "                val result = VideoRepository.getPortraitPlaybackDetails(",
+      "after": "                val playbackRequest = platform.capturePlaybackRequest()\n                val result = playbackRequest.protocol.getPortraitPlaybackDetails("
+    },
+    {
+      "label": "Original chosen DASH/CDN URLs become existing PlaybackSource with captured receipt, not new Media3 sources",
+      "before": "                        val videoItem = MediaItem.Builder()\n                            .setUri(resolvedUrls.videoUrl)\n                            .setMediaId(mediaId)\n                            .build()\n                        val videoSource = portraitMediaSourceFactory.createMediaSource(videoItem)\n                        val finalSource = resolvedUrls.audioUrl?.takeIf { it.isNotEmpty() }?.let { audioUrl ->\n                            val audioItem = MediaItem.Builder()\n                                .setUri(audioUrl)\n                                .setMediaId(\"audio_$mediaId\")\n                                .build()\n                            val audioSource = portraitMediaSourceFactory.createMediaSource(audioItem)\n                            MergingMediaSource(videoSource, audioSource)\n                        } ?: videoSource\n\n",
+      "after": "                        val finalSource = platform.prepareSource(\n                            request = playbackRequest, info = info, playData = playData,\n                            videoUrl = resolvedUrls.videoUrl, audioUrl = resolvedUrls.audioUrl,\n                            mediaId = mediaId,\n                        )\n\n"
+    },
+    {
+      "label": "Same Store/entry atomic final admission rejects retired receipt/load before native queue publication",
+      "before": "                        exoPlayer.setMediaSource(finalSource)",
+      "after": "                        if (!platform.publishSource(playbackRequest, finalSource, requestGeneration) {\n                                shouldApplyLoadResult(requestGeneration, activeLoadGeneration, bvid, currentPlayingBvid)\n                            }) return@fold"
+    },
+    {
+      "label": "Each preload operation captures its own still-active request receipt",
+      "before": "VideoRepository.preloadPortraitPlayUrl(",
+      "after": "platform.capturePlaybackRequest().protocol.preloadPortraitPlayUrl(",
+      "count": 2
+    },
+    {
+      "label": "Reference sole original Home protocol/preload authority",
+      "before": "VideoRepository.getHomeVideos(",
+      "after": "platform.requests.getHomeVideos(",
+      "count": 2
+    },
+    {
+      "label": "Reference existing raw related request",
+      "before": "VideoRepository.getRelatedVideos(",
+      "after": "platform.requests.getRelatedVideos(",
+      "count": 1
+    },
+    {
+      "label": "Captured playback auth state",
+      "before": "VideoRepository.isPlaybackLoggedIn()",
+      "after": "platform.requests.isPlaybackLoggedIn()",
+      "count": 1
+    },
+    {
+      "label": "Captured playback VIP state",
+      "before": "VideoRepository.isPlaybackVip()",
+      "after": "platform.requests.isPlaybackVip()",
+      "count": 1
+    },
+    {
+      "label": "Actual Windows transport capability",
+      "before": "NetworkUtils.isWifi(context)",
+      "after": "platform.isWifi()",
+      "count": 1
+    },
+    {
+      "label": "Existing bounded media prefetch capability",
+      "before": "prefetchPortraitPlaybackHead(context, streamUrls)",
+      "after": "prefetchPortraitPlaybackHead(platform, streamUrls)",
+      "count": 2
+    },
+    {
+      "label": "Canonical actual API DTO property mapping",
+      "before": "playData.accept_quality",
+      "after": "playData.acceptQuality",
+      "count": 1
+    },
+    {
+      "label": "Existing native viewport only",
+      "before": "    var playerViewRef by remember { mutableStateOf<PlayerView?>(null) }",
+      "after": "    val playerViewRef: PlayerView? = section.viewport"
+    },
+    {
+      "label": "Native size observed through same StateFlow below; no unsupported synthetic listener",
+      "before": "            override fun onVideoSizeChanged(videoSize: VideoSize) {\n                if (videoSize.width > 0 && videoSize.height > 0) {\n                    currentVideoAspect = resolvePortraitRuntimeVideoAspectRatio(\n                        knownVideoAspectRatio = knownVideoAspectRatio,\n                        playerVideoWidth = videoSize.width,\n                        playerVideoHeight = videoSize.height\n                    )\n                }\n            }",
+      "after": ""
+    },
+    {
+      "label": "Actual video-size StateFlow uses original aspect resolver",
+      "before": "    // [逻辑] 只有当播放器正在播放当前视频时，才显示 PlayerView",
+      "after": "    LaunchedEffect(exoPlayer, knownVideoAspectRatio) {\n        exoPlayer.state.collect { _ ->\n            val videoSize = exoPlayer.videoSize\n            if (videoSize.width > 0 && videoSize.height > 0) {\n                currentVideoAspect = resolvePortraitRuntimeVideoAspectRatio(\n                    knownVideoAspectRatio, videoSize.width, videoSize.height)\n            }\n        }\n    }\n\n    // [逻辑] 只有当播放器正在播放当前视频时，才显示 PlayerView"
+    },
+    {
+      "label": "Required existing surface handover/recovery",
+      "before": "rebindPlayerSurfaceIfNeeded(playerView = view, player = exoPlayer)",
+      "after": "platform.recoverSurface(exoPlayer)"
+    },
+    {
+      "label": "Required existing surface handover/recovery",
+      "before": "rebindPlayerSurfaceIfNeeded(playerView = playerView, player = exoPlayer)",
+      "after": "platform.recoverSurface(exoPlayer)"
+    },
+    {
+      "label": "Required existing surface handover/recovery",
+      "before": "rebindPlayerSurfaceIfNeeded(playerView = retryView, player = exoPlayer)",
+      "after": "platform.recoverSurface(exoPlayer)"
+    },
+    {
+      "label": "Actual viewport attachment",
+      "before": "playerView.isAttachedToWindow",
+      "after": "section.viewportAttached",
+      "count": 1
+    },
+    {
+      "label": "Native frame capture receipt instead of Android Bitmap/View",
+      "before": "captureVideoAmbientFrame(\n                        playerView = playerView,\n                        targetWidth = VIDEO_STATUS_BAR_AMBIENT_SAMPLE_WIDTH_PX,\n                        targetHeight = VIDEO_STATUS_BAR_AMBIENT_SAMPLE_HEIGHT_PX,\n                    )",
+      "after": "section.captureAmbientFrame(\n                        targetWidth = VIDEO_STATUS_BAR_AMBIENT_SAMPLE_WIDTH_PX,\n                        targetHeight = VIDEO_STATUS_BAR_AMBIENT_SAMPLE_HEIGHT_PX,\n                    )"
+    },
+    {
+      "label": "Actual native capture already returns ImageBitmap",
+      "before": ")?.asImageBitmap()",
+      "after": ")"
+    },
+    {
+      "label": "Sole native viewport consumes exact original layout/HDR/navigation intent; capability remains explicit",
+      "before": "                        AndroidView(\n                            factory = { ctx ->\n                                // HDR/Dolby need SurfaceView; navigation morph TextureView kills HDR.\n                                val preferTexture = shouldUseTextureSurfaceForFlip(\n                                    isFlippedHorizontal = false,\n                                    isFlippedVertical = false,\n                                    navigationTransformEnabled = useTextureSurfaceForNavigation,\n                                    requiresHdrSurfaceOutput = requiresHdrSurfaceOutput(\n                                        currentQualityId = selectedQualityId\n                                    )\n                                )\n                                val basePlayerView = if (preferTexture) {\n                                    android.view.LayoutInflater.from(ctx)\n                                        .inflate(\n                                            com.android.purebilibili.R.layout.view_player_texture,\n                                            null,\n                                            false,\n                                        ) as PlayerView\n                                } else {\n                                    PlayerView(ctx)\n                                }\n                                basePlayerView.apply {\n                                    playerViewRef = this\n                                    player = exoPlayer\n                                    useController = false\n                                    keepScreenOn = shouldKeepPortraitPagerItemAwake\n                                    resizeMode = portraitPagerResizeMode\n                                    setKeepContentOnPlayerReset(true)\n                                    setShutterBackgroundColor(android.graphics.Color.TRANSPARENT)\n                                    setShowBuffering(PlayerView.SHOW_BUFFERING_ALWAYS)\n                                }\n                            },\n                            update = { view ->\n                                playerViewRef = view\n                                if (view.player != exoPlayer) {\n                                    view.player = exoPlayer\n                                }\n                                view.keepScreenOn = shouldKeepPortraitPagerItemAwake\n                                // mode 变化：Media3 会 remeasure；同 mode 但 FILL 容器尺寸变：强制刷新一次。\n                                val modeChanged = view.resizeMode != portraitPagerResizeMode\n                                val sizeTag =\n                                    \"vp:${view.width}x${view.height}:$portraitPagerResizeMode:$portraitPagerFillContainer\"\n                                val sizeChanged = view.tag != sizeTag\n                                com.android.purebilibili.feature.video.ui.components.applyPlayerViewResizeMode(\n                                    playerView = view,\n                                    resizeMode = portraitPagerResizeMode,\n                                    forceRelayout = false,\n                                )\n                                if (modeChanged || (portraitPagerFillContainer && sizeChanged)) {\n                                    view.tag = sizeTag\n                                    com.android.purebilibili.feature.video.ui.components.schedulePlayerViewViewportRefresh(\n                                        playerView = view,\n                                        resizeMode = portraitPagerResizeMode,\n                                    )\n                                }\n                            },\n                            modifier = Modifier.fillMaxSize()\n                        )",
+      "after": "                        platform.Viewport(\n                            player = exoPlayer, modifier = Modifier.fillMaxSize(),\n                            resizeMode = portraitPagerResizeMode,\n                            keepAwake = shouldKeepPortraitPagerItemAwake,\n                            navigationTextureRequested = useTextureSurfaceForNavigation,\n                            requiresHdr = requiresHdrSurfaceOutput(currentQualityId = selectedQualityId),\n                        )"
+    },
+    {
+      "label": "Same Root typed text-share actor replaces Android chooser",
+      "before": "                val shareIntent = android.content.Intent().apply {\n                    action = android.content.Intent.ACTION_SEND\n                    putExtra(android.content.Intent.EXTRA_TEXT, shareText)\n                    type = \"text/plain\"\n                }\n                context.startActivity(android.content.Intent.createChooser(shareIntent, \"Share too...\"))\n",
+      "after": "                platform.shareText(shareText)\n"
+    },
+    {
+      "label": "Existing document/carrier renders original video/page danmaku geometry",
+      "before": "    AndroidView(\n        factory = { ctx ->\n            DanmakuRenderView(ctx).apply {\n                setBackgroundColor(android.graphics.Color.TRANSPARENT)\n                // 弹幕层必须 passive，否则会吞掉竖屏全屏的全部触控。\n                configureAsPassiveDanmakuOverlay()\n                danmakuManager.attachView(this)\n            }\n        },\n        update = { view ->\n            view.configureAsPassiveDanmakuOverlay()\n            val viewportTag = \"$videoWidth:$videoHeight:$resizeMode:${view.width}x${view.height}\"\n            if (view.width > 0 && view.height > 0 && view.tag != viewportTag) {\n                view.tag = viewportTag\n                danmakuManager.attachView(view)\n                }\n        },\n        onRelease = { view -> danmakuManager.detachView(view) },\n        modifier = modifier\n    )",
+      "after": "    LocalDesktopOriginalPortraitPlatform.current.DanmakuSurface(\n        modifier, videoWidth, videoHeight, resizeMode,\n    )"
+    },
+    {
+      "label": "Sole Surface foreground encloses the complete original pager",
+      "before": "    VerticalPager(",
+      "after": "    platform.Surface(exoPlayer) {\n    VerticalPager("
+    },
+    {
+      "label": "Close whole pager carrier before original coin dialog",
+      "before": "    com.android.purebilibili.feature.video.ui.components.CoinDialog(",
+      "after": "    }\n    com.android.purebilibili.feature.video.ui.components.CoinDialog("
+    },
+    {
+      "label": "Only native foreground page root becomes transparent; original covers/scrims remain black",
+      "before": ".background(Color.Black)\n            .onSizeChanged",
+      "after": ".background(Color.Transparent)\n            .onSizeChanged"
+    },
+    {
+      "label": "Required actual native codec capability fields",
+      "before": "resolvePortraitPlaybackStreamUrls(\n                                    playData = playData,\n                                    targetQuality = targetQuality\n                                )",
+      "after": "resolvePortraitPlaybackStreamUrls(\n            isHevcSupported = platform.codecs.hevcSupported,\n            isAv1Supported = platform.codecs.av1Supported,\n            isDolbyAudioSupported = platform.codecs.dolbyAudioSupported,\n            isDolbyAudioSoftwareDecoded = platform.codecs.dolbyAudioSoftwareDecoded,\n                                    playData = playData,\n                                    targetQuality = targetQuality\n                                )"
+    },
+    {
+      "label": "Required actual native codec capability fields",
+      "before": "resolvePortraitPlaybackStreamUrls(\n                        playData = playData,\n                        targetQuality = targetQuality\n                    )",
+      "after": "resolvePortraitPlaybackStreamUrls(\n            isHevcSupported = platform.codecs.hevcSupported,\n            isAv1Supported = platform.codecs.av1Supported,\n            isDolbyAudioSupported = platform.codecs.dolbyAudioSupported,\n            isDolbyAudioSoftwareDecoded = platform.codecs.dolbyAudioSoftwareDecoded,\n                        playData = playData,\n                        targetQuality = targetQuality\n                    )"
+    },
+    {
+      "label": "Required actual native codec capability fields",
+      "before": "resolvePortraitPlaybackStreamUrls(\n                            playData = playData,\n                            targetQuality = targetQuality,\n                            requestedAudioQuality = targetAudioQuality,\n                            playbackSpeed = exoPlayer.playbackParameters.speed\n                        )",
+      "after": "resolvePortraitPlaybackStreamUrls(\n            isHevcSupported = platform.codecs.hevcSupported,\n            isAv1Supported = platform.codecs.av1Supported,\n            isDolbyAudioSupported = platform.codecs.dolbyAudioSupported,\n            isDolbyAudioSoftwareDecoded = platform.codecs.dolbyAudioSoftwareDecoded,\n                            playData = playData,\n                            targetQuality = targetQuality,\n                            requestedAudioQuality = targetAudioQuality,\n                            playbackSpeed = exoPlayer.playbackParameters.speed\n                        )"
+    },
+    {
+      "label": "Required actual native codec capability fields",
+      "before": "switchPortraitPlaybackAudioSource(\n            player = exoPlayer,\n            mediaSourceFactory = portraitMediaSourceFactory,\n            dash = dash,\n            currentVideoUrl = videoUrl,\n            requestedAudioQuality = audioQuality,\n            targetVideoQuality = resolvePortraitPlaybackTargetQuality(portraitSelectedQuality),\n            mediaId = resolvePortraitMediaId(activeBvid, currentPlayingCid),\n            cdnPlugin = portraitPlaybackCdnPlugin\n        )",
+      "after": "switchPortraitPlaybackAudioSource(\n            isDolbyAudioSupported = platform.codecs.dolbyAudioSupported,\n            isDolbyAudioSoftwareDecoded = platform.codecs.dolbyAudioSoftwareDecoded,\n            player = exoPlayer,\n            mediaSourceFactory = portraitMediaSourceFactory,\n            dash = dash,\n            currentVideoUrl = videoUrl,\n            requestedAudioQuality = audioQuality,\n            targetVideoQuality = resolvePortraitPlaybackTargetQuality(portraitSelectedQuality),\n            mediaId = resolvePortraitMediaId(activeBvid, currentPlayingCid),\n            cdnPlugin = portraitPlaybackCdnPlugin\n        )"
+    },
+    {
+      "label": "Original font scale override is supplied to the same renderer settings",
+      "before": "settings = danmakuSettings,\n                fontScaleOverride = effectiveDanmakuFontScale",
+      "after": "settings = danmakuSettings.copy(fontScale = effectiveDanmakuFontScale)"
+    },
+    {
+      "label": "Original font scale override is supplied to the same renderer settings",
+      "before": "settings = danmakuSettings,\n            fontScaleOverride = effectiveDanmakuFontScale",
+      "after": "settings = danmakuSettings.copy(fontScale = effectiveDanmakuFontScale)"
+    },
+    {
+      "label": "Sole original settings mapper longPressSpeed",
+      "before": "SettingsManager\n        .getLongPressSpeed(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.longPressSpeed }"
+    },
+    {
+      "label": "Sole original settings mapper doubleTapSeekEnabled",
+      "before": "SettingsManager\n        .getDoubleTapSeekEnabled(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.doubleTapSeekEnabled }"
+    },
+    {
+      "label": "Sole original settings mapper seekForwardSeconds",
+      "before": "SettingsManager\n        .getSeekForwardSeconds(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.seekForwardSeconds }"
+    },
+    {
+      "label": "Sole original settings mapper seekBackwardSeconds",
+      "before": "SettingsManager\n        .getSeekBackwardSeconds(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.seekBackwardSeconds }"
+    },
+    {
+      "label": "Sole original settings mapper longPressSpeedHintCloseEnabled",
+      "before": "SettingsManager\n        .getLongPressSpeedHintCloseEnabled(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.longPressSpeedHintCloseEnabled }"
+    },
+    {
+      "label": "Sole original settings mapper longPressSpeedHintHidden",
+      "before": "SettingsManager\n        .getLongPressSpeedHintHidden(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.longPressSpeedHintHidden }"
+    },
+    {
+      "label": "Sole original settings mapper longPressSpeedHintScale",
+      "before": "SettingsManager\n        .getLongPressSpeedHintScale(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.longPressSpeedHintScale }"
+    },
+    {
+      "label": "Sole original settings mapper longPressSpeedHintAlpha",
+      "before": "SettingsManager\n        .getLongPressSpeedHintAlpha(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.longPressSpeedHintAlpha }"
+    },
+    {
+      "label": "Sole original settings mapper portraitLetterboxAmbientHaze",
+      "before": "SettingsManager\n        .getPortraitLetterboxAmbientHaze(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.portraitLetterboxAmbientHaze }"
+    },
+    {
+      "label": "Sole original settings member getAutoPlay",
+      "before": "SettingsManager\n        .getAutoPlay",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPortraitSettings.getAutoPlay"
+    },
+    {
+      "label": "Sole original settings member getCommentFraudDetectionEnabled",
+      "before": "com.android.purebilibili.core.store.SettingsManager\n                .getCommentFraudDetectionEnabled",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentFraudDetectionEnabled"
+    },
+    {
+      "label": "Sole original danmaku preferences getDanmakuSettings",
+      "before": "SettingsManager.getDanmakuSettings(context, ",
+      "after": "section.danmakuPreferences.getDanmakuSettings("
+    },
+    {
+      "label": "Sole original settings member getExternalPlaylistAutoContinue",
+      "before": "SettingsManager\n        .getExternalPlaylistAutoContinue",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPortraitSettings.getExternalPlaylistAutoContinue"
+    },
+    {
+      "label": "Sole original settings member getLongPressSpeedHintAlphaSync",
+      "before": "SettingsManager.getLongPressSpeedHintAlphaSync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintAlphaSync"
+    },
+    {
+      "label": "Sole original settings member getLongPressSpeedHintCloseEnabledSync",
+      "before": "SettingsManager.getLongPressSpeedHintCloseEnabledSync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintCloseEnabledSync"
+    },
+    {
+      "label": "Sole original settings member getLongPressSpeedHintHiddenSync",
+      "before": "SettingsManager.getLongPressSpeedHintHiddenSync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintHiddenSync"
+    },
+    {
+      "label": "Sole original settings member getLongPressSpeedHintScaleSync",
+      "before": "SettingsManager.getLongPressSpeedHintScaleSync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintScaleSync"
+    },
+    {
+      "label": "Sole original settings member getPlaybackCompletionBehavior",
+      "before": "SettingsManager\n        .getPlaybackCompletionBehavior",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getPlaybackCompletionBehavior"
+    },
+    {
+      "label": "Sole original settings member getPortraitLetterboxAmbientHazeSync",
+      "before": "SettingsManager.getPortraitLetterboxAmbientHazeSync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPortraitSettings.getPortraitLetterboxAmbientHazeSync"
+    },
+    {
+      "label": "Sole original settings member getPrefetchVideo",
+      "before": "SettingsManager.getPrefetchVideo",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPortraitSettings.getPrefetchVideo"
+    },
+    {
+      "label": "Sole original settings member getSubtitleAutoPreference",
+      "before": "SettingsManager\n        .getSubtitleAutoPreference",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getSubtitleAutoPreference"
+    },
+    {
+      "label": "Sole original settings member setAudioQuality",
+      "before": "SettingsManager.setAudioQuality",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPortraitSettings.setAudioQuality"
+    },
+    {
+      "label": "Sole original danmaku preferences setDanmakuEnabled",
+      "before": "SettingsManager.setDanmakuEnabled(\n                context,\n                ",
+      "after": "section.danmakuPreferences.setDanmakuEnabled("
+    },
+    {
+      "label": "Sole original settings member setLastPlaybackSpeed",
+      "before": "SettingsManager.setLastPlaybackSpeed",
+      "after": "com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings.setLastPlaybackSpeed"
+    },
+    {
+      "label": "Global reply settings context type boundary",
+      "before": "getCommentFraudDetectionEnabled(context)",
+      "after": "getCommentFraudDetectionEnabled(context.pluginContext)",
+      "count": 1
+    },
+    {
+      "label": "Existing platform/type boundary import androidx.media3.common.Player",
+      "before": "import androidx.media3.common.Player",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player",
+      "count": 1
+    },
+    {
+      "label": "Existing platform/type boundary import androidx.media3.common.PlaybackParameters",
+      "before": "import androidx.media3.common.PlaybackParameters",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalPlaybackRate as PlaybackParameters",
+      "count": 1
+    },
+    {
+      "label": "Existing platform/type boundary import androidx.media3.exoplayer.ExoPlayer",
+      "before": "import androidx.media3.exoplayer.ExoPlayer",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl as ExoPlayer",
+      "count": 1
+    },
+    {
+      "label": "Existing platform/type boundary import androidx.media3.ui.PlayerView",
+      "before": "import androidx.media3.ui.PlayerView",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalPlayerViewportPort as PlayerView",
+      "count": 1
+    },
+    {
+      "label": "Existing platform/type boundary import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel",
+      "before": "import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalPortraitPlaybackOwner as VideoPlaybackViewModel",
+      "count": 1
+    },
+    {
+      "label": "Existing platform/type boundary import com.android.purebilibili.feature.video.danmaku.DanmakuManager",
+      "before": "import com.android.purebilibili.feature.video.danmaku.DanmakuManager",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalPortraitDanmakuPort as DanmakuManager",
+      "count": 1
+    },
+    {
+      "label": "Existing platform/type boundary import com.android.purebilibili.core.store.player.PlayerSettingsStore",
+      "before": "import com.android.purebilibili.core.store.player.PlayerSettingsStore",
+      "after": "import com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings as PlayerSettingsStore",
+      "count": 1
+    },
+    {
+      "label": "Existing platform/type boundary androidx.compose.ui.platform.LocalConfiguration",
+      "before": "androidx.compose.ui.platform.LocalConfiguration",
+      "after": "com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics",
+      "count": 1
+    },
+    {
+      "label": "Existing platform/type boundary com.android.purebilibili.core.util.Logger.",
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "count": 2
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import androidx.compose.ui.platform.LocalView\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import androidx.core.view.WindowInsetsCompat\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import androidx.core.view.WindowInsetsControllerCompat\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.core.ui.AppWindowSystemUiController\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.screen.VideoDetailHiddenSystemBars\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.screen.VideoDetailSystemBarsApplySpec\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.screen.applyVideoDetailSystemBarsSpec\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.screen.findActivity\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.screen.resolveVideoDetailSystemBarsApplySpec\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.screen.resolveVideoDetailSystemBarsVisibilityPolicy\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import androidx.compose.ui.viewinterop.AndroidView\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import androidx.media3.common.MediaItem\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import androidx.media3.common.VideoSize\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import androidx.media3.common.util.UnstableApi\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import androidx.media3.exoplayer.source.MergingMediaSource\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import androidx.media3.ui.AspectRatioFrameLayout\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.core.network.NetworkModule\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.core.player.HiResCompatibleRenderersFactory\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.core.plugin.PluginManager\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.core.util.NetworkUtils\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.core.store.TokenManager\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.data.repository.VideoRepository\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.player.PlaylistManager\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.danmaku.configureAsPassiveDanmakuOverlay\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.danmaku.rememberIsolatedDanmakuManager\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.util.captureVideoAmbientFrame\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.player.resolveHandleAudioFocusByPolicy\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.ui.section.rebindPlayerSurfaceIfNeeded\n",
+      "after": ""
+    },
+    {
+      "label": "Android-only or fully mapped producer import",
+      "before": "import com.android.purebilibili.feature.video.viewmodel.VideoComposerViewModel\n",
+      "after": ""
+    },
+    {
+      "label": "Android native annotation boundary",
+      "before": "@UnstableApi\n",
+      "after": "",
+      "count": 2
+    },
+    {
+      "label": "Same Entry local/prefs map imports",
+      "before": "import androidx.compose.runtime.Composable\n",
+      "after": "import androidx.compose.runtime.Composable\nimport com.bilipai.desktop.ui.LocalDesktopOriginalPortraitPlatform\nimport kotlinx.coroutines.flow.map\n"
+    },
+    {
+      "label": "Actual status-bar inset supplied by Section",
+      "before": "import androidx.compose.foundation.layout.statusBarsIgnoringVisibility\n",
+      "after": ""
+    },
+    {
+      "label": "Actual desktop viewport inset",
+      "before": "WindowInsets.statusBarsIgnoringVisibility.getTop(this)",
+      "after": "section.statusBarInsetPixels"
+    },
+    {
+      "label": "Required sole document/carrier already mapped",
+      "before": "import com.android.purebilibili.danmaku.engine.DanmakuRenderView\n",
+      "after": ""
+    },
+    {
+      "label": "Actual selected filter policy requires the same owned vertical-details request",
+      "before": "filterPortraitOnlyVerticalRecommendations(\n                                    recommendations =\n                                        verifiedHomeRecommendations + relatedFallbackRecommendations,\n                                    enabled = onlyVerticalRecommendations,\n                                )",
+      "after": "filterPortraitOnlyVerticalRecommendations(\n                                    recommendations =\n                                        verifiedHomeRecommendations + relatedFallbackRecommendations,\n                                    enabled = onlyVerticalRecommendations,\n                                isVerticalVideo = platform.requests::isVerticalVideo,\n)"
+    },
+    {
+      "label": "Actual selected filter policy requires the same owned vertical-details request",
+      "before": "filterPortraitOnlyVerticalRecommendations(\n                                        recommendations = homeFeedPage,\n                                        enabled = onlyVerticalRecommendations,\n                                    )",
+      "after": "filterPortraitOnlyVerticalRecommendations(\n                                        recommendations = homeFeedPage,\n                                        enabled = onlyVerticalRecommendations,\n                                    isVerticalVideo = platform.requests::isVerticalVideo,\n)"
+    },
+    {
+      "label": "Actual selected filter policy requires the same owned vertical-details request",
+      "before": "filterPortraitOnlyVerticalRecommendations(\n            recommendations = discoveryRecommendations,\n            enabled = onlyVerticalRecommendations,\n        )",
+      "after": "filterPortraitOnlyVerticalRecommendations(\n            recommendations = discoveryRecommendations,\n            enabled = onlyVerticalRecommendations,\n        isVerticalVideo = platform.requests::isVerticalVideo,\n)"
+    },
+    {
+      "label": "Actual selected filter policy requires the same owned vertical-details request",
+      "before": "filterPortraitOnlyVerticalRecommendations(\n            recommendations = watchLaterVideos.filter { it.bvid !in existingBvids },\n            enabled = onlyVerticalRecommendations,\n        )",
+      "after": "filterPortraitOnlyVerticalRecommendations(\n            recommendations = watchLaterVideos.filter { it.bvid !in existingBvids },\n            enabled = onlyVerticalRecommendations,\n        isVerticalVideo = platform.requests::isVerticalVideo,\n)"
+    },
+    {
+      "label": "Actual selected filter policy requires the same owned vertical-details request",
+      "before": "filterPortraitOnlyVerticalRecommendations(\n            recommendations = recommendations,\n            enabled = onlyVerticalRecommendations,\n        )",
+      "after": "filterPortraitOnlyVerticalRecommendations(\n            recommendations = recommendations,\n            enabled = onlyVerticalRecommendations,\n        isVerticalVideo = platform.requests::isVerticalVideo,\n)"
+    },
+    {
+      "label": "Whole original viewport model/resolver moved to same producer shared declaration file",
+      "before": "internal data class PortraitVideoViewportSize(\n    val width: Int,\n    val height: Int\n)\n\ninternal fun resolvePortraitVideoViewportSize(\n    containerWidth: Int,\n    containerHeight: Int,\n    currentVideoAspect: Float,\n    fillContainer: Boolean\n): PortraitVideoViewportSize {\n    val safeWidth = containerWidth.coerceAtLeast(1)\n    val safeHeight = containerHeight.coerceAtLeast(1)\n    if (fillContainer) {\n        return PortraitVideoViewportSize(width = safeWidth, height = safeHeight)\n    }\n    val safeAspect = currentVideoAspect.coerceAtLeast(0.1f)\n    val containerAspect = safeWidth.toFloat() / safeHeight.toFloat()\n    return if (safeAspect > containerAspect) {\n        PortraitVideoViewportSize(\n            width = safeWidth,\n            height = (safeWidth / safeAspect).roundToInt().coerceIn(1, safeHeight)\n        )\n    } else {\n        PortraitVideoViewportSize(\n            width = (safeHeight * safeAspect).roundToInt().coerceIn(1, safeWidth),\n            height = safeHeight\n        )\n    }\n}",
+      "after": ""
+    }
+  ]
+}

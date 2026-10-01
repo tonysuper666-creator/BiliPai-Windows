@@ -1,0 +1,2774 @@
+{
+  "frozen": true,
+  "task": "full-original-stable-fullscreen-and-portrait-pager-source-closure",
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceOnlyPrepared": true,
+  "productRuntimeAcceptance": false,
+  "artifactCount": 546,
+  "artifacts": [
+    {
+      "path": "adaptations/CoinDialog.kt.json",
+      "bytes": 359,
+      "sha256Bytes": "f56ab1bf471fa9b67c59ad356f410b00319a4315b24a52b56be2204f86207211"
+    },
+    {
+      "path": "adaptations/DesktopOriginalPortraitAudioUrlCandidates.kt.json",
+      "bytes": 396,
+      "sha256Bytes": "ff2bb7a9ca9256e58d2876e1ba64fea809880189ce580896a7ddf280c23db82e"
+    },
+    {
+      "path": "adaptations/DesktopOriginalPortraitVideoViewport.kt.json",
+      "bytes": 1404,
+      "sha256Bytes": "fb42e90fe0ccf92537b829db5af7d3c314dda9f29056900cdb00a97759eff6ea"
+    },
+    {
+      "path": "adaptations/DesktopOriginalVideoCommentListSkeleton.kt.json",
+      "bytes": 378,
+      "sha256Bytes": "4fdfe0f9e2eef26a20608868938f166519dd31dbb07eec4578438e9037856e98"
+    },
+    {
+      "path": "adaptations/PortraitAudioPlaybackController.kt.json",
+      "bytes": 3061,
+      "sha256Bytes": "82d1d4b0e64726f19b1a1bf8b260387c5fe952d8d85fa2959ecef0ca4498930b"
+    },
+    {
+      "path": "adaptations/PortraitBottomInputBar.kt.json",
+      "bytes": 604,
+      "sha256Bytes": "0d0125feecc955bfc49cc17a0d26bc21d99e66f254a8dd61a9cb0a041992734b"
+    },
+    {
+      "path": "adaptations/PortraitBottomInputBarLayoutPolicy.kt.json",
+      "bytes": 380,
+      "sha256Bytes": "4dc5e61c53d576d0bc788113945cc7b490b93c2a58df0fd2df313578a7b9cb0a"
+    },
+    {
+      "path": "adaptations/PortraitFullscreenOverlay.kt.json",
+      "bytes": 607,
+      "sha256Bytes": "b055116b45984c5b201a60e7e229ec5e65e53dcf6e73dd9112d38306002c5da5"
+    },
+    {
+      "path": "adaptations/PortraitFullscreenOverlayLayoutPolicy.kt.json",
+      "bytes": 383,
+      "sha256Bytes": "bf0c48e8cebcf4f1ab4ba3421666e1cf1c295ec329894d3dba7523caa77da8f3"
+    },
+    {
+      "path": "adaptations/PortraitInteractionBar.kt.json",
+      "bytes": 604,
+      "sha256Bytes": "b1d730035000e5f9cec543ac32ae5734936e60474c2b14cd28fc96ebe1ae55eb"
+    },
+    {
+      "path": "adaptations/PortraitInteractionBarLayoutPolicy.kt.json",
+      "bytes": 380,
+      "sha256Bytes": "e3cb1499a6ad61119512eeaffbb9e670a5a57bfa051d52d641a55a018f27ef62"
+    },
+    {
+      "path": "adaptations/PortraitSubtitleOverlay.kt.json",
+      "bytes": 2561,
+      "sha256Bytes": "03686414e6279cb9311722244914da4d0516923c2d186026ab343a9d0a1e39b7"
+    },
+    {
+      "path": "adaptations/PortraitVideoLoadPolicy.kt.json",
+      "bytes": 5105,
+      "sha256Bytes": "731b7c596d9de6b5e1e408de03635189e01fdc80bf5d65adc9a962fd75a6263b"
+    },
+    {
+      "path": "adaptations/PortraitVideoPager.kt.json",
+      "bytes": 48213,
+      "sha256Bytes": "6e0ed70bab1cfa2fb7c74ba2593c81e0dc24d2a69bfb249b667b3bb897251f27"
+    },
+    {
+      "path": "adaptations/UpPreviewSheet.kt.json",
+      "bytes": 1389,
+      "sha256Bytes": "2de264108150dd04261caf1152145926e8a872bc965defc04c6642580c2d46a6"
+    },
+    {
+      "path": "adaptations/UpPreviewSheetPolicy.kt.json",
+      "bytes": 369,
+      "sha256Bytes": "73868073c394cb50af6c8a83caee7c6d293487a5d2d208be590175e0c4cce3d2"
+    },
+    {
+      "path": "adaptations/VideoCommentSheetHost.kt.json",
+      "bytes": 4919,
+      "sha256Bytes": "16d870a15576411a656f9edfd5b8113302b682f92a3431dca0377c68e4188d5f"
+    },
+    {
+      "path": "audit-symbols.py",
+      "bytes": 2322,
+      "sha256Bytes": "c0e2d9b31bf8b29984a609d7dcddd05f02958f6e76f78f8c53a34ad14572d842"
+    },
+    {
+      "path": "compile.py",
+      "bytes": 3450,
+      "sha256Bytes": "5ad0a2c00ba9ee9b5e02f70787a475c331f55a0ce2d3d3778f05a8cbc11f9e8d"
+    },
+    {
+      "path": "core-append-contract.json",
+      "bytes": 1032,
+      "sha256Bytes": "7095b2c0392d37c9c8bc0c7fcacb3a31fc1e7d9350b943118ed72c1e9b0f0599"
+    },
+    {
+      "path": "final-source-checks.json",
+      "bytes": 11662,
+      "sha256Bytes": "12efd09b06a5483046be4ca01871c8d2a98e78a2e4fe21b978770b2070ab25f1"
+    },
+    {
+      "path": "finalize.py",
+      "bytes": 11357,
+      "sha256Bytes": "70537a1bf71cb368e16850655759af52697d41be49f185ceee7c8f3f0af8b4a0"
+    },
+    {
+      "path": "fix-drafts.py",
+      "bytes": 1710,
+      "sha256Bytes": "1c93fcc5df4745f0eb91289e328e64b6ea4476282ae0d1d477ddb5d0b8c30f7b"
+    },
+    {
+      "path": "fullscreen-adaptations.json",
+      "bytes": 28101,
+      "sha256Bytes": "10e525a5e3d71394a3515205487dc620b0fea9ab581f26bf3400b404d052d531"
+    },
+    {
+      "path": "fullscreen-direct-source-inventory.json",
+      "bytes": 1531,
+      "sha256Bytes": "283422579975cfdbba5871d2a2130d380f65d7cf5579f258ba9e153be55e1e35"
+    },
+    {
+      "path": "fullscreen-source-audit.json",
+      "bytes": 385,
+      "sha256Bytes": "31d46ee4e3b1b44b66e018aa97f0e4f1a0a53481d2abb0acf41c12d2f27d82b7"
+    },
+    {
+      "path": "install-packet/local-hunks/core-protocol-append.json",
+      "bytes": 1085,
+      "sha256Bytes": "37fc8b2930e3a27d633839487262619464670b8bf82549dc1162fd50ece27009"
+    },
+    {
+      "path": "install-packet/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "install-packet/manual/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "bytes": 7636,
+      "sha256Bytes": "1c751a856baeca8b382f3f4f0f037d331a94547febb6448d3ff5d5dc0a5ad267"
+    },
+    {
+      "path": "install-packet/tools/extract-upstream-video-fullscreen-pager.py",
+      "bytes": 118281,
+      "sha256Bytes": "8ce884f47fe8f508f0b36f3b345f686e1c0c124485e5004fbcc2886ca6a44be8"
+    },
+    {
+      "path": "install-whitelist.json",
+      "bytes": 1521,
+      "sha256Bytes": "e2e5aac25a357c77cb0a21d1654495f4d06e50137b3d14d539ec903ab6f2edb3"
+    },
+    {
+      "path": "INSTALL.md",
+      "bytes": 1783,
+      "sha256Bytes": "31c6482f3cf4e6677b56001022c0ce4f90762e3b393676e50ec4a6aba45cf4f3"
+    },
+    {
+      "path": "original-source-inventory.json",
+      "bytes": 1001,
+      "sha256Bytes": "979454b0cd8d868c6a3ad1fc5fd34b9e3deb48220202f4826f44b4e6208e4d0b"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+      "bytes": 14123,
+      "sha256Bytes": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "bytes": 396158,
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3782,
+      "sha256Bytes": "220e03ed1ab747373ffc8252c774f72c65821961de440fcf442d6a83753d4329"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "bytes": 21250,
+      "sha256Bytes": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "bytes": 103425,
+      "sha256Bytes": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "bytes": 4752,
+      "sha256Bytes": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 26972,
+      "sha256Bytes": "323b75b9fdb070ad75ad12f3373f082d394f366dfa3d269ace61b13f3a30473e"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+      "bytes": 5911,
+      "sha256Bytes": "47319a7d7bd5bc852f5f00a3e2c3f9cfecd9de31cbed55e0ec8d67cc6788449f"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48587,
+      "sha256Bytes": "927d1eb0ef4b75e5f2467392d22b9fd5f067e0016b7628d97decf59ababcdd56"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 82131,
+      "sha256Bytes": "62e28947eccd2a5dd70d1e0ee9458475001c9411af5a02d86c462c7ff7528feb"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4765,
+      "sha256Bytes": "8e52f5641a61ce40c874a0610170fa57782293f4ff25d908bf7330b7d32ee6a7"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+      "bytes": 2084,
+      "sha256Bytes": "5d8aa01d65a5a789b5ceadd10270e8ecd0fb540558e1f9836e67f1bfc54d7373"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29856,
+      "sha256Bytes": "2d8b2ec774f6d4bb64a27cd2e1bdfc923edcbcf1217cffdc4467e896a3c5e29e"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "bytes": 6340,
+      "sha256Bytes": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11757,
+      "sha256Bytes": "1a155295c162521a3d860f341a12cbc1f94ca08dd0d1be25d1dfd8a0f2562263"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+      "bytes": 2018,
+      "sha256Bytes": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14209,
+      "sha256Bytes": "fc1d5baefa3033d00be84ced887d801f9148dd19934a2dbf527ed08611c51b7f"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27551,
+      "sha256Bytes": "06cbba3f9a6e3b43805c9619c56fdde19dc06feb5ed02fd68f5a2e0acb3d2195"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 3503,
+      "sha256Bytes": "ee0802a25e20f2b9b6ede65ffd6e5b35590b2457e80318d874489dcc98a13dc0"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "bytes": 6591,
+      "sha256Bytes": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "bytes": 8723,
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1938,
+      "sha256Bytes": "ce7570bd9324c6d27a3baedb37ed9dea96bd50c4744340fa7ae769806039d4fa"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25575,
+      "sha256Bytes": "1bcdbe6cd08953cf3335ecfc193ffdc000198081956f7e0b239231972fb9471e"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "bytes": 1947,
+      "sha256Bytes": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "bytes": 4215,
+      "sha256Bytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "bytes": 769,
+      "sha256Bytes": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "bytes": 1954,
+      "sha256Bytes": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "bytes": 314,
+      "sha256Bytes": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 17025,
+      "sha256Bytes": "e80e604e6393d0e44764b49e813fff004fb581293f8d71eeb8bdeaf18c9a9fc3"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 186912,
+      "sha256Bytes": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "bytes": 398331,
+      "sha256Bytes": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae"
+    },
+    {
+      "path": "pager-dependency-source-inventory.json",
+      "bytes": 4339,
+      "sha256Bytes": "2bc5173f5e91982ad8d87df9029995c3b4ae914b5e96a875a8a7e372a25b3152"
+    },
+    {
+      "path": "portrait-protocol-original-audit.json",
+      "bytes": 8365,
+      "sha256Bytes": "3b71b579a0287518d8fdb7cb3255ba762d79797bc37063670cb1717f1ec12500"
+    },
+    {
+      "path": "prepare-extra.py",
+      "bytes": 10321,
+      "sha256Bytes": "4fb746df21431aca2b1e7122162d00c65f6732548cffc098779a32cb34dd6a95"
+    },
+    {
+      "path": "prepare-fullscreen.py",
+      "bytes": 13967,
+      "sha256Bytes": "64c03950e1b6aa3c9f5096244350898a8f2012a6589cd35d14b02cf85f299027"
+    },
+    {
+      "path": "prepare-install.py",
+      "bytes": 13304,
+      "sha256Bytes": "2d5731775bbf44d952b96061021f06d53404e95da786ee92134c5c56d4be7154"
+    },
+    {
+      "path": "prepare-libraries.py",
+      "bytes": 7042,
+      "sha256Bytes": "8d62eec5b9b3d1813a8e3124904f24108d47a6398cd919da7882a2626e4ef524"
+    },
+    {
+      "path": "prepare-pager-dependencies.py",
+      "bytes": 3757,
+      "sha256Bytes": "810f4b67aba8e3c97ece08be313aa821f529f6257697205929cdb3220c1cffa5"
+    },
+    {
+      "path": "prepare-pager.py",
+      "bytes": 20753,
+      "sha256Bytes": "a57497b4cb01784cfcca093bd1d2c9b81824b6ff4952572cf6154c4003de3ea5"
+    },
+    {
+      "path": "prepared/fragments/portrait-protocol-members.kt.fragment",
+      "bytes": 3722,
+      "sha256Bytes": "4d18b52c3b7ede0f9f9a02d41c4d2fab0614cc0ddfd10de0652eb55a44c9b1b8"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 3482,
+      "sha256Bytes": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "bytes": 889,
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "bytes": 1059,
+      "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "bytes": 4752,
+      "sha256Bytes": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 27042,
+      "sha256Bytes": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+      "bytes": 5911,
+      "sha256Bytes": "47319a7d7bd5bc852f5f00a3e2c3f9cfecd9de31cbed55e0ec8d67cc6788449f"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48084,
+      "sha256Bytes": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76870,
+      "sha256Bytes": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4791,
+      "sha256Bytes": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+      "bytes": 2084,
+      "sha256Bytes": "5d8aa01d65a5a789b5ceadd10270e8ecd0fb540558e1f9836e67f1bfc54d7373"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29882,
+      "sha256Bytes": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "bytes": 6340,
+      "sha256Bytes": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11783,
+      "sha256Bytes": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+      "bytes": 2018,
+      "sha256Bytes": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27864,
+      "sha256Bytes": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/DesktopOriginalPortraitVideoViewport.kt",
+      "bytes": 1097,
+      "sha256Bytes": "d53f7dafcf76f029347d2820c17473107b33927b75b2f24f4be86ce29db1695d"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "bytes": 6591,
+      "sha256Bytes": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "bytes": 8723,
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1947,
+      "sha256Bytes": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25540,
+      "sha256Bytes": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "bytes": 1947,
+      "sha256Bytes": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "bytes": 4215,
+      "sha256Bytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "bytes": 769,
+      "sha256Bytes": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "bytes": 1954,
+      "sha256Bytes": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "bytes": 314,
+      "sha256Bytes": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 178257,
+      "sha256Bytes": "4cda773fac87eb413ccaedb35d5ded586dc21501631e9d43968a72eb3becd0d1"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "bytes": 803,
+      "sha256Bytes": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "bytes": 7636,
+      "sha256Bytes": "1c751a856baeca8b382f3f4f0f037d331a94547febb6448d3ff5d5dc0a5ad267"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 3482,
+      "sha256Bytes": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "bytes": 889,
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "bytes": 1059,
+      "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 27042,
+      "sha256Bytes": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48084,
+      "sha256Bytes": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76870,
+      "sha256Bytes": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4791,
+      "sha256Bytes": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29882,
+      "sha256Bytes": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11783,
+      "sha256Bytes": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27864,
+      "sha256Bytes": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1947,
+      "sha256Bytes": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25540,
+      "sha256Bytes": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 179267,
+      "sha256Bytes": "ecfdf28884fa34eecae8f1663c904372a5063119a6b4daa343ea817de3bf5d18"
+    },
+    {
+      "path": "producer-proof/production/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "bytes": 803,
+      "sha256Bytes": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "path": "producer-proof/production/source-inventory.json",
+      "bytes": 12180,
+      "sha256Bytes": "a2286911470aa695b802ba82c2eb5e365474ce20f0b185232c7d59981285de78"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 3482,
+      "sha256Bytes": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "bytes": 889,
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "bytes": 1059,
+      "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "bytes": 4752,
+      "sha256Bytes": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 27042,
+      "sha256Bytes": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+      "bytes": 5911,
+      "sha256Bytes": "47319a7d7bd5bc852f5f00a3e2c3f9cfecd9de31cbed55e0ec8d67cc6788449f"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48084,
+      "sha256Bytes": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76870,
+      "sha256Bytes": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4791,
+      "sha256Bytes": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+      "bytes": 2084,
+      "sha256Bytes": "5d8aa01d65a5a789b5ceadd10270e8ecd0fb540558e1f9836e67f1bfc54d7373"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29882,
+      "sha256Bytes": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "bytes": 6340,
+      "sha256Bytes": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11783,
+      "sha256Bytes": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+      "bytes": 2018,
+      "sha256Bytes": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27864,
+      "sha256Bytes": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "bytes": 6591,
+      "sha256Bytes": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "bytes": 8723,
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1947,
+      "sha256Bytes": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25540,
+      "sha256Bytes": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "bytes": 1947,
+      "sha256Bytes": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "bytes": 4215,
+      "sha256Bytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "bytes": 769,
+      "sha256Bytes": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "bytes": 1954,
+      "sha256Bytes": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "bytes": 314,
+      "sha256Bytes": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 179267,
+      "sha256Bytes": "ecfdf28884fa34eecae8f1663c904372a5063119a6b4daa343ea817de3bf5d18"
+    },
+    {
+      "path": "producer-proof/standalone/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "bytes": 803,
+      "sha256Bytes": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "path": "producer-proof/standalone/source-inventory.json",
+      "bytes": 12165,
+      "sha256Bytes": "03d55951db6e661a0f34ab8b4d20ee5ccdbd142f07837f0c1198449546e26e05"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 3482,
+      "sha256Bytes": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "bytes": 889,
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "bytes": 1059,
+      "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 27042,
+      "sha256Bytes": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48084,
+      "sha256Bytes": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76870,
+      "sha256Bytes": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4791,
+      "sha256Bytes": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29882,
+      "sha256Bytes": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11783,
+      "sha256Bytes": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27864,
+      "sha256Bytes": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/pager/DesktopOriginalPortraitVideoViewport.kt",
+      "bytes": 1097,
+      "sha256Bytes": "d53f7dafcf76f029347d2820c17473107b33927b75b2f24f4be86ce29db1695d"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1947,
+      "sha256Bytes": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25540,
+      "sha256Bytes": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 178257,
+      "sha256Bytes": "4cda773fac87eb413ccaedb35d5ded586dc21501631e9d43968a72eb3becd0d1"
+    },
+    {
+      "path": "producer-proof-02/production/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "bytes": 803,
+      "sha256Bytes": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "path": "producer-proof-02/production/source-inventory.json",
+      "bytes": 12548,
+      "sha256Bytes": "3ff743f7d99e1295866d2f1344bfe42f5be02c35220882e032c6f4f0571209e4"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 3482,
+      "sha256Bytes": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "bytes": 889,
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "bytes": 1059,
+      "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "bytes": 4752,
+      "sha256Bytes": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 27042,
+      "sha256Bytes": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+      "bytes": 5911,
+      "sha256Bytes": "47319a7d7bd5bc852f5f00a3e2c3f9cfecd9de31cbed55e0ec8d67cc6788449f"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48084,
+      "sha256Bytes": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76870,
+      "sha256Bytes": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4791,
+      "sha256Bytes": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+      "bytes": 2084,
+      "sha256Bytes": "5d8aa01d65a5a789b5ceadd10270e8ecd0fb540558e1f9836e67f1bfc54d7373"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29882,
+      "sha256Bytes": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "bytes": 6340,
+      "sha256Bytes": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11783,
+      "sha256Bytes": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+      "bytes": 2018,
+      "sha256Bytes": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27864,
+      "sha256Bytes": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/DesktopOriginalPortraitVideoViewport.kt",
+      "bytes": 1097,
+      "sha256Bytes": "d53f7dafcf76f029347d2820c17473107b33927b75b2f24f4be86ce29db1695d"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "bytes": 6591,
+      "sha256Bytes": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "bytes": 8723,
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1947,
+      "sha256Bytes": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25540,
+      "sha256Bytes": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "bytes": 1947,
+      "sha256Bytes": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "bytes": 4215,
+      "sha256Bytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "bytes": 769,
+      "sha256Bytes": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "bytes": 1954,
+      "sha256Bytes": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "bytes": 314,
+      "sha256Bytes": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 178257,
+      "sha256Bytes": "4cda773fac87eb413ccaedb35d5ded586dc21501631e9d43968a72eb3becd0d1"
+    },
+    {
+      "path": "producer-proof-02/standalone/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "bytes": 803,
+      "sha256Bytes": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "path": "producer-proof-02/standalone/source-inventory.json",
+      "bytes": 12533,
+      "sha256Bytes": "76a981889db13adadd0abde27a037867ccc8af571724b9267dba46b564708e9e"
+    },
+    {
+      "path": "proof-only/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt",
+      "bytes": 48157,
+      "sha256Bytes": "7f60de6a618072fe68a8df4dcf2854130762c455923609f43bfd4ce398f2c677"
+    },
+    {
+      "path": "registry-baseline.json",
+      "bytes": 378171,
+      "sha256Bytes": "395f654f6018d5648820cd02deb7e0857a3caa5a80b4573aa7e023358da86eaa"
+    },
+    {
+      "path": "registry-merge-recipe.json",
+      "bytes": 25699,
+      "sha256Bytes": "da0739a35b3fa0061c1a5c751df07aa6e6aa614ed686fb3d8b6c1aa856eacb90"
+    },
+    {
+      "path": "result.json",
+      "bytes": 11434,
+      "sha256Bytes": "cc5d7a4df3812874b1e993ba53a12bc9c7e5a2584077bf5c6b2af89f00405417"
+    },
+    {
+      "path": "root-build-proposal.kts",
+      "bytes": 1338,
+      "sha256Bytes": "2ab9ec069a73c0458c7571af9d78b793a9c9745427432e1f9392b74acad58d81"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "bytes": 6102,
+      "sha256Bytes": "f07c4e12a1114e701135e7d71f67000b22eb26f40b0bf2440ce680ad35e5be41"
+    },
+    {
+      "path": "runs/fullscreen-01/compile-result.json",
+      "bytes": 186,
+      "sha256Bytes": "b3bd3bb87ea0ddf272422cdaca45b719ef0d64b270b395f8adc8c2f04ce35527"
+    },
+    {
+      "path": "runs/fullscreen-01/compile.args",
+      "bytes": 26178,
+      "sha256Bytes": "6eb94ebed52d0f5be5f902572fc3d0b87b9b06f42ac6953c67ab22f000c79948"
+    },
+    {
+      "path": "runs/fullscreen-01/compile.log",
+      "bytes": 26359,
+      "sha256Bytes": "78309ed0227640a6c28c9dae736176e2399fadae82096e9ce26686a1b62b49b0"
+    },
+    {
+      "path": "runs/fullscreen-01/pins-after.json",
+      "bytes": 43614,
+      "sha256Bytes": "cb88c589b5a153146dc12fdbb899e5c92d771cea7c55cf20488f5cf49f3ccae8"
+    },
+    {
+      "path": "runs/fullscreen-01/pins-before.json",
+      "bytes": 43614,
+      "sha256Bytes": "cb88c589b5a153146dc12fdbb899e5c92d771cea7c55cf20488f5cf49f3ccae8"
+    },
+    {
+      "path": "runs/fullscreen-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 77076,
+      "sha256Bytes": "f54d9f2d9bef75e4fc5867906860988f081ad5b8ebfd485fb57d8660b01f37c7"
+    },
+    {
+      "path": "runs/fullscreen-01/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "runs/fullscreen-02/compile-result.json",
+      "bytes": 186,
+      "sha256Bytes": "8485049bd1a340b17b58802e0634fed9f61df59bd3b583e24f1e398c6d0d8c0f"
+    },
+    {
+      "path": "runs/fullscreen-02/compile.args",
+      "bytes": 27280,
+      "sha256Bytes": "db32345149e0aba2c62a1eed640ad4489675be29b38f8f55b30246655731ed0d"
+    },
+    {
+      "path": "runs/fullscreen-02/compile.log",
+      "bytes": 1010,
+      "sha256Bytes": "83a75198ea1d21f0f232f35bf9e35bcb8f1fbcdedda14e759e41e1caddffc055"
+    },
+    {
+      "path": "runs/fullscreen-02/pins-after.json",
+      "bytes": 45276,
+      "sha256Bytes": "c3e52df91d6a5497dfee5a3edd79c559392f04f8f4cc452731e77353a67ae89f"
+    },
+    {
+      "path": "runs/fullscreen-02/pins-before.json",
+      "bytes": 45276,
+      "sha256Bytes": "c3e52df91d6a5497dfee5a3edd79c559392f04f8f4cc452731e77353a67ae89f"
+    },
+    {
+      "path": "runs/fullscreen-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "runs/fullscreen-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76864,
+      "sha256Bytes": "af93b6a70a0988a5444493a989471e797ab402f538a53d1f0805b2553ba94c89"
+    },
+    {
+      "path": "runs/fullscreen-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "runs/fullscreen-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14209,
+      "sha256Bytes": "fc1d5baefa3033d00be84ced887d801f9148dd19934a2dbf527ed08611c51b7f"
+    },
+    {
+      "path": "runs/fullscreen-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "runs/fullscreen-02/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "runs/fullscreen-03/compile-result.json",
+      "bytes": 247,
+      "sha256Bytes": "f219c4cf806ce1d97de84c1b9f1566e3ba0bd854a67cad7359c0b003c0c9e095"
+    },
+    {
+      "path": "runs/fullscreen-03/compile.args",
+      "bytes": 27280,
+      "sha256Bytes": "7e6f6f44aa32273cf638559aee59a432b382cec5dee70f6e0f26fac8474c8511"
+    },
+    {
+      "path": "runs/fullscreen-03/compile.log",
+      "bytes": 560,
+      "sha256Bytes": "a3e89b456bfadb4ff067f431f326d2a4e85f14395d0237f604afc1b46ed9cf07"
+    },
+    {
+      "path": "runs/fullscreen-03/pins-after.json",
+      "bytes": 45276,
+      "sha256Bytes": "0c64fc7fd29db4032b57aa98b5ee2f5369b1b0d2a754566576fe3beea6bd66c5"
+    },
+    {
+      "path": "runs/fullscreen-03/pins-before.json",
+      "bytes": 45276,
+      "sha256Bytes": "0c64fc7fd29db4032b57aa98b5ee2f5369b1b0d2a754566576fe3beea6bd66c5"
+    },
+    {
+      "path": "runs/fullscreen-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "runs/fullscreen-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76864,
+      "sha256Bytes": "af93b6a70a0988a5444493a989471e797ab402f538a53d1f0805b2553ba94c89"
+    },
+    {
+      "path": "runs/fullscreen-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "runs/fullscreen-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "runs/fullscreen-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "runs/fullscreen-03/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "runs/pager-01/compile-result.json",
+      "bytes": 187,
+      "sha256Bytes": "0787787d821714a547482a7c3af6fc14c970c5d1871b8a751f340d545b95ab86"
+    },
+    {
+      "path": "runs/pager-01/compile.args",
+      "bytes": 32526,
+      "sha256Bytes": "bc52ad985d03e29a6493d424d6fe15e3967e5d9a28ae559036ec9b4429d272dd"
+    },
+    {
+      "path": "runs/pager-01/compile.log",
+      "bytes": 31374,
+      "sha256Bytes": "78e3c73867f71a908d4bc06e01f48a6c0031abda29629df3bcea7a4da742ad69"
+    },
+    {
+      "path": "runs/pager-01/pins-after.json",
+      "bytes": 53317,
+      "sha256Bytes": "56a1e82bc45ef60f42e5fc2d940bec8dce0ffb8b92aa94965a90c5fe478824ef"
+    },
+    {
+      "path": "runs/pager-01/pins-before.json",
+      "bytes": 53317,
+      "sha256Bytes": "56a1e82bc45ef60f42e5fc2d940bec8dce0ffb8b92aa94965a90c5fe478824ef"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 1963,
+      "sha256Bytes": "89186dd67d63802d0d3db6b27d6f7017e121f112ed4e01bc43fbb52aa8c42351"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48587,
+      "sha256Bytes": "927d1eb0ef4b75e5f2467392d22b9fd5f067e0016b7628d97decf59ababcdd56"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76864,
+      "sha256Bytes": "af93b6a70a0988a5444493a989471e797ab402f538a53d1f0805b2553ba94c89"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29860,
+      "sha256Bytes": "8a57f996996709cce91ec0ec8a6c59447a27399b1d81a3bd78f362d3123eb1bb"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "bytes": 6340,
+      "sha256Bytes": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27763,
+      "sha256Bytes": "9c3f0cda2c58b9d4d0d6b93ee72c88abd939af187b5de506d1b1a0b484141e5f"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "bytes": 6591,
+      "sha256Bytes": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "bytes": 8723,
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1938,
+      "sha256Bytes": "ce7570bd9324c6d27a3baedb37ed9dea96bd50c4744340fa7ae769806039d4fa"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25610,
+      "sha256Bytes": "032dd262cb07de248a926c7c7693540294d598a0a2e5f87d46a2773f6b1f05f4"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "bytes": 1947,
+      "sha256Bytes": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "bytes": 4215,
+      "sha256Bytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "bytes": 769,
+      "sha256Bytes": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "bytes": 1954,
+      "sha256Bytes": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "bytes": 314,
+      "sha256Bytes": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 179251,
+      "sha256Bytes": "1f8712aa052536f0632f3db06464c14111a4d62ad2322c89b90165f05fe2be3d"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "bytes": 6780,
+      "sha256Bytes": "16a7798af528cd5489703a10d4232cdbaa630be35bbe5a718f8dc461a9e263e8"
+    },
+    {
+      "path": "runs/pager-01/source-inputs/proof-only/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt",
+      "bytes": 48123,
+      "sha256Bytes": "8195d58dc799b091e824709022e0343467f916570632ce235338cce29cd7c100"
+    },
+    {
+      "path": "runs/pager-02/compile-result.json",
+      "bytes": 187,
+      "sha256Bytes": "a960058512d97d9b114f86915121008a192a24d70ecd9b5f04989ca81cf0b66b"
+    },
+    {
+      "path": "runs/pager-02/compile.args",
+      "bytes": 35538,
+      "sha256Bytes": "63ebdcd84a9c2f862d4a6ca5c66384fddcab5906e62eaabded17f8c0e0d9d774"
+    },
+    {
+      "path": "runs/pager-02/compile.log",
+      "bytes": 3442,
+      "sha256Bytes": "7fc95da1a9b019c0c8fc659186036f1bca8fb3bed459afaf76a98940fda86ab1"
+    },
+    {
+      "path": "runs/pager-02/pins-after.json",
+      "bytes": 57799,
+      "sha256Bytes": "86cdf49212735262b9a08b5e81d0345db021175eb3eff2dbcd2d6abce5773c08"
+    },
+    {
+      "path": "runs/pager-02/pins-before.json",
+      "bytes": 57799,
+      "sha256Bytes": "86cdf49212735262b9a08b5e81d0345db021175eb3eff2dbcd2d6abce5773c08"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 3482,
+      "sha256Bytes": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "bytes": 889,
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "bytes": 1047,
+      "sha256Bytes": "9bb699bbe345da3433dbbae868a16a9e707e896a30ce22f241d4f16d209ab1d6"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "bytes": 4752,
+      "sha256Bytes": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 27042,
+      "sha256Bytes": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+      "bytes": 5911,
+      "sha256Bytes": "47319a7d7bd5bc852f5f00a3e2c3f9cfecd9de31cbed55e0ec8d67cc6788449f"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48426,
+      "sha256Bytes": "4b78d4b539b7a6bad591b140c78e2c8850ae60be6d7e7f8146c5c2196c84d6c7"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76864,
+      "sha256Bytes": "af93b6a70a0988a5444493a989471e797ab402f538a53d1f0805b2553ba94c89"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4791,
+      "sha256Bytes": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+      "bytes": 2084,
+      "sha256Bytes": "5d8aa01d65a5a789b5ceadd10270e8ecd0fb540558e1f9836e67f1bfc54d7373"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29882,
+      "sha256Bytes": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "bytes": 6340,
+      "sha256Bytes": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11783,
+      "sha256Bytes": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+      "bytes": 2018,
+      "sha256Bytes": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27864,
+      "sha256Bytes": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "bytes": 6591,
+      "sha256Bytes": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "bytes": 8723,
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1947,
+      "sha256Bytes": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25606,
+      "sha256Bytes": "7496edca003284dd8aa4ce9c3dbacb421de1d53b5c45b51796cd55f81fb65a09"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "bytes": 1947,
+      "sha256Bytes": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "bytes": 4215,
+      "sha256Bytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "bytes": 769,
+      "sha256Bytes": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "bytes": 1954,
+      "sha256Bytes": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "bytes": 314,
+      "sha256Bytes": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 179267,
+      "sha256Bytes": "ecfdf28884fa34eecae8f1663c904372a5063119a6b4daa343ea817de3bf5d18"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "bytes": 803,
+      "sha256Bytes": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "bytes": 7553,
+      "sha256Bytes": "c62ce2555cf69df811795396d12ca9baa968c3e7471769704248410f70fd8974"
+    },
+    {
+      "path": "runs/pager-02/source-inputs/proof-only/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt",
+      "bytes": 48157,
+      "sha256Bytes": "7f60de6a618072fe68a8df4dcf2854130762c455923609f43bfd4ce398f2c677"
+    },
+    {
+      "path": "runs/pager-03/compile-result.json",
+      "bytes": 2525,
+      "sha256Bytes": "9e30093015aad08f0aff05c247f2c91b94fba498b2a6a6b77bfcbc17bada3a67"
+    },
+    {
+      "path": "runs/pager-03/compile.args",
+      "bytes": 35444,
+      "sha256Bytes": "4211b3255b756f29b1174ae8fcae0864116e4a9ecf053c2919e5229fd8258ea1"
+    },
+    {
+      "path": "runs/pager-03/compile.log",
+      "bytes": 1816,
+      "sha256Bytes": "1a27230719662366b376a9dab3a8209ea1072960d91e246f6e97ca91499a3b0a"
+    },
+    {
+      "path": "runs/pager-03/pins-after.json",
+      "bytes": 57802,
+      "sha256Bytes": "ff06fe24197d6fb389df033961c71d6709be1e42d215851421c3cdbab6dab4ef"
+    },
+    {
+      "path": "runs/pager-03/pins-before.json",
+      "bytes": 57802,
+      "sha256Bytes": "ff06fe24197d6fb389df033961c71d6709be1e42d215851421c3cdbab6dab4ef"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/parent-reference/DesktopOriginalCommentUrlNavigation.kt",
+      "bytes": 1250,
+      "sha256Bytes": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 3482,
+      "sha256Bytes": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "bytes": 889,
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "bytes": 1059,
+      "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "bytes": 4752,
+      "sha256Bytes": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 27042,
+      "sha256Bytes": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+      "bytes": 5911,
+      "sha256Bytes": "47319a7d7bd5bc852f5f00a3e2c3f9cfecd9de31cbed55e0ec8d67cc6788449f"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48426,
+      "sha256Bytes": "4b78d4b539b7a6bad591b140c78e2c8850ae60be6d7e7f8146c5c2196c84d6c7"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76870,
+      "sha256Bytes": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4791,
+      "sha256Bytes": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+      "bytes": 2084,
+      "sha256Bytes": "5d8aa01d65a5a789b5ceadd10270e8ecd0fb540558e1f9836e67f1bfc54d7373"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29882,
+      "sha256Bytes": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "bytes": 6340,
+      "sha256Bytes": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11783,
+      "sha256Bytes": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+      "bytes": 2018,
+      "sha256Bytes": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27864,
+      "sha256Bytes": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "bytes": 6591,
+      "sha256Bytes": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "bytes": 8723,
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1947,
+      "sha256Bytes": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25540,
+      "sha256Bytes": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "bytes": 1947,
+      "sha256Bytes": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "bytes": 4215,
+      "sha256Bytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "bytes": 769,
+      "sha256Bytes": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "bytes": 1954,
+      "sha256Bytes": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "bytes": 314,
+      "sha256Bytes": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 179267,
+      "sha256Bytes": "ecfdf28884fa34eecae8f1663c904372a5063119a6b4daa343ea817de3bf5d18"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "bytes": 803,
+      "sha256Bytes": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "bytes": 7553,
+      "sha256Bytes": "c62ce2555cf69df811795396d12ca9baa968c3e7471769704248410f70fd8974"
+    },
+    {
+      "path": "runs/pager-03/source-inputs/proof-only/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt",
+      "bytes": 48157,
+      "sha256Bytes": "7f60de6a618072fe68a8df4dcf2854130762c455923609f43bfd4ce398f2c677"
+    },
+    {
+      "path": "runs/pager-03/symbol-audit.json",
+      "bytes": 8110,
+      "sha256Bytes": "9668898ede52b7e2721ad1d21af4eee770ba43020276d3a04b3cc81c75d6e9dd"
+    },
+    {
+      "path": "runs/pager-04/compile-result.json",
+      "bytes": 2525,
+      "sha256Bytes": "9e30093015aad08f0aff05c247f2c91b94fba498b2a6a6b77bfcbc17bada3a67"
+    },
+    {
+      "path": "runs/pager-04/compile.args",
+      "bytes": 35444,
+      "sha256Bytes": "1fc3d2a964bedb7a8521750c03de9607f11dd0ffe1977625fb5042211003e723"
+    },
+    {
+      "path": "runs/pager-04/compile.log",
+      "bytes": 1816,
+      "sha256Bytes": "4d7b2a16f4ed0d2b7587f67c40a805370be22e752ec998e70cd33046edfca34d"
+    },
+    {
+      "path": "runs/pager-04/pins-after.json",
+      "bytes": 57802,
+      "sha256Bytes": "58969418ab1d8f4add405af73bc34c187947a114fc570196c91c18daa8ce8274"
+    },
+    {
+      "path": "runs/pager-04/pins-before.json",
+      "bytes": 57802,
+      "sha256Bytes": "58969418ab1d8f4add405af73bc34c187947a114fc570196c91c18daa8ce8274"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/parent-reference/DesktopOriginalCommentUrlNavigation.kt",
+      "bytes": 1250,
+      "sha256Bytes": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 3482,
+      "sha256Bytes": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "bytes": 889,
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "bytes": 1059,
+      "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "bytes": 4752,
+      "sha256Bytes": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 27042,
+      "sha256Bytes": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+      "bytes": 5911,
+      "sha256Bytes": "47319a7d7bd5bc852f5f00a3e2c3f9cfecd9de31cbed55e0ec8d67cc6788449f"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48426,
+      "sha256Bytes": "4b78d4b539b7a6bad591b140c78e2c8850ae60be6d7e7f8146c5c2196c84d6c7"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76870,
+      "sha256Bytes": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4791,
+      "sha256Bytes": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+      "bytes": 2084,
+      "sha256Bytes": "5d8aa01d65a5a789b5ceadd10270e8ecd0fb540558e1f9836e67f1bfc54d7373"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29882,
+      "sha256Bytes": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "bytes": 6340,
+      "sha256Bytes": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11783,
+      "sha256Bytes": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+      "bytes": 2018,
+      "sha256Bytes": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27864,
+      "sha256Bytes": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "bytes": 6591,
+      "sha256Bytes": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "bytes": 8723,
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1947,
+      "sha256Bytes": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25540,
+      "sha256Bytes": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "bytes": 1947,
+      "sha256Bytes": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "bytes": 4215,
+      "sha256Bytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "bytes": 769,
+      "sha256Bytes": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "bytes": 1954,
+      "sha256Bytes": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "bytes": 314,
+      "sha256Bytes": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 179267,
+      "sha256Bytes": "ecfdf28884fa34eecae8f1663c904372a5063119a6b4daa343ea817de3bf5d18"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "bytes": 803,
+      "sha256Bytes": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "bytes": 7553,
+      "sha256Bytes": "c62ce2555cf69df811795396d12ca9baa968c3e7471769704248410f70fd8974"
+    },
+    {
+      "path": "runs/pager-04/source-inputs/proof-only/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt",
+      "bytes": 48157,
+      "sha256Bytes": "7f60de6a618072fe68a8df4dcf2854130762c455923609f43bfd4ce398f2c677"
+    },
+    {
+      "path": "runs/pager-05/compile-result.json",
+      "bytes": 2525,
+      "sha256Bytes": "e9748e6f59c4465ce2668901874e62bf144de930a5f336dcdc51df4006df1708"
+    },
+    {
+      "path": "runs/pager-05/compile.args",
+      "bytes": 35444,
+      "sha256Bytes": "671eee7294f9a3bc05030a2a369734550c58d30dae8776be348297ed365ec50f"
+    },
+    {
+      "path": "runs/pager-05/compile.log",
+      "bytes": 1816,
+      "sha256Bytes": "85013c609dc914b580dff54425b8b393043b85f3c90c0187e412ad924ee085a4"
+    },
+    {
+      "path": "runs/pager-05/pins-after.json",
+      "bytes": 57802,
+      "sha256Bytes": "87aa8b0734fa0558835ccef61ab19881f54921690516402bb1cc6d0899e07bd2"
+    },
+    {
+      "path": "runs/pager-05/pins-before.json",
+      "bytes": 57802,
+      "sha256Bytes": "87aa8b0734fa0558835ccef61ab19881f54921690516402bb1cc6d0899e07bd2"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/parent-reference/DesktopOriginalCommentUrlNavigation.kt",
+      "bytes": 1250,
+      "sha256Bytes": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 3482,
+      "sha256Bytes": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "bytes": 889,
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "bytes": 1059,
+      "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "bytes": 4752,
+      "sha256Bytes": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 27042,
+      "sha256Bytes": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+      "bytes": 5911,
+      "sha256Bytes": "47319a7d7bd5bc852f5f00a3e2c3f9cfecd9de31cbed55e0ec8d67cc6788449f"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48084,
+      "sha256Bytes": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76870,
+      "sha256Bytes": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4791,
+      "sha256Bytes": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+      "bytes": 2084,
+      "sha256Bytes": "5d8aa01d65a5a789b5ceadd10270e8ecd0fb540558e1f9836e67f1bfc54d7373"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29882,
+      "sha256Bytes": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "bytes": 6340,
+      "sha256Bytes": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11783,
+      "sha256Bytes": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+      "bytes": 2018,
+      "sha256Bytes": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27864,
+      "sha256Bytes": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "bytes": 6591,
+      "sha256Bytes": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "bytes": 8723,
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1947,
+      "sha256Bytes": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25540,
+      "sha256Bytes": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "bytes": 1947,
+      "sha256Bytes": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "bytes": 4215,
+      "sha256Bytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "bytes": 769,
+      "sha256Bytes": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "bytes": 1954,
+      "sha256Bytes": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "bytes": 314,
+      "sha256Bytes": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 179267,
+      "sha256Bytes": "ecfdf28884fa34eecae8f1663c904372a5063119a6b4daa343ea817de3bf5d18"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "bytes": 803,
+      "sha256Bytes": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "bytes": 7553,
+      "sha256Bytes": "c62ce2555cf69df811795396d12ca9baa968c3e7471769704248410f70fd8974"
+    },
+    {
+      "path": "runs/pager-05/source-inputs/proof-only/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt",
+      "bytes": 48157,
+      "sha256Bytes": "7f60de6a618072fe68a8df4dcf2854130762c455923609f43bfd4ce398f2c677"
+    },
+    {
+      "path": "runs/pager-05/symbol-audit.json",
+      "bytes": 7289,
+      "sha256Bytes": "72f49fbd8214410fc8f984f366a98e1d495974c99480b09e56c97eb0489747ed"
+    },
+    {
+      "path": "runs/pager-06/compile-result.json",
+      "bytes": 2525,
+      "sha256Bytes": "ffa577846686f15aaed74e626fe353d27dd9a79ce981e558cd547f3e9c321d4f"
+    },
+    {
+      "path": "runs/pager-06/compile.args",
+      "bytes": 35721,
+      "sha256Bytes": "1424f106385adc35a8f00a31c0f04f0476c8b52589b5a4a131566c90de38a2bc"
+    },
+    {
+      "path": "runs/pager-06/compile.log",
+      "bytes": 1816,
+      "sha256Bytes": "6b20610fd65c83dfeeb630fd95fa81b1b8147caff4e9a6a3bc504025d448c0f6"
+    },
+    {
+      "path": "runs/pager-06/pins-after.json",
+      "bytes": 58219,
+      "sha256Bytes": "7ca24ba2693355ae0b06438eea3efc2faa309fcbe4bf65bb724485d4a8a08810"
+    },
+    {
+      "path": "runs/pager-06/pins-before.json",
+      "bytes": 58219,
+      "sha256Bytes": "7ca24ba2693355ae0b06438eea3efc2faa309fcbe4bf65bb724485d4a8a08810"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/parent-reference/DesktopOriginalCommentUrlNavigation.kt",
+      "bytes": 1250,
+      "sha256Bytes": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 3482,
+      "sha256Bytes": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "bytes": 889,
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "bytes": 1059,
+      "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "bytes": 4752,
+      "sha256Bytes": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 27042,
+      "sha256Bytes": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+      "bytes": 5911,
+      "sha256Bytes": "47319a7d7bd5bc852f5f00a3e2c3f9cfecd9de31cbed55e0ec8d67cc6788449f"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48084,
+      "sha256Bytes": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76870,
+      "sha256Bytes": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4791,
+      "sha256Bytes": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+      "bytes": 2084,
+      "sha256Bytes": "5d8aa01d65a5a789b5ceadd10270e8ecd0fb540558e1f9836e67f1bfc54d7373"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29882,
+      "sha256Bytes": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "bytes": 6340,
+      "sha256Bytes": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11783,
+      "sha256Bytes": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+      "bytes": 2018,
+      "sha256Bytes": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27864,
+      "sha256Bytes": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/DesktopOriginalPortraitVideoViewport.kt",
+      "bytes": 1097,
+      "sha256Bytes": "d53f7dafcf76f029347d2820c17473107b33927b75b2f24f4be86ce29db1695d"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "bytes": 6591,
+      "sha256Bytes": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "bytes": 8723,
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1947,
+      "sha256Bytes": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25540,
+      "sha256Bytes": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "bytes": 1947,
+      "sha256Bytes": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "bytes": 4215,
+      "sha256Bytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "bytes": 769,
+      "sha256Bytes": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "bytes": 1954,
+      "sha256Bytes": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "bytes": 314,
+      "sha256Bytes": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 178257,
+      "sha256Bytes": "4cda773fac87eb413ccaedb35d5ded586dc21501631e9d43968a72eb3becd0d1"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "bytes": 803,
+      "sha256Bytes": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "bytes": 7553,
+      "sha256Bytes": "c62ce2555cf69df811795396d12ca9baa968c3e7471769704248410f70fd8974"
+    },
+    {
+      "path": "runs/pager-06/source-inputs/proof-only/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt",
+      "bytes": 48157,
+      "sha256Bytes": "7f60de6a618072fe68a8df4dcf2854130762c455923609f43bfd4ce398f2c677"
+    },
+    {
+      "path": "runs/pager-06/symbol-audit.json",
+      "bytes": 7289,
+      "sha256Bytes": "fa00372167f301ebe09f8294fd7cededa0cdd210113732f112180154dd6075d9"
+    },
+    {
+      "path": "runs/pager-07/compile-result.json",
+      "bytes": 2525,
+      "sha256Bytes": "2dce71a4db7fc8b9938e0d9998ca8cb6613d1a5dfa08ed80038d1daec7ef58e3"
+    },
+    {
+      "path": "runs/pager-07/compile.args",
+      "bytes": 35721,
+      "sha256Bytes": "1116406900a3b8f8cd3ce776ffc9fcf01b3433392045b195aaa67cc8d87e7af8"
+    },
+    {
+      "path": "runs/pager-07/compile.log",
+      "bytes": 1816,
+      "sha256Bytes": "84a4b56e931538707372dafbcd93fe64828bfe477fb41887a89ff0a736e57e7c"
+    },
+    {
+      "path": "runs/pager-07/pins-after.json",
+      "bytes": 58219,
+      "sha256Bytes": "2da0cfa4164639a3dd2506f9bf696772a7c30ee25d830ac1ec56659e5bf25548"
+    },
+    {
+      "path": "runs/pager-07/pins-before.json",
+      "bytes": 58219,
+      "sha256Bytes": "2da0cfa4164639a3dd2506f9bf696772a7c30ee25d830ac1ec56659e5bf25548"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/parent-reference/DesktopOriginalCommentUrlNavigation.kt",
+      "bytes": 1250,
+      "sha256Bytes": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "bytes": 3482,
+      "sha256Bytes": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "bytes": 889,
+      "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "bytes": 3786,
+      "sha256Bytes": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "bytes": 1059,
+      "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "bytes": 4752,
+      "sha256Bytes": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "bytes": 27042,
+      "sha256Bytes": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+      "bytes": 5911,
+      "sha256Bytes": "47319a7d7bd5bc852f5f00a3e2c3f9cfecd9de31cbed55e0ec8d67cc6788449f"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "bytes": 48084,
+      "sha256Bytes": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "bytes": 1426,
+      "sha256Bytes": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "bytes": 76870,
+      "sha256Bytes": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "bytes": 727,
+      "sha256Bytes": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "bytes": 4791,
+      "sha256Bytes": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+      "bytes": 2084,
+      "sha256Bytes": "5d8aa01d65a5a789b5ceadd10270e8ecd0fb540558e1f9836e67f1bfc54d7373"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "bytes": 29882,
+      "sha256Bytes": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "bytes": 6340,
+      "sha256Bytes": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "bytes": 11783,
+      "sha256Bytes": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+      "bytes": 2018,
+      "sha256Bytes": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "bytes": 14235,
+      "sha256Bytes": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "bytes": 3372,
+      "sha256Bytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "bytes": 27864,
+      "sha256Bytes": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/DesktopOriginalPortraitVideoViewport.kt",
+      "bytes": 1097,
+      "sha256Bytes": "d53f7dafcf76f029347d2820c17473107b33927b75b2f24f4be86ce29db1695d"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "bytes": 2825,
+      "sha256Bytes": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "bytes": 6591,
+      "sha256Bytes": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "bytes": 8723,
+      "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "bytes": 1947,
+      "sha256Bytes": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "bytes": 25540,
+      "sha256Bytes": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "bytes": 1947,
+      "sha256Bytes": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "bytes": 4215,
+      "sha256Bytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "bytes": 769,
+      "sha256Bytes": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "bytes": 1954,
+      "sha256Bytes": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "bytes": 314,
+      "sha256Bytes": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "bytes": 15591,
+      "sha256Bytes": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "bytes": 178257,
+      "sha256Bytes": "4cda773fac87eb413ccaedb35d5ded586dc21501631e9d43968a72eb3becd0d1"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "bytes": 803,
+      "sha256Bytes": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "bytes": 7636,
+      "sha256Bytes": "1c751a856baeca8b382f3f4f0f037d331a94547febb6448d3ff5d5dc0a5ad267"
+    },
+    {
+      "path": "runs/pager-07/source-inputs/proof-only/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt",
+      "bytes": 48157,
+      "sha256Bytes": "7f60de6a618072fe68a8df4dcf2854130762c455923609f43bfd4ce398f2c677"
+    },
+    {
+      "path": "runs/pager-07/symbol-audit.json",
+      "bytes": 7289,
+      "sha256Bytes": "594cf6bc16a3f3f9baec82e1a1861a6bec566c7b7e7953c54ff2bf5e808e0dfe"
+    },
+    {
+      "path": "settings-library-audit.json",
+      "bytes": 881,
+      "sha256Bytes": "6f9ef81ac951ee769bdbb068b10f6c18b2fb848f1de2bcb4d300371ba1d60fc5"
+    },
+    {
+      "path": "source-bootstrap.py",
+      "bytes": 1140,
+      "sha256Bytes": "73a7804ef23227a507c28157134fec1099ba4d52510bb581dd894b4f0f13115c"
+    },
+    {
+      "path": "source-identity-output-audit.json",
+      "bytes": 19496,
+      "sha256Bytes": "d97a23be2bfe93ee9c0397ae4bf8233e6174896c3a0f8b08f2d30c6793e75c59"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "runs/fullscreen-03/candidate.jar",
+      "reason": "Compiled binary or unregistered intermediate; no product payload."
+    },
+    {
+      "path": "runs/pager-03/candidate.jar",
+      "reason": "Compiled binary or unregistered intermediate; no product payload."
+    },
+    {
+      "path": "runs/pager-04/candidate.jar",
+      "reason": "Compiled binary or unregistered intermediate; no product payload."
+    },
+    {
+      "path": "runs/pager-05/candidate.jar",
+      "reason": "Compiled binary or unregistered intermediate; no product payload."
+    },
+    {
+      "path": "runs/pager-06/candidate.jar",
+      "reason": "Compiled binary or unregistered intermediate; no product payload."
+    },
+    {
+      "path": "runs/pager-07/candidate.jar",
+      "reason": "Compiled binary or unregistered intermediate; no product payload."
+    }
+  ],
+  "result": "result.json",
+  "whitelist": "install-whitelist.json",
+  "notes": [
+    "LF normalization is CRLF to LF only; no trimming.",
+    "Failure/history sources and logs remain registered; final acceptance is pager-07 only.",
+    "Candidate/proof Core JAR is not installed. Root applies source-only exact hunk to sole Core producer.",
+    "No Main/Candidate source, shared Gradle, account, HTTP, native HWND or GUI operation occurred."
+  ]
+}

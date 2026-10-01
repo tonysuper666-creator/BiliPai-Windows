@@ -1,0 +1,39 @@
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:527:9: warning: condition is always 'true'.
+        musicBackdrop != null -> MusicGlassMaterialMode.FROSTED
+        ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:1003:38: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+                        (hingeStartDp!! - MUSIC_PLAYER_HINGE_CLEARANCE_DP)
+                                     ^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:1010:55: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+                        (availableWidthDp - hingeEndDp!! - MUSIC_PLAYER_HINGE_CLEARANCE_DP)
+                                                      ^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:1022:36: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+                        (hingeEndDp!! - hingeStartDp!! + MUSIC_PLAYER_HINGE_CLEARANCE_DP * 2).dp
+                                   ^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:1022:53: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+                        (hingeEndDp!! - hingeStartDp!! + MUSIC_PLAYER_HINGE_CLEARANCE_DP * 2).dp
+                                                    ^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:1736:94: warning: 'val Icons.Outlined.QueueMusic: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.QueueMusic.
+                                imageVector = androidx.compose.material.icons.Icons.Outlined.QueueMusic,
+                                                                                             ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:1998:60: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'LyricDocument'.
+                            mapToHalcyonLyrics(state.lyrics!!.lines)
+                                                           ^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:2002:78: warning: unnecessary safe call on a non-null receiver of type 'LyricDocument'.
+                                positionMs = state.positionMs - (state.lyrics?.offsetMs ?: 0L),
+                                                                             ^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:2010:74: warning: unnecessary safe call on a non-null receiver of type 'LyricDocument'.
+                            positionMs = state.positionMs - (state.lyrics?.offsetMs ?: 0L),
+                                                                         ^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:2236:32: warning: 'val Icons.Outlined.QueueMusic: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.QueueMusic.
+                Icons.Outlined.QueueMusic,
+                               ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:2516:42: warning: 'val Icons.Outlined.VolumeDown: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.VolumeDown.
+            imageVector = Icons.Outlined.VolumeDown,
+                                         ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:2544:42: warning: 'val Icons.Outlined.VolumeUp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.VolumeUp.
+            imageVector = Icons.Outlined.VolumeUp,
+                                         ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\prepared\generated\com\android\purebilibili\feature\audio\screen\MusicPlayerContent.kt:3608:43: warning: 'val Icons.Outlined.QueueMusic: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.QueueMusic.
+                    icon = Icons.Outlined.QueueMusic,
+                                          ^^^^^^^^^^

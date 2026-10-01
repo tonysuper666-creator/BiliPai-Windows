@@ -1,0 +1,34 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+    "sha256LF": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e",
+    "outputSHA256LF": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e",
+    "mode": "direct",
+    "wholeFile": true,
+    "adaptation": null
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+    "sha256LF": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7",
+    "outputSHA256LF": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7",
+    "mode": "direct",
+    "wholeFile": true,
+    "adaptation": null
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+    "sha256LF": "fc1d5baefa3033d00be84ced887d801f9148dd19934a2dbf527ed08611c51b7f",
+    "outputSHA256LF": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402",
+    "mode": "selected",
+    "wholeFile": true,
+    "adaptation": "LocalConfiguration import alias to actual Root window metrics only"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+    "sha256LF": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21",
+    "outputSHA256LF": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21",
+    "mode": "direct",
+    "wholeFile": true,
+    "adaptation": null
+  }
+]

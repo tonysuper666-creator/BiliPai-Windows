@@ -1,0 +1,60 @@
+{
+  "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+  "originalSHA256LF": "06cbba3f9a6e3b43805c9619c56fdde19dc06feb5ed02fd68f5a2e0acb3d2195",
+  "candidateSHA256LF": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661",
+  "completeOriginalFile": true,
+  "orderedExactReplay": true,
+  "edits": [
+    {
+      "label": "Actual root window metrics",
+      "before": "androidx.compose.ui.platform.LocalConfiguration",
+      "after": "com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration",
+      "count": 1
+    },
+    {
+      "label": "Same actual native control",
+      "before": "import androidx.media3.exoplayer.ExoPlayer",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl as ExoPlayer"
+    },
+    {
+      "label": "Same settings/entry platform",
+      "before": "import androidx.compose.ui.platform.LocalContext",
+      "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalPortraitPlatform"
+    },
+    {
+      "label": "Same global original settings context",
+      "before": "val context = LocalContext.current",
+      "after": "val context = LocalDesktopOriginalPortraitPlatform.current.section.settingsContext",
+      "count": 1
+    },
+    {
+      "label": "Sole original subtitle setters/getters",
+      "before": "SettingsManager\n        .getSubtitlePortraitVerticalOffsetFraction",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPortraitSettings.getSubtitlePortraitVerticalOffsetFraction",
+      "count": 1
+    },
+    {
+      "label": "Sole original subtitle setters/getters",
+      "before": "SettingsManager\n        .getSubtitlePositionLocked",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPortraitSettings.getSubtitlePositionLocked",
+      "count": 1
+    },
+    {
+      "label": "Sole original subtitle setters/getters",
+      "before": "SettingsManager.setSubtitlePortraitVerticalOffsetFraction",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPortraitSettings.setSubtitlePortraitVerticalOffsetFraction",
+      "count": 2
+    },
+    {
+      "label": "Sole original subtitle setters/getters",
+      "before": "SettingsManager.setSubtitlePositionLocked",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setSubtitlePositionLocked",
+      "count": 1
+    },
+    {
+      "label": "Mapped original settings family",
+      "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+      "after": ""
+    }
+  ]
+}

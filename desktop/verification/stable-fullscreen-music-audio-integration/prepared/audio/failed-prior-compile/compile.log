@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\compile-audio-01\source-inputs\reference\child-comment\com\android\purebilibili\feature\video\ui\pager\PortraitCommentPresentationPolicy.kt:165:12: error: unresolved reference 'resolvePortraitVideoViewportSize'.
+    return resolvePortraitVideoViewportSize(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\compile-audio-01\source-inputs\reference\child-comment\com\android\purebilibili\feature\video\ui\pager\PortraitCommentPresentationPolicy.kt:184:24: error: unresolved reference 'resolvePortraitVideoViewportSize'.
+    val viewportSize = resolvePortraitVideoViewportSize(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

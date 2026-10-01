@@ -1,0 +1,20 @@
+PASS original case: audio mode collection switch forces playback to resume
+PASS original case: audio mode creates standalone player when sourced route has no player
+PASS original case: audio mode page switch forces playback to resume
+PASS original case: audio mode reuses existing player when available
+PASS original case: audio mode waits when no source video is available
+PASS original case: play button pauses when player is already playing
+PASS original case: play button prepares idle player before resuming
+PASS original case: play button restarts playback after media ended
+PASS original case: play button resumes paused ready playback
+PASS original case: share title falls back to display title when video title is blank
+PASS original case: share title prefers real video title over display title
+PASS original case: formatAudioModeSleepTimerButtonLabel formats common states
+PASS original case: formatAudioModeSleepTimerInput prefers compact editable values
+PASS original case: parseAudioModeSleepTimerInput accepts hour minute formats
+PASS original case: parseAudioModeSleepTimerInput accepts plain minute values
+PASS original case: parseAudioModeSleepTimerInput rejects invalid values
+PASS full renderer ABI: com.android.purebilibili.feature.video.screen.AudioModeScreenKt
+PASS full renderer ABI: com.android.purebilibili.feature.video.screen.AudioModeMusicPlayerKt
+PASS full renderer ABI: com.android.purebilibili.feature.video.ui.components.VideoCommentSheetHostKt
+PASS all 16 original cases; no native window, request or account

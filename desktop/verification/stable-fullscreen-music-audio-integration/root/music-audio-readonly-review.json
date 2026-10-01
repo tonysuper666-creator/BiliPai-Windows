@@ -1,0 +1,418 @@
+{
+  "readOnly": true,
+  "productMutation": false,
+  "compileOrRuntime": false,
+  "packets": {
+    "frozen-music-slice": {
+      "manifest": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-music-slice\\frozen-handoff.json",
+        "sha256Bytes": "f95b38ff95b90e9dcc38d0a174d24c386438d9f0d23d9ec1086f4a7989e136bc",
+        "size": 224593
+      },
+      "rawVerified": 131,
+      "installPayloads": [
+        {
+          "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-music-slice\\prepared\\desktop\\tools\\extract-upstream-music-player-full.py",
+          "sha256Bytes": "eeabd6f0f1ed80f703470c4c99c1aba0cf234f1ad45c5fa22aa9ff2cf3e5808b",
+          "size": 25312
+        },
+        {
+          "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-music-slice\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopMusicRaster.kt",
+          "sha256Bytes": "d5a3dc4ac55d37fa591c7389db9658bb30df25dede63fa960049f0145acb18ff",
+          "size": 7634
+        },
+        {
+          "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-music-slice\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalMusicUiPlatform.kt",
+          "sha256Bytes": "2ce04e5a057a8438edc2c9f4ad3c7b1ff62c54cc8d57cac17ae5c45da14b1819",
+          "size": 5668
+        }
+      ],
+      "registryRecipe": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-music-slice\\registry-feature-merge.json",
+        "sha256Bytes": "caeb76f8855419f91690724f9a6f6fc7af34c6fe7d96318654c2fdfbd4e60e5d",
+        "size": 8127
+      },
+      "registrySchema": [
+        "path",
+        "mode",
+        "features",
+        "sha256",
+        "action"
+      ],
+      "registryRows": 22,
+      "directRows": [
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricSettings.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerVisualPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicTopControlDragPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavyProgressPolicy.kt"
+      ],
+      "mergeExisting": [
+        "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
+      ],
+      "generatedSources": 22,
+      "declarations": [
+        "com.android.purebilibili.core.store.LocalPlaylistItem",
+        "com.android.purebilibili.core.store.LocalPlaylist",
+        "com.android.purebilibili.core.store.DesktopOriginalMusicUiSettings",
+        "com.android.purebilibili.core.store.PlayHistoryEntry",
+        "com.android.purebilibili.core.store.PlayLastSession",
+        "com.android.purebilibili.data.repository.DesktopOriginalExternalPlaylistSchema",
+        "com.android.purebilibili.feature.audio.screen.ExternalPlaylistImportDialog",
+        "com.android.purebilibili.feature.audio.screen.Music3DCoverFlow",
+        "com.android.purebilibili.feature.audio.screen.MusicGlassMaterialMode",
+        "com.android.purebilibili.feature.audio.screen.MusicPlayerMaterial",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicPlayerContentColor",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicPlayerThemeContentColors",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicPlayerThemeContentColors",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicImmersivePanelColor",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicGlassContainerColor",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicGlassBorderColor",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicPlayerAccentColor",
+        "com.android.purebilibili.feature.audio.screen.MusicPlayerContent",
+        "com.android.purebilibili.feature.audio.screen.ImmersiveBottomQueueShelf",
+        "com.android.purebilibili.feature.audio.screen.MusicArtworkBackground",
+        "com.android.purebilibili.feature.audio.screen.PlayerPage",
+        "com.android.purebilibili.feature.audio.screen.MusicSecondaryControls",
+        "com.android.purebilibili.feature.audio.screen.MusicArtwork",
+        "com.android.purebilibili.feature.audio.screen.MusicProgress",
+        "com.android.purebilibili.feature.audio.screen.MusicVolumeSlider",
+        "com.android.purebilibili.feature.audio.screen.PlaybackControls",
+        "com.android.purebilibili.feature.audio.screen.PlayerLyricsPreview",
+        "com.android.purebilibili.feature.audio.screen.PlaybackIconButton",
+        "com.android.purebilibili.feature.audio.screen.LyricsPage",
+        "com.android.purebilibili.feature.audio.screen.LyricsPrimaryControls",
+        "com.android.purebilibili.feature.audio.screen.formatLyricsOffset",
+        "com.android.purebilibili.feature.audio.screen.LyricsOffsetSettingsContent",
+        "com.android.purebilibili.feature.audio.screen.LyricsImmersiveProgress",
+        "com.android.purebilibili.feature.audio.screen.MusicPlayPauseButton",
+        "com.android.purebilibili.feature.audio.screen.LyricsSettingsContent",
+        "com.android.purebilibili.feature.audio.screen.LyricLineContent",
+        "com.android.purebilibili.feature.audio.screen.buildLyricText",
+        "com.android.purebilibili.feature.audio.screen.AnnotatedString",
+        "com.android.purebilibili.feature.audio.screen.MusicTopBar",
+        "com.android.purebilibili.feature.audio.screen.GlassIconButton",
+        "com.android.purebilibili.feature.audio.screen.GlassTextButton",
+        "com.android.purebilibili.feature.audio.screen.TabletopPlayerLayout",
+        "com.android.purebilibili.feature.audio.screen.ExpandedQueuePane",
+        "com.android.purebilibili.feature.audio.screen.MusicActionSheetItem",
+        "com.android.purebilibili.feature.audio.screen.MusicArtworkPalette",
+        "com.android.purebilibili.feature.audio.screen.formatMusicTime",
+        "com.android.purebilibili.feature.audio.screen.MusicLyricFocusStyle",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicPagerIndicatorPosition",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicPlayModeIndex",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicPlayMode",
+        "com.android.purebilibili.feature.audio.screen.MusicRepeatGlyph",
+        "com.android.purebilibili.feature.audio.screen.MusicSecondaryTransportState",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicRepeatGlyph",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicSecondaryTransport",
+        "com.android.purebilibili.feature.audio.screen.resolvePlayModeAfterShuffleToggle",
+        "com.android.purebilibili.feature.audio.screen.resolvePlayModeAfterRepeatToggle",
+        "com.android.purebilibili.feature.audio.screen.resolveRepeatModeAfterToggle",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicLyricsBlurEnabled",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicLyricFocusStyle",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicLyricFocusFraction",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicLiquidGlassEnabled",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicCoverFlowItemEntranceProgress",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicCoverFlowShadowEntranceProgress",
+        "com.android.purebilibili.feature.audio.screen.resolveAppleMusicCoverScale",
+        "com.android.purebilibili.feature.audio.screen.resolveAppleMusicCoverShadowElevation",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicCoverFlowItemAlpha",
+        "com.android.purebilibili.feature.audio.screen.MusicTopControlTransform",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicTopControlTransform",
+        "com.android.purebilibili.feature.audio.screen.shouldAnimateMusicWavyProgress",
+        "com.android.purebilibili.feature.audio.screen.shouldUseNativeThemeMusicProgress",
+        "com.android.purebilibili.feature.audio.screen.shouldUseMusicWavyProgress",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicProgressFraction",
+        "com.android.purebilibili.feature.audio.screen.resolveMusicProgressValue",
+        "com.android.purebilibili.feature.audio.screen.MusicWavySlider",
+        "com.android.purebilibili.feature.audio.screen.PlayHistorySheet",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleFlowBlurScratch",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleCoverFlowBackground",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.scaledAppleFlowTimeMs",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.rememberThrottledFlowTimeMs",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Bitmap",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.appleFlowDownsampleFactor",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.createAppleFlowFrameBitmap",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.drawFlowLayer",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.blurBitmapFast",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.blendColors",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicInterlude",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicInterludeGroupState",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.resolveAppleMusicInterludeGroupState",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.resolveAppleMusicInterludeDotAlpha",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.resolveAppleMusicInterludeDotTimelineIndex",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicInterlude",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.List",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.isInlineRubyPronunciation",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Char",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.appleMusicKaraokeLiftPx",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.TimedLyricText",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicFocusedTimedRow",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicTimedWordRows",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicKaraokeWord",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.KaraokeGlyphLayout",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicKaraokeGlyphs",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicRenderWord",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.karaokeTrailFeather",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.karaokeRainbowColor",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.karaokeRainbowBrush",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Color",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.karaokeRainbowFillStops",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.karaokeFillStops",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.karaokeSheenStops",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.rubiesForTimedWords",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.assignRubySpansToWords",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.attachRubyBySyllables",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.attachRubyByCorrespondence",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.readingConsumedForKanjiRun",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.countIdeographRuns",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.splitReadingAcrossKanji",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.kanaEquals",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.timedRangesOverlap",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.overlapMs",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Char",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicRenderWord",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicRenderWord",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.List",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.LyricWord",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Char",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.lyricUnitBreakAllowedBefore",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.continuesLatinWord",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.wrapLyricUnitRows",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Char",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicRenderWord",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.List",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.List",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.appleMusicLyricStackedSecondaryPadding",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicSingleLyricLine",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicLyricLine",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Modifier",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.StatusBarSeparatedTimedLyricLines",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.StatusBarMergedTimedLyricRow",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.HalcyonLyricLine",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.HalcyonLyricLine",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.AppleMusicLyricsView",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.lyricLineDoubleTapEnabled",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.HalcyonLyricLine",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.resolveOpeningLyricSeekPosition",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.resolveAppleMusicLyricsLeadingPadding",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.resolveAppleMusicLyricsTrailingPadding",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.resolveAppleMusicLyricsFocusOffset",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.resolveAppleMusicLyricsScrollTargetIndex",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.resolveAppleMusicLyricsBackgroundFocusIndex",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.nextSmoothLyricPositionMs",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.HalcyonLyricLine",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.HalcyonLyricLine",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.HalcyonLyricSettings",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerBlurBackground",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.FluidLyricBackground",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.BeautifulLyricsDynamicBackground",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.rememberSharedFlowProgress",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.beautifulLyricsBlobCenters",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Color",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.beautifulLyricsSampleColors",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.beautifulLyricsNeutralPalette",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Modifier",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.isUltraWideLandscapePlayerLayout",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerMiniLyrics",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerPalette",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Color",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Color",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Color",
+        "com.android.purebilibili.feature.audio.lyrics.halcyon.Color"
+      ]
+    },
+    "frozen-audio-slice": {
+      "manifest": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\frozen-handoff.json",
+        "sha256Bytes": "f5eebbb9ddff4fb0a16826de253ff1c90d93c930eca1b207a640ccc1307bbb05",
+        "size": 175145
+      },
+      "rawVerified": 46,
+      "installPayloads": [
+        {
+          "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\prepared\\desktop\\tools\\extract-upstream-video-audio-full.py",
+          "sha256Bytes": "7686a6c595aa6edd96f56ebc9fbb28147152530ba43d6034a6b52d15d34ef2e6",
+          "size": 14897
+        },
+        {
+          "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioModePlatform.kt",
+          "sha256Bytes": "09772e987e12753b4069fca378f3f3883869640deb66c5cdc357c07567f7b75b",
+          "size": 4624
+        }
+      ],
+      "registryRecipe": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\registry-feature-merge.json",
+        "sha256Bytes": "0b8ebbd10177ef6913101bee2f90941583a35f37427143783a5875c98eb0dc32",
+        "size": 634
+      },
+      "registrySchema": [
+        "path",
+        "mode",
+        "features",
+        "sha256",
+        "action"
+      ],
+      "registryRows": 2,
+      "directRows": [],
+      "mergeExisting": [],
+      "generatedSources": 2,
+      "declarations": [
+        "com.android.purebilibili.feature.video.screen.AudioPlaybackSnapshot",
+        "com.android.purebilibili.feature.video.screen.resolveAudioModeTrackTitle",
+        "com.android.purebilibili.feature.video.screen.resolveAudioModeShareTitle",
+        "com.android.purebilibili.feature.video.screen.AudioModeLyricMetadata",
+        "com.android.purebilibili.feature.video.screen.resolveAudioModeLyricMetadata",
+        "com.android.purebilibili.feature.video.screen.AudioModeMusicPlayer",
+        "com.android.purebilibili.feature.video.screen.rememberAudioPlaybackSnapshot",
+        "com.android.purebilibili.feature.video.screen.Player",
+        "com.android.purebilibili.feature.video.screen.AudioStartupAutoPlayGuard",
+        "com.android.purebilibili.feature.video.screen.resolveAudioPlayModeLabel",
+        "com.android.purebilibili.feature.video.screen.shouldUseAudioModeLiquidPlayModeControl",
+        "com.android.purebilibili.feature.video.screen.AudioModePlayPauseAction",
+        "com.android.purebilibili.feature.video.screen.resolveAudioModePlayPauseAction",
+        "com.android.purebilibili.feature.video.screen.shouldCreateAudioModeStandalonePlayer",
+        "com.android.purebilibili.feature.video.screen.resolveAudioModePageSwitchAutoPlay",
+        "com.android.purebilibili.feature.video.screen.resolveAudioModeCollectionSwitchAutoPlay",
+        "com.android.purebilibili.feature.video.screen.resolveAudioModeOrientationActionLabel",
+        "com.android.purebilibili.feature.video.screen.resolveAudioModeRequestedOrientation",
+        "com.android.purebilibili.feature.video.screen.parseAudioModeSleepTimerInput",
+        "com.android.purebilibili.feature.video.screen.formatAudioModeSleepTimerButtonLabel",
+        "com.android.purebilibili.feature.video.screen.formatAudioModeSleepTimerInput",
+        "com.android.purebilibili.feature.video.screen.Player",
+        "com.android.purebilibili.feature.video.screen.AudioModeScreen",
+        "com.android.purebilibili.feature.video.screen.AudioModeInitialState",
+        "com.android.purebilibili.feature.video.screen.AudioModeSleepTimerDialog"
+      ]
+    }
+  },
+  "sharedCommentReferences": [
+    {
+      "name": "DesktopOriginalPortraitVideoViewport.kt",
+      "retained": {
+        "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reference-retained\\child-comment\\DesktopOriginalPortraitVideoViewport.kt.txt",
+        "sha256Bytes": "d53f7dafcf76f029347d2820c17473107b33927b75b2f24f4be86ce29db1695d",
+        "size": 1097
+      },
+      "soleChildSource": {
+        "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-fullscreen-pager-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\DesktopOriginalPortraitVideoViewport.kt",
+        "sha256Bytes": "d53f7dafcf76f029347d2820c17473107b33927b75b2f24f4be86ce29db1695d",
+        "size": 1097
+      },
+      "byteEqual": true
+    },
+    {
+      "name": "DesktopOriginalVideoCommentListSkeleton.kt",
+      "retained": {
+        "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reference-retained\\child-comment\\DesktopOriginalVideoCommentListSkeleton.kt.txt",
+        "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a",
+        "size": 1059
+      },
+      "soleChildSource": {
+        "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-fullscreen-pager-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalVideoCommentListSkeleton.kt",
+        "sha256Bytes": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a",
+        "size": 1059
+      },
+      "byteEqual": true
+    },
+    {
+      "name": "DesktopOriginalVideoCommentSheetSettings.kt",
+      "retained": {
+        "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reference-retained\\child-comment\\DesktopOriginalVideoCommentSheetSettings.kt.txt",
+        "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67",
+        "size": 889
+      },
+      "soleChildSource": {
+        "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-fullscreen-pager-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalVideoCommentSheetSettings.kt",
+        "sha256Bytes": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67",
+        "size": 889
+      },
+      "byteEqual": true
+    },
+    {
+      "name": "PortraitCommentPresentationPolicy.kt",
+      "retained": {
+        "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reference-retained\\child-comment\\PortraitCommentPresentationPolicy.kt.txt",
+        "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f",
+        "size": 8723
+      },
+      "soleChildSource": {
+        "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-fullscreen-pager-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\PortraitCommentPresentationPolicy.kt",
+        "sha256Bytes": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f",
+        "size": 8723
+      },
+      "byteEqual": true
+    },
+    {
+      "name": "VideoCommentSheetHost.kt",
+      "retained": {
+        "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\frozen-audio-slice\\reference-retained\\child-comment\\VideoCommentSheetHost.kt.txt",
+        "sha256Bytes": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91",
+        "size": 48084
+      },
+      "soleChildSource": {
+        "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-fullscreen-pager-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\VideoCommentSheetHost.kt",
+        "sha256Bytes": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91",
+        "size": 48084
+      },
+      "byteEqual": true
+    }
+  ],
+  "sourceIdentityCollisions": [],
+  "childWhitelist": {
+    "sourceOnly": true,
+    "files": [
+      {
+        "path": "install-packet/tools/extract-upstream-video-fullscreen-pager.py",
+        "bytes": 118281,
+        "sha256Bytes": "8ce884f47fe8f508f0b36f3b345f686e1c0c124485e5004fbcc2886ca6a44be8"
+      },
+      {
+        "path": "install-packet/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+        "bytes": 1746,
+        "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+      },
+      {
+        "path": "install-packet/manual/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+        "bytes": 7636,
+        "sha256Bytes": "1c751a856baeca8b382f3f4f0f037d331a94547febb6448d3ff5d5dc0a5ad267"
+      }
+    ],
+    "exactLocalHunks": [
+      {
+        "path": "install-packet/local-hunks/core-protocol-append.json",
+        "bytes": 1085,
+        "sha256Bytes": "37fc8b2930e3a27d633839487262619464670b8bf82549dc1162fd50ece27009"
+      }
+    ],
+    "registryRecipe": {
+      "path": "registry-merge-recipe.json",
+      "bytes": 25699,
+      "sha256Bytes": "da0739a35b3fa0061c1a5c751df07aa6e6aa614ed686fb3d8b6c1aa856eacb90"
+    },
+    "buildProposal": {
+      "path": "root-build-proposal.kts",
+      "bytes": 1338,
+      "sha256Bytes": "2ab9ec069a73c0458c7571af9d78b793a9c9745427432e1f9392b74acad58d81"
+    },
+    "neverInstall": [
+      "candidate.jar",
+      "proof-only whole Core source",
+      "parent CommentURL reference source",
+      "standalone DIRECT copies alongside registry Sync"
+    ],
+    "requiresRootOwnedImplementations": true,
+    "preservesSoleStoreClientCachePlayer": true
+  },
+  "installationOrder": [
+    "Sync registry DIRECT (no standalone copies)",
+    "sole Fullscreen/Pager producer/manuals + exact Core local append",
+    "sole Music producer/manuals",
+    "sole Audio producer/manual"
+  ],
+  "runtimeNotClaimed": [
+    "Full VM mount",
+    "actual Music history/import/SID-vs-BV transport",
+    "real Listen/Audio/PiP Main owner"
+  ]
+}

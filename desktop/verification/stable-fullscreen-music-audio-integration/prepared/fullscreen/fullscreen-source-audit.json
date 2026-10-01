@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "completeOriginalFile": true,
+  "originalSHA256LF": "62e28947eccd2a5dd70d1e0ee9458475001c9411af5a02d86c462c7ff7528feb",
+  "candidateSHA256LF": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033",
+  "exactOrderedTransformReplay": true,
+  "declaredEdits": 83,
+  "originalLines": 1724,
+  "candidateLines": 1602,
+  "productionRuntimeAccepted": false
+}

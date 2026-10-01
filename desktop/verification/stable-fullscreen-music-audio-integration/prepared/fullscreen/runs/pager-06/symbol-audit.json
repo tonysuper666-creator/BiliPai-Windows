@@ -1,0 +1,119 @@
+{
+  "passed": true,
+  "scope": "prospective full renderer against actual55; Core-only two-member append proof override",
+  "candidateSHA": "05a3a75657228f2a60d7744ba1ba2c8c91ae8e235cbf0d7d2d34102ac0f03cfe",
+  "actualKotlinSHA": "8d75f8cd3ce6fafb5bb6b3f0c1257679de3ee9d2a3215b23ae017aec6488fb2a",
+  "candidateClasses": 422,
+  "actualClasses": 13679,
+  "declaredExistingOverrideFamily": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol",
+  "classOverlaps": [
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.class",
+      "candidateSHA": "d1c04172575444d536da6ef36df8a4ff8b6188a89c409e4e8204818120086ff9",
+      "actualSHA": "e99f3601b9aad7ee88a75c90c949c19e170a6f23e850c175d473ebbf0eea9f1f"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoInfoOnly$2.class",
+      "candidateSHA": "0559a38025ea03c698d2fccdbd6ac07e168f01df24b0497d74910e410f511902",
+      "actualSHA": "e8d0dd9a7bb439f6eedd1a7c2ab8da41293f128142db6133c515b213aed573cd"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoInfoOnly$1.class",
+      "candidateSHA": "64b7a1d15c09436dd30500684bc35f7ba1744bcd3ca55a83eb0d188665d02629",
+      "actualSHA": "fb003660c61333561805e4376fa1b2022831c104e7a0dbe6c62fa67c0dc8023e"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getInitialPlayUrlData$2.class",
+      "candidateSHA": "69d70f329c00a88a79a1981251a8501f0c279b3a6957b7733d0878d73746e89f",
+      "actualSHA": "d26fc7bd2357109c1196a3f4ad6c01f4af03dd59877534e651d3363498795807"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoDetails$2.class",
+      "candidateSHA": "9f8694913f4ff9972e87b996bf28e38f74466d3abdf44dcc494876b501f1bd73",
+      "actualSHA": "92ca42cc67246725fd12288fd94e7c67194648ae7c5f9ca016b7b8f9429c8954"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoDetails$1.class",
+      "candidateSHA": "6ab4d8f02dfc0d67add4d987715c505931dc61746f0a3e5c6d55489c536b3ea5",
+      "actualSHA": "6047d54c4a8f01e439f244387c4572c66b073b1f9b259ff0f15bea6f947f24f6"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlaybackNavInfo$2.class",
+      "candidateSHA": "abdeb6e584d2d5a0814885a7e4723202335647a82e4a73a45cf1696cac706bca",
+      "actualSHA": "f709ac1f51742af877c60f99a0d6f0f2bbd93aaa504775ed4da690b64f340581"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlaybackNavInfo$1.class",
+      "candidateSHA": "9568f094650fb1a625805fea342740b1c8a2db37c918688a4ba8a3668a5a55dd",
+      "actualSHA": "17c676567d6b66804de95186e813c1d19244bdb50a8b15ad9588174f89ecba38"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlayUrlData$2.class",
+      "candidateSHA": "8832ac8603187debe46f70a71df8c800ab323c7b738203220ff8415704265844",
+      "actualSHA": "b06f0628d2a53cadd1e84fb6fa6552dd9f73c72263b2c1a6c1e05da451adc627"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlayUrlDataForPlaybackTransition$2.class",
+      "candidateSHA": "4fa1597e55195dc73c35e8c8a1716b9d063c9e9e8f2444fa8cf0588ff5baf6e9",
+      "actualSHA": "80c29ac5bffd66e59ee1fc95e1e3a8216787801826652a31c0b9c3ff69f5ff29"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getExactPremiumPlayUrl$2.class",
+      "candidateSHA": "72329ecfb7f48251737c8dcd3f580110d308a6b94015216f7069f4baf09b5ee1",
+      "actualSHA": "cfcd4f9ddadca6941a7727eda2bd9b29dff9d8ef53a89267348a40052305021c"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchPlayUrlRecursive$1.class",
+      "candidateSHA": "cd46ceff8c7ddae76db048c1e18d5c81009fd4e8b5aac287e75a46f661cf881f",
+      "actualSHA": "5b5b1767f5c5ef7ea08fc2339d04e3b585a43c844b93b1bca649c63942b3d420"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchDashWithFallback$1.class",
+      "candidateSHA": "b525c40f2987e72952653e58e1b1e7e90f084f5a5d17627c2736c76b4f43c71c",
+      "actualSHA": "a103df2c4288afb62dc3039091db37c2f656b01be4d6c9951b49c43fc33379ac"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchAsGuestFallback$1.class",
+      "candidateSHA": "91edde2e85d227f1697af58d26120ca41f11195a065cb0834f8959538c33d6f3",
+      "actualSHA": "8126e873ceeb10c9673a5a47d804b1d01578be69e805d7399e7e30de0e1b1d44"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchGuestPlaybackWithFallback$1.class",
+      "candidateSHA": "b900fb3298e06e5f4cf6fcf934ac3dced96e6caee389889fbabde18991bb03ea",
+      "actualSHA": "6e5f540e3d97f2b4ab2cc06496f622412cd8de01f83ae60d7f90302e4dc4d1ea"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchPlayUrlWithWbiInternal$1.class",
+      "candidateSHA": "e11560afc1265e8d86c5c2654849996b9efea93207c7e6cbe0bf242d17872667",
+      "actualSHA": "14494ec59758da242a8b722542a2292392ef73fd5d3aae7a25419ee4ef12de4d"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchPlayUrlWithAccessToken$1.class",
+      "candidateSHA": "618916b072bc0253651add870386efa6050db59583fe1ca4672fcef9790b30de",
+      "actualSHA": "5bcb691930c759b05af7913d96f941b9744def8cbeb6061120316bd444dbcefb"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getRelatedVideos$2.class",
+      "candidateSHA": "9bb1928776307c231c5d92783b2b753c6535cd50ed8ce2ce6f99b36045387d4a",
+      "actualSHA": "f460a95ce473211161b750f4758134d2c577759de4cb3e0b7a87d22920f54f24"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getWbiKeys$1.class",
+      "candidateSHA": "6559b1144161345d3926780b4f3444b8661e7d2a25de63d51f188a5612ccfad2",
+      "actualSHA": "dcae0e801189e3ee0a945ef7e26cb983fa0e8ec9859557fb3543f051d84f2ed4"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$PlayUrlFetchResult.class",
+      "candidateSHA": "59d211a428168ccffd0c0f64b60ac30a3e8befa7b9169c7bdeec40d6d3c49fec",
+      "actualSHA": "4dfb483da55254abf684336d0b2c8706ccd364bd3fdd852d65434341d7e9ec2e"
+    },
+    {
+      "classEntry": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$WhenMappings.class",
+      "candidateSHA": "ffe66720327e5fccd567a1271d2b4b734764ebe792651423fc66c35d36d485e5",
+      "actualSHA": "ffe66720327e5fccd567a1271d2b4b734764ebe792651423fc66c35d36d485e5"
+    }
+  ],
+  "unexpectedClasses": [],
+  "topLevelMethodIntersections": [],
+  "illegalNonLocalReturnClasses": []
+}

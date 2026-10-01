@@ -1,0 +1,97 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+    "sha256LF": "ee0802a25e20f2b9b6ede65ffd6e5b35590b2457e80318d874489dcc98a13dc0",
+    "outputSHA256LF": null,
+    "mode": "selected",
+    "wholeFile": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+    "sha256LF": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9",
+    "outputSHA256LF": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9",
+    "mode": "direct",
+    "wholeFile": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+    "sha256LF": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f",
+    "outputSHA256LF": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f",
+    "mode": "direct",
+    "wholeFile": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+    "sha256LF": "ce7570bd9324c6d27a3baedb37ed9dea96bd50c4744340fa7ae769806039d4fa",
+    "outputSHA256LF": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c",
+    "mode": "selected",
+    "wholeFile": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+    "sha256LF": "1bcdbe6cd08953cf3335ecfc193ffdc000198081956f7e0b239231972fb9471e",
+    "outputSHA256LF": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec",
+    "mode": "selected",
+    "wholeFile": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+    "sha256LF": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba",
+    "outputSHA256LF": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba",
+    "mode": "direct",
+    "wholeFile": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+    "sha256LF": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401",
+    "outputSHA256LF": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401",
+    "mode": "direct",
+    "wholeFile": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+    "sha256LF": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d",
+    "outputSHA256LF": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d",
+    "mode": "direct",
+    "wholeFile": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+    "sha256LF": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f",
+    "outputSHA256LF": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f",
+    "mode": "direct",
+    "wholeFile": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+    "sha256LF": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b",
+    "outputSHA256LF": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b",
+    "mode": "direct",
+    "wholeFile": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+    "sha256LF": "e80e604e6393d0e44764b49e813fff004fb581293f8d71eeb8bdeaf18c9a9fc3",
+    "outputSHA256LF": null,
+    "mode": "selected",
+    "wholeFile": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+    "sha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+    "mode": "source-reference",
+    "wholeFile": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "mode": "source-reference",
+    "wholeFile": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+    "sha256LF": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed",
+    "mode": "source-reference",
+    "wholeFile": false
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "actual55Source": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-state-holder-parity\\producer-production-02\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalVideoLoadProtocol.kt",
+    "sha256Bytes": "4820182ebfd2301845b17448233409a0bc763a08fd2db8ff96a65322a5b052b0",
+    "kind": "frozen-Core192-production-source",
+    "notActual55ManifestInput": true
+  },
+  "baseSHA256LF": "4820182ebfd2301845b17448233409a0bc763a08fd2db8ff96a65322a5b052b0",
+  "candidateSHA256LF": "7f60de6a618072fe68a8df4dcf2854130762c455923609f43bfd4ce398f2c677",
+  "fragmentPath": "prepared/fragments/portrait-protocol-members.kt.fragment",
+  "fragmentSHA256LF": "4d18b52c3b7ede0f9f9a02d41c4d2fab0614cc0ddfd10de0652eb55a44c9b1b8",
+  "overrideOnlyForProspectiveCompile": true,
+  "productionOwner": "parent sole extract-upstream-video-state-core.py",
+  "getHomeVideos": "REFERENCE existing DesktopOriginalHomeVideoProtocol, same retained instance"
+}

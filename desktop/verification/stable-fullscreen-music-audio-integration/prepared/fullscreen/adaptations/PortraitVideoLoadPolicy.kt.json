@@ -1,0 +1,114 @@
+{
+  "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+  "originalSHA256LF": "e80e604e6393d0e44764b49e813fff004fb581293f8d71eeb8bdeaf18c9a9fc3",
+  "candidateSHA256LF": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4",
+  "completeOriginalFile": true,
+  "orderedExactReplay": true,
+  "edits": [
+    {
+      "label": "Required same-native codec capabilities",
+      "before": "Boolean = MediaUtils.isHevcSupported()",
+      "after": "Boolean"
+    },
+    {
+      "label": "Required same-native codec capabilities",
+      "before": "Boolean = MediaUtils.isAv1Supported()",
+      "after": "Boolean"
+    },
+    {
+      "label": "Required same-native codec capabilities",
+      "before": "Boolean = MediaUtils.isDolbyAtmosAudioSupported()",
+      "after": "Boolean"
+    },
+    {
+      "label": "Required same-native codec capabilities",
+      "before": "Boolean = MediaUtils.isDolbySoftwareAudioDecoderRequired()",
+      "after": "Boolean"
+    },
+    {
+      "label": "Existing owner/cache prefetch capability",
+      "before": "    context: Context,\n    streamUrls:",
+      "after": "    context: DesktopOriginalPortraitPlatform,\n    streamUrls:"
+    },
+    {
+      "label": "Actual Windows connection capability",
+      "before": "com.android.purebilibili.core.util.NetworkUtils.isWifi(context)",
+      "after": "context.isWifi()"
+    },
+    {
+      "label": "Existing transport supplies the original HTTP headers",
+      "before": "        val upstreamFactory = OkHttpDataSource.Factory(NetworkModule.playbackOkHttpClient)\n            .setDefaultRequestProperties(buildPortraitPlaybackHttpHeaders())\n",
+      "after": ""
+    },
+    {
+      "label": "Existing bounded cache transport; no new factory/cache",
+      "before": "                val uri = Uri.parse(url)\n                PlaybackMediaCache.prefetchRange(\n                    context = context.applicationContext,\n                    upstreamFactory = upstreamFactory,\n                    url = uri,\n                    cacheKey = buildPlaybackCacheKey(uri = uri, explicitKey = null),\n                    position = 0L,\n                    length = length\n                )\n",
+      "after": "                context.prefetchRange(url, buildPortraitPlaybackHttpHeaders(), length)\n"
+    },
+    {
+      "label": "Required native factory references same source/cache owner",
+      "before": "@UnstableApi\ninternal fun buildPortraitCachedMediaSourceFactory(context: Context): DefaultMediaSourceFactory {\n    val headers = buildPortraitPlaybackHttpHeaders()\n    val upstreamFactory = OkHttpDataSource.Factory(NetworkModule.playbackOkHttpClient)\n        .setDefaultRequestProperties(headers)\n    val dataSourceFactory: DataSource.Factory =\n        PlaybackMediaCache.buildCachedDataSourceFactory(context, upstreamFactory)\n    return DefaultMediaSourceFactory(context)\n        .setDataSourceFactory(dataSourceFactory)\n}\n",
+      "after": "internal fun buildPortraitCachedMediaSourceFactory(context: DesktopOriginalPortraitPlatform): DesktopOriginalPortraitMediaFactory = context.mediaFactory\n"
+    },
+    {
+      "label": "Mapped Android media/cache import",
+      "before": "import android.content.Context\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped Android media/cache import",
+      "before": "import android.net.Uri\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped Android media/cache import",
+      "before": "import androidx.media3.common.util.UnstableApi\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped Android media/cache import",
+      "before": "import androidx.media3.datasource.DataSource\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped Android media/cache import",
+      "before": "import androidx.media3.datasource.okhttp.OkHttpDataSource\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped Android media/cache import",
+      "before": "import androidx.media3.exoplayer.source.DefaultMediaSourceFactory\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped Android media/cache import",
+      "before": "import com.android.purebilibili.core.network.NetworkModule\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped Android media/cache import",
+      "before": "import com.android.purebilibili.core.player.PlaybackMediaCache\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped Android media/cache import",
+      "before": "import com.android.purebilibili.core.player.buildPlaybackCacheKey\n",
+      "after": ""
+    },
+    {
+      "label": "Mapped Android media/cache import",
+      "before": "import com.android.purebilibili.core.util.MediaUtils\n",
+      "after": ""
+    },
+    {
+      "label": "Android annotation",
+      "before": "@UnstableApi\n",
+      "after": ""
+    },
+    {
+      "label": "Required same media ports",
+      "before": "import kotlinx.coroutines.Dispatchers\n",
+      "after": "import kotlinx.coroutines.Dispatchers\nimport com.bilipai.desktop.ui.DesktopOriginalPortraitPlatform\nimport com.bilipai.desktop.ui.DesktopOriginalPortraitMediaFactory\n"
+    }
+  ]
+}

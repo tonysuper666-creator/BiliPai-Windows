@@ -1,0 +1,21 @@
+--- app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\frozen-music-slice\generation-proof\com\android\purebilibili\feature\audio\lyrics\halcyon\PlayerBlurBackground.kt
+@@ -1,7 +1,7 @@
+ package com.android.purebilibili.feature.audio.lyrics.halcyon
+ 
+-import android.graphics.Bitmap
+-import android.graphics.Color as AndroidColor
++import com.bilipai.desktop.ui.DesktopMusicRaster as Bitmap
++import com.bilipai.desktop.ui.DesktopMusicRasterColor as AndroidColor
+ import androidx.compose.animation.core.LinearEasing
+ import androidx.compose.animation.core.RepeatMode
+ import androidx.compose.animation.core.animateFloat
+@@ -20,7 +20,7 @@
+ import androidx.compose.ui.geometry.Offset
+ import androidx.compose.ui.graphics.Brush
+ import androidx.compose.ui.graphics.Color
+-import androidx.compose.ui.graphics.asImageBitmap
++import com.bilipai.desktop.ui.asImageBitmap
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.unit.dp
+ import kotlin.math.cos

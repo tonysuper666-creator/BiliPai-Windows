@@ -1,0 +1,36 @@
+--- app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavySlider.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\frozen-music-slice\generation-proof\com\android\purebilibili\feature\audio\screen\MusicWavySlider.kt
+@@ -1,6 +1,5 @@
+ package com.android.purebilibili.feature.audio.screen
+ 
+-import android.os.SystemClock
+ import androidx.compose.animation.core.LinearEasing
+ import androidx.compose.animation.core.RepeatMode
+ import androidx.compose.animation.core.animateFloat
+@@ -62,7 +61,7 @@
+     fun changeValue(nextValue: Float, isDrag: Boolean) {
+         if (isDrag) {
+             val nextBucket = hapticBucket(nextValue)
+-            val nowMs = SystemClock.elapsedRealtime()
++            val nowMs = System.nanoTime() / 1_000_000L
+             if (nextBucket != lastHapticBucket && nowMs - lastHapticTimeMs >= 55L) {
+                 haptic(HapticType.SELECTION)
+                 lastHapticTimeMs = nowMs
+@@ -72,7 +71,7 @@
+             }
+         } else if (nextValue != value) {
+             haptic(HapticType.LIGHT)
+-            lastHapticTimeMs = SystemClock.elapsedRealtime()
++            lastHapticTimeMs = System.nanoTime() / 1_000_000L
+             lastHapticBucket = hapticBucket(nextValue)
+         }
+         onValueChange(nextValue)
+@@ -127,7 +126,7 @@
+                 detectHorizontalDragGestures(
+                     onDragStart = {
+                         haptic(HapticType.LIGHT)
+-                        lastHapticTimeMs = SystemClock.elapsedRealtime()
++                        lastHapticTimeMs = System.nanoTime() / 1_000_000L
+                     },
+                     onDragEnd = onValueChangeFinished,
+                     onDragCancel = onValueChangeFinished

@@ -1,0 +1,9 @@
+{
+  "passed": false,
+  "sources": 36,
+  "exitCode": 1,
+  "actual55RuntimeEntries": 101,
+  "productAcceptance": false,
+  "prospectiveClassOverlap": [],
+  "candidateJarSha256Bytes": null
+}

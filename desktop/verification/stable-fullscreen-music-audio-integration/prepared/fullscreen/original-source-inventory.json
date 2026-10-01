@@ -1,0 +1,26 @@
+{
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "rows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "sha256LF": "62e28947eccd2a5dd70d1e0ee9458475001c9411af5a02d86c462c7ff7528feb",
+      "bytesLF": 82131,
+      "lines": 1724,
+      "gitBlob": "b5d30644f4f8d483a441d188e1027aedff281286"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "sha256LF": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9",
+      "bytesLF": 186912,
+      "lines": 4122,
+      "gitBlob": "b1182d9d3c45c34ec541c325c5b68bb0f398d30c"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "sha256LF": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "bytesLF": 103425,
+      "lines": 2391,
+      "gitBlob": "6a7a29eaf4d0d1f49bad3cfd2a20bf67d9944357"
+    }
+  ]
+}

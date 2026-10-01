@@ -1,0 +1,104 @@
+    suspend fun getPortraitPlaybackDetails(
+        bvid: String,
+        aid: Long = 0,
+        requestedCid: Long = 0,
+        targetQuality: Int = PORTRAIT_PLAYBACK_TARGET_QUALITY,
+        audioLang: String? = null
+    ): Result<Pair<ViewInfo, PlayUrlData>> = withContext(Dispatchers.IO) {
+        environment.assertOwned()
+        try {
+            if (shouldUsePortraitParallelPlaybackBootstrap(bvid, requestedCid)) {
+                coroutineScope {
+                    val infoDeferred = async {
+                        getVideoInfoOnly(
+                            bvid = bvid,
+                            aid = aid,
+                            requestedCid = requestedCid
+                        )
+                    }
+                    val playUrlDeferred = async {
+                        getInitialPlayUrlData(
+                            bvid = bvid,
+                            cid = requestedCid,
+                            targetQuality = targetQuality,
+                            audioLang = audioLang
+                        ) ?: throw Exception("无法获取播放地址")
+                    }
+                    infoDeferred.await().fold(
+                        onSuccess = { info ->
+                            Result.success(info to playUrlDeferred.await())
+                        },
+                        onFailure = { error ->
+                            Result.failure(error)
+                        }
+                    )
+                }
+            } else {
+                getVideoDetails(
+                    bvid = bvid,
+                    aid = aid,
+                    requestedCid = requestedCid,
+                    targetQuality = targetQuality,
+                    audioLang = audioLang
+                )
+            }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }.also { environment.assertOwned() }
+
+
+    suspend fun preloadPortraitPlayUrl(
+        bvid: String,
+        cid: Long,
+        aid: Long = 0L,
+        targetQuality: Int = PORTRAIT_PLAYBACK_TARGET_QUALITY
+    ): PlayUrlData? {
+        if (bvid.isBlank()) return null
+        environment.assertOwned()
+        return withContext(Dispatchers.IO) {
+            if (cid <= 0L) {
+                val resolved = getPortraitPlaybackDetails(
+                    bvid = bvid,
+                    aid = aid,
+                    requestedCid = 0L,
+                    targetQuality = targetQuality
+                ).getOrNull()?.second
+                if (resolved != null) {
+                    Logger.d(
+                        "VideoRepo",
+                        "🚀 Portrait preload resolved cid and playurl: bvid=$bvid"
+                    )
+                }
+                return@withContext resolved
+            }
+            val cachedPlayData = environment.cache.get(
+                bvid = bvid,
+                cid = cid,
+                requestedQuality = targetQuality
+            )
+            if (cachedPlayData != null) {
+                Logger.d(
+                    "VideoRepo",
+                    "🚀 Portrait preload skip (cached): bvid=$bvid"
+                )
+                return@withContext cachedPlayData
+            }
+            val playData = getInitialPlayUrlData(
+                bvid = bvid,
+                cid = cid,
+                targetQuality = targetQuality,
+                audioLang = null
+            )
+            if (playData != null) {
+                Logger.d(
+                    "VideoRepo",
+                    "🚀 Portrait preloaded playurl: bvid=$bvid"
+                )
+            }
+            playData
+        }.also { environment.assertOwned() }
+    }
+

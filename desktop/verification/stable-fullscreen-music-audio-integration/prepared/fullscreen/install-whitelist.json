@@ -1,0 +1,45 @@
+{
+  "sourceOnly": true,
+  "files": [
+    {
+      "path": "install-packet/tools/extract-upstream-video-fullscreen-pager.py",
+      "bytes": 118281,
+      "sha256Bytes": "8ce884f47fe8f508f0b36f3b345f686e1c0c124485e5004fbcc2886ca6a44be8"
+    },
+    {
+      "path": "install-packet/manual/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "bytes": 1746,
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "install-packet/manual/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "bytes": 7636,
+      "sha256Bytes": "1c751a856baeca8b382f3f4f0f037d331a94547febb6448d3ff5d5dc0a5ad267"
+    }
+  ],
+  "exactLocalHunks": [
+    {
+      "path": "install-packet/local-hunks/core-protocol-append.json",
+      "bytes": 1085,
+      "sha256Bytes": "37fc8b2930e3a27d633839487262619464670b8bf82549dc1162fd50ece27009"
+    }
+  ],
+  "registryRecipe": {
+    "path": "registry-merge-recipe.json",
+    "bytes": 25699,
+    "sha256Bytes": "da0739a35b3fa0061c1a5c751df07aa6e6aa614ed686fb3d8b6c1aa856eacb90"
+  },
+  "buildProposal": {
+    "path": "root-build-proposal.kts",
+    "bytes": 1338,
+    "sha256Bytes": "2ab9ec069a73c0458c7571af9d78b793a9c9745427432e1f9392b74acad58d81"
+  },
+  "neverInstall": [
+    "candidate.jar",
+    "proof-only whole Core source",
+    "parent CommentURL reference source",
+    "standalone DIRECT copies alongside registry Sync"
+  ],
+  "requiresRootOwnedImplementations": true,
+  "preservesSoleStoreClientCachePlayer": true
+}

@@ -1,0 +1,197 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeScreen.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\frozen-audio-slice\generation-proof\com\android\purebilibili\feature\video\screen\AudioModeScreen.kt
+@@ -1,14 +1,5 @@
+ package com.android.purebilibili.feature.video.screen
+ 
+-import android.app.Activity
+-import android.app.PictureInPictureParams
+-import android.content.Context
+-import android.content.ContextWrapper
+-import android.content.pm.ActivityInfo
+-import com.android.purebilibili.core.util.applyPlayerRequestedOrientation
+-import android.content.res.Configuration
+-import android.os.Build
+-import android.util.Rational
+ import androidx.compose.foundation.horizontalScroll
+ import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Box
+@@ -37,22 +28,18 @@
+ import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.platform.LocalContext
+-import androidx.compose.ui.platform.LocalConfiguration
+ import androidx.compose.ui.text.input.ImeAction
+ import androidx.compose.ui.text.input.KeyboardType
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import androidx.media3.common.Player
++import com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl as Player
++import com.bilipai.desktop.ui.*
+ import com.android.purebilibili.core.store.HomeSettings
+-import com.android.purebilibili.core.store.SettingsManager
+ import com.android.purebilibili.core.ui.rememberAppPlayerChromeProfile
+-import com.android.purebilibili.feature.audio.player.AudioNowPlayingSession
+ import com.android.purebilibili.feature.video.player.PlayMode
+-import com.android.purebilibili.feature.video.state.rememberVideoPlayerState
+ import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
+-import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel
++import com.bilipai.desktop.ui.DesktopOriginalAudioVideoOwner as VideoPlaybackViewModel
+ import com.android.purebilibili.feature.video.viewmodel.toEngagementSeed
+ import com.android.purebilibili.feature.video.viewmodel.toSupplementSeed
+ import com.android.purebilibili.core.ui.AppShapes
+@@ -84,9 +71,9 @@
+ ): AudioModePlayPauseAction {
+     if (isPlaying) return AudioModePlayPauseAction.PAUSE
+     return when (playbackState) {
+-        Player.STATE_ENDED -> AudioModePlayPauseAction.RESTART_FROM_BEGINNING
+-        Player.STATE_IDLE -> AudioModePlayPauseAction.PREPARE_AND_RESUME
+-        Player.STATE_READY, Player.STATE_BUFFERING -> AudioModePlayPauseAction.RESUME
++        DesktopOriginalPlaybackStates.STATE_ENDED -> AudioModePlayPauseAction.RESTART_FROM_BEGINNING
++        DesktopOriginalPlaybackStates.STATE_IDLE -> AudioModePlayPauseAction.PREPARE_AND_RESUME
++        DesktopOriginalPlaybackStates.STATE_READY, DesktopOriginalPlaybackStates.STATE_BUFFERING -> AudioModePlayPauseAction.RESUME
+         else -> if (playWhenReady) AudioModePlayPauseAction.PAUSE else AudioModePlayPauseAction.RESUME
+     }
+ }
+@@ -103,14 +90,14 @@
+ internal fun resolveAudioModeOrientationActionLabel(isLandscape: Boolean): String =
+     if (isLandscape) "竖屏" else "横屏"
+ 
+-internal fun resolveAudioModeRequestedOrientation(isLandscape: Boolean): Int =
++internal fun resolveAudioModeRequestedOrientation(isLandscape: Boolean): DesktopOriginalAudioOrientation =
+     if (isLandscape) {
+-        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
++        DesktopOriginalAudioOrientation.PORTRAIT
+     } else {
+-        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+-    }
+-
+-internal fun shouldShowAudioModePipButton(sdkInt: Int): Boolean = sdkInt >= Build.VERSION_CODES.O
++        DesktopOriginalAudioOrientation.LANDSCAPE
++    }
++
++
+ 
+ internal fun parseAudioModeSleepTimerInput(raw: String): Int? {
+     val trimmed = raw.trim()
+@@ -141,12 +128,6 @@
+     } else {
+         minutes.toString()
+     }
+-}
+-
+-private tailrec fun Context.findHostActivity(): Activity? = when (this) {
+-    is Activity -> this
+-    is ContextWrapper -> baseContext.findHostActivity()
+-    else -> null
+ }
+ 
+ internal fun Player.handleAudioModePlayPause() {
+@@ -170,25 +151,15 @@
+     }
+ }
+ 
+-private fun enterAudioModePip(activity: Activity?) {
+-    if (activity == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInPictureInPictureMode) return
+-    val paramsBuilder = PictureInPictureParams.Builder().setAspectRatio(Rational(1, 1))
+-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+-        paramsBuilder.setSeamlessResizeEnabled(true)
+-    }
+-    activity.enterPictureInPictureMode(paramsBuilder.build())
+-}
+-
+ @Composable
+-fun AudioModeScreen(
++internal fun AudioModeScreen(
+     viewModel: VideoPlaybackViewModel,
+     engagementViewModel: com.android.purebilibili.feature.video.viewmodel.VideoEngagementViewModel =
+-        androidx.lifecycle.viewmodel.compose.viewModel(),
+-    composerViewModel: com.android.purebilibili.feature.video.viewmodel.VideoComposerViewModel =
+-        androidx.lifecycle.viewmodel.compose.viewModel(),
++        LocalDesktopOriginalAudioModePlatform.current.engagement,
++    composerViewModel: DesktopOriginalAudioComposerPort =
++        LocalDesktopOriginalAudioModePlatform.current.composer,
+     supplementViewModel: com.android.purebilibili.feature.video.viewmodel.VideoSupplementViewModel =
+-        androidx.lifecycle.viewmodel.compose.viewModel(),
++        LocalDesktopOriginalAudioModePlatform.current.supplement,
+     onBack: () -> Unit,
+     onVideoModeClick: (String, Long) -> Unit,
+     isInPipMode: Boolean = false,
+@@ -200,22 +171,16 @@
+     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+     val subjectSnapshot by viewModel.subjectSnapshot.collectAsStateWithLifecycle()
+     val sleepTimerMinutes by viewModel.sleepTimerMinutes.collectAsStateWithLifecycle()
+-    val context = LocalContext.current
+-    val configuration = LocalConfiguration.current
+-    val activity = context.findHostActivity()
+-    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
++    val platform = LocalDesktopOriginalAudioModePlatform.current
++    val musicPlatform = LocalDesktopOriginalMusicUiPlatform.current
++    val context = musicPlatform.context
++    val isLandscape by platform.window.isLandscape.collectAsStateWithLifecycle()
+     val orientationActionLabel = resolveAudioModeOrientationActionLabel(isLandscape)
+-    DisposableEffect(activity) {
+-        val originalOrientation = activity?.requestedOrientation
+-            ?: ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+-        onDispose {
+-            activity?.applyPlayerRequestedOrientation(originalOrientation)
+-        }
+-    }
+-    val homeSettings by SettingsManager.getHomeSettings(context).collectAsStateWithLifecycle(
+-        initialValue = HomeSettings(),
+-        context = kotlin.coroutines.EmptyCoroutineContext
+-    )
++    DisposableEffect(platform.window) {
++        val lease = platform.window.orientationLease()
++        onDispose { lease.close() }
++    }
++    val homeSettings by musicPlatform.homeSettings.collectAsStateWithLifecycle()
+     val playerChromeProfile = rememberAppPlayerChromeProfile()
+     val liquidPlayModeControlEnabled = shouldUseAudioModeLiquidPlayModeControl(
+         supportsIndependentLiquidGlass =
+@@ -249,8 +214,7 @@
+         )
+     }
+     val standalonePlayerState = if (shouldCreateStandalonePlayer) {
+-        rememberVideoPlayerState(
+-            context = context,
++        platform.standalonePlayerState(
+             viewModel = viewModel,
+             bvid = initialBvid,
+             cid = initialCid,
+@@ -273,7 +237,7 @@
+     }
+     DisposableEffect(viewModel) {
+         viewModel.setAudioMode(true)
+-        AudioNowPlayingSession.markListening()
++        platform.session.markListening()
+         onDispose { viewModel.setAudioMode(false) }
+     }
+ 
+@@ -287,7 +251,7 @@
+         return
+     }
+ 
+-    val enterPip = remember(context) { { enterAudioModePip(context.findHostActivity()) } }
++    val enterPip = remember(platform.window) { { platform.window.enterPip() } }
+     AudioModeMusicPlayer(
+         viewModel = viewModel,
+         successState = displayState,
+@@ -295,13 +259,13 @@
+         onBack = onBack,
+         onVideoModeClick = onVideoModeClick,
+         isInPipMode = isInPipMode,
+-        showPipButton = shouldShowAudioModePipButton(Build.VERSION.SDK_INT),
++        showPipButton = platform.window.pipAvailable,
+         onEnterPip = enterPip,
+         sleepTimerMinutes = sleepTimerMinutes,
+         titleOverride = titleOverride,
+         liquidGlassEffectsEnabled = liquidPlayModeControlEnabled,
+         onToggleOrientation = {
+-            activity?.applyPlayerRequestedOrientation(resolveAudioModeRequestedOrientation(isLandscape))
++            platform.window.setRequestedOrientation(resolveAudioModeRequestedOrientation(isLandscape))
+         },
+         orientationActionLabel = orientationActionLabel,
+         engagementViewModel = engagementViewModel

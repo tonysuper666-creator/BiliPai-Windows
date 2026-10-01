@@ -1,0 +1,15 @@
+{
+  "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+  "originalSHA256LF": "2d8b2ec774f6d4bb64a27cd2e1bdfc923edcbcf1217cffdc4467e896a3c5e29e",
+  "candidateSHA256LF": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e",
+  "completeOriginalFile": true,
+  "orderedExactReplay": true,
+  "edits": [
+    {
+      "label": "Actual root window metrics",
+      "before": "androidx.compose.ui.platform.LocalConfiguration",
+      "after": "com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration",
+      "count": 1
+    }
+  ]
+}

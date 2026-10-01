@@ -1,0 +1,10 @@
+{
+  "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeScreen.kt": {
+    "sha256LF": "8be4fda06237bf87601aa55f844bc501991a426fbde778f3abe6b264fd87ce2d",
+    "gitBlob": "88daf54da269640a18a1ab07bb030f0bff5fa462"
+  },
+  "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeMusicPlayer.kt": {
+    "sha256LF": "4aa801e622630315ff95d9ba5bb4c277ecee524055ef4f5ccc5c71e648f136ea",
+    "gitBlob": "86588a2c4f6404a0464b8d3ef856bfce43734d14"
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "status": "PASS",
+  "actualSnapshot": 54,
+  "entries": 101,
+  "productionOverrides": 0,
+  "sourceCount": 36,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\video\\screen\\DesktopOriginalCommentUrlNavigation.kt",
+      "sha256LF": "818b31846491cbef3f45782cf32cf223bd8b8c9b9c004278a2ee8cf89fd70282"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalLocalPlaylistModels.kt",
+      "sha256LF": "3699c2dd619d0127e00ee1c4c23a6d690b15c870c7b84760021d1908202e0ad4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalMusicUiSettings.kt",
+      "sha256LF": "d0e235a177f9f306c59ce9fe21f281a1063e3979e177dc18a47eab943a2e38ad"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalPlayHistoryModels.kt",
+      "sha256LF": "b31b2156aa27872d87a1cc0ba5eb16d5e0093eb1b02c4e89528779925c4bcfe5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalTabletAudioSettings.kt",
+      "sha256LF": "cf72804cd8d36b35f4c9b8a75420078d3c4353313802465ad4aae797bff15251"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalTabletSecondaryDefaultTab.kt",
+      "sha256LF": "357812c4ef4faf3773e7799bd775cd2505b23159b468ef27fcc90ee3f0956479"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalExternalPlaylistSchema.kt",
+      "sha256LF": "32312dc86ce8bc3391080aa4587b5d283a8e21254ab75f8f93e6852985b82890"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleCoverFlowBackground.kt",
+      "sha256LF": "067e050410d66e5d7a2bf6cf38c2abd85e2df1d1bacb1f4b6802ca1acc491cb0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicInterludes.kt",
+      "sha256LF": "625a065e021dcde08f9b1a0eb9595c17a33e893913e241a3b9b804cd5f852114"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicKaraokeText.kt",
+      "sha256LF": "c419efe7e0acb834d851b6acb7bb73de70493f692d3e9042e47cdfe7ca5a3a18"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricLine.kt",
+      "sha256LF": "d650ace0c00bd7554beda9bb5cb0e681a6fc85fa750a5fbda0d114b4f9071180"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\AppleMusicLyricsView.kt",
+      "sha256LF": "f876605d852fc1147693bce5fe173230b25b94e5d043f670fa27bb975674a8cb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\HalcyonLyricSettings.kt",
+      "sha256LF": "e6d0fee9d480937bd863d70da646ac256c9f4021c78b6b02d08ee1e90d97eeda"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerBlurBackground.kt",
+      "sha256LF": "58c1f909231ea355e0c066c3fadc003a2d838324ada69263f8607c0e3b01b3bc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerLyricPerspective.kt",
+      "sha256LF": "546eb6b1fc07225751019694127e0abdb02380ba02a7aecc5af78a9a99653fa1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerMiniLyrics.kt",
+      "sha256LF": "92299e6f66c8e3bf25ac0866eda05f364dcdf72d3f9d61a40d86bffaecefd98b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerPalette.kt",
+      "sha256LF": "0eccbd544460071cf7f9defe8d46b96f0daa58c0fea594be66c993406c4c504a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\ExternalPlaylistImportDialog.kt",
+      "sha256LF": "aa2151d83bc839f6bd01ce13d12eddf6b77fb30d647ae0f14aa4c99698918bd1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\Music3DCoverFlow.kt",
+      "sha256LF": "fea16146c8b3ff2ecca919e31f177330d59ff973703972eba6a162aac2b23392"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerContent.kt",
+      "sha256LF": "b99ba982c945e058fd2b9e367531bd9a1b1f79b6023a2a293491a2800ae33094"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerVisualPolicy.kt",
+      "sha256LF": "4d76fac7122d0e371fd8710eab280f20921e6ce164a01b9773dfd3cadbfebb1b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicTopControlDragPolicy.kt",
+      "sha256LF": "8eb95f92c79b22446cdedc05a67566c328e3a01df750c58abbd144816e366d07"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicWavyProgressPolicy.kt",
+      "sha256LF": "d310349e0081260e95353694f47ee498277db6da4622dac33eab5a36b0999ab3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\MusicWavySlider.kt",
+      "sha256LF": "dd3d2b68a123e7af9d6cc9539802d815a22be0e544fc1970976f9e9e49fabd53"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\audio\\screen\\PlayHistorySheet.kt",
+      "sha256LF": "15a0dff1b2f7500fc27052308bd877b48c1e1bca6e66992ac8f0cee7249ebff0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\space\\DesktopOriginalSpaceUiState.kt",
+      "sha256LF": "cd56738a2052d6da64b8d9541993d09c2cdb9bd3be3b39b877da8245a83fc645"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletCinemaLayout.kt",
+      "sha256LF": "0c05fe73cd9265e5869a8f011fa550700a2f2ff93b1e7d073a504d53b99247ce"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletDanmakuChromeState.kt",
+      "sha256LF": "ad8ba9dd5d4548b0ecf879df937284ecd3a54ddcf50106586a7d6fc52cab49b7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletOwnerUploadsPane.kt",
+      "sha256LF": "77192f0b2d146960ebcc6611830f3b50d8feda13f024905ce300d83d33966366"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoInfoEntrancePolicy.kt",
+      "sha256LF": "1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayout.kt",
+      "sha256LF": "7bc69cabd5b933e170476a8a73c2c3084e9fc03b3c58542a4989e47087003d7b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayoutPolicy.kt",
+      "sha256LF": "31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalBottomInputBar.kt",
+      "sha256LF": "b04e86784e7a6f7adcd3f20468bb71944c8bbd7b077b921d4f22de6fa673c793"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopMusicRaster.kt",
+      "sha256LF": "d5a3dc4ac55d37fa591c7389db9658bb30df25dede63fa960049f0145acb18ff"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalMusicUiPlatform.kt",
+      "sha256LF": "2ce04e5a057a8438edc2c9f4ad3c7b1ff62c54cc8d57cac17ae5c45da14b1819"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalTabletAudioPlatform.kt",
+      "sha256LF": "f78b94415d77f3583c7b6e95812a73c1020c394c75e2219f3cedb552d4a2f878"
+    }
+  ],
+  "candidateJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-tablet-audio-parity\\compile-07\\tablet-audio-candidate.jar",
+    "sha256Bytes": "aa83c9f637d48eaf5b25d158f4d7076cbfa485e0c33b991df688260566174c30"
+  },
+  "classOverlap": []
+}

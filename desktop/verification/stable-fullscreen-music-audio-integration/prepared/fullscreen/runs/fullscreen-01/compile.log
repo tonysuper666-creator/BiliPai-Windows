@@ -1,0 +1,174 @@
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:92:58: error: unresolved reference 'GestureMode'.
+import com.android.purebilibili.feature.video.ui.gesture.GestureMode
+                                                         ^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:93:58: error: unresolved reference 'GestureIndicator'.
+import com.android.purebilibili.feature.video.ui.gesture.GestureIndicator
+                                                         ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:94:58: error: unresolved reference 'rememberPlayerGestureState'.
+import com.android.purebilibili.feature.video.ui.gesture.rememberPlayerGestureState
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:138:45: error: unresolved reference 'FullscreenShortcutKey'.
+internal fun Key.toFullscreenShortcutKey(): FullscreenShortcutKey = when (this) {
+                                            ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:139:28: error: unresolved reference 'FullscreenShortcutKey'.
+    Key.Spacebar, Key.K -> FullscreenShortcutKey.Space
+                           ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:140:26: error: unresolved reference 'FullscreenShortcutKey'.
+    Key.DirectionLeft -> FullscreenShortcutKey.Left
+                         ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:141:27: error: unresolved reference 'FullscreenShortcutKey'.
+    Key.DirectionRight -> FullscreenShortcutKey.Right
+                          ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:142:19: error: unresolved reference 'FullscreenShortcutKey'.
+    Key.Escape -> FullscreenShortcutKey.Escape
+                  ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:143:42: error: unresolved reference 'FullscreenShortcutKey'.
+    Key.F, Key.Enter, Key.NumPadEnter -> FullscreenShortcutKey.KeyF
+                                         ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:144:14: error: unresolved reference 'FullscreenShortcutKey'.
+    Key.M -> FullscreenShortcutKey.KeyM
+             ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:145:14: error: unresolved reference 'FullscreenShortcutKey'.
+    Key.D -> FullscreenShortcutKey.KeyD
+             ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:146:13: error: unresolved reference 'FullscreenShortcutKey'.
+    else -> FullscreenShortcutKey.Other
+            ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:232:112: error: unresolved reference 'playerInteractionSettings'.
+    val fixedFullscreenAspectRatio by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.fixedFullscreenAspectRatio }
+                                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:232:147: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val fixedFullscreenAspectRatio by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.fixedFullscreenAspectRatio }
+                                                                                                                                                  ^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:232:147: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+    val fixedFullscreenAspectRatio by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.fixedFullscreenAspectRatio }
+                                                                                                                                                  ^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:232:151: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val fixedFullscreenAspectRatio by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.fixedFullscreenAspectRatio }
+                                                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:232:156: error: unresolved reference 'fixedFullscreenAspectRatio'.
+    val fixedFullscreenAspectRatio by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.fixedFullscreenAspectRatio }
+                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:324:82: error: unresolved reference 'playerInteractionSettings'.
+        com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.fullscreenSwipeSeekSeconds }
+                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:324:117: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.fullscreenSwipeSeekSeconds }
+                                                                                                                    ^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:324:117: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+        com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.fullscreenSwipeSeekSeconds }
+                                                                                                                    ^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:324:121: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.fullscreenSwipeSeekSeconds }
+                                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:324:126: error: unresolved reference 'fullscreenSwipeSeekSeconds'.
+        com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.fullscreenSwipeSeekSeconds }
+                                                                                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:325:14: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            .collectLatest { value = it }
+             ^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:325:28: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            .collectLatest { value = it }
+                           ^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:327:106: error: unresolved reference 'playerInteractionSettings'.
+    val doubleTapSeekEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.doubleTapSeekEnabled }
+                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:327:141: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val doubleTapSeekEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.doubleTapSeekEnabled }
+                                                                                                                                            ^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:327:141: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+    val doubleTapSeekEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.doubleTapSeekEnabled }
+                                                                                                                                            ^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:327:145: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val doubleTapSeekEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.doubleTapSeekEnabled }
+                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:327:150: error: unresolved reference 'doubleTapSeekEnabled'.
+    val doubleTapSeekEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.doubleTapSeekEnabled }
+                                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:330:104: error: unresolved reference 'playerInteractionSettings'.
+    val seekForwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.seekForwardSeconds }
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:330:139: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val seekForwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.seekForwardSeconds }
+                                                                                                                                          ^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:330:139: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+    val seekForwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.seekForwardSeconds }
+                                                                                                                                          ^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:330:143: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val seekForwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.seekForwardSeconds }
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:330:148: error: unresolved reference 'seekForwardSeconds'.
+    val seekForwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.seekForwardSeconds }
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:333:105: error: unresolved reference 'playerInteractionSettings'.
+    val seekBackwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.seekBackwardSeconds }
+                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:333:140: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val seekBackwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.seekBackwardSeconds }
+                                                                                                                                           ^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:333:140: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+    val seekBackwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.seekBackwardSeconds }
+                                                                                                                                           ^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:333:144: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val seekBackwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.seekBackwardSeconds }
+                                                                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:333:149: error: unresolved reference 'seekBackwardSeconds'.
+    val seekBackwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.playerInteractionSettings(context).map { it.seekBackwardSeconds }
+                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:433:13: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+        if (!shouldPollFullscreenPlayerProgress(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:433:14: error: unresolved reference 'shouldPollFullscreenPlayerProgress'.
+        if (!shouldPollFullscreenPlayerProgress(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:456:32: error: unresolved reference 'resolveFullscreenPlayerPollingIntervalMs'.
+            val pollInterval = resolveFullscreenPlayerPollingIntervalMs(
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:468:13: error: unresolved reference 'shouldAutoHideFullscreenControls'.
+            shouldAutoHideFullscreenControls(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:558:30: error: unresolved reference 'resolveFullscreenKeyboardAction'.
+                val action = resolveFullscreenKeyboardAction(
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:566:17: error: return type mismatch: expected 'Boolean', actual 'Unit'.
+                when (action) {
+                ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:567:21: error: unresolved reference 'FullscreenKeyboardAction'.
+                    FullscreenKeyboardAction.PlayPause -> {
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:573:21: error: unresolved reference 'FullscreenKeyboardAction'.
+                    FullscreenKeyboardAction.SeekBackward,
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:574:21: error: unresolved reference 'FullscreenKeyboardAction'.
+                    FullscreenKeyboardAction.SeekForward -> {
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:576:53: error: unresolved reference 'FullscreenKeyboardAction'.
+                        val deltaMs = if (action == FullscreenKeyboardAction.SeekBackward) {
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:591:21: error: unresolved reference 'FullscreenKeyboardAction'.
+                    FullscreenKeyboardAction.CloseTopLayer,
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:592:21: error: unresolved reference 'FullscreenKeyboardAction'.
+                    FullscreenKeyboardAction.ToggleFullscreen -> {
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:596:21: error: unresolved reference 'FullscreenKeyboardAction'.
+                    FullscreenKeyboardAction.ToggleMute -> {
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:605:21: error: unresolved reference 'FullscreenKeyboardAction'.
+                    FullscreenKeyboardAction.ToggleDanmaku -> {
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:610:21: error: unresolved reference 'FullscreenKeyboardAction'.
+                    FullscreenKeyboardAction.ToggleLock -> false
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:611:21: error: unresolved reference 'FullscreenKeyboardAction'.
+                    FullscreenKeyboardAction.None -> false
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:1157:29: error: unresolved reference 'ThinWigglyProgressBar'.
+                            ThinWigglyProgressBar(
+                            ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:1161:48: error: unresolved reference 'resolvePortraitProgressBarLayoutPolicy'.
+                                layoutPolicy = resolvePortraitProgressBarLayoutPolicy(
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-fullscreen-pager-parity\runs\fullscreen-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:1164:44: error: cannot infer type for value parameter 'newProgress'. Specify it explicitly.
+                                onSeek = { newProgress ->
+                                           ^^^^^^^^^^^

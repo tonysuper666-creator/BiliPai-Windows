@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "sources": 37,
+  "exitCode": 0,
+  "actual55RuntimeEntries": 101,
+  "productAcceptance": false,
+  "prospectiveClassOverlap": [
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$PlayUrlFetchResult.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$WhenMappings.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchAsGuestFallback$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchDashWithFallback$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchGuestPlaybackWithFallback$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchPlayUrlRecursive$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchPlayUrlWithAccessToken$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchPlayUrlWithWbiInternal$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getExactPremiumPlayUrl$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getInitialPlayUrlData$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlayUrlData$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlayUrlDataForPlaybackTransition$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlaybackNavInfo$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlaybackNavInfo$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getRelatedVideos$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoDetails$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoDetails$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoInfoOnly$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoInfoOnly$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getWbiKeys$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.class"
+  ],
+  "candidateJarSha256Bytes": "43e5fe840eefa3639d36196bde5c70812e597b518fafa682e632679264a8f3fe"
+}

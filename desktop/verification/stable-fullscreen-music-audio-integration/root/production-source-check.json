@@ -1,0 +1,303 @@
+{
+  "passed": true,
+  "selectedProductionBodiesCompared": 39,
+  "directPoliciesSyncOnly": 19,
+  "exactFrozenLFSourceMatches": [
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "sha256LF": "ef247efabf62bb22ea2f2fa3928228321992e9df161335dee2dc3648271ea143"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/core/store/DesktopOriginalVideoCommentSheetSettings.kt",
+      "sha256LF": "c76bddc7eae4e2163923ad220ab24c90ed1b7427d03729fbe76a6abd74e63d67"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "sha256LF": "fe6da28cac98074b76a41d87dfd97dcb82fb1d1b34ddbe64337d815522893f97"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+      "sha256LF": "5f343c8a5ca38575b44081dd34967fbdaa27d804e1f452b114e047547caddc3a"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "sha256LF": "21e101af8bcb9042f3ffce99c9c97f2118966544c99ef75fb065f3ad1556db3d"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "sha256LF": "aebfce17f24e3058c864f4167fc1ebd948770f2dc2bfa42ef67a3ef4045c1a91"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "sha256LF": "14a15aa8fd8c064b01f4106b47ae1584ab9e9efaa7e060e0552b83dcd7a92033"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "sha256LF": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "sha256LF": "5e6cda37a7697fbb4f4c09c6db3f31168b7d108d4e8ad9450fb19fb7b489f31e"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "sha256LF": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "sha256LF": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "sha256LF": "6cd38de69a694f5b44042ff50c702e92c1662c3397fc00f46aac6d6c03a90661"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/pager/DesktopOriginalPortraitVideoViewport.kt",
+      "sha256LF": "d53f7dafcf76f029347d2820c17473107b33927b75b2f24f4be86ce29db1695d"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+      "sha256LF": "0a966f9671bb000624917b77501a73fd271249642983f5ae8aa0c4ecac74e485"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+      "sha256LF": "0a080655ab786857b329ae0b4cd00a4ba7f582a2749ac78f612d19d2198de01c"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+      "sha256LF": "4fbf9bb065873c3830fcf90dad77c718eae2ce14e8230e7a488f74773622f4ec"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "sha256LF": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "sha256LF": "4cda773fac87eb413ccaedb35d5ded586dc21501631e9d43968a72eb3becd0d1"
+    },
+    {
+      "family": "fullscreen",
+      "path": "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalPortraitAudioUrlCandidates.kt",
+      "sha256LF": "922380af844f8a857c8c8b3d9de11e5722c79a25dbef5b33869851e47c2ffad4"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricsView.kt",
+      "sha256LF": "f876605d852fc1147693bce5fe173230b25b94e5d043f670fa27bb975674a8cb"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricLine.kt",
+      "sha256LF": "d650ace0c00bd7554beda9bb5cb0e681a6fc85fa750a5fbda0d114b4f9071180"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicKaraokeText.kt",
+      "sha256LF": "c419efe7e0acb834d851b6acb7bb73de70493f692d3e9042e47cdfe7ca5a3a18"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicInterludes.kt",
+      "sha256LF": "625a065e021dcde08f9b1a0eb9595c17a33e893913e241a3b9b804cd5f852114"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerMiniLyrics.kt",
+      "sha256LF": "92299e6f66c8e3bf25ac0866eda05f364dcdf72d3f9d61a40d86bffaecefd98b"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt",
+      "sha256LF": "546eb6b1fc07225751019694127e0abdb02380ba02a7aecc5af78a9a99653fa1"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerPalette.kt",
+      "sha256LF": "0eccbd544460071cf7f9defe8d46b96f0daa58c0fea594be66c993406c4c504a"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt",
+      "sha256LF": "58c1f909231ea355e0c066c3fadc003a2d838324ada69263f8607c0e3b01b3bc"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt",
+      "sha256LF": "067e050410d66e5d7a2bf6cf38c2abd85e2df1d1bacb1f4b6802ca1acc491cb0"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/screen/MusicWavySlider.kt",
+      "sha256LF": "dd3d2b68a123e7af9d6cc9539802d815a22be0e544fc1970976f9e9e49fabd53"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/screen/Music3DCoverFlow.kt",
+      "sha256LF": "fea16146c8b3ff2ecca919e31f177330d59ff973703972eba6a162aac2b23392"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/core/store/DesktopOriginalMusicUiSettings.kt",
+      "sha256LF": "d0e235a177f9f306c59ce9fe21f281a1063e3979e177dc18a47eab943a2e38ad"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/core/store/DesktopOriginalPlayHistoryModels.kt",
+      "sha256LF": "b31b2156aa27872d87a1cc0ba5eb16d5e0093eb1b02c4e89528779925c4bcfe5"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/core/store/DesktopOriginalLocalPlaylistModels.kt",
+      "sha256LF": "3699c2dd619d0127e00ee1c4c23a6d690b15c870c7b84760021d1908202e0ad4"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalExternalPlaylistSchema.kt",
+      "sha256LF": "32312dc86ce8bc3391080aa4587b5d283a8e21254ab75f8f93e6852985b82890"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt",
+      "sha256LF": "15a0dff1b2f7500fc27052308bd877b48c1e1bca6e66992ac8f0cee7249ebff0"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt",
+      "sha256LF": "aa2151d83bc839f6bd01ce13d12eddf6b77fb30d647ae0f14aa4c99698918bd1"
+    },
+    {
+      "family": "music",
+      "path": "com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt",
+      "sha256LF": "b99ba982c945e058fd2b9e367531bd9a1b1f79b6023a2a293491a2800ae33094"
+    },
+    {
+      "family": "audio",
+      "path": "com/android/purebilibili/feature/video/screen/AudioModeScreen.kt",
+      "sha256LF": "2755c1800bb59d12c2d7b480330956261d34d29711856e642e883d026c6502e9"
+    },
+    {
+      "family": "audio",
+      "path": "com/android/purebilibili/feature/video/screen/AudioModeMusicPlayer.kt",
+      "sha256LF": "521bf64bd22d8465900a76fb81a2435d411ec46a634aa12337b0f6f30f4a538b"
+    }
+  ],
+  "directSourceChecks": [
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "sha256LF": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+      "sha256LF": "47319a7d7bd5bc852f5f00a3e2c3f9cfecd9de31cbed55e0ec8d67cc6788449f"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+      "sha256LF": "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+      "sha256LF": "a13b46cdf702d34744467852d172f373748d334f1e47309d6187ff16dcb473f7"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+      "sha256LF": "5d8aa01d65a5a789b5ceadd10270e8ecd0fb540558e1f9836e67f1bfc54d7373"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+      "sha256LF": "f1426de1c78f9219040529e6d56b790c1ed3159da2036d9883c10e8dbd4aac62"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+      "sha256LF": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+      "sha256LF": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+      "sha256LF": "516960ab15173e051c100d3fece18be8c5e7f84bb18bd05c3e2137bb2c2acdf9"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+      "sha256LF": "ba96b2b07814dd9599b73e4d5a91faeda658ef3dfd0133cda646c7001bd64e0f"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+      "sha256LF": "9efb8d775cde625bb27cc43ecdb0e5050554f3a14c48c8ab563846a89e73ebba"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+      "sha256LF": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+      "sha256LF": "7de55d891fd6d3b658e4e066c48caa20809faa378fe29d771bf2307f15f2996d"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+      "sha256LF": "91a5b8f5a56bdf5666f964186b41231b483c58ebfdc1e04905489987001e5f5f"
+    },
+    {
+      "family": "fullscreen",
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+      "sha256LF": "0c8dad6a201f6589b667ab5c6a6b65511e7fdf0415dbd60b4cadcf15c419138b"
+    },
+    {
+      "family": "music",
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricSettings.kt",
+      "sha256LF": "e6d0fee9d480937bd863d70da646ac256c9f4021c78b6b02d08ee1e90d97eeda"
+    },
+    {
+      "family": "music",
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerVisualPolicy.kt",
+      "sha256LF": "4d76fac7122d0e371fd8710eab280f20921e6ce164a01b9773dfd3cadbfebb1b"
+    },
+    {
+      "family": "music",
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicTopControlDragPolicy.kt",
+      "sha256LF": "8eb95f92c79b22446cdedc05a67566c328e3a01df750c58abbd144816e366d07"
+    },
+    {
+      "family": "music",
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavyProgressPolicy.kt",
+      "sha256LF": "d310349e0081260e95353694f47ee498277db6da4622dac33eab5a36b0999ab3"
+    }
+  ],
+  "sourceIdentityCount": 1115,
+  "resourceCount": 213,
+  "sourceInventoryIsNotFunctionalOrReusePercentage": true,
+  "wholeRootMounted": false
+}

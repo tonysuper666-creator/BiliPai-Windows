@@ -1,0 +1,12 @@
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-03\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\overlay\FullscreenPlayerOverlay.kt:379:58: warning: the corresponding parameter in the supertype 'Listener' is named 'parameters'. This may cause problems when calling this function with named arguments.
+                override fun onPlaybackParametersChanged(playbackParameters: com.bilipai.desktop.ui.DesktopOriginalPlaybackRate) {
+                                                         ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-03\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:1803:45: warning: the corresponding parameter in the supertype 'Listener' is named 'isPlaying'. This may cause problems when calling this function with named arguments.
+            override fun onIsPlayingChanged(isPlaying_: Boolean) {
+                                            ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-03\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:1816:54: warning: the corresponding parameter in the supertype 'Listener' is named 'parameters'. This may cause problems when calling this function with named arguments.
+            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
+                                                     ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-fullscreen-pager-parity\runs\pager-03\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:2998:9: warning: expression is unused.
+        Unit
+        ^^^^

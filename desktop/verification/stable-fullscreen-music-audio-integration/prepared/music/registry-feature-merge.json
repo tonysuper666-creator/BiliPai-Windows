@@ -1,0 +1,231 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricsView.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "deeaee2422f18c6f5bad05186235eccb900fe77e48d864751be0545f9974ff67",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricLine.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "1114516a2105245c0b108e2d4616636cbca4c56b9635105420962acadf2730f7",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicKaraokeText.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "41765edebf44f4719b1e46e7c1efc5a82281d0d4db8eb18fe4e1c6ae28af1180",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicInterludes.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "625a065e021dcde08f9b1a0eb9595c17a33e893913e241a3b9b804cd5f852114",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerMiniLyrics.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "92299e6f66c8e3bf25ac0866eda05f364dcdf72d3f9d61a40d86bffaecefd98b",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricSettings.kt",
+    "mode": "direct",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "e6d0fee9d480937bd863d70da646ac256c9f4021c78b6b02d08ee1e90d97eeda",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "31a860459d16f51b3c7d94147f0852a7ba7a62d06b073a7d8a8b8c373a908a59",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerPalette.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "dba4432bc86d36792ec75e67681bec25e512b6290471a6c66b68d1b8c210e43b",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "fbc253f246e873b3c8131d4fa4328d1932e63eb4e931b720264999718c8d8c84",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "466ae7e5dff23b97d4d3cddf7718855d57947c1998bae26a5570490f088b0599",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerVisualPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "4d76fac7122d0e371fd8710eab280f20921e6ce164a01b9773dfd3cadbfebb1b",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicTopControlDragPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "8eb95f92c79b22446cdedc05a67566c328e3a01df750c58abbd144816e366d07",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavyProgressPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "d310349e0081260e95353694f47ee498277db6da4622dac33eab5a36b0999ab3",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavySlider.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "d6de77651bbf9109b7e0f27dd72084e4b466f61d77d09e1a5f37f6121ca54e3f",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/Music3DCoverFlow.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "fea16146c8b3ff2ecca919e31f177330d59ff973703972eba6a162aac2b23392",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "mode": "policy-extract",
+    "features": [
+      "appearance-parity",
+      "discovery",
+      "dynamic-detail-reply",
+      "home-full-card",
+      "home-page",
+      "home-protocol-platform-reference",
+      "live-sub-navigation",
+      "settings-dynamic-full-card-parity",
+      "settings-dynamic-tabs-parity",
+      "settings-home-card-parity",
+      "settings-home-dynamic-parity",
+      "settings-image-save-path-parity",
+      "settings-local-diagnostics-parity",
+      "settings-privacy-section-parity",
+      "stable-collection-sheet",
+      "stable-danmaku-list-menu",
+      "stable-danmaku-settings-panel",
+      "stable-download-list-original",
+      "stable-favorites",
+      "stable-frosted-audio-renderer",
+      "stable-linked-dock-search",
+      "stable-music-player-original",
+      "stable-navigation3-host",
+      "stable-profile-windows-platform",
+      "stable-shared-liquid-tabs",
+      "stable-video-content-full",
+      "stable-video-detail-full-units",
+      "stable-video-metadata",
+      "stable-video-original-comments",
+      "stable-video-player-full-controls",
+      "stable-video-player-section-full",
+      "stable-video-tablet-original"
+    ],
+    "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "action": "merge-existing-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/PlayHistoryStore.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "571161606f2dc9c287fcbdfc43699b46fca9e67384969598e38cbd4170efcf17",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/LocalPlaylistStore.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "40ee1a329c6a725f52f1450b7686d1e66eab320cf31acd9721d5e8bace414fdd",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/ExternalPlaylistRepository.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "3fe9556d6701f34e7f0eb1731ad005acca7f2ef2f278f5bf3fc571911ae09288",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "85639fbe680f6f56868bf7b58126af26b921721ba876b670213344f57f6f2694",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "26cb46a8d744f16eb448c3242ade46d4edc9363c7109fdaf7b86d07c3fd91c97",
+    "action": "add-new-identity"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt",
+    "mode": "policy-extract",
+    "features": [
+      "stable-music-player-original"
+    ],
+    "sha256": "96b8c9ac79136440418c75f0740f04845701e4d3b46342575d81ec79b3e0701c",
+    "action": "add-new-identity"
+  }
+]

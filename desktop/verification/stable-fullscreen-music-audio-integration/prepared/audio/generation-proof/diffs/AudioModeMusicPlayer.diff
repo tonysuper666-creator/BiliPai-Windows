@@ -1,0 +1,232 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeMusicPlayer.kt
++++ C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-video-tablet-audio-parity\frozen-audio-slice\generation-proof\com\android\purebilibili\feature\video\screen\AudioModeMusicPlayer.kt
+@@ -1,5 +1,3 @@
+-@file:androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+-
+ package com.android.purebilibili.feature.video.screen
+ 
+ import androidx.compose.foundation.background
+@@ -19,29 +17,22 @@
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+-import androidx.compose.ui.platform.LocalContext
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import androidx.lifecycle.viewmodel.compose.viewModel
+-import androidx.media3.common.Player
+-import androidx.media3.exoplayer.ExoPlayer
+-import com.android.purebilibili.core.player.PlayerVolumeController
+-import com.android.purebilibili.core.store.SettingsManager
++import com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl as Player
++import com.bilipai.desktop.ui.*
++import com.android.purebilibili.core.store.DesktopOriginalMusicUiSettings as SettingsManager
+ import com.android.purebilibili.core.util.FormatUtils
+ import com.android.purebilibili.data.model.response.Page
+ import com.android.purebilibili.feature.audio.lyrics.BiliSubtitleLyricsPolicy
+ import com.android.purebilibili.feature.audio.lyrics.LyricSource
+-import com.android.purebilibili.feature.audio.player.AudioNowPlayingSession
+ import com.android.purebilibili.feature.audio.player.MusicPlayerUiState
+ import com.android.purebilibili.feature.audio.player.MusicLyricCandidateUi
+ import com.android.purebilibili.feature.audio.player.MusicQueueItemUi
+ import com.android.purebilibili.feature.audio.screen.MusicPlayerContent
+-import com.android.purebilibili.feature.audio.viewmodel.MusicViewModel
+-import com.android.purebilibili.feature.video.player.MiniPlayerManager
++import com.bilipai.desktop.ui.DesktopOriginalAudioLyricsPort as MusicViewModel
+ import com.android.purebilibili.core.store.PlayHistoryEntry
+-import com.android.purebilibili.core.store.PlayHistoryStore
+ import com.android.purebilibili.core.store.PlayLastSession
+ import com.android.purebilibili.feature.video.player.PlaylistItem
+-import com.android.purebilibili.feature.video.player.PlaylistManager
+ import com.android.purebilibili.feature.video.subtitle.buildSubtitleTrackOptions
+ import com.android.purebilibili.feature.video.playback.audio.resolveAudioQualityControlPresentation
+ import com.android.purebilibili.feature.video.share.VideoShareSheet
+@@ -54,7 +45,7 @@
+ import com.android.purebilibili.feature.video.viewmodel.VideoCommentViewModel
+ import com.android.purebilibili.feature.video.viewmodel.VideoEngagementViewModel
+ import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
+-import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel
++import com.bilipai.desktop.ui.DesktopOriginalAudioVideoOwner as VideoPlaybackViewModel
+ import kotlinx.coroutines.delay
+ import kotlinx.coroutines.flow.firstOrNull
+ import kotlinx.coroutines.isActive
+@@ -121,7 +112,7 @@
+     liquidGlassEffectsEnabled: Boolean,
+     onToggleOrientation: (() -> Unit)? = null,
+     orientationActionLabel: String = "横屏",
+-    engagementViewModel: VideoEngagementViewModel = viewModel()
++    engagementViewModel: VideoEngagementViewModel = LocalDesktopOriginalAudioModePlatform.current.engagement
+ ) {
+     if (successState == null) {
+         Box(
+@@ -135,21 +126,21 @@
+         return
+     }
+ 
+-    val context = LocalContext.current
++    val platform = LocalDesktopOriginalAudioModePlatform.current
++    val musicPlatform = LocalDesktopOriginalMusicUiPlatform.current
++    val context = musicPlatform.context
+     val info = successState.info
+     val displayTitle = resolveAudioModeTrackTitle(
+         videoTitle = titleOverride?.takeIf { it.isNotBlank() } ?: info.title,
+         currentCid = info.cid,
+         pages = info.pages
+     )
+-    val playlist by PlaylistManager.playlist.collectAsStateWithLifecycle()
+-    val playlistIndex by PlaylistManager.currentIndex.collectAsStateWithLifecycle()
+-    val playMode by PlaylistManager.playMode.collectAsStateWithLifecycle()
+-    val shuffleEnabled by PlaylistManager.shuffleEnabled.collectAsStateWithLifecycle()
++    val playlist by platform.playlist.playlist.collectAsStateWithLifecycle()
++    val playlistIndex by platform.playlist.currentIndex.collectAsStateWithLifecycle()
++    val playMode by platform.playlist.playMode.collectAsStateWithLifecycle()
++    val shuffleEnabled by platform.playlist.shuffleEnabled.collectAsStateWithLifecycle()
+     val playback = rememberAudioPlaybackSnapshot(player)
+-    val lyricsViewModel = androidx.lifecycle.viewmodel.compose.viewModel<MusicViewModel>(
+-        key = "audio_mode_lyrics"
+-    )
++    val lyricsViewModel = platform.lyrics
+     val lyricsState by lyricsViewModel.uiState.collectAsStateWithLifecycle()
+     var showCollectionSheet by remember { mutableStateOf(false) }
+     var showPageSelector by remember { mutableStateOf(false) }
+@@ -162,8 +153,7 @@
+     // ---- 播放历史记录与冷启动续播 ----
+     val historyScope = rememberCoroutineScope()
+     LaunchedEffect(info.bvid, info.cid) {
+-        PlayHistoryStore.record(
+-            context = context,
++        musicPlatform.history.record(
+             entry = PlayHistoryEntry(
+                 bvid = info.bvid,
+                 cid = info.cid,
+@@ -180,8 +170,7 @@
+         if (!playback.isPlaying) return@LaunchedEffect
+         while (true) {
+             kotlinx.coroutines.delay(5_000L)
+-            PlayHistoryStore.saveLastSession(
+-                context,
++            musicPlatform.history.saveLastSession(
+                 PlayLastSession(
+                     bvid = info.bvid,
+                     cid = info.cid,
+@@ -199,10 +188,10 @@
+         AudioStartupAutoPlayGuard.handled = true
+         val enabled = SettingsManager.getStartupAutoPlayEnabledSync(context)
+         if (!enabled) return@LaunchedEffect
+-        if (PlaylistManager.playlist.value.isNotEmpty()) return@LaunchedEffect
+-        val session = PlayHistoryStore.lastSession(context).firstOrNull() ?: return@LaunchedEffect
++        if (platform.playlist.playlist.value.isNotEmpty()) return@LaunchedEffect
++        val session = musicPlatform.history.lastSession().firstOrNull() ?: return@LaunchedEffect
+         if (session.bvid.isBlank()) return@LaunchedEffect
+-        PlaylistManager.addToPlaylist(
++        platform.playlist.addToPlaylist(
+             PlaylistItem(
+                 bvid = session.bvid,
+                 cid = session.cid,
+@@ -220,7 +209,7 @@
+             }
+         }
+     }
+-    val commentViewModel: VideoCommentViewModel = viewModel()
++    val commentViewModel: VideoCommentViewModel = platform.comments
+     val currentSpeed = player?.playbackParameters?.speed ?: 1f
+ 
+     val metadataDurationMs = info.pages
+@@ -304,15 +293,15 @@
+         .collectAsStateWithLifecycle(initialValue = true)
+     LaunchedEffect(player, info.bvid, info.cid, displayTitle, coverUrl, audioNowPlayingBarEnabled) {
+         if (!audioNowPlayingBarEnabled) return@LaunchedEffect
+-        val exoPlayer = player as? ExoPlayer ?: return@LaunchedEffect
+-        MiniPlayerManager.getInstance(context).setVideoInfo(
++        val ownedPlayer = player ?: return@LaunchedEffect
++        platform.mini.setVideoInfo(
+             bvid = info.bvid,
+             title = displayTitle,
+             cover = coverUrl,
+             owner = info.owner.name,
+             cid = info.cid,
+             aid = info.aid,
+-            externalPlayer = exoPlayer
++            externalPlayer = ownedPlayer
+         )
+     }
+     val audioQualityPresentation = remember(
+@@ -324,8 +313,8 @@
+             selectedAudioQuality = successState.selectedAudioQuality
+         )
+     }
+-    val favoriteQuickSaveDefaultFolder by com.android.purebilibili.core.store.FavoriteInteractionSettingsStore
+-        .getQuickSaveDefaultFolder(LocalContext.current)
++    val favoriteQuickSaveDefaultFolder by platform.favoriteInteraction
++        .getQuickSaveDefaultFolder()
+         .collectAsStateWithLifecycle(initialValue = false)
+ 
+     val subtitleLyrics = remember(
+@@ -403,12 +392,12 @@
+         onPlayPause = { player?.handleAudioModePlayPause() },
+         onSeek = { positionMs ->
+             player?.seekTo(positionMs)
+-            player?.let(PlayerVolumeController::applyPreferredVolume)
++            player?.let(platform::applyPreferredVolume)
+         },
+         onPrevious = { viewModel.playPreviousAudioModeTrack() },
+         onNext = { viewModel.playNextAudioModeTrack() },
+         onImportToQueue = { importedItems ->
+-            PlaylistManager.setPlaylist(importedItems)
++            platform.playlist.setPlaylist(importedItems)
+             importedItems.firstOrNull()?.let { first ->
+                 viewModel.loadVideo(
+                     bvid = first.bvid,
+@@ -422,7 +411,7 @@
+         },
+         onQueueItemSelected = { index ->
+             if (playlist.isNotEmpty()) {
+-                PlaylistManager.playAt(index)?.let {
++                platform.playlist.playAt(index)?.let {
+                     viewModel.loadVideo(
+                         bvid = it.bvid,
+                         cid = it.cid,
+@@ -447,8 +436,8 @@
+                 }
+             }
+         },
+-        onPlayModeChange = PlaylistManager::setPlayMode,
+-        onShuffleEnabledChange = PlaylistManager::setShuffleEnabled,
++        onPlayModeChange = platform.playlist::setPlayMode,
++        onShuffleEnabledChange = platform.playlist::setShuffleEnabled,
+         onLyricsOffsetChange = { deltaMs ->
+             if (effectiveLyrics?.source == LyricSource.BILIBILI) {
+                 subtitleOffsetMs = (subtitleOffsetMs + deltaMs).coerceIn(-10_000L, 10_000L)
+@@ -466,7 +455,7 @@
+         onLyricsSearch = lyricsViewModel::searchLyrics,
+         onLyricsCandidateSelected = lyricsViewModel::selectLyricsCandidate,
+         onVideoModeClick = {
+-            AudioNowPlayingSession.dismiss()
++            platform.session.dismiss()
+             onVideoModeClick(info.bvid, info.cid)
+         },
+         onCollectionClick = when {
+@@ -627,10 +616,11 @@
+     var snapshot by remember(player) { mutableStateOf(player.readAudioPlaybackSnapshot()) }
+ 
+     DisposableEffect(player) {
+-        val listener = object : Player.Listener {
+-            override fun onEvents(player: Player, events: Player.Events) {
+-                snapshot = player.readAudioPlaybackSnapshot()
+-            }
++        val listener = object : DesktopOriginalMpvOverlayControl.Listener {
++            override fun onIsPlayingChanged(isPlaying: Boolean) { snapshot = player.readAudioPlaybackSnapshot() }
++            override fun onPlaybackStateChanged(playbackState: Int) { snapshot = player.readAudioPlaybackSnapshot() }
++            override fun onPlaybackParametersChanged(parameters: DesktopOriginalPlaybackRate) { snapshot = player.readAudioPlaybackSnapshot() }
++            override fun onSourceTransition(sourceVersion: Long) { snapshot = player.readAudioPlaybackSnapshot() }
+         }
+         player?.addListener(listener)
+         onDispose { player?.removeListener(listener) }
+@@ -649,7 +639,7 @@
+     val player = this ?: return AudioPlaybackSnapshot()
+     return AudioPlaybackSnapshot(
+         isPlaying = player.isPlaying,
+-        isBuffering = player.playbackState == Player.STATE_BUFFERING,
++        isBuffering = player.playbackState == DesktopOriginalPlaybackStates.STATE_BUFFERING,
+         positionMs = player.currentPosition.coerceAtLeast(0L),
+         durationMs = player.duration.coerceAtLeast(0L),
+         playbackSpeed = player.playbackParameters.speed
