@@ -1,0 +1,74 @@
+{
+  "payloads": [
+    {
+      "path": "desktop/tools/extract-upstream-category-page.py",
+      "sha256Bytes": "13cf1aff8fac330699914eda6f31fa02e9c380a208e1feaf80b124c25fa5fc96"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCategoryEnvironment.kt",
+      "sha256Bytes": "dd4b245e50d566264ed06d5a4856d8b4be3a9072c75171187875231b0cd3a848"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCategoryRouteHost.kt",
+      "sha256Bytes": "0278305589b3bb3f4ff477b18572a2d490315ebcb9482a2138eb41424f0f03b6"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-return-navigation.py",
+      "sha256Bytes": "deca07715b303f22d2e7bb7a13b9c34b62e6cd1ddb42c2c3f0c7fbb2e55ca884"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+      "sha256Bytes": "d1e47198740351f9985cae9e5a305901b9ad394cb8c053bd0b06633714cc9073"
+    }
+  ],
+  "sharedProducerHunks": [
+    {
+      "path": "desktop/tools/extract-upstream-home-partition.py",
+      "baseSha256LF": "4b15b4718fb80986dcf827d0f5610b193e99fa653e00bfa4d2b4d2d1deb01667",
+      "candidateSha256LF": "5136d8de3cd52f75019271311060693d4e36f6bb666fbf2ca136874a6d6134d5",
+      "changes": [
+        {
+          "before": "('MediaListRowSkeleton','UserListRowSkeleton','ContentMediaListSkeleton','ContentVideoGridSkeleton')",
+          "after": "('MediaListRowSkeleton','UserListRowSkeleton','ContentMediaListSkeleton','ContentVideoGridSkeleton','ContentVideoGridSkeletonFixedColumns')"
+        }
+      ],
+      "installWholeFile": false
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bgm-detail.py",
+      "baseSha256LF": "ab0cd031888ef7866f205298b5ad9cdc76c2af99ac82403323a48b867037389e",
+      "candidateSha256LF": "a7930d611284574a46d80eb3c3c8adab49e5aef4865fb3aad8ef8808df785d0f",
+      "changes": [
+        {
+          "before": "    constants=re.search(r'object LottieUrls \\{[\\s\\S]*?\\n\\}',raw).group()",
+          "after": "    constants=re.search(r'object LottieUrls \\{[\\s\\S]*?\\n\\}',raw).group()\n    cute_mask=shared.masked(raw);cute_match=re.search(r'(?m)^fun CutePersonLoadingIndicator\\(',cute_mask)\n    cute_start=raw.rfind('@Composable',0,cute_match.start())\n    cute_opening=cute_mask.index('{',shared.balanced(cute_mask,cute_mask.index('(',cute_match.start())))\n    cute_end=shared.balanced(cute_mask,cute_opening,'{','}')\n    cute_body=raw[cute_start:cute_end]"
+        },
+        {
+          "before": "import androidx.compose.ui.unit.dp\n'''+constants+'\\n\\n'+body+'\\n'",
+          "after": "import androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.Dp\nimport androidx.compose.ui.graphics.Color\n'''+constants+'\\n\\n'+body+'\\n\\n'+cute_body+'\\n'"
+        }
+      ],
+      "installWholeFile": false
+    }
+  ],
+  "sourceCountBefore": 864,
+  "sourceCountAfter": 871,
+  "newIdentities": [
+    "app/src/main/java/com/android/purebilibili/feature/category/CategoryScreen.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiReturnSessionState.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavSourceMetadata.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/VideoCardTransitionSession.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiVideoSourcePolicy.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt"
+  ],
+  "featureMerges": [
+    "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+    "app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt"
+  ],
+  "preparedManifests": {
+    "category": "33a9d7f107a9dce5454241dba2f7e43d03c25f6dee22d890e9d72369ee878b8b",
+    "return": "6a7eb9e749bfc00f4f4d528385e1f8e68990d134457e4ef1b903813e6df9f2eb"
+  },
+  "actualRootMounted": false
+}

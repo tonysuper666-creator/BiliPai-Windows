@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "source": "prepared/tools/extract-upstream-home-return-navigation.py",
+      "destination": "desktop/tools/extract-upstream-home-return-navigation.py",
+      "sha256LF": "deca07715b303f22d2e7bb7a13b9c34b62e6cd1ddb42c2c3f0c7fbb2e55ca884"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+      "sha256LF": "d1e47198740351f9985cae9e5a305901b9ad394cb8c053bd0b06633714cc9073"
+    }
+  ],
+  "neverInstall": [
+    "prepared/generated",
+    "prepared/direct",
+    "production-replay",
+    "compile-*",
+    "proof-*"
+  ],
+  "directBodiesAlreadyPinnedUpstream": true
+}

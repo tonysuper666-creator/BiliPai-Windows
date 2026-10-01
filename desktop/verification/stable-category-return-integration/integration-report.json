@@ -1,0 +1,25 @@
+{
+  "wholeClassesPhase": 40,
+  "wholeClassesPassed": true,
+  "sourceIdentityCount": 871,
+  "resourceCount": 213,
+  "actualRuntimeEntries": 97,
+  "actualKotlinClasses": 11156,
+  "invalidJvmMethodNames": 0,
+  "completeOriginalCategoryUiAndViewModelCompiled": true,
+  "originalReturnNavigationOwnersCompiled": true,
+  "actualProductClassOrigins": 10,
+  "categoryAssertions": 16,
+  "categoryGroups": 3,
+  "returnGroups": 7,
+  "productionOverrides": 0,
+  "fullRootNavigationOrPhysicalWindowAccepted": false,
+  "fullHomeRootMounted": false,
+  "newWindowsExeDeployed": false,
+  "pending": [
+    "Retained four-page aggregate/factory and simultaneous old planner retirement",
+    "Original Profile and Live subroutes",
+    "Full original navigation host, actual click geometry/backstack and transition window acceptance",
+    "Final EXE deployment"
+  ]
+}

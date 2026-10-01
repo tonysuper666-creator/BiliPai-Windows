@@ -585,6 +585,37 @@ val extractOriginalSubscriptionPage by tasks.registering(Exec::class) {
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-subscription-page")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalSubscriptionPage) }
 
+
+val prepareOriginalCategoryPage by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-category-page.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/category-page").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-category-page.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "category-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/category-page"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/category-page")) }
+tasks.named("compileKotlin") { dependsOn(prepareOriginalCategoryPage) }
+
+val prepareOriginalHomeReturnNavigation by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-return-navigation.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/home-return-navigation").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-home-return-navigation.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-home-return-navigation" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/home-return-navigation"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-return-navigation")) }
+tasks.named("compileKotlin") { dependsOn(prepareOriginalHomeReturnNavigation) }
+
 val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories, extractUpstreamHomeCards, extractOriginalHomePage)
     workingDir(projectDir)

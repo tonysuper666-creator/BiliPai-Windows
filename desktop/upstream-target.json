@@ -186,12 +186,12 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 864,
+    "candidateSourceIdentityCount": 871,
     "candidateResourceCount": 213,
     "all907CurrentSourceAndResourcePinsVerified": true,
-    "actualClassesEvidence": "verification/stable-home-data-pages-integration/root/classes-39.log",
+    "actualClassesEvidence": "verification/stable-category-return-integration/root/classes-40.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-home-data-pages-integration/root/classes-39.log",
+    "latestCandidateClassesLog": "verification/stable-category-return-integration/root/classes-40.log",
     "liveGuestBackendPassed": false,
     "liveGuestBackendFailure": "HTTP 412 at video details after popular/search passed",
     "liveGuestBackendEvidence": "verification/stable-comments-sharing-integration/root/actual-guest-backend/run-01/accepted-evidence.json",
@@ -219,7 +219,7 @@
     "fullDanmakuPanelPointerAccepted": false,
     "fullDanmakuAndroidRendererParityAccepted": false,
     "danmakuSettingsRootEvidence": "verification/stable-danmaku-settings-root-integration/integration-report.json",
-    "latestCandidateClassesPhase": 39,
+    "latestCandidateClassesPhase": 40,
     "danmakuActualProduct27Assertions": 61,
     "danmakuSettingsIsolatedPanelPointerAccepted": true,
     "danmakuSettingsIsolatedPanelUiAssertions": 32,
@@ -281,7 +281,14 @@
     "homeActual39RetainedOwnerGates": 5,
     "homeActual39ProductClassOrigins": 5,
     "homeActual39ProductionOverrides": 0,
-    "homeDataPagesIntegrationEvidence": "verification/stable-home-data-pages-integration/integration-report.json"
+    "homeDataPagesIntegrationEvidence": "verification/stable-home-data-pages-integration/integration-report.json",
+    "originalCategoryFullPageCompiled": true,
+    "originalHomeReturnNavigationCompiled": true,
+    "categoryActual40Assertions": 16,
+    "homeReturnActual40Groups": 7,
+    "categoryReturnActual40ProductClassOrigins": 10,
+    "categoryReturnActual40ProductionOverrides": 0,
+    "categoryReturnIntegrationEvidence": "verification/stable-category-return-integration/integration-report.json"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -309,6 +316,7 @@
     "verification/stable-home-ui-media-integration/integration-report.json",
     "verification/stable-web-mask-osd-integration/integration-report.json",
     "verification/stable-home-windows-prefs-integration/integration-report.json",
-    "verification/stable-home-data-pages-integration/integration-report.json"
+    "verification/stable-home-data-pages-integration/integration-report.json",
+    "verification/stable-category-return-integration/integration-report.json"
   ]
 }

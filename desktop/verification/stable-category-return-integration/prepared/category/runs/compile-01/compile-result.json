@@ -1,0 +1,25 @@
+{
+  "status": "FAIL",
+  "exitCode": 1,
+  "sourceOnly": true,
+  "actualRuntimeAcceptance": false,
+  "nativeOrAnimationExecuted": false,
+  "HTTP": false,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\runs\\compile-01\\source-inputs\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCategoryEnvironment.kt",
+      "sha256Bytes": "dd4b245e50d566264ed06d5a4856d8b4be3a9072c75171187875231b0cd3a848"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\runs\\compile-01\\source-inputs\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCategoryRouteHost.kt",
+      "sha256Bytes": "0278305589b3bb3f4ff477b18572a2d490315ebcb9482a2138eb41424f0f03b6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\runs\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\category\\CategoryScreen.kt",
+      "sha256Bytes": "bd7fae498c5c5f7370952c94d69c3cc0005d4191ce241c45fac5a261cb239c7a"
+    }
+  ],
+  "snapshotManifestSha256Bytes": "a445ed0f4944ba6ac581b06401576aec23638ef242aa1da442a6baead60b637d",
+  "orderedCpSha256Bytes": "2fa3092ec985e32bf6b1b046266e6b84994adeeb023615549a9422eddb0aa493",
+  "runtimeEntries": 97
+}

@@ -1,0 +1,6 @@
+{
+  "stage": "first audit_and_freeze invocation",
+  "failure": "ValueError: relative receipt output path was compared with absolute prepared root",
+  "correction": "Resolve the task-owned receipt path to absolute before relative_to; no production source was changed",
+  "claimedVerifiedBeforeCorrection": false
+}

@@ -1,0 +1,71 @@
+{
+  "target": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256LF": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "selected": [
+        "currentNavigation3SourceMetadata",
+        "captureCardSourceDirectionForSession",
+        "captureVideoCardTransitionSession",
+        "prearmVideoCardOpening"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt",
+      "sha256LF": "cbb6d92e8bcba3dfdf5df6dff06b8e61ccccaea9973a2d5e04fd0b5cd54917e6",
+      "selected": [
+        "resolveVideoCardSourceRouteForNavigation",
+        "normalizeVideoCardNavigationSourceRoute",
+        "resolveClickedVideoSourceRoute"
+      ]
+    }
+  ],
+  "selections": {
+    "currentNavigation3SourceMetadata": {
+      "originalSha256LF": "fbd895f0e34bfd95b334ad433b755bb46225bcedad6e5fe553b3f81167dfd2a2",
+      "originalBody": "fun currentNavigation3SourceMetadata() = resolveBiliPaiNavSourceMetadata(\n    sourceKey = navigation3ReturnSession.transitionSession?.sourceKey\n        ?: navigation3ReturnSession.lastVideoSourceKey,\n    sourceRoute = navigation3ReturnSession.transitionSession?.sourceRoute\n        ?: navigation3ReturnSession.lastVideoSourceRoute,\n    clickedBoundsRecorded = navigation3ReturnSession.transitionSession\n        ?.hasUsableSourceGeometry\n        ?: false,\n    cardFullyVisible = navigation3ReturnSession.transitionSession\n        ?.cardFullyVisible\n        ?: false,\n    cardSourceDirection = navigation3ReturnSession.transitionSession\n        ?.cardSourceDirection\n        ?: navigation3ReturnSession.lastCardSourceDirection,\n    sourceCornerDp = navigation3ReturnSession.transitionSession?.sourceCornerDp,\n    coverIdentity = navigation3ReturnSession.transitionSession?.coverIdentity,\n    sourceBounds = navigation3ReturnSession.transitionSession?.cardBounds,\n    sourceCoverBounds = navigation3ReturnSession.transitionSession?.coverBounds,\n    sourceLayout = navigation3ReturnSession.transitionSession?.sourceLayout\n        ?: com.android.purebilibili.core.ui.transition.VideoCardSourceLayout.COVER_ONLY,\n    sourceChromeSnapshot = navigation3ReturnSession.transitionSession?.sourceChromeSnapshot,\n)",
+      "generatedSha256LF": "9b86007c7b48523a4599c839b7c9d7ef77594cd336472a06d7a7f09241f47b6f"
+    },
+    "captureCardSourceDirectionForSession": {
+      "originalSha256LF": "806df791b65b81fce2ce804ffeefcdaf0fe3d581e14fd51b8b7aa4a676c1225c",
+      "originalBody": "fun captureCardSourceDirectionForSession(): BiliPaiNavCardSourceDirection {\n    return resolveBiliPaiNavCardSourceDirection(\n        clickedBoundsRecorded = CardPositionManager.lastClickedCardBounds != null,\n        cardFullyVisible = CardPositionManager.isCardFullyVisible,\n        isSingleColumnCard = CardPositionManager.isSingleColumnCard,\n        normalizedCenterX = CardPositionManager.lastClickedCardCenter?.x\n    )\n}",
+      "generatedSha256LF": "5ecf27c16499e99ef075de162a56c2b81ae685d52c39880861fd4617a0aeadf2"
+    },
+    "captureVideoCardTransitionSession": {
+      "originalSha256LF": "cfdab4f96c13333405c69336f09398ab174f589f5dd7357e480a73df87d87922",
+      "originalBody": "fun captureVideoCardTransitionSession(\n    bvid: String,\n    source: BiliPaiVideoSource,\n    coverIdentity: String?,\n) = VideoCardTransitionSession.create(\n    bvid = bvid,\n    source = source,\n    cardBounds = CardPositionManager.lastClickedCardBounds,\n    coverBounds = CardPositionManager.lastClickedCoverBounds,\n    sourceCornerDp = CardPositionManager.lastClickedVideoSourceCornerDp,\n    cardSourceDirection = captureCardSourceDirectionForSession(),\n    coverIdentity = coverIdentity,\n    cardFullyVisible = CardPositionManager.isCardFullyVisible,\n    isSingleColumnCard = CardPositionManager.isSingleColumnCard,\n    sourceLayout = CardPositionManager.lastClickedVideoSourceLayout,\n    sourceChromeSnapshot = CardPositionManager.lastClickedVideoSourceChromeSnapshot,\n    hostOriginInRoot = navigationHostOriginInRoot,\n)",
+      "generatedSha256LF": "972189622bc31ff12933655a24cc368d238de2e115e916980b2d692242cd9a18"
+    },
+    "prearmVideoCardOpening": {
+      "originalSha256LF": "b292394109e1209fa5d03d9f641bd4ae973e80914edd4deb1ce55b46928a113b",
+      "originalBody": "fun prearmVideoCardOpening(session: VideoCardTransitionSession) {\n    val transitionEnabledForSource = resolveVideoCardTransitionEnabledForSource(\n        cardTransitionEnabled = sharedVideoCardTransitionEnabled,\n        relatedVideoTransitionEnabled = relatedVideoTransitionEnabled,\n        sourceRoute = session.sourceRoute,\n    )\n    val hasUsableSourceBounds = session.cardBounds\n        ?.let { it.width > 1f && it.height > 1f } == true\n    if (\n        shouldUseMiuixVideoCardMorph(\n            cardTransitionEnabled = transitionEnabledForSource,\n            reduceMotion = systemReduceMotion,\n            sourceRoute = session.sourceRoute,\n            hasUsableSourceBounds = hasUsableSourceBounds,\n        )\n    ) {\n        // Activate the source-cover session before NavDisplay mounts the destination.\n        // Waiting for its stack-observer effect exposes the black player Surface for one frame.\n        videoCardTransitionClock.beginOpeningIfNeeded(session.sourceRoute)\n    }\n}",
+      "generatedSha256LF": "76b0c6aed10f4721715f11c4f5f128a6f892d593c5cffcc14e60493a287c22ca"
+    },
+    "resolveVideoCardSourceRouteForNavigation": {
+      "originalSha256LF": "049a2d7f412e619ec4149b3b3e651fafa71af7bf0983807831c9a29d6a70298c",
+      "originalBody": "internal fun resolveVideoCardSourceRouteForNavigation(\n    currentRoute: String?,\n    videoBvid: String,\n    lastClickedVideoSourceKey: String?,\n    visibleBottomBarRoutes: Set<String>\n): String? {\n    if (videoBvid.isBlank() || lastClickedVideoSourceKey.isNullOrBlank()) return null\n    val routeBase = normalizeVideoCardNavigationSourceRoute(currentRoute)\n    val currentRouteMatch = routeBase\n        ?.takeIf { route -> lastClickedVideoSourceKey == \"$route:$videoBvid\" }\n    if (currentRouteMatch != null) return currentRouteMatch\n\n    // Bottom-bar tabs first (MainHost top is not the card host).\n    visibleBottomBarRoutes.firstOrNull { route ->\n        lastClickedVideoSourceKey == \"$route:$videoBvid\"\n    }?.let { return it }\n\n    // Search / Space / History / video-related / collection hosts are not bottom-bar routes.\n    // Still honor the recorded card key so predictive-back sharedBounds land on the same route.\n    return resolveClickedVideoSourceRoute(lastClickedVideoSourceKey, videoBvid)\n}",
+      "generatedSha256LF": "049a2d7f412e619ec4149b3b3e651fafa71af7bf0983807831c9a29d6a70298c"
+    },
+    "normalizeVideoCardNavigationSourceRoute": {
+      "originalSha256LF": "4c6e811ca2ac4c3b1d4f523c4a8a82b7ed20051b5c749d8c518dc26990d6cc40",
+      "originalBody": "private fun normalizeVideoCardNavigationSourceRoute(route: String?): String? {\n    val normalized = route?.trim()?.takeIf { it.isNotBlank() } ?: return null\n    return if (normalized.startsWith(\"home?category=\")) {\n        ScreenRoutes.Home.route\n    } else {\n        normalized.substringBefore(\"?\")\n    }\n}",
+      "generatedSha256LF": "4c6e811ca2ac4c3b1d4f523c4a8a82b7ed20051b5c749d8c518dc26990d6cc40"
+    },
+    "resolveClickedVideoSourceRoute": {
+      "originalSha256LF": "6ebcf59b48795b1c62b544260949dab3c66da7b60a44ecbe2ca66455d2503f52",
+      "originalBody": "private fun resolveClickedVideoSourceRoute(\n    lastClickedVideoSourceKey: String,\n    videoBvid: String\n): String? {\n    val expectedSuffix = \":$videoBvid\"\n    return lastClickedVideoSourceKey\n        .takeIf { it.endsWith(expectedSuffix) }\n        ?.removeSuffix(expectedSuffix)\n        ?.takeIf { it.isNotBlank() }\n}",
+      "generatedSha256LF": "6ebcf59b48795b1c62b544260949dab3c66da7b60a44ecbe2ca66455d2503f52"
+    }
+  },
+  "outputs": [
+    {
+      "path": "work\\BiliPai\\desktop\\.local\\stable-home-return-navigation-parity\\prepared\\generated\\com\\bilipai\\desktop\\ui\\DesktopOriginalHomeReturnCallers.kt",
+      "sha256Bytes": "e6f799f505e51a061bbcca2e5c1408f4880713f01a7a429a5d3f8a07f507b6ad"
+    },
+    {
+      "path": "work\\BiliPai\\desktop\\.local\\stable-home-return-navigation-parity\\prepared\\generated\\com\\android\\purebilibili\\navigation\\DesktopOriginalHomeVideoSourceRoute.kt",
+      "sha256Bytes": "4d6add726bf952ef986ad69133c6239d31fc72d31a0b94c70e5f5f68f653ae7d"
+    }
+  ]
+}

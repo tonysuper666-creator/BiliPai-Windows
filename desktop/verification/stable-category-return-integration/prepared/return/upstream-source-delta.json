@@ -1,0 +1,73 @@
+{
+  "target": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "newDirectCount": 6,
+  "existingFeatureMergeCount": 2,
+  "rows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiReturnSessionState.kt",
+      "sha256": "05a095c3522fbd0e48a6e9418f79f7644e87041e758c9d66512c2f0a4a7eeecd",
+      "mode": "direct",
+      "features": [
+        "stable-home-return-navigation"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavSourceMetadata.kt",
+      "sha256": "a7c5bbd4e854598c656d8a59d8345d153f48bd0acc9d8806d9bfda1654cf27c4",
+      "mode": "direct",
+      "features": [
+        "stable-home-return-navigation"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/VideoCardTransitionSession.kt",
+      "sha256": "7de4337b6ae297a8aa0cbb387f86402f4376a301899d005a02704ef5eb97be84",
+      "mode": "direct",
+      "features": [
+        "stable-home-return-navigation"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiVideoSourcePolicy.kt",
+      "sha256": "b7a309e7a181f62bc54fdbebe3f798a11de0822f0e611199043b36c764beb3e9",
+      "mode": "direct",
+      "features": [
+        "stable-home-return-navigation"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt",
+      "sha256": "1637952c78fccb2677ee73640b70ab876746d693fbca438365d285812fa76c85",
+      "mode": "direct",
+      "features": [
+        "stable-home-return-navigation"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt",
+      "sha256": "6e8c956f101e679ad0a96786ce8c114845ddb3c3e27cc41551c261f5407a586d",
+      "mode": "direct",
+      "features": [
+        "stable-home-return-navigation"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "preserveExistingMode": true,
+      "addFeatures": [
+        "stable-home-return-navigation"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt",
+      "sha256": "cbb6d92e8bcba3dfdf5df6dff06b8e61ccccaea9973a2d5e04fd0b5cd54917e6",
+      "preserveExistingMode": true,
+      "addFeatures": [
+        "stable-home-return-navigation"
+      ]
+    }
+  ],
+  "resources": [],
+  "dependencies": []
+}

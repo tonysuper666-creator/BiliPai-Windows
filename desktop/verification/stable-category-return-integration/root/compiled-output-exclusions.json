@@ -1,0 +1,37 @@
+[
+  {
+    "lane": "category",
+    "path": "runs/compile-02/prepared-category-page.jar",
+    "sha256Bytes": "9465507e21b330e73d1585b8e1da16631cd3e820f7091091e3ec85a58a906c26",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "lane": "category",
+    "path": "runs/fixture-01/category-fixture.jar",
+    "sha256Bytes": "3afab38c0b820a80a6282b8ad81bdc0adb6b93a92c3911dee286d4019119fee9",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "lane": "return",
+    "path": "compile-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "e30bfd41c3b7d62b4c51d3ea0e444d0cf445edba52cba3a9a4da40851ad3e83f",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "lane": "return",
+    "path": "compile-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "01f84657405b217577591318f4ed13e27c5e24269be0dc1e5b419a4087be37bf",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "lane": "return",
+    "path": "proof-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "d984c4df83a995cbf7f1fb62eb014c626f35f0da225c4c982c8a2cd6cd439181",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "path": "root/category-return-actual40/fixture.jar",
+    "sha256Bytes": "6b32b6cad5a3a4f38efa7ce5b5576ae62179afdbf6c1a3799d93c47a501edb3d",
+    "reason": "Rebuildable fixture output"
+  }
+]

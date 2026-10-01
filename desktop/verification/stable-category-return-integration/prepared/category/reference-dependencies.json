@@ -1,0 +1,32 @@
+[
+  {
+    "original": "app/src/main/java/com/android/purebilibili/core/util/FeedRefreshPaging.kt",
+    "sourceSha256LF": "7ed91d88e7198729fd2503db6317a0abe15c92efaed7c670bce122bd37c7ae98",
+    "proof": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\reference-only\\com\\android\\purebilibili\\core\\util\\FeedRefreshPaging.kt",
+    "install": false,
+    "owner": "existing sole fullPartition producer"
+  },
+  {
+    "original": "app/src/main/java/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt",
+    "sourceSha256LF": "628f76935eba485f1adf9b81774643fc3b33a791970e5144de032bdad4463312",
+    "proof": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\reference-only\\com\\android\\purebilibili\\feature\\common\\VideoLazyKeyPolicy.kt",
+    "install": false,
+    "owner": "existing sole fullPartition producer"
+  },
+  {
+    "original": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+    "sourceSha256LF": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2",
+    "selectedBodySha256LF": "56f45531d60043ff14e34b2bd4f6c146b4bf18e925d979faa07d96a2e7f0f630",
+    "proof": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\reference-only\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopCategoryFixedColumnsReference.kt",
+    "install": false,
+    "owner": "append selection in sole fullPartition producer"
+  },
+  {
+    "original": "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+    "sourceSha256LF": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728",
+    "selectedBodySha256LF": "9a93415f86cc751428191eec8c32e622f7652c2957a66d0731970dcda9ef1299",
+    "proof": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\reference-only\\com\\android\\purebilibili\\core\\ui\\DesktopCategoryLoadingReference.kt",
+    "install": false,
+    "owner": "append selected wrapper in sole BGM Lottie producer"
+  }
+]

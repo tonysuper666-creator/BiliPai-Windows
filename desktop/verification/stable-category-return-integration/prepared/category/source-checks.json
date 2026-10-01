@@ -1,0 +1,102 @@
+{
+  "status": "PASS",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "source": "app/src/main/java/com/android/purebilibili/feature/category/CategoryScreen.kt",
+  "originalSha256LF": "fc7bb877d961633bb0a3fe8aaa4ceb15476b394d0f2d3a3ffb3bc72acbaffc96",
+  "originalLines": 368,
+  "fullOriginalUiAndViewModel": true,
+  "originalSuccessPaginationBodyUnchanged": true,
+  "inverseNormalizedSourceEqual": true,
+  "productionStandalonePreparedByteEqual": true,
+  "producerOutputs": [
+    {
+      "path": "source-audit/production/com/android/purebilibili/feature/category/CategoryScreen.kt",
+      "sha256Bytes": "bd7fae498c5c5f7370952c94d69c3cc0005d4191ce241c45fac5a261cb239c7a"
+    },
+    {
+      "path": "source-audit/standalone/com/android/purebilibili/feature/category/CategoryScreen.kt",
+      "sha256Bytes": "bd7fae498c5c5f7370952c94d69c3cc0005d4191ce241c45fac5a261cb239c7a"
+    }
+  ],
+  "requiredVideoAndReturnFlags": true,
+  "noFakeHomeSettings": true,
+  "immutableTid": true,
+  "ownedRequestAdmission": "Root gate -> VM lock, synchronous busy; lazy dispatch and prior request cancellation outside monitors",
+  "cancelledOrReplacedRequestCannotPublishOrClearReplacement": true,
+  "categoryScopeSurvivesVideoCover": true,
+  "sharedReferences": [
+    {
+      "original": "app/src/main/java/com/android/purebilibili/core/util/FeedRefreshPaging.kt",
+      "sourceSha256LF": "7ed91d88e7198729fd2503db6317a0abe15c92efaed7c670bce122bd37c7ae98",
+      "proof": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\reference-only\\com\\android\\purebilibili\\core\\util\\FeedRefreshPaging.kt",
+      "install": false,
+      "owner": "existing sole fullPartition producer"
+    },
+    {
+      "original": "app/src/main/java/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt",
+      "sourceSha256LF": "628f76935eba485f1adf9b81774643fc3b33a791970e5144de032bdad4463312",
+      "proof": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\reference-only\\com\\android\\purebilibili\\feature\\common\\VideoLazyKeyPolicy.kt",
+      "install": false,
+      "owner": "existing sole fullPartition producer"
+    },
+    {
+      "original": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "sourceSha256LF": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2",
+      "selectedBodySha256LF": "56f45531d60043ff14e34b2bd4f6c146b4bf18e925d979faa07d96a2e7f0f630",
+      "proof": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\reference-only\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopCategoryFixedColumnsReference.kt",
+      "install": false,
+      "owner": "append selection in sole fullPartition producer"
+    },
+    {
+      "original": "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+      "sourceSha256LF": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728",
+      "selectedBodySha256LF": "9a93415f86cc751428191eec8c32e622f7652c2957a66d0731970dcda9ef1299",
+      "proof": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\reference-only\\com\\android\\purebilibili\\core\\ui\\DesktopCategoryLoadingReference.kt",
+      "install": false,
+      "owner": "append selected wrapper in sole BGM Lottie producer"
+    }
+  ],
+  "sharedHelperExactHunksVerified": true,
+  "compiledClasses": 25,
+  "productionClassIntersections": [],
+  "topLevelMethods": 7,
+  "actual97CpTopLevelMethods": 28904,
+  "topLevelIntersections": [],
+  "illegalNonLocalReturnMarkers": [],
+  "prospectiveFixture": {
+    "status": "PASS",
+    "assertions": 16,
+    "groups": 3,
+    "transport": "In-memory required region callback, no socket",
+    "settings": "Actual existing DesktopOriginalHomePreferences and same real temporary DesktopPluginStore",
+    "prospectiveCategoryOnly": true,
+    "actualRootAccountIntegration": false,
+    "productionClassOverrides": 0,
+    "explicitReferenceOnlySharedFamilies": 4,
+    "HTTP": false,
+    "GUI": false,
+    "HWND": false,
+    "Gradle": false,
+    "actualRuntimeEntries": 97,
+    "candidateJarSha256Bytes": "9465507e21b330e73d1585b8e1da16631cd3e820f7091091e3ec85a58a906c26",
+    "fixtureJarSha256Bytes": "3afab38c0b820a80a6282b8ad81bdc0adb6b93a92c3911dee286d4019119fee9",
+    "observedClassOrigins": [
+      "ORIGIN com.android.purebilibili.feature.category.CategoryViewModel file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-home-category-page-parity/runs/compile-02/prepared-category-page.jar",
+      "ORIGIN com.bilipai.desktop.ui.DesktopCategoryEnvironment file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-home-category-page-parity/runs/compile-02/prepared-category-page.jar",
+      "ORIGIN com.bilipai.desktop.ui.DesktopOriginalHomePreferences file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-36/main-kotlin.jar",
+      "ORIGIN com.bilipai.desktop.plugins.DesktopPluginStore file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-36/main-kotlin.jar",
+      "ORIGIN com.android.purebilibili.data.model.response.VideoItem file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-36/main-kotlin.jar"
+    ]
+  },
+  "actualMain36ClasspathSha256Bytes": "2fa3092ec985e32bf6b1b046266e6b84994adeeb023615549a9422eddb0aa493",
+  "sourceOnlyInstallation": true,
+  "actualCategoryRootRuntimeAccepted": false,
+  "HTTP": false,
+  "GUI": false,
+  "HWND": false,
+  "Gradle": false,
+  "pending": [
+    "Root same retained Home transport, category nav-entry owner and actual callbacks integration",
+    "Actual mounted full Category UI/pointer/return-transition proof"
+  ]
+}

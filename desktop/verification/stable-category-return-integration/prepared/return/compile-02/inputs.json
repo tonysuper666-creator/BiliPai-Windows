@@ -1,0 +1,51 @@
+{
+  "actualMain": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-36",
+  "manifestSha": "a445ed0f4944ba6ac581b06401576aec23638ef242aa1da442a6baead60b637d",
+  "cpSha": "2fa3092ec985e32bf6b1b046266e6b84994adeeb023615549a9422eddb0aa493",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-return-navigation-parity\\prepared\\direct\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation3\\BiliPaiNavKey.kt",
+      "sha256Bytes": "1637952c78fccb2677ee73640b70ab876746d693fbca438365d285812fa76c85"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-return-navigation-parity\\prepared\\direct\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation3\\BiliPaiNavKeyMappingPolicy.kt",
+      "sha256Bytes": "6e8c956f101e679ad0a96786ce8c114845ddb3c3e27cc41551c261f5407a586d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-return-navigation-parity\\prepared\\direct\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation3\\BiliPaiNavSourceMetadata.kt",
+      "sha256Bytes": "a7c5bbd4e854598c656d8a59d8345d153f48bd0acc9d8806d9bfda1654cf27c4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-return-navigation-parity\\prepared\\direct\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation3\\BiliPaiReturnSessionState.kt",
+      "sha256Bytes": "05a095c3522fbd0e48a6e9418f79f7644e87041e758c9d66512c2f0a4a7eeecd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-return-navigation-parity\\prepared\\direct\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation3\\BiliPaiVideoSourcePolicy.kt",
+      "sha256Bytes": "b7a309e7a181f62bc54fdbebe3f798a11de0822f0e611199043b36c764beb3e9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-return-navigation-parity\\prepared\\direct\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation3\\VideoCardTransitionSession.kt",
+      "sha256Bytes": "7de4337b6ae297a8aa0cbb387f86402f4376a301899d005a02704ef5eb97be84"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-return-navigation-parity\\prepared\\generated\\com\\android\\purebilibili\\navigation\\DesktopOriginalHomeVideoSourceRoute.kt",
+      "sha256Bytes": "4d6add726bf952ef986ad69133c6239d31fc72d31a0b94c70e5f5f68f653ae7d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-return-navigation-parity\\prepared\\generated\\com\\bilipai\\desktop\\ui\\DesktopOriginalHomeReturnCallers.kt",
+      "sha256Bytes": "e6f799f505e51a061bbcca2e5c1408f4880713f01a7a429a5d3f8a07f507b6ad"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-return-navigation-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeReturnNavigationOwner.kt",
+      "sha256Bytes": "d1e47198740351f9985cae9e5a305901b9ad394cb8c053bd0b06633714cc9073"
+    }
+  ],
+  "compilerSerializationPlugin": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-serialization-compiler-plugin-embeddable\\2.4.0\\9c09aa2727d9ade95c1b0a00458e74feced83908\\kotlin-serialization-compiler-plugin-embeddable-2.4.0.jar",
+    "sha256Bytes": "272d419cb12e9a8aba4e6fa7a76bfc486f97dc0f79a32ef1397b1f175bc35c50"
+  },
+  "prospectiveSourceOnly": true,
+  "mainIntegration": false,
+  "exit": 0
+}

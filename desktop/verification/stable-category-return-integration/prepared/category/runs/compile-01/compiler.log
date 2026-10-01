@@ -1,0 +1,21 @@
+work\BiliPai\desktop\.local\stable-home-category-page-parity\runs\compile-01\source-inputs\generated\com\android\purebilibili\feature\category\CategoryScreen.kt:34:41: error: unresolved reference 'common'.
+import com.android.purebilibili.feature.common.resolveIndexedVideoLazyKey
+                                        ^^^^^^
+work\BiliPai\desktop\.local\stable-home-category-page-parity\runs\compile-01\source-inputs\generated\com\android\purebilibili\feature\category\CategoryScreen.kt:38:50: error: unresolved reference 'ContentVideoGridSkeletonFixedColumns'.
+import com.android.purebilibili.core.ui.skeleton.ContentVideoGridSkeletonFixedColumns
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-category-page-parity\runs\compile-01\source-inputs\generated\com\android\purebilibili\feature\category\CategoryScreen.kt:41:43: error: unresolved reference 'resolveReplaceRefreshPage'.
+import com.android.purebilibili.core.util.resolveReplaceRefreshPage
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-category-page-parity\runs\compile-01\source-inputs\generated\com\android\purebilibili\feature\category\CategoryScreen.kt:115:21: error: unresolved reference 'resolveReplaceRefreshPage'.
+                    resolveReplaceRefreshPage(nextLoadPage = currentPage, hasMore = hasMore)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-category-page-parity\runs\compile-01\source-inputs\generated\com\android\purebilibili\feature\category\CategoryScreen.kt:288:17: error: unresolved reference 'ContentVideoGridSkeletonFixedColumns'.
+                ContentVideoGridSkeletonFixedColumns(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-category-page-parity\runs\compile-01\source-inputs\generated\com\android\purebilibili\feature\category\CategoryScreen.kt:325:33: error: unresolved reference 'resolveIndexedVideoLazyKey'.
+                                resolveIndexedVideoLazyKey(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-category-page-parity\runs\compile-01\source-inputs\generated\com\android\purebilibili\feature\category\CategoryScreen.kt:390:70: error: unresolved reference 'CutePersonLoadingIndicator'.
+                                    com.android.purebilibili.core.ui.CutePersonLoadingIndicator(size = 24.dp)
+                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -221,6 +221,11 @@ def generate_ui(repo,original,shared,emit,changes):
     body=raw[start:end]
     body=replace_once(body,'        LottieAnimation(\n            url = LottieUrls.EMPTY,\n            size = 150.dp\n        )','        com.bilipai.desktop.ui.DesktopBgmLottie(\n            url = LottieUrls.EMPTY,\n            size = 150.dp\n        )')
     constants=re.search(r'object LottieUrls \{[\s\S]*?\n\}',raw).group()
+    cute_mask=shared.masked(raw);cute_match=re.search(r'(?m)^fun CutePersonLoadingIndicator\(',cute_mask)
+    cute_start=raw.rfind('@Composable',0,cute_match.start())
+    cute_opening=cute_mask.index('{',shared.balanced(cute_mask,cute_mask.index('(',cute_match.start())))
+    cute_end=shared.balanced(cute_mask,cute_opening,'{','}')
+    cute_body=raw[cute_start:cute_end]
     body='''package com.android.purebilibili.core.ui
 import com.android.purebilibili.core.ui.components.AppText
 import androidx.compose.foundation.clickable
@@ -230,7 +235,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-'''+constants+'\n\n'+body+'\n'
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.graphics.Color
+'''+constants+'\n\n'+body+'\n\n'+cute_body+'\n'
     emit('com/android/purebilibili/core/ui/DesktopOriginalBgmEmptyState.kt',body)
     retained(path,body,'Complete original EmptyState body and original LottieUrls; only Android Lottie animation API maps to existing Skottie with required same-owner anonymous loader.')
 

@@ -1,0 +1,13 @@
+ORIGIN com.bilipai.desktop.ui.DesktopHomeReturnNavigationOwner file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-40/main-kotlin.jar
+ORIGIN com.android.purebilibili.navigation3.BiliPaiReturnSessionState file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-40/main-kotlin.jar
+ORIGIN com.android.purebilibili.navigation3.VideoCardTransitionSession file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-40/main-kotlin.jar
+ORIGIN com.android.purebilibili.core.util.CardPositionManager file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-40/main-kotlin.jar
+ORIGIN com.android.purebilibili.core.ui.transition.VideoCardTransitionClock file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-40/main-kotlin.jar
+PASS rejected checkpoint does not capture or enter
+PASS immutable click geometry survives manager clearing and uses captured host origin
+PASS actual accepted return at original 500ms boundary and consume
+PASS 501ms return is not quick
+PASS related pop restores original parent only after non-idle then idle
+PASS retired epoch predicate and closed owner reject old UI effects
+PASS exact original session factory strips mismatched source geometry
+RESULT 7 groups; source-only prepared adapter; Main/nav/renderer/HTTP/Window=false

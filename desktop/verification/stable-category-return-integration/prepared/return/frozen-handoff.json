@@ -1,0 +1,1851 @@
+{
+  "scope": "Prepared source-only Home return/nav owner; no Main consumer/renderer/native admission acceptance.",
+  "target": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "rawArtifacts": [
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "df9105c985f4d4f2eaf61e38298231c6fc9d1802cc4fe62e2906b6ade0f7b607",
+      "bytes": 6170
+    },
+    {
+      "path": "actual39-readonly-audit.json",
+      "sha256Bytes": "f2960a3ec3ee2c301bd8ef58e2ee8ed99a76e369debe01851e4fa346396e01a9",
+      "bytes": 375
+    },
+    {
+      "path": "audit_and_freeze.py",
+      "sha256Bytes": "914888856d55bc5d1ac662a12eff863d7e47a09c8f124251f6d7ed075dcae244",
+      "bytes": 7301
+    },
+    {
+      "path": "compile-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "e30bfd41c3b7d62b4c51d3ea0e444d0cf445edba52cba3a9a4da40851ad3e83f",
+      "bytes": 180
+    },
+    {
+      "path": "compile-01/compile.args",
+      "sha256Bytes": "bcffbd61b486f81943a8ae6f858e14b99be42717acb79026bc2d65580d58d64b",
+      "bytes": 26121
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "40a0d0a7455c81348e3e628f3bad2937ee9ef703d7a2d310ab65c232c6a90a97",
+      "bytes": 424
+    },
+    {
+      "path": "compile-01/inputs.json",
+      "sha256Bytes": "49bb1ecb17333ae8dab1cdc15a697779df61f2e8ca72c7d1e76cdb861ee456b2",
+      "bytes": 3144
+    },
+    {
+      "path": "compile-02/class-overlap.json",
+      "sha256Bytes": "e3fbb38a6a3b97524392727fb6addba730cb5c3c587cea5a16e711463b0b32a9",
+      "bytes": 64
+    },
+    {
+      "path": "compile-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "01f84657405b217577591318f4ed13e27c5e24269be0dc1e5b419a4087be37bf",
+      "bytes": 320
+    },
+    {
+      "path": "compile-02/compile.args",
+      "sha256Bytes": "d2a2c99db2154bf657047976ef5302405e545f3fb13703407a4c99ec7c5eec17",
+      "bytes": 26797
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "40a0d0a7455c81348e3e628f3bad2937ee9ef703d7a2d310ab65c232c6a90a97",
+      "bytes": 424
+    },
+    {
+      "path": "compile-02/inputs.json",
+      "sha256Bytes": "0da650aebdedc87d42c41627b2a04e873c3624e1a22e219641e57958c3c4e86e",
+      "bytes": 4294
+    },
+    {
+      "path": "compile_candidate.py",
+      "sha256Bytes": "f4e058b84ca13663ab994866db7a9bdae64eefbc16feb4d290b938c583358494",
+      "bytes": 3184
+    },
+    {
+      "path": "fixtures/ReturnNavigationFixture.kt",
+      "sha256Bytes": "92d635dd7f5908d23538eeac44c59ffaec78c6779878fdf3cf49f39e72620c48",
+      "bytes": 5077
+    },
+    {
+      "path": "history/receipt-path-correction.json",
+      "sha256Bytes": "368357f9dc263d56f0c3b36de3677ed6586bd9a8eaa98b50feafbf76860da0da",
+      "bytes": 313
+    },
+    {
+      "path": "initial-inventory.json",
+      "sha256Bytes": "cacbe16d9017eaff68563b502eef629b4b70879bda71c40984a9c9584ce7619c",
+      "bytes": 2346
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "40628f228c7ce4ca2c9ab767d9ed0afd60740ed167556adcf871b9ed5066ff8a",
+      "bytes": 772
+    },
+    {
+      "path": "prepared/direct/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt",
+      "sha256Bytes": "1637952c78fccb2677ee73640b70ab876746d693fbca438365d285812fa76c85",
+      "bytes": 14209
+    },
+    {
+      "path": "prepared/direct/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt",
+      "sha256Bytes": "6e8c956f101e679ad0a96786ce8c114845ddb3c3e27cc41551c261f5407a586d",
+      "bytes": 24631
+    },
+    {
+      "path": "prepared/direct/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavSourceMetadata.kt",
+      "sha256Bytes": "a7c5bbd4e854598c656d8a59d8345d153f48bd0acc9d8806d9bfda1654cf27c4",
+      "bytes": 5356
+    },
+    {
+      "path": "prepared/direct/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiReturnSessionState.kt",
+      "sha256Bytes": "05a095c3522fbd0e48a6e9418f79f7644e87041e758c9d66512c2f0a4a7eeecd",
+      "bytes": 6553
+    },
+    {
+      "path": "prepared/direct/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiVideoSourcePolicy.kt",
+      "sha256Bytes": "b7a309e7a181f62bc54fdbebe3f798a11de0822f0e611199043b36c764beb3e9",
+      "bytes": 4050
+    },
+    {
+      "path": "prepared/direct/app/src/main/java/com/android/purebilibili/navigation3/VideoCardTransitionSession.kt",
+      "sha256Bytes": "7de4337b6ae297a8aa0cbb387f86402f4376a301899d005a02704ef5eb97be84",
+      "bytes": 3622
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/navigation/DesktopOriginalHomeVideoSourceRoute.kt",
+      "sha256Bytes": "4d6add726bf952ef986ad69133c6239d31fc72d31a0b94c70e5f5f68f653ae7d",
+      "bytes": 1838
+    },
+    {
+      "path": "prepared/generated/com/bilipai/desktop/ui/DesktopOriginalHomeReturnCallers.kt",
+      "sha256Bytes": "e6f799f505e51a061bbcca2e5c1408f4880713f01a7a429a5d3f8a07f507b6ad",
+      "bytes": 4279
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+      "sha256Bytes": "d1e47198740351f9985cae9e5a305901b9ad394cb8c053bd0b06633714cc9073",
+      "bytes": 7441
+    },
+    {
+      "path": "prepared/tools/extract-upstream-home-return-navigation.py",
+      "sha256Bytes": "deca07715b303f22d2e7bb7a13b9c34b62e6cd1ddb42c2c3f0c7fbb2e55ca884",
+      "bytes": 6145
+    },
+    {
+      "path": "production-replay/com/android/purebilibili/navigation/DesktopOriginalHomeVideoSourceRoute.kt",
+      "sha256Bytes": "4d6add726bf952ef986ad69133c6239d31fc72d31a0b94c70e5f5f68f653ae7d",
+      "bytes": 1838
+    },
+    {
+      "path": "production-replay/com/bilipai/desktop/ui/DesktopOriginalHomeReturnCallers.kt",
+      "sha256Bytes": "e6f799f505e51a061bbcca2e5c1408f4880713f01a7a429a5d3f8a07f507b6ad",
+      "bytes": 4279
+    },
+    {
+      "path": "proof-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "d984c4df83a995cbf7f1fb62eb014c626f35f0da225c4c982c8a2cd6cd439181",
+      "bytes": 77
+    },
+    {
+      "path": "proof-01/compile.args",
+      "sha256Bytes": "fbc505e58aff7676af1adb27400b679dbe54887622c5ee048198f24ee3fdfe98",
+      "bytes": 24855
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-01/inputs.json",
+      "sha256Bytes": "72a4416dd5671c66a235684c104df7eb3796d347bce768d5b0ecf2372761245a",
+      "bytes": 27146
+    },
+    {
+      "path": "proof-01/run.log",
+      "sha256Bytes": "07d8940e67f8b4e68e83d6798aa68a1275130ec22a4bef1c1cfba03320e6308d",
+      "bytes": 536
+    },
+    {
+      "path": "run_fixture.py",
+      "sha256Bytes": "3da2d6e3c0dd4193d29859130fc1b31c0c8ca711f2b857b2b6bf6f4198555ed3",
+      "bytes": 2568
+    },
+    {
+      "path": "selected-source-receipt.json",
+      "sha256Bytes": "2cc3c7226377b2eff7c94eeca7b4660b93192112a3d456a6fa59f8d46e95cd98",
+      "bytes": 8640
+    },
+    {
+      "path": "source-checks.json",
+      "sha256Bytes": "06ea3aae1b146037b7d50aa10543cb35f46d06e520d103938a57230035e83e34",
+      "bytes": 2677
+    },
+    {
+      "path": "upstream-source-delta.json",
+      "sha256Bytes": "805a9b970f37be694f98a635f24d94814d124cc2b91e2e53a212b92b4649defd",
+      "bytes": 2572
+    }
+  ],
+  "excludedRuntimeArtifacts": [
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavCardSourceDirection.class",
+      "sha256Bytes": "46571efaa88547293aa3d381bd419e6ba7e417284967eca44b0c5ee7e165198d",
+      "bytes": 2124
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AicuQuery$$serializer.class",
+      "sha256Bytes": "44cd4e2e2e770752596b221d98417523e4be2ab2836e51e07d45dfdbfc6f70f4",
+      "bytes": 6232
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AicuQuery$Companion.class",
+      "sha256Bytes": "ed924cd42b664893db2d3f88ca5dc0ec80048801123f8c69536744b0dd37d918",
+      "bytes": 1690
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AicuQuery.class",
+      "sha256Bytes": "92afa8610b2b6dc1ca77327c21bd96d871cb00af208e08eeaea15649962095d5",
+      "bytes": 6090
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AnimationSettings.class",
+      "sha256Bytes": "c24ef0402822ff5b8868ae12d2367fcfd4b919859f88ef4d95552fb93eab7502",
+      "bytes": 3665
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AppearanceSettings.class",
+      "sha256Bytes": "ea3a179f6dc761214e3196482080516530ef8e1cded7a82c3c0448b8cfdc3945",
+      "bytes": 3671
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ArticleDetail$$serializer.class",
+      "sha256Bytes": "36550641a06ec0c38c11d797a8b4646457981e3440d4b1267dc5c923046f2745",
+      "bytes": 6279
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ArticleDetail$Companion.class",
+      "sha256Bytes": "12612a5c527976e129422a51af753bebc6cb8e23f1ed690c57d881fa5a3d34cc",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ArticleDetail.class",
+      "sha256Bytes": "166f611b68c9def49a13929998d388f6c5f0c5cc58cd26254e6746535b752153",
+      "bytes": 6013
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AtMe.class",
+      "sha256Bytes": "7269f37a119f259cec204110a837eb4c845bc98616fe92ad1311b1e0498a382f",
+      "bytes": 3595
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AudioMode$$serializer.class",
+      "sha256Bytes": "b6433599f940a449c1f5ac489e7e48399f6e69da8b6e467dfd9b92b61954e5c3",
+      "bytes": 6333
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AudioMode$Companion.class",
+      "sha256Bytes": "6d9eab3908e2e1040fd256c187e9b6f35b9f639da4f8466de0920e61cf04f9bb",
+      "bytes": 1690
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AudioMode.class",
+      "sha256Bytes": "17c6af1587b3e936650e274399735682c43e5341c31daf9add80f66dcc3236f8",
+      "bytes": 6635
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Bangumi$$serializer.class",
+      "sha256Bytes": "761849a1f2beb48715089e87b0321df8bedd7aa0a3ae12abb0d06c371e9baa25",
+      "bytes": 6114
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Bangumi$Companion.class",
+      "sha256Bytes": "c64225d8d30ac9ccd11fd07f3e441a047a0c02d5347bd1fa87d50cbe9146f179",
+      "bytes": 1674
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Bangumi.class",
+      "sha256Bytes": "2c2105a0c9839a964409d10fafc99c276c9f87cb8eaed056f5334fd269867320",
+      "bytes": 5331
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiDetail$$serializer.class",
+      "sha256Bytes": "190873f23c34b1cc41f4e71167b54a5966da7470c756791f0a8be8e2e8276a89",
+      "bytes": 6332
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiDetail$Companion.class",
+      "sha256Bytes": "09868953b65163a85a0dbab42d29bb6114b915d8f9db2171e1449c886ebbc9d1",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiDetail.class",
+      "sha256Bytes": "c74ff4db29a30b482ef5f6b9a35183d4647b8da04b7a3185e8d761e2df0c9385",
+      "bytes": 6174
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiPlayer$$serializer.class",
+      "sha256Bytes": "9c9b887ecc0337bb75c1e0ddff097854b55ef09453dad964ff94f57e552d8d37",
+      "bytes": 6718
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiPlayer$Companion.class",
+      "sha256Bytes": "67834d7d612cd905140445e66c5939c7c4bc4999910e86498248ec3af01f2539",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiPlayer.class",
+      "sha256Bytes": "cd7daadfa9b77064d6fe54bb18becf8daad33166858db23ad1ce4a2de74209f1",
+      "bytes": 7169
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiReview$$serializer.class",
+      "sha256Bytes": "05845a8dac17efdc84d164715a26597e8593a39bd7117b26dd74257a0bdcfa43",
+      "bytes": 6277
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiReview$Companion.class",
+      "sha256Bytes": "9305449a4a6785ee70e180ee64c1cfd244f95892bbdc49b236678039702cee46",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiReview.class",
+      "sha256Bytes": "64a437f54834ecd1d5c44b4c014c08809eaa1e0345dc36a9dd492dcd2adf5bcf",
+      "bytes": 6014
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BgmDetail$$serializer.class",
+      "sha256Bytes": "07f7154dc4c40e96eb9a18c3de13e0c8898e3fb4d0d0bed54716c3419c6c73f6",
+      "bytes": 6595
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BgmDetail$Companion.class",
+      "sha256Bytes": "65d06440ba1c32673b784cd20e7e5af626767543e4d6e13b02c63e510ff0d38d",
+      "bytes": 1690
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BgmDetail.class",
+      "sha256Bytes": "b4130d7c322021dc00e066e5de7cfd9cca7a45620597eb5f493c9c164dbca975",
+      "bytes": 7001
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BottomBarSettings.class",
+      "sha256Bytes": "7c16210a1caf959c0c12a8a591609498a8e35e8f137ff455491d41918883ae48",
+      "bytes": 3666
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Category$$serializer.class",
+      "sha256Bytes": "bd94f5631cc257a593452d93f5c8aa880362e8beefc2179d7898a05894e4ec90",
+      "bytes": 6214
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Category$Companion.class",
+      "sha256Bytes": "a6e53aa05a3e157cc9c9c28269c3b1a20095222cf27f7b4e32bea06f79b30c09",
+      "bytes": 1682
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Category.class",
+      "sha256Bytes": "b8f83bb64f325f58b4cc27ba3181efaa8c76c18df494346d300d62cec8fa3dd9",
+      "bytes": 5909
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Chat$$serializer.class",
+      "sha256Bytes": "91d290c28cefd0240ea480f28f854a2431481cf10cf9244e0e5e22bac9604b38",
+      "bytes": 6461
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Chat$Companion.class",
+      "sha256Bytes": "703c1c548d871cd6fa3297a14cb1f793d600c9e88f0d61b071f67d44b3fd6073",
+      "bytes": 1650
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Chat.class",
+      "sha256Bytes": "ba14b7cf011e23b17b3e97fb209d30106115d0f6310744380944b45a0a7edafe",
+      "bytes": 6418
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$CommentDetail$$serializer.class",
+      "sha256Bytes": "bf1afc0a284518cc0d2624dc084329d48873563b6b4b521fb4b46277634647db",
+      "bytes": 6710
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$CommentDetail$Companion.class",
+      "sha256Bytes": "11d1db623757057ce4ce767099a00bc3aad84bb2e963caa042b29eb0d9fed1fd",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$CommentDetail.class",
+      "sha256Bytes": "8700c6ee8b48fc353aedf3fc15786d0083e92700aeb469181b1bb1205ccb9dc8",
+      "bytes": 7414
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Companion.class",
+      "sha256Bytes": "8eb1a26c08358e6fdeb118878c2a36e8bc79cec7a9ae9d1a109285125b6f1b7d",
+      "bytes": 23205
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$DownloadList.class",
+      "sha256Bytes": "03d762c292e94dfd697de77035ea96fb722e6f8433b548ebf855b38f19c3e75f",
+      "bytes": 3635
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Dynamic.class",
+      "sha256Bytes": "f6fa7089b0640571c68d75f307fd559d998115cac9d413c36f2535c5de7c4573",
+      "bytes": 3604
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$DynamicDetail$$serializer.class",
+      "sha256Bytes": "5bf81c4de156d3bafa213ea8175ad8e56072504e5c5765b3e0b96782db90d785",
+      "bytes": 6377
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$DynamicDetail$Companion.class",
+      "sha256Bytes": "2be8bc1e14fecb6129b2145fddc4c964305a6492ac348cbed4ec1cfd35bda4ee",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$DynamicDetail.class",
+      "sha256Bytes": "3e40dc0ae0224e3ed2a393ece3faf6e1b584a825e0dd9b8ef102a615fe66f718",
+      "bytes": 6526
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ExternalMedia$$serializer.class",
+      "sha256Bytes": "549e9b4f4b69da835c6b8a4ad5a2c9b5a70a926d7652b5e8a23e470a2a74ca02",
+      "bytes": 6003
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ExternalMedia$Companion.class",
+      "sha256Bytes": "12f6bd4de02de8d6fb0c5a6586cf055325a5404007ccb89efdd346bfdd2db7b6",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ExternalMedia.class",
+      "sha256Bytes": "c9d4d2192c4c63de3fb5e5fe9cc59dd090a6202774815de74b6d00841386c61c",
+      "bytes": 5267
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Favorite.class",
+      "sha256Bytes": "710b68a6e883f736f98d573d91fd766493afc8fb631fdd31f85604f09b521f83",
+      "bytes": 3610
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$FavoriteSearch$$serializer.class",
+      "sha256Bytes": "57ebfba97d97c4fd08a323b08064af5a3af7c12517308d086605bbe36873d827",
+      "bytes": 6655
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$FavoriteSearch$Companion.class",
+      "sha256Bytes": "96b8c4ed29cefe79d71330e0b174f7c69dd5eb89ad8405130e3566540821a6b1",
+      "bytes": 1730
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$FavoriteSearch.class",
+      "sha256Bytes": "90ee8a402e01154710c2c662fe805c1a18d8e9d57c61d48f8e27870d6e4897b0",
+      "bytes": 8230
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$FavoriteSubscribed.class",
+      "sha256Bytes": "e4f88fd5ab5fd17ede82a6907b198b331fc7519a13b7c9ab3ca80ba5c513c98d",
+      "bytes": 3671
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Following$$serializer.class",
+      "sha256Bytes": "431ec67500bdcf7cefdfaf427f0d3ae00ce66b2e3efbf12299d79304eccf5831",
+      "bytes": 6131
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Following$Companion.class",
+      "sha256Bytes": "bc647f991af9970d391c0f14f1d1e6fd8f2687c8a2e1377abadd4b2f584d14e9",
+      "bytes": 1690
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Following.class",
+      "sha256Bytes": "51eb219a4c9081fdedbdd1be8ed86b8c082a8b6ca7eb2c56e49ec13fb9d6f277",
+      "bytes": 5095
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$History.class",
+      "sha256Bytes": "6101fb2e8fee427ddb115afc085f5f255d81bb9e61e70d43077709067840b3db",
+      "bytes": 3604
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$HistorySearch$$serializer.class",
+      "sha256Bytes": "548f0d56bfd152daa117a5ad8640171280a0c957bcecc6a3d03f57afbc7d9299",
+      "bytes": 6000
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$HistorySearch$Companion.class",
+      "sha256Bytes": "65bb81127790b74fda5413b2b50365aca57fffd7779abd9d2e5bd8ad451d3beb",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$HistorySearch.class",
+      "sha256Bytes": "8cf27e73a5fa2908bef5df06011a6b688001bf7c56400e169ea6e72a55693e77",
+      "bytes": 5530
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Home.class",
+      "sha256Bytes": "9a1b63babc0b4cf14edc401975e12d9fbec66cfe61554af24de9bf7fc079d9a6",
+      "bytes": 3586
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$HomeSettings.class",
+      "sha256Bytes": "8407b632b2fdd59e8b7ec66901d0231acee16372dac420f6b98c420c0b0b8c7c",
+      "bytes": 3635
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$IconSettings.class",
+      "sha256Bytes": "68c780e17fbe4cd02f61ff94a935625309eab84fe2e0dadb035ae0315d2f99bf",
+      "bytes": 3635
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Inbox.class",
+      "sha256Bytes": "b3cba483752379e4a7e6b8cd8eeab0ef5107f7b7e9b187614f8f6ce0e22d53bc",
+      "bytes": 3592
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$JsPluginContent$$serializer.class",
+      "sha256Bytes": "0c6d3c138edb267256eee562ba46014eecd2ffc78558fcecb9e829768501435c",
+      "bytes": 6025
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$JsPluginContent$Companion.class",
+      "sha256Bytes": "3bc7f4f5bd64cecba8a7905fab314ea824a1a4883c633f36eb8d4f6daa13285b",
+      "bytes": 1738
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$JsPluginContent.class",
+      "sha256Bytes": "d460a81c8421605d5bfa0d627b4770b360852fdb05f68a560563ee76f5c1f5aa",
+      "bytes": 5286
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LikeMe.class",
+      "sha256Bytes": "83c598a7681060ff6bac8260066ab95e8775d12f76d151acd2923f0071fbf061",
+      "bytes": 3607
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LikedVideos$$serializer.class",
+      "sha256Bytes": "854b7ab9c545c302d786074a9a8007648ed1597830774dbd6833347738544312",
+      "bytes": 6548
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LikedVideos$Companion.class",
+      "sha256Bytes": "6a9c0120f8b05aa1e6c43414b90945d0afc27ac2e07929a5b4986adba945d5e0",
+      "bytes": 1964
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LikedVideos.class",
+      "sha256Bytes": "c1960c66362832ce2e2ee18bbb4cf6cd63d9950dc1ea914b445af1eabadfe238",
+      "bytes": 6868
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ListenVideo.class",
+      "sha256Bytes": "04d277a9c4c0bfa037deb0b45745577b1ba384aaa7b222aebe05d433d864c9b8",
+      "bytes": 3629
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Live$$serializer.class",
+      "sha256Bytes": "9aeb91b4c1b05e66ce7d97d6442810df717a9690abf5c893c670d76a61aa2a04",
+      "bytes": 6199
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Live$Companion.class",
+      "sha256Bytes": "94a32b9ef6182be0e3425e5cf71367b4e9c8f323b838f450ef41ca65dc9e6e6c",
+      "bytes": 1650
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Live.class",
+      "sha256Bytes": "c794ef298e8331e0d3007b83a7d04997573ffffb5466d1e191989afce2263f0f",
+      "bytes": 7166
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveArea.class",
+      "sha256Bytes": "1926fcab41d8b8f3bd508bbb4153fd7aa3f82b54920c1468b6316c8114a627d2",
+      "bytes": 3611
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveAreaDetail$$serializer.class",
+      "sha256Bytes": "830e4c43b11904c3bc792a63caa3a84927054c31fff7417055f87db2047d7e7b",
+      "bytes": 6644
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveAreaDetail$Companion.class",
+      "sha256Bytes": "e155e3d2d47c4aacbeae06d13140b37d75460376ee088ca961ead8018dcaec99",
+      "bytes": 1730
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveAreaDetail.class",
+      "sha256Bytes": "8bdd727b58008965c2ee2326407c13847b42387b461afccab7654b8751fcbf90",
+      "bytes": 6983
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveFollowing.class",
+      "sha256Bytes": "151dd802467e31f02f88c11eb2721aa801c4b4b51a58556429afbbabd3a00db4",
+      "bytes": 3641
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveList.class",
+      "sha256Bytes": "038b91df0a0b8cabc91a0ff483941ce83b7f34fd539aa89bd06acdf4501deb5f",
+      "bytes": 3611
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveSearch.class",
+      "sha256Bytes": "a05a18c1591e465c936be34a00200c46d5610f8b0a7e2ea7da349a7fc171352a",
+      "bytes": 3623
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Login.class",
+      "sha256Bytes": "9105ad3059473f8ba3b07ae3696c68a6d895d4f2a87a9a7bac0cd7c80fdb42aa",
+      "bytes": 3592
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MainHost.class",
+      "sha256Bytes": "e86f0fffd59af3be256abc14f43607f6cb31f7f930e0e3731b011e28ba37ca8a",
+      "bytes": 3527
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MemberGuard$$serializer.class",
+      "sha256Bytes": "4dfd4f3704edbf132b94a808c2f2c19c62f5f45297b0082cb1975f5c73466807",
+      "bytes": 6326
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MemberGuard$Companion.class",
+      "sha256Bytes": "79336c61d985c94d5dea03da66800ce650e7595585c2966f692e0c2afe126fd9",
+      "bytes": 1964
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MemberGuard.class",
+      "sha256Bytes": "1b1389b79fa140feb3801b101e3a8093efadb8c2b035f02ba8bc789c14453ca7",
+      "bytes": 6554
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MessageNotificationSettings.class",
+      "sha256Bytes": "5232b7e8a93430259cc7484f432be0e7c6b7735a1decfeefe452ab71fc78bb25",
+      "bytes": 3726
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MusicDetail$$serializer.class",
+      "sha256Bytes": "a5fbb0c052baea2a70b83ced08a4a39f59a0eecdff09902da06446efbf1a5d93",
+      "bytes": 6153
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MusicDetail$Companion.class",
+      "sha256Bytes": "ec9f6201f3ea55e871453f64ca5f1ccb11235f07e1cb53d80c0922cfb4528bdc",
+      "bytes": 1706
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MusicDetail.class",
+      "sha256Bytes": "0142cbf39412b619f863a310a50d40370711e81944b0c8cc5989a4b8015a0956",
+      "bytes": 5115
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$NativeMusic$$serializer.class",
+      "sha256Bytes": "0d115d72cdd9b884e1254731c5997ef98e776d00745ddf9548b8dd9d379d8c85",
+      "bytes": 6349
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$NativeMusic$Companion.class",
+      "sha256Bytes": "216a99190d6dc89017cb7788864bd5b3da529753aa243b6aed109e85d70731d7",
+      "bytes": 1706
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$NativeMusic.class",
+      "sha256Bytes": "9f8f2600078132016da7b4897a5aa93bfa797ecb05d9023dc2bb15f83dc98190",
+      "bytes": 6252
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$OfflineVideoPlayer$$serializer.class",
+      "sha256Bytes": "e68d9b866c0260067dbbc13347bbc3387b9fd8c2baa62ca2e927d0a2337e2d32",
+      "bytes": 6056
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$OfflineVideoPlayer$Companion.class",
+      "sha256Bytes": "ddbd6f2eb0a9530302f16729280d6a3897c4e7555546d10c879db0c774f0275e",
+      "bytes": 1762
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$OfflineVideoPlayer.class",
+      "sha256Bytes": "24b1e848022577e8c2f126a1aa89399ec26354c3ad2fec51af1b21e9ecc30810",
+      "bytes": 5320
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Onboarding.class",
+      "sha256Bytes": "8552f44a3d1124e7c9a61ebd60da3625df3b3065bd6ecf4633bd2e7ea1d60a2b",
+      "bytes": 3622
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$OpenSourceLicenses.class",
+      "sha256Bytes": "39b04650ec7fcff1b3b6991df46d60c3bc70f31c5f4158b8fd84b782094d5f3c",
+      "bytes": 3672
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Partition.class",
+      "sha256Bytes": "0406a22a29587494e11603b9820510c76e16cfa7d4fac5ce9b2b060ec697fabf",
+      "bytes": 3616
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$PermissionSettings.class",
+      "sha256Bytes": "0a458f5bea308406943a8b221d450994af8e9b6094c4a94e6110b5d4e6a35193",
+      "bytes": 3671
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$PlaybackSettings.class",
+      "sha256Bytes": "0aac51682c7e40f2735837ba9ecf06bf93915cdca61b7104f6f2531115795edf",
+      "bytes": 3659
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$PluginsSettings$$serializer.class",
+      "sha256Bytes": "04ee1f8287fac3c72af1de9bed80ac8c5df797f74dbffafd5b3e96327838d903",
+      "bytes": 6449
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$PluginsSettings$Companion.class",
+      "sha256Bytes": "641920c8e912b56a31a377d248469ff61bfa32bc926caf1dcf3eb84601839423",
+      "bytes": 1738
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$PluginsSettings.class",
+      "sha256Bytes": "1d55afa77aa691e01ad972de1b7d306fb6e1cff9dda94baa6c531dfe87ed0b20",
+      "bytes": 5839
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Profile.class",
+      "sha256Bytes": "9b95cff226a24e9767383d04daa4127f4a42c514a0f2b90893d0d0afaf158694",
+      "bytes": 3604
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ReplyMe.class",
+      "sha256Bytes": "6427b24ad8f7cb1e29e7c97877693f5397f07a3fc58394c56d9db2ccfeb8d2cc",
+      "bytes": 3613
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Search$$serializer.class",
+      "sha256Bytes": "22e55dd9b657d6bed29cb7af244056bf4c869586d70b7e33db6f9665561084bf",
+      "bytes": 6201
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Search$Companion.class",
+      "sha256Bytes": "4a7a878d34213c16ceb1f7e066926da83039ef606e3d0c249308674c96e2dd66",
+      "bytes": 1924
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Search.class",
+      "sha256Bytes": "62e2b7a0519c22b959b435f108044ccd3a493c168abe2123abe7c4a601966bd8",
+      "bytes": 6207
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SearchTrending.class",
+      "sha256Bytes": "a4bfac939ce54ff2dfade9a2a847dc30d47203cba0882f561163e6ac45516eb0",
+      "bytes": 3647
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SeasonSeriesDetail$$serializer.class",
+      "sha256Bytes": "4577fba736cb995932af28f691420da40972d63856a36ac9407f019506395688",
+      "bytes": 6913
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SeasonSeriesDetail$Companion.class",
+      "sha256Bytes": "2c443f3be17a786c2538f46ef777af7dfb8114b3bce514bcd80a1c825fbc10a4",
+      "bytes": 1762
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SeasonSeriesDetail.class",
+      "sha256Bytes": "05d105296f340ca5a4afcfc353bed9a259eca87a8067084aeeb7bc72790d7303",
+      "bytes": 8237
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Settings.class",
+      "sha256Bytes": "e8fda686c4d0aee321240cad5a4e58e2feed1a35f95419f4d127a2a2848c555f",
+      "bytes": 3610
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SettingsCategory$$serializer.class",
+      "sha256Bytes": "e81b3dfe75cafa61aca69212af333540989024a5b5f408a2981f00282ea2332c",
+      "bytes": 6578
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SettingsCategory$Companion.class",
+      "sha256Bytes": "ad98934a79d072e16290d3f495df2f529c6bc3b264931e8d468697e7e674131c",
+      "bytes": 1746
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SettingsCategory.class",
+      "sha256Bytes": "29ed04e22409c62d0490185010f2420e4c85e801ef7756efdcae92a7a64dab39",
+      "bytes": 7242
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SettingsSearch.class",
+      "sha256Bytes": "3dae7f0a0a079ae261c963b12dbc35c8d581bbb8d608704172deabff9820ec7b",
+      "bytes": 3647
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SettingsShare.class",
+      "sha256Bytes": "fbf10f65ba1b58d8f91698ea59a81701b963b677f211460efa636e12eadf71bb",
+      "bytes": 3641
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Space$$serializer.class",
+      "sha256Bytes": "be7c95c79070f5bffb898e20e45ded2c4f00a8efab614696b7d50e529d264aed",
+      "bytes": 6190
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Space$Companion.class",
+      "sha256Bytes": "efd641f7593da1d618e289150e74986523365a49b0113b7fcb27536d3ebc3207",
+      "bytes": 1658
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Space.class",
+      "sha256Bytes": "3832a208b93309fc0e8bba28a6739a1b44a3becf7d9a2cf768c4638683f23200",
+      "bytes": 5912
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Story$$serializer.class",
+      "sha256Bytes": "a02ac647096814b7e02fde70bda84597d2a6c7fcc05b2994eee8acc9d431e1b6",
+      "bytes": 7011
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Story$Companion.class",
+      "sha256Bytes": "5ef69edae5e15fe787d61806233c9a7139e6b322b7d9d7b09b3b5b6bba8c10c8",
+      "bytes": 1658
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Story.class",
+      "sha256Bytes": "f1f426df3d1a26bb265002c2df7a41dcd95263812613dac9f05451c6c86cd163",
+      "bytes": 8802
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SystemNotice.class",
+      "sha256Bytes": "19b644d7df4d81e308437aa5a6180816dd89d31eefb954026aa99e28f483c775",
+      "bytes": 3643
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$TipsSettings.class",
+      "sha256Bytes": "b891a56d34b581c52ed9b7750a7549dade62253e02109b56cf7a759e271fe2da",
+      "bytes": 3635
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$TopicDetail$$serializer.class",
+      "sha256Bytes": "cd4ca76d27f85cd1fced72055b3e52df62c5924105eb354ef0eb95b8e63cb2af",
+      "bytes": 6157
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$TopicDetail$Companion.class",
+      "sha256Bytes": "6c12b25d6155c4a2f06167f31b80365d09e8a11deda9b90ce9817eaeae95f09c",
+      "bytes": 1706
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$TopicDetail.class",
+      "sha256Bytes": "dcde1cf31c7eeeb18589d36a7fa001c72e97b6096fdafd9e28fe616eb137136b",
+      "bytes": 5127
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Unknown$$serializer.class",
+      "sha256Bytes": "363a8773cf210dc66bcd44a5584d0e58ce284ecb261195ad14bc2be3dc410d4e",
+      "bytes": 5934
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Unknown$Companion.class",
+      "sha256Bytes": "79835955c84b3eeac85b932aace82f34be1d6957088bfd790a6e21c8b55802df",
+      "bytes": 1674
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Unknown.class",
+      "sha256Bytes": "6e3039322686a32f1aad45ab02188d6bf8b19e77726009f474dc6868b193e054",
+      "bytes": 5401
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$UpowerRank$$serializer.class",
+      "sha256Bytes": "7f3219abe265f3d783f8e3171fbd019cb89ad9d595d74e2ecbb8bcb356f0ea0f",
+      "bytes": 6315
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$UpowerRank$Companion.class",
+      "sha256Bytes": "b31b2ceffc31b076030ee2403c7f3645cb31376ea7c07fa9dbf78b25788224d3",
+      "bytes": 1956
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$UpowerRank.class",
+      "sha256Bytes": "61c3b260e53dbbe5a013c587ac160c7d5fbdceab819ee2ae827d2a98060b1d2a",
+      "bytes": 6541
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$VideoDetail$$serializer.class",
+      "sha256Bytes": "c997511f3deb36c6b3917a61080d19b6d474ed0f127ce181cf454b36a6edc5b9",
+      "bytes": 7897
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$VideoDetail$Companion.class",
+      "sha256Bytes": "c57dc8d3cb4e2b94f4592ccaaec626898cf73f9c40c2f6c9861ec6a7a2213d11",
+      "bytes": 1706
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$VideoDetail.class",
+      "sha256Bytes": "747017a03f811d3b29ea514c8639ec536d696fd47d3ac832341898cd5e182788",
+      "bytes": 12059
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WatchLater.class",
+      "sha256Bytes": "ae5a62c9fb0f849e2edfdc49187c35db31101ecf1cb573870e55fdc3275c82da",
+      "bytes": 3623
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WatchLaterSearch$$serializer.class",
+      "sha256Bytes": "afe38a942479fb33823b32a0de7bc4b3a12659bcc60e28054e4e781c78449a89",
+      "bytes": 6033
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WatchLaterSearch$Companion.class",
+      "sha256Bytes": "b66a33e621867f2a3af6c51689c1ef4f2e527263be5afc33604b2ffe9ff7da3a",
+      "bytes": 1746
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WatchLaterSearch.class",
+      "sha256Bytes": "76509a9a1862af96a8b8239be8ed05af28e17786029d33439fbb84d0e6760217",
+      "bytes": 5570
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Web$$serializer.class",
+      "sha256Bytes": "88b0bfb539043a829fc54c9dbb3ce9049d7b2a4003bd1f1160235ecb71a45790",
+      "bytes": 5986
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Web$Companion.class",
+      "sha256Bytes": "a5b36e071da59e5f6a8b7da0760cdc6c60169d6ba4a17cafb417374bd3ce9633",
+      "bytes": 1642
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Web.class",
+      "sha256Bytes": "ec75020e2bf108fbc0c4e7e0fc64b389f301437f2a20ec39ebf0d6f1136416ba",
+      "bytes": 5884
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WebDavBackup.class",
+      "sha256Bytes": "7025cc679a96f51b214c14b6cd194df3e24faa23dac3dffb9935da9c9844d40c",
+      "bytes": 3635
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WeeklySeries$$serializer.class",
+      "sha256Bytes": "d4055d219b268ec85b346a7feb5e29013beef7a127f83a5de05f060230f94afa",
+      "bytes": 6546
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WeeklySeries$Companion.class",
+      "sha256Bytes": "600d16a101501d227ff99769c485ff9a6243cc6d21f06faffccdbbc7e74a830d",
+      "bytes": 1714
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WeeklySeries.class",
+      "sha256Bytes": "605dd9020d5b2fb0b4ac1a779c4df23ddb79b771ba53da42879663c37b848dac",
+      "bytes": 5869
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKey.class",
+      "sha256Bytes": "5cebf12ae2fa1be356ec74b3c2e0a64746bb75b9a4c10057c12519e0677ec8bf",
+      "bytes": 14633
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicyKt.class",
+      "sha256Bytes": "f26f9037c014412c2885f2471edb99dc0951d76a2bd1b2352347d6bfc38375b4",
+      "bytes": 52215
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavSourceMetadata.class",
+      "sha256Bytes": "6ac90b93e6d18d41af5238c8b4d2a6e9dec03c4f765702e40f839c59027ecbba",
+      "bytes": 10199
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiNavSourceMetadataKt.class",
+      "sha256Bytes": "60bd7c1d25be6969c0bedeee8a919171aff78b3dc22e52a1d5a8334250189ca2",
+      "bytes": 10830
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiReturnSessionState.class",
+      "sha256Bytes": "5ec870fc3ac40c57a9a2e4ef00801283f787d76d784094b8bb541b25f8b75937",
+      "bytes": 14732
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiReturnSessionStateKt.class",
+      "sha256Bytes": "fc00ec57d2a2e16a6a41228afae9fcb6c202c7bcfbb6137655bd786a690eb1c3",
+      "bytes": 1732
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiVideoCardMorphMode.class",
+      "sha256Bytes": "f693fa00291987ff587ca9a1d58f9c95dd3bbf1c9f19a12798e63a2a56e507b0",
+      "bytes": 2037
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiVideoSource.class",
+      "sha256Bytes": "f88cf2f109b4b05ef1fbe22ca68e23a053ce289ba763226ae89ff81674dbb2df",
+      "bytes": 2992
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/BiliPaiVideoSourcePolicyKt.class",
+      "sha256Bytes": "ac30880c443d6611fb5894d397390f37326ac6f123a6e3408fe0e6d32a85c307",
+      "bytes": 6291
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/RelatedReturnSourceRestoreDecision.class",
+      "sha256Bytes": "bfc00240c64bc73ef9b33086b403e11fc5f5a4ce2fceba80263cdac1c5a5e100",
+      "bytes": 2728
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/VideoCardTransitionSession$Companion.class",
+      "sha256Bytes": "4fc63cc456e47d039ea728a296bef13b8c3ecb50e6216692187d8fa818a863d4",
+      "bytes": 10265
+    },
+    {
+      "path": "compile-01/classes/com/android/purebilibili/navigation3/VideoCardTransitionSession.class",
+      "sha256Bytes": "b97f9977564bee4b4840b03618574ab68a73ea9fcaad1c862031d08be8d3aef5",
+      "bytes": 11970
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation/DesktopOriginalHomeVideoSourceRouteKt.class",
+      "sha256Bytes": "c3f7d4e6387678b96f13c99a3f19e4c1e546e7dcc6d70d5f476f44e967041974",
+      "bytes": 6110
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavCardSourceDirection.class",
+      "sha256Bytes": "46571efaa88547293aa3d381bd419e6ba7e417284967eca44b0c5ee7e165198d",
+      "bytes": 2124
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AicuQuery$$serializer.class",
+      "sha256Bytes": "44cd4e2e2e770752596b221d98417523e4be2ab2836e51e07d45dfdbfc6f70f4",
+      "bytes": 6232
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AicuQuery$Companion.class",
+      "sha256Bytes": "ed924cd42b664893db2d3f88ca5dc0ec80048801123f8c69536744b0dd37d918",
+      "bytes": 1690
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AicuQuery.class",
+      "sha256Bytes": "92afa8610b2b6dc1ca77327c21bd96d871cb00af208e08eeaea15649962095d5",
+      "bytes": 6090
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AnimationSettings.class",
+      "sha256Bytes": "c24ef0402822ff5b8868ae12d2367fcfd4b919859f88ef4d95552fb93eab7502",
+      "bytes": 3665
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AppearanceSettings.class",
+      "sha256Bytes": "ea3a179f6dc761214e3196482080516530ef8e1cded7a82c3c0448b8cfdc3945",
+      "bytes": 3671
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ArticleDetail$$serializer.class",
+      "sha256Bytes": "36550641a06ec0c38c11d797a8b4646457981e3440d4b1267dc5c923046f2745",
+      "bytes": 6279
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ArticleDetail$Companion.class",
+      "sha256Bytes": "12612a5c527976e129422a51af753bebc6cb8e23f1ed690c57d881fa5a3d34cc",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ArticleDetail.class",
+      "sha256Bytes": "166f611b68c9def49a13929998d388f6c5f0c5cc58cd26254e6746535b752153",
+      "bytes": 6013
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AtMe.class",
+      "sha256Bytes": "7269f37a119f259cec204110a837eb4c845bc98616fe92ad1311b1e0498a382f",
+      "bytes": 3595
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AudioMode$$serializer.class",
+      "sha256Bytes": "b6433599f940a449c1f5ac489e7e48399f6e69da8b6e467dfd9b92b61954e5c3",
+      "bytes": 6333
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AudioMode$Companion.class",
+      "sha256Bytes": "6d9eab3908e2e1040fd256c187e9b6f35b9f639da4f8466de0920e61cf04f9bb",
+      "bytes": 1690
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$AudioMode.class",
+      "sha256Bytes": "17c6af1587b3e936650e274399735682c43e5341c31daf9add80f66dcc3236f8",
+      "bytes": 6635
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Bangumi$$serializer.class",
+      "sha256Bytes": "761849a1f2beb48715089e87b0321df8bedd7aa0a3ae12abb0d06c371e9baa25",
+      "bytes": 6114
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Bangumi$Companion.class",
+      "sha256Bytes": "c64225d8d30ac9ccd11fd07f3e441a047a0c02d5347bd1fa87d50cbe9146f179",
+      "bytes": 1674
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Bangumi.class",
+      "sha256Bytes": "2c2105a0c9839a964409d10fafc99c276c9f87cb8eaed056f5334fd269867320",
+      "bytes": 5331
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiDetail$$serializer.class",
+      "sha256Bytes": "190873f23c34b1cc41f4e71167b54a5966da7470c756791f0a8be8e2e8276a89",
+      "bytes": 6332
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiDetail$Companion.class",
+      "sha256Bytes": "09868953b65163a85a0dbab42d29bb6114b915d8f9db2171e1449c886ebbc9d1",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiDetail.class",
+      "sha256Bytes": "c74ff4db29a30b482ef5f6b9a35183d4647b8da04b7a3185e8d761e2df0c9385",
+      "bytes": 6174
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiPlayer$$serializer.class",
+      "sha256Bytes": "9c9b887ecc0337bb75c1e0ddff097854b55ef09453dad964ff94f57e552d8d37",
+      "bytes": 6718
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiPlayer$Companion.class",
+      "sha256Bytes": "67834d7d612cd905140445e66c5939c7c4bc4999910e86498248ec3af01f2539",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiPlayer.class",
+      "sha256Bytes": "cd7daadfa9b77064d6fe54bb18becf8daad33166858db23ad1ce4a2de74209f1",
+      "bytes": 7169
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiReview$$serializer.class",
+      "sha256Bytes": "05845a8dac17efdc84d164715a26597e8593a39bd7117b26dd74257a0bdcfa43",
+      "bytes": 6277
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiReview$Companion.class",
+      "sha256Bytes": "9305449a4a6785ee70e180ee64c1cfd244f95892bbdc49b236678039702cee46",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BangumiReview.class",
+      "sha256Bytes": "64a437f54834ecd1d5c44b4c014c08809eaa1e0345dc36a9dd492dcd2adf5bcf",
+      "bytes": 6014
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BgmDetail$$serializer.class",
+      "sha256Bytes": "07f7154dc4c40e96eb9a18c3de13e0c8898e3fb4d0d0bed54716c3419c6c73f6",
+      "bytes": 6595
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BgmDetail$Companion.class",
+      "sha256Bytes": "65d06440ba1c32673b784cd20e7e5af626767543e4d6e13b02c63e510ff0d38d",
+      "bytes": 1690
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BgmDetail.class",
+      "sha256Bytes": "b4130d7c322021dc00e066e5de7cfd9cca7a45620597eb5f493c9c164dbca975",
+      "bytes": 7001
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$BottomBarSettings.class",
+      "sha256Bytes": "7c16210a1caf959c0c12a8a591609498a8e35e8f137ff455491d41918883ae48",
+      "bytes": 3666
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Category$$serializer.class",
+      "sha256Bytes": "bd94f5631cc257a593452d93f5c8aa880362e8beefc2179d7898a05894e4ec90",
+      "bytes": 6214
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Category$Companion.class",
+      "sha256Bytes": "a6e53aa05a3e157cc9c9c28269c3b1a20095222cf27f7b4e32bea06f79b30c09",
+      "bytes": 1682
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Category.class",
+      "sha256Bytes": "b8f83bb64f325f58b4cc27ba3181efaa8c76c18df494346d300d62cec8fa3dd9",
+      "bytes": 5909
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Chat$$serializer.class",
+      "sha256Bytes": "91d290c28cefd0240ea480f28f854a2431481cf10cf9244e0e5e22bac9604b38",
+      "bytes": 6461
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Chat$Companion.class",
+      "sha256Bytes": "703c1c548d871cd6fa3297a14cb1f793d600c9e88f0d61b071f67d44b3fd6073",
+      "bytes": 1650
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Chat.class",
+      "sha256Bytes": "ba14b7cf011e23b17b3e97fb209d30106115d0f6310744380944b45a0a7edafe",
+      "bytes": 6418
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$CommentDetail$$serializer.class",
+      "sha256Bytes": "bf1afc0a284518cc0d2624dc084329d48873563b6b4b521fb4b46277634647db",
+      "bytes": 6710
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$CommentDetail$Companion.class",
+      "sha256Bytes": "11d1db623757057ce4ce767099a00bc3aad84bb2e963caa042b29eb0d9fed1fd",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$CommentDetail.class",
+      "sha256Bytes": "8700c6ee8b48fc353aedf3fc15786d0083e92700aeb469181b1bb1205ccb9dc8",
+      "bytes": 7414
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Companion.class",
+      "sha256Bytes": "8eb1a26c08358e6fdeb118878c2a36e8bc79cec7a9ae9d1a109285125b6f1b7d",
+      "bytes": 23205
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$DownloadList.class",
+      "sha256Bytes": "03d762c292e94dfd697de77035ea96fb722e6f8433b548ebf855b38f19c3e75f",
+      "bytes": 3635
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Dynamic.class",
+      "sha256Bytes": "f6fa7089b0640571c68d75f307fd559d998115cac9d413c36f2535c5de7c4573",
+      "bytes": 3604
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$DynamicDetail$$serializer.class",
+      "sha256Bytes": "5bf81c4de156d3bafa213ea8175ad8e56072504e5c5765b3e0b96782db90d785",
+      "bytes": 6377
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$DynamicDetail$Companion.class",
+      "sha256Bytes": "2be8bc1e14fecb6129b2145fddc4c964305a6492ac348cbed4ec1cfd35bda4ee",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$DynamicDetail.class",
+      "sha256Bytes": "3e40dc0ae0224e3ed2a393ece3faf6e1b584a825e0dd9b8ef102a615fe66f718",
+      "bytes": 6526
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ExternalMedia$$serializer.class",
+      "sha256Bytes": "549e9b4f4b69da835c6b8a4ad5a2c9b5a70a926d7652b5e8a23e470a2a74ca02",
+      "bytes": 6003
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ExternalMedia$Companion.class",
+      "sha256Bytes": "12f6bd4de02de8d6fb0c5a6586cf055325a5404007ccb89efdd346bfdd2db7b6",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ExternalMedia.class",
+      "sha256Bytes": "c9d4d2192c4c63de3fb5e5fe9cc59dd090a6202774815de74b6d00841386c61c",
+      "bytes": 5267
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Favorite.class",
+      "sha256Bytes": "710b68a6e883f736f98d573d91fd766493afc8fb631fdd31f85604f09b521f83",
+      "bytes": 3610
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$FavoriteSearch$$serializer.class",
+      "sha256Bytes": "57ebfba97d97c4fd08a323b08064af5a3af7c12517308d086605bbe36873d827",
+      "bytes": 6655
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$FavoriteSearch$Companion.class",
+      "sha256Bytes": "96b8c4ed29cefe79d71330e0b174f7c69dd5eb89ad8405130e3566540821a6b1",
+      "bytes": 1730
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$FavoriteSearch.class",
+      "sha256Bytes": "90ee8a402e01154710c2c662fe805c1a18d8e9d57c61d48f8e27870d6e4897b0",
+      "bytes": 8230
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$FavoriteSubscribed.class",
+      "sha256Bytes": "e4f88fd5ab5fd17ede82a6907b198b331fc7519a13b7c9ab3ca80ba5c513c98d",
+      "bytes": 3671
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Following$$serializer.class",
+      "sha256Bytes": "431ec67500bdcf7cefdfaf427f0d3ae00ce66b2e3efbf12299d79304eccf5831",
+      "bytes": 6131
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Following$Companion.class",
+      "sha256Bytes": "bc647f991af9970d391c0f14f1d1e6fd8f2687c8a2e1377abadd4b2f584d14e9",
+      "bytes": 1690
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Following.class",
+      "sha256Bytes": "51eb219a4c9081fdedbdd1be8ed86b8c082a8b6ca7eb2c56e49ec13fb9d6f277",
+      "bytes": 5095
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$History.class",
+      "sha256Bytes": "6101fb2e8fee427ddb115afc085f5f255d81bb9e61e70d43077709067840b3db",
+      "bytes": 3604
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$HistorySearch$$serializer.class",
+      "sha256Bytes": "548f0d56bfd152daa117a5ad8640171280a0c957bcecc6a3d03f57afbc7d9299",
+      "bytes": 6000
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$HistorySearch$Companion.class",
+      "sha256Bytes": "65bb81127790b74fda5413b2b50365aca57fffd7779abd9d2e5bd8ad451d3beb",
+      "bytes": 1722
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$HistorySearch.class",
+      "sha256Bytes": "8cf27e73a5fa2908bef5df06011a6b688001bf7c56400e169ea6e72a55693e77",
+      "bytes": 5530
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Home.class",
+      "sha256Bytes": "9a1b63babc0b4cf14edc401975e12d9fbec66cfe61554af24de9bf7fc079d9a6",
+      "bytes": 3586
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$HomeSettings.class",
+      "sha256Bytes": "8407b632b2fdd59e8b7ec66901d0231acee16372dac420f6b98c420c0b0b8c7c",
+      "bytes": 3635
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$IconSettings.class",
+      "sha256Bytes": "68c780e17fbe4cd02f61ff94a935625309eab84fe2e0dadb035ae0315d2f99bf",
+      "bytes": 3635
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Inbox.class",
+      "sha256Bytes": "b3cba483752379e4a7e6b8cd8eeab0ef5107f7b7e9b187614f8f6ce0e22d53bc",
+      "bytes": 3592
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$JsPluginContent$$serializer.class",
+      "sha256Bytes": "0c6d3c138edb267256eee562ba46014eecd2ffc78558fcecb9e829768501435c",
+      "bytes": 6025
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$JsPluginContent$Companion.class",
+      "sha256Bytes": "3bc7f4f5bd64cecba8a7905fab314ea824a1a4883c633f36eb8d4f6daa13285b",
+      "bytes": 1738
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$JsPluginContent.class",
+      "sha256Bytes": "d460a81c8421605d5bfa0d627b4770b360852fdb05f68a560563ee76f5c1f5aa",
+      "bytes": 5286
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LikeMe.class",
+      "sha256Bytes": "83c598a7681060ff6bac8260066ab95e8775d12f76d151acd2923f0071fbf061",
+      "bytes": 3607
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LikedVideos$$serializer.class",
+      "sha256Bytes": "854b7ab9c545c302d786074a9a8007648ed1597830774dbd6833347738544312",
+      "bytes": 6548
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LikedVideos$Companion.class",
+      "sha256Bytes": "6a9c0120f8b05aa1e6c43414b90945d0afc27ac2e07929a5b4986adba945d5e0",
+      "bytes": 1964
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LikedVideos.class",
+      "sha256Bytes": "c1960c66362832ce2e2ee18bbb4cf6cd63d9950dc1ea914b445af1eabadfe238",
+      "bytes": 6868
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ListenVideo.class",
+      "sha256Bytes": "04d277a9c4c0bfa037deb0b45745577b1ba384aaa7b222aebe05d433d864c9b8",
+      "bytes": 3629
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Live$$serializer.class",
+      "sha256Bytes": "9aeb91b4c1b05e66ce7d97d6442810df717a9690abf5c893c670d76a61aa2a04",
+      "bytes": 6199
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Live$Companion.class",
+      "sha256Bytes": "94a32b9ef6182be0e3425e5cf71367b4e9c8f323b838f450ef41ca65dc9e6e6c",
+      "bytes": 1650
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Live.class",
+      "sha256Bytes": "c794ef298e8331e0d3007b83a7d04997573ffffb5466d1e191989afce2263f0f",
+      "bytes": 7166
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveArea.class",
+      "sha256Bytes": "1926fcab41d8b8f3bd508bbb4153fd7aa3f82b54920c1468b6316c8114a627d2",
+      "bytes": 3611
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveAreaDetail$$serializer.class",
+      "sha256Bytes": "830e4c43b11904c3bc792a63caa3a84927054c31fff7417055f87db2047d7e7b",
+      "bytes": 6644
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveAreaDetail$Companion.class",
+      "sha256Bytes": "e155e3d2d47c4aacbeae06d13140b37d75460376ee088ca961ead8018dcaec99",
+      "bytes": 1730
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveAreaDetail.class",
+      "sha256Bytes": "8bdd727b58008965c2ee2326407c13847b42387b461afccab7654b8751fcbf90",
+      "bytes": 6983
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveFollowing.class",
+      "sha256Bytes": "151dd802467e31f02f88c11eb2721aa801c4b4b51a58556429afbbabd3a00db4",
+      "bytes": 3641
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveList.class",
+      "sha256Bytes": "038b91df0a0b8cabc91a0ff483941ce83b7f34fd539aa89bd06acdf4501deb5f",
+      "bytes": 3611
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$LiveSearch.class",
+      "sha256Bytes": "a05a18c1591e465c936be34a00200c46d5610f8b0a7e2ea7da349a7fc171352a",
+      "bytes": 3623
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Login.class",
+      "sha256Bytes": "9105ad3059473f8ba3b07ae3696c68a6d895d4f2a87a9a7bac0cd7c80fdb42aa",
+      "bytes": 3592
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MainHost.class",
+      "sha256Bytes": "e86f0fffd59af3be256abc14f43607f6cb31f7f930e0e3731b011e28ba37ca8a",
+      "bytes": 3527
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MemberGuard$$serializer.class",
+      "sha256Bytes": "4dfd4f3704edbf132b94a808c2f2c19c62f5f45297b0082cb1975f5c73466807",
+      "bytes": 6326
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MemberGuard$Companion.class",
+      "sha256Bytes": "79336c61d985c94d5dea03da66800ce650e7595585c2966f692e0c2afe126fd9",
+      "bytes": 1964
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MemberGuard.class",
+      "sha256Bytes": "1b1389b79fa140feb3801b101e3a8093efadb8c2b035f02ba8bc789c14453ca7",
+      "bytes": 6554
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MessageNotificationSettings.class",
+      "sha256Bytes": "5232b7e8a93430259cc7484f432be0e7c6b7735a1decfeefe452ab71fc78bb25",
+      "bytes": 3726
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MusicDetail$$serializer.class",
+      "sha256Bytes": "a5fbb0c052baea2a70b83ced08a4a39f59a0eecdff09902da06446efbf1a5d93",
+      "bytes": 6153
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MusicDetail$Companion.class",
+      "sha256Bytes": "ec9f6201f3ea55e871453f64ca5f1ccb11235f07e1cb53d80c0922cfb4528bdc",
+      "bytes": 1706
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$MusicDetail.class",
+      "sha256Bytes": "0142cbf39412b619f863a310a50d40370711e81944b0c8cc5989a4b8015a0956",
+      "bytes": 5115
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$NativeMusic$$serializer.class",
+      "sha256Bytes": "0d115d72cdd9b884e1254731c5997ef98e776d00745ddf9548b8dd9d379d8c85",
+      "bytes": 6349
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$NativeMusic$Companion.class",
+      "sha256Bytes": "216a99190d6dc89017cb7788864bd5b3da529753aa243b6aed109e85d70731d7",
+      "bytes": 1706
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$NativeMusic.class",
+      "sha256Bytes": "9f8f2600078132016da7b4897a5aa93bfa797ecb05d9023dc2bb15f83dc98190",
+      "bytes": 6252
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$OfflineVideoPlayer$$serializer.class",
+      "sha256Bytes": "e68d9b866c0260067dbbc13347bbc3387b9fd8c2baa62ca2e927d0a2337e2d32",
+      "bytes": 6056
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$OfflineVideoPlayer$Companion.class",
+      "sha256Bytes": "ddbd6f2eb0a9530302f16729280d6a3897c4e7555546d10c879db0c774f0275e",
+      "bytes": 1762
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$OfflineVideoPlayer.class",
+      "sha256Bytes": "24b1e848022577e8c2f126a1aa89399ec26354c3ad2fec51af1b21e9ecc30810",
+      "bytes": 5320
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Onboarding.class",
+      "sha256Bytes": "8552f44a3d1124e7c9a61ebd60da3625df3b3065bd6ecf4633bd2e7ea1d60a2b",
+      "bytes": 3622
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$OpenSourceLicenses.class",
+      "sha256Bytes": "39b04650ec7fcff1b3b6991df46d60c3bc70f31c5f4158b8fd84b782094d5f3c",
+      "bytes": 3672
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Partition.class",
+      "sha256Bytes": "0406a22a29587494e11603b9820510c76e16cfa7d4fac5ce9b2b060ec697fabf",
+      "bytes": 3616
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$PermissionSettings.class",
+      "sha256Bytes": "0a458f5bea308406943a8b221d450994af8e9b6094c4a94e6110b5d4e6a35193",
+      "bytes": 3671
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$PlaybackSettings.class",
+      "sha256Bytes": "0aac51682c7e40f2735837ba9ecf06bf93915cdca61b7104f6f2531115795edf",
+      "bytes": 3659
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$PluginsSettings$$serializer.class",
+      "sha256Bytes": "04ee1f8287fac3c72af1de9bed80ac8c5df797f74dbffafd5b3e96327838d903",
+      "bytes": 6449
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$PluginsSettings$Companion.class",
+      "sha256Bytes": "641920c8e912b56a31a377d248469ff61bfa32bc926caf1dcf3eb84601839423",
+      "bytes": 1738
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$PluginsSettings.class",
+      "sha256Bytes": "1d55afa77aa691e01ad972de1b7d306fb6e1cff9dda94baa6c531dfe87ed0b20",
+      "bytes": 5839
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Profile.class",
+      "sha256Bytes": "9b95cff226a24e9767383d04daa4127f4a42c514a0f2b90893d0d0afaf158694",
+      "bytes": 3604
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$ReplyMe.class",
+      "sha256Bytes": "6427b24ad8f7cb1e29e7c97877693f5397f07a3fc58394c56d9db2ccfeb8d2cc",
+      "bytes": 3613
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Search$$serializer.class",
+      "sha256Bytes": "22e55dd9b657d6bed29cb7af244056bf4c869586d70b7e33db6f9665561084bf",
+      "bytes": 6201
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Search$Companion.class",
+      "sha256Bytes": "4a7a878d34213c16ceb1f7e066926da83039ef606e3d0c249308674c96e2dd66",
+      "bytes": 1924
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Search.class",
+      "sha256Bytes": "62e2b7a0519c22b959b435f108044ccd3a493c168abe2123abe7c4a601966bd8",
+      "bytes": 6207
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SearchTrending.class",
+      "sha256Bytes": "a4bfac939ce54ff2dfade9a2a847dc30d47203cba0882f561163e6ac45516eb0",
+      "bytes": 3647
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SeasonSeriesDetail$$serializer.class",
+      "sha256Bytes": "4577fba736cb995932af28f691420da40972d63856a36ac9407f019506395688",
+      "bytes": 6913
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SeasonSeriesDetail$Companion.class",
+      "sha256Bytes": "2c443f3be17a786c2538f46ef777af7dfb8114b3bce514bcd80a1c825fbc10a4",
+      "bytes": 1762
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SeasonSeriesDetail.class",
+      "sha256Bytes": "05d105296f340ca5a4afcfc353bed9a259eca87a8067084aeeb7bc72790d7303",
+      "bytes": 8237
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Settings.class",
+      "sha256Bytes": "e8fda686c4d0aee321240cad5a4e58e2feed1a35f95419f4d127a2a2848c555f",
+      "bytes": 3610
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SettingsCategory$$serializer.class",
+      "sha256Bytes": "e81b3dfe75cafa61aca69212af333540989024a5b5f408a2981f00282ea2332c",
+      "bytes": 6578
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SettingsCategory$Companion.class",
+      "sha256Bytes": "ad98934a79d072e16290d3f495df2f529c6bc3b264931e8d468697e7e674131c",
+      "bytes": 1746
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SettingsCategory.class",
+      "sha256Bytes": "29ed04e22409c62d0490185010f2420e4c85e801ef7756efdcae92a7a64dab39",
+      "bytes": 7242
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SettingsSearch.class",
+      "sha256Bytes": "3dae7f0a0a079ae261c963b12dbc35c8d581bbb8d608704172deabff9820ec7b",
+      "bytes": 3647
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SettingsShare.class",
+      "sha256Bytes": "fbf10f65ba1b58d8f91698ea59a81701b963b677f211460efa636e12eadf71bb",
+      "bytes": 3641
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Space$$serializer.class",
+      "sha256Bytes": "be7c95c79070f5bffb898e20e45ded2c4f00a8efab614696b7d50e529d264aed",
+      "bytes": 6190
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Space$Companion.class",
+      "sha256Bytes": "efd641f7593da1d618e289150e74986523365a49b0113b7fcb27536d3ebc3207",
+      "bytes": 1658
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Space.class",
+      "sha256Bytes": "3832a208b93309fc0e8bba28a6739a1b44a3becf7d9a2cf768c4638683f23200",
+      "bytes": 5912
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Story$$serializer.class",
+      "sha256Bytes": "a02ac647096814b7e02fde70bda84597d2a6c7fcc05b2994eee8acc9d431e1b6",
+      "bytes": 7011
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Story$Companion.class",
+      "sha256Bytes": "5ef69edae5e15fe787d61806233c9a7139e6b322b7d9d7b09b3b5b6bba8c10c8",
+      "bytes": 1658
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Story.class",
+      "sha256Bytes": "f1f426df3d1a26bb265002c2df7a41dcd95263812613dac9f05451c6c86cd163",
+      "bytes": 8802
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$SystemNotice.class",
+      "sha256Bytes": "19b644d7df4d81e308437aa5a6180816dd89d31eefb954026aa99e28f483c775",
+      "bytes": 3643
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$TipsSettings.class",
+      "sha256Bytes": "b891a56d34b581c52ed9b7750a7549dade62253e02109b56cf7a759e271fe2da",
+      "bytes": 3635
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$TopicDetail$$serializer.class",
+      "sha256Bytes": "cd4ca76d27f85cd1fced72055b3e52df62c5924105eb354ef0eb95b8e63cb2af",
+      "bytes": 6157
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$TopicDetail$Companion.class",
+      "sha256Bytes": "6c12b25d6155c4a2f06167f31b80365d09e8a11deda9b90ce9817eaeae95f09c",
+      "bytes": 1706
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$TopicDetail.class",
+      "sha256Bytes": "dcde1cf31c7eeeb18589d36a7fa001c72e97b6096fdafd9e28fe616eb137136b",
+      "bytes": 5127
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Unknown$$serializer.class",
+      "sha256Bytes": "363a8773cf210dc66bcd44a5584d0e58ce284ecb261195ad14bc2be3dc410d4e",
+      "bytes": 5934
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Unknown$Companion.class",
+      "sha256Bytes": "79835955c84b3eeac85b932aace82f34be1d6957088bfd790a6e21c8b55802df",
+      "bytes": 1674
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Unknown.class",
+      "sha256Bytes": "6e3039322686a32f1aad45ab02188d6bf8b19e77726009f474dc6868b193e054",
+      "bytes": 5401
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$UpowerRank$$serializer.class",
+      "sha256Bytes": "7f3219abe265f3d783f8e3171fbd019cb89ad9d595d74e2ecbb8bcb356f0ea0f",
+      "bytes": 6315
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$UpowerRank$Companion.class",
+      "sha256Bytes": "b31b2ceffc31b076030ee2403c7f3645cb31376ea7c07fa9dbf78b25788224d3",
+      "bytes": 1956
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$UpowerRank.class",
+      "sha256Bytes": "61c3b260e53dbbe5a013c587ac160c7d5fbdceab819ee2ae827d2a98060b1d2a",
+      "bytes": 6541
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$VideoDetail$$serializer.class",
+      "sha256Bytes": "c997511f3deb36c6b3917a61080d19b6d474ed0f127ce181cf454b36a6edc5b9",
+      "bytes": 7897
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$VideoDetail$Companion.class",
+      "sha256Bytes": "c57dc8d3cb4e2b94f4592ccaaec626898cf73f9c40c2f6c9861ec6a7a2213d11",
+      "bytes": 1706
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$VideoDetail.class",
+      "sha256Bytes": "747017a03f811d3b29ea514c8639ec536d696fd47d3ac832341898cd5e182788",
+      "bytes": 12059
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WatchLater.class",
+      "sha256Bytes": "ae5a62c9fb0f849e2edfdc49187c35db31101ecf1cb573870e55fdc3275c82da",
+      "bytes": 3623
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WatchLaterSearch$$serializer.class",
+      "sha256Bytes": "afe38a942479fb33823b32a0de7bc4b3a12659bcc60e28054e4e781c78449a89",
+      "bytes": 6033
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WatchLaterSearch$Companion.class",
+      "sha256Bytes": "b66a33e621867f2a3af6c51689c1ef4f2e527263be5afc33604b2ffe9ff7da3a",
+      "bytes": 1746
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WatchLaterSearch.class",
+      "sha256Bytes": "76509a9a1862af96a8b8239be8ed05af28e17786029d33439fbb84d0e6760217",
+      "bytes": 5570
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Web$$serializer.class",
+      "sha256Bytes": "88b0bfb539043a829fc54c9dbb3ce9049d7b2a4003bd1f1160235ecb71a45790",
+      "bytes": 5986
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Web$Companion.class",
+      "sha256Bytes": "a5b36e071da59e5f6a8b7da0760cdc6c60169d6ba4a17cafb417374bd3ce9633",
+      "bytes": 1642
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$Web.class",
+      "sha256Bytes": "ec75020e2bf108fbc0c4e7e0fc64b389f301437f2a20ec39ebf0d6f1136416ba",
+      "bytes": 5884
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WebDavBackup.class",
+      "sha256Bytes": "7025cc679a96f51b214c14b6cd194df3e24faa23dac3dffb9935da9c9844d40c",
+      "bytes": 3635
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WeeklySeries$$serializer.class",
+      "sha256Bytes": "d4055d219b268ec85b346a7feb5e29013beef7a127f83a5de05f060230f94afa",
+      "bytes": 6546
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WeeklySeries$Companion.class",
+      "sha256Bytes": "600d16a101501d227ff99769c485ff9a6243cc6d21f06faffccdbbc7e74a830d",
+      "bytes": 1714
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey$WeeklySeries.class",
+      "sha256Bytes": "605dd9020d5b2fb0b4ac1a779c4df23ddb79b771ba53da42879663c37b848dac",
+      "bytes": 5869
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKey.class",
+      "sha256Bytes": "5cebf12ae2fa1be356ec74b3c2e0a64746bb75b9a4c10057c12519e0677ec8bf",
+      "bytes": 14633
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicyKt.class",
+      "sha256Bytes": "f26f9037c014412c2885f2471edb99dc0951d76a2bd1b2352347d6bfc38375b4",
+      "bytes": 52215
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavSourceMetadata.class",
+      "sha256Bytes": "6ac90b93e6d18d41af5238c8b4d2a6e9dec03c4f765702e40f839c59027ecbba",
+      "bytes": 10199
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiNavSourceMetadataKt.class",
+      "sha256Bytes": "60bd7c1d25be6969c0bedeee8a919171aff78b3dc22e52a1d5a8334250189ca2",
+      "bytes": 10830
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiReturnSessionState.class",
+      "sha256Bytes": "5ec870fc3ac40c57a9a2e4ef00801283f787d76d784094b8bb541b25f8b75937",
+      "bytes": 14732
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiReturnSessionStateKt.class",
+      "sha256Bytes": "fc00ec57d2a2e16a6a41228afae9fcb6c202c7bcfbb6137655bd786a690eb1c3",
+      "bytes": 1732
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiVideoCardMorphMode.class",
+      "sha256Bytes": "f693fa00291987ff587ca9a1d58f9c95dd3bbf1c9f19a12798e63a2a56e507b0",
+      "bytes": 2037
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiVideoSource.class",
+      "sha256Bytes": "f88cf2f109b4b05ef1fbe22ca68e23a053ce289ba763226ae89ff81674dbb2df",
+      "bytes": 2992
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/BiliPaiVideoSourcePolicyKt.class",
+      "sha256Bytes": "ac30880c443d6611fb5894d397390f37326ac6f123a6e3408fe0e6d32a85c307",
+      "bytes": 6291
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/RelatedReturnSourceRestoreDecision.class",
+      "sha256Bytes": "bfc00240c64bc73ef9b33086b403e11fc5f5a4ce2fceba80263cdac1c5a5e100",
+      "bytes": 2728
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/VideoCardTransitionSession$Companion.class",
+      "sha256Bytes": "4fc63cc456e47d039ea728a296bef13b8c3ecb50e6216692187d8fa818a863d4",
+      "bytes": 10265
+    },
+    {
+      "path": "compile-02/classes/com/android/purebilibili/navigation3/VideoCardTransitionSession.class",
+      "sha256Bytes": "b97f9977564bee4b4840b03618574ab68a73ea9fcaad1c862031d08be8d3aef5",
+      "bytes": 11970
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.class",
+      "sha256Bytes": "c1f4c78dda0ffa47b84e81fb2675ec9c593b0e269d1707f07180b327cc646e30",
+      "bytes": 19462
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeReturnCallersKt.class",
+      "sha256Bytes": "7270342f4a1777a7e41637721b2b55bda0edff52857a29e350385598388d0ceb",
+      "bytes": 10112
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/ReturnNavigationFixtureKt.class",
+      "sha256Bytes": "8aadc5e1782ae0829739fe12867521104ffe222532037ca5711b1b3a7dae3492",
+      "bytes": 15478
+    }
+  ],
+  "runtimeAcceptance": {
+    "actualRoot": false,
+    "actualWindow": false,
+    "actualMpV": false,
+    "actualAccountHttp": false
+  },
+  "evidence": {
+    "compile": "compile-02",
+    "fixture": "proof-01",
+    "groups": 7,
+    "newSourceIdentities": 6,
+    "featureMerges": 2
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "assertions": 16,
+  "groups": 3,
+  "transport": "In-memory required region callback, no socket",
+  "settings": "Actual existing DesktopOriginalHomePreferences and same real temporary DesktopPluginStore",
+  "prospectiveCategoryOnly": true,
+  "actualRootAccountIntegration": false,
+  "productionClassOverrides": 0,
+  "explicitReferenceOnlySharedFamilies": 4,
+  "HTTP": false,
+  "GUI": false,
+  "HWND": false,
+  "Gradle": false,
+  "actualRuntimeEntries": 97,
+  "candidateJarSha256Bytes": "9465507e21b330e73d1585b8e1da16631cd3e820f7091091e3ec85a58a906c26",
+  "fixtureJarSha256Bytes": "3afab38c0b820a80a6282b8ad81bdc0adb6b93a92c3911dee286d4019119fee9",
+  "observedClassOrigins": [
+    "ORIGIN com.android.purebilibili.feature.category.CategoryViewModel file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-home-category-page-parity/runs/compile-02/prepared-category-page.jar",
+    "ORIGIN com.bilipai.desktop.ui.DesktopCategoryEnvironment file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-home-category-page-parity/runs/compile-02/prepared-category-page.jar",
+    "ORIGIN com.bilipai.desktop.ui.DesktopOriginalHomePreferences file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-36/main-kotlin.jar",
+    "ORIGIN com.bilipai.desktop.plugins.DesktopPluginStore file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-36/main-kotlin.jar",
+    "ORIGIN com.android.purebilibili.data.model.response.VideoItem file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-36/main-kotlin.jar"
+  ]
+}

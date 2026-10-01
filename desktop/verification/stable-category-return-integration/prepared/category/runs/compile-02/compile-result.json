@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "sourceOnly": true,
+  "actualRuntimeAcceptance": false,
+  "nativeOrAnimationExecuted": false,
+  "HTTP": false,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\runs\\compile-02\\source-inputs\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCategoryEnvironment.kt",
+      "sha256Bytes": "dd4b245e50d566264ed06d5a4856d8b4be3a9072c75171187875231b0cd3a848"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\runs\\compile-02\\source-inputs\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCategoryRouteHost.kt",
+      "sha256Bytes": "0278305589b3bb3f4ff477b18572a2d490315ebcb9482a2138eb41424f0f03b6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\runs\\compile-02\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\category\\CategoryScreen.kt",
+      "sha256Bytes": "bd7fae498c5c5f7370952c94d69c3cc0005d4191ce241c45fac5a261cb239c7a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\runs\\compile-02\\source-inputs\\reference-only\\com\\android\\purebilibili\\core\\ui\\DesktopCategoryLoadingReference.kt",
+      "sha256Bytes": "a612ce5dec179371729d831e43058a6fc5b7871a2f62c8ecae7426fda09d5a6f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\runs\\compile-02\\source-inputs\\reference-only\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopCategoryFixedColumnsReference.kt",
+      "sha256Bytes": "d8d96a9376b3c87dfd94d46b8f69e282573e3bed3a66a5535daba28b46097586"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\runs\\compile-02\\source-inputs\\reference-only\\com\\android\\purebilibili\\core\\util\\FeedRefreshPaging.kt",
+      "sha256Bytes": "7ed91d88e7198729fd2503db6317a0abe15c92efaed7c670bce122bd37c7ae98"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-category-page-parity\\runs\\compile-02\\source-inputs\\reference-only\\com\\android\\purebilibili\\feature\\common\\VideoLazyKeyPolicy.kt",
+      "sha256Bytes": "628f76935eba485f1adf9b81774643fc3b33a791970e5144de032bdad4463312"
+    }
+  ],
+  "snapshotManifestSha256Bytes": "a445ed0f4944ba6ac581b06401576aec23638ef242aa1da442a6baead60b637d",
+  "orderedCpSha256Bytes": "2fa3092ec985e32bf6b1b046266e6b84994adeeb023615549a9422eddb0aa493",
+  "runtimeEntries": 97,
+  "candidateJarSha256Bytes": "9465507e21b330e73d1585b8e1da16631cd3e820f7091091e3ec85a58a906c26",
+  "classCount": 25,
+  "productionClassIntersection": [],
+  "classes": [
+    "com/android/purebilibili/core/ui/DesktopCategoryLoadingReferenceKt.class",
+    "com/android/purebilibili/core/ui/skeleton/DesktopCategoryFixedColumnsReferenceKt$ContentVideoGridSkeletonFixedColumns_HYR8e34$lambda$1$0$$inlined$items$default$1.class",
+    "com/android/purebilibili/core/ui/skeleton/DesktopCategoryFixedColumnsReferenceKt$ContentVideoGridSkeletonFixedColumns_HYR8e34$lambda$1$0$$inlined$items$default$2.class",
+    "com/android/purebilibili/core/ui/skeleton/DesktopCategoryFixedColumnsReferenceKt$ContentVideoGridSkeletonFixedColumns_HYR8e34$lambda$1$0$$inlined$items$default$3.class",
+    "com/android/purebilibili/core/ui/skeleton/DesktopCategoryFixedColumnsReferenceKt$ContentVideoGridSkeletonFixedColumns_HYR8e34$lambda$1$0$$inlined$items$default$4.class",
+    "com/android/purebilibili/core/ui/skeleton/DesktopCategoryFixedColumnsReferenceKt.class",
+    "com/android/purebilibili/core/util/FeedRefreshPagingKt.class",
+    "com/android/purebilibili/feature/category/CategoryScreenKt$CategoryScreen$1$1.class",
+    "com/android/purebilibili/feature/category/CategoryScreenKt$CategoryScreen$2$1.class",
+    "com/android/purebilibili/feature/category/CategoryScreenKt$CategoryScreen$4$1$1$1.class",
+    "com/android/purebilibili/feature/category/CategoryScreenKt$CategoryScreen$4$1$2$1$1$2$1$1.class",
+    "com/android/purebilibili/feature/category/CategoryScreenKt$CategoryScreen$4$1$2$1$1$2$2$1.class",
+    "com/android/purebilibili/feature/category/CategoryScreenKt$CategoryScreen$4$1$3$1$1.class",
+    "com/android/purebilibili/feature/category/CategoryScreenKt$CategoryScreen$lambda$16$0$1$0$0$$inlined$itemsIndexed$default$1.class",
+    "com/android/purebilibili/feature/category/CategoryScreenKt$CategoryScreen$lambda$16$0$1$0$0$$inlined$itemsIndexed$default$2.class",
+    "com/android/purebilibili/feature/category/CategoryScreenKt$CategoryScreen$lambda$16$0$1$0$0$$inlined$itemsIndexed$default$3.class",
+    "com/android/purebilibili/feature/category/CategoryScreenKt$CategoryScreen$lambda$16$0$1$0$0$$inlined$itemsIndexed$default$4.class",
+    "com/android/purebilibili/feature/category/CategoryScreenKt.class",
+    "com/android/purebilibili/feature/category/CategoryViewModel$loadVideos$1$1.class",
+    "com/android/purebilibili/feature/category/CategoryViewModel.class",
+    "com/android/purebilibili/feature/category/ComposableSingletons$CategoryScreenKt.class",
+    "com/android/purebilibili/feature/common/VideoLazyKeyPolicyKt.class",
+    "com/bilipai/desktop/ui/DesktopCategoryEnvironment.class",
+    "com/bilipai/desktop/ui/DesktopCategoryRouteHostKt.class",
+    "com/bilipai/desktop/ui/DesktopCategoryRouteOwner.class"
+  ]
+}

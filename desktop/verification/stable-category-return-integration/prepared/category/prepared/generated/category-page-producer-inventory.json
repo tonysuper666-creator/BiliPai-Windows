@@ -1,0 +1,85 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/category/CategoryScreen.kt",
+    "sha256LF": "fc7bb877d961633bb0a3fe8aaa4ceb15476b394d0f2d3a3ffb3bc72acbaffc96",
+    "mode": "extracted",
+    "fullSourceSelected": true,
+    "originalLineCount": 368,
+    "originalPageSuccessBodyUnchanged": true,
+    "originalAppendRefreshEmptyAlgorithmsUnchanged": true,
+    "immutableRoute": true,
+    "requiredCallbacks": true,
+    "changes": [
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext\n",
+        "after": ""
+      },
+      {
+        "before": "import androidx.lifecycle.ViewModel\n",
+        "after": ""
+      },
+      {
+        "before": "import androidx.lifecycle.viewModelScope\n",
+        "after": "import kotlinx.coroutines.*\n"
+      },
+      {
+        "before": "import androidx.lifecycle.viewmodel.compose.viewModel\n",
+        "after": ""
+      },
+      {
+        "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+        "after": ""
+      },
+      {
+        "before": "import com.android.purebilibili.data.repository.VideoRepository\n",
+        "after": ""
+      },
+      {
+        "before": "class CategoryViewModel : ViewModel() {",
+        "after": "class CategoryViewModel internal constructor(\n    private val environment: com.bilipai.desktop.ui.DesktopCategoryEnvironment,\n) : AutoCloseable {\n    private val ownerLock = Any()\n    @Volatile private var closed = false\n    private val ownerJob = SupervisorJob(environment.parentScope.coroutineContext[Job])\n    private val viewModelScope = CoroutineScope(environment.parentScope.coroutineContext + ownerJob)\n    private var requestId = 0L\n    private var requestJob: Job? = null\n    internal val settings get() = environment.settings\n    private fun owned() = !closed && ownerJob.isActive && environment.stillOwned()\n    private fun commit(block: () -> Unit): Boolean {\n        var applied = false\n        environment.commitIfCurrent {\n            synchronized(ownerLock) { if (owned()) { block(); applied = true } }\n        }\n        return applied\n    }\n    internal fun commitNavigation(action: () -> Unit) = commit(action)\n    override fun close() {\n        synchronized(ownerLock) { closed = true; requestId++ }\n        ownerJob.cancel()\n    }"
+      },
+      {
+        "before": "    fun loadCategory(tid: Int) {\n        if (currentTid == tid && _videos.value.isNotEmpty()) return\n        currentTid = tid\n        currentPage = 1\n        hasMore = true\n        _videos.value = emptyList()\n        loadVideos(replace = true)\n    }\n    \n",
+        "after": "    fun loadCategory(tid: Int) {\n        require(tid == environment.tid) { \"A different category needs a new navigation owner\" }\n        var changed = false\n        commit {\n            if (currentTid != tid || _videos.value.isEmpty()) {\n                currentTid = tid\n                currentPage = 1\n                hasMore = true\n                _videos.value = emptyList()\n                changed = true\n            }\n        }\n        if (changed) loadVideos(replace = true)\n    }\n    \n"
+      },
+      {
+        "before": "    private fun loadVideos(replace: Boolean = false, isRefresh: Boolean = false) {\n        if (_isRefreshing.value) return\n        if (!isRefresh && (_isLoading.value || !hasMore)) return\n        \n        viewModelScope.launch {\n            val pageToFetch = if (isRefresh) {\n                resolveReplaceRefreshPage(nextLoadPage = currentPage, hasMore = hasMore)\n            } else {\n                currentPage\n            }\n            if (isRefresh) {\n                _isRefreshing.value = true\n            } else {\n                _isLoading.value = true\n            }\n            _error.value = null\n            \n            VideoRepository.getRegionVideos(tid = currentTid, page = pageToFetch)\n                .onSuccess { newVideos ->\n                    if (newVideos.isEmpty()) {\n                        hasMore = false\n                        if (isRefresh) {\n                            currentPage = 1\n                        }\n                    } else {\n                        hasMore = true\n                        _videos.value = if (replace || isRefresh) newVideos else _videos.value + newVideos\n                        currentPage = pageToFetch + 1\n                    }\n                }\n                .onFailure { e ->\n                    _error.value = e.message ?: \"加载失败\"\n                }\n            \n            _isLoading.value = false\n            _isRefreshing.value = false\n        }\n    }\n    \n",
+        "after": "    private fun loadVideos(replace: Boolean = false, isRefresh: Boolean = false) {\n        var previous: Job? = null\n        var replacement: Job? = null\n        commit {\n            if (!_isRefreshing.value && (isRefresh || (!_isLoading.value && hasMore))) {\n                // Capture immutable route/page at synchronous admission, before launch can be queued.\n                val capturedTid = currentTid\n                val capturedRequest = ++requestId\n                val pageToFetch = if (isRefresh) {\n                    resolveReplaceRefreshPage(nextLoadPage = currentPage, hasMore = hasMore)\n                } else {\n                    currentPage\n                }\n                previous = requestJob\n                _isRefreshing.value = isRefresh\n                _isLoading.value = !isRefresh\n                _error.value = null\n                replacement = viewModelScope.launch(start = CoroutineStart.LAZY) {\n                    try {\n                        currentCoroutineContext().ensureActive()\n                        environment.getRegionVideos(capturedTid, pageToFetch)\n                            .onSuccess { newVideos ->\n                                currentCoroutineContext().ensureActive()\n                                commit {\n                                    if (capturedRequest == requestId && capturedTid == currentTid) {\n                    if (newVideos.isEmpty()) {\n                        hasMore = false\n                        if (isRefresh) {\n                            currentPage = 1\n                        }\n                    } else {\n                        hasMore = true\n                        _videos.value = if (replace || isRefresh) newVideos else _videos.value + newVideos\n                        currentPage = pageToFetch + 1\n                    }\n                                    }\n                                }\n                            }\n                            .onFailure { e ->\n                                if (e is CancellationException) throw e\n                                currentCoroutineContext().ensureActive()\n                                commit { if (capturedRequest == requestId && capturedTid == currentTid) _error.value = e.message ?: \"加载失败\" }\n                            }\n                    } finally {\n                        // Cleanup may run after this request cancels; it can only clear its own busy state.\n                        commit {\n                            if (capturedRequest == requestId && capturedTid == currentTid) {\n                                _isLoading.value = false\n                                _isRefreshing.value = false\n                                requestJob = null\n                            }\n                        }\n                    }\n                }\n                requestJob = replacement\n            }\n        }\n        // Cancellation and dispatch are outside Root/VM admission monitors.\n        previous?.cancel()\n        replacement?.start()\n    }\n    \n"
+      },
+      {
+        "before": "    onVideoClick: (String, Long, String, Boolean) -> Unit = { _, _, _, _ -> },",
+        "after": "    onVideoClick: (String, Long, String, Boolean) -> Unit,"
+      },
+      {
+        "before": "    isReturningFromVideoDetail: Boolean = false,",
+        "after": "    isReturningFromVideoDetail: Boolean,"
+      },
+      {
+        "before": "    isQuickReturningFromVideoDetail: Boolean = false,",
+        "after": "    isQuickReturningFromVideoDetail: Boolean,"
+      },
+      {
+        "before": "    viewModel: CategoryViewModel = viewModel()",
+        "after": "    viewModel: CategoryViewModel"
+      },
+      {
+        "before": "    val context = LocalContext.current\n",
+        "after": ""
+      },
+      {
+        "before": "SettingsManager.getHomeSettings(context).collectAsStateWithLifecycle(initialValue = HomeSettings()\n    )",
+        "after": "viewModel.settings.homeSettings.collectAsStateWithLifecycle()"
+      },
+      {
+        "before": "SettingsManager\n        .getHomeFeedCardStyle(context)\n        .collectAsStateWithLifecycle(initialValue = HomeFeedCardStyle.BILIPAI)",
+        "after": "viewModel.settings.homeFeedCardStyle.collectAsStateWithLifecycle()"
+      },
+      {
+        "before": "SettingsManager.getShowOnlineCount(context).collectAsStateWithLifecycle(initialValue = false)",
+        "after": "viewModel.settings.showOnlineCount.collectAsStateWithLifecycle()"
+      }
+    ],
+    "inverseNormalizedOriginalEqual": true,
+    "generatedSha256LF": "bd7fae498c5c5f7370952c94d69c3cc0005d4191ce241c45fac5a261cb239c7a"
+  }
+]

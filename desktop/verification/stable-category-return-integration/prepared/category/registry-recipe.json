@@ -1,0 +1,13 @@
+{
+  "overwrite": false,
+  "page": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/category/CategoryScreen.kt",
+    "sha256": "fc7bb877d961633bb0a3fe8aaa4ceb15476b394d0f2d3a3ffb3bc72acbaffc96",
+    "mode": "extracted",
+    "features": [
+      "category-page"
+    ]
+  },
+  "existing": [],
+  "sharedIdentityRule": "Only merge category feature into existing exact helper identities; preserve their sole producers/modes"
+}
