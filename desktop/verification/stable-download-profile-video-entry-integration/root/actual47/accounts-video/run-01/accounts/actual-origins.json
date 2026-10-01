@@ -1,0 +1,33 @@
+{
+  "classes": [
+    {
+      "class": "com.bilipai.desktop.ui.DesktopProfileAccountsBinding",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+      "classSha256": "2f1f9f5bb8bd5c019f3e66d9b5a44b50b1f4b151bf0de0b0810942dc03fea2d7"
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopSessionStore",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+      "classSha256": "412d849ea8f43feac60ac01c8d29e369f1922b4b588d83e2c0239f40e4706c49"
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopRepository",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+      "classSha256": "1414c6a91938701313c233b9696a1579bbfff6c8fd46875caca3623045dc8fcb"
+    },
+    {
+      "class": "com.android.purebilibili.core.store.StoredAccountSession",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+      "classSha256": "cbc5166764971f1a6ee2d11d790175b65e0109b435453fcb3462f0d3006c95da"
+    },
+    {
+      "class": "com.android.purebilibili.data.model.response.NavData",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+      "classSha256": "efa797f5b0cd8a1e3ded09a99672570d5e5a7044a1fe81950bf4db790fd97614"
+    }
+  ],
+  "expectedProductJar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-47\\main-kotlin.jar",
+  "expectedProductJarSha256Bytes": "6c67aade3e1862046237409101cff747c0f0913f5a868ed10b5955e3410dda2a",
+  "zeroProductionOverrides": true,
+  "allCodeSourcesAndClassBytesVerified": true
+}

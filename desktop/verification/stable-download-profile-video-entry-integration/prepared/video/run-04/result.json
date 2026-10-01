@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "groups": 2,
+  "assertions": 24,
+  "origins": [
+    {
+      "class": "com.bilipai.desktop.DesktopPlaybackController",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-detail-admission-parity/run-04/candidate.jar",
+      "classSha256": "ef2371f86998ef787004fd262db7b5e6a3377725dd38a6c5db7fdaf26b2af5bb"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopVideoCommentRootKt",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-detail-admission-parity/run-04/candidate.jar",
+      "classSha256": "b2fa2e8a316e2409ce4042d21985c71fb49a4ee259142724900e59b269986bf1"
+    },
+    {
+      "class": "com.android.purebilibili.feature.video.viewmodel.VideoCommentViewModel",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+      "classSha256": "cb41edba009996e56814752abbb93f5e53e8528e8961625c6312798fb868cff1"
+    },
+    {
+      "class": "com.bilipai.desktop.player.MpvPlayer",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+      "classSha256": "f99266b3766ddc8e1a218324ad7a37f9d4d5bfce1510a593142cf8643f2d6b28"
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopRepository",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+      "classSha256": "2397a469e36e4b8aa79178e22a6f1a458d074a61fb598cab766c21d79330ca69"
+    }
+  ],
+  "HTTP": false,
+  "NativeDLL": false,
+  "RootMounted": false,
+  "HostUIRuntime": false,
+  "explicitProductionOverrides": 2,
+  "actualProductAcceptance": false,
+  "fixtureProductionIntersections": [],
+  "candidateJarSha256Bytes": "3fbc07f373a4e9610a7fa8f7c935420e28063847aae4e1ae287c970a3876d2e9",
+  "actual45RuntimeEntries": 97,
+  "cpToolsSourcesPrePostByteEqual": true
+}

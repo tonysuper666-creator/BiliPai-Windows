@@ -1,0 +1,6 @@
+{
+  "failedOrchestrator": "freeze-download-profile-video47.py attempt01",
+  "reason": "Proof manifest uses registeredRawArtifacts rather than artifacts/files; explicit schema support added. Product/source/proof unchanged. Partial unfrozen directory preserved under Candidate .local/freeze47-attempt01/partial-unfrozen.",
+  "productFailure": false,
+  "frozenPacketModified": false
+}

@@ -1,0 +1,10 @@
+FIXTURE_LIST_RENDERED
+FIXTURE_DELETE_POINTER
+FIXTURE_SEMANTICS [([], null), ([], null), ([], null), ([], null), ([], null), ([], null), ([], [Paused synthetic task]), ([], null), ([����ͣ], null), ([], null), ([1080P], null), ([Paused synthetic task], null), ([fixture], null), ([����ͣ], null), ([], null), ([], [����]), ([], null), ([], [ɾ��]), ([], null), ([], null), ([], [Completed synthetic task]), ([], null), ([1080P], null), ([Completed synthetic task], null), ([fixture], null), ([�����], null), ([], null), ([], [ɾ��]), ([�� 2 �� �� ���� 3 B], null), ([�洢λ��], null), ([C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-download-list-parity\proof-03\local-fixture\downloads], null), ([], null), ([], null), ([], null), ([], null), ([], [����]), ([], null), ([���߻���], null), ([], null), ([����ȫ��], null), ([], null), ([], [�л�Ϊ˫��])]
+Exception in thread "main" kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 5000 ms
+	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:189)
+	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:157)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:505)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:105)
+	at java.base/java.lang.Thread.run(Thread.java:1583)

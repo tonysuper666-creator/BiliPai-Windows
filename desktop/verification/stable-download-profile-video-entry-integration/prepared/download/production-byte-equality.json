@@ -1,0 +1,7 @@
+{
+  "productionGeneratedSources": 3,
+  "directPolicyEmittedTwice": false,
+  "allThreeProductionFilesEqualStandaloneCompiledInputs": true,
+  "registryFixedIdentityAndGitBlobGatesPassed": true,
+  "sameSourceBodiesUnchangedAfterFinalCompile": true
+}

@@ -1,0 +1,192 @@
+{
+  "frozen": true,
+  "phase": "actual47-accounts-video-admission-focused-zero-override",
+  "registeredRawArtifacts": [
+    {
+      "path": "freeze-proof.py",
+      "bytes": 2053,
+      "sha256Bytes": "89345f650f5277ede1b5b745625f1245c6c0f69e7501645b76e924015864acc9"
+    },
+    {
+      "path": "prepared-runner.json",
+      "bytes": 1869,
+      "sha256Bytes": "ce91b6d771d44fa797329137475b03a3211215c67c3c00bb64f0d06a17a2eb47"
+    },
+    {
+      "path": "result.json",
+      "bytes": 9144,
+      "sha256Bytes": "b1716ca20955c358cd7b864cba39ed6f9b778a10c3cde7a0c3670ca3f582d647"
+    },
+    {
+      "path": "run-01/accounts/AccountPortFixture.kt",
+      "bytes": 8723,
+      "sha256Bytes": "92accde8fc258162b8229105263e6d19df3b8da7b45a321f509e20ef58f74341"
+    },
+    {
+      "path": "run-01/accounts/actual-origins.json",
+      "bytes": 2146,
+      "sha256Bytes": "3fc9e510e78ff47a2310f14a0617f438843a9a6d78e48a8afe804289da31ae41"
+    },
+    {
+      "path": "run-01/accounts/compile.args",
+      "bytes": 24560,
+      "sha256Bytes": "a3e7d503c71eaa68a4099ff5f43feca62ee7593b6ea8ddfe4d18606b0f1ddd5b"
+    },
+    {
+      "path": "run-01/accounts/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/accounts/fixture-intersections.json",
+      "bytes": 1410,
+      "sha256Bytes": "4258ccf03dfa7d4f3d75d019448d9a05aadc1a1fb56ce79a47140484afd7598c"
+    },
+    {
+      "path": "run-01/accounts/result.json",
+      "bytes": 2280,
+      "sha256Bytes": "f7f320b3b27516c49f75288aeedc131243851e8f5531948bfe9993c9dfdad833"
+    },
+    {
+      "path": "run-01/accounts/runtime-command.json",
+      "bytes": 26206,
+      "sha256Bytes": "cd7680e7cbeb3a2672e56293d6d942774244cdb76d1ed85a43fb647f95f47d5a"
+    },
+    {
+      "path": "run-01/accounts/runtime-stderr.raw.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/accounts/runtime-stdout.raw.log",
+      "bytes": 119,
+      "sha256Bytes": "c0d971f4a4aa9c134886934456e52c4fc7dc506a7166996d36929a9fb3bec1b6"
+    },
+    {
+      "path": "run-01/pins-after.json",
+      "bytes": 42842,
+      "sha256Bytes": "b615dabf1b14c0b7c1df807e3866eb0fc180321ac2f2a89feecf96995cc717b3"
+    },
+    {
+      "path": "run-01/pins-before.json",
+      "bytes": 42842,
+      "sha256Bytes": "b615dabf1b14c0b7c1df807e3866eb0fc180321ac2f2a89feecf96995cc717b3"
+    },
+    {
+      "path": "run-01/result.json",
+      "bytes": 9144,
+      "sha256Bytes": "b1716ca20955c358cd7b864cba39ed6f9b778a10c3cde7a0c3670ca3f582d647"
+    },
+    {
+      "path": "run-01/video/actual-origins.json",
+      "bytes": 2141,
+      "sha256Bytes": "aae3ea2d470bf6299934dcb30711f8ddbaa03c2d598ca98d956ebbe12f6e0765"
+    },
+    {
+      "path": "run-01/video/compile.args",
+      "bytes": 24554,
+      "sha256Bytes": "19a4d8af1d6893ebff52bdbd20f14656f410144389db179bb0474f068a20c2b8"
+    },
+    {
+      "path": "run-01/video/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/video/fixture-intersections.json",
+      "bytes": 745,
+      "sha256Bytes": "cb5f8200a707a3b07c4bf728b9e9d756117402239f3b4d10ae2081736b38f20a"
+    },
+    {
+      "path": "run-01/video/result.json",
+      "bytes": 2325,
+      "sha256Bytes": "cf1db8708fbea2f4853619fae7c036de0682469e00dd6c9df0399e5bbc96ebd3"
+    },
+    {
+      "path": "run-01/video/RouteAdmissionFixture.kt",
+      "bytes": 10842,
+      "sha256Bytes": "a48f945c837f19f753a98e1fda71625358f6e8b2510148e48157871302f06078"
+    },
+    {
+      "path": "run-01/video/runtime-command.json",
+      "bytes": 26200,
+      "sha256Bytes": "a841e8ca3fffaccfd669085133ead3867d68bdb5616f34ad76c813d7179984a0"
+    },
+    {
+      "path": "run-01/video/runtime-stderr.raw.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-01/video/runtime-stdout.raw.log",
+      "bytes": 134,
+      "sha256Bytes": "c778d7c4a25610203e6e3265b0df9bdc94385cec0ed42d2e4767389606be492e"
+    },
+    {
+      "path": "run-proof.py",
+      "bytes": 8295,
+      "sha256Bytes": "9cd90826b6d903102fe94a9865331248f3937d98363084c1f2d7ca30a0cc680a"
+    }
+  ],
+  "excludedPrivateAndBinaries": [
+    {
+      "path": "run-01/accounts/fixture.jar",
+      "reason": "binary or private synthetic Store/library",
+      "sha256Bytes": "32fc9284c0c6602b6322f3f7876d81c52a8725933bec516fa0c97c2d98ee271b"
+    },
+    {
+      "path": "run-01/accounts/private-memory/cancel-session.json",
+      "reason": "binary or private synthetic Store/library",
+      "sha256Bytes": "57e89fac8c231da4bf505d77589e467208c1d216a6c53f89620f508d46f07752"
+    },
+    {
+      "path": "run-01/accounts/private-memory/private-session.json",
+      "reason": "binary or private synthetic Store/library",
+      "sha256Bytes": "f992b67e6b6e03c259d1b481858d0e62167cac07aceb0ace075b9785671da22b"
+    },
+    {
+      "path": "run-01/accounts/private-memory/result.json",
+      "reason": "binary or private synthetic Store/library",
+      "sha256Bytes": "1acf7364a58b58f66820de1e32ce33e5cde155180cfb34f08d1be5da183e92de"
+    },
+    {
+      "path": "run-01/accounts/private-memory/terminal-session.json",
+      "reason": "binary or private synthetic Store/library",
+      "sha256Bytes": "7208ca761780f2b4bdc5db453eefaeaca177d97dad29ae72049f321dd6ecbd72"
+    },
+    {
+      "path": "run-01/video/fixture.jar",
+      "reason": "binary or private synthetic Store/library",
+      "sha256Bytes": "163ff75a5f05cf4bae12c8b0efcf96ca10dc83824a5acecb59d6e0bfbd6b2aef"
+    },
+    {
+      "path": "run-01/video/private-memory/private-library/library.json",
+      "reason": "binary or private synthetic Store/library",
+      "sha256Bytes": "6c02fbc12baf9cd3a109b5e4eeff991a2069fdd09a3829578ccddd425b780b42"
+    },
+    {
+      "path": "run-01/video/private-memory/result.json",
+      "reason": "binary or private synthetic Store/library",
+      "sha256Bytes": "b7786ea9119943a0a96290a256d33494fb1d43157825170d3327c1163da00c30"
+    }
+  ],
+  "acceptance": {
+    "groups": 5,
+    "assertions": 54,
+    "productionOverrides": 0,
+    "fixtureProductClassIntersections": 0,
+    "runtimeEntries": 97,
+    "loadedOriginRows": 10,
+    "uniqueActualClasses": 9,
+    "codeSourcesAndClassBytesVerified": true,
+    "cpToolsOriginalFixtureInputsPrePostByteEqual": true
+  },
+  "originalPreparedPacketsUnchanged": [
+    "ProfileAccountPort56",
+    "VideoDetail69"
+  ],
+  "limitations": [
+    "No actual Profile/Video Host mounting, native DLL, native seek ACK, HTTP/socket, root navigation, chooser or user files",
+    "Original fixture console labels describe their prior prospective run; this runner verifies only actual47 JAR/class-byte origins and has no production candidate JAR"
+  ]
+}

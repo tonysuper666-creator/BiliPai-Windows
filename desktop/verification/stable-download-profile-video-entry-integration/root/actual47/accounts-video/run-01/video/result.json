@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "groups": 2,
+  "assertions": 24,
+  "origins": [
+    {
+      "class": "com.bilipai.desktop.DesktopPlaybackController",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+      "classSha256": "60a3273082f784bd558c42af6b5503cf8d81f99f5d5f3d24130fc99fa73ac036"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopVideoCommentRootKt",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+      "classSha256": "9e1f2bd160099f669fc1eb84eb8afe20434f40ee23eb2e0c4fa0e4d997db395d"
+    },
+    {
+      "class": "com.android.purebilibili.feature.video.viewmodel.VideoCommentViewModel",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+      "classSha256": "cb41edba009996e56814752abbb93f5e53e8528e8961625c6312798fb868cff1"
+    },
+    {
+      "class": "com.bilipai.desktop.player.MpvPlayer",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+      "classSha256": "f99266b3766ddc8e1a218324ad7a37f9d4d5bfce1510a593142cf8643f2d6b28"
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopRepository",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+      "classSha256": "1414c6a91938701313c233b9696a1579bbfff6c8fd46875caca3623045dc8fcb"
+    }
+  ],
+  "HTTP": false,
+  "NativeDLL": false,
+  "RootMounted": false,
+  "HostUIRuntime": false,
+  "actualProductSnapshot": 47,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersections": [],
+  "originalFixtureSourceUnchanged": true,
+  "originalFixtureLegacyProspectiveConsoleWordingRetained": true,
+  "fixtureSourceSha256Bytes": "a48f945c837f19f753a98e1fda71625358f6e8b2510148e48157871302f06078",
+  "fixtureJarSha256Bytes": "163ff75a5f05cf4bae12c8b0efcf96ca10dc83824a5acecb59d6e0bfbd6b2aef"
+}

@@ -1,0 +1,12 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-download-list-parity\generated\com\android\purebilibili\feature\download\DownloadListScreen.kt:419:13: error: unresolved reference 'resolveDownloadTaskSecondaryText'.
+            resolveDownloadTaskSecondaryText(task)?.let { secondaryText ->
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-download-list-parity\generated\com\android\purebilibili\feature\download\DownloadListScreen.kt:419:53: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            resolveDownloadTaskSecondaryText(task)?.let { secondaryText ->
+                                                    ^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-download-list-parity\generated\com\android\purebilibili\feature\download\DownloadListScreen.kt:419:53: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+            resolveDownloadTaskSecondaryText(task)?.let { secondaryText ->
+                                                    ^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-download-list-parity\generated\com\android\purebilibili\feature\download\DownloadListScreen.kt:419:59: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            resolveDownloadTaskSecondaryText(task)?.let { secondaryText ->
+                                                          ^^^^^^^^^^^^^

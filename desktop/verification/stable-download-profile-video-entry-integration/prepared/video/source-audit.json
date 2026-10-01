@@ -1,0 +1,84 @@
+{
+  "passed": true,
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt",
+      "sha256Bytes": "1637952c78fccb2677ee73640b70ab876746d693fbca438365d285812fa76c85",
+      "sha256Lf": "1637952c78fccb2677ee73640b70ab876746d693fbca438365d285812fa76c85"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+      "sha256Bytes": "4fe3b94adbd3a4f9eea165e68b8efdee0f06d74c78bc3de9269b2fa067ba8db3",
+      "sha256Lf": "4fe3b94adbd3a4f9eea165e68b8efdee0f06d74c78bc3de9269b2fa067ba8db3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "sha256Bytes": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517",
+      "sha256Lf": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517"
+    }
+  ],
+  "originalRoutedReplyMethod": {
+    "sha256Lf": "4d85b525aa611d2e6528d2d3127eec8f3aba3c079dc2c3d9e8686ff6e64a4366",
+    "originalStartLine": 450
+  },
+  "originalObserverSha256Lf": "719fac5c7bbfba545dabeda3a22ed7e828af10849795e0fed2407d00fc05b033",
+  "candidateObserverSha256Lf": "60affe884ab976ecb60b6022c4ba4fc53634ce2944b7d3753cce519e6f75d347",
+  "observerSourceEquivalentUnderDeclaredAliasesIndentAndSingleStatementBraceFormat": true,
+  "observerBraceNormalization": {
+    "original": "if(openStarted){hasHandledCommentRootFromRoute=true}",
+    "candidate": "if(openStarted)hasHandledCommentRootFromRoute=true",
+    "occurrences": 1
+  },
+  "observerAliases": {
+    "commentViewModel": "viewModel",
+    "openCommentRootRpidFromRoute": "initialCommentRootRpid",
+    "openCommentTargetRpidFromRoute": "initialCommentTargetRpid"
+  },
+  "exactInverseHunks": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "hunks": 6,
+      "reverseNormalizedByteEqual": true,
+      "baseSha256Lf": "2b043cb3f614a480d955ad59446de05e12589660d9dabded47f5062660af5593",
+      "candidateSha256Lf": "f9cbf2e781b3cce2802ba9a813c61128069468362504b4c8042d05d92932342b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "hunks": 4,
+      "reverseNormalizedByteEqual": true,
+      "baseSha256Lf": "57321d696b8de599b77a072fe49bca4266987bc67d23adb1a0d2122ea29e92ab",
+      "candidateSha256Lf": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06"
+    }
+  ],
+  "actual45SupportingInputs": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "dcaa277454a90930b0603d53d7ccf651a08202bcc0d73ff5124275a26c5421fd",
+      "matchesActual45Input": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+      "sha256Bytes": "bbc99f260a799626efb14603e06c90a35da14a1ef745dfe614ab397fca1f8a86",
+      "matchesActual45Input": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "fff510976494af0321ff26de3263d35aa02e53ef9613fc16fa3e7f27f50fb792",
+      "matchesActual45Input": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackPublication.kt",
+      "sha256Bytes": "35d8e32aece6fadf98eaf340f1be23d21796902f7bfc0a2d0cb1451feaac74eb",
+      "matchesActual45Input": true
+    }
+  ],
+  "declaredAdapters": [
+    "Structured owned outer guards replace original early return in routed comment effect",
+    "Owner identity includes original route root/target and openId; old owner disposal uses the existing common scope, selected-images, assets and exact epoch authority",
+    "Original immediate init routed open and state observer fallback remain original VM calls, no simplified REST wrapper",
+    "Milliseconds are request-local Double seconds, with existing history fallback/duration policy untouched",
+    "Matching route retention requires actual current native snapshot/sourceVersion and same receipt atomic admission; queue/source/pause remain unchanged",
+    "Positive retained seek requires real codec presence accepted by existing Mpv.seekTracked; otherwise ordinary route load preserves requested millisecond position. No native seek completion is fabricated"
+  ]
+}

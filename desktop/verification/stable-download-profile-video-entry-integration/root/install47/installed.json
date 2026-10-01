@@ -1,0 +1,50 @@
+{
+  "applied": true,
+  "newPayloads": 4,
+  "existingFamilyHunks": 17,
+  "families": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "baseSha256Lf": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "resultSha256Lf": "5eb88e5254d9b251d0c70995c478cb857b24188dff6dfbc923763f66f9dba327",
+      "hunks": 3
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseSha256Lf": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "resultSha256Lf": "3cb16a47b96b6d86297abcfdbaad1ed009e47089b264fd5b156f82487d2caeae",
+      "hunks": 1
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "baseSha256Lf": "2b043cb3f614a480d955ad59446de05e12589660d9dabded47f5062660af5593",
+      "resultSha256Lf": "f9cbf2e781b3cce2802ba9a813c61128069468362504b4c8042d05d92932342b",
+      "hunks": 6
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "baseSha256Lf": "57321d696b8de599b77a072fe49bca4266987bc67d23adb1a0d2122ea29e92ab",
+      "resultSha256Lf": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06",
+      "hunks": 4
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+      "baseSha256Lf": "ef4fd8c98211a3686824fbe1b55a0dcdf305a09b0598c269adc338f6f088c984",
+      "resultSha256Lf": "e1d11cc44f7cac317e53d09703885417276d6f4724f08815ef66dedb678542b7",
+      "hunks": 1
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseSha256Lf": "dbf8a344ccf718c7887ba8cfecf467ca39bc4162fabb98736e97c3a33e7dd57f",
+      "resultSha256Lf": "66695e0748c40bad16073a66ca3882e09bc60c24e208be3e0310f19c7ace6225",
+      "hunks": 2
+    }
+  ],
+  "newOriginalIdentities": 3,
+  "sourceCount": 938,
+  "resources": 213,
+  "newRuntimeArtifacts": 0,
+  "wholeCompilationPending": true,
+  "rootMounted": false,
+  "newExeDeployed": false
+}

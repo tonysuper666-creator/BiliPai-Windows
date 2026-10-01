@@ -1,0 +1,18 @@
+desktop\.local\stable-profile-account-port-parity\run-01\AccountPortFixture.kt:18:39: error: literals must be surrounded by whitespace.
+    store.saveAccount(mapOf("SESSDATA"to"synthetic-secondary","bili_jct"to"csrf-two"),AccountSummary(2,"Secondary","",true),imported=true,
+                                      ^^
+desktop\.local\stable-profile-account-port-parity\run-01\AccountPortFixture.kt:18:73: error: literals must be surrounded by whitespace.
+    store.saveAccount(mapOf("SESSDATA"to"synthetic-secondary","bili_jct"to"csrf-two"),AccountSummary(2,"Secondary","",true),imported=true,
+                                                                        ^^
+desktop\.local\stable-profile-account-port-parity\run-01\AccountPortFixture.kt:20:39: error: literals must be surrounded by whitespace.
+    store.saveAccount(mapOf("SESSDATA"to"synthetic-primary","bili_jct"to"csrf-one"),AccountSummary(1,"Primary",""),imported=true,
+                                      ^^
+desktop\.local\stable-profile-account-port-parity\run-01\AccountPortFixture.kt:20:71: error: literals must be surrounded by whitespace.
+    store.saveAccount(mapOf("SESSDATA"to"synthetic-primary","bili_jct"to"csrf-one"),AccountSummary(1,"Primary",""),imported=true,
+                                                                      ^^
+desktop\.local\stable-profile-account-port-parity\run-01\AccountPortFixture.kt:36:55: error: literals must be surrounded by whitespace.
+    verify(port.accessTokenCredentials()==("token-one"to"tv"),"same original access token platform")
+                                                      ^^
+desktop\.local\stable-profile-account-port-parity\run-01\AccountPortFixture.kt:43:87: error: literals must be surrounded by whitespace.
+    verify(store.currentCookies()==before&&port.accessTokenCredentials()==("token-one"to"tv"),"nav cannot rewrite credentials")
+                                                                                      ^^

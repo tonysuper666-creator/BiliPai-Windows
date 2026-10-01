@@ -1,0 +1,24 @@
+desktop\.local\stable-video-detail-admission-parity\run-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:206:55: warning: condition is always 'true'.
+            try { publication.admit(retainedSource, { context != null && owns(context) }) { true } }
+                                                      ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-detail-admission-parity\run-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:443:44: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+        recordQueueRequest(expected, player?.currentSourceVersion)
+                                           ^^
+desktop\.local\stable-video-detail-admission-parity\run-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:456:36: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+                val latest = player?.state?.value ?: native
+                                   ^^
+desktop\.local\stable-video-detail-admission-parity\run-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:460:27: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+                    player?.recoverSource(active.sourceVersion, publication.ownedSource(source.toNative(latest.positionSeconds, latest.paused),
+                          ^^
+desktop\.local\stable-video-detail-admission-parity\run-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:520:19: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            player?.setMuted(preferences().muted); pluginMuteUntilMs = null; pluginMuteFromMs = null
+                  ^^
+desktop\.local\stable-video-detail-admission-parity\run-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:527:76: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            if (!publication.tryAdmit(retained, { owns(context) }) { player?.replayAuthorized(context.sourceVersion, retained) == true }) return
+                                                                           ^^
+desktop\.local\stable-video-detail-admission-parity\run-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:878:54: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            danmaku?.setComments(emptyList()); player?.stopIfSourceVersion(version)
+                                                     ^^
+desktop\.local\stable-video-detail-admission-parity\run-03\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:900:37: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+            suspended = true; player?.setPaused(true)
+                                    ^^

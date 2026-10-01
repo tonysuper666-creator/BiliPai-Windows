@@ -1,0 +1,39 @@
+{
+  "baseActualSnapshot": 45,
+  "existingFamilies": 2,
+  "wholeFileInstallationForbidden": true,
+  "changes": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "baseSha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "baseSha256Lf": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "candidateSha256Lf": "5eb88e5254d9b251d0c70995c478cb857b24188dff6dfbc923763f66f9dba327",
+      "hunks": [
+        {
+          "before": "package com.bilipai.desktop.data",
+          "after": "package com.bilipai.desktop.data\n\nimport kotlinx.coroutines.CancellationException"
+        },
+        {
+          "before": "    internal fun accessTokenCredentials(): Pair<String?, String> = synchronized(lock) { saved.accessToken to saved.accessTokenPlatform }",
+          "after": "\n    /** Profile TokenManager writes share the canonical primary identity and encrypted file.\n     * Called only inside Repository's captured-epoch Store -> entry admission. */\n    internal fun saveProfileMid(mid: Long) = synchronized(lock) {\n        val account = saved.account ?: throw CancellationException(\"Profile primary session absent\")\n        if (mid <= 0L || account.mid != mid) throw CancellationException(\"Profile nav MID does not match captured primary\")\n        val next = saved.copy(account = account.copy(mid = mid)).let { it.copy(accounts = accountRecords(it)) }\n        persist(next); saved = next\n        mutableAccount.value = next.account\n        mutableAccounts.value = accountRecords(saved).map { it.toInfo() }\n    }\n\n    internal fun saveProfileVipStatus(vip: Boolean) = synchronized(lock) {\n        val account = saved.account ?: throw CancellationException(\"Profile primary session absent\")\n        val next = saved.copy(account = account.copy(isVip = vip)).let { it.copy(accounts = accountRecords(it)) }\n        persist(next); saved = next; refreshPlaybackAuthorizationLocked()\n        mutableAccount.value = next.account\n        mutableAccounts.value = accountRecords(saved).map { it.toInfo() }\n    }\n\n    /** Original AccountSessionStore.upsertCurrentAccount values, using this Store's credentials.\n     * No cookie/token/selected-playback identity is obtained from Profile's NavData. */\n    internal fun upsertProfileCurrentAccount(nav: com.android.purebilibili.data.model.response.NavData?) = synchronized(lock) {\n        val account = saved.account ?: return@synchronized\n        val mid = nav?.mid?.takeIf { it > 0L } ?: account.mid\n        val sessData = saved.cookies[\"SESSDATA\"]?.takeIf { it.isNotBlank() } ?: return@synchronized\n        if (mid != account.mid) throw CancellationException(\"Profile upsert MID does not match captured primary\")\n        val existing = accountRecords(saved).associateBy { it.session.mid }\n        val previous = existing[mid]\n        val timestamp = System.currentTimeMillis()\n        val updated = StoredAccountSession(\n            mid = mid,\n            name = nav?.uname?.ifBlank { previous?.session?.name.orEmpty() } ?: previous?.session?.name.orEmpty(),\n            face = nav?.face?.ifBlank { previous?.session?.face.orEmpty() } ?: previous?.session?.face.orEmpty(),\n            sessData = sessData,\n            csrf = saved.cookies[\"bili_jct\"].orEmpty(),\n            accessToken = saved.accessToken.orEmpty(),\n            refreshToken = saved.refreshToken,\n            accessTokenPlatform = saved.accessTokenPlatform,\n            buvid3 = saved.cookies[\"buvid3\"].orEmpty().ifBlank { saved.spiCookies[\"buvid3\"].orEmpty() },\n            isVip = nav?.vip?.status == 1 || account.isVip,\n            vipLabel = nav?.vip?.label?.text.orEmpty().ifBlank { previous?.session?.vipLabel.orEmpty() },\n            lastUsedAt = timestamp\n        )\n        val primary = account.copy(name = updated.name, avatar = updated.face, isVip = updated.isVip)\n        val nextPrimary = saved.copy(account = primary, lastUsedAt = timestamp)\n        val record = recordCurrent(nextPrimary).copy(session = updated)\n        val merged = existing.values.filterNot { it.session.mid == mid }.plus(record).sortedByDescending { it.session.lastUsedAt }\n        val next = nextPrimary.copy(accounts = merged)\n        persist(next); saved = next; refreshPlaybackAuthorizationLocked()\n        mutableAccount.value = primary\n        mutableAccounts.value = accountRecords(saved).map { it.toInfo() }\n    }\n\n    internal fun accessTokenCredentials(): Pair<String?, String> = synchronized(lock) { saved.accessToken to saved.accessTokenPlatform }"
+        },
+        {
+          "before": "session.cookies[\"buvid3\"].orEmpty().ifBlank { session.spiCookies[\"buvid3\"].orEmpty() }, account.isVip, lastUsedAt = session.lastUsedAt)",
+          "after": "session.cookies[\"buvid3\"].orEmpty().ifBlank { session.spiCookies[\"buvid3\"].orEmpty() }, account.isVip,\n            vipLabel = session.accounts.firstOrNull { it.session.mid == account.mid }?.session?.vipLabel.orEmpty(),\n            lastUsedAt = session.lastUsedAt)"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseSha256Bytes": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "baseSha256Lf": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "candidateSha256Lf": "3cb16a47b96b6d86297abcfdbaad1ed009e47089b264fd5b156f82487d2caeae",
+      "hunks": [
+        {
+          "before": "    internal val httpClient: OkHttpClient get() = client",
+          "after": "\n    /** All Profile reads/writes are admitted by THIS same Store, then Root's entry gate.\n     * The callback must only commit short synchronous state/file actions, never HTTP/native join. */\n    internal fun <T> withProfileAccountAdmission(expectedEpoch: Long, expectedMid: Long?,\n        stillOwned: () -> Boolean, commitIfCurrent: ((() -> Unit) -> Boolean),\n        action: DesktopSessionStore.() -> T): T {\n        try {\n            return sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) {\n                if (sessions.activeAccountMid() != expectedMid) throw CancellationException(\"Profile primary MID changed\")\n                var applied = false\n                var value: Any? = null\n                val admitted = commitIfCurrent {\n                    if (sessions.generation != expectedEpoch || sessions.activeAccountMid() != expectedMid || !stillOwned())\n                        throw CancellationException(\"Profile account entry retired\")\n                    value = action(sessions); applied = true\n                }\n                if (!admitted || !applied) throw CancellationException(\"Profile account entry rejected\")\n                @Suppress(\"UNCHECKED_CAST\")\n                value as T\n            }\n        } catch (error: BiliApiException) {\n            throw CancellationException(\"Profile account epoch retired\").also { it.initCause(error) }\n        }\n    }\n\n    /** Root's existing authentication/cache reset, outside Store/entry monitors. */\n    internal fun profileAuthenticationChanged() = resetAuthentication()\n\n    /** Completion of this exact logout only: no mutation or admission under the new epoch. */\n    internal fun verifyProfileLogoutTerminal(expectedEpoch: Long, acceptedEpoch: Long): Boolean = try {\n        sessions.withHomeRequestAdmission(acceptedEpoch, { true }) {\n            acceptedEpoch == expectedEpoch + 1L && sessions.activeAccountMid() == null && sessions.currentCookies()[\"SESSDATA\"].isNullOrBlank()\n        }\n    } catch (_: BiliApiException) { false }\n\n    internal val httpClient: OkHttpClient get() = client"
+        }
+      ]
+    }
+  ]
+}

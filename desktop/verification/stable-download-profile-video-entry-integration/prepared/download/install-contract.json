@@ -1,0 +1,34 @@
+{
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDownloadListBindings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDownloadListBindings.kt",
+      "sha256Bytes": "a7f6e9d8466ade08f511a51a5766323cf71aac130633896847d6d6afe93bc020",
+      "sha256LF": "a7f6e9d8466ade08f511a51a5766323cf71aac130633896847d6d6afe93bc020"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDownloadListHost.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDownloadListHost.kt",
+      "sha256Bytes": "0392800388fc6e4c8d0bea4347788370ef7278ab3bfb1f945774904a988679eb",
+      "sha256LF": "0392800388fc6e4c8d0bea4347788370ef7278ab3bfb1f945774904a988679eb"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\prepared\\desktop\\tools\\extract-upstream-download-list.py",
+      "target": "desktop/tools/extract-upstream-download-list.py",
+      "sha256Bytes": "b4c9819aae4f09e4beb76e5e08b99965a9e0307cbca1b64bcf8b69815f2a5477",
+      "sha256LF": "b4c9819aae4f09e4beb76e5e08b99965a9e0307cbca1b64bcf8b69815f2a5477"
+    }
+  ],
+  "sharedHunkFile": "shared-local-hunks.json",
+  "sharedHunks": 3,
+  "sharedTargets": 2,
+  "generatedSources": 3,
+  "soleDirectPolicySources": 1,
+  "manualSources": 2,
+  "newRegistryRows": 3,
+  "sameExistingSettingsIdentityFeatureMerge": 1,
+  "rootFactoryRequired": true,
+  "offlinePlayerOriginalUiStillPending": true,
+  "noNativeRebuildNeededForThisSourceOnlyUi": true,
+  "noJarInstallation": true
+}

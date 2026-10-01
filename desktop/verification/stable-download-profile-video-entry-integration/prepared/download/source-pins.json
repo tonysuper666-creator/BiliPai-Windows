@@ -1,0 +1,5 @@
+{
+  "app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt": "ef589577cc3c4a7f533016e76b6a89bb2d9fb394c9bfd5710fba8f9cf3f05a15",
+  "app/src/main/java/com/android/purebilibili/feature/download/DownloadStoragePolicy.kt": "a5b874db17777ade210027e7b517fe9a292a94fe117844d0ed139f9ce2d3f74c",
+  "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+}

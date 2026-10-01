@@ -1,0 +1,128 @@
+{
+  "status": "PASS_FROZEN_ACTUAL47_FIXTURE_ONLY",
+  "actualSnapshot": 47,
+  "runtimeEntries": 97,
+  "fixtureUnchangedFromFrozen58": true,
+  "originalUiProof": {
+    "status": "PASS",
+    "groups": 3,
+    "assertions": 21,
+    "pointerPairs": 2,
+    "loadedCandidateClasses": 36,
+    "actualRootRuntimeAccepted": false,
+    "rootMounted": false,
+    "HTTPCalls": 0,
+    "chooserOpened": false,
+    "offscreenOriginalUi": true,
+    "actualQueueAndLocalDelete": true,
+    "actualSnapshot": 47,
+    "actualRuntimeEntries": 97,
+    "actualInstalledOriginalUi": true,
+    "runtimeProductionOverrides": 0,
+    "fixtureOnlyClassCount": 13,
+    "fixtureProductionClassIntersection": [],
+    "classOrigins": {
+      "status": "PASS",
+      "verifiedInstalledClassesBeforeAndAfter": 36,
+      "extraActualOwnerClasses": 4,
+      "runtimeProductionOverrides": 0,
+      "referenceJarOnClasspath": false
+    },
+    "newFixtureJarSha256Bytes": "0712a796e95642b33da0fa7f794582e331640d8584b8b3cfe3105be4874474bc",
+    "all97RuntimeAndFixturePinsBeforeAfterEqual": true,
+    "sharedGradleRun": false,
+    "referenceJarRuntimeOrCompilerEntry": false,
+    "legacyFieldMeaning": {
+      "loadedCandidateClasses": "Historical fixture field: these 36 names are loaded from actual47; the older reference JAR supplies names only, never code."
+    }
+  },
+  "classOriginsBeforeAfter": {
+    "status": "PASS",
+    "verifiedInstalledClassesBeforeAndAfter": 36,
+    "extraActualOwnerClasses": 4,
+    "runtimeProductionOverrides": 0,
+    "referenceJarOnClasspath": false
+  },
+  "productionOverrides": 0,
+  "sharedEdits": false,
+  "sharedGradleRun": false,
+  "fullRootMountedOrRuntimeAccepted": false,
+  "old58Modified": false,
+  "files": [
+    {
+      "path": "ActualDownloadFixtureConstruction.kt",
+      "sha256Bytes": "7dbb20cce76d6f8cd86804360235741385f123dc0fbf213821ad76482521d984",
+      "size": 1378
+    },
+    {
+      "path": "ActualDownloadOriginRunner.kt",
+      "sha256Bytes": "09c4b8d33c45b6ddd1bb78279bae02bef786cc64e81ae28c7d723d6122ca6c6b",
+      "size": 2065
+    },
+    {
+      "path": "run-01/compile.log",
+      "sha256Bytes": "c7e079e0a29034ec2f1390d8b8547e733f5727dc30221b71d2204d41022ea507",
+      "size": 3438
+    },
+    {
+      "path": "run-01/compiler.args",
+      "sha256Bytes": "2684d0233d8e62a268b03a0fad71f9a5d759ac4c52403a2372486df2d385ecc8",
+      "size": 24964
+    },
+    {
+      "path": "run-01/pins-before.json",
+      "sha256Bytes": "f22957ddae80b2d17ed12d7a01e7dece6592862d0fb584b13c63627d6fcdf5b1",
+      "size": 38579
+    },
+    {
+      "path": "run-02/actual47-download-fixture.jar",
+      "sha256Bytes": "0712a796e95642b33da0fa7f794582e331640d8584b8b3cfe3105be4874474bc",
+      "size": 41753
+    },
+    {
+      "path": "run-02/classes/META-INF/actual47_download_fixture.kotlin_module",
+      "sha256Bytes": "2e13c46fc1bd628164ca9c2faff0b6f308eefb59e3b63ad754d4e5c832ec80bc",
+      "size": 169
+    },
+    {
+      "path": "run-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "run-02/compiler.args",
+      "sha256Bytes": "5869e693dc72ada3303ee76ed5da73d975e18de5756d52d707b637cca0f5bc7b",
+      "size": 25142
+    },
+    {
+      "path": "run-02/pins-after.json",
+      "sha256Bytes": "2a800d5a3787d494d9a4cbdf52056f5467627f17d1471b7dadd286d864a583c5",
+      "size": 38923
+    },
+    {
+      "path": "run-02/pins-before.json",
+      "sha256Bytes": "2a800d5a3787d494d9a4cbdf52056f5467627f17d1471b7dadd286d864a583c5",
+      "size": 38923
+    },
+    {
+      "path": "run-02/proof-result.json",
+      "sha256Bytes": "1f7491787264a462b386896ee0cb4014fef1cf4fb2d8bb3e75644c18d6c05893",
+      "size": 1105
+    },
+    {
+      "path": "run-02/run.log",
+      "sha256Bytes": "fc8c14308bc5f1b6373816c70130878cdbf2cbccc3b60398fa1b01c5d891d22f",
+      "size": 491
+    },
+    {
+      "path": "run-02/runtime-command.json",
+      "sha256Bytes": "645a83eeff55e0e1650d7f8439c7b7f67e159a4930677ad69d445095a2bbb49b",
+      "size": 26601
+    },
+    {
+      "path": "run.py",
+      "sha256Bytes": "5350591b08c1ca955ea8c4014e5bb8e342d1d6945ef903346f269d92fcf19175",
+      "size": 6545
+    }
+  ]
+}

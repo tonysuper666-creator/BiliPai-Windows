@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "groups": 3,
+  "assertions": 21,
+  "pointerPairs": 2,
+  "loadedCandidateClasses": 36,
+  "actualRootRuntimeAccepted": false,
+  "rootMounted": false,
+  "HTTPCalls": 0,
+  "chooserOpened": false,
+  "offscreenOriginalUi": true,
+  "actualQueueAndLocalDelete": true,
+  "actualSnapshot": 47,
+  "actualRuntimeEntries": 97,
+  "actualInstalledOriginalUi": true,
+  "runtimeProductionOverrides": 0,
+  "fixtureOnlyClassCount": 13,
+  "fixtureProductionClassIntersection": [],
+  "classOrigins": {
+    "status": "PASS",
+    "verifiedInstalledClassesBeforeAndAfter": 36,
+    "extraActualOwnerClasses": 4,
+    "runtimeProductionOverrides": 0,
+    "referenceJarOnClasspath": false
+  },
+  "newFixtureJarSha256Bytes": "0712a796e95642b33da0fa7f794582e331640d8584b8b3cfe3105be4874474bc",
+  "all97RuntimeAndFixturePinsBeforeAfterEqual": true,
+  "sharedGradleRun": false,
+  "referenceJarRuntimeOrCompilerEntry": false,
+  "legacyFieldMeaning": {
+    "loadedCandidateClasses": "Historical fixture field: these 36 names are loaded from actual47; the older reference JAR supplies names only, never code."
+  }
+}

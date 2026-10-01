@@ -1,0 +1,4 @@
+FIXTURE_LIST_RENDERED
+FIXTURE_DELETE_POINTER
+DOWNLOAD_LIST_PROOF {"status":"PASS","groups":3,"assertions":21,"pointerPairs":2,"loadedCandidateClasses":36,"actualRootRuntimeAccepted":false,"rootMounted":false,"HTTPCalls":0,"chooserOpened":false,"offscreenOriginalUi":true,"actualQueueAndLocalDelete":true}
+ACTUAL_DOWNLOAD_ORIGIN_PROOF {"status":"PASS","verifiedInstalledClassesBeforeAndAfter":36,"extraActualOwnerClasses":4,"runtimeProductionOverrides":0,"referenceJarOnClasspath":false}

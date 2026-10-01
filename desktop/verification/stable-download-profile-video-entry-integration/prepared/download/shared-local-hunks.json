@@ -1,0 +1,38 @@
+{
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+      "baseSha256LF": "ef4fd8c98211a3686824fbe1b55a0dcdf305a09b0598c269adc338f6f088c984",
+      "candidateSha256LF": "e1d11cc44f7cac317e53d09703885417276d6f4724f08815ef66dedb678542b7",
+      "exactReversePass": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseSha256LF": "dbf8a344ccf718c7887ba8cfecf467ca39bc4162fabb98736e97c3a33e7dd57f",
+      "candidateSha256LF": "66695e0748c40bad16073a66ca3882e09bc60c24e208be3e0310f19c7ace6225",
+      "exactReversePass": true
+    }
+  ],
+  "rows": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+      "before": "private fun desktopDownloadNetworkAvailable(): Boolean = runCatching {",
+      "after": "internal fun desktopDownloadNetworkAvailable(): Boolean = runCatching {",
+      "count": 1
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "before": "                                        if (repository.sessionEpoch != expectedEpoch) throw CancellationException(\"下载账号已切换\")",
+      "after": "                                        if (repository.sessionEpoch != expectedEpoch) throw CancellationException(\"下载账号已切换\")\n                                        val downloadDestination = desktopOriginalDownloadDestination(globalPluginContext) {\n                                            !isClosing() && !activatingUpdate && repository.sessionEpoch == expectedEpoch &&\n                                                downloadJob?.isActive == true && playback.state.value.details?.bvid == info.bvid &&\n                                                playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == part.cid\n                                        }",
+      "count": 1
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "before": "authorizationReceipt = source.authorizationReceipt), metadata = DownloadMetadata(\n                                            aid = info.aid, bvid = info.bvid, cid = part.cid",
+      "after": "authorizationReceipt = source.authorizationReceipt), destination = downloadDestination, metadata = DownloadMetadata(\n                                            aid = info.aid, bvid = info.bvid, cid = part.cid",
+      "count": 1
+    }
+  ],
+  "wholeSharedCandidateInstall": false,
+  "keepRootPlayback45Admission": true
+}

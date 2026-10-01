@@ -1,0 +1,1 @@
+PASS profile account 3 groups 30 assertions; explicit Store/Repository candidate overrides, no HTTP/socket/RootWindow

@@ -1,0 +1,16 @@
+{
+  "fixtureClasses": [
+    "com/bilipai/desktop/Requests$getSortedSubCommentsForSubject$1.class",
+    "com/bilipai/desktop/Requests$getSortedSubCommentsForSubject$2.class",
+    "com/bilipai/desktop/Requests.class",
+    "com/bilipai/desktop/RouteAdmissionFixtureKt$commentRoutes$1.class",
+    "com/bilipai/desktop/RouteAdmissionFixtureKt$controller$1.class",
+    "com/bilipai/desktop/RouteAdmissionFixtureKt$controller$backend$1.class",
+    "com/bilipai/desktop/RouteAdmissionFixtureKt$main$1.class",
+    "com/bilipai/desktop/RouteAdmissionFixtureKt$swing$2.class",
+    "com/bilipai/desktop/RouteAdmissionFixtureKt$waitFor$2.class",
+    "com/bilipai/desktop/RouteAdmissionFixtureKt.class"
+  ],
+  "fixtureProductIntersections": [],
+  "fixtureCandidateIntersections": []
+}

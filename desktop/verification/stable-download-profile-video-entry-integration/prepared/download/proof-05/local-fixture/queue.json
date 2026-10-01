@@ -1,0 +1,23 @@
+[
+    {
+        "item": {
+            "bvid": "BVfixture",
+            "cid": 1,
+            "title": "Completed synthetic task",
+            "cover": "",
+            "ownerName": "fixture",
+            "ownerFace": "",
+            "duration": 4,
+            "quality": 80,
+            "qualityDesc": "1080P",
+            "videoUrl": "https://fixture.invalid/video",
+            "audioUrl": "",
+            "status": "COMPLETED",
+            "filePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\proof-05\\local-fixture\\downloads\\download-918fb1252169401802bd8f1f\\video.mp4",
+            "fileSize": 3,
+            "createdAt": 1,
+            "localCoverPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\proof-05\\local-fixture\\local-cover.png"
+        },
+        "destinationRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\proof-05\\local-fixture\\downloads"
+    }
+]

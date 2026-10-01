@@ -1,0 +1,237 @@
+{
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt",
+      "originalSha256LF": "ef589577cc3c4a7f533016e76b6a89bb2d9fb394c9bfd5710fba8f9cf3f05a15",
+      "output": "com/android/purebilibili/feature/download/DownloadListScreen.kt",
+      "preparedSha256LF": "00045b56b7bfa225989473598931bc3b2edba49445e97d130596db126a609b7f",
+      "wholeOriginalFile": true,
+      "exactReversePass": true,
+      "deltaCount": 20
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/DownloadStoragePolicy.kt",
+      "originalSha256LF": "a5b874db17777ade210027e7b517fe9a292a94fe117844d0ed139f9ce2d3f74c",
+      "output": "com/android/purebilibili/feature/download/DownloadStoragePolicy.kt",
+      "preparedSha256LF": "84f1297bd3a5f887e7923972ee53a34eae282c266b17c65551b09870b5bde770",
+      "wholeOriginalFile": true,
+      "exactReversePass": true,
+      "deltaCount": 1
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "originalSha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "output": "com/android/purebilibili/core/store/DesktopOriginalDownloadListSettings.kt",
+      "preparedSha256LF": "2579d780e5f21f665a9ac4ea1efc9a62cec6579a4ea50068f953d8a999f3162e",
+      "wholeOriginalFile": false,
+      "exactReversePass": false,
+      "deltaCount": 1
+    }
+  ],
+  "soleDirectReference": "app/src/main/java/com/android/purebilibili/feature/download/DownloadTaskPresentationPolicy.kt",
+  "standalone": false,
+  "exactDeltas": {
+    "app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt": [
+      {
+        "before": "import android.widget.Toast\n",
+        "after": "",
+        "count": 1,
+        "afterOffsets": [
+          51
+        ]
+      },
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext",
+        "after": "import coil3.compose.LocalPlatformContext as LocalContext\nimport com.bilipai.desktop.ui.LocalDesktopOriginalDownloadListBindings\nimport com.bilipai.desktop.ui.desktopOriginalDownloadListScreenWidthDp",
+        "count": 1,
+        "afterOffsets": [
+          1571
+        ]
+      },
+      {
+        "before": "import com.android.purebilibili.core.store.SettingsManager",
+        "after": "import com.android.purebilibili.core.store.DesktopOriginalDownloadListSettings as SettingsManager",
+        "count": 1,
+        "afterOffsets": [
+          1972
+        ]
+      },
+      {
+        "before": "import com.android.purebilibili.core.util.NetworkUtils\n",
+        "after": "",
+        "count": 1,
+        "afterOffsets": [
+          2735
+        ]
+      },
+      {
+        "before": "import androidx.lifecycle.compose.collectAsStateWithLifecycle",
+        "after": "import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle",
+        "count": 1,
+        "afterOffsets": [
+          2767
+        ]
+      },
+      {
+        "before": "onOfflineVideoClick: (String) -> Unit = {}",
+        "after": "onOfflineVideoClick: (String) -> Unit",
+        "count": 1,
+        "afterOffsets": [
+          3128
+        ]
+      },
+      {
+        "before": "    val context = LocalContext.current",
+        "after": "    val context = LocalContext.current\n    val bindings = LocalDesktopOriginalDownloadListBindings.current",
+        "count": 1,
+        "afterOffsets": [
+          3195
+        ]
+      },
+      {
+        "before": "androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp.toFloat()",
+        "after": "desktopOriginalDownloadListScreenWidthDp()",
+        "count": 1,
+        "afterOffsets": [
+          3510
+        ]
+      },
+      {
+        "before": "DownloadManager.tasks",
+        "after": "bindings.tasks",
+        "count": 1,
+        "afterOffsets": [
+          3577
+        ]
+      },
+      {
+        "before": "resolveDisplayedDownloadLocation(",
+        "after": "bindings.displayedDownloadLocation(",
+        "count": 1,
+        "afterOffsets": [
+          4201
+        ]
+      },
+      {
+        "before": "androidx.compose.ui.platform.LocalContext.current",
+        "after": "LocalContext.current",
+        "count": 1,
+        "afterOffsets": [
+          15524
+        ]
+      },
+      {
+        "before": "SettingsManager.getDownloadPath(context)",
+        "after": "SettingsManager.getDownloadPath(bindings.context)",
+        "count": 1,
+        "afterOffsets": [
+          3761
+        ]
+      },
+      {
+        "before": "SettingsManager.getDownloadExportTreeUri(context)",
+        "after": "SettingsManager.getDownloadExportTreeUri(bindings.context)",
+        "count": 1,
+        "afterOffsets": [
+          3893
+        ]
+      },
+      {
+        "before": "SettingsManager.getDefaultDownloadPath(context)",
+        "after": "SettingsManager.getDefaultDownloadPath(bindings.context)",
+        "count": 1,
+        "afterOffsets": [
+          4304
+        ]
+      },
+      {
+        "before": "NetworkUtils.isNetworkAvailable(context)",
+        "after": "bindings.isNetworkAvailable()",
+        "count": 2,
+        "afterOffsets": [
+          3687,
+          4540
+        ]
+      },
+      {
+        "before": "initialValue =",
+        "after": "initial =",
+        "count": 2,
+        "afterOffsets": [
+          3828,
+          3964
+        ]
+      },
+      {
+        "before": "DownloadManager.pauseDownload",
+        "after": "bindings.pauseDownload",
+        "count": 2,
+        "afterOffsets": [
+          6238,
+          10338
+        ]
+      },
+      {
+        "before": "DownloadManager.startDownload",
+        "after": "bindings.startDownload",
+        "count": 2,
+        "afterOffsets": [
+          6461,
+          10460
+        ]
+      },
+      {
+        "before": "DownloadManager.removeTask",
+        "after": "bindings.removeTask",
+        "count": 1,
+        "afterOffsets": [
+          13333
+        ]
+      },
+      {
+        "before": "                                        Toast.makeText(\n                                            context,\n                                            \"本地文件不可用，已切换在线播放\",\n                                            Toast.LENGTH_SHORT\n                                        ).show()",
+        "after": "                                        bindings.showFeedback(\"本地文件不可用，已切换在线播放\")",
+        "count": 1,
+        "afterOffsets": [
+          9691
+        ]
+      }
+    ],
+    "app/src/main/java/com/android/purebilibili/feature/download/DownloadStoragePolicy.kt": [
+      {
+        "before": "import com.android.purebilibili.core.util.decodeUrlComponentCompat",
+        "after": "import java.net.URLDecoder.decode as decodeUrlComponentCompat",
+        "count": 1,
+        "afterOffsets": [
+          112
+        ]
+      }
+    ],
+    "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt": [
+      {
+        "before": "fun getDefaultDownloadPath(context: Context): String {\n    val baseDir = runCatching { context.getExternalFilesDir(null) }\n        .getOrNull()\n        ?: context.filesDir\n    return File(baseDir, \"downloads\").absolutePath\n}",
+        "after": "fun getDefaultDownloadPath(context: Context): String {\n    return com.bilipai.desktop.download.DesktopDownloadManager.defaultDownloadRoot().toAbsolutePath().normalize().toString()\n}",
+        "count": 1
+      }
+    ]
+  },
+  "selectedSettingsDeclarations": [
+    "KEY_DOWNLOAD_PATH",
+    "KEY_DOWNLOAD_EXPORT_TREE_URI",
+    "getDownloadPath",
+    "getDownloadExportTreeUri",
+    "getDefaultDownloadPath"
+  ],
+  "selectedSettingsOriginalSha256LF": "0fb41e64aa1d9d69d02d8752faa189be12f5a643c759ccd28038612125589683",
+  "selectedSettingsAdaptedSha256LF": "53cef43a44d400f9d292ae2a925d900e217b894d8c939ae7858d2e72e62f66f9",
+  "selectedSettingsExactInversePass": true,
+  "canonicalGetterBodiesUnchanged": true,
+  "allThreeListDeclarationsRetained": [
+    "DownloadListScreen",
+    "formatDownloadStorageBytes",
+    "DownloadTaskItem"
+  ],
+  "newHttpClient": false,
+  "newTaskModelOrStore": false
+}

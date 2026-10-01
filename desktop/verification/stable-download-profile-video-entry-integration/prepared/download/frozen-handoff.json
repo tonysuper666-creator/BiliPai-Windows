@@ -1,0 +1,292 @@
+{
+  "scope": "Complete original v0.2.3 DownloadListScreen and original storage/display policies with sole existing Windows queue bindings",
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualSnapshot": 44,
+  "actualRuntimeEntries": 97,
+  "actualOrderedCpSha256Bytes": "b4d72f39a19b3704e657a9edb8c8e8d18c10a1a352481c34a96f0ad208e17141",
+  "production": {
+    "payloads": 3,
+    "manual": 2,
+    "generated": 3,
+    "direct": 1,
+    "newRegistryRows": 3,
+    "settingsIdentityFeatureMerge": 1,
+    "sharedLocalHunks": 3,
+    "sharedTargets": 2,
+    "newDependencies": 0,
+    "prospectiveProductOverrides": 0
+  },
+  "compile": {
+    "sources": 6,
+    "classes": 36,
+    "methods": 182,
+    "newFqnOverlap": 0,
+    "newPublicTopMethodOverlap": 0,
+    "invalidJvmMethodNames": 0,
+    "jarSha256Bytes": "c2f2b68fb3bb06ee29e673f88b510484b49ae81928615cf23a95b2b7b83aa959"
+  },
+  "proof": {
+    "groups": 3,
+    "assertions": 21,
+    "sourceChecks": 18,
+    "pointerPairs": 2,
+    "loadedClasses": 36,
+    "originalOffscreenUi": true,
+    "sameActualQueueAndStore": true,
+    "fixtureOnlyOwnedAdmission": true,
+    "externalHTTP": false,
+    "realAccountOrUserFiles": false,
+    "chooser": false,
+    "nativePlayer": false
+  },
+  "originalUIAndStorageWholeReverse": true,
+  "sourceBodiesGitVerified": true,
+  "newHttpTaskStoreOrPlayer": false,
+  "rootMounted": false,
+  "sharedSourcesModified": false,
+  "sharedGradleRun": false,
+  "deployed": false,
+  "remainingRequiredRootAcceptance": [
+    "Serial source/registry/local-hunk install and whole classes",
+    "Actual retained DownloadList key and foreground/scaffold/theme provider",
+    "Required offline taskId consumer on existing retained native owner",
+    "Full original OfflineVideoPlayerScreen remains a separate UI closure",
+    "Windows Android-SAF export capability is unsupported, reported rather than simulated"
+  ],
+  "installContractSha256Bytes": "14316e5c93041f98d660d818d76d8848720a560b75cf308a473efbe2f822d44e",
+  "rootRecipeSha256Bytes": "e1362ecda40d3629a7a1235afb5d4c4adcbde0eb3e9d180394522e5588125fdc",
+  "artifacts": [
+    {
+      "path": "DownloadListFixture.kt",
+      "sha256Bytes": "2d4ef8d056563dd9dd33e00e6c80c06b94d9a55dc52c4a56e178977cca14327a"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "e1362ecda40d3629a7a1235afb5d4c4adcbde0eb3e9d180394522e5588125fdc"
+    },
+    {
+      "path": "abi-audit.json",
+      "sha256Bytes": "6652ec89fe70842e9267d3ce79baa01b6f901cf7ae88ce3160bacfdfa1457c9d"
+    },
+    {
+      "path": "compile-01/kotlin.log",
+      "sha256Bytes": "9fa94ff51e2e1ea9ab784630435521cb0de4bc2bad7bb95900ac0c7dc72a81c1"
+    },
+    {
+      "path": "compile-03/compile-result.json",
+      "sha256Bytes": "07289b64f11b529a3dc0708b2312096fe74120c6b6d540a7567e719416aca94a"
+    },
+    {
+      "path": "compile-03/kotlin.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-03/original-download-list.jar",
+      "sha256Bytes": "c2f2b68fb3bb06ee29e673f88b510484b49ae81928615cf23a95b2b7b83aa959"
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "0f3b349809e6ac8e430516159e6f15b2be6c795a9e4ca6a6d97f3e2c79ab790f"
+    },
+    {
+      "path": "finish.py",
+      "sha256Bytes": "29a98ebd62cbbe2b7e9f4f25f3d0567a28aba0ca954273d09e9a3a680e01ed41"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "e541bb58320d7fcc5315b5c8dcf52b5e9506280dc67878299731e6e9c1a25759"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/DesktopOriginalDownloadListSettings.kt",
+      "sha256Bytes": "2579d780e5f21f665a9ac4ea1efc9a62cec6579a4ea50068f953d8a999f3162e"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/download/DownloadListScreen.kt",
+      "sha256Bytes": "00045b56b7bfa225989473598931bc3b2edba49445e97d130596db126a609b7f"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/download/DownloadStoragePolicy.kt",
+      "sha256Bytes": "84f1297bd3a5f887e7923972ee53a34eae282c266b17c65551b09870b5bde770"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/download/DownloadTaskPresentationPolicy.kt",
+      "sha256Bytes": "b7a3849710941b82fbba529d6f5f8f6e9d824a73ed75b2203f05f213ac89d54d"
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt.txt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt.txt",
+      "sha256Bytes": "ef589577cc3c4a7f533016e76b6a89bb2d9fb394c9bfd5710fba8f9cf3f05a15"
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/download/DownloadStoragePolicy.kt.txt",
+      "sha256Bytes": "a5b874db17777ade210027e7b517fe9a292a94fe117844d0ed139f9ce2d3f74c"
+    },
+    {
+      "path": "generated/original-retained/app/src/main/java/com/android/purebilibili/feature/download/DownloadTaskPresentationPolicy.kt.txt",
+      "sha256Bytes": "b7a3849710941b82fbba529d6f5f8f6e9d824a73ed75b2203f05f213ac89d54d"
+    },
+    {
+      "path": "generated/source-receipt.json",
+      "sha256Bytes": "91c765337dfb1842b7c20f3ebaaeed242a18063b430e84dbe09a8178089b3a4c"
+    },
+    {
+      "path": "gradle-task.snippet.kts",
+      "sha256Bytes": "ca8097f201c0b1c111c0accca0a76c76cd239a125ebb49465a3777e5737fa980"
+    },
+    {
+      "path": "input-audit.json",
+      "sha256Bytes": "8273af9ac0d7702074eeb2d01026d11dfc7bc71a890df923a0379f343e95c9b4"
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "14316e5c93041f98d660d818d76d8848720a560b75cf308a473efbe2f822d44e"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDownloadListBindings.kt",
+      "sha256Bytes": "a7f6e9d8466ade08f511a51a5766323cf71aac130633896847d6d6afe93bc020"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDownloadListHost.kt",
+      "sha256Bytes": "0392800388fc6e4c8d0bea4347788370ef7278ab3bfb1f945774904a988679eb"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-download-list.py",
+      "sha256Bytes": "b4c9819aae4f09e4beb76e5e08b99965a9e0307cbca1b64bcf8b69815f2a5477"
+    },
+    {
+      "path": "production-byte-equality.json",
+      "sha256Bytes": "097de5d7008a7e08fcd0cbfff6568ffdf8275e8f9108024fd7d0dce2738313bf"
+    },
+    {
+      "path": "proof-01/run.log",
+      "sha256Bytes": "a13cbf35853b90aa05ac75da63be98760c0d2f121ee3a307700c1318155f2fe6"
+    },
+    {
+      "path": "proof-02/run.log",
+      "sha256Bytes": "dcd90b0eb9f9bc47adeaf974cd5d138b6b28776f93721d07f1b82de45b551b8c"
+    },
+    {
+      "path": "proof-03/run.log",
+      "sha256Bytes": "472f083d19d4387c5f0a3651d60abe686fc084ea8f9d14b2376ed264358d7463"
+    },
+    {
+      "path": "proof-05/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-05/download-list-fixture.jar",
+      "sha256Bytes": "af6a6cfd7453f6c439ef85e0f5a7e8e7338c433c635701f973418e689f775032"
+    },
+    {
+      "path": "proof-05/local-fixture/downloads/download-918fb1252169401802bd8f1f/.bilipai-download",
+      "sha256Bytes": "918fb1252169401802bd8f1fb6178f47d133ab730e24f5bad73741c11fb542e3"
+    },
+    {
+      "path": "proof-05/local-fixture/downloads/download-918fb1252169401802bd8f1f/audio.m4s",
+      "sha256Bytes": "2fa1b377bf67309f65e5e7bc9d924345ca648dec4e601a398a9cb497dcba3765"
+    },
+    {
+      "path": "proof-05/local-fixture/downloads/download-918fb1252169401802bd8f1f/danmaku.pb",
+      "sha256Bytes": "67586e98fad27da0b9968bc039a1ef34c939b9b8e523a8bef89d478608c5ecf6"
+    },
+    {
+      "path": "proof-05/local-fixture/downloads/download-918fb1252169401802bd8f1f/video.mp4",
+      "sha256Bytes": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81"
+    },
+    {
+      "path": "proof-05/local-fixture/local-cover.png",
+      "sha256Bytes": "9ec2631071657ca6dfba3c48340413a17769e6be8eaccaa6d0c8ef53fa09d46a"
+    },
+    {
+      "path": "proof-05/local-fixture/queue.json",
+      "sha256Bytes": "3311d181cedb83cb73eefb610e1304b84c1d4b130cc30307dec984d5f40c4646"
+    },
+    {
+      "path": "proof-05/local-fixture/settings/plugin-settings.json",
+      "sha256Bytes": "797182a9bfc79023de80df44e3906d6e5a5b5370a81ab6ac2e4c9f248d067c8a"
+    },
+    {
+      "path": "proof-05/proof-result.json",
+      "sha256Bytes": "ed6f21ba48ab790457141b717f9483d20d4fba60d1085cc2dfdd4d4f5beafd0e"
+    },
+    {
+      "path": "proof-05/run.log",
+      "sha256Bytes": "d5bce49c79090894b297d0eee197705efee78390969523a3d1d7aae0b63b00df"
+    },
+    {
+      "path": "registry-merge-recipe.json",
+      "sha256Bytes": "a6a64f5df7f5743fe2a020d1ba9bd472acc4b76e9294736587eb0fb0fbc6113a"
+    },
+    {
+      "path": "replay-production.log",
+      "sha256Bytes": "f7b1ead02894926ba394ec29bb2457093cc7ad231eef53ba2d6dd5b6d97d7814"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/core/store/DesktopOriginalDownloadListSettings.kt",
+      "sha256Bytes": "2579d780e5f21f665a9ac4ea1efc9a62cec6579a4ea50068f953d8a999f3162e"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/download/DownloadListScreen.kt",
+      "sha256Bytes": "00045b56b7bfa225989473598931bc3b2edba49445e97d130596db126a609b7f"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/download/DownloadStoragePolicy.kt",
+      "sha256Bytes": "84f1297bd3a5f887e7923972ee53a34eae282c266b17c65551b09870b5bde770"
+    },
+    {
+      "path": "replay-production/original-retained/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt.txt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "path": "replay-production/original-retained/app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt.txt",
+      "sha256Bytes": "ef589577cc3c4a7f533016e76b6a89bb2d9fb394c9bfd5710fba8f9cf3f05a15"
+    },
+    {
+      "path": "replay-production/original-retained/app/src/main/java/com/android/purebilibili/feature/download/DownloadStoragePolicy.kt.txt",
+      "sha256Bytes": "a5b874db17777ade210027e7b517fe9a292a94fe117844d0ed139f9ce2d3f74c"
+    },
+    {
+      "path": "replay-production/original-retained/app/src/main/java/com/android/purebilibili/feature/download/DownloadTaskPresentationPolicy.kt.txt",
+      "sha256Bytes": "b7a3849710941b82fbba529d6f5f8f6e9d824a73ed75b2203f05f213ac89d54d"
+    },
+    {
+      "path": "replay-production/source-receipt.json",
+      "sha256Bytes": "294e66c4859a34e762efb17ec82eafb1ee6f75a3be08a733526c939142d9f3cb"
+    },
+    {
+      "path": "review-only-shared-candidates/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "66695e0748c40bad16073a66ca3882e09bc60c24e208be3e0310f19c7ace6225"
+    },
+    {
+      "path": "review-only-shared-candidates/desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+      "sha256Bytes": "e1d11cc44f7cac317e53d09703885417276d6f4724f08815ef66dedb678542b7"
+    },
+    {
+      "path": "run-proof.py",
+      "sha256Bytes": "e418b68f2ed57aab0a28085088429d4c568094f48c72ace3ac3b7b445342a676"
+    },
+    {
+      "path": "shared-bases/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "dbf8a344ccf718c7887ba8cfecf467ca39bc4162fabb98736e97c3a33e7dd57f"
+    },
+    {
+      "path": "shared-bases/desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+      "sha256Bytes": "ef4fd8c98211a3686824fbe1b55a0dcdf305a09b0598c269adc338f6f088c984"
+    },
+    {
+      "path": "shared-local-hunks.json",
+      "sha256Bytes": "2e25f7767b10516bb22712b8cadb89f5c513d29c88a8ce4274f0228d71a4ffdc"
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "82811dd6e995d719005f4f4b7630f575ce609169b21f1c49188d4dd68ec71847"
+    },
+    {
+      "path": "source-pins.json",
+      "sha256Bytes": "3d8634557c0e84446f6b22cef0626676ad2a423f5f215e85bc9507a2aede6ff9"
+    }
+  ]
+}

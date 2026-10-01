@@ -1,0 +1,66 @@
+{
+  "baseActualSnapshot": 45,
+  "newManualSource": {
+    "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileAccountsBinding.kt",
+    "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileAccountsBinding.kt",
+    "sha256Lf": "da30e4d7b3016d7503e0cbce1c6b457a61b7ef6d8c1375619b554f666ef141e9"
+  },
+  "existingExactHunks": "local-hunks.json",
+  "sharedFamilies": 2,
+  "hunks": 4,
+  "wholeProofOnlyFilesMustNotBeInstalled": true,
+  "sourceRegistryNewUpstreamIdentity": false,
+  "newSourceRegistryEntryNotNeededForHandwrittenAdapter": true,
+  "rootConstructor": "DesktopProfileAccountsBinding(repository, capturedEpoch, capturedMid, entryJob, isCurrent, commitIfCurrent)",
+  "requiredRootContract": [
+    "Capture primary MID and epoch under the SAME SessionStore; capturedMid is not playback MID",
+    "Reuse the existing Profile navigation entry Job and Store -> entry admission. Root commit must run the supplied action synchronously at most once",
+    "Key the entry by primary epoch/MID; metadata name/face/VIP changes do not create another account owner",
+    "Account switch/logout invalidates old entries; construct replacement only after old ownership is retired. Authentication reset is outside Store/entry monitors",
+    "Original Profile VM guards removal of the active account. Preserve that existing UI/VM guard",
+    "Do not transfer an old adapter to the replacement epoch. Only exact same-caller logout terminal may validate clearActive completion; subsequent old reads and writes are cancelled",
+    "No HTTP/client creation, native close/join, or blocking callback may be added inside commitIfCurrent"
+  ],
+  "existingKeySchemaUnchanged": true,
+  "prospectiveProof": {
+    "passed": true,
+    "groups": 3,
+    "assertions": 30,
+    "origins": [
+      {
+        "class": "com.bilipai.desktop.ui.DesktopProfileAccountsBinding",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-profile-account-port-parity/run-03/candidate.jar",
+        "classSha256": "19220f6f449aa6fbec50d29125ab824a0aa656d3eedabaf05c857ac6952ce8b5"
+      },
+      {
+        "class": "com.bilipai.desktop.data.DesktopSessionStore",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-profile-account-port-parity/run-03/candidate.jar",
+        "classSha256": "4ed164af20eef97dc93f238bc8f31ac912d18f230fdf7159445cc09458f17e2a"
+      },
+      {
+        "class": "com.bilipai.desktop.data.DesktopRepository",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-profile-account-port-parity/run-03/candidate.jar",
+        "classSha256": "14cd41b41f9fb40111517d740c8e795e42a2654cd3fb8b0cc34399bcda9626bd"
+      },
+      {
+        "class": "com.android.purebilibili.core.store.StoredAccountSession",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+        "classSha256": "cbc5166764971f1a6ee2d11d790175b65e0109b435453fcb3462f0d3006c95da"
+      },
+      {
+        "class": "com.android.purebilibili.data.model.response.NavData",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+        "classSha256": "efa797f5b0cd8a1e3ded09a99672570d5e5a7044a1fe81950bf4db790fd97614"
+      }
+    ],
+    "HTTP": false,
+    "RootMounted": false,
+    "explicitProductionOverrides": 2,
+    "actualProductAcceptance": false,
+    "fixtureProductionIntersections": [],
+    "candidateJarSha256Bytes": "f796ec5cc0ebec339f4cf71d9ad57eee7eb943790e36f1ccbc455ffdfc9acb78",
+    "actual45RuntimeEntries": 97,
+    "cpToolsSourcesPrePostByteEqual": true
+  },
+  "actualWholeProductAndRootMountPending": true
+}

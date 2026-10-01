@@ -1,0 +1,65 @@
+{
+  "baseActualSnapshot": 45,
+  "existingFamilies": 2,
+  "changes": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "baseSha256Bytes": "2b043cb3f614a480d955ad59446de05e12589660d9dabded47f5062660af5593",
+      "baseSha256Lf": "2b043cb3f614a480d955ad59446de05e12589660d9dabded47f5062660af5593",
+      "candidateSha256Lf": "f9cbf2e781b3cce2802ba9a813c61128069468362504b4c8042d05d92932342b",
+      "hunks": [
+        {
+          "before": "    fun open(bvid: String) = open(VideoCard(bvid, \"\", \"\", \"\", 0, 0))",
+          "after": "    fun open(bvid: String) = open(VideoCard(bvid, \"\", \"\", \"\", 0, 0))\n\n    /** Only the immutable route request supplies millisecond resume; existing queue APIs are unchanged. */\n    fun open(card: VideoCard, resumePositionMs: Long) {\n        if (!closed.get()) openQueueWithRouteResume(listOf(card), 0, null, resumePositionMs.coerceAtLeast(0L))\n    }"
+        },
+        {
+          "before": "    fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0, owner: Any? = null) {",
+          "after": "    fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0, owner: Any? = null) =\n        openQueueWithRouteResume(cards, selectedIndex, owner, null)\n\n    private fun openQueueWithRouteResume(cards: List<VideoCard>, selectedIndex: Int, owner: Any?, routeResumePositionMs: Long?) {"
+        },
+        {
+          "before": "        mutableState.update { it.copy(queue = normalized, queueIndex = index) }\n        openQueueItem(index, useResume = true)",
+          "after": "        mutableState.update { it.copy(queue = normalized, queueIndex = index) }\n        openQueueItem(index, useResume = true, routeResumePositionMs = routeResumePositionMs)"
+        },
+        {
+          "before": "    private fun openQueueItem(index: Int, useResume: Boolean) {",
+          "after": "    private fun openQueueItem(index: Int, useResume: Boolean, routeResumePositionMs: Long? = null) {"
+        },
+        {
+          "before": "                val position = (resume?.progressSeconds ?: 0).toDouble().takeIf { it >= 0 && (duration <= 0 || it < duration - 2) } ?: 0.0",
+          "after": "                val requestedPosition = routeResumePositionMs?.takeIf { it > 0L }?.div(1000.0)\n                    ?: (resume?.progressSeconds ?: 0).toDouble()\n                val position = requestedPosition.takeIf { it >= 0 && (duration <= 0 || it < duration - 2) } ?: 0.0"
+        },
+        {
+          "before": "    fun open(bvid: String) = open(VideoCard(bvid, \"\", \"\", \"\", 0, 0))",
+          "after": "    fun open(bvid: String) = open(VideoCard(bvid, \"\", \"\", \"\", 0, 0))\n\n    /** Root decides whether route effects are compatible. True only means this existing\n     * owned BVID/CID/source was retained; its queue, paused state and source are unchanged.\n     * Source/openId remain the Root navigation entry's identity, never a native-source alias. */\n    fun openVideoDetail(card: VideoCard, resumePositionMs: Long, keepMatchingSource: Boolean): Boolean {\n        val context = current?.takeIf(::owns)\n        val seekAvailable = resumePositionMs <= 0L || player?.state?.value?.let { it.videoCodec != null || it.audioCodec != null } == true\n        val ready = !state.value.opening && !state.value.recovering && seekAvailable\n        val retainedSource = player?.currentSourceSnapshot()?.takeIf { it.sourceVersion == context?.sourceVersion }?.source\n        val same = context != null && card.preferredCid > 0L &&\n            context.details.bvid == card.bvid && context.details.pages[context.index].cid == card.preferredCid\n        val retained = if (keepMatchingSource && ready && same && retainedSource != null) {\n            try { publication.admit(retainedSource, { context != null && owns(context) }) { true } }\n            catch (_: CancellationException) { false }\n        } else false\n        if (retained) {\n            if (resumePositionMs > 0L) seekTo(resumePositionMs / 1000.0)\n            return true\n        }\n        open(card, resumePositionMs)\n        return false\n    }"
+        }
+      ],
+      "reverseNormalizedByteEqual": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "baseSha256Bytes": "57321d696b8de599b77a072fe49bca4266987bc67d23adb1a0d2122ea29e92ab",
+      "baseSha256Lf": "57321d696b8de599b77a072fe49bca4266987bc67d23adb1a0d2122ea29e92ab",
+      "candidateSha256Lf": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06",
+      "hunks": [
+        {
+          "before": "    auxiliaryContent: (@Composable (DesktopOriginalCommentRootOwner) -> Unit)? = null,",
+          "after": "    auxiliaryContent: (@Composable (DesktopOriginalCommentRootOwner) -> Unit)? = null,\n    initialCommentRootRpid: Long = 0L,\n    initialCommentTargetRpid: Long = 0L,\n    commentRouteOpenId: Long = 0L,"
+        },
+        {
+          "before": "    DesktopOriginalCommentRootBindings(repository, community, fraud, info.aid, stillOwned, modifier) { owner ->",
+          "after": "    // Same sole owner: a distinct routed comment/openId disposes the old composition scope,\n    // preview, detail route and every owned request rather than transferring a stale thread.\n    val routeIdentity = Triple(info.aid, commentRouteOpenId, initialCommentRootRpid to initialCommentTargetRpid)\n    DesktopOriginalCommentRootBindings(repository, community, fraud, routeIdentity, stillOwned, modifier) { owner ->"
+        },
+        {
+          "before": "        var detailRoute by remember(owner) { mutableStateOf<DesktopVideoCommentDetailRoute?>(null) }",
+          "after": "        var detailRoute by remember(owner) { mutableStateOf<DesktopVideoCommentDetailRoute?>(null) }\n        var hasHandledCommentRootFromRoute by remember(owner) { mutableStateOf(false) }"
+        },
+        {
+          "before": "        LaunchedEffect(owner, info.aid, info.owner.mid, info.stat.reply, preferredSort) {\n            if (owned()) viewModel.init(info.aid, info.owner.mid,\n                CommentSortMode.fromApiMode(preferredSort), info.stat.reply, commentType = 1)\n        }",
+          "after": "        LaunchedEffect(owner, info.aid, info.owner.mid, info.stat.reply, preferredSort) {\n            if (owned()) {\n                viewModel.init(info.aid, info.owner.mid,\n                    CommentSortMode.fromApiMode(preferredSort), info.stat.reply, commentType = 1)\n                if (initialCommentRootRpid > 0L && !hasHandledCommentRootFromRoute) {\n                    val openStarted = viewModel.openSubReplyFromRoute(\n                        rootReplyId = initialCommentRootRpid,\n                        targetReplyId = initialCommentTargetRpid\n                    )\n                    if (openStarted) hasHandledCommentRootFromRoute = true\n                }\n            }\n        }\n        LaunchedEffect(owner, initialCommentRootRpid, initialCommentTargetRpid,\n            commentState.replies, commentState.isRepliesLoading, subReplyState.visible) {\n            if (owned() && initialCommentRootRpid > 0L && !hasHandledCommentRootFromRoute && !subReplyState.visible) {\n                val rootReply = commentState.replies.firstOrNull { it.rpid == initialCommentRootRpid }\n                if (rootReply != null) {\n                    viewModel.openSubReply(rootReply, initialCommentTargetRpid)\n                    hasHandledCommentRootFromRoute = true\n                } else if (!commentState.isRepliesLoading) {\n                    val openStarted = viewModel.openSubReplyFromRoute(\n                        rootReplyId = initialCommentRootRpid,\n                        targetReplyId = initialCommentTargetRpid\n                    )\n                    if (openStarted) hasHandledCommentRootFromRoute = true\n                }\n            }\n        }"
+        }
+      ],
+      "reverseNormalizedByteEqual": true
+    }
+  ],
+  "wholeFileInstallationForbidden": true
+}

@@ -1,0 +1,193 @@
+{
+  "passed": true,
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+      "sha256Bytes": "c7619b2386b42349693098c28657867cf8b73af3a66e1353d039bdc037a68011",
+      "sha256Lf": "c7619b2386b42349693098c28657867cf8b73af3a66e1353d039bdc037a68011",
+      "selectedMethods": [
+        {
+          "startLine": 43,
+          "endLine": 52,
+          "sha256Lf": "dbf97530631ec71e44b5d2318b746db416f35fcddf239a73ecca5b5b3d66b922",
+          "name": "getAccounts"
+        },
+        {
+          "startLine": 61,
+          "endLine": 65,
+          "sha256Lf": "803e739e22f5fd399d8564ba9ce749dedff58c5282e8284c22b19e3755ba2950",
+          "name": "getActiveAccountMid"
+        },
+        {
+          "startLine": 71,
+          "endLine": 75,
+          "sha256Lf": "ff67ae9997f01c2ca74d000f3a873cd4e5aba29e1ccf1b2a6db6a928c73ec88f",
+          "name": "getPlaybackAccountMid"
+        },
+        {
+          "startLine": 77,
+          "endLine": 80,
+          "sha256Lf": "8b330362a0d99b21e238c12a5a386fb12001963af3706d9e565539c2e25ece05",
+          "name": "getPlaybackAccount"
+        },
+        {
+          "startLine": 83,
+          "endLine": 95,
+          "sha256Lf": "eccf1788845dfcfff9e3c655a3b3f13695bc589ad69989d2bef69ea0aa91cde7",
+          "name": "setPlaybackAccountMid"
+        },
+        {
+          "startLine": 97,
+          "endLine": 103,
+          "sha256Lf": "c04f62cfa5f20e05ac86a817174f797d723d375dcc2a3ccf016179a1efa7b183",
+          "name": "clearActiveAccount"
+        },
+        {
+          "startLine": 105,
+          "endLine": 122,
+          "sha256Lf": "261c9a9e6773fff7ebc76b000b8c4be660abb5774b12f143e73015f7f154c4d1",
+          "name": "removeAccount"
+        },
+        {
+          "startLine": 124,
+          "endLine": 156,
+          "sha256Lf": "cf7b2c59a74fd9b2a1b94540f7e23192e891134bcb85e9cb42dfcd3e5846696e",
+          "name": "upsertCurrentAccount"
+        },
+        {
+          "startLine": 158,
+          "endLine": 182,
+          "sha256Lf": "f8469d9ee21ba2a0ecdb24299ef17c2cca99d6ccc6fb88563bd0d5d83105fed0",
+          "name": "activateAccount"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/TokenManager.kt",
+      "sha256Bytes": "ff078f305afba5eb523bc281ca9d8660ad434417f407973fa1aca9fb8359cd37",
+      "sha256Lf": "ff078f305afba5eb523bc281ca9d8660ad434417f407973fa1aca9fb8359cd37",
+      "selectedMethods": [
+        {
+          "startLine": 168,
+          "endLine": 173,
+          "sha256Lf": "d9d4b55d721f471df0078b737b70ce617332f5c63baa919c411c39871355106d",
+          "name": "saveMid"
+        },
+        {
+          "startLine": 206,
+          "endLine": 208,
+          "sha256Lf": "a5f59f9540434b0765751fc72b7b561f46605b971abe89f2ed0800b1e76004cf",
+          "name": "saveVipStatus"
+        },
+        {
+          "startLine": 280,
+          "endLine": 306,
+          "sha256Lf": "168edbc8b55470414ff427dd29db1add5ac2b4449bc96932910292127ce579b1",
+          "name": "clear"
+        },
+        {
+          "startLine": 241,
+          "endLine": 274,
+          "sha256Lf": "17871cec4e7fb626e0a2258353719ce488a6987b280ce9cec7f8d75d794f4a08",
+          "name": "applyStoredSession"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+      "sha256Bytes": "a2a08a77fefc78f9cbe41760034e273bb34f5555b65e979f7e12fad147c333a1",
+      "sha256Lf": "a2a08a77fefc78f9cbe41760034e273bb34f5555b65e979f7e12fad147c333a1",
+      "selectedMethods": [
+        {
+          "startLine": 227,
+          "endLine": 232,
+          "sha256Lf": "e3e600b42b6a392fbf86d94876c0ea45a530acb38d3a78dbad39dd97ec4376ff",
+          "name": "persistProfileSession"
+        },
+        {
+          "startLine": 483,
+          "endLine": 489,
+          "sha256Lf": "e596285a58c8f4a1fa8256f2aa114ae280d1864a41a11e5d122255c0afc04c4e",
+          "name": "clearInvalidProfileSession"
+        },
+        {
+          "startLine": 704,
+          "endLine": 723,
+          "sha256Lf": "5de44f0f4192dde59cb66392effa8f36245a80c0668db16df3d103fcf09aca7e",
+          "name": "logout"
+        },
+        {
+          "startLine": 725,
+          "endLine": 727,
+          "sha256Lf": "78ae94c109ccd668dac2c90a2d89089d757623e4fcfe2922832637202789b2e5",
+          "name": "switchAccount"
+        },
+        {
+          "startLine": 748,
+          "endLine": 750,
+          "sha256Lf": "21cdc739d265f82460e40ad1311382c4d4ff1e630729cd9628ac5c928b4a4451",
+          "name": "removeStoredAccount"
+        }
+      ]
+    }
+  ],
+  "interfacePath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileBindings.kt",
+  "interfaceSha256Bytes": "af622378fc9104554d7913c5843ebde63ec53d8af68791b96e7008e67c3cdc0d",
+  "interfaceMethods": [
+    "getAccounts",
+    "getActiveAccountMid",
+    "getPlaybackAccountMid",
+    "setPlaybackAccountMid",
+    "currentMid",
+    "hasSession",
+    "accessTokenCredentials",
+    "saveMid",
+    "saveVipStatus",
+    "upsertCurrentAccount",
+    "clearCurrentSession",
+    "clearActiveAccount",
+    "activateAccount",
+    "removeAccount"
+  ],
+  "complete14Methods": true,
+  "inverseHunks": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "hunks": 3,
+      "reverseNormalizedByteEqual": true,
+      "baseSha256Lf": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0",
+      "candidateSha256Lf": "5eb88e5254d9b251d0c70995c478cb857b24188dff6dfbc923763f66f9dba327"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "hunks": 1,
+      "reverseNormalizedByteEqual": true,
+      "baseSha256Lf": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d",
+      "candidateSha256Lf": "3cb16a47b96b6d86297abcfdbaad1ed009e47089b264fd5b156f82487d2caeae"
+    }
+  ],
+  "navFieldExpressionMappings": {
+    "name": {
+      "original": "navData?.uname?.ifBlank { previous?.name.orEmpty() } ?: previous?.name.orEmpty()",
+      "candidate": "nav?.uname?.ifBlank { previous?.session?.name.orEmpty() } ?: previous?.session?.name.orEmpty()",
+      "sameSourceExpressionWithStorageAlias": true
+    },
+    "face": {
+      "original": "navData?.face?.ifBlank { previous?.face.orEmpty() } ?: previous?.face.orEmpty()",
+      "candidate": "nav?.face?.ifBlank { previous?.session?.face.orEmpty() } ?: previous?.session?.face.orEmpty()",
+      "sameSourceExpressionWithStorageAlias": true
+    },
+    "isVip": {
+      "original": "navData?.vip?.status == 1 || TokenManager.isVipCache",
+      "candidate": "nav?.vip?.status == 1 || account.isVip",
+      "sameSourceExpressionWithStorageAlias": true
+    },
+    "vipLabel": {
+      "original": "navData?.vip?.label?.text.orEmpty().ifBlank { previous?.vipLabel.orEmpty() }",
+      "candidate": "nav?.vip?.label?.text.orEmpty().ifBlank { previous?.session?.vipLabel.orEmpty() }",
+      "sameSourceExpressionWithStorageAlias": true
+    }
+  },
+  "scope": "Source-preserving original field expressions with declared single-store/owner adapters; not whole-body identity or actual mounted Profile UI proof"
+}

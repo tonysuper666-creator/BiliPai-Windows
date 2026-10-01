@@ -1752,7 +1752,8 @@
         "home-protocol-platform-reference",
         "live-sub-navigation",
         "stable-navigation3-host",
-        "stable-profile-windows-platform"
+        "stable-profile-windows-platform",
+        "stable-download-list-original"
       ],
       "mode": "policy-extract"
     },
@@ -7860,6 +7861,30 @@
         "stable-root-home-navigation"
       ],
       "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadTaskPresentationPolicy.kt",
+      "sha256": "b7a3849710941b82fbba529d6f5f8f6e9d824a73ed75b2203f05f213ac89d54d",
+      "features": [
+        "stable-download-list-original"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt",
+      "sha256": "ef589577cc3c4a7f533016e76b6a89bb2d9fb394c9bfd5710fba8f9cf3f05a15",
+      "features": [
+        "stable-download-list-original"
+      ],
+      "mode": "platform-adapter-reference"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadStoragePolicy.kt",
+      "sha256": "a5b874db17777ade210027e7b517fe9a292a94fe117844d0ed139f9ce2d3f74c",
+      "features": [
+        "stable-download-list-original"
+      ],
+      "mode": "platform-adapter-reference"
     }
   ],
   "featureCoverage": {

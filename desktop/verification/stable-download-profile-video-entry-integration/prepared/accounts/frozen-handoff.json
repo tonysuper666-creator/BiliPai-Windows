@@ -1,0 +1,348 @@
+{
+  "frozen": true,
+  "phase": "source-only-complete-profile-account-port",
+  "baseActualSnapshot": 45,
+  "artifacts": [
+    {
+      "path": "AccountPortFixture.kt",
+      "bytes": 8723,
+      "sha256Bytes": "92accde8fc258162b8229105263e6d19df3b8da7b45a321f509e20ef58f74341"
+    },
+    {
+      "path": "audit-and-freeze.py",
+      "bytes": 9943,
+      "sha256Bytes": "e04a35ba8160872034526a66de910f78e28cbcb74464d6a4e0302d22de8778f8"
+    },
+    {
+      "path": "compile-and-prove.py",
+      "bytes": 5560,
+      "sha256Bytes": "31f3e00aaee992b1ea301f6199e47a810f73878f952af9f23d8e4d3ed56e5c89"
+    },
+    {
+      "path": "installation-recipe.json",
+      "bytes": 4088,
+      "sha256Bytes": "12b5b12d7253b6dfa245de7a0cb438e9a669945dc02cb7b7d3415f853a00d775"
+    },
+    {
+      "path": "local-hunks.json",
+      "bytes": 7779,
+      "sha256Bytes": "0aac14f492af7834973dc996359c110af97bd5f6f8a1ae3ad918d35dff574eaa"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+      "bytes": 8574,
+      "sha256Bytes": "c7619b2386b42349693098c28657867cf8b73af3a66e1353d039bdc037a68011"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/TokenManager.kt",
+      "bytes": 12894,
+      "sha256Bytes": "ff078f305afba5eb523bc281ca9d8660ad434417f407973fa1aca9fb8359cd37"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+      "bytes": 48158,
+      "sha256Bytes": "a2a08a77fefc78f9cbe41760034e273bb34f5555b65e979f7e12fad147c333a1"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 9969,
+      "sha256Bytes": "704edd182679acf32aaef3705562d45b348143be53349147591d896ea2bab598"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileAccountsBinding.kt",
+      "bytes": 4408,
+      "sha256Bytes": "da30e4d7b3016d7503e0cbce1c6b457a61b7ef6d8c1375619b554f666ef141e9"
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "bytes": 49591,
+      "sha256Bytes": "3cb16a47b96b6d86297abcfdbaad1ed009e47089b264fd5b156f82487d2caeae"
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "bytes": 30929,
+      "sha256Bytes": "5eb88e5254d9b251d0c70995c478cb857b24188dff6dfbc923763f66f9dba327"
+    },
+    {
+      "path": "result.json",
+      "bytes": 768,
+      "sha256Bytes": "bd301dc01f102cb8c5510c9b32216da77c9e77538620e6cbc7f381c2f4b96f73"
+    },
+    {
+      "path": "run-01/AccountPortFixture.kt",
+      "bytes": 8711,
+      "sha256Bytes": "af7e953e55bab51ea77ffe5b70342ac75bac03fddb7befac65b3a542ea9a72de"
+    },
+    {
+      "path": "run-01/compile-result.json",
+      "bytes": 3560,
+      "sha256Bytes": "128a41406f87c1512799822b1b06b1784b6802f921c3aa520a799a852ccff05d"
+    },
+    {
+      "path": "run-01/failure.json",
+      "bytes": 54,
+      "sha256Bytes": "85758b7cc843cb0bd968fcb0195e24b1567b63f42e5c5df8090284632e4876e1"
+    },
+    {
+      "path": "run-01/fixture-compile.args",
+      "bytes": 24836,
+      "sha256Bytes": "9a96ebd58d492e1145170454d575413d5dacd486240dcd1dc980f7f6a24e60d8"
+    },
+    {
+      "path": "run-01/fixture-compile.log",
+      "bytes": 1977,
+      "sha256Bytes": "3ec75c1731ac31f26ef67da660c23bb7edd675e9e99ef078296b4ef646ac76a9"
+    },
+    {
+      "path": "run-01/pins-before.json",
+      "bytes": 43337,
+      "sha256Bytes": "b44180098327afd4229f882a900504f20455deceddbe04885e36100df2cf43a4"
+    },
+    {
+      "path": "run-01/production-compile.args",
+      "bytes": 25719,
+      "sha256Bytes": "41e77be61c3424c506f21a6b842c98a65ea2d99152ac18e3e06c6ba6cc2c50fe"
+    },
+    {
+      "path": "run-01/production-compile.log",
+      "bytes": 745,
+      "sha256Bytes": "ec9750368d1d586f84b13f7b9598904d14731760fb3c3403e005c6a4d9ce2741"
+    },
+    {
+      "path": "run-01/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileAccountsBinding.kt",
+      "bytes": 4408,
+      "sha256Bytes": "da30e4d7b3016d7503e0cbce1c6b457a61b7ef6d8c1375619b554f666ef141e9"
+    },
+    {
+      "path": "run-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "bytes": 49591,
+      "sha256Bytes": "3cb16a47b96b6d86297abcfdbaad1ed009e47089b264fd5b156f82487d2caeae"
+    },
+    {
+      "path": "run-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "bytes": 30929,
+      "sha256Bytes": "5eb88e5254d9b251d0c70995c478cb857b24188dff6dfbc923763f66f9dba327"
+    },
+    {
+      "path": "run-02/AccountPortFixture.kt",
+      "bytes": 8711,
+      "sha256Bytes": "af7e953e55bab51ea77ffe5b70342ac75bac03fddb7befac65b3a542ea9a72de"
+    },
+    {
+      "path": "run-02/compile-result.json",
+      "bytes": 3560,
+      "sha256Bytes": "128a41406f87c1512799822b1b06b1784b6802f921c3aa520a799a852ccff05d"
+    },
+    {
+      "path": "run-02/failure.json",
+      "bytes": 54,
+      "sha256Bytes": "85758b7cc843cb0bd968fcb0195e24b1567b63f42e5c5df8090284632e4876e1"
+    },
+    {
+      "path": "run-02/fixture-compile.args",
+      "bytes": 24836,
+      "sha256Bytes": "2c41d5667c4c4d6687685606e770899db676a601650cda32c9f9ae4501852463"
+    },
+    {
+      "path": "run-02/fixture-compile.log",
+      "bytes": 1977,
+      "sha256Bytes": "e9e071e7b7e641025b4e9756ea937d3b24b2a5251c7b7bc12bbd5f7bc25fdfc4"
+    },
+    {
+      "path": "run-02/pins-before.json",
+      "bytes": 43337,
+      "sha256Bytes": "216fdd928ebbb0857269b93e0a2fa756977954951105c272c8e9a37f751ce052"
+    },
+    {
+      "path": "run-02/production-compile.args",
+      "bytes": 25719,
+      "sha256Bytes": "00c5e63fb0ca08873f11136afb503ee779d6cd73c2d065c7fc188a4cc9e92644"
+    },
+    {
+      "path": "run-02/production-compile.log",
+      "bytes": 745,
+      "sha256Bytes": "53898218781f2aa6dd2b06879db416863eefdb2d0998392bec9bf6e8ad9eacde"
+    },
+    {
+      "path": "run-02/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileAccountsBinding.kt",
+      "bytes": 4408,
+      "sha256Bytes": "da30e4d7b3016d7503e0cbce1c6b457a61b7ef6d8c1375619b554f666ef141e9"
+    },
+    {
+      "path": "run-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "bytes": 49591,
+      "sha256Bytes": "3cb16a47b96b6d86297abcfdbaad1ed009e47089b264fd5b156f82487d2caeae"
+    },
+    {
+      "path": "run-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "bytes": 30929,
+      "sha256Bytes": "5eb88e5254d9b251d0c70995c478cb857b24188dff6dfbc923763f66f9dba327"
+    },
+    {
+      "path": "run-03/AccountPortFixture.kt",
+      "bytes": 8723,
+      "sha256Bytes": "92accde8fc258162b8229105263e6d19df3b8da7b45a321f509e20ef58f74341"
+    },
+    {
+      "path": "run-03/compile-result.json",
+      "bytes": 3560,
+      "sha256Bytes": "128a41406f87c1512799822b1b06b1784b6802f921c3aa520a799a852ccff05d"
+    },
+    {
+      "path": "run-03/fixture-compile.args",
+      "bytes": 24836,
+      "sha256Bytes": "1799cf0b800f6ee6674ccdc6b43e7ff0e4c0d3af49c9aed17b8edce59918a294"
+    },
+    {
+      "path": "run-03/fixture-compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-03/fixture-intersections.json",
+      "bytes": 1452,
+      "sha256Bytes": "42e8c2951251b414b54ce52b130b4c03df49ab75fe4a8526b345976e0c4c9a52"
+    },
+    {
+      "path": "run-03/pins-after.json",
+      "bytes": 43337,
+      "sha256Bytes": "37031c29adc584cf8c0d948e79e0e37555c10edf11d30c87f82d93bbb3268fef"
+    },
+    {
+      "path": "run-03/pins-before.json",
+      "bytes": 43337,
+      "sha256Bytes": "37031c29adc584cf8c0d948e79e0e37555c10edf11d30c87f82d93bbb3268fef"
+    },
+    {
+      "path": "run-03/production-compile.args",
+      "bytes": 25719,
+      "sha256Bytes": "e8b153e348ea5d705f30c31d755f9d8a84cbf9c77c9921825beb2ceb54470af7"
+    },
+    {
+      "path": "run-03/production-compile.log",
+      "bytes": 745,
+      "sha256Bytes": "b6ec61790a3c0ae12cf97bb769e6fcd6bf24a028910412ff685cfb94091b38ae"
+    },
+    {
+      "path": "run-03/result.json",
+      "bytes": 2199,
+      "sha256Bytes": "07923539ff06c19a0b125414ec594aaabd30f4ba56d75048b0fb6ea8be9138ea"
+    },
+    {
+      "path": "run-03/runtime-command.json",
+      "bytes": 26345,
+      "sha256Bytes": "1e3e7412cefe6059379879846c4c4fa42f6324d2bea18d77e43b5a430a829641"
+    },
+    {
+      "path": "run-03/runtime-stderr.raw.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-03/runtime-stdout.raw.log",
+      "bytes": 119,
+      "sha256Bytes": "c0d971f4a4aa9c134886934456e52c4fc7dc506a7166996d36929a9fb3bec1b6"
+    },
+    {
+      "path": "run-03/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileAccountsBinding.kt",
+      "bytes": 4408,
+      "sha256Bytes": "da30e4d7b3016d7503e0cbce1c6b457a61b7ef6d8c1375619b554f666ef141e9"
+    },
+    {
+      "path": "run-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "bytes": 49591,
+      "sha256Bytes": "3cb16a47b96b6d86297abcfdbaad1ed009e47089b264fd5b156f82487d2caeae"
+    },
+    {
+      "path": "run-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "bytes": 30929,
+      "sha256Bytes": "5eb88e5254d9b251d0c70995c478cb857b24188dff6dfbc923763f66f9dba327"
+    },
+    {
+      "path": "source-audit.json",
+      "bytes": 7425,
+      "sha256Bytes": "e89792f1972b5cf8655aade303c1f3b9abb1c1c1a03e7ae85690bb22bb5949d6"
+    },
+    {
+      "path": "source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "bytes": 47569,
+      "sha256Bytes": "fe0dfef2dba6d8d18ec4175cced77893aaa1043a26ee89e88d9e1e5f80d1583d"
+    },
+    {
+      "path": "source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "bytes": 27210,
+      "sha256Bytes": "ad9925b83678f00138361e7ac13643992213e19fd76da24cc113b04e8682a0a0"
+    },
+    {
+      "path": "source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileBindings.kt",
+      "bytes": 12022,
+      "sha256Bytes": "af622378fc9104554d7913c5843ebde63ec53d8af68791b96e7008e67c3cdc0d"
+    },
+    {
+      "path": "source-contract.json",
+      "bytes": 1752,
+      "sha256Bytes": "3ca8647b7b0feab274f6a56e0fe7bfe9350d7243839e8048f1697235026db174"
+    }
+  ],
+  "excludedPrivateAndBinary": [
+    {
+      "path": "run-01/candidate.jar",
+      "reason": "private temporary synthetic store or binary",
+      "sha256Bytes": "f796ec5cc0ebec339f4cf71d9ad57eee7eb943790e36f1ccbc455ffdfc9acb78"
+    },
+    {
+      "path": "run-02/candidate.jar",
+      "reason": "private temporary synthetic store or binary",
+      "sha256Bytes": "f796ec5cc0ebec339f4cf71d9ad57eee7eb943790e36f1ccbc455ffdfc9acb78"
+    },
+    {
+      "path": "run-03/candidate.jar",
+      "reason": "private temporary synthetic store or binary",
+      "sha256Bytes": "f796ec5cc0ebec339f4cf71d9ad57eee7eb943790e36f1ccbc455ffdfc9acb78"
+    },
+    {
+      "path": "run-03/fixture.jar",
+      "reason": "private temporary synthetic store or binary",
+      "sha256Bytes": "567f5dee8ac379e01894c89eea39cf826a76a8a787daeb7abdb1acd8b145950e"
+    },
+    {
+      "path": "run-03/private-synthetic-store/cancel-session.json",
+      "reason": "private temporary synthetic store or binary",
+      "sha256Bytes": "977c3f65fbe2ed52b29eed67512b360bb71089a5d98597361771f64c3c7d7516"
+    },
+    {
+      "path": "run-03/private-synthetic-store/private-session.json",
+      "reason": "private temporary synthetic store or binary",
+      "sha256Bytes": "011cd7f2ecae9e4392d26e86c227a973eac7c79a11501de5dc245f857037668d"
+    },
+    {
+      "path": "run-03/private-synthetic-store/result.json",
+      "reason": "private temporary synthetic store or binary",
+      "sha256Bytes": "31fb0607768e519d50cb2cf045e7945cc8c1fe5ecb4688831e95a072e6efbfaf"
+    },
+    {
+      "path": "run-03/private-synthetic-store/terminal-session.json",
+      "reason": "private temporary synthetic store or binary",
+      "sha256Bytes": "7da4eb3da5dd19be64952b03cf9ec2831df14b32c5a337f2b3ff3ba00acbdcfc"
+    }
+  ],
+  "installation": "installation-recipe.json",
+  "proof": {
+    "groups": 3,
+    "assertions": 30,
+    "productionOverrides": 2,
+    "fixtureClassIntersections": 0,
+    "actual45RuntimeEntries": 97
+  },
+  "limitations": [
+    "prospective Store/Repository overrides; actual whole-product installation not accepted here",
+    "no Root Profile mounted UI, account requests, network/socket, native window, chooser, or user file operations",
+    "proof-only whole source copies are evidence only; installation uses exact local-hunks"
+  ],
+  "oldFrozenPacketsUnchanged": [
+    "Playback84",
+    "FinalPublication428",
+    "actual44",
+    "actual45 proof86"
+  ]
+}

@@ -1,0 +1,3 @@
+desktop\.local\stable-video-detail-admission-parity\run-01\source-inputs\proof-only\desktop\src\main\kotlin\com\bilipai\desktop\DesktopPlaybackController.kt:204:37: error: argument type mismatch: actual type is 'com.bilipai.desktop.data.PlaybackSource', but 'com.bilipai.desktop.player.PlaybackSource' was expected.
+            try { publication.admit(context!!.source, { owns(context) }) { true } }
+                                    ^^^^^^^^^^^^^^^^

@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "phase": "prepared-profile-account-port-on-actual45-runtime",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "groups": 3,
+  "assertions": 30,
+  "existingProductionFamiliesOverridden": 2,
+  "actualProductAcceptance": false,
+  "RootMounted": false,
+  "HTTP": false,
+  "GUI": false,
+  "sourceAudit": "source-audit.json",
+  "acceptedRun": "run-03",
+  "preservedFailureRuns": [
+    "run-01",
+    "run-02"
+  ],
+  "failures": "Both production compiles passed; fixture compilation failed on identical missing whitespace around Kotlin infix to. A shell edit failed before run-02, so run-02 retains the same failure. Run-03 fixes fixture whitespace only; production inputs unchanged.",
+  "cpPrePostByteEqual": true
+}

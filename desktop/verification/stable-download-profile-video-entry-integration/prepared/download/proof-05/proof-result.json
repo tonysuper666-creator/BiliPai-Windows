@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "groups": 3,
+  "assertions": 21,
+  "pointerPairs": 2,
+  "loadedCandidateClasses": 36,
+  "actualRootRuntimeAccepted": false,
+  "rootMounted": false,
+  "HTTPCalls": 0,
+  "chooserOpened": false,
+  "offscreenOriginalUi": true,
+  "actualQueueAndLocalDelete": true,
+  "actualSnapshot": 44,
+  "actualRuntimeEntries": 97,
+  "candidateNewClassesOnly": true,
+  "prospectiveOverrides": [],
+  "fixtureJarSha256Bytes": "af6a6cfd7453f6c439ef85e0f5a7e8e7338c433c635701f973418e689f775032",
+  "candidateJarSha256Bytes": "c2f2b68fb3bb06ee29e673f88b510484b49ae81928615cf23a95b2b7b83aa959",
+  "all97PinsVerified": true,
+  "sharedGradleRun": false
+}

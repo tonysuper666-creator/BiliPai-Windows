@@ -1,0 +1,38 @@
+{
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "newRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadTaskPresentationPolicy.kt",
+      "sha256": "b7a3849710941b82fbba529d6f5f8f6e9d824a73ed75b2203f05f213ac89d54d",
+      "features": [
+        "stable-download-list-original"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt",
+      "sha256": "ef589577cc3c4a7f533016e76b6a89bb2d9fb394c9bfd5710fba8f9cf3f05a15",
+      "features": [
+        "stable-download-list-original"
+      ],
+      "mode": "platform-adapter-reference"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadStoragePolicy.kt",
+      "sha256": "a5b874db17777ade210027e7b517fe9a292a94fe117844d0ed139f9ce2d3f74c",
+      "features": [
+        "stable-download-list-original"
+      ],
+      "mode": "platform-adapter-reference"
+    }
+  ],
+  "existingFeatureMerges": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "appendFeature": "stable-download-list-original",
+      "newSettingsManagerObject": false,
+      "newPersistentStore": false
+    }
+  ]
+}

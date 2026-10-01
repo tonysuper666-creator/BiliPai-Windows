@@ -1,0 +1,72 @@
+{
+  "baseActualSnapshot": 45,
+  "existingExactHunks": "local-hunks.json",
+  "sharedFamilies": 2,
+  "hunks": 10,
+  "newProductionFiles": 0,
+  "newUpstreamSourceIdentities": 0,
+  "wholeProofOnlyFilesMustNotBeInstalled": true,
+  "signatures": [
+    "fun open(card:VideoCard,resumePositionMs:Long)",
+    "fun openVideoDetail(card:VideoCard,resumePositionMs:Long,keepMatchingSource:Boolean):Boolean",
+    "DesktopVideoCommentRootHost(...,initialCommentRootRpid:Long=0L,initialCommentTargetRpid:Long=0L,commentRouteOpenId:Long=0L)"
+  ],
+  "rootContract": [
+    "Preserve the immutable original BiliPaiNavKey.VideoDetail, including sourceRoute/openId, in the existing Root stack. VideoCard only carries playback metadata/CID to the existing Controller; it is not a replacement route schema",
+    "Root gate must check immutable nav-entry/account/source ownership before calling Controller. The new method does not create a root-route authority",
+    "Set keepMatchingSource from actual compatible normal-native route flags, including !startAudio; controller checks exact nonzero preferredCID/BVID, held native source and receipt. Unknown CID zero uses original saved-history fallback",
+    "Return true means current source retained. False means ordinary route-open path or closed Controller; it is not a claim that an asynchronous load completed",
+    "Root passes key.commentRootRpid/commentTargetRpid/openId to Host and selects original comments tab when root>0",
+    "Root owns audio/fullscreen/portrait/return/clock effects. Do not substitute toggles, fake flags, window ratio, or a second player"
+  ],
+  "fullscreenRequiredPort": {
+    "currentSource": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt:206-208",
+    "getter": "isFullscreen:()->Boolean = { windowState.placement == WindowPlacement.Fullscreen }",
+    "setter": "setFullscreen:(Boolean)->Unit = { enabled -> windowState.placement = if(enabled) WindowPlacement.Fullscreen else WindowPlacement.Floating }",
+    "originalExistingToggleRetainedForF11": true,
+    "rootConsumer": "For a fullscreen entry, call the setter only if actual getter reports false; a false route flag does not fabricate an Android portrait/fullscreen presentation"
+  },
+  "scope": {
+    "passed": true,
+    "groups": 2,
+    "assertions": 24,
+    "origins": [
+      {
+        "class": "com.bilipai.desktop.DesktopPlaybackController",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-detail-admission-parity/run-04/candidate.jar",
+        "classSha256": "ef2371f86998ef787004fd262db7b5e6a3377725dd38a6c5db7fdaf26b2af5bb"
+      },
+      {
+        "class": "com.bilipai.desktop.ui.DesktopVideoCommentRootKt",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-detail-admission-parity/run-04/candidate.jar",
+        "classSha256": "b2fa2e8a316e2409ce4042d21985c71fb49a4ee259142724900e59b269986bf1"
+      },
+      {
+        "class": "com.android.purebilibili.feature.video.viewmodel.VideoCommentViewModel",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+        "classSha256": "cb41edba009996e56814752abbb93f5e53e8528e8961625c6312798fb868cff1"
+      },
+      {
+        "class": "com.bilipai.desktop.player.MpvPlayer",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+        "classSha256": "f99266b3766ddc8e1a218324ad7a37f9d4d5bfce1510a593142cf8643f2d6b28"
+      },
+      {
+        "class": "com.bilipai.desktop.data.DesktopRepository",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-45/main-kotlin.jar",
+        "classSha256": "2397a469e36e4b8aa79178e22a6f1a458d074a61fb598cab766c21d79330ca69"
+      }
+    ],
+    "HTTP": false,
+    "NativeDLL": false,
+    "RootMounted": false,
+    "HostUIRuntime": false,
+    "explicitProductionOverrides": 2,
+    "actualProductAcceptance": false,
+    "fixtureProductionIntersections": [],
+    "candidateJarSha256Bytes": "3fbc07f373a4e9610a7fa8f7c935420e28063847aae4e1ae287c970a3876d2e9",
+    "actual45RuntimeEntries": 97,
+    "cpToolsSourcesPrePostByteEqual": true
+  },
+  "actualRootMountAndNativeSeekPending": true
+}

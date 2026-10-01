@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "phase": "prepared-video-detail-admission-on-actual45-runtime",
+  "groups": 2,
+  "assertions": 24,
+  "existingProductionFamiliesOverridden": 2,
+  "actualProductAcceptance": false,
+  "HTTP": false,
+  "NativeDLL": false,
+  "HostUIRuntime": false,
+  "RootMounted": false,
+  "cpPrePostByteEqual": true,
+  "acceptedRun": "run-04",
+  "preservedFailureRuns": [
+    "run-01",
+    "run-02",
+    "run-03"
+  ],
+  "failures": {
+    "run-01": "Production compile: resolved data PlaybackSource was incompatible with native publication transport. Candidate now takes same current native snapshot rather than rebuilding/copying credentials.",
+    "run-02": "Fixture incorrectly expected immediate seek position in memory-only Mpv without a native session/ACK. Production also gained codec admission so a positive resume cannot be silently dropped by an unavailable native seek.",
+    "run-03": "Fixture incorrectly expected CID zero to reset to first part; unchanged original library fallback selected the saved second part. Run-04 preserves that actual original behavior."
+  },
+  "limitations": [
+    "Host compiles and JVM class loads; no actual Host Compose UI mounting was run",
+    "Original VM routed request and cancel guards are actual45; test uses explicit memory requests, no socket",
+    "Native source/queue/paused/authorization bookkeeping and millisecond load mapping were tested without native DLL. Actual native seek completion/window playback remains pending"
+  ]
+}

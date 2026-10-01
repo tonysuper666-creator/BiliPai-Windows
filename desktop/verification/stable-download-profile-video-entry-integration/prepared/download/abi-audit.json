@@ -1,0 +1,11 @@
+{
+  "candidateClasses": 36,
+  "candidateMethods": 182,
+  "newFqnOverlap": 0,
+  "newPublicTopMethodOverlap": 0,
+  "invalidJvmMethodNames": [],
+  "actualSnapshot": 44,
+  "existingReaderPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-home-live-list-parity\\audit_abi.py",
+  "existingReaderSha256Bytes": "81c8a0e46e1bdc4a2a45227465ef91b02966e14d0307f2f6eabf52b17c0488c7",
+  "classloadWithoutInitialization": 36
+}

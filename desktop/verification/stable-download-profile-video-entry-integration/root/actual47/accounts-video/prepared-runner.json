@@ -1,0 +1,33 @@
+{
+  "prepared": true,
+  "waitingForActualSnapshot": 47,
+  "requiredSnapshotManifestAndCpSha": true,
+  "oldFixtureInputs": [
+    {
+      "name": "accounts",
+      "manifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-account-port-parity\\frozen-handoff.json",
+      "manifestSha256Bytes": "250100d194c524add5b3baf05b1efd1d470a63d4045ed4274c624e9b6292f5c2",
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-profile-account-port-parity\\AccountPortFixture.kt",
+      "sourceSha256Bytes": "92accde8fc258162b8229105263e6d19df3b8da7b45a321f509e20ef58f74341",
+      "groups": 3,
+      "assertions": 30
+    },
+    {
+      "name": "video",
+      "manifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-admission-parity\\frozen-handoff.json",
+      "manifestSha256Bytes": "ee4c6d9fea64b8294bfe6bd995c68f12304f41820594fae1181fc6b2787b4da9",
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-admission-parity\\RouteAdmissionFixture.kt",
+      "sourceSha256Bytes": "a48f945c837f19f753a98e1fda71625358f6e8b2510148e48157871302f06078",
+      "groups": 2,
+      "assertions": 24
+    }
+  ],
+  "productionOverrides": 0,
+  "requiredRuntimeEntries": 97,
+  "claims": [
+    "fixture-only compilation, unchanged original assertions",
+    "No HTTP/socket/native DLL/GUI/window/user files",
+    "Host JVM loading is not actual Host UI mounting or native seek ACK"
+  ],
+  "invocation": "python desktop/.local/stable-profile-video-admission-actual47-proof/run-proof.py 01 MANIFEST_SHA CP_SHA"
+}

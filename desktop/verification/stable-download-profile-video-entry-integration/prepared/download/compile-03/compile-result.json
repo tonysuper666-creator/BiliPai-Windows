@@ -1,0 +1,39 @@
+{
+  "actualSnapshot": 44,
+  "actualRuntimeEntries": 97,
+  "sources": 6,
+  "classes": 36,
+  "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\compile-03\\original-download-list.jar",
+  "jarSha256Bytes": "c2f2b68fb3bb06ee29e673f88b510484b49ae81928615cf23a95b2b7b83aa959",
+  "declaredProspectiveOverrideFamilies": [],
+  "newFqnDuplicate": 0,
+  "sourcePins": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDownloadListBindings.kt",
+      "sha256Bytes": "a7f6e9d8466ade08f511a51a5766323cf71aac130633896847d6d6afe93bc020"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDownloadListHost.kt",
+      "sha256Bytes": "0392800388fc6e4c8d0bea4347788370ef7278ab3bfb1f945774904a988679eb"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalDownloadListSettings.kt",
+      "sha256Bytes": "2579d780e5f21f665a9ac4ea1efc9a62cec6579a4ea50068f953d8a999f3162e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\generated\\com\\android\\purebilibili\\feature\\download\\DownloadListScreen.kt",
+      "sha256Bytes": "00045b56b7bfa225989473598931bc3b2edba49445e97d130596db126a609b7f"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\generated\\com\\android\\purebilibili\\feature\\download\\DownloadStoragePolicy.kt",
+      "sha256Bytes": "84f1297bd3a5f887e7923972ee53a34eae282c266b17c65551b09870b5bde770"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-list-parity\\generated\\com\\android\\purebilibili\\feature\\download\\DownloadTaskPresentationPolicy.kt",
+      "sha256Bytes": "b7a3849710941b82fbba529d6f5f8f6e9d824a73ed75b2203f05f213ac89d54d"
+    }
+  ],
+  "sharedGradleRun": false,
+  "rootMounted": false,
+  "rootRuntimeAccepted": false
+}

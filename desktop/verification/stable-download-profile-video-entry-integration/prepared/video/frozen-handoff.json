@@ -1,0 +1,421 @@
+{
+  "frozen": true,
+  "phase": "source-only-video-detail-final-admission",
+  "baseActualSnapshot": 45,
+  "artifacts": [
+    {
+      "path": "audit-and-freeze.py",
+      "bytes": 10927,
+      "sha256Bytes": "41bf960886d241705b13969ed4e989f6fe385ebe1fd5919da69358304038891e"
+    },
+    {
+      "path": "compile-and-prove.py",
+      "bytes": 5440,
+      "sha256Bytes": "d5b8e086c3edee481b5b88b63e868f22ab64e7fb5467631abbcbbd0800e32b87"
+    },
+    {
+      "path": "installation-recipe.json",
+      "bytes": 4615,
+      "sha256Bytes": "79c72e4a2c7c99c9efb65a16fc5ff4f144006bec3c240898766be23883dc5cdc"
+    },
+    {
+      "path": "local-hunks.json",
+      "bytes": 8022,
+      "sha256Bytes": "d83171e0fe005bf3e9cacb2433ddd4b6a0ec331dab1744f6362f685f4d8a7f7b"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+      "bytes": 301728,
+      "sha256Bytes": "4fe3b94adbd3a4f9eea165e68b8efdee0f06d74c78bc3de9269b2fa067ba8db3"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "bytes": 55780,
+      "sha256Bytes": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt",
+      "bytes": 14209,
+      "sha256Bytes": "1637952c78fccb2677ee73640b70ab876746d693fbca438365d285812fa76c85"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 8696,
+      "sha256Bytes": "34b6556ef4a42ad9a67dec1487d273d037eb2ef7145d15905a10a7aac1998081"
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "bytes": 62517,
+      "sha256Bytes": "f9cbf2e781b3cce2802ba9a813c61128069468362504b4c8042d05d92932342b"
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "bytes": 12339,
+      "sha256Bytes": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06"
+    },
+    {
+      "path": "result.json",
+      "bytes": 1518,
+      "sha256Bytes": "2c9456d6bc0cd95a715656b3c95eee90723739323eb40534f24b624b25709c57"
+    },
+    {
+      "path": "RouteAdmissionFixture.kt",
+      "bytes": 10842,
+      "sha256Bytes": "a48f945c837f19f753a98e1fda71625358f6e8b2510148e48157871302f06078"
+    },
+    {
+      "path": "run-01/failure.json",
+      "bytes": 57,
+      "sha256Bytes": "047b173152a6421d37ef0a846768e1c4077a6b8f5312a42a7951161ab7002c4e"
+    },
+    {
+      "path": "run-01/pins-before.json",
+      "bytes": 42510,
+      "sha256Bytes": "79c0f550eb4a5edffb1423e2e1dc815d75bb165e72b5f525424a087bc24bd710"
+    },
+    {
+      "path": "run-01/production-compile.args",
+      "bytes": 25164,
+      "sha256Bytes": "2139f978209f371efa5b9d7096793923d10ec4445580ffdf00bc05838c241bde"
+    },
+    {
+      "path": "run-01/production-compile.log",
+      "bytes": 456,
+      "sha256Bytes": "cf7516682187c7deeddd84dbee8eea8582485c62f99342148cbcfadbba99dda2"
+    },
+    {
+      "path": "run-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "bytes": 62194,
+      "sha256Bytes": "b87b61c79c40ad3e180c36d9d2aa10339a72d4faef701a59004655747cfa05c4"
+    },
+    {
+      "path": "run-01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "bytes": 12339,
+      "sha256Bytes": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06"
+    },
+    {
+      "path": "run-02/compile-result.json",
+      "bytes": 3462,
+      "sha256Bytes": "ef2603cda1ab80b50481fd4514e835bdb7bd3ba8038cba9e8bd9b3bd46149b48"
+    },
+    {
+      "path": "run-02/failure.json",
+      "bytes": 54,
+      "sha256Bytes": "205ec9423938e2c4e43401c6feaa24fec8e15ba2403cbdf39b700e3744b788c8"
+    },
+    {
+      "path": "run-02/fixture-compile.args",
+      "bytes": 24847,
+      "sha256Bytes": "ee2ec1c08b44dd036bbe9abcaf55bad57815cab52f1bcf124aae9b74015bb8a1"
+    },
+    {
+      "path": "run-02/fixture-compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-02/fixture-intersections.json",
+      "bytes": 787,
+      "sha256Bytes": "7b73976d449c8ec8966202178f08611c94905373a5db8fdcb42a2d651815422a"
+    },
+    {
+      "path": "run-02/pins-before.json",
+      "bytes": 42510,
+      "sha256Bytes": "0b0308fb5bdce61a10dd6c309b65c48ca8242eec2b9e911c11f1237ae961b52c"
+    },
+    {
+      "path": "run-02/production-compile.args",
+      "bytes": 25164,
+      "sha256Bytes": "04736a737b9a5dd5357bb067ef448798999438297e61c4fe3e8cf83b2d6a271d"
+    },
+    {
+      "path": "run-02/production-compile.log",
+      "bytes": 3039,
+      "sha256Bytes": "2f508a926a3facd378c35ca1f0e91b091213e8e1429de32ea09a49f3f310bba0"
+    },
+    {
+      "path": "run-02/RouteAdmissionFixture.kt",
+      "bytes": 10824,
+      "sha256Bytes": "14f49ddc1dda913f37a31e6fedf39b1b189d6f3ab1e163ed63d4f29935bc0fc9"
+    },
+    {
+      "path": "run-02/runtime-command.json",
+      "bytes": 26342,
+      "sha256Bytes": "227b9713b31b05b85c92ca0883ebfe224c62791af6a6a7a90fabd1deb8cdba2d"
+    },
+    {
+      "path": "run-02/runtime-stderr.raw.log",
+      "bytes": 1186,
+      "sha256Bytes": "423eede936b3dae46762933a8f73987a321d269de67d4f6281f38e92cf357a15"
+    },
+    {
+      "path": "run-02/runtime-stdout.raw.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "bytes": 62361,
+      "sha256Bytes": "e8b6f93ab3685ca58a6c19f1d112fb7087fd0aa962025a4b8b3911cd8c0671ae"
+    },
+    {
+      "path": "run-02/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "bytes": 12339,
+      "sha256Bytes": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06"
+    },
+    {
+      "path": "run-03/compile-result.json",
+      "bytes": 3462,
+      "sha256Bytes": "b5d1e83f3bf585ea0dd17195a7c456ca29d2f154c7baabc2028075e1df51b481"
+    },
+    {
+      "path": "run-03/failure.json",
+      "bytes": 54,
+      "sha256Bytes": "205ec9423938e2c4e43401c6feaa24fec8e15ba2403cbdf39b700e3744b788c8"
+    },
+    {
+      "path": "run-03/fixture-compile.args",
+      "bytes": 24847,
+      "sha256Bytes": "2c7bac1e71f817dfae90cdb5b5f1b11243efd177c7f9a31e8d6f7dab8508962a"
+    },
+    {
+      "path": "run-03/fixture-compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-03/fixture-intersections.json",
+      "bytes": 787,
+      "sha256Bytes": "7b73976d449c8ec8966202178f08611c94905373a5db8fdcb42a2d651815422a"
+    },
+    {
+      "path": "run-03/pins-before.json",
+      "bytes": 42510,
+      "sha256Bytes": "f4d123e2147ea1c14fed00e3073432c86c8be0f9459519e98e9d1ed9cbbd97b1"
+    },
+    {
+      "path": "run-03/production-compile.args",
+      "bytes": 25164,
+      "sha256Bytes": "1ff58282951cd72ef1035ec48e594405e1902f11e78204208b727a38871016d7"
+    },
+    {
+      "path": "run-03/production-compile.log",
+      "bytes": 3039,
+      "sha256Bytes": "9a2406bcdfc1e39205be39a2256c3bcb5c79c045a104842916c2bf49cebc81cb"
+    },
+    {
+      "path": "run-03/RouteAdmissionFixture.kt",
+      "bytes": 10804,
+      "sha256Bytes": "39b9851c2c9a8ffb755dffb93c002b80fc6543cb995a8ec2aa57569f66c5da8c"
+    },
+    {
+      "path": "run-03/runtime-command.json",
+      "bytes": 26342,
+      "sha256Bytes": "3adb0330f3a4428717d04b5d38f167519cdd69b8982402cbad26e79db3333902"
+    },
+    {
+      "path": "run-03/runtime-stderr.raw.log",
+      "bytes": 2045,
+      "sha256Bytes": "8c03d524615e8fb2c67f2f865d97b6c30d9e5b35a38dc224c47e3c9135665e99"
+    },
+    {
+      "path": "run-03/runtime-stdout.raw.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "bytes": 62517,
+      "sha256Bytes": "f9cbf2e781b3cce2802ba9a813c61128069468362504b4c8042d05d92932342b"
+    },
+    {
+      "path": "run-03/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "bytes": 12339,
+      "sha256Bytes": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06"
+    },
+    {
+      "path": "run-04/compile-result.json",
+      "bytes": 3462,
+      "sha256Bytes": "b5d1e83f3bf585ea0dd17195a7c456ca29d2f154c7baabc2028075e1df51b481"
+    },
+    {
+      "path": "run-04/fixture-compile.args",
+      "bytes": 24847,
+      "sha256Bytes": "b63ffc114e4f742d3c05c6920a49d7482c4349cc9dcb19a290fe72a2687f8fa5"
+    },
+    {
+      "path": "run-04/fixture-compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-04/fixture-intersections.json",
+      "bytes": 787,
+      "sha256Bytes": "7b73976d449c8ec8966202178f08611c94905373a5db8fdcb42a2d651815422a"
+    },
+    {
+      "path": "run-04/pins-after.json",
+      "bytes": 42510,
+      "sha256Bytes": "00006ed251e108c37acfb45226a5257f0e9d609ba17b5132d545c738071a8714"
+    },
+    {
+      "path": "run-04/pins-before.json",
+      "bytes": 42510,
+      "sha256Bytes": "00006ed251e108c37acfb45226a5257f0e9d609ba17b5132d545c738071a8714"
+    },
+    {
+      "path": "run-04/production-compile.args",
+      "bytes": 25164,
+      "sha256Bytes": "de7bad6f4e9fb681a3fe8c58d8723c7edc1e24231fe7cbb68091a20b8d48472b"
+    },
+    {
+      "path": "run-04/production-compile.log",
+      "bytes": 3039,
+      "sha256Bytes": "7730a0abc92898caf53697da2ebd9b78f2197163c26d72f14aae41ffd1e13d38"
+    },
+    {
+      "path": "run-04/result.json",
+      "bytes": 2235,
+      "sha256Bytes": "cbc53d5d04ff2ad7dc897bc577aae364ba84b90ce589f5ae56ca2aa7c567584e"
+    },
+    {
+      "path": "run-04/RouteAdmissionFixture.kt",
+      "bytes": 10842,
+      "sha256Bytes": "a48f945c837f19f753a98e1fda71625358f6e8b2510148e48157871302f06078"
+    },
+    {
+      "path": "run-04/runtime-command.json",
+      "bytes": 26342,
+      "sha256Bytes": "aba918266ae93c18af20c27357add1658f937ab81f36343b7256031f50c991d6"
+    },
+    {
+      "path": "run-04/runtime-stderr.raw.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run-04/runtime-stdout.raw.log",
+      "bytes": 134,
+      "sha256Bytes": "c778d7c4a25610203e6e3265b0df9bdc94385cec0ed42d2e4767389606be492e"
+    },
+    {
+      "path": "run-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "bytes": 62517,
+      "sha256Bytes": "f9cbf2e781b3cce2802ba9a813c61128069468362504b4c8042d05d92932342b"
+    },
+    {
+      "path": "run-04/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "bytes": 12339,
+      "sha256Bytes": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06"
+    },
+    {
+      "path": "source-audit.json",
+      "bytes": 4452,
+      "sha256Bytes": "67246fb5350b8953bff9bab5be4697184af515dbca1920216e1ae2100ed4aae3"
+    },
+    {
+      "path": "source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "bytes": 60397,
+      "sha256Bytes": "2b043cb3f614a480d955ad59446de05e12589660d9dabded47f5062660af5593"
+    },
+    {
+      "path": "source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "bytes": 13151,
+      "sha256Bytes": "dcaa277454a90930b0603d53d7ccf651a08202bcc0d73ff5124275a26c5421fd"
+    },
+    {
+      "path": "source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackPublication.kt",
+      "bytes": 7364,
+      "sha256Bytes": "35d8e32aece6fadf98eaf340f1be23d21796902f7bfc0a2d0cb1451feaac74eb"
+    },
+    {
+      "path": "source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "bytes": 61709,
+      "sha256Bytes": "fff510976494af0321ff26de3263d35aa02e53ef9613fc16fa3e7f27f50fb792"
+    },
+    {
+      "path": "source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+      "bytes": 6718,
+      "sha256Bytes": "bbc99f260a799626efb14603e06c90a35da14a1ef745dfe614ab397fca1f8a86"
+    },
+    {
+      "path": "source-baselines/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "bytes": 10427,
+      "sha256Bytes": "57321d696b8de599b77a072fe49bca4266987bc67d23adb1a0d2122ea29e92ab"
+    },
+    {
+      "path": "source-contract.json",
+      "bytes": 1851,
+      "sha256Bytes": "be90a3dc59cb0f3178415d7cbcb448cab40fc100ff85e8d17e46d4112d1fff25"
+    }
+  ],
+  "excludedPrivateAndBinary": [
+    {
+      "path": "run-02/candidate.jar",
+      "reason": "private temporary memory library or binary",
+      "sha256Bytes": "446a6d430e91b93959f0761d81722aa7478f319deb1b9c7609c78d2cb15fa0ac"
+    },
+    {
+      "path": "run-02/fixture.jar",
+      "reason": "private temporary memory library or binary",
+      "sha256Bytes": "bc1b953edc977329f91b43644dd139f3c3f4f3413d9e3be2bc4c3e9c9f60a53b"
+    },
+    {
+      "path": "run-02/private-memory/private-library/library.json",
+      "reason": "private temporary memory library or binary",
+      "sha256Bytes": "486c9476f5a3edc5172a8513385300bacfd53894d359f417cf8f613dbcd3144b"
+    },
+    {
+      "path": "run-03/candidate.jar",
+      "reason": "private temporary memory library or binary",
+      "sha256Bytes": "3fbc07f373a4e9610a7fa8f7c935420e28063847aae4e1ae287c970a3876d2e9"
+    },
+    {
+      "path": "run-03/fixture.jar",
+      "reason": "private temporary memory library or binary",
+      "sha256Bytes": "a51b374bb47c18ac1304b70ccbced597b27a401733c37721605cd9018ab9b6e1"
+    },
+    {
+      "path": "run-03/private-memory/private-library/library.json",
+      "reason": "private temporary memory library or binary",
+      "sha256Bytes": "36dc4352a52056789575acac16298c0981d10d559626d322c8663e7cec006ed0"
+    },
+    {
+      "path": "run-04/candidate.jar",
+      "reason": "private temporary memory library or binary",
+      "sha256Bytes": "3fbc07f373a4e9610a7fa8f7c935420e28063847aae4e1ae287c970a3876d2e9"
+    },
+    {
+      "path": "run-04/fixture.jar",
+      "reason": "private temporary memory library or binary",
+      "sha256Bytes": "6b6e9869084408a76183ab67e3ca74b3ed9808826dce0dcc43a1de08d94ae85c"
+    },
+    {
+      "path": "run-04/private-memory/private-library/library.json",
+      "reason": "private temporary memory library or binary",
+      "sha256Bytes": "ccca5d735ee540ceb48a3b1bc48b0900b96c94371ef7221b8c1d248db4fac49a"
+    },
+    {
+      "path": "run-04/private-memory/result.json",
+      "reason": "private temporary memory library or binary",
+      "sha256Bytes": "25a87fa0e2d2d33b46d47ea936e5ad75011a73bab761759fb0b290c35c578e42"
+    }
+  ],
+  "installation": "installation-recipe.json",
+  "proof": {
+    "groups": 2,
+    "assertions": 24,
+    "productionOverrides": 2,
+    "fixtureClassIntersections": 0,
+    "actual45RuntimeEntries": 97
+  },
+  "oldFrozenPacketsUnchanged": [
+    "FinalPublication428",
+    "Playback84",
+    "ProfileAccount56"
+  ],
+  "limitations": [
+    "No actual Root mounting, native DLL, native seek ACK, original portrait renderer, navigation transition, HTTP or account operations",
+    "Install exact hunks only, preserving all Root changes outside snippets"
+  ]
+}

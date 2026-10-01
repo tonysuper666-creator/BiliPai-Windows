@@ -1,0 +1,38 @@
+{
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+  "originalSha256Bytes": "4fe3b94adbd3a4f9eea165e68b8efdee0f06d74c78bc3de9269b2fa067ba8db3",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalCommentAnchors": [
+    [
+      754,
+      758
+    ],
+    [
+      1136,
+      1159
+    ],
+    [
+      3085,
+      3106
+    ]
+  ],
+  "originalRouteOpenIdType": "Long",
+  "signatures": [
+    "open(card:VideoCard,resumePositionMs:Long)",
+    "openVideoDetail(card:VideoCard,resumePositionMs:Long,keepMatchingSource:Boolean):Boolean",
+    "DesktopVideoCommentRootHost(...,initialCommentRootRpid:Long=0L,initialCommentTargetRpid:Long=0L,commentRouteOpenId:Long=0L)"
+  ],
+  "requestOwnership": "Same Controller generation/account/source+existing final publication; same sole CommentRootBindings owner contains aid/openId/root/target and retains existing epoch/Job guards",
+  "requiredRootInputs": [
+    "Card.preferredCid is the real original CID; zero is an unspecified CID and never falsely matches an already playing part",
+    "keepMatchingSource must come from actual compatible route effects; the Controller does not guess fullscreen/audio/portrait flags",
+    "sourceRoute/openId remain in the existing typed navigation entry and are not native ownership tokens",
+    "Root chooses the comments tab for a positive comment root using original route behavior; Host only opens the actual thread",
+    "Caller same-epoch nav-entry owns/cancel guards must wrap deferred Root calls; no stale route may call this fresh Controller"
+  ],
+  "boundaries": [
+    "No new player/store/client/DTO/cache",
+    "No original full player action-row, portrait-fullscreen renderer, or Story/navigation window proof",
+    "No actual Root UI or native DLL playback accepted here"
+  ]
+}

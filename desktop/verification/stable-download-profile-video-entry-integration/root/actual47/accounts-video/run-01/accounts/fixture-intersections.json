@@ -1,0 +1,23 @@
+{
+  "fixtureClasses": [
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$callerOnlyCancellation$2$1.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$callerOnlyCancellation$2$2.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$callerOnlyCancellation$2$task$1.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$callerOnlyCancellation$2.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$cancelled$1.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$main$1.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$metadata$1.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$metadata$5.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$metadata$6.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$metadata$7.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$selectionAndTerminal$1.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$selectionAndTerminal$2.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$selectionAndTerminal$3.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$selectionAndTerminal$4.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$selectionAndTerminal$5.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt$selectionAndTerminal$6.class",
+    "com/bilipai/desktop/ui/AccountPortFixtureKt.class",
+    "com/bilipai/desktop/ui/Entry.class"
+  ],
+  "productClassIntersections": []
+}

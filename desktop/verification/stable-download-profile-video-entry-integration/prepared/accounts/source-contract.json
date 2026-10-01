@@ -1,0 +1,67 @@
+{
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalPath": "app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+  "originalSha256Bytes": "c7619b2386b42349693098c28657867cf8b73af3a66e1353d039bdc037a68011",
+  "originalAnchors": {
+    "getAccounts": [
+      43,
+      52
+    ],
+    "getActiveAccountMid": [
+      61,
+      65
+    ],
+    "getPlaybackAccountMid": [
+      71,
+      75
+    ],
+    "getPlaybackAccount": [
+      77,
+      80
+    ],
+    "setPlaybackAccountMid": [
+      83,
+      95
+    ],
+    "clearActiveAccount": [
+      97,
+      103
+    ],
+    "removeAccount": [
+      105,
+      122
+    ],
+    "upsertCurrentAccount": [
+      124,
+      156
+    ],
+    "activateAccount": [
+      158,
+      182
+    ]
+  },
+  "sameStore": true,
+  "newClient": false,
+  "newSchema": false,
+  "newPersistentKeys": false,
+  "originalUpsertFields": [
+    "mid",
+    "name",
+    "face",
+    "sessData",
+    "csrf",
+    "accessToken",
+    "refreshToken",
+    "accessTokenPlatform",
+    "buvid3",
+    "isVip",
+    "vipLabel",
+    "lastUsedAt"
+  ],
+  "declaredAdapters": [
+    "Primary MID save rejects mismatched Nav MID instead of relabeling live credentials",
+    "Existing Store coalesces logout session+active selector in one epoch publication; subsequent clearActive only validates exact terminal receipt and never opens a new-epoch write grant",
+    "Synchronous removeAccount uses real entry Job and one immediate atomic click admission; suspend mutations additionally capture their caller Job",
+    "Existing recordCurrent retains previously persisted original vipLabel rather than dropping it while projecting same active record"
+  ]
+}

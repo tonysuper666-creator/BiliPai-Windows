@@ -1,0 +1,35 @@
+work\BiliPai\desktop\.local\stable-download-list-parity\DownloadListFixture.kt:86:17: error: none of the following candidates is applicable:
+
+constructor(client: OkHttpClient, stateFile: Path, muxer: DownloadMuxer, sourceResolver: (suspend (DownloadTask) -> PlaybackSource?)? = ..., danmakuDownloader: (suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?>)? = ..., publication: DesktopPlaybackPublication): DesktopDownloadManager:
+  No value passed for parameter 'publication'.
+
+constructor(repository: DesktopRepository): DesktopDownloadManager:
+  Too many arguments for 'constructor(repository: DesktopRepository): DesktopDownloadManager'.
+  Too many arguments for 'constructor(repository: DesktopRepository): DesktopDownloadManager'.
+  Argument type mismatch: actual type is 'OkHttpClient', but 'DesktopRepository' was expected.
+    val manager=DesktopDownloadManager(client,stateFile,DownloadMuxer{_,_,_->error("Fixture does not start download or mux")})
+                ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-download-list-parity\DownloadListFixture.kt:91:50: error: unresolved reference 'tasks'.
+        prove(bindings.tasks.value.keys==manager.tasks.value.map{it.id}.toSet(),"Transient map exposes the actual queue's original task identities")
+                                                 ^^^^^
+work\BiliPai\desktop\.local\stable-download-list-parity\DownloadListFixture.kt:91:66: error: unresolved reference 'it'.
+        prove(bindings.tasks.value.keys==manager.tasks.value.map{it.id}.toSet(),"Transient map exposes the actual queue's original task identities")
+                                                                 ^^
+work\BiliPai\desktop\.local\stable-download-list-parity\DownloadListFixture.kt:109:27: error: unresolved reference 'tasks'.
+            prove(manager.tasks.value.size==2,"Original confirmation prevents immediate destructive deletion")
+                          ^^^^^
+work\BiliPai\desktop\.local\stable-download-list-parity\DownloadListFixture.kt:111:32: error: unresolved reference 'tasks'.
+            eventually{manager.tasks.value.size==1&&!Files.exists(Path.of(paused.directory))}
+                               ^^^^^
+work\BiliPai\desktop\.local\stable-download-list-parity\DownloadListFixture.kt:112:27: error: unresolved reference 'tasks'.
+            prove(manager.tasks.value.single().id==complete.id,"Real original confirmation removes only its selected queue task")
+                          ^^^^^
+work\BiliPai\desktop\.local\stable-download-list-parity\DownloadListFixture.kt:112:48: error: unresolved reference 'id'.
+            prove(manager.tasks.value.single().id==complete.id,"Real original confirmation removes only its selected queue task")
+                                               ^^
+work\BiliPai\desktop\.local\stable-download-list-parity\DownloadListFixture.kt:117:27: error: unresolved reference 'tasks'.
+            prove(manager.tasks.value.size==1&&Files.exists(Path.of(complete.directory)),"Retired entry cannot delete another task")
+                          ^^^^^
+work\BiliPai\desktop\.local\stable-download-list-parity\DownloadListFixture.kt:122:44: error: unresolved reference 'close'.
+    } finally {entryScope.cancel();manager.close();client.dispatcher.executorService.shutdownNow();client.connectionPool.evictAll()}
+                                           ^^^^^

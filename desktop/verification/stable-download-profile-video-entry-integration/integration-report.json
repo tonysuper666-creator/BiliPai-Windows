@@ -1,0 +1,215 @@
+{
+  "wholeClassesPhase": 47,
+  "wholeClassesPassed": true,
+  "wholeTestSourcesCompiled": true,
+  "sourceIdentityCount": 938,
+  "resourceCount": 213,
+  "actualRuntimeEntries": 97,
+  "actualKotlinClasses": 12005,
+  "invalidJvmMethodNames": 0,
+  "actualFocusedAssertions": 75,
+  "actualFocusedGroups": 8,
+  "productionOverrides": 0,
+  "accountsVideoProof": {
+    "passed": true,
+    "phase": "actual47-profile-video-admission-zero-override",
+    "groups": 5,
+    "assertions": 54,
+    "productionOverrides": 0,
+    "runtimeEntries": 97,
+    "cpToolsOriginalSourcesPrePostByteEqual": true,
+    "fixtureProductClassIntersections": [],
+    "actualProductOriginationRows": 10,
+    "uniqueActualProductClasses": 9,
+    "origins": [
+      {
+        "class": "com.bilipai.desktop.ui.DesktopProfileAccountsBinding",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+        "classSha256": "2f1f9f5bb8bd5c019f3e66d9b5a44b50b1f4b151bf0de0b0810942dc03fea2d7"
+      },
+      {
+        "class": "com.bilipai.desktop.data.DesktopSessionStore",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+        "classSha256": "412d849ea8f43feac60ac01c8d29e369f1922b4b588d83e2c0239f40e4706c49"
+      },
+      {
+        "class": "com.bilipai.desktop.data.DesktopRepository",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+        "classSha256": "1414c6a91938701313c233b9696a1579bbfff6c8fd46875caca3623045dc8fcb"
+      },
+      {
+        "class": "com.android.purebilibili.core.store.StoredAccountSession",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+        "classSha256": "cbc5166764971f1a6ee2d11d790175b65e0109b435453fcb3462f0d3006c95da"
+      },
+      {
+        "class": "com.android.purebilibili.data.model.response.NavData",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+        "classSha256": "efa797f5b0cd8a1e3ded09a99672570d5e5a7044a1fe81950bf4db790fd97614"
+      },
+      {
+        "class": "com.bilipai.desktop.DesktopPlaybackController",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+        "classSha256": "60a3273082f784bd558c42af6b5503cf8d81f99f5d5f3d24130fc99fa73ac036"
+      },
+      {
+        "class": "com.bilipai.desktop.ui.DesktopVideoCommentRootKt",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+        "classSha256": "9e1f2bd160099f669fc1eb84eb8afe20434f40ee23eb2e0c4fa0e4d997db395d"
+      },
+      {
+        "class": "com.android.purebilibili.feature.video.viewmodel.VideoCommentViewModel",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+        "classSha256": "cb41edba009996e56814752abbb93f5e53e8528e8961625c6312798fb868cff1"
+      },
+      {
+        "class": "com.bilipai.desktop.player.MpvPlayer",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+        "classSha256": "f99266b3766ddc8e1a218324ad7a37f9d4d5bfce1510a593142cf8643f2d6b28"
+      },
+      {
+        "class": "com.bilipai.desktop.data.DesktopRepository",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+        "classSha256": "1414c6a91938701313c233b9696a1579bbfff6c8fd46875caca3623045dc8fcb"
+      }
+    ],
+    "fixtures": [
+      {
+        "passed": true,
+        "groups": 3,
+        "assertions": 30,
+        "origins": [
+          {
+            "class": "com.bilipai.desktop.ui.DesktopProfileAccountsBinding",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+            "classSha256": "2f1f9f5bb8bd5c019f3e66d9b5a44b50b1f4b151bf0de0b0810942dc03fea2d7"
+          },
+          {
+            "class": "com.bilipai.desktop.data.DesktopSessionStore",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+            "classSha256": "412d849ea8f43feac60ac01c8d29e369f1922b4b588d83e2c0239f40e4706c49"
+          },
+          {
+            "class": "com.bilipai.desktop.data.DesktopRepository",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+            "classSha256": "1414c6a91938701313c233b9696a1579bbfff6c8fd46875caca3623045dc8fcb"
+          },
+          {
+            "class": "com.android.purebilibili.core.store.StoredAccountSession",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+            "classSha256": "cbc5166764971f1a6ee2d11d790175b65e0109b435453fcb3462f0d3006c95da"
+          },
+          {
+            "class": "com.android.purebilibili.data.model.response.NavData",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+            "classSha256": "efa797f5b0cd8a1e3ded09a99672570d5e5a7044a1fe81950bf4db790fd97614"
+          }
+        ],
+        "HTTP": false,
+        "RootMounted": false,
+        "actualProductSnapshot": 47,
+        "productionOverrides": 0,
+        "fixtureProductClassIntersections": [],
+        "originalFixtureSourceUnchanged": true,
+        "originalFixtureLegacyProspectiveConsoleWordingRetained": true,
+        "fixtureSourceSha256Bytes": "92accde8fc258162b8229105263e6d19df3b8da7b45a321f509e20ef58f74341",
+        "fixtureJarSha256Bytes": "32fc9284c0c6602b6322f3f7876d81c52a8725933bec516fa0c97c2d98ee271b"
+      },
+      {
+        "passed": true,
+        "groups": 2,
+        "assertions": 24,
+        "origins": [
+          {
+            "class": "com.bilipai.desktop.DesktopPlaybackController",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+            "classSha256": "60a3273082f784bd558c42af6b5503cf8d81f99f5d5f3d24130fc99fa73ac036"
+          },
+          {
+            "class": "com.bilipai.desktop.ui.DesktopVideoCommentRootKt",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+            "classSha256": "9e1f2bd160099f669fc1eb84eb8afe20434f40ee23eb2e0c4fa0e4d997db395d"
+          },
+          {
+            "class": "com.android.purebilibili.feature.video.viewmodel.VideoCommentViewModel",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+            "classSha256": "cb41edba009996e56814752abbb93f5e53e8528e8961625c6312798fb868cff1"
+          },
+          {
+            "class": "com.bilipai.desktop.player.MpvPlayer",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+            "classSha256": "f99266b3766ddc8e1a218324ad7a37f9d4d5bfce1510a593142cf8643f2d6b28"
+          },
+          {
+            "class": "com.bilipai.desktop.data.DesktopRepository",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-47/main-kotlin.jar",
+            "classSha256": "1414c6a91938701313c233b9696a1579bbfff6c8fd46875caca3623045dc8fcb"
+          }
+        ],
+        "HTTP": false,
+        "NativeDLL": false,
+        "RootMounted": false,
+        "HostUIRuntime": false,
+        "actualProductSnapshot": 47,
+        "productionOverrides": 0,
+        "fixtureProductClassIntersections": [],
+        "originalFixtureSourceUnchanged": true,
+        "originalFixtureLegacyProspectiveConsoleWordingRetained": true,
+        "fixtureSourceSha256Bytes": "a48f945c837f19f753a98e1fda71625358f6e8b2510148e48157871302f06078",
+        "fixtureJarSha256Bytes": "163ff75a5f05cf4bae12c8b0efcf96ca10dc83824a5acecb59d6e0bfbd6b2aef"
+      }
+    ],
+    "limitations": [
+      "No actual Profile/Video Host mounting, native DLL, native seek ACK, HTTP/socket, root navigation, chooser or user files",
+      "Original fixture console labels describe their prior prospective run; this runner verifies only actual47 JAR/class-byte origins and has no production candidate JAR"
+    ]
+  },
+  "downloadProof": {
+    "status": "PASS",
+    "groups": 3,
+    "assertions": 21,
+    "pointerPairs": 2,
+    "loadedCandidateClasses": 36,
+    "actualRootRuntimeAccepted": false,
+    "rootMounted": false,
+    "HTTPCalls": 0,
+    "chooserOpened": false,
+    "offscreenOriginalUi": true,
+    "actualQueueAndLocalDelete": true,
+    "actualSnapshot": 47,
+    "actualRuntimeEntries": 97,
+    "actualInstalledOriginalUi": true,
+    "runtimeProductionOverrides": 0,
+    "fixtureOnlyClassCount": 13,
+    "fixtureProductionClassIntersection": [],
+    "classOrigins": {
+      "status": "PASS",
+      "verifiedInstalledClassesBeforeAndAfter": 36,
+      "extraActualOwnerClasses": 4,
+      "runtimeProductionOverrides": 0,
+      "referenceJarOnClasspath": false
+    },
+    "newFixtureJarSha256Bytes": "0712a796e95642b33da0fa7f794582e331640d8584b8b3cfe3105be4874474bc",
+    "all97RuntimeAndFixturePinsBeforeAfterEqual": true,
+    "sharedGradleRun": false,
+    "referenceJarRuntimeOrCompilerEntry": false,
+    "legacyFieldMeaning": {
+      "loadedCandidateClasses": "Historical fixture field: these 36 names are loaded from actual47; the older reference JAR supplies names only, never code."
+    }
+  },
+  "fullOriginalDownloadListInstalled": true,
+  "sameQueueAndAccountStoreAndMpv": true,
+  "canonicalDownloadDestinationUsedByRootEnqueue": true,
+  "profileOriginalAccountPortAll14MethodsInstalled": true,
+  "videoMillisecondResumeAndInitialCommentRouteInstalled": true,
+  "newOriginalIdentities": 3,
+  "newRuntimeArtifacts": 0,
+  "rootMounted": false,
+  "newWindowsExeDeployed": false,
+  "pending": [
+    "Physical original Window/MainHost/Profile and typed leaf mount",
+    "Initial offline taskId bridge followed by full original offline controls",
+    "Full original normal/portrait/landscape video renderer and actual native/Root/user-account interaction",
+    "Portable desktop EXE"
+  ]
+}
