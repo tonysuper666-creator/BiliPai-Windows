@@ -91,3 +91,4 @@ desktop/verification/stable-native-playback-dispatch/** -text
 desktop/verification/stable-runtime-plugin-dispatch/** -text
 desktop/verification/stable-full-video-owner-holder-integration/** -text
 desktop/verification/stable-native-media-byte-cache-core/** -text
+desktop/verification/stable-native-media-byte-cache-actual70/** -text

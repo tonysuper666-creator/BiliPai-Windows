@@ -1,0 +1,72 @@
+{
+  "com/bilipai/desktop/player/PlaybackSource.class": [
+    {
+      "jar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-70\\main-kotlin.jar",
+        "sha256Bytes": "816e0d12b3f27b48cde35cecc8a5e7e4466692f748503d2ecaaa2c79a1159802",
+        "size": 44300542
+      },
+      "sha256ClassBytes": "955f2d872b592ba0b84aa8554b8faee29715ad838cec1d1cd8c9e907afbfcbec"
+    }
+  ],
+  "com/bilipai/desktop/player/MpvPlayer.class": [
+    {
+      "jar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-70\\main-kotlin.jar",
+        "sha256Bytes": "816e0d12b3f27b48cde35cecc8a5e7e4466692f748503d2ecaaa2c79a1159802",
+        "size": 44300542
+      },
+      "sha256ClassBytes": "46ee09f2ffa1aac135e7925dc6f88e20ba37c03b29308aa67833b0e1f1ce1515"
+    }
+  ],
+  "com/bilipai/desktop/player/cache/DesktopMediaByteCache.class": [
+    {
+      "jar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-70\\main-kotlin.jar",
+        "sha256Bytes": "816e0d12b3f27b48cde35cecc8a5e7e4466692f748503d2ecaaa2c79a1159802",
+        "size": 44300542
+      },
+      "sha256ClassBytes": "5d19f629f1af40c17e6f245eeed4ba5d4d0d8dea1741ec80a8a6efa5e50cb5f5"
+    }
+  ],
+  "com/bilipai/desktop/player/cache/DesktopNativeMediaTransport.class": [
+    {
+      "jar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-70\\main-kotlin.jar",
+        "sha256Bytes": "816e0d12b3f27b48cde35cecc8a5e7e4466692f748503d2ecaaa2c79a1159802",
+        "size": 44300542
+      },
+      "sha256ClassBytes": "7290f996403b0309e0895d4689fb9847553b9e4e9053e91df594a3b4126e9822"
+    }
+  ],
+  "com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.class": [
+    {
+      "jar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-70\\main-kotlin.jar",
+        "sha256Bytes": "816e0d12b3f27b48cde35cecc8a5e7e4466692f748503d2ecaaa2c79a1159802",
+        "size": 44300542
+      },
+      "sha256ClassBytes": "f466bd38dc400c9f26fc78c54a16928979954399b87d9e2706386d18fb523ef6"
+    }
+  ],
+  "com/bilipai/desktop/data/DesktopSessionStore.class": [
+    {
+      "jar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-70\\main-kotlin.jar",
+        "sha256Bytes": "816e0d12b3f27b48cde35cecc8a5e7e4466692f748503d2ecaaa2c79a1159802",
+        "size": 44300542
+      },
+      "sha256ClassBytes": "66bc237ff5f36f08176d5f2bde5666e2efde45b07e6d7468e18e4361b9d6cca2"
+    }
+  ],
+  "com/bilipai/desktop/data/DesktopRepository.class": [
+    {
+      "jar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-70\\main-kotlin.jar",
+        "sha256Bytes": "816e0d12b3f27b48cde35cecc8a5e7e4466692f748503d2ecaaa2c79a1159802",
+        "size": 44300542
+      },
+      "sha256ClassBytes": "0cd8ba8bf7a7ccf57cd359b31fda73353ea36a053af2f766e08807c8ab053c2d"
+    }
+  ]
+}

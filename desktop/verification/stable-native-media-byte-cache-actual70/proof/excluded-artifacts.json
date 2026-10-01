@@ -1,0 +1,128 @@
+[
+  {
+    "path": "runs/actual70-01/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$await$1.class",
+    "sha256Bytes": "a62f8e85239cf75d2805bd37379563fe1b4b52379fdc3507fb4b47acfa0176dc",
+    "size": 1709,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-01/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$await$2.class",
+    "sha256Bytes": "28e10f0910fd7c7c7d30ee7c898f31632f56061aa2d0737e4ad9021aea3336cf",
+    "size": 3609,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-01/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$main$1$owner$4.class",
+    "sha256Bytes": "5f76e70e5968c332ca3a48c7ab041763ec348a7714ac422959d7a2ba339c6e10",
+    "size": 2559,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-01/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$main$1$ready$1.class",
+    "sha256Bytes": "ad14ed735fac6929d205102ad8975c2fcbbadf324efac50dfe8c366077abd2e2",
+    "size": 1782,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-01/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$main$1$ready$2$1.class",
+    "sha256Bytes": "234a580942a4f6ae5bb395ef7f2e0e8c494b2f5053c3b59bb6c58678f1c8807c",
+    "size": 3423,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-01/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$main$1$ready$2.class",
+    "sha256Bytes": "27659ca9a4df7f80a01756d012dc3ed5132bf3fa94a625104f937f79aea8c685",
+    "size": 4065,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-01/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$main$1.class",
+    "sha256Bytes": "299b23b42dccc7ee5326e11b2db261917c9370fab7557fcc4d7fdf262716c314",
+    "size": 67029,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-01/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt.class",
+    "sha256Bytes": "cecfaefcfda3637ad9d9144076b0e5f7372c63bcac81fcb86d891506284c5926",
+    "size": 5773,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "6d6be75f1dedc60de31f7a53f83f9b28a082a73fc23b7c01b19519caea82b2f7",
+    "size": 90,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-02/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$await$1.class",
+    "sha256Bytes": "a62f8e85239cf75d2805bd37379563fe1b4b52379fdc3507fb4b47acfa0176dc",
+    "size": 1709,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-02/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$await$2.class",
+    "sha256Bytes": "28e10f0910fd7c7c7d30ee7c898f31632f56061aa2d0737e4ad9021aea3336cf",
+    "size": 3609,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-02/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$main$1$owner$4.class",
+    "sha256Bytes": "1b74cf10d11ab17607c9a65b288c309e36922b36a468aaf3f66cb96454d4560f",
+    "size": 2559,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-02/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$main$1$ready$1.class",
+    "sha256Bytes": "ffcf44b082e422e115ca79509ad066701671b73271a00d428440ed8a222e3496",
+    "size": 1782,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-02/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$main$1$ready$2$1.class",
+    "sha256Bytes": "fa63aff96bc80fe1f69024584870525a3fae342b11104fa4fc51cd3e65e3028a",
+    "size": 3423,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-02/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$main$1$ready$2.class",
+    "sha256Bytes": "813f70e909a2534249dcfe1beb3b87b00cc53d642b3de2a7ec57cc3c13ea9639",
+    "size": 4065,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-02/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt$main$1.class",
+    "sha256Bytes": "cddbeadff2d465b11ac2b8ed6a4622b2e0a066726067571f4cbc69d0e8f6ceac",
+    "size": 66070,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-02/classes/com/bilipai/desktop/player/cache/InstalledMediaCarrierProofKt.class",
+    "sha256Bytes": "9f93a063b5216a0f9dcad362b46542afce61eb7014e3b2c4698cf31e887402aa",
+    "size": 5773,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "6d6be75f1dedc60de31f7a53f83f9b28a082a73fc23b7c01b19519caea82b2f7",
+    "size": 90,
+    "reason": "rebuildable fixture compiler output; never installed"
+  },
+  {
+    "path": "runs/actual70-02/owned-data/cache/3c7318d0-5527-4b58-8762-457ac7fd3882.span",
+    "sha256Bytes": "235610512dc2f8c9bb0c1d00d103ec2695afe53a98c95e39dafcdd223123f274",
+    "size": 85178,
+    "reason": "fixture-owned temporary cache/session/task data; exact hashes retained"
+  },
+  {
+    "path": "runs/actual70-02/owned-data/cache/5060af5e-f956-49b9-bd0c-ae6202591966.span",
+    "sha256Bytes": "259fedefc733a20c90382f4bfa3788e6918e9f128bd9eb1a2ffe0640e4f502cb",
+    "size": 39928,
+    "reason": "fixture-owned temporary cache/session/task data; exact hashes retained"
+  },
+  {
+    "path": "runs/actual70-02/owned-data/cache/b9a54528-f948-429b-89ee-789d2031997c.span",
+    "sha256Bytes": "37be8046a765e2e4a975e78fc6261e693ac5272f3631c5a99559b38dd77ea58b",
+    "size": 34958,
+    "reason": "fixture-owned temporary cache/session/task data; exact hashes retained"
+  }
+]

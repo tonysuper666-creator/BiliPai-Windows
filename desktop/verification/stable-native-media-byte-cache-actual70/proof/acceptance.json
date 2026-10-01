@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "actualSnapshot": 70,
+  "groups": 4,
+  "assertions": 21,
+  "productionOverrides": 0,
+  "actualNativeCarrier": true,
+  "actualStoreGuestPartition": true,
+  "actualFinalEmptyHeaderWire": true,
+  "actualOwnerPublishAckAdopt": true,
+  "sameVersionCarrierReadLeaseTransferred": true,
+  "normalCompletedResolverSupported": true,
+  "oldOwnerRetirementSafe": true,
+  "newLoadAndCloseCapabilitiesRevoked": true,
+  "completeMpdRepresentations": 3,
+  "actualVideoAudioDecoding": true,
+  "warmNativeNoSecondOriginBodyRange": true,
+  "strictRuntimeEntries": 101,
+  "classpathAndNativePinsUnchanged": true,
+  "failedHistory": [
+    {
+      "run": "actual70-01",
+      "kind": "fixture premise",
+      "reason": "HTTP localhost CookieJar correctly rejected; incorrect fixture assertion"
+    }
+  ],
+  "unaccepted": [
+    "MainShell mount",
+    "real account/CDN",
+    "cache-error direct-source recovery",
+    "operating-system input/window",
+    "all EDL/music paths"
+  ],
+  "acceptedRun": "runs/actual70-02",
+  "contract": {
+    "path": "contract.md",
+    "sha256Bytes": "89bc7a330c130a81bbc07b5660aa7f35422b7ebc27353579c73b659e0060edbc",
+    "size": 3842
+  }
+}

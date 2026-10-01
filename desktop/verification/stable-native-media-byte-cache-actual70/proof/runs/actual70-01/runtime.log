@@ -1,0 +1,14 @@
+PASS actual SessionStore produces stable bounded effective partition
+Exception in thread "main" java.lang.IllegalStateException: same actual store has synthetic local cookie before final header override
+	at com.bilipai.desktop.player.cache.InstalledMediaCarrierProofKt.verify(InstalledMediaCarrierProof.kt:30)
+	at com.bilipai.desktop.player.cache.InstalledMediaCarrierProofKt.access$verify(InstalledMediaCarrierProof.kt:1)
+	at com.bilipai.desktop.player.cache.InstalledMediaCarrierProofKt$main$1.invokeSuspend(InstalledMediaCarrierProof.kt:105)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.player.cache.InstalledMediaCarrierProofKt.main(InstalledMediaCarrierProof.kt:38)

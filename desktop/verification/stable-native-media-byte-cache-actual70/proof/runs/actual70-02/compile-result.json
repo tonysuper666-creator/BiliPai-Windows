@@ -1,0 +1,13 @@
+{
+  "exit": 0,
+  "snapshot": 70,
+  "entries": 101,
+  "productionOverrides": 0,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-actual70-proof\\runs\\actual70-02\\inputs\\InstalledMediaCarrierProof.kt",
+      "sha256Bytes": "3428fdd3cbac480955b5d62e7dd49984070d2f9c97614bbbca3af1183129a4a3",
+      "size": 14171
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+PASS actual SessionStore produces stable bounded effective partition
+PASS same actual SessionStore rejects out-of-scope localhost cookie
+PASS actual Repository final network tag keeps explicit empty UA Referer Cookie on wire
+PASS actual native source 1 readback ready with real codecs
+PASS actual native owner stores remote fields and same nativeTransport object
+PASS actual MPV consumes warmed separate video and audio without second body range
+PASS normal completed resolver is not accepted native source job
+PASS actual ACK replaces transient request guard for live carrier
+PASS same actual MPV source barrier drains before adoption
+PASS actual owner adoption transfers same version carrier and publication identity
+PASS old source job cancellation and old owner close preserve adopted read capability
+PASS same MPV playback clock advances after real owner adoption
+PASS actual adopted reader still uses warmed original ranges
+PASS complete MPD keeps every original representation and exact range table
+PASS actual native source 2 readback ready with real codecs
+PASS actual new load invalidates previous local capabilities
+PASS actual full MPD consumer keeps remote semantic fields and actual carrier
+PASS actual complete MPD stays readable after resolver normal completion and real ACK
+PASS actual complete MPD video audio decode reads warmed spans without second body range
+PASS actual current owner close revokes complete MPD capability
+PASS actual bounded cache includes all committed disk headers
+{"snapshot":70,"groups":4,"assertions":21,"productionOverrides":0,"actualNativeCarrier":true,"actualStorePartition":true,"actualFinalWireHeaders":true,"actualOwnerPublishAckAdopt":true,"fullAdaptiveMpdNative":true,"realAccount":false,"MainShell":false,"window":false,"OSInput":false}
