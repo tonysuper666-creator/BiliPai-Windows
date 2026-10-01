@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "compileExitCode": 0,
+  "runExitCode": 0,
+  "actualProductSnapshot": 58,
+  "runtimeEntries": 101,
+  "fixtureClasses": 3,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersections": [],
+  "fixtureJarSha256Bytes": "cf20e866e29ff6a7ab640ccedae04edaab91901563bfb92df12a3d5c4f5b37b0",
+  "byteVerifiedProductOrigins": [
+    {
+      "class": "com.bilipai.desktop.player.MpvPlayer",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-58/main-kotlin.jar",
+      "sha256ClassBytes": "729b7ac3aeb818ede187ac4678ceec6743ba18b3faf44a834d9589a1f9f493b3"
+    },
+    {
+      "class": "com.bilipai.desktop.player.PlaybackSource",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-58/main-kotlin.jar",
+      "sha256ClassBytes": "e1d50d2f012b093f04b6c6d1671126d82fc52e39ff6808587dd4d0105e4baa70"
+    },
+    {
+      "class": "com.bilipai.desktop.player.DesktopNativePlaybackPublication",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-58/main-kotlin.jar",
+      "sha256ClassBytes": "de64bc3f59cf49212f35ff0b03815f094881c3f4f5a1a182035367e7a2638d75"
+    }
+  ],
+  "fixtureSourceUnchanged": true,
+  "fixtureIsRootOwned": true,
+  "sameSocketFreeChecksReplayed": true,
+  "actualAccountUsed": false,
+  "nativeExecuted": true,
+  "actualLocalNativeClip": true,
+  "fullControllerDrainAccepted": false,
+  "independentVisualAcceptance": false,
+  "fullOrdinaryVideoRootMountAccepted": false
+}

@@ -1,0 +1,12 @@
+{
+  "sourcePath": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+  "baselineCommit": "e598d1a6892068d57096a2aabf67f490e0c17c0e",
+  "baselineLFsha256": "fff510976494af0321ff26de3263d35aa02e53ef9613fc16fa3e7f27f50fb792",
+  "candidateLFsha256": "d974a2a05eaee2217f75fc21fcd3d43e07aaf2a87a028333f412cd38802125e9",
+  "adoption": "same version and media identity; only nativePublication changes",
+  "barrier": "same existing native actor acknowledges queued commands, no media command",
+  "requiredCaller": "Store/entry admission for adopt; no Store/entry locks across drain await",
+  "newSourceIdentities": 0,
+  "newDependencies": 0,
+  "fullOwnerOrControllerTransitionAccepted": false
+}

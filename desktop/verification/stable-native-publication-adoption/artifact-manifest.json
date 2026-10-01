@@ -1,0 +1,116 @@
+{
+  "artifacts": [
+    {
+      "path": "root/source-packet/NativePublicationAdoptionFixture.kt",
+      "sha256Bytes": "2b416d39a5532d1ee5602855aa10af88b3fa19cfa28093d9649cfda03ef0cf0c",
+      "sizeBytes": 9794
+    },
+    {
+      "path": "root/source-packet/after/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "d974a2a05eaee2217f75fc21fcd3d43e07aaf2a87a028333f412cd38802125e9",
+      "sizeBytes": 64632
+    },
+    {
+      "path": "root/source-packet/before/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "fff510976494af0321ff26de3263d35aa02e53ef9613fc16fa3e7f27f50fb792",
+      "sizeBytes": 61709
+    },
+    {
+      "path": "root/source-packet/source-delta.json",
+      "sha256Bytes": "bd4f91cb043b39de4bc48a69db179c97da8d2fe90a3772cd9171b86cb3a9ae1f",
+      "sizeBytes": 702
+    },
+    {
+      "path": "root/actual58-native-publication-fixture01/NativePublicationAdoptionFixture.kt",
+      "sha256Bytes": "2b416d39a5532d1ee5602855aa10af88b3fa19cfa28093d9649cfda03ef0cf0c",
+      "sizeBytes": 9794
+    },
+    {
+      "path": "root/actual58-native-publication-fixture01/compile.args",
+      "sha256Bytes": "058492217f2060a8330332709cee59d1dfc7c5c9fd7a8c1fa333f3ca910d07ff",
+      "sizeBytes": 25553
+    },
+    {
+      "path": "root/actual58-native-publication-fixture01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual58-native-publication-fixture01/fixture-subtitle.srt",
+      "sha256Bytes": "24b1bf02da3d17898480d0aaadab160dc8dc61aa0bf168a1d3b2bc4b7f8ed9f9",
+      "sizeBytes": 61
+    },
+    {
+      "path": "root/actual58-native-publication-fixture01/pins-after.json",
+      "sha256Bytes": "3369dda4616dddc1262536e213bc34538096e83b36d4323c4506ce4e927a592e",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual58-native-publication-fixture01/pins-before.json",
+      "sha256Bytes": "3369dda4616dddc1262536e213bc34538096e83b36d4323c4506ce4e927a592e",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual58-native-publication-fixture01/result.json",
+      "sha256Bytes": "1297472e8858ba99b77d9c1bc94910647e95b1d5f9e6d83bc78f33a7106b91f7",
+      "sizeBytes": 3553
+    },
+    {
+      "path": "root/actual58-native-publication-fixture01/run.log",
+      "sha256Bytes": "72ba18457dc841c4a8686f5d3d4dbbd91a9610a1175835acf89d15f99dd6b273",
+      "sizeBytes": 55
+    },
+    {
+      "path": "root/actual58-native-publication-fixture01/runner-result.json",
+      "sha256Bytes": "22b261d2d0496d910faff424ede6d65bcd9df0f5fe27071f8898fc45c1012021",
+      "sizeBytes": 1703
+    },
+    {
+      "path": "root/snapshot58/manifest.json",
+      "sha256Bytes": "7dcc0c79eb816e781313a2dcf3d3c7d17fa14865fa3ece7996575c14b17339ae",
+      "sizeBytes": 147578
+    },
+    {
+      "path": "root/snapshot58/ordered-runtime-cp.json",
+      "sha256Bytes": "504d65ec721ff872dc169229b7fc0cd068e3ac33933070ff69cc81762638ac6c",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-58.log",
+      "sha256Bytes": "5f539ba67397eb81254595b5064c650c224f26852dfaaff2d2e344595f88bf81",
+      "sizeBytes": 8815
+    },
+    {
+      "path": "root/classpath-58.log",
+      "sha256Bytes": "7c162df127e6e77117fbaa124774a5dc00a562d0ef4fd8adfca638e66ec2c51d",
+      "sizeBytes": 287
+    },
+    {
+      "path": "root/run-actual58-native-publication-fixture.py",
+      "sha256Bytes": "b98e595049474854f1f34711cdbaae26d38b72799e007328901e5cfd7fb2e9ea",
+      "sizeBytes": 5749
+    },
+    {
+      "path": "root/freeze-native-publication58.py",
+      "sha256Bytes": "ae8d2d4da36badfe6d1ad9720460e2f26b63c6747186e9b7986d6d7e7a935cd1",
+      "sizeBytes": 6270
+    },
+    {
+      "path": "root/jvm-method-name-audit-58.json",
+      "sha256Bytes": "6fe5242bf64f9ac220d5106fc63c57c0f54ed85e8fb8f1f75734d985f6472ad9",
+      "sizeBytes": 240
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "c180ea08bf7a7d5c107761663e46368cc93e5f2eef17ceabd47c58d987398e92",
+      "sizeBytes": 2741
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "root/actual58-native-publication-fixture01/fixture.jar",
+      "sha256Bytes": "cf20e866e29ff6a7ab640ccedae04edaab91901563bfb92df12a3d5c4f5b37b0",
+      "reason": "Rebuildable binary or private rendered output"
+    }
+  ]
+}

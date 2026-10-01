@@ -93,40 +93,6 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         }
     }
 
-    /** Wait outside Store/entry locks, after cancelling and joining the old producer jobs.
-     * The existing native actor acknowledges earlier commands without issuing a media command. */
-    internal suspend fun drainSourceCommands(expectedSourceVersion: Long): Boolean {
-        val completion = CompletableDeferred<Boolean>()
-        val queued = synchronized(lock) {
-            val active = session
-            if (closed.get() || requestedSource == null || sourceVersion != expectedSourceVersion ||
-                active == null || active.closing.get()) false
-            else active.commands.offer(Action.Barrier(expectedSourceVersion, playbackRevision, completion))
-        }
-        if (!queued) return false
-        return try { kotlinx.coroutines.withTimeoutOrNull(3_000L) { completion.await() } ?: false }
-        finally { completion.cancel() }
-    }
-
-    /** Root calls inside its Store/entry admission after draining the previous owner.
-     * Only publication changes: the already loaded source, clock, tracks and surface stay intact.
-     * The expected publication identity prevents a second stale handoff from replacing a new owner. */
-    internal fun adoptPublication(expectedSourceVersion: Long, expectedSource: PlaybackSource,
-        replacement: PlaybackSource): Boolean = synchronized(lock) {
-        val current = requestedSource ?: return@synchronized false
-        val native = state.value
-        if (closed.get() || sourceVersion != expectedSourceVersion || session == null ||
-            replacement.nativePublication == null || current.nativePublication !== expectedSource.nativePublication ||
-            !native.ready || native.loading || native.ended || native.error != null || native.failure != null ||
-            native.nativePaused == null || (native.videoCodec == null && native.audioCodec == null)) return@synchronized false
-        fun mediaIdentity(source: PlaybackSource) = source.copy(startPositionSeconds = current.startPositionSeconds,
-            startPaused = current.startPaused, nativePublication = null).immutableSnapshot()
-        val identity = mediaIdentity(current)
-        if (mediaIdentity(expectedSource) != identity || mediaIdentity(replacement) != identity) return@synchronized false
-        requestedSource = current.copy(nativePublication = replacement.nativePublication).immutableSnapshot()
-        true
-    }
-
     /** A source ownership token lets a screen dispose only the stream that it actually loaded. */
     fun loadVersioned(source: PlaybackSource): Long = synchronized(lock) {
         load(source)
@@ -490,7 +456,6 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         data class Command(val args: List<String>) : Action
         data class Seek(val id: Long, val sourceVersion: Long, val revision: Long, val seconds: Double, val relative: Boolean) : Action
         data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>) : Action
-        data class Barrier(val version: Long, val revision: Long, val completion: CompletableDeferred<Boolean>) : Action
     }
 
     private data class ExternalSubtitle(val path: Path, val title: String, val language: String, val selection: Int?, val nativeId: Int? = null)
@@ -615,7 +580,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
 
         private fun perform(native: MpvNative, handle: Pointer, action: Action) {
             try {
-                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier) publishState { it.copy(operationError = null) }
+                if (action !is Action.Load && action !is Action.Screenshot) publishState { it.copy(operationError = null) }
                 when (action) {
                     is Action.Load -> {
                         val command = { synchronized(lock) {
@@ -692,11 +657,6 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         lastTrackPoll = 0L
                     }
                     is Action.Screenshot -> saveScreenshot(native, handle, action)
-                    is Action.Barrier -> action.completion.complete(synchronized(lock) {
-                        session === this && !closing.get() && sourceVersion == action.version &&
-                            playbackRevision == action.revision && activeSourceVersion == action.version &&
-                            activeRevision == action.revision && fileLoaded
-                    })
                 }
             } catch (failure: Exception) {
                 if (action is Action.Screenshot) {
