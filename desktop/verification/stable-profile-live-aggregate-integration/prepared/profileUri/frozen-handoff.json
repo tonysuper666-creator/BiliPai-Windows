@@ -1,0 +1,37 @@
+{
+  "baseProfile137Unchanged": true,
+  "localHunks": 3,
+  "wholeSourceInstall": false,
+  "nativeWindowsUriAssertions": 4,
+  "rootAccepted": false,
+  "artifacts": [
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "a3cddd87a3b8759f65699de14158b2bdd3e27f24bb886aec4574c3d8013a76dd"
+    },
+    {
+      "path": "proof.py",
+      "sha256Bytes": "c8ea955bfe14772350ae6767918c0fb5deb099ee6ec18174883ee48163187bb5"
+    },
+    {
+      "path": "local-hunks.json",
+      "sha256Bytes": "cd3843cfd3c75c634750c539cc06bfd99c8c23251716e8802e4673ee0747f710"
+    },
+    {
+      "path": "prepared/extract-upstream-profile-main.py",
+      "sha256Bytes": "f1f770072220a9d29e20cb77c3f4f5fd6d30c6decea0a0c83129114fe16942d4"
+    },
+    {
+      "path": "WindowsProfileFileUriProof.java",
+      "sha256Bytes": "05992e0bd6e9ab4a4bca2a09286b5d4058a7d21bee6d489aef3263d760db2a53"
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run.log",
+      "sha256Bytes": "665aefdee7d4ee64aa48e7053b97a26a618a6c0d4c743e26390960b49c4dc4b1"
+    }
+  ]
+}

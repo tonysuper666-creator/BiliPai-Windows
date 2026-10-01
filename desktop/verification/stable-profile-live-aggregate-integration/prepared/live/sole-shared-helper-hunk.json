@@ -1,0 +1,29 @@
+{
+  "target": "desktop/tools/extract-upstream-home-partition.py",
+  "baseSha256LF": "5136d8de3cd52f75019271311060693d4e36f6bb666fbf2ca136874a6d6134d5",
+  "baseSha256Bytes": "5136d8de3cd52f75019271311060693d4e36f6bb666fbf2ca136874a6d6134d5",
+  "before": "('MediaListRowSkeleton','UserListRowSkeleton','ContentMediaListSkeleton','ContentVideoGridSkeleton','ContentVideoGridSkeletonFixedColumns')",
+  "after": "('MediaListRowSkeleton','UserListRowSkeleton','ContentMediaListSkeleton','ContentVideoGridSkeleton','ContentVideoGridSkeletonFixedColumns','ContentCategoryGridSkeleton')",
+  "count": 1,
+  "originalSource": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+  "originalSha256LF": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2",
+  "originalDeclarations": [
+    {
+      "name": "ContentVideoGridSkeletonFixedColumns",
+      "originalBodySha256LF": "f76112d34b487700d2747314240fc9f441b51c5e623d553bbc9a79aaeeb9ab3a"
+    },
+    {
+      "name": "ContentCategoryGridSkeleton",
+      "originalBodySha256LF": "baa7f334e018905ee85c46d0ee21b70b6e6d228d0d489dcc377c004b85a97a90"
+    }
+  ],
+  "referenceOnlyCompilerFiles": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\reference-only\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopLiveSkeletonReference.kt"
+  ],
+  "existingCandidateFixedColumns": true,
+  "actual39FixedColumns": false,
+  "productionNewDeclarations": [
+    "ContentCategoryGridSkeleton"
+  ],
+  "rootWholeCompileRequired": true
+}

@@ -1,0 +1,1034 @@
+[
+  {
+    "originalStart": 49,
+    "originalEnd": 49,
+    "preparedStart": 49,
+    "preparedEnd": 201,
+    "original": "",
+    "prepared": "import com.bilipai.desktop.ui.DesktopProfileEnvironment\nimport com.bilipai.desktop.ui.DesktopOwnedProfileState\nimport kotlinx.coroutines.CoroutineScope\n"
+  },
+  {
+    "originalStart": 50,
+    "originalEnd": 224,
+    "preparedStart": 202,
+    "preparedEnd": 202,
+    "original": "import android.app.Application\nimport androidx.lifecycle.AndroidViewModel\nimport androidx.lifecycle.viewModelScope\nimport com.android.purebilibili.core.network.NetworkModule\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 278,
+    "originalEnd": 341,
+    "preparedStart": 256,
+    "preparedEnd": 318,
+    "original": "import com.android.purebilibili.core.network.getSpaceAggregate\n",
+    "prepared": "import com.bilipai.desktop.ui.getDesktopProfileSpaceAggregate\n"
+  },
+  {
+    "originalStart": 407,
+    "originalEnd": 470,
+    "preparedStart": 384,
+    "preparedEnd": 384,
+    "original": "import com.android.purebilibili.core.store.AccountSessionStore\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 534,
+    "originalEnd": 590,
+    "preparedStart": 448,
+    "preparedEnd": 448,
+    "original": "import com.android.purebilibili.core.store.TokenManager\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 904,
+    "originalEnd": 1037,
+    "preparedStart": 762,
+    "preparedEnd": 762,
+    "original": "import com.android.purebilibili.data.repository.FavoriteRepository\nimport com.android.purebilibili.data.repository.BangumiRepository\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 1279,
+    "originalEnd": 1279,
+    "preparedStart": 1004,
+    "preparedEnd": 1043,
+    "original": "",
+    "prepared": "import kotlinx.coroutines.ensureActive\n"
+  },
+  {
+    "originalStart": 1380,
+    "originalEnd": 1428,
+    "preparedStart": 1144,
+    "preparedEnd": 1144,
+    "original": "import kotlinx.coroutines.flow.MutableStateFlow\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 1581,
+    "originalEnd": 1635,
+    "preparedStart": 1297,
+    "preparedEnd": 1297,
+    "original": "import android.net.Uri\nimport android.content.Context\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 1711,
+    "originalEnd": 1770,
+    "preparedStart": 1373,
+    "preparedEnd": 1373,
+    "original": "import com.android.purebilibili.core.store.SettingsManager\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 2106,
+    "originalEnd": 2138,
+    "preparedStart": 1709,
+    "preparedEnd": 1709,
+    "original": "import java.io.FileOutputStream\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 3269,
+    "originalEnd": 3436,
+    "preparedStart": 2840,
+    "preparedEnd": 3324,
+    "original": "class ProfileViewModel(application: Application) : AndroidViewModel(application) {\n    private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)\n",
+    "prepared": "internal class ProfileViewModel(private val environment: DesktopProfileEnvironment) {\n    private val viewModelScope get() = environment.scope\n    private val platform get() = environment.platform\n    private val preferences get() = environment.preferences\n    private val accountsPort get() = environment.accounts\n    private fun <T> ownedFlow(initial: T) = DesktopOwnedProfileState(initial, environment)\n\n    private val _uiState = ownedFlow<ProfileUiState>(ProfileUiState.Loading)\n"
+  },
+  {
+    "originalStart": 3477,
+    "originalEnd": 3563,
+    "preparedStart": 3365,
+    "preparedEnd": 3444,
+    "original": "    private val _accounts = MutableStateFlow<List<StoredAccountSession>>(emptyList())\n",
+    "prepared": "    private val _accounts = ownedFlow<List<StoredAccountSession>>(emptyList())\n"
+  },
+  {
+    "originalStart": 3606,
+    "originalEnd": 3672,
+    "preparedStart": 3487,
+    "preparedEnd": 3546,
+    "original": "    private val _activeAccountMid = MutableStateFlow<Long?>(null)\n",
+    "prepared": "    private val _activeAccountMid = ownedFlow<Long?>(null)\n"
+  },
+  {
+    "originalStart": 3731,
+    "originalEnd": 3799,
+    "preparedStart": 3605,
+    "preparedEnd": 3666,
+    "original": "    private val _playbackAccountMid = MutableStateFlow<Long?>(null)\n",
+    "prepared": "    private val _playbackAccountMid = ownedFlow<Long?>(null)\n"
+  },
+  {
+    "originalStart": 4132,
+    "originalEnd": 4472,
+    "preparedStart": 3999,
+    "preparedEnd": 4247,
+    "original": "        val context = getApplication<Application>()\n        viewModelScope.launch(Dispatchers.IO) {\n            val accounts = AccountSessionStore.getAccounts(context)\n            val activeAccountMid = AccountSessionStore.getActiveAccountMid(context)\n            val playbackAccountMid = AccountSessionStore.getPlaybackAccountMid(context)\n",
+    "prepared": "        environment.launchOwned(Dispatchers.IO) {\n            val accounts = accountsPort.getAccounts()\n            val activeAccountMid = accountsPort.getActiveAccountMid()\n            val playbackAccountMid = accountsPort.getPlaybackAccountMid()\n"
+  },
+  {
+    "originalStart": 4815,
+    "originalEnd": 4997,
+    "preparedStart": 4590,
+    "preparedEnd": 4706,
+    "original": "        val context = getApplication<Application>()\n        viewModelScope.launch(Dispatchers.IO) {\n            val updated = AccountSessionStore.setPlaybackAccountMid(context, mid)\n",
+    "prepared": "        environment.launchOwned(Dispatchers.IO) {\n            val updated = accountsPort.setPlaybackAccountMid(mid)\n"
+  },
+  {
+    "originalStart": 5125,
+    "originalEnd": 5157,
+    "preparedStart": 4834,
+    "preparedEnd": 4898,
+    "original": "                    onSuccess()\n",
+    "prepared": "                    environment.publishCallback { onSuccess() }\n"
+  },
+  {
+    "originalStart": 5182,
+    "originalEnd": 5232,
+    "preparedStart": 4923,
+    "preparedEnd": 5005,
+    "original": "                    onFailure(\"播放账号不可用，请重新登录后再试\")\n",
+    "prepared": "                    environment.publishCallback { onFailure(\"播放账号不可用，请重新登录后再试\") }\n"
+  },
+  {
+    "originalStart": 5681,
+    "originalEnd": 5730,
+    "preparedStart": 5454,
+    "preparedEnd": 5507,
+    "original": "        val requestedMid = TokenManager.midCache\n",
+    "prepared": "        val requestedMid = accountsPort.currentMid()\n"
+  },
+  {
+    "originalStart": 6027,
+    "originalEnd": 6059,
+    "preparedStart": 5804,
+    "preparedEnd": 5838,
+    "original": "        viewModelScope.launch {\n",
+    "prepared": "        environment.launchOwned {\n"
+  },
+  {
+    "originalStart": 6341,
+    "originalEnd": 6403,
+    "preparedStart": 6120,
+    "preparedEnd": 6166,
+    "original": "            if (TokenManager.sessDataCache.isNullOrEmpty()) {\n",
+    "prepared": "            if (!accountsPort.hasSession()) {\n"
+  },
+  {
+    "originalStart": 6677,
+    "originalEnd": 6736,
+    "preparedStart": 6440,
+    "preparedEnd": 6497,
+    "original": "            val data = NetworkModule.api.getNavInfo().data\n",
+    "prepared": "            val data = environment.api.getNavInfo().data\n"
+  },
+  {
+    "originalStart": 7196,
+    "originalEnd": 7294,
+    "preparedStart": 6957,
+    "preparedEnd": 7047,
+    "original": "        } catch (e: CancellationException) {\n            throw e\n        } catch (e: Exception) {\n",
+    "prepared": "        } catch (e: CancellationException) { throw e\n            } catch (e: Exception) {\n"
+  },
+  {
+    "originalStart": 9313,
+    "originalEnd": 9500,
+    "preparedStart": 9066,
+    "preparedEnd": 9210,
+    "original": "        TokenManager.saveMid(getApplication(), data.mid)\n        TokenManager.saveVipStatus(data.vip.status == 1)\n        AccountSessionStore.upsertCurrentAccount(getApplication(), data)\n",
+    "prepared": "        accountsPort.saveMid(data.mid)\n        accountsPort.saveVipStatus(data.vip.status == 1)\n        accountsPort.upsertCurrentAccount(data)\n"
+  },
+  {
+    "originalStart": 10610,
+    "originalEnd": 10701,
+    "preparedStart": 10320,
+    "preparedEnd": 10409,
+    "original": "        val stats = profileRequestOrNull { NetworkModule.api.getNavStat().data } ?: return\n",
+    "prepared": "        val stats = profileRequestOrNull { environment.api.getNavStat().data } ?: return\n"
+  },
+  {
+    "originalStart": 11097,
+    "originalEnd": 11196,
+    "preparedStart": 10805,
+    "preparedEnd": 10902,
+    "original": "        val account = profileRequestOrNull { NetworkModule.api.getMemberAccount().data } ?: return\n",
+    "prepared": "        val account = profileRequestOrNull { environment.api.getMemberAccount().data } ?: return\n"
+  },
+  {
+    "originalStart": 12306,
+    "originalEnd": 12369,
+    "preparedStart": 12012,
+    "preparedEnd": 12078,
+    "original": "            NetworkModule.spaceApi.getSpaceAggregate(mid).data\n",
+    "prepared": "            environment.getDesktopProfileSpaceAggregate(mid).data\n"
+  },
+  {
+    "originalStart": 14218,
+    "originalEnd": 14250,
+    "preparedStart": 13927,
+    "preparedEnd": 13961,
+    "original": "        viewModelScope.launch {\n",
+    "prepared": "        environment.launchOwned {\n"
+  },
+  {
+    "originalStart": 15182,
+    "originalEnd": 15251,
+    "preparedStart": 14893,
+    "preparedEnd": 14960,
+    "original": "        val response = NetworkModule.spaceApi.getSpaceVideos(params)\n",
+    "prepared": "        val response = environment.spaceApi.getSpaceVideos(params)\n"
+  },
+  {
+    "originalStart": 15482,
+    "originalEnd": 15564,
+    "preparedStart": 15191,
+    "preparedEnd": 15275,
+    "original": "        val folders = FavoriteRepository.getFavFolders(mid).getOrNull() ?: return\n",
+    "prepared": "        val folders = environment.favorite.getFavFolders(mid).getOrNull() ?: return\n"
+  },
+  {
+    "originalStart": 16556,
+    "originalEnd": 16628,
+    "preparedStart": 16267,
+    "preparedEnd": 16341,
+    "original": "                        val cover = FavoriteRepository.getFavoriteList(\n",
+    "prepared": "                        val cover = environment.favorite.getFavoriteList(\n"
+  },
+  {
+    "originalStart": 17712,
+    "originalEnd": 17770,
+    "preparedStart": 17425,
+    "preparedEnd": 17485,
+    "original": "        val items = BangumiRepository.getMyFollowBangumi(\n",
+    "prepared": "        val items = environment.bangumi.getMyFollowBangumi(\n"
+  },
+  {
+    "originalStart": 18198,
+    "originalEnd": 18266,
+    "preparedStart": 17913,
+    "preparedEnd": 17979,
+    "original": "            NetworkModule.spaceApi.getSpaceDynamic(mid).data?.items\n",
+    "prepared": "            environment.spaceApi.getSpaceDynamic(mid).data?.items\n"
+  },
+  {
+    "originalStart": 19009,
+    "originalEnd": 19119,
+    "preparedStart": 18722,
+    "preparedEnd": 18807,
+    "original": "        TokenManager.clear(getApplication())\n        AccountSessionStore.clearActiveAccount(getApplication())\n",
+    "prepared": "        accountsPort.clearCurrentSession()\n        accountsPort.clearActiveAccount()\n"
+  },
+  {
+    "originalStart": 19994,
+    "originalEnd": 20069,
+    "preparedStart": 19682,
+    "preparedEnd": 19741,
+    "original": "        _uiState.value = if (TokenManager.sessDataCache.isNullOrEmpty()) {\n",
+    "prepared": "        _uiState.value = if (!accountsPort.hasSession()) {\n"
+  },
+  {
+    "originalStart": 20398,
+    "originalEnd": 20478,
+    "preparedStart": 20070,
+    "preparedEnd": 20130,
+    "original": "            SettingsManager.getProfileBgUri(getApplication()).first().orEmpty()\n",
+    "prepared": "            preferences.getProfileBgUri().first().orEmpty()\n"
+  },
+  {
+    "originalStart": 21099,
+    "originalEnd": 21166,
+    "preparedStart": 20751,
+    "preparedEnd": 20828,
+    "original": "            val file = File(Uri.parse(customBgUri).path.orEmpty())\n",
+    "prepared": "            val file = File(java.net.URI.create(customBgUri).path.orEmpty())\n"
+  },
+  {
+    "originalStart": 21774,
+    "originalEnd": 21841,
+    "preparedStart": 21436,
+    "preparedEnd": 21501,
+    "original": "        val response = NetworkModule.spaceApi.getSpaceInfo(params)\n",
+    "prepared": "        val response = environment.spaceApi.getSpaceInfo(params)\n"
+  },
+  {
+    "originalStart": 22509,
+    "originalEnd": 22541,
+    "preparedStart": 22169,
+    "preparedEnd": 22203,
+    "original": "        viewModelScope.launch {\n",
+    "prepared": "        environment.launchOwned {\n"
+  },
+  {
+    "originalStart": 22609,
+    "originalEnd": 22690,
+    "preparedStart": 22271,
+    "preparedEnd": 22389,
+    "original": "                    onResult(false, \"无法删除该动态\")\n                    return@launch\n",
+    "prepared": "                    environment.publishCallback { onResult(false, \"无法删除该动态\") }\n                    return@launchOwned\n"
+  },
+  {
+    "originalStart": 22708,
+    "originalEnd": 22758,
+    "preparedStart": 22407,
+    "preparedEnd": 22453,
+    "original": "                val csrf = TokenManager.csrfCache\n",
+    "prepared": "                val csrf = environment.csrf()\n"
+  },
+  {
+    "originalStart": 22802,
+    "originalEnd": 22880,
+    "preparedStart": 22497,
+    "preparedEnd": 22612,
+    "original": "                    onResult(false, \"请先登录\")\n                    return@launch\n",
+    "prepared": "                    environment.publishCallback { onResult(false, \"请先登录\") }\n                    return@launchOwned\n"
+  },
+  {
+    "originalStart": 22899,
+    "originalEnd": 22970,
+    "preparedStart": 22631,
+    "preparedEnd": 22700,
+    "original": "                val response = NetworkModule.dynamicApi.deleteDynamic(\n",
+    "prepared": "                val response = environment.dynamicApi.deleteDynamic(\n"
+  },
+  {
+    "originalStart": 23344,
+    "originalEnd": 23388,
+    "preparedStart": 23074,
+    "preparedEnd": 23150,
+    "original": "                    onResult(true, \"已删除动态\")\n",
+    "prepared": "                    environment.publishCallback { onResult(true, \"已删除动态\") }\n"
+  },
+  {
+    "originalStart": 23413,
+    "originalEnd": 23486,
+    "preparedStart": 23175,
+    "preparedEnd": 23280,
+    "original": "                    onResult(false, response.message.ifBlank { \"删除失败\" })\n",
+    "prepared": "                    environment.publishCallback { onResult(false, response.message.ifBlank { \"删除失败\" }) }\n"
+  },
+  {
+    "originalStart": 23504,
+    "originalEnd": 23504,
+    "preparedStart": 23298,
+    "preparedEnd": 23371,
+    "original": "",
+    "prepared": "            } catch (cancelled: CancellationException) { throw cancelled\n"
+  },
+  {
+    "originalStart": 23541,
+    "originalEnd": 23594,
+    "preparedStart": 23408,
+    "preparedEnd": 23493,
+    "original": "                onResult(false, e.message ?: \"网络错误\")\n",
+    "prepared": "                environment.publishCallback { onResult(false, e.message ?: \"网络错误\") }\n"
+  },
+  {
+    "originalStart": 24540,
+    "originalEnd": 24592,
+    "preparedStart": 24439,
+    "preparedEnd": 24487,
+    "original": "        val csrf = TokenManager.csrfCache.orEmpty()\n",
+    "prepared": "        val csrf = environment.csrf().orEmpty()\n"
+  },
+  {
+    "originalStart": 24784,
+    "originalEnd": 24904,
+    "preparedStart": 24679,
+    "preparedEnd": 24806,
+    "original": "        viewModelScope.launch {\n            val beforeSave = _uiState.value as? ProfileUiState.Success ?: return@launch\n",
+    "prepared": "        environment.launchOwned {\n            val beforeSave = _uiState.value as? ProfileUiState.Success ?: return@launchOwned\n"
+  },
+  {
+    "originalStart": 25094,
+    "originalEnd": 25182,
+    "preparedStart": 24996,
+    "preparedEnd": 25082,
+    "original": "                NetworkModule.api.updateMemberSign(userSign = sign.trim(), csrf = csrf)\n",
+    "prepared": "                environment.api.updateMemberSign(userSign = sign.trim(), csrf = csrf)\n"
+  },
+  {
+    "originalStart": 25196,
+    "originalEnd": 25280,
+    "preparedStart": 25096,
+    "preparedEnd": 25340,
+    "original": "            val latest = _uiState.value as? ProfileUiState.Success ?: return@launch\n",
+    "prepared": "            (result.exceptionOrNull() as? CancellationException)?.let { throw it }\n            kotlinx.coroutines.currentCoroutineContext().ensureActive()\n            val latest = _uiState.value as? ProfileUiState.Success ?: return@launchOwned\n"
+  },
+  {
+    "originalStart": 26107,
+    "originalEnd": 26126,
+    "preparedStart": 26167,
+    "preparedEnd": 26189,
+    "original": "        uri: Uri, \n",
+    "prepared": "        uri: String, \n"
+  },
+  {
+    "originalStart": 26297,
+    "originalEnd": 26345,
+    "preparedStart": 26360,
+    "preparedEnd": 26410,
+    "original": "        viewModelScope.launch(Dispatchers.IO) {\n",
+    "prepared": "        environment.launchOwned(Dispatchers.IO) {\n"
+  },
+  {
+    "originalStart": 26363,
+    "originalEnd": 26801,
+    "preparedStart": 26428,
+    "preparedEnd": 26788,
+    "original": "                val context = getApplication<Application>()\n                val wallpaper = importWallpaperMedia(context, uri, File(context.filesDir, \"profile_wallpaper\"))\n                SettingsManager.setProfileBgTransform(context, false, mobileTransform)\n                SettingsManager.setProfileBgTransform(context, true, tabletTransform)\n                SettingsManager.setProfileBgUri(context, Uri.fromFile(wallpaper).toString())\n",
+    "prepared": "                        val wallpaper = platform.importWallpaperMedia(uri, File(platform.stateDirectory.toFile(), \"profile_wallpaper\"))\n                preferences.setProfileBgTransform( false, mobileTransform)\n                preferences.setProfileBgTransform( true, tabletTransform)\n                preferences.setProfileBgUri( wallpaper.toURI().toString())\n"
+  },
+  {
+    "originalStart": 27031,
+    "originalEnd": 27167,
+    "preparedStart": 27018,
+    "preparedEnd": 27083,
+    "original": "                    android.widget.Toast.makeText(getApplication(), error.message ?: \"壁纸导入失败\", android.widget.Toast.LENGTH_LONG).show()\n",
+    "prepared": "                    platform.feedback(error.message ?: \"壁纸导入失败\")\n"
+  },
+  {
+    "originalStart": 27575,
+    "originalEnd": 27607,
+    "preparedStart": 27491,
+    "preparedEnd": 27525,
+    "original": "        viewModelScope.launch {\n",
+    "prepared": "        environment.launchOwned {\n"
+  },
+  {
+    "originalStart": 27722,
+    "originalEnd": 28005,
+    "preparedStart": 27640,
+    "preparedEnd": 27859,
+    "original": "            val customBgUri = SettingsManager.getProfileBgUri(getApplication()).first() ?: \"\"\n            AccountSessionStore.upsertCurrentAccount(getApplication())\n            TokenManager.clear(getApplication())\n            AccountSessionStore.clearActiveAccount(getApplication())\n",
+    "prepared": "            val customBgUri = preferences.getProfileBgUri().first() ?: \"\"\n            accountsPort.upsertCurrentAccount(null)\n            accountsPort.clearCurrentSession()\n            accountsPort.clearActiveAccount()\n"
+  },
+  {
+    "originalStart": 28118,
+    "originalEnd": 28198,
+    "preparedStart": 27972,
+    "preparedEnd": 28023,
+    "original": "            com.android.purebilibili.core.util.AnalyticsHelper.syncUserContext(\n",
+    "prepared": "            environment.analytics.syncUserContext(\n"
+  },
+  {
+    "originalStart": 28257,
+    "originalEnd": 28353,
+    "preparedStart": 28082,
+    "preparedEnd": 28158,
+    "original": "                privacyModeEnabled = SettingsManager.isPrivacyModeEnabledSync(getApplication())\n",
+    "prepared": "                privacyModeEnabled = preferences.isPrivacyModeEnabledSync()\n"
+  },
+  {
+    "originalStart": 28390,
+    "originalEnd": 28465,
+    "preparedStart": 28195,
+    "preparedEnd": 28241,
+    "original": "            com.android.purebilibili.core.util.AnalyticsHelper.logLogout()\n",
+    "prepared": "            environment.analytics.logLogout()\n"
+  },
+  {
+    "originalStart": 28609,
+    "originalEnd": 28747,
+    "preparedStart": 28385,
+    "preparedEnd": 28566,
+    "original": "        viewModelScope.launch {\n            if (mid == TokenManager.midCache) {\n                onSuccess()\n                return@launch\n",
+    "prepared": "        environment.launchOwned {\n            if (mid == accountsPort.currentMid()) {\n                environment.publishCallback { onSuccess() }\n                return@launchOwned\n"
+  },
+  {
+    "originalStart": 28762,
+    "originalEnd": 28848,
+    "preparedStart": 28581,
+    "preparedEnd": 28642,
+    "original": "            val switched = AccountSessionStore.activateAccount(getApplication(), mid)\n",
+    "prepared": "            val switched = accountsPort.activateAccount(mid)\n"
+  },
+  {
+    "originalStart": 28877,
+    "originalEnd": 28943,
+    "preparedStart": 28671,
+    "preparedEnd": 28774,
+    "original": "                onFailure(\"切换账号失败\")\n                return@launch\n",
+    "prepared": "                environment.publishCallback { onFailure(\"切换账号失败\") }\n                return@launchOwned\n"
+  },
+  {
+    "originalStart": 29031,
+    "originalEnd": 29055,
+    "preparedStart": 28862,
+    "preparedEnd": 28918,
+    "original": "            onSuccess()\n",
+    "prepared": "            environment.publishCallback { onSuccess() }\n"
+  },
+  {
+    "originalStart": 29205,
+    "originalEnd": 29292,
+    "preparedStart": 29068,
+    "preparedEnd": 29191,
+    "original": "        if (TokenManager.midCache == mid) {\n            onFailure(\"请先切换到其他账号后再移除当前账号\")\n",
+    "prepared": "        if (accountsPort.currentMid() == mid) {\n            environment.publishCallback { onFailure(\"请先切换到其他账号后再移除当前账号\") }\n"
+  },
+  {
+    "originalStart": 29322,
+    "originalEnd": 29401,
+    "preparedStart": 29221,
+    "preparedEnd": 29275,
+    "original": "        val removed = AccountSessionStore.removeAccount(getApplication(), mid)\n",
+    "prepared": "        val removed = accountsPort.removeAccount(mid)\n"
+  },
+  {
+    "originalStart": 29459,
+    "originalEnd": 29483,
+    "preparedStart": 29333,
+    "preparedEnd": 29389,
+    "original": "            onSuccess()\n",
+    "prepared": "            environment.publishCallback { onSuccess() }\n"
+  },
+  {
+    "originalStart": 29500,
+    "originalEnd": 29532,
+    "preparedStart": 29406,
+    "preparedEnd": 29470,
+    "original": "            onFailure(\"移除账号失败\")\n",
+    "prepared": "            environment.publishCallback { onFailure(\"移除账号失败\") }\n"
+  },
+  {
+    "originalStart": 29572,
+    "originalEnd": 29703,
+    "preparedStart": 29510,
+    "preparedEnd": 29634,
+    "original": "    private val _officialWallpapers = MutableStateFlow<List<com.android.purebilibili.data.model.response.SplashItem>>(emptyList())\n",
+    "prepared": "    private val _officialWallpapers = ownedFlow<List<com.android.purebilibili.data.model.response.SplashItem>>(emptyList())\n"
+  },
+  {
+    "originalStart": 29766,
+    "originalEnd": 29835,
+    "preparedStart": 29697,
+    "preparedEnd": 29759,
+    "original": "    private val _officialWallpapersLoading = MutableStateFlow(false)\n",
+    "prepared": "    private val _officialWallpapersLoading = ownedFlow(false)\n"
+  },
+  {
+    "originalStart": 29912,
+    "originalEnd": 29987,
+    "preparedStart": 29836,
+    "preparedEnd": 29904,
+    "original": "    private val _officialWallpapersError = MutableStateFlow<String?>(null)\n",
+    "prepared": "    private val _officialWallpapersError = ownedFlow<String?>(null)\n"
+  },
+  {
+    "originalStart": 30096,
+    "originalEnd": 30128,
+    "preparedStart": 30013,
+    "preparedEnd": 30047,
+    "original": "        viewModelScope.launch {\n",
+    "prepared": "        environment.launchOwned {\n"
+  },
+  {
+    "originalStart": 30230,
+    "originalEnd": 30337,
+    "preparedStart": 30149,
+    "preparedEnd": 30217,
+    "original": "            val result = com.android.purebilibili.data.repository.SplashRepository.getOfficialWallpapers()\n",
+    "prepared": "            val result = environment.splash.getOfficialWallpapers()\n"
+  },
+  {
+    "originalStart": 30671,
+    "originalEnd": 30800,
+    "preparedStart": 30551,
+    "preparedEnd": 30673,
+    "original": "    private val _searchWallpapers = MutableStateFlow<List<com.android.purebilibili.data.model.response.SplashItem>>(emptyList())\n",
+    "prepared": "    private val _searchWallpapers = ownedFlow<List<com.android.purebilibili.data.model.response.SplashItem>>(emptyList())\n"
+  },
+  {
+    "originalStart": 30859,
+    "originalEnd": 30916,
+    "preparedStart": 30732,
+    "preparedEnd": 30782,
+    "original": "    private val _searchLoading = MutableStateFlow(false)\n",
+    "prepared": "    private val _searchLoading = ownedFlow(false)\n"
+  },
+  {
+    "originalStart": 31012,
+    "originalEnd": 31091,
+    "preparedStart": 30878,
+    "preparedEnd": 30964,
+    "original": "        viewModelScope.launch {\n            if (query.isBlank()) return@launch\n",
+    "prepared": "        environment.launchOwned {\n            if (query.isBlank()) return@launchOwned\n"
+  },
+  {
+    "originalStart": 31192,
+    "originalEnd": 31248,
+    "preparedStart": 31065,
+    "preparedEnd": 31119,
+    "original": "                val searchApi = NetworkModule.searchApi\n",
+    "prepared": "                val searchApi = environment.searchApi\n"
+  },
+  {
+    "originalStart": 32503,
+    "originalEnd": 32503,
+    "preparedStart": 32374,
+    "preparedEnd": 32447,
+    "original": "",
+    "prepared": "            } catch (cancelled: CancellationException) { throw cancelled\n"
+  },
+  {
+    "originalStart": 32540,
+    "originalEnd": 32576,
+    "preparedStart": 32484,
+    "preparedEnd": 32560,
+    "original": "                e.printStackTrace()\n",
+    "prepared": "                // Root diagnostic actor controls raw exception disclosure.\n"
+  },
+  {
+    "originalStart": 32696,
+    "originalEnd": 32796,
+    "preparedStart": 32680,
+    "preparedEnd": 32773,
+    "original": "    private val _wallpaperSaveState = MutableStateFlow<WallpaperSaveState>(WallpaperSaveState.Idle)\n",
+    "prepared": "    private val _wallpaperSaveState = ownedFlow<WallpaperSaveState>(WallpaperSaveState.Idle)\n"
+  },
+  {
+    "originalStart": 32928,
+    "originalEnd": 33240,
+    "preparedStart": 32905,
+    "preparedEnd": 33155,
+    "original": "    fun getProfileBgAlignment(isTablet: Boolean) = SettingsManager.getProfileBgAlignment(getApplication(), isTablet)\n    fun getProfileBgTransform(isTablet: Boolean) = SettingsManager.getProfileBgTransform(getApplication(), isTablet)\n    fun getProfileBgUri() = SettingsManager.getProfileBgUri(getApplication())\n",
+    "prepared": "    fun getProfileBgAlignment(isTablet: Boolean) = preferences.getProfileBgAlignment( isTablet)\n    fun getProfileBgTransform(isTablet: Boolean) = preferences.getProfileBgTransform( isTablet)\n    fun getProfileBgUri() = preferences.getProfileBgUri()\n"
+  },
+  {
+    "originalStart": 33275,
+    "originalEnd": 33483,
+    "preparedStart": 33190,
+    "preparedEnd": 33325,
+    "original": "        viewModelScope.launch {\n            val context = getApplication<Application>()\n            SettingsManager.setProfileBgUri(context, null)\n            SettingsManager.resetProfileBgTransform(context)\n",
+    "prepared": "        environment.launchOwned {\n                preferences.setProfileBgUri( null)\n            preferences.resetProfileBgTransform()\n"
+  },
+  {
+    "originalStart": 33509,
+    "originalEnd": 33596,
+    "preparedStart": 33351,
+    "preparedEnd": 33527,
+    "original": "                File(context.filesDir, \"images/profile_bg.jpg\").delete()\n            }\n",
+    "prepared": "                platform.deleteOwnedFile(File(platform.stateDirectory.toFile(), \"images/profile_bg.jpg\"))\n            }.onFailure { if (it is CancellationException) throw it }\n"
+  },
+  {
+    "originalStart": 33959,
+    "originalEnd": 34007,
+    "preparedStart": 33890,
+    "preparedEnd": 33940,
+    "original": "        viewModelScope.launch(Dispatchers.IO) {\n",
+    "prepared": "        environment.launchOwned(Dispatchers.IO) {\n"
+  },
+  {
+    "originalStart": 34118,
+    "originalEnd": 34351,
+    "preparedStart": 34051,
+    "preparedEnd": 34208,
+    "original": "                val context = getApplication<Application>()\n                SettingsManager.setProfileBgTransform(context, false, mobileTransform)\n                SettingsManager.setProfileBgTransform(context, true, tabletTransform)\n",
+    "prepared": "                        preferences.setProfileBgTransform( false, mobileTransform)\n                preferences.setProfileBgTransform( true, tabletTransform)\n"
+  },
+  {
+    "originalStart": 34786,
+    "originalEnd": 34871,
+    "preparedStart": 34643,
+    "preparedEnd": 34713,
+    "original": "                val response = NetworkModule.okHttpClient.newCall(request).execute()\n",
+    "prepared": "                platform.openOwnedDownload(request).use { response ->\n"
+  },
+  {
+    "originalStart": 34933,
+    "originalEnd": 35002,
+    "preparedStart": 34775,
+    "preparedEnd": 34860,
+    "original": "                    val imagesDir = File(context.filesDir, \"images\")\n",
+    "prepared": "                    val imagesDir = File(platform.stateDirectory.toFile(), \"images\")\n"
+  },
+  {
+    "originalStart": 35156,
+    "originalEnd": 35307,
+    "preparedStart": 35014,
+    "preparedEnd": 35083,
+    "original": "                    FileOutputStream(destFile).use { output ->\n                        response.body.byteStream().copyTo(output)\n                    }\n",
+    "prepared": "                    platform.writeOwnedFile(destFile, response.body)\n"
+  },
+  {
+    "originalStart": 35328,
+    "originalEnd": 35468,
+    "preparedStart": 35104,
+    "preparedEnd": 35226,
+    "original": "                    val savedUri = Uri.fromFile(destFile).toString()\n                    SettingsManager.setProfileBgUri(context, savedUri)\n",
+    "prepared": "                    val savedUri = destFile.toURI().toString()\n                    preferences.setProfileBgUri( savedUri)\n"
+  },
+  {
+    "originalStart": 35703,
+    "originalEnd": 35740,
+    "preparedStart": 35461,
+    "preparedEnd": 35530,
+    "original": "                        onComplete()\n",
+    "prepared": "                        environment.publishCallback { onComplete() }\n"
+  },
+  {
+    "originalStart": 35904,
+    "originalEnd": 35904,
+    "preparedStart": 35694,
+    "preparedEnd": 35785,
+    "original": "",
+    "prepared": "                }\n            } catch (cancelled: CancellationException) { throw cancelled\n"
+  },
+  {
+    "originalStart": 35941,
+    "originalEnd": 35977,
+    "preparedStart": 35822,
+    "preparedEnd": 35898,
+    "original": "                e.printStackTrace()\n",
+    "prepared": "                // Root diagnostic actor controls raw exception disclosure.\n"
+  },
+  {
+    "originalStart": 36526,
+    "originalEnd": 36623,
+    "preparedStart": 36447,
+    "preparedEnd": 36537,
+    "original": "    private val _splashSaveState = MutableStateFlow<WallpaperSaveState>(WallpaperSaveState.Idle)\n",
+    "prepared": "    private val _splashSaveState = ownedFlow<WallpaperSaveState>(WallpaperSaveState.Idle)\n"
+  },
+  {
+    "originalStart": 36681,
+    "originalEnd": 36792,
+    "preparedStart": 36595,
+    "preparedEnd": 36685,
+    "original": "    fun getSplashAlignment(isTablet: Boolean) = SettingsManager.getSplashAlignment(getApplication(), isTablet)\n",
+    "prepared": "    fun getSplashAlignment(isTablet: Boolean) = preferences.getSplashAlignment( isTablet)\n"
+  },
+  {
+    "originalStart": 36998,
+    "originalEnd": 37046,
+    "preparedStart": 36891,
+    "preparedEnd": 36941,
+    "original": "        viewModelScope.launch(Dispatchers.IO) {\n",
+    "prepared": "        environment.launchOwned(Dispatchers.IO) {\n"
+  },
+  {
+    "originalStart": 37128,
+    "originalEnd": 37223,
+    "preparedStart": 37023,
+    "preparedEnd": 37066,
+    "original": "                val context = getApplication<Application>()\n                var finalUrl = url\n",
+    "prepared": "                        var finalUrl = url\n"
+  },
+  {
+    "originalStart": 37550,
+    "originalEnd": 37635,
+    "preparedStart": 37393,
+    "preparedEnd": 37463,
+    "original": "                val response = NetworkModule.okHttpClient.newCall(request).execute()\n",
+    "prepared": "                platform.openOwnedDownload(request).use { response ->\n"
+  },
+  {
+    "originalStart": 37720,
+    "originalEnd": 37774,
+    "preparedStart": 37548,
+    "preparedEnd": 37619,
+    "original": "                    val bytes = response.body.bytes()\n",
+    "prepared": "                    val bytes = platform.readOwnedBytes(response.body)\n"
+  },
+  {
+    "originalStart": 37855,
+    "originalEnd": 37924,
+    "preparedStart": 37700,
+    "preparedEnd": 37785,
+    "original": "                    val splashDir = File(context.filesDir, \"splash\")\n",
+    "prepared": "                    val splashDir = File(platform.stateDirectory.toFile(), \"splash\")\n"
+  },
+  {
+    "originalStart": 38087,
+    "originalEnd": 38216,
+    "preparedStart": 37948,
+    "preparedEnd": 38009,
+    "original": "                    FileOutputStream(destFile).use { output ->\n                        output.write(bytes)\n                    }\n",
+    "prepared": "                    platform.writeOwnedFile(destFile, bytes)\n"
+  },
+  {
+    "originalStart": 38259,
+    "originalEnd": 38698,
+    "preparedStart": 38052,
+    "preparedEnd": 38437,
+    "original": "                    val savedUri = Uri.fromFile(destFile).toString()\n                    SettingsManager.setSplashWallpaperUri(context, savedUri)\n                    SettingsManager.setSplashEnabled(context, true)\n                    mobileBias?.let { SettingsManager.setSplashAlignment(context, isTablet = false, bias = it) }\n                    tabletBias?.let { SettingsManager.setSplashAlignment(context, isTablet = true, bias = it) }\n",
+    "prepared": "                    val savedUri = destFile.toURI().toString()\n                    preferences.setSplashWallpaperUri( savedUri)\n                    preferences.setSplashEnabled( true)\n                    mobileBias?.let { preferences.setSplashAlignment( isTablet = false, bias = it) }\n                    tabletBias?.let { preferences.setSplashAlignment( isTablet = true, bias = it) }\n"
+  },
+  {
+    "originalStart": 38795,
+    "originalEnd": 38904,
+    "preparedStart": 38534,
+    "preparedEnd": 38635,
+    "original": "                         saveImageToGallery(context, bytes, \"bili_splash_${System.currentTimeMillis()}.jpg\")\n",
+    "prepared": "                         saveImageToGallery( bytes, \"bili_splash_${System.currentTimeMillis()}.jpg\")\n"
+  },
+  {
+    "originalStart": 39065,
+    "originalEnd": 39102,
+    "preparedStart": 38796,
+    "preparedEnd": 38865,
+    "original": "                        onComplete()\n",
+    "prepared": "                        environment.publishCallback { onComplete() }\n"
+  },
+  {
+    "originalStart": 39263,
+    "originalEnd": 39263,
+    "preparedStart": 39026,
+    "preparedEnd": 39117,
+    "original": "",
+    "prepared": "                }\n            } catch (cancelled: CancellationException) { throw cancelled\n"
+  },
+  {
+    "originalStart": 39300,
+    "originalEnd": 39336,
+    "preparedStart": 39154,
+    "preparedEnd": 39230,
+    "original": "                e.printStackTrace()\n",
+    "prepared": "                // Root diagnostic actor controls raw exception disclosure.\n"
+  },
+  {
+    "originalStart": 39899,
+    "originalEnd": 39947,
+    "preparedStart": 39793,
+    "preparedEnd": 39843,
+    "original": "        viewModelScope.launch(Dispatchers.IO) {\n",
+    "prepared": "        environment.launchOwned(Dispatchers.IO) {\n"
+  },
+  {
+    "originalStart": 40029,
+    "originalEnd": 40652,
+    "preparedStart": 39925,
+    "preparedEnd": 40435,
+    "original": "                val context = getApplication<Application>()\n                val wallpaper = importWallpaperImage(context, Uri.parse(uri), File(context.filesDir, \"splash\"))\n                SettingsManager.setSplashWallpaperUri(context, Uri.fromFile(wallpaper).toString())\n                SettingsManager.setSplashEnabled(context, true)\n                SettingsManager.setSplashRandomEnabled(context, false)\n                mobileBias?.let { SettingsManager.setSplashAlignment(context, isTablet = false, bias = it) }\n                tabletBias?.let { SettingsManager.setSplashAlignment(context, isTablet = true, bias = it) }\n",
+    "prepared": "                        val wallpaper = platform.importWallpaperImage(uri, File(platform.stateDirectory.toFile(), \"splash\"))\n                preferences.setSplashWallpaperUri( wallpaper.toURI().toString())\n                preferences.setSplashEnabled( true)\n                preferences.setSplashRandomEnabled( false)\n                mobileBias?.let { preferences.setSplashAlignment( isTablet = false, bias = it) }\n                tabletBias?.let { preferences.setSplashAlignment( isTablet = true, bias = it) }\n"
+  },
+  {
+    "originalStart": 40783,
+    "originalEnd": 40816,
+    "preparedStart": 40566,
+    "preparedEnd": 40631,
+    "original": "                    onComplete()\n",
+    "prepared": "                    environment.publishCallback { onComplete() }\n"
+  },
+  {
+    "originalStart": 40834,
+    "originalEnd": 40923,
+    "preparedStart": 40649,
+    "preparedEnd": 40722,
+    "original": "            } catch (cancelled: CancellationException) {\n                throw cancelled\n",
+    "prepared": "            } catch (cancelled: CancellationException) { throw cancelled\n"
+  },
+  {
+    "originalStart": 40960,
+    "originalEnd": 40996,
+    "preparedStart": 40759,
+    "preparedEnd": 40835,
+    "original": "                e.printStackTrace()\n",
+    "prepared": "                // Root diagnostic actor controls raw exception disclosure.\n"
+  },
+  {
+    "originalStart": 41434,
+    "originalEnd": 41482,
+    "preparedStart": 41273,
+    "preparedEnd": 41323,
+    "original": "        viewModelScope.launch(Dispatchers.IO) {\n",
+    "prepared": "        environment.launchOwned(Dispatchers.IO) {\n"
+  },
+  {
+    "originalStart": 41564,
+    "originalEnd": 41659,
+    "preparedStart": 41405,
+    "preparedEnd": 41448,
+    "original": "                val context = getApplication<Application>()\n                var finalUrl = url\n",
+    "prepared": "                        var finalUrl = url\n"
+  },
+  {
+    "originalStart": 41986,
+    "originalEnd": 42071,
+    "preparedStart": 41775,
+    "preparedEnd": 41845,
+    "original": "                val response = NetworkModule.okHttpClient.newCall(request).execute()\n",
+    "prepared": "                platform.openOwnedDownload(request).use { response ->\n"
+  },
+  {
+    "originalStart": 42117,
+    "originalEnd": 42255,
+    "preparedStart": 41891,
+    "preparedEnd": 42062,
+    "original": "                    val bytes = response.body.bytes()\n                    val homeWallpaperDir = File(context.filesDir, \"home_wallpaper\")\n",
+    "prepared": "                    val bytes = platform.readOwnedBytes(response.body)\n                    val homeWallpaperDir = File(platform.stateDirectory.toFile(), \"home_wallpaper\")\n"
+  },
+  {
+    "originalStart": 42437,
+    "originalEnd": 42566,
+    "preparedStart": 42244,
+    "preparedEnd": 42305,
+    "original": "                    FileOutputStream(destFile).use { output ->\n                        output.write(bytes)\n                    }\n",
+    "prepared": "                    platform.writeOwnedFile(destFile, bytes)\n"
+  },
+  {
+    "originalStart": 42567,
+    "originalEnd": 42667,
+    "preparedStart": 42306,
+    "preparedEnd": 42388,
+    "original": "                    SettingsManager.setHomeWallpaperUri(context, Uri.fromFile(destFile).toString())\n",
+    "prepared": "                    preferences.setHomeWallpaperUri( destFile.toURI().toString())\n"
+  },
+  {
+    "originalStart": 42709,
+    "originalEnd": 42815,
+    "preparedStart": 42430,
+    "preparedEnd": 42528,
+    "original": "                        saveImageToGallery(context, bytes, \"bili_home_${System.currentTimeMillis()}.jpg\")\n",
+    "prepared": "                        saveImageToGallery( bytes, \"bili_home_${System.currentTimeMillis()}.jpg\")\n"
+  },
+  {
+    "originalStart": 42976,
+    "originalEnd": 43013,
+    "preparedStart": 42689,
+    "preparedEnd": 42758,
+    "original": "                        onComplete()\n",
+    "prepared": "                        environment.publishCallback { onComplete() }\n"
+  },
+  {
+    "originalStart": 43174,
+    "originalEnd": 43174,
+    "preparedStart": 42919,
+    "preparedEnd": 43010,
+    "original": "",
+    "prepared": "                }\n            } catch (cancelled: CancellationException) { throw cancelled\n"
+  },
+  {
+    "originalStart": 43211,
+    "originalEnd": 43247,
+    "preparedStart": 43047,
+    "preparedEnd": 43123,
+    "original": "                e.printStackTrace()\n",
+    "prepared": "                // Root diagnostic actor controls raw exception disclosure.\n"
+  },
+  {
+    "originalStart": 43649,
+    "originalEnd": 43697,
+    "preparedStart": 43525,
+    "preparedEnd": 43575,
+    "original": "        viewModelScope.launch(Dispatchers.IO) {\n",
+    "prepared": "        environment.launchOwned(Dispatchers.IO) {\n"
+  },
+  {
+    "originalStart": 43779,
+    "originalEnd": 44056,
+    "preparedStart": 43657,
+    "preparedEnd": 43869,
+    "original": "                val context = getApplication<Application>()\n                val wallpaper = importWallpaperMedia(context, Uri.parse(uri), File(context.filesDir, \"home_wallpaper\"))\n                SettingsManager.setHomeWallpaperUri(context, Uri.fromFile(wallpaper).toString())\n",
+    "prepared": "                        val wallpaper = platform.importWallpaperMedia(uri, File(platform.stateDirectory.toFile(), \"home_wallpaper\"))\n                preferences.setHomeWallpaperUri( wallpaper.toURI().toString())\n"
+  },
+  {
+    "originalStart": 44187,
+    "originalEnd": 44220,
+    "preparedStart": 44000,
+    "preparedEnd": 44065,
+    "original": "                    onComplete()\n",
+    "prepared": "                    environment.publishCallback { onComplete() }\n"
+  },
+  {
+    "originalStart": 44238,
+    "originalEnd": 44327,
+    "preparedStart": 44083,
+    "preparedEnd": 44156,
+    "original": "            } catch (cancelled: CancellationException) {\n                throw cancelled\n",
+    "prepared": "            } catch (cancelled: CancellationException) { throw cancelled\n"
+  },
+  {
+    "originalStart": 44364,
+    "originalEnd": 44400,
+    "preparedStart": 44193,
+    "preparedEnd": 44269,
+    "original": "                e.printStackTrace()\n",
+    "prepared": "                // Root diagnostic actor controls raw exception disclosure.\n"
+  },
+  {
+    "originalStart": 44705,
+    "originalEnd": 46172,
+    "preparedStart": 44574,
+    "preparedEnd": 44704,
+    "original": "    private fun saveImageToGallery(context: Context, bytes: ByteArray, fileName: String) {\n        try {\n            val contentValues = android.content.ContentValues().apply {\n                put(android.provider.MediaStore.Images.Media.DISPLAY_NAME, fileName)\n                put(android.provider.MediaStore.Images.Media.MIME_TYPE, \"image/jpeg\")\n                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {\n                    put(android.provider.MediaStore.Images.Media.IS_PENDING, 1)\n                     put(android.provider.MediaStore.Images.Media.RELATIVE_PATH, android.os.Environment.DIRECTORY_PICTURES + \"/BiliPai\")\n                }\n            }\n            \n            val resolver = context.contentResolver\n            val uri = resolver.insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)\n            \n            uri?.let {\n                resolver.openOutputStream(it)?.use { output: java.io.OutputStream ->\n                    output.write(bytes)\n                }\n                \n                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {\n                    contentValues.clear()\n                    contentValues.put(android.provider.MediaStore.Images.Media.IS_PENDING, 0)\n                    resolver.update(it, contentValues, null, null)\n                }\n            }\n        } catch (e: Exception) {\n            e.printStackTrace()\n        }\n",
+    "prepared": "private suspend fun saveImageToGallery(bytes: ByteArray, fileName: String) {\n        platform.saveImageToGallery(bytes, fileName)\n"
+  },
+  {
+    "originalStart": 46224,
+    "originalEnd": 46311,
+    "preparedStart": 44756,
+    "preparedEnd": 44828,
+    "original": "    val tripleJumpEnabled = SettingsManager.getTripleJumpEnabled(application).stateIn(\n",
+    "prepared": "    val tripleJumpEnabled = preferences.getTripleJumpEnabled().stateIn(\n"
+  },
+  {
+    "originalStart": 46508,
+    "originalEnd": 46616,
+    "preparedStart": 45025,
+    "preparedEnd": 45114,
+    "original": "        viewModelScope.launch {\n            SettingsManager.setTripleJumpEnabled(getApplication(), enabled)\n",
+    "prepared": "        environment.launchOwned {\n            preferences.setTripleJumpEnabled( enabled)\n"
+  }
+]

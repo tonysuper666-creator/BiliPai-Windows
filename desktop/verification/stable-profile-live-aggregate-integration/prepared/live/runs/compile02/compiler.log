@@ -1,0 +1,3 @@
+desktop\.local\stable-home-live-navigation-parity\runs\compile02\source-inputs\prepared\generated\com\android\purebilibili\data\repository\DesktopOriginalLiveSearchProtocol.kt:106:59: error: unresolved reference 'w'.
+                com.android.purebilibili.core.util.Logger.w(
+                                                          ^

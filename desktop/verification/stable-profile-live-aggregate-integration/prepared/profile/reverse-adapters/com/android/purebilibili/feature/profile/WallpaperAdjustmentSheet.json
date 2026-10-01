@@ -1,0 +1,58 @@
+[
+  {
+    "originalStart": 49,
+    "originalEnd": 49,
+    "preparedStart": 49,
+    "preparedEnd": 174,
+    "original": "",
+    "prepared": "import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment\nimport com.bilipai.desktop.ui.rememberDesktopProfileMediaPicker\n"
+  },
+  {
+    "originalStart": 81,
+    "originalEnd": 116,
+    "preparedStart": 206,
+    "preparedEnd": 206,
+    "original": "import coil3.request.allowHardware\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 919,
+    "originalEnd": 968,
+    "preparedStart": 1009,
+    "preparedEnd": 1051,
+    "original": "import androidx.compose.ui.platform.LocalContext\n",
+    "prepared": "import coil3.compose.LocalPlatformContext\n"
+  },
+  {
+    "originalStart": 2420,
+    "originalEnd": 2459,
+    "preparedStart": 2503,
+    "preparedEnd": 2608,
+    "original": "    val context = LocalContext.current\n",
+    "prepared": "    val platform = LocalDesktopProfileEnvironment.current\n    val context = LocalPlatformContext.current\n"
+  },
+  {
+    "originalStart": 2720,
+    "originalEnd": 2754,
+    "preparedStart": 2869,
+    "preparedEnd": 2882,
+    "original": "            .allowHardware(false)\n",
+    "prepared": "            \n"
+  },
+  {
+    "originalStart": 6973,
+    "originalEnd": 7086,
+    "preparedStart": 7101,
+    "preparedEnd": 7202,
+    "original": "                                Logger.w(\"WallpaperAdjustment\", \"Wallpaper preview failed\", it.result.throwable)\n",
+    "prepared": "                                platform.platform.reportWallpaperPreviewFailure(it.result.throwable)\n"
+  },
+  {
+    "originalStart": 16679,
+    "originalEnd": 16763,
+    "preparedStart": 16795,
+    "preparedEnd": 16887,
+    "original": "                            imageModel = ImageRequest.Builder(LocalContext.current)\n",
+    "prepared": "                            imageModel = ImageRequest.Builder(LocalPlatformContext.current)\n"
+  }
+]

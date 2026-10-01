@@ -1,0 +1,63 @@
+{
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\tools\\extract-upstream-profile-main.py",
+      "target": "desktop/tools/extract-upstream-profile-main.py",
+      "sha256Bytes": "bdac97838189ea341d962499a0275214e8221d3795c6f0d0c2a5ae41f3d37b66",
+      "sha256LF": "bdac97838189ea341d962499a0275214e8221d3795c6f0d0c2a5ae41f3d37b66",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileBindings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileBindings.kt",
+      "sha256Bytes": "af622378fc9104554d7913c5843ebde63ec53d8af68791b96e7008e67c3cdc0d",
+      "sha256LF": "af622378fc9104554d7913c5843ebde63ec53d8af68791b96e7008e67c3cdc0d",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalProfilePreferences.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalProfilePreferences.kt",
+      "sha256Bytes": "08752986aa6d2606a14feca8b01b8a3ae872d52204d2c4ecd0d07dccffb15429",
+      "sha256LF": "08752986aa6d2606a14feca8b01b8a3ae872d52204d2c4ecd0d07dccffb15429",
+      "newSoleDefinition": true
+    }
+  ],
+  "newOriginalIdentities": [
+    "app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+    "app/src/main/java/com/android/purebilibili/feature/profile/ProfileChromePolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/profile/ProfileLayoutPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/profile/ProfileSpacePolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/profile/ProfileFavoriteFolderShortcutPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/profile/ProfileDashboardPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt",
+    "app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt",
+    "app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSelectionPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt",
+    "app/src/main/java/com/android/purebilibili/feature/profile/SplashWallpaperRandomPoolPolicy.kt",
+    "design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/ProfileWallpaperTransformPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/SplashRepository.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/TopReadabilityChrome.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionMotionSpec.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/store/SplashWallpaperHistoryPolicy.kt"
+  ],
+  "featureMerges": [
+    "app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+    "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"
+  ],
+  "referenceOnlyIdentitiesNotMerged": [
+    "app/src/main/java/com/android/purebilibili/feature/profile/WallpaperImageImport.kt",
+    "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+    "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+    "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt"
+  ],
+  "sourceCountBefore": 871,
+  "sourceCountAfter": 890,
+  "preparedManifestSHA256": "5d4ce31834b9bb34c09fca2bd22ea092f24f504a1ff74f49cfb1aaa6ab22ebe7",
+  "originalProfileMounted": false,
+  "requiredAuthorizationThemeFileMediaBoundariesPending": true
+}

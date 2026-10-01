@@ -1,0 +1,33 @@
+{
+  "sourceOnly": true,
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\desktop\\tools\\extract-upstream-live-navigation.py",
+      "target": "desktop/tools/extract-upstream-live-navigation.py",
+      "sha256Bytes": "7c33a5206014b345007dbf739b577d281398e60106dc416ff642f7a7da325091"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopLiveNavigationBindings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveNavigationBindings.kt",
+      "sha256Bytes": "b8fdf971f3c3419321f347d50c2996440da38ac5255837893b41dcaf4ad2b868"
+    }
+  ],
+  "defaultGeneratedOutputs": 5,
+  "directOriginalPolicyCopies": 1,
+  "manualBindings": 1,
+  "sourceCompilerInputs": 8,
+  "classes": 110,
+  "existingProductionOverrides": 0,
+  "sharedHunks": "sole-shared-helper-hunk.json",
+  "registry": "registry-merge-recipe.json",
+  "callerRecipe": "ROOT-INTEGRATION.md",
+  "candidateJarSha256Bytes": "6d4afc73eed70f487aff14851b7c5fd6abd3a5e12a9aea38e6089e0df8a170ef",
+  "preparedJarInstall": false,
+  "actualRootMountedUiAccepted": false,
+  "actualAccountTransportAccepted": false,
+  "HTTP": false,
+  "GUI": false,
+  "HWND": false,
+  "Gradle": false
+}

@@ -1,0 +1,57 @@
+{
+  "installNone": true,
+  "sources": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEmbeddedRetainedOwner.kt",
+      "sha256LF": "94bfdbb6b929ea87200b17915888acdcec43adb8f0380823119b341dd708ace7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEnvironment.kt",
+      "sha256LF": "a907694bf33d3cafd696e44e4654da377fe391e5bce026c51f8953d63bc9ebe9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt",
+      "sha256LF": "981b50e08be45ae2f9f6dd2b56b6c672704e1aacb485b066e74d0404190273a6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRequestBinding.kt",
+      "sha256LF": "66a42d7df260d936e6b998a21ea470b7ebc2bf7335f6d852e6a9ec317e4d5a2e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPartitionRoot.kt",
+      "sha256LF": "43975346ea194c568449a816e069ec8b88dedab9657df2338ebae83b0e34c355"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiHubRoot.kt",
+      "sha256LF": "c2edd98f193c6da1098a7d93d2dc632540e8bfd53c2160376bee157d933f2e56"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveListBindings.kt",
+      "sha256LF": "97993d0091a4bb7496f72cede57a19ff32ae0997451acecd895a0e8937c59826"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "sha256LF": "5c4b1c680f34cf201d37147f224a6f9999b49b8653237b1b6906c76374ec46d4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256LF": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "sha256LF": "40a0c2424116bfccedf9b4d34c9fd8e12e29b324a37133aeee11520287ec0f20"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256LF": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImageSaveLocations.kt",
+      "sha256LF": "5f27ef6e0a6db648446430dce3c92204d1317e66830c94b443475ba1908da97c"
+    }
+  ],
+  "newOriginalIdentityCount": 0,
+  "newDependencies": [],
+  "newResources": [],
+  "sourceProducers": []
+}

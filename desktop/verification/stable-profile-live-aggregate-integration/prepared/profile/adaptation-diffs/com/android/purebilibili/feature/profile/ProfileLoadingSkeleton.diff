@@ -1,0 +1,36 @@
+--- app/src/main/java/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt
++++ com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt
+@@ -1,4 +1,6 @@
+ package com.android.purebilibili.feature.profile
++import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment
++import com.bilipai.desktop.ui.rememberDesktopProfileMediaPicker
+ 
+ import com.android.purebilibili.core.ui.AppSurfaceTokens
+ import androidx.compose.animation.core.FastOutSlowInEasing
+@@ -38,7 +40,7 @@
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.Shape
+ import androidx.compose.ui.graphics.lerp
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.desktopProfileWindowConfiguration
+ import androidx.compose.ui.semantics.clearAndSetSemantics
+ import androidx.compose.ui.semantics.contentDescription
+ import androidx.compose.ui.unit.Dp
+@@ -46,7 +48,7 @@
+ import com.android.purebilibili.core.ui.AppShapes
+ import com.android.purebilibili.core.ui.ContainerLevel
+ import com.android.purebilibili.core.ui.globalWallpaperAwareBackground
+-import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion
++import com.bilipai.desktop.ui.rememberDesktopDynamicReduceMotion as rememberSystemReduceMotion
+ import com.android.purebilibili.core.util.LocalWindowSizeClass
+ 
+ private const val PROFILE_SKELETON_PULSE_DURATION_MILLIS = 950
+@@ -76,7 +78,7 @@
+ 
+ @Composable
+ private fun ProfilePhoneLoadingSkeleton(blockColor: Color) {
+-    val configuration = LocalConfiguration.current
++    val configuration = desktopProfileWindowConfiguration()
+     val windowSizeClass = LocalWindowSizeClass.current
+     val layoutTokens = remember { resolveProfileLayoutTokens() }
+     val heroHeight = resolveProfileHeroHeightDp(

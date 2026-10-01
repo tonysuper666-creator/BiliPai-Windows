@@ -1,0 +1,580 @@
+{
+  "scope": "complete original Profile primary navigation source/UI/VM/pure closure with required real Root account/settings/media/file ports",
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualProductSnapshot39": {
+    "manifestSha256Bytes": "4840845d18a6fd1171c32a03ba397306a0f509b6510ca9544ceac935befe46ae",
+    "orderedClasspathSha256Bytes": "e9b8db57c428c214b243e2ea41761d0745c3b48ff386fe8d38901d892760fd8f",
+    "entries": 97
+  },
+  "compile": {
+    "sources": 24,
+    "classes": 180,
+    "methods": 2035,
+    "jarSha256Bytes": "ad8004729b3a496de745504ee74bc180d0eaa3ea7d00983f44f90b0cc172f2ad",
+    "runtimeSourceOverrides": 0,
+    "classAndTopMethodOverlap": 0,
+    "invalidJvmNames": 0
+  },
+  "proof": {
+    "sourceReplayReverseChecks": 313,
+    "fullOriginalFilesRecovered": 7,
+    "preparedClassesLoadedWithoutInitialization": 180
+  },
+  "installPayloads": 3,
+  "sharedSourcesOrGradleModified": false,
+  "actualRootMounted": false,
+  "actualWindowNetworkAccountMediaAccepted": false,
+  "deployedExe": false,
+  "requiredRootBoundariesRemain": true,
+  "installationContractSha256Bytes": "dc9bf9e0c007bf4c9da706cdb50434f46813994b52b86d9e69f3fce8c958fe75",
+  "artifacts": [
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "2f9c5d19b45bffdb9f380442fd67057774452c522d6e4ccd53f82787db55cc02"
+    },
+    {
+      "path": "abi-audit.json",
+      "sha256Bytes": "455c0d2fb1dcd87f0389a14493965cf8c4986d308b43baa8704b865fb3112d5a"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/core/store/SplashWallpaperHistoryPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/core/ui/TopReadabilityChrome.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/core/ui/wallpaper/ProfileWallpaperTransformPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.diff",
+      "sha256Bytes": "80d86bc045134bc0a993609d4da8c9d6202c4a24893b74c0bef1cd883b6efbe8"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/data/repository/DesktopOriginalProfileSplashProtocol.diff",
+      "sha256Bytes": "89f2ff8044863bc3cbff850001aae5b965144af869a44b845fff7304237e7b50"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/OfficialWallpaperSelectionPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.diff",
+      "sha256Bytes": "9597e509f166bedb712ed378e016519ba7884f34327b82e790b8cdb2bb600379"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/ProfileChromePolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/ProfileDashboardPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/ProfileFavoriteFolderShortcutPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/ProfileLayoutPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.diff",
+      "sha256Bytes": "b866e134043f3d9581eb5dcd63227ed2bbe8e25a12d945f1a20297234ce9e2d0"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/ProfileScreen.diff",
+      "sha256Bytes": "85829e1e973ce156d4d13613549158c8c0a6ad51ff833e20e09123647d569dd0"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/ProfileSpacePolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/ProfileViewModel.diff",
+      "sha256Bytes": "296ccd8b838ef50ba4efc4a7a86140e5b9b35036ffb0bc66ee5e6ce9eec175b8"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/SplashWallpaperRandomPoolPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.diff",
+      "sha256Bytes": "e7c91dd16b78cc02e569f9f81a7a22230571a931d9df256b1b0d7f4e06727e1e"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/video/ui/components/DesktopOriginalProfileTripleSuccessAnimation.diff",
+      "sha256Bytes": "aa6b60f3b8bb4bc2d5edc10f3d367e9797a647fe14d3b5032420481192c50067"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/video/ui/feedback/TripleActionMotionSpec.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adaptation-diffs/com/android/purebilibili/feature/video/ui/section/DesktopOriginalProfileTripleProgressIcon.diff",
+      "sha256Bytes": "af5634115c67b1c94bb09a47f87c8321eae216c55494bbc5974b7ac831bdffa4"
+    },
+    {
+      "path": "adaptation-diffs/com/bilipai/desktop/ui/DesktopOriginalProfileSpaceAggregate.diff",
+      "sha256Bytes": "f7fade0c4be5e1841934cceb5f6d72da08aeb57b15ed3b1ae85bb53f1caf9e59"
+    },
+    {
+      "path": "audit_abi.py",
+      "sha256Bytes": "3f87a6e79217c86f1fb25d73b8cc260ed91bd5c4ff1604153b3740648927e1f5"
+    },
+    {
+      "path": "audit_source.py",
+      "sha256Bytes": "09fb810fc649e457b8bbfd99995f527d09edc26e73e85b715c37fa0de53e0011"
+    },
+    {
+      "path": "classload-proof/ProfileClassLoadProof.java",
+      "sha256Bytes": "c4b5a89729270303ad83c596987447386c00d1477fc49a9a44158db66df17da8"
+    },
+    {
+      "path": "classload-proof/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "classload-proof/run.log",
+      "sha256Bytes": "7c7bacabfd3957f9463b05a1f6a5915050be82d8871a14cad2f817677c8f3fe8"
+    },
+    {
+      "path": "compile-06/compile-result.json",
+      "sha256Bytes": "3cdf57d8ca48434978a74fa27dfa1180193c082fca4d8382ac00199df5a64ab4"
+    },
+    {
+      "path": "compile-06/compile.log",
+      "sha256Bytes": "869f013e5cf5dae68aee639034f7797de4413090adf7f09cad47c4f80ee5a79b"
+    },
+    {
+      "path": "compile-06/original-profile-main.jar",
+      "sha256Bytes": "ad8004729b3a496de745504ee74bc180d0eaa3ea7d00983f44f90b0cc172f2ad"
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "9a89b39caf94625adf2ee062d242f6e758f23d5bff4a2a3b81d55d5955c7fd88"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "82fa6afd26156202cf3dac4149ce83d82042f6622acc2875d0ac54e809a519f0"
+    },
+    {
+      "path": "gradle-tasks.snippet.kts",
+      "sha256Bytes": "3a669962a2c4acab56e6d12831fafc1fbe60f1756cc92a2bc62bc5deccb6bae1"
+    },
+    {
+      "path": "input-audit.json",
+      "sha256Bytes": "666f5f864d678632a3692e23199ca6d0ed8b66fc1c5f07e7cf9bc9434850546b"
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "dc9bf9e0c007bf4c9da706cdb50434f46813994b52b86d9e69f3fce8c958fe75"
+    },
+    {
+      "path": "method-inventory.json",
+      "sha256Bytes": "7143fd9032cb1ee8b1bd43f77cfc7f7904e1e548a6203c5f031c0cb49de05663"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256Bytes": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+      "sha256Bytes": "c7619b2386b42349693098c28657867cf8b73af3a66e1353d039bdc037a68011"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/SplashWallpaperHistoryPolicy.kt",
+      "sha256Bytes": "f18f960603e1d8b2fc2d12e1429209e3e98fb10c55817a603a35cc58b24f372d"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/ui/TopReadabilityChrome.kt",
+      "sha256Bytes": "aa046cdbabbed0e6cc983756b0b524e5bd9eff5caa03572ffe963de24e27ad1b"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+      "sha256Bytes": "8f6f22e673a0b8d11455b2c4762ec72ce98ea5ff68eb270d4f021748c289324b"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/SplashRepository.kt",
+      "sha256Bytes": "b962ce085c19bf4afef44770640e0b029a020358048a15bbfc4f89a0577b5ed8"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "sha256Bytes": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSelectionPolicy.kt",
+      "sha256Bytes": "b0f8d1a53099f1d0e6694c941479cf645b36533ce7fee931bab5245a8b7654c8"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt",
+      "sha256Bytes": "0753f850d0feca7412619ad98cbf9a7b9243c51df67d99e6a7bac6032236c59c"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/ProfileChromePolicy.kt",
+      "sha256Bytes": "0a26a4799c92fdeaf1f10b470ab85aca7f6dd12a269add128c55a836752348ef"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/ProfileDashboardPolicy.kt",
+      "sha256Bytes": "88173befd9eac7db213b6e771e34ba9960a99a8b9e6f187fc01bc4348bcf7e3a"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/ProfileFavoriteFolderShortcutPolicy.kt",
+      "sha256Bytes": "7e170e76dcea8912827b0de91e385be9dafca82587cf5659fd1487433a8a9bba"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/ProfileLayoutPolicy.kt",
+      "sha256Bytes": "756136f81ec01df0575822ab2168851ffc43b34256eac13145adeb849d8319a1"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt",
+      "sha256Bytes": "cb193c0afc53bab41e26dbf97ceaf9ae63664cf365eeb81292e4bc963f468137"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+      "sha256Bytes": "034c92c6622f540400972353e26ec1a61a022151cbb71e7c6ee45f4305617a0c"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/ProfileSpacePolicy.kt",
+      "sha256Bytes": "d7c2e8857b7006f7b11a97b27712f98a4b642342c22f75b190ccc6c93600de7e"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+      "sha256Bytes": "a2a08a77fefc78f9cbe41760034e273bb34f5555b65e979f7e12fad147c333a1"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/SplashWallpaperRandomPoolPolicy.kt",
+      "sha256Bytes": "693bf431e9f34e8ae87f6fa785d6259b58c75921785294f74c30b8df81c663d2"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt",
+      "sha256Bytes": "7aa9b8853899b0f4eb71e2e3414d173f8556fbc05ef4f4b56f7bffcfcadd2756"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/profile/WallpaperImageImport.kt",
+      "sha256Bytes": "9d1d439a42738a9e1b92340e1b5c3e9c2abe5cf578cf3f605a43388f178cbc91"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
+      "sha256Bytes": "0962e31c0e46ad0a870b4e5a4612ba1e7d31c4aa9a71cac2ea5480d6ca470372"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionMotionSpec.kt",
+      "sha256Bytes": "c1adf12dc3a718cd46b75c83bb7e767e1207e11a58f0abe7bb749157cfbfe7c8"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+      "sha256Bytes": "8be87ce3d877b5ad25793847ec0664d1196d8b5fe0abe700d2e29e0440a242c5"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+      "sha256Bytes": "799f5d6fdd39adba83bd59aa52860b3d3378908b135aed4c55527e50686dc03a"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256Bytes": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59"
+    },
+    {
+      "path": "original-stable/design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/ProfileWallpaperTransformPolicy.kt",
+      "sha256Bytes": "d196cef4d2e96343ce7d42b2147c9ffd2793458e8d6758a65942fe44b64f16f3"
+    },
+    {
+      "path": "pins.json",
+      "sha256Bytes": "cf5f484a4b32ce95d40a5c2f79afc010fac424e62e80c78d7b5f901d26c643e3"
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "88bf2dc2aa6414cb987aae0e79b0587a204a8bd5bb3d1158253ce420e83b73d9"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/store/SplashWallpaperHistoryPolicy.kt",
+      "sha256Bytes": "f18f960603e1d8b2fc2d12e1429209e3e98fb10c55817a603a35cc58b24f372d"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/TopReadabilityChrome.kt",
+      "sha256Bytes": "aa046cdbabbed0e6cc983756b0b524e5bd9eff5caa03572ffe963de24e27ad1b"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/wallpaper/ProfileWallpaperTransformPolicy.kt",
+      "sha256Bytes": "d196cef4d2e96343ce7d42b2147c9ffd2793458e8d6758a65942fe44b64f16f3"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+      "sha256Bytes": "cb90b4d3917c1cb58af73a64784aaf1dbd0783f89fd404ac6c9cc6595846da52"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/data/repository/DesktopOriginalProfileSplashProtocol.kt",
+      "sha256Bytes": "5e631e23b24e593207b273ca90886bed4c0bdc571b0ce51d9a0992ec4800f1d0"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/OfficialWallpaperSelectionPolicy.kt",
+      "sha256Bytes": "b0f8d1a53099f1d0e6694c941479cf645b36533ce7fee931bab5245a8b7654c8"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt",
+      "sha256Bytes": "6da67158a7521969d4f340e4656addbcd846a9ef5967a3753d89f295e4fa9561"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/ProfileChromePolicy.kt",
+      "sha256Bytes": "0a26a4799c92fdeaf1f10b470ab85aca7f6dd12a269add128c55a836752348ef"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/ProfileDashboardPolicy.kt",
+      "sha256Bytes": "88173befd9eac7db213b6e771e34ba9960a99a8b9e6f187fc01bc4348bcf7e3a"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/ProfileFavoriteFolderShortcutPolicy.kt",
+      "sha256Bytes": "7e170e76dcea8912827b0de91e385be9dafca82587cf5659fd1487433a8a9bba"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/ProfileLayoutPolicy.kt",
+      "sha256Bytes": "756136f81ec01df0575822ab2168851ffc43b34256eac13145adeb849d8319a1"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt",
+      "sha256Bytes": "747fc6ae8142a0867159eeaeb0fa817943478ec30c32975099bcebc3a2c26ac4"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+      "sha256Bytes": "91813b7af6a18ff002bb4b057e1719b17c5da03a62367c71926e25fdebf2bec3"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/ProfileSpacePolicy.kt",
+      "sha256Bytes": "d7c2e8857b7006f7b11a97b27712f98a4b642342c22f75b190ccc6c93600de7e"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+      "sha256Bytes": "4e26e61d7895b15eb03c22c56daec33dd6d291606d5fa1537f33e723f6d08e6b"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/SplashWallpaperRandomPoolPolicy.kt",
+      "sha256Bytes": "693bf431e9f34e8ae87f6fa785d6259b58c75921785294f74c30b8df81c663d2"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt",
+      "sha256Bytes": "b046a2116230ba8c99e1f91581cd14af33f0b3a9cf1e5a9a172a043a07c6b6d6"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/components/DesktopOriginalProfileTripleSuccessAnimation.kt",
+      "sha256Bytes": "58917f6b114aa0b1b517a9701459df4994c5813156c3a3665d82680ef9c38eca"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/feedback/TripleActionMotionSpec.kt",
+      "sha256Bytes": "c1adf12dc3a718cd46b75c83bb7e767e1207e11a58f0abe7bb749157cfbfe7c8"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+      "sha256Bytes": "8be87ce3d877b5ad25793847ec0664d1196d8b5fe0abe700d2e29e0440a242c5"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/section/DesktopOriginalProfileTripleProgressIcon.kt",
+      "sha256Bytes": "94cee828dc5b1c7bc113ed27133d88a88caffe78b345526b073f413da74bab6d"
+    },
+    {
+      "path": "prepared/generated/com/bilipai/desktop/ui/DesktopOriginalProfileSpaceAggregate.kt",
+      "sha256Bytes": "a7c0c2e3c0fc64054e8d4c7b923233b44f1b08eba8d3fba69509129fe27e2116"
+    },
+    {
+      "path": "prepared/generated/profile-selection-proof.json",
+      "sha256Bytes": "eae30bcf997d7284a1f813d7a764faa9a4d518b14e32198fce270a4fcc89680c"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalProfilePreferences.kt",
+      "sha256Bytes": "08752986aa6d2606a14feca8b01b8a3ae872d52204d2c4ecd0d07dccffb15429"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopProfileBindings.kt",
+      "sha256Bytes": "af622378fc9104554d7913c5843ebde63ec53d8af68791b96e7008e67c3cdc0d"
+    },
+    {
+      "path": "prepared/tools/extract-upstream-profile-main.py",
+      "sha256Bytes": "bdac97838189ea341d962499a0275214e8221d3795c6f0d0c2a5ae41f3d37b66"
+    },
+    {
+      "path": "registry-merge-recipe.json",
+      "sha256Bytes": "971a31c6f545c7506e47acf659f044fd4dbcdc4a0786f0a9889d26b80a7eb3a5"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+      "sha256Bytes": "cb90b4d3917c1cb58af73a64784aaf1dbd0783f89fd404ac6c9cc6595846da52"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/data/repository/DesktopOriginalProfileSplashProtocol.kt",
+      "sha256Bytes": "5e631e23b24e593207b273ca90886bed4c0bdc571b0ce51d9a0992ec4800f1d0"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt",
+      "sha256Bytes": "6da67158a7521969d4f340e4656addbcd846a9ef5967a3753d89f295e4fa9561"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt",
+      "sha256Bytes": "747fc6ae8142a0867159eeaeb0fa817943478ec30c32975099bcebc3a2c26ac4"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+      "sha256Bytes": "91813b7af6a18ff002bb4b057e1719b17c5da03a62367c71926e25fdebf2bec3"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+      "sha256Bytes": "4e26e61d7895b15eb03c22c56daec33dd6d291606d5fa1537f33e723f6d08e6b"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt",
+      "sha256Bytes": "b046a2116230ba8c99e1f91581cd14af33f0b3a9cf1e5a9a172a043a07c6b6d6"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/video/ui/components/DesktopOriginalProfileTripleSuccessAnimation.kt",
+      "sha256Bytes": "58917f6b114aa0b1b517a9701459df4994c5813156c3a3665d82680ef9c38eca"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/video/ui/section/DesktopOriginalProfileTripleProgressIcon.kt",
+      "sha256Bytes": "94cee828dc5b1c7bc113ed27133d88a88caffe78b345526b073f413da74bab6d"
+    },
+    {
+      "path": "replay-production/com/bilipai/desktop/ui/DesktopOriginalProfileSpaceAggregate.kt",
+      "sha256Bytes": "a7c0c2e3c0fc64054e8d4c7b923233b44f1b08eba8d3fba69509129fe27e2116"
+    },
+    {
+      "path": "replay-production/profile-selection-proof.json",
+      "sha256Bytes": "3cc035c41b1d24ef6bcb4c7187a9f9be1ceedfa2e5c00bb10519b26f7f3fd6fd"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/core/store/SplashWallpaperHistoryPolicy.kt",
+      "sha256Bytes": "f18f960603e1d8b2fc2d12e1429209e3e98fb10c55817a603a35cc58b24f372d"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/core/ui/TopReadabilityChrome.kt",
+      "sha256Bytes": "aa046cdbabbed0e6cc983756b0b524e5bd9eff5caa03572ffe963de24e27ad1b"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/core/ui/wallpaper/ProfileWallpaperTransformPolicy.kt",
+      "sha256Bytes": "d196cef4d2e96343ce7d42b2147c9ffd2793458e8d6758a65942fe44b64f16f3"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+      "sha256Bytes": "cb90b4d3917c1cb58af73a64784aaf1dbd0783f89fd404ac6c9cc6595846da52"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/data/repository/DesktopOriginalProfileSplashProtocol.kt",
+      "sha256Bytes": "5e631e23b24e593207b273ca90886bed4c0bdc571b0ce51d9a0992ec4800f1d0"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/OfficialWallpaperSelectionPolicy.kt",
+      "sha256Bytes": "b0f8d1a53099f1d0e6694c941479cf645b36533ce7fee931bab5245a8b7654c8"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt",
+      "sha256Bytes": "6da67158a7521969d4f340e4656addbcd846a9ef5967a3753d89f295e4fa9561"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/ProfileChromePolicy.kt",
+      "sha256Bytes": "0a26a4799c92fdeaf1f10b470ab85aca7f6dd12a269add128c55a836752348ef"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/ProfileDashboardPolicy.kt",
+      "sha256Bytes": "88173befd9eac7db213b6e771e34ba9960a99a8b9e6f187fc01bc4348bcf7e3a"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/ProfileFavoriteFolderShortcutPolicy.kt",
+      "sha256Bytes": "7e170e76dcea8912827b0de91e385be9dafca82587cf5659fd1487433a8a9bba"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/ProfileLayoutPolicy.kt",
+      "sha256Bytes": "756136f81ec01df0575822ab2168851ffc43b34256eac13145adeb849d8319a1"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt",
+      "sha256Bytes": "747fc6ae8142a0867159eeaeb0fa817943478ec30c32975099bcebc3a2c26ac4"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+      "sha256Bytes": "91813b7af6a18ff002bb4b057e1719b17c5da03a62367c71926e25fdebf2bec3"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/ProfileSpacePolicy.kt",
+      "sha256Bytes": "d7c2e8857b7006f7b11a97b27712f98a4b642342c22f75b190ccc6c93600de7e"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+      "sha256Bytes": "4e26e61d7895b15eb03c22c56daec33dd6d291606d5fa1537f33e723f6d08e6b"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/SplashWallpaperRandomPoolPolicy.kt",
+      "sha256Bytes": "693bf431e9f34e8ae87f6fa785d6259b58c75921785294f74c30b8df81c663d2"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt",
+      "sha256Bytes": "b046a2116230ba8c99e1f91581cd14af33f0b3a9cf1e5a9a172a043a07c6b6d6"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/video/ui/components/DesktopOriginalProfileTripleSuccessAnimation.kt",
+      "sha256Bytes": "58917f6b114aa0b1b517a9701459df4994c5813156c3a3665d82680ef9c38eca"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/video/ui/feedback/TripleActionMotionSpec.kt",
+      "sha256Bytes": "c1adf12dc3a718cd46b75c83bb7e767e1207e11a58f0abe7bb749157cfbfe7c8"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+      "sha256Bytes": "8be87ce3d877b5ad25793847ec0664d1196d8b5fe0abe700d2e29e0440a242c5"
+    },
+    {
+      "path": "replay-standalone/com/android/purebilibili/feature/video/ui/section/DesktopOriginalProfileTripleProgressIcon.kt",
+      "sha256Bytes": "94cee828dc5b1c7bc113ed27133d88a88caffe78b345526b073f413da74bab6d"
+    },
+    {
+      "path": "replay-standalone/com/bilipai/desktop/ui/DesktopOriginalProfileSpaceAggregate.kt",
+      "sha256Bytes": "a7c0c2e3c0fc64054e8d4c7b923233b44f1b08eba8d3fba69509129fe27e2116"
+    },
+    {
+      "path": "replay-standalone/profile-selection-proof.json",
+      "sha256Bytes": "eae30bcf997d7284a1f813d7a764faa9a4d518b14e32198fce270a4fcc89680c"
+    },
+    {
+      "path": "reverse-adapters/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.json",
+      "sha256Bytes": "7c5de79dd2375281a6d02e0e695f623460fcb2508d2a07c14f533530de550f6a"
+    },
+    {
+      "path": "reverse-adapters/com/android/purebilibili/data/repository/DesktopOriginalProfileSplashProtocol.json",
+      "sha256Bytes": "192383e3cfdb714a342f1138b3924198ca83b17b1bfd0283f595b68ccc0cf5a1"
+    },
+    {
+      "path": "reverse-adapters/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.json",
+      "sha256Bytes": "6f0d40ef853b940bb03ad1991bbe362b545c8291fad347fa631e50e6f0e80b1e"
+    },
+    {
+      "path": "reverse-adapters/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.json",
+      "sha256Bytes": "817f5638ac1723174f482ad43349a0c6bca0ae85f4c7e074934cac4756047301"
+    },
+    {
+      "path": "reverse-adapters/com/android/purebilibili/feature/profile/ProfileScreen.json",
+      "sha256Bytes": "5f8ad68ed22d8ff61a67f7e5f2b55bb8d1294fe079e6f39d655709e953f6653b"
+    },
+    {
+      "path": "reverse-adapters/com/android/purebilibili/feature/profile/ProfileViewModel.json",
+      "sha256Bytes": "b4c59526a4826fe243ad79dcde25de46506dd1ecc29d6b10ae1a51f4931f2368"
+    },
+    {
+      "path": "reverse-adapters/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.json",
+      "sha256Bytes": "b0ce4903b2e031a72cab39578a0c9934d2ea91735e9ef70fd7fabbd94546c579"
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "eb21f30bddd910048d8b036ae33bbc0e0481cc98dfcf62ccf6af7dc61ceb8a52"
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "6ef756241def35d7cd54cb6a50d61810bf41eea9b00a23886811b7955740adfc"
+    }
+  ]
+}

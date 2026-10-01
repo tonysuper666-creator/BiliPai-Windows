@@ -1,0 +1,56 @@
+{
+  "payloads": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.kt",
+      "sha256LF": "1aeb84aa6a9746fefd1a296242c53d73713f8101457a7394f7b9b1828458c3f0"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "sha256LF": "8d3fae0ec31c64e4d6160525efd5eaefb94f56716957dae728c1857d5db752f3"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "sha256LF": "af1a01f2059d4a549bebb349b199bb77fe24586900aec178ebe74d8c857695be"
+    }
+  ],
+  "profileUriHunks": {
+    "baseManifestSha256Bytes": "5d4ce31834b9bb34c09fca2bd22ea092f24f504a1ff74f49cfb1aaa6ab22ebe7",
+    "target": "desktop/tools/extract-upstream-profile-main.py",
+    "baseProducerSha256Bytes": "bdac97838189ea341d962499a0275214e8221d3795c6f0d0c2a5ae41f3d37b66",
+    "candidateProducerSha256Bytes": "f1f770072220a9d29e20cb77c3f4f5fd6d30c6decea0a0c83129114fe16942d4",
+    "hunks": [
+      {
+        "target": "desktop/tools/extract-upstream-profile-main.py",
+        "before": "java.net.URI.create(customBgUri).path.orEmpty()",
+        "after": "java.nio.file.Paths.get(java.net.URI.create(customBgUri)).toString()",
+        "expectedCount": 1
+      },
+      {
+        "target": "desktop/tools/extract-upstream-profile-main.py",
+        "before": "wallpaper.toURI().toString()",
+        "after": "wallpaper.toPath().toUri().toString()",
+        "expectedCount": 1
+      },
+      {
+        "target": "desktop/tools/extract-upstream-profile-main.py",
+        "before": "destFile.toURI().toString()",
+        "after": "destFile.toPath().toUri().toString()",
+        "expectedCount": 1
+      }
+    ],
+    "intent": "Keep original file existence/fallback semantics with canonical Windows file:/// URI and real drive conversion. Android original and historic Profile137 remain unchanged.",
+    "sharedChanged": false,
+    "wholeFileInstall": false,
+    "newDependency": false,
+    "actualRootAccepted": false
+  },
+  "preparedManifests": {
+    "aggregate": "7398c0f9ae3e6b3b0f519616247bd5c4ccff662786ab90cd792d3d324fd17a48",
+    "profileUri": "dff4a29b9bd149c0c49574d023a98de1bbad98534af94044fe01b977d4ca5eb8"
+  },
+  "rootFactoryMounted": false,
+  "profileMounted": false
+}

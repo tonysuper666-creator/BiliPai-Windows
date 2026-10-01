@@ -1,0 +1,5 @@
+{
+    "settings": {
+        "live_favorite_tags": "[{\"parentAreaId\":1,\"areaId\":1,\"title\":\"area1\",\"parentTitle\":\"parent\"},{\"parentAreaId\":1,\"areaId\":2,\"title\":\"area2\",\"parentTitle\":\"parent\"},{\"parentAreaId\":1,\"areaId\":3,\"title\":\"area3\",\"parentTitle\":\"parent\"},{\"parentAreaId\":1,\"areaId\":4,\"title\":\"area4\",\"parentTitle\":\"parent\"},{\"parentAreaId\":1,\"areaId\":5,\"title\":\"area5\",\"parentTitle\":\"parent\"},{\"parentAreaId\":1,\"areaId\":6,\"title\":\"area6\",\"parentTitle\":\"parent\"},{\"parentAreaId\":1,\"areaId\":7,\"title\":\"area7\",\"parentTitle\":\"parent\"},{\"parentAreaId\":1,\"areaId\":8,\"title\":\"area8\",\"parentTitle\":\"parent\"},{\"parentAreaId\":1,\"areaId\":9,\"title\":\"area9\",\"parentTitle\":\"parent\"},{\"parentAreaId\":1,\"areaId\":10,\"title\":\"area10\",\"parentTitle\":\"parent\"},{\"parentAreaId\":1,\"areaId\":11,\"title\":\"area11\",\"parentTitle\":\"parent\"},{\"parentAreaId\":1,\"areaId\":12,\"title\":\"area12\",\"parentTitle\":\"parent\"}]"
+    }
+}

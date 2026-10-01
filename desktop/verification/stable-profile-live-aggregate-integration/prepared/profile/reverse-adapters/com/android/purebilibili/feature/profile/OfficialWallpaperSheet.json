@@ -1,0 +1,66 @@
+[
+  {
+    "originalStart": 49,
+    "originalEnd": 49,
+    "preparedStart": 49,
+    "preparedEnd": 174,
+    "original": "",
+    "prepared": "import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment\nimport com.bilipai.desktop.ui.rememberDesktopProfileMediaPicker\n"
+  },
+  {
+    "originalStart": 1109,
+    "originalEnd": 1158,
+    "preparedStart": 1234,
+    "preparedEnd": 1276,
+    "original": "import androidx.compose.ui.platform.LocalContext\n",
+    "prepared": "import coil3.compose.LocalPlatformContext\n"
+  },
+  {
+    "originalStart": 1425,
+    "originalEnd": 1453,
+    "preparedStart": 1543,
+    "preparedEnd": 1543,
+    "original": "import android.widget.Toast\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 2657,
+    "originalEnd": 2685,
+    "preparedStart": 2747,
+    "preparedEnd": 2784,
+    "original": "fun OfficialWallpaperSheet(\n",
+    "prepared": "internal fun OfficialWallpaperSheet(\n"
+  },
+  {
+    "originalStart": 7135,
+    "originalEnd": 7226,
+    "preparedStart": 7234,
+    "preparedEnd": 7333,
+    "original": "                                        model = ImageRequest.Builder(LocalContext.current)\n",
+    "prepared": "                                        model = ImageRequest.Builder(LocalPlatformContext.current)\n"
+  },
+  {
+    "originalStart": 11768,
+    "originalEnd": 11827,
+    "preparedStart": 11875,
+    "preparedEnd": 12000,
+    "original": "                        val context = LocalContext.current\n",
+    "prepared": "                        val platform = LocalDesktopProfileEnvironment.current\n    val context = LocalPlatformContext.current\n"
+  },
+  {
+    "originalStart": 13650,
+    "originalEnd": 13755,
+    "preparedStart": 13823,
+    "preparedEnd": 13896,
+    "original": "                                            Toast.makeText(context, \"背景设置成功\", Toast.LENGTH_SHORT).show()\n",
+    "prepared": "                                            platform.feedback( \"背景设置成功\")\n"
+  },
+  {
+    "originalStart": 14993,
+    "originalEnd": 15100,
+    "preparedStart": 15134,
+    "preparedEnd": 15209,
+    "original": "                                            Toast.makeText(context, \"开屏壁纸设置成功\", Toast.LENGTH_SHORT).show()\n",
+    "prepared": "                                            platform.feedback( \"开屏壁纸设置成功\")\n"
+  }
+]

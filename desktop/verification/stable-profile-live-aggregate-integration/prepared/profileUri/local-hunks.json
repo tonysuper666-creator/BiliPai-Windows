@@ -1,0 +1,31 @@
+{
+  "baseManifestSha256Bytes": "5d4ce31834b9bb34c09fca2bd22ea092f24f504a1ff74f49cfb1aaa6ab22ebe7",
+  "target": "desktop/tools/extract-upstream-profile-main.py",
+  "baseProducerSha256Bytes": "bdac97838189ea341d962499a0275214e8221d3795c6f0d0c2a5ae41f3d37b66",
+  "candidateProducerSha256Bytes": "f1f770072220a9d29e20cb77c3f4f5fd6d30c6decea0a0c83129114fe16942d4",
+  "hunks": [
+    {
+      "target": "desktop/tools/extract-upstream-profile-main.py",
+      "before": "java.net.URI.create(customBgUri).path.orEmpty()",
+      "after": "java.nio.file.Paths.get(java.net.URI.create(customBgUri)).toString()",
+      "expectedCount": 1
+    },
+    {
+      "target": "desktop/tools/extract-upstream-profile-main.py",
+      "before": "wallpaper.toURI().toString()",
+      "after": "wallpaper.toPath().toUri().toString()",
+      "expectedCount": 1
+    },
+    {
+      "target": "desktop/tools/extract-upstream-profile-main.py",
+      "before": "destFile.toURI().toString()",
+      "after": "destFile.toPath().toUri().toString()",
+      "expectedCount": 1
+    }
+  ],
+  "intent": "Keep original file existence/fallback semantics with canonical Windows file:/// URI and real drive conversion. Android original and historic Profile137 remain unchanged.",
+  "sharedChanged": false,
+  "wholeFileInstall": false,
+  "newDependency": false,
+  "actualRootAccepted": false
+}

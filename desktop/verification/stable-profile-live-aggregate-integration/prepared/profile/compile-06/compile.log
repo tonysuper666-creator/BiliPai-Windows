@@ -1,0 +1,9 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-profile-main-parity\prepared\generated\com\android\purebilibili\feature\profile\OfficialWallpaperSheet.kt:89:22: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-profile-main-parity\prepared\generated\com\android\purebilibili\feature\profile\WallpaperAdjustmentSheet.kt:77:22: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-profile-main-parity\prepared\generated\com\android\purebilibili\feature\profile\WallpaperAdjustmentSheet.kt:285:22: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

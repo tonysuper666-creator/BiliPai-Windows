@@ -1,0 +1,62 @@
+[
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+    "output": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalProfileTripleProgressIcon.kt",
+    "originalSha256LF": "799f5d6fdd39adba83bd59aa52860b3d3378908b135aed4c55527e50686dc03a",
+    "preparedSha256LF": "94cee828dc5b1c7bc113ed27133d88a88caffe78b345526b073f413da74bab6d"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
+    "output": "com/android/purebilibili/feature/video/ui/components/DesktopOriginalProfileTripleSuccessAnimation.kt",
+    "originalSha256LF": "0962e31c0e46ad0a870b4e5a4612ba1e7d31c4aa9a71cac2ea5480d6ca470372",
+    "preparedSha256LF": "58917f6b114aa0b1b517a9701459df4994c5813156c3a3665d82680ef9c38eca"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt",
+    "output": "com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt",
+    "originalSha256LF": "cb193c0afc53bab41e26dbf97ceaf9ae63664cf365eeb81292e4bc963f468137",
+    "preparedSha256LF": "747fc6ae8142a0867159eeaeb0fa817943478ec30c32975099bcebc3a2c26ac4"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt",
+    "output": "com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt",
+    "originalSha256LF": "0753f850d0feca7412619ad98cbf9a7b9243c51df67d99e6a7bac6032236c59c",
+    "preparedSha256LF": "6da67158a7521969d4f340e4656addbcd846a9ef5967a3753d89f295e4fa9561"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt",
+    "output": "com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt",
+    "originalSha256LF": "7aa9b8853899b0f4eb71e2e3414d173f8556fbc05ef4f4b56f7bffcfcadd2756",
+    "preparedSha256LF": "b046a2116230ba8c99e1f91581cd14af33f0b3a9cf1e5a9a172a043a07c6b6d6"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+    "output": "com/android/purebilibili/feature/profile/ProfileScreen.kt",
+    "originalSha256LF": "034c92c6622f540400972353e26ec1a61a022151cbb71e7c6ee45f4305617a0c",
+    "preparedSha256LF": "91813b7af6a18ff002bb4b057e1719b17c5da03a62367c71926e25fdebf2bec3"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+    "output": "com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+    "originalSha256LF": "8f6f22e673a0b8d11455b2c4762ec72ce98ea5ff68eb270d4f021748c289324b",
+    "preparedSha256LF": "cb90b4d3917c1cb58af73a64784aaf1dbd0783f89fd404ac6c9cc6595846da52"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+    "output": "com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+    "originalSha256LF": "a2a08a77fefc78f9cbe41760034e273bb34f5555b65e979f7e12fad147c333a1",
+    "preparedSha256LF": "4e26e61d7895b15eb03c22c56daec33dd6d291606d5fa1537f33e723f6d08e6b"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+    "output": "com/bilipai/desktop/ui/DesktopOriginalProfileSpaceAggregate.kt",
+    "originalSha256LF": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+    "preparedSha256LF": "a7c0c2e3c0fc64054e8d4c7b923233b44f1b08eba8d3fba69509129fe27e2116"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/SplashRepository.kt",
+    "output": "com/android/purebilibili/data/repository/DesktopOriginalProfileSplashProtocol.kt",
+    "originalSha256LF": "b962ce085c19bf4afef44770640e0b029a020358048a15bbfc4f89a0577b5ed8",
+    "preparedSha256LF": "5e631e23b24e593207b273ca90886bed4c0bdc571b0ce51d9a0992ec4800f1d0"
+  }
+]

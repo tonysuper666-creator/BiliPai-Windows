@@ -1,0 +1,41 @@
+{
+  "status": "FAIL",
+  "exitCode": 1,
+  "sourceOnly": true,
+  "actualRuntimeAcceptance": false,
+  "nativeOrAnimationExecuted": false,
+  "HTTP": false,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopLiveNavigationBindings.kt",
+      "sha256Bytes": "ef2ecaeb12130a3e529ce714fca6441f91e8436f03dea8fa4d36e773a98234dd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalLiveSearchProtocol.kt",
+      "sha256Bytes": "583ec4ecd07ae665b94161cb96578930bd67dd08ca46655f70160f69c423b94c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaDetailScreen.kt",
+      "sha256Bytes": "d15e793e19023705fcc9a394487f64e18e18989123765de1d8ac4a10b3a824c6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreen.kt",
+      "sha256Bytes": "4540db29ab55458ec254b3adfc2905214bb4202f288d810b0531eb532f65cbc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreenPolicy.kt",
+      "sha256Bytes": "f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveFollowingScreen.kt",
+      "sha256Bytes": "08da9d043e42e9ba6d9d12313c965b8d106e44fcfe92c6ee88682600812ee4a3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveSearchScreen.kt",
+      "sha256Bytes": "2a1b931cd8c0a8199f33f2001db6299b4cb00653fc9d72388ff0a85f45ceeae2"
+    }
+  ],
+  "snapshotManifestSha256Bytes": "4840845d18a6fd1171c32a03ba397306a0f509b6510ca9544ceac935befe46ae",
+  "orderedCpSha256Bytes": "e9b8db57c428c214b243e2ea41761d0745c3b48ff386fe8d38901d892760fd8f",
+  "runtimeEntries": 97
+}

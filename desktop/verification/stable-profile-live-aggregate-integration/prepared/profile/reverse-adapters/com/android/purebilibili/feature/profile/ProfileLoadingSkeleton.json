@@ -1,0 +1,34 @@
+[
+  {
+    "originalStart": 49,
+    "originalEnd": 49,
+    "preparedStart": 49,
+    "preparedEnd": 174,
+    "original": "",
+    "prepared": "import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment\nimport com.bilipai.desktop.ui.rememberDesktopProfileMediaPicker\n"
+  },
+  {
+    "originalStart": 1920,
+    "originalEnd": 1975,
+    "preparedStart": 2045,
+    "preparedEnd": 2109,
+    "original": "import androidx.compose.ui.platform.LocalConfiguration\n",
+    "prepared": "import com.bilipai.desktop.ui.desktopProfileWindowConfiguration\n"
+  },
+  {
+    "originalStart": 2335,
+    "originalEnd": 2409,
+    "preparedStart": 2469,
+    "preparedEnd": 2564,
+    "original": "import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion\n",
+    "prepared": "import com.bilipai.desktop.ui.rememberDesktopDynamicReduceMotion as rememberSystemReduceMotion\n"
+  },
+  {
+    "originalStart": 3283,
+    "originalEnd": 3334,
+    "preparedStart": 3438,
+    "preparedEnd": 3498,
+    "original": "    val configuration = LocalConfiguration.current\n",
+    "prepared": "    val configuration = desktopProfileWindowConfiguration()\n"
+  }
+]

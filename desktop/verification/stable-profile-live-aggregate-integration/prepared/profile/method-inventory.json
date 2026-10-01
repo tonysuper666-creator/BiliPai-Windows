@@ -1,0 +1,299 @@
+[
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileChromePolicy.kt",
+    "originalFunctions": 5,
+    "preparedFunctions": 5,
+    "droppedReusedUniqueHelper": {},
+    "addedWindowsMethods": {},
+    "tokenUnchangedFunctions": [
+      "resolveProfileHeroChrome",
+      "resolveProfileContentChrome",
+      "resolveProfileHeroFallbackGradient"
+    ],
+    "adaptedFunctions": []
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileLayoutPolicy.kt",
+    "originalFunctions": 8,
+    "preparedFunctions": 8,
+    "droppedReusedUniqueHelper": {},
+    "addedWindowsMethods": {},
+    "tokenUnchangedFunctions": [
+      "resolveProfileHeroHeightDp",
+      "resolveProfileTopBannerHeightDp",
+      "referenceProfileScreenHeightDp",
+      "resolveProfileCardCoverHeightDp",
+      "resolveProfileCardHeightDp"
+    ],
+    "adaptedFunctions": []
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileSpacePolicy.kt",
+    "originalFunctions": 31,
+    "preparedFunctions": 31,
+    "droppedReusedUniqueHelper": {},
+    "addedWindowsMethods": {},
+    "tokenUnchangedFunctions": [
+      "defaultProfileSpaceTabs",
+      "resolveProfileSpaceTabChromeSpec",
+      "resolveProfileSpaceContentPanelSpec",
+      "resolveProfileSpaceWallpaperChromePalette",
+      "calculateProfileSpaceContrast",
+      "resolveProfileSpaceHomeSections",
+      "resolveProfileContributionContentState",
+      "validateProfileSign",
+      "resolveProfileSpaceIdentityMeta",
+      "resolveProfileEditableAccountState",
+      "resolveProfileSpaceStateFromAggregate",
+      "mergeProfileAggregateState",
+      "shouldHydrateProfileContributionVideos",
+      "mergeProfileContributionVideoState",
+      "mergeProfileFavoriteFolderState",
+      "resolveProfileFavoritePreviewCoverTargets",
+      "mergeProfileFavoritePreviewCovers",
+      "mergeProfileBangumiState",
+      "mergeProfileDynamicState",
+      "shouldApplyProfileLoadResult",
+      "mergeProfileFavoriteFolders",
+      "mapProfileAggregateVideoItem",
+      "mapProfileAggregateFavoriteFolder",
+      "resolveProfileDynamicCover",
+      "resolveProfileDynamicImageUrls",
+      "resolveProfileDynamicText",
+      "resolveProfileDynamicAuthorName",
+      "resolveProfileDynamicPublishText",
+      "resolveProfileDynamicActionText",
+      "resolveProfileDynamicDeleteAction",
+      "formatProfileDynamicCount"
+    ],
+    "adaptedFunctions": []
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileFavoriteFolderShortcutPolicy.kt",
+    "originalFunctions": 1,
+    "preparedFunctions": 1,
+    "droppedReusedUniqueHelper": {},
+    "addedWindowsMethods": {},
+    "tokenUnchangedFunctions": [
+      "resolveProfileFavoriteFolderShortcuts"
+    ],
+    "adaptedFunctions": []
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileDashboardPolicy.kt",
+    "originalFunctions": 2,
+    "preparedFunctions": 2,
+    "droppedReusedUniqueHelper": {},
+    "addedWindowsMethods": {},
+    "tokenUnchangedFunctions": [
+      "resolveProfileLevelProgress"
+    ],
+    "adaptedFunctions": []
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSelectionPolicy.kt",
+    "originalFunctions": 2,
+    "preparedFunctions": 2,
+    "droppedReusedUniqueHelper": {},
+    "addedWindowsMethods": {},
+    "tokenUnchangedFunctions": [
+      "resolveOfficialWallpaperThumbnailUrl",
+      "resolveOfficialWallpaperDetailUrl"
+    ],
+    "adaptedFunctions": []
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt",
+    "originalFunctions": 7,
+    "preparedFunctions": 7,
+    "droppedReusedUniqueHelper": {},
+    "addedWindowsMethods": {},
+    "tokenUnchangedFunctions": [
+      "ProfileLoadingSkeleton",
+      "ProfileTabletLoadingSkeleton",
+      "ProfileSkeletonServiceGroup",
+      "ProfileSkeletonFeedGroup",
+      "ProfileSkeletonBlock",
+      "rememberProfileSkeletonBlockColor"
+    ],
+    "adaptedFunctions": [
+      "ProfilePhoneLoadingSkeleton"
+    ]
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt",
+    "originalFunctions": 2,
+    "preparedFunctions": 2,
+    "droppedReusedUniqueHelper": {},
+    "addedWindowsMethods": {},
+    "tokenUnchangedFunctions": [
+      "fixWallpaperUrl"
+    ],
+    "adaptedFunctions": [
+      "OfficialWallpaperSheet"
+    ]
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt",
+    "originalFunctions": 4,
+    "preparedFunctions": 4,
+    "droppedReusedUniqueHelper": {},
+    "addedWindowsMethods": {},
+    "tokenUnchangedFunctions": [
+      "updateCurrentTransform",
+      "WallpaperDeviceTabRow"
+    ],
+    "adaptedFunctions": [
+      "WallpaperAdjustmentSheet",
+      "ProfileWallpaperAdjustmentSheet"
+    ]
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+    "originalFunctions": 78,
+    "preparedFunctions": 77,
+    "droppedReusedUniqueHelper": {
+      "resolveProfileSkinVideoRepeatMode": 1
+    },
+    "addedWindowsMethods": {},
+    "tokenUnchangedFunctions": [
+      "resolveProfileWallpaperActionColumnCount",
+      "resolveProfileWallpaperActionLabelMode",
+      "resolveProfileWallpaperActionTitleLines",
+      "resolveProfileWallpaperBlendBandDp",
+      "resolveProfileWallpaperDecodeSizePx",
+      "resolveProfileWallpaperActionBlurEnabled",
+      "shouldRenderProfileImmersiveBackground",
+      "resolveProfileTopBarScrimAlpha",
+      "resolveProfilePinnedTopChromeScrim",
+      "resolveProfileLightStatusBars",
+      "shouldShowProfileHistoryService",
+      "resolveProfileSkinBackgroundImagePath",
+      "ProfileSpaceFeedColumn",
+      "ProfileTopActions",
+      "ProfileQuickAccessDashboard",
+      "ProfileContentSheet",
+      "ProfileSpaceHeader",
+      "ProfileIdentityDrawer",
+      "ProfileSpaceMetaChip",
+      "ProfileSpaceTabs",
+      "ProfileSpaceTabBody",
+      "ProfileSpaceHome",
+      "ProfileSpaceServices",
+      "ProfileFavoriteFolderStrip",
+      "ProfileBangumiStrip",
+      "ProfileAggregateVideoStrip",
+      "ProfileVideoStrip",
+      "ProfileSpaceSection",
+      "ProfileSpacePosterCard",
+      "ProfileFavoriteFolderList",
+      "ProfileBangumiList",
+      "ProfileDynamicList",
+      "ProfileDynamicOriginalContent",
+      "ProfileDynamicActionRow",
+      "ProfileDynamicAction",
+      "ProfileSpaceListRow",
+      "ProfileSpaceEmpty",
+      "ProfileEditAccountDialog",
+      "rememberProfileProgressiveTopChrome",
+      "profileProgressiveBackdrop",
+      "ProfileReadonlyAccountField",
+      "TabletProfileContent",
+      "ProfileWallpaperMenuButton",
+      "ProfileWallpaperActionSheet",
+      "ProfileWallpaperSheetActionRow",
+      "ProfileWallpaperActionButton",
+      "UserInfoText",
+      "LevelTag",
+      "UserStatsSection",
+      "StatItem",
+      "VipBannerSection",
+      "ServicesSection",
+      "ProfileServicesListIsland",
+      "ProfileServiceRow",
+      "ProfileServiceDivider",
+      "ProfileAccountActionArea",
+      "ProfileFavoriteFolderShortcutGrid",
+      "ProfileFavoriteFolderShortcutChip",
+      "ProfileFavoriteFolderMoreChip",
+      "AccountSwitchDialog",
+      "ProfileTripleActionEntry",
+      "ObserveProfileScrollToTop"
+    ],
+    "adaptedFunctions": [
+      "ProfileScreen",
+      "ProfileBackground",
+      "ProfileSkinVideoBackground",
+      "ProfileSpaceContent",
+      "ProfileSpaceHeroHeader",
+      "ProfileSpaceStat",
+      "ProfileVideoList",
+      "ProfileDynamicCard",
+      "ProfileDynamicMajorContent",
+      "MobileProfileContent",
+      "GuestProfileContent",
+      "UserInfoSection",
+      "ProfileWallpaperActionCard"
+    ]
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+    "originalFunctions": 52,
+    "preparedFunctions": 53,
+    "droppedReusedUniqueHelper": {},
+    "addedWindowsMethods": {
+      "ownedFlow": 1
+    },
+    "tokenUnchangedFunctions": [
+      "shouldStartProfileLoad",
+      "shouldForceProfileLoadForAccountSessionRefresh",
+      "showProfileIdentity",
+      "loadProfileEnrichment",
+      "loadProfileSpaceInfo",
+      "loadProfileContributions",
+      "updateProfileSuccess",
+      "selectProfileSpaceTab",
+      "clearProfileSpaceMessage",
+      "removeProfileDynamic",
+      "isNetworkError",
+      "selectOfficialWallpaper"
+    ],
+    "adaptedFunctions": [
+      "refreshSavedAccounts",
+      "setPlaybackAccount",
+      "loadProfile",
+      "performProfileLoad",
+      "persistProfileSession",
+      "loadProfileStats",
+      "loadProfileAccount",
+      "loadProfileAggregate",
+      "retryProfileContributions",
+      "fetchProfileContributionVideos",
+      "loadProfileFavoriteFolders",
+      "loadProfileFavoritePreviewCovers",
+      "loadProfileBangumi",
+      "loadProfileDynamics",
+      "clearInvalidProfileSession",
+      "handleProfileLoadFailure",
+      "readProfileBackgroundUri",
+      "resolveProfileTopPhoto",
+      "fetchProfileSpaceInfo",
+      "deleteProfileDynamic",
+      "updateProfileSign",
+      "updateCustomBackground",
+      "logout",
+      "switchAccount",
+      "removeStoredAccount",
+      "loadOfficialWallpapers",
+      "searchWallpapers",
+      "clearCustomBackground",
+      "saveWallpaper",
+      "setAsSplashWallpaper",
+      "setCustomSplashWallpaper",
+      "setAsHomeWallpaper",
+      "setCustomHomeWallpaper",
+      "saveImageToGallery",
+      "setTripleJumpEnabled"
+    ]
+  }
+]

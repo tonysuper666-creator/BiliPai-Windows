@@ -1,0 +1,16 @@
+Input #0, lavfi, from 'testsrc2=size=160x90:rate=15':
+  Duration: N/A, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: wrapped_avframe, yuv420p, 160x90 [SAR 1:1 DAR 16:9], 15 fps, 15 tbr, 15 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (wrapped_avframe (native) -> mpeg4 (native))
+[mpeg4 @ 00000080005d3e80] too many threads/slices (7), reducing to 6
+Output #0, mp4, to 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\upstream-v023-audit\profile-media-actual41\local-media\moving.mp4':
+  Metadata:
+    encoder         : Lavf62.12.102
+  Stream #0:0: Video: mpeg4 (mp4v / 0x7634706D), yuv420p(tv, progressive), 160x90 [SAR 1:1 DAR 16:9], q=2-31, 200 kb/s, 15 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.28.102 mpeg4
+    Side data:
+      CPB properties: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A
+[out#0/mp4 @ 000000800056e180] video:266KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.423039%
+frame=   60 fps=0.0 q=2.0 Lsize=     267KiB time=00:00:04.00 bitrate= 547.4kbits/s speed= 436x elapsed=0:00:00.00    

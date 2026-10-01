@@ -1,0 +1,59 @@
+[
+  {
+    "lane": "profile",
+    "path": "compile-06/original-profile-main.jar",
+    "sha256Bytes": "ad8004729b3a496de745504ee74bc180d0eaa3ea7d00983f44f90b0cc172f2ad",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "lane": "aggregate",
+    "path": "compile-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "06d262cf732152000d8cb1453e8dc1209b37fa4411e5c4d202265ff0d18ec16d",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "lane": "aggregate",
+    "path": "compile-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "06d262cf732152000d8cb1453e8dc1209b37fa4411e5c4d202265ff0d18ec16d",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "lane": "aggregate",
+    "path": "proof-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "d38f1b40376d32d2cbc962c55885e8c96c3338b5c81505c26a2f4fda808b9b6e",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "lane": "live",
+    "path": "runs/compile03/prepared-live-navigation.jar",
+    "sha256Bytes": "0db1f4fb6262cdd9c78fc71deb96c7dfdd2a6851eb5d5416ddc0073c8159e975",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "lane": "live",
+    "path": "runs/compile04/prepared-live-navigation.jar",
+    "sha256Bytes": "6d4afc73eed70f487aff14851b7c5fd6abd3a5e12a9aea38e6089e0df8a170ef",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "lane": "live",
+    "path": "runs/fixture-01/live-fixture.jar",
+    "sha256Bytes": "ee24b1fe09a2714f0c5298e3b74f7e5514220a8c10cb9331499754d787a86b4c",
+    "reason": "Rebuildable preparation/compiler output"
+  },
+  {
+    "path": "root/profile-live-aggregate-actual41/fixture.jar",
+    "sha256Bytes": "c8ea023a2f8802cd87e52c9bbcbc7a2c6e9af4c9c95a5fcc58bedd89f083bb04",
+    "reason": "Rebuildable fixture output"
+  },
+  {
+    "path": "root/profile-live-aggregate-actual41/java-classes/ActualProfileClassLoadProof.class",
+    "sha256Bytes": "de85f4e62263baabf01270c0d43b00ddf6212ee02f2158f1224313594531ea52",
+    "reason": "Rebuildable fixture output"
+  },
+  {
+    "path": "root/profile-media-actual41/fixture.jar",
+    "sha256Bytes": "3bf13afacd565ff0260d52ad9db7df9b23f7822ae0059ab79bc47f0345ef2e2e",
+    "reason": "Rebuildable fixture output"
+  }
+]

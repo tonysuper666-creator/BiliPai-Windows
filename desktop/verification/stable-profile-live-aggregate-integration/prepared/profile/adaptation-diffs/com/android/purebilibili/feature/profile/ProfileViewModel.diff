@@ -1,0 +1,913 @@
+--- app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt
++++ com/android/purebilibili/feature/profile/ProfileViewModel.kt
+@@ -1,39 +1,31 @@
+ package com.android.purebilibili.feature.profile
+-
+-import android.app.Application
+-import androidx.lifecycle.AndroidViewModel
+-import androidx.lifecycle.viewModelScope
+-import com.android.purebilibili.core.network.NetworkModule
++import com.bilipai.desktop.ui.DesktopProfileEnvironment
++import com.bilipai.desktop.ui.DesktopOwnedProfileState
++import kotlinx.coroutines.CoroutineScope
++
+ import com.android.purebilibili.core.network.WbiUtils
+-import com.android.purebilibili.core.network.getSpaceAggregate
++import com.bilipai.desktop.ui.getDesktopProfileSpaceAggregate
+ import com.android.purebilibili.core.network.DynamicDeleteRequest
+-import com.android.purebilibili.core.store.AccountSessionStore
+ import com.android.purebilibili.core.store.StoredAccountSession
+-import com.android.purebilibili.core.store.TokenManager
+ import com.android.purebilibili.data.model.response.FavFolder
+ import com.android.purebilibili.data.model.response.NavData
+ import com.android.purebilibili.data.model.response.SpaceUserInfo
+ import com.android.purebilibili.data.model.response.SpaceVideoItem
+ import com.android.purebilibili.data.model.response.WbiImg
+-import com.android.purebilibili.data.repository.FavoriteRepository
+-import com.android.purebilibili.data.repository.BangumiRepository
+ import com.android.purebilibili.feature.dynamic.DynamicDeleteAction
+ import com.android.purebilibili.feature.bangumi.MY_FOLLOW_TYPE_BANGUMI
+ import com.android.purebilibili.feature.home.UserState
+ import kotlinx.coroutines.CancellationException
++import kotlinx.coroutines.ensureActive
+ import kotlinx.coroutines.async
+ import kotlinx.coroutines.awaitAll
+ import kotlinx.coroutines.joinAll
+-import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.launch
+ import java.net.UnknownHostException
+ import java.net.SocketTimeoutException
+ 
+-import android.net.Uri
+-import android.content.Context
+ import com.android.purebilibili.core.ui.wallpaper.ProfileWallpaperTransform
+-import com.android.purebilibili.core.store.SettingsManager
+ import kotlinx.coroutines.flow.combine
+ import kotlinx.coroutines.flow.first
+ import kotlinx.coroutines.flow.stateIn
+@@ -43,7 +35,6 @@
+ import kotlinx.coroutines.sync.withPermit
+ import kotlinx.coroutines.withContext
+ import java.io.File
+-import java.io.FileOutputStream
+ 
+ sealed class ProfileUiState {
+     object Loading : ProfileUiState()
+@@ -78,14 +69,20 @@
+         accountSessionRefreshGeneration > handledAccountSessionRefreshGeneration
+ }
+ 
+-class ProfileViewModel(application: Application) : AndroidViewModel(application) {
+-    private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
++internal class ProfileViewModel(private val environment: DesktopProfileEnvironment) {
++    private val viewModelScope get() = environment.scope
++    private val platform get() = environment.platform
++    private val preferences get() = environment.preferences
++    private val accountsPort get() = environment.accounts
++    private fun <T> ownedFlow(initial: T) = DesktopOwnedProfileState(initial, environment)
++
++    private val _uiState = ownedFlow<ProfileUiState>(ProfileUiState.Loading)
+     val uiState = _uiState.asStateFlow()
+-    private val _accounts = MutableStateFlow<List<StoredAccountSession>>(emptyList())
++    private val _accounts = ownedFlow<List<StoredAccountSession>>(emptyList())
+     val accounts = _accounts.asStateFlow()
+-    private val _activeAccountMid = MutableStateFlow<Long?>(null)
++    private val _activeAccountMid = ownedFlow<Long?>(null)
+     val activeAccountMid = _activeAccountMid.asStateFlow()
+-    private val _playbackAccountMid = MutableStateFlow<Long?>(null)
++    private val _playbackAccountMid = ownedFlow<Long?>(null)
+     val playbackAccountMid = _playbackAccountMid.asStateFlow()
+     private var hasLoadedProfileOnce = false
+     private var isProfileLoadInFlight = false
+@@ -97,11 +94,10 @@
+     }
+ 
+     fun refreshSavedAccounts() {
+-        val context = getApplication<Application>()
+-        viewModelScope.launch(Dispatchers.IO) {
+-            val accounts = AccountSessionStore.getAccounts(context)
+-            val activeAccountMid = AccountSessionStore.getActiveAccountMid(context)
+-            val playbackAccountMid = AccountSessionStore.getPlaybackAccountMid(context)
++        environment.launchOwned(Dispatchers.IO) {
++            val accounts = accountsPort.getAccounts()
++            val activeAccountMid = accountsPort.getActiveAccountMid()
++            val playbackAccountMid = accountsPort.getPlaybackAccountMid()
+             withContext(Dispatchers.Main.immediate) {
+                 _accounts.value = accounts
+                 _activeAccountMid.value = activeAccountMid
+@@ -111,15 +107,14 @@
+     }
+ 
+     fun setPlaybackAccount(mid: Long?, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+-        val context = getApplication<Application>()
+-        viewModelScope.launch(Dispatchers.IO) {
+-            val updated = AccountSessionStore.setPlaybackAccountMid(context, mid)
++        environment.launchOwned(Dispatchers.IO) {
++            val updated = accountsPort.setPlaybackAccountMid(mid)
+             withContext(Dispatchers.Main.immediate) {
+                 if (updated) {
+                     refreshSavedAccounts()
+-                    onSuccess()
++                    environment.publishCallback { onSuccess() }
+                 } else {
+-                    onFailure("播放账号不可用，请重新登录后再试")
++                    environment.publishCallback { onFailure("播放账号不可用，请重新登录后再试") }
+                 }
+             }
+         }
+@@ -137,14 +132,14 @@
+         hasLoadedProfileOnce = true
+         isProfileLoadInFlight = true
+         val generation = ++profileLoadGeneration
+-        val requestedMid = TokenManager.midCache
++        val requestedMid = accountsPort.currentMid()
+         val current = _uiState.value as? ProfileUiState.Success
+         _uiState.value = if (current != null && current.user.mid == requestedMid) {
+             current.copy(space = current.space.copy(isLoading = true, message = null))
+         } else {
+             ProfileUiState.Loading
+         }
+-        viewModelScope.launch {
++        environment.launchOwned {
+             performProfileLoad(generation = generation, requestedMid = requestedMid)
+         }
+     }
+@@ -153,7 +148,7 @@
+         var customBgUri = ""
+         try {
+             customBgUri = readProfileBackgroundUri()
+-            if (TokenManager.sessDataCache.isNullOrEmpty()) {
++            if (!accountsPort.hasSession()) {
+                 if (generation == profileLoadGeneration) {
+                     _uiState.value = ProfileUiState.LoggedOut(
+                         topPhoto = resolveProfileTopPhoto(customBgUri, "")
+@@ -161,7 +156,7 @@
+                 }
+                 return
+             }
+-            val data = NetworkModule.api.getNavInfo().data
++            val data = environment.api.getNavInfo().data
+             if (generation != profileLoadGeneration) return
+             if (data == null || !data.isLogin) {
+                 clearInvalidProfileSession(generation, customBgUri)
+@@ -171,9 +166,8 @@
+             currentProfileWbiImg = data.wbi_img
+             profileRequestOrNull { persistProfileSession(data) }
+             loadProfileEnrichment(generation, data.mid, data.wbi_img)
+-        } catch (e: CancellationException) {
+-            throw e
+-        } catch (e: Exception) {
++        } catch (e: CancellationException) { throw e
++            } catch (e: Exception) {
+             handleProfileLoadFailure(generation, requestedMid, customBgUri, e)
+         } finally {
+             if (generation == profileLoadGeneration) {
+@@ -225,9 +219,9 @@
+     }
+ 
+     private suspend fun persistProfileSession(data: NavData) {
+-        TokenManager.saveMid(getApplication(), data.mid)
+-        TokenManager.saveVipStatus(data.vip.status == 1)
+-        AccountSessionStore.upsertCurrentAccount(getApplication(), data)
++        accountsPort.saveMid(data.mid)
++        accountsPort.saveVipStatus(data.vip.status == 1)
++        accountsPort.upsertCurrentAccount(data)
+         refreshSavedAccounts()
+     }
+ 
+@@ -257,7 +251,7 @@
+     }
+ 
+     private suspend fun loadProfileStats(generation: Long, mid: Long) {
+-        val stats = profileRequestOrNull { NetworkModule.api.getNavStat().data } ?: return
++        val stats = profileRequestOrNull { environment.api.getNavStat().data } ?: return
+         updateProfileSuccess(generation, mid) { current ->
+             current.copy(
+                 user = current.user.copy(
+@@ -270,7 +264,7 @@
+     }
+ 
+     private suspend fun loadProfileAccount(generation: Long, mid: Long) {
+-        val account = profileRequestOrNull { NetworkModule.api.getMemberAccount().data } ?: return
++        val account = profileRequestOrNull { environment.api.getMemberAccount().data } ?: return
+         updateProfileSuccess(generation, mid) { current ->
+             current.copy(
+                 editableAccount = current.editableAccount.copy(
+@@ -301,7 +295,7 @@
+ 
+     private suspend fun loadProfileAggregate(generation: Long, mid: Long) {
+         val aggregate = profileRequestOrNull {
+-            NetworkModule.spaceApi.getSpaceAggregate(mid).data
++            environment.getDesktopProfileSpaceAggregate(mid).data
+         } ?: return
+         updateProfileSuccess(generation, mid) { current ->
+             val nextSpace = mergeProfileAggregateState(current.space, aggregate)
+@@ -356,7 +350,7 @@
+     fun retryProfileContributions() {
+         val current = _uiState.value as? ProfileUiState.Success ?: return
+         val generation = profileLoadGeneration
+-        viewModelScope.launch {
++        environment.launchOwned {
+             loadProfileContributions(
+                 generation = generation,
+                 mid = current.user.mid,
+@@ -384,14 +378,14 @@
+             imgKey,
+             subKey
+         )
+-        val response = NetworkModule.spaceApi.getSpaceVideos(params)
++        val response = environment.spaceApi.getSpaceVideos(params)
+         val data = response.data ?: return null
+         if (response.code != 0) return null
+         return data.list.vlist to data.page.count
+     }
+ 
+     private suspend fun loadProfileFavoriteFolders(generation: Long, mid: Long) {
+-        val folders = FavoriteRepository.getFavFolders(mid).getOrNull() ?: return
++        val folders = environment.favorite.getFavFolders(mid).getOrNull() ?: return
+         var mergedFolders = emptyList<FavFolder>()
+         updateProfileSuccess(generation, mid) { current ->
+             val nextSpace = mergeProfileFavoriteFolderState(current.space, folders)
+@@ -418,7 +412,7 @@
+             targets.map { target ->
+                 async {
+                     coverFetchSemaphore.withPermit {
+-                        val cover = FavoriteRepository.getFavoriteList(
++                        val cover = environment.favorite.getFavoriteList(
+                             mediaId = target.mediaId,
+                             pn = 1,
+                             ps = 1
+@@ -448,7 +442,7 @@
+     }
+ 
+     private suspend fun loadProfileBangumi(generation: Long, mid: Long) {
+-        val items = BangumiRepository.getMyFollowBangumi(
++        val items = environment.bangumi.getMyFollowBangumi(
+             type = MY_FOLLOW_TYPE_BANGUMI,
+             page = 1,
+             pageSize = 12,
+@@ -461,7 +455,7 @@
+ 
+     private suspend fun loadProfileDynamics(generation: Long, mid: Long) {
+         val items = profileRequestOrNull {
+-            NetworkModule.spaceApi.getSpaceDynamic(mid).data?.items
++            environment.spaceApi.getSpaceDynamic(mid).data?.items
+         } ?: return
+         updateProfileSuccess(generation, mid) { current ->
+             current.copy(space = mergeProfileDynamicState(current.space, items))
+@@ -482,8 +476,8 @@
+ 
+     private suspend fun clearInvalidProfileSession(generation: Long, customBgUri: String) {
+         if (generation != profileLoadGeneration) return
+-        TokenManager.clear(getApplication())
+-        AccountSessionStore.clearActiveAccount(getApplication())
++        accountsPort.clearCurrentSession()
++        accountsPort.clearActiveAccount()
+         refreshSavedAccounts()
+         _uiState.value = ProfileUiState.LoggedOut(topPhoto = resolveProfileTopPhoto(customBgUri, ""))
+     }
+@@ -510,7 +504,7 @@
+             )
+             return
+         }
+-        _uiState.value = if (TokenManager.sessDataCache.isNullOrEmpty()) {
++        _uiState.value = if (!accountsPort.hasSession()) {
+             ProfileUiState.LoggedOut(topPhoto = resolveProfileTopPhoto(customBgUri, ""))
+         } else {
+             ProfileUiState.Error(
+@@ -521,7 +515,7 @@
+ 
+     private suspend fun readProfileBackgroundUri(): String {
+         return try {
+-            SettingsManager.getProfileBgUri(getApplication()).first().orEmpty()
++            preferences.getProfileBgUri().first().orEmpty()
+         } catch (e: CancellationException) {
+             throw e
+         } catch (_: Exception) {
+@@ -543,7 +537,7 @@
+         if (customBgUri.isBlank()) return fallback
+         if (!customBgUri.startsWith("file://")) return customBgUri
+         return runCatching {
+-            val file = File(Uri.parse(customBgUri).path.orEmpty())
++            val file = File(java.net.URI.create(customBgUri).path.orEmpty())
+             if (file.exists()) "$customBgUri?t=${file.lastModified()}" else customBgUri
+         }.getOrDefault(customBgUri)
+     }
+@@ -555,7 +549,7 @@
+         val subKey = subUrl.substringAfterLast("/").substringBefore(".")
+         if (imgKey.isBlank() || subKey.isBlank()) return null
+         val params = WbiUtils.sign(mapOf("mid" to mid.toString()), imgKey, subKey)
+-        val response = NetworkModule.spaceApi.getSpaceInfo(params)
++        val response = environment.spaceApi.getSpaceInfo(params)
+         return if (response.code == 0) response.data else null
+     }
+ 
+@@ -571,19 +565,19 @@
+     }
+ 
+     fun deleteProfileDynamic(action: DynamicDeleteAction, onResult: (Boolean, String) -> Unit) {
+-        viewModelScope.launch {
++        environment.launchOwned {
+             try {
+                 if (action.dynamicId.isBlank()) {
+-                    onResult(false, "无法删除该动态")
+-                    return@launch
+-                }
+-                val csrf = TokenManager.csrfCache
++                    environment.publishCallback { onResult(false, "无法删除该动态") }
++                    return@launchOwned
++                }
++                val csrf = environment.csrf()
+                 if (csrf.isNullOrBlank()) {
+-                    onResult(false, "请先登录")
+-                    return@launch
+-                }
+-
+-                val response = NetworkModule.dynamicApi.deleteDynamic(
++                    environment.publishCallback { onResult(false, "请先登录") }
++                    return@launchOwned
++                }
++
++                val response = environment.dynamicApi.deleteDynamic(
+                     csrf = csrf,
+                     body = DynamicDeleteRequest(
+                         dyn_id_str = action.dynamicId,
+@@ -593,12 +587,13 @@
+                 )
+                 if (response.code == 0) {
+                     removeProfileDynamic(action.dynamicId)
+-                    onResult(true, "已删除动态")
++                    environment.publishCallback { onResult(true, "已删除动态") }
+                 } else {
+-                    onResult(false, response.message.ifBlank { "删除失败" })
+-                }
++                    environment.publishCallback { onResult(false, response.message.ifBlank { "删除失败" }) }
++                }
++            } catch (cancelled: CancellationException) { throw cancelled
+             } catch (e: Exception) {
+-                onResult(false, e.message ?: "网络错误")
++                environment.publishCallback { onResult(false, e.message ?: "网络错误") }
+             }
+         }
+     }
+@@ -626,7 +621,7 @@
+             return
+         }
+ 
+-        val csrf = TokenManager.csrfCache.orEmpty()
++        val csrf = environment.csrf().orEmpty()
+         if (csrf.isBlank()) {
+             _uiState.value = current.copy(
+                 space = current.space.copy(signSaveMessage = "请先登录后再修改签名")
+@@ -634,15 +629,17 @@
+             return
+         }
+ 
+-        viewModelScope.launch {
+-            val beforeSave = _uiState.value as? ProfileUiState.Success ?: return@launch
++        environment.launchOwned {
++            val beforeSave = _uiState.value as? ProfileUiState.Success ?: return@launchOwned
+             _uiState.value = beforeSave.copy(
+                 space = beforeSave.space.copy(isSavingSign = true, signSaveMessage = null)
+             )
+             val result = runCatching {
+-                NetworkModule.api.updateMemberSign(userSign = sign.trim(), csrf = csrf)
+-            }
+-            val latest = _uiState.value as? ProfileUiState.Success ?: return@launch
++                environment.api.updateMemberSign(userSign = sign.trim(), csrf = csrf)
++            }
++            (result.exceptionOrNull() as? CancellationException)?.let { throw it }
++            kotlinx.coroutines.currentCoroutineContext().ensureActive()
++            val latest = _uiState.value as? ProfileUiState.Success ?: return@launchOwned
+             val response = result.getOrNull()
+             if (response?.code == 0) {
+                 _uiState.value = latest.copy(
+@@ -668,23 +665,22 @@
+      * 将选中的图片复制到应用私有目录，并更新设置
+      */
+     fun updateCustomBackground(
+-        uri: Uri, 
++        uri: String, 
+         mobileTransform: ProfileWallpaperTransform = ProfileWallpaperTransform(),
+         tabletTransform: ProfileWallpaperTransform = ProfileWallpaperTransform()
+     ) {
+-        viewModelScope.launch(Dispatchers.IO) {
++        environment.launchOwned(Dispatchers.IO) {
+             try {
+-                val context = getApplication<Application>()
+-                val wallpaper = importWallpaperMedia(context, uri, File(context.filesDir, "profile_wallpaper"))
+-                SettingsManager.setProfileBgTransform(context, false, mobileTransform)
+-                SettingsManager.setProfileBgTransform(context, true, tabletTransform)
+-                SettingsManager.setProfileBgUri(context, Uri.fromFile(wallpaper).toString())
++                        val wallpaper = platform.importWallpaperMedia(uri, File(platform.stateDirectory.toFile(), "profile_wallpaper"))
++                preferences.setProfileBgTransform( false, mobileTransform)
++                preferences.setProfileBgTransform( true, tabletTransform)
++                preferences.setProfileBgUri( wallpaper.toURI().toString())
+                 loadProfile(force = true)
+             } catch (cancelled: CancellationException) {
+                 throw cancelled
+             } catch (error: Exception) {
+                 withContext(Dispatchers.Main.immediate) {
+-                    android.widget.Toast.makeText(getApplication(), error.message ?: "壁纸导入失败", android.widget.Toast.LENGTH_LONG).show()
++                    platform.feedback(error.message ?: "壁纸导入失败")
+                 }
+             }
+         }
+@@ -702,23 +698,23 @@
+     }
+ 
+     fun logout() {
+-        viewModelScope.launch {
++        environment.launchOwned {
+             profileLoadGeneration += 1L
+             isProfileLoadInFlight = false
+             // retain background
+-            val customBgUri = SettingsManager.getProfileBgUri(getApplication()).first() ?: ""
+-            AccountSessionStore.upsertCurrentAccount(getApplication())
+-            TokenManager.clear(getApplication())
+-            AccountSessionStore.clearActiveAccount(getApplication())
++            val customBgUri = preferences.getProfileBgUri().first() ?: ""
++            accountsPort.upsertCurrentAccount(null)
++            accountsPort.clearCurrentSession()
++            accountsPort.clearActiveAccount()
+             refreshSavedAccounts()
+             _uiState.value = ProfileUiState.LoggedOut(topPhoto = customBgUri)
+-            com.android.purebilibili.core.util.AnalyticsHelper.syncUserContext(
++            environment.analytics.syncUserContext(
+                 mid = null,
+                 isVip = false,
+-                privacyModeEnabled = SettingsManager.isPrivacyModeEnabledSync(getApplication())
++                privacyModeEnabled = preferences.isPrivacyModeEnabledSync()
+             )
+             //  记录登出事件
+-            com.android.purebilibili.core.util.AnalyticsHelper.logLogout()
++            environment.analytics.logLogout()
+         }
+     }
+ 
+@@ -727,21 +723,21 @@
+         onSuccess: () -> Unit = {},
+         onFailure: (String) -> Unit = {}
+     ) {
+-        viewModelScope.launch {
+-            if (mid == TokenManager.midCache) {
+-                onSuccess()
+-                return@launch
+-            }
+-
+-            val switched = AccountSessionStore.activateAccount(getApplication(), mid)
++        environment.launchOwned {
++            if (mid == accountsPort.currentMid()) {
++                environment.publishCallback { onSuccess() }
++                return@launchOwned
++            }
++
++            val switched = accountsPort.activateAccount(mid)
+             if (!switched) {
+-                onFailure("切换账号失败")
+-                return@launch
++                environment.publishCallback { onFailure("切换账号失败") }
++                return@launchOwned
+             }
+ 
+             refreshSavedAccounts()
+             loadProfile(force = true)
+-            onSuccess()
++            environment.publishCallback { onSuccess() }
+         }
+     }
+ 
+@@ -750,33 +746,33 @@
+         onSuccess: () -> Unit = {},
+         onFailure: (String) -> Unit = {}
+     ) {
+-        if (TokenManager.midCache == mid) {
+-            onFailure("请先切换到其他账号后再移除当前账号")
++        if (accountsPort.currentMid() == mid) {
++            environment.publishCallback { onFailure("请先切换到其他账号后再移除当前账号") }
+             return
+         }
+ 
+-        val removed = AccountSessionStore.removeAccount(getApplication(), mid)
++        val removed = accountsPort.removeAccount(mid)
+         if (removed) {
+             refreshSavedAccounts()
+-            onSuccess()
++            environment.publishCallback { onSuccess() }
+         } else {
+-            onFailure("移除账号失败")
++            environment.publishCallback { onFailure("移除账号失败") }
+         }
+     }
+     
+     // [新增] 官方壁纸列表
+-    private val _officialWallpapers = MutableStateFlow<List<com.android.purebilibili.data.model.response.SplashItem>>(emptyList())
++    private val _officialWallpapers = ownedFlow<List<com.android.purebilibili.data.model.response.SplashItem>>(emptyList())
+     val officialWallpapers = _officialWallpapers.asStateFlow()
+-    private val _officialWallpapersLoading = MutableStateFlow(false)
++    private val _officialWallpapersLoading = ownedFlow(false)
+     val officialWallpapersLoading = _officialWallpapersLoading.asStateFlow()
+-    private val _officialWallpapersError = MutableStateFlow<String?>(null)
++    private val _officialWallpapersError = ownedFlow<String?>(null)
+     val officialWallpapersError = _officialWallpapersError.asStateFlow()
+ 
+     fun loadOfficialWallpapers() {
+-        viewModelScope.launch {
++        environment.launchOwned {
+             _officialWallpapersLoading.value = true
+             _officialWallpapersError.value = null
+-            val result = com.android.purebilibili.data.repository.SplashRepository.getOfficialWallpapers()
++            val result = environment.splash.getOfficialWallpapers()
+             if (result.isSuccess) {
+                 _officialWallpapers.value = result.getOrNull() ?: emptyList()
+             } else {
+@@ -787,18 +783,18 @@
+     }
+ 
+     // [新增] 搜索壁纸
+-    private val _searchWallpapers = MutableStateFlow<List<com.android.purebilibili.data.model.response.SplashItem>>(emptyList())
++    private val _searchWallpapers = ownedFlow<List<com.android.purebilibili.data.model.response.SplashItem>>(emptyList())
+     val searchWallpapers = _searchWallpapers.asStateFlow()
+-    private val _searchLoading = MutableStateFlow(false)
++    private val _searchLoading = ownedFlow(false)
+     val searchLoading = _searchLoading.asStateFlow()
+ 
+     fun searchWallpapers(query: String) {
+-        viewModelScope.launch {
+-            if (query.isBlank()) return@launch
++        environment.launchOwned {
++            if (query.isBlank()) return@launchOwned
+             _searchLoading.value = true
+             try {
+                 // 使用通用搜索接口搜索 "query + 壁纸"
+-                val searchApi = NetworkModule.searchApi
++                val searchApi = environment.searchApi
+                 // 这里调用 searchAll 或 searchType 接口，假设 searchAll 可用
+                 // 注意：B站搜索 API 比较复杂，这里简化处理，假设搜索 "壁纸" 相关内容
+                 // 实际可能需要解析 SearchResponse 并转换为 SplashItem
+@@ -827,8 +823,9 @@
+                  // TODO: Parse result to SplashItem list
+                  // _searchWallpapers.value = parsedList
+                  
++            } catch (cancelled: CancellationException) { throw cancelled
+             } catch (e: Exception) {
+-                e.printStackTrace()
++                // Root diagnostic actor controls raw exception disclosure.
+             } finally {
+                 _searchLoading.value = false
+             }
+@@ -836,25 +833,24 @@
+     }
+ 
+     // [New] 壁纸保存状态
+-    private val _wallpaperSaveState = MutableStateFlow<WallpaperSaveState>(WallpaperSaveState.Idle)
++    private val _wallpaperSaveState = ownedFlow<WallpaperSaveState>(WallpaperSaveState.Idle)
+     val wallpaperSaveState = _wallpaperSaveState.asStateFlow()
+ 
+     /**
+      * 保存壁纸 (下载并设置为背景)
+      */
+     // [New] Alignment State
+-    fun getProfileBgAlignment(isTablet: Boolean) = SettingsManager.getProfileBgAlignment(getApplication(), isTablet)
+-    fun getProfileBgTransform(isTablet: Boolean) = SettingsManager.getProfileBgTransform(getApplication(), isTablet)
+-    fun getProfileBgUri() = SettingsManager.getProfileBgUri(getApplication())
++    fun getProfileBgAlignment(isTablet: Boolean) = preferences.getProfileBgAlignment( isTablet)
++    fun getProfileBgTransform(isTablet: Boolean) = preferences.getProfileBgTransform( isTablet)
++    fun getProfileBgUri() = preferences.getProfileBgUri()
+ 
+     fun clearCustomBackground() {
+-        viewModelScope.launch {
+-            val context = getApplication<Application>()
+-            SettingsManager.setProfileBgUri(context, null)
+-            SettingsManager.resetProfileBgTransform(context)
++        environment.launchOwned {
++                preferences.setProfileBgUri( null)
++            preferences.resetProfileBgTransform()
+             runCatching {
+-                File(context.filesDir, "images/profile_bg.jpg").delete()
+-            }
++                platform.deleteOwnedFile(File(platform.stateDirectory.toFile(), "images/profile_bg.jpg"))
++            }.onFailure { if (it is CancellationException) throw it }
+             loadProfile(force = true)
+         }
+     }
+@@ -869,13 +865,12 @@
+         tabletTransform: ProfileWallpaperTransform = ProfileWallpaperTransform(),
+         onComplete: () -> Unit = {}
+     ) {
+-        viewModelScope.launch(Dispatchers.IO) {
++        environment.launchOwned(Dispatchers.IO) {
+             _wallpaperSaveState.value = WallpaperSaveState.Loading
+             try {
+                 // 保存对齐设置
+-                val context = getApplication<Application>()
+-                SettingsManager.setProfileBgTransform(context, false, mobileTransform)
+-                SettingsManager.setProfileBgTransform(context, true, tabletTransform)
++                        preferences.setProfileBgTransform( false, mobileTransform)
++                preferences.setProfileBgTransform( true, tabletTransform)
+                 
+                 // 修复 URL 协议 (强制 HTTPS)
+                 var finalUrl = url
+@@ -886,31 +881,31 @@
+                 }
+                 
+                 val request = okhttp3.Request.Builder().url(finalUrl).build()
+-                val response = NetworkModule.okHttpClient.newCall(request).execute()
++                platform.openOwnedDownload(request).use { response ->
+                 
+                 if (response.isSuccessful) {
+-                    val imagesDir = File(context.filesDir, "images")
++                    val imagesDir = File(platform.stateDirectory.toFile(), "images")
+                     if (!imagesDir.exists()) imagesDir.mkdirs()
+                     val destFile = File(imagesDir, "profile_bg.jpg")
+                     
+-                    FileOutputStream(destFile).use { output ->
+-                        response.body.byteStream().copyTo(output)
+-                    }
++                    platform.writeOwnedFile(destFile, response.body)
+                     
+-                    val savedUri = Uri.fromFile(destFile).toString()
+-                    SettingsManager.setProfileBgUri(context, savedUri)
++                    val savedUri = destFile.toURI().toString()
++                    preferences.setProfileBgUri( savedUri)
+                     
+                     loadProfile(force = true) // 刷新
+                     
+                     withContext(Dispatchers.Main.immediate) {
+                         _wallpaperSaveState.value = WallpaperSaveState.Success
+-                        onComplete()
++                        environment.publishCallback { onComplete() }
+                     }
+                 } else {
+                     _wallpaperSaveState.value = WallpaperSaveState.Error("下载失败: ${response.code}")
+                 }
++                }
++            } catch (cancelled: CancellationException) { throw cancelled
+             } catch (e: Exception) {
+-                e.printStackTrace()
++                // Root diagnostic actor controls raw exception disclosure.
+                 _wallpaperSaveState.value = WallpaperSaveState.Error(e.message ?: "保存出错")
+             } finally {
+                 // Delay reset to allow UI to show success checkmark if needed, but for now we rely on onDismiss
+@@ -926,10 +921,10 @@
+     }
+     
+     // [New] Splash Wallpaper Logic
+-    private val _splashSaveState = MutableStateFlow<WallpaperSaveState>(WallpaperSaveState.Idle)
++    private val _splashSaveState = ownedFlow<WallpaperSaveState>(WallpaperSaveState.Idle)
+     val splashSaveState = _splashSaveState.asStateFlow()
+ 
+-    fun getSplashAlignment(isTablet: Boolean) = SettingsManager.getSplashAlignment(getApplication(), isTablet)
++    fun getSplashAlignment(isTablet: Boolean) = preferences.getSplashAlignment( isTablet)
+ 
+     fun setAsSplashWallpaper(
+         url: String,
+@@ -938,11 +933,10 @@
+         tabletBias: Float? = null,
+         onComplete: () -> Unit = {}
+     ) {
+-        viewModelScope.launch(Dispatchers.IO) {
++        environment.launchOwned(Dispatchers.IO) {
+             _splashSaveState.value = WallpaperSaveState.Loading
+             try {
+-                val context = getApplication<Application>()
+-                var finalUrl = url
++                        var finalUrl = url
+                 if (finalUrl.startsWith("//")) {
+                     finalUrl = "https:$finalUrl"
+                 } else if (finalUrl.startsWith("http://")) {
+@@ -950,42 +944,42 @@
+                 }
+ 
+                 val request = okhttp3.Request.Builder().url(finalUrl).build()
+-                val response = NetworkModule.okHttpClient.newCall(request).execute()
++                platform.openOwnedDownload(request).use { response ->
+ 
+                 if (response.isSuccessful) {
+                     // Read bytes once
+-                    val bytes = response.body.bytes()
++                    val bytes = platform.readOwnedBytes(response.body)
+                     
+                     // 1. Save to internal splash directory
+-                    val splashDir = File(context.filesDir, "splash")
++                    val splashDir = File(platform.stateDirectory.toFile(), "splash")
+                     if (!splashDir.exists()) splashDir.mkdirs()
+                     val destFile = File(splashDir, "splash_bg_${System.currentTimeMillis()}.jpg")
+ 
+-                    FileOutputStream(destFile).use { output ->
+-                        output.write(bytes)
+-                    }
++                    platform.writeOwnedFile(destFile, bytes)
+ 
+                     // 2. Update Settings
+-                    val savedUri = Uri.fromFile(destFile).toString()
+-                    SettingsManager.setSplashWallpaperUri(context, savedUri)
+-                    SettingsManager.setSplashEnabled(context, true)
+-                    mobileBias?.let { SettingsManager.setSplashAlignment(context, isTablet = false, bias = it) }
+-                    tabletBias?.let { SettingsManager.setSplashAlignment(context, isTablet = true, bias = it) }
++                    val savedUri = destFile.toURI().toString()
++                    preferences.setSplashWallpaperUri( savedUri)
++                    preferences.setSplashEnabled( true)
++                    mobileBias?.let { preferences.setSplashAlignment( isTablet = false, bias = it) }
++                    tabletBias?.let { preferences.setSplashAlignment( isTablet = true, bias = it) }
+ 
+                     // 3. Save to Gallery if requested
+                     if (saveToGallery) {
+-                         saveImageToGallery(context, bytes, "bili_splash_${System.currentTimeMillis()}.jpg")
++                         saveImageToGallery( bytes, "bili_splash_${System.currentTimeMillis()}.jpg")
+                     }
+ 
+                     withContext(Dispatchers.Main.immediate) {
+                         _splashSaveState.value = WallpaperSaveState.Success
+-                        onComplete()
++                        environment.publishCallback { onComplete() }
+                     }
+                 } else {
+                     _splashSaveState.value = WallpaperSaveState.Error("下载失败: ${response.code}")
+                 }
++                }
++            } catch (cancelled: CancellationException) { throw cancelled
+             } catch (e: Exception) {
+-                e.printStackTrace()
++                // Root diagnostic actor controls raw exception disclosure.
+                 _splashSaveState.value = WallpaperSaveState.Error(e.message ?: "保存出错")
+             } finally {
+                 // Delay reset slightly to let UI react if needed, or just reset logic
+@@ -1002,25 +996,23 @@
+         tabletBias: Float? = null,
+         onComplete: () -> Unit = {}
+     ) {
+-        viewModelScope.launch(Dispatchers.IO) {
++        environment.launchOwned(Dispatchers.IO) {
+             _splashSaveState.value = WallpaperSaveState.Loading
+             try {
+-                val context = getApplication<Application>()
+-                val wallpaper = importWallpaperImage(context, Uri.parse(uri), File(context.filesDir, "splash"))
+-                SettingsManager.setSplashWallpaperUri(context, Uri.fromFile(wallpaper).toString())
+-                SettingsManager.setSplashEnabled(context, true)
+-                SettingsManager.setSplashRandomEnabled(context, false)
+-                mobileBias?.let { SettingsManager.setSplashAlignment(context, isTablet = false, bias = it) }
+-                tabletBias?.let { SettingsManager.setSplashAlignment(context, isTablet = true, bias = it) }
++                        val wallpaper = platform.importWallpaperImage(uri, File(platform.stateDirectory.toFile(), "splash"))
++                preferences.setSplashWallpaperUri( wallpaper.toURI().toString())
++                preferences.setSplashEnabled( true)
++                preferences.setSplashRandomEnabled( false)
++                mobileBias?.let { preferences.setSplashAlignment( isTablet = false, bias = it) }
++                tabletBias?.let { preferences.setSplashAlignment( isTablet = true, bias = it) }
+ 
+                 withContext(Dispatchers.Main.immediate) {
+                     _splashSaveState.value = WallpaperSaveState.Success
+-                    onComplete()
+-                }
+-            } catch (cancelled: CancellationException) {
+-                throw cancelled
++                    environment.publishCallback { onComplete() }
++                }
++            } catch (cancelled: CancellationException) { throw cancelled
+             } catch (e: Exception) {
+-                e.printStackTrace()
++                // Root diagnostic actor controls raw exception disclosure.
+                 _splashSaveState.value = WallpaperSaveState.Error(e.message ?: "保存出错")
+             } finally {
+                 if (_splashSaveState.value is WallpaperSaveState.Success) {
+@@ -1035,11 +1027,10 @@
+         saveToGallery: Boolean = false,
+         onComplete: () -> Unit = {}
+     ) {
+-        viewModelScope.launch(Dispatchers.IO) {
++        environment.launchOwned(Dispatchers.IO) {
+             _splashSaveState.value = WallpaperSaveState.Loading
+             try {
+-                val context = getApplication<Application>()
+-                var finalUrl = url
++                        var finalUrl = url
+                 if (finalUrl.startsWith("//")) {
+                     finalUrl = "https:$finalUrl"
+                 } else if (finalUrl.startsWith("http://")) {
+@@ -1047,33 +1038,33 @@
+                 }
+ 
+                 val request = okhttp3.Request.Builder().url(finalUrl).build()
+-                val response = NetworkModule.okHttpClient.newCall(request).execute()
++                platform.openOwnedDownload(request).use { response ->
+ 
+                 if (response.isSuccessful) {
+-                    val bytes = response.body.bytes()
+-                    val homeWallpaperDir = File(context.filesDir, "home_wallpaper")
++                    val bytes = platform.readOwnedBytes(response.body)
++                    val homeWallpaperDir = File(platform.stateDirectory.toFile(), "home_wallpaper")
+                     if (!homeWallpaperDir.exists()) homeWallpaperDir.mkdirs()
+                     val destFile = File(homeWallpaperDir, "home_bg_${System.currentTimeMillis()}.jpg")
+ 
+-                    FileOutputStream(destFile).use { output ->
+-                        output.write(bytes)
+-                    }
+-
+-                    SettingsManager.setHomeWallpaperUri(context, Uri.fromFile(destFile).toString())
++                    platform.writeOwnedFile(destFile, bytes)
++
++                    preferences.setHomeWallpaperUri( destFile.toURI().toString())
+ 
+                     if (saveToGallery) {
+-                        saveImageToGallery(context, bytes, "bili_home_${System.currentTimeMillis()}.jpg")
++                        saveImageToGallery( bytes, "bili_home_${System.currentTimeMillis()}.jpg")
+                     }
+ 
+                     withContext(Dispatchers.Main.immediate) {
+                         _splashSaveState.value = WallpaperSaveState.Success
+-                        onComplete()
++                        environment.publishCallback { onComplete() }
+                     }
+                 } else {
+                     _splashSaveState.value = WallpaperSaveState.Error("下载失败: ${response.code}")
+                 }
++                }
++            } catch (cancelled: CancellationException) { throw cancelled
+             } catch (e: Exception) {
+-                e.printStackTrace()
++                // Root diagnostic actor controls raw exception disclosure.
+                 _splashSaveState.value = WallpaperSaveState.Error(e.message ?: "保存出错")
+             } finally {
+                 if (_splashSaveState.value is WallpaperSaveState.Success) {
+@@ -1087,21 +1078,19 @@
+         uri: String,
+         onComplete: () -> Unit = {}
+     ) {
+-        viewModelScope.launch(Dispatchers.IO) {
++        environment.launchOwned(Dispatchers.IO) {
+             _splashSaveState.value = WallpaperSaveState.Loading
+             try {
+-                val context = getApplication<Application>()
+-                val wallpaper = importWallpaperMedia(context, Uri.parse(uri), File(context.filesDir, "home_wallpaper"))
+-                SettingsManager.setHomeWallpaperUri(context, Uri.fromFile(wallpaper).toString())
++                        val wallpaper = platform.importWallpaperMedia(uri, File(platform.stateDirectory.toFile(), "home_wallpaper"))
++                preferences.setHomeWallpaperUri( wallpaper.toURI().toString())
+ 
+                 withContext(Dispatchers.Main.immediate) {
+                     _splashSaveState.value = WallpaperSaveState.Success
+-                    onComplete()
+-                }
+-            } catch (cancelled: CancellationException) {
+-                throw cancelled
++                    environment.publishCallback { onComplete() }
++                }
++            } catch (cancelled: CancellationException) { throw cancelled
+             } catch (e: Exception) {
+-                e.printStackTrace()
++                // Root diagnostic actor controls raw exception disclosure.
+                 _splashSaveState.value = WallpaperSaveState.Error(e.message ?: "保存出错")
+             } finally {
+                 if (_splashSaveState.value is WallpaperSaveState.Success) {
+@@ -1111,46 +1100,20 @@
+         }
+     }
+ 
+-    private fun saveImageToGallery(context: Context, bytes: ByteArray, fileName: String) {
+-        try {
+-            val contentValues = android.content.ContentValues().apply {
+-                put(android.provider.MediaStore.Images.Media.DISPLAY_NAME, fileName)
+-                put(android.provider.MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+-                    put(android.provider.MediaStore.Images.Media.IS_PENDING, 1)
+-                     put(android.provider.MediaStore.Images.Media.RELATIVE_PATH, android.os.Environment.DIRECTORY_PICTURES + "/BiliPai")
+-                }
+-            }
+-            
+-            val resolver = context.contentResolver
+-            val uri = resolver.insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+-            
+-            uri?.let {
+-                resolver.openOutputStream(it)?.use { output: java.io.OutputStream ->
+-                    output.write(bytes)
+-                }
+-                
+-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+-                    contentValues.clear()
+-                    contentValues.put(android.provider.MediaStore.Images.Media.IS_PENDING, 0)
+-                    resolver.update(it, contentValues, null, null)
+-                }
+-            }
+-        } catch (e: Exception) {
+-            e.printStackTrace()
+-        }
++private suspend fun saveImageToGallery(bytes: ByteArray, fileName: String) {
++        platform.saveImageToGallery(bytes, fileName)
+     }
+ 
+     // [New] Easter Egg: Triple Jump Setting
+-    val tripleJumpEnabled = SettingsManager.getTripleJumpEnabled(application).stateIn(
++    val tripleJumpEnabled = preferences.getTripleJumpEnabled().stateIn(
+         scope = viewModelScope,
+         started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+         initialValue = false
+     )
+ 
+     fun setTripleJumpEnabled(enabled: Boolean) {
+-        viewModelScope.launch {
+-            SettingsManager.setTripleJumpEnabled(getApplication(), enabled)
++        environment.launchOwned {
++            preferences.setTripleJumpEnabled( enabled)
+         }
+     }
+ }

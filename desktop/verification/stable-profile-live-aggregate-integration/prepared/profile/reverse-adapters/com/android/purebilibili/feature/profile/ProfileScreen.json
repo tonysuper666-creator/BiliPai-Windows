@@ -1,0 +1,418 @@
+[
+  {
+    "originalStart": 49,
+    "originalEnd": 49,
+    "preparedStart": 49,
+    "preparedEnd": 174,
+    "original": "",
+    "prepared": "import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment\nimport com.bilipai.desktop.ui.rememberDesktopProfileMediaPicker\n"
+  },
+  {
+    "originalStart": 544,
+    "originalEnd": 577,
+    "preparedStart": 669,
+    "preparedEnd": 669,
+    "original": "import coil3.request.placeholder\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 971,
+    "originalEnd": 1105,
+    "preparedStart": 1063,
+    "preparedEnd": 1063,
+    "original": "import android.app.Activity\nimport android.content.Context\nimport android.net.Uri\nimport android.os.Build\nimport android.widget.Toast\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 3163,
+    "originalEnd": 3318,
+    "preparedStart": 3121,
+    "preparedEnd": 3227,
+    "original": "import androidx.compose.ui.viewinterop.AndroidView\nimport androidx.compose.ui.platform.LocalConfiguration\nimport androidx.compose.ui.platform.LocalContext\n",
+    "prepared": "import com.bilipai.desktop.ui.desktopProfileWindowConfiguration\nimport coil3.compose.LocalPlatformContext\n"
+  },
+  {
+    "originalStart": 3367,
+    "originalEnd": 3413,
+    "preparedStart": 3276,
+    "preparedEnd": 3276,
+    "original": "import androidx.compose.ui.platform.LocalView\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 3669,
+    "originalEnd": 3778,
+    "preparedStart": 3532,
+    "preparedEnd": 3532,
+    "original": "import androidx.core.view.WindowInsetsControllerCompat\nimport androidx.lifecycle.viewmodel.compose.viewModel\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 3917,
+    "originalEnd": 4123,
+    "preparedStart": 3671,
+    "preparedEnd": 3671,
+    "original": "import androidx.media3.common.MediaItem\nimport androidx.media3.common.Player\nimport androidx.media3.exoplayer.ExoPlayer\nimport androidx.media3.ui.AspectRatioFrameLayout\nimport androidx.media3.ui.PlayerView\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 4155,
+    "originalEnd": 4180,
+    "preparedStart": 3703,
+    "preparedEnd": 3703,
+    "original": "import coil3.imageLoader\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 4563,
+    "originalEnd": 4628,
+    "preparedStart": 4086,
+    "preparedEnd": 4086,
+    "original": "import com.android.purebilibili.core.util.PickGalleryVisualMedia\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 9315,
+    "originalEnd": 9374,
+    "preparedStart": 8773,
+    "preparedEnd": 8773,
+    "original": "import com.android.purebilibili.core.store.SettingsManager\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 10127,
+    "originalEnd": 10212,
+    "preparedStart": 9526,
+    "preparedEnd": 9526,
+    "original": "import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 10430,
+    "originalEnd": 10617,
+    "preparedStart": 9744,
+    "preparedEnd": 9744,
+    "original": "import androidx.activity.compose.rememberLauncherForActivityResult\nimport androidx.activity.result.contract.ActivityResultContracts\nimport androidx.activity.result.PickVisualMediaRequest\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 14860,
+    "originalEnd": 14926,
+    "preparedStart": 13987,
+    "preparedEnd": 14048,
+    "original": "fun ProfileScreen(\n    viewModel: ProfileViewModel = viewModel(),\n",
+    "prepared": "internal fun ProfileScreen(\n    viewModel: ProfileViewModel,\n"
+  },
+  {
+    "originalStart": 16229,
+    "originalEnd": 16268,
+    "preparedStart": 15351,
+    "preparedEnd": 15456,
+    "original": "    val context = LocalContext.current\n",
+    "prepared": "    val platform = LocalDesktopProfileEnvironment.current\n    val context = LocalPlatformContext.current\n"
+  },
+  {
+    "originalStart": 16626,
+    "originalEnd": 16659,
+    "preparedStart": 15814,
+    "preparedEnd": 15814,
+    "original": "    val view = LocalView.current\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 17334,
+    "originalEnd": 17514,
+    "preparedStart": 16489,
+    "preparedEnd": 16665,
+    "original": "    val privacyModeEnabled by SettingsManager.getPrivacyModeEnabled(context)\n        .collectAsStateWithLifecycle(initialValue = SettingsManager.isPrivacyModeEnabledSync(context))\n",
+    "prepared": "    val privacyModeEnabled by platform.preferences.getPrivacyModeEnabled()\n        .collectAsStateWithLifecycle(initialValue = platform.preferences.isPrivacyModeEnabledSync())\n"
+  },
+  {
+    "originalStart": 17671,
+    "originalEnd": 17927,
+    "preparedStart": 16822,
+    "preparedEnd": 16996,
+    "original": "            SettingsManager.setPrivacyModeEnabled(context, !privacyModeEnabled)\n            Toast.makeText(\n                context,\n                if (privacyModeEnabled) \"已关闭无痕模式\" else \"已开启无痕模式\",\n                Toast.LENGTH_SHORT,\n            ).show()\n",
+    "prepared": "            platform.preferences.setPrivacyModeEnabled( !privacyModeEnabled)\n            platform.feedback(\n                if (privacyModeEnabled) \"已关闭无痕模式\" else \"已开启无痕模式\")\n"
+  },
+  {
+    "originalStart": 18019,
+    "originalEnd": 18086,
+    "preparedStart": 17088,
+    "preparedEnd": 17135,
+    "original": "            SettingsManager.setThemeMode(\n                context,\n",
+    "prepared": "            platform.preferences.setThemeMode(\n"
+  },
+  {
+    "originalStart": 19046,
+    "originalEnd": 19120,
+    "preparedStart": 18095,
+    "preparedEnd": 18146,
+    "original": "        shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT) &&\n",
+    "prepared": "        platform.supportsRenderEffectBackedHaze &&\n"
+  },
+  {
+    "originalStart": 19463,
+    "originalEnd": 19497,
+    "preparedStart": 18489,
+    "preparedEnd": 18572,
+    "original": "    //  设置沉浸式状态栏和导航栏（进入时修改，离开时恢复）\n",
+    "prepared": "    // Same Windows Root chrome lease restores the prior window state on disposal.\n"
+  },
+  {
+    "originalStart": 19562,
+    "originalEnd": 21402,
+    "preparedStart": 18637,
+    "preparedEnd": 18762,
+    "original": "        val window = (context as? Activity)?.window\n        val insetsController = if (window != null) {\n            WindowInsetsControllerCompat(window, view)\n        } else null\n        \n        // 保存原始配置\n        val originalStatusBarColor = window?.let {\n            com.android.purebilibili.core.ui.getWindowStatusBarColor(it)\n        } ?: android.graphics.Color.TRANSPARENT\n        val originalNavBarColor = window?.let {\n            com.android.purebilibili.core.ui.getWindowNavigationBarColor(it)\n        } ?: android.graphics.Color.TRANSPARENT\n        val originalLightStatusBars = insetsController?.isAppearanceLightStatusBars ?: true\n        val originalLightNavigationBars = insetsController?.isAppearanceLightNavigationBars ?: true\n\n        if (shouldControlSystemBars && window != null) {\n            com.android.purebilibili.core.ui.AppWindowSystemUiController.ensureEdgeToEdge(window)\n            com.android.purebilibili.core.ui.setWindowStatusBarColor(window, Color.Transparent.toArgb())\n            com.android.purebilibili.core.ui.setWindowNavigationBarColor(window, Color.Transparent.toArgb())\n            insetsController?.isAppearanceLightStatusBars = lightStatusBars\n            insetsController?.isAppearanceLightNavigationBars = lightStatusBars\n        }\n        \n        onDispose {\n            // 离开时恢复原始配置\n            if (shouldControlSystemBars && window != null && insetsController != null) {\n                com.android.purebilibili.core.ui.setWindowStatusBarColor(window, originalStatusBarColor)\n                com.android.purebilibili.core.ui.setWindowNavigationBarColor(window, originalNavBarColor)\n                insetsController.isAppearanceLightStatusBars = originalLightStatusBars\n                insetsController.isAppearanceLightNavigationBars = originalLightNavigationBars\n            }\n        }\n",
+    "prepared": "        val lease = platform.acquireSystemBars(shouldControlSystemBars, lightStatusBars)\n        onDispose { lease.close() }\n"
+  },
+  {
+    "originalStart": 22075,
+    "originalEnd": 22165,
+    "preparedStart": 19435,
+    "preparedEnd": 19493,
+    "original": "        com.android.purebilibili.core.util.AnalyticsHelper.logScreenView(\"ProfileScreen\")\n",
+    "prepared": "        platform.analytics.logScreenView(\"ProfileScreen\")\n"
+  },
+  {
+    "originalStart": 22789,
+    "originalEnd": 22873,
+    "preparedStart": 20117,
+    "preparedEnd": 20169,
+    "original": "                        Toast.makeText(context, \"已切换账号\", Toast.LENGTH_SHORT).show()\n",
+    "prepared": "                        platform.feedback( \"已切换账号\")\n"
+  },
+  {
+    "originalStart": 22941,
+    "originalEnd": 23025,
+    "preparedStart": 20237,
+    "preparedEnd": 20289,
+    "original": "                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()\n",
+    "prepared": "                        platform.feedback( message)\n"
+  },
+  {
+    "originalStart": 23228,
+    "originalEnd": 23352,
+    "preparedStart": 20492,
+    "preparedEnd": 20584,
+    "original": "                        Toast.makeText(context, if (mid == null) \"播放授权已跟随当前账号\" else \"已设置播放授权账号\", Toast.LENGTH_SHORT).show()\n",
+    "prepared": "                        platform.feedback( if (mid == null) \"播放授权已跟随当前账号\" else \"已设置播放授权账号\")\n"
+  },
+  {
+    "originalStart": 23375,
+    "originalEnd": 23482,
+    "preparedStart": 20607,
+    "preparedEnd": 20682,
+    "original": "                    onFailure = { message -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show() }\n",
+    "prepared": "                    onFailure = { message -> platform.feedback( message) }\n"
+  },
+  {
+    "originalStart": 23659,
+    "originalEnd": 23743,
+    "preparedStart": 20859,
+    "preparedEnd": 20911,
+    "original": "                        Toast.makeText(context, \"已移除账号\", Toast.LENGTH_SHORT).show()\n",
+    "prepared": "                        platform.feedback( \"已移除账号\")\n"
+  },
+  {
+    "originalStart": 23811,
+    "originalEnd": 23895,
+    "preparedStart": 20979,
+    "preparedEnd": 21031,
+    "original": "                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()\n",
+    "prepared": "                        platform.feedback( message)\n"
+  },
+  {
+    "originalStart": 25018,
+    "originalEnd": 25018,
+    "preparedStart": 22154,
+    "preparedEnd": 22197,
+    "original": "",
+    "prepared": "                    viewModel = viewModel,\n"
+  },
+  {
+    "originalStart": 32424,
+    "originalEnd": 32504,
+    "preparedStart": 29603,
+    "preparedEnd": 29651,
+    "original": "                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()\n",
+    "prepared": "                    platform.feedback( message)\n"
+  },
+  {
+    "originalStart": 38446,
+    "originalEnd": 38538,
+    "preparedStart": 35593,
+    "preparedEnd": 35653,
+    "original": "                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()\n",
+    "prepared": "                                platform.feedback( message)\n"
+  },
+  {
+    "originalStart": 40849,
+    "originalEnd": 40939,
+    "preparedStart": 37964,
+    "preparedEnd": 38129,
+    "original": "    val context = LocalContext.current\n    val configuration = LocalConfiguration.current\n",
+    "prepared": "    val platform = LocalDesktopProfileEnvironment.current\n    val context = LocalPlatformContext.current\n    val configuration = desktopProfileWindowConfiguration()\n"
+  },
+  {
+    "originalStart": 45941,
+    "originalEnd": 46175,
+    "preparedStart": 43131,
+    "preparedEnd": 43132,
+    "original": "internal fun resolveProfileSkinVideoRepeatMode(playMode: String?): Int {\n    return if (playMode?.trim()?.equals(\"once\", ignoreCase = true) == true) {\n        Player.REPEAT_MODE_OFF\n    } else {\n        Player.REPEAT_MODE_ONE\n    }\n}\n",
+    "prepared": "\n"
+  },
+  {
+    "originalStart": 46188,
+    "originalEnd": 46246,
+    "preparedStart": 43145,
+    "preparedEnd": 43145,
+    "original": "@android.annotation.SuppressLint(\"UnsafeOptInUsageError\")\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 46401,
+    "originalEnd": 48248,
+    "preparedStart": 43300,
+    "preparedEnd": 43407,
+    "original": "    val context = LocalContext.current\n    val lifecycleOwner = LocalLifecycleOwner.current\n    val repeatMode = remember(playMode) { resolveProfileSkinVideoRepeatMode(playMode) }\n    val player = remember(videoPath) {\n        ExoPlayer.Builder(context).build()\n    }\n\n    DisposableEffect(player, videoPath, repeatMode) {\n        player.volume = 0f\n        player.repeatMode = repeatMode\n        player.setMediaItem(MediaItem.fromUri(Uri.fromFile(File(videoPath))))\n        player.prepare()\n        onDispose {\n            player.release()\n        }\n    }\n\n    DisposableEffect(lifecycleOwner, player, playbackEnabled) {\n        val observer = LifecycleEventObserver { _, event ->\n            when (event) {\n                Lifecycle.Event.ON_START -> if (playbackEnabled) player.play()\n                Lifecycle.Event.ON_STOP -> player.pause()\n                else -> Unit\n            }\n        }\n        lifecycleOwner.lifecycle.addObserver(observer)\n        if (playbackEnabled && lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {\n            player.play()\n        } else {\n            player.pause()\n        }\n        onDispose {\n            lifecycleOwner.lifecycle.removeObserver(observer)\n            player.pause()\n        }\n    }\n\n    SideEffect {\n        if (!playbackEnabled) player.pause()\n    }\n\n    AndroidView(\n        factory = { viewContext ->\n            PlayerView(viewContext).apply {\n                useController = false\n                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM\n                setShutterBackgroundColor(android.graphics.Color.TRANSPARENT)\n                setKeepContentOnPlayerReset(true)\n                this.player = player\n            }\n        },\n        update = { playerView ->\n            playerView.player = player\n        },\n        modifier = modifier,\n    )\n",
+    "prepared": "    LocalDesktopProfileEnvironment.current.media.skinVideo(videoPath, playMode, playbackEnabled, modifier)\n"
+  },
+  {
+    "originalStart": 49855,
+    "originalEnd": 49922,
+    "preparedStart": 45014,
+    "preparedEnd": 45084,
+    "original": "    var tempSelectedUri by remember { mutableStateOf<Uri?>(null) }\n",
+    "prepared": "    var tempSelectedUri by remember { mutableStateOf<String?>(null) }\n"
+  },
+  {
+    "originalStart": 50039,
+    "originalEnd": 50161,
+    "preparedStart": 45201,
+    "preparedEnd": 45387,
+    "original": "    val context = LocalContext.current\n    val showProfileEditButton by SettingsManager.getShowProfileEditButton(context)\n",
+    "prepared": "    val platform = LocalDesktopProfileEnvironment.current\n    val context = LocalPlatformContext.current\n    val showProfileEditButton by platform.preferences.getShowProfileEditButton()\n"
+  },
+  {
+    "originalStart": 50220,
+    "originalEnd": 50350,
+    "preparedStart": 45446,
+    "preparedEnd": 45530,
+    "original": "    val photoPickerLauncher = rememberLauncherForActivityResult(\n        contract = PickGalleryVisualMedia()\n    ) { uri: Uri? ->\n",
+    "prepared": "    val photoPickerLauncher = rememberDesktopProfileMediaPicker() { uri: String? ->\n"
+  },
+  {
+    "originalStart": 52753,
+    "originalEnd": 52937,
+    "preparedStart": 47933,
+    "preparedEnd": 47986,
+    "original": "                        photoPickerLauncher.launch(\n                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)\n                        )\n",
+    "prepared": "                        photoPickerLauncher.launch()\n"
+  },
+  {
+    "originalStart": 73146,
+    "originalEnd": 73197,
+    "preparedStart": 68195,
+    "preparedEnd": 68255,
+    "original": "    val configuration = LocalConfiguration.current\n",
+    "prepared": "    val configuration = desktopProfileWindowConfiguration()\n"
+  },
+  {
+    "originalStart": 85021,
+    "originalEnd": 85106,
+    "preparedStart": 80079,
+    "preparedEnd": 80173,
+    "original": "    val width = if (LocalConfiguration.current.screenWidthDp < 360) 60.dp else 72.dp\n",
+    "prepared": "    val width = if (desktopProfileWindowConfiguration().screenWidthDp < 360) 60.dp else 72.dp\n"
+  },
+  {
+    "originalStart": 105040,
+    "originalEnd": 105125,
+    "preparedStart": 100107,
+    "preparedEnd": 100201,
+    "original": "        listLayout.singleColumn, LocalConfiguration.current.screenWidthDp.toFloat(),\n",
+    "prepared": "        listLayout.singleColumn, desktopProfileWindowConfiguration().screenWidthDp.toFloat(),\n"
+  },
+  {
+    "originalStart": 109470,
+    "originalEnd": 109509,
+    "preparedStart": 104546,
+    "preparedEnd": 104651,
+    "original": "    val context = LocalContext.current\n",
+    "prepared": "    val platform = LocalDesktopProfileEnvironment.current\n    val context = LocalPlatformContext.current\n"
+  },
+  {
+    "originalStart": 113230,
+    "originalEnd": 113672,
+    "preparedStart": 108372,
+    "preparedEnd": 108493,
+    "original": "                            val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE)\n                                as android.content.ClipboardManager\n                            clipboard.setPrimaryClip(\n                                android.content.ClipData.newPlainText(\"动态链接\", dynamicUrl)\n                            )\n                            Toast.makeText(context, \"已复制链接\", Toast.LENGTH_SHORT).show()\n",
+    "prepared": "                            platform.copyText(\"动态链接\", dynamicUrl)\n                            platform.feedback(\"已复制链接\")\n"
+  },
+  {
+    "originalStart": 117368,
+    "originalEnd": 117407,
+    "preparedStart": 112189,
+    "preparedEnd": 112294,
+    "original": "    val context = LocalContext.current\n",
+    "prepared": "    val platform = LocalDesktopProfileEnvironment.current\n    val context = LocalPlatformContext.current\n"
+  },
+  {
+    "originalStart": 132397,
+    "originalEnd": 132444,
+    "preparedStart": 127284,
+    "preparedEnd": 127317,
+    "original": "    viewModel: ProfileViewModel = viewModel(),\n",
+    "prepared": "    viewModel: ProfileViewModel,\n"
+  },
+  {
+    "originalStart": 133671,
+    "originalEnd": 133738,
+    "preparedStart": 128544,
+    "preparedEnd": 128614,
+    "original": "    var tempSelectedUri by remember { mutableStateOf<Uri?>(null) }\n",
+    "prepared": "    var tempSelectedUri by remember { mutableStateOf<String?>(null) }\n"
+  },
+  {
+    "originalStart": 133856,
+    "originalEnd": 133986,
+    "preparedStart": 128732,
+    "preparedEnd": 128816,
+    "original": "    val photoPickerLauncher = rememberLauncherForActivityResult(\n        contract = PickGalleryVisualMedia()\n    ) { uri: Uri? ->\n",
+    "prepared": "    val photoPickerLauncher = rememberDesktopProfileMediaPicker() { uri: String? ->\n"
+  },
+  {
+    "originalStart": 136837,
+    "originalEnd": 137021,
+    "preparedStart": 131667,
+    "preparedEnd": 131720,
+    "original": "                        photoPickerLauncher.launch(\n                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)\n                        )\n",
+    "prepared": "                        photoPickerLauncher.launch()\n"
+  },
+  {
+    "originalStart": 147254,
+    "originalEnd": 147405,
+    "preparedStart": 141953,
+    "preparedEnd": 142132,
+    "original": "                    model = ImageRequest.Builder(LocalContext.current)\n                        .data(com.android.purebilibili.R.mipmap.ic_launcher_3d)\n",
+    "prepared": "                    model = ImageRequest.Builder(LocalPlatformContext.current)\n                        .data(LocalDesktopProfileEnvironment.current.platform.applicationIconModel)\n"
+  },
+  {
+    "originalStart": 150032,
+    "originalEnd": 150202,
+    "preparedStart": 144759,
+    "preparedEnd": 144896,
+    "original": "            model = ImageRequest.Builder(LocalContext.current).data(FormatUtils.fixImageUrl(user.face)).crossfade(true).placeholder(android.R.color.darker_gray).build(),\n",
+    "prepared": "            model = ImageRequest.Builder(LocalPlatformContext.current).data(FormatUtils.fixImageUrl(user.face)).crossfade(true).build(),\n"
+  },
+  {
+    "originalStart": 155449,
+    "originalEnd": 155539,
+    "preparedStart": 150143,
+    "preparedEnd": 150308,
+    "original": "    val context = LocalContext.current\n    val configuration = LocalConfiguration.current\n",
+    "prepared": "    val platform = LocalDesktopProfileEnvironment.current\n    val context = LocalPlatformContext.current\n    val configuration = desktopProfileWindowConfiguration()\n"
+  }
+]

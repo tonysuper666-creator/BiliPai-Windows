@@ -1,0 +1,531 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "selectedSources": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "output": "com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "mode": "selected",
+      "originalSha256LF": "c391e12ba7e24a29cecf7c13d3593365029b2dbad19b8bb2a7ec48b8e28c0ba0",
+      "preparedSha256LF": "2a1b931cd8c0a8199f33f2001db6299b4cb00653fc9d72388ff0a85f45ceeae2",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "output": "com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "mode": "selected",
+      "originalSha256LF": "09f5cb59863395387ca7b40805e30e633f1aa2f74bb593bc12104e35dd9b53f8",
+      "preparedSha256LF": "4540db29ab55458ec254b3adfc2905214bb4202f288d810b0531eb532f65cbc0",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "output": "com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "mode": "selected",
+      "originalSha256LF": "e71df3f0eb772d756399a4f035e3a8477411f0ebf6bb6525142f45ba65b53cc7",
+      "preparedSha256LF": "d15e793e19023705fcc9a394487f64e18e18989123765de1d8ac4a10b3a824c6",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "output": "com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "mode": "selected",
+      "originalSha256LF": "75bc6e38c891944425834a188973a314abf4c4d24a7fbbf50c6d44560ad32b59",
+      "preparedSha256LF": "135db872603dd054839340ea81a9812b60d18cfb3e8b9fac5bf759e366bf20e5",
+      "adapted": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt",
+      "output": "com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt",
+      "mode": "direct",
+      "originalSha256LF": "f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf",
+      "preparedSha256LF": "f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf",
+      "adapted": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "declaration": "searchTypeParams",
+      "originalBodySha256LF": "18d99b38e54dae3fab026e564bda82a129610d8f9f0c16b28f22064c8e75b40b",
+      "preparedBodySha256LF": "18d99b38e54dae3fab026e564bda82a129610d8f9f0c16b28f22064c8e75b40b"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "declaration": "createPageInfo",
+      "originalBodySha256LF": "2a47279a2de8c18dbb2cce1b309fdb3c5fcc6d5b5426bbca0eed36850d031091",
+      "preparedBodySha256LF": "2a47279a2de8c18dbb2cce1b309fdb3c5fcc6d5b5426bbca0eed36850d031091"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "declaration": "createSearchError",
+      "originalBodySha256LF": "fca37ed30c2e3511d82da9bc7f42fda7b310692e4de93008f38671e2ed770aaa",
+      "preparedBodySha256LF": "fca37ed30c2e3511d82da9bc7f42fda7b310692e4de93008f38671e2ed770aaa"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "declaration": "searchLive",
+      "originalBodySha256LF": "d699785edcb3cbff687a6cd35c4ae46b7c08a935d67febab72070f3a474668b4",
+      "preparedBodySha256LF": "8158fc19e72c463e8571321fd2d522ad265ae786add662717e77ebc2fa9e435c"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "declaration": "signWithWbi",
+      "originalBodySha256LF": "012df5465d3885cbdbb114c11eb78d9aa3228a7c48e2598ca44879231d6dd0df",
+      "preparedBodySha256LF": "25ace86f66ba3abb852e4f0556b03aa3f1aa5f5325b1c3f422656fc47adf1976"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "output": "com/android/purebilibili/data/repository/DesktopOriginalLiveSearchProtocol.kt",
+      "mode": "selected",
+      "originalSha256LF": "9cb78811e16b872a943744544074629d406c48af08c917ca252aa54bdd699e55",
+      "preparedSha256LF": "78598a375fe63d78bc9d170fab8fa8b98d766cccd3f7d86b4cd684d2519a1460",
+      "adapted": true
+    }
+  ],
+  "exactAdaptations": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "before": "import com.android.purebilibili.data.repository.SearchRepository\n",
+      "after": "",
+      "count": 1,
+      "positionsAfter": [
+        4231
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "before": "import kotlinx.coroutines.launch",
+      "after": "import kotlinx.coroutines.launch\nimport com.bilipai.desktop.ui.LocalDesktopLiveNavigationBinding\nimport com.bilipai.desktop.ui.onOwnedSuccess\nimport com.bilipai.desktop.ui.onOwnedFailure",
+      "count": 1,
+      "positionsAfter": [
+        4231
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "before": "",
+      "after": "\n    val binding = LocalDesktopLiveNavigationBinding.current",
+      "count": 1,
+      "insertAtFunction": "LiveSearchScreen",
+      "positionsAfter": [
+        4562
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "before": "SearchRepository.",
+      "after": "binding.requests.",
+      "count": 4,
+      "positionsAfter": [
+        7711,
+        8074,
+        8599,
+        9244
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "before": "\n        val normalized = query.trim()\n        if (normalized.isEmpty()) return\n        if (normalized.all { it.isDigit() }) {\n            onLiveClick(normalized.toLong(), \"\", \"\")\n            return\n        }\n        keyboard?.hide()\n        hasSubmitted = true\n        isLoading = true\n        error = null\n        activeKeyword = normalized\n        liveResults.clear()\n        userResults.clear()\n        liveHasMore = false\n        userHasMore = false\n        liveNextPage = 1\n        userNextPage = 1\n        liveGridState.scrollToItem(0)\n        userListState.scrollToItem(0)\n        binding.requests.searchLive(normalized, 1, SearchLiveOrder.ONLINE)\n            .onSuccess { (rooms, pageInfo) ->\n                liveResults.addAll(rooms.distinctBy { it.roomid })\n                liveHasMore = pageInfo.hasMore\n                liveNextPage = pageInfo.currentPage + 1\n            }\n            .onFailure { error = it.message ?: \"直播搜索失败\" }\n        binding.requests.searchUp(normalized, 1)\n            .onSuccess { (ups, pageInfo) ->\n                userResults.addAll(ups.distinctBy { it.mid })\n                userHasMore = pageInfo.hasMore\n                userNextPage = pageInfo.currentPage + 1\n            }\n            .onFailure { if (error == null) error = it.message ?: \"主播搜索失败\" }\n        isLoading = false\n    ",
+      "after": "\n        val normalized = query.trim()\n        if (normalized.isEmpty()) return\n        if (normalized.all { it.isDigit() }) {\n            onLiveClick(normalized.toLong(), \"\", \"\")\n            return\n        }\n\n        val request = binding.begin(\"search-submit\", \"search\")\n        try {\n        keyboard?.hide()\n        request.publish {\n        hasSubmitted = true\n        isLoading = true\n        error = null\n        activeKeyword = normalized\n        liveResults.clear()\n        userResults.clear()\n        liveHasMore = false\n        userHasMore = false\n        liveNextPage = 1\n        userNextPage = 1\n        }\n        liveGridState.scrollToItem(0)\n        userListState.scrollToItem(0)\n        binding.requests.searchLive(normalized, 1, SearchLiveOrder.ONLINE)\n            .onOwnedSuccess(request) { (rooms, pageInfo) ->\n                liveResults.addAll(rooms.distinctBy { it.roomid })\n                liveHasMore = pageInfo.hasMore\n                liveNextPage = pageInfo.currentPage + 1\n            }\n            .onOwnedFailure(request) { error = it.message ?: \"直播搜索失败\" }\n        binding.requests.searchUp(normalized, 1)\n            .onOwnedSuccess(request) { (ups, pageInfo) ->\n                userResults.addAll(ups.distinctBy { it.mid })\n                userHasMore = pageInfo.hasMore\n                userNextPage = pageInfo.currentPage + 1\n            }\n            .onOwnedFailure(request) { if (error == null) error = it.message ?: \"主播搜索失败\" }\n\n    \n        } finally { request.finish { isLoading = false } }\n    ",
+      "count": 1,
+      "positionsAfter": [
+        7122
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "before": "\n        if (activeKeyword.isBlank() || liveLoadingMore || !liveHasMore) return\n        liveLoadingMore = true\n        binding.requests.searchLive(activeKeyword, liveNextPage, SearchLiveOrder.ONLINE)\n            .onSuccess { (rooms, pageInfo) ->\n                val currentIds = liveResults.map { it.roomid }.toSet()\n                liveResults.addAll(rooms.filterNot { it.roomid in currentIds })\n                liveHasMore = pageInfo.hasMore\n                liveNextPage = pageInfo.currentPage + 1\n            }\n            .onFailure { error = it.message ?: \"直播加载更多失败\" }\n        liveLoadingMore = false\n    ",
+      "after": "\n        if (activeKeyword.isBlank() || liveLoadingMore || !liveHasMore) return\n\n        val request = binding.begin(\"search-live\", null)\n        val requestedKeyword = activeKeyword\n        val requestedPage = liveNextPage\n        try {\n        request.publish {\n        liveLoadingMore = true\n        }\n        binding.requests.searchLive(activeKeyword, liveNextPage, SearchLiveOrder.ONLINE)\n            .onOwnedSuccess(request) { (rooms, pageInfo) ->\n                val currentIds = liveResults.map { it.roomid }.toSet()\n                liveResults.addAll(rooms.filterNot { it.roomid in currentIds })\n                liveHasMore = pageInfo.hasMore\n                liveNextPage = pageInfo.currentPage + 1\n            }\n            .onOwnedFailure(request) { error = it.message ?: \"直播加载更多失败\" }\n\n    \n        } finally { request.finish { liveLoadingMore = false } }\n    ",
+      "count": 1,
+      "positionsAfter": [
+        8689
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "before": "\n        if (activeKeyword.isBlank() || userLoadingMore || !userHasMore) return\n        userLoadingMore = true\n        binding.requests.searchUp(activeKeyword, userNextPage)\n            .onSuccess { (ups, pageInfo) ->\n                val currentIds = userResults.map { it.mid }.toSet()\n                userResults.addAll(ups.filterNot { it.mid in currentIds })\n                userHasMore = pageInfo.hasMore\n                userNextPage = pageInfo.currentPage + 1\n            }\n            .onFailure { error = it.message ?: \"主播加载更多失败\" }\n        userLoadingMore = false\n    ",
+      "after": "\n        if (activeKeyword.isBlank() || userLoadingMore || !userHasMore) return\n\n        val request = binding.begin(\"search-user\", null)\n        val requestedKeyword = activeKeyword\n        val requestedPage = userNextPage\n        try {\n        request.publish {\n        userLoadingMore = true\n        }\n        binding.requests.searchUp(activeKeyword, userNextPage)\n            .onOwnedSuccess(request) { (ups, pageInfo) ->\n                val currentIds = userResults.map { it.mid }.toSet()\n                userResults.addAll(ups.filterNot { it.mid in currentIds })\n                userHasMore = pageInfo.hasMore\n                userNextPage = pageInfo.currentPage + 1\n            }\n            .onOwnedFailure(request) { error = it.message ?: \"主播加载更多失败\" }\n\n    \n        } finally { request.finish { userLoadingMore = false } }\n    ",
+      "count": 1,
+      "positionsAfter": [
+        9595
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "before": "binding.requests.searchLive(activeKeyword, liveNextPage",
+      "after": "binding.requests.searchLive(requestedKeyword, requestedPage",
+      "count": 1,
+      "positionsAfter": [
+        9002
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "before": "binding.requests.searchUp(activeKeyword, userNextPage)",
+      "after": "binding.requests.searchUp(requestedKeyword, requestedPage)",
+      "count": 1,
+      "positionsAfter": [
+        9912
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "before": "        liveNextPage = 1\n        userNextPage = 1",
+      "after": "        liveNextPage = 1\n        userNextPage = 1\n        liveLoadingMore = false\n        userLoadingMore = false",
+      "count": 1,
+      "positionsAfter": [
+        7681
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "before": "                            if (it.isBlank()) {",
+      "after": "                            if (it.isBlank()) {\n                                binding.invalidate(\"search\")\n                                isLoading = false\n                                liveLoadingMore = false\n                                userLoadingMore = false",
+      "count": 1,
+      "positionsAfter": [
+        11760
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "import com.android.purebilibili.data.repository.LiveRepository\n",
+      "after": "",
+      "count": 1,
+      "positionsAfter": [
+        4077
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+      "after": "",
+      "count": 1,
+      "positionsAfter": [
+        4018
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "",
+      "count": 1,
+      "positionsAfter": [
+        3669
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "import kotlinx.coroutines.launch",
+      "after": "import kotlinx.coroutines.launch\nimport com.bilipai.desktop.ui.LocalDesktopLiveNavigationBinding\nimport com.bilipai.desktop.ui.onOwnedSuccess\nimport com.bilipai.desktop.ui.onOwnedFailure",
+      "count": 1,
+      "positionsAfter": [
+        3970
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "",
+      "after": "\n    val binding = LocalDesktopLiveNavigationBinding.current",
+      "count": 1,
+      "insertAtFunction": "LiveAreaScreen",
+      "positionsAfter": [
+        4261
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "LiveRepository.",
+      "after": "binding.requests.",
+      "count": 1,
+      "positionsAfter": [
+        5572
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "    val context = LocalContext.current\n",
+      "after": "",
+      "count": 1,
+      "positionsAfter": [
+        4910
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "SettingsManager.getLiveFavoriteTags(context)",
+      "after": "binding.preferences.favoriteTags",
+      "count": 1,
+      "positionsAfter": [
+        5338
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "SettingsManager.setLiveFavoriteTags(context, next)",
+      "after": "binding.preferences.setLiveFavoriteTags(next)",
+      "count": 1,
+      "positionsAfter": [
+        13046
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "SettingsManager.setLiveFavoriteTags(\n                                context,",
+      "after": "binding.preferences.setLiveFavoriteTags(",
+      "count": 1,
+      "positionsAfter": [
+        6986
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "    LaunchedEffect(reloadKey) {",
+      "after": "    LaunchedEffect(reloadKey) {\n        val request = binding.begin(\"area-index\", \"area-index\")\n        try {",
+      "count": 1,
+      "positionsAfter": [
+        5481
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": ".onSuccess {",
+      "after": ".onOwnedSuccess(request) {",
+      "count": 1,
+      "positionsAfter": [
+        5647
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": ".onFailure {",
+      "after": ".onOwnedFailure(request) {",
+      "count": 1,
+      "positionsAfter": [
+        5761
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "before": "    }\n\n    AppScaffold(",
+      "after": "        } finally { request.finish { isLoading = false } }\n    }\n\n    AppScaffold(",
+      "count": 1,
+      "positionsAfter": [
+        5883
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "before": "import com.android.purebilibili.data.repository.LiveRepository\n",
+      "after": "",
+      "count": 1,
+      "positionsAfter": [
+        3309
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "before": "import kotlinx.coroutines.launch",
+      "after": "import kotlinx.coroutines.launch\nimport com.bilipai.desktop.ui.LocalDesktopLiveNavigationBinding\nimport com.bilipai.desktop.ui.onOwnedSuccess\nimport com.bilipai.desktop.ui.onOwnedFailure",
+      "count": 1,
+      "positionsAfter": [
+        3361
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "before": "",
+      "after": "\n    val binding = LocalDesktopLiveNavigationBinding.current",
+      "count": 1,
+      "insertAtFunction": "LiveAreaDetailScreen",
+      "positionsAfter": [
+        3767
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "before": "LiveRepository.",
+      "after": "binding.requests.",
+      "count": 2,
+      "positionsAfter": [
+        6078,
+        6739
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "before": "\n        if (reset) {\n            isLoading = true\n            error = null\n            page = 1\n            rooms = emptyList()\n            hasMore = false\n            totalCount = 0\n        } else {\n            if (isLoadingMore || !hasMore) return\n            isLoadingMore = true\n        }\n        val nextPage = if (reset) 1 else page + 1\n        binding.requests.getAreaRoomsPage(\n            parentAreaId = parentAreaId,\n            areaId = areaId,\n            page = nextPage,\n            sortType = sortType,\n            areaTitle = title,\n        ).onSuccess { result ->\n            rooms = if (reset) result.rooms else rooms + result.rooms\n            page = nextPage\n            hasMore = result.hasMore\n            totalCount = result.totalCount\n            isLoading = false\n            isLoadingMore = false\n        }.onFailure {\n            error = it.message ?: \"加载分区直播失败\"\n            isLoading = false\n            isLoadingMore = false\n        }\n    ",
+      "after": "\n        if (!reset && (isLoadingMore || !hasMore)) return\n        val request = binding.begin(\"area-page\", if (reset) \"area\" else null)\n        val requestedSortType = sortType\n        try {\n\n        request.publish {\n        if (reset) {\n            isLoading = true\n            error = null\n            page = 1\n            rooms = emptyList()\n            hasMore = false\n            totalCount = 0\n        } else {\n            isLoadingMore = true\n        }\n        }\n        val nextPage = if (reset) 1 else page + 1\n        binding.requests.getAreaRoomsPage(\n            parentAreaId = parentAreaId,\n            areaId = areaId,\n            page = nextPage,\n            sortType = requestedSortType,\n            areaTitle = title,\n        ).onOwnedSuccess(request) { result ->\n            rooms = if (reset) result.rooms else rooms + result.rooms\n            page = nextPage\n            hasMore = result.hasMore\n            totalCount = result.totalCount\n            isLoading = false\n            isLoadingMore = false\n        }.onOwnedFailure(request) {\n            error = it.message ?: \"加载分区直播失败\"\n            isLoading = false\n            isLoadingMore = false\n        }\n    \n        } finally { request.finish { isLoading = false; isLoadingMore = false } }\n    ",
+      "count": 1,
+      "positionsAfter": [
+        5726
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "before": "            totalCount = 0\n        } else {",
+      "after": "            totalCount = 0\n            isLoadingMore = false\n        } else {",
+      "count": 1,
+      "positionsAfter": [
+        6101
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "before": "\n        binding.requests.getLiveAreaIndex().onSuccess { list ->\n            siblings = list.firstOrNull { it.id == parentAreaId }?.list.orEmpty()\n        }\n    ",
+      "after": "\n        val request = binding.begin(\"area-siblings\")\n        try {\n\n        binding.requests.getLiveAreaIndex().onOwnedSuccess(request) { list ->\n            siblings = list.firstOrNull { it.id == parentAreaId }?.list.orEmpty()\n        }\n    \n        } finally { request.finish {} }\n    ",
+      "count": 1,
+      "positionsAfter": [
+        7066
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "import com.android.purebilibili.data.repository.LiveRepository\n",
+      "after": "",
+      "count": 1,
+      "positionsAfter": [
+        2731
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "import kotlinx.coroutines.launch",
+      "after": "import kotlinx.coroutines.launch\nimport com.bilipai.desktop.ui.LocalDesktopLiveNavigationBinding\nimport com.bilipai.desktop.ui.onOwnedSuccess\nimport com.bilipai.desktop.ui.onOwnedFailure",
+      "count": 1,
+      "positionsAfter": [
+        2731
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "",
+      "after": "\n    val binding = LocalDesktopLiveNavigationBinding.current",
+      "count": 1,
+      "insertAtFunction": "LiveFollowingScreen",
+      "positionsAfter": [
+        3031
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "LiveRepository.",
+      "after": "binding.requests.",
+      "count": 3,
+      "positionsAfter": [
+        4608,
+        5912,
+        9589
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "    LaunchedEffect(Unit) {",
+      "after": "    LaunchedEffect(Unit) {\n        val request = binding.begin(\"following-initial\", \"following\")\n        try {",
+      "count": 1,
+      "positionsAfter": [
+        4573
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "    }\n\n    AppScaffold(",
+      "after": "        } finally { request.finish { isLoading = false } }\n    }\n\n    AppScaffold(",
+      "count": 1,
+      "positionsAfter": [
+        5098
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "                            coroutineScope.launch {\n                                isRefreshing = true",
+      "after": "                            coroutineScope.launch {\n                                val request = binding.begin(\"following-refresh\", \"following\")\n                                try {\n                                request.publish { isRefreshing = true }",
+      "count": 1,
+      "positionsAfter": [
+        5874
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "                                isRefreshing = false",
+      "after": "                                } finally { request.finish { isRefreshing = false; isLoadingMore = false } }",
+      "count": 1,
+      "positionsAfter": [
+        6661
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "                                    coroutineScope.launch {\n                                        isLoadingMore = true",
+      "after": "                                    coroutineScope.launch {\n                                        val request = binding.begin(\"following-more\")\n                                        val requestedPage = nextPage\n                                        try {\n                                        request.publish { isLoadingMore = true }",
+      "count": 1,
+      "positionsAfter": [
+        9779
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "page = nextPage)",
+      "after": "page = requestedPage)",
+      "count": 1,
+      "positionsAfter": [
+        10198
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "                                        val request = binding.begin(\"following-more\")",
+      "after": "                                        if (isRefreshing || isLoadingMore || !hasMore) return@launch\n                                        val request = binding.begin(\"following-more\")",
+      "count": 1,
+      "positionsAfter": [
+        9839
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "request.publish { isRefreshing = true }",
+      "after": "request.publish { isRefreshing = true; isLoadingMore = false }",
+      "count": 1,
+      "positionsAfter": [
+        6090
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "request.publish { isRefreshing = true; isLoadingMore = false }\n                                error = null",
+      "after": "request.publish { isRefreshing = true; isLoadingMore = false; error = null }",
+      "count": 1,
+      "positionsAfter": [
+        6090
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": "                                        isLoadingMore = false",
+      "after": "                                        } finally { request.finish { isLoadingMore = false } }",
+      "count": 1,
+      "positionsAfter": [
+        10761
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": ".onSuccess {",
+      "after": ".onOwnedSuccess(request) {",
+      "count": 3,
+      "positionsAfter": [
+        4751,
+        6296,
+        10385
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "before": ".onFailure {",
+      "after": ".onOwnedFailure(request) {",
+      "count": 3,
+      "positionsAfter": [
+        5002,
+        6647,
+        10785
+      ]
+    }
+  ]
+}

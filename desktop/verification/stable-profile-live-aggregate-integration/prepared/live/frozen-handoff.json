@@ -1,0 +1,623 @@
+{
+  "frozen": true,
+  "scope": "prepared-full-original-Live-sub-navigation-source-only",
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualDependencySnapshot": "stable-product-snapshot-39",
+  "actualManifestSha256Bytes": "4840845d18a6fd1171c32a03ba397306a0f509b6510ca9544ceac935befe46ae",
+  "actual97CpSha256Bytes": "e9b8db57c428c214b243e2ea41761d0745c3b48ff386fe8d38901d892760fd8f",
+  "sourceChecksSha256Bytes": "b64c8b38701053c7a38c5297736d7e5bf96d36673f9b4bb1044256a7549a0770",
+  "installContractSha256Bytes": "de5a55a05e55adba94b83d42388a951c336443a564fba9f51f684aa64bd557a8",
+  "rootIntegrationSha256Bytes": "841714bcb5f0ab664e12ce473b002ab1c8446a1cff7949aa7dc5c8d498b10d12",
+  "compiledSources": 8,
+  "compiledClasses": 110,
+  "fixtureAssertions": 25,
+  "fixtureGroups": 3,
+  "existingProductionOverrides": 0,
+  "directOriginalCopyOnce": true,
+  "productionSelectedOutputs": 5,
+  "mandatoryRouteOwner": true,
+  "sameGlobalSettings": true,
+  "actualRootMountedUiAccepted": false,
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\audit.py",
+      "relative": "audit.py",
+      "sizeBytes": 8723,
+      "sha256Bytes": "64bed4025daf4c09fbc8a02d796abd4b45740e95ddba83ef2ea05d603df5738a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\compile.py",
+      "relative": "compile.py",
+      "sizeBytes": 3832,
+      "sha256Bytes": "00988466593b2e1fcaf5643287ae3d1a8494539e62931820233e4e2f6de4d59b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\fixture.py",
+      "relative": "fixture.py",
+      "sizeBytes": 3553,
+      "sha256Bytes": "67f503e44c3b675517f71456c92dae8ad4e9ce056d3bf88d6311e87c8a201f82"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\fixtures\\LiveNavigationFixture.kt",
+      "relative": "fixtures/LiveNavigationFixture.kt",
+      "sizeBytes": 9448,
+      "sha256Bytes": "06f6c0469137fb7328bd98c3359df9ca14dbe7a7a77e129113de4bb3e057f920"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\freeze.py",
+      "relative": "freeze.py",
+      "sizeBytes": 3197,
+      "sha256Bytes": "5112d26b83f19c3bad975bd0c6032503cb6230193e8b36789881c6fcf5a9c810"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\install-contract.json",
+      "relative": "install-contract.json",
+      "sizeBytes": 1562,
+      "sha256Bytes": "de5a55a05e55adba94b83d42388a951c336443a564fba9f51f684aa64bd557a8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\original-source-inventory.json",
+      "relative": "original-source-inventory.json",
+      "sizeBytes": 1835,
+      "sha256Bytes": "56ee90a07d627cbdbc121fd59bb07a5d9161d963f43aff7509e6428a89b4e09b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepare-fixture-runner.py",
+      "relative": "prepare-fixture-runner.py",
+      "sizeBytes": 1379,
+      "sha256Bytes": "9219464cae4ff58b7b18fbc9f31d24bd55ecec797af466fab3e4390fad1df3d1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepare-shared-reference.py",
+      "relative": "prepare-shared-reference.py",
+      "sizeBytes": 2111,
+      "sha256Bytes": "11422c45d985d05d41fd3e716405379975eec0dd596aed5175d2af3ead819590"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepare.py",
+      "relative": "prepare.py",
+      "sizeBytes": 1839,
+      "sha256Bytes": "b38f037d6a464f5ec9c8d9fa72dde2b417b4700d12e4bb70050b9364e1d2705e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopLiveNavigationBindings.kt",
+      "relative": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveNavigationBindings.kt",
+      "sizeBytes": 9792,
+      "sha256Bytes": "b8fdf971f3c3419321f347d50c2996440da38ac5255837893b41dcaf4ad2b868"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\desktop\\tools\\extract-upstream-live-navigation.py",
+      "relative": "prepared/desktop/tools/extract-upstream-live-navigation.py",
+      "sizeBytes": 14086,
+      "sha256Bytes": "7c33a5206014b345007dbf739b577d281398e60106dc416ff642f7a7da325091"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalLiveSearchProtocol.kt",
+      "relative": "prepared/generated/com/android/purebilibili/data/repository/DesktopOriginalLiveSearchProtocol.kt",
+      "sizeBytes": 4815,
+      "sha256Bytes": "78598a375fe63d78bc9d170fab8fa8b98d766cccd3f7d86b4cd684d2519a1460"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaDetailScreen.kt",
+      "relative": "prepared/generated/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "sizeBytes": 16270,
+      "sha256Bytes": "d15e793e19023705fcc9a394487f64e18e18989123765de1d8ac4a10b3a824c6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreen.kt",
+      "relative": "prepared/generated/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "sizeBytes": 22476,
+      "sha256Bytes": "4540db29ab55458ec254b3adfc2905214bb4202f288d810b0531eb532f65cbc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreenPolicy.kt",
+      "relative": "prepared/generated/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt",
+      "sizeBytes": 2219,
+      "sha256Bytes": "f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveFollowingScreen.kt",
+      "relative": "prepared/generated/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "sizeBytes": 11343,
+      "sha256Bytes": "135db872603dd054839340ea81a9812b60d18cfb3e8b9fac5bf759e366bf20e5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveSearchScreen.kt",
+      "relative": "prepared/generated/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "sizeBytes": 23791,
+      "sha256Bytes": "2a1b931cd8c0a8199f33f2001db6299b4cb00653fc9d72388ff0a85f45ceeae2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\generated\\live-navigation-selection-proof.json",
+      "relative": "prepared/generated/live-navigation-selection-proof.json",
+      "sizeBytes": 29014,
+      "sha256Bytes": "6b2d12c277489a786fb18e8f31bd056c32d44654d26d1238f794ca418df32551"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\producer-template.py",
+      "relative": "producer-template.py",
+      "sizeBytes": 12908,
+      "sha256Bytes": "8ff547349b7315e7bf1e49676d67e1a4647932fa16d273873920580e006acf5a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\production-generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalLiveSearchProtocol.kt",
+      "relative": "production-generated/com/android/purebilibili/data/repository/DesktopOriginalLiveSearchProtocol.kt",
+      "sizeBytes": 4815,
+      "sha256Bytes": "78598a375fe63d78bc9d170fab8fa8b98d766cccd3f7d86b4cd684d2519a1460"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\production-generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaDetailScreen.kt",
+      "relative": "production-generated/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "sizeBytes": 16270,
+      "sha256Bytes": "d15e793e19023705fcc9a394487f64e18e18989123765de1d8ac4a10b3a824c6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\production-generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreen.kt",
+      "relative": "production-generated/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "sizeBytes": 22476,
+      "sha256Bytes": "4540db29ab55458ec254b3adfc2905214bb4202f288d810b0531eb532f65cbc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\production-generated\\com\\android\\purebilibili\\feature\\live\\LiveFollowingScreen.kt",
+      "relative": "production-generated/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "sizeBytes": 11343,
+      "sha256Bytes": "135db872603dd054839340ea81a9812b60d18cfb3e8b9fac5bf759e366bf20e5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\production-generated\\com\\android\\purebilibili\\feature\\live\\LiveSearchScreen.kt",
+      "relative": "production-generated/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "sizeBytes": 23791,
+      "sha256Bytes": "2a1b931cd8c0a8199f33f2001db6299b4cb00653fc9d72388ff0a85f45ceeae2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\production-generated\\live-navigation-selection-proof.json",
+      "relative": "production-generated/live-navigation-selection-proof.json",
+      "sizeBytes": 28586,
+      "sha256Bytes": "f4a7b145fcb5ad3d76735b6f78455c88307a08854045cf60d489531bb2ffe93e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\reference-only\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopLiveSkeletonReference.kt",
+      "relative": "reference-only/com/android/purebilibili/core/ui/skeleton/DesktopLiveSkeletonReference.kt",
+      "sizeBytes": 4505,
+      "sha256Bytes": "b81d37ec1eca1f693b0d86a1949e0645f726a6a7ee9fa536783723c52adb0b7a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\registry-merge-recipe.json",
+      "relative": "registry-merge-recipe.json",
+      "sizeBytes": 5389,
+      "sha256Bytes": "c282bc1a9ef2f96681d48b83bdb583d4cff8ace4699c6321bc3e0c604ae093fd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\ROOT-INTEGRATION.md",
+      "relative": "ROOT-INTEGRATION.md",
+      "sizeBytes": 7233,
+      "sha256Bytes": "841714bcb5f0ab664e12ce473b002ab1c8446a1cff7949aa7dc5c8d498b10d12"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\compile-result.json",
+      "relative": "runs/compile01/compile-result.json",
+      "sizeBytes": 3127,
+      "sha256Bytes": "7404dea8000fe9941ed9f253d2a885cfdd926b6c5c4c501542f3c7b74f312b0c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\compiler.args",
+      "relative": "runs/compile01/compiler.args",
+      "sizeBytes": 26428,
+      "sha256Bytes": "2de50d7096e42620fbef05929c2c913ebfbad9a9e800d9d0977ec3d287cd74ac"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\compiler.log",
+      "relative": "runs/compile01/compiler.log",
+      "sizeBytes": 3422,
+      "sha256Bytes": "039405d8a6e15733f3ea0d6108023bfd3171ea57441d371730b85be172a97d35"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\dependency-pins-before.json",
+      "relative": "runs/compile01/dependency-pins-before.json",
+      "sizeBytes": 44021,
+      "sha256Bytes": "a846dab995ebe8e0f20c5c01cc128ddca1f4c304559c0d77d3e560464fac1ce6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopLiveNavigationBindings.kt",
+      "relative": "runs/compile01/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveNavigationBindings.kt",
+      "sizeBytes": 9508,
+      "sha256Bytes": "ef2ecaeb12130a3e529ce714fca6441f91e8436f03dea8fa4d36e773a98234dd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaDetailScreen.kt",
+      "relative": "runs/compile01/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "sizeBytes": 16270,
+      "sha256Bytes": "d15e793e19023705fcc9a394487f64e18e18989123765de1d8ac4a10b3a824c6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreen.kt",
+      "relative": "runs/compile01/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "sizeBytes": 22476,
+      "sha256Bytes": "4540db29ab55458ec254b3adfc2905214bb4202f288d810b0531eb532f65cbc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreenPolicy.kt",
+      "relative": "runs/compile01/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt",
+      "sizeBytes": 2219,
+      "sha256Bytes": "f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveFollowingScreen.kt",
+      "relative": "runs/compile01/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "sizeBytes": 11374,
+      "sha256Bytes": "08da9d043e42e9ba6d9d12313c965b8d106e44fcfe92c6ee88682600812ee4a3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile01\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveSearchScreen.kt",
+      "relative": "runs/compile01/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "sizeBytes": 23791,
+      "sha256Bytes": "2a1b931cd8c0a8199f33f2001db6299b4cb00653fc9d72388ff0a85f45ceeae2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile02\\compile-result.json",
+      "relative": "runs/compile02/compile-result.json",
+      "sizeBytes": 3523,
+      "sha256Bytes": "3de9a2a87541bb54f130f20d9a48621ca4c1446af4868a967a4348fbb31536f5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile02\\compiler.args",
+      "relative": "runs/compile02/compiler.args",
+      "sizeBytes": 26686,
+      "sha256Bytes": "4b9b236707b483a66b730a3029ef735148da69cb732e876ee040303ab51c1355"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile02\\compiler.log",
+      "relative": "runs/compile02/compiler.log",
+      "sizeBytes": 338,
+      "sha256Bytes": "05c3e9da826cae1be047d339377b964bd8105fabd4344e5fc66958be5c05e17d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile02\\dependency-pins-before.json",
+      "relative": "runs/compile02/dependency-pins-before.json",
+      "sizeBytes": 44417,
+      "sha256Bytes": "3123b03e63cc6ded9011338c4996ae1c50e9987d8dd0edd0ac56df9ddb4c879b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile02\\source-inputs\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopLiveNavigationBindings.kt",
+      "relative": "runs/compile02/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveNavigationBindings.kt",
+      "sizeBytes": 9524,
+      "sha256Bytes": "9c39b26dba8d65956243fe9c6cd76abdaba6fed1e3932442f691fdd7f05a499a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile02\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaDetailScreen.kt",
+      "relative": "runs/compile02/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "sizeBytes": 16270,
+      "sha256Bytes": "d15e793e19023705fcc9a394487f64e18e18989123765de1d8ac4a10b3a824c6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile02\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreen.kt",
+      "relative": "runs/compile02/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "sizeBytes": 22476,
+      "sha256Bytes": "4540db29ab55458ec254b3adfc2905214bb4202f288d810b0531eb532f65cbc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile02\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreenPolicy.kt",
+      "relative": "runs/compile02/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt",
+      "sizeBytes": 2219,
+      "sha256Bytes": "f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile02\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveFollowingScreen.kt",
+      "relative": "runs/compile02/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "sizeBytes": 11374,
+      "sha256Bytes": "08da9d043e42e9ba6d9d12313c965b8d106e44fcfe92c6ee88682600812ee4a3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile02\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveSearchScreen.kt",
+      "relative": "runs/compile02/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "sizeBytes": 23791,
+      "sha256Bytes": "2a1b931cd8c0a8199f33f2001db6299b4cb00653fc9d72388ff0a85f45ceeae2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile02\\source-inputs\\reference-only\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopLiveSkeletonReference.kt",
+      "relative": "runs/compile02/source-inputs/reference-only/com/android/purebilibili/core/ui/skeleton/DesktopLiveSkeletonReference.kt",
+      "sizeBytes": 4505,
+      "sha256Bytes": "b81d37ec1eca1f693b0d86a1949e0645f726a6a7ee9fa536783723c52adb0b7a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\compile-result.json",
+      "relative": "runs/compile03/compile-result.json",
+      "sizeBytes": 15559,
+      "sha256Bytes": "9bfa12da93a1fb20565c6b19f743429318712fa7d225aa1bd70c85da39e87085"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\compiler.args",
+      "relative": "runs/compile03/compiler.args",
+      "sizeBytes": 26686,
+      "sha256Bytes": "7295d5bf99a853878d7749fa0332d5d5f032f9de632dbb2b1dfea1f1f9f69c05"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\compiler.log",
+      "relative": "runs/compile03/compiler.log",
+      "sizeBytes": 722,
+      "sha256Bytes": "ade239a550d91e0b335326b0c793cad65c31deab1b09702e0431d1a3225545c8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\dependency-pins-after.json",
+      "relative": "runs/compile03/dependency-pins-after.json",
+      "sizeBytes": 44417,
+      "sha256Bytes": "416198918fdaf311296005b90edf3d44461bae95067aae5e9cba034f39e34d71"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\dependency-pins-before.json",
+      "relative": "runs/compile03/dependency-pins-before.json",
+      "sizeBytes": 44417,
+      "sha256Bytes": "416198918fdaf311296005b90edf3d44461bae95067aae5e9cba034f39e34d71"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\prepared-live-navigation.jar",
+      "relative": "runs/compile03/prepared-live-navigation.jar",
+      "sizeBytes": 340000,
+      "sha256Bytes": "0db1f4fb6262cdd9c78fc71deb96c7dfdd2a6851eb5d5416ddc0073c8159e975"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\source-inputs\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopLiveNavigationBindings.kt",
+      "relative": "runs/compile03/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveNavigationBindings.kt",
+      "sizeBytes": 9524,
+      "sha256Bytes": "9c39b26dba8d65956243fe9c6cd76abdaba6fed1e3932442f691fdd7f05a499a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaDetailScreen.kt",
+      "relative": "runs/compile03/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "sizeBytes": 16270,
+      "sha256Bytes": "d15e793e19023705fcc9a394487f64e18e18989123765de1d8ac4a10b3a824c6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreen.kt",
+      "relative": "runs/compile03/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "sizeBytes": 22476,
+      "sha256Bytes": "4540db29ab55458ec254b3adfc2905214bb4202f288d810b0531eb532f65cbc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreenPolicy.kt",
+      "relative": "runs/compile03/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt",
+      "sizeBytes": 2219,
+      "sha256Bytes": "f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveFollowingScreen.kt",
+      "relative": "runs/compile03/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "sizeBytes": 11374,
+      "sha256Bytes": "08da9d043e42e9ba6d9d12313c965b8d106e44fcfe92c6ee88682600812ee4a3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveSearchScreen.kt",
+      "relative": "runs/compile03/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "sizeBytes": 23791,
+      "sha256Bytes": "2a1b931cd8c0a8199f33f2001db6299b4cb00653fc9d72388ff0a85f45ceeae2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile03\\source-inputs\\reference-only\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopLiveSkeletonReference.kt",
+      "relative": "runs/compile03/source-inputs/reference-only/com/android/purebilibili/core/ui/skeleton/DesktopLiveSkeletonReference.kt",
+      "sizeBytes": 4505,
+      "sha256Bytes": "b81d37ec1eca1f693b0d86a1949e0645f726a6a7ee9fa536783723c52adb0b7a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\compile-result.json",
+      "relative": "runs/compile04/compile-result.json",
+      "sizeBytes": 15638,
+      "sha256Bytes": "597d2c1426f9483beef35a95d9dade1294be62859010902ec0aac7f7fa54cb47"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\compiler.args",
+      "relative": "runs/compile04/compiler.args",
+      "sizeBytes": 26686,
+      "sha256Bytes": "64793aac57bc8b52ce1cf50c45029d98cc39cf83fef60f0c1e5547a69fb5adea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\compiler.log",
+      "relative": "runs/compile04/compiler.log",
+      "sizeBytes": 722,
+      "sha256Bytes": "b501dfe69b68f87bd31d7335296bde4aaa5c36ae17a0617ad9eb5dafbf60e9cd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\dependency-pins-after.json",
+      "relative": "runs/compile04/dependency-pins-after.json",
+      "sizeBytes": 44417,
+      "sha256Bytes": "1b738a804a9eff1799140b15f8033a4415c2f82850e0d890519b6641965d6960"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\dependency-pins-before.json",
+      "relative": "runs/compile04/dependency-pins-before.json",
+      "sizeBytes": 44417,
+      "sha256Bytes": "1b738a804a9eff1799140b15f8033a4415c2f82850e0d890519b6641965d6960"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\prepared-live-navigation.jar",
+      "relative": "runs/compile04/prepared-live-navigation.jar",
+      "sizeBytes": 341414,
+      "sha256Bytes": "6d4afc73eed70f487aff14851b7c5fd6abd3a5e12a9aea38e6089e0df8a170ef"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\source-inputs\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopLiveNavigationBindings.kt",
+      "relative": "runs/compile04/source-inputs/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveNavigationBindings.kt",
+      "sizeBytes": 9792,
+      "sha256Bytes": "b8fdf971f3c3419321f347d50c2996440da38ac5255837893b41dcaf4ad2b868"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaDetailScreen.kt",
+      "relative": "runs/compile04/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "sizeBytes": 16270,
+      "sha256Bytes": "d15e793e19023705fcc9a394487f64e18e18989123765de1d8ac4a10b3a824c6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreen.kt",
+      "relative": "runs/compile04/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "sizeBytes": 22476,
+      "sha256Bytes": "4540db29ab55458ec254b3adfc2905214bb4202f288d810b0531eb532f65cbc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreenPolicy.kt",
+      "relative": "runs/compile04/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt",
+      "sizeBytes": 2219,
+      "sha256Bytes": "f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveFollowingScreen.kt",
+      "relative": "runs/compile04/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "sizeBytes": 11343,
+      "sha256Bytes": "135db872603dd054839340ea81a9812b60d18cfb3e8b9fac5bf759e366bf20e5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\source-inputs\\prepared\\generated\\com\\android\\purebilibili\\feature\\live\\LiveSearchScreen.kt",
+      "relative": "runs/compile04/source-inputs/prepared/generated/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "sizeBytes": 23791,
+      "sha256Bytes": "2a1b931cd8c0a8199f33f2001db6299b4cb00653fc9d72388ff0a85f45ceeae2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\compile04\\source-inputs\\reference-only\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopLiveSkeletonReference.kt",
+      "relative": "runs/compile04/source-inputs/reference-only/com/android/purebilibili/core/ui/skeleton/DesktopLiveSkeletonReference.kt",
+      "sizeBytes": 4505,
+      "sha256Bytes": "b81d37ec1eca1f693b0d86a1949e0645f726a6a7ee9fa536783723c52adb0b7a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\fixture-01\\compiler.args",
+      "relative": "runs/fixture-01/compiler.args",
+      "sizeBytes": 24909,
+      "sha256Bytes": "e26c2ac28d740cff0a54bfcc63081374d9c1dd727daa4563993f680817a97cb0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\fixture-01\\compiler.log",
+      "relative": "runs/fixture-01/compiler.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\fixture-01\\dependency-pins-after.json",
+      "relative": "runs/fixture-01/dependency-pins-after.json",
+      "sizeBytes": 41251,
+      "sha256Bytes": "fa9e2cba49c81c9dd635c69173bd647edad57158d5262f08ce5a1428854a343b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\fixture-01\\dependency-pins-before.json",
+      "relative": "runs/fixture-01/dependency-pins-before.json",
+      "sizeBytes": 41251,
+      "sha256Bytes": "fa9e2cba49c81c9dd635c69173bd647edad57158d5262f08ce5a1428854a343b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\fixture-01\\live-fixture.jar",
+      "relative": "runs/fixture-01/live-fixture.jar",
+      "sizeBytes": 37759,
+      "sha256Bytes": "ee24b1fe09a2714f0c5298e3b74f7e5514220a8c10cb9331499754d787a86b4c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\fixture-01\\LiveNavigationFixture.kt",
+      "relative": "runs/fixture-01/LiveNavigationFixture.kt",
+      "sizeBytes": 9448,
+      "sha256Bytes": "06f6c0469137fb7328bd98c3359df9ca14dbe7a7a77e129113de4bb3e057f920"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\fixture-01\\real-global-store\\plugin-settings.json",
+      "relative": "runs/fixture-01/real-global-store/plugin-settings.json",
+      "sizeBytes": 1039,
+      "sha256Bytes": "f3285cb6d3608fb9617756f7c0880d2bea5b8c5dc970ce5188b481438a17690a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\fixture-01\\result.json",
+      "relative": "runs/fixture-01/result.json",
+      "sizeBytes": 3718,
+      "sha256Bytes": "912f0304b43ecc6dc9d51bf62389b4e09f4a9a9b0ad8aab595073e4dcf6915f7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\runs\\fixture-01\\runtime.log",
+      "relative": "runs/fixture-01/runtime.log",
+      "sizeBytes": 3274,
+      "sha256Bytes": "0503a75cfa202e46c6f1bf502d4ff8161abfda0124dc8d4978ee4a43da257a48"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\sole-shared-helper-hunk.json",
+      "relative": "sole-shared-helper-hunk.json",
+      "sizeBytes": 1619,
+      "sha256Bytes": "d4adf9de9f811ce2849b7ce2b61f6470cfff3d69f35cda3d55e732b4a3541f9d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\production\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalLiveSearchProtocol.kt",
+      "relative": "source-audit/production/com/android/purebilibili/data/repository/DesktopOriginalLiveSearchProtocol.kt",
+      "sizeBytes": 4815,
+      "sha256Bytes": "78598a375fe63d78bc9d170fab8fa8b98d766cccd3f7d86b4cd684d2519a1460"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\production\\com\\android\\purebilibili\\feature\\live\\LiveAreaDetailScreen.kt",
+      "relative": "source-audit/production/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "sizeBytes": 16270,
+      "sha256Bytes": "d15e793e19023705fcc9a394487f64e18e18989123765de1d8ac4a10b3a824c6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\production\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreen.kt",
+      "relative": "source-audit/production/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "sizeBytes": 22476,
+      "sha256Bytes": "4540db29ab55458ec254b3adfc2905214bb4202f288d810b0531eb532f65cbc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\production\\com\\android\\purebilibili\\feature\\live\\LiveFollowingScreen.kt",
+      "relative": "source-audit/production/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "sizeBytes": 11343,
+      "sha256Bytes": "135db872603dd054839340ea81a9812b60d18cfb3e8b9fac5bf759e366bf20e5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\production\\com\\android\\purebilibili\\feature\\live\\LiveSearchScreen.kt",
+      "relative": "source-audit/production/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "sizeBytes": 23791,
+      "sha256Bytes": "2a1b931cd8c0a8199f33f2001db6299b4cb00653fc9d72388ff0a85f45ceeae2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\production\\live-navigation-selection-proof.json",
+      "relative": "source-audit/production/live-navigation-selection-proof.json",
+      "sizeBytes": 28586,
+      "sha256Bytes": "f4a7b145fcb5ad3d76735b6f78455c88307a08854045cf60d489531bb2ffe93e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\standalone\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalLiveSearchProtocol.kt",
+      "relative": "source-audit/standalone/com/android/purebilibili/data/repository/DesktopOriginalLiveSearchProtocol.kt",
+      "sizeBytes": 4815,
+      "sha256Bytes": "78598a375fe63d78bc9d170fab8fa8b98d766cccd3f7d86b4cd684d2519a1460"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\standalone\\com\\android\\purebilibili\\feature\\live\\LiveAreaDetailScreen.kt",
+      "relative": "source-audit/standalone/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "sizeBytes": 16270,
+      "sha256Bytes": "d15e793e19023705fcc9a394487f64e18e18989123765de1d8ac4a10b3a824c6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\standalone\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreen.kt",
+      "relative": "source-audit/standalone/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "sizeBytes": 22476,
+      "sha256Bytes": "4540db29ab55458ec254b3adfc2905214bb4202f288d810b0531eb532f65cbc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\standalone\\com\\android\\purebilibili\\feature\\live\\LiveAreaScreenPolicy.kt",
+      "relative": "source-audit/standalone/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt",
+      "sizeBytes": 2219,
+      "sha256Bytes": "f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\standalone\\com\\android\\purebilibili\\feature\\live\\LiveFollowingScreen.kt",
+      "relative": "source-audit/standalone/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "sizeBytes": 11343,
+      "sha256Bytes": "135db872603dd054839340ea81a9812b60d18cfb3e8b9fac5bf759e366bf20e5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\standalone\\com\\android\\purebilibili\\feature\\live\\LiveSearchScreen.kt",
+      "relative": "source-audit/standalone/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "sizeBytes": 23791,
+      "sha256Bytes": "2a1b931cd8c0a8199f33f2001db6299b4cb00653fc9d72388ff0a85f45ceeae2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-audit\\standalone\\live-navigation-selection-proof.json",
+      "relative": "source-audit/standalone/live-navigation-selection-proof.json",
+      "sizeBytes": 29014,
+      "sha256Bytes": "6b2d12c277489a786fb18e8f31bd056c32d44654d26d1238f794ca418df32551"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\source-checks.json",
+      "relative": "source-checks.json",
+      "sizeBytes": 8472,
+      "sha256Bytes": "b64c8b38701053c7a38c5297736d7e5bf96d36673f9b4bb1044256a7549a0770"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "originalStart": 51,
+    "originalEnd": 51,
+    "preparedStart": 51,
+    "preparedEnd": 112,
+    "original": "",
+    "prepared": "import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment\n"
+  },
+  {
+    "originalStart": 52,
+    "originalEnd": 154,
+    "preparedStart": 113,
+    "preparedEnd": 113,
+    "original": "import android.graphics.drawable.Animatable\nimport android.net.Uri\nimport android.view.LayoutInflater\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 308,
+    "originalEnd": 408,
+    "preparedStart": 267,
+    "preparedEnd": 267,
+    "original": "import androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.viewinterop.AndroidView\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 547,
+    "originalEnd": 728,
+    "preparedStart": 406,
+    "preparedEnd": 406,
+    "original": "import androidx.media3.common.MediaItem\nimport androidx.media3.common.Player\nimport androidx.media3.exoplayer.ExoPlayer\nimport androidx.media3.ui.PlayerView\nimport coil3.asDrawable\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 836,
+    "originalEnd": 1080,
+    "preparedStart": 514,
+    "preparedEnd": 514,
+    "original": "import com.android.purebilibili.R\n\ninternal fun isVideoWallpaper(uri: String): Boolean =\n    uri.substringBefore('?').substringBefore('#').substringAfterLast('.').lowercase() in\n        setOf(\"mp4\", \"m4v\", \"webm\", \"mkv\", \"mov\", \"3gp\", \"video\")\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 1423,
+    "originalEnd": 1462,
+    "preparedStart": 857,
+    "preparedEnd": 918,
+    "original": "    val context = LocalContext.current\n",
+    "prepared": "    val environment = LocalDesktopProfileEnvironment.current\n"
+  },
+  {
+    "originalStart": 2051,
+    "originalEnd": 2051,
+    "preparedStart": 1507,
+    "preparedEnd": 1590,
+    "original": "",
+    "prepared": "    // Original file-extension/MIME policy, using the actual Windows URI resolver.\n"
+  },
+  {
+    "originalStart": 2110,
+    "originalEnd": 2397,
+    "preparedStart": 1649,
+    "preparedEnd": 1708,
+    "original": "        value = video || withContext(Dispatchers.IO) {\n            if (uri.startsWith(\"content:\")) {\n                runCatching { context.contentResolver.getType(Uri.parse(uri))?.startsWith(\"video/\") == true }\n                    .getOrDefault(false)\n            } else false\n        }\n",
+    "prepared": "        value = video || environment.media.isVideoUri(uri)\n"
+  },
+  {
+    "originalStart": 2403,
+    "originalEnd": 4032,
+    "preparedStart": 1714,
+    "preparedEnd": 1894,
+    "original": "    if (resolvedVideo) {\n        val player = remember(context, uri) {\n            ExoPlayer.Builder(context).build().apply {\n                volume = 0f\n                repeatMode = Player.REPEAT_MODE_ONE\n                setMediaItem(MediaItem.fromUri(Uri.parse(uri)))\n                prepare()\n            }\n        }\n        DisposableEffect(player) { onDispose { player.release() } }\n        SideEffect { player.playWhenReady = playing }\n        AndroidView(\n            modifier = modifier,\n            factory = {\n                (LayoutInflater.from(it).inflate(R.layout.wallpaper_video, null) as PlayerView).apply {\n                    useController = false\n                    this.player = player\n                    isFocusable = false\n                    isClickable = false\n                    importantForAccessibility = android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO\n                }\n            },\n            update = { it.player = player },\n            onRelease = { it.player = null },\n        )\n    } else {\n        var animation by remember(uri) { mutableStateOf<Animatable?>(null) }\n        DisposableEffect(animation, playing) {\n            val current = animation\n            if (playing) current?.start() else current?.stop()\n            onDispose { current?.stop() }\n        }\n        AsyncImage(\n            model = imageModel,\n            contentDescription = null,\n            contentScale = ContentScale.Crop,\n            alignment = alignment,\n            modifier = modifier,\n            onSuccess = { animation = it.result.image.asDrawable(context.resources) as? Animatable },\n        )\n    }\n",
+    "prepared": "    // Required physical carrier owns the same existing Root media lease/image actor.\n    environment.media.wallpaper(uri, imageModel, alignment, playing, resolvedVideo, modifier)\n"
+  }
+]

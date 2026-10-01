@@ -1,0 +1,28 @@
+{
+  "snapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-39",
+  "manifestSha": "4840845d18a6fd1171c32a03ba397306a0f509b6510ca9544ceac935befe46ae",
+  "orderedCpSha": "e9b8db57c428c214b243e2ea41761d0745c3b48ff386fe8d38901d892760fd8f",
+  "cpEntries": 97,
+  "preparedOverrides": [],
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-four-page-aggregate-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeEmbeddedLifetime.kt",
+      "sha256Bytes": "1aeb84aa6a9746fefd1a296242c53d73713f8101457a7394f7b9b1828458c3f0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-four-page-aggregate-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopHomeGalleryBindings.kt",
+      "sha256Bytes": "8d3fae0ec31c64e4d6160525efd5eaefb94f56716957dae728c1857d5db752f3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-four-page-aggregate-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalHomeEmbeddedAggregate.kt",
+      "sha256Bytes": "af1a01f2059d4a549bebb349b199bb77fe24586900aec178ebe74d8c857695be"
+    }
+  ],
+  "explicitNewCandidate": null,
+  "RootMounted": false,
+  "actualUi": false,
+  "actualHttp": false,
+  "compileExit": 0,
+  "candidateClassCount": 43,
+  "classOverlap": []
+}

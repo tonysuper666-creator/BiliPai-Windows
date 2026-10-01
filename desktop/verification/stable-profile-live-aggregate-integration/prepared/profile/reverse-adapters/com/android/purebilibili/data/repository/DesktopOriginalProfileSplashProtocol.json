@@ -1,0 +1,50 @@
+[
+  {
+    "originalStart": 108,
+    "originalEnd": 167,
+    "preparedStart": 108,
+    "preparedEnd": 108,
+    "original": "import com.android.purebilibili.core.network.NetworkModule\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 307,
+    "originalEnd": 333,
+    "preparedStart": 248,
+    "preparedEnd": 368,
+    "original": "object SplashRepository {\n",
+    "prepared": "internal class DesktopOriginalProfileSplashProtocol(private val api: com.android.purebilibili.core.network.SplashApi) {\n"
+  },
+  {
+    "originalStart": 394,
+    "originalEnd": 440,
+    "preparedStart": 429,
+    "preparedEnd": 429,
+    "original": "    private val api = NetworkModule.splashApi\n",
+    "prepared": ""
+  },
+  {
+    "originalStart": 1797,
+    "originalEnd": 1797,
+    "preparedStart": 1786,
+    "preparedEnd": 1878,
+    "original": "",
+    "prepared": "            } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled\n"
+  },
+  {
+    "originalStart": 1883,
+    "originalEnd": 1919,
+    "preparedStart": 1964,
+    "preparedEnd": 2031,
+    "original": "                e.printStackTrace()\n",
+    "prepared": "                // Root diagnostics controls exception disclosure.\n"
+  },
+  {
+    "originalStart": 3235,
+    "originalEnd": 3268,
+    "preparedStart": 3347,
+    "preparedEnd": 3472,
+    "original": "        } catch (e: Exception) {\n",
+    "prepared": "        } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled\n            } catch (e: Exception) {\n"
+  }
+]

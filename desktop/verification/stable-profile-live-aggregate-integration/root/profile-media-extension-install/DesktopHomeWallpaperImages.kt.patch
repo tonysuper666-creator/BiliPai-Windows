@@ -1,0 +1,58 @@
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt
+index c5e954e5..61d7c7a1 100644
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt
+@@ -3,9 +3,12 @@ package com.bilipai.desktop.ui
+ import androidx.compose.foundation.Canvas
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.Alignment
+ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+ import androidx.compose.ui.graphics.nativeCanvas
+ import androidx.compose.ui.layout.ContentScale
++import androidx.compose.ui.platform.LocalLayoutDirection
++import androidx.compose.ui.unit.IntSize
+ import androidx.lifecycle.Lifecycle
+ import androidx.lifecycle.compose.LocalLifecycleOwner
+ import androidx.lifecycle.compose.currentStateAsState
+@@ -18,6 +21,7 @@ import java.io.ByteArrayOutputStream
+ import java.net.URI
+ import java.nio.file.Files
+ import java.nio.file.Path
++import kotlin.math.roundToInt
+ 
+ /** Original extension policy + real Windows file MIME. Android content: requires a real migrated file chooser URI. */
+ internal fun desktopHomeWallpaperIsVideo(uri: String, fileForUri: (String) -> Path?): Boolean =
+@@ -37,7 +41,8 @@ internal fun desktopHomeWallpaperFile(uri: String): Path? {
+ /** Original static AsyncImage model/crop + actual GIF/WebP codec animation, paused with the same lifecycle/setting. */
+ @Composable
+ internal fun DesktopHomeWallpaperImages(owner: DesktopHomeMediaLifetime, uri: String, imageModel: Any,
+-    playbackEnabled: Boolean, modifier: Modifier, fileForUri: (String) -> Path?, feedback: (String) -> Unit) {
++    playbackEnabled: Boolean, modifier: Modifier, fileForUri: (String) -> Path?, feedback: (String) -> Unit,
++    alignment: Alignment = Alignment.Center) {
+     var animation by remember(owner, uri) { mutableStateOf<DesktopAnimatedSkinImage?>(null) }
+     val feedbackNow by rememberUpdatedState(feedback)
+     LaunchedEffect(owner, uri) {
+@@ -80,16 +85,20 @@ internal fun DesktopHomeWallpaperImages(owner: DesktopHomeMediaLifetime, uri: St
+         }
+     }
+     val current = animation
+-    if (current == null) AsyncImage(model = imageModel, contentDescription = null, contentScale = ContentScale.Crop, modifier = modifier)
++    val direction = LocalLayoutDirection.current
++    if (current == null) AsyncImage(model = imageModel, contentDescription = null, contentScale = ContentScale.Crop,
++        alignment = alignment, modifier = modifier)
+     else Canvas(modifier) {
+         if (owner.isOwned() && size.width > 0f && size.height > 0f) drawIntoCanvas { composeCanvas ->
+             val canvas = composeCanvas.nativeCanvas
+             val scale = maxOf(size.width / current.width, size.height / current.height)
+             val width = current.width * scale; val height = current.height * scale
++            val offset = alignment.align(IntSize(width.roundToInt(), height.roundToInt()),
++                IntSize(size.width.roundToInt(), size.height.roundToInt()), direction)
+             canvas.save()
+             try {
+                 canvas.clipRect(Rect.makeWH(size.width, size.height))
+-                current.render(canvas, Rect.makeXYWH((size.width - width) / 2f, (size.height - height) / 2f, width, height), seconds)
++                current.render(canvas, Rect.makeXYWH(offset.x.toFloat(), offset.y.toFloat(), width, height), seconds)
+             } finally { canvas.restore() }
+         }
+     }

@@ -1,0 +1,9 @@
+ORIGIN com.bilipai.desktop.ui.DesktopHomeEmbeddedLifetime file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-41/main-kotlin.jar
+ORIGIN com.bilipai.desktop.ui.DesktopHomeRetainedGate file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-41/main-kotlin.jar
+ORIGIN com.bilipai.desktop.data.DesktopSessionStore file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-41/main-kotlin.jar
+ORIGIN com.android.purebilibili.feature.partition.PartitionFeedViewModel file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-41/main-kotlin.jar
+PASS actual original partition instance and admitted request survive UI coverage
+PASS closing aggregate drains only descendant tasks, leaves shared Home/parent active
+PASS same-MID credential epoch change retires old embedded page admission
+PASS Store-to-page commit completes before local close; future publication rejected
+RESULT 4 lifecycle groups; actual39 original VM/gate/temp store; aggregate UI/Runtime/gallery/network=false

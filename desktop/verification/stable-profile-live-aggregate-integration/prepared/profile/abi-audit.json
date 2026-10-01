@@ -1,0 +1,12 @@
+{
+  "actualSnapshot": 39,
+  "actualProductEntries": 97,
+  "candidateClasses": 180,
+  "candidateMethods": 2035,
+  "classFqnOverlap": [],
+  "samePackagePublicStaticMethodOverlap": [],
+  "invalidJvmMethodNames": [],
+  "jvmLoadedPreparedClasses": 180,
+  "runtimeSourceOverrides": 0,
+  "actualRootWindowOrNetwork": false
+}

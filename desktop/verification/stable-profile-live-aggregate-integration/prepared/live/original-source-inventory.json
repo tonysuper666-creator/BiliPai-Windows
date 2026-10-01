@@ -1,0 +1,45 @@
+{
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "sha256LF": "c391e12ba7e24a29cecf7c13d3593365029b2dbad19b8bb2a7ec48b8e28c0ba0",
+      "physicalLines": 491
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "sha256LF": "09f5cb59863395387ca7b40805e30e633f1aa2f74bb593bc12104e35dd9b53f8",
+      "physicalLines": 526
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "sha256LF": "e71df3f0eb772d756399a4f035e3a8477411f0ebf6bb6525142f45ba65b53cc7",
+      "physicalLines": 391
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "sha256LF": "75bc6e38c891944425834a188973a314abf4c4d24a7fbbf50c6d44560ad32b59",
+      "physicalLines": 225
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt",
+      "sha256LF": "f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf",
+      "physicalLines": 66
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "sha256LF": "9cb78811e16b872a943744544074629d406c48af08c917ca252aa54bdd699e55",
+      "physicalLines": 767
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "physicalLines": 8396
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256LF": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "physicalLines": 4778
+    }
+  ]
+}

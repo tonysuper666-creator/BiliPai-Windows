@@ -1,0 +1,26 @@
+{
+  "sources": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt",
+      "sha256Bytes": "da89ab5b4193a9ec8a1c5a2645a1320514e44fc7798c77254aedd82092beda41",
+      "desiredSha256Bytes": "4151961c7936366bae2edd733243241c9e4b1a6f7095cab6f6a34dcce78b5f31"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt",
+      "sha256Bytes": "f73b775f131559586b8186e2d5bef29c7cc80afa51f28ee4ee305c62754bf879",
+      "desiredSha256Bytes": "9071a2667c477778d64c67b5231eb94a8388baeb51919867ae799dd80ed8e33a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalProfileMedia.kt",
+      "newManualSource": true,
+      "desiredSha256Bytes": "b105869099f365d3b284f757284fcbac4eaa707cf3ce24448b0f87056d596e7a"
+    }
+  ],
+  "newDependencies": 0,
+  "newOriginalIdentities": 0,
+  "sameExistingMediaOwner": true,
+  "originalWallpaperVideoCenteredZoom": true,
+  "originalWallpaperImageGifAlignment": true,
+  "originalSkinStartedLifecycle": true,
+  "actualRuntimeProofPending": true
+}

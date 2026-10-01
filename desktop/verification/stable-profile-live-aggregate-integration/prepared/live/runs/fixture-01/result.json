@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "assertions": 25,
+  "groups": 3,
+  "transport": "Java Proxy original API, no socket",
+  "settings": "Actual same real temporary DesktopPluginStore and original key/tag DTO; candidate original decoder facade",
+  "prospectiveLiveOnly": true,
+  "actualRootAccountIntegration": false,
+  "productionClassOverrides": 0,
+  "explicitReferenceOnlySharedDeclarations": 2,
+  "HTTP": false,
+  "GUI": false,
+  "HWND": false,
+  "Gradle": false,
+  "actualRuntimeEntries": 97,
+  "candidateJarSha256Bytes": "6d4afc73eed70f487aff14851b7c5fd6abd3a5e12a9aea38e6089e0df8a170ef",
+  "fixtureJarSha256Bytes": "ee24b1fe09a2714f0c5298e3b74f7e5514220a8c10cb9331499754d787a86b4c",
+  "observedClassOrigins": [
+    "ORIGIN com.bilipai.desktop.ui.DesktopLiveNavigationBinding file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-home-live-navigation-parity/runs/compile04/prepared-live-navigation.jar 348260c1d8a2882e59b66427e5642f352404ad9f14af7c4fe7af673992644780",
+    "ORIGIN com.android.purebilibili.data.repository.DesktopOriginalLiveSearchProtocol file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-home-live-navigation-parity/runs/compile04/prepared-live-navigation.jar a42e5b8367b39ed13f45407b6ad723f430f95d1063197b7ca24daa9f2fbc04e8",
+    "ORIGIN com.android.purebilibili.data.repository.DesktopDynamicUpSearch file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar 60c8a807f21d0a6da1ed2c70e5753201c6521306bea84ec23533564e4c444fc5",
+    "ORIGIN com.android.purebilibili.data.repository.DesktopOriginalLiveListProtocol file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar d97b4854dcd2657b4b0e365f2e27ffefae71d1ed57a89cae071c9ae3d8b2c0d1",
+    "ORIGIN com.android.purebilibili.data.repository.DesktopOriginalHomeLiveProtocol file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar e894fdcb9a236a45a8fc331d20962af1d4512b6d749ddb40d9fef8c4c283ce0a",
+    "ORIGIN com.bilipai.desktop.ui.DesktopHomeProtocolEnvironment file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar 069bbde1c28a3d8dead7720d1d1ab20a79807ff3cb2bf907161f6b902aa24590",
+    "ORIGIN com.bilipai.desktop.plugins.DesktopPluginStore file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar d02a8d4305804bafb989a2fc219bfd17e787932c1178d9c5b91e1554cbbaa868",
+    "ORIGIN com.android.purebilibili.data.model.response.LiveRoomSearchItem file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar de1f129d83cd123e827f998eb59e703e0b7709bfe71558b69d72bb3dcd3cdd4e",
+    "ORIGIN com.android.purebilibili.data.model.response.SearchUpItem file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar e61dd3446240f8b57c9ba5e5656478571be41a8e29d7e4cd339cf2269805dd5c",
+    "ORIGIN com.android.purebilibili.data.model.response.LiveFavoriteTagEntry file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar 134b559010c96a273671ddcc2b5960e8ed8cd58ea50d6bfa5c382d33ff79e3ba"
+  ]
+}

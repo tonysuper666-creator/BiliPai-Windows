@@ -62,3 +62,4 @@ desktop/verification/stable-web-mask-osd-integration/** -text
 desktop/verification/stable-home-windows-prefs-integration/** -text
 desktop/verification/stable-home-data-pages-integration/** -text
 desktop/verification/stable-category-return-integration/** -text
+desktop/verification/stable-profile-live-aggregate-integration/** -text

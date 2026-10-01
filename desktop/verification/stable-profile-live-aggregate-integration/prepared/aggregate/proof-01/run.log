@@ -1,0 +1,5 @@
+PASS actual original partition instance and admitted request survive UI coverage
+PASS closing aggregate drains only descendant tasks, leaves shared Home/parent active
+PASS same-MID credential epoch change retires old embedded page admission
+PASS Store-to-page commit completes before local close; future publication rejected
+RESULT 4 lifecycle groups; actual39 original VM/gate/temp store; aggregate UI/Runtime/gallery/network=false

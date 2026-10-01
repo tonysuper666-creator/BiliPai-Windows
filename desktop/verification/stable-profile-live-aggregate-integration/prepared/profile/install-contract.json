@@ -1,0 +1,43 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\tools\\extract-upstream-profile-main.py",
+      "target": "desktop/tools/extract-upstream-profile-main.py",
+      "sha256Bytes": "bdac97838189ea341d962499a0275214e8221d3795c6f0d0c2a5ae41f3d37b66",
+      "sha256LF": "bdac97838189ea341d962499a0275214e8221d3795c6f0d0c2a5ae41f3d37b66",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileBindings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileBindings.kt",
+      "sha256Bytes": "af622378fc9104554d7913c5843ebde63ec53d8af68791b96e7008e67c3cdc0d",
+      "sha256LF": "af622378fc9104554d7913c5843ebde63ec53d8af68791b96e7008e67c3cdc0d",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalProfilePreferences.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalProfilePreferences.kt",
+      "sha256Bytes": "08752986aa6d2606a14feca8b01b8a3ae872d52204d2c4ecd0d07dccffb15429",
+      "sha256LF": "08752986aa6d2606a14feca8b01b8a3ae872d52204d2c4ecd0d07dccffb15429",
+      "newSoleDefinition": true
+    }
+  ],
+  "localSharedSourceHunks": 0,
+  "productionSelectedSources": 10,
+  "wholeOriginalDirectSources": 12,
+  "registryRecipe": "registry-merge-recipe.json",
+  "gradleRecipe": "gradle-tasks.snippet.kts",
+  "requiredCallerRecipe": "ROOT-INTEGRATION.md",
+  "generatedPreparedFilesInstall": false,
+  "jarInstall": false,
+  "newDependencies": 0,
+  "requiredRootBoundaries": [
+    "actual retained Profile nav/account epoch and 17 actions",
+    "sameStore verified playback MID and playback URL authorization consumer/invalidation",
+    "sameRoot original live theme setter",
+    "sameRoot physical chooser/file/download/gallery/chrome ports",
+    "same existing Home media lifetime with real alignment/repeat/GIF support"
+  ],
+  "rootMounted": false
+}

@@ -72,7 +72,7 @@ def main():
  origin=BASE+'core/util/FeedRefreshPaging.kt';emit('com/android/purebilibili/core/util/FeedRefreshPaging.kt',raw[origin],origin,[])
  origin=BASE+'core/ui/skeleton/ContentLoadingSkeletons.kt';original=raw[origin]
  header=original[:original.index('/**')]
- bodies=[fn(original,n)for n in ('MediaListRowSkeleton','UserListRowSkeleton','ContentMediaListSkeleton','ContentVideoGridSkeleton','ContentVideoGridSkeletonFixedColumns')]
+ bodies=[fn(original,n)for n in ('MediaListRowSkeleton','UserListRowSkeleton','ContentMediaListSkeleton','ContentVideoGridSkeleton','ContentVideoGridSkeletonFixedColumns','ContentCategoryGridSkeleton')]
  emit('com/android/purebilibili/core/ui/skeleton/DesktopOriginalMediaListSkeleton.kt',header+'\n\n'.join(bodies)+'\n',origin,[])
  origin=BASE+'feature/common/VideoLazyKeyPolicy.kt';emit('com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt',raw[origin],origin,[])
  (out/'partition-producer-inventory.json').write_text(json.dumps(dict(upstreamCommit='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589',pins=PINS,emitted=rows,completePartitionInverseByteEqual=True,sharedSkeletonPulseHasOneExistingProducer=True),indent=2)+'\n',encoding='utf-8')

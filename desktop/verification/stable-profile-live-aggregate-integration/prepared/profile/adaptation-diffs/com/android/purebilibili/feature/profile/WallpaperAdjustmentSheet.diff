@@ -1,0 +1,56 @@
+--- app/src/main/java/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt
++++ com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt
+@@ -1,7 +1,8 @@
+ package com.android.purebilibili.feature.profile
++import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment
++import com.bilipai.desktop.ui.rememberDesktopProfileMediaPicker
+ 
+ import coil3.request.crossfade
+-import coil3.request.allowHardware
+ 
+ import com.android.purebilibili.core.ui.components.AppSegmentOption
+ import com.android.purebilibili.core.ui.components.AppThemeAdaptiveTabRow
+@@ -21,7 +22,7 @@
+ import androidx.compose.ui.graphics.Brush
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.compose.ui.platform.LocalContext
++import coil3.compose.LocalPlatformContext
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+@@ -53,13 +54,14 @@
+     onSave: (mobileBias: Float, tabletBias: Float) -> Unit,
+     onDismiss: () -> Unit
+ ) {
+-    val context = LocalContext.current
++    val platform = LocalDesktopProfileEnvironment.current
++    val context = LocalPlatformContext.current
+     var previewLoaded by remember(imageUri) { mutableStateOf(false) }
+     var previewFailed by remember(imageUri) { mutableStateOf(false) }
+     val previewRequest = remember(context, imageUri) {
+         ImageRequest.Builder(context)
+             .data(imageUri)
+-            .allowHardware(false)
++            
+             .crossfade(true)
+             .build()
+     }
+@@ -159,7 +161,7 @@
+                             onError = {
+                                 previewLoaded = false
+                                 previewFailed = true
+-                                Logger.w("WallpaperAdjustment", "Wallpaper preview failed", it.result.throwable)
++                                platform.platform.reportWallpaperPreviewFailure(it.result.throwable)
+                             },
+                             contentDescription = null,
+                             alignment = androidx.compose.ui.BiasAlignment(0f, currentBias),
+@@ -370,7 +372,7 @@
+                     ) {
+                         com.android.purebilibili.core.ui.wallpaper.WallpaperMedia(
+                             uri = imageUri,
+-                            imageModel = ImageRequest.Builder(LocalContext.current)
++                            imageModel = ImageRequest.Builder(LocalPlatformContext.current)
+                                 .data(imageUri)
+                                 .crossfade(true)
+                                 .build(),

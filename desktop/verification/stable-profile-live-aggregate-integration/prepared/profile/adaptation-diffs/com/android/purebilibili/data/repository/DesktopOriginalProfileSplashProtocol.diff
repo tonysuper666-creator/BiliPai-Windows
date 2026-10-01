@@ -1,0 +1,40 @@
+--- app/src/main/java/com/android/purebilibili/data/repository/SplashRepository.kt
++++ com/android/purebilibili/data/repository/DesktopOriginalProfileSplashProtocol.kt
+@@ -1,14 +1,12 @@
+ package com.android.purebilibili.data.repository
+ 
+ import com.android.purebilibili.core.network.AppSignUtils
+-import com.android.purebilibili.core.network.NetworkModule
+ import com.android.purebilibili.data.model.response.SplashItem
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+ 
+-object SplashRepository {
++internal class DesktopOriginalProfileSplashProtocol(private val api: com.android.purebilibili.core.network.SplashApi) {
+     // 使用 NetworkModule 直接获取 API 实例 (与 VideoRepository 保持一致)
+-    private val api = NetworkModule.splashApi
+ 
+     /**
+      * 获取官方壁纸列表
+@@ -40,9 +38,10 @@
+                         return@withContext Result.success(items)
+                     }
+                 }
++            } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled
+             } catch (e: Exception) {
+                 // brand/list 失败，回退到 splash/list
+-                e.printStackTrace()
++                // Root diagnostics controls exception disclosure.
+             }
+             
+             // 回退到原有 splash/list API
+@@ -70,7 +69,8 @@
+             } else {
+                 Result.failure(Exception(response.message))
+             }
+-        } catch (e: Exception) {
++        } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled
++            } catch (e: Exception) {
+             Result.failure(e)
+         }
+     }

@@ -1,0 +1,171 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources
+> Task :extractBgmDetail
+> Task :extractCommentFraudProtocol
+> Task :extractFrostedAudioRenderer
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 93}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform UP-TO-DATE
+> Task :extractImageSaveSettingsUi UP-TO-DATE
+> Task :extractLinkedDock
+> Task :extractNativeMusicRoot UP-TO-DATE
+> Task :extractOriginalDanmakuListMenu
+> Task :extractOriginalDanmakuSettings
+
+> Task :extractOriginalFavoriteFolder
+generated original favorite drawer, policy, protocol and session closure
+
+> Task :extractOriginalFavorites
+
+> Task :extractOriginalHomeBangumiPage
+Complete original Home Bangumi Hub emitted
+
+> Task :extractOriginalHomePage
+57 source outputs
+original settings keys 82
+original Home outputs 71
+
+> Task :extractOriginalHomePartition
+Complete original Partition Screen/Content/VM and shared media skeleton produced
+
+> Task :extractOriginalHomeProtocols UP-TO-DATE
+> Task :extractOriginalHomeViewModel UP-TO-DATE
+> Task :extractOriginalLiveList
+> Task :extractOriginalLiveNavigation
+> Task :extractOriginalProfileMain
+
+> Task :extractOriginalSubscriptionPage
+Original Subscription UI outputs 1
+
+> Task :extractPlaybackSettings UP-TO-DATE
+> Task :extractPlaybackWatchdogs UP-TO-DATE
+> Task :extractSharedLiquidTabs
+> Task :extractStableCollectionSheet
+> Task :extractStableVideoMetadata
+> Task :extractStableWeeklySeries UP-TO-DATE
+> Task :extractSubtitleLoadPolicy UP-TO-DATE
+
+> Task :extractUpstreamApi
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\api\com\android\purebilibili\core\network\DesktopUpstreamApi.kt
+
+> Task :extractUpstreamAppearance UP-TO-DATE
+> Task :extractUpstreamAudio UP-TO-DATE
+> Task :extractUpstreamDiscovery UP-TO-DATE
+> Task :extractUpstreamBlockedUp UP-TO-DATE
+> Task :extractUpstreamSettingsSearch UP-TO-DATE
+> Task :extractUpstreamSettingsCategories UP-TO-DATE
+> Task :extractUpstreamBlockedListUi UP-TO-DATE
+> Task :extractUpstreamCast UP-TO-DATE
+> Task :extractUpstreamComponents UP-TO-DATE
+> Task :extractUpstreamCrashPrompt UP-TO-DATE
+
+> Task :extractUpstreamDanmaku
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\danmaku\com\android\purebilibili\feature\video\danmaku\AdvancedDanmakuData.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\danmaku\com\android\purebilibili\feature\video\danmaku\DesktopAdvancedDanmakuParser.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\danmaku\com\android\purebilibili\data\repository\DesktopDanmakuSegmentPolicy.kt
+
+> Task :extractUpstreamDiagnostics
+8
+
+> Task :extractUpstreamDynamicDetail UP-TO-DATE
+> Task :extractUpstreamDynamicDetailContainer UP-TO-DATE
+> Task :extractUpstreamDynamicDetailProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicEditor
+> Task :extractUpstreamSettingsHome UP-TO-DATE
+> Task :extractUpstreamDynamicSettings UP-TO-DATE
+> Task :extractUpstreamDynamicTabs UP-TO-DATE
+> Task :extractUpstreamDynamicFollow UP-TO-DATE
+> Task :extractUpstreamDynamicFullCard UP-TO-DATE
+> Task :extractUpstreamDynamicReply UP-TO-DATE
+> Task :extractUpstreamDynamicReplyProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicStaticImageCodec UP-TO-DATE
+> Task :extractUpstreamHomeCards UP-TO-DATE
+> Task :extractUpstreamHomeFullCard UP-TO-DATE
+> Task :extractUpstreamJs UP-TO-DATE
+> Task :extractUpstreamLogin UP-TO-DATE
+> Task :extractUpstreamMedia UP-TO-DATE
+> Task :extractUpstreamNetworkProxy UP-TO-DATE
+> Task :extractUpstreamPackages UP-TO-DATE
+> Task :extractUpstreamPlayback UP-TO-DATE
+> Task :extractUpstreamPlugins UP-TO-DATE
+> Task :extractUpstreamPreferences UP-TO-DATE
+> Task :extractUpstreamSearch UP-TO-DATE
+> Task :extractUpstreamSettings UP-TO-DATE
+> Task :extractUpstreamSettingsEntries UP-TO-DATE
+> Task :extractUpstreamSettingsPrivacy UP-TO-DATE
+> Task :extractUpstreamSettingsStorageEntries UP-TO-DATE
+> Task :extractUpstreamSpace UP-TO-DATE
+> Task :extractUpstreamSpaceContributions UP-TO-DATE
+> Task :extractUpstreamSpaceImagePreviews UP-TO-DATE
+> Task :extractUpstreamSpaceOverview UP-TO-DATE
+> Task :extractUpstreamStoryTopic UP-TO-DATE
+> Task :extractVideoCommentUi
+> Task :convertXmlValueResourcesForMain NO-SOURCE
+> Task :copyNonXmlValueResourcesForMain NO-SOURCE
+> Task :prepareComposeResourcesTaskForMain NO-SOURCE
+> Task :generateResourceAccessorsForMain SKIPPED
+> Task :generateActualResourceCollectorsForMain SKIPPED
+> Task :generateComposeResClass SKIPPED
+> Task :fetchJsWorkerJdk UP-TO-DATE
+> Task :prepareJsWorker UP-TO-DATE
+
+> Task :prepareNativeDiagnosticShare
+{"passed": true, "headers": 369, "searchedLibraries": 11, "compilerFiles": 64, "dllSha256Bytes": "77e01c10bd8425bd07ad69a007a755b0a0588d5da0eb95b53a8cc9e119741a0b"}
+{"passed": true, "freshBuild": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\2d8cbabb-5b27-4eda-890a-b46d5219a58e", "approvedSourceManifestSha256Bytes": "87ea6bb475187e2fda34d3583b39e09d7c3bb3a9689baaefda85097a90a35658", "sourceSha256Bytes": "19ac663f66cb6d9eb585a4dd8e2651c9d735a8ee48142ab8eed891bfe0557418", "compilerDriverSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861", "expectedDllSha256Bytes": "77e01c10bd8425bd07ad69a007a755b0a0588d5da0eb95b53a8cc9e119741a0b", "stagedDllSha256Bytes": "77e01c10bd8425bd07ad69a007a755b0a0588d5da0eb95b53a8cc9e119741a0b", "actualBuildGraph": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\2d8cbabb-5b27-4eda-890a-b46d5219a58e\\producer-input-graph.json", "actualBuildGraphSha256Bytes": "80e70ab5aed12aaf6e124aa820ca7a2c9e1f81c75e03c41f0ab22e17f28f09ea", "cachedOutputTrusted": false, "freshCompilationOnEveryInvocation": true, "resolvedGraphMatchesReviewedBuild": true, "publicReleaseAuthorizationVerified": false}
+
+> Task :prepareOriginalCategoryPage
+Original Category outputs 1
+
+> Task :prepareOriginalHomeReturnNavigation
+
+> Task :verifyAppearanceDependencies
+Verified eight fixed appearance runtime dependencies and six source notices.
+
+> Task :verifyDynamicMediaDependencies
+Verified three approved image metadata runtime dependencies and six Apache notices.
+
+> Task :verifySettingsSearchDependencies
+Verified original pinyin4j runtime and all five source/license files; POM/source license conflict retained.
+
+> Task :extractStableVideoVotes
+> Task :verifyUpstreamDynamicDetailReplyProtocol UP-TO-DATE
+> Task :verifyUpstreamDynamicEditorProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicGalleryMotionPhoto UP-TO-DATE
+> Task :verifyUpstreamDynamicMedia UP-TO-DATE
+
+> Task :miuix5157:verifyPinnedSource
+Exact Miuix5c91 pinned source PASS: 225 files; 195 compiled source files
+
+> Task :miuix5157:bakeSquircleSdf UP-TO-DATE
+> Task :miuix5157:kmpPartiallyResolvedDependenciesChecker
+> Task :miuix5157:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :miuix5157:compileKotlinJvm UP-TO-DATE
+> Task :miuix5157:compileJvmMainJava NO-SOURCE
+> Task :miuix5157:jvmProcessResources NO-SOURCE
+> Task :miuix5157:processJvmMainResources SKIPPED
+> Task :miuix5157:jvmMainClasses UP-TO-DATE
+> Task :miuix5157:jvmJar UP-TO-DATE
+> Task :assembleMainResources UP-TO-DATE
+> Task :prepareOriginalPluginResources
+> Task :processResources
+
+> Task :compileKotlin
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/profile-main/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt:89:22 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/profile-main/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt:77:22 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/profile-main/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt:285:22 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt:146:85 Unnecessary safe call on a non-null receiver of type 'DesktopHomeMediaLease'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt:93:40 'val Canvas.nativeCanvas: Canvas' is deprecated. Naming alignment to avoid ambiguity: use [Canvas.skiaCanvas] extension instead.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveNavigationBindings.kt:52:51 Unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopLiveNavigationRequest'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveNavigationBindings.kt:59:23 Unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopLiveNavigationRequest'.
+
+> Task :compileJava UP-TO-DATE
+> Task :classes
+
+[Incubating] Problems report is available at: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 57s
+98 actionable tasks: 37 executed, 61 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html

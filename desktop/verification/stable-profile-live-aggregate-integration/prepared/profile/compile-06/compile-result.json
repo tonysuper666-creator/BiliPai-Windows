@@ -1,0 +1,111 @@
+{
+  "exitCode": 0,
+  "sources": 24,
+  "sourcePins": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\store\\SplashWallpaperHistoryPolicy.kt",
+      "sha256Bytes": "f18f960603e1d8b2fc2d12e1429209e3e98fb10c55817a603a35cc58b24f372d"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\ui\\TopReadabilityChrome.kt",
+      "sha256Bytes": "aa046cdbabbed0e6cc983756b0b524e5bd9eff5caa03572ffe963de24e27ad1b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\ui\\wallpaper\\ProfileWallpaperTransformPolicy.kt",
+      "sha256Bytes": "d196cef4d2e96343ce7d42b2147c9ffd2793458e8d6758a65942fe44b64f16f3"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\core\\ui\\wallpaper\\WallpaperMedia.kt",
+      "sha256Bytes": "cb90b4d3917c1cb58af73a64784aaf1dbd0783f89fd404ac6c9cc6595846da52"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalProfileSplashProtocol.kt",
+      "sha256Bytes": "5e631e23b24e593207b273ca90886bed4c0bdc571b0ce51d9a0992ec4800f1d0"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\OfficialWallpaperSelectionPolicy.kt",
+      "sha256Bytes": "b0f8d1a53099f1d0e6694c941479cf645b36533ce7fee931bab5245a8b7654c8"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\OfficialWallpaperSheet.kt",
+      "sha256Bytes": "6da67158a7521969d4f340e4656addbcd846a9ef5967a3753d89f295e4fa9561"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\ProfileChromePolicy.kt",
+      "sha256Bytes": "0a26a4799c92fdeaf1f10b470ab85aca7f6dd12a269add128c55a836752348ef"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\ProfileDashboardPolicy.kt",
+      "sha256Bytes": "88173befd9eac7db213b6e771e34ba9960a99a8b9e6f187fc01bc4348bcf7e3a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\ProfileFavoriteFolderShortcutPolicy.kt",
+      "sha256Bytes": "7e170e76dcea8912827b0de91e385be9dafca82587cf5659fd1487433a8a9bba"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\ProfileLayoutPolicy.kt",
+      "sha256Bytes": "756136f81ec01df0575822ab2168851ffc43b34256eac13145adeb849d8319a1"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\ProfileLoadingSkeleton.kt",
+      "sha256Bytes": "747fc6ae8142a0867159eeaeb0fa817943478ec30c32975099bcebc3a2c26ac4"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\ProfileScreen.kt",
+      "sha256Bytes": "91813b7af6a18ff002bb4b057e1719b17c5da03a62367c71926e25fdebf2bec3"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\ProfileSpacePolicy.kt",
+      "sha256Bytes": "d7c2e8857b7006f7b11a97b27712f98a4b642342c22f75b190ccc6c93600de7e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\ProfileViewModel.kt",
+      "sha256Bytes": "4e26e61d7895b15eb03c22c56daec33dd6d291606d5fa1537f33e723f6d08e6b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\SplashWallpaperRandomPoolPolicy.kt",
+      "sha256Bytes": "693bf431e9f34e8ae87f6fa785d6259b58c75921785294f74c30b8df81c663d2"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\profile\\WallpaperAdjustmentSheet.kt",
+      "sha256Bytes": "b046a2116230ba8c99e1f91581cd14af33f0b3a9cf1e5a9a172a043a07c6b6d6"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalProfileTripleSuccessAnimation.kt",
+      "sha256Bytes": "58917f6b114aa0b1b517a9701459df4994c5813156c3a3665d82680ef9c38eca"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\feedback\\TripleActionMotionSpec.kt",
+      "sha256Bytes": "c1adf12dc3a718cd46b75c83bb7e767e1207e11a58f0abe7bb749157cfbfe7c8"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\feedback\\VideoActionFeedbackPolicy.kt",
+      "sha256Bytes": "8be87ce3d877b5ad25793847ec0664d1196d8b5fe0abe700d2e29e0440a242c5"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\section\\DesktopOriginalProfileTripleProgressIcon.kt",
+      "sha256Bytes": "94cee828dc5b1c7bc113ed27133d88a88caffe78b345526b073f413da74bab6d"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\generated\\com\\bilipai\\desktop\\ui\\DesktopOriginalProfileSpaceAggregate.kt",
+      "sha256Bytes": "a7c0c2e3c0fc64054e8d4c7b923233b44f1b08eba8d3fba69509129fe27e2116"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalProfilePreferences.kt",
+      "sha256Bytes": "08752986aa6d2606a14feca8b01b8a3ae872d52204d2c4ecd0d07dccffb15429"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopProfileBindings.kt",
+      "sha256Bytes": "af622378fc9104554d7913c5843ebde63ec53d8af68791b96e7008e67c3cdc0d"
+    }
+  ],
+  "actualProductEntries": 97,
+  "declaredProspectiveEntries": 0,
+  "runtimeSourceOverrides": 0,
+  "classFqnOverlap": [],
+  "classes": 180,
+  "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-profile-main-parity\\compile-06\\original-profile-main.jar",
+  "jarSha256Bytes": "ad8004729b3a496de745504ee74bc180d0eaa3ea7d00983f44f90b0cc172f2ad",
+  "sharedGradleRun": false,
+  "actualRootRuntime": false
+}

@@ -1,0 +1,27 @@
+desktop\.local\stable-home-live-navigation-parity\runs\compile01\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopLiveNavigationBindings.kt:134:67: error: argument type mismatch: actual type is 'String', but 'Int' was expected.
+        owned { live.getAreaRoomsPage(parentAreaId, areaId, page, sortType, areaTitle) }
+                                                                  ^^^^^^^^
+desktop\.local\stable-home-live-navigation-parity\runs\compile01\source-inputs\prepared\generated\com\android\purebilibili\feature\live\LiveAreaDetailScreen.kt:46:50: error: unresolved reference 'ContentVideoGridSkeletonFixedColumns'.
+import com.android.purebilibili.core.ui.skeleton.ContentVideoGridSkeletonFixedColumns
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-live-navigation-parity\runs\compile01\source-inputs\prepared\generated\com\android\purebilibili\feature\live\LiveAreaDetailScreen.kt:277:30: error: unresolved reference 'ContentVideoGridSkeletonFixedColumns'.
+                isLoading -> ContentVideoGridSkeletonFixedColumns(
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-live-navigation-parity\runs\compile01\source-inputs\prepared\generated\com\android\purebilibili\feature\live\LiveAreaScreen.kt:53:50: error: unresolved reference 'ContentCategoryGridSkeleton'.
+import com.android.purebilibili.core.ui.skeleton.ContentCategoryGridSkeleton
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-live-navigation-parity\runs\compile01\source-inputs\prepared\generated\com\android\purebilibili\feature\live\LiveAreaScreen.kt:182:26: error: unresolved reference 'ContentCategoryGridSkeleton'.
+            isLoading -> ContentCategoryGridSkeleton(
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-live-navigation-parity\runs\compile01\source-inputs\prepared\generated\com\android\purebilibili\feature\live\LiveFollowingScreen.kt:26:50: error: unresolved reference 'ContentVideoGridSkeletonFixedColumns'.
+import com.android.purebilibili.core.ui.skeleton.ContentVideoGridSkeletonFixedColumns
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-live-navigation-parity\runs\compile01\source-inputs\prepared\generated\com\android\purebilibili\feature\live\LiveFollowingScreen.kt:163:26: error: unresolved reference 'ContentVideoGridSkeletonFixedColumns'.
+            isLoading -> ContentVideoGridSkeletonFixedColumns(
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-live-navigation-parity\runs\compile01\source-inputs\prepared\generated\com\android\purebilibili\feature\live\LiveSearchScreen.kt:61:50: error: unresolved reference 'ContentVideoGridSkeletonFixedColumns'.
+import com.android.purebilibili.core.ui.skeleton.ContentVideoGridSkeletonFixedColumns
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-live-navigation-parity\runs\compile01\source-inputs\prepared\generated\com\android\purebilibili\feature\live\LiveSearchScreen.kt:355:25: error: unresolved reference 'ContentVideoGridSkeletonFixedColumns'.
+                        ContentVideoGridSkeletonFixedColumns(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

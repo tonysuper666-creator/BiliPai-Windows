@@ -1,0 +1,361 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "observedRegistryRows": 871,
+  "observedRegistrySha256Bytes": "d4e50d65c97e1c3d75e2e5d19b10c05f8d9030dc10bc128d57df94c3af816077",
+  "newProductionRows": 19,
+  "existingFeatureMerges": 3,
+  "mergeExistingModeAndFeatures": true,
+  "records": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+      "sha256": "034c92c6622f540400972353e26ec1a61a022151cbb71e7c6ee45f4305617a0c",
+      "sha256Bytes": "1754388a63a4be0fcaa8968ebcd8672eed0b2fb3b39a52698b7207b6eb4f8a1f",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+      "sha256": "a2a08a77fefc78f9cbe41760034e273bb34f5555b65e979f7e12fad147c333a1",
+      "sha256Bytes": "bf5b51f4564aba9f020d83d0153486b5f4b2d9a592e8544181d724b8ee2566b2",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileChromePolicy.kt",
+      "sha256": "0a26a4799c92fdeaf1f10b470ab85aca7f6dd12a269add128c55a836752348ef",
+      "sha256Bytes": "219162c98ab43a6721f6568227257e715ae13203ff87ea974cb295100148f0fc",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileLayoutPolicy.kt",
+      "sha256": "756136f81ec01df0575822ab2168851ffc43b34256eac13145adeb849d8319a1",
+      "sha256Bytes": "4a4bf405b8b7f4e15636b4a9b9c839f6170fe8e20852532a03812f1c6158d620",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileSpacePolicy.kt",
+      "sha256": "d7c2e8857b7006f7b11a97b27712f98a4b642342c22f75b190ccc6c93600de7e",
+      "sha256Bytes": "797b3110685cb1be8decd75800d256af0fe1bed7f827dceb8b8014d7437d6862",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileFavoriteFolderShortcutPolicy.kt",
+      "sha256": "7e170e76dcea8912827b0de91e385be9dafca82587cf5659fd1487433a8a9bba",
+      "sha256Bytes": "2ef2da28d4caa850a7d653051c385b2deb6ef632f853f8646ed8080260032d35",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileDashboardPolicy.kt",
+      "sha256": "88173befd9eac7db213b6e771e34ba9960a99a8b9e6f187fc01bc4348bcf7e3a",
+      "sha256Bytes": "d6c91879db429865bb9cc2c1e8977a05eaea3d99ce0ec8c9be53aa7c13db664d",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt",
+      "sha256": "cb193c0afc53bab41e26dbf97ceaf9ae63664cf365eeb81292e4bc963f468137",
+      "sha256Bytes": "3e85aeb81c73648b1fa3944b469460467d5cf8ab849cd310de8e3dbbcd4d9a5f",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt",
+      "sha256": "0753f850d0feca7412619ad98cbf9a7b9243c51df67d99e6a7bac6032236c59c",
+      "sha256Bytes": "f4c92860344efe4499e3224b5c6d7d94f2bb7e2e6786d15d67f3a14b3fc58f83",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSelectionPolicy.kt",
+      "sha256": "b0f8d1a53099f1d0e6694c941479cf645b36533ce7fee931bab5245a8b7654c8",
+      "sha256Bytes": "6c0812a2b91319f43da5f094ad1aba46ffc800014635f2af0bfac621dfbc57b4",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt",
+      "sha256": "7aa9b8853899b0f4eb71e2e3414d173f8556fbc05ef4f4b56f7bffcfcadd2756",
+      "sha256Bytes": "9ae8526ac12747f33f4afdafa1f43822e73a248dbb8366dc27cfbf823d44b811",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/WallpaperImageImport.kt",
+      "sha256": "9d1d439a42738a9e1b92340e1b5c3e9c2abe5cf578cf3f605a43388f178cbc91",
+      "sha256Bytes": "f02c0f996f227ca8b38f05f019b66907950f50ac935812101fe0857effe28596",
+      "mode": null,
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": true,
+      "newSoleOriginalDefinition": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/SplashWallpaperRandomPoolPolicy.kt",
+      "sha256": "693bf431e9f34e8ae87f6fa785d6259b58c75921785294f74c30b8df81c663d2",
+      "sha256Bytes": "45b742c738ace1b19c4e6a1f170cff4105c5a1f7c3e30020bd6aea74d888f279",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+      "sha256": "8f6f22e673a0b8d11455b2c4762ec72ce98ea5ff68eb270d4f021748c289324b",
+      "sha256Bytes": "c05b6e2c60d08459af568bca145319e4c0a8376cbe2b9fd48e7e9daef99b21f5",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": false
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/ProfileWallpaperTransformPolicy.kt",
+      "sha256": "d196cef4d2e96343ce7d42b2147c9ffd2793458e8d6758a65942fe44b64f16f3",
+      "sha256Bytes": "8f14d2de90df98e85a3320f86c548c34539589dc0415abd0382dd14aebad6263",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SplashRepository.kt",
+      "sha256": "b962ce085c19bf4afef44770640e0b029a020358048a15bbfc4f89a0577b5ed8",
+      "sha256Bytes": "e866b89453f3e1400528b655ebb6ed2dcfb19e12f6afba84b11beec72958d783",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "sha256Bytes": "27aa95562630640a5308f02c0c417d2deda7254d08b364b6dd9dbf48facbb542",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": true,
+      "newSoleOriginalDefinition": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt",
+      "sha256": "c7619b2386b42349693098c28657867cf8b73af3a66e1353d039bdc037a68011",
+      "sha256Bytes": "f3df1cbb2e7c47e64f4417a7944e3cfde47908b217a30aaa96b99a65c600e67c",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": true,
+      "newSoleOriginalDefinition": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "sha256Bytes": "9b7d174db3a1a08802e8f7c4282353896552052cf066facc6853e8c27024d493",
+      "mode": "api-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": true,
+      "existingMode": "api-extract",
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "sha256": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a",
+      "sha256Bytes": "3a072e769187f1863b54fd5bcce9e5f634aa27157c0332086f02117c51745aed",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": true,
+      "newSoleOriginalDefinition": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "sha256Bytes": "d7f21117c7eb6efab55429f517fb9641af8a5a89c7d0b0b85ac3973c5ddb5c5b",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "referenceOnly": true,
+      "newSoleOriginalDefinition": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/TopReadabilityChrome.kt",
+      "sha256": "aa046cdbabbed0e6cc983756b0b524e5bd9eff5caa03572ffe963de24e27ad1b",
+      "sha256Bytes": "4a3901ba2d6ee7030e14bf08cb4be875fbd49c2c283ca701522889e4fec32d90",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+      "sha256": "799f5d6fdd39adba83bd59aa52860b3d3378908b135aed4c55527e50686dc03a",
+      "sha256Bytes": "a0555f758e4dec37638b1fb407ba84d28437a78cd5debe22044b54e6e4d6223b",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
+      "sha256": "0962e31c0e46ad0a870b4e5a4612ba1e7d31c4aa9a71cac2ea5480d6ca470372",
+      "sha256Bytes": "3f773b4a3a1a9053726f45715b9106c4f9349c9a6b63528dbc1d2a89e25bb4fb",
+      "mode": "policy-extract",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionMotionSpec.kt",
+      "sha256": "c1adf12dc3a718cd46b75c83bb7e767e1207e11a58f0abe7bb749157cfbfe7c8",
+      "sha256Bytes": "05d08fbb155b78f2dd09c28b91acf487ba2e2111bb62bb6729822d2ef63eeaa3",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+      "sha256": "8be87ce3d877b5ad25793847ec0664d1196d8b5fe0abe700d2e29e0440a242c5",
+      "sha256Bytes": "bec88af29643d8a6b5c96e0f117d5f9c9a32e4fd1a0286c0f6f358356d139b4a",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SplashWallpaperHistoryPolicy.kt",
+      "sha256": "f18f960603e1d8b2fc2d12e1429209e3e98fb10c55817a603a35cc58b24f372d",
+      "sha256Bytes": "afc680777b94c75e27d536e0efb8771de114267af748e28457966e451389d5cf",
+      "mode": "direct",
+      "features": [
+        "profile-main-original"
+      ],
+      "existingIdentity": false,
+      "existingMode": null,
+      "referenceOnly": false,
+      "newSoleOriginalDefinition": true
+    }
+  ]
+}

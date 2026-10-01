@@ -1,0 +1,138 @@
+{
+  "status": "PASS",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "fullOriginalPages": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "originalLines": 491,
+      "originalSha256LF": "c391e12ba7e24a29cecf7c13d3593365029b2dbad19b8bb2a7ec48b8e28c0ba0",
+      "inverseNormalizedByteEqual": true,
+      "adaptationCount": 11
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "originalLines": 526,
+      "originalSha256LF": "09f5cb59863395387ca7b40805e30e633f1aa2f74bb593bc12104e35dd9b53f8",
+      "inverseNormalizedByteEqual": true,
+      "adaptationCount": 14
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+      "originalLines": 391,
+      "originalSha256LF": "e71df3f0eb772d756399a4f035e3a8477411f0ebf6bb6525142f45ba65b53cc7",
+      "inverseNormalizedByteEqual": true,
+      "adaptationCount": 7
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+      "originalLines": 225,
+      "originalSha256LF": "75bc6e38c891944425834a188973a314abf4c4d24a7fbbf50c6d44560ad32b59",
+      "inverseNormalizedByteEqual": true,
+      "adaptationCount": 16
+    }
+  ],
+  "originalPagePhysicalLines": 1633,
+  "productionSelectedOutputs": 5,
+  "standaloneOutputs": 6,
+  "productionDirectOriginalPolicyCopies": 1,
+  "manualWindowsBindings": 1,
+  "sourceProducerByteEquality": true,
+  "originalSearchMethods": [
+    {
+      "name": "searchTypeParams",
+      "originalBodySha256LF": "18d99b38e54dae3fab026e564bda82a129610d8f9f0c16b28f22064c8e75b40b",
+      "preparedBodySha256LF": "18d99b38e54dae3fab026e564bda82a129610d8f9f0c16b28f22064c8e75b40b",
+      "inverseNormalizedByteEqual": true
+    },
+    {
+      "name": "createPageInfo",
+      "originalBodySha256LF": "2a47279a2de8c18dbb2cce1b309fdb3c5fcc6d5b5426bbca0eed36850d031091",
+      "preparedBodySha256LF": "2a47279a2de8c18dbb2cce1b309fdb3c5fcc6d5b5426bbca0eed36850d031091",
+      "inverseNormalizedByteEqual": true
+    },
+    {
+      "name": "createSearchError",
+      "originalBodySha256LF": "fca37ed30c2e3511d82da9bc7f42fda7b310692e4de93008f38671e2ed770aaa",
+      "preparedBodySha256LF": "fca37ed30c2e3511d82da9bc7f42fda7b310692e4de93008f38671e2ed770aaa",
+      "inverseNormalizedByteEqual": true
+    },
+    {
+      "name": "searchLive",
+      "originalBodySha256LF": "d699785edcb3cbff687a6cd35c4ae46b7c08a935d67febab72070f3a474668b4",
+      "preparedBodySha256LF": "8158fc19e72c463e8571321fd2d522ad265ae786add662717e77ebc2fa9e435c",
+      "inverseNormalizedByteEqual": true
+    },
+    {
+      "name": "signWithWbi",
+      "originalBodySha256LF": "012df5465d3885cbdbb114c11eb78d9aa3228a7c48e2598ca44879231d6dd0df",
+      "preparedBodySha256LF": "25ace86f66ba3abb852e4f0556b03aa3f1aa5f5325b1c3f422656fc47adf1976",
+      "inverseNormalizedByteEqual": true
+    }
+  ],
+  "originalLiveFavoriteTags": {
+    "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "originalSha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "key": "live_favorite_tags",
+    "getterInvalidJsonEmptyFallback": true,
+    "setterOriginalTokensEqual": true,
+    "setterDistinctTake12": true,
+    "originalPolicyToggleTakeLast8": true,
+    "sameGlobalStore": true
+  },
+  "compiledSources": 8,
+  "compiledClasses": 110,
+  "productionClassIntersections": [],
+  "candidateTopLevelMethods": 17,
+  "actualTopLevelMethods": 29055,
+  "topLevelIntersections": [],
+  "illegalNonLocalReturnMarkers": [],
+  "actualSnapshotManifestSha256Bytes": "4840845d18a6fd1171c32a03ba397306a0f509b6510ca9544ceac935befe46ae",
+  "actualOrdered97CpSha256Bytes": "e9b8db57c428c214b243e2ea41761d0745c3b48ff386fe8d38901d892760fd8f",
+  "candidateJarSha256Bytes": "6d4afc73eed70f487aff14851b7c5fd6abd3a5e12a9aea38e6089e0df8a170ef",
+  "focusedFixture": {
+    "status": "PASS",
+    "assertions": 25,
+    "groups": 3,
+    "transport": "Java Proxy original API, no socket",
+    "settings": "Actual same real temporary DesktopPluginStore and original key/tag DTO; candidate original decoder facade",
+    "prospectiveLiveOnly": true,
+    "actualRootAccountIntegration": false,
+    "productionClassOverrides": 0,
+    "explicitReferenceOnlySharedDeclarations": 2,
+    "HTTP": false,
+    "GUI": false,
+    "HWND": false,
+    "Gradle": false,
+    "actualRuntimeEntries": 97,
+    "candidateJarSha256Bytes": "6d4afc73eed70f487aff14851b7c5fd6abd3a5e12a9aea38e6089e0df8a170ef",
+    "fixtureJarSha256Bytes": "ee24b1fe09a2714f0c5298e3b74f7e5514220a8c10cb9331499754d787a86b4c",
+    "observedClassOrigins": [
+      "ORIGIN com.bilipai.desktop.ui.DesktopLiveNavigationBinding file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-home-live-navigation-parity/runs/compile04/prepared-live-navigation.jar 348260c1d8a2882e59b66427e5642f352404ad9f14af7c4fe7af673992644780",
+      "ORIGIN com.android.purebilibili.data.repository.DesktopOriginalLiveSearchProtocol file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-home-live-navigation-parity/runs/compile04/prepared-live-navigation.jar a42e5b8367b39ed13f45407b6ad723f430f95d1063197b7ca24daa9f2fbc04e8",
+      "ORIGIN com.android.purebilibili.data.repository.DesktopDynamicUpSearch file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar 60c8a807f21d0a6da1ed2c70e5753201c6521306bea84ec23533564e4c444fc5",
+      "ORIGIN com.android.purebilibili.data.repository.DesktopOriginalLiveListProtocol file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar d97b4854dcd2657b4b0e365f2e27ffefae71d1ed57a89cae071c9ae3d8b2c0d1",
+      "ORIGIN com.android.purebilibili.data.repository.DesktopOriginalHomeLiveProtocol file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar e894fdcb9a236a45a8fc331d20962af1d4512b6d749ddb40d9fef8c4c283ce0a",
+      "ORIGIN com.bilipai.desktop.ui.DesktopHomeProtocolEnvironment file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar 069bbde1c28a3d8dead7720d1d1ab20a79807ff3cb2bf907161f6b902aa24590",
+      "ORIGIN com.bilipai.desktop.plugins.DesktopPluginStore file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar d02a8d4305804bafb989a2fc219bfd17e787932c1178d9c5b91e1554cbbaa868",
+      "ORIGIN com.android.purebilibili.data.model.response.LiveRoomSearchItem file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar de1f129d83cd123e827f998eb59e703e0b7709bfe71558b69d72bb3dcd3cdd4e",
+      "ORIGIN com.android.purebilibili.data.model.response.SearchUpItem file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar e61dd3446240f8b57c9ba5e5656478571be41a8e29d7e4cd339cf2269805dd5c",
+      "ORIGIN com.android.purebilibili.data.model.response.LiveFavoriteTagEntry file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-39/main-kotlin.jar 134b559010c96a273671ddcc2b5960e8ed8cd58ea50d6bfa5c382d33ff79e3ba"
+    ]
+  },
+  "sourceOnly": true,
+  "actualRootMountedUiAccepted": false,
+  "HTTP": false,
+  "HWND": false,
+  "GUI": false,
+  "Gradle": false,
+  "compileHistory": [
+    "compile01: one positional protocol argument + two shared skeleton gaps",
+    "compile02: existing Windows Logger missing w API; maps original warning to existing actual android.util.Log.w diagnostic bridge",
+    "compile03: initial PASS",
+    "compile04: final same Root -> binding -> global preference publication lock; PASS"
+  ],
+  "pending": [
+    "Root immutable route/epoch-owned services and CompositionLocal injection; full mounted UI/pointer/native IME/back/scroll acceptance",
+    "Root sole ContentLoadingSkeletons producer addition and whole product compile"
+  ]
+}

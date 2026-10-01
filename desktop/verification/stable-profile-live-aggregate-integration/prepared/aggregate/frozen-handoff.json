@@ -1,0 +1,610 @@
+{
+  "target": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "scope": "Prepared four complete original embedded pages aggregate/platform factory",
+  "rawArtifacts": [
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "0e4d5297f403e337233e34662911f1a9910d6065782e3355cc89ff0d7aee56c3",
+      "bytes": 6439
+    },
+    {
+      "path": "compile-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "06d262cf732152000d8cb1453e8dc1209b37fa4411e5c4d202265ff0d18ec16d",
+      "bytes": 24
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "sha256Bytes": "8767d7c09e2c59a3ee4445fb966881630dfe4c11be27450386c2de2147478af3",
+      "bytes": 25318
+    },
+    {
+      "path": "compile-01/inputs.json",
+      "sha256Bytes": "5e183c0085f56929914c1b427b6793db3068fd67ae1d9dc1b8e96c93c7274ead",
+      "bytes": 1648
+    },
+    {
+      "path": "compile-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "06d262cf732152000d8cb1453e8dc1209b37fa4411e5c4d202265ff0d18ec16d",
+      "bytes": 24
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-02/compiler.args",
+      "sha256Bytes": "e03bbcdd30dddf7d8320309f2666c7417b2e975afe4f07dbfbbdffe50b30e252",
+      "bytes": 25318
+    },
+    {
+      "path": "compile-02/inputs.json",
+      "sha256Bytes": "f5270cf9ff3dbd008598fea6a71f62210937ae15becf8317a9a5d47789e1820f",
+      "bytes": 1648
+    },
+    {
+      "path": "compile_candidate.py",
+      "sha256Bytes": "f3389dedb0be56bc9979df48ea4b264fd16daa6b11fc7572efff50d0d52c283e",
+      "bytes": 3488
+    },
+    {
+      "path": "existing-owner-references.json",
+      "sha256Bytes": "51ec24ccc620499ec53b875db14e451bc71397b533e7a050ec0720f46f47e240",
+      "bytes": 2522
+    },
+    {
+      "path": "fixtures/EmbeddedLifetimeFixture.kt",
+      "sha256Bytes": "4397b808178bc3fbff922adfa671c0b454dcc0964da7e1368456294e3f2da6f4",
+      "bytes": 5300
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "641752127cf6815a0a0bb2c87f52fa418a621709fb31561fc41b45b995c7ecf6",
+      "bytes": 4364
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "804cba6e5bf527b07bf32c93a969a5f7e63b868ee362d4acedcfef3cfdf862da",
+      "bytes": 1108
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.kt",
+      "sha256Bytes": "1aeb84aa6a9746fefd1a296242c53d73713f8101457a7394f7b9b1828458c3f0",
+      "bytes": 1501
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "sha256Bytes": "8d3fae0ec31c64e4d6160525efd5eaefb94f56716957dae728c1857d5db752f3",
+      "bytes": 5821
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "sha256Bytes": "af1a01f2059d4a549bebb349b199bb77fe24586900aec178ebe74d8c857695be",
+      "bytes": 10746
+    },
+    {
+      "path": "proof-01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "d38f1b40376d32d2cbc962c55885e8c96c3338b5c81505c26a2f4fda808b9b6e",
+      "bytes": 77
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sha256Bytes": "9c88977ae9d81c2836a37ed9764225931a1ab503592d639367579d6301b4058c",
+      "bytes": 25166
+    },
+    {
+      "path": "proof-01/inputs.json",
+      "sha256Bytes": "be144bdd97cb701250d5891320e1ddf19e0cef54a89df7a3825cc0d5dcc0c2cc",
+      "bytes": 27193
+    },
+    {
+      "path": "proof-01/run.log",
+      "sha256Bytes": "1de42cdbc8703c201b283fcebd02596726b5a80e8c34554b2d3ad6a49443f73a",
+      "bytes": 438
+    }
+  ],
+  "excludedRuntimeArtifacts": [
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime$closeAndJoin$2.class",
+      "sha256Bytes": "ddc7813a8db8f3bfe1df613089fa20a8e71ef6ccfd8bb961964aade188e70847",
+      "bytes": 3472
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.class",
+      "sha256Bytes": "5514a8136082e93b6788fd7d41a7b02960d944165722eb1bf1f1250705759076",
+      "bytes": 8020
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeEmbeddedRootUi.class",
+      "sha256Bytes": "5480f46ce56e19eff1a0546e5be9f911ff6dd3ee6c579d47fbc67bdbdff8c187",
+      "bytes": 2720
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$Companion$create$assets$2.class",
+      "sha256Bytes": "e3b128fe2fdd3750fb2313c50bd4a5b688360bdfc412a24d1ddbde457ea66493",
+      "bytes": 4072
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$Companion$create$assets$3.class",
+      "sha256Bytes": "1678f78721328c890bb4b4a2f824c182c7aac46bcb127e79054c0d5c02fce477",
+      "bytes": 3676
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$Companion.class",
+      "sha256Bytes": "781dc432c8689d362869ae77704a7b4c876d540ec1ba5bf680cd1ab43b212654",
+      "bytes": 9298
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$fetchMessageUserInfo$2.class",
+      "sha256Bytes": "85754fab141bc1b94a54c3b6454117b59c48a1cc8ed1535f97daaaad3aba73f3",
+      "bytes": 3395
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getMessageSessions$1.class",
+      "sha256Bytes": "b386d06ceef364bb3a45a74175c8bfb40cd046e5e3a6e6bd8301669b92e55eec",
+      "bytes": 2100
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getMessageSessions$2.class",
+      "sha256Bytes": "4c61a879a3ad1f72ec256ac8c2c86e7332245fe6d12b3aaac3341b0e42bcad88",
+      "bytes": 3581
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getShareTargets$1.class",
+      "sha256Bytes": "580dc4823fbea0647d47cd20359f3603ba2d45743a69166cbca3d86bf7897be9",
+      "bytes": 2088
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getShareTargets$2.class",
+      "sha256Bytes": "6b8ade8b040412f5d99f43af548eb1d0122be792fc0f996b360ac46464c715d6",
+      "bytes": 3617
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getVoteInfo$1.class",
+      "sha256Bytes": "8b5e86bb16c5bda28b3dd459ac1fb4476e47419c189fe1106e5d4dd7c7d5153e",
+      "bytes": 2078
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getVoteInfo$2.class",
+      "sha256Bytes": "b7ec35b13cea9ca7c7a06793c4405f1178267c1a6ecf261823affb2722aea356",
+      "bytes": 3553
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$owned$1.class",
+      "sha256Bytes": "033436ca08d93cf3134e8d6c5dc89bd70648f80fd98ce346b0287870008d490f",
+      "bytes": 2068
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$saveImage$2.class",
+      "sha256Bytes": "7c78c939b89790e7ea25afad4c079f0c409fcc69fc5b59a7d5c012789e3d39d0",
+      "bytes": 3261
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$saveImages$2.class",
+      "sha256Bytes": "9a91a22b4d8c0e65b1ac7e20b152968ad68f16273105cc9f3de3dbe30bb94867",
+      "bytes": 3326
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$saveLivePhotoVideo$2.class",
+      "sha256Bytes": "e6f69dc37febb9d60cd8ba5af2bbbc57ba89031e502ffc8dd179f77a802b93ed",
+      "bytes": 3311
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$saveMotionPhoto$2.class",
+      "sha256Bytes": "27b5ba2718448114cd4c7fc43ef109d63e6d5c3211296e76e3baa83d34c3d9f3",
+      "bytes": 3404
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$searchUp$1.class",
+      "sha256Bytes": "76d24716280c22c7582a4a48ce029b29fbb6edb5fd269adbffd11ac5d2d7aa43",
+      "bytes": 2077
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$searchUp$2.class",
+      "sha256Bytes": "905848e092cfecdee62b83be42b8dbb805085081a9fccb043fddf09e900778e2",
+      "bytes": 4114
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$sendDynamicShare$1.class",
+      "sha256Bytes": "fbb2a9eb96f62943452e2079e21e7b8359c5ec1580dccbf3db6eec83d6269592",
+      "bytes": 2154
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$sendDynamicShare$2.class",
+      "sha256Bytes": "5efe8795edbc1f969d72d6c2d8531ee38129068fdfa9a64adce71257e900fa04",
+      "bytes": 3556
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$shareText$1.class",
+      "sha256Bytes": "8c438ac1568b59f32455ef13b2a68a79edbeaebbba25ebc395f7d138057d0c20",
+      "bytes": 1299
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$shareText$2.class",
+      "sha256Bytes": "aad433c150675e89b0f827eea932499404a42082bec28dd0ed862476fc5845c5",
+      "bytes": 1512
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$submitVote$1.class",
+      "sha256Bytes": "0f2f86180e735377b11985febe05a04050ce78398c15392e38aa2ef58ab039c7",
+      "bytes": 2184
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$submitVote$2.class",
+      "sha256Bytes": "d269c85ed5b0c79319d1c88797700a36e723235ba72fdeada214367d6b6f1936",
+      "bytes": 4076
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.class",
+      "sha256Bytes": "c83b5997760f4fc7be7837b827826ff3d6922b7f095a8eba5dd97499067ceb90",
+      "bytes": 21346
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$bangumiApi$1.class",
+      "sha256Bytes": "2f35eef62088581fef86305d626c596f05ef1e262374dde440b18fb46aead80a",
+      "bytes": 2118
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$lifetime$1.class",
+      "sha256Bytes": "bf37a3b3fcb72c7accfed5bc82ba328113251c3953d8290d3ade5050644d4ac7",
+      "bytes": 2110
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$lifetime$2.class",
+      "sha256Bytes": "23ddf7976230ca20464a1159c23d5b00aabe9752c336d15d758e892fc1cf386a",
+      "bytes": 2582
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$live$1.class",
+      "sha256Bytes": "866b47b2d5bd701279ab2186e3fb8d513b565092b62de972637e37191b1a4620",
+      "bytes": 3026
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$local$1.class",
+      "sha256Bytes": "edc326e264b947d819442f24a30e3bbcd21d78d0afb6472291f547db5687dc95",
+      "bytes": 2108
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$local$2.class",
+      "sha256Bytes": "a13f807f2abc9d1077c04cee9d84cfb96a6db6ce75ffd4b52514f40c560165f5",
+      "bytes": 2580
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$searchApi$1.class",
+      "sha256Bytes": "6bbde5ebddd8ed2a24a6d519384543988eb3024e533d0029f540ec91d2093559",
+      "bytes": 2116
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$subscribed$1.class",
+      "sha256Bytes": "0d19348171afde4fb2025d020602732a26c72b56d7c31f7e34b4e0d601f8fc26",
+      "bytes": 2118
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$subscribed$2.class",
+      "sha256Bytes": "5978ad24a0d6c8bdf17b67a0aa2e540c4a0b1d469e5602f71cc05c4d0511b3c7",
+      "bytes": 2590
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion.class",
+      "sha256Bytes": "09ff531730ca446520fe27654a2e17b121cfcc1df697e26fa567d248ff49425d",
+      "bytes": 17563
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$closeAndJoin$2.class",
+      "sha256Bytes": "0e969ab77d71f2da4534ff2dae003b14f4cf2a2e459126a9d15950a5e6b5a1eb",
+      "bytes": 3768
+    },
+    {
+      "path": "compile-01/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.class",
+      "sha256Bytes": "83c2df102f62153906773ba42b79d6b3c7e2c15a14d2a27b377b8d859a26fa52",
+      "bytes": 51650
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime$closeAndJoin$2.class",
+      "sha256Bytes": "ddc7813a8db8f3bfe1df613089fa20a8e71ef6ccfd8bb961964aade188e70847",
+      "bytes": 3472
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.class",
+      "sha256Bytes": "5514a8136082e93b6788fd7d41a7b02960d944165722eb1bf1f1250705759076",
+      "bytes": 8020
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeEmbeddedRootUi.class",
+      "sha256Bytes": "5480f46ce56e19eff1a0546e5be9f911ff6dd3ee6c579d47fbc67bdbdff8c187",
+      "bytes": 2720
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$Companion$create$assets$2.class",
+      "sha256Bytes": "e3b128fe2fdd3750fb2313c50bd4a5b688360bdfc412a24d1ddbde457ea66493",
+      "bytes": 4072
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$Companion$create$assets$3.class",
+      "sha256Bytes": "1678f78721328c890bb4b4a2f824c182c7aac46bcb127e79054c0d5c02fce477",
+      "bytes": 3676
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$Companion.class",
+      "sha256Bytes": "781dc432c8689d362869ae77704a7b4c876d540ec1ba5bf680cd1ab43b212654",
+      "bytes": 9298
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$fetchMessageUserInfo$2.class",
+      "sha256Bytes": "85754fab141bc1b94a54c3b6454117b59c48a1cc8ed1535f97daaaad3aba73f3",
+      "bytes": 3395
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getMessageSessions$1.class",
+      "sha256Bytes": "b386d06ceef364bb3a45a74175c8bfb40cd046e5e3a6e6bd8301669b92e55eec",
+      "bytes": 2100
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getMessageSessions$2.class",
+      "sha256Bytes": "4c61a879a3ad1f72ec256ac8c2c86e7332245fe6d12b3aaac3341b0e42bcad88",
+      "bytes": 3581
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getShareTargets$1.class",
+      "sha256Bytes": "580dc4823fbea0647d47cd20359f3603ba2d45743a69166cbca3d86bf7897be9",
+      "bytes": 2088
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getShareTargets$2.class",
+      "sha256Bytes": "6b8ade8b040412f5d99f43af548eb1d0122be792fc0f996b360ac46464c715d6",
+      "bytes": 3617
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getVoteInfo$1.class",
+      "sha256Bytes": "8b5e86bb16c5bda28b3dd459ac1fb4476e47419c189fe1106e5d4dd7c7d5153e",
+      "bytes": 2078
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$getVoteInfo$2.class",
+      "sha256Bytes": "b7ec35b13cea9ca7c7a06793c4405f1178267c1a6ecf261823affb2722aea356",
+      "bytes": 3553
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$owned$1.class",
+      "sha256Bytes": "033436ca08d93cf3134e8d6c5dc89bd70648f80fd98ce346b0287870008d490f",
+      "bytes": 2068
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$saveImage$2.class",
+      "sha256Bytes": "7c78c939b89790e7ea25afad4c079f0c409fcc69fc5b59a7d5c012789e3d39d0",
+      "bytes": 3261
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$saveImages$2.class",
+      "sha256Bytes": "9a91a22b4d8c0e65b1ac7e20b152968ad68f16273105cc9f3de3dbe30bb94867",
+      "bytes": 3326
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$saveLivePhotoVideo$2.class",
+      "sha256Bytes": "e6f69dc37febb9d60cd8ba5af2bbbc57ba89031e502ffc8dd179f77a802b93ed",
+      "bytes": 3311
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$saveMotionPhoto$2.class",
+      "sha256Bytes": "27b5ba2718448114cd4c7fc43ef109d63e6d5c3211296e76e3baa83d34c3d9f3",
+      "bytes": 3404
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$searchUp$1.class",
+      "sha256Bytes": "76d24716280c22c7582a4a48ce029b29fbb6edb5fd269adbffd11ac5d2d7aa43",
+      "bytes": 2077
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$searchUp$2.class",
+      "sha256Bytes": "905848e092cfecdee62b83be42b8dbb805085081a9fccb043fddf09e900778e2",
+      "bytes": 4114
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$sendDynamicShare$1.class",
+      "sha256Bytes": "fbb2a9eb96f62943452e2079e21e7b8359c5ec1580dccbf3db6eec83d6269592",
+      "bytes": 2154
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$sendDynamicShare$2.class",
+      "sha256Bytes": "5efe8795edbc1f969d72d6c2d8531ee38129068fdfa9a64adce71257e900fa04",
+      "bytes": 3556
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$shareText$1.class",
+      "sha256Bytes": "8c438ac1568b59f32455ef13b2a68a79edbeaebbba25ebc395f7d138057d0c20",
+      "bytes": 1299
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$shareText$2.class",
+      "sha256Bytes": "aad433c150675e89b0f827eea932499404a42082bec28dd0ed862476fc5845c5",
+      "bytes": 1512
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$submitVote$1.class",
+      "sha256Bytes": "0f2f86180e735377b11985febe05a04050ce78398c15392e38aa2ef58ab039c7",
+      "bytes": 2184
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings$submitVote$2.class",
+      "sha256Bytes": "d269c85ed5b0c79319d1c88797700a36e723235ba72fdeada214367d6b6f1936",
+      "bytes": 4076
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.class",
+      "sha256Bytes": "c83b5997760f4fc7be7837b827826ff3d6922b7f095a8eba5dd97499067ceb90",
+      "bytes": 21346
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$bangumiApi$1.class",
+      "sha256Bytes": "3d4dea6d6435a2cde00e84f6820169feac793ce544a7e4cf641ebb9de9102980",
+      "bytes": 2118
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$lifetime$1.class",
+      "sha256Bytes": "9e7f99fca4628ca1513e65a728d717c71befa9449848fb49a21a10ab48cd19e3",
+      "bytes": 2110
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$lifetime$2.class",
+      "sha256Bytes": "c212cd18a857a8f553bfaf2bd2d38ba115cd71a2c2acca16e06e32bce3178fc8",
+      "bytes": 2582
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$live$1.class",
+      "sha256Bytes": "2839eec04059cfd53c015236cd92ad7f5b5a471eb68e9e01fad8ff548f6eb668",
+      "bytes": 3026
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$local$1.class",
+      "sha256Bytes": "72aec93424f1f8f445fb9918bac36024089916e9875d89ddde8f7f0323208e93",
+      "bytes": 2108
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$local$2.class",
+      "sha256Bytes": "c29a2dcdc473c1dd5b3dcba04f7ace5a90294dffaa0eda629217b2c34ac3fe12",
+      "bytes": 2580
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$searchApi$1.class",
+      "sha256Bytes": "792ba61a0294691e730c49955f871a1909dcbc2d51a2b9fa09e6a40b4ebdcdbb",
+      "bytes": 2116
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$subscribed$1.class",
+      "sha256Bytes": "3faca91fb483799e2f014d7f0bd6326352a459d76ff8595b5eb9a4301b408759",
+      "bytes": 2118
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion$create$subscribed$2.class",
+      "sha256Bytes": "45543029c2388ed14e6374d41428e53cae4e6999328aa8602a8aced88e40f81b",
+      "bytes": 2590
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$Companion.class",
+      "sha256Bytes": "44e813e60a858cae4bd8d88b354abdc2900d19e585ef42d5ee4624d689fea080",
+      "bytes": 17563
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate$closeAndJoin$2.class",
+      "sha256Bytes": "318c80731b7229e2f20bd431f1a1c0a86be449cf7a5214e9413ef9d8d6e2638b",
+      "bytes": 3768
+    },
+    {
+      "path": "compile-02/classes/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.class",
+      "sha256Bytes": "582d403a6cae7c1deef0b90e17198bcdc65e28ee599e8003ef9ab4d4e97945a2",
+      "bytes": 52955
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$1.class",
+      "sha256Bytes": "e0300049efb488b1fef002d957eaea15af09862d384d5cea9fd379b4dbf3072a",
+      "bytes": 3714
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$completion$1.class",
+      "sha256Bytes": "1da60461e94d7f01d0a7c62d71c91d4f9569d7301b78b232717ea44aeae1204a",
+      "bytes": 3547
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$life$1.class",
+      "sha256Bytes": "0481c1c9d7612ed9e132e65679b580676d9d8617c661c9447c6b3e55d66bc1c7",
+      "bytes": 1379
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$life$2.class",
+      "sha256Bytes": "2d92df2685ddad6d2af5345f53819b54a1c2b42408654184402d89b0f405b800",
+      "bytes": 1810
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$partition$1.class",
+      "sha256Bytes": "5310afb6ee305a0946ddbf83334baf9e8093b80531079c8f3e74b2be0ab757c1",
+      "bytes": 1393
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$partition$2.class",
+      "sha256Bytes": "f6ac9cc05208a92bdf7abf3df856e60925a5d3b542bcaec0e187116ce035dcb8",
+      "bytes": 1824
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$previous$1.class",
+      "sha256Bytes": "f426e76aa08b286258446cee468797f989f49bf540648fc7c58023ba87547302",
+      "bytes": 1387
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$previous$2.class",
+      "sha256Bytes": "39635ffef6d32f0e8483274aa1d63a93338ceca8e163a34a8aec44e609a1a3f8",
+      "bytes": 1818
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$racing$1.class",
+      "sha256Bytes": "211ad133eb2d80cbb31696e4a817060dee6898f8ad60d7bfd8688947fb683c83",
+      "bytes": 1383
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$racing$2.class",
+      "sha256Bytes": "e1f9439e2beb89513f5238c47649502b5e2459ea32f40b507cb1071c197e0d2a",
+      "bytes": 1814
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$requests$1$getPopularVideos$1.class",
+      "sha256Bytes": "49ebd6cc806a287df397dceaa9898a8110b9d8af6e0be458152d5dd448e054a0",
+      "bytes": 2126
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1$requests$1.class",
+      "sha256Bytes": "1ca22fe2f144b3500e1899a90d2b85c3182cb6d18a9396fae3421e056e7ecf4d",
+      "bytes": 6227
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt$main$1.class",
+      "sha256Bytes": "50443d1c048dea1a737764fc511a9e0eb37e6f65c09f9a1477a615ddf4c5482b",
+      "bytes": 24940
+    },
+    {
+      "path": "proof-01/classes/com/bilipai/desktop/ui/EmbeddedLifetimeFixtureKt.class",
+      "sha256Bytes": "03bec3a08d774b01c3a5c81ba876627f1a0857ce06c790784be9d7b93f401596",
+      "bytes": 964
+    }
+  ],
+  "installFiles": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.kt",
+      "sha256LF": "1aeb84aa6a9746fefd1a296242c53d73713f8101457a7394f7b9b1828458c3f0"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "sha256LF": "8d3fae0ec31c64e4d6160525efd5eaefb94f56716957dae728c1857d5db752f3"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "sha256LF": "af1a01f2059d4a549bebb349b199bb77fe24586900aec178ebe74d8c857695be"
+    }
+  ],
+  "existingProducersUntouched": true,
+  "actualMainBase": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-39",
+  "evidence": {
+    "compile": "compile-02",
+    "candidateSources": 3,
+    "candidateClasses": 43,
+    "classOverlap": [],
+    "proof": "proof-01",
+    "lifecycleGroups": 4,
+    "actualRootMounted": false,
+    "actualComposeOrNativeUi": false,
+    "actualRuntimeConstructed": false,
+    "actualHttpOrAccount": false,
+    "actualGallerySave": false
+  }
+}

@@ -1,0 +1,531 @@
+--- app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt
++++ com/android/purebilibili/feature/profile/ProfileScreen.kt
+@@ -1,4 +1,6 @@
+ package com.android.purebilibili.feature.profile
++import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment
++import com.bilipai.desktop.ui.rememberDesktopProfileMediaPicker
+ 
+ import com.android.purebilibili.feature.personal.PersonalMediaCardFrame
+ import com.android.purebilibili.core.ui.components.VideoListLayoutToggle
+@@ -8,7 +10,6 @@
+ import androidx.compose.ui.layout.LookaheadScope
+ import androidx.compose.runtime.key
+ import coil3.request.crossfade
+-import coil3.request.placeholder
+ import com.android.purebilibili.core.ui.resolveFilledButtonContainerColor
+ import com.android.purebilibili.core.ui.resolveFilledButtonContentColor
+ import com.android.purebilibili.core.ui.components.AppIcon
+@@ -16,11 +17,6 @@
+ import com.android.purebilibili.core.ui.components.AppHorizontalDivider
+ import com.android.purebilibili.core.ui.AppSpacingTokens
+ 
+-import android.app.Activity
+-import android.content.Context
+-import android.net.Uri
+-import android.os.Build
+-import android.widget.Toast
+ import androidx.compose.ui.graphics.luminance
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+@@ -65,28 +61,18 @@
+ import androidx.compose.ui.layout.ContentScale
+ import androidx.compose.ui.layout.boundsInWindow
+ import androidx.compose.ui.layout.onGloballyPositioned
+-import androidx.compose.ui.viewinterop.AndroidView
+-import androidx.compose.ui.platform.LocalConfiguration
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.desktopProfileWindowConfiguration
++import coil3.compose.LocalPlatformContext
+ import androidx.compose.ui.platform.LocalDensity
+-import androidx.compose.ui.platform.LocalView
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ import com.android.purebilibili.core.ui.transition.LocalDynamicImagePreviewTextVisible
+-import androidx.core.view.WindowInsetsControllerCompat
+-import androidx.lifecycle.viewmodel.compose.viewModel
+ import androidx.lifecycle.Lifecycle
+ import androidx.lifecycle.LifecycleEventObserver
+ import androidx.lifecycle.compose.LocalLifecycleOwner
+-import androidx.media3.common.MediaItem
+-import androidx.media3.common.Player
+-import androidx.media3.exoplayer.ExoPlayer
+-import androidx.media3.ui.AspectRatioFrameLayout
+-import androidx.media3.ui.PlayerView
+ import coil3.compose.AsyncImage
+-import coil3.imageLoader
+ import coil3.request.ImageRequest
+ import coil3.size.Scale
+ import java.io.File
+@@ -95,7 +81,6 @@
+ import com.android.purebilibili.core.theme.DarkSurfaceVariant
+ import com.android.purebilibili.core.theme.resolveAccessibleContainerColors
+ import com.android.purebilibili.core.util.FormatUtils
+-import com.android.purebilibili.core.util.PickGalleryVisualMedia
+ import com.android.purebilibili.feature.home.UserState
+ import com.android.purebilibili.feature.dynamic.components.ImagePreviewDialog
+ import com.android.purebilibili.feature.dynamic.components.isImagePreviewSourceHidden
+@@ -167,7 +152,6 @@
+ import com.android.purebilibili.core.ui.components.AppSegmentOption
+ import com.android.purebilibili.core.ui.components.AppThemeAdaptiveTabRow
+ import com.android.purebilibili.core.store.StoredAccountSession
+-import com.android.purebilibili.core.store.SettingsManager
+ import com.android.purebilibili.data.model.response.FavFolder
+ import com.android.purebilibili.data.model.response.FollowBangumiItem
+ import com.android.purebilibili.data.model.response.SpaceAggregateArchiveItem
+@@ -180,15 +164,11 @@
+ 
+ import com.android.purebilibili.core.ui.blur.rememberRecoverableHazeState
+ import com.android.purebilibili.core.ui.blur.recoverableBlurEnabled
+-import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect
+ import com.android.purebilibili.core.ui.blur.BlurSurfaceType
+ import dev.chrisbanes.haze.HazeState
+ import com.android.purebilibili.core.ui.blur.hazeSourceCompat
+ import com.android.purebilibili.core.ui.blur.unifiedBlur
+ 
+-import androidx.activity.compose.rememberLauncherForActivityResult
+-import androidx.activity.result.contract.ActivityResultContracts
+-import androidx.activity.result.PickVisualMediaRequest
+ import androidx.compose.animation.AnimatedVisibility
+ import androidx.compose.animation.expandVertically
+ import androidx.compose.animation.fadeIn
+@@ -313,8 +293,8 @@
+ 
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+-fun ProfileScreen(
+-    viewModel: ProfileViewModel = viewModel(),
++internal fun ProfileScreen(
++    viewModel: ProfileViewModel,
+     isCurrentPage: Boolean = true,
+     accountSessionRefreshGeneration: Int = 0,
+     onBack: () -> Unit,
+@@ -344,13 +324,13 @@
+     // [注意] 移除了 globalHazeState - 双 hazeSource 模式与 Haze 库冲突
+ ) {
+     val state by viewModel.uiState.collectAsStateWithLifecycle()
+-    val context = LocalContext.current
++    val platform = LocalDesktopProfileEnvironment.current
++    val context = LocalPlatformContext.current
+     val headerBlurEnabled =
+         com.android.purebilibili.core.ui.LocalAppThemeConfig.current.headerBlurEnabled
+     val accounts by viewModel.accounts.collectAsStateWithLifecycle()
+     val activeAccountMid by viewModel.activeAccountMid.collectAsStateWithLifecycle()
+     val playbackAccountMid by viewModel.playbackAccountMid.collectAsStateWithLifecycle()
+-    val view = LocalView.current
+     var showAccountSwitchDialog by remember { mutableStateOf(false) }
+     val windowSizeClass = LocalWindowSizeClass.current
+     val skinProfileBackgroundPath = remember(
+@@ -366,23 +346,19 @@
+     }
+     val isDarkTheme = MaterialTheme.colorScheme.surface.luminance() < 0.5f
+     val isLoggedOut = state is ProfileUiState.LoggedOut
+-    val privacyModeEnabled by SettingsManager.getPrivacyModeEnabled(context)
+-        .collectAsStateWithLifecycle(initialValue = SettingsManager.isPrivacyModeEnabledSync(context))
++    val privacyModeEnabled by platform.preferences.getPrivacyModeEnabled()
++        .collectAsStateWithLifecycle(initialValue = platform.preferences.isPrivacyModeEnabledSync())
+     val profileActionScope = androidx.compose.runtime.rememberCoroutineScope()
+     val togglePrivacyMode: () -> Unit = {
+         profileActionScope.launch {
+-            SettingsManager.setPrivacyModeEnabled(context, !privacyModeEnabled)
+-            Toast.makeText(
+-                context,
+-                if (privacyModeEnabled) "已关闭无痕模式" else "已开启无痕模式",
+-                Toast.LENGTH_SHORT,
+-            ).show()
++            platform.preferences.setPrivacyModeEnabled( !privacyModeEnabled)
++            platform.feedback(
++                if (privacyModeEnabled) "已关闭无痕模式" else "已开启无痕模式")
+         }
+     }
+     val toggleThemeMode: () -> Unit = {
+         profileActionScope.launch {
+-            SettingsManager.setThemeMode(
+-                context,
++            platform.preferences.setThemeMode(
+                 if (isDarkTheme) AppThemeMode.LIGHT else AppThemeMode.DARK,
+             )
+         }
+@@ -403,7 +379,7 @@
+     // [Blur] Haze State: only expose a source when the platform and runtime guard
+     // can actually render it; otherwise every top bar keeps its solid fallback.
+     val hazeState = if (headerBlurEnabled &&
+-        shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT) &&
++        platform.supportsRenderEffectBackedHaze &&
+         !isLowBlurBudgetForced()
+     ) {
+         rememberRecoverableHazeState()
+@@ -417,40 +393,10 @@
+         }
+     }
+ 
+-    //  设置沉浸式状态栏和导航栏（进入时修改，离开时恢复）
++    // Same Windows Root chrome lease restores the prior window state on disposal.
+     DisposableEffect(shouldControlSystemBars, lightStatusBars) {
+-        val window = (context as? Activity)?.window
+-        val insetsController = if (window != null) {
+-            WindowInsetsControllerCompat(window, view)
+-        } else null
+-        
+-        // 保存原始配置
+-        val originalStatusBarColor = window?.let {
+-            com.android.purebilibili.core.ui.getWindowStatusBarColor(it)
+-        } ?: android.graphics.Color.TRANSPARENT
+-        val originalNavBarColor = window?.let {
+-            com.android.purebilibili.core.ui.getWindowNavigationBarColor(it)
+-        } ?: android.graphics.Color.TRANSPARENT
+-        val originalLightStatusBars = insetsController?.isAppearanceLightStatusBars ?: true
+-        val originalLightNavigationBars = insetsController?.isAppearanceLightNavigationBars ?: true
+-
+-        if (shouldControlSystemBars && window != null) {
+-            com.android.purebilibili.core.ui.AppWindowSystemUiController.ensureEdgeToEdge(window)
+-            com.android.purebilibili.core.ui.setWindowStatusBarColor(window, Color.Transparent.toArgb())
+-            com.android.purebilibili.core.ui.setWindowNavigationBarColor(window, Color.Transparent.toArgb())
+-            insetsController?.isAppearanceLightStatusBars = lightStatusBars
+-            insetsController?.isAppearanceLightNavigationBars = lightStatusBars
+-        }
+-        
+-        onDispose {
+-            // 离开时恢复原始配置
+-            if (shouldControlSystemBars && window != null && insetsController != null) {
+-                com.android.purebilibili.core.ui.setWindowStatusBarColor(window, originalStatusBarColor)
+-                com.android.purebilibili.core.ui.setWindowNavigationBarColor(window, originalNavBarColor)
+-                insetsController.isAppearanceLightStatusBars = originalLightStatusBars
+-                insetsController.isAppearanceLightNavigationBars = originalLightNavigationBars
+-            }
+-        }
++        val lease = platform.acquireSystemBars(shouldControlSystemBars, lightStatusBars)
++        onDispose { lease.close() }
+     }
+ 
+     LaunchedEffect(viewModel, isCurrentPage, accountSessionRefreshGeneration) {
+@@ -469,7 +415,7 @@
+ 
+     LaunchedEffect(Unit) {
+         //  [埋点] 页面浏览追踪
+-        com.android.purebilibili.core.util.AnalyticsHelper.logScreenView("ProfileScreen")
++        platform.analytics.logScreenView("ProfileScreen")
+     }
+ 
+     if (showAccountSwitchDialog) {
+@@ -488,10 +434,10 @@
+                     mid = mid,
+                     onSuccess = {
+                         onAccountSwitchSuccess()
+-                        Toast.makeText(context, "已切换账号", Toast.LENGTH_SHORT).show()
++                        platform.feedback( "已切换账号")
+                     },
+                     onFailure = { message ->
+-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
++                        platform.feedback( message)
+                     }
+                 )
+             },
+@@ -499,19 +445,19 @@
+                 viewModel.setPlaybackAccount(
+                     mid = mid,
+                     onSuccess = {
+-                        Toast.makeText(context, if (mid == null) "播放授权已跟随当前账号" else "已设置播放授权账号", Toast.LENGTH_SHORT).show()
++                        platform.feedback( if (mid == null) "播放授权已跟随当前账号" else "已设置播放授权账号")
+                     },
+-                    onFailure = { message -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show() }
++                    onFailure = { message -> platform.feedback( message) }
+                 )
+             },
+             onRemove = { mid ->
+                 viewModel.removeStoredAccount(
+                     mid = mid,
+                     onSuccess = {
+-                        Toast.makeText(context, "已移除账号", Toast.LENGTH_SHORT).show()
++                        platform.feedback( "已移除账号")
+                     },
+                     onFailure = { message ->
+-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
++                        platform.feedback( message)
+                     }
+                 )
+             }
+@@ -548,6 +494,7 @@
+             
+             Box(modifier = Modifier.fillMaxSize()) {
+                 MobileProfileContent(
++                    viewModel = viewModel,
+                     captureBackground = {
+                         ProfileBackground(
+                             user = guestUser,
+@@ -698,7 +645,7 @@
+             }
+             LaunchedEffect(currentUiState.space.signSaveMessage) {
+                 currentUiState.space.signSaveMessage?.let { message ->
+-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
++                    platform.feedback( message)
+                     viewModel.clearProfileSpaceMessage()
+                 }
+             }
+@@ -808,7 +755,7 @@
+                         onContributionRetry = viewModel::retryProfileContributions,
+                         onDynamicDeleteClick = { action ->
+                             viewModel.deleteProfileDynamic(action) { _, message ->
+-                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
++                                platform.feedback( message)
+                             }
+                         },
+                         onBangumiClick = onBangumiClick,
+@@ -858,8 +805,9 @@
+     val hasSkinVideo = !skinVideoBackgroundPath.isNullOrBlank()
+     val hasWallpaper = user.topPhoto.isNotEmpty() || hasSkinVideo
+     val bgTransform by viewModel.getProfileBgTransform(isTablet).collectAsStateWithLifecycle(initialValue = ProfileWallpaperTransform())
+-    val context = LocalContext.current
+-    val configuration = LocalConfiguration.current
++    val platform = LocalDesktopProfileEnvironment.current
++    val context = LocalPlatformContext.current
++    val configuration = desktopProfileWindowConfiguration()
+     val density = LocalDensity.current
+     val colorScheme = MaterialTheme.colorScheme
+     val isDarkTheme = colorScheme.surface.luminance() < 0.5f
+@@ -983,78 +931,16 @@
+     }
+ }
+ 
+-internal fun resolveProfileSkinVideoRepeatMode(playMode: String?): Int {
+-    return if (playMode?.trim()?.equals("once", ignoreCase = true) == true) {
+-        Player.REPEAT_MODE_OFF
+-    } else {
+-        Player.REPEAT_MODE_ONE
+-    }
+-}
+-
+-@Composable
+-@android.annotation.SuppressLint("UnsafeOptInUsageError")
++
++
++@Composable
+ private fun ProfileSkinVideoBackground(
+     videoPath: String,
+     playMode: String?,
+     playbackEnabled: Boolean,
+     modifier: Modifier = Modifier,
+ ) {
+-    val context = LocalContext.current
+-    val lifecycleOwner = LocalLifecycleOwner.current
+-    val repeatMode = remember(playMode) { resolveProfileSkinVideoRepeatMode(playMode) }
+-    val player = remember(videoPath) {
+-        ExoPlayer.Builder(context).build()
+-    }
+-
+-    DisposableEffect(player, videoPath, repeatMode) {
+-        player.volume = 0f
+-        player.repeatMode = repeatMode
+-        player.setMediaItem(MediaItem.fromUri(Uri.fromFile(File(videoPath))))
+-        player.prepare()
+-        onDispose {
+-            player.release()
+-        }
+-    }
+-
+-    DisposableEffect(lifecycleOwner, player, playbackEnabled) {
+-        val observer = LifecycleEventObserver { _, event ->
+-            when (event) {
+-                Lifecycle.Event.ON_START -> if (playbackEnabled) player.play()
+-                Lifecycle.Event.ON_STOP -> player.pause()
+-                else -> Unit
+-            }
+-        }
+-        lifecycleOwner.lifecycle.addObserver(observer)
+-        if (playbackEnabled && lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+-            player.play()
+-        } else {
+-            player.pause()
+-        }
+-        onDispose {
+-            lifecycleOwner.lifecycle.removeObserver(observer)
+-            player.pause()
+-        }
+-    }
+-
+-    SideEffect {
+-        if (!playbackEnabled) player.pause()
+-    }
+-
+-    AndroidView(
+-        factory = { viewContext ->
+-            PlayerView(viewContext).apply {
+-                useController = false
+-                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+-                setShutterBackgroundColor(android.graphics.Color.TRANSPARENT)
+-                setKeepContentOnPlayerReset(true)
+-                this.player = player
+-            }
+-        },
+-        update = { playerView ->
+-            playerView.player = player
+-        },
+-        modifier = modifier,
+-    )
++    LocalDesktopProfileEnvironment.current.media.skinVideo(videoPath, playMode, playbackEnabled, modifier)
+ }
+ 
+ @OptIn(ExperimentalMaterial3Api::class)
+@@ -1099,15 +985,14 @@
+ ) {
+     var showEditDialog by remember { mutableStateOf(false) }
+     var showAdjustmentSheet by remember { mutableStateOf(false) }
+-    var tempSelectedUri by remember { mutableStateOf<Uri?>(null) }
++    var tempSelectedUri by remember { mutableStateOf<String?>(null) }
+     val customBackgroundUri by viewModel.getProfileBgUri().collectAsStateWithLifecycle(initialValue = null
+         )
+-    val context = LocalContext.current
+-    val showProfileEditButton by SettingsManager.getShowProfileEditButton(context)
++    val platform = LocalDesktopProfileEnvironment.current
++    val context = LocalPlatformContext.current
++    val showProfileEditButton by platform.preferences.getShowProfileEditButton()
+         .collectAsStateWithLifecycle(initialValue = false)
+-    val photoPickerLauncher = rememberLauncherForActivityResult(
+-        contract = PickGalleryVisualMedia()
+-    ) { uri: Uri? ->
++    val photoPickerLauncher = rememberDesktopProfileMediaPicker() { uri: String? ->
+         if (uri != null) {
+             tempSelectedUri = uri
+             showAdjustmentSheet = true
+@@ -1169,9 +1054,7 @@
+                 AppButton(
+                     onClick = {
+                         showPhotoPickerDialog = false
+-                        photoPickerLauncher.launch(
+-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
+-                        )
++                        photoPickerLauncher.launch()
+                     }
+                 ) {
+                     AppText("选择照片")
+@@ -1646,7 +1529,7 @@
+     onWallpaperActionClick: () -> Unit,
+     onFollowingClick: () -> Unit
+ ) {
+-    val configuration = LocalConfiguration.current
++    val configuration = desktopProfileWindowConfiguration()
+     val windowSizeClass = LocalWindowSizeClass.current
+     val heroHeight = resolveProfileHeroHeightDp(
+         screenHeightDp = configuration.screenHeightDp,
+@@ -1958,7 +1841,7 @@
+ 
+ @Composable
+ private fun ProfileSpaceStat(label: String, value: Int, color: Color, onClick: (() -> Unit)? = null) {
+-    val width = if (LocalConfiguration.current.screenWidthDp < 360) 60.dp else 72.dp
++    val width = if (desktopProfileWindowConfiguration().screenWidthDp < 360) 60.dp else 72.dp
+     Column(
+         modifier = Modifier
+             .width(width)
+@@ -2509,7 +2392,7 @@
+     }
+     val listLayout = rememberVideoListLayoutControl(defaultSingleColumn = true)
+     val columns = resolveVideoListColumns(
+-        listLayout.singleColumn, LocalConfiguration.current.screenWidthDp.toFloat(),
++        listLayout.singleColumn, desktopProfileWindowConfiguration().screenWidthDp.toFloat(),
+     )
+     Column(modifier = modifier.padding(horizontal = 16.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+@@ -2607,7 +2490,8 @@
+     val moreIcon = rememberAppMoreIcon()
+     val deleteIcon = rememberAppDeleteIcon()
+     val linkIcon = rememberAppLinkIcon()
+-    val context = LocalContext.current
++    val platform = LocalDesktopProfileEnvironment.current
++    val context = LocalPlatformContext.current
+     val deleteAction = remember(item) { resolveProfileDynamicDeleteAction(item) }
+     var showMoreMenu by remember(item.id_str) { mutableStateOf(false) }
+     var pendingDeleteAction by remember(item.id_str) { mutableStateOf<DynamicDeleteAction?>(null) }
+@@ -2696,12 +2580,8 @@
+                         onClick = {
+                             showMoreMenu = false
+                             val dynamicUrl = "https://t.bilibili.com/${item.id_str}"
+-                            val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE)
+-                                as android.content.ClipboardManager
+-                            clipboard.setPrimaryClip(
+-                                android.content.ClipData.newPlainText("动态链接", dynamicUrl)
+-                            )
+-                            Toast.makeText(context, "已复制链接", Toast.LENGTH_SHORT).show()
++                            platform.copyText("动态链接", dynamicUrl)
++                            platform.feedback("已复制链接")
+                         }
+                     )
+                     if (deleteAction != null) {
+@@ -2799,7 +2679,8 @@
+     val clickableBvid = major?.archive?.bvid?.takeIf { it.isNotBlank() }
+     var selectedImageIndex by remember(item.id_str, imageUrls) { mutableIntStateOf(-1) }
+     var sourceRect by remember(item.id_str, imageUrls) { mutableStateOf<Rect?>(null) }
+-    val context = LocalContext.current
++    val platform = LocalDesktopProfileEnvironment.current
++    val context = LocalPlatformContext.current
+     val dynamicPreviewTextVisible = LocalDynamicImagePreviewTextVisible.current
+     val previewText = remember(item, title) {
+         ImagePreviewTextContent(
+@@ -3187,7 +3068,7 @@
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+ private fun MobileProfileContent(
+-    viewModel: ProfileViewModel = viewModel(),
++    viewModel: ProfileViewModel,
+     user: UserState,
+     onLogout: () -> Unit,
+     onAccountManageClick: () -> Unit = {},
+@@ -3217,13 +3098,11 @@
+     // 📸 图片选择器
+     // [New] Adjustment Sheet State
+     var showAdjustmentSheet by remember { mutableStateOf(false) }
+-    var tempSelectedUri by remember { mutableStateOf<Uri?>(null) }
++    var tempSelectedUri by remember { mutableStateOf<String?>(null) }
+     val customBackgroundUri by viewModel.getProfileBgUri().collectAsStateWithLifecycle(initialValue = null
+         )
+ 
+-    val photoPickerLauncher = rememberLauncherForActivityResult(
+-        contract = PickGalleryVisualMedia()
+-    ) { uri: Uri? ->
++    val photoPickerLauncher = rememberDesktopProfileMediaPicker() { uri: String? ->
+         if (uri != null) {
+             // [Modified] Don't save immediately, show adjustment sheet
+             tempSelectedUri = uri
+@@ -3301,9 +3180,7 @@
+                 AppButton(
+                     onClick = {
+                         showPhotoPickerDialog = false
+-                        photoPickerLauncher.launch(
+-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
+-                        )
++                        photoPickerLauncher.launch()
+                     }
+                 ) {
+                     AppText("选择照片")
+@@ -3543,8 +3420,8 @@
+                 modifier = Modifier.size(100.dp)
+             ) {
+                 AsyncImage(
+-                    model = ImageRequest.Builder(LocalContext.current)
+-                        .data(com.android.purebilibili.R.mipmap.ic_launcher_3d)
++                    model = ImageRequest.Builder(LocalPlatformContext.current)
++                        .data(LocalDesktopProfileEnvironment.current.platform.applicationIconModel)
+                         .crossfade(true)
+                         .build(),
+                     contentDescription = "BiliPai",
+@@ -3623,7 +3500,7 @@
+         horizontalArrangement = if (centered) Arrangement.Center else Arrangement.Start
+     ) {
+         AsyncImage(
+-            model = ImageRequest.Builder(LocalContext.current).data(FormatUtils.fixImageUrl(user.face)).crossfade(true).placeholder(android.R.color.darker_gray).build(),
++            model = ImageRequest.Builder(LocalPlatformContext.current).data(FormatUtils.fixImageUrl(user.face)).crossfade(true).build(),
+             contentDescription = null,
+             modifier = Modifier
+                 .size(72.dp)
+@@ -3788,8 +3665,9 @@
+     onResetWallpaperClick: () -> Unit,
+     isResetEnabled: Boolean
+ ) {
+-    val context = LocalContext.current
+-    val configuration = LocalConfiguration.current
++    val platform = LocalDesktopProfileEnvironment.current
++    val context = LocalPlatformContext.current
++    val configuration = desktopProfileWindowConfiguration()
+     val columnCount = remember(configuration.screenWidthDp) {
+         resolveProfileWallpaperActionColumnCount(configuration.screenWidthDp)
+     }

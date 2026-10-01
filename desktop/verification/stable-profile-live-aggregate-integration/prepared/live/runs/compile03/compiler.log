@@ -1,0 +1,6 @@
+desktop\.local\stable-home-live-navigation-parity\runs\compile03\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopLiveNavigationBindings.kt:43:51: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopLiveNavigationRequest'.
+                    requestsBySlot[slot] = request!!
+                                                  ^^
+desktop\.local\stable-home-live-navigation-parity\runs\compile03\source-inputs\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopLiveNavigationBindings.kt:50:23: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopLiveNavigationRequest'.
+        return request!!
+                      ^^

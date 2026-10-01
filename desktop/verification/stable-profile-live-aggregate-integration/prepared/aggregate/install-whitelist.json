@@ -1,0 +1,28 @@
+{
+  "files": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.kt",
+      "sha256LF": "1aeb84aa6a9746fefd1a296242c53d73713f8101457a7394f7b9b1828458c3f0"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "sha256LF": "8d3fae0ec31c64e4d6160525efd5eaefb94f56716957dae728c1857d5db752f3"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "sha256LF": "af1a01f2059d4a549bebb349b199bb77fe24586900aec178ebe74d8c857695be"
+    }
+  ],
+  "sharedPatchCount": 0,
+  "registryDelta": [],
+  "GradleDelta": null,
+  "neverInstall": [
+    "compile-*",
+    "proof-*",
+    "fixtures",
+    "task classes/JAR/DLL/store"
+  ]
+}

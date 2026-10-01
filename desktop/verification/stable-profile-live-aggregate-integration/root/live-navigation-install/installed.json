@@ -1,0 +1,60 @@
+{
+  "preparedManifestSHA256": "f029db02a6efff2c48f142d675e1cfbfaf6aa5b644823adcb3facb59d9620818",
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\desktop\\tools\\extract-upstream-live-navigation.py",
+      "target": "desktop/tools/extract-upstream-live-navigation.py",
+      "sha256Bytes": "7c33a5206014b345007dbf739b577d281398e60106dc416ff642f7a7da325091"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopLiveNavigationBindings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveNavigationBindings.kt",
+      "sha256Bytes": "b8fdf971f3c3419321f347d50c2996440da38ac5255837893b41dcaf4ad2b868"
+    }
+  ],
+  "sharedHelperHunk": {
+    "target": "desktop/tools/extract-upstream-home-partition.py",
+    "baseSha256LF": "5136d8de3cd52f75019271311060693d4e36f6bb666fbf2ca136874a6d6134d5",
+    "baseSha256Bytes": "5136d8de3cd52f75019271311060693d4e36f6bb666fbf2ca136874a6d6134d5",
+    "before": "('MediaListRowSkeleton','UserListRowSkeleton','ContentMediaListSkeleton','ContentVideoGridSkeleton','ContentVideoGridSkeletonFixedColumns')",
+    "after": "('MediaListRowSkeleton','UserListRowSkeleton','ContentMediaListSkeleton','ContentVideoGridSkeleton','ContentVideoGridSkeletonFixedColumns','ContentCategoryGridSkeleton')",
+    "count": 1,
+    "originalSource": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+    "originalSha256LF": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2",
+    "originalDeclarations": [
+      {
+        "name": "ContentVideoGridSkeletonFixedColumns",
+        "originalBodySha256LF": "f76112d34b487700d2747314240fc9f441b51c5e623d553bbc9a79aaeeb9ab3a"
+      },
+      {
+        "name": "ContentCategoryGridSkeleton",
+        "originalBodySha256LF": "baa7f334e018905ee85c46d0ee21b70b6e6d228d0d489dcc377c004b85a97a90"
+      }
+    ],
+    "referenceOnlyCompilerFiles": [
+      "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-live-navigation-parity\\reference-only\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopLiveSkeletonReference.kt"
+    ],
+    "existingCandidateFixedColumns": true,
+    "actual39FixedColumns": false,
+    "productionNewDeclarations": [
+      "ContentCategoryGridSkeleton"
+    ],
+    "rootWholeCompileRequired": true
+  },
+  "desiredSharedProducerSHA256LF": "0d21fc282852dbd3ff6344673bd88812fd7e5bcc2162d4e98f18431be0eb9571",
+  "newIdentities": [
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+    "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt"
+  ],
+  "featureMerges": [
+    "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+    "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt"
+  ],
+  "sourceCountBefore": 890,
+  "sourceCountAfter": 895,
+  "rootMounted": false
+}

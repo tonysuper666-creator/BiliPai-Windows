@@ -1,0 +1,51 @@
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt
+index 39af6a88..cb67717d 100644
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt
+@@ -43,7 +43,7 @@ internal class DesktopHomeMediaLifetime(
+         finally { withContext(NonCancellable + Dispatchers.IO) { close() } }
+     } }
+ 
+-    internal fun open(url: String, muted: Boolean): DesktopHomeMediaLease? {
++    internal fun open(url: String, muted: Boolean, repeatOne: Boolean = true): DesktopHomeMediaLease? {
+         var result: DesktopHomeMediaLease? = null
+         var failed: DesktopHomeMediaLease? = null
+         // Store/Root admission -> media lifetime -> private player/target; close NEVER retains that admission.
+@@ -55,7 +55,7 @@ internal class DesktopHomeMediaLifetime(
+                     val player = MpvPlayer(softwareTarget = target)
+                     try {
+                         player.setMuted(muted)
+-                        player.setLoop(true)
++                        player.setLoop(repeatOne)
+                         player.setSubtitlesVisible(false)
+                         player.setVideoPanscan(1.0) // Original preview/wallpaper ZOOM, rendered into actual viewport.
+                         val version = player.loadVersioned(source)
+@@ -125,14 +125,15 @@ internal class DesktopHomeMediaLease internal constructor(private val owner: Des
+ /** CPU render result is carried as a Compose image, so original alpha/clip/blur/Haze modifiers apply. */
+ @Composable
+ internal fun DesktopHomeMpvTexture(owner: DesktopHomeMediaLifetime, url: String, muted: Boolean,
+-    playbackEnabled: Boolean, onFirstFrame: (() -> Unit)?, modifier: Modifier, onFailure: (String) -> Unit) {
++    playbackEnabled: Boolean, onFirstFrame: (() -> Unit)?, modifier: Modifier, onFailure: (String) -> Unit,
++    repeatOne: Boolean = true, minimumPlayingState: Lifecycle.State = Lifecycle.State.RESUMED) {
+     val callback by rememberUpdatedState(onFirstFrame)
+     val failureCallback by rememberUpdatedState(onFailure)
+-    var lease by remember(owner, url, muted) { mutableStateOf<DesktopHomeMediaLease?>(null) }
+-    LaunchedEffect(owner, url, muted) {
++    var lease by remember(owner, url, muted, repeatOne) { mutableStateOf<DesktopHomeMediaLease?>(null) }
++    LaunchedEffect(owner, url, muted, repeatOne) {
+         var opened: DesktopHomeMediaLease? = null
+         try {
+-            withContext(Dispatchers.IO) { opened = owner.open(url, muted) }
++            withContext(Dispatchers.IO) { opened = owner.open(url, muted, repeatOne) }
+             lease = opened
+             awaitCancellation()
+         } catch (cancelled: CancellationException) { throw cancelled }
+@@ -144,7 +145,7 @@ internal fun DesktopHomeMpvTexture(owner: DesktopHomeMediaLifetime, url: String,
+     val playerState = own?.player?.state?.collectAsState()?.value
+     LaunchedEffect(own, playerState?.error) { playerState?.error?.let { error -> own?.commit { failureCallback(error) } } }
+     val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
+-    val playing = playbackEnabled && lifecycleState.isAtLeast(Lifecycle.State.RESUMED)
++    val playing = playbackEnabled && lifecycleState.isAtLeast(minimumPlayingState)
+     LaunchedEffect(own, playing) { own?.setPlaying(playing) }
+     val image = remember(frame) { frame?.let {
+         SkiaImage.makeRaster(ImageInfo(it.width, it.height, ColorType.BGRA_8888, ColorAlphaType.OPAQUE), it.opaqueBgra, it.rowBytes)

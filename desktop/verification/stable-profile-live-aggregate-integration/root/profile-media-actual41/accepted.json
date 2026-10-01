@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "actualPhase": 41,
+  "actualRuntimeEntries": 97,
+  "productionOverrides": 0,
+  "actualCodeOrigins": 12,
+  "assertions": 27,
+  "originalNativeFixtureSha256Bytes": "593b39977aa40e0b370a6d789e87bc6d15c02703ee7cdf4d6b6a5e66fd10751f",
+  "expandedFixtureSha256Bytes": "ddc611b36d14b0cb7e3a612f1199425c34718e2673746f540dda845201b947cd",
+  "nativePins": {
+    "libmpv-2.dll": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+    "ffmpeg.exe": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea"
+  },
+  "originalVideoAlignmentSemantics": "WallpaperMedia applies alignment only to image/GIF; video retains centered ZOOM",
+  "snapshotManifestSha256Bytes": "f63beb92079c82b5318bbb9721d06618639a0d7da83e1dd149e0dadb0dcab779",
+  "orderedClasspathSha256Bytes": "23e35645396f8b5b1d720c9604799bacccb75e3edca551dcf49da54497564abe",
+  "rootProfileMounted": false,
+  "physicalWindowTested": false,
+  "realAccountRead": false,
+  "nativeNetworkSources": 0,
+  "scope": "Actual local libmpv decode/EOF/repeat and isolated Compose skin lifecycle/GIF pixels"
+}
