@@ -1,0 +1,20 @@
+[
+  {
+    "path": "root/windows-home-prefs-actual37/bilipai-diagnostic-share.dll",
+    "sha256Bytes": "77e01c10bd8425bd07ad69a007a755b0a0588d5da0eb95b53a8cc9e119741a0b",
+    "sizeBytes": 238080,
+    "reason": "Rebuildable output; trusted actual native asset has its fresh producer receipt and exact digest"
+  },
+  {
+    "path": "root/windows-home-prefs-actual37/classes/META-INF/actual_windows_home_prefs.kotlin_module",
+    "sha256Bytes": "4e1b77639c29bb4a198a9cf425b2b847c0f47a2ac5302678eb9003afb19bef9a",
+    "sizeBytes": 89,
+    "reason": "Rebuildable output; trusted actual native asset has its fresh producer receipt and exact digest"
+  },
+  {
+    "path": "root/windows-home-prefs-actual37/classes/com/bilipai/desktop/ui/HomeWindowsPreferencesActualFixtureKt.class",
+    "sha256Bytes": "6af4f97ab0114118357c7d95e7e9366fc49b07f5ca54c0eb70623999b42377d9",
+    "sizeBytes": 15101,
+    "reason": "Rebuildable output; trusted actual native asset has its fresh producer receipt and exact digest"
+  }
+]

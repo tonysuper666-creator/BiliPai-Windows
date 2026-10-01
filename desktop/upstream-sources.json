@@ -5146,7 +5146,8 @@
       "path": "app/src/main/java/com/android/purebilibili/core/util/FoldableDisplayPolicy.kt",
       "sha256": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5",
       "features": [
-        "dynamic-detail-container"
+        "dynamic-detail-container",
+        "home-windows-prefs-ports"
       ],
       "mode": "selected"
     },

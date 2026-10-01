@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "sourceOnly": true,
+  "actualRuntimeAcceptance": false,
+  "nativeOrAnimationExecuted": false,
+  "HTTP": false,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\runs\\compile-01\\source-inputs\\desktop\\generated\\home-windows-prefs\\com\\android\\purebilibili\\core\\util\\DesktopHomeOriginalDeviceClassification.kt",
+      "sha256Bytes": "17fff9db5ee2f0fd85f9894fb7624d26f50927104dd7fb508caea3358b810fa6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\runs\\compile-01\\source-inputs\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeWindowsPreferencesPlatform.kt",
+      "sha256Bytes": "10d443774659a748bfa23418a157f581e65232ca49c1eb490d48559b7a949355"
+    }
+  ],
+  "snapshotManifestSha256Bytes": "a94cf303442cc285a81650237f0cc1a3910c47e4f3b1a43e42a23e36e0c63883",
+  "orderedCpSha256Bytes": "e76eb70649106c7acc0d446c539e6b971fcf578daaca68221a5897fda2fdb09d",
+  "runtimeEntries": 97,
+  "candidateJarSha256Bytes": "dd12d6c7ef85ff88ba5a2e42c1c1b020f587fe3dc11deacdf2afd8abb475f575",
+  "classCount": 8,
+  "productionClassIntersection": [],
+  "classes": [
+    "com/android/purebilibili/core/util/DesktopHomeOriginalDeviceClassificationKt.class",
+    "com/bilipai/desktop/ui/DesktopHomeDeviceDefaultObservation.class",
+    "com/bilipai/desktop/ui/DesktopHomeHingeCapability.class",
+    "com/bilipai/desktop/ui/DesktopHomeNetworkObservation.class",
+    "com/bilipai/desktop/ui/DesktopHomePreferenceCapabilityUnavailable.class",
+    "com/bilipai/desktop/ui/DesktopHomeWindowsPreferencesPlatform$Api.class",
+    "com/bilipai/desktop/ui/DesktopHomeWindowsPreferencesPlatform.class",
+    "com/bilipai/desktop/ui/DesktopHomeWindowsPreferencesPlatformKt.class"
+  ]
+}

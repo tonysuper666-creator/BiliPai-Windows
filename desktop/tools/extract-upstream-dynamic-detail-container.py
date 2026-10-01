@@ -264,7 +264,7 @@ def _generate_body():
     body+=between(source,'data class WindowSizeClass(', '/**\n * Returns true only while the current activity')
     emit(path,'package com.android.purebilibili.core.util\n\nimport androidx.compose.runtime.compositionLocalOf\nimport androidx.compose.ui.unit.*\nimport kotlin.math.min\n\n'+body,'DesktopOriginalDetailWindowModels.kt',note='WindowWidthSizeClass and width resolver are reused from Main. Actual host always provides measured width/height; no Android device/posture query.')
     select(BASE+'core/util/HingeLayoutPolicy.kt',['AppHingeFeature'],'import androidx.compose.ui.unit.IntRect\n','DesktopOriginalDetailHingeModel.kt')
-    select(BASE+'core/util/FoldableDisplayPolicy.kt',['AppFoldableDisplayRole','AppDisplayNaturalOrientation','AppFoldableDetectionBasis','AppDisplayContext'],'','DesktopOriginalDetailDisplayModel.kt')
+    select(BASE+'core/util/FoldableDisplayPolicy.kt',['AppFoldableDisplayRole','AppDisplayNaturalOrientation','AppFoldableDetectionBasis','AppDisplayContext','LARGE_SCREEN_SMALLEST_WIDTH_DP','resolveLargeScreenOrFoldableConfiguration'],'','DesktopOriginalDetailDisplayModel.kt')
     path=BASE+'core/ui/SplitLayout.kt'; emit(path,read(path),mode='direct',note='Reuse sole Main AppAdaptiveSplitLayout low-level renderer.')
     path=BASE+'feature/video/ui/components/CommentThreadDrag.kt'; emit(path,read(path),mode='direct')
     path=BASE+'feature/video/ui/components/VideoCommentSheetHost.kt'

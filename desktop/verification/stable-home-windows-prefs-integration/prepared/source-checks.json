@@ -1,0 +1,39 @@
+{
+  "status": "SOURCE_ONLY_KOTLIN_AND_SAME_DLL_NATIVE_COMPILE_PASS",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalPolicySources": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt",
+      "gitCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\original-source\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\NetworkUtils.kt",
+      "sha256Bytes": "306e82c59477a5b8801a86f85d0d0c856c31fc5801d52dd626af3765afc4530e",
+      "sha256LF": "306e82c59477a5b8801a86f85d0d0c856c31fc5801d52dd626af3765afc4530e"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "gitCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\original-source\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    }
+  ],
+  "actual33BinaryDeclarationNameMatches": [],
+  "runtimeEntries": 97,
+  "compileClasses": 8,
+  "productionClassIntersection": [],
+  "nativeBuildHeaders": 369,
+  "nativeBuildLibraries": 11,
+  "nativeCompilerFiles": 64,
+  "nativeDll": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\runs\\native-compile-01\\bilipai-diagnostic-share.dll",
+    "sha256Bytes": "77e01c10bd8425bd07ad69a007a755b0a0588d5da0eb95b53a8cc9e119741a0b",
+    "bytes": 238080
+  },
+  "freshPreferredProfileNoActorOrProfileCache": true,
+  "networkObservationIncludesSeparateInternetAccess": true,
+  "rootGlobalStoreNotReadOrCopied": true,
+  "appOrNativeQueryExecuted": false,
+  "HWNDOrGuiExecuted": false,
+  "officialSourceDownloadsOnly": true,
+  "MainOrSharedModified": false
+}

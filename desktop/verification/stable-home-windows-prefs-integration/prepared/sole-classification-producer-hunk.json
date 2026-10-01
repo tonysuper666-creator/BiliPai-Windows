@@ -1,0 +1,9 @@
+{
+  "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\tools\\extract-upstream-dynamic-detail-container.py",
+  "baseSha256Bytes": "2db34ab72df3a71bd9d31cdfe4361d04df5f1cce96a90d875d564f9dcffba9a5",
+  "baseSha256LF": "2db34ab72df3a71bd9d31cdfe4361d04df5f1cce96a90d875d564f9dcffba9a5",
+  "before": "select(BASE+'core/util/FoldableDisplayPolicy.kt',['AppFoldableDisplayRole','AppDisplayNaturalOrientation','AppFoldableDetectionBasis','AppDisplayContext'],'','DesktopOriginalDetailDisplayModel.kt')",
+  "after": "select(BASE+'core/util/FoldableDisplayPolicy.kt',['AppFoldableDisplayRole','AppDisplayNaturalOrientation','AppFoldableDetectionBasis','AppDisplayContext','LARGE_SCREEN_SMALLEST_WIDTH_DP','resolveLargeScreenOrFoldableConfiguration'],'','DesktopOriginalDetailDisplayModel.kt')",
+  "RootInstallNewStandaloneClassificationFile": false,
+  "selectedStandaloneProofHasSameOriginalBodies": true
+}

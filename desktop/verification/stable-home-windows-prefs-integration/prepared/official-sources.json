@@ -1,0 +1,71 @@
+{
+  "retrievedAtUTC": "2026-10-01T07:13:47.334385+00:00",
+  "officialOnly": true,
+  "sources": [
+    {
+      "url": "https://learn.microsoft.com/en-us/uwp/api/windows.networking.connectivity.networkinformation.getinternetconnectionprofile?view=winrt-26100",
+      "finalUrl": "https://learn.microsoft.com/en-us/uwp/api/windows.networking.connectivity.networkinformation.getinternetconnectionprofile?view=winrt-26100",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\official-sources\\preferred-profile.source",
+      "sha256Bytes": "10dc4999d75ab20f116d9b0e9a57b736a1327707ef9d2eb3f9b23c8e0abfbc18",
+      "sha256LF": "10dc4999d75ab20f116d9b0e9a57b736a1327707ef9d2eb3f9b23c8e0abfbc18",
+      "bytes": 55441
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/uwp/api/windows.networking.connectivity.networkadapter.ianainterfacetype?view=winrt-26100",
+      "finalUrl": "https://learn.microsoft.com/en-us/uwp/api/windows.networking.connectivity.networkadapter.ianainterfacetype?view=winrt-26100",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\official-sources\\iana-type.source",
+      "sha256Bytes": "fde256dc97e06e79eb45bf327e1d0179f04428b87b3378b70af700a6f1e7c71a",
+      "sha256LF": "fde256dc97e06e79eb45bf327e1d0179f04428b87b3378b70af700a6f1e7c71a",
+      "bytes": 53607
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/uwp/api/windows.networking.connectivity.connectionprofile.iswwanconnectionprofile?view=winrt-26100",
+      "finalUrl": "https://learn.microsoft.com/en-us/uwp/api/windows.networking.connectivity.connectionprofile.iswwanconnectionprofile?view=winrt-26100",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\official-sources\\wwan-profile.source",
+      "sha256Bytes": "e507550f823c6faaedf80e6ebd2f8f76cfc4efacea79e266a7647493ed1d1c29",
+      "sha256LF": "e507550f823c6faaedf80e6ebd2f8f76cfc4efacea79e266a7647493ed1d1c29",
+      "bytes": 51517
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/uwp/api/windows.networking.connectivity.networkconnectivitylevel?view=winrt-26100",
+      "finalUrl": "https://learn.microsoft.com/en-us/uwp/api/windows.networking.connectivity.networkconnectivitylevel?view=winrt-26100",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\official-sources\\connectivity-level.source",
+      "sha256Bytes": "ebde82b150d946d3f53a6ea8a628531437de20f2524de2c89687f74241ee69b4",
+      "sha256LF": "ebde82b150d946d3f53a6ea8a628531437de20f2524de2c89687f74241ee69b4",
+      "bytes": 54854
+    },
+    {
+      "url": "https://www.iana.org/assignments/ianaiftype-mib/ianaiftype-mib",
+      "finalUrl": "https://www.iana.org/assignments/ianaiftype-mib/ianaiftype-mib",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\official-sources\\iana-iftype-registry.source",
+      "sha256Bytes": "c676192edc492eb068c3aa2755991c34c061e103ddd12e6653795b3813b82a59",
+      "sha256LF": "c676192edc492eb068c3aa2755991c34c061e103ddd12e6653795b3813b82a59",
+      "bytes": 39630
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/GraphicsConfiguration.html",
+      "finalUrl": "https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/GraphicsConfiguration.html",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\official-sources\\graphics-configuration.source",
+      "sha256Bytes": "96b15a5228534376b04bbc9fdd12c6aa4e637b6e335a318bde37ee1b668587fc",
+      "sha256LF": "96b15a5228534376b04bbc9fdd12c6aa4e637b6e335a318bde37ee1b668587fc",
+      "bytes": 47767
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/DisplayMode.html",
+      "finalUrl": "https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/DisplayMode.html",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\official-sources\\display-mode.source",
+      "sha256Bytes": "2d67780e2fc9b525bf91751a98c1462f21a17ae2284e411d14910b9db83e6e70",
+      "sha256LF": "2d67780e2fc9b525bf91751a98c1462f21a17ae2284e411d14910b9db83e6e70",
+      "bytes": 22290
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openjdk/jdk21u/master/src/java.desktop/windows/native/libawt/windows/awt_Toolkit.cpp",
+      "finalUrl": "https://raw.githubusercontent.com/openjdk/jdk21u/master/src/java.desktop/windows/native/libawt/windows/awt_Toolkit.cpp",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\official-sources\\openjdk21u-awt-toolkit.source",
+      "sha256Bytes": "cf03f31773950d3585da9f800d1cf278b27d339102d9a80cef782449c7bce8fc",
+      "sha256LF": "cf03f31773950d3585da9f800d1cf278b27d339102d9a80cef782449c7bce8fc",
+      "bytes": 101197
+    }
+  ],
+  "openJdkNativeSourceIsReferenceNotExactRuntimeBuild": true
+}

@@ -189,9 +189,9 @@
     "candidateSourceIdentityCount": 833,
     "candidateResourceCount": 213,
     "all907CurrentSourceAndResourcePinsVerified": true,
-    "actualClassesEvidence": "verification/stable-web-mask-osd-integration/root/classes-36.log",
+    "actualClassesEvidence": "verification/stable-home-windows-prefs-integration/root/classes-37.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-web-mask-osd-integration/root/classes-36.log",
+    "latestCandidateClassesLog": "verification/stable-home-windows-prefs-integration/root/classes-37.log",
     "liveGuestBackendPassed": false,
     "liveGuestBackendFailure": "HTTP 412 at video details after popular/search passed",
     "liveGuestBackendEvidence": "verification/stable-comments-sharing-integration/root/actual-guest-backend/run-01/accepted-evidence.json",
@@ -219,7 +219,7 @@
     "fullDanmakuPanelPointerAccepted": false,
     "fullDanmakuAndroidRendererParityAccepted": false,
     "danmakuSettingsRootEvidence": "verification/stable-danmaku-settings-root-integration/integration-report.json",
-    "latestCandidateClassesPhase": 36,
+    "latestCandidateClassesPhase": 37,
     "danmakuActualProduct27Assertions": 61,
     "danmakuSettingsIsolatedPanelPointerAccepted": true,
     "danmakuSettingsIsolatedPanelUiAssertions": 32,
@@ -269,7 +269,13 @@
     "actualNativeOsdMaskRuntimeEntries": 97,
     "actualNativeOsdMaskProductionOverrides": 0,
     "actualFullRootMaskScreenAccepted": false,
-    "smartMaskIntegrationEvidence": "verification/stable-web-mask-osd-integration/integration-report.json"
+    "smartMaskIntegrationEvidence": "verification/stable-web-mask-osd-integration/integration-report.json",
+    "homeWindowsPreferencePlatformCompiled": true,
+    "homeActual37WindowAndPreferredProfileAssertions": 18,
+    "homeActual37ProductOrigins": 4,
+    "homeActual37ProductionOverrides": 0,
+    "homeWindowsPreferenceActualRootMounted": false,
+    "homeWindowsPreferenceIntegrationEvidence": "verification/stable-home-windows-prefs-integration/integration-report.json"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -295,6 +301,7 @@
     "verification/stable-danmaku-render-integration/integration-report.json",
     "verification/stable-miuix-nav-integration/integration-report.json",
     "verification/stable-home-ui-media-integration/integration-report.json",
-    "verification/stable-web-mask-osd-integration/integration-report.json"
+    "verification/stable-web-mask-osd-integration/integration-report.json",
+    "verification/stable-home-windows-prefs-integration/integration-report.json"
   ]
 }

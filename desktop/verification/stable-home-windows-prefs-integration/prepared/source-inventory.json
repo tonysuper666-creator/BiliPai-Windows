@@ -1,0 +1,31 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalClassification": {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/FoldableDisplayPolicy.kt",
+    "sha256Bytes": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5",
+    "sha256LF": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5",
+    "selectedBodySha256LF": "ca8fb25d8ef0d7e2cee3395c047b674f8b97d5f414bad69ba9506db9008c9176",
+    "outputSha256Bytes": "17fff9db5ee2f0fd85f9894fb7624d26f50927104dd7fb508caea3358b810fa6"
+  },
+  "nativeExactHunks": {
+    "basePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\native\\diagnostic-share\\DesktopDiagnosticShare.cpp",
+    "baseSha256Bytes": "5dda917b15ea5892e57e03320877901a35cb8435cc7663cd405dcd1457e4f095",
+    "baseSha256LF": "5dda917b15ea5892e57e03320877901a35cb8435cc7663cd405dcd1457e4f095",
+    "candidateSha256LF": "19ac663f66cb6d9eb585a4dd8e2651c9d735a8ee48142ab8eed891bfe0557418",
+    "headerBefore": "#include <winrt/Windows.ApplicationModel.DataTransfer.h>\n",
+    "headerAfter": "#include <winrt/Windows.ApplicationModel.DataTransfer.h>\n#include <winrt/Windows.Networking.Connectivity.h>\n",
+    "append": "// Desktop Home preference transport: fresh preferred-profile snapshot, no cache/actor/event ownership.\nextern \"C\" __declspec(dllexport) HRESULT WINAPI BilipaiHomeNetworkSnapshot(\n    int* profilePresent,int* connectivity,unsigned* interfaceType,int* isWwan) noexcept {\n    if(!profilePresent||!connectivity||!interfaceType||!isWwan)return E_POINTER;\n    *profilePresent=-1;*connectivity=-1;*interfaceType=0;*isWwan=-1;\n    struct NetworkApartment final {\n        HRESULT result=RoInitialize(RO_INIT_MULTITHREADED);\n        ~NetworkApartment(){if(SUCCEEDED(result))RoUninitialize();}\n    } apartment;\n    // A caller's existing STA remains valid and must not be uninitialized by this query.\n    if(FAILED(apartment.result)&&apartment.result!=RPC_E_CHANGED_MODE)return apartment.result;\n    try {\n        using namespace winrt::Windows::Networking::Connectivity;\n        auto profile=NetworkInformation::GetInternetConnectionProfile();\n        if(!profile) {*profilePresent=0;*connectivity=0;*interfaceType=0;*isWwan=0;return S_OK;}\n        auto adapter=profile.NetworkAdapter();if(!adapter)return E_UNEXPECTED;\n        auto level=profile.GetNetworkConnectivityLevel();\n        auto kind=adapter.IanaInterfaceType();\n        auto cellular=profile.IsWwanConnectionProfile();\n        *profilePresent=1;*connectivity=static_cast<int>(level);*interfaceType=kind;*isWwan=cellular?1:0;\n        return S_OK;\n    }catch(...){return winrt::to_hresult();}\n}\n",
+    "allOriginalNativeBytesReverseNormalizedEqual": true
+  },
+  "newManualSource": [
+    {
+      "path": "prepared/desktop/generated/home-windows-prefs/com/android/purebilibili/core/util/DesktopHomeOriginalDeviceClassification.kt",
+      "sha256Bytes": "17fff9db5ee2f0fd85f9894fb7624d26f50927104dd7fb508caea3358b810fa6"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowsPreferencesPlatform.kt",
+      "sha256Bytes": "10d443774659a748bfa23418a157f581e65232ca49c1eb490d48559b7a949355"
+    }
+  ],
+  "MainSharedModified": false
+}

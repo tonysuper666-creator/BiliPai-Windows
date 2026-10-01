@@ -1,0 +1,315 @@
+{
+  "schema": "raw-artifact-manifest-v1",
+  "artifacts": [
+    {
+      "path": "prepared/frozen-handoff.json",
+      "sha256Bytes": "d3c1d609dc624eca5894e8d68e13727f24adc3000dfd9428f70088585f0a08ac",
+      "sizeBytes": 8553
+    },
+    {
+      "path": "prepared/audit.py",
+      "sha256Bytes": "36e2701cebb5895bb2dc6b60e7aa34f68bf67a6453ca695c86b0f22cfab6b58d",
+      "sizeBytes": 6428
+    },
+    {
+      "path": "prepared/compile.py",
+      "sha256Bytes": "046f6b7d40c6222dd0190a01a0607e62c281e947a6cb712e2a73d6bb45a2a32b",
+      "sizeBytes": 3799
+    },
+    {
+      "path": "prepared/freeze.py",
+      "sha256Bytes": "0b4eea6da2c701dac4226815d004affd7375917c3092c9240aa96b0cb170b63b",
+      "sizeBytes": 1939
+    },
+    {
+      "path": "prepared/native-candidate/DesktopDiagnosticShare-base.cpp",
+      "sha256Bytes": "5dda917b15ea5892e57e03320877901a35cb8435cc7663cd405dcd1457e4f095",
+      "sizeBytes": 29067
+    },
+    {
+      "path": "prepared/native-candidate/DesktopDiagnosticShare.cpp",
+      "sha256Bytes": "19ac663f66cb6d9eb585a4dd8e2651c9d735a8ee48142ab8eed891bfe0557418",
+      "sizeBytes": 30566
+    },
+    {
+      "path": "prepared/native-local.patch",
+      "sha256Bytes": "24ee2691845b41d9195f2a7b293f9fb2aff57ca181cbba3a47bdee3c3e44a3d1",
+      "sizeBytes": 2185
+    },
+    {
+      "path": "prepared/network-export.inc",
+      "sha256Bytes": "3b59a58168f71eb6b6d5a172c9ffe192bec08e7469748e1796d39a3ed2c5dd77",
+      "sizeBytes": 1447
+    },
+    {
+      "path": "prepared/official-sources/connectivity-level.source",
+      "sha256Bytes": "ebde82b150d946d3f53a6ea8a628531437de20f2524de2c89687f74241ee69b4",
+      "sizeBytes": 54854
+    },
+    {
+      "path": "prepared/official-sources/display-mode.source",
+      "sha256Bytes": "2d67780e2fc9b525bf91751a98c1462f21a17ae2284e411d14910b9db83e6e70",
+      "sizeBytes": 22290
+    },
+    {
+      "path": "prepared/official-sources/graphics-configuration.source",
+      "sha256Bytes": "96b15a5228534376b04bbc9fdd12c6aa4e637b6e335a318bde37ee1b668587fc",
+      "sizeBytes": 47767
+    },
+    {
+      "path": "prepared/official-sources/iana-iftype-registry.source",
+      "sha256Bytes": "c676192edc492eb068c3aa2755991c34c061e103ddd12e6653795b3813b82a59",
+      "sizeBytes": 39630
+    },
+    {
+      "path": "prepared/official-sources/iana-type.source",
+      "sha256Bytes": "fde256dc97e06e79eb45bf327e1d0179f04428b87b3378b70af700a6f1e7c71a",
+      "sizeBytes": 53607
+    },
+    {
+      "path": "prepared/official-sources/openjdk21u-awt-toolkit.source",
+      "sha256Bytes": "cf03f31773950d3585da9f800d1cf278b27d339102d9a80cef782449c7bce8fc",
+      "sizeBytes": 101197
+    },
+    {
+      "path": "prepared/official-sources/preferred-profile.source",
+      "sha256Bytes": "10dc4999d75ab20f116d9b0e9a57b736a1327707ef9d2eb3f9b23c8e0abfbc18",
+      "sizeBytes": 55441
+    },
+    {
+      "path": "prepared/official-sources/wwan-profile.source",
+      "sha256Bytes": "e507550f823c6faaedf80e6ebd2f8f76cfc4efacea79e266a7647493ed1d1c29",
+      "sizeBytes": 51517
+    },
+    {
+      "path": "prepared/official-sources.json",
+      "sha256Bytes": "47521d8097c8dc363b077886cc1b1a3e8d8ce0e961aaab4e9685eafc2537f9c9",
+      "sizeBytes": 5609
+    },
+    {
+      "path": "prepared/original-source/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "sizeBytes": 396158
+    },
+    {
+      "path": "prepared/original-source/app/src/main/java/com/android/purebilibili/core/util/FoldableDisplayPolicy.kt",
+      "sha256Bytes": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5",
+      "sizeBytes": 9316
+    },
+    {
+      "path": "prepared/original-source/app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt",
+      "sha256Bytes": "306e82c59477a5b8801a86f85d0d0c856c31fc5801d52dd626af3765afc4530e",
+      "sizeBytes": 5026
+    },
+    {
+      "path": "prepared/prepare.py",
+      "sha256Bytes": "a3fb1d4d0801d335e0e2b92b26470b3b42f7588d204ce0c89521b1e7efe3885d",
+      "sizeBytes": 3592
+    },
+    {
+      "path": "prepared/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowsPreferencesPlatform.kt",
+      "sha256Bytes": "10d443774659a748bfa23418a157f581e65232ca49c1eb490d48559b7a949355",
+      "sizeBytes": 7608
+    },
+    {
+      "path": "prepared/registry-merge-recipe.json",
+      "sha256Bytes": "832f160772e79d6dfee428ed346870e328960df72f9f25779c15dfadbfba4f11",
+      "sizeBytes": 974
+    },
+    {
+      "path": "prepared/ROOT-INTEGRATION.md",
+      "sha256Bytes": "d4716f94e1984383ed7ccb3c5d9a94f5bcc8d9b02a38d9e640c3c9d66e5faf9b",
+      "sizeBytes": 6911
+    },
+    {
+      "path": "prepared/runs/compile-01/compile-result.json",
+      "sha256Bytes": "d54fd88a7c07ea23ea57e62c4daf3a385798411c706acecd6036f0c068f68d14",
+      "sizeBytes": 1995
+    },
+    {
+      "path": "prepared/runs/compile-01/compiler.args",
+      "sha256Bytes": "b92ced01bfb57448ada571df85492df6a977f2b9e386ef06d5511c2706112fa7",
+      "sizeBytes": 25227
+    },
+    {
+      "path": "prepared/runs/compile-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/runs/compile-01/dependency-pins-after.json",
+      "sha256Bytes": "8e3e7ff9ccd33ff8029c99e89d50ceb7bb17d4dd7f729e22c84d563282983790",
+      "sizeBytes": 42119
+    },
+    {
+      "path": "prepared/runs/compile-01/dependency-pins-before.json",
+      "sha256Bytes": "8e3e7ff9ccd33ff8029c99e89d50ceb7bb17d4dd7f729e22c84d563282983790",
+      "sizeBytes": 42119
+    },
+    {
+      "path": "prepared/runs/compile-01/prepared-home-windows-prefs.jar",
+      "sha256Bytes": "dd12d6c7ef85ff88ba5a2e42c1c1b020f587fe3dc11deacdf2afd8abb475f575",
+      "sizeBytes": 17792
+    },
+    {
+      "path": "prepared/runs/compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowsPreferencesPlatform.kt",
+      "sha256Bytes": "10d443774659a748bfa23418a157f581e65232ca49c1eb490d48559b7a949355",
+      "sizeBytes": 7608
+    },
+    {
+      "path": "prepared/runs/native-compile-01/bilipai-diagnostic-share.dll",
+      "sha256Bytes": "77e01c10bd8425bd07ad69a007a755b0a0588d5da0eb95b53a8cc9e119741a0b",
+      "sizeBytes": 238080
+    },
+    {
+      "path": "prepared/runs/native-compile-01/bilipai-diagnostic-share.exp",
+      "sha256Bytes": "3de53304cff444afd7cd21bcf312a31d0c68c82749169eb972048f7906eca7a3",
+      "sizeBytes": 2404
+    },
+    {
+      "path": "prepared/runs/native-compile-01/bilipai-diagnostic-share.lib",
+      "sha256Bytes": "18c57aedf595ec0ac7594e41a213bf0f44a3e0de4ddcf06d133102e4d934eefe",
+      "sizeBytes": 4462
+    },
+    {
+      "path": "prepared/runs/native-compile-01/compile.log",
+      "sha256Bytes": "13940b11c3f4f77ea2f35ed943e0106adfbaad184d5efd310ccb1cf6510b01a7",
+      "sizeBytes": 11479
+    },
+    {
+      "path": "prepared/runs/native-compile-01/compile.raw.log",
+      "sha256Bytes": "870d5a572baee9860397f26585202a5304d3763695a084520f6a39d19866edd9",
+      "sizeBytes": 11353
+    },
+    {
+      "path": "prepared/runs/native-compile-01/DesktopDiagnosticShare.obj",
+      "sha256Bytes": "fea2e9ace31397316503e158c753b6ec621d98828904d8ba535a00a13f8a3607",
+      "sizeBytes": 2194792
+    },
+    {
+      "path": "prepared/runs/native-compile-01/producer-input-graph.json",
+      "sha256Bytes": "87d2f63826c26ad4f40e470585dd4ed2a715d8cbeea171d1e8959765a301d77d",
+      "sizeBytes": 116896
+    },
+    {
+      "path": "prepared/runs/native-compile-01/source-dependencies.json",
+      "sha256Bytes": "8651efa3ba6fa92bbfb135afe3deb580864598990e85c6f7e065aeefceeb923a",
+      "sizeBytes": 52508
+    },
+    {
+      "path": "prepared/sole-classification-producer-hunk.json",
+      "sha256Bytes": "d8a791e783a84f4e4c0d00ccc5c666539f2fb87a464fbb3dcaef4ad9a99ace13",
+      "sizeBytes": 967
+    },
+    {
+      "path": "prepared/source-checks.json",
+      "sha256Bytes": "ede166a6eac05c29184b5acd64688f8841f902e03536e288d197a6ec6f1dc603",
+      "sizeBytes": 2260
+    },
+    {
+      "path": "prepared/source-inventory.json",
+      "sha256Bytes": "8f22cbe6d7df734412f617720941ab70068f2b5a03d3acb7afdee604971053c2",
+      "sizeBytes": 3315
+    },
+    {
+      "path": "root/windows-home-prefs-install/approval-before.json",
+      "sha256Bytes": "f1dac93f3883a47fee1b8dd559bff8d366cf3a22e15bacab499154011daeb004",
+      "sizeBytes": 79381
+    },
+    {
+      "path": "root/windows-home-prefs-install/installed.json",
+      "sha256Bytes": "45cc8ec6bab02be207ab8b3242b7de0973223f3796368ed28ca7ac5b28a34ef3",
+      "sizeBytes": 609
+    },
+    {
+      "path": "root/windows-home-prefs-actual37/HomeWindowsPreferencesActualFixture.kt",
+      "sha256Bytes": "5c3596796548c34648cc2ed6d7d034749f2cf5a344aef91daa273a16ba48b9e6",
+      "sizeBytes": 4667
+    },
+    {
+      "path": "root/windows-home-prefs-actual37/compiler.args",
+      "sha256Bytes": "7234c63e20a4015c746aae3aedfc8936e9994f9960ed3531cf5040a9baf55535",
+      "sizeBytes": 24543
+    },
+    {
+      "path": "root/windows-home-prefs-actual37/compiler.log",
+      "sha256Bytes": "dcf9ffe1952ee83f2f18faf8416da1155391a981aef9d1e1445acf68832076d7",
+      "sizeBytes": 379
+    },
+    {
+      "path": "root/windows-home-prefs-actual37/result.json",
+      "sha256Bytes": "c0303e99f770cff40a498f2bf63ce2656c20c617050b109f00e187e48d7a393c",
+      "sizeBytes": 1465
+    },
+    {
+      "path": "root/windows-home-prefs-actual37/runtime.log",
+      "sha256Bytes": "3e7ac4d6e9e25a18cd322f321a88e1376edbf8e023e684b45ac244a7e8d5e1fd",
+      "sizeBytes": 505
+    },
+    {
+      "path": "root/install-windows-home-prefs.py",
+      "sha256Bytes": "062fe6d58e4bc9806e5b68f8d9b92437c8d440fa505ba946060cc0fd5cd486fd",
+      "sizeBytes": 4288
+    },
+    {
+      "path": "root/prove-windows-home-prefs37.py",
+      "sha256Bytes": "a573ee8e4c6e39d05f12507f4fcb7a834bd002b6d146fca59f68118f36887152",
+      "sizeBytes": 2607
+    },
+    {
+      "path": "root/HomeWindowsPreferencesActualFixture.kt",
+      "sha256Bytes": "5c3596796548c34648cc2ed6d7d034749f2cf5a344aef91daa273a16ba48b9e6",
+      "sizeBytes": 4667
+    },
+    {
+      "path": "root/freeze-windows-home-prefs37.py",
+      "sha256Bytes": "4cf148d088425986336b7269f8ebba6887e150fab5b673c2c55e04bae42406c3",
+      "sizeBytes": 5317
+    },
+    {
+      "path": "root/jvm-method-name-audit-37.json",
+      "sha256Bytes": "9323ae560892f353176db92a127773490e97379c00f7c7309bda5a06f23fc7f8",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/snapshot37/manifest.json",
+      "sha256Bytes": "4c18273f144259998a652cb94d4a61304bdd2d98cf959656d5a76b7757e7fba6",
+      "sizeBytes": 119783
+    },
+    {
+      "path": "root/snapshot37/ordered-runtime-cp.json",
+      "sha256Bytes": "4f4c87646123fc1b6b2074b05e8adbce5e8698065f06f550c4a00c46e3c03ba1",
+      "sizeBytes": 36694
+    },
+    {
+      "path": "root/classes-37.log",
+      "sha256Bytes": "40109a42717f6849d15ccf406f5329fd981695c9f0c7bbe5f9146e9932f3e68b",
+      "sizeBytes": 10611
+    },
+    {
+      "path": "root/native-producer-receipt.json",
+      "sha256Bytes": "79733d9a8391162fb3870913bffeb8190aaadbcc219bee2bfcf2b1583a0c6aa4",
+      "sizeBytes": 1247
+    },
+    {
+      "path": "root/native-actual-input-graph.json",
+      "sha256Bytes": "eca12e99b035d5435aecd4ab0660e31570db6725463496c216acfb1a9d64538a",
+      "sizeBytes": 116973
+    },
+    {
+      "path": "root/native-approved-development-build.json",
+      "sha256Bytes": "87ea6bb475187e2fda34d3583b39e09d7c3bb3a9689baaefda85097a90a35658",
+      "sizeBytes": 82919
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "20cb1fa56337661a807130185903ec5952fe8a23c97b8e3068085975ccd63d43",
+      "sizeBytes": 928
+    },
+    {
+      "path": "root/compiled-output-exclusions.json",
+      "sha256Bytes": "9a8d9ad674da3789d5b4aad4e9c4b5b87a28ec01b1ef7457232bd02d3fe4230b",
+      "sizeBytes": 1002
+    }
+  ]
+}

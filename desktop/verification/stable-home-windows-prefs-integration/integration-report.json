@@ -1,0 +1,30 @@
+{
+  "wholeClassesPhase": 37,
+  "wholeClassesPassed": true,
+  "sourceIdentityCount": 833,
+  "resourceCount": 213,
+  "actualRuntimeEntries": 97,
+  "productionOverrides": 0,
+  "actualProductClassOrigins": 4,
+  "actualWindowAndPreferredProfileAssertions": 18,
+  "freshSameNativeDllSha256": "77e01c10bd8425bd07ad69a007a755b0a0588d5da0eb95b53a8cc9e119741a0b",
+  "sameReviewedNativeProducerAndGraph": true,
+  "originalLargeScreenPolicyOneProducer": true,
+  "observedPhysicalMonitor": [
+    3840,
+    2160
+  ],
+  "observedScale": [
+    1.5,
+    1.5
+  ],
+  "observedPreferredIanaInterfaceType": 71,
+  "actualCellularHardwareAvailableForThisProof": false,
+  "actualFullRootMounted": false,
+  "actualAccountOrExeAccepted": false,
+  "pending": [
+    "Full original Home retained entry/four embedded pages/return navigation",
+    "Root Windows preference construction and unavailable capability UX",
+    "Final Windows EXE deployment"
+  ]
+}

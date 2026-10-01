@@ -1,0 +1,13 @@
+{
+  "nativeHunks": 2,
+  "manualSources": 1,
+  "existingClassificationProducerHunk": 1,
+  "originalIdentitiesNew": 0,
+  "originalIdentityFeatureMerge": 1,
+  "nativeSourceSha256": "19ac663f66cb6d9eb585a4dd8e2651c9d735a8ee48142ab8eed891bfe0557418",
+  "expectedFreshSameDllSha256": "77e01c10bd8425bd07ad69a007a755b0a0588d5da0eb95b53a8cc9e119741a0b",
+  "reviewGraphSha256": "87d2f63826c26ad4f40e470585dd4ed2a715d8cbeea171d1e8959765a301d77d",
+  "actualRootMounted": false,
+  "actualQueryExecuted": false,
+  "preparedManifestSha256": "d3c1d609dc624eca5894e8d68e13727f24adc3000dfd9428f70088585f0a08ac"
+}

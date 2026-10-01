@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\upstream-v023-audit\windows-home-prefs-actual37\HomeWindowsPreferencesActualFixture.kt:24:67: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'JFrame'.
+            platform = DesktopHomeWindowsPreferencesPlatform(frame!!, { dll }, expected, { true })
+                                                                  ^^

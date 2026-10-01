@@ -1,0 +1,19 @@
+{
+  "existingRegistry": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\upstream-sources.json",
+    "sha256Bytes": "94372472535a84b81a0a79d811bff93180594cdc4c196153b8872735c7d5b51f",
+    "sha256LF": "94372472535a84b81a0a79d811bff93180594cdc4c196153b8872735c7d5b51f"
+  },
+  "path": "app/src/main/java/com/android/purebilibili/core/util/FoldableDisplayPolicy.kt",
+  "sha256LF": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5",
+  "existingRow": {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/FoldableDisplayPolicy.kt",
+    "sha256": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5",
+    "features": [
+      "dynamic-detail-container"
+    ],
+    "mode": "selected"
+  },
+  "operation": "Preserve existing selected mode and all features; merge home-windows-prefs-ports feature into this same source identity only",
+  "noSecondIdentity": true
+}

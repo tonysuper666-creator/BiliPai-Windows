@@ -1,0 +1,237 @@
+{
+  "status": "FROZEN_SOURCE_ONLY_HOME_WINDOWS_PREFERENCE_PORTS",
+  "artifactCount": 41,
+  "artifacts": [
+    {
+      "path": "audit.py",
+      "bytes": 6428,
+      "sha256Bytes": "36e2701cebb5895bb2dc6b60e7aa34f68bf67a6453ca695c86b0f22cfab6b58d"
+    },
+    {
+      "path": "compile.py",
+      "bytes": 3799,
+      "sha256Bytes": "046f6b7d40c6222dd0190a01a0607e62c281e947a6cb712e2a73d6bb45a2a32b"
+    },
+    {
+      "path": "freeze.py",
+      "bytes": 1939,
+      "sha256Bytes": "0b4eea6da2c701dac4226815d004affd7375917c3092c9240aa96b0cb170b63b"
+    },
+    {
+      "path": "native-candidate/DesktopDiagnosticShare-base.cpp",
+      "bytes": 29067,
+      "sha256Bytes": "5dda917b15ea5892e57e03320877901a35cb8435cc7663cd405dcd1457e4f095"
+    },
+    {
+      "path": "native-candidate/DesktopDiagnosticShare.cpp",
+      "bytes": 30566,
+      "sha256Bytes": "19ac663f66cb6d9eb585a4dd8e2651c9d735a8ee48142ab8eed891bfe0557418"
+    },
+    {
+      "path": "native-local.patch",
+      "bytes": 2185,
+      "sha256Bytes": "24ee2691845b41d9195f2a7b293f9fb2aff57ca181cbba3a47bdee3c3e44a3d1"
+    },
+    {
+      "path": "network-export.inc",
+      "bytes": 1447,
+      "sha256Bytes": "3b59a58168f71eb6b6d5a172c9ffe192bec08e7469748e1796d39a3ed2c5dd77"
+    },
+    {
+      "path": "official-sources/connectivity-level.source",
+      "bytes": 54854,
+      "sha256Bytes": "ebde82b150d946d3f53a6ea8a628531437de20f2524de2c89687f74241ee69b4"
+    },
+    {
+      "path": "official-sources/display-mode.source",
+      "bytes": 22290,
+      "sha256Bytes": "2d67780e2fc9b525bf91751a98c1462f21a17ae2284e411d14910b9db83e6e70"
+    },
+    {
+      "path": "official-sources/graphics-configuration.source",
+      "bytes": 47767,
+      "sha256Bytes": "96b15a5228534376b04bbc9fdd12c6aa4e637b6e335a318bde37ee1b668587fc"
+    },
+    {
+      "path": "official-sources/iana-iftype-registry.source",
+      "bytes": 39630,
+      "sha256Bytes": "c676192edc492eb068c3aa2755991c34c061e103ddd12e6653795b3813b82a59"
+    },
+    {
+      "path": "official-sources/iana-type.source",
+      "bytes": 53607,
+      "sha256Bytes": "fde256dc97e06e79eb45bf327e1d0179f04428b87b3378b70af700a6f1e7c71a"
+    },
+    {
+      "path": "official-sources/openjdk21u-awt-toolkit.source",
+      "bytes": 101197,
+      "sha256Bytes": "cf03f31773950d3585da9f800d1cf278b27d339102d9a80cef782449c7bce8fc"
+    },
+    {
+      "path": "official-sources/preferred-profile.source",
+      "bytes": 55441,
+      "sha256Bytes": "10dc4999d75ab20f116d9b0e9a57b736a1327707ef9d2eb3f9b23c8e0abfbc18"
+    },
+    {
+      "path": "official-sources/wwan-profile.source",
+      "bytes": 51517,
+      "sha256Bytes": "e507550f823c6faaedf80e6ebd2f8f76cfc4efacea79e266a7647493ed1d1c29"
+    },
+    {
+      "path": "official-sources.json",
+      "bytes": 5609,
+      "sha256Bytes": "47521d8097c8dc363b077886cc1b1a3e8d8ce0e961aaab4e9685eafc2537f9c9"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "bytes": 396158,
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/util/FoldableDisplayPolicy.kt",
+      "bytes": 9316,
+      "sha256Bytes": "3ab8f1a1a56ec6c82bdbc08bf4087cb3d6edd99c37d2faa46f9050ba0dfff0b5"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt",
+      "bytes": 5026,
+      "sha256Bytes": "306e82c59477a5b8801a86f85d0d0c856c31fc5801d52dd626af3765afc4530e"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 3592,
+      "sha256Bytes": "a3fb1d4d0801d335e0e2b92b26470b3b42f7588d204ce0c89521b1e7efe3885d"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowsPreferencesPlatform.kt",
+      "bytes": 7608,
+      "sha256Bytes": "10d443774659a748bfa23418a157f581e65232ca49c1eb490d48559b7a949355"
+    },
+    {
+      "path": "registry-merge-recipe.json",
+      "bytes": 974,
+      "sha256Bytes": "832f160772e79d6dfee428ed346870e328960df72f9f25779c15dfadbfba4f11"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "bytes": 6911,
+      "sha256Bytes": "d4716f94e1984383ed7ccb3c5d9a94f5bcc8d9b02a38d9e640c3c9d66e5faf9b"
+    },
+    {
+      "path": "runs/compile-01/compile-result.json",
+      "bytes": 1995,
+      "sha256Bytes": "d54fd88a7c07ea23ea57e62c4daf3a385798411c706acecd6036f0c068f68d14"
+    },
+    {
+      "path": "runs/compile-01/compiler.args",
+      "bytes": 25227,
+      "sha256Bytes": "b92ced01bfb57448ada571df85492df6a977f2b9e386ef06d5511c2706112fa7"
+    },
+    {
+      "path": "runs/compile-01/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/compile-01/dependency-pins-after.json",
+      "bytes": 42119,
+      "sha256Bytes": "8e3e7ff9ccd33ff8029c99e89d50ceb7bb17d4dd7f729e22c84d563282983790"
+    },
+    {
+      "path": "runs/compile-01/dependency-pins-before.json",
+      "bytes": 42119,
+      "sha256Bytes": "8e3e7ff9ccd33ff8029c99e89d50ceb7bb17d4dd7f729e22c84d563282983790"
+    },
+    {
+      "path": "runs/compile-01/prepared-home-windows-prefs.jar",
+      "bytes": 17792,
+      "sha256Bytes": "dd12d6c7ef85ff88ba5a2e42c1c1b020f587fe3dc11deacdf2afd8abb475f575"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowsPreferencesPlatform.kt",
+      "bytes": 7608,
+      "sha256Bytes": "10d443774659a748bfa23418a157f581e65232ca49c1eb490d48559b7a949355"
+    },
+    {
+      "path": "runs/native-compile-01/bilipai-diagnostic-share.dll",
+      "bytes": 238080,
+      "sha256Bytes": "77e01c10bd8425bd07ad69a007a755b0a0588d5da0eb95b53a8cc9e119741a0b"
+    },
+    {
+      "path": "runs/native-compile-01/bilipai-diagnostic-share.exp",
+      "bytes": 2404,
+      "sha256Bytes": "3de53304cff444afd7cd21bcf312a31d0c68c82749169eb972048f7906eca7a3"
+    },
+    {
+      "path": "runs/native-compile-01/bilipai-diagnostic-share.lib",
+      "bytes": 4462,
+      "sha256Bytes": "18c57aedf595ec0ac7594e41a213bf0f44a3e0de4ddcf06d133102e4d934eefe"
+    },
+    {
+      "path": "runs/native-compile-01/compile.log",
+      "bytes": 11479,
+      "sha256Bytes": "13940b11c3f4f77ea2f35ed943e0106adfbaad184d5efd310ccb1cf6510b01a7"
+    },
+    {
+      "path": "runs/native-compile-01/compile.raw.log",
+      "bytes": 11353,
+      "sha256Bytes": "870d5a572baee9860397f26585202a5304d3763695a084520f6a39d19866edd9"
+    },
+    {
+      "path": "runs/native-compile-01/DesktopDiagnosticShare.obj",
+      "bytes": 2194792,
+      "sha256Bytes": "fea2e9ace31397316503e158c753b6ec621d98828904d8ba535a00a13f8a3607"
+    },
+    {
+      "path": "runs/native-compile-01/producer-input-graph.json",
+      "bytes": 116896,
+      "sha256Bytes": "87d2f63826c26ad4f40e470585dd4ed2a715d8cbeea171d1e8959765a301d77d"
+    },
+    {
+      "path": "runs/native-compile-01/source-dependencies.json",
+      "bytes": 52508,
+      "sha256Bytes": "8651efa3ba6fa92bbfb135afe3deb580864598990e85c6f7e065aeefceeb923a"
+    },
+    {
+      "path": "sole-classification-producer-hunk.json",
+      "bytes": 967,
+      "sha256Bytes": "d8a791e783a84f4e4c0d00ccc5c666539f2fb87a464fbb3dcaef4ad9a99ace13"
+    },
+    {
+      "path": "source-checks.json",
+      "bytes": 2260,
+      "sha256Bytes": "ede166a6eac05c29184b5acd64688f8841f902e03536e288d197a6ec6f1dc603"
+    },
+    {
+      "path": "source-inventory.json",
+      "bytes": 3315,
+      "sha256Bytes": "8f22cbe6d7df734412f617720941ab70068f2b5a03d3acb7afdee604971053c2"
+    }
+  ],
+  "manualInstallFiles": [
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowsPreferencesPlatform.kt"
+  ],
+  "exactLocalHunks": [
+    "native-local.patch",
+    "sole-classification-producer-hunk.json"
+  ],
+  "sameExistingRegistryMerge": "registry-merge-recipe.json",
+  "proofOnlyNotInstall": [
+    "native-candidate",
+    "runs",
+    "prepared/desktop/generated"
+  ],
+  "compilePass": {
+    "kotlinClasses": 8,
+    "productionClassIntersection": [],
+    "sameNativeDll": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-windows-prefs-ports-parity\\runs\\native-compile-01\\bilipai-diagnostic-share.dll",
+      "sha256Bytes": "77e01c10bd8425bd07ad69a007a755b0a0588d5da0eb95b53a8cc9e119741a0b",
+      "bytes": 238080
+    }
+  },
+  "nativeOrGuiRuntimeAccepted": false,
+  "appHTTP": false,
+  "officialSourceDownloadsOnly": true,
+  "MainOrSharedModified": false
+}

@@ -26,6 +26,8 @@ v0.2.3 原依赖库对齐见 `verification/stable-miuix5c91-integration`：唯�
 
 原智能遮罩与原生视口切片见 `verification/stable-web-mask-osd-integration`：原完整 MASK/gzip/base64/SVG 解码、原遮罩请求和窗口方法进入现有 Overlay，BVID/CID/原生源/账号 epoch 固定；原未初始化 Long.MIN_VALUE 窗口差值溢出用单个初始化关口修正，原 10/30/5 秒表达式保留。mpv 同一轮已有 OSD 属性观测保存真实位置与负裁切边距，未增加轮询或播放器，未准备时省略遮罩。番剧页补齐 required 同 Root community 请求消费者，按分集/源/账号退休；无 BVID 课程没有可用的可选遮罩。classes34/35 的漏接参数及 import 失败保留，classes36 整包通过。actual36/97 依赖固定、零覆盖、11 产品类来源，39 项真实隐藏 HWND/原解析/Java2D/高级弹幕断言通过：实际 150%/DPI144、黑边、负裁切、竖长 resize、跳转/换源/停止与线程回收。隔离原生窗口与图像不代表完整 Root 透明遮罩屏幕呈现、真人 WBI 元数据、ByteDance 像素/碰撞渲染或 EXE；这些仍待组合验收。
 
+Windows 首页偏好平台切片见 `verification/stable-home-windows-prefs-integration`：same DLL 新鲜读取系统首选连接，原省流策略区分 WWAN 和 Wi-Fi；使用实际显示器/缩放映射原大屏默认值，同一分类生成器保留原阈值。classes37 整包通过；actual37/97、零覆盖、4 个真实产品类来源，18 条真实隐藏窗口与原生查询检查通过。本机观测 4K/150% 与 IANA71/Wi-Fi，未测实体蜂窝切换，Windows 铰链检测明确不可用。完整 Root 首页构造、四个嵌入页、真实返回与 EXE 仍待接通。
+
 正式版元数据分别核验：发布说明 versionCode 414，固定 tag 源码 415，官方 APK 二进制清单 418。已观察 tag 后六次提交的 main 为 `f2973e9a0649a4d32618d65e8870165a048e0a02`、源码版本 418；版本号相同不能证明 APK 精确构建提交，候选仍固定上述 tag，歌词、听视频、首页撤销/定位提示与评论图标的六文件后续修改单列待复核。历史 Main15 启动首次结果因 Composition 错误被审查否决，第二次失败亦保留；准备实际 JS 资源后的第三次访客窗口启动通过，仅证明启动/关闭，不证明页面交互或新的 EXE 已交付。
 
 本轮窄验证包括原 BGM 后台 12 项/43 断言、评论检测 12 项/40 断言、实际 mpv 投票窗口 8 门和 6 次鼠标点击、隐藏真实 HWND 下载进度 34 断言，以及实际整包 Main14 类的玻璃背景采样 25 断言。后者确认原 Tab 前景不进入背景取样，同时保留正常绘制。原生文字分享的准备/回收和 actor 生命周期通过，系统分享面板及 DataRequested 尚未验收。窄测试、隐藏窗口 API 调用和真实整包页面验收分别记录；已有桌面 EXE 未替换。
