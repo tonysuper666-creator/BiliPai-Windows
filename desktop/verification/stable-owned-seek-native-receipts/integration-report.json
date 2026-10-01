@@ -1,0 +1,94 @@
+{
+  "phase": 66,
+  "sourceIdentityCount": 1115,
+  "resourceCount": 213,
+  "runtimeEntries": 101,
+  "wholeClassesPassed": true,
+  "wholeTestSourcesCompiled": true,
+  "kotlinClassCount": 14331,
+  "illegalJvmMethodNames": 0,
+  "sourceDelta": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "beforeCommit": "aa0f05d8a9911c93df50ccb499cd6307951d0471",
+      "beforeSha256LF": "4da608e024ab32c4c155688aa7d149e0529f0b5cf1de6332213104290090b213",
+      "afterSha256Bytes": "6842ad1a1abda9c6e4218fade027dd82d2db6076cabd86b8ea99300cd0b54e42"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvOverlayControl.kt",
+      "beforeCommit": "aa0f05d8a9911c93df50ccb499cd6307951d0471",
+      "beforeSha256LF": "82ecb87a9a449121825f6809ad76141b0a35f434713681baa82a973607552412",
+      "afterSha256Bytes": "6bd4f20c88716ef7c9e10e39268d083637c404e7d1750fdf10134bb90c05683c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState.kt",
+      "beforeCommit": "aa0f05d8a9911c93df50ccb499cd6307951d0471",
+      "beforeSha256LF": "957db9765b016779acf400555dce7089671ad1df7527c4f5971f9b3ebd4d84e2",
+      "afterSha256Bytes": "8aed76922088520264d7ab4adde84783a85be64a4e04704429f7b4631113ff50"
+    }
+  ],
+  "requiredSourceOwnedSeekVersionCheckedAtomicallyAtEnqueue": true,
+  "ownedSeekExecutionChecksSourceVersionRevisionPublicationAndActualAdmission": true,
+  "queueSubmissionHasExactImmutableTicket": true,
+  "queuedIsNotNativeCompletion": true,
+  "existingSectionListenerScopeUsed": true,
+  "newPollersOrActors": 0,
+  "existingControllerSeekSemanticsPreserved": true,
+  "actualNativeFixtureAssertions": 67,
+  "installedProductFixture": {
+    "passed": true,
+    "compileExitCode": 0,
+    "runExitCode": 0,
+    "actualProductSnapshot": 66,
+    "runtimeEntries": 101,
+    "fixtureClasses": 11,
+    "productionOverrides": 0,
+    "fixtureProductClassIntersections": [],
+    "fixtureJarSha256Bytes": "ccfa0d60133ec08f9fc0536767625f448b99fda16be13b7310db0adfd03126ae",
+    "byteVerifiedProductOrigins": [
+      {
+        "class": "com.bilipai.desktop.player.MpvPlayer",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-66/main-kotlin.jar",
+        "sha256ClassBytes": "be7e36ba34246ad8e788bdc4bdb70f10bc941c72bb33ccfae5a67b37dbd4b74f"
+      },
+      {
+        "class": "com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-66/main-kotlin.jar",
+        "sha256ClassBytes": "c898322d7688b373eb94fd5aa73346212e3cb0bc917891ea46f5ecb9c463aa56"
+      },
+      {
+        "class": "com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-66/main-kotlin.jar",
+        "sha256ClassBytes": "0b7f1c22dac61fa7ca5f8b10b4dd407e65c4969593b928080c1f175361f79c59"
+      },
+      {
+        "class": "com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission",
+        "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-66/main-kotlin.jar",
+        "sha256ClassBytes": "e21c9be2f632ea1dca0552cad2401617db84e62925b874be50ac842bdca5fb8b"
+      }
+    ],
+    "fixtureSourceUnchanged": true,
+    "fixtureIsRootOwned": true,
+    "exactOwnedSeekChecksReplayed": true,
+    "actualAccountUsed": false,
+    "nativeExecuted": true,
+    "actualLocalNativeClip": true,
+    "actualOwnedSeekQueueAndNativeCompletionAccepted": true,
+    "fullControllerFacadeSwitchAccepted": false,
+    "independentVisualAcceptance": false,
+    "fullOrdinaryVideoRootMountAccepted": false
+  },
+  "nativeTestUsesLocalClipAndTemporaryActualStore": true,
+  "fixtureGateBeforeAdmissionLocks": true,
+  "firstAttemptFixtureCompileFailed": true,
+  "firstAttemptNativeNotExecuted": true,
+  "productChangedForFixtureRepair": false,
+  "sponsorHistoryAndConsentBridgeStillPending": true,
+  "fullOriginalVmAndHolderNotMounted": true,
+  "lastActualMainStartupPhase": 57,
+  "actualMainRerun": false,
+  "realAccountUsed": false,
+  "newExeDeployed": false,
+  "independentVisualAcceptance": false,
+  "sourceInventoryIsNotFunctionalOrReusePercentage": true
+}

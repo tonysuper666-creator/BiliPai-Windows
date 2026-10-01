@@ -1,0 +1,19 @@
+--- aa0f05d8a9911c93df50ccb499cd6307951d0471:desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState.kt
++++ actual66:desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState.kt
+@@ -78,6 +78,16 @@
+         }
+     private val eventLock = Any()
+     private val registrations = IdentityHashMap<Listener, Job>()
++    override fun onSeekQueued(submission: DesktopOriginalNativeSeekSubmission) {
++        val listeners = synchronized(eventLock) { registrations.entries.map { it.key to it.value } }
++        for ((listener, registrationJob) in listeners) {
++            commitEventIfCurrent {
++                if (entryOwns() && registrationJob.isActive && acceptedSourceVersion() == submission.sourceVersion &&
++                    nativePlayer.ownsSourceVersion(submission.sourceVersion) &&
++                    synchronized(eventLock) { registrations[listener] === registrationJob }) listener.onSeekQueued(submission)
++            }
++        }
++    }
+     override fun addListener(listener: Listener) {
+         if (!entryOwns() || !eventScope.coroutineContext[Job]!!.isActive) return
+         val created = synchronized(eventLock) {

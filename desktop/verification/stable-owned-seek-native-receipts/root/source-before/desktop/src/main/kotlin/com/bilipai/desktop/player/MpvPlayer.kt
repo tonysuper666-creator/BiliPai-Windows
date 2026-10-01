@@ -221,18 +221,6 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     fun seekTo(seconds: Double) { seekToTracked(seconds) }
     /** Returns an operation ID; success is published only after native playback-restart confirms its position. */
     fun seekToTracked(seconds: Double): Long? = seekTracked(seconds, relative = false)
-    /** Original source-owned controls retain this exact command ID until native
-     * playback-restart confirms it. Queue admission is not seek completion. */
-    internal fun seekToTrackedIfSourceVersion(expectedSourceVersion: Long, seconds: Double): Long? = synchronized(lock) {
-        val source = requestedSource ?: return@synchronized null
-        val active = session ?: return@synchronized null
-        if (!seconds.isFinite() || closed.get() || active.closing.get() || sourceVersion != expectedSourceVersion ||
-            (state.value.videoCodec == null && state.value.audioCodec == null) ||
-            (source.nativePublication == null && (source.authorizationReceipt != null || source.primaryAccountEpoch != null))) return@synchronized null
-        val id = nextSeekId.incrementAndGet()
-        active.commands.offer(Action.Seek(id, sourceVersion, playbackRevision, seconds, false, source))
-        id
-    }
     fun seekBy(seconds: Double) { seekTracked(seconds, relative = true) }
     private fun seekTracked(seconds: Double, relative: Boolean): Long? = synchronized(lock) {
         val active = session ?: return@synchronized null
@@ -519,8 +507,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         data class Property(val name: String, val value: String) : Action
         data class OwnedMute(val version: Long, val revision: Long, val source: PlaybackSource, val muted: Boolean) : Action
         data class Command(val args: List<String>) : Action
-        data class Seek(val id: Long, val sourceVersion: Long, val revision: Long, val seconds: Double, val relative: Boolean,
-            val admissionSource: PlaybackSource? = null) : Action
+        data class Seek(val id: Long, val sourceVersion: Long, val revision: Long, val seconds: Double, val relative: Boolean) : Action
         data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>) : Action
         data class Barrier(val version: Long, val revision: Long, val completion: CompletableDeferred<Boolean>) : Action
     }
@@ -647,8 +634,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
 
         private fun perform(native: MpvNative, handle: Pointer, action: Action) {
             try {
-                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.OwnedMute &&
-                    !(action is Action.Seek && action.admissionSource != null)) publishState { it.copy(operationError = null) }
+                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.OwnedMute) publishState { it.copy(operationError = null) }
                 when (action) {
                     is Action.Load -> {
                         val command = { synchronized(lock) {
@@ -703,32 +689,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     }
                     is Action.Subtitles -> if (fileLoaded && activeSourceVersion == action.version) restoreSubtitles(native, handle)
                     is Action.Seek -> {
-                        fun seek() {
-                            val position = if (action.relative) (property(native, handle, "time-pos")?.toDoubleOrNull() ?: state.value.positionSeconds) + action.seconds else action.seconds
-                            val duration = property(native, handle, "duration")?.toDoubleOrNull()?.takeIf { it > 0 && it.isFinite() }
-                            val target = position.coerceAtLeast(0.0).let { if (duration == null) it else it.coerceAtMost(duration) }
-                            checkResult(native, native.mpv_command(handle, StringArray(arrayOf("seek", target.toString(), "absolute+exact"), "UTF-8")), "seek")
-                            seekTracker.submit(action.id, action.sourceVersion, target)
-                        }
-                        val owned = action.admissionSource
-                        if (owned == null) {
-                            // Existing controller commands issued before retirement retain their semantics.
-                            if (!fileLoaded || action.sourceVersion != activeSourceVersion || action.revision != activeRevision ||
-                                !synchronized(lock) { action.sourceVersion == sourceVersion && action.revision == playbackRevision }) return
-                            seek()
-                        } else {
-                            val command = { synchronized(lock) {
-                                if (session === this && !closing.get() && fileLoaded &&
-                                    sourceVersion == action.sourceVersion && playbackRevision == action.revision &&
-                                    activeSourceVersion == action.sourceVersion && activeRevision == action.revision &&
-                                    requestedSource?.nativePublication === owned.nativePublication) {
-                                    seek()
-                                    publishState { it.copy(operationError = null) }
-                                }
-                            } }
-                            if (owned.nativePublication != null) owned.nativePublication.admit(command)
-                            else if (owned.authorizationReceipt == null && owned.primaryAccountEpoch == null) command()
-                        }
+                        if (!fileLoaded || action.sourceVersion != activeSourceVersion || action.revision != activeRevision ||
+                            !synchronized(lock) { action.sourceVersion == sourceVersion && action.revision == playbackRevision }) return
+                        val position = if (action.relative) (property(native, handle, "time-pos")?.toDoubleOrNull() ?: state.value.positionSeconds) + action.seconds else action.seconds
+                        val duration = property(native, handle, "duration")?.toDoubleOrNull()?.takeIf { it > 0 && it.isFinite() }
+                        val target = position.coerceAtLeast(0.0).let { if (duration == null) it else it.coerceAtMost(duration) }
+                        checkResult(native, native.mpv_command(handle, StringArray(arrayOf("seek", target.toString(), "absolute+exact"), "UTF-8")), "seek")
+                        seekTracker.submit(action.id, action.sourceVersion, target)
                     }
                     is Action.VideoShaders -> {
                         if (!synchronized(lock) { session === this && !closing.get() && action.version == videoShaderVersion }) return

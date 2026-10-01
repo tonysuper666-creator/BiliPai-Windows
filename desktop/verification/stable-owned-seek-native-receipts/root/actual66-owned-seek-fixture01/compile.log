@@ -1,0 +1,15 @@
+desktop\.local\upstream-v023-audit\actual66-owned-seek-fixture01\TypedSeekFixture.kt:46:29: error: unresolved reference 'attempt'.
+                publication.attempt(base,{alive.get()}){synchronized(entry){if(alive.get())command()}}
+                            ^^^^^^^
+desktop\.local\upstream-v023-audit\actual66-owned-seek-fixture01\TypedSeekFixture.kt:49:60: error: unresolved reference 'attempt'.
+            fun commit(block:()->Unit):Boolean=publication.attempt(source,{alive.get()}){
+                                                           ^^^^^^^
+desktop\.local\upstream-v023-audit\actual66-owned-seek-fixture01\TypedSeekFixture.kt:124:39: error: unresolved reference 'attempt'.
+                        f.publication.attempt(f.base,{f.alive.get()}){synchronized(f.entry){if(f.alive.get())command()}}
+                                      ^^^^^^^
+desktop\.local\upstream-v023-audit\actual66-owned-seek-fixture01\TypedSeekFixture.kt:129:82: error: argument type mismatch: actual type is 'Double', but 'PlaybackSource?' was expected.
+                "revision"->ui{check(f.player.recoverSource(ticket.sourceVersion,0.3,true))}
+                                                                                 ^^^
+desktop\.local\upstream-v023-audit\actual66-owned-seek-fixture01\TypedSeekFixture.kt:129:86: error: argument type mismatch: actual type is 'Boolean', but 'Double' was expected.
+                "revision"->ui{check(f.player.recoverSource(ticket.sourceVersion,0.3,true))}
+                                                                                     ^^^^

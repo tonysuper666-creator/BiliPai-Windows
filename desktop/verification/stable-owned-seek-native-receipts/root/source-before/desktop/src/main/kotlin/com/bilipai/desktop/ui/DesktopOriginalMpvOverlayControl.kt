@@ -6,9 +6,6 @@ import com.android.purebilibili.feature.video.ui.overlay.PlaybackUserActionType
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.CancellationException
 
-/** Immutable admission receipt. Completion remains the actual native readback ID. */
-data class DesktopOriginalNativeSeekSubmission(val sourceVersion: Long, val operationId: Long, val targetPositionMs: Long)
-
 /** Real MPV readback and the existing Controller command admission. Not a Media3 player/decoder.
  * Root binds a fixed BVID/CID + page/epoch owner and a live accepted sourceVersion getter.
  */
@@ -41,7 +38,6 @@ open class DesktopOriginalMpvOverlayControl internal constructor(
         fun onTracksChanged(tracks: List<com.bilipai.desktop.player.PlayerTrack>) {}
         fun onSourceTransition(sourceVersion: Long) {}
         fun onPlayerError(error: DesktopOriginalNativePlaybackError) {}
-        fun onSeekQueued(submission: DesktopOriginalNativeSeekSubmission) {}
     }
     open fun addListener(listener: Listener) {
         error("The same-entry native event scope is required")
@@ -83,19 +79,7 @@ open class DesktopOriginalMpvOverlayControl internal constructor(
     fun prepare() = write(ensurePreparedSource)
     fun play() = write { if (state.value.ended) resumeEndedSource() else nativePlayer.setPaused(false) }
     fun pause() = write { nativePlayer.setPaused(true) }
-    fun seekTo(positionMs: Long) { seekToTracked(positionMs) }
-    fun seekToTracked(positionMs: Long): DesktopOriginalNativeSeekSubmission? {
-        var queued: DesktopOriginalNativeSeekSubmission? = null
-        write {
-            val version = sourceVersion() ?: return@write
-            val target = positionMs.coerceAtLeast(0L)
-            val id = nativePlayer.seekToTrackedIfSourceVersion(version, target / 1000.0) ?: return@write
-            queued = DesktopOriginalNativeSeekSubmission(version, id, target)
-            onSeekQueued(checkNotNull(queued))
-        }
-        return queued
-    }
-    protected open fun onSeekQueued(submission: DesktopOriginalNativeSeekSubmission) {}
+    fun seekTo(positionMs: Long) = write { nativePlayer.seekTo(positionMs.coerceAtLeast(0L) / 1000.0) }
     fun setPlaybackSpeed(value: Float) = write { nativePlayer.setSpeed(value.toDouble()) }
     fun logSeek(targetPositionMs: Long, currentPositionMs: Long, bufferedPositionMs: Long, durationMs: Long) {
         if (isOwned()) logSeekDiagnostic(targetPositionMs, currentPositionMs, bufferedPositionMs, durationMs)

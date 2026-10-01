@@ -78,16 +78,6 @@ class DesktopOriginalMpvSectionControl internal constructor(
         }
     private val eventLock = Any()
     private val registrations = IdentityHashMap<Listener, Job>()
-    override fun onSeekQueued(submission: DesktopOriginalNativeSeekSubmission) {
-        val listeners = synchronized(eventLock) { registrations.entries.map { it.key to it.value } }
-        for ((listener, registrationJob) in listeners) {
-            commitEventIfCurrent {
-                if (entryOwns() && registrationJob.isActive && acceptedSourceVersion() == submission.sourceVersion &&
-                    nativePlayer.ownsSourceVersion(submission.sourceVersion) &&
-                    synchronized(eventLock) { registrations[listener] === registrationJob }) listener.onSeekQueued(submission)
-            }
-        }
-    }
     override fun addListener(listener: Listener) {
         if (!entryOwns() || !eventScope.coroutineContext[Job]!!.isActive) return
         val created = synchronized(eventLock) {

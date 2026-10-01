@@ -1,0 +1,20 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "beforeCommit": "aa0f05d8a9911c93df50ccb499cd6307951d0471",
+    "beforeSha256LF": "4da608e024ab32c4c155688aa7d149e0529f0b5cf1de6332213104290090b213",
+    "afterSha256Bytes": "6842ad1a1abda9c6e4218fade027dd82d2db6076cabd86b8ea99300cd0b54e42"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvOverlayControl.kt",
+    "beforeCommit": "aa0f05d8a9911c93df50ccb499cd6307951d0471",
+    "beforeSha256LF": "82ecb87a9a449121825f6809ad76141b0a35f434713681baa82a973607552412",
+    "afterSha256Bytes": "6bd4f20c88716ef7c9e10e39268d083637c404e7d1750fdf10134bb90c05683c"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState.kt",
+    "beforeCommit": "aa0f05d8a9911c93df50ccb499cd6307951d0471",
+    "beforeSha256LF": "957db9765b016779acf400555dce7089671ad1df7527c4f5971f9b3ebd4d84e2",
+    "afterSha256Bytes": "8aed76922088520264d7ab4adde84783a85be64a4e04704429f7b4631113ff50"
+  }
+]

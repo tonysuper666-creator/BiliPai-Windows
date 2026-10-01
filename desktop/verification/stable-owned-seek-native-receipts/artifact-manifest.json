@@ -1,0 +1,186 @@
+{
+  "artifacts": [
+    {
+      "path": "root/source-before/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "4da608e024ab32c4c155688aa7d149e0529f0b5cf1de6332213104290090b213",
+      "sizeBytes": 67313
+    },
+    {
+      "path": "root/source-after/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "6842ad1a1abda9c6e4218fade027dd82d2db6076cabd86b8ea99300cd0b54e42",
+      "sizeBytes": 69681
+    },
+    {
+      "path": "root/source-diffs/MpvPlayer.kt.diff",
+      "sha256Bytes": "31501012596ac0bd1bdb95aa19ded121df1fcc0999bf19df9f2dc7d2d15135fe",
+      "sizeBytes": 6890
+    },
+    {
+      "path": "root/source-before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvOverlayControl.kt",
+      "sha256Bytes": "82ecb87a9a449121825f6809ad76141b0a35f434713681baa82a973607552412",
+      "sizeBytes": 4895
+    },
+    {
+      "path": "root/source-after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvOverlayControl.kt",
+      "sha256Bytes": "6bd4f20c88716ef7c9e10e39268d083637c404e7d1750fdf10134bb90c05683c",
+      "sizeBytes": 5769
+    },
+    {
+      "path": "root/source-diffs/DesktopOriginalMpvOverlayControl.kt.diff",
+      "sha256Bytes": "bf6fad2c80577f09c4afdf8911929f85ede76f291591bdc0d1ab578146327316",
+      "sizeBytes": 2605
+    },
+    {
+      "path": "root/source-before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState.kt",
+      "sha256Bytes": "957db9765b016779acf400555dce7089671ad1df7527c4f5971f9b3ebd4d84e2",
+      "sizeBytes": 14682
+    },
+    {
+      "path": "root/source-after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState.kt",
+      "sha256Bytes": "8aed76922088520264d7ab4adde84783a85be64a4e04704429f7b4631113ff50",
+      "sizeBytes": 15311
+    },
+    {
+      "path": "root/source-diffs/DesktopOriginalMpvVideoPlayerState.kt.diff",
+      "sha256Bytes": "4d7978851e10e4573f1d3e5412597aeb0dbd45bed88c8f3f893fcb27d6242099",
+      "sizeBytes": 1181
+    },
+    {
+      "path": "root/source-delta.json",
+      "sha256Bytes": "2a6ba45ae6043459bb78a01c0b220bfac27cda7b18bd45de26cdadad985009d6",
+      "sizeBytes": 1042
+    },
+    {
+      "path": "root/owned-seek66/TypedSeekFixture.kt",
+      "sha256Bytes": "4c97e81dfb5949f492d49ab22b7faafc5242faa99a9249cf25c0c78df62d6dc1",
+      "sizeBytes": 11196
+    },
+    {
+      "path": "root/owned-seek66-02/TypedSeekFixture.kt",
+      "sha256Bytes": "b352e61ac2399c7379d3f2cac4823c964008a9500a8cb6d8b80668bd2f965b16",
+      "sizeBytes": 11261
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture01/TypedSeekFixture.kt",
+      "sha256Bytes": "4c97e81dfb5949f492d49ab22b7faafc5242faa99a9249cf25c0c78df62d6dc1",
+      "sizeBytes": 11196
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture01/compile.args",
+      "sha256Bytes": "83b9563b7f95e1b36c6dd073bb0ed2a9ed2b884f805d3bc8a250044fab19582f",
+      "sizeBytes": 25521
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture01/compile.log",
+      "sha256Bytes": "32d4bfb6571580b6887183462c35f3e7968e1077114d30fce8895db06af22202",
+      "sizeBytes": 1595
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture01/pins-before.json",
+      "sha256Bytes": "050cbbc31393c73b9cdfd926ceae3cf3b1c70c264bb625793a63261d83c13bf1",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture02/TypedSeekFixture.kt",
+      "sha256Bytes": "b352e61ac2399c7379d3f2cac4823c964008a9500a8cb6d8b80668bd2f965b16",
+      "sizeBytes": 11261
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture02/compile.args",
+      "sha256Bytes": "1af453669c394832d0dcdab13ebc1dd879cb3c91acf4313c4488d0d1b8402402",
+      "sizeBytes": 25521
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture02/pins-after.json",
+      "sha256Bytes": "bddd0be1c6fa0ccd60ac7cdc46f151b722c2eedacd4ff1c34ce9a9dfb12abdbb",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture02/pins-before.json",
+      "sha256Bytes": "bddd0be1c6fa0ccd60ac7cdc46f151b722c2eedacd4ff1c34ce9a9dfb12abdbb",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture02/result.json",
+      "sha256Bytes": "fc569333b9ce868e28c156282b495b93428804c83f312ebe294c7f20b4fd1867",
+      "sizeBytes": 4869
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture02/run.log",
+      "sha256Bytes": "22f885132890739d61d684e21dfff74b89c1330eef327ca012336b31fd9f3054",
+      "sizeBytes": 56
+    },
+    {
+      "path": "root/actual66-owned-seek-fixture02/runner-result.json",
+      "sha256Bytes": "6a394dbed49725e5d1c170c934418aaa622f92635e7ccbb457981974e4f5b574",
+      "sizeBytes": 2138
+    },
+    {
+      "path": "root/snapshot66/manifest.json",
+      "sha256Bytes": "e549c7badf5b11208e8b9fb3c2d5480759e9202eb157ae165feb0a8354cbcba3",
+      "sizeBytes": 149824
+    },
+    {
+      "path": "root/snapshot66/ordered-runtime-cp.json",
+      "sha256Bytes": "43b1e432d592dd74088079e60731eda25d26f6c636df3570644a377b200ba9db",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-66.log",
+      "sha256Bytes": "f18fa55cd83aa0de1ce85c139a965a5f133c1120b6ef8bf9bedbefe6fde54a8f",
+      "sizeBytes": 9071
+    },
+    {
+      "path": "root/classpath-66.log",
+      "sha256Bytes": "2a7dc658648bffa3a65f1b4e52b89feee32bfbd7ad505fb69db7a99c5073bf04",
+      "sizeBytes": 290
+    },
+    {
+      "path": "root/create-owned-seek-runner66.py",
+      "sha256Bytes": "c90a74e270cff9c23907ae25353b7068e6a4455112c9b961c02690690bb4e344",
+      "sizeBytes": 1853
+    },
+    {
+      "path": "root/repair-owned-seek-fixture66.py",
+      "sha256Bytes": "b1d6c7f3554297b7e0e43adcb9f829dbaf023c55ff1d44df936bad075c36e288",
+      "sizeBytes": 1996
+    },
+    {
+      "path": "root/run-actual66-owned-seek-fixture.py",
+      "sha256Bytes": "e6cc10b401f3f2b6e9ed5447b4859050b658423fdd61daa1f6dd851cbccc5da5",
+      "sizeBytes": 5762
+    },
+    {
+      "path": "root/run-actual66-owned-seek-fixture02.py",
+      "sha256Bytes": "653aebc6cd3f3fd3b235f58318cbcb20d52346200569fc6b624a907a9ccce24b",
+      "sizeBytes": 5765
+    },
+    {
+      "path": "root/freeze-owned-seek66.py",
+      "sha256Bytes": "29b389c99c1c6cc2f00756b6793b949d09c59d254856ffba032669b0b01ca3e1",
+      "sizeBytes": 7906
+    },
+    {
+      "path": "root/jvm-method-name-audit-66.json",
+      "sha256Bytes": "3bab9ef3afe36cc665fb3b206cb916c19a2f7bef8c8fd6da70bd467e0112b48e",
+      "sizeBytes": 240
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "f3b1a3add19a400a1f45bfdab3894b5713c24752e9c366b60a2b159949350644",
+      "sizeBytes": 4524
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "root/actual66-owned-seek-fixture02/fixture.jar",
+      "sha256Bytes": "ccfa0d60133ec08f9fc0536767625f448b99fda16be13b7310db0adfd03126ae",
+      "reason": "Rebuildable fixture binary"
+    }
+  ]
+}
