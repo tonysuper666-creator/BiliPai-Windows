@@ -2,6 +2,8 @@
 
 package com.android.purebilibili.feature.video.ui.section
 
+import com.android.purebilibili.core.ui.components.AppIconButton
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -70,7 +72,7 @@ private fun SupplementEntryIcon(
     label: String,
     onClick: () -> Unit,
 ) {
-    androidx.compose.material3.IconButton(onClick = onClick) {
+    AppIconButton(onClick = onClick) {
         androidx.compose.material3.Icon(
             imageVector = icon,
             contentDescription = label,

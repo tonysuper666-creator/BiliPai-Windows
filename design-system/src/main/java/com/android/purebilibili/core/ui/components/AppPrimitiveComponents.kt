@@ -19,6 +19,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Arrangement
@@ -794,6 +796,29 @@ fun AppDropdownMenuItem(
     interactionSource: MutableInteractionSource? = null,
 ) {
     val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
+    if (LocalAppUiStyle.current == AppUiStyle.MIUIX) {
+        AppSurface(
+            onClick = onClick,
+            enabled = enabled,
+            interactionSource = resolvedInteractionSource,
+            modifier = modifier.fillMaxWidth(),
+            color = Color.Transparent,
+            contentColor = if (enabled) MiuixTheme.colorScheme.onSurface else MiuixTheme.colorScheme.disabledOnSurface,
+        ) {
+            androidx.compose.foundation.layout.Row(
+                modifier = Modifier
+                    .heightIn(min = 48.dp)
+                    .padding(contentPadding),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                leadingIcon?.invoke()
+                androidx.compose.foundation.layout.Box(Modifier.weight(1f)) { text() }
+                trailingIcon?.invoke()
+            }
+        }
+        return
+    }
     DropdownMenuItem(
         text = text,
         onClick = onClick,

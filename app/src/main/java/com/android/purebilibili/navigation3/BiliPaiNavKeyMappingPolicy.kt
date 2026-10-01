@@ -128,6 +128,8 @@ internal fun BiliPaiNavKey.toLegacyRoute(): String {
             preferredAid,
             isCourse
         )
+        is BiliPaiNavKey.WeeklySeries -> ScreenRoutes.WeeklySeries.createRoute(number)
+        is BiliPaiNavKey.BgmDetail -> ScreenRoutes.BgmDetail.createRoute(musicId, aid, cid, showVideos)
         is BiliPaiNavKey.MusicDetail -> ScreenRoutes.MusicDetail.createRoute(sid)
         is BiliPaiNavKey.NativeMusic -> ScreenRoutes.NativeMusic.createRoute(title, bvid, cid)
         is BiliPaiNavKey.VideoDetail -> VideoRoute.createRoute(
@@ -320,6 +322,13 @@ internal fun legacyRouteToBiliPaiNavKey(route: String?): BiliPaiNavKey {
         segments.firstOrNull() == "music" && segments.size >= 2 -> {
             BiliPaiNavKey.MusicDetail(sid = segments[1].toLongOrNull() ?: 0L)
         }
+        routeBase == "bgm_detail" -> BiliPaiNavKey.BgmDetail(
+            musicId = query["musicId"].orEmpty(), aid = query["aid"]?.toLongOrNull() ?: 0,
+            cid = query["cid"]?.toLongOrNull() ?: 0, showVideos = query["showVideos"]?.toBooleanStrictOrNull() ?: false
+        )
+        routeBase == "weekly_series" -> BiliPaiNavKey.WeeklySeries(
+            query["number"]?.toIntOrNull()?.takeIf { it > 0 }
+        )
         routeBase == "native_music" -> {
             BiliPaiNavKey.NativeMusic(
                 title = query["title"].orEmpty(),

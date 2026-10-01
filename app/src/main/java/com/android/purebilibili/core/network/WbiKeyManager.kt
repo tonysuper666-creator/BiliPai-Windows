@@ -152,6 +152,16 @@ object WbiKeyManager {
     }
     
     /**
+     * 预热持久化存储:提前触发 SP 文件的异步磁盘加载。
+     * 启动任务在主线程同步调用 [restoreFromStorage],若此时尚未读过该文件,
+     * 主线程会阻塞在首次磁盘读;Application.onCreate 早期在 IO 线程调用本方法,
+     * 通常能让主线程读到时命中框架的内存缓存。
+     */
+    fun prewarmStorage(context: Context) {
+        context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+    }
+
+    /**
      * 从本地存储恢复
      */
     fun restoreFromStorage(context: Context): Boolean {

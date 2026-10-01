@@ -13,6 +13,12 @@ sealed interface BilibiliNavigationTarget {
     data class BangumiEpisode(val epId: Long) : BilibiliNavigationTarget
     data class Music(val musicId: String) : BilibiliNavigationTarget
     data class Article(val articleId: Long) : BilibiliNavigationTarget
+
+    /**
+     * 站内热门榜单页(weekly/rank/all/comprehensive)。
+     * 每周必看可指定 weeklyNumber,导航层打开原生选期页面;其余映射到首页子分类。
+     */
+    data class PopularFeed(val subCategoryKey: String, val weeklyNumber: Int? = null) : BilibiliNavigationTarget
 }
 
 object BilibiliNavigationTargetParser {
@@ -92,6 +98,15 @@ object BilibiliNavigationTargetParser {
         queryMap: Map<String, String>
     ): BilibiliNavigationTarget? {
         when {
+            host == "popular" -> {
+                pathSegments.firstOrNull()?.lowercase()?.let { key ->
+                    return BilibiliNavigationTarget.PopularFeed(
+                        subCategoryKey = key,
+                        weeklyNumber = queryMap["number"]?.toIntOrNull()?.takeIf { it > 0 }
+                    )
+                }
+            }
+
             host == "space" -> {
                 pathSegments.firstOrNull()?.toLongOrNull()?.let {
                     return BilibiliNavigationTarget.Space(it)
@@ -166,6 +181,14 @@ object BilibiliNavigationTargetParser {
         queryMap: Map<String, String>
     ): BilibiliNavigationTarget? {
         when {
+            host in setOf("www.bilibili.com", "bilibili.com", "m.bilibili.com") &&
+                pathSegments.take(2) == listOf("v", "popular") &&
+                pathSegments.getOrNull(2) == "weekly" -> {
+                return BilibiliNavigationTarget.PopularFeed(
+                    "weekly", queryMap["num"]?.toIntOrNull()?.takeIf { it > 0 }
+                        ?: queryMap["number"]?.toIntOrNull()?.takeIf { it > 0 }
+                )
+            }
             host == "space.bilibili.com" -> {
                 pathSegments.firstOrNull()?.toLongOrNull()?.let {
                     return BilibiliNavigationTarget.Space(it)

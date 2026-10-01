@@ -1,10 +1,16 @@
 package com.android.purebilibili.feature.home
+
+import com.android.purebilibili.core.ui.components.AppButton
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import com.android.purebilibili.core.ui.components.videoListItemModifier
 import com.android.purebilibili.core.ui.components.FeedVerticalStaggeredGrid
 
 import com.android.purebilibili.core.theme.AppUiStyle
 import com.android.purebilibili.core.theme.LocalAppUiStyle
 import com.android.purebilibili.core.ui.AppChromeSizeTokens
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.purebilibili.core.ui.AppSpacingTokens
 
 import androidx.compose.material.icons.Icons
@@ -20,12 +26,12 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.foundation.shape.RoundedCornerShape
 import com.android.purebilibili.core.ui.components.AppCard
 import com.android.purebilibili.core.ui.components.AppCardDefaults
 import com.android.purebilibili.core.ui.AdaptiveLoadingIndicator
+import androidx.compose.material.icons.outlined.Close
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppTextButton
 import com.android.purebilibili.core.ui.components.AppText
@@ -33,6 +39,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.platform.LocalConfiguration
@@ -58,7 +65,6 @@ import top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop
 import top.yukonga.miuix.kmp.blur.layerBackdrop
 import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
 import com.android.purebilibili.feature.home.components.cards.ElegantVideoCard
-import com.android.purebilibili.feature.home.components.cards.LiveRoomCard
 import com.android.purebilibili.feature.home.components.cards.LocalHomeScrollTickProvider
 import com.android.purebilibili.feature.home.components.cards.StoryVideoCard
 
@@ -190,6 +196,7 @@ internal fun HomeCategoryPageContent(
     displayMode: Int,
     cardAnimationEnabled: Boolean,
     cardMotionTier: MotionTier = MotionTier.Normal,
+    backToTopSquishActive: Boolean = false,
     cardTransitionEnabled: Boolean,
     isReturningFromVideoDetail: Boolean = false,
     isQuickReturningFromVideoDetail: Boolean = false,
@@ -217,6 +224,7 @@ internal fun HomeCategoryPageContent(
     onGetPreviewUrl: suspend (String, Long) -> String? = { _, _ -> null },
     oldContentAnchorBvid: String? = null,
     oldContentStartIndex: Int? = null,
+    oldContentLocatorRefreshKey: Long = 0L,
     onOldContentDividerClick: () -> Unit = {},
     todayWatchEnabled: Boolean = false,
     todayWatchMode: TodayWatchMode = TodayWatchMode.RELAX,
@@ -231,6 +239,7 @@ internal fun HomeCategoryPageContent(
     onTodayWatchUpClick: (Long) -> Unit = {},
     popularSubCategory: PopularSubCategory = PopularSubCategory.COMPREHENSIVE,
     onPopularSubCategoryChange: (PopularSubCategory) -> Unit = {},
+    onWeeklySeriesClick: () -> Unit = {},
     onTodayWatchVideoClick: (VideoItem) -> Unit = { video ->
         onVideoClick(
             HomeVideoClickRequest(
@@ -363,11 +372,43 @@ internal fun HomeCategoryPageContent(
         }
     }
     val oldContentLocatorScope = rememberCoroutineScope()
+    var oldContentLocatorDismissed by remember(oldContentLocatorRefreshKey) {
+        mutableStateOf(false)
+    }
 
     val renderVideoCard: @Composable (Int, VideoItem, Modifier) -> Unit = { index, video, itemModifier ->
         val isDynamicDetailCard = video.dynamicId.isNotBlank() &&
             !video.bvid.startsWith("BV", ignoreCase = true)
         val isDissolving = video.bvid in dissolvingVideos
+        val squishAmount = when (cardMotionTier) {
+            MotionTier.Reduced -> 0.004f
+            MotionTier.Normal -> 0.008f
+            MotionTier.Enhanced -> 0.009f
+        }
+        val cardSquishScaleX by animateFloatAsState(
+            targetValue = if (backToTopSquishActive) 1f + squishAmount else 1f,
+            animationSpec = spring(
+                dampingRatio = if (backToTopSquishActive) {
+                    Spring.DampingRatioNoBouncy
+                } else {
+                    0.64f
+                },
+                stiffness = Spring.StiffnessMedium,
+            ),
+            label = "home_back_to_top_card_squish_x",
+        )
+        val cardSquishScaleY by animateFloatAsState(
+            targetValue = if (backToTopSquishActive) 1f - squishAmount else 1f,
+            animationSpec = spring(
+                dampingRatio = if (backToTopSquishActive) {
+                    Spring.DampingRatioNoBouncy
+                } else {
+                    0.64f
+                },
+                stiffness = Spring.StiffnessMedium,
+            ),
+            label = "home_back_to_top_card_squish_y",
+        )
 
         MaybeDissolvableVideoCard(
             isDissolving = isDissolving,
@@ -376,6 +417,10 @@ internal fun HomeCategoryPageContent(
             preset = DissolveAnimationPreset.TELEGRAM_FAST,
             preserveContentLayerWhenIdle = cardTransitionEnabled,
             modifier = itemModifier
+                .graphicsLayer {
+                    scaleX = cardSquishScaleX
+                    scaleY = cardSquishScaleY
+                }
                 .jiggleOnDissolve(
                     cardId = video.bvid,
                     isCurrentCardDissolving = isDissolving
@@ -583,6 +628,17 @@ internal fun HomeCategoryPageContent(
                 }
             }
 
+            if (category == HomeCategory.POPULAR && popularSubCategory == PopularSubCategory.WEEKLY) {
+                item(span = StaggeredGridItemSpan.FullLine) {
+                    com.android.purebilibili.core.ui.components.AppTextButton(
+                        onClick = onWeeklySeriesClick,
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                    ) {
+                        com.android.purebilibili.core.ui.components.AppText("查看往期每周必看")
+                    }
+                }
+            }
+
             if (visibleGridVideos.isNotEmpty()) {
                 val shouldShowOldContentDivider = category == HomeCategory.RECOMMEND &&
                     (
@@ -700,19 +756,27 @@ internal fun HomeCategoryPageContent(
         }
         }
         }
+        val nowPlayingBarOverlayVisible by com.android.purebilibili.feature.audio.player
+            .AudioNowPlayingSession.barOverlayVisible
+            .collectAsStateWithLifecycle()
         AnimatedVisibility(
-            visible = category == HomeCategory.RECOMMEND && oldContentGridItemIndex != null,
+            visible = category == HomeCategory.RECOMMEND &&
+                oldContentGridItemIndex != null &&
+                !oldContentLocatorDismissed,
             enter = fadeIn() + scaleIn(initialScale = 0.92f),
             exit = fadeOut() + scaleOut(targetScale = 0.92f),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(
                     end = AppSpacingTokens.Large,
-                    bottom = contentPadding.calculateBottomPadding() + AppSpacingTokens.Medium,
+                    // 听视频小横条悬浮时上浮避让（与动态页 76dp 预留一致）
+                    bottom = contentPadding.calculateBottomPadding() + AppSpacingTokens.Medium +
+                        if (nowPlayingBarOverlayVisible) 76.dp else 0.dp,
                 ),
         ) {
-            Button(
+            AppButton(
                 onClick = {
+                    oldContentLocatorDismissed = true
                     oldContentGridItemIndex?.let { targetIndex ->
                         oldContentLocatorScope.launch {
                             gridState.animateScrollToItem(targetIndex)
@@ -724,6 +788,20 @@ internal fun HomeCategoryPageContent(
                 contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
             ) {
                 AppText("定位上次刷新")
+                Spacer(modifier = Modifier.width(6.dp))
+                Box(
+                    modifier = Modifier
+                        .size(22.dp)
+                        .clip(androidx.compose.foundation.shape.CircleShape)
+                        .clickable { oldContentLocatorDismissed = true },
+                    contentAlignment = Alignment.Center
+                ) {
+                    AppIcon(
+                        imageVector = Icons.Outlined.Close,
+                        contentDescription = "关闭",
+                        modifier = Modifier.size(14.dp)
+                    )
+                }
             }
         }
     }

@@ -1,0 +1,26 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-build-repair\\generated\\diagnostics\\sources\\com\\android\\purebilibili\\core\\performance\\DesktopOriginalAbnormalProcessExitException.kt",
+    "sha256Bytes": "e24ed8a538d7ae1a0dfed8cfba229d43c393573d29061fd163908c7088afbfa9"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-build-repair\\generated\\diagnostics\\sources\\com\\android\\purebilibili\\core\\performance\\DesktopOriginalNativeExitTrace.kt",
+    "sha256Bytes": "0e33fb74c8433939444dddcfe6d88a6970fa3eaed46772ee61befcae73c70695"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-build-repair\\generated\\diagnostics\\sources\\com\\android\\purebilibili\\core\\util\\DesktopDiagnosticPolicy.kt",
+    "sha256Bytes": "c0c10a77c7dce2287b4cf998989680d951d8cdce4f03214e4ceee0d23f0fe218"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-build-repair\\generated\\diagnostics\\sources\\com\\android\\purebilibili\\core\\util\\DesktopDiagnosticCollector.kt",
+    "sha256Bytes": "f4f11fea1b5ea4c9c9f11bdf0d0aaf1d47d1ebd2070d59dba75c98197bfecc0b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-build-repair\\generated\\dynamic-tabs\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalDynamicTabsFields.kt",
+    "sha256Bytes": "a0dfd8f801a68be727d4d7f5f99bb9b6dfb4f2394bd154de9184c79a5627f918"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-build-repair\\generated\\plugins\\com\\android\\purebilibili\\data\\repository\\SponsorBlockRepository.kt",
+    "sha256Bytes": "3c95f3d6b937da952e3c20a5996b1ce258959c4a195ded3f68dd002d4e91570c"
+  }
+]

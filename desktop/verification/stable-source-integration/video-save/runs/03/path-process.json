@@ -1,0 +1,10 @@
+{
+  "exitCode": 0,
+  "command": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1\\bin\\java.exe",
+    "@C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\video-default-save-parity\\runs\\03\\path.args"
+  ],
+  "candidateJarSha256": "1593e91026ba14b1e5ae4423108cb4ec77767de8c1825bd3532f16f89cae9760",
+  "nativeActualAccountEnvironment": false,
+  "JnaAndJavaTemporaryIsolated": true
+}

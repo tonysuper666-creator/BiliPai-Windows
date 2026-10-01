@@ -209,7 +209,7 @@ internal fun AppMiuixMessageSnackbar(
                         textColor = colors.actionContentColor,
                     ),
                     insideMargin = MiuixSnackbarDefaults.ActionInsideMargin,
-                    textStyle = TextStyle(fontSize = 15.sp),
+                    textStyle = MiuixTheme.textStyles.button,
                 )
             }
             if (withDismissAction && onDismiss != null) {

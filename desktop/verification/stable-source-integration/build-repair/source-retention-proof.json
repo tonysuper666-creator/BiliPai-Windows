@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/Logger.kt",
+      "sha256Lf": "aa4af545b0c4a59fd7e57d5b2e64b3c1506b7732042a51d1643ca331a05a7c5e",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedGitBlob": "7e8934a67bd487cb1164fcd18013f7b5571df774",
+      "currentGitBlob": "7e8934a67bd487cb1164fcd18013f7b5571df774",
+      "alpha9SourceExisted": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt",
+      "sha256Lf": "056db2c4d628e38dbfc3b7be5e6dd6b21bd9ff97597f5385f666579a0924785e",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedGitBlob": "ea9cb3af64dc6b179b915a57c962c78c15268226",
+      "currentGitBlob": "ea9cb3af64dc6b179b915a57c962c78c15268226",
+      "alpha9SourceExisted": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/performance/NativeExitTrace.kt",
+      "sha256Lf": "8d0e38625f243072cd72d380cb6c7eb36ec3587deb194c497a7d9a10434be182",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedGitBlob": "070fd26b7103b095ea284a70153551060935b933",
+      "currentGitBlob": "070fd26b7103b095ea284a70153551060935b933",
+      "alpha9SourceExisted": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "sha256Lf": "eb7b82d766d32fd9be380c491b87c5bd7705fe12f61ef73773067f55de1b9468",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedGitBlob": "fd886867c9a2c2af6403566a7d2008e0d8bd657f",
+      "currentGitBlob": "fd886867c9a2c2af6403566a7d2008e0d8bd657f",
+      "alpha9SourceExisted": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "sha256Lf": "dad065eba76c2bb51ce9c5775b4e8bf86f21b8230be0ee2606fe53fa77b64f25",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedGitBlob": "9592a47d2f1a679a9bf434dc076035bf353c2e2c",
+      "currentGitBlob": "9592a47d2f1a679a9bf434dc076035bf353c2e2c",
+      "alpha9SourceExisted": true
+    }
+  ],
+  "originalLoggerPureRegionLfSha256": "ac704f000802fa1b06590ac5b5e4a8c81f241dc2393314df56a52132c3fb129c",
+  "entireLoggerPureRegionRetainedExceptExistingAdapters": true,
+  "originalExceptionClassLfSha256": "96764428b9b5fabc11d42b37b3cabca8cb753e71e055e0311cf21f54bd405db3",
+  "entireOriginalExceptionClassUnchanged": true,
+  "nativeExitTraceFullOriginalLfSha256": "8d0e38625f243072cd72d380cb6c7eb36ec3587deb194c497a7d9a10434be182",
+  "nativeExitTraceFullFileVerbatim": true,
+  "tabsVisibilityOriginalBodyLfSha256": "dd152d4fb22f4cc62d9d522371e4cf48c01788ba59cd2b24145827c6f19109dd",
+  "tabsVisibilityOriginalBodyUnchanged": true,
+  "sponsorLoadOriginalBodyLfSha256": "4499723990844d34a64b31ee1701c996617c9266d4b484b62e025d83cb9f6805",
+  "sponsorLoadBodyIdenticalAfterReversingTwoClockCalls": true,
+  "cachedSegmentsTtlAndGenerationAndDedupeAndLimitPreserved": true,
+  "platformClock": "existing DesktopMonotonicClock maps monotonic elapsed time to milliseconds",
+  "systemExitCaptureAdded": false,
+  "AndroidProfilingHooksAdded": false,
+  "newHttpOrStore": false,
+  "MainWrittenByThisLane": false
+}

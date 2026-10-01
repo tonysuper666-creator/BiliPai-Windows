@@ -1,0 +1,228 @@
+{
+  "schema": "stable-space-complete-preview-consumer-prepared-v1",
+  "preparedOnly": true,
+  "actualMainRuntimeAccepted": false,
+  "originalTag": "v0.2.3",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifactCount": 35,
+  "artifacts": [
+    {
+      "path": "audit-and-patch.py",
+      "sha256Bytes": "0d7c21e697b349f8200a40011233d0d01231210b1742af2d8c78c74aa662008e",
+      "sizeBytes": 9138
+    },
+    {
+      "path": "baseline/DesktopCompleteSpaceScreen.kt",
+      "sha256Bytes": "d6751e49f4c4c25cfc3821db56960743750d86796b3f946a0bcf37257c7f527e",
+      "sizeBytes": 14869
+    },
+    {
+      "path": "baseline/DesktopSpaceOverviewScreens.kt",
+      "sha256Bytes": "e4ea71b8d97eb9a855051adde64fa749e9f0759ea92c167b2a276c3c02679241",
+      "sizeBytes": 14561
+    },
+    {
+      "path": "baseline/DesktopSpaceScreens.kt",
+      "sha256Bytes": "cc28816657c9417c6cd163472458929d473f0b945b8b409439728fe3a2a97809",
+      "sizeBytes": 17213
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "sha256Bytes": "379154002d8aaec9d097e0dee66bac5e6af703f951ded6c800737e892e02411f",
+      "sizeBytes": 24878
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "sha256Bytes": "ad53b7d15e43dd190e402dd1a17ffe0f6e5a497352aa6f631f574cf47d3bb763",
+      "sizeBytes": 3019
+    },
+    {
+      "path": "compile-01/input-ordered-runtime-cp.json",
+      "sha256Bytes": "68ac45d72dbbe288658d1a6ea1ce0cc29ad39c0667b2c355487484e11c93afa5",
+      "sizeBytes": 34463
+    },
+    {
+      "path": "compile-02/compiler.args",
+      "sha256Bytes": "491291ac84bd404abe2b8db72aeaad81fe17d0c6f402039e5e461ae979375b12",
+      "sizeBytes": 24878
+    },
+    {
+      "path": "compile-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "compile-02/input-ordered-runtime-cp.json",
+      "sha256Bytes": "68ac45d72dbbe288658d1a6ea1ce0cc29ad39c0667b2c355487484e11c93afa5",
+      "sizeBytes": 34463
+    },
+    {
+      "path": "compile-03/compile-result.json",
+      "sha256Bytes": "01236c67e979ff84cf814ed1e782008ffb089fbd3fc7c5d4be3136788d7b6e2b",
+      "sizeBytes": 44146
+    },
+    {
+      "path": "compile-03/compiler.args",
+      "sha256Bytes": "1e483275174666bd373d176bf9f593bff59d7814a608c4dcd98503a614aa57c3",
+      "sizeBytes": 24878
+    },
+    {
+      "path": "compile-03/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "compile-03/input-ordered-runtime-cp.json",
+      "sha256Bytes": "68ac45d72dbbe288658d1a6ea1ce0cc29ad39c0667b2c355487484e11c93afa5",
+      "sizeBytes": 34463
+    },
+    {
+      "path": "compile-attempt-history.json",
+      "sha256Bytes": "6012f0ca5786ea3ea5c7044808f2fa72f9789b6ede45e5b148b888de22359dcb",
+      "sizeBytes": 713
+    },
+    {
+      "path": "compile-consumers.py",
+      "sha256Bytes": "821efca07022237fce38b100c07cfba5c4656bcc402112540d12e8bb767342a1",
+      "sizeBytes": 5253
+    },
+    {
+      "path": "consumer-patch-check.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "consumer.patch",
+      "sha256Bytes": "4b752a0d256bca22cc3a8182cd071c496b0e5eb9068106873e30066ed05fa344",
+      "sizeBytes": 17579
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "c888800ed96e4b1b4509b19900adb2faf6279d8b8316b981c9d03168d43d37eb",
+      "sizeBytes": 3435
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/space/DesktopOriginalSpaceImagePreviewCallers.kt",
+      "sha256Bytes": "9a3b155844b002398ae2512cac9ed00b1b95129a0483e24da9d22033f327f265",
+      "sizeBytes": 11472
+    },
+    {
+      "path": "original-selected/SpaceHeaderBanner.kt.reference.txt",
+      "sha256Bytes": "386487c3e118a2889c0d38bd8854a8d0b16b76ba3fc6a689990d51e1d2a4ff82",
+      "sizeBytes": 6026
+    },
+    {
+      "path": "original-selected/SpaceHeaderTitleBadge.kt.reference.txt",
+      "sha256Bytes": "4d8533cc5c499094f0406fd6a772aae870af7ce0b136cc42500f8f4ebd85de12",
+      "sizeBytes": 1968
+    },
+    {
+      "path": "preparation-contract.json",
+      "sha256Bytes": "01525de66a8148743e77dc5bbfa4374b6e4a2899ea35a51cc6be8ead7a92bc56",
+      "sizeBytes": 1893
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "f72465d2651e85fd90c5b94247d406cb39020096fb0c67aac44edb8f0a36ed25",
+      "sizeBytes": 17539
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+      "sha256Bytes": "76f1bee6ff516b2c7ce9b2a5410a9af650b87eddbcf8d7e2e8449e0b2d1f0e96",
+      "sizeBytes": 15641
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "sha256Bytes": "ce19a11f8f32826ae48c8f89b4db309445f89649e19eba303f9e601c90c98420",
+      "sizeBytes": 8186
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceOverviewScreens.kt",
+      "sha256Bytes": "a2853e0d4d2ea731c6551225c2901507eef58ca346715d0067cb0d07de5ceb52",
+      "sizeBytes": 15976
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+      "sha256Bytes": "93fe822b2b12f80053f03e457261d0bfe84829d2f6975af20f5d4de0b58373b8",
+      "sizeBytes": 19001
+    },
+    {
+      "path": "prepared/desktop/tools/extract-space-image-preview-callers.py",
+      "sha256Bytes": "80133dfdfb5e759ada5214645d602b3def971c0cd1052089a9ca771328bc9caa",
+      "sizeBytes": 5496
+    },
+    {
+      "path": "root-feedback-seam.json",
+      "sha256Bytes": "dcaaf7c262b670c0d66e68698479bd94b0d8d2f3fab0da21a53041086845705d",
+      "sizeBytes": 312
+    },
+    {
+      "path": "root-feedback.patch",
+      "sha256Bytes": "13583f7badc731ce1e44507d9647d37c72ac4e0602b0c70a78910ab82de955fe",
+      "sizeBytes": 1182
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "a595a231918db5bed9aedcf5b42ed34dc56128c93c38931ec591ce5f0e1a8168",
+      "sizeBytes": 6631
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "477ff872d26717639a191b9ebfcc63fc3916ef32131d8a7621aff4ea9ae85224",
+      "sizeBytes": 1710
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "96f9c40ee600d6c609b8bd5d828ead6592da16ba2b34ad9dd4c681f0949aa879",
+      "sizeBytes": 6134
+    },
+    {
+      "path": "excluded-runtime-artifacts.json",
+      "sha256Bytes": "7d98ffcec9c009b556eaed8d806634593859fff9ed27939ab2e0958235e4a29c",
+      "sizeBytes": 536
+    }
+  ],
+  "originalSelectedBodyCount": 4,
+  "compiledSourceCount": 5,
+  "candidateProductClassOverrideCount": 25,
+  "previewCandidateDependencySourceCount": 6,
+  "previewCandidateDependencyProductClassOverrideCount": 42,
+  "sourceChecks": 22,
+  "sourceOnlyPayloadCount": 5,
+  "consumerPatchAppliesToMain04": true,
+  "preservedHistoricalReferences": [
+    {
+      "kind": "historical stable caller",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\space-avatar-save-v023-parity\\frozen-handoff.json",
+      "sha256Bytes": "424ef334084c32f067bcfa0df976fc22ee5ea500e7894a21a261391a61f8ee0d"
+    },
+    {
+      "kind": "sole stable renderer",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity\\evidence-manifest.json",
+      "sha256Bytes": "aa2f0fded76142156e7470d40d999939e78fe9ea3a86300353ab8e1e805a92d9"
+    },
+    {
+      "kind": "source dependency review",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\space-header-v023-dependency-review\\evidence-manifest.json",
+      "sha256Bytes": "dff7f9f62ae58ee56676c4db191466a332090c480f6ccd63a7f920f0b6833ad0"
+    },
+    {
+      "kind": "actual Main04",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\image-save-main-integration\\main-product-snapshot-04\\manifest.json",
+      "sha256Bytes": "7bc5ac8875dadf38510120db6619bd6e748e7f790a47afc11374e14114f25865"
+    }
+  ],
+  "scope": {
+    "MainWrites": false,
+    "sharedGradle": false,
+    "HTTP": false,
+    "accountWrites": false,
+    "HWND": false,
+    "userDirectoryWrites": false,
+    "systemChooser": false,
+    "stableMountedUI": false,
+    "EXE": false
+  },
+  "integration": "ROOT-INTEGRATION.md",
+  "inventory": "source-inventory.json"
+}

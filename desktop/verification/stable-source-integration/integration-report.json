@@ -1,0 +1,81 @@
+{
+  "schema": "stable-source-integration-v1",
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "wholeCandidateClassesPassed": true,
+  "classesLog": "root-install/gradle-candidate-09.log",
+  "stableDesktopRuntimeAccepted": false,
+  "desktopExeReplaced": false,
+  "physicalReceiverTested": false,
+  "notificationProgressImplemented": false,
+  "originalTreeExactToTag": true,
+  "sourceRegistryCount": 627,
+  "resourceRegistryCount": 210,
+  "implemented": [
+    "Original full publisher UI with 18 selected images",
+    "Ordered nine-image comment upload and posting",
+    "Default two concurrent downloads with original queue policy",
+    "Pause/continue all predicates and per-task speed",
+    "Original chapter bar with player-owned metadata",
+    "Space multi-image source previews",
+    "Native Videos/BiliPai default saves",
+    "Original sampled cover palette and crash/diagnostic/plugin source updates"
+  ],
+  "pending": [
+    "Same-page comment sort cancels submit busy completion",
+    "Vote command source ownership and root installation",
+    "Original BGM detail and typed comments",
+    "Collection drawer/honors/declarations/staff and weekly complete UI",
+    "Download quality dialog/online fallback root installation",
+    "Stable full UI/runtime/portable EXE validation",
+    "Remaining source parity and original transitions",
+    "Mature recurring upstream update pipeline"
+  ],
+  "proofScope": "Prepared targeted source replacements run against an explicitly pinned historical Main04 runtime. Whole stable classes09 passes separately; neither proves stable application runtime.",
+  "verifiedCohorts": [
+    {
+      "name": "editor-stream",
+      "sourceManifestSha256Bytes": "e48ee2b9dbf7bd58f8460fee44f32fe700cad98e8ed8d2a834c9472042575f29",
+      "verifiedArtifacts": 44
+    },
+    {
+      "name": "space-preview",
+      "sourceManifestSha256Bytes": "7586f91c748d3f574d313020d8e453fb5e9b431bb5950359b06664d0696d5ecf",
+      "verifiedArtifacts": 35
+    },
+    {
+      "name": "video-save",
+      "sourceManifestSha256Bytes": "9dfb6a3ab5f9c95eea1e11ad3523176e337cec11d87899f67ce50dd8806e288b",
+      "verifiedArtifacts": 68
+    },
+    {
+      "name": "full-editor",
+      "sourceManifestSha256Bytes": "9d7376c941a30725c3e745e8f99b5cb0f3591ace7efef5d48bacee1031ee98e2",
+      "verifiedArtifacts": 167
+    },
+    {
+      "name": "build-repair",
+      "sourceManifestSha256Bytes": "bf654d5670ff0e98cf8613d8b882ccb4db56b35a8f1a96de82ee78601ee7b21f",
+      "verifiedArtifacts": 113
+    },
+    {
+      "name": "comment-images",
+      "sourceManifestSha256Bytes": "a91a58a41674adb28b77fb39e9edd56208865536501a1ed9e1fa6720d907902f",
+      "verifiedArtifacts": 109
+    }
+  ],
+  "excludedRuntimeArtifacts": [
+    {
+      "cohort": "comment-images",
+      "path": "compile-01/prepared-comment-images.jar",
+      "sha256Bytes": "0aab1fb8991e21af7968d2e6fdc7e061343f23fa3211b54c28926e761cc61e61",
+      "reason": "Runtime-only binary; immutable digest retained in original evidence"
+    },
+    {
+      "cohort": "comment-images",
+      "path": "fixture-01/comment-image-fixture.jar",
+      "sha256Bytes": "752bdf46e8fb66019cce3b626796db259f4b8e7009006ec4a80991fef57593f4",
+      "reason": "Runtime-only binary; immutable digest retained in original evidence"
+    }
+  ]
+}

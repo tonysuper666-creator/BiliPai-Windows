@@ -75,6 +75,7 @@ import com.android.purebilibili.core.ui.transition.shouldEnableVideoCoverSharedT
 import com.android.purebilibili.core.ui.transition.shouldUseVideoCardShellSharedBounds
 import com.android.purebilibili.core.ui.transition.videoCardShellSharedBoundsOrEmpty
 import com.android.purebilibili.feature.home.HomeCoverRequestSpec
+import com.android.purebilibili.feature.home.resolveHomeCoverImageSource
 import com.android.purebilibili.feature.home.resolveHomeCardEnterAnimationEnabledAtMount
 import com.android.purebilibili.feature.video.ui.section.resolveCompactPublishTimeRowText
 import androidx.compose.material.icons.Icons
@@ -162,15 +163,11 @@ internal fun StoryVideoCard(
         showOnlineCount = showOnlineCount
     )
     val useLowQualityCover = isDataSaverActive && preferLowQualityCover
-    val coverUrl = remember(video.bvid, video.pic, useLowQualityCover, coverRequestSpec) {
-        coverRequestSpec?.resolveUrl(video.pic) ?: FormatUtils.resolveVideoCoverUrl(
-            video.pic,
-            useLowQuality = useLowQualityCover,
-        )
+    val coverSource = remember(video.bvid, video.id, video.cid, video.title, video.pic, useLowQualityCover, coverRequestSpec) {
+        resolveHomeCoverImageSource(video, useLowQualityCover, coverRequestSpec)
     }
-    val coverCacheKey = remember(video.bvid, video.pic, coverRequestSpec) {
-        "story_${video.bvid.ifBlank { video.pic }}_${coverRequestSpec?.cacheKeySuffix ?: "default"}"
-    }
+    val coverUrl = coverSource.url
+    val coverCacheKey = coverSource.cacheKey
     val publishTimeRowText = remember(showPublishTime, video.pubdate) {
         if (!showPublishTime) {
             ""

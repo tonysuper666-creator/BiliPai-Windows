@@ -217,6 +217,8 @@ fun BottomBarSettingsContent(
         .collectAsStateWithLifecycle(initialValue = false)
     val bottomBarSearchEnabled by SettingsManager.getBottomBarSearchEnabled(context)
         .collectAsStateWithLifecycle(initialValue = false)
+    val linkedDockMergeOnScrollEnabled by SettingsManager.getLinkedDockMergeOnScrollEnabled(context)
+        .collectAsStateWithLifecycle(initialValue = true)
     val listScopedSearchEnabled by SettingsManager.getListScopedSearchEnabled(context)
         .collectAsStateWithLifecycle(initialValue = false)
     val isLargeScreenCapable = windowSizeClass.isTabletDevice ||
@@ -400,6 +402,19 @@ fun BottomBarSettingsContent(
                             iconTint = com.android.purebilibili.core.theme.iOSTeal,
                         )
                         if (bottomBarSearchEnabled) {
+                            AppPreferenceDivider()
+                            AppSwitchPreference(
+                                icon = rememberSettingsSemanticIcon(SettingsIconRole.BOTTOM_BAR_SEARCH),
+                                title = "下滑合体",
+                                subtitle = "下滑时搜索胶囊与导航 dock 收拢合并；关闭后保持分体的圆钮与完整底栏",
+                                checked = linkedDockMergeOnScrollEnabled,
+                                onCheckedChange = { enabled ->
+                                    scope.launch {
+                                        SettingsManager.setLinkedDockMergeOnScrollEnabled(context, enabled)
+                                    }
+                                },
+                                iconTint = com.android.purebilibili.core.theme.iOSTeal,
+                            )
                             AppPreferenceDivider()
                             AppSwitchPreference(
                                 icon = rememberSettingsSemanticIcon(SettingsIconRole.BOTTOM_BAR_SEARCH),

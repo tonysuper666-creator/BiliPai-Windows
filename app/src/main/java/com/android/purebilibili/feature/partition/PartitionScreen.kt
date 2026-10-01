@@ -1158,6 +1158,15 @@ private fun PartitionVideoList(
     val homeFeedCardStyle by SettingsManager
         .getHomeFeedCardStyle(context)
         .collectAsStateWithLifecycle(initialValue = HomeFeedCardStyle.BILIPAI)
+    val showUpBadges by SettingsManager
+        .getHomeUpBadgesVisible(context)
+        .collectAsStateWithLifecycle(initialValue = false)
+    val homeDurationStyle by SettingsManager
+        .getHomeDurationStyle(context)
+        .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.HomeDurationStyle.OUTSIDE_COVER)
+    val showHomePublishTime by SettingsManager
+        .getHomePublishTimeVisible(context)
+        .collectAsStateWithLifecycle(initialValue = true)
     val cardLayout = remember(homeFeedCardStyle) {
         resolveHomeFeedCardLayout(homeFeedCardStyle)
     }
@@ -1208,7 +1217,9 @@ private fun PartitionVideoList(
                         sourceRoute = sharedElementSourceRoute,
                         coverAspectRatio = cardLayout.coverAspectRatio,
                         transitionEnabled = sharedTransitionEnabled,
-                        showUpBadge = false,
+                        showUpBadge = showUpBadges,
+                        durationStyle = homeDurationStyle,
+                        showPublishTime = showHomePublishTime,
                         modifier = Modifier.fillMaxWidth(),
                         onClick = { onVideoClick(video) },
                     )

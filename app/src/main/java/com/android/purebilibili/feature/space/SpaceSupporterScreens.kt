@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.space
 
+import com.android.purebilibili.core.ui.components.AppSurface
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -359,7 +361,7 @@ private fun SpaceGuardPodium(
                         url = member.face,
                         size = if (isFirst) 50.dp else 42.dp,
                     )
-                    androidx.compose.material3.Surface(
+                    AppSurface(
                         shape = CircleShape,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier

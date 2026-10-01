@@ -6,6 +6,22 @@ import kotlin.test.assertIs
 import kotlin.test.assertNull
 
 class BilibiliNavigationTargetParserTest {
+    @Test
+    fun weeklyLinksPreservePeriodAndIgnoreInvalidNumbers() {
+        for (url in listOf(
+            "bilibili://popular/weekly?number=133",
+            "https://www.bilibili.com/v/popular/weekly?num=133",
+            "https://m.bilibili.com/v/popular/weekly?number=133"
+        )) {
+            assertEquals(BilibiliNavigationTarget.PopularFeed("weekly", 133), BilibiliNavigationTargetParser.parse(url))
+        }
+        for (number in listOf("0", "-1", "invalid", "2147483648")) {
+            assertEquals(BilibiliNavigationTarget.PopularFeed("weekly"),
+                BilibiliNavigationTargetParser.parse("bilibili://popular/weekly?number=$number"))
+        }
+        assertNull(BilibiliNavigationTargetParser.parse("https://example.com/v/popular/weekly?num=133"))
+    }
+
 
     @Test
     fun parse_commentSpaceSchema_resolvesSpaceTarget() {

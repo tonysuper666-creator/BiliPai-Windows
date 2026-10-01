@@ -1,0 +1,62 @@
+{
+    "status": "PASS",
+    "assertions": 65,
+    "caseCount": 9,
+    "cases": [
+        "image-only-nine-ordered-original-wire",
+        "text-only-and-immutable-reply-target",
+        "blank-and-ten-rejected-before-transport",
+        "reply-image-prohibition-before-upload",
+        "ordinary-upload-failure-and-next-attempt",
+        "ordinary-add-failure-and-next-attempt",
+        "same-mid-account-replacement-no-late-post-or-callback",
+        "closed-page-keeps-account-no-late-post-or-callback",
+        "request-generation-change-after-upload-no-late-post"
+    ],
+    "actualCodeSources": [
+        {
+            "class": "com.bilipai.desktop.data.DesktopDynamicCardOperations",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\compile-01\\prepared-comment-images.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicReplyOperationsBinding",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\compile-01\\prepared-comment-images.jar"
+        },
+        {
+            "class": "com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicReplySession",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\compile-01\\prepared-comment-images.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicEditorSelectedImages",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\compile-01\\prepared-comment-images.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopSessionStore",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\image-save-main-integration\\main-product-snapshot-04\\main-kotlin.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopRepository",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\image-save-main-integration\\main-product-snapshot-04\\main-kotlin.jar"
+        },
+        {
+            "class": "com.android.purebilibili.core.network.BilibiliApi",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\image-save-main-integration\\main-product-snapshot-04\\main-kotlin.jar"
+        },
+        {
+            "class": "com.android.purebilibili.data.model.response.ReplyPicture",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\image-save-main-integration\\main-product-snapshot-04\\main-kotlin.jar"
+        },
+        {
+            "class": "com.android.purebilibili.data.model.response.DynamicItem",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\image-save-main-integration\\main-product-snapshot-04\\main-kotlin.jar"
+        }
+    ],
+    "terminalApplicationInterceptorNoProceed": true,
+    "temporaryDeclaredCredentialStoreOnly": true,
+    "noSocket": true,
+    "noHTTP": true,
+    "noHWND": true,
+    "noMainEdits": true,
+    "notRootButtonOrChooserE2E": true,
+    "preparedOnly": true
+}

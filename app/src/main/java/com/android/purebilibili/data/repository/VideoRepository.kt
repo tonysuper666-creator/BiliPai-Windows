@@ -151,6 +151,7 @@ data class CreatorCardStats(
     val followerCount: Int,
     val videoCount: Int,
     val vipStatus: Int = 0,
+    val vipType: Int = 0,
     val officialType: Int = -1,
     val pendantImage: String = "",
 )
@@ -937,6 +938,37 @@ object VideoRepository {
         }
     }
 
+    suspend fun getWeeklyPeriods(): Result<List<PopularSeriesPeriod>> = withContext(Dispatchers.IO) {
+        try {
+            val response = api.getWeeklySeriesList()
+            if (response.code != 0) {
+                Result.failure(Exception(response.message.ifBlank { "每周必看期数加载失败(${response.code})" }))
+            } else {
+                Result.success(response.data?.list.orEmpty().filter { it.number > 0 }
+                    .distinctBy { it.number }.sortedByDescending { it.number })
+            }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getWeeklyPeriod(number: Int): Result<PopularSeriesOneData> = withContext(Dispatchers.IO) {
+        try {
+            val response = api.getWeeklySeriesVideos(number)
+            if (response.code != 0 || response.data == null) {
+                Result.failure(Exception(response.message.ifBlank { "第${number}期加载失败(${response.code})" }))
+            } else {
+                Result.success(response.data)
+            }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun getWeeklyMustWatchVideos(number: Int? = null): Result<List<VideoItem>> = withContext(Dispatchers.IO) {
         try {
             val targetNumber = number ?: run {
@@ -1150,6 +1182,7 @@ object VideoRepository {
                     followerCount = data.follower.coerceAtLeast(0),
                     videoCount = data.archive_count.coerceAtLeast(0),
                     vipStatus = data.card?.vip?.status ?: 0,
+                    vipType = data.card?.vip?.type ?: 0,
                     officialType = data.card?.Official?.type ?: -1,
                     pendantImage = data.card?.pendant?.image.orEmpty(),
                 )

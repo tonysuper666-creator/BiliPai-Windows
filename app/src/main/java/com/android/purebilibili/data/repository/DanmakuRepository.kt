@@ -14,6 +14,17 @@ import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import kotlin.math.abs
 
+data class DanmakuCloudFilterRule(
+    val id: Long,
+    val type: Int,
+    val filter: String
+)
+
+data class DanmakuCloudFilterRules(
+    val rules: List<DanmakuCloudFilterRule>,
+    val toast: String? = null
+)
+
 internal data class DanmakuThumbupState(
     val likes: Int,
     val liked: Boolean
@@ -456,6 +467,84 @@ object DanmakuRepository {
         }
         bytes
     }
+
+    /** UP主关闭弹幕的 cid 集合（来自 DmSegMobileReply.state == 1） */
+    private val serverDisabledDanmakuCids =
+        java.util.Collections.synchronizedSet(mutableSetOf<Long>())
+
+    fun markDanmakuServerDisabled(cid: Long) {
+        serverDisabledDanmakuCids.add(cid)
+    }
+
+    fun isDanmakuServerDisabled(cid: Long): Boolean = cid in serverDisabledDanmakuCids
+
+    /** 拉取云端弹幕屏蔽规则（关键词/正则/UID），未登录返回失败 */
+    suspend fun getDanmakuCloudFilterRules(): Result<DanmakuCloudFilterRules> =
+        withContext(Dispatchers.IO) {
+            try {
+                val response = api.getDanmakuFilterRules()
+                if (response.code != 0) {
+                    return@withContext Result.failure(Exception(response.message.ifEmpty { "同步云端弹幕屏蔽规则失败" }))
+                }
+                val data = response.data
+                    ?: return@withContext Result.failure(Exception("同步云端弹幕屏蔽规则失败"))
+                val rules = buildList {
+                    addAll(data.rule)
+                    addAll(data.rule1)
+                    addAll(data.rule2)
+                }.map { DanmakuCloudFilterRule(id = it.id, type = it.type, filter = it.filter) }
+                Result.success(DanmakuCloudFilterRules(rules = rules, toast = data.toast))
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+
+    /** 添加云端弹幕屏蔽规则（type: 0=关键词, 1=正则, 2=UID crc32 hex） */
+    suspend fun addDanmakuCloudFilterRule(type: Int, filter: String): Result<DanmakuCloudFilterRule> =
+        withContext(Dispatchers.IO) {
+            try {
+                val csrf = com.android.purebilibili.core.store.TokenManager.csrfCache
+                if (csrf.isNullOrEmpty()) {
+                    return@withContext Result.failure(Exception("请先登录"))
+                }
+                val response = api.addDanmakuFilterRule(type = type, filter = filter, csrf = csrf)
+                if (response.code != 0) {
+                    return@withContext Result.failure(Exception(response.message.ifEmpty { "添加云端弹幕屏蔽规则失败" }))
+                }
+                val data = response.data
+                    ?: return@withContext Result.failure(Exception("添加云端弹幕屏蔽规则失败"))
+                Result.success(
+                    DanmakuCloudFilterRule(id = data.id, type = data.type, filter = data.filter)
+                )
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+
+    /** 删除云端弹幕屏蔽规则 */
+    suspend fun deleteDanmakuCloudFilterRule(id: Long): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                val csrf = com.android.purebilibili.core.store.TokenManager.csrfCache
+                if (csrf.isNullOrEmpty()) {
+                    return@withContext Result.failure(Exception("请先登录"))
+                }
+                val response = api.deleteDanmakuFilterRule(ids = id, csrf = csrf)
+                if (response.code != 0) {
+                    Result.failure(Exception(response.message.ifEmpty { "删除云端弹幕屏蔽规则失败" }))
+                } else {
+                    Result.success(Unit)
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
 
     /** Full-video loading is retained only for offline asset export. Playback uses single segments. */
     suspend fun getDanmakuSegments(

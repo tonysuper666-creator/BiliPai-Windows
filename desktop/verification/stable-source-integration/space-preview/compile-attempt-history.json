@@ -1,0 +1,22 @@
+{
+  "attempts": [
+    {
+      "directory": "compile-01",
+      "compiler": "FAIL",
+      "cause": "Candidate AST extraction stopped at default callback lambda instead of function parameter closing. Fixed only new generator, no original body edits."
+    },
+    {
+      "directory": "compile-02",
+      "compiler": "PASS",
+      "evidenceAssertion": "FAIL",
+      "cause": "Class-overlap allowlist omitted Compose compiler ComposableSingletons for the same three consumer files. Historical outputs retained."
+    },
+    {
+      "directory": "compile-03",
+      "compiler": "PASS",
+      "classOwnershipAudit": "PASS",
+      "proof": "compile-03/compile-result.json"
+    }
+  ],
+  "noOldFrozenEvidenceChanged": true
+}

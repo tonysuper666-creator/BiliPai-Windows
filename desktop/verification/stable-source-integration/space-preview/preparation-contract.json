@@ -1,0 +1,42 @@
+{
+  "preparedOnly": true,
+  "originalTag": "v0.2.3",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalSource": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+  "originalSourceSha256Lf": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca",
+  "baselineConsumers": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceOverviewScreens.kt",
+      "sha256Lf": "e4ea71b8d97eb9a855051adde64fa749e9f0759ea92c167b2a276c3c02679241",
+      "actualBytesSha256": "e4ea71b8d97eb9a855051adde64fa749e9f0759ea92c167b2a276c3c02679241"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+      "sha256Lf": "d6751e49f4c4c25cfc3821db56960743750d86796b3f946a0bcf37257c7f527e",
+      "actualBytesSha256": "d6751e49f4c4c25cfc3821db56960743750d86796b3f946a0bcf37257c7f527e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+      "sha256Lf": "cc28816657c9417c6cd163472458929d473f0b945b8b409439728fe3a2a97809",
+      "actualBytesSha256": "cc28816657c9417c6cd163472458929d473f0b945b8b409439728fe3a2a97809"
+    }
+  ],
+  "selected": [
+    "avatar corner and call",
+    "topImages/index/enabled and call",
+    "entire SpaceHeaderBanner",
+    "entire SpaceHeaderTitleBadge"
+  ],
+  "thinAdapters": [
+    "LocalContext→Coil LocalPlatformContext",
+    "private banner→internal DesktopOriginalSpaceHeaderBanner",
+    "state input/dismiss parameters",
+    "optional original sourceKey bound to clicked immutable raw URL",
+    "original skin landscape preference: desktop LocalWindowInfo same ratio comparison",
+    "Main04 layout retained; avatar 80dp/Circle border source block"
+  ],
+  "solePreviewProducer": "stable-image-preview-producer-parity",
+  "noMainWrites": true,
+  "noAccountRequests": true,
+  "noNative": true
+}

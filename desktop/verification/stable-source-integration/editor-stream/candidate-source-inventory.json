@@ -1,0 +1,48 @@
+{
+  "sourceCandidates": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-editor-protocol.py",
+      "baseLfSha256": "85efcbef79934a5444fa53f417a9f2f949d4ea4ee38e8b232418c07f95fcaaae",
+      "candidateLfSha256": "cf0cd7c2a1d3fdfa1b8232035d175ace1851bef6ae22b918c790acaaa0630abc",
+      "changed": true
+    },
+    {
+      "path": "desktop/tools/verify-upstream-dynamic-editor-protocol.py",
+      "baseLfSha256": "b15f19eb220550ec18e7f66806deba9d1e10c889f252932f0e005eb03f6d34a4",
+      "candidateLfSha256": "b15f19eb220550ec18e7f66806deba9d1e10c889f252932f0e005eb03f6d34a4",
+      "changed": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "baseLfSha256": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+      "candidateLfSha256": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2",
+      "changed": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "baseLfSha256": "84389c917a95da7d5f4626565785f7ccec7e947b807ee1dbe0d45744edc012eb",
+      "candidateLfSha256": "ce08f0d5703f2b447dfcc64db56636bfa696cb39e7584969bb69b93d2f6b5aff",
+      "changed": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHost.kt",
+      "baseLfSha256": "7a4e8a76945d923dc6bcc1ff1d10ee623253330e70fb04c932424ee458a2c718",
+      "candidateLfSha256": "28235cfe6d786e82804149265ab4d3ce61df433f378c628997bb015246c55b49",
+      "changed": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorRoot.kt",
+      "baseLfSha256": "7b8848caec0b6d19be856b90f0ca8e76858ea28383a2d97aa4daf10429e99234",
+      "candidateLfSha256": "e01961364d0f4ae063b85e94f2026b1c00d2f37a051b9f1fd4ffd07f81414602",
+      "changed": true
+    }
+  ],
+  "requiresDetailReplyIdentityProducer": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-dynamic-protocol-rebase\\prepared\\desktop\\tools\\extract-upstream-dynamic-reply-protocol.py",
+  "identityProducerLfSha256": "4bea60a6059c1a8f7b9e42caa8ef825ef84c0c59802d852e61f41130fd07c0e7",
+  "generatedEditorMembersLfSha256": "aecbfc16bbef6307e0b22c9b9fb1a5037afcf79b3dac3db7d1f99a35b78886d3",
+  "MainChanged": false,
+  "newDependencies": false,
+  "newHttpClient": false,
+  "newStore": false,
+  "gradleInputRecommendation": "verifyUpstreamDynamicEditorProtocol inputs must also include extract-upstream-dynamic-reply-protocol.py for its shared fixed-source identity helper"
+}

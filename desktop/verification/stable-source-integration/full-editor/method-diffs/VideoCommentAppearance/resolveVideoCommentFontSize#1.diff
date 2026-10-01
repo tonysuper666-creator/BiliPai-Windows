@@ -1,0 +1,10 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt:resolveVideoCommentFontSize#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt:resolveVideoCommentFontSize#1
+@@ -0,0 +1,7 @@
++internal fun resolveVideoCommentFontSize(typography: Typography, role: VideoCommentTextRole): TextUnit =
++    when (role) {
++        VideoCommentTextRole.AUTHOR, VideoCommentTextRole.SUB_REPLY -> typography.bodySmall.fontSize
++        VideoCommentTextRole.METADATA, VideoCommentTextRole.ACTION_COUNT -> typography.labelSmall.fontSize
++        VideoCommentTextRole.BODY -> typography.bodyLarge.fontSize
++        VideoCommentTextRole.ACTION -> typography.labelMedium.fontSize
++    }

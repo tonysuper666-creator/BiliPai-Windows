@@ -101,6 +101,14 @@ private val SETTINGS_SEARCH_INDEX: List<SettingsSearchEntry> = listOf(
         aliases = listOf("互动", "评论", "楼中楼", "评论楼中楼", "评论检测", "发评反诈", "评论发送检测", "评论装扮", "个性装扮", "视频详情评论数", "评论标签数量", "简介评论数量", "ai总结", "视频总结", "双击点赞", "收藏", "收藏夹", "快速收藏", "点按收藏", "收藏点按", "默认收藏夹", "视频简介", "简介默认展开", "视频笔记", "显示视频笔记", "默认折叠视频笔记", "笔记折叠", "视频标签", "视频标签大小", "标签大小", "标签紧凑", "标签更小", "tag")
     ),
     SettingsSearchEntry(
+        target = SettingsSearchTarget.INTERACTION_COMMENT,
+        title = "评论 IP 属地",
+        subtitle = "有数据时自动显示，无需开启；B站未返回时无法强制显示",
+        section = "设置",
+        aliases = listOf("IP属地", "IP归属地", "显示IP", "评论地区", "评论定位"),
+        focusId = SettingsSearchFocusIds.PLAYBACK_INTERACTION,
+    ),
+    SettingsSearchEntry(
         target = SettingsSearchTarget.DATA_BACKUP,
         title = "数据与备份",
         subtitle = "设置分享、WebDAV、下载位置与清除缓存",

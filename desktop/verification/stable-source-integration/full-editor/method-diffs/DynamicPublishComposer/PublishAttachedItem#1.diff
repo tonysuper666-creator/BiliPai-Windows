@@ -1,0 +1,30 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposer.kt:PublishAttachedItem#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposer.kt:PublishAttachedItem#1
+@@ -0,0 +1,27 @@
++private fun PublishAttachedItem(
++    label: String,
++    onRemove: () -> Unit,
++    enabled: Boolean,
++) {
++    AppSurface(
++        modifier = Modifier.fillMaxWidth(),
++        shape = AppShapes.container(ContainerLevel.Card),
++        color = MaterialTheme.colorScheme.surfaceContainer,
++    ) {
++        Row(
++            modifier = Modifier
++                .fillMaxWidth()
++                .padding(start = AppSpacingTokens.Medium, end = AppSpacingTokens.Small),
++            verticalAlignment = Alignment.CenterVertically,
++        ) {
++            AppText(label, modifier = Modifier.weight(1f))
++            AppIconButton(
++                onClick = onRemove,
++                enabled = enabled,
++                modifier = Modifier.size(AppChromeSizeTokens.MinimumTouchTarget),
++            ) {
++                AppIcon(rememberAppDeleteIcon(), contentDescription = "移除附件")
++            }
++        }
++    }
++}

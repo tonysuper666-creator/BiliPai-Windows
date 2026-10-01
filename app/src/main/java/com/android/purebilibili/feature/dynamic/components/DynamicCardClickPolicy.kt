@@ -339,6 +339,7 @@ internal fun resolveDynamicOpusLinkCardAction(card: OpusLinkCard): DynamicOpusLi
         )
         is BilibiliNavigationTarget.Music,
         is BilibiliNavigationTarget.Search,
+        is BilibiliNavigationTarget.PopularFeed,
         null -> DynamicOpusLinkCardAction.OpenExternalUrl(url)
     }
 }

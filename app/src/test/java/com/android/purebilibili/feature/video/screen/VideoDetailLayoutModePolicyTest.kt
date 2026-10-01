@@ -455,6 +455,7 @@ class VideoDetailLayoutModePolicyTest {
                 isCompactDevice = true,
                 isOrientationDrivenFullscreen = true,
                 isFullscreenMode = true,
+                manualFullscreenRequested = true,
                 preferPortraitForFlatFoldable = true
             )
         )
@@ -485,9 +486,9 @@ class VideoDetailLayoutModePolicyTest {
     }
 
     @Test
-    fun phoneOrientationPolicy_autoRotateDisabled_switchesBetweenPortraitAndLandscapeLock() {
+    fun phoneOrientationPolicy_autoRotateDisabled_followsSystemThroughFullscreen() {
         assertEquals(
-            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+            ActivityInfo.SCREEN_ORIENTATION_USER,
             resolvePhoneVideoRequestedOrientation(
                 autoRotateEnabled = false,
                 fullscreenMode = FullscreenMode.AUTO,
@@ -497,7 +498,7 @@ class VideoDetailLayoutModePolicyTest {
             )
         )
         assertEquals(
-            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE,
+            ActivityInfo.SCREEN_ORIENTATION_USER,
             resolvePhoneVideoRequestedOrientation(
                 autoRotateEnabled = false,
                 fullscreenMode = FullscreenMode.AUTO,
@@ -519,6 +520,7 @@ class VideoDetailLayoutModePolicyTest {
                     isCompactDevice = isCompactDevice,
                     isOrientationDrivenFullscreen = isCompactDevice,
                     isFullscreenMode = true,
+                    manualFullscreenRequested = true,
                     currentRequestedOrientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
                 )
             )
@@ -545,12 +547,11 @@ class VideoDetailLayoutModePolicyTest {
         // Regression: with auto-rotate OFF, pressing fullscreen applies SENSOR_LANDSCAPE
         // directly. Before configuration flips to landscape, isFullscreenMode is still
         // false. The orientation effect must honor manualFullscreenRequested and keep
-        // requesting landscape, otherwise it reverts to PORTRAIT and yanks the user
+        // requesting landscape, otherwise it returns to USER and yanks the user
         // back out of fullscreen (#782 class loop on auto-rotate off).
         // autoRotate off → resolveStableOrientationWhenAutoRotateDisabled converts
-        // SENSOR_LANDSCAPE to a fixed LANDSCAPE side (matches the existing
-        // phoneOrientationPolicy_autoRotateDisabled_switchesBetweenPortraitAndLandscapeLock
-        // convention). The pre-fix branch returned PORTRAIT here and yanked the user
+        // SENSOR_LANDSCAPE to a fixed LANDSCAPE side. The pre-fix branch returned
+        // PORTRAIT here and yanked the user
         // back out of fullscreen.
         assertEquals(
             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE,
@@ -1034,7 +1035,7 @@ class VideoDetailLayoutModePolicyTest {
                 manualPortraitHoldActive = true
             )
         )
-        assertFalse(
+        assertTrue(
             shouldObservePhoneAutoRotate(
                 autoRotateEnabled = false,
                 isCompactDevice = true,
@@ -1126,6 +1127,7 @@ class VideoDetailLayoutModePolicyTest {
                 isCompactDevice = true,
                 isOrientationDrivenFullscreen = true,
                 isFullscreenMode = true,
+                manualFullscreenRequested = true,
                 currentRequestedOrientation = currentRequest,
             ))
             assertEquals(expected, currentRequest)

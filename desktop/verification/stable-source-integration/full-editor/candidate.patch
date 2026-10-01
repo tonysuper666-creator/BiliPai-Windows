@@ -1,0 +1,171 @@
+--- a/desktop/tools/extract-upstream-dynamic-editor.py
++++ b/desktop/tools/extract-upstream-dynamic-editor.py
+@@ -1,8 +1,7 @@
+-"""Original alpha.9 dynamic editor, Windows native-theme slice.
++"""Sole fixed-source dynamic editor UI producer with existing Windows bindings.
+ 
+-This prepared producer does not install Main. Original liquid dock/segmented
+-renderers and the ReplyItemView/detail closure remain explicit pending sources.
+-No replacement liquid renderer, HomeSettings schema, API or draft model is emitted.
++The original full-window sheet, draft controls and dialogs are retained.
++Source drift rejects the build by manifest LF hash and exact fixed Git blob.
+ """
+ from pathlib import Path
+ import hashlib, importlib.util, json, sys
+@@ -21,21 +20,27 @@
+ def load(repo, name, path):
+     spec = importlib.util.spec_from_file_location(name, repo / path)
+     module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module); return module
++def pinned(repo):
++    identity = load(Path(__file__).resolve().parent, 'editor_fixed_identity', 'extract-upstream-dynamic-reply-protocol.py')
++    return identity.load_pinned_sources(repo, list(dict.fromkeys(EDITOR + DIRECT + REFERENCES)))
++
+ def inventory(repo):
++    source_texts, source_identities = pinned(repo)
+     selected = EDITOR + [BASE + 'feature/video/viewmodel/VideoCommentViewModel.kt', COMP + 'DynamicCommentSheet.kt', BASE + 'feature/video/ui/components/ReplyComponents.kt', BASE + 'data/repository/DynamicCreateRepository.kt', BASE + 'data/repository/CommentRepository.kt']
+     unique = list(dict.fromkeys(EDITOR + DIRECT + REFERENCES))
+-    return [dict(path=p, mode='direct' if p in DIRECT else 'policy-extract' if p in selected else 'reference-only', features=['dynamic-editor-detail-parity'], sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in unique]
++    return [dict(path=p, mode='direct' if p in DIRECT else 'policy-extract' if p in selected else 'reference-only', features=['dynamic-editor-detail-parity'], sha256=hashlib.sha256(source_texts[p].encode()).hexdigest()) for p in unique]
+ 
+ def generate(repo, output, standalone=False):
++    source_texts, source_identities = pinned(repo)
+     host = load(repo, 'editor_host', 'desktop/tools/extract-upstream-plugins.py')
+     media = host.media_extractor(repo); parser = media.parser_for(repo)
+     output.mkdir(parents=True, exist_ok=True); files=[]
+-    def emit(p,s,n): files.append(host.write(output,p,read(repo,p),s,n))
++    def emit(p,s,n): files.append(host.write(output,p,source_texts[p],s,n))
+     def sub(s,a,b): return host.substitute(s,a,b)
+     for p in DIRECT:
+-        if standalone: emit(p,read(repo,p),'DesktopOriginal'+Path(p).name)
++        if standalone: emit(p,source_texts[p],'DesktopOriginal'+Path(p).name)
+     appearance=load(repo,'editor_declarations','desktop/tools/extract-appearance-platform.py')
+-    p=BASE+'feature/dynamic/DynamicViewModel.kt';s=read(repo,p)
++    p=BASE+'feature/dynamic/DynamicViewModel.kt';s=source_texts[p]
+     # Keep the original post-publish AUTH check, delay, warning and cancellation.
+     # Root supplies the current page's read boundary after dismissing the composer.
+     import re, textwrap
+@@ -56,10 +61,10 @@
+     onResult: (Boolean, String) -> Unit,
+ ) {
+ '''+textwrap.indent(body,'    ')+'}\n','DesktopOriginalDynamicPublishVerification.kt')
+-    p=BASE+'feature/video/viewmodel/VideoCommentViewModel.kt';s=read(repo,p)
++    p=BASE+'feature/video/viewmodel/VideoCommentViewModel.kt';s=source_texts[p]
+     body=appearance.declarations(parser,s,['CommentSortMode','SubReplyUiState'])
+     emit(p,'package com.android.purebilibili.feature.video.viewmodel\nimport com.android.purebilibili.data.model.response.ReplyItem\nimport kotlinx.collections.immutable.*\n'+body,'DesktopOriginalDynamicCommentModels.kt')
+-    p=COMP+'DynamicCommentSheet.kt';s=read(repo,p)
++    p=COMP+'DynamicCommentSheet.kt';s=source_texts[p]
+     body=appearance.declarations(parser,s,['DynamicCommentSortControl','DynamicCommentSortControlSpec','resolveDynamicCommentSortControlSpec','DynamicInlineCommentHeader'])
+     emit(p,'''package com.android.purebilibili.feature.dynamic.components
+ import androidx.compose.runtime.*
+@@ -76,7 +81,7 @@
+ import com.android.purebilibili.feature.video.viewmodel.CommentSortMode
+ import top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop
+ '''+body,'DesktopOriginalDynamicInlineCommentHeader.kt')
+-    p=BASE+'feature/video/ui/components/ReplyComponents.kt';s=read(repo,p)
++    p=BASE+'feature/video/ui/components/ReplyComponents.kt';s=source_texts[p]
+     # Exact pure rich-text/layout/model policies needed by the future ReplyItemView
+     # producer. This deliberately emits neither a fake ReplyItemView nor its
+     # Android bitmap/gallery, translation, block-user or cached-title consumer.
+@@ -102,7 +107,7 @@
+ import java.util.*
+ '''+body,'DesktopOriginalDynamicRichCommentPolicy.kt')
+     for p in EDITOR:
+-        s=read(repo,p)
++        s=source_texts[p]
+         # One required platform captures the current existing operations/session.
+         s='\n'.join(l for l in s.splitlines() if not any(x in l for x in [
+             'import androidx.activity.', 'import androidx.compose.ui.platform.LocalContext',
+@@ -114,30 +119,20 @@
+             'import com.android.purebilibili.data.repository.DynamicCreateRepository']))+'\n'
+         s=s.replace('package com.android.purebilibili.feature.dynamic.components\n', 'package com.android.purebilibili.feature.dynamic.components\n\nimport com.bilipai.desktop.ui.LocalDesktopDynamicEditorBindings\n')
+         if p.endswith('DynamicPublishComposer.kt'):
+-            a=s.index('    val context = LocalContext.current');b=s.index('    var text by',a)
+-            s=s[:a]+'    val platform = LocalDesktopDynamicEditorBindings.current\n'+s[b:]
+-            a=s.index('    val picker = rememberLauncherForActivityResult(');b=s.index('\n    AppAlertDialog(',a)
++            # Retain the complete original stable full-window Material sheet.
++            # Only Android's activity result launcher maps to the same owned
++            # Windows selection callback. The original 18-item cap is retained.
++            s=sub(s,'    var text by remember(initialDraft)',
++                '    val platform = LocalDesktopDynamicEditorBindings.current\n    var text by remember(initialDraft)')
++            a=s.index('    val picker = rememberLauncherForActivityResult(')
++            b=s.index('\n    val canPublish =',a)
++            original_picker=s[a:b]
++            expected='    val picker = rememberLauncherForActivityResult(\n        PickMultipleGalleryVisualMedia(maxItems = MAX_DYNAMIC_IMAGES)\n    ) { uris ->\n        if (uris.isNotEmpty()) {\n            imageUris = (imageUris + uris.map { it.toString() }).distinct().take(MAX_DYNAMIC_IMAGES)\n        }\n    }\n'
++            if original_picker!=expected: raise ValueError('Original full composer gallery result changed')
+             s=s[:a]+s[b:]
+-            s=sub(s,'            val publishChromeBackdrop = if (liquidGlassEnabled) rememberLayerBackdrop() else null\n','')
+-            s=sub(s,'            val visibilityLabels = remember { listOf("公开", "仅自己可见") }\n','')
+-            a=s.index('                if (liquidGlassEnabled) {');b=s.index('                Column(',a)
+-            s=s[:a]+s[b:]
+-            a=s.index('                    BottomBarMatchedReusableLiquidDock(');b=s.index('                        LazyRow(',a)
+-            s=s[:a]+'''                    // Original native toolbar body. The Android liquid dock is pending,
+-                    // not replaced by a shader or an invented HomeSettings value.
+-                    Box(modifier = Modifier.fillMaxWidth().height(AppSpacingTokens.TripleExtraLarge)) {
+-                        val liquidChromeActive = false
+-'''+s[b:]
+-            a=s.index('                                        picker.launch(');b=s.index('\n                                    }',a)
+-            s=s[:a]+'''                                        platform.pickImages(9) { uris ->
+-                                            if (platform.isOwned() && uris.isNotEmpty()) {
+-                                                imageUris = (imageUris + uris.map { it.toString() }).distinct().take(9)
+-                                            }
+-                                        }'''+s[b:]
+-            a=s.index('                    if (liquidGlassEnabled) {');b=s.index('                        AppNativeSegmentedControl(',a)
+-            c=s.index('\n                    }',b)
+-            native=s[b:c]
+-            s=s[:a]+native+s[c+len('\n                    }'):]
++            picker_call='platform.pickImages(MAX_DYNAMIC_IMAGES) { uris ->\n' +                 '                                            if (platform.isOwned() && uris.isNotEmpty()) {\n' +                 '                                                imageUris = (imageUris + uris.map { it.toString() }).distinct().take(MAX_DYNAMIC_IMAGES)\n' +                 '                                            }\n                                        }'
++            s=sub(s,'picker.launch(\n                                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)\n                                        )',picker_call)
++            s=sub(s,'picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))',picker_call)
+         elif p.endswith('DynamicPublishPickers.kt'):
+             # Actual Main's catalog is shared with the card owner; no new cache.
+             for needle in ['    var query by remember { mutableStateOf("") }','    var emotes by remember { mutableStateOf(DynamicEmoteCatalog.snapshot()) }']:
+@@ -159,11 +154,12 @@
+                                 }.timeInMillis
+                             }
+                         }'''+s[b:]
+-        # Miuix layerBackdrops in Vote are original and available; no fake renderer.
+-        # Composer no longer references its unavailable original liquid branch.
+-        if p.endswith('DynamicPublishComposer.kt'):
+-            s='\n'.join(l for l in s.splitlines() if 'import top.yukonga.miuix.kmp.blur.' not in l)+'\n'
++        # Preserve every original UI renderer and branch outside the explicit platform seams.
+         emit(p,s,'DesktopOriginal'+Path(p).name)
++    (output / 'source-identity.json').write_text(json.dumps(source_identities, indent=2) + '\n', encoding='utf-8')
++    (output / 'original-editor-source-bodies.json').write_text(json.dumps(
++        [dict(path=p, sha256Lf=hashlib.sha256(source_texts[p].encode()).hexdigest(), originalText=source_texts[p]) for p in EDITOR],
++        ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+     return files
+ 
+ if __name__=='__main__':
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt
+@@ -41,7 +41,7 @@
+     }
+     fun accept(paths: List<Path>): List<String> {
+         val result = mutableListOf<String>()
+-        for (path in paths.take(9)) {
++        for (path in paths.take(18)) {
+             admit()
+             val actual = path.toRealPath()
+             UpdateStorage.existingPathWithoutLinks(actual)
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt
+@@ -35,7 +35,7 @@
+                 val sources = DesktopDynamicGallerySelection(selectedImages, stillOwned).acceptResult(
+                     approved = true, single = chooser.selectedFile?.toPath(),
+                     multiple = chooser.selectedFiles.map { it.toPath() }.takeIf { it.isNotEmpty() },
+-                    maxItems = maxItems.coerceIn(1, 9))
++                    maxItems = maxItems.coerceIn(1, 18))
+                 if (stillOwned()) onSelected(sources)
+             } catch (failure: Exception) {
+                 if (stillOwned()) onFailure("无法读取所选图片")
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt
+@@ -18,7 +18,7 @@
+     private fun owned() { if (!stillOwned()) throw CancellationException("Gallery owner retired") }
+     fun acceptResult(approved: Boolean, single: Path?, multiple: List<Path>?, maxItems: Int): List<String> {
+         owned()
+-        require(maxItems in 1..9) { "Dynamic editor image capacity must be between 1 and 9" }
++        require(maxItems in 1..18) { "Dynamic editor image capacity must be between 1 and 18" }
+         val data = single?.toUri()?.toString()
+         val clips = multiple?.takeIf { it.isNotEmpty() }?.map { it.toUri().toString() }
+         val accepted = if (maxItems == 1) listOfNotNull(desktopOriginalSingleGalleryResult(approved, data, clips))

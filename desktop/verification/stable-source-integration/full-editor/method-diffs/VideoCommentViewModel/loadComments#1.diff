@@ -1,0 +1,20 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt:loadComments#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt:loadComments#1
+@@ -15,7 +15,8 @@
+                 page = pageToLoad, 
+                 ps = 20,
+                 mode = currentState.sortMode.apiMode,
+-                paginationOffset = currentState.grpcNextOffset
++                paginationOffset = currentState.grpcNextOffset,
++                fallbackOnMissingLocation = requestSubject.type == 1,
+             )
+ 
+             result.onSuccess { data ->
+@@ -62,6 +63,7 @@
+                 
+                 _commentState.value = current.copy(
+                     replies = combinedReplies.toImmutableList(),
++                    voteCard = if (pageToLoad == 1) data.voteCard else current.voteCard,
+                     likedComments = (current.likedComments + combinedReplies.flatMap { root ->
+                         (listOf(root) + root.replies.orEmpty()).filter { it.action == 1 }.map { it.rpid }
+                     }).toImmutableSet(),

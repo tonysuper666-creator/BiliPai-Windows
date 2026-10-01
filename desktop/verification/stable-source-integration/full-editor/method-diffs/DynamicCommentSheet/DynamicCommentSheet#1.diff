@@ -1,0 +1,34 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt:DynamicCommentSheet#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt:DynamicCommentSheet#1
+@@ -6,7 +6,7 @@
+     isLoadingMore: Boolean,
+     onDismiss: () -> Unit,
+     onSortModeChange: (CommentSortMode) -> Unit = {},
+-    onPostComment: (String) -> Unit,
++    onPostComment: (String, List<Uri>, (Boolean) -> Unit) -> Unit,
+     onViewReplies: (ReplyItem) -> Unit = {},
+     onReply: (ReplyItem) -> Unit = {},
+     onLike: (ReplyItem) -> Unit = {},
+@@ -402,12 +402,16 @@
+                 DynamicCommentComposer(
+                     value = commentText,
+                     onValueChange = { commentText = it },
+-                    onSubmit = {
+-                        onPostComment(it)
+-                        commentText = ""
+-                        if (!replyTargetUname.isNullOrBlank()) onClearReplyTarget()
+-                        focusManager.clearFocus()
+-                        keyboardController?.hide()
++                    onSubmit = { message, images, onResult ->
++                        onPostComment(message, images) { success ->
++                            if (success) {
++                                commentText = ""
++                                if (!replyTargetUname.isNullOrBlank()) onClearReplyTarget()
++                                focusManager.clearFocus()
++                                keyboardController?.hide()
++                            }
++                            onResult(success)
++                        }
+                     },
+                     hint = resolveDynamicCommentComposerHint(replyTargetUname),
+                     onClearReplyTarget = if (replyTargetUname.isNullOrBlank()) null else onClearReplyTarget,

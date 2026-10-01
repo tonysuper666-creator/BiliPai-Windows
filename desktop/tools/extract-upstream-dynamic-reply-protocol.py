@@ -1,7 +1,36 @@
 """Original selected protocol producer; no snapshot or .local dependency."""
 from pathlib import Path
 import hashlib, re, subprocess, json
-TAG = 'v0.2.3-alpha.9'
+def load_pinned_sources(repo: Path, paths):
+    """One fixed manifest commit plus Git blobs; never silently accept a local edit."""
+    def normalized(path):
+        value = str(path.absolute())
+        safe = Path(value if value.startswith('\\\\?\\') else '\\\\?\\' + value)
+        return safe.read_text(encoding='utf-8').replace('\r\n', '\n').replace('\r', '\n')
+    manifest = json.loads(normalized(repo / 'desktop/upstream-sources.json'))
+    commit = manifest['upstreamCommit']
+    assert re.fullmatch(r'[0-9a-f]{40}', commit), 'upstreamCommit must be a full fixed commit'
+    assert manifest['hashNormalization'] == 'lf'
+    assert manifest['upstreamRepository'] == 'jay3-yy/BiliPai'
+    pins = {}
+    for row in manifest['sources']:
+        assert row['path'] not in pins, 'duplicate source identity'
+        pins[row['path']] = row['sha256']
+    sources = {}; identities = []
+    for path in paths:
+        selected = repo / path
+        assert not selected.is_symlink() and selected.resolve().is_relative_to(repo.resolve()), path
+        text = normalized(selected)
+        actual_sha = hashlib.sha256(text.encode('utf-8')).hexdigest()
+        assert actual_sha == pins[path], path + ' differs from fixed source manifest'
+        blob = subprocess.check_output(['git', '-c', 'core.longpaths=true', 'rev-parse', commit + ':' + path], cwd=repo, text=True).strip()
+        current = subprocess.check_output(['git', '-c', 'core.longpaths=true', 'hash-object', '--path=' + path, path], cwd=repo, text=True).strip()
+        assert blob == current, path + ' differs from fixed Git commit blob'
+        sources[path] = text
+        identities.append(dict(path=path, pinnedCommit=commit, pinnedTag=manifest['upstreamTag'],
+            pinnedGitBlob=blob, currentGitBlob=current, sha256LfUtf8=actual_sha, matchesPinnedCommit=True))
+    return sources, identities
+
 
 def masked(text):
     out = list(text)
@@ -227,15 +256,7 @@ def generate(repo: Path, output: Path):
     A = 'app/src/main/java/com/android/purebilibili/'
     paths = [A + 'data/repository/' + name + '.kt' for name in ('CommentRepository', 'CommentReadAccessPolicy', 'CommentGrpcRepository')]
     paths += [A + 'core/network/ApiClient.kt', A + 'data/model/response/ResponseModels.kt']
-    sources = {}
-    source_ids = []
-    for relative in paths:
-        content = read(ROOT / relative)
-        sources[relative] = content
-        blob = subprocess.check_output(['git', 'rev-parse', TAG + ':' + relative], cwd=ROOT, text=True).strip()
-        current = subprocess.check_output(['git', 'hash-object', '--path=' + relative, relative], cwd=ROOT, text=True).strip()
-        assert blob == current, relative
-        source_ids.append(dict(path=relative, tagBlob=blob, currentGitBlob=current, sha256LfUtf8=digest(content), matchesTag=True))
+    sources, source_ids = load_pinned_sources(ROOT, paths)
     repo_path = paths[0]
     repo = sources[repo_path]
     read_names = ['resolveReadApi', 'fetchNonWbiCommentFallback', 'fetchCommentsByApi', 'fetchGuestHotCommentsCompat', 'fetchLegacyHotCommentsCompat', 'fetchCommentEmptySuccessFallback', 'getCommentsForSubject', 'getCommentCountForSubject', 'getSortedSubCommentsForSubject', 'getSubCommentsForSubject', 'getDialogCommentsForSubject', 'shouldTryGrpcMainList', 'resolveCommentMainListPaginationParameters', 'resolveCommentMainListMode', 'shouldTryGrpcPagedRequest']
@@ -263,6 +284,7 @@ def generate(repo: Path, output: Path):
         fragment += '\nsuspend fun ' + name + '(' + params + '):Result<' + ret + '> = result { read { commentProtocol.' + name + '(' + args + ').getOrThrow() } }\n'
     fragment += '\nsuspend fun translateReply(type:Long,oid:Long,rpid:Long):Result<String?> = result { read { commentGrpc.translateReply(type,oid,rpid).getOrThrow() } }\n'
     fragment += '\nsuspend fun uploadCommentImage(fileName:String,mimeType:String,bytes:ByteArray):Result<ReplyPicture> = result { mutate { csrf -> uploadEditorCommentImage(csrf,fileName,mimeType,bytes) } }\n'
+    fragment += '\n    // Desktop original comment image streaming binding. Reuse the editor\'s one original upload body.\n    suspend fun uploadCommentImageBody(fileName: String, mimeType: String, fileBody: okhttp3.RequestBody): Result<ReplyPicture> =\n        result { mutate { csrf -> uploadEditorCommentImageBody(csrf, fileName, mimeType, fileBody) } }\n\n'
     for name in ('addCommentForSubject', 'likeCommentForSubject', 'hateCommentForSubject', 'deleteCommentForSubject', 'setCommentTopForSubject', 'reportCommentForSubject'):
         original = extract(repo, name, repo_path)
         mask = masked(original)
@@ -299,6 +321,8 @@ def generate(repo: Path, output: Path):
         block = extract(repo, old, repo_path).replace('internal fun ' + old, 'private fun ' + new)
         fragment += '\n' + block + '\n'
     write(HERE / 'DesktopDynamicCommentOperations.fragment.kt', fragment)
+    write(HERE / 'source-identity.json', json.dumps(source_ids, indent=2) + '\n')
+    write(HERE / 'selected-source-bodies.json', json.dumps(records, indent=2) + '\n')
     return sorted(HERE.rglob('generated/**/*.kt'))
 if __name__ == '__main__':
     import argparse

@@ -1,0 +1,22 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt:uploadCommentPictures#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt:uploadCommentPictures#1
+@@ -4,16 +4,14 @@
+         return withContext(Dispatchers.IO) {
+             runCatching {
+                 imageUris.take(9).mapIndexed { index, uri ->
+-                    val bytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
+-                        ?: error("无法读取图片文件")
+-                    require(bytes.isNotEmpty()) { "图片内容为空" }
+-                    require(bytes.size <= 15 * 1024 * 1024) { "图片过大（单张最大 15MB）" }
+                     val fileName = queryDisplayName(context, uri)
+                         ?: "comment_${System.currentTimeMillis()}_${index + 1}.jpg"
++                    // 流式上传:空/15MB 校验在 CommentRepository 内完成,不再整文件读入内存。
+                     CommentRepository.uploadCommentImage(
+                         fileName = fileName,
+                         mimeType = context.contentResolver.getType(uri) ?: "image/jpeg",
+-                        bytes = bytes
++                        resolver = context.contentResolver,
++                        uri = uri
+                     ).getOrElse { throw it }
+                 }
+             }

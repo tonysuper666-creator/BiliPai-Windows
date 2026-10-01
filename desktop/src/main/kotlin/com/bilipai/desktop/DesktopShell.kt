@@ -335,6 +335,21 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val emptyListenState = remember { MutableStateFlow(ListenAudioState()) }
     val listening by (listen?.state ?: emptyListenState).collectAsState()
     val playing by playback.state.collectAsState()
+    val chapterIdentity = playing.details?.let { info ->
+        info.pages.getOrNull(playing.currentPart)?.cid?.takeIf { it > 0 }?.let { info.bvid to it }
+    }
+    var chapterViewPoints by remember(chapterIdentity, sessionEpoch) {
+        mutableStateOf<List<com.android.purebilibili.data.model.response.ViewPoint>>(emptyList())
+    }
+    LaunchedEffect(community, chapterIdentity, sessionEpoch) {
+        val identity = chapterIdentity ?: return@LaunchedEffect
+        try {
+            val points = community.playerMetadata(identity.first, identity.second).viewPoints
+            kotlinx.coroutines.currentCoroutineContext().ensureActive()
+            if (repository.sessionEpoch == sessionEpoch) chapterViewPoints = points
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (_: Exception) { /* Optional player metadata must not interrupt playback. */ }
+    }
     val emptyNativeState = remember { MutableStateFlow(com.bilipai.desktop.player.PlayerState()) }
     val native by (player?.state ?: emptyNativeState).collectAsState()
     var subtitleDialog by remember { mutableStateOf(false) }
@@ -1063,6 +1078,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             automaticSubtitleTracks = automaticSubtitleState.tracks,
                             onAutomaticSubtitleMode = if (showVideo || section == DesktopSection.STORY) ({ playback.setAutomaticSubtitleMode(it) }) else null,
                             surfaceOnly = section == DesktopSection.STORY,
+                            viewPoints = if (playback.currentCastSource(initialized.currentSourceVersion) != null)
+                                chapterViewPoints else emptyList(),
                             onSeekTo = if ((showVideo || section == DesktopSection.STORY) && playing.details != null) playback::seekTo else null,
                             renderSurface = !pipActive, onPictureInPicture = if (pip != null && hostWindow != null) ({ pip.open(hostWindow, initialized.state.value.sourceTitle) }) else null)
                         if (section != DesktopSection.STORY) DesktopVideoEnhancementControls(enhancementState,
@@ -1231,7 +1248,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                             runCatching { java.awt.Desktop.getDesktop().browse(uri) }
                                         }
                                     }, progressByBvid = progress, localPositionMs = { bvid -> ((history.firstOrNull { it.bvid == bvid }?.progressSeconds ?: 0) * 1000L) },
-                                    locateBvid = playing.details?.takeIf { it.authorMid == userId }?.bvid ?: history.firstOrNull()?.bvid, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword)
+                                    locateBvid = playing.details?.takeIf { it.authorMid == userId }?.bvid ?: history.firstOrNull()?.bvid, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword, onImagePreviewFeedback = { error = it })
                             }
                             section in listOf(DesktopSection.DYNAMIC, DesktopSection.SEARCH, DesktopSection.MESSAGES, DesktopSection.ARTICLE, DesktopSection.NOTES) ->
                                 CommunityContentScreen(when(section) {

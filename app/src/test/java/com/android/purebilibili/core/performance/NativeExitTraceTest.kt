@@ -13,6 +13,9 @@ class NativeExitTraceTest {
         val trace = requireNotNull(encodeNativeExitTrace(bytes.inputStream()))
         assertTrue(trace.contains("truncated=false"))
         assertContentEquals(bytes, decodeRawTombstone(trace))
+        assertContentEquals(bytes, decodeNativeExitTrace(trace))
+        assertTrue(nativeExitTraceSummary(trace).contains("Native tombstone: protobuf/base64"))
+        assertTrue(!nativeExitTraceSummary(trace).contains("BEGIN TOMBSTONE"))
     }
 
     @Test

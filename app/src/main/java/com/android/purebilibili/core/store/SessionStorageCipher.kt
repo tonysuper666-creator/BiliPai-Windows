@@ -19,13 +19,20 @@ object SessionStorageCipher {
     @Volatile
     private var cachedKey: SecretKey? = null
 
-    fun encrypt(value: String): String {
+    fun encrypt(value: String): String? {
         if (value.isEmpty()) return value
-        val cipher = Cipher.getInstance("AES/GCM/NoPadding").apply {
-            // Android Keystore requires a fresh system-generated IV for GCM encryption.
-            init(Cipher.ENCRYPT_MODE, key())
+        return try {
+            val cipher = Cipher.getInstance("AES/GCM/NoPadding").apply {
+                // Android Keystore requires a fresh system-generated IV for GCM encryption.
+                init(Cipher.ENCRYPT_MODE, key())
+            }
+            PREFIX + b64(cipher.iv) + ":" + b64(cipher.doFinal(value.toByteArray(StandardCharsets.UTF_8)))
+        } catch (failure: Exception) {
+            // Keystore services can be temporarily unavailable on some devices. Keep the
+            // caller's in-memory session usable and leave the previous encrypted value intact.
+            android.util.Log.e("SessionStorageCipher", "Keystore encryption failed; skipping persistence", failure)
+            null
         }
-        return PREFIX + b64(cipher.iv) + ":" + b64(cipher.doFinal(value.toByteArray(StandardCharsets.UTF_8)))
     }
 
     fun decrypt(value: String): String {

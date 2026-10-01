@@ -2,6 +2,8 @@
 
 package com.android.purebilibili.core.ui.common
 
+import com.android.purebilibili.core.ui.components.AppSurface
+
 import android.os.Build
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -21,7 +23,6 @@ import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -130,7 +131,7 @@ internal fun AppFloatingSelectionToolbar(
         )
     ) {
         DisableSelection {
-            Surface(
+            AppSurface(
                 shape = RoundedCornerShape(24.dp),
             color = MaterialTheme.colorScheme.surfaceContainerHigh,
             tonalElevation = 6.dp,
@@ -148,7 +149,7 @@ internal fun AppFloatingSelectionToolbar(
                 // 实时字数气泡角标（手指按住划选时即时看到选中字数）
                 val characterCount = selectedText.length
                 if (characterCount > 0) {
-                    Surface(
+                    AppSurface(
                         shape = RoundedCornerShape(12.dp),
                         color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.65f),
                         modifier = Modifier.padding(start = 4.dp, end = 2.dp)

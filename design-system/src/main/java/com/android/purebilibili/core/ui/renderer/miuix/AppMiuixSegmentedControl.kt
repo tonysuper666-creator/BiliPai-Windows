@@ -11,9 +11,19 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.unit.LayoutDirection
+import com.android.purebilibili.core.ui.LocalImmersiveTopChromeActive
+import com.android.purebilibili.core.ui.AppSurfaceTokens
+import com.android.purebilibili.core.ui.components.shouldUseOpaqueMiuixTabBackdrop
+import top.yukonga.miuix.kmp.squircle.addSquircleRect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalDensity
@@ -54,7 +64,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.android.purebilibili.core.ui.components.AppText
-import com.android.purebilibili.core.ui.components.resolveAppSegmentedLabelFontSizeSp
+import com.android.purebilibili.core.ui.components.resolveAppSegmentedLabelFontSize
 import com.android.purebilibili.core.ui.components.resolveMiuixNonGlassContentTabItemWidths
 
 import kotlin.math.absoluteValue
@@ -76,13 +86,16 @@ internal fun <T> AppMiuixSegmentedControl(
     val longestLabelLength = remember(options) {
         options.maxOfOrNull { it.label.length } ?: 0
     }
-    val labelFontSize = remember(options.size, longestLabelLength) {
-        resolveAppSegmentedLabelFontSizeSp(options.size, longestLabelLength).sp
-    }
+    val labelFontSize = resolveAppSegmentedLabelFontSize(
+        MaterialTheme.typography.labelLarge.fontSize, options.size, longestLabelLength
+    )
     val targetHeight = height ?: 36.dp
     val cornerRadius = 8.dp
     val tabColors = resolveAppMiuixSegmentedColors(colors)
     val nonGlassMiuix = isMiuixNonGlassEnabled()
+    val inactiveItemBackground = if (shouldUseOpaqueMiuixTabBackdrop(nonGlassMiuix, LocalImmersiveTopChromeActive.current)) {
+        AppSurfaceTokens.groupedListContainer()
+    } else tabColors.backgroundColor
     val inactiveContentColor = resolveAppMiuixTabContentColor(
         nonGlassMiuix = nonGlassMiuix,
         inactiveContentColor = tabColors.contentColor,
@@ -110,13 +123,13 @@ internal fun <T> AppMiuixSegmentedControl(
             val itemBackground = if (currentPosition != null) {
                 lerp(
                     tabColors.selectedBackgroundColor,
-                    tabColors.backgroundColor,
+                    inactiveItemBackground,
                     fraction
                 )
             } else {
                 when {
                     isSelected -> tabColors.selectedBackgroundColor
-                    else -> tabColors.backgroundColor
+                    else -> inactiveItemBackground
                 }
             }
 
@@ -337,7 +350,10 @@ private fun <T> AppMiuixNonGlassTabs(
         )
         return
     }
-    val listState = if (scrollable) rememberLazyListState() else null
+    // Share upstream's item geometry with the drawing layer; read offsets only during draw.
+    val listState = rememberLazyListState()
+    val opaqueItems = shouldUseOpaqueMiuixTabBackdrop(true, LocalImmersiveTopChromeActive.current)
+    val itemBackground = AppSurfaceTokens.groupedListContainer()
     // Keep the upstream TabRow defaults for a scrollable rail. The app-level 48dp
     // accessibility minimum is too narrow once upstream's 12dp item padding is
     // applied, which turns otherwise readable Chinese labels into ellipses.
@@ -359,6 +375,19 @@ private fun <T> AppMiuixNonGlassTabs(
         },
         modifier = modifier
             .squircleClip(geometry.cornerRadius)
+            .drawBehind {
+                if (opaqueItems) clipRect {
+                    listState.layoutInfo.visibleItemsInfo.forEach { item ->
+                        val left = if (layoutDirection == LayoutDirection.Rtl) {
+                            size.width - item.offset - item.size
+                        } else item.offset.toFloat()
+                        val path = Path().apply {
+                            addSquircleRect(item.size.toFloat(), size.height, geometry.cornerRadius.toPx())
+                        }
+                        translate(left = left) { drawPath(path, itemBackground) }
+                    }
+                }
+            }
             .then(if (!enabled) Modifier.semantics { disabled() } else Modifier),
         colors = TabRowDefaults.tabRowColors(
             backgroundColor = if (drawTrack) tabColors.backgroundColor else Color.Transparent,
@@ -390,6 +419,9 @@ private fun <T> AppMiuixContentSizedNonGlassTabs(
 ) {
     val tabColors = resolveAppMiuixSegmentedColors(colors)
     val outlineColor = MiuixTheme.colorScheme.outline
+    val inactiveItemBackground = if (shouldUseOpaqueMiuixTabBackdrop(true, LocalImmersiveTopChromeActive.current)) {
+        AppSurfaceTokens.groupedListContainer()
+    } else Color.Transparent
     val listState = rememberLazyListState()
     LaunchedEffect(selectedIndex, itemWidths) {
         listState.animateScrollToItem(selectedIndex.coerceIn(0, options.lastIndex))
@@ -415,7 +447,7 @@ private fun <T> AppMiuixContentSizedNonGlassTabs(
                         .width(itemWidths.getOrElse(index) { 48.dp })
                         .height(height)
                         .adaptiveSquircleBackground(
-                            color = if (selected) tabColors.selectedBackgroundColor else Color.Transparent,
+                            color = if (selected) tabColors.selectedBackgroundColor else inactiveItemBackground,
                             cornerRadius = 8.dp,
                         )
                         .squircleBorder(
@@ -431,7 +463,7 @@ private fun <T> AppMiuixContentSizedNonGlassTabs(
                         .padding(horizontal = 12.dp),
                     contentAlignment = Alignment.Center,
                 ) {
-                    androidx.compose.material3.Text(
+                    AppText(
                         text = option.label,
                         modifier = Modifier.wrapContentWidth(unbounded = true),
                         color = if (selected) {

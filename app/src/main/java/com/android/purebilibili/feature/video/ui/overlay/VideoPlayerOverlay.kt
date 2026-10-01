@@ -6,6 +6,7 @@ import com.android.purebilibili.core.ui.components.AppHorizontalDivider
 import com.android.purebilibili.core.ui.components.AppDropdownMenu
 import com.android.purebilibili.core.ui.components.AppDropdownMenuItem
 import com.android.purebilibili.core.ui.isMiuixNonGlassEnabled
+import com.android.purebilibili.core.ui.performance.rememberPanelFrameRateLabel
 
 import android.content.ClipData
 import android.content.Context
@@ -570,6 +571,7 @@ fun VideoPlayerOverlay(
     danmakuAllowBottom: Boolean = true,
     danmakuAllowColorful: Boolean = true,
     danmakuAllowSpecial: Boolean = true,
+    danmakuWeightFilterLevel: Int = 0,
     danmakuHideInteractiveCommands: Boolean = false,
     danmakuBlockRulesRaw: String = "",
     danmakuSmartOcclusion: Boolean = true,
@@ -600,6 +602,7 @@ fun VideoPlayerOverlay(
     onDanmakuAllowBottomChange: (Boolean) -> Unit = {},
     onDanmakuAllowColorfulChange: (Boolean) -> Unit = {},
     onDanmakuAllowSpecialChange: (Boolean) -> Unit = {},
+    onDanmakuWeightFilterLevelChange: (Int) -> Unit = {},
     onDanmakuHideInteractiveCommandsChange: (Boolean) -> Unit = {},
     onDanmakuBlockRulesRawChange: (String) -> Unit = {},
     onDanmakuSmartOcclusionChange: (Boolean) -> Unit = {},
@@ -661,6 +664,7 @@ fun VideoPlayerOverlay(
     //  [新增] 外部可接管 seek 行为（用于同步弹幕等）
     onSeekTo: ((Long) -> Unit)? = null,
     progressDisplayOverridePositionMs: Long? = null,
+    progressDisplayOverridePositionProvider: (() -> Long?)? = null,
     isPlaybackTransitionPending: Boolean = false,
     highFrequencyProgressActive: Boolean = false,
     // [New] Codec & Audio Params
@@ -839,8 +843,11 @@ fun VideoPlayerOverlay(
             } ?: debugInfo.lastLoadError
         )
     }
-    val debugRows = remember(effectiveDebugInfo) {
+    val panelFrameRateLabel = rememberPanelFrameRateLabel()
+    val debugRows = remember(effectiveDebugInfo, panelFrameRateLabel) {
         resolvePlaybackDebugRows(effectiveDebugInfo)
+            .plus(DebugStatRow("Panel rate", panelFrameRateLabel))
+            .filter { it.value.isNotBlank() }
     }
     val insightPresentation = remember(effectiveDebugInfo) {
         resolvePlaybackInsightPresentation(effectiveDebugInfo)
@@ -1191,14 +1198,15 @@ fun VideoPlayerOverlay(
     val effectiveProgressState = remember(progressState, pluginPlaybackState) {
         resolveEffectivePlayerProgress(progressState, pluginPlaybackState)
     }
-    val displayedProgressState = remember(
-        effectiveProgressState,
-        progressDisplayOverridePositionMs
-    ) {
-        resolveDisplayedPlayerProgressWithOverride(
-            progress = effectiveProgressState,
-            overridePositionMs = progressDisplayOverridePositionMs
-        )
+    val latestProgressOverrideProvider = rememberUpdatedState(progressDisplayOverridePositionProvider)
+    val displayedProgressState = remember(effectiveProgressState, progressDisplayOverridePositionMs) {
+        derivedStateOf {
+            resolveDisplayedPlayerProgressWithOverride(
+                progress = effectiveProgressState,
+                overridePositionMs = latestProgressOverrideProvider.value?.invoke()
+                    ?: progressDisplayOverridePositionMs
+            )
+        }
     }
     val effectiveIsPlaying = remember(isPlaying, pluginPlaybackState) {
         resolveEffectivePlayingState(isPlaying, pluginPlaybackState)
@@ -1433,8 +1441,8 @@ fun VideoPlayerOverlay(
             )
         ) {
             PersistentBottomProgressBar(
-                current = displayedProgressState.current,
-                duration = displayedProgressState.duration,
+                current = displayedProgressState.value.current,
+                duration = displayedProgressState.value.duration,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(end = endDrawerReservedWidth)
@@ -1532,10 +1540,11 @@ fun VideoPlayerOverlay(
                         )
                     }
 
+                    key(player, bvid, cid) {
                     BottomControlBar(
                     viewportWidthDpOverride = viewportWidthDpOverride,
                     isPlaying = effectiveIsPlaying,
-                    progress = displayedProgressState,
+                    progress = effectiveProgressState,
                     isFullscreen = isFullscreen,
                     compactPlayerChrome = playerControlVisibility.compactPlayerChrome,
                     currentSpeed = currentSpeed,
@@ -1548,7 +1557,7 @@ fun VideoPlayerOverlay(
                     onSeekDragStart = onSeekDragStart,
                     onSeekDragUpdate = onSeekDragUpdate,
                     onSeekDragCancel = onSeekDragCancel,
-                    seekPositionMs = displayedProgressState.current,
+                    seekPositionProvider = { displayedProgressState.value.current },
                     isSeekScrubbing = isSeekScrubbing,
                     onSpeedClick = { showSpeedMenu = true },
                     onRatioClick = { showRatioMenu = true },
@@ -1623,6 +1632,7 @@ fun VideoPlayerOverlay(
                     },
                     progressPlacement = effectiveProgressPlacement
                 )
+                    }
                 }
             }
         }
@@ -2083,6 +2093,7 @@ fun VideoPlayerOverlay(
                 allowBottom = danmakuAllowBottom,
                 allowColorful = danmakuAllowColorful,
                 allowSpecial = danmakuAllowSpecial,
+                weightFilterLevel = danmakuWeightFilterLevel,
                 hideInteractiveCommands = danmakuHideInteractiveCommands,
                 showBlockRuleEditor = true,
                 showSmartOcclusionSection = true,
@@ -2113,6 +2124,7 @@ fun VideoPlayerOverlay(
                 onAllowBottomChange = onDanmakuAllowBottomChange,
                 onAllowColorfulChange = onDanmakuAllowColorfulChange,
                 onAllowSpecialChange = onDanmakuAllowSpecialChange,
+                onWeightFilterLevelChange = onDanmakuWeightFilterLevelChange,
                 onHideInteractiveCommandsChange = onDanmakuHideInteractiveCommandsChange,
                 onBlockRulesRawChange = onDanmakuBlockRulesRawChange,
                 onSmartOcclusionChange = onDanmakuSmartOcclusionChange,
@@ -2251,7 +2263,7 @@ fun VideoPlayerOverlay(
         if (showChapterList && viewPoints.isNotEmpty()) {
             ChapterListPanel(
                 viewPoints = viewPoints,
-                currentPositionMs = displayedProgressState.current,
+                currentPositionMs = displayedProgressState.value.current,
                 onSeek = commitSeek,
                 onDismiss = { showChapterList = false }
             )
@@ -2630,28 +2642,28 @@ private fun PortraitTopBar(
                     }
                 }
             } else {
-                DropdownMenu(
+                AppDropdownMenu(
                     expanded = showMoreMenu,
                     onDismissRequest = { showMoreMenu = false }
                 ) {
-                    DropdownMenuItem(
-                        text = { Text("播放设置") },
+                    AppDropdownMenuItem(
+                        text = { AppText("播放设置") },
                         onClick = { showMoreMenu = false; onSettings() }
                     )
-                    DropdownMenuItem(
-                        text = { Text(if (sleepTimerMinutes == null) "定时关闭" else "取消定时关闭（${sleepTimerMinutes}分钟）") },
+                    AppDropdownMenuItem(
+                        text = { AppText(if (sleepTimerMinutes == null) "定时关闭" else "取消定时关闭（${sleepTimerMinutes}分钟）") },
                         onClick = {
                             showMoreMenu = false
                             onSleepTimerChange(if (sleepTimerMinutes == null) 30 else null)
                         }
                     )
-                    DropdownMenuItem(
-                        text = { Text("不感兴趣") },
+                    AppDropdownMenuItem(
+                        text = { AppText("不感兴趣") },
                         onClick = { showMoreMenu = false; onNotInterested() }
                     )
                     if (compactPlayerChrome) {
-                        DropdownMenuItem(
-                            text = { Text("分享") },
+                        AppDropdownMenuItem(
+                            text = { AppText("分享") },
                             onClick = { showMoreMenu = false; onShare() }
                         )
                     }

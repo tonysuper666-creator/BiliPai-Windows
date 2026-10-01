@@ -1,0 +1,32 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt:DynamicInlineCommentComposer#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt:DynamicInlineCommentComposer#1
+@@ -1,5 +1,5 @@
+ fun DynamicInlineCommentComposer(
+-    onPostComment: (String) -> Unit,
++    onPostComment: (String, List<Uri>, (Boolean) -> Unit) -> Unit,
+     replyTargetUname: String? = null,
+     onClearReplyTarget: () -> Unit = {},
+     liquidGlassEnabled: Boolean = false,
+@@ -24,12 +24,16 @@
+     DynamicCommentComposer(
+         value = commentText,
+         onValueChange = { commentText = it },
+-        onSubmit = {
+-            onPostComment(it)
+-            commentText = ""
+-            if (!replyTargetUname.isNullOrBlank()) onClearReplyTarget()
+-            focusManager.clearFocus()
+-            keyboardController?.hide()
++        onSubmit = { message, images, onResult ->
++            onPostComment(message, images) { success ->
++                if (success) {
++                    commentText = ""
++                    if (!replyTargetUname.isNullOrBlank()) onClearReplyTarget()
++                    focusManager.clearFocus()
++                    keyboardController?.hide()
++                }
++                onResult(success)
++            }
+         },
+         hint = resolveDynamicCommentComposerHint(replyTargetUname),
+         onClearReplyTarget = if (replyTargetUname.isNullOrBlank()) null else onClearReplyTarget,

@@ -1,0 +1,52 @@
+[
+  {
+    "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+    "sha256Bytes": "ac1c037cd40164d7e25b3ced3bbc85e0432e16ec5ac4d2c01b81c154a1081630",
+    "sha256LF": "882d4a32047bcfe9c4e29edd87b1fc572419d38c7d7cdf5c038aca82e7141852"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-dynamic-detail.py",
+    "sha256Bytes": "53d6ecd8106895af1573714ee955a61f42848ccc8d91069f58fceb7c5973737c",
+    "sha256LF": "71a77a716758a0166cb8c548c911715844e2ebc7569b88269c9b3306cc8c98a1"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt",
+    "sha256Bytes": "a9ff696d56ac392050241929bb62f68fb9f1bcdcde140f47de98a2f6b966fe48",
+    "sha256LF": "1babe9e62147f48eb40c12696283b168a77ba5f8be6ec7b6d873a254c527a181"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt",
+    "sha256Bytes": "d2474c1ccb998e20eba934a8d753de729b8a008667be35f509a4b005634c77ba",
+    "sha256LF": "3a899c08cfb6a17ae6d2e2efcc1e69cedc78ee10450a22614ab79318c4966849"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+    "sha256Bytes": "d41633d450a27b60722b24675b73ef230f3ae875c7fa5a58f8ecb261cbcfb068",
+    "sha256LF": "aa8bb5966ac9793578cd67d98933d5fe2b9f5806cfb2e8068a04001600de9ccf"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+    "sha256Bytes": "d08573b0c1b204d16ab1d80fd8eb77b27b732b054c20c565fc7fba68852ba97e",
+    "sha256LF": "e639074224211beffbd758dce0315dc28f8e46927abc67df33187ba52d8dc088"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+    "sha256Bytes": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2",
+    "sha256LF": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+    "sha256Bytes": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34",
+    "sha256LF": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+    "sha256Bytes": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa",
+    "sha256LF": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+    "sha256Bytes": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3",
+    "sha256LF": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3"
+  }
+]

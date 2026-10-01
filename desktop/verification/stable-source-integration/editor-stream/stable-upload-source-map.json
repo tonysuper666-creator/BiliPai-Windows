@@ -1,0 +1,344 @@
+{
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceIdentities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "currentGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "sha256LfUtf8": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "9288ff19be144f051ef2dfe1917685289538e897",
+      "currentGitBlob": "9288ff19be144f051ef2dfe1917685289538e897",
+      "sha256LfUtf8": "2f85544e1e973dd0e7178077ef5c1f439b798a1d86b46701803adeb2a7c0364f",
+      "matchesPinnedCommit": true
+    }
+  ],
+  "selectedMethods": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "method": "createReserve#1",
+      "status": "unchanged",
+      "alpha9": {
+        "name": "createReserve",
+        "overload": 1,
+        "startLine": 189,
+        "endLine": 211,
+        "sha256Lf": "74c772ff707da65e17329f8a766bcb68fcc38a398e976f6c06e8f8361bce5aba",
+        "tokenSha256": "9975528fbb238ec9726472ed871be66befaefc8c24af12b958fb1f08d984dcc7",
+        "originalText": "    suspend fun createReserve(\n        title: String,\n        livePlanStartTimeSeconds: Long,\n        subType: Int = 0\n    ): Result<DynamicCreatedReserve> = withContext(Dispatchers.IO) {\n        runCatching {\n            val csrf = TokenManager.csrfCache.orEmpty()\n            if (csrf.isBlank()) error(\"请先登录\")\n            if (title.isBlank()) error(\"请填写预约标题\")\n            val response = NetworkModule.dynamicApi.createReserve(\n                subType = subType,\n                title = title.trim(),\n                livePlanStartTime = livePlanStartTimeSeconds,\n                csrf = csrf\n            )\n            if (response.code != 0) {\n                error(response.message.ifBlank { \"创建预约失败\" })\n            }\n            val reserveId = response.data?.sid ?: 0L\n            if (reserveId <= 0L) error(\"预约创建失败\")\n            DynamicCreatedReserve(reserveId = reserveId, title = title.trim())\n        }\n    }"
+      },
+      "stable": {
+        "name": "createReserve",
+        "overload": 1,
+        "startLine": 189,
+        "endLine": 211,
+        "sha256Lf": "74c772ff707da65e17329f8a766bcb68fcc38a398e976f6c06e8f8361bce5aba",
+        "tokenSha256": "9975528fbb238ec9726472ed871be66befaefc8c24af12b958fb1f08d984dcc7",
+        "originalText": "    suspend fun createReserve(\n        title: String,\n        livePlanStartTimeSeconds: Long,\n        subType: Int = 0\n    ): Result<DynamicCreatedReserve> = withContext(Dispatchers.IO) {\n        runCatching {\n            val csrf = TokenManager.csrfCache.orEmpty()\n            if (csrf.isBlank()) error(\"请先登录\")\n            if (title.isBlank()) error(\"请填写预约标题\")\n            val response = NetworkModule.dynamicApi.createReserve(\n                subType = subType,\n                title = title.trim(),\n                livePlanStartTime = livePlanStartTimeSeconds,\n                csrf = csrf\n            )\n            if (response.code != 0) {\n                error(response.message.ifBlank { \"创建预约失败\" })\n            }\n            val reserveId = response.data?.sid ?: 0L\n            if (reserveId <= 0L) error(\"预约创建失败\")\n            DynamicCreatedReserve(reserveId = reserveId, title = title.trim())\n        }\n    }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "method": "createVote#1",
+      "status": "unchanged",
+      "alpha9": {
+        "name": "createVote",
+        "overload": 1,
+        "startLine": 140,
+        "endLine": 174,
+        "sha256Lf": "da5926df53de4f0c9d3b6e7807ca3303dbbe90c8c160008208d7e8412b90f747",
+        "tokenSha256": "0b02c4677272e393081ed8425b472d52a56eafe7da09f906dedee760141a2ea2",
+        "originalText": "    suspend fun createVote(\n        title: String,\n        options: List<String>,\n        description: String = \"\",\n        choiceCount: Int = 1,\n        durationSeconds: Int\n    ): Result<DynamicCreatedVote> = withContext(Dispatchers.IO) {\n        runCatching {\n            val csrf = TokenManager.csrfCache.orEmpty()\n            if (csrf.isBlank()) error(\"请先登录\")\n            val cleanedOptions = options.map { it.trim() }.filter { it.isNotEmpty() }\n            if (title.isBlank() || cleanedOptions.size < 2) {\n                error(\"至少填写标题和两个选项\")\n            }\n            val response = NetworkModule.dynamicApi.createVote(\n                csrf = csrf,\n                body = DynamicCreateVoteRequest(\n                    vote_info = DynamicCreateVoteInfo(\n                        title = title.trim(),\n                        desc = description.trim(),\n                        choice_cnt = choiceCount.coerceIn(1, cleanedOptions.size),\n                        duration = durationSeconds.coerceAtLeast(60),\n                        options = cleanedOptions.map { DynamicCreateVoteOption(opt_desc = it) },\n                        vote_publisher = TokenManager.midCache ?: 0L\n                    )\n                )\n            )\n            if (response.code != 0) {\n                error(response.message.ifBlank { \"创建投票失败\" })\n            }\n            val voteId = response.data?.vote_id ?: 0L\n            if (voteId <= 0L) error(\"投票创建失败\")\n            DynamicCreatedVote(voteId = voteId, title = title.trim())\n        }\n    }"
+      },
+      "stable": {
+        "name": "createVote",
+        "overload": 1,
+        "startLine": 140,
+        "endLine": 174,
+        "sha256Lf": "da5926df53de4f0c9d3b6e7807ca3303dbbe90c8c160008208d7e8412b90f747",
+        "tokenSha256": "0b02c4677272e393081ed8425b472d52a56eafe7da09f906dedee760141a2ea2",
+        "originalText": "    suspend fun createVote(\n        title: String,\n        options: List<String>,\n        description: String = \"\",\n        choiceCount: Int = 1,\n        durationSeconds: Int\n    ): Result<DynamicCreatedVote> = withContext(Dispatchers.IO) {\n        runCatching {\n            val csrf = TokenManager.csrfCache.orEmpty()\n            if (csrf.isBlank()) error(\"请先登录\")\n            val cleanedOptions = options.map { it.trim() }.filter { it.isNotEmpty() }\n            if (title.isBlank() || cleanedOptions.size < 2) {\n                error(\"至少填写标题和两个选项\")\n            }\n            val response = NetworkModule.dynamicApi.createVote(\n                csrf = csrf,\n                body = DynamicCreateVoteRequest(\n                    vote_info = DynamicCreateVoteInfo(\n                        title = title.trim(),\n                        desc = description.trim(),\n                        choice_cnt = choiceCount.coerceIn(1, cleanedOptions.size),\n                        duration = durationSeconds.coerceAtLeast(60),\n                        options = cleanedOptions.map { DynamicCreateVoteOption(opt_desc = it) },\n                        vote_publisher = TokenManager.midCache ?: 0L\n                    )\n                )\n            )\n            if (response.code != 0) {\n                error(response.message.ifBlank { \"创建投票失败\" })\n            }\n            val voteId = response.data?.vote_id ?: 0L\n            if (voteId <= 0L) error(\"投票创建失败\")\n            DynamicCreatedVote(voteId = voteId, title = title.trim())\n        }\n    }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "method": "edit#1",
+      "status": "unchanged",
+      "alpha9": {
+        "name": "edit",
+        "overload": 1,
+        "startLine": 79,
+        "endLine": 138,
+        "sha256Lf": "d88b9806a51083a73b2de678b70ff580b398ffcfb17e206ce8a3f8ff501726ff",
+        "tokenSha256": "0448dd257a8fe4a44240144dbf4194f831fe8729a103ab42267d2061014b7877",
+        "originalText": "    suspend fun edit(\n        context: Context,\n        dynamicId: String,\n        draft: DynamicPublishDraft,\n    ): Result<Unit> = withContext(Dispatchers.IO) {\n        runCatching {\n            val csrf = TokenManager.csrfCache.orEmpty()\n            if (csrf.isBlank()) error(\"请先登录\")\n            if (dynamicId.isBlank()) error(\"无法识别该动态\")\n            val pics = draft.imageUris.map { uriString ->\n                draft.existingImages.firstOrNull { it.img_src == uriString }\n                    ?: uploadImage(context, Uri.parse(uriString))\n            }\n            val contents = buildDynamicCreateContents(\n                text = draft.text,\n                voteId = draft.voteId,\n                voteTitle = draft.voteTitle,\n                mentions = draft.mentions,\n                emotes = draft.emotes,\n            )\n            if (contents.isEmpty() && pics.isEmpty()) error(\"内容不能为空\")\n            val mid = TokenManager.midCache ?: 0L\n            val uploadId = \"${mid}_${System.currentTimeMillis() / 1000}_${Random.nextInt(1000, 10000)}\"\n            val request = DynamicEditFeedRequest(\n                dyn_req = DynamicCreateFeedReq(\n                    content = DynamicCreateFeedContent(\n                        contents = contents.ifEmpty {\n                            listOf(DynamicRepostContentItem(raw_text = \" \", type = 1, biz_id = \"\"))\n                        },\n                        title = draft.title.trim().takeIf(String::isNotEmpty),\n                    ),\n                    scene = resolveDynamicCreateScene(pics.isNotEmpty()),\n                    pics = pics.takeIf { it.isNotEmpty() },\n                    attach_card = resolveReserveAttachCard(draft.reserveId),\n                    option = if (draft.private) DynamicCreateOption(private_pub = 1) else null,\n                    topic = draft.topic?.takeIf { it.id > 0L }?.let {\n                        DynamicCreateTopic(id = it.id, name = it.name)\n                    },\n                    upload_id = uploadId,\n                ),\n                dyn_id_str = dynamicId,\n            )\n            val wbiKeys = WbiKeyManager.getWbiKeys().getOrElse { throw it }\n            val query = WbiUtils.sign(\n                params = mapOf(\n                    \"platform\" to \"web\",\n                    \"csrf\" to csrf,\n                    \"x-bili-device-req-json\" to\n                        \"{\\\"platform\\\":\\\"web\\\",\\\"device\\\":\\\"pc\\\",\\\"spmid\\\":\\\"333.1368\\\"}\",\n                    \"w_dyn_req.upload_id\" to uploadId,\n                    \"w_dyn_req.meta\" to\n                        \"{\\\"app_meta\\\":{\\\"from\\\":\\\"create.dynamic.web\\\",\\\"mobi_app\\\":\\\"web\\\"}}\",\n                ),\n                imgKey = wbiKeys.first,\n                subKey = wbiKeys.second,\n            )\n            val response = NetworkModule.dynamicApi.editFeedDynamic(query = query, body = request)\n            if (response.code != 0) error(response.message.ifBlank { \"编辑失败\" })\n        }\n    }"
+      },
+      "stable": {
+        "name": "edit",
+        "overload": 1,
+        "startLine": 79,
+        "endLine": 138,
+        "sha256Lf": "d88b9806a51083a73b2de678b70ff580b398ffcfb17e206ce8a3f8ff501726ff",
+        "tokenSha256": "0448dd257a8fe4a44240144dbf4194f831fe8729a103ab42267d2061014b7877",
+        "originalText": "    suspend fun edit(\n        context: Context,\n        dynamicId: String,\n        draft: DynamicPublishDraft,\n    ): Result<Unit> = withContext(Dispatchers.IO) {\n        runCatching {\n            val csrf = TokenManager.csrfCache.orEmpty()\n            if (csrf.isBlank()) error(\"请先登录\")\n            if (dynamicId.isBlank()) error(\"无法识别该动态\")\n            val pics = draft.imageUris.map { uriString ->\n                draft.existingImages.firstOrNull { it.img_src == uriString }\n                    ?: uploadImage(context, Uri.parse(uriString))\n            }\n            val contents = buildDynamicCreateContents(\n                text = draft.text,\n                voteId = draft.voteId,\n                voteTitle = draft.voteTitle,\n                mentions = draft.mentions,\n                emotes = draft.emotes,\n            )\n            if (contents.isEmpty() && pics.isEmpty()) error(\"内容不能为空\")\n            val mid = TokenManager.midCache ?: 0L\n            val uploadId = \"${mid}_${System.currentTimeMillis() / 1000}_${Random.nextInt(1000, 10000)}\"\n            val request = DynamicEditFeedRequest(\n                dyn_req = DynamicCreateFeedReq(\n                    content = DynamicCreateFeedContent(\n                        contents = contents.ifEmpty {\n                            listOf(DynamicRepostContentItem(raw_text = \" \", type = 1, biz_id = \"\"))\n                        },\n                        title = draft.title.trim().takeIf(String::isNotEmpty),\n                    ),\n                    scene = resolveDynamicCreateScene(pics.isNotEmpty()),\n                    pics = pics.takeIf { it.isNotEmpty() },\n                    attach_card = resolveReserveAttachCard(draft.reserveId),\n                    option = if (draft.private) DynamicCreateOption(private_pub = 1) else null,\n                    topic = draft.topic?.takeIf { it.id > 0L }?.let {\n                        DynamicCreateTopic(id = it.id, name = it.name)\n                    },\n                    upload_id = uploadId,\n                ),\n                dyn_id_str = dynamicId,\n            )\n            val wbiKeys = WbiKeyManager.getWbiKeys().getOrElse { throw it }\n            val query = WbiUtils.sign(\n                params = mapOf(\n                    \"platform\" to \"web\",\n                    \"csrf\" to csrf,\n                    \"x-bili-device-req-json\" to\n                        \"{\\\"platform\\\":\\\"web\\\",\\\"device\\\":\\\"pc\\\",\\\"spmid\\\":\\\"333.1368\\\"}\",\n                    \"w_dyn_req.upload_id\" to uploadId,\n                    \"w_dyn_req.meta\" to\n                        \"{\\\"app_meta\\\":{\\\"from\\\":\\\"create.dynamic.web\\\",\\\"mobi_app\\\":\\\"web\\\"}}\",\n                ),\n                imgKey = wbiKeys.first,\n                subKey = wbiKeys.second,\n            )\n            val response = NetworkModule.dynamicApi.editFeedDynamic(query = query, body = request)\n            if (response.code != 0) error(response.message.ifBlank { \"编辑失败\" })\n        }\n    }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "method": "publish#1",
+      "status": "unchanged",
+      "alpha9": {
+        "name": "publish",
+        "overload": 1,
+        "startLine": 35,
+        "endLine": 77,
+        "sha256Lf": "538f22a15ee4165e191bdc7db8afb394a4a764562c0387387ce287c76752a9bc",
+        "tokenSha256": "704e9458e92b36f93f853f4d2b5d891a0d6fe67f93b80ce6c9fb68d3f4022bf5",
+        "originalText": "    suspend fun publish(context: Context, draft: DynamicPublishDraft): Result<String> = withContext(Dispatchers.IO) {\n        runCatching {\n            val csrf = TokenManager.csrfCache.orEmpty()\n            if (csrf.isBlank()) error(\"请先登录\")\n            val mid = TokenManager.midCache ?: 0L\n            val pics = draft.imageUris.map { uriString ->\n                uploadImage(context, Uri.parse(uriString))\n            }\n            val contents = buildDynamicCreateContents(\n                text = draft.text,\n                voteId = draft.voteId,\n                voteTitle = draft.voteTitle,\n                mentions = draft.mentions,\n                emotes = draft.emotes,\n            )\n            if (contents.isEmpty() && pics.isEmpty()) {\n                error(\"内容不能为空\")\n            }\n            val request = DynamicCreateFeedRequest(\n                dyn_req = DynamicCreateFeedReq(\n                    content = DynamicCreateFeedContent(\n                        contents = contents.ifEmpty {\n                            listOf(DynamicRepostContentItem(raw_text = \" \", type = 1, biz_id = \"\"))\n                        },\n                        title = draft.title.trim().takeIf { it.isNotEmpty() }\n                    ),\n                    scene = resolveDynamicCreateScene(pics.isNotEmpty()),\n                    pics = pics.takeIf { it.isNotEmpty() },\n                    attach_card = resolveReserveAttachCard(draft.reserveId),\n                    option = if (draft.private) DynamicCreateOption(private_pub = 1) else null,\n                    topic = draft.topic?.takeIf { it.id > 0L }?.let {\n                        DynamicCreateTopic(id = it.id, name = it.name)\n                    },\n                    upload_id = \"${mid}_${System.currentTimeMillis() / 1000}_${Random.nextInt(1000, 10000)}\"\n                )\n            )\n            val response = NetworkModule.dynamicApi.createFeedDynamic(csrf = csrf, body = request)\n            if (response.code != 0) {\n                error(response.message.ifBlank { \"发布失败\" })\n            }\n            resolveCreatedDynamicId(response.data).ifBlank { \"ok\" }\n        }\n    }"
+      },
+      "stable": {
+        "name": "publish",
+        "overload": 1,
+        "startLine": 35,
+        "endLine": 77,
+        "sha256Lf": "538f22a15ee4165e191bdc7db8afb394a4a764562c0387387ce287c76752a9bc",
+        "tokenSha256": "704e9458e92b36f93f853f4d2b5d891a0d6fe67f93b80ce6c9fb68d3f4022bf5",
+        "originalText": "    suspend fun publish(context: Context, draft: DynamicPublishDraft): Result<String> = withContext(Dispatchers.IO) {\n        runCatching {\n            val csrf = TokenManager.csrfCache.orEmpty()\n            if (csrf.isBlank()) error(\"请先登录\")\n            val mid = TokenManager.midCache ?: 0L\n            val pics = draft.imageUris.map { uriString ->\n                uploadImage(context, Uri.parse(uriString))\n            }\n            val contents = buildDynamicCreateContents(\n                text = draft.text,\n                voteId = draft.voteId,\n                voteTitle = draft.voteTitle,\n                mentions = draft.mentions,\n                emotes = draft.emotes,\n            )\n            if (contents.isEmpty() && pics.isEmpty()) {\n                error(\"内容不能为空\")\n            }\n            val request = DynamicCreateFeedRequest(\n                dyn_req = DynamicCreateFeedReq(\n                    content = DynamicCreateFeedContent(\n                        contents = contents.ifEmpty {\n                            listOf(DynamicRepostContentItem(raw_text = \" \", type = 1, biz_id = \"\"))\n                        },\n                        title = draft.title.trim().takeIf { it.isNotEmpty() }\n                    ),\n                    scene = resolveDynamicCreateScene(pics.isNotEmpty()),\n                    pics = pics.takeIf { it.isNotEmpty() },\n                    attach_card = resolveReserveAttachCard(draft.reserveId),\n                    option = if (draft.private) DynamicCreateOption(private_pub = 1) else null,\n                    topic = draft.topic?.takeIf { it.id > 0L }?.let {\n                        DynamicCreateTopic(id = it.id, name = it.name)\n                    },\n                    upload_id = \"${mid}_${System.currentTimeMillis() / 1000}_${Random.nextInt(1000, 10000)}\"\n                )\n            )\n            val response = NetworkModule.dynamicApi.createFeedDynamic(csrf = csrf, body = request)\n            if (response.code != 0) {\n                error(response.message.ifBlank { \"发布失败\" })\n            }\n            resolveCreatedDynamicId(response.data).ifBlank { \"ok\" }\n        }\n    }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "method": "resolveReserveAttachCard#1",
+      "status": "unchanged",
+      "alpha9": {
+        "name": "resolveReserveAttachCard",
+        "overload": 1,
+        "startLine": 243,
+        "endLine": 253,
+        "sha256Lf": "4321b69a6e76a8159f3b01b13bd0b2e4c445c5717483a0ed46dd65f31524bee0",
+        "tokenSha256": "d16ce98c8787faada1bdee5e4a6259b023d4359ee8f8359fe0b7f7e6f9b8f638",
+        "originalText": "    private fun resolveReserveAttachCard(reserveId: Long): JsonObject? {\n        if (reserveId <= 0L) return null\n        return buildJsonObject {\n            put(\"common_card\", buildJsonObject {\n                put(\"type\", 14)\n                put(\"biz_id\", reserveId)\n                put(\"reserve_source\", 0)\n                put(\"reserve_lottery\", 0)\n            })\n        }\n    }"
+      },
+      "stable": {
+        "name": "resolveReserveAttachCard",
+        "overload": 1,
+        "startLine": 241,
+        "endLine": 251,
+        "sha256Lf": "4321b69a6e76a8159f3b01b13bd0b2e4c445c5717483a0ed46dd65f31524bee0",
+        "tokenSha256": "d16ce98c8787faada1bdee5e4a6259b023d4359ee8f8359fe0b7f7e6f9b8f638",
+        "originalText": "    private fun resolveReserveAttachCard(reserveId: Long): JsonObject? {\n        if (reserveId <= 0L) return null\n        return buildJsonObject {\n            put(\"common_card\", buildJsonObject {\n                put(\"type\", 14)\n                put(\"biz_id\", reserveId)\n                put(\"reserve_source\", 0)\n                put(\"reserve_lottery\", 0)\n            })\n        }\n    }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "method": "searchPublishTopics#1",
+      "status": "unchanged",
+      "alpha9": {
+        "name": "searchPublishTopics",
+        "overload": 1,
+        "startLine": 176,
+        "endLine": 187,
+        "sha256Lf": "9b2ad5519cd5a4cd0fa4004c31ddc3d557584c4b765905cdc4edeeff234f7ffa",
+        "tokenSha256": "4a7aeed190b41e0fba6d863928d1730493ec6e6bf213e5ccac6dc0c2532cdc1c",
+        "originalText": "    suspend fun searchPublishTopics(keyword: String): Result<List<com.android.purebilibili.data.model.response.DynamicTopicSearchItem>> =\n        withContext(Dispatchers.IO) {\n            runCatching {\n                val response = NetworkModule.api.searchDynamicPublishTopics(\n                    keywords = keyword.trim().takeIf(String::isNotBlank),\n                )\n                if (response.code != 0) error(response.message.ifBlank { \"搜索话题失败\" })\n                response.data?.topic_items.orEmpty()\n                    .filter { it.id > 0L && it.name.isNotBlank() }\n                    .distinctBy { it.id }\n            }\n        }"
+      },
+      "stable": {
+        "name": "searchPublishTopics",
+        "overload": 1,
+        "startLine": 176,
+        "endLine": 187,
+        "sha256Lf": "9b2ad5519cd5a4cd0fa4004c31ddc3d557584c4b765905cdc4edeeff234f7ffa",
+        "tokenSha256": "4a7aeed190b41e0fba6d863928d1730493ec6e6bf213e5ccac6dc0c2532cdc1c",
+        "originalText": "    suspend fun searchPublishTopics(keyword: String): Result<List<com.android.purebilibili.data.model.response.DynamicTopicSearchItem>> =\n        withContext(Dispatchers.IO) {\n            runCatching {\n                val response = NetworkModule.api.searchDynamicPublishTopics(\n                    keywords = keyword.trim().takeIf(String::isNotBlank),\n                )\n                if (response.code != 0) error(response.message.ifBlank { \"搜索话题失败\" })\n                response.data?.topic_items.orEmpty()\n                    .filter { it.id > 0L && it.name.isNotBlank() }\n                    .distinctBy { it.id }\n            }\n        }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "method": "uploadImage#1",
+      "status": "changed",
+      "alpha9": {
+        "name": "uploadImage",
+        "overload": 1,
+        "startLine": 213,
+        "endLine": 231,
+        "sha256Lf": "eff984ae459507497a802fb7cbd5f1bec3d5205b16ddb0df6f869339f502769d",
+        "tokenSha256": "b029fe62b585a0b651a6433f7adc86a59185a1e347d4a2ef1e26e9b95a398ade",
+        "originalText": "    private suspend fun uploadImage(context: Context, uri: Uri): DynamicCreatePic {\n        val bytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() }\n            ?: error(\"无法读取图片\")\n        if (bytes.isEmpty()) error(\"图片内容为空\")\n        if (bytes.size > 15 * 1024 * 1024) error(\"图片过大（单张最大 15MB）\")\n        val mimeType = context.contentResolver.getType(uri) ?: \"image/jpeg\"\n        val fileName = queryDisplayName(context, uri) ?: \"dyn_${System.currentTimeMillis()}.jpg\"\n        val uploaded = CommentRepository.uploadCommentImage(\n            fileName = fileName,\n            mimeType = mimeType,\n            bytes = bytes\n        ).getOrElse { throw it }\n        return DynamicCreatePic(\n            img_src = uploaded.imgSrc,\n            img_width = uploaded.imgWidth,\n            img_height = uploaded.imgHeight,\n            img_size = uploaded.imgSize\n        )\n    }"
+      },
+      "stable": {
+        "name": "uploadImage",
+        "overload": 1,
+        "startLine": 213,
+        "endLine": 229,
+        "sha256Lf": "d00a10f7b251742a91e88a5bc04d2270458d976085223dad4c4862f8ba0aa570",
+        "tokenSha256": "a03baaec4f4d6d336ec8d3a9e6d9f861efee3b9cd0fed735b36505bd7e2d0e77",
+        "originalText": "    private suspend fun uploadImage(context: Context, uri: Uri): DynamicCreatePic {\n        val mimeType = context.contentResolver.getType(uri) ?: \"image/jpeg\"\n        val fileName = queryDisplayName(context, uri) ?: \"dyn_${System.currentTimeMillis()}.jpg\"\n        // 流式上传:空/15MB 校验在 CommentRepository 内基于文件尺寸完成,不再整文件读入内存。\n        val uploaded = CommentRepository.uploadCommentImage(\n            fileName = fileName,\n            mimeType = mimeType,\n            resolver = context.contentResolver,\n            uri = uri\n        ).getOrElse { throw it }\n        return DynamicCreatePic(\n            img_src = uploaded.imgSrc,\n            img_width = uploaded.imgWidth,\n            img_height = uploaded.imgHeight,\n            img_size = uploaded.imgSize\n        )\n    }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "method": "contentLength#1",
+      "status": "added",
+      "alpha9": null,
+      "stable": {
+        "name": "contentLength",
+        "overload": 1,
+        "startLine": 1058,
+        "endLine": 1058,
+        "sha256Lf": "ce3f1ebb9c197422785f72b86f44045ef9bbee6656a8171406c8a87a6b213e1f",
+        "tokenSha256": "e91a500f0d7607231ab3d90c97138b4f271d9181e11e4f218b0e41dd87a99185",
+        "originalText": "        override fun contentLength(): Long = contentLength"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "method": "contentType#1",
+      "status": "added",
+      "alpha9": null,
+      "stable": {
+        "name": "contentType",
+        "overload": 1,
+        "startLine": 1057,
+        "endLine": 1057,
+        "sha256Lf": "830ce00b26924d5b1c338e91f75d307b6ffc3181898571b769a31953ea751f87",
+        "tokenSha256": "ab4af960804776aec898fc962cbd7321fe0b86191f8e33c4b470c2321922ab5d",
+        "originalText": "        override fun contentType(): MediaType = mediaType"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "method": "isOneShot#1",
+      "status": "added",
+      "alpha9": null,
+      "stable": {
+        "name": "isOneShot",
+        "overload": 1,
+        "startLine": 1059,
+        "endLine": 1059,
+        "sha256Lf": "4c764bee55702a8f0138a9139e6a8169969a4e50a2e924ec250d56e9e983ada1",
+        "tokenSha256": "082a41593e5b1c082bd84b561d4f3f85618a7480fec0b3d7e71d8c912961d407",
+        "originalText": "        override fun isOneShot(): Boolean = true"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "method": "queryContentImageSize#1",
+      "status": "added",
+      "alpha9": null,
+      "stable": {
+        "name": "queryContentImageSize",
+        "overload": 1,
+        "startLine": 1036,
+        "endLine": 1045,
+        "sha256Lf": "676e63f9510bd353b2d26684dbce84217cf0719c05a47a04c662735773302d25",
+        "tokenSha256": "4fc5c9ba31b935d361690f046bb46ce66fa33442d6adb3dfd2500a769df3d779",
+        "originalText": "    private fun queryContentImageSize(resolver: ContentResolver, uri: Uri): Long? = runCatching {\n        resolver.query(uri, arrayOf(OpenableColumns.SIZE), null, null, null)?.use { cursor ->\n            val index = cursor.getColumnIndex(OpenableColumns.SIZE)\n            if (index >= 0 && cursor.moveToFirst() && !cursor.isNull(index)) {\n                cursor.getLong(index)\n            } else {\n                null\n            }\n        }\n    }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "method": "searchMentionUsers#1",
+      "status": "unchanged",
+      "alpha9": {
+        "name": "searchMentionUsers",
+        "overload": 1,
+        "startLine": 785,
+        "endLine": 807,
+        "sha256Lf": "976ebf112816c8bb9dee918c00a745075595fb78cf7d218e00471d6b165f8a86",
+        "tokenSha256": "bf5384430a8bc1fa8c5fe38e9b4749eb6b4c22dd2ed9b84d5affd2390aec66d3",
+        "originalText": "    suspend fun searchMentionUsers(keyword: String = \"\"): Result<List<MentionSearchUser>> = withContext(Dispatchers.IO) {\n        try {\n            val response = api.searchMentionUsers(keyword.trim().takeIf { it.isNotEmpty() })\n            if (response.code == 0) {\n                val users = response.data\n                    ?.groups\n                    .orEmpty()\n                    .flatMap { it.items }\n                    .filter { it.uid > 0L && it.name.isNotBlank() }\n                    .distinctBy { it.uid }\n                Result.success(users)\n            } else {\n                val errorMsg = when (response.code) {\n                    -101 -> \"请先登录后使用@好友\"\n                    else -> response.message.ifEmpty { \"搜索@好友失败 (${response.code})\" }\n                }\n                Result.failure(Exception(errorMsg))\n            }\n        } catch (e: Exception) {\n            Logger.e(\"CommentRepo\", \"searchMentionUsers exception: keyword=$keyword\", e)\n            Result.failure(e)\n        }\n    }"
+      },
+      "stable": {
+        "name": "searchMentionUsers",
+        "overload": 1,
+        "startLine": 797,
+        "endLine": 819,
+        "sha256Lf": "976ebf112816c8bb9dee918c00a745075595fb78cf7d218e00471d6b165f8a86",
+        "tokenSha256": "bf5384430a8bc1fa8c5fe38e9b4749eb6b4c22dd2ed9b84d5affd2390aec66d3",
+        "originalText": "    suspend fun searchMentionUsers(keyword: String = \"\"): Result<List<MentionSearchUser>> = withContext(Dispatchers.IO) {\n        try {\n            val response = api.searchMentionUsers(keyword.trim().takeIf { it.isNotEmpty() })\n            if (response.code == 0) {\n                val users = response.data\n                    ?.groups\n                    .orEmpty()\n                    .flatMap { it.items }\n                    .filter { it.uid > 0L && it.name.isNotBlank() }\n                    .distinctBy { it.uid }\n                Result.success(users)\n            } else {\n                val errorMsg = when (response.code) {\n                    -101 -> \"请先登录后使用@好友\"\n                    else -> response.message.ifEmpty { \"搜索@好友失败 (${response.code})\" }\n                }\n                Result.failure(Exception(errorMsg))\n            }\n        } catch (e: Exception) {\n            Logger.e(\"CommentRepo\", \"searchMentionUsers exception: keyword=$keyword\", e)\n            Result.failure(e)\n        }\n    }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "method": "uploadCommentImage#1",
+      "status": "changed",
+      "alpha9": {
+        "name": "uploadCommentImage",
+        "overload": 1,
+        "startLine": 914,
+        "endLine": 969,
+        "sha256Lf": "a3b7e9a0a297878baf0df0317b56b33704e84f167b2fb073633b7969bc3c30f1",
+        "tokenSha256": "96e09392e43f9620d5a889bf0af8ae4caacea30ba58db4213b93201387d29730",
+        "originalText": "    suspend fun uploadCommentImage(\n        fileName: String,\n        mimeType: String,\n        bytes: ByteArray\n    ): Result<ReplyPicture> = withContext(Dispatchers.IO) {\n        try {\n            val csrf = com.android.purebilibili.core.store.TokenManager.csrfCache\n            if (csrf.isNullOrEmpty()) {\n                return@withContext Result.failure(Exception(\"请先登录\"))\n            }\n\n            val mediaType = mimeType.toMediaType()\n            val fileBody = bytes.toRequestBody(mediaType)\n            val part = okhttp3.MultipartBody.Part.createFormData(\n                \"file_up\",\n                fileName.ifBlank { \"comment_image.jpg\" },\n                fileBody\n            )\n            val textMedia = \"text/plain\".toMediaType()\n            val categoryBody = \"daily\".toRequestBody(textMedia)\n            val bizBody = \"new_dyn\".toRequestBody(textMedia)\n            val csrfBody = csrf.toRequestBody(textMedia)\n\n            val response = api.uploadCommentImage(\n                fileUp = part,\n                category = categoryBody,\n                biz = bizBody,\n                csrf = csrfBody\n            )\n\n            if (response.code == 0 && response.data != null) {\n                val data = response.data\n                Result.success(\n                    ReplyPicture(\n                        imgSrc = data.imageUrl,\n                        imgWidth = data.imageWidth,\n                        imgHeight = data.imageHeight,\n                        imgSize = data.imgSize\n                    )\n                )\n            } else {\n                Logger.e(\n                    \"CommentRepo\",\n                    \"uploadCommentImage failed: fileName=$fileName, mimeType=$mimeType, size=${bytes.size}, code=${response.code}, message=${response.message}\"\n                )\n                Result.failure(Exception(response.message.ifEmpty { \"图片上传失败 (${response.code})\" }))\n            }\n        } catch (e: Exception) {\n            Logger.e(\n                \"CommentRepo\",\n                \"uploadCommentImage exception: fileName=$fileName, mimeType=$mimeType, size=${bytes.size}\",\n                e\n            )\n            Result.failure(e)\n        }\n    }"
+      },
+      "stable": {
+        "name": "uploadCommentImage",
+        "overload": 1,
+        "startLine": 926,
+        "endLine": 937,
+        "sha256Lf": "053277351308cbbfae29a4f6aed3c7dbea094558558ddf3c47f0ef347b724f94",
+        "tokenSha256": "8b8854dc4967db5b7ee8da19ad39f0b11e0c41a2a6b0f7abf861c06024d466e9",
+        "originalText": "    suspend fun uploadCommentImage(\n        fileName: String,\n        mimeType: String,\n        bytes: ByteArray\n    ): Result<ReplyPicture> = withContext(Dispatchers.IO) {\n        val mediaType = mimeType.toMediaType()\n        uploadCommentImagePart(\n            fileName = fileName.ifBlank { \"comment_image.jpg\" },\n            mimeType = mimeType,\n            fileBody = bytes.toRequestBody(mediaType)\n        )\n    }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "method": "uploadCommentImage#2",
+      "status": "added",
+      "alpha9": null,
+      "stable": {
+        "name": "uploadCommentImage",
+        "overload": 2,
+        "startLine": 944,
+        "endLine": 979,
+        "sha256Lf": "80fa5c343c04dec517ab101b18ca8144858c1460b4a654aee3be6310e0334ff6",
+        "tokenSha256": "9979393118855378a4f08c767dcda67b40f7be7b63c2db1f45220507ae55d627",
+        "originalText": "    suspend fun uploadCommentImage(\n        fileName: String,\n        mimeType: String,\n        resolver: ContentResolver,\n        uri: Uri\n    ): Result<ReplyPicture> = withContext(Dispatchers.IO) {\n        val size = queryContentImageSize(resolver, uri)\n        if (size == null) {\n            val bytes = resolver.openInputStream(uri)?.use { it.readBytes() }\n                ?: return@withContext Result.failure(Exception(\"无法读取图片文件\"))\n            if (bytes.isEmpty()) return@withContext Result.failure(Exception(\"图片内容为空\"))\n            if (bytes.size > MAX_COMMENT_IMAGE_BYTES) {\n                return@withContext Result.failure(Exception(IMAGE_TOO_LARGE_MESSAGE))\n            }\n            uploadCommentImage(\n                fileName = fileName,\n                mimeType = mimeType,\n                bytes = bytes\n            )\n        } else {\n            if (size <= 0L) return@withContext Result.failure(Exception(\"图片内容为空\"))\n            if (size > MAX_COMMENT_IMAGE_BYTES) {\n                return@withContext Result.failure(Exception(IMAGE_TOO_LARGE_MESSAGE))\n            }\n            uploadCommentImagePart(\n                fileName = fileName.ifBlank { \"comment_image.jpg\" },\n                mimeType = mimeType,\n                fileBody = ContentUriRequestBody(\n                    resolver = resolver,\n                    uri = uri,\n                    mediaType = mimeType.toMediaType(),\n                    contentLength = size\n                )\n            )\n        }\n    }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "method": "uploadCommentImagePart#1",
+      "status": "added",
+      "alpha9": null,
+      "stable": {
+        "name": "uploadCommentImagePart",
+        "overload": 1,
+        "startLine": 981,
+        "endLine": 1034,
+        "sha256Lf": "2d4f1527edae9f67c1ed36f725c194f6d25faf09538c0a2fe2e2438e1e9cdf07",
+        "tokenSha256": "d39c81bf7f4009be48874fc3a54215b2e914cd9e6ef071fd23348a1f04eaba4f",
+        "originalText": "    private suspend fun uploadCommentImagePart(\n        fileName: String,\n        mimeType: String,\n        fileBody: RequestBody\n    ): Result<ReplyPicture> = withContext(Dispatchers.IO) {\n        try {\n            val csrf = com.android.purebilibili.core.store.TokenManager.csrfCache\n            if (csrf.isNullOrEmpty()) {\n                return@withContext Result.failure(Exception(\"请先登录\"))\n            }\n\n            val part = okhttp3.MultipartBody.Part.createFormData(\n                \"file_up\",\n                fileName,\n                fileBody\n            )\n            val textMedia = \"text/plain\".toMediaType()\n            val categoryBody = \"daily\".toRequestBody(textMedia)\n            val bizBody = \"new_dyn\".toRequestBody(textMedia)\n            val csrfBody = csrf.toRequestBody(textMedia)\n\n            val response = api.uploadCommentImage(\n                fileUp = part,\n                category = categoryBody,\n                biz = bizBody,\n                csrf = csrfBody\n            )\n\n            if (response.code == 0 && response.data != null) {\n                val data = response.data\n                Result.success(\n                    ReplyPicture(\n                        imgSrc = data.imageUrl,\n                        imgWidth = data.imageWidth,\n                        imgHeight = data.imageHeight,\n                        imgSize = data.imgSize\n                    )\n                )\n            } else {\n                Logger.e(\n                    \"CommentRepo\",\n                    \"uploadCommentImage failed: fileName=$fileName, mimeType=$mimeType, size=${fileBody.contentLength()}, code=${response.code}, message=${response.message}\"\n                )\n                Result.failure(Exception(response.message.ifEmpty { \"图片上传失败 (${response.code})\" }))\n            }\n        } catch (e: Exception) {\n            Logger.e(\n                \"CommentRepo\",\n                \"uploadCommentImage exception: fileName=$fileName, mimeType=$mimeType, size=${fileBody.contentLength()}\",\n                e\n            )\n            Result.failure(e)\n        }\n    }"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "method": "writeTo#1",
+      "status": "added",
+      "alpha9": null,
+      "stable": {
+        "name": "writeTo",
+        "overload": 1,
+        "startLine": 1061,
+        "endLine": 1065,
+        "sha256Lf": "617e71dbc3df8a9e09202b65ea46fe19c268ce5c77c8e240a8248ae7cdb648b7",
+        "tokenSha256": "2d245da2278f0a1d8ef28633d53a38c6cdb0fec8922c4e285088f7192b65b217",
+        "originalText": "        override fun writeTo(sink: BufferedSink) {\n            resolver.openInputStream(uri)?.use { input ->\n                sink.writeAll(input.source())\n            } ?: error(\"无法读取图片文件\")\n        }"
+      }
+    }
+  ],
+  "existingKnownSizeValidator": "Exact stable <=0 and >15MiB failures before any file input is opened",
+  "platformDifference": "Windows selected Paths always have filesystem size; no Android DocumentsProvider unknown-size interface is exposed",
+  "oneShot": "Original ContentUriRequestBody isOneShot=true/contentLength and contentType semantics retained",
+  "streamBoundary": "Windows owned 64KiB copy with actual SessionStore -> selected-owner gate and active publishing/editing caller context; close retires registered streams",
+  "requestAlgorithm": "One stable uploadCommentImagePart-derived multipart body shared by original byte API and editor streaming provider",
+  "MainChanged": false,
+  "sharedGradle": false
+}

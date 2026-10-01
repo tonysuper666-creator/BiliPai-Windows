@@ -1,0 +1,26 @@
+{
+  "attempt01": {
+    "status": "fixture compile failure",
+    "cause": "Ambiguous java.util.concurrent and kotlinx.coroutines CancellationException imports",
+    "productChanged": false,
+    "correction": "Explicit kotlinx.coroutines.CancellationException fixture import"
+  },
+  "attempt02": {
+    "status": "candidate compile and 12 fake ABI pass; real native failed before path proof",
+    "cause": "Task USERPROFILE isolation influenced real Shell folder expansion; HRESULT 0x80070002",
+    "productChanged": false,
+    "correction": "Preserve actual Windows account native environment; isolate only JNA and Java temp, flags0 no CREATE"
+  },
+  "attempt03": {
+    "status": "accepted",
+    "candidateCompiled": true,
+    "declaredProductClassOverrides": 42,
+    "fakeAbiCases": 12,
+    "actualReadOnlyNativeCases": 4,
+    "isolatedRuntimeCases": 5,
+    "assertions": 45,
+    "anonymousLoopbackGetCount": 3,
+    "MainIntegrated": false,
+    "oldMain04MatricesRerun": false
+  }
+}

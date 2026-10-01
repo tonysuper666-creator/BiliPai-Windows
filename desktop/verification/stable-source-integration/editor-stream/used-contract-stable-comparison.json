@@ -1,0 +1,78 @@
+{
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "modelPath": "app/src/main/java/com/android/purebilibili/data/model/response/DynamicCreateModels.kt",
+  "fullModelGitBytesAlpha9EqualStable": true,
+  "modelGitSha256": "319289227083e60e04943ab9bb15c0c500dd5bab452ca658f1372937cda4afaa",
+  "usedApiMethods": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "method": "createFeedDynamic#1",
+      "status": "unchanged",
+      "alpha9": {
+        "name": "createFeedDynamic",
+        "overload": 1,
+        "startLine": 1867,
+        "endLine": 1873,
+        "sha256Lf": "fa27a22612beaa31637a038b4445d7a67a0bda9256b7e35f9f81fd7a7d4a477c",
+        "tokenSha256": "4f2409e6089b4cf5293b3c4d0c83c95a9d6043321b84f76a67d9a2b8657f9c68",
+        "originalText": "    suspend fun createFeedDynamic(\n        @Query(\"csrf\") csrf: String,\n        @Query(\"platform\") platform: String = \"web\",\n        @Query(\"x-bili-device-req-json\") deviceRequestJson: String = \"{\\\"platform\\\":\\\"web\\\",\\\"device\\\":\\\"pc\\\"}\",\n        @Query(\"x-bili-web-req-json\") webRequestJson: String = \"{\\\"spm_id\\\":\\\"333.999\\\"}\",\n        @retrofit2.http.Body body: DynamicCreateFeedRequest\n    ): DynamicCreateFeedResponse"
+      },
+      "stable": {
+        "name": "createFeedDynamic",
+        "overload": 1,
+        "startLine": 1900,
+        "endLine": 1906,
+        "sha256Lf": "fa27a22612beaa31637a038b4445d7a67a0bda9256b7e35f9f81fd7a7d4a477c",
+        "tokenSha256": "4f2409e6089b4cf5293b3c4d0c83c95a9d6043321b84f76a67d9a2b8657f9c68",
+        "originalText": "    suspend fun createFeedDynamic(\n        @Query(\"csrf\") csrf: String,\n        @Query(\"platform\") platform: String = \"web\",\n        @Query(\"x-bili-device-req-json\") deviceRequestJson: String = \"{\\\"platform\\\":\\\"web\\\",\\\"device\\\":\\\"pc\\\"}\",\n        @Query(\"x-bili-web-req-json\") webRequestJson: String = \"{\\\"spm_id\\\":\\\"333.999\\\"}\",\n        @retrofit2.http.Body body: DynamicCreateFeedRequest\n    ): DynamicCreateFeedResponse"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "method": "editFeedDynamic#1",
+      "status": "unchanged",
+      "alpha9": {
+        "name": "editFeedDynamic",
+        "overload": 1,
+        "startLine": 1876,
+        "endLine": 1879,
+        "sha256Lf": "c2e54481df600ab4dde5504a9f49b5007bdedd2cbf45bf4cbaf25f437bc1c3e9",
+        "tokenSha256": "d02255408c100601724ec7f19224afc6966321497a43e9cb0aaea4971c8f8b7f",
+        "originalText": "    suspend fun editFeedDynamic(\n        @retrofit2.http.QueryMap query: Map<String, String>,\n        @retrofit2.http.Body body: com.android.purebilibili.data.model.response.DynamicEditFeedRequest,\n    ): SimpleApiResponse"
+      },
+      "stable": {
+        "name": "editFeedDynamic",
+        "overload": 1,
+        "startLine": 1909,
+        "endLine": 1912,
+        "sha256Lf": "c2e54481df600ab4dde5504a9f49b5007bdedd2cbf45bf4cbaf25f437bc1c3e9",
+        "tokenSha256": "d02255408c100601724ec7f19224afc6966321497a43e9cb0aaea4971c8f8b7f",
+        "originalText": "    suspend fun editFeedDynamic(\n        @retrofit2.http.QueryMap query: Map<String, String>,\n        @retrofit2.http.Body body: com.android.purebilibili.data.model.response.DynamicEditFeedRequest,\n    ): SimpleApiResponse"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "method": "uploadCommentImage#1",
+      "status": "unchanged",
+      "alpha9": {
+        "name": "uploadCommentImage",
+        "overload": 1,
+        "startLine": 1170,
+        "endLine": 1175,
+        "sha256Lf": "d31bac7abd9b7656c721d96224831ace42b6476e75fbf50c0bda83a89695d03c",
+        "tokenSha256": "504d627f4c7d6473815a43815e10e915574451ff6c1e095f3477477ed07b0897",
+        "originalText": "    suspend fun uploadCommentImage(\n        @retrofit2.http.Part fileUp: okhttp3.MultipartBody.Part,\n        @retrofit2.http.Part(\"category\") category: okhttp3.RequestBody,\n        @retrofit2.http.Part(\"biz\") biz: okhttp3.RequestBody,\n        @retrofit2.http.Part(\"csrf\") csrf: okhttp3.RequestBody\n    ): UploadCommentImageResponse"
+      },
+      "stable": {
+        "name": "uploadCommentImage",
+        "overload": 1,
+        "startLine": 1203,
+        "endLine": 1208,
+        "sha256Lf": "d31bac7abd9b7656c721d96224831ace42b6476e75fbf50c0bda83a89695d03c",
+        "tokenSha256": "504d627f4c7d6473815a43815e10e915574451ff6c1e095f3477477ed07b0897",
+        "originalText": "    suspend fun uploadCommentImage(\n        @retrofit2.http.Part fileUp: okhttp3.MultipartBody.Part,\n        @retrofit2.http.Part(\"category\") category: okhttp3.RequestBody,\n        @retrofit2.http.Part(\"biz\") biz: okhttp3.RequestBody,\n        @retrofit2.http.Part(\"csrf\") csrf: okhttp3.RequestBody\n    ): UploadCommentImageResponse"
+      }
+    }
+  ],
+  "scope": "used dynamic create/edit/upload contracts only; unrelated stable model/API additions remain Root responsibility"
+}

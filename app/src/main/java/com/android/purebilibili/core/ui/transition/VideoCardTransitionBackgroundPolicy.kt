@@ -1272,7 +1272,7 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
                         displayListStale = snapshotState.displayListStale,
                     )
                 ) {
-                    val heldFrame = snapshotState.frameCache.resolve(
+                    val resolvedHeldFrame = snapshotState.frameCache.resolve(
                         progress = 1f,
                         phase = VideoCardTransitionBackgroundPhase.HELD,
                         motionTier = motionTierProvider(),
@@ -1282,6 +1282,11 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
                         deviceCornerRadiusPx = deviceCornerRadiusPx,
                         scaleReduction = scaleReductionProvider(),
                     )
+                    val heldFrame = if (realtimeBlurEnabledProvider()) {
+                        resolvedHeldFrame
+                    } else {
+                        resolvedHeldFrame.copy(blurRadiusPx = 0f)
+                    }
                     applyVideoCardTransitionSnapshotFrame(
                         contentLayer = contentLayer,
                         snapshotState = snapshotState,

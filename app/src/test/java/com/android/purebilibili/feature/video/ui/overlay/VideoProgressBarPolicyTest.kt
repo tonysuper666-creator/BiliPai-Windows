@@ -8,6 +8,13 @@ import kotlin.test.assertTrue
 class VideoProgressBarPolicyTest {
 
     @Test
+    fun unknownDuration_keepsProgressAndTouchTargetAtZero() {
+        assertEquals(0f, resolveProgressFraction(positionMs = 20_000L, durationMs = 0L))
+        assertEquals(0L, resolveSeekPositionFromTouch(touchX = 100f, containerWidthPx = 200f, durationMs = 0L))
+    }
+
+
+    @Test
     fun seekableDuration_usesFallbackWhenPlaybackDurationIsUnset() {
         assertEquals(
             120_000L,

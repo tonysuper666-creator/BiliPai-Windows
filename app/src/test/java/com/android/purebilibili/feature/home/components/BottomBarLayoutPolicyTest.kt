@@ -805,6 +805,40 @@ class BottomBarLayoutPolicyTest {
     }
 
     @Test
+    fun `bottom search collapses after keyword submit and keeps blank submit open`() {
+        assertEquals(
+            BottomBarSearchExpansionOverride.COLLAPSED,
+            resolveBottomBarSearchExpansionOverrideAfterSubmit(hasKeyword = true)
+        )
+        assertEquals(
+            null,
+            resolveBottomBarSearchExpansionOverrideAfterSubmit(hasKeyword = false)
+        )
+    }
+
+    @Test
+    fun `bottom search ime is user tap only`() {
+        assertEquals(true, shouldRequestBottomBarSearchIme(pendingUserImeRequest = true))
+        assertEquals(false, shouldRequestBottomBarSearchIme(pendingUserImeRequest = false))
+    }
+
+    @Test
+    fun `bottom search ime is dismissed while scrolling expanded capsule`() {
+        assertEquals(
+            true,
+            shouldDismissBottomBarSearchImeOnScroll(isScrolling = true, isSearchExpanded = true)
+        )
+        assertEquals(
+            false,
+            shouldDismissBottomBarSearchImeOnScroll(isScrolling = true, isSearchExpanded = false)
+        )
+        assertEquals(
+            false,
+            shouldDismissBottomBarSearchImeOnScroll(isScrolling = false, isSearchExpanded = true)
+        )
+    }
+
+    @Test
     fun `docked mode stays full width with no horizontal inset`() {
         val policy = resolveBottomBarLayoutPolicy(
             containerWidth = 393.dp,

@@ -94,6 +94,19 @@ data class BgmDetailResponse(
 
 @Serializable
 data class BgmDetailData(
+    @SerialName("origin_artist_list") val originArtistList: String = "",
+    val album: String = "",
+    @SerialName("music_source") val musicSource: String = "",
+    @SerialName("music_publish") val musicPublish: String = "",
+    @SerialName("mv_aid") val mvAid: Long = 0,
+    @SerialName("mv_bvid") val mvBvid: String = "",
+    @SerialName("mv_cid") val mvCid: Long = 0,
+    @SerialName("wish_listen") val wishListen: Boolean = false,
+    @SerialName("artists_list") val artistsList: List<BgmArtist> = emptyList(),
+    val achievement: List<String> = emptyList(),
+    @SerialName("music_rank") val musicRank: String = "",
+    @SerialName("recreation_rank") val recreationRank: String = "",
+    @SerialName("hot_song_heat") val hotSongHeat: BgmHotSongHeat? = null,
     @SerialName("music_title")
     val musicTitle: String = "",
     @SerialName("origin_artist")
@@ -115,6 +128,21 @@ data class BgmDetailData(
     @SerialName("flow_attr")
     val flowAttr: BgmFlowAttr? = null
 )
+
+@Serializable
+data class BgmArtist(val mid: Long = 0, val name: String = "", val face: String = "", val identity: String = "演唱者")
+
+@Serializable
+data class BgmHotSongHeat(
+    @SerialName("last_heat") val lastHeat: Long = 0,
+    @SerialName("song_heat") val songHeat: List<BgmSongHeat> = emptyList()
+)
+
+@Serializable
+data class BgmSongHeat(val date: Long = 0, val heat: Long = 0)
+
+@Serializable
+data class BgmVideoLabel(val name: String = "")
 
 @Serializable
 data class BgmCommentInfo(
@@ -158,7 +186,8 @@ data class BgmRecommendVideo(
     val play: Int = 0,
     val danmu: Int = 0,
     val duration: Int = 0,
-    val label: String = ""
+    val label: String = "",
+    @SerialName("label_list") val labelList: List<BgmVideoLabel> = emptyList()
 )
 
 /**

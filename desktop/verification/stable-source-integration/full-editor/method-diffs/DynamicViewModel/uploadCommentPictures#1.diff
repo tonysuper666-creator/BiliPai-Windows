@@ -1,0 +1,22 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt:uploadCommentPictures#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt:uploadCommentPictures#1
+@@ -0,0 +1,19 @@
++    private suspend fun uploadCommentPictures(imageUris: List<Uri>): List<ReplyPicture> =
++        withContext(Dispatchers.IO) {
++            require(imageUris.size <= 9) { "最多选择 9 张图片" }
++            imageUris.mapIndexed { index, uri ->
++                val fileName = appContext.contentResolver.query(
++                    uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null
++                )?.use { cursor ->
++                    val column = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
++                    if (column >= 0 && cursor.moveToFirst()) cursor.getString(column) else null
++                } ?: "comment_${System.currentTimeMillis()}_${index + 1}.jpg"
++                // 流式上传:空/15MB 校验在 CommentRepository 内完成,不再整文件读入内存。
++                CommentRepository.uploadCommentImage(
++                    fileName = fileName,
++                    mimeType = appContext.contentResolver.getType(uri) ?: "image/jpeg",
++                    resolver = appContext.contentResolver,
++                    uri = uri,
++                ).getOrElse { throw it }
++            }
++        }

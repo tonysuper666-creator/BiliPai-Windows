@@ -40,6 +40,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridS
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import com.android.purebilibili.core.ui.components.AppIcon
 import androidx.compose.material3.MaterialTheme
@@ -1260,8 +1262,11 @@ fun DynamicScreen(
                     .align(Alignment.BottomEnd)
                     .padding(end = AppSpacingTokens.Large + AppSpacingTokens.ExtraSmall, bottom = dynamicListBottomPadding + AppSpacingTokens.Medium),
             )
+            var oldContentLocatorDismissed by remember(oldContentDividerIndex) {
+                mutableStateOf(false)
+            }
             AnimatedVisibility(
-                visible = oldContentDividerIndex >= 0,
+                visible = oldContentDividerIndex >= 0 && !oldContentLocatorDismissed,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(
@@ -1283,6 +1288,20 @@ fun DynamicScreen(
                     contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
                 ) {
                     AppText("定位上次刷新")
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Box(
+                        modifier = Modifier
+                            .size(22.dp)
+                            .clip(androidx.compose.foundation.shape.CircleShape)
+                            .clickable { oldContentLocatorDismissed = true },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        AppIcon(
+                            imageVector = Icons.Outlined.Close,
+                            contentDescription = "关闭",
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
                 }
             }
         }
@@ -1525,10 +1544,12 @@ private fun DynamicList(
     val useManualPrependAnchor = remember(feedLayoutMode) {
         shouldUseDynamicManualPrependAnchor(feedLayoutMode)
     }
-    val skeletonPulse = if (showSkeleton) {
-        com.android.purebilibili.feature.dynamic.components.rememberDynamicFeedSkeletonPulse()
+    // [性能优化] 脉冲 state 只包进 provider,值在骨架卡 draw 阶段读取,
+    // 骨架期间屏幕级组合作用域不再逐帧失效。
+    val skeletonPulseState = if (showSkeleton) {
+        com.android.purebilibili.feature.dynamic.components.rememberDynamicFeedSkeletonPulseState()
     } else {
-        0f
+        null
     }
 
     FeedVerticalStaggeredGrid(
@@ -1580,7 +1601,7 @@ private fun DynamicList(
                 contentType = { "dynamic_skeleton" }
             ) { _ ->
                 com.android.purebilibili.feature.dynamic.components.DynamicFeedSkeletonCard(
-                    pulse = skeletonPulse
+                    pulse = { skeletonPulseState?.value ?: 0f }
                 )
             }
         }

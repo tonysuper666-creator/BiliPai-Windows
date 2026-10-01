@@ -1,0 +1,4 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt:contentLength#1
++++ v023:app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt:contentLength#1
+@@ -0,0 +1 @@
++        override fun contentLength(): Long = contentLength

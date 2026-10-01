@@ -1,0 +1,20 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt:uploadImage#1
++++ v023:app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt:uploadImage#1
+@@ -1,14 +1,12 @@
+     private suspend fun uploadImage(context: Context, uri: Uri): DynamicCreatePic {
+-        val bytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
+-            ?: error("无法读取图片")
+-        if (bytes.isEmpty()) error("图片内容为空")
+-        if (bytes.size > 15 * 1024 * 1024) error("图片过大（单张最大 15MB）")
+         val mimeType = context.contentResolver.getType(uri) ?: "image/jpeg"
+         val fileName = queryDisplayName(context, uri) ?: "dyn_${System.currentTimeMillis()}.jpg"
++        // 流式上传:空/15MB 校验在 CommentRepository 内基于文件尺寸完成,不再整文件读入内存。
+         val uploaded = CommentRepository.uploadCommentImage(
+             fileName = fileName,
+             mimeType = mimeType,
+-            bytes = bytes
++            resolver = context.contentResolver,
++            uri = uri
+         ).getOrElse { throw it }
+         return DynamicCreatePic(
+             img_src = uploaded.imgSrc,

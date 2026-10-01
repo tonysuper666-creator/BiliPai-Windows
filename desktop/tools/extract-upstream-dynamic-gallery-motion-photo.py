@@ -5,7 +5,7 @@ sys.dont_write_bytecode = True
 
 PREVIEW = 'app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt'
 GALLERY = 'app/src/main/java/com/android/purebilibili/core/util/GalleryVisualMediaContracts.kt'
-TAG = 'v0.2.3-alpha.9'
+TAG = 'v0.2.3'
 
 def digest(value): return hashlib.sha256(value.encode()).hexdigest()
 
@@ -16,7 +16,7 @@ def generate(repo: Path, output: Path):
     for path in [PREVIEW, GALLERY]:
         raw = (repo / path).read_text(encoding='utf-8').replace('\r\n', '\n')
         tag_raw = subprocess.check_output(['git', 'show', TAG + ':' + path], cwd=repo).decode().replace('\r\n', '\n')
-        assert raw == tag_raw, path + ' differs from pinned alpha.9'
+        assert raw == tag_raw, path + ' differs from pinned ' + TAG
         sources[path] = raw
     preview = sources[PREVIEW]
     start = preview.index('            // 4. 构建 Google / Android 官方 Motion Photo 1.0 标准 XMP 元数据')
@@ -31,7 +31,7 @@ def generate(repo: Path, output: Path):
     assert original_packing.count('\n') - packing.count('\n') == 3
     (output / 'original-packing-before-xmp-fix.txt').write_text(original_packing, encoding='utf-8', newline='\n')
     (output / 'packing-after-xmp-fix.txt').write_text(packing, encoding='utf-8', newline='\n')
-    (output / 'xmp-three-line-adaptation.diff').write_text(''.join(difflib.unified_diff(original_packing.splitlines(True), packing.splitlines(True), fromfile='alpha9-original-packing', tofile='windows-xmp-unique-attributes-packing')), encoding='utf-8', newline='\n')
+    (output / 'xmp-three-line-adaptation.diff').write_text(''.join(difflib.unified_diff(original_packing.splitlines(True), packing.splitlines(True), fromfile=TAG + '-original-packing', tofile='windows-xmp-unique-attributes-packing')), encoding='utf-8', newline='\n')
     packing_target = output / 'com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt'
     packing_target.parent.mkdir(parents=True, exist_ok=True)
     prefix = ('// GENERATED selected original JPEG APP1/XMP assembly; do not hand-maintain a second packing algorithm.\n'

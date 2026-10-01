@@ -1,0 +1,387 @@
+{
+  "scope": "prepared standalone default-video candidate, NOT Main installed",
+  "baseCommit": "bd094f91a637fbbc179a6d266a696101946c67f6",
+  "sourceCandidates": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt",
+      "baseLfSha256": "0ad0fcbd85e20264a827e7be28273eb9fc756a5cf2de8a8deb19449a6dda8fe9",
+      "candidateLfSha256": "dfb6115880896df86d3ae5a46881831a997d01aa4aba8fb20432c831b7124c31",
+      "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\video-default-save-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\platform\\DesktopWindowsImageSaveDirectory.kt"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImageSaveLocations.kt",
+      "baseLfSha256": "88efa261d483c257b329244fa2b50f99e07642c40b174c21c036a8b97d3b6105",
+      "candidateLfSha256": "5f27ef6e0a6db648446430dce3c92204d1317e66830c94b443475ba1908da97c",
+      "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\video-default-save-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopImageSaveLocations.kt"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "baseLfSha256": "96895bf38d22efcdbf23dd89bf6ba8e23af987858f4b677bf4a0f8d2c16327e4",
+      "candidateLfSha256": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\video-default-save-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicImageAssets.kt"
+    }
+  ],
+  "Main04ManifestSha256": "7bc5ac8875dadf38510120db6619bd6e748e7f790a47afc11374e14114f25865",
+  "Main04Ordered92ClasspathSha256": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2",
+  "acceptedEvidencePath": "runs/03/accepted-evidence.json",
+  "acceptedEvidenceSha256": "cc62f915f40cb01800c926bf9183214f7afb19e179a8bee4a46fc60002937454",
+  "artifacts": [
+    {
+      "path": "VideoDefaultFixture.kt",
+      "sha256Bytes": "5a071fb6f77ba951b5cff746948a699c3dd80bd23879cb84ce4ddaf68c727bd2",
+      "sizeBytes": 13941
+    },
+    {
+      "path": "VideoKnownFolderFixture.kt",
+      "sha256Bytes": "87e228afea46728d6f99e26d268684d07a176cb867066973e6922f99c7171499",
+      "sizeBytes": 8631
+    },
+    {
+      "path": "attempt-history.json",
+      "sha256Bytes": "14d35f9a9b6c4b4473e2dd62d774c20fdddefd0242f4a8613d43796394eaa498",
+      "sizeBytes": 982
+    },
+    {
+      "path": "candidate.patch",
+      "sha256Bytes": "95c6a92f379ead393ebab69eed2c6fbb57ce5228f267972c924c5e8b9b70be58",
+      "sizeBytes": 8495
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "286ab04faf6853264d8a278ce94fd8f2d29d0a42397c96733c66632339903f62",
+      "sizeBytes": 6720
+    },
+    {
+      "path": "integration-boundaries.json",
+      "sha256Bytes": "489ec0ccdb097228768e5af9a05ef8d8a5b83fb5948c40910343d30356dc9fc1",
+      "sizeBytes": 2028
+    },
+    {
+      "path": "original/ImagePreviewDialog-2564-2625.txt",
+      "sha256Bytes": "ab00854c1ce020a64ac8c57d8a821ec1ea7fe6499c256750f15011b2d92bb646",
+      "sizeBytes": 2941
+    },
+    {
+      "path": "original/ImagePreviewDialog.kt",
+      "sha256Bytes": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+      "sizeBytes": 128708
+    },
+    {
+      "path": "original/desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt",
+      "sha256Bytes": "0ad0fcbd85e20264a827e7be28273eb9fc756a5cf2de8a8deb19449a6dda8fe9",
+      "sizeBytes": 5828
+    },
+    {
+      "path": "original/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "96895bf38d22efcdbf23dd89bf6ba8e23af987858f4b677bf4a0f8d2c16327e4",
+      "sizeBytes": 15897
+    },
+    {
+      "path": "original/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImageSaveLocations.kt",
+      "sha256Bytes": "88efa261d483c257b329244fa2b50f99e07642c40b174c21c036a8b97d3b6105",
+      "sizeBytes": 5930
+    },
+    {
+      "path": "original/v0.2.3-saveLivePhotoVideoToGallery.kt",
+      "sha256Bytes": "3071039726dcf9070df9a7cb59f198fce2f6c02a4844dc449c0b968a840c449e",
+      "sizeBytes": 2556
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "fb1b893f1dd5ce2859335cb0b95f6214451edc7f26225300b347e85004992ee0",
+      "sizeBytes": 10488
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt",
+      "sha256Bytes": "dfb6115880896df86d3ae5a46881831a997d01aa4aba8fb20432c831b7124c31",
+      "sizeBytes": 7149
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "sizeBytes": 16116
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImageSaveLocations.kt",
+      "sha256Bytes": "5f27ef6e0a6db648446430dce3c92204d1317e66830c94b443475ba1908da97c",
+      "sizeBytes": 7063
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "f2e41b4d49201f15c1a69e2610024b7d94c30cdb80ffd261208c45129e9f5b79",
+      "sizeBytes": 8635
+    },
+    {
+      "path": "runs/01/compile-failure.json",
+      "sha256Bytes": "5145dfa064a38666c96d2d46834338ae7f37649b0b9b9165e021b19fc74046bb",
+      "sizeBytes": 137
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "0f525fbadc45e88c13db2f21a465f8bc3e58b72d32ea3973b7bbd246080c6b85",
+      "sizeBytes": 23954
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "89bb7f1ac5aa40b72ae5230b2a256be62970a7abbd1e15b998b5d5a5d7911d72",
+      "sizeBytes": 762
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "sizeBytes": 16116
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopImageSaveLocations.kt",
+      "sha256Bytes": "5f27ef6e0a6db648446430dce3c92204d1317e66830c94b443475ba1908da97c",
+      "sizeBytes": 7063
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopWindowsImageSaveDirectory.kt",
+      "sha256Bytes": "dfb6115880896df86d3ae5a46881831a997d01aa4aba8fb20432c831b7124c31",
+      "sizeBytes": 7149
+    },
+    {
+      "path": "runs/01/frozen-sources/VideoDefaultFixture.kt",
+      "sha256Bytes": "270a5d00f0310e338451e902b81e72eca601c1cb9bbdfda717cdab7db7cef20e",
+      "sizeBytes": 13893
+    },
+    {
+      "path": "runs/01/frozen-sources/VideoKnownFolderFixture.kt",
+      "sha256Bytes": "87e228afea46728d6f99e26d268684d07a176cb867066973e6922f99c7171499",
+      "sizeBytes": 8631
+    },
+    {
+      "path": "runs/02/compile-evidence.json",
+      "sha256Bytes": "f6bda143256eab2fb4d57055f72d2d7d90389a550e19daa3677cb4b59958ee49",
+      "sizeBytes": 43927
+    },
+    {
+      "path": "runs/02/compile.args",
+      "sha256Bytes": "c8c254d3c4341cae166eb0676790038fbaac8694b399593e68c188824346d1a5",
+      "sizeBytes": 23954
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "66c5582e698023ac6411f65b227958a7635b77b4eb0f0f2bc609f6db0c2fdc3e",
+      "sizeBytes": 693
+    },
+    {
+      "path": "runs/02/fake-process.json",
+      "sha256Bytes": "84dd4832493d8541045177e63d73b20a5bbb16068b15cd8f599213cadbd7a555",
+      "sizeBytes": 442
+    },
+    {
+      "path": "runs/02/fake-proof.json",
+      "sha256Bytes": "3eb71074fd80972e9815fd99af8382d2c5dc69463a03ee90b319741e30031c6d",
+      "sizeBytes": 862
+    },
+    {
+      "path": "runs/02/fake.args",
+      "sha256Bytes": "9bff368c8137bc5fa5ecfc8b68f263c5deec30961a56043f9a9e98eab6b30066",
+      "sizeBytes": 23359
+    },
+    {
+      "path": "runs/02/fake.log",
+      "sha256Bytes": "53310997f7f62a255d6b90bcd64f0059d06eb2b221e4f9efb15871c76d632612",
+      "sizeBytes": 786
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "sizeBytes": 16116
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopImageSaveLocations.kt",
+      "sha256Bytes": "5f27ef6e0a6db648446430dce3c92204d1317e66830c94b443475ba1908da97c",
+      "sizeBytes": 7063
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopWindowsImageSaveDirectory.kt",
+      "sha256Bytes": "dfb6115880896df86d3ae5a46881831a997d01aa4aba8fb20432c831b7124c31",
+      "sizeBytes": 7149
+    },
+    {
+      "path": "runs/02/frozen-sources/VideoDefaultFixture.kt",
+      "sha256Bytes": "5a071fb6f77ba951b5cff746948a699c3dd80bd23879cb84ce4ddaf68c727bd2",
+      "sizeBytes": 13941
+    },
+    {
+      "path": "runs/02/frozen-sources/VideoKnownFolderFixture.kt",
+      "sha256Bytes": "87e228afea46728d6f99e26d268684d07a176cb867066973e6922f99c7171499",
+      "sizeBytes": 8631
+    },
+    {
+      "path": "runs/02/native-process.json",
+      "sha256Bytes": "ac52f5ed374e7d6e1000f2f2a8ba34e413bc4ce99043c09c3bb70e89498bd7e1",
+      "sizeBytes": 444
+    },
+    {
+      "path": "runs/02/native.args",
+      "sha256Bytes": "4f9951f8302e5ce330112d5dfc885de9bbcb5f97a46d724e44d65d74dc9d5d86",
+      "sizeBytes": 23361
+    },
+    {
+      "path": "runs/02/native.log",
+      "sha256Bytes": "1bcbd926a976ea3b635b5be2de1abeeeb8a9741536d1fb691eded33aa5bf951b",
+      "sizeBytes": 755
+    },
+    {
+      "path": "runs/03/accepted-evidence.json",
+      "sha256Bytes": "cc62f915f40cb01800c926bf9183214f7afb19e179a8bee4a46fc60002937454",
+      "sizeBytes": 5635
+    },
+    {
+      "path": "runs/03/compile-evidence.json",
+      "sha256Bytes": "0b6945887b84d7adce9557ccb8c181e5c9144660455f70024c5cfb76902178cf",
+      "sizeBytes": 43927
+    },
+    {
+      "path": "runs/03/compile.args",
+      "sha256Bytes": "30ab1fc8ae57ae5fb4cc1fc6b7a874a5ae11102c802aec5b900e274cee7dba43",
+      "sizeBytes": 23954
+    },
+    {
+      "path": "runs/03/compile.log",
+      "sha256Bytes": "634cdbcb4ddcb418e05906863e52b84543bd06c9034cf1e82d655568e8f96ce1",
+      "sizeBytes": 693
+    },
+    {
+      "path": "runs/03/fake-process.json",
+      "sha256Bytes": "f14e8c25fbb610a5fc1e4c0a5e96a0d6a6960f9006bb9a6782a271099dcfb0a6",
+      "sizeBytes": 524
+    },
+    {
+      "path": "runs/03/fake-proof.json",
+      "sha256Bytes": "3eb71074fd80972e9815fd99af8382d2c5dc69463a03ee90b319741e30031c6d",
+      "sizeBytes": 862
+    },
+    {
+      "path": "runs/03/fake.args",
+      "sha256Bytes": "c7d6316b78d148c89574e40cf2359b108b37e7da077c541cc0f56fc9d697c145",
+      "sizeBytes": 23359
+    },
+    {
+      "path": "runs/03/fake.log",
+      "sha256Bytes": "53310997f7f62a255d6b90bcd64f0059d06eb2b221e4f9efb15871c76d632612",
+      "sizeBytes": 786
+    },
+    {
+      "path": "runs/03/frozen-sources/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "sizeBytes": 16116
+    },
+    {
+      "path": "runs/03/frozen-sources/DesktopImageSaveLocations.kt",
+      "sha256Bytes": "5f27ef6e0a6db648446430dce3c92204d1317e66830c94b443475ba1908da97c",
+      "sizeBytes": 7063
+    },
+    {
+      "path": "runs/03/frozen-sources/DesktopWindowsImageSaveDirectory.kt",
+      "sha256Bytes": "dfb6115880896df86d3ae5a46881831a997d01aa4aba8fb20432c831b7124c31",
+      "sizeBytes": 7149
+    },
+    {
+      "path": "runs/03/frozen-sources/VideoDefaultFixture.kt",
+      "sha256Bytes": "5a071fb6f77ba951b5cff746948a699c3dd80bd23879cb84ce4ddaf68c727bd2",
+      "sizeBytes": 13941
+    },
+    {
+      "path": "runs/03/frozen-sources/VideoKnownFolderFixture.kt",
+      "sha256Bytes": "87e228afea46728d6f99e26d268684d07a176cb867066973e6922f99c7171499",
+      "sizeBytes": 8631
+    },
+    {
+      "path": "runs/03/independent-byte-readback.json",
+      "sha256Bytes": "4c0eb2af4ab40e9414fb4a3752522e1ffa889ad85e3c3db6df0cff8f048d16f3",
+      "sizeBytes": 361
+    },
+    {
+      "path": "runs/03/native-process.json",
+      "sha256Bytes": "68f15864883a18da08fbb668766ce063f2ee95a041c29adea218f5c661c07abd",
+      "sizeBytes": 525
+    },
+    {
+      "path": "runs/03/native-proof.json",
+      "sha256Bytes": "9f2b2d040a8c1c9c33bbbf2b9d8e8cad33c8d8801085ce8f10461dc3bea9852a",
+      "sizeBytes": 1361
+    },
+    {
+      "path": "runs/03/native.args",
+      "sha256Bytes": "0a8cd1ba42f668bc21eb1caf2bbb727bfc417df039420e6b0bdb7643f53d7aee",
+      "sizeBytes": 23361
+    },
+    {
+      "path": "runs/03/native.log",
+      "sha256Bytes": "732abe63d6e098248e644046183107123bb80fffc6350d3a458dbdf4fd0e56f7",
+      "sizeBytes": 1045
+    },
+    {
+      "path": "runs/03/path-process.json",
+      "sha256Bytes": "f558524d3ddd384734cfa7d09f628d9a182ca22bdba93b086073374bc3e0704b",
+      "sizeBytes": 524
+    },
+    {
+      "path": "runs/03/path.args",
+      "sha256Bytes": "1cf265e152852d1de7f844f450e63aeb62c00a107f317f427cd023ecf8c5a77d",
+      "sizeBytes": 23832
+    },
+    {
+      "path": "runs/03/path.log",
+      "sha256Bytes": "159449f3778b7814fbd10dc1e32ccce7c7ae26125433f5f9b125fd89125efb65",
+      "sizeBytes": 86
+    },
+    {
+      "path": "runs/03/proof/input.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "sizeBytes": 1055711
+    },
+    {
+      "path": "runs/03/proof/result.json",
+      "sha256Bytes": "551ab404031f8e3cbcc090a74e1cf089d7e7eea3a438b50190c4d8a1db3f2d2e",
+      "sizeBytes": 1511
+    },
+    {
+      "path": "runs/03/proof/videos-base/BiliPai/BiliPai_Live_1790821203934.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "sizeBytes": 1055711
+    },
+    {
+      "path": "runs/03/proof/videos-base/BiliPai/BiliPai_Live_42.mp4",
+      "sha256Bytes": "d29828c738783cf410a526cabdcba776e89489036f5550a5c370f4a84d888622",
+      "sizeBytes": 25
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "66105d09f0d371a8953eb6dc8570e52afef57a35d988a49a02c5cd698640baf5",
+      "sizeBytes": 2383
+    },
+    {
+      "path": "stable-scope-comparison.json",
+      "sha256Bytes": "26e9bdcc00fd5fb20d886aeec36dcf46dd96bd71cb566c80ca7a7efdf1a014f7",
+      "sizeBytes": 645
+    },
+    {
+      "path": "windows-sdk-videos-evidence.json",
+      "sha256Bytes": "d25c9a1427fc58ffb2b238275addc9cce1b0a2989117cd6383e4b2a37f14bff1",
+      "sizeBytes": 468
+    }
+  ],
+  "runtimeReferencesOnly": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\video-default-save-parity\\runs\\02\\candidate.jar",
+      "sha256Bytes": "1593e91026ba14b1e5ae4423108cb4ec77767de8c1825bd3532f16f89cae9760",
+      "excludedFromFormalGit": true
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\video-default-save-parity\\runs\\03\\candidate.jar",
+      "sha256Bytes": "1593e91026ba14b1e5ae4423108cb4ec77767de8c1825bd3532f16f89cae9760",
+      "excludedFromFormalGit": true
+    }
+  ],
+  "allRawArtifactsWithinLane": true,
+  "newDependencies": false,
+  "MainIntegrated": false,
+  "sharedGradle": false,
+  "HWND": false
+}

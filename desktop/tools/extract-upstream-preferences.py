@@ -14,12 +14,12 @@ DIRECT = [BASE + name + ".kt" for name in (
     "AppBottomNavigationHost", "AppSquircleModifiers", "motion/AppMotionTokens")]
 DIRECT += [BASE + "components/" + name + ".kt" for name in (
     "AppPreferenceComponents", "AppListItem", "AppSingleChoiceRow", "AppWindowActionMenu",
-    "AppNavigationComponents", "AppSplitLayout", "AppBackToTopButton", "AppContentStateComponents",
+    "AppSplitLayout", "AppBackToTopButton", "AppContentStateComponents",
     "AdaptiveListItemPolicy", "LongPressActionModifier")]
 DIRECT += [BASE + "renderer/" + name + ".kt" for name in (
     "material3/AppMaterial3ListItem", "miuix/AppMiuixListItem")]
 ADAPTED = [BASE + "components/" + name + ".kt" for name in (
-    "AdaptivePreferenceComponents", "AppSelectionPreferenceComponents", "AdaptiveContentCardComponents")]
+    "AdaptivePreferenceComponents", "AppSelectionPreferenceComponents", "AdaptiveContentCardComponents", "AppNavigationComponents")]
 POLICIES = [BASE + "AdaptiveChrome.kt"]
 
 def helper(repo):
@@ -28,7 +28,11 @@ def helper(repo):
     return result
 
 def adapt(path, source, host):
-    if path.endswith("/AdaptivePreferenceComponents.kt"):
+    if path.endswith("/AppNavigationComponents.kt"):
+        # The pinned Miuix JVM rail uses state=null for the same non-expandable
+        # collapsed overload described by the original facade's own comment.
+        source = host.substitute(source, "            expanded = false,\n", "            state = null,\n")
+    elif path.endswith("/AdaptivePreferenceComponents.kt"):
         # Keep original rendering/signatures; bind the M3 collector to current hoisted input.
         duplicate = "import com.android.purebilibili.core.ui.LocalAppThemeConfig\n"
         if source.count(duplicate) != 2: raise ValueError("Original duplicate preference import changed")

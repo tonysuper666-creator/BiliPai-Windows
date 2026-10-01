@@ -44,7 +44,7 @@ class ScrollLayer : IRenderLayer, ITouchDelegate, ConfigChangeListener {
     private lateinit var mBuffer: LayerBuffer
     private lateinit var mConfig: DanmakuConfig
     private val mLines = LinkedList<ScrollLine>()
-    private val mPreDrawItems = LinkedList<DrawItem<DanmakuData>>()
+    private val mPreDrawItems = ArrayList<DrawItem<DanmakuData>>()
     private var mTotalDanmakuCountInLayer = 0
     private var mWidth = 0
     private var mHeight = 0

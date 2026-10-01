@@ -235,8 +235,8 @@ class TopTabStylePolicyTest {
         val iconAndText = topStyle(UiPreset.MD3, AndroidNativeVariant.MIUIX, labelMode = 0)
 
         assertEquals(AppTopTabPresentation.MATERIAL_UNDERLINE, iconAndText.presentation)
-        assertEquals(56.dp, iconAndText.tabRowHeightDocked)
-        assertEquals(56.dp, iconAndText.tabRowHeightFloating)
+        assertEquals(48.dp, iconAndText.tabRowHeightDocked)
+        assertEquals(48.dp, iconAndText.tabRowHeightFloating)
         assertEquals(30.dp, iconAndText.md3VisualSpec.selectedCapsuleHeight)
         assertEquals(44.dp, iconAndText.actionButtonSizeDocked)
     }
@@ -590,42 +590,45 @@ class TopTabStylePolicyTest {
         assertEquals(18f, resolveTopTabIconSizeDp(labelMode = 0), 0.001f)
         assertEquals(18f, resolveTopTabIconSizeDp(labelMode = 1), 0.001f)
         assertEquals(6f, resolveTopTabIconTextSpacingDp(labelMode = 0), 0.001f)
-        // Must match compact chrome track (HomeTopPresetStyle 36/40) or labels clip to "...".
-        assertEquals(36.dp, resolveIosTopTabRowHeight(isFloatingStyle = false))
-        assertEquals(40.dp, resolveIosTopTabRowHeight(isFloatingStyle = true))
-        assertEquals(44.dp, resolveIosTopTabActionButtonSize(isFloatingStyle = false))
-        assertEquals(22.dp, resolveIosTopTabActionIconSize(isFloatingStyle = false))
+        // Must match compact chrome track (HomeTopPresetStyle 32/36) or labels clip to "...".
+        assertEquals(32.dp, resolveIosTopTabRowHeight(isFloatingStyle = false))
+        assertEquals(36.dp, resolveIosTopTabRowHeight(isFloatingStyle = true))
+        // 侧钮缩小一档，给五个标签与扁圆指示器让出宽度。
+        assertEquals(32.dp, resolveIosTopTabActionButtonSize(isFloatingStyle = false))
+        assertEquals(20.dp, resolveIosTopTabActionIconSize(isFloatingStyle = false))
+        assertEquals(36.dp, resolveIosTopTabActionButtonSize(isFloatingStyle = true))
+        assertEquals(20.dp, resolveIosTopTabActionIconSize(isFloatingStyle = true))
     }
 
     @Test
-    fun `all three top tab presentations use bottom dock shell height`() {
+    fun `all three top tab presentations use the shrunken top dock shell`() {
         listOf(
             topStyle(UiPreset.IOS, AndroidNativeVariant.MATERIAL3),
             topStyle(UiPreset.MD3, AndroidNativeVariant.MATERIAL3),
             topStyle(UiPreset.MD3, AndroidNativeVariant.MIUIX)
         ).forEach { style ->
-            assertEquals(resolveBiliPaiBottomBarDockHeight(searchExpanded = false), style.tabRowHeightDocked)
-            assertEquals(resolveBiliPaiBottomBarDockHeight(searchExpanded = false), style.tabRowHeightFloating)
+            assertEquals(48.dp, style.tabRowHeightDocked)
+            assertEquals(52.dp, style.tabRowHeightFloating)
         }
 
-        assertEquals(36.dp, resolveIosTopTabRowHeight(isFloatingStyle = false))
-        assertEquals(40.dp, resolveIosTopTabRowHeight(isFloatingStyle = true))
+        assertEquals(32.dp, resolveIosTopTabRowHeight(isFloatingStyle = false))
+        assertEquals(36.dp, resolveIosTopTabRowHeight(isFloatingStyle = true))
         assertEquals(
-            36.dp,
+            32.dp,
             resolveMd3TopTabVisualSpec(
                 isFloatingStyle = false,
                 presentation = AppTopTabPresentation.MATERIAL_UNDERLINE
             ).rowHeight
         )
         assertEquals(
-            40.dp,
+            36.dp,
             resolveMd3TopTabVisualSpec(
                 isFloatingStyle = true,
                 presentation = AppTopTabPresentation.MATERIAL_UNDERLINE
             ).rowHeight
         )
         assertEquals(
-            36.dp,
+            32.dp,
             resolveMd3TopTabVisualSpec(
                 isFloatingStyle = false,
                 presentation = AppTopTabPresentation.TONAL_CAPSULE
@@ -647,7 +650,7 @@ class TopTabStylePolicyTest {
     fun `md3 top tabs use compact rounded rectangle sizing`() {
         val spec = resolveMd3TopTabVisualSpec(isFloatingStyle = false)
 
-        assertEquals(36.dp, spec.rowHeight)
+        assertEquals(32.dp, spec.rowHeight)
         assertEquals(30.dp, spec.selectedCapsuleHeight)
         assertEquals(9.dp, spec.selectedCapsuleCornerRadius)
         assertEquals(18.dp, spec.iconSize)
@@ -666,7 +669,7 @@ class TopTabStylePolicyTest {
             labelMode = 0
         )
 
-        assertEquals(56.dp, spec.rowHeight)
+        assertEquals(48.dp, spec.rowHeight)
         assertEquals(10.dp, spec.itemHorizontalPadding)
         assertEquals(6.dp, spec.iconLabelSpacing)
         assertEquals(18.dp, spec.iconSize)

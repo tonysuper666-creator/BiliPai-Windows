@@ -1,0 +1,47 @@
+{
+  "schema": "stable-chapter-bar-candidate-install-v1",
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "adoptedUnmodified": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBar.kt",
+      "sha256": "3a27be99d3614c9f1f6f0e1e86b541f56bf37396e9ade454dd73cbb9ad517ce5",
+      "features": [
+        "chapter-segment-bar",
+        "playback"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicy.kt",
+      "sha256": "611e577cd7a90b193e438f2f6f718ada6e0f73c30589d26c2bec8454902a5f3c",
+      "features": [
+        "chapter-segment-bar",
+        "playback"
+      ],
+      "mode": "direct"
+    }
+  ],
+  "registryCount": 624,
+  "platformAdapters": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+      "baseSha256Lf": "99808ee4fb54d77adc50828b997263e2360107c00843a24a75fb1a7ffa3c30ac",
+      "sha256Lf": "bef70d4837d3f78b44f7c0b2efb392cb178cd194458a77a30328440aa3a8c151"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseSha256Lf": "cb5f77d95ffa8bc632ce5c9f3cb3e6ff7b8e7ed2e3c4e7d27648037c29b5e032",
+      "sha256Lf": "8f6c3b59ebaef5aebde903b7e6ba5224831b895a44171f7f0c4b07ce7b6b884d"
+    }
+  ],
+  "oneExistingRepository": true,
+  "existingPlaybackSeekOwner": true,
+  "chapterStateKeyedBy": [
+    "bvid",
+    "cid",
+    "sessionEpoch"
+  ],
+  "mainInstalled": false,
+  "wholeStableCompiled": false,
+  "stableRuntimeAccepted": false
+}

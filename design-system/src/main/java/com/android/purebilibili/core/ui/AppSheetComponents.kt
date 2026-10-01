@@ -248,6 +248,8 @@ fun AppModalBottomSheet(
     // Reserve the former handle space without drawing a line; ModalBottomSheet owns swipe gestures.
     dragHandle: @Composable (() -> Unit)? = { Spacer(Modifier.height(24.dp)) },
     windowInsets: androidx.compose.foundation.layout.WindowInsets = androidx.compose.material3.BottomSheetDefaults.modalWindowInsets,
+    presentationOverride: AppModalPresentation? = null,
+    sheetSurfaceModifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val uiStyle = LocalAppUiStyle.current
@@ -287,7 +289,7 @@ fun AppModalBottomSheet(
     }
     // 返回统一走 ModalSheetNavigationHost（Dialog 窗口 NavigationBackHandler），
     // 关闭 Dialog 默认 dismissOnBackPress，避免侧边返回与 back 双触发。
-    if (layoutSpec.presentation == AppModalPresentation.CenteredDialog) {
+    if ((presentationOverride ?: layoutSpec.presentation) == AppModalPresentation.CenteredDialog) {
         Dialog(
             onDismissRequest = onDismissRequest,
             properties = DialogProperties(
@@ -345,7 +347,7 @@ fun AppModalBottomSheet(
             ) {
                 AppPopupSurface(
                     type = AppPopupSurfaceType.SHEET,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().then(sheetSurfaceModifier),
                     shape = sheetShape,
                     containerColor = resolvedContainerColor,
                     contentColor = contentColor,

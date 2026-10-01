@@ -58,6 +58,8 @@ internal enum class BiliPaiNavEntryContentRole {
     SEASON_SERIES_DETAIL,
     BANGUMI,
     BANGUMI_PLAYER,
+    WEEKLY_SERIES,
+    BGM_DETAIL,
     MUSIC_DETAIL,
     NATIVE_MUSIC,
     SPACE,
@@ -137,6 +139,8 @@ internal fun resolveBiliPaiNavEntryContentRole(key: BiliPaiNavKey): BiliPaiNavEn
         is BiliPaiNavKey.SeasonSeriesDetail -> BiliPaiNavEntryContentRole.SEASON_SERIES_DETAIL
         is BiliPaiNavKey.Bangumi -> BiliPaiNavEntryContentRole.BANGUMI
         is BiliPaiNavKey.BangumiPlayer -> BiliPaiNavEntryContentRole.BANGUMI_PLAYER
+        is BiliPaiNavKey.WeeklySeries -> BiliPaiNavEntryContentRole.WEEKLY_SERIES
+        is BiliPaiNavKey.BgmDetail -> BiliPaiNavEntryContentRole.BGM_DETAIL
         is BiliPaiNavKey.MusicDetail -> BiliPaiNavEntryContentRole.MUSIC_DETAIL
         is BiliPaiNavKey.NativeMusic -> BiliPaiNavEntryContentRole.NATIVE_MUSIC
         is BiliPaiNavKey.Space -> BiliPaiNavEntryContentRole.SPACE

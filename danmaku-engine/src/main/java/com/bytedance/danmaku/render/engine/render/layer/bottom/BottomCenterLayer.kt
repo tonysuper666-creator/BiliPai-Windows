@@ -47,7 +47,7 @@ class BottomCenterLayer : IRenderLayer, ITouchDelegate, ConfigChangeListener {
      * The last line is align the bottom of layer
      */
     private val mLines = LinkedList<BottomCenterLine>()
-    private val mPreDrawItems = LinkedList<DrawItem<DanmakuData>>()
+    private val mPreDrawItems = ArrayList<DrawItem<DanmakuData>>()
     private var mTotalDanmakuCountInLayer = 0
     private var mWidth = 0
     private var mHeight = 0

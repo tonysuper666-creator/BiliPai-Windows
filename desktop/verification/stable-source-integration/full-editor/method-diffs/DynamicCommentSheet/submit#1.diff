@@ -1,0 +1,11 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt:submit#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt:submit#1
+@@ -0,0 +1,8 @@
++    fun submit() {
++        if (!canSend) return
++        isSending = true
++        onSubmit(value.trim(), selectedImages) { success ->
++            if (success) selectedImages = emptyList()
++            isSending = false
++        }
++    }

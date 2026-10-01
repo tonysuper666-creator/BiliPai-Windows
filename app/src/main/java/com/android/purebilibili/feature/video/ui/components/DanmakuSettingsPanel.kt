@@ -20,6 +20,8 @@ import com.android.purebilibili.feature.video.danmaku.normalizeDanmakuRegexManag
 import com.android.purebilibili.feature.video.danmaku.normalizeDanmakuUserHashManagerInput
 import com.android.purebilibili.feature.video.danmaku.parseDanmakuBlockRules
 import com.android.purebilibili.feature.video.danmaku.partitionDanmakuBlockRules
+import com.android.purebilibili.feature.video.danmaku.DanmakuCloudRuleSyncPolicy
+import com.android.purebilibili.data.repository.DanmakuRepository
 import com.android.purebilibili.core.ui.components.AppButton
 import com.android.purebilibili.core.ui.components.AppSegmentOption
 import com.android.purebilibili.core.ui.components.AppThemeAdaptiveTabRow
@@ -326,6 +328,7 @@ fun DanmakuSettingsPanel(
     allowBottom: Boolean = true,
     allowColorful: Boolean = true,
     allowSpecial: Boolean = true,
+    weightFilterLevel: Int = 0,
     hideInteractiveCommands: Boolean = false,
     showBlockRuleEditor: Boolean = false,
     showSmartOcclusionSection: Boolean = false,
@@ -357,6 +360,7 @@ fun DanmakuSettingsPanel(
     onAllowBottomChange: (Boolean) -> Unit = {},
     onAllowColorfulChange: (Boolean) -> Unit = {},
     onAllowSpecialChange: (Boolean) -> Unit = {},
+    onWeightFilterLevelChange: (Int) -> Unit = {},
     onHideInteractiveCommandsChange: (Boolean) -> Unit = {},
     onBlockRulesRawChange: (String) -> Unit = {},
     onSmartOcclusionChange: (Boolean) -> Unit = {},
@@ -1115,9 +1119,24 @@ indicatorPresentation = AppTabRowIndicatorPresentation.TONAL_PILL,
                                 label = "视频内互动提示",
                                 checked = !hideInteractiveCommands,
                                 onCheckedChange = { onHideInteractiveCommandsChange(!it) },
-                                showDivider = false,
+                                showDivider = true,
                                 colors = panelColors,
                                 fullscreenStyle = isFullscreenStyle
+                            )
+                            DanmakuSliderItem(
+                                label = "智能云屏蔽",
+                                value = weightFilterLevel.toFloat(),
+                                valueRange = 0f..10f,
+                                steps = 9,
+                                displayValue = { value ->
+                                    val level = value.roundToInt()
+                                    if (level == 0) "关闭" else "$level 级"
+                                },
+                                onValueChange = { onWeightFilterLevelChange(it.roundToInt()) },
+                                colors = panelColors,
+                                fullscreenStyle = isFullscreenStyle,
+                                resetValue = 0f,
+                                tickCount = 11
                             )
                         }
                     }
@@ -1260,6 +1279,58 @@ private fun DanmakuBlockManagerDialog(
             }
         }
     }
+
+    var cloudSyncInProgress by remember { mutableStateOf(false) }
+    var cloudRules by remember {
+        mutableStateOf<List<com.android.purebilibili.data.repository.DanmakuCloudFilterRule>>(emptyList())
+    }
+    var cloudBaseline by remember { mutableStateOf(initialSections) }
+
+    fun syncCloudRules(manual: Boolean) {
+        if (cloudSyncInProgress) return
+        scope.launch {
+            cloudSyncInProgress = true
+            DanmakuRepository.getDanmakuCloudFilterRules()
+                .onSuccess { result ->
+                    cloudRules = result.rules
+                    val mapped = result.rules.mapNotNull { rule ->
+                        DanmakuCloudRuleSyncPolicy.cloudRuleToLocalRule(rule.type, rule.filter)
+                            ?.let { rule.type to it }
+                    }
+                    val newKeyword = (keywordRules + mapped.filter { it.first == 0 }.map { it.second }).distinct()
+                    val newRegex = (regexRules + mapped.filter { it.first == 1 }.map { it.second }).distinct()
+                    val newUid = (userHashRules + mapped.filter { it.first == 2 }.map { it.second }).distinct()
+                    keywordRules = newKeyword
+                    regexRules = newRegex
+                    userHashRules = newUid
+                    val baseline = DanmakuBlockRuleSections(newKeyword, newRegex, newUid)
+                    cloudBaseline = baseline
+                    onRulesSave(persistDanmakuBlockManagerSections(baseline))
+                    if (manual) {
+                        android.widget.Toast.makeText(
+                            context,
+                            "已同步云端弹幕屏蔽规则（${mapped.size} 条）",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    result.toast?.takeIf { it.isNotBlank() }?.let {
+                        android.widget.Toast.makeText(context, it, android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .onFailure { error ->
+                    if (manual) {
+                        android.widget.Toast.makeText(
+                            context,
+                            error.message?.takeIf(String::isNotBlank) ?: "云端规则同步失败",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            cloudSyncInProgress = false
+        }
+    }
+
+    LaunchedEffect(Unit) { syncCloudRules(manual = false) }
 
     fun updateCurrentRules(transform: (List<String>) -> List<String>) {
         when (selectedTabIndex) {
@@ -1434,6 +1505,12 @@ indicatorPresentation = AppTabRowIndicatorPresentation.TONAL_PILL,
                     ) {
                         AppText("导入文件")
                     }
+                    AppOutlinedButton(
+                        onClick = { syncCloudRules(manual = true) },
+                        enabled = !cloudSyncInProgress
+                    ) {
+                        AppText(if (cloudSyncInProgress) "同步中…" else "同步云端")
+                    }
                     AppButton(
                         onClick = {
                             val candidate = inputValue.trim()
@@ -1507,15 +1584,34 @@ indicatorPresentation = AppTabRowIndicatorPresentation.TONAL_PILL,
                     Spacer(modifier = Modifier.width(8.dp))
                     AppButton(
                         onClick = {
-                            onRulesSave(
-                                persistDanmakuBlockManagerSections(
-                                    DanmakuBlockRuleSections(
-                                        keywordRules = keywordRules,
-                                        regexRules = regexRules,
-                                        userHashRules = userHashRules
-                                    )
-                                )
+                            val finalSections = DanmakuBlockRuleSections(
+                                keywordRules = keywordRules,
+                                regexRules = regexRules,
+                                userHashRules = userHashRules
                             )
+                            val cloudAdds = DanmakuCloudRuleSyncPolicy.resolveCloudRuleAdds(
+                                baseline = cloudBaseline,
+                                current = finalSections
+                            )
+                            val cloudDeletes = DanmakuCloudRuleSyncPolicy.resolveCloudRuleDeletes(
+                                cloudRules = cloudRules,
+                                current = finalSections
+                            )
+                            if (cloudAdds.isNotEmpty() || cloudDeletes.isNotEmpty()) {
+                                scope.launch {
+                                    cloudAdds.forEach { add ->
+                                        DanmakuRepository.addDanmakuCloudFilterRule(add.type, add.filter)
+                                            .onSuccess { cloudRules = cloudRules + it }
+                                    }
+                                    cloudDeletes.forEach { id ->
+                                        DanmakuRepository.deleteDanmakuCloudFilterRule(id)
+                                            .onSuccess {
+                                                cloudRules = cloudRules.filterNot { rule -> rule.id == id }
+                                            }
+                                    }
+                                }
+                            }
+                            onRulesSave(persistDanmakuBlockManagerSections(finalSections))
                             onDismiss()
                         }
                     ) {

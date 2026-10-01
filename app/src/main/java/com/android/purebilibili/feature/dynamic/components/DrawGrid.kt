@@ -164,8 +164,10 @@ private fun DrawGridImage(
     // boundsInWindow changes on every scroll frame. Keep it outside snapshot state so
     // measuring a waterfall item never back-writes into composition and reflows the grid.
     val imageRectRef = remember { object { var value: Rect? = null } }
-    // 预览打开期间隐藏原位卡片，回位落地后恢复
-    val sourceHidden = isImagePreviewSourceHidden(imageRectRef.value)
+    // 预览打开期间隐藏原位卡片，回位落地后恢复。
+    // 优先按图片 URL 身份匹配，几何判定仅作无身份键入口的回退，
+    // 避免 Dialog 窗口/滚动容器坐标差异导致的"原图残留"。
+    val sourceHidden = isImagePreviewSourceHidden(imageRectRef.value, imageUrl)
 
     Box(
         modifier = modifier
@@ -176,13 +178,25 @@ private fun DrawGridImage(
                 imageRectRef.value = coordinates.boundsInWindow()
                 galleryRects[index] = imageRectRef.value!!
             }
-            .clickable(enabled = !sourceHidden) {
+            .clickable(
+                interactionSource = null,
+                indication = null,
+                enabled = !sourceHidden,
+            ) {
                 val rect = imageRectRef.value
+                val anchor = rect?.let {
+                    ImagePreviewSourceAnchor(
+                        rect = it,
+                        cornerRadiusDp = cornerRadius.value,
+                        galleryRects = galleryRects.toMap(),
+                        sourceKey = imageUrl,
+                    )
+                }
+                if (onImagePreviewClick != null) {
+                    prepareImagePreviewSourceTransition(anchor?.rect, imageUrl)
+                }
                 onImageClick(index, rect)
-                onImagePreviewClick?.invoke(
-                    index,
-                    rect?.let { ImagePreviewSourceAnchor(it, cornerRadius.value, galleryRects.toMap()) }
-                )
+                onImagePreviewClick?.invoke(index, anchor)
             },
         contentAlignment = Alignment.Center
     ) {
@@ -190,8 +204,12 @@ private fun DrawGridImage(
             AsyncImage(
                 model = coil3.request.ImageRequest.Builder(context)
                     .data(imageUrl)
+                    // Reuse this exact source identity as the preview's placeholder key.
+                    .memoryCacheKey(imageUrl)
                     .httpHeaders(NetworkHeaders.Builder().set("Referer", "https://www.bilibili.com/").build())
-                    .crossfade(!isGif)
+                    // The Hero flight is the only transition; don't fade the source
+                    // again if its list item is recreated while the preview is open.
+                    .crossfade(false)
                     .build(),
                 imageLoader = if (isGif) gifImageLoader else defaultImageLoader,
                 contentDescription = null,

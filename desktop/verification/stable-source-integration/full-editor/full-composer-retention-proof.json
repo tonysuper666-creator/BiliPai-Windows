@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "source": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposer.kt",
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "entireOriginalBodyLfSha256": "4c3572bd566235e6bea167dc3867df8f95c48ae888a0541a569db7cc08aea983",
+  "reconstitutedBodyLfSha256": "4c3572bd566235e6bea167dc3867df8f95c48ae888a0541a569db7cc08aea983",
+  "fullOriginalBodyByteEqualAfterReversingOnlyActivityResultSeams": true,
+  "substitutions": [
+    "one current platform capture",
+    "two owned gallery callback calls",
+    "original Android activity-result launcher moved to the existing Windows callback"
+  ],
+  "sourceMaximumImages": 18,
+  "fullWindowSheet": true,
+  "originalHeaderAndSubmitDraftAndFormAndFooterAndSubdialogsRetained": true,
+  "UIInteractionMeasured": false,
+  "MainChanged": false
+}

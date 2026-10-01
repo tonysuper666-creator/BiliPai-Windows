@@ -95,6 +95,8 @@ internal fun MusicWavySlider(
     val wavelengthPx = with(density) { MUSIC_WAVY_WAVELENGTH_DP.dp.toPx() }
     val strokePx = with(density) { MUSIC_WAVY_STROKE_DP.dp.toPx() }
     val thumbRadiusPx = with(density) { MUSIC_WAVY_THUMB_DP.dp.toPx() / 2f }
+    // 波形 Path 跨帧复用(每帧 reset 重填),避免播放/拖动期间逐帧分配。
+    val activePathScratch = remember { Path() }
 
     Canvas(
         modifier = modifier
@@ -143,34 +145,49 @@ internal fun MusicWavySlider(
         val fraction = resolveMusicProgressFraction(value, valueRange.start, valueRange.endInclusive)
         val progressX = size.width * fraction
         val centerY = size.height / 2f
-        val activePath = Path()
-        val inactivePath = Path()
-        val step = 2f
-        var x = 0f
-        var started = false
-        while (x <= progressX) {
-            val y = centerY + sin((x / wavelengthPx) * 2f * PI.toFloat() + phase) * amplitude
-            if (!started) {
-                activePath.moveTo(x, y)
-                started = true
-            } else {
-                activePath.lineTo(x, y)
+        if (amplitude <= 0.5f) {
+            // 无波形(非 wavy 或收起中):直接画直线,跳过逐点采样。
+            if (progressX > 0f) {
+                drawLine(
+                    color = activeColor,
+                    start = Offset(0f, centerY),
+                    end = Offset(progressX, centerY),
+                    strokeWidth = strokePx,
+                    cap = StrokeCap.Round
+                )
             }
-            x += step
+        } else {
+            val activePath = activePathScratch
+            activePath.reset()
+            // 采样步长按波长自适应(约 12 个采样点/波长),固定 2px 步长在宽屏下每帧
+            // 会上百次 sin + lineTo,视觉上并无差异。
+            val step = (wavelengthPx / 12f).coerceAtLeast(2f)
+            var x = 0f
+            var started = false
+            while (x <= progressX) {
+                val y = centerY + sin((x / wavelengthPx) * 2f * PI.toFloat() + phase) * amplitude
+                if (!started) {
+                    activePath.moveTo(x, y)
+                    started = true
+                } else {
+                    activePath.lineTo(x, y)
+                }
+                x += step
+            }
+            if (started) {
+                drawPath(
+                    path = activePath,
+                    color = activeColor,
+                    style = Stroke(width = strokePx, cap = StrokeCap.Round)
+                )
+            }
         }
-        if (started) {
-            drawPath(
-                path = activePath,
-                color = activeColor,
-                style = Stroke(width = strokePx, cap = StrokeCap.Round)
-            )
-        }
-        inactivePath.moveTo(progressX, centerY)
-        inactivePath.lineTo(size.width, centerY)
-        drawPath(
-            path = inactivePath,
+        drawLine(
             color = inactiveColor,
-            style = Stroke(width = strokePx, cap = StrokeCap.Round)
+            start = Offset(progressX, centerY),
+            end = Offset(size.width, centerY),
+            strokeWidth = strokePx,
+            cap = StrokeCap.Round
         )
         drawCircle(
             color = thumbColor,

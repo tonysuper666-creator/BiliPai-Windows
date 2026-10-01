@@ -1,0 +1,22 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LF": "0b6c8d1589b6be0ebcec709f2c04b5154afca6411559ac3c115bce122ff26ba9"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LF": "8b9186a097d15302f33e5439f28c94dd8a124235937d9fe7404a30c85731918c"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LF": "ab0d6cf956ba9915445f421f299ea48e14a7561edd2a609973700531bf0f67b4"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LF": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820"
+  }
+]

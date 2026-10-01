@@ -1,0 +1,63 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt:uploadCommentImage#1
++++ v023:app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt:uploadCommentImage#1
+@@ -3,54 +3,10 @@
+         mimeType: String,
+         bytes: ByteArray
+     ): Result<ReplyPicture> = withContext(Dispatchers.IO) {
+-        try {
+-            val csrf = com.android.purebilibili.core.store.TokenManager.csrfCache
+-            if (csrf.isNullOrEmpty()) {
+-                return@withContext Result.failure(Exception("请先登录"))
+-            }
+-
+-            val mediaType = mimeType.toMediaType()
+-            val fileBody = bytes.toRequestBody(mediaType)
+-            val part = okhttp3.MultipartBody.Part.createFormData(
+-                "file_up",
+-                fileName.ifBlank { "comment_image.jpg" },
+-                fileBody
+-            )
+-            val textMedia = "text/plain".toMediaType()
+-            val categoryBody = "daily".toRequestBody(textMedia)
+-            val bizBody = "new_dyn".toRequestBody(textMedia)
+-            val csrfBody = csrf.toRequestBody(textMedia)
+-
+-            val response = api.uploadCommentImage(
+-                fileUp = part,
+-                category = categoryBody,
+-                biz = bizBody,
+-                csrf = csrfBody
+-            )
+-
+-            if (response.code == 0 && response.data != null) {
+-                val data = response.data
+-                Result.success(
+-                    ReplyPicture(
+-                        imgSrc = data.imageUrl,
+-                        imgWidth = data.imageWidth,
+-                        imgHeight = data.imageHeight,
+-                        imgSize = data.imgSize
+-                    )
+-                )
+-            } else {
+-                Logger.e(
+-                    "CommentRepo",
+-                    "uploadCommentImage failed: fileName=$fileName, mimeType=$mimeType, size=${bytes.size}, code=${response.code}, message=${response.message}"
+-                )
+-                Result.failure(Exception(response.message.ifEmpty { "图片上传失败 (${response.code})" }))
+-            }
+-        } catch (e: Exception) {
+-            Logger.e(
+-                "CommentRepo",
+-                "uploadCommentImage exception: fileName=$fileName, mimeType=$mimeType, size=${bytes.size}",
+-                e
+-            )
+-            Result.failure(e)
+-        }
++        val mediaType = mimeType.toMediaType()
++        uploadCommentImagePart(
++            fileName = fileName.ifBlank { "comment_image.jpg" },
++            mimeType = mimeType,
++            fileBody = bytes.toRequestBody(mediaType)
++        )
+     }

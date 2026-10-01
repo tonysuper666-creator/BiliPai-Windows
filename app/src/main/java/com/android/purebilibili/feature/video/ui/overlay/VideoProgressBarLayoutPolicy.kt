@@ -99,3 +99,16 @@ fun resolveVideoProgressBarLayoutPolicy(
         thumbDraggingOffsetDp = 8
     )
 }
+
+/** Reserve image height plus its gap; chapter chrome must not consume the image's space. */
+internal fun resolveVideoProgressPreviewAreaHeightDp(
+    layoutPolicy: VideoProgressBarLayoutPolicy,
+    hasChapter: Boolean,
+    previewImageHeightDp: Int?,
+): Int {
+    val baseHeight = if (hasChapter) layoutPolicy.baseHeightWithChapterDp
+        else layoutPolicy.baseHeightWithoutChapterDp
+    val existingHeight = (layoutPolicy.draggingContainerHeightDp - baseHeight).coerceAtLeast(52)
+    val requiredHeight = previewImageHeightDp?.let { it + layoutPolicy.previewBottomPaddingDp } ?: 0
+    return maxOf(existingHeight, requiredHeight)
+}

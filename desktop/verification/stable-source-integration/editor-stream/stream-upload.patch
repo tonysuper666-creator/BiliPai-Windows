@@ -1,0 +1,358 @@
+--- a/desktop/tools/extract-upstream-dynamic-editor-protocol.py
++++ b/desktop/tools/extract-upstream-dynamic-editor-protocol.py
+@@ -12,8 +12,10 @@
+ def generate_members(repo):
+     host=module(repo,'editor_protocol_host','desktop/tools/extract-upstream-plugins.py')
+     media=host.media_extractor(repo);parser=media.parser_for(repo)
+-    create=(repo/(BASE+'data/repository/DynamicCreateRepository.kt')).read_text(encoding='utf-8').replace('\r\n','\n')
+-    comment=(repo/(BASE+'data/repository/CommentRepository.kt')).read_text(encoding='utf-8').replace('\r\n','\n')
++    identity=module(repo,'editor_fixed_source_identity',Path(__file__).with_name('extract-upstream-dynamic-reply-protocol.py'))
++    sources,_=identity.load_pinned_sources(repo,[BASE+'data/repository/DynamicCreateRepository.kt',BASE+'data/repository/CommentRepository.kt'])
++    create=sources[BASE+'data/repository/DynamicCreateRepository.kt']
++    comment=sources[BASE+'data/repository/CommentRepository.kt']
+     def fun(s,n):return '\n'.join('    '+line for line in media.function(s,n,parser).splitlines())
+     def sub(s,a,b):return host.substitute(s,a,b)
+     def block(s,marker):
+@@ -38,12 +40,12 @@
+         body=credentials(block(fun(create,name),'runCatching {'))
+         body=body.replace('uploadImage(context, Uri.parse(uriString))','uploadEditorImage(csrf, imageProvider(uriString))')
+         body=body.replace('            val response = dynamic.','            coroutineContext.ensureActive(); assertOwned()\n            val response = dynamic.')
+-        if name=='publish':sig='suspend fun publishDynamic(draft: DynamicPublishDraft, imageProvider: suspend (String) -> Triple<String?, String?, ByteArray>): Result<String>'
++        if name=='publish':sig='suspend fun publishDynamic(draft: DynamicPublishDraft, imageProvider: suspend (String) -> Triple<String?, String?, okhttp3.RequestBody>): Result<String>'
+         elif name=='edit':
+             a=body.index('            val wbiKeys = ');b=body.index('            coroutineContext.ensureActive(); assertOwned()',a)
+             params=expression(body[a:b],'mapOf(')
+             body=body[:a]+'            coroutineContext.ensureActive(); assertOwned()\n            val query = repository.signWebParams('+params+')\n'+body[b:]
+-            sig='suspend fun editDynamic(dynamicId: String, draft: DynamicPublishDraft, imageProvider: suspend (String) -> Triple<String?, String?, ByteArray>): Result<Unit>'
++            sig='suspend fun editDynamic(dynamicId: String, draft: DynamicPublishDraft, imageProvider: suspend (String) -> Triple<String?, String?, okhttp3.RequestBody>): Result<Unit>'
+         elif name=='createVote':
+             body=sub(body,'durationSeconds.coerceAtLeast(60)','(durationDays * 24 * 60 * 60).coerceAtLeast(60)')
+             sig='suspend fun createVote(title: String, options: List<String>, description: String, choiceCount: Int, durationDays: Int): Result<DynamicCreatedVote>'
+@@ -55,24 +57,30 @@
+     body=sub(body,'Result.success(users)','users');body=sub(body,'Result.failure(Exception(errorMsg))','throw Exception(errorMsg)')
+     members.append(wrap('suspend fun searchMentionUsers(keyword: String): Result<List<MentionSearchUser>>',body,False))
+     upload=fun(create,'uploadImage')
+-    a=upload.index('        if (bytes.isEmpty())');b=upload.rfind('\n    }')
++    a=upload.index('        val mimeType =');b=upload.rfind('\n    }')
+     body=upload[a:b]
+     body=sub(body,'context.contentResolver.getType(uri)','selected.second')
+     body=sub(body,'queryDisplayName(context, uri)','selected.first')
+-    body=sub(body,'CommentRepository.uploadCommentImage(','uploadEditorCommentImage(csrf,')
++    body=sub(body,'CommentRepository.uploadCommentImage(','uploadEditorCommentImageBody(csrf,')
++    body=sub(body,'            resolver = context.contentResolver,\n            uri = uri','            fileBody = selected.third')
+     body=sub(body,').getOrElse { throw it }',')')
+-    members.append('private suspend fun uploadEditorImage(csrf: String, selected: Triple<String?, String?, ByteArray>): DynamicCreatePic {\n        coroutineContext.ensureActive(); assertOwned()\n        val bytes = selected.third\n'+body+'\n}\n')
+-    body=block(fun(comment,'uploadCommentImage'),'try {')
+-    a=body.index('            val mediaType =');body=body[a:]
+-    body=sub(body,'            if (response.code == 0 && response.data != null) {\n                val data = response.data','            coroutineContext.ensureActive(); assertOwned()\n            val data = response.data\n            return if (response.code == 0 && data != null) {')
+-    # The original upload success shape is retained. Cancellation is handled by
+-    # existing Operations.result; logs cannot expose file names or user content.
++    members.append('private suspend fun uploadEditorImage(csrf: String, selected: Triple<String?, String?, okhttp3.RequestBody>): DynamicCreatePic {\n        coroutineContext.ensureActive(); assertOwned()\n'+body+'\n}\n')
++    # Stable byte overload is retained for the existing reply API. The editor's
++    # known-size selected files take the RequestBody path; one multipart algorithm.
++    byte_start,byte_end=identity.fun_span(comment,'uploadCommentImage')
++    byte_function=comment[byte_start:byte_end]
++    byte_mask=identity.masked(byte_function);byte_open=byte_mask.index('{')
++    byte_body=byte_function[byte_open+1:identity.balanced(byte_mask,byte_open,'{','}')-1].strip('\n')
++    byte_body=sub(byte_body,'        uploadCommentImagePart(','        return uploadEditorCommentImageBody(csrf,')
++    members.append('private suspend fun uploadEditorCommentImage(csrf: String, fileName: String, mimeType: String, bytes: ByteArray): ReplyPicture {\n        coroutineContext.ensureActive(); assertOwned()\n'+byte_body+'\n}\n')
++    body=block(fun(comment,'uploadCommentImagePart'),'try {')
++    a=body.index('            val part =');body=body[a:]
++    body=sub(body,'            if (response.code == 0 && response.data != null) {\n                val data = response.data','            coroutineContext.ensureActive(); assertOwned()\n            val uploadContext = coroutineContext\n            if (!withOwnedEditorImageAdmission { uploadContext.ensureActive() }) throw CancellationException("Dynamic upload account owner retired")\n            val data = response.data\n            return if (response.code == 0 && data != null) {')
+     body=sub(body,'                Result.success(\n                    ReplyPicture(','                ReplyPicture(')
+     body=sub(body,'                    )\n                )','                    )')
+-    a=body.index('                Logger.e(');b=body.index('                Result.failure(',a)
+-    body=body[:a]+body[b:]
++    body=identity.drop_logs(body)
+     body=sub(body,'Result.failure(Exception(response.message.ifEmpty { "图片上传失败 (${response.code})" }))','throw Exception(response.message.ifEmpty { "图片上传失败 (${response.code})" })')
+-    members.append('private suspend fun uploadEditorCommentImage(csrf: String, fileName: String, mimeType: String, bytes: ByteArray): ReplyPicture {\n        coroutineContext.ensureActive(); assertOwned()\n'+body+'\n}\n')
++    members.append('private suspend fun uploadEditorCommentImageBody(csrf: String, fileName: String, mimeType: String, fileBody: okhttp3.RequestBody): ReplyPicture {\n        coroutineContext.ensureActive(); assertOwned()\n'+body+'\n}\n')
+     reserve=fun(create,'resolveReserveAttachCard').replace('resolveReserveAttachCard','resolveEditorReserveAttachCard')
+     members.append(reserve)
+     header='// GENERATED original editor members; do not hand-maintain a second request algorithm.\n'
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt
+@@ -37,6 +37,13 @@
+     private val stillOwned: () -> Boolean = { true },
+     sharedEmotes: com.bilipai.desktop.ui.DesktopDynamicEmotes? = null,
+ ) {
++    private val editorImageOwner = repository.dynamicCacheSessionGuard.dynamicCacheOwner()
++    internal fun withOwnedEditorImageAdmission(block: () -> Unit): Boolean {
++        val owner = editorImageOwner ?: return false
++        return repository.dynamicCacheSessionGuard.withCurrentDynamicCacheOwner(owner) {
++            assertOwned(); block(); assertOwned()
++        }
++    }
+     private val mutex = Mutex()
+     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
+     private val ownerJar = repository.httpClient.cookieJar
+@@ -193,11 +200,11 @@
+     suspend fun getPublishedDynamicDetail(id: String): DynamicDetailResponse = read { dynamic.getDynamicDetail(id) }
+ // GENERATED original editor members; do not hand-maintain a second request algorithm.
+ // ORIGINAL app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt
+-// LF-normalized SHA-256: f204c21e0e5a21e83b5b2b20ce59d822f8ac74cc8f109663da408e250506a373
++// LF-normalized SHA-256: 2f85544e1e973dd0e7178077ef5c1f439b798a1d86b46701803adeb2a7c0364f
+ // ORIGINAL app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt
+-// LF-normalized SHA-256: 80fe4b7dc2d388641b3b5a5cf0cb287567274d91379816131fd1c354707cd998
+-
+-suspend fun publishDynamic(draft: DynamicPublishDraft, imageProvider: suspend (String) -> Triple<String?, String?, ByteArray>): Result<String> = result {
++// LF-normalized SHA-256: 4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820
++
++suspend fun publishDynamic(draft: DynamicPublishDraft, imageProvider: suspend (String) -> Triple<String?, String?, okhttp3.RequestBody>): Result<String> = result {
+     mutate { csrf ->
+             val mid = repository.requireAccount().mid
+             val pics = draft.imageUris.map { uriString ->
+@@ -241,7 +248,7 @@
+     }
+ }
+ 
+-suspend fun editDynamic(dynamicId: String, draft: DynamicPublishDraft, imageProvider: suspend (String) -> Triple<String?, String?, ByteArray>): Result<Unit> = result {
++suspend fun editDynamic(dynamicId: String, draft: DynamicPublishDraft, imageProvider: suspend (String) -> Triple<String?, String?, okhttp3.RequestBody>): Result<Unit> = result {
+     mutate { csrf ->
+             if (dynamicId.isBlank()) error("无法识别该动态")
+             val pics = draft.imageUris.map { uriString ->
+@@ -379,17 +386,15 @@
+     }
+ }
+ 
+-private suspend fun uploadEditorImage(csrf: String, selected: Triple<String?, String?, ByteArray>): DynamicCreatePic {
++private suspend fun uploadEditorImage(csrf: String, selected: Triple<String?, String?, okhttp3.RequestBody>): DynamicCreatePic {
+         coroutineContext.ensureActive(); assertOwned()
+-        val bytes = selected.third
+-        if (bytes.isEmpty()) error("图片内容为空")
+-        if (bytes.size > 15 * 1024 * 1024) error("图片过大（单张最大 15MB）")
+         val mimeType = selected.second ?: "image/jpeg"
+         val fileName = selected.first ?: "dyn_${System.currentTimeMillis()}.jpg"
+-        val uploaded = uploadEditorCommentImage(csrf,
++        // 流式上传:空/15MB 校验在 CommentRepository 内基于文件尺寸完成,不再整文件读入内存。
++        val uploaded = uploadEditorCommentImageBody(csrf,
+             fileName = fileName,
+             mimeType = mimeType,
+-            bytes = bytes
++            fileBody = selected.third
+         )
+         return DynamicCreatePic(
+             img_src = uploaded.imgSrc,
+@@ -401,11 +406,20 @@
+ 
+ private suspend fun uploadEditorCommentImage(csrf: String, fileName: String, mimeType: String, bytes: ByteArray): ReplyPicture {
+         coroutineContext.ensureActive(); assertOwned()
+-            val mediaType = mimeType.toMediaType()
+-            val fileBody = bytes.toRequestBody(mediaType)
++        val mediaType = mimeType.toMediaType()
++        return uploadEditorCommentImageBody(csrf,
++            fileName = fileName.ifBlank { "comment_image.jpg" },
++            mimeType = mimeType,
++            fileBody = bytes.toRequestBody(mediaType)
++        )
++    
++}
++
++private suspend fun uploadEditorCommentImageBody(csrf: String, fileName: String, mimeType: String, fileBody: okhttp3.RequestBody): ReplyPicture {
++        coroutineContext.ensureActive(); assertOwned()
+             val part = okhttp3.MultipartBody.Part.createFormData(
+                 "file_up",
+-                fileName.ifBlank { "comment_image.jpg" },
++                fileName,
+                 fileBody
+             )
+             val textMedia = "text/plain".toMediaType()
+@@ -421,6 +435,8 @@
+             )
+     
+             coroutineContext.ensureActive(); assertOwned()
++            val uploadContext = coroutineContext
++            if (!withOwnedEditorImageAdmission { uploadContext.ensureActive() }) throw CancellationException("Dynamic upload account owner retired")
+             val data = response.data
+             return if (response.code == 0 && data != null) {
+                 ReplyPicture(
+@@ -430,6 +446,7 @@
+                         imgSize = data.imgSize
+                     )
+             } else {
++
+                 throw Exception(response.message.ifEmpty { "图片上传失败 (${response.code})" })
+             }
+         
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt
+@@ -1,43 +1,130 @@
+ package com.bilipai.desktop.ui
+ 
++import com.bilipai.desktop.update.UpdateStorage
+ import kotlinx.coroutines.CancellationException
+ import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.currentCoroutineContext
+ import kotlinx.coroutines.ensureActive
+ import kotlinx.coroutines.withContext
++import okhttp3.MediaType
++import okhttp3.MediaType.Companion.toMediaType
++import okhttp3.RequestBody
++import okio.BufferedSink
++import java.io.InputStream
+ import java.nio.file.Files
++import java.nio.file.LinkOption.NOFOLLOW_LINKS
+ import java.nio.file.Path
+-import java.util.concurrent.ConcurrentHashMap
+-import java.util.concurrent.atomic.AtomicBoolean
+-import kotlin.coroutines.coroutineContext
++import java.nio.file.StandardOpenOption.READ
++import java.nio.file.attribute.BasicFileAttributes
++import kotlin.coroutines.CoroutineContext
+ 
+-/** Task-owned selected file handles only. Android's URI resolver is replaced by
+- * exact user-selected Paths; existing HTTP images are reused by original edit
+- * matching before this reader is called. No URL fetching or account data access.
++/** Windows mapping of stable ContentUriRequestBody's known-size, one-shot path.
++ * Only exact editor-selected Paths are admitted. Existing Operations supplies
++ * the actual SessionStore owner gate; this owner retires its open input streams.
+  */
+ internal class DesktopDynamicEditorSelectedImages(
+     private val stillOwned: () -> Boolean,
++    private val withOwnedAdmission: ((() -> Unit) -> Boolean),
+ ) : AutoCloseable {
+-    private val active = AtomicBoolean(true)
+-    private val selected = ConcurrentHashMap<String, Path>()
++    private val lock = Any()
++    private var active = true
++    private val selected = mutableMapOf<String, Path>()
++    private val streams = mutableSetOf<InputStream>()
+     private fun owned() {
+-        if (!active.get() || !stillOwned()) throw CancellationException("Dynamic editor owner retired")
++        if (!active || !stillOwned()) throw CancellationException("Dynamic editor owner retired")
++    }
++    private fun admit(context: CoroutineContext? = null, block: () -> Unit = {}) {
++        val admitted = withOwnedAdmission {
++            synchronized(lock) { context?.ensureActive(); owned(); block() }
++        }
++        if (!admitted) throw CancellationException("Dynamic editor account owner retired")
+     }
+     fun accept(paths: List<Path>): List<String> {
+-        owned()
+-        return paths.take(9).map { path ->
++        val result = mutableListOf<String>()
++        for (path in paths.take(9)) {
++            admit()
+             val actual = path.toRealPath()
+-            require(Files.isRegularFile(actual)) { "请选择图片文件" }
++            UpdateStorage.existingPathWithoutLinks(actual)
++            require(Files.isRegularFile(actual, NOFOLLOW_LINKS)) { "请选择图片文件" }
+             val uri = actual.toUri().toString()
+-            owned(); selected[uri] = actual
+-            uri
+-        }.also { owned() }
++            admit { selected[uri] = actual; result += uri }
++        }
++        admit()
++        return result
+     }
+-    suspend fun read(source: String): Triple<String?, String?, ByteArray> = withContext(Dispatchers.IO) {
+-        coroutineContext.ensureActive(); owned()
+-        val path = selected[source] ?: error("该图片不是当前编辑器所选文件")
+-        val bytes = Files.readAllBytes(path)
+-        coroutineContext.ensureActive(); owned()
+-        Triple(path.fileName.toString(), Files.probeContentType(path), bytes)
++    suspend fun read(source: String): Triple<String?, String?, RequestBody> {
++        // Capture the caller's publishing/editing job before the short IO child
++        // finishes. The HTTP writer later executes on an OkHttp thread.
++        val operationContext = currentCoroutineContext()
++        return withContext(Dispatchers.IO) {
++            var path: Path? = null
++            admit(operationContext) { path = selected[source] ?: error("该图片不是当前编辑器所选文件") }
++            val actual = checkNotNull(path)
++            var size = 0L
++            admit(operationContext) {
++                UpdateStorage.existingPathWithoutLinks(actual)
++                val attributes = Files.readAttributes(actual, BasicFileAttributes::class.java, NOFOLLOW_LINKS)
++                require(attributes.isRegularFile) { "请选择图片文件" }
++                size = attributes.size()
++                // Exact stable known-size branch of CommentRepository.uploadCommentImage.
++                if (size <= 0L) throw Exception("图片内容为空")
++                if (size > MAX_COMMENT_IMAGE_BYTES) throw Exception(IMAGE_TOO_LARGE_MESSAGE)
++            }
++            val mimeType = Files.probeContentType(actual)
++            val mediaType = (mimeType ?: "image/jpeg").toMediaType()
++            admit(operationContext)
++            Triple(actual.fileName.toString(), mimeType, SelectedPathRequestBody(source, actual, mediaType, size, operationContext))
++        }
+     }
+-    override fun close() { active.set(false); selected.clear() }
++    private inner class SelectedPathRequestBody(
++        private val source: String,
++        private val path: Path,
++        private val mediaType: MediaType,
++        private val contentLength: Long,
++        private val operationContext: CoroutineContext,
++    ) : RequestBody() {
++        override fun contentType(): MediaType = mediaType
++        override fun contentLength(): Long = contentLength
++        override fun isOneShot(): Boolean = true
++        override fun writeTo(sink: BufferedSink) {
++            var opened: InputStream? = null
++            admit(operationContext) {
++                check(selected[source] == path) { "该图片不是当前编辑器所选文件" }
++                UpdateStorage.existingPathWithoutLinks(path)
++                val attributes = Files.readAttributes(path, BasicFileAttributes::class.java, NOFOLLOW_LINKS)
++                require(attributes.isRegularFile && attributes.size() == contentLength) { "图片文件已改变，请重新选择" }
++                opened = Files.newInputStream(path, READ, NOFOLLOW_LINKS).also { streams += it }
++            }
++            val input = checkNotNull(opened)
++            try {
++                input.use {
++                    val buffer = ByteArray(64 * 1024)
++                    var copied = 0L
++                    while (true) {
++                        var count = -1
++                        admit(operationContext) { count = it.read(buffer) }
++                        if (count < 0) break
++                        copied += count
++                        require(copied <= contentLength && copied <= MAX_COMMENT_IMAGE_BYTES) { "图片文件已改变，请重新选择" }
++                        // One bounded slice is consumed under SessionStore ->
++                        // selected-owner ordering. Retirement admits no next slice.
++                        admit(operationContext) { sink.write(buffer, 0, count) }
++                    }
++                    admit(operationContext) { require(copied == contentLength) { "图片文件已改变，请重新选择" } }
++                }
++            } finally { synchronized(lock) { streams.remove(input) } }
++        }
++    }
++    override fun close() {
++        val pending = synchronized(lock) {
++            if (!active) return
++            active = false; selected.clear(); streams.toList().also { streams.clear() }
++        }
++        // Cleanup holds neither the selected-owner nor SessionStore monitor.
++        pending.forEach { runCatching { it.close() } }
++    }
++    private companion object {
++        const val MAX_COMMENT_IMAGE_BYTES = 15L * 1024 * 1024
++        const val IMAGE_TOO_LARGE_MESSAGE = "图片过大（单张最大 15MB）"
++    }
+ }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHost.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHost.kt
+@@ -16,7 +16,7 @@
+     session: DesktopDynamicCardSession,
+     imagePicker: (Int, (List<String>) -> Unit) -> Unit,
+     dateTimePicker: (Long, (Int, Int, Int, Int, Int) -> Unit) -> Unit,
+-    imageProvider: suspend (String) -> Triple<String?, String?, ByteArray>,
++    imageProvider: suspend (String) -> Triple<String?, String?, okhttp3.RequestBody>,
+     onDismiss: () -> Unit,
+     onPublished: (String) -> Unit,
+     onEdited: (String, DynamicPublishDraft) -> Unit,
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorRoot.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorRoot.kt
+@@ -76,10 +76,12 @@
+     root.request?.let { request -> key(root, request) {
+         val alive = remember { AtomicBoolean(true) }
+         val owned = remember(root, request) { { alive.get() && root.owns(request) } }
+-        val selected = remember(root, request) { DesktopDynamicEditorSelectedImages(owned) }
+         val operations = remember(root, request) {
+             // The modal must retire its own uploads without retiring post-publish verification.
+             root.operations.forEditor(owned)
++        }
++        val selected = remember(root, request, operations) {
++            DesktopDynamicEditorSelectedImages(owned, operations::withOwnedEditorImageAdmission)
+         }
+         val pickers = remember(selected, hostWindow) {
+             DesktopDynamicEditorWindowsPickers(selected, owned, { hostWindow }, root::show)

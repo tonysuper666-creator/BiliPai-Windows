@@ -1,0 +1,56 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/Logger.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "7e8934a67bd487cb1164fcd18013f7b5571df774",
+    "currentGitBlob": "7e8934a67bd487cb1164fcd18013f7b5571df774",
+    "sha256LfUtf8": "aa4af545b0c4a59fd7e57d5b2e64b3c1506b7732042a51d1643ca331a05a7c5e",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+    "currentGitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+    "sha256LfUtf8": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "9592a47d2f1a679a9bf434dc076035bf353c2e2c",
+    "currentGitBlob": "9592a47d2f1a679a9bf434dc076035bf353c2e2c",
+    "sha256LfUtf8": "dad065eba76c2bb51ce9c5775b4e8bf86f21b8230be0ee2606fe53fa77b64f25",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/CrashReporter.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "720dc2dd3b7102f688276fb5bce5fe2cc6b44a96",
+    "currentGitBlob": "720dc2dd3b7102f688276fb5bce5fe2cc6b44a96",
+    "sha256LfUtf8": "f8699ac6588654fd9fef96ce337b94ffe0d9270f63d46cb0f4e5eea3521735a6",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "ea9cb3af64dc6b179b915a57c962c78c15268226",
+    "currentGitBlob": "ea9cb3af64dc6b179b915a57c962c78c15268226",
+    "sha256LfUtf8": "056db2c4d628e38dbfc3b7be5e6dd6b21bd9ff97597f5385f666579a0924785e",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/performance/NativeExitTrace.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "070fd26b7103b095ea284a70153551060935b933",
+    "currentGitBlob": "070fd26b7103b095ea284a70153551060935b933",
+    "sha256LfUtf8": "8d0e38625f243072cd72d380cb6c7eb36ec3587deb194c497a7d9a10434be182",
+    "matchesPinnedCommit": true
+  }
+]

@@ -1,0 +1,11 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -1231,7 +1231,7 @@
+                                             runCatching { java.awt.Desktop.getDesktop().browse(uri) }
+                                         }
+                                     }, progressByBvid = progress, localPositionMs = { bvid -> ((history.firstOrNull { it.bvid == bvid }?.progressSeconds ?: 0) * 1000L) },
+-                                    locateBvid = playing.details?.takeIf { it.authorMid == userId }?.bvid ?: history.firstOrNull()?.bvid, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword)
++                                    locateBvid = playing.details?.takeIf { it.authorMid == userId }?.bvid ?: history.firstOrNull()?.bvid, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword, onImagePreviewFeedback = { error = it })
+                             }
+                             section in listOf(DesktopSection.DYNAMIC, DesktopSection.SEARCH, DesktopSection.MESSAGES, DesktopSection.ARTICLE, DesktopSection.NOTES) ->
+                                 CommunityContentScreen(when(section) {

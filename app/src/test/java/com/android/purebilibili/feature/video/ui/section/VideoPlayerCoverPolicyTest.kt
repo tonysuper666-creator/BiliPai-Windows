@@ -6,6 +6,8 @@ import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class VideoPlayerCoverPolicyTest {
@@ -226,6 +228,63 @@ class VideoPlayerCoverPolicyTest {
                 hasStartedSmoothReveal = true,
             )
         )
+    }
+
+    @Test
+    fun surfaceRevealSettling_keepsOpaqueCoverUnderlayUntilVideoIsOpaque() {
+        // 揭开进行中（视频 surface 淡入未完成）封面必须保持不透明垫底：
+        // 视频在封面之上淡入，封面同步淡出会让两层半透明叠加透出黑底（亮度凹陷）。
+        assertTrue(
+            shouldHoldEntryCoverUnderlay(
+                isFirstFrameRendered = true,
+                forceCoverDuringReturnAnimation = false,
+                shouldKeepCoverForManualStart = false,
+                hasStartedSmoothReveal = true,
+                isSurfaceRevealSettling = true,
+            )
+        )
+        assertTrue(
+            shouldShowCoverImage(
+                isFirstFrameRendered = true,
+                forceCoverDuringReturnAnimation = false,
+                shouldKeepCoverForManualStart = false,
+                hasStartedSmoothReveal = true,
+                isSurfaceRevealSettling = true,
+            )
+        )
+        // 揭开完全落定后移除垫底（视频已完全不透明，移除不可见）。
+        assertFalse(
+            shouldHoldEntryCoverUnderlay(
+                isFirstFrameRendered = true,
+                forceCoverDuringReturnAnimation = false,
+                shouldKeepCoverForManualStart = false,
+                hasStartedSmoothReveal = true,
+                isSurfaceRevealSettling = false,
+            )
+        )
+    }
+
+    @Test
+    fun coverRevealSettleDelay_coversSurfaceRevealPlusBuffer() {
+        val delay = resolveVideoPlayerCoverRevealSettleDelayMillis(
+            surfaceRevealDurationMillis = 220
+        )
+        assertTrue(delay > 220L, "settle delay must outlast the surface reveal fade, got $delay")
+    }
+
+    @Test
+    fun coverRevealPolish_desaturatesDuringBlend_withoutTouchingLuminance() {
+        assertEquals(
+            1.0f,
+            resolveVideoPlayerCoverRevealSaturation(progress = 1f),
+        )
+        val start = resolveVideoPlayerCoverRevealSaturation(progress = 0f)
+        assertTrue(start < 1f && start > 0.8f, "start saturation must be a gentle desaturation, got $start")
+        val mid = resolveVideoPlayerCoverRevealSaturation(progress = 0.5f)
+        assertTrue(mid > start && mid < 1f, "saturation must ramp monotonically, got $mid")
+        // 落定后不挂 colorFilter（封面已被视频完全盖住，零开销）。
+        assertNull(resolveVideoPlayerCoverRevealColorFilter(progress = 1f))
+        assertNotNull(resolveVideoPlayerCoverRevealColorFilter(progress = 0.5f))
     }
 
     @Test

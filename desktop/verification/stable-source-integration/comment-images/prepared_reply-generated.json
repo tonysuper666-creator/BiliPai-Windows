@@ -1,0 +1,66 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalReplyComponents.kt",
+    "sha256Bytes": "761b336ff007821d34489d5b9b7db96bc3e27f767998ca0cc01c9d9f025c16da"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalSubReplyDetailComponents.kt",
+    "sha256Bytes": "97e4d94340e12d3ac6d0a51cb537bf68bd8d0c419814142a71f15633ab7f2e01"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalReplyCommentImageSpec.kt",
+    "sha256Bytes": "66ee63530154e4951451f4abbf4de67a93ddc8fab45c3625e053555c0f8d45fe"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalReplyImageRenderer.kt",
+    "sha256Bytes": "0866b1077fc93ff5325576f2b96140ca9d54507dab1e14cefb282ea978e32280"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicInlineReplyUi.kt",
+    "sha256Bytes": "8f91a13f726d87f70d9f2d04941cb138d132f1469c1cae858e8ca84e17494dc0"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalReplyReportReasonDialog.kt",
+    "sha256Bytes": "15ea696907c032994162e84b4a25df1c572f4d86bc5307f1faed180e36b7ff63"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalReplyLoadingSkeletons.kt",
+    "sha256Bytes": "159cfcdbba32b227ec9dd63317d327c067544787395c3ca26f0f59a5ffed9958"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalReplySkeletonBreathing.kt",
+    "sha256Bytes": "0f403f52431998f06e91695469b470ec0466c701485be118353e731a0664e36d"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\core\\store\\DesktopOriginalReplySkeletonSettingsStore.kt",
+    "sha256Bytes": "a04fbc6a5094b14cb0173d3fd33e2182058cbf75589a57dd515a267997711cd6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\feature\\home\\components\\DesktopOriginalReplyCapsuleShape.kt",
+    "sha256Bytes": "f482a95bd997d766859dcf5650192420c5d4319f66b052e350e00b3dd55a5673"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\core\\ui\\common\\DesktopOriginalReplyClipboard.kt",
+    "sha256Bytes": "2a767ac4af4a5f097470ab0f6c9e475cb35fecc0d96a37a2951f75a449808438"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\feature\\aicu\\DesktopOriginalReplyAicuNavigation.kt",
+    "sha256Bytes": "64ab4e1518681db26626551fcdd4bf0a25c2f6b472afef140756b673a040f26c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicCommentPanel.kt",
+    "sha256Bytes": "ff65dd544496f64f2da29117c5e0716138734ff5251db509401860a9ba2ca67c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicThreadContent.kt",
+    "sha256Bytes": "2622aca6fcda5c7520e094a707debca4c4c4fd3be5a7348dc6f7357a4b8d9c65"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\android\\purebilibili\\core\\store\\DesktopOriginalReplySettings.kt",
+    "sha256Bytes": "1858d62e31d0282561fffe7a7390f2cc55742dbed854860b70613966357aec2a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\generated\\reply\\com\\bilipai\\desktop\\ui\\DesktopOriginalReplyFailedCaptureDissolve.kt",
+    "sha256Bytes": "4864474c76c50b581c304a4c789d2b8be1edbfce0bcc09112af780504fa70c5f"
+  }
+]

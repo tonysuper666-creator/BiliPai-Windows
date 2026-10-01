@@ -1,0 +1,11 @@
+{
+  "schema": "stable-editor-ui-candidate-install-v1",
+  "candidateInstalled": true,
+  "mainInstalled": false,
+  "path": "desktop/tools/extract-upstream-dynamic-editor.py",
+  "sha256Lf": "adf02e645c163afc52ba2b63db1f2f2564a1f68cbd58dc8d37590d766cfadac7",
+  "fullOriginalComposerBodyRetained": true,
+  "wholeStableCompiled": false,
+  "stableRuntimeAccepted": false,
+  "preparedAgentEvidenceAwaitingFreeze": true
+}

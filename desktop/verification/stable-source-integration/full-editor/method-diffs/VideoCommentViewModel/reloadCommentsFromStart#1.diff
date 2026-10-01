@@ -1,0 +1,10 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt:reloadCommentsFromStart#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt:reloadCommentsFromStart#1
+@@ -2,6 +2,7 @@
+         allReplies = emptyList()
+         _commentState.value = _commentState.value.copy(
+             replies = emptyList<ReplyItem>().toImmutableList(),
++            voteCard = null,
+             nextPage = 1,
+             isRepliesEnd = false,
+             isRepliesLoading = false,

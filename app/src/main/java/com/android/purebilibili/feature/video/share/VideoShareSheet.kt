@@ -27,9 +27,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.outlined.MoreHoriz
+import androidx.compose.material.icons.outlined.People
 import com.android.purebilibili.core.ui.components.AppIcon
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
 import androidx.compose.material3.rememberModalBottomSheetState
 import com.android.purebilibili.core.ui.components.AppText
 import androidx.compose.runtime.Composable
@@ -55,6 +57,7 @@ import com.android.purebilibili.core.ui.components.AppSegmentOption
 import com.android.purebilibili.core.ui.LocalAppThemeConfig
 import com.android.purebilibili.feature.home.components.BottomBarLiquidSegmentedControl
 import com.android.purebilibili.core.ui.common.copyPlainTextToClipboard
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
 @Composable
@@ -82,7 +85,13 @@ internal fun VideoShareSheet(
     val context = LocalContext.current
     val shareScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val isLandscape = isLandscapeVideoShare()
+    val sheetBounce = rememberVideoShareSheetBounce(sheetState, isLandscape)
     var sharingTarget by remember { mutableStateOf<VideoShareTarget?>(null) }
+    var switchingSheet by remember { mutableStateOf(false) }
+    var showFollowingPicker by remember { mutableStateOf(false) }
+    var showMoreTargets by remember { mutableStateOf(false) }
+    var moreShareMedia by remember { mutableStateOf<VideoShareCoverFile?>(null) }
     var shareStyle by remember { mutableStateOf(VideoShareStyle.LINK) }
     val neutralIconBackground = MaterialTheme.colorScheme.surfaceContainerHighest
     val neutralIconContent = MaterialTheme.colorScheme.onSurface
@@ -93,6 +102,14 @@ internal fun VideoShareSheet(
         )
     }
     val items = listOf(
+        VideoShareSheetItem(
+            target = VideoShareTarget.BILIBILI_FRIENDS,
+            label = "B 站好友",
+            iconText = null,
+            iconVector = Icons.Outlined.People,
+            backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        ),
         VideoShareSheetItem(
             target = VideoShareTarget.WECHAT,
             label = "微信",
@@ -127,9 +144,43 @@ internal fun VideoShareSheet(
         )
     )
 
+    if (showFollowingPicker) {
+        VideoShareToFollowingDialog(
+            payload = payload,
+            onDismiss = onDismiss,
+            onSuccess = { count ->
+                Toast.makeText(context, "已发送给 $count 位 B 站好友", Toast.LENGTH_SHORT).show()
+            },
+        )
+        return
+    }
+    if (showMoreTargets) {
+        VideoShareMoreTargetsSheet(
+            shareMedia = moreShareMedia,
+            onDismiss = onDismiss,
+            onTargetClick = { target ->
+                context.startTargetedVideoShare(
+                    payload = payload,
+                    packageName = target.packageName,
+                    appName = target.label,
+                    shareMedia = moreShareMedia,
+                    preferredActivityClassName = target.activityClassName,
+                )
+                onDismiss()
+            },
+            onSystemChooserClick = {
+                context.startMoreVideoShare(payload, moreShareMedia)
+                onDismiss()
+            },
+        )
+        return
+    }
+
     AppModalBottomSheet(
-        onDismissRequest = onDismiss,
+        onDismissRequest = { if (!switchingSheet && sharingTarget == null) onDismiss() },
         modifier = modifier,
+        presentationOverride = videoSharePresentation(isLandscape),
+        sheetSurfaceModifier = sheetBounce,
         sheetState = sheetState,
         dragHandle = null
     ) {
@@ -185,6 +236,14 @@ internal fun VideoShareSheet(
                         item = item,
                         onClick = {
                             when (item.target) {
+                                VideoShareTarget.BILIBILI_FRIENDS -> {
+                                    if (sharingTarget != null) return@VideoShareSheetItemView
+                                    switchingSheet = true
+                                    shareScope.launch {
+                                        hideVideoShareSheet(sheetState)
+                                        showFollowingPicker = true
+                                    }
+                                }
                                 VideoShareTarget.WECHAT,
                                 VideoShareTarget.QQ -> {
                                     val packageName = item.target.packageName ?: return@VideoShareSheetItemView
@@ -223,6 +282,7 @@ internal fun VideoShareSheet(
                                     if (sharingTarget != null) return@VideoShareSheetItemView
                                     sharingTarget = item.target
                                     shareScope.launch {
+                                        var openedLocalTargets = false
                                         try {
                                             val shareMedia = prepareVideoShareMedia(
                                                 context = context,
@@ -231,13 +291,16 @@ internal fun VideoShareSheet(
                                                 progressMessage = "正在生成分享卡片",
                                             )
                                             hideVideoShareSheet(sheetState)
-                                            context.startMoreVideoShare(
-                                                payload = payload,
-                                                shareMedia = shareMedia,
-                                            )
+                                            if (isLandscape) {
+                                                moreShareMedia = shareMedia
+                                                showMoreTargets = true
+                                                openedLocalTargets = true
+                                            } else {
+                                                context.startMoreVideoShare(payload, shareMedia)
+                                            }
                                         } finally {
                                             sharingTarget = null
-                                            onDismiss()
+                                            if (!openedLocalTargets) onDismiss()
                                         }
                                     }
                                 }
@@ -278,7 +341,7 @@ private data class VideoShareSheetItem(
     val iconText: String?,
     val iconVector: ImageVector?,
     val backgroundColor: Color,
-    val contentColor: Color
+    val contentColor: Color,
 )
 
 @Composable
@@ -317,12 +380,21 @@ private fun VideoShareSheetItemView(
                     modifier = Modifier.size(58.dp),
                 )
             } else if (item.iconVector != null) {
-                AppIcon(
-                    imageVector = item.iconVector,
-                    contentDescription = item.label,
-                    modifier = Modifier.size(28.dp),
-                    tint = item.contentColor
-                )
+                if (item.target == VideoShareTarget.BILIBILI_FRIENDS) {
+                    Icon(
+                        imageVector = item.iconVector,
+                        contentDescription = item.label,
+                        modifier = Modifier.size(28.dp),
+                        tint = item.contentColor,
+                    )
+                } else {
+                    AppIcon(
+                        imageVector = item.iconVector,
+                        contentDescription = item.label,
+                        modifier = Modifier.size(28.dp),
+                        tint = item.contentColor,
+                    )
+                }
             } else {
                 AppText(
                     text = item.iconText.orEmpty(),
@@ -343,13 +415,17 @@ private fun VideoShareSheetItemView(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-private suspend fun hideVideoShareSheet(
+internal suspend fun hideVideoShareSheet(
     sheetState: androidx.compose.material3.SheetState
 ) {
-    runCatching {
+    try {
         if (sheetState.isVisible) {
             sheetState.hide()
         }
+    } catch (cancelled: CancellationException) {
+        throw cancelled
+    } catch (_: Exception) {
+        // A disappearing host can make hide fail; the caller still completes its action.
     }
 }
 
@@ -380,10 +456,11 @@ private fun Context.startTargetedVideoShare(
     packageName: String,
     appName: String,
     shareMedia: VideoShareCoverFile?,
+    preferredActivityClassName: String? = null,
 ) {
     try {
         val mimeType = shareMedia?.mimeType ?: "text/plain"
-        val activityClassName = resolveShareActivityClassName(
+        val activityClassName = preferredActivityClassName ?: resolveShareActivityClassName(
             packageName = packageName,
             mimeType = mimeType,
         )

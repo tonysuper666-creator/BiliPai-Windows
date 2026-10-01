@@ -1,0 +1,47 @@
+{
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceCandidates": [
+    {
+      "path": "desktop/tools/extract-upstream-diagnostics.py",
+      "baseLfSha256": "b8a4a4ee08eceee4edf0af28c5d86087b03e7455e9d297dbce5dd40a0d3c518f",
+      "candidateLfSha256": "5801bc6b79824caa5c01577eedf1a54997b6317f822c5a2d7e6847c5b7f3a29c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "baseLfSha256": "2d69ecf0766b7c9c7207f5cf3e8f30396e1364aaae7ee348591c3abaeb87383d",
+      "candidateLfSha256": "bca1f195aa5f5fd202cffb759ef208b9715e7f5a834363cce475db48f181f3ab"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "baseLfSha256": "1bc550ca4b2ddd145710cb6601e530b6040d620ece7b094a8f2c23f4b53af310",
+      "candidateLfSha256": "4cfc9d0f889f4334c292cb12b2a0e5f7441c73df2999bf7504726a058a3b2756"
+    }
+  ],
+  "registryAppendRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt",
+      "sha256": "056db2c4d628e38dbfc3b7be5e6dd6b21bd9ff97597f5385f666579a0924785e",
+      "features": [
+        "settings-local-diagnostics-parity"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/performance/NativeExitTrace.kt",
+      "sha256": "8d0e38625f243072cd72d380cb6c7eb36ec3587deb194c497a7d9a10434be182",
+      "features": [
+        "settings-local-diagnostics-parity"
+      ],
+      "mode": "policy-extract"
+    }
+  ],
+  "baselineManifestSha256": "b92f804839c0fca61fd31bc1ed1bfc89794b9bd0416b820105d442e9031c47fe",
+  "preparedSourceShadowManifestSha256": "37562b8bee8d67266cc2d9b36b8a7bc1a4c5d5f4b45e1caf0f10dcae5ce9cd2e",
+  "generatedCounts": {
+    "diagnostics": 8,
+    "tabs": 15,
+    "plugins": 34
+  },
+  "MainWrittenByThisLane": false,
+  "sharedGradle": false
+}

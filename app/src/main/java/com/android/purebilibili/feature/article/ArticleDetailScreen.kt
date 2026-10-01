@@ -55,6 +55,7 @@ import com.android.purebilibili.core.util.responsiveContentWidth
 import com.android.purebilibili.data.repository.ArticleDetailUiModel
 import com.android.purebilibili.data.repository.ArticleRepository
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewDialog
+import com.android.purebilibili.feature.dynamic.components.prepareImagePreviewSourceTransition
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
 import com.android.purebilibili.core.ui.components.appDesktopFocusableItemVisuals
@@ -238,7 +239,12 @@ private fun ArticleDetailContent(
         .onGloballyPositioned { coordinates ->
             bannerSourceRect = coordinates.boundsInWindow()
         }
-        .clickable(enabled = previewImages.isNotEmpty()) {
+        .clickable(
+            interactionSource = null,
+            indication = null,
+            enabled = previewImages.isNotEmpty(),
+        ) {
+            prepareImagePreviewSourceTransition(bannerSourceRect)
             imagePreviewRequest = ArticleImagePreviewRequest(
                 images = previewImages,
                 initialIndex = 0,
@@ -465,11 +471,12 @@ private fun ArticleDetailContent(
                             .onGloballyPositioned { coordinates ->
                                 bodyImageSourceRects[index] = coordinates.boundsInWindow()
                             }
-                            .clickable {
+                            .clickable(interactionSource = null, indication = null) {
                                 val payload = resolveArticleImagePreviewPayload(
                                     blocks = article.blocks,
                                     tappedBlockIndex = index
                                 ) ?: return@clickable
+                                prepareImagePreviewSourceTransition(bodyImageSourceRects[index])
                                 imagePreviewRequest = ArticleImagePreviewRequest(
                                     images = previewImages,
                                     initialIndex = payload.initialIndex + bodyImageIndexOffset,

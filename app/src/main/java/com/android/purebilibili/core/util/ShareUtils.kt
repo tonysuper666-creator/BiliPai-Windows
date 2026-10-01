@@ -101,6 +101,29 @@ object ShareUtils {
         }
     }
 
+    /**
+     * 分享合集/列表页
+     *
+     * @param mid UP主 uid（合集页挂在空间频道下）
+     * @param seasonId 合集 id (ugc_season.id)
+     */
+    fun shareCollection(context: Context, title: String, mid: Long, seasonId: Long) {
+        val url = "https://space.bilibili.com/$mid/channel/collectiondetail?sid=$seasonId"
+        val shareText = "$title\n$url"
+
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, title)
+            putExtra(Intent.EXTRA_TEXT, shareText)
+        }
+
+        try {
+            context.startActivity(Intent.createChooser(intent, "分享合集"))
+        } catch (e: Exception) {
+            Logger.e("ShareUtils", "分享合集失败: ${e.message}")
+        }
+    }
+
     fun shareText(
         context: Context,
         subject: String,

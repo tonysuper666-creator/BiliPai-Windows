@@ -21,6 +21,9 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
+import android.os.SystemClock
+import androidx.compose.foundation.ComposeFoundationFlags
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.profileinstaller.ProfileInstaller
 import com.android.purebilibili.BuildConfig
 import coil3.ImageLoader
@@ -32,6 +35,9 @@ import coil3.memory.MemoryCache
 import coil3.request.CachePolicy
 import com.android.purebilibili.core.coroutines.AppScope
 import com.android.purebilibili.core.lifecycle.BackgroundManager
+import com.android.purebilibili.core.lifecycle.BACKGROUND_IMAGE_TRIM_DELAY_MS
+import com.android.purebilibili.core.lifecycle.resolveBackgroundImageCacheTrimTargetBytes
+import com.android.purebilibili.core.lifecycle.shouldTrimImageCacheAfterBackgroundDelay
 import com.android.purebilibili.core.network.NetworkModule
 import com.android.purebilibili.core.network.WbiKeyManager
 import com.android.purebilibili.core.plugin.PluginManager
@@ -92,6 +98,46 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
     private var _imageLoader: ImageLoader? = null
     private var launcherIconUiModeSnapshot: Int? = null
 
+    private val backgroundImageTrimHandler by lazy { Handler(Looper.getMainLooper()) }
+    private var enteredBackgroundForImageTrimAtMs = 0L
+    private val delayedBackgroundImageTrim = Runnable {
+        val miniPlayer = com.android.purebilibili.feature.video.player.MiniPlayerManager.getInstanceOrNull()
+        if (!StartupRecovery.isRecoveryMode && shouldTrimImageCacheAfterBackgroundDelay(
+                isInBackground = BackgroundManager.isInBackground,
+                isPipActiveOrPending = miniPlayer?.shouldKeepPlaybackForPipTransition() == true,
+                backgroundElapsedMs = SystemClock.elapsedRealtime() - enteredBackgroundForImageTrimAtMs,
+            )
+        ) {
+            // Keep a small warm cache for return-to-home. This never stops playback, clears
+            // a video surface, or discards the current wallpaper palette.
+            _imageLoader?.memoryCache?.apply {
+                trimToSize(resolveBackgroundImageCacheTrimTargetBytes(size, BACKGROUND_IMAGE_TRIM_DELAY_MS))
+            }
+            com.android.purebilibili.feature.home.components.cards.VideoCardCoverColorStore.trimToSize(16)
+            com.android.purebilibili.feature.home.components.cards.WallpaperPaletteStore.clearCache()
+            Logger.d(PureApplicationRuntimeConfig.TAG, "Sustained background: trimmed image cache to 8 MiB")
+        }
+    }
+    private val backgroundImageTrimListener = object : BackgroundManager.BackgroundStateListener {
+        override fun onEnterBackground() {
+            enteredBackgroundForImageTrimAtMs = SystemClock.elapsedRealtime()
+            backgroundImageTrimHandler.removeCallbacks(delayedBackgroundImageTrim)
+            // A cached process may be frozen before the delayed task can execute. Apply
+            // the light budget synchronously while the process is still running.
+            val miniPlayer = com.android.purebilibili.feature.video.player.MiniPlayerManager.getInstanceOrNull()
+            if (!StartupRecovery.isRecoveryMode && miniPlayer?.shouldKeepPlaybackForPipTransition() != true) {
+                _imageLoader?.memoryCache?.apply {
+                    trimToSize(resolveBackgroundImageCacheTrimTargetBytes(size, 0L))
+                }
+            }
+            backgroundImageTrimHandler.postDelayed(delayedBackgroundImageTrim, BACKGROUND_IMAGE_TRIM_DELAY_MS)
+        }
+
+        override fun onEnterForeground() {
+            backgroundImageTrimHandler.removeCallbacks(delayedBackgroundImageTrim)
+        }
+    }
+
     private val telemetryListener by lazy {
         PureApplicationRuntimeConfig.createTelemetryBackgroundStateListener()
     }
@@ -130,9 +176,9 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
                     .maxSizeBytes(diskCacheBytes)
                     .build()
             }
-            // 保留本地文件更新失效策略与原图请求，避免长图/预览雪碧图被默认 4096px 上限截小。
+            // 显示用位图必须低于 Android Canvas 的单次绘制上限。长图与雪碧图按比例采样。
             .addLastModifiedToFileCacheKey(true)
-            .maxBitmapSize(coil3.size.Size.ORIGINAL)
+            .maxBitmapSize(coil3.size.Size(4608, 4608))
             //  优先使用缓存
             .memoryCachePolicy(CachePolicy.ENABLED)
             .diskCachePolicy(CachePolicy.ENABLED)
@@ -143,8 +189,14 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
             .also { _imageLoader = it }  // 保存引用
     }
     
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate() {
         instance = this
+
+        // Compose 1.13's staggered-grid cache-window prefetch can assign an invalid lane
+        // after rapid scroll-to-top and subsequent scrolling. Keep the established prefetcher
+        // until the upstream cache-window path is safe for this feed.
+        ComposeFoundationFlags.isUsingCacheWindowInStaggeredGrids = false
 
         // Install the local crash path before theme, StrictMode, or any other startup work. This
         // ensures even an early initialization exception has a private snapshot for feedback.
@@ -156,8 +208,16 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
             return
         }
         Logger.init(this)
-        com.android.purebilibili.core.performance.Android17Diagnostics
-            .persistLatestAbnormalExitSnapshot(this)
+        // 预热启动任务(wbi_key_restore)要在主线程同步读的 SP 文件:
+        // IO 线程提前触发磁盘加载,主线程执行恢复时通常已命中内存缓存。
+        AppScope.ioScope.launch {
+            com.android.purebilibili.core.network.WbiKeyManager.prewarmStorage(this@PureApplication)
+        }
+        // 系统退出 Trace 的读取与脱敏可能很慢，不能阻塞 Application.onCreate。
+        AppScope.ioScope.launch {
+            com.android.purebilibili.core.performance.Android17Diagnostics
+                .persistLatestAbnormalExitSnapshot(this@PureApplication)
+        }
 
         // StrictMode 必须装在任何业务代码之前，否则紧接着的 applyThemePreference()
         // 里那次同步偏好读取就漏检了——而那恰恰是最该被看见的一处。
@@ -165,15 +225,9 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
 
         //  [关键] 必须在 super.onCreate() 之前设置！
         // 这样系统在初始化时就能读取到正确的夜间模式配置
-        // 新用户默认设置必须先于主题读取应用，避免首屏短暂显示旧默认值。
-        // 仅首次运行（标记缺失）才同步等待应用内置默认值；其余启动只做一次标记
-        // 读取，不再 parked 主线程等待 IO 派发。
-        if (!SettingsShareService.hasBundledDefaultMarker(this)) {
-            runBlocking(Dispatchers.IO) {
-                SettingsShareService(this@PureApplication)
-                    .applyBundledDefaultIfNeeded()
-            }
-        }
+        // 新用户内置默认值不再阻塞主线程:profile 不含 theme_mode/语言键,
+        // applyThemePreference 不依赖它;应用动作移入 initializeNormalRuntime 的
+        // 后台协程,并与首页视觉默认值迁移串行,保证内置 profile 先落地。
         applyThemePreference()
         
         super.onCreate()
@@ -198,12 +252,18 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
 
         // 启动即确保首页视觉默认值生效：底栏悬浮 + 液态玻璃 + 顶部模糊
         // 冷启动路径不阻塞主线程，迁移改为后台执行。
+        // 首次运行的内置默认 profile 在同一协程内先于该迁移应用（串行），
+        // 保证最终生效的是内置 profile 的取值,与旧的同步路径语义一致。
         if (PureApplicationRuntimeConfig.shouldBlockStartupForHomeVisualDefaultsMigration()) {
             runBlocking(Dispatchers.IO) {
+                SettingsShareService(this@PureApplication)
+                    .applyBundledDefaultIfNeeded()
                 SettingsManager.ensureHomeVisualDefaults(this@PureApplication)
             }
         } else {
             AppScope.ioScope.launch {
+                SettingsShareService(this@PureApplication)
+                    .applyBundledDefaultIfNeeded()
                 SettingsManager.ensureHomeVisualDefaults(this@PureApplication)
             }
         }
@@ -266,7 +326,10 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
             "token_manager_init" -> TokenManager.init(this)
             "wbi_key_restore" -> WbiKeyManager.restoreFromStorage(this)
             "video_repository_init" -> com.android.purebilibili.data.repository.VideoRepository.init(this)
-            "background_manager_init" -> BackgroundManager.init(this)
+            "background_manager_init" -> {
+                BackgroundManager.init(this)
+                BackgroundManager.addListener(backgroundImageTrimListener)
+            }
             "player_settings_cache_init" -> com.android.purebilibili.core.store.PlayerSettingsCache.init(this)
             "notification_channel_init" -> createNotificationChannel()
             "message_notification_sync" -> AppScope.ioScope.launch {

@@ -41,15 +41,18 @@ internal fun VideoCardTransitionHostDepthLayer(
     sourceBoundsProvider: () -> Rect? = { null },
     modifier: Modifier = Modifier,
 ) {
-    if (!enabled) return
+    val contentLayer = snapshotHandle.contentLayer
+    val snapshotState = snapshotHandle.state
+    if (!enabled) {
+        SideEffect { snapshotHandle.clearRenderEffect() }
+        return
+    }
     val view = LocalView.current
     var deviceCornerRadiusPx by remember { mutableFloatStateOf(0f) }
     SideEffect {
         deviceCornerRadiusPx = resolveDeviceDisplayCornerRadiusPx(view.rootWindowInsets)
+        if (!realtimeBlurEnabledProvider()) snapshotHandle.clearRenderEffect()
     }
-    val contentLayer = snapshotHandle.contentLayer
-    val snapshotState = snapshotHandle.state
-
     Box(
         modifier = modifier
             .fillMaxSize()

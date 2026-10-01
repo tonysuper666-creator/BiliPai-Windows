@@ -34,6 +34,12 @@ internal fun resolveFloatingDockIconAndTextLabelFontSize(fontScale: Float = 1f):
 internal fun resolveFloatingDockTextOnlyLabelFontSize(fontScale: Float = 1f): TextUnit =
     dockLabelSp(baseSp = 15f, fontScale = fontScale)
 
+/** Keep top-dock line boxes close to their rendered glyphs so icon+label content fits its slot. */
+internal fun resolveFloatingDockLabelLineHeight(
+    showIcon: Boolean,
+    fontScale: Float = 1f,
+): TextUnit = dockLabelSp(baseSp = if (showIcon) 14f else 19f, fontScale = fontScale)
+
 internal fun resolveFloatingDockLabelFontSize(
     showIcon: Boolean,
     showText: Boolean,

@@ -307,6 +307,13 @@ class DanmakuManager private constructor(
             applyConfigToController("filter_changed")
         }
 
+    var weightFilterLevel: Int
+        get() = config.weightFilterLevel
+        set(value) {
+            config.weightFilterLevel = value.coerceIn(0, 10)
+            applyConfigToController("filter_changed")
+        }
+
     internal fun updateFaceOcclusion(faceRegions: List<FaceOcclusionRegion>) {
         if (!config.smartOcclusionEnabled) return
 
@@ -346,7 +353,7 @@ class DanmakuManager private constructor(
                 }
                 if (rebuild == null) return@collect
 
-                withContext(Dispatchers.Main) {
+                withContext(Dispatchers.Main.immediate) {
                     if (!shouldApplyDanmakuLoadResult(
                             expectedCid = expectedCid,
                             expectedGeneration = expectedGeneration,
@@ -715,6 +722,7 @@ class DanmakuManager private constructor(
             settings.allowBottom &&
             settings.allowColorful &&
             settings.allowSpecial &&
+            config.weightFilterLevel <= 0 &&
             blockedRuleMatchers.isEmpty()
         ) {
             return Pair(standardDanmakuList, advancedDanmakuList)
@@ -733,6 +741,10 @@ class DanmakuManager private constructor(
                 isVipGradualColor = textData.isVipGradualColor
             )
             if (!typeVisible) {
+                filteredStandardCount++
+                return@filter false
+            }
+            if (config.weightFilterLevel > 0 && !textData.isSelf && textData.weight < config.weightFilterLevel) {
                 filteredStandardCount++
                 return@filter false
             }
@@ -937,7 +949,8 @@ class DanmakuManager private constructor(
             allowColorful = settings.allowColorful,
             allowSpecial = settings.allowSpecial,
             blockedRules = settings.blockRules,
-            smartOcclusion = settings.smartOcclusion
+            smartOcclusion = settings.smartOcclusion,
+            weightFilterLevel = settings.weightFilterLevel
         )
     }
 
@@ -963,7 +976,8 @@ class DanmakuManager private constructor(
         allowColorful: Boolean = config.allowColorful,
         allowSpecial: Boolean = config.allowSpecial,
         blockedRules: List<String> = config.blockedRules,
-        smartOcclusion: Boolean = config.smartOcclusionEnabled
+        smartOcclusion: Boolean = config.smartOcclusionEnabled,
+        weightFilterLevel: Int = config.weightFilterLevel
     ) {
         val mergeChanged = config.mergeDuplicates != mergeDuplicates ||
             config.duplicateMergeWindowMs != duplicateMergeWindowMs ||
@@ -975,6 +989,7 @@ class DanmakuManager private constructor(
                 config.allowBottom != allowBottom ||
                 config.allowColorful != allowColorful ||
                 config.allowSpecial != allowSpecial ||
+                config.weightFilterLevel != weightFilterLevel ||
                 blockedRulesChanged
         val occlusionChanged = config.smartOcclusionEnabled != smartOcclusion
         
@@ -998,6 +1013,7 @@ class DanmakuManager private constructor(
         config.allowBottom = allowBottom
         config.allowColorful = allowColorful
         config.allowSpecial = allowSpecial
+        config.weightFilterLevel = weightFilterLevel.coerceIn(0, 10)
         config.blockedRules = blockedRules
         config.smartOcclusionEnabled = smartOcclusion
         if (blockedRulesChanged) {
@@ -1747,7 +1763,7 @@ class DanmakuManager private constructor(
                 throw e
             } catch (e: Exception) {
                 Log.e(TAG, " Failed to load danmaku for cid=$cid: ${e.message}", e)
-                withContext(Dispatchers.Main) {
+                withContext(Dispatchers.Main.immediate) {
                     if (shouldApplyDanmakuLoadResult(cid, requestGeneration, cachedCid, loadGeneration)) {
                         isLoading = false
                     }
@@ -1839,7 +1855,12 @@ class DanmakuManager private constructor(
                 .getDanmakuSegment(cid, segmentIndex)
         } ?: return null
         return withContext(Dispatchers.Default) {
-            DanmakuParser.parseProtobuf(listOf(bytes))
+            val parsed = DanmakuParser.parseProtobuf(listOf(bytes))
+            if (parsed.serverDisabled) {
+                com.android.purebilibili.data.repository.DanmakuRepository
+                    .markDanmakuServerDisabled(cid)
+            }
+            parsed
         }
     }
 
@@ -1876,7 +1897,7 @@ class DanmakuManager private constructor(
             )
         }
         if (!isCurrentSegmentWindowRequest(cid, requestGeneration, requestWindowGeneration)) return
-        withContext(Dispatchers.Main) {
+        withContext(Dispatchers.Main.immediate) {
             if (!isCurrentSegmentWindowRequest(cid, requestGeneration, requestWindowGeneration)) {
                 return@withContext
             }
@@ -2107,7 +2128,7 @@ class DanmakuManager private constructor(
                 throw e
             } catch (e: Exception) {
                 Log.e(TAG, " Failed to load local danmaku for cid=$cid: ${e.message}", e)
-                withContext(Dispatchers.Main) {
+                withContext(Dispatchers.Main.immediate) {
                     if (shouldApplyDanmakuLoadResult(cid, requestGeneration, cachedCid, loadGeneration)) {
                         isLoading = false
                     }
@@ -2200,6 +2221,7 @@ class DanmakuManager private constructor(
      * 仅用于显式 seek scrub，避免用户拖动时继续看到旧时间线弹幕。
      */
     fun prepareForSeekScrub() {
+        if (isSeekScrubbing) return
         isSeekScrubbing = true
         val ctrl = controller ?: return
         executeDanmakuSeekScrubStart(

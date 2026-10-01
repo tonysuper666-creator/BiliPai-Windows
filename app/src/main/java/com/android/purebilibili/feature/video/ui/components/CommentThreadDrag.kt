@@ -38,6 +38,10 @@ internal fun consumeCommentThreadReverseDrag(offsetPx: Float, deltaPx: Float): F
     else -> 0f
 }
 
+/** A list's bottom overscroll belongs to the list, not the dismiss gesture. */
+internal fun shouldStartCommentThreadDragFromList(remainingDeltaY: Float): Boolean =
+    remainingDeltaY > 0f
+
 internal class CommentThreadDrag(
     val offsetPx: State<Float>,
     private val heightPx: State<Float>,
@@ -118,7 +122,8 @@ internal fun rememberCommentThreadDrag(
             }
 
             override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                if (!latestVisible || dismissRequested || source != NestedScrollSource.UserInput || available.y == 0f) {
+                if (!latestVisible || dismissRequested || source != NestedScrollSource.UserInput ||
+                    !shouldStartCommentThreadDragFromList(available.y)) {
                     return Offset.Zero
                 }
                 latestDragBy(available.y)
@@ -132,7 +137,7 @@ internal fun rememberCommentThreadDrag(
             }
 
             override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity =
-                if (latestVisible) Velocity(0f, available.y) else Velocity.Zero
+                Velocity.Zero
         }
     }
     val header = Modifier.draggable(

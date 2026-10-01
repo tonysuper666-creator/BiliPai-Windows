@@ -1,5 +1,8 @@
 // 文件路径: feature/video/ui/components/DanmakuSendDialog.kt
 package com.android.purebilibili.feature.video.ui.components
+
+import com.android.purebilibili.core.ui.AppAlertDialog
+import com.android.purebilibili.core.ui.components.AppSlider
 import com.android.purebilibili.core.ui.resolveFilledButtonContainerColor
 import com.android.purebilibili.core.ui.resolveFilledButtonContentColor
 import com.android.purebilibili.core.ui.components.AppIcon
@@ -50,6 +53,7 @@ import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppTextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
+import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
@@ -93,7 +97,9 @@ internal fun resolveDanmakuSendSelectionState(
     val fallbackMode = 1.takeIf { it in modeOptions } ?: modeOptions.firstOrNull() ?: 1
     val fallbackFontSize = 25.takeIf { it in fontSizeOptions } ?: fontSizeOptions.firstOrNull() ?: 25
     return DanmakuSendSelectionState(
-        color = initialColor.takeIf { it in colorOptions } ?: fallbackColor,
+        color = initialColor.takeIf {
+            it in colorOptions || it == DANMAKU_SEND_VIP_GRADUAL_COLOR || it >= 0
+        } ?: fallbackColor,
         mode = initialMode.takeIf { it in modeOptions } ?: fallbackMode,
         fontSize = initialFontSize.takeIf { it in fontSizeOptions } ?: fallbackFontSize
     )
@@ -146,6 +152,8 @@ fun DanmakuSendDialog(
     var selectedFontSize by remember { mutableIntStateOf(initialFontSize) }
     var attentionCommandChecked by remember { mutableStateOf(initialAttentionCommand) }
     var showSettings by remember { mutableStateOf(false) }
+    var showCustomColorPicker by remember { mutableStateOf(false) }
+    var lastCustomColor by remember { mutableIntStateOf(0x66CCFF) }
 
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -183,6 +191,18 @@ fun DanmakuSendDialog(
     LaunchedEffect(selectedColor, selectedMode, selectedFontSize, visible) {
         if (!visible) return@LaunchedEffect
         onSelectionChange(selectedColor, selectedMode, selectedFontSize)
+    }
+
+    if (showCustomColorPicker) {
+        DanmakuCustomColorPickerDialog(
+            initialColor = lastCustomColor,
+            onConfirm = { picked ->
+                lastCustomColor = picked
+                selectedColor = picked
+                showCustomColorPicker = false
+            },
+            onDismiss = { showCustomColorPicker = false }
+        )
     }
 
     AnimatedVisibility(
@@ -386,6 +406,45 @@ fun DanmakuSendDialog(
                                         }
                                     }
                                 }
+                                val isCustomSelection = selectedColor >= 0 &&
+                                    selectedColor != DANMAKU_SEND_VIP_GRADUAL_COLOR &&
+                                    colorOptions.none { (preset, _) -> preset == selectedColor }
+                                Box(
+                                    modifier = Modifier
+                                        .size(32.dp)
+                                        .clip(CircleShape)
+                                        .background(
+                                            Brush.linearGradient(
+                                                colors = listOf(
+                                                    Color(0xFFFF5252),
+                                                    Color(0xFFFFEB3B),
+                                                    Color(0xFF4CAF50),
+                                                    Color(0xFF00BCD4),
+                                                    Color(0xFF3F51B5),
+                                                    Color(0xFFE040FB)
+                                                )
+                                            )
+                                        )
+                                        .then(
+                                            if (isCustomSelection) {
+                                                Modifier.border(
+                                                    width = 2.dp,
+                                                    color = MaterialTheme.colorScheme.primary,
+                                                    shape = CircleShape
+                                                )
+                                            } else {
+                                                Modifier
+                                            }
+                                        )
+                                        .clickable { showCustomColorPicker = true },
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    AppText(
+                                        text = "自定义",
+                                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                        color = Color.White
+                                    )
+                                }
                             }
                         }
 
@@ -536,4 +595,73 @@ fun DanmakuSendDialog(
             }
         }
     }
+}
+
+/**
+ * 自定义弹幕颜色取色器（RGB 滑杆），对齐 PiliPlus 的自定义颜色入口。
+ */
+@Composable
+internal fun DanmakuCustomColorPickerDialog(
+    initialColor: Int,
+    onConfirm: (Int) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var pickerRed by remember { mutableIntStateOf((initialColor shr 16) and 0xFF) }
+    var pickerGreen by remember { mutableIntStateOf((initialColor shr 8) and 0xFF) }
+    var pickerBlue by remember { mutableIntStateOf(initialColor and 0xFF) }
+    val pickerRgb = (pickerRed shl 16) or (pickerGreen shl 8) or pickerBlue
+
+    AppAlertDialog(
+        onDismissRequest = onDismiss,
+        title = { AppText("自定义弹幕颜色") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(36.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(pickerRgb or 0xFF000000.toInt()))
+                )
+                listOf(
+                    Triple("红", pickerRed) { value: Int -> pickerRed = value },
+                    Triple("绿", pickerGreen) { value: Int -> pickerGreen = value },
+                    Triple("蓝", pickerBlue) { value: Int -> pickerBlue = value }
+                ).forEach { (label, channel, onChange) ->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        AppText(
+                            text = label,
+                            style = MaterialTheme.typography.labelMedium,
+                            modifier = Modifier.width(20.dp)
+                        )
+                        AppSlider(
+                            value = channel.toFloat(),
+                            onValueChange = { onChange(it.roundToInt()) },
+                            valueRange = 0f..255f
+                        )
+                        AppText(
+                            text = channel.toString(),
+                            style = MaterialTheme.typography.labelMedium,
+                            modifier = Modifier.width(32.dp)
+                        )
+                    }
+                }
+                AppText(
+                    text = "#%06X".format(pickerRgb),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        },
+        confirmButton = {
+            AppTextButton(onClick = { onConfirm(pickerRgb) }) {
+                AppText("确定")
+            }
+        },
+        dismissButton = {
+            AppTextButton(onClick = onDismiss) {
+                AppText("取消")
+            }
+        }
+    )
 }

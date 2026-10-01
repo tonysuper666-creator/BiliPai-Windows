@@ -1,0 +1,23 @@
+// GENERATED from app/src/main/res/drawable/ms_pest_control_24.xml; do not edit.
+// LF-normalized SHA-256: 0744bf06cc448779e466f49c6d57117c306a84a294ed34fe9ea14c361604f015
+package com.bilipai.desktop.settings
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.vector.*
+import androidx.compose.ui.unit.dp
+import java.util.concurrent.ConcurrentHashMap
+/** Exact original XML paths/viewports. Native list icon tint remains authoritative. */
+internal object DesktopDiagnosticSettingsSymbols {
+const val ms_pest_control_24="ms_pest_control_24"
+}
+internal object DesktopDiagnosticSettingsVectors {
+ private val cache=ConcurrentHashMap<String,ImageVector>()
+ @Composable fun vector(name:String):ImageVector=remember(name){load(name)}
+ fun load(name:String):ImageVector=cache.computeIfAbsent(name){build(it)}
+ private fun build(name:String):ImageVector=when(name){
+"ms_pest_control_24" -> ImageVector.Builder(name="ms_pest_control_24",defaultWidth=24.0f.dp,defaultHeight=24.0f.dp,viewportWidth=960.0f,viewportHeight=960.0f,autoMirror=false).apply{
+addPath(pathData=addPathNodes("M480,840Q416,840 365.5,807Q315,774 283,720L188,774L148,705L251,645Q248,634 246,622.5Q244,611 242,600L120,600L120,520L242,520Q244,508 246,496.5Q248,485 251,474L148,414L188,345L282,400Q290,386 300.5,372.5Q311,359 322,348Q320,341 320,334Q320,327 320,320Q320,296 327,274Q334,252 346,233L280,167L336,110L406,178Q423,169 441.5,164.5Q460,160 480,160Q500,160 519,165Q538,170 555,179L624,110L680,167L614,233Q626,252 632.5,274Q639,296 639,320Q639,327 639,333.5Q639,340 637,347Q648,358 658.5,372Q669,386 677,400L772,346L812,415L708,474Q711,485 713.5,496.5Q716,508 718,520L840,520L840,600L718,600Q716,612 714,623.5Q712,635 709,646L812,706L772,775L677,720Q645,774 594.5,807Q544,840 480,840ZM404,294Q421,287 440.5,283.5Q460,280 480,280Q500,280 518.5,283Q537,286 554,293Q546,270 526,255Q506,240 480,240Q454,240 433,255.5Q412,271 404,294ZM480,760Q553,760 596.5,699Q640,638 640,560Q640,490 599.5,425Q559,360 480,360Q402,360 361,424.5Q320,489 320,560Q320,638 363.5,699Q407,760 480,760ZM440,680L440,440L520,440L520,680L440,680Z"),fill=SolidColor(Color(0xFFFFFFFF)),fillAlpha=1.0f,pathFillType=PathFillType.NonZero)
+}.build()
+else->error("Unknown original settings vector: $name")
+}
+}

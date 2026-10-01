@@ -1,0 +1,35 @@
+{
+  "baseCommit": "bd094f91a637fbbc179a6d266a696101946c67f6",
+  "originalCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "candidates": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt",
+      "baseLfSha256": "0ad0fcbd85e20264a827e7be28273eb9fc756a5cf2de8a8deb19449a6dda8fe9",
+      "candidateLfSha256": "dfb6115880896df86d3ae5a46881831a997d01aa4aba8fb20432c831b7124c31",
+      "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\video-default-save-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\platform\\DesktopWindowsImageSaveDirectory.kt"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImageSaveLocations.kt",
+      "baseLfSha256": "88efa261d483c257b329244fa2b50f99e07642c40b174c21c036a8b97d3b6105",
+      "candidateLfSha256": "5f27ef6e0a6db648446430dce3c92204d1317e66830c94b443475ba1908da97c",
+      "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\video-default-save-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopImageSaveLocations.kt"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "baseLfSha256": "96895bf38d22efcdbf23dd89bf6ba8e23af987858f4b677bf4a0f8d2c16327e4",
+      "candidateLfSha256": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4",
+      "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\video-default-save-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicImageAssets.kt"
+    }
+  ],
+  "originalImagePreviewSha256Bytes": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+  "mainModified": false,
+  "newDependencies": false,
+  "behaviors": [
+    "default standalone video never reads image tree preference",
+    "same Root app lifetime gate",
+    "existing SessionStore owner before Assets lock before app lifetime before Files",
+    "existing anonymous 64KiB streamed download / 200MiB cap / callback-drain cleanup",
+    "original MP4 display name plus only collision suffix",
+    "null-location explicit chooser seam retained"
+  ]
+}

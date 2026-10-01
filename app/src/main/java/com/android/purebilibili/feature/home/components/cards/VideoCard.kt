@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.home.components.cards
 
+import kotlinx.coroutines.launch
+
 import android.os.Build
 import coil3.request.crossfade
 import com.android.purebilibili.core.ui.components.AppIcon
@@ -97,6 +99,7 @@ import com.android.purebilibili.feature.home.LocalHomeWallpaperBackdrop
 import com.android.purebilibili.feature.home.LocalHomeWallpaperBackdropReady
 import com.android.purebilibili.feature.home.LocalHomeWallpaperIsStatic
 import com.android.purebilibili.feature.home.HomeCoverRequestSpec
+import com.android.purebilibili.feature.home.resolveHomeCoverImageSource
 import top.yukonga.miuix.kmp.blur.blur
 import top.yukonga.miuix.kmp.blur.drawBackdrop
 import com.android.purebilibili.core.ui.ContainerLevel
@@ -568,6 +571,8 @@ internal fun ElegantVideoCard(
             transitionEnabled = transitionEnabled,
             isFollowing = isFollowing,
             showUpBadge = showUpBadge ?: com.android.purebilibili.core.ui.LocalUpBadgeVisibility.current.showBadges,
+            durationStyle = homeDurationStyle,
+            showPublishTime = showPublishTime,
             modifier = modifier,
             highlightedTitle = highlightedTitle,
             onClick = { onClick(video.bvid, video.cid) },
@@ -752,17 +757,11 @@ internal fun ElegantVideoCard(
     val premiumBadgeLabel: String?
     // Cover identity does not depend on playback progress or live statistics. Keep unrelated
     // VideoItem updates from rebuilding the cover URL/cache key on the UI thread.
-    remember(video.pic, video.rights, useLowQualityCover, coverRequestSpec) {
+    remember(video.bvid, video.id, video.cid, video.title, video.pic, video.rights, useLowQualityCover, coverRequestSpec) {
+        val source = resolveHomeCoverImageSource(video, useLowQualityCover, coverRequestSpec)
         Triple(
-            resolveVideoCardCoverCacheKey(
-                video = video,
-                useLowQualityCover = useLowQualityCover,
-                requestSpec = coverRequestSpec,
-            ),
-            coverRequestSpec?.resolveUrl(video.pic) ?: FormatUtils.resolveVideoCoverUrl(
-                video.pic,
-                useLowQuality = useLowQualityCover,
-            ),
+            source.cacheKey,
+            source.url,
             resolveVideoPremiumBadgeLabel(video.rights)
         )
     }.let { (cache, url, badge) ->
@@ -1248,18 +1247,16 @@ internal fun ElegantVideoCard(
             AsyncImage(
                 model = coverImageRequest,
                 contentDescription = null,
-                onSuccess = { state ->
+                onSuccess = {
                     if (homeCardDynamicTintEnabled && coverTint == null) {
-                        val bitmap = (state.result.image as? coil3.BitmapImage)?.bitmap
-                        if (bitmap != null) {
-                            VideoCardCoverColorStore.extractColorAsync(
+                        scope.launch {
+                            val extracted = VideoCardCoverColorStore.extractColor(
+                                context = context,
                                 cacheKey = requestCoverCacheKey,
-                                bitmap = bitmap,
-                                scope = scope
-                            ) { extracted ->
-                                if (activeCoverCacheKey == requestCoverCacheKey) {
-                                    coverTint = extracted
-                                }
+                                coverUrl = requestCoverUrl,
+                            )
+                            if (activeCoverCacheKey == requestCoverCacheKey && extracted != null) {
+                                coverTint = extracted
                             }
                         }
                     }
@@ -1836,7 +1833,10 @@ internal fun ElegantVideoCard(
         )
 
         VideoCardDurationPublishRow(
-            durationText = durationText.takeIf { showDurationOutside }.orEmpty(),
+            // 数据贴封面时，时长已随统计行以 pill 呈现，不再在信息区重复显示
+            durationText = durationText
+                .takeIf { showDurationOutside && !scrollLitePolicy.showCompactStatsOnCover }
+                .orEmpty(),
             publishTimeText = publishTimeRowText,
             emphasizePublishTime = emphasizePublishTime,
             publishTimeColor = metadataColors.publishTimeColor,

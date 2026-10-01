@@ -16,7 +16,7 @@ MAJOR.MINOR.PATCH
 | `MINOR` | 新功能 | 第二位 +1，`PATCH` 归零 |
 | `PATCH` | 修 bug / 小改进 | 第三位 +1 |
 
-当前构建：`0.2.3-alpha.9` / `versionCode 405`。
+当前构建：`0.2.3-alpha.10` / `versionCode 407`。
 
 - **不要**用日期充当 `versionName`（例如 `26.0805.1`）。
 - 应用 ID、签名和用户配置格式不变。

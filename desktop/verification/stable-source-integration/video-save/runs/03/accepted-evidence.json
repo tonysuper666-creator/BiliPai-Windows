@@ -1,0 +1,129 @@
+{
+  "passed": true,
+  "cases": 5,
+  "assertions": 45,
+  "requests": 3,
+  "classSources": [
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicImageAssets",
+      "candidateOverride": true
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicSaveTarget",
+      "candidateOverride": true
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopImageSaveLocations",
+      "candidateOverride": true
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopImageSaveLifetime",
+      "candidateOverride": true
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopSessionStore",
+      "candidateOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopRepository",
+      "candidateOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopDynamicCardOperations",
+      "candidateOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.settings.DesktopImageSaveLocationPreferences",
+      "candidateOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.plugins.DesktopPluginStore",
+      "candidateOverride": false
+    }
+  ],
+  "reports": [
+    {
+      "name": "actual-candidate-streaming-standalone-default-video",
+      "requests": 1,
+      "passed": true
+    },
+    {
+      "name": "location-only-default-collision-selection",
+      "requests": 0,
+      "passed": true
+    },
+    {
+      "name": "default-video-resolver-failure-no-image-fallback",
+      "requests": 0,
+      "passed": true
+    },
+    {
+      "name": "cancel-only-save-job-at-actual-store-final-gate",
+      "requests": 1,
+      "passed": true
+    },
+    {
+      "name": "same-global-app-lifetime-close-at-actual-store-final-gate",
+      "requests": 1,
+      "passed": true
+    }
+  ],
+  "outsideHttp": false,
+  "actualWindowsKnownFolderWrites": false,
+  "sharedGradle": false,
+  "MainIntegrated": false,
+  "HWND": false,
+  "actualSaveAs": false,
+  "allWritesInNewTaskLane": true,
+  "Main04ManifestSha256": "7bc5ac8875dadf38510120db6619bd6e748e7f790a47afc11374e14114f25865",
+  "Main04Ordered92ClasspathSha256": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2",
+  "candidateJarSha256": "1593e91026ba14b1e5ae4423108cb4ec77767de8c1825bd3532f16f89cae9760",
+  "existingMainProductOverrides": [
+    "com/bilipai/desktop/platform/DesktopKnownFolderFailure.class",
+    "com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.class",
+    "com/bilipai/desktop/platform/DesktopWindowsKnownFolderNative.class",
+    "com/bilipai/desktop/platform/JnaWindowsKnownFolderNative$Ole32.class",
+    "com/bilipai/desktop/platform/JnaWindowsKnownFolderNative$Shell32.class",
+    "com/bilipai/desktop/platform/JnaWindowsKnownFolderNative.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$Companion.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$3.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$4.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$5.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$exif$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$motionPhoto$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$motionPhoto$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$motionPhoto$3.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImage$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImageUnlocked$2$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImageUnlocked$2$3.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImageUnlocked$2$4.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImageUnlocked$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImages$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveLivePhotoVideo$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveMotionPhoto$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveMotionPhoto$2$2$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveMotionPhoto$2$2$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveMotionPhoto$2$2$3.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveMotionPhoto$2$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$special$$inlined$-addNetworkInterceptor$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$writeRaw$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$writeStatic$2$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$writeStatic$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt$selectDynamicSaveDirectory$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt$selectDynamicSaveTarget$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt.class",
+    "com/bilipai/desktop/ui/DesktopDynamicSaveTarget.class",
+    "com/bilipai/desktop/ui/DesktopImageSaveLifetime.class",
+    "com/bilipai/desktop/ui/DesktopImageSaveLocations$1.class",
+    "com/bilipai/desktop/ui/DesktopImageSaveLocations.class",
+    "com/bilipai/desktop/ui/DesktopImageSaveLocationsKt.class"
+  ],
+  "nativeFakeCases": 12,
+  "actualNativeReadOnlyCases": 4,
+  "stableHelperByteEqual": true,
+  "scope": "prepared candidate only, not actual Main installation"
+}

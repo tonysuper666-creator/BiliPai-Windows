@@ -53,6 +53,7 @@ fun PlayerPanel(
     automaticSubtitleTracks: List<SubtitleTrackMeta> = emptyList(),
     onAutomaticSubtitleMode: ((SubtitleDisplayMode) -> Unit)? = null,
     surfaceOnly: Boolean = false,
+    viewPoints: List<com.android.purebilibili.data.model.response.ViewPoint> = emptyList(),
 ) {
     val state by player.state.collectAsState()
     val scope = rememberCoroutineScope()
@@ -90,6 +91,15 @@ fun PlayerPanel(
             bufferedFraction = state.bufferedForwardSeconds?.takeIf { it.isFinite() && it >= 0 }?.let {
                 ((state.positionSeconds + it) / duration).toFloat().coerceIn(0f, 1f)
             }, dragging = seeking != null, onError = ::message)
+        if (state.ready && state.error == null && state.durationSeconds.isFinite() && state.durationSeconds > 0) {
+            com.android.purebilibili.feature.video.ui.overlay.ViewPointSegmentBar(
+                viewPoints = viewPoints,
+                durationMs = (state.durationSeconds * 1000.0).toLong(),
+                currentPositionMs = ((seeking?.toDouble() ?: state.positionSeconds)
+                    .takeIf { it.isFinite() }?.coerceAtLeast(0.0) ?: 0.0).times(1000.0).toLong(),
+                onSeek = { seekTo(it / 1000.0) },
+            )
+        }
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             FilledTonalButton(onClick = { player.togglePause() }, enabled = state.ready && (state.durationSeconds > 0 || state.ended)) {
                 Text(if (state.paused || state.ended) "播放" else "暂停")

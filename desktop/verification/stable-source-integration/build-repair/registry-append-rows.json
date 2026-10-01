@@ -1,0 +1,18 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt",
+    "sha256": "056db2c4d628e38dbfc3b7be5e6dd6b21bd9ff97597f5385f666579a0924785e",
+    "features": [
+      "settings-local-diagnostics-parity"
+    ],
+    "mode": "policy-extract"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/performance/NativeExitTrace.kt",
+    "sha256": "8d0e38625f243072cd72d380cb6c7eb36ec3587deb194c497a7d9a10434be182",
+    "features": [
+      "settings-local-diagnostics-parity"
+    ],
+    "mode": "policy-extract"
+  }
+]

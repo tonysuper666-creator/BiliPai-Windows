@@ -1,0 +1,46 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt:postComment#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt:postComment#1
+@@ -1,4 +1,9 @@
+-    fun postComment(dynamicId: String, message: String, onResult: (Boolean, String) -> Unit) {
++    fun postComment(
++        dynamicId: String,
++        message: String,
++        imageUris: List<Uri> = emptyList(),
++        onResult: (Boolean, String) -> Unit,
++    ) {
+         viewModelScope.launch {
+             try {
+                 val csrf = com.android.purebilibili.core.store.TokenManager.csrfCache
+@@ -18,12 +23,22 @@
+                     return@launch
+                 }
+                 val replyTarget = _commentReplyTarget.value
++                if (message.isBlank() && imageUris.isEmpty()) {
++                    onResult(false, "请输入评论内容")
++                    return@launch
++                }
++                if (replyTarget != null && imageUris.isNotEmpty()) {
++                    onResult(false, "回复暂不支持图片")
++                    return@launch
++                }
++                val pictures = uploadCommentPictures(imageUris)
+                 val response = CommentRepository.addCommentForSubject(
+                     oid = target.oid,
+                     type = target.type,
+                     message = message,
+                     root = replyTarget?.rootRpid ?: 0L,
+-                    parent = replyTarget?.parentRpid ?: 0L
++                    parent = replyTarget?.parentRpid ?: 0L,
++                    pictures = pictures,
+                 )
+                 if (response.isSuccess) {
+                     _commentReplyTarget.value = null
+@@ -32,6 +47,8 @@
+                 } else {
+                     onResult(false, response.exceptionOrNull()?.message ?: "评论失败")
+                 }
++            } catch (e: CancellationException) {
++                throw e
+             } catch (e: Exception) {
+                 onResult(false, e.message ?: "网络错误")
+             }

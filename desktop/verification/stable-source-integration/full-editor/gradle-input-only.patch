@@ -1,0 +1,11 @@
+--- a/desktop/build.gradle.kts
++++ b/desktop/build.gradle.kts
+@@ -554,7 +554,7 @@
+     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-editor.py",
+         "--repo", repositoryRoot.absolutePath,
+         "--output", layout.buildDirectory.dir("generated/dynamic-editor").get().asFile.absolutePath)
+-    inputs.files("tools/extract-upstream-dynamic-editor.py", "tools/extract-upstream-plugins.py",
++    inputs.files("tools/extract-upstream-dynamic-editor.py", "tools/extract-upstream-dynamic-reply-protocol.py", "upstream-sources.json", "tools/extract-upstream-plugins.py",
+         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
+     inputs.files(sources.filter { "dynamic-editor-detail-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+         .map { File(repositoryRoot, it["path"].toString()) })

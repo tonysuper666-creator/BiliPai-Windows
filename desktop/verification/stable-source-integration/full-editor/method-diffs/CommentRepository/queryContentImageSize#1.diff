@@ -1,0 +1,13 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt:queryContentImageSize#1
++++ v023:app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt:queryContentImageSize#1
+@@ -0,0 +1,10 @@
++    private fun queryContentImageSize(resolver: ContentResolver, uri: Uri): Long? = runCatching {
++        resolver.query(uri, arrayOf(OpenableColumns.SIZE), null, null, null)?.use { cursor ->
++            val index = cursor.getColumnIndex(OpenableColumns.SIZE)
++            if (index >= 0 && cursor.moveToFirst() && !cursor.isNull(index)) {
++                cursor.getLong(index)
++            } else {
++                null
++            }
++        }
++    }

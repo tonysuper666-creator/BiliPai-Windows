@@ -8,6 +8,14 @@ import kotlin.test.assertNotEquals
 
 class BiliPaiNavKeyMappingPolicyTest {
     @Test
+    fun weeklySeriesKeysPreservePeriodAcrossRouteRestoration() {
+        for (key in listOf(BiliPaiNavKey.WeeklySeries(), BiliPaiNavKey.WeeklySeries(133))) {
+            assertEquals(key, legacyRouteToBiliPaiNavKey(key.toLegacyRoute()))
+            assertEquals(BiliPaiNavEntryContentRole.WEEKLY_SERIES, resolveBiliPaiNavEntryContentRole(key))
+        }
+    }
+
+    @Test
     fun personalListSearchKeysRoundTripThroughLegacyRoutes() {
         val keys = listOf(
             BiliPaiNavKey.HistorySearch("猫 咪"),

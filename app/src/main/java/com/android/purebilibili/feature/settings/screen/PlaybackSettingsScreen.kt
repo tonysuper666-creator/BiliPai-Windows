@@ -1349,6 +1349,9 @@ private fun PlaybackInteractionSettingsSection(
     val videoInfoDefaultExpanded by com.android.purebilibili.core.store.SettingsManager
         .getVideoInfoDefaultExpanded(context)
         .collectAsStateWithLifecycle(initialValue = false)
+    val videoArgueMsgShown by com.android.purebilibili.core.store.SettingsManager
+        .getVideoArgueMsgShown(context)
+        .collectAsStateWithLifecycle(initialValue = true)
     val showVideoDetailCommentCount by SettingsManager
         .getShowVideoDetailCommentCount(context)
         .collectAsStateWithLifecycle(initialValue = true)
@@ -1563,6 +1566,39 @@ private fun PlaybackInteractionSettingsSection(
                 }
             },
             iconTint = com.android.purebilibili.core.theme.iOSBlue
+        )
+        AppPreferenceDivider()
+        AppSwitchPreference(
+            icon = rememberSettingsSemanticIcon(SettingsIconRole.VIDEO_DESCRIPTION),
+            title = "显示 UP 主视频声明",
+            subtitle = if (videoArgueMsgShown) {
+                "在视频简介区上方显示 UP 主设置的声明（如\"虚构演绎，请勿过度解读\"）"
+            } else {
+                "关闭后：不再显示 UP 主设置的视频声明"
+            },
+            checked = videoArgueMsgShown,
+            onCheckedChange = {
+                scope.launch {
+                    com.android.purebilibili.core.store.SettingsManager
+                        .setVideoArgueMsgShown(context, it)
+                }
+            },
+            iconTint = com.android.purebilibili.core.theme.iOSBlue
+        )
+        AppPreferenceDivider()
+
+        AppListItem(
+            headlineContent = { AppText("评论 IP 属地") },
+            supportingContent = {
+                AppText("无需开启；B站返回属地时会在评论时间旁自动显示。部分评论没有属地数据。")
+            },
+            leadingContent = {
+                AppIcon(
+                    rememberMaterialSymbol(R.drawable.ms_info_24),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                )
+            },
         )
         AppPreferenceDivider()
         AppSwitchPreference(

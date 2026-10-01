@@ -167,19 +167,39 @@ class DesktopDownloadManager internal constructor(
     }
 
     private fun scheduleLocked() {
-        if (closed || jobs.values.any { it.isActive }) return
-        val id = resolveNextQueuedDownloadTaskId(mutableTasks.value.map { it.item }) ?: return
-        val job = scope.launch(start = CoroutineStart.LAZY) { runTask(id) }
-        jobs[id] = job
-        job.start()
+        if (closed) return
+        // A cancelled Windows job retains its file owner until its finally block
+        // completes. Reserve that slot while the original policy selects work.
+        val candidates = mutableTasks.value.map { task ->
+            if (task.id in jobs && !isDownloadTaskActive(task.item))
+                task.item.copy(status = DownloadStatus.PENDING) else task.item
+        }
+        val retiringRemovedJobs = jobs.keys.count { id -> mutableTasks.value.none { it.id == id } }
+        resolveNextQueuedDownloadTaskIds(candidates,
+            maxConcurrent = (DEFAULT_MAX_CONCURRENT_DOWNLOADS - retiringRemovedJobs).coerceAtLeast(0)).forEach { id ->
+            // Match original enqueueDownload: reserve PENDING under the queue
+            // lock before launching, so a rapid second enqueue cannot overbook.
+            updateLocked(id) { it.copy(item = it.item.copy(status = DownloadStatus.PENDING, errorMessage = null)) }
+            val job = scope.launch(start = CoroutineStart.LAZY) { runTask(id) }
+            jobs[id] = job
+            job.start()
+        }
+        persistLocked(force = true)
     }
 
     private suspend fun runTask(id: String) {
         try {
             val task = synchronized(lock) { mutableTasks.value.firstOrNull { it.id == id } } ?: return
-            if (task.status != DownloadStatus.QUEUED) return
+            if (task.status != DownloadStatus.PENDING) return
+            currentCoroutineContext().ensureActive()
             val directory = ensureOwnedDirectory(task)
-            update(id, true) { it.copy(item = it.item.copy(status = DownloadStatus.DOWNLOADING, errorMessage = null)) }
+            val caller = currentCoroutineContext()
+            synchronized(lock) {
+                caller.ensureActive()
+                if (closed || mutableTasks.value.none { it.id == id && it.status == DownloadStatus.PENDING })
+                    throw CancellationException("下载任务已暂停")
+                update(id, true) { it.copy(item = it.item.copy(status = DownloadStatus.DOWNLOADING, errorMessage = null)) }
+            }
             downloadOptionalAssets(id, directory)
             val video = directory.resolve("video.m4s")
             val audio = directory.resolve("audio.m4s")
@@ -208,7 +228,8 @@ class DesktopDownloadManager internal constructor(
             update(id, true) { it.copy(item = it.item.copy(status = DownloadStatus.COMPLETED, progress = 1f,
                 filePath = output.toString(), fileSize = outputSize, errorMessage = null)) }
         } catch (cancelled: CancellationException) {
-            update(id, true) { task -> if (task.status == DownloadStatus.PAUSED) task else task.copy(item = task.item.copy(status = DownloadStatus.PAUSED)) }
+            update(id, true) { task -> if (task.status in setOf(DownloadStatus.PAUSED, DownloadStatus.QUEUED)) task
+                else task.copy(item = task.item.copy(status = DownloadStatus.PAUSED)) }
         } catch (error: Exception) {
             update(id, true) { it.copy(item = it.item.copy(status = DownloadStatus.FAILED,
                 errorMessage = error.message?.take(2000) ?: "下载失败")) }

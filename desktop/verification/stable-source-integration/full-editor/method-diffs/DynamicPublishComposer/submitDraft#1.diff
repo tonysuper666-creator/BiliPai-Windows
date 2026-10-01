@@ -1,0 +1,21 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposer.kt:submitDraft#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposer.kt:submitDraft#1
+@@ -0,0 +1,18 @@
++    fun submitDraft() {
++        if (!canPublish) return
++        onSubmit(
++            DynamicPublishDraft(
++                text = text,
++                title = title,
++                imageUris = imageUris,
++                voteId = vote?.voteId ?: 0L,
++                voteTitle = vote?.title.orEmpty(),
++                reserveId = reserve?.reserveId ?: 0L,
++                private = privatePublish,
++                mentions = mentions,
++                emotes = emotes,
++                topic = topic,
++                existingImages = initialDraft.existingImages.filter { it.img_src in imageUris },
++            )
++        )
++    }

@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "sourceIdentityChecks": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "declaration": "SpaceHeaderBanner",
+      "sha256Lf": "386487c3e118a2889c0d38bd8854a8d0b16b76ba3fc6a689990d51e1d2a4ff82",
+      "fullFunctionBodyPreserved": true
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "declaration": "SpaceHeaderTitleBadge",
+      "sha256Lf": "4d8533cc5c499094f0406fd6a772aae870af7ce0b136cc42500f8f4ebd85de12",
+      "fullFunctionBodyPreserved": true
+    }
+  ],
+  "consumerChecks": {
+    "originalBannerWholeBodyOnlyPlatformRename": true,
+    "originalBadgeWholeBodyUnchanged": true,
+    "customBannerDialogRemoved": true,
+    "fullOriginalBannerCalled": true,
+    "currentRealBannerUrlForwarded": true,
+    "skinUsesActualGlobalAuthority": true,
+    "skinPriorityDisablesRemoteImagePreview": true,
+    "previewSourceKeyPrepared": true,
+    "originalCallerSourceKeyForwarded": true,
+    "sameOwnerOriginalProviderKeyed": true,
+    "immutableOpenedAvatar": true,
+    "immutableOpenedTopImages": true,
+    "existingAssetsOnly": true,
+    "noCompetingStore": true,
+    "requiredGlobalLocations": true,
+    "completeFallbackFeedback": true,
+    "completeLeafFeedback": true,
+    "legacySameHost": true,
+    "stableCoilCacheKeyAndCrossfadeBoth": true,
+    "stableCircularAvatarBoth": true,
+    "avatarHiddenIdentityBoth": true,
+    "noSavedImageProtocolDuplication": true
+  },
+  "sourceContractCheckCount": 22,
+  "consumerPatchApplyCheck": true,
+  "checksAreSourceNotRuntime": true,
+  "noMainWrites": true,
+  "noGradle": true,
+  "noHWND": true,
+  "noHTTP": true
+}

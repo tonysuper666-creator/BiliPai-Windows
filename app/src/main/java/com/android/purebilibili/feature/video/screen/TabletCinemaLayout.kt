@@ -604,11 +604,15 @@ private fun CinemaStagePlayer(
                     onSubtitleTrackSelected = playbackActions.selectSubtitleTrack,
                     onDanmakuInputClick = playbackActions.showDanmakuSendDialog,
                     onSponsorContributionMarkBoundary = playbackActions.markSponsorContributionBoundary,
+                    onSponsorContributionMarkWholeVideo = playbackActions.markWholeVideoAsSponsor,
                     onSponsorContributionCategoryChange = playbackActions.setSponsorContributionCategory,
                     onSponsorContributionActionTypeChange = playbackActions.setSponsorContributionActionType,
                     onSponsorContributionSubmit = playbackActions.submitSponsorContribution,
                     onSponsorContributionCancel = playbackActions.cancelSponsorContribution,
                     onLikeDanmaku = playbackActions.likeDanmaku,
+                    onLikeDanmakuToggle = playbackActions.likeDanmakuToggle,
+                    likedDanmakuIds = playbackActions.likedDanmakuIds,
+                    onReportDanmaku = playbackActions.reportDanmaku,
                     onRecallDanmaku = playbackActions.recallDanmaku,
                 ),
             )
@@ -1371,6 +1375,14 @@ private fun CinemaCommentsPane(
                     .layerBackdrop(commentChromeBackdrop),
                 contentPadding = PaddingValues(bottom = 112.dp)
             ) {
+            commentState.voteCard?.let { card ->
+                item(key = "curtain_vote_${card.voteId}") {
+                    com.android.purebilibili.feature.video.ui.components.VideoCommentVoteCard(
+                        card = card,
+                        modifier = Modifier.fillMaxWidth().padding(12.dp),
+                    )
+                }
+            }
             items(
                 items = commentState.replies,
                 key = { "curtain_reply_${it.rpid}" },

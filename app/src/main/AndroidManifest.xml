@@ -44,6 +44,14 @@
     <queries>
         <package android:name="com.tencent.mm" />
         <package android:name="com.tencent.mobileqq" />
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="text/plain" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="image/jpeg" />
+        </intent>
     </queries>
 
     <application

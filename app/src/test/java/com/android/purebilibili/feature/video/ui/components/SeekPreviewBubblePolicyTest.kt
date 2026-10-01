@@ -135,6 +135,49 @@ class SeekPreviewBubblePolicyTest {
     }
 
     @Test
+    fun compactPreview_clampsHeightToContainerMinusSafetyMargin() {
+        // 播放区 300dp − 140dp 安全边距 = 160dp 上限，压掉 213dp 的竖版预览。
+        assertEquals(
+            CompactSeekPreviewSize(widthDp = 120, heightDp = 160),
+            resolveCompactSeekPreviewSize(
+                sourceWidthPx = 160,
+                sourceHeightPx = 90,
+                screenWidthDp = 393,
+                videoAspectRatio = 9f / 16f,
+                containerHeightDp = 300
+            )
+        )
+    }
+
+    @Test
+    fun compactPreview_keepsHeightWhenContainerCapBelowReadableMinimum() {
+        // clamp 结果低于可读下限时放弃 clamp，保持原尺寸。
+        assertEquals(
+            CompactSeekPreviewSize(widthDp = 120, heightDp = 213),
+            resolveCompactSeekPreviewSize(
+                sourceWidthPx = 160,
+                sourceHeightPx = 90,
+                screenWidthDp = 393,
+                videoAspectRatio = 9f / 16f,
+                containerHeightDp = 200
+            )
+        )
+    }
+
+    @Test
+    fun compactPreview_ignoresInvalidContainerHeight() {
+        assertEquals(
+            CompactSeekPreviewSize(widthDp = 144, heightDp = 81),
+            resolveCompactSeekPreviewSize(
+                sourceWidthPx = 160,
+                sourceHeightPx = 90,
+                screenWidthDp = 393,
+                containerHeightDp = 0
+            )
+        )
+    }
+
+    @Test
     fun portraitVideoPreview_cropsLetterboxedSpriteCellToVideoRatio() {
         assertEquals(
             SeekPreviewSourceCrop(

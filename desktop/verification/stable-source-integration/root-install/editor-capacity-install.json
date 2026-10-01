@@ -1,0 +1,24 @@
+{
+  "schema": "stable-editor-capacity-candidate-install-v1",
+  "candidateInstalled": true,
+  "mainInstalled": false,
+  "installed": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Lf": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "sha256Lf": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "sha256Lf": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3"
+    }
+  ],
+  "verifiedArtifacts": 167,
+  "maximumDynamicImages": 18,
+  "maximumCommentImages": 9,
+  "wholeStableCompiled": false,
+  "stableRuntimeAccepted": false
+}

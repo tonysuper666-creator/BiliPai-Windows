@@ -16,9 +16,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
@@ -157,21 +154,21 @@ fun <T> AppSingleChoicePreference(
             // 菜单在其下方展开，符合 M3「菜单锚定触发元素」的规范。
             trailingContent = if (useWindowMenu) {
                 {
-                    DropdownMenu(
+                    AppDropdownMenu(
                         expanded = menuExpanded,
                         onDismissRequest = { menuExpanded = false },
                     ) {
                         options.forEach { option ->
                             val selected = option.value == selectedValue
-                            DropdownMenuItem(
+                            AppDropdownMenuItem(
                                 text = {
                                     Column {
-                                        Text(
+                                        AppText(
                                             text = option.label,
                                             style = MaterialTheme.typography.bodyLarge,
                                         )
                                         option.description?.let { description ->
-                                            Text(
+                                            AppText(
                                                 text = description,
                                                 style = MaterialTheme.typography.bodySmall,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -255,7 +252,7 @@ fun <T> AppSingleChoiceDialog(
             containerColor = AppSurfaceTokens.surfaceContainerHigh(),
         ) {
             Column(modifier = Modifier.padding(vertical = 12.dp)) {
-                Text(
+                AppText(
                     text = title,
                     style = MaterialTheme.typography.headlineSmall,
                     color = dialogContentColor,
@@ -275,14 +272,14 @@ fun <T> AppSingleChoiceDialog(
                                 .fillMaxWidth(),
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(
+                                AppText(
                                     text = option.label,
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = dialogContentColor,
                                 )
                                 option.description?.let { description ->
                                     Spacer(modifier = Modifier.height(2.dp))
-                                    Text(
+                                    AppText(
                                         text = description,
                                         style = MaterialTheme.typography.bodySmall,
                                         color = dialogSecondaryContentColor,
@@ -402,13 +399,13 @@ fun AppSliderDialog(
             containerColor = AppSurfaceTokens.surfaceContainerHigh(),
         ) {
             Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 20.dp)) {
-                Text(
+                AppText(
                     text = title,
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
                 Spacer(modifier = Modifier.height(18.dp))
-                Text(
+                AppText(
                     text = valueFormatter(draftValue),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary,
@@ -430,7 +427,7 @@ fun AppSliderDialog(
                 ) {
                     // 内容尺寸按钮：避免 AppDialogAction 在 iOS 预设下 fillMaxSize 把弹窗撑满屏高
                     AppTextButton(onClick = onDismissRequest) {
-                        Text("取消")
+                        AppText("取消")
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     AppTextButton(
@@ -438,7 +435,7 @@ fun AppSliderDialog(
                             onConfirm(resolveAppSliderDialogValue(draftValue, valueRange, steps))
                         },
                     ) {
-                        Text("确定")
+                        AppText("确定")
                     }
                 }
             }

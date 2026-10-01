@@ -31,6 +31,8 @@ class BottomBarTypographySpecTest {
             0.sp,
             resolveFloatingDockLabelFontSize(showIcon = true, showText = false),
         )
+        assertEquals(14.sp, resolveFloatingDockLabelLineHeight(showIcon = true))
+        assertEquals(19.sp, resolveFloatingDockLabelLineHeight(showIcon = false))
     }
 
     @Test
@@ -72,6 +74,9 @@ class BottomBarTypographySpecTest {
         assertTrue(floatingVisual.contains("resolveFloatingDockLabelFontSize("))
         assertTrue(topBar.contains("resolveFloatingDockLabelFontSize("))
         assertTrue(topDock.contains("fontSize = labelFontSize"))
+        assertTrue(topDock.contains("lineHeight = resolveFloatingDockLabelLineHeight("))
+        assertTrue(topDock.contains("autoSize = TextAutoSize.StepBased("))
+        assertTrue(topDock.contains("modifier = Modifier.size(resolveTopTabIconSizeDp("))
         assertFalse(topDock.contains("labelSmall.fontSize"))
         // Dock 槽宽固定,标签必须省略号截断而不是切半字。
         assertTrue(bottomBar.contains("overflow = TextOverflow.Ellipsis"), "dock 标签需要 Ellipsis")

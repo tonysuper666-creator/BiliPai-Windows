@@ -18,7 +18,6 @@ import com.android.purebilibili.core.ui.rememberAppSegmentedControlPolicy
 import com.android.purebilibili.core.ui.roundMatchedLiquidIndicatorHeightDp
 import com.android.purebilibili.core.ui.renderer.material3.AppMaterial3SegmentedControl
 import com.android.purebilibili.core.ui.renderer.material3.AppMaterial3TabRow
-import androidx.compose.foundation.isSystemInDarkTheme
 import com.android.purebilibili.core.ui.isMiuixNonGlassEnabled
 import com.android.purebilibili.core.ui.renderer.miuix.AppMiuixSegmentedControl
 import com.android.purebilibili.core.ui.renderer.miuix.AppMiuixTabRow
@@ -94,6 +93,14 @@ fun resolveAppSegmentedLabelFontSizeSp(
     longestLabelLength >= 5 -> 14f
     else -> 15f
 }
+
+/** Preserve compact-label ratios while honoring the active theme and app font scale. */
+fun resolveAppSegmentedLabelFontSize(
+    themeLabelFontSize: androidx.compose.ui.unit.TextUnit,
+    optionCount: Int,
+    longestLabelLength: Int,
+): androidx.compose.ui.unit.TextUnit =
+    themeLabelFontSize * (resolveAppSegmentedLabelFontSizeSp(optionCount, longestLabelLength) / 15f)
 
 fun shouldFillMaxWidthAppSegmentedControl(
     optionCount: Int,
@@ -257,6 +264,10 @@ fun resolveAppMiuixSegmentedColors(
     selectedContentColor = colors.activeContentColor,
 )
 
+/** Only individual outlined items need opaque fills over scrolling chrome; the track stays clear. */
+fun shouldUseOpaqueMiuixTabBackdrop(nonGlassMiuix: Boolean, immersiveTopChrome: Boolean): Boolean =
+    nonGlassMiuix && immersiveTopChrome
+
 fun resolveAppMiuixTabTrackColor(
     nonGlassMiuix: Boolean,
     trackColor: Color,
@@ -290,14 +301,13 @@ fun <T> AppNativeSegmentedControl(
     val materialColors = MaterialTheme.colorScheme
     val isImmersiveTopChrome = LocalImmersiveTopChromeActive.current
     val isMiuixNonGlass = isMiuixNonGlassEnabled()
-    val isDark = isSystemInDarkTheme()
     val trackColor = if (isImmersiveTopChrome || isMiuixNonGlass) {
         Color.Transparent
     } else {
         AppSurfaceTokens.surfaceContainerHigh()
     }
     val activeCardColor = if (isMiuixNonGlass) {
-        if (isDark) Color(0xFF383838) else AppSurfaceTokens.surfaceContainer()
+        AppSurfaceTokens.surfaceContainerHigh()
     } else {
         AppSurfaceTokens.surfaceContainer()
     }
@@ -392,14 +402,13 @@ fun <T> AppNativeTabRow(
     val materialColors = MaterialTheme.colorScheme
     val isImmersiveTopChrome = LocalImmersiveTopChromeActive.current
     val isMiuixNonGlass = isMiuixNonGlassEnabled()
-    val isDark = isSystemInDarkTheme()
     val trackColor = if (isImmersiveTopChrome || isMiuixNonGlass) {
         Color.Transparent
     } else {
         AppSurfaceTokens.surfaceContainerHigh()
     }
     val activeCardColor = if (isMiuixNonGlass) {
-        if (isDark) Color(0xFF383838) else AppSurfaceTokens.surfaceContainer()
+        AppSurfaceTokens.surfaceContainerHigh()
     } else {
         AppSurfaceTokens.surfaceContainer()
     }

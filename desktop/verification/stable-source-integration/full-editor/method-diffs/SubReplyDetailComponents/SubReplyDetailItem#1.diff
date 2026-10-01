@@ -1,0 +1,20 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt:SubReplyDetailItem#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt:SubReplyDetailItem#1
+@@ -82,11 +82,12 @@
+         }
+     }
+     val avatarSize = remember { resolveSubReplyDetailAvatarSizeDp().dp }
+-    val nameColor = if (item.member.vip?.vipStatus == 1) {
+-        appearance.accentColor
+-    } else {
+-        appearance.primaryTextColor
+-    }
++    val nameColor = resolveUpNameColor(
++        vipStatus = item.member.vip?.vipStatus ?: 0,
++        vipType = item.member.vip?.vipType ?: 0,
++        onSurface = appearance.primaryTextColor,
++        secondary = MaterialTheme.colorScheme.secondary,
++    )
+     val context = LocalContext.current
+     val scope = rememberCoroutineScope()
+     val copyToClipboard = rememberClipboardCopyHandler()

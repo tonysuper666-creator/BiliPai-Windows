@@ -1,0 +1,125 @@
+{
+  "originalTag": "v0.2.3",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "preparedOnly": true,
+  "originalSourceIdentities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "sha256Lf": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca",
+      "mode": "extract",
+      "producer": "prepared/desktop/tools/extract-space-image-preview-callers.py",
+      "output": "com/android/purebilibili/feature/space/DesktopOriginalSpaceImagePreviewCallers.kt",
+      "integration": "Merge existing stable SpaceScreen identity and feature registration; retain its other producers. No duplicate row."
+    }
+  ],
+  "selectedOriginalDeclarations": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "declaration": "SpaceHeaderBanner",
+      "sha256Lf": "386487c3e118a2889c0d38bd8854a8d0b16b76ba3fc6a689990d51e1d2a4ff82",
+      "fullFunctionBodyPreserved": true
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "declaration": "SpaceHeaderTitleBadge",
+      "sha256Lf": "4d8533cc5c499094f0406fd6a772aae870af7ce0b136cc42500f8f4ebd85de12",
+      "fullFunctionBodyPreserved": true
+    }
+  ],
+  "sharedReferences": [
+    "feature/space/SpaceHeaderPresentationPolicy.kt original banner policies",
+    "data/model/response/SpaceModels.kt original top image/title models",
+    "core/ui/components/AppText.kt",
+    "core/ui/components/AppProgressIndicator.kt",
+    "core/plugin/skin/UiSkinState.kt and UiSkinModels.kt existing global source"
+  ],
+  "childSolePreviewOwner": {
+    "directory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-producer-parity",
+    "manifestSha256": "aa2f0fded76142156e7470d40d999939e78fe9ea3a86300353ab8e1e805a92d9",
+    "selectedSourceCount": 6,
+    "rendererIsNotProducedHere": true
+  },
+  "additionalResources": [],
+  "additionalDependencies": [],
+  "parallelModelOrStore": false,
+  "payloadTargets": [
+    {
+      "candidate": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCompleteSpaceScreen.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+      "sha256Bytes": "76f1bee6ff516b2c7ce9b2a5410a9af650b87eddbcf8d7e2e8449e0b2d1f0e96"
+    },
+    {
+      "candidate": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopSpaceImagePreviews.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "sha256Bytes": "ce19a11f8f32826ae48c8f89b4db309445f89649e19eba303f9e601c90c98420"
+    },
+    {
+      "candidate": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopSpaceOverviewScreens.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceOverviewScreens.kt",
+      "sha256Bytes": "a2853e0d4d2ea731c6551225c2901507eef58ca346715d0067cb0d07de5ceb52"
+    },
+    {
+      "candidate": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopSpaceScreens.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+      "sha256Bytes": "93fe822b2b12f80053f03e457261d0bfe84829d2f6975af20f5d4de0b58373b8"
+    },
+    {
+      "candidate": "prepared\\desktop\\tools\\extract-space-image-preview-callers.py",
+      "target": "desktop/tools/extract-space-image-preview-callers.py",
+      "sha256Bytes": "80133dfdfb5e759ada5214645d602b3def971c0cd1052089a9ca771328bc9caa"
+    }
+  ],
+  "consumerChanges": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceOverviewScreens.kt",
+      "baseSha256Lf": "e4ea71b8d97eb9a855051adde64fa749e9f0759ea92c167b2a276c3c02679241",
+      "desiredSha256Lf": "a2853e0d4d2ea731c6551225c2901507eef58ca346715d0067cb0d07de5ceb52",
+      "desiredSha256Bytes": "a2853e0d4d2ea731c6551225c2901507eef58ca346715d0067cb0d07de5ceb52",
+      "baseMatchesCurrentMain": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+      "baseSha256Lf": "d6751e49f4c4c25cfc3821db56960743750d86796b3f946a0bcf37257c7f527e",
+      "desiredSha256Lf": "76f1bee6ff516b2c7ce9b2a5410a9af650b87eddbcf8d7e2e8449e0b2d1f0e96",
+      "desiredSha256Bytes": "76f1bee6ff516b2c7ce9b2a5410a9af650b87eddbcf8d7e2e8449e0b2d1f0e96",
+      "baseMatchesCurrentMain": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+      "baseSha256Lf": "cc28816657c9417c6cd163472458929d473f0b945b8b409439728fe3a2a97809",
+      "desiredSha256Lf": "93fe822b2b12f80053f03e457261d0bfe84829d2f6975af20f5d4de0b58373b8",
+      "desiredSha256Bytes": "93fe822b2b12f80053f03e457261d0bfe84829d2f6975af20f5d4de0b58373b8",
+      "baseMatchesCurrentMain": true
+    }
+  ],
+  "sourceContractChecks": {
+    "originalBannerWholeBodyOnlyPlatformRename": true,
+    "originalBadgeWholeBodyUnchanged": true,
+    "customBannerDialogRemoved": true,
+    "fullOriginalBannerCalled": true,
+    "currentRealBannerUrlForwarded": true,
+    "skinUsesActualGlobalAuthority": true,
+    "skinPriorityDisablesRemoteImagePreview": true,
+    "previewSourceKeyPrepared": true,
+    "originalCallerSourceKeyForwarded": true,
+    "sameOwnerOriginalProviderKeyed": true,
+    "immutableOpenedAvatar": true,
+    "immutableOpenedTopImages": true,
+    "existingAssetsOnly": true,
+    "noCompetingStore": true,
+    "requiredGlobalLocations": true,
+    "completeFallbackFeedback": true,
+    "completeLeafFeedback": true,
+    "legacySameHost": true,
+    "stableCoilCacheKeyAndCrossfadeBoth": true,
+    "stableCircularAvatarBoth": true,
+    "avatarHiddenIdentityBoth": true,
+    "noSavedImageProtocolDuplication": true
+  },
+  "sourceContractCheckCount": 22,
+  "fullOuterHeaderStillPending": [
+    "Original hero/parallax/collapse/shared transition/top scrim and complete header appearance",
+    "Actual stable Main recompilation and mounted preview/save/owner tests",
+    "Native popup/system chooser/Photos/EXE acceptance"
+  ]
+}

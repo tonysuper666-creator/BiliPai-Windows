@@ -433,7 +433,7 @@ val extractUpstreamDiagnostics by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-diagnostics.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/diagnostics/sources").get().asFile.absolutePath)
-    inputs.files("tools/extract-upstream-diagnostics.py", "tools/extract-upstream-plugins.py",
+    inputs.files("tools/extract-upstream-diagnostics.py", "tools/extract-upstream-dynamic-reply-protocol.py", "tools/extract-appearance-platform.py", "upstream-sources.json", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-upstream-api.py",
         "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-local-diagnostics-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -554,7 +554,7 @@ val extractUpstreamDynamicEditor by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-editor.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-editor").get().asFile.absolutePath)
-    inputs.files("tools/extract-upstream-dynamic-editor.py", "tools/extract-upstream-plugins.py",
+    inputs.files("tools/extract-upstream-dynamic-editor.py", "tools/extract-upstream-dynamic-reply-protocol.py", "upstream-sources.json", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
     inputs.files(sources.filter { "dynamic-editor-detail-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { File(repositoryRoot, it["path"].toString()) })
@@ -568,6 +568,7 @@ val verifyUpstreamDynamicEditorProtocol by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.file("generated/dynamic-editor-protocol/verification.json").get().asFile.absolutePath)
     inputs.files("tools/verify-upstream-dynamic-editor-protocol.py", "tools/extract-upstream-dynamic-editor-protocol.py",
+        "tools/extract-upstream-dynamic-reply-protocol.py",
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
         "src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt")
     inputs.files(sources.filter { "dynamic-editor-detail-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -716,6 +717,17 @@ val extractUpstreamSpace by tasks.registering(Exec::class) {
     inputs.files(sources.filter { "space" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { File(repositoryRoot, it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/space"))
+}
+
+val extractUpstreamSpaceImagePreviews by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-space-image-preview-callers.py",
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/space-image-previews").get().asFile.absolutePath)
+    inputs.files("tools/extract-space-image-preview-callers.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "space-image-preview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/space-image-previews"))
 }
 
 val extractUpstreamSpaceContributions by tasks.registering(Exec::class) {
@@ -905,6 +917,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/space"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space-contributions"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space-overview"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/space-image-previews"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/components"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/preferences"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-search"))
@@ -942,7 +955,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamAppearance, verifyAppear
 tasks.named("compileKotlin") { dependsOn(extractUpstreamSettingsSearch, extractUpstreamSettingsCategories, extractUpstreamSettingsHome, extractUpstreamSettingsPrivacy, extractUpstreamSettingsEntries, extractUpstreamSettingsStorageEntries, extractNativeMusicRoot, verifySettingsSearchDependencies) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamBlockedUp, extractUpstreamBlockedListUi, extractUpstreamNetworkProxy) }
-tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview, extractUpstreamSpaceImagePreviews) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDiagnostics) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicSettings) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamCrashPrompt) }

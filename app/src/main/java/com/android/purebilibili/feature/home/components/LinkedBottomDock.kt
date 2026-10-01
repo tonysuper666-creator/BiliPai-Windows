@@ -36,6 +36,11 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.components.AppIcon
+import androidx.compose.animation.core.EaseInCubic
+import androidx.compose.animation.core.EaseOutCubic
+import androidx.compose.ui.graphics.TransformOrigin
+import com.android.purebilibili.core.ui.motion.emphasizedEnterTween
+import com.android.purebilibili.core.ui.motion.emphasizedExitTween
 import com.android.purebilibili.core.ui.motion.iosMorphTween
 import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion
 import com.android.purebilibili.feature.audio.screen.AUDIO_NOW_PLAYING_PRESENCE_ENTER_SLIDE_DP
@@ -81,6 +86,7 @@ internal fun LinkedBottomDock(
     dockPhase: LinkedDockPhase? = null,
     onDockPhaseChange: ((LinkedDockPhase) -> Unit)? = null,
     isTopLevelDestination: Boolean = true,
+    mergeOnScrollDownEnabled: Boolean = true,
     animateNowPlayingPresence: Boolean = true,
     modifier: Modifier = Modifier,
     blurEnabled: Boolean = false,
@@ -117,13 +123,14 @@ internal fun LinkedBottomDock(
             query = ""
         }
     }
+    var pendingUserImeRequest by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val scroll = LocalHomeScrollOffset.current
     val currentPhase by rememberUpdatedState(phase)
     val scrolling by rememberUpdatedState(isFeedScrollInProgress)
     val threshold = with(LocalDensity.current) { 24.dp.toPx() }
-    LaunchedEffect(currentItem, hasAudio, searchEnabled, scroll, threshold, isTopLevelDestination) {
+    LaunchedEffect(currentItem, hasAudio, searchEnabled, scroll, threshold, isTopLevelDestination, mergeOnScrollDownEnabled) {
         var previous = scroll.floatValue
         var accumulated = 0f
         snapshotFlow { scroll.floatValue to scrolling }.collect { (offset, active) ->
@@ -131,6 +138,13 @@ internal fun LinkedBottomDock(
             previous = offset
             if (!active || !isTopLevelDestination || currentPhase == LinkedDockPhase.Search) {
                 accumulated = 0f
+            } else if (!mergeOnScrollDownEnabled) {
+                // 用户选择下滑不合体：只保留向上滚动回到展开（分体）的能力。
+                accumulated = accumulateDockScroll(accumulated, delta)
+                if ((offset <= 0f && delta < 0f) || accumulated <= -threshold) {
+                    updatePhase(LinkedDockPhase.Expanded)
+                    accumulated = 0f
+                }
             } else {
                 accumulated = accumulateDockScroll(accumulated, delta)
                 if ((offset <= 0f && delta < 0f) || accumulated <= -threshold) {
@@ -174,9 +188,17 @@ internal fun LinkedBottomDock(
     }
     val reduceMotion = rememberSystemReduceMotion()
     val transition = updateTransition(targetState = phase, label = "linkedBottomDock")
+    // 合体与解体使用方向感知曲线：收拢走 emphasized-exit（中段加速的压缩感），
+    // 展开走 emphasized-enter（快起缓收的弹开感），比对称 easeInOut 更有方向性。
     val merge = transition.animateFloat(
         transitionSpec = {
-            if (reduceMotion) snap() else iosMorphTween(LINKED_DOCK_MERGE_DURATION_MILLIS)
+            if (reduceMotion) {
+                snap()
+            } else if (targetState == LinkedDockPhase.Expanded) {
+                emphasizedEnterTween(LINKED_DOCK_MERGE_DURATION_MILLIS + 20)
+            } else {
+                emphasizedExitTween(LINKED_DOCK_MERGE_DURATION_MILLIS)
+            }
         },
         label = "dockMerge",
     ) { if (it == LinkedDockPhase.Expanded) 0f else 1f }
@@ -324,7 +346,16 @@ internal fun LinkedBottomDock(
                             with(density) { navWidth.toDp() },
                             with(density) { barHeight.toDp() },
                         )
-                        .graphicsLayer { alpha = (1f - merge.value * 3f).coerceIn(0f, 1f) }
+                        .graphicsLayer {
+                            // 退出窗口（前 34%）ease-in 淡出；全程向左侧圆钮方向
+                            // 轻微收拢缩放，读作"并入圆钮"而非原地溶解。
+                            val exitProgress = (merge.value / 0.34f).coerceIn(0f, 1f)
+                            alpha = 1f - EaseInCubic.transform(exitProgress)
+                            val collapse = EaseOutCubic.transform(merge.value)
+                            scaleX = 1f - 0.10f * collapse
+                            scaleY = 1f - 0.10f * collapse
+                            transformOrigin = TransformOrigin(0f, 0.5f)
+                        }
                         .pointerInput(phase) {
                             if (phase != LinkedDockPhase.Expanded) {
                                 awaitPointerEventScope {
@@ -353,7 +384,15 @@ internal fun LinkedBottomDock(
                         with(density) { button.toDp() },
                         with(density) { controlHeight.toDp() },
                     )
-                    .graphicsLayer { alpha = (merge.value * 2f).coerceIn(0f, 1f) }
+                    .graphicsLayer {
+                        // 进入窗口（前 50%）ease-out 淡入并从 92% 缩放弹出，落定干净无过冲。
+                        val enterProgress = (merge.value / 0.5f).coerceIn(0f, 1f)
+                        val eased = EaseOutCubic.transform(enterProgress)
+                        alpha = eased
+                        val scale = 0.92f + 0.08f * eased
+                        scaleX = scale
+                        scaleY = scale
+                    }
                     .then(
                         if (phase != LinkedDockPhase.Expanded) {
                             Modifier.clickable(role = Role.Button) { expand() }
@@ -532,6 +571,7 @@ internal fun LinkedBottomDock(
                                     if (phase != LinkedDockPhase.Search) {
                                         Modifier.clickable(role = Role.Button) {
                                             phaseBeforeSearch = phase
+                                            pendingUserImeRequest = true
                                             updatePhase(LinkedDockPhase.Search)
                                         }
                                     } else Modifier
@@ -544,9 +584,21 @@ internal fun LinkedBottomDock(
                                 onQueryChange = { query = it },
                                 onSubmit = {
                                     focusManager.clearFocus()
+                                    keyboardController?.hide()
                                     val keyword = query.trim()
                                     query = ""
-                                    if (keyword.isBlank()) onSearchClick() else onSearchKeywordSubmit(keyword)
+                                    if (keyword.isBlank()) {
+                                        onSearchClick()
+                                    } else {
+                                        onSearchKeywordSubmit(keyword)
+                                        pendingUserImeRequest = false
+                                        updatePhase(
+                                            resolveLinkedDockPhaseOnSearchDismiss(
+                                                hasAudio = hasAudio,
+                                                previousPhase = phaseBeforeSearch,
+                                            )
+                                        )
+                                    }
                                 },
                                 contentColor = contentColor,
                                 accentColor = accentColor,
@@ -554,6 +606,8 @@ internal fun LinkedBottomDock(
                                 fieldAlpha = searchProgressProvider,
                                 interactive = phase == LinkedDockPhase.Search,
                                 iconStyle = iconStyle,
+                                pendingUserImeRequest = pendingUserImeRequest,
+                                onUserImeRequestConsumed = { pendingUserImeRequest = false },
                             )
                         }
                     }

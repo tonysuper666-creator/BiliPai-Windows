@@ -40,9 +40,14 @@ object DanmakuParser {
         Log.d(TAG, " Parsing ${segments.size} Protobuf segments...")
         
         var totalParsed = 0
+        var serverDisabled = false
         for ((index, segment) in segments.withIndex()) {
             try {
-                val elems = DanmakuProto.parse(segment)
+                val reply = DanmakuProto.parseReply(segment)
+                val elems = reply.elems
+                if (reply.state == 1) {
+                    serverDisabled = true
+                }
                 Log.d(TAG, " Segment ${index + 1}: parsed ${elems.size} danmakus")
                 
                 for (elem in elems) {
@@ -90,7 +95,7 @@ object DanmakuParser {
             Log.w(TAG, " No danmakus parsed from Protobuf!")
         }
         
-        return ParsedDanmaku(standardList, advancedList)
+        return ParsedDanmaku(standardList, advancedList, serverDisabled)
     }
     
     /**

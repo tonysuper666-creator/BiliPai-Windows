@@ -15,6 +15,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -97,7 +98,7 @@ internal fun CommandDanmakuOverlay(
     fontScale: Float,
     onFollowClick: () -> Unit,
     onTripleClick: () -> Unit,
-    onVoteSubmit: (CommandDanmakuItem, VoteOption) -> Unit = { _, _ -> },
+    onVoteSubmit: (CommandDanmakuItem, VoteOption, Int) -> Unit = { _, _, _ -> },
     isFollowing: Boolean = false,
     modifier: Modifier = Modifier
 ) {
@@ -107,6 +108,9 @@ internal fun CommandDanmakuOverlay(
             kotlinx.coroutines.delay(80)
         }
     }
+    // 投票弹幕的 vote_id 与动态/视频投票同一套系统，点击后复用标准投票面板。
+    var votePanelVoteId by remember { mutableStateOf<Long?>(null) }
+    var votePanelInitialOptionIndex by remember { mutableIntStateOf(-1) }
 
     Box(modifier = modifier.fillMaxSize()) {
         val active = items.filter {
@@ -124,10 +128,23 @@ internal fun CommandDanmakuOverlay(
                     onTripleClick = onTripleClick,
                     onVoteSubmit = onVoteSubmit,
                     isFollowing = isFollowing,
-                    onDismiss = { state.dismiss(item.id) }
+                    onDismiss = { state.dismiss(item.id) },
+                    onOpenVotePanel = { voteId, initialOptionIndex ->
+                        votePanelInitialOptionIndex = initialOptionIndex ?: -1
+                        votePanelVoteId = voteId
+                    }
                 )
             }
         }
+    }
+
+    votePanelVoteId?.let { voteId ->
+        com.android.purebilibili.feature.dynamic.components.DynamicVoteDialog(
+            voteId = voteId,
+            dynamicId = "",
+            onDismiss = { votePanelVoteId = null },
+            initialOptionIndex = votePanelInitialOptionIndex.takeIf { it >= 0 }
+        )
     }
 }
 
@@ -139,9 +156,10 @@ private fun CommandDanmakuCard(
     fontScale: Float,
     onFollowClick: () -> Unit,
     onTripleClick: () -> Unit,
-    onVoteSubmit: (CommandDanmakuItem, VoteOption) -> Unit,
+    onVoteSubmit: (CommandDanmakuItem, VoteOption, Int) -> Unit,
     isFollowing: Boolean,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onOpenVotePanel: (Long, Int?) -> Unit
 ) {
     val containerWidth = viewport.widthPx
     val containerHeight = viewport.heightPx
@@ -207,7 +225,8 @@ private fun CommandDanmakuCard(
                     item = item,
                     state = state,
                     maxHeightDp = maxCardHeightDp,
-                    onVoteSubmit = onVoteSubmit
+                    onVoteSubmit = onVoteSubmit,
+                    onOpenVotePanel = onOpenVotePanel
                 )
                 else -> InfoCommandCard(item)
             }
@@ -502,7 +521,8 @@ private fun VoteCommandCard(
     item: CommandDanmakuItem,
     maxHeightDp: Dp,
     state: CommandDanmakuOverlayState,
-    onVoteSubmit: (CommandDanmakuItem, VoteOption) -> Unit
+    onVoteSubmit: (CommandDanmakuItem, VoteOption, Int) -> Unit,
+    onOpenVotePanel: (Long, Int?) -> Unit
 ) {
     val selectedOptionId = state.selection(item.id)?.id
     val selectedGradeScore = state.selection(item.id)?.score
@@ -511,6 +531,7 @@ private fun VoteCommandCard(
     val gradeStarOptions = remember(item.id, item.voteOptions) {
         resolveGradeStarOptions(item.voteOptions)
     }
+    val voteIdLong = item.voteId.toLongOrNull()
 
     Column(
         modifier = Modifier
@@ -521,7 +542,15 @@ private fun VoteCommandCard(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(start = 10.dp, end = 52.dp),
+            modifier = Modifier
+                .padding(start = 10.dp, end = 52.dp)
+                .then(
+                    if (!isGrade && voteIdLong != null) {
+                        Modifier.clickable { onOpenVotePanel(voteIdLong, null) }
+                    } else {
+                        Modifier
+                    }
+                ),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             AppText(
@@ -546,23 +575,48 @@ private fun VoteCommandCard(
                 selectedScore = selectedGradeScore,
                 onSelect = { option ->
                     if (state.select(item.id, option)) {
-                        onVoteSubmit(item, option)
+                        onVoteSubmit(item, option, -1)
                     }
                 }
             )
-            item.voteOptions.isEmpty() -> AppText(
-                text = "点击屏幕参与投票",
-                modifier = Modifier.padding(start = 10.dp, end = 52.dp),
-                style = MaterialTheme.typography.bodySmall,
-                color = Color.White.copy(alpha = 0.6f)
-            )
-            else -> item.voteOptions.forEach { option ->
+            item.voteOptions.isEmpty() -> {
+                // 与官方一致：点击进入标准投票面板参与投票，而非纯提示文本
+                if (voteIdLong != null) {
+                    AppButton(
+                        onClick = { onOpenVotePanel(voteIdLong, null) },
+                        shape = AppShapes.container(ContainerLevel.Chip),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.White.copy(alpha = 0.14f),
+                            contentColor = Color.White
+                        ),
+                        elevation = null,
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                        modifier = Modifier
+                            .padding(start = 10.dp, end = 52.dp)
+                            .fillMaxWidth()
+                            .heightIn(min = 48.dp)
+                    ) {
+                        AppText(
+                            text = "参与投票",
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                } else {
+                    AppText(
+                        text = "点击屏幕参与投票",
+                        modifier = Modifier.padding(start = 10.dp, end = 52.dp),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White.copy(alpha = 0.6f)
+                    )
+                }
+            }
+            else -> item.voteOptions.forEachIndexed { index, option ->
                 val isSelected = selectedOptionId == option.id
                 val isSubmitted = selectedOptionId != null
                 AppButton(
                     onClick = {
                         if (state.select(item.id, option)) {
-                            onVoteSubmit(item, option)
+                            onVoteSubmit(item, option, index)
                         }
                     },
                     enabled = !isSubmitted,

@@ -23,7 +23,7 @@ import com.android.purebilibili.core.ui.components.AppSegmentOption
 import com.android.purebilibili.core.ui.components.AppSegmentedControlColors
 import com.android.purebilibili.core.ui.components.AppPrimaryScrollableTabRow
 import com.android.purebilibili.core.ui.components.AppPrimaryTabRow
-import com.android.purebilibili.core.ui.components.resolveAppSegmentedLabelFontSizeSp
+import com.android.purebilibili.core.ui.components.resolveAppSegmentedLabelFontSize
 import com.android.purebilibili.core.ui.components.resolveAppSegmentedSelectionIndex
 
 @Composable
@@ -38,9 +38,9 @@ internal fun <T> AppMaterial3SegmentedControl(
     val longestLabelLength = remember(options) {
         options.maxOfOrNull { it.label.length } ?: 0
     }
-    val labelFontSize = remember(options.size, longestLabelLength) {
-        resolveAppSegmentedLabelFontSizeSp(options.size, longestLabelLength).sp
-    }
+    val labelFontSize = resolveAppSegmentedLabelFontSize(
+        MaterialTheme.typography.labelLarge.fontSize, options.size, longestLabelLength
+    )
     SingleChoiceSegmentedButtonRow(modifier = modifier.fillMaxWidth()) {
         options.forEachIndexed { index, option ->
             val selected = option.value == selectedValue
@@ -94,9 +94,9 @@ internal fun <T> AppMaterial3TabRow(
     val longestLabelLength = remember(options) {
         options.maxOfOrNull { it.label.length } ?: 0
     }
-    val labelFontSize = remember(options.size, longestLabelLength) {
-        resolveAppSegmentedLabelFontSizeSp(options.size, longestLabelLength).sp
-    }
+    val labelFontSize = resolveAppSegmentedLabelFontSize(
+        MaterialTheme.typography.labelLarge.fontSize, options.size, longestLabelLength
+    )
     if (indicatorPresentation == AppTabRowIndicatorPresentation.TONAL_PILL) {
         AppTonalPillTabRow(
             options = options,

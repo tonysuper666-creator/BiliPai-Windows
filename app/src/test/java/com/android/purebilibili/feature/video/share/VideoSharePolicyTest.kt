@@ -1,6 +1,7 @@
 package com.android.purebilibili.feature.video.share
 
 import java.io.File
+import com.android.purebilibili.data.model.response.FollowingUser
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -55,10 +56,30 @@ class VideoSharePolicyTest {
 
     @Test
     fun videoShareTarget_mapsWechatAndQqPackages() {
+        assertNull(VideoShareTarget.BILIBILI_FRIENDS.packageName)
         assertEquals("com.tencent.mm", VideoShareTarget.WECHAT.packageName)
         assertEquals("com.tencent.mobileqq", VideoShareTarget.QQ.packageName)
         assertNull(VideoShareTarget.COPY_LINK.packageName)
         assertNull(VideoShareTarget.MORE.packageName)
+    }
+
+    @Test
+    fun shareRecipientsContainOnlySelectedFollowedPeopleOnce() {
+        val followings = listOf(
+            FollowingUser(mid = 21, uname = "甲"),
+            FollowingUser(mid = 22, uname = "乙"),
+            FollowingUser(mid = 21, uname = "甲"),
+            FollowingUser(mid = 0),
+        )
+
+        assertEquals(
+            listOf(21L, 22L),
+            resolveVideoShareRecipientIds(setOf(21L, 22L, 99L, 0L), followings, selfMid = 99L),
+        )
+        assertEquals(
+            listOf(21L),
+            resolveVideoShareRecipientIds(setOf(21L, 22L), followings, selfMid = 22L),
+        )
     }
 
     @Test

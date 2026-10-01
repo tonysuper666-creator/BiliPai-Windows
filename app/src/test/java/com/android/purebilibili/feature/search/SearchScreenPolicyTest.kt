@@ -12,19 +12,19 @@ import kotlin.test.assertTrue
 class SearchScreenPolicyTest {
 
     @Test
-    fun searchResultCardsUseSemanticTypographyOnlyForMiuixNonGlassMode() {
+    fun searchResultCardsUseSemanticTypographyInEveryTheme() {
         val source = loadSource("app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt")
         val typographyFacade = source
             .substringAfter("private enum class SearchResultTextRole")
             .substringBefore("/**\n *  搜索结果卡片")
 
-        assertTrue(typographyFacade.contains("if (isMiuixNonGlassEnabled())"))
+        assertFalse(typographyFacade.contains("if (isMiuixNonGlassEnabled())"))
         assertTrue(typographyFacade.contains("MaterialTheme.typography.titleSmall"))
         assertTrue(typographyFacade.contains("MaterialTheme.typography.bodySmall"))
         assertTrue(typographyFacade.contains("MaterialTheme.typography.labelMedium"))
         assertTrue(typographyFacade.contains("MaterialTheme.typography.labelSmall"))
-        assertTrue(typographyFacade.contains("fontSize = legacyFontSize"))
-        assertTrue(typographyFacade.contains("lineHeight = legacyLineHeight"))
+        assertFalse(typographyFacade.contains("fontSize = legacyFontSize"))
+        assertFalse(typographyFacade.contains("lineHeight = legacyLineHeight"))
 
         listOf(
             "fun SearchResultCard(",

@@ -63,6 +63,8 @@ data class ReplyData(
     val upper: ReplyUpper? = null,
     //  [新增] 评论输入控制（占位文案/图片上传开关）
     val control: ReplyPageControl? = null,
+    @SerialName("vote_card")
+    val voteCard: ReplyVoteCard? = null,
     @SerialName("grpc_next_offset")
     val grpcNextOffset: String = ""
 ) {
@@ -95,6 +97,22 @@ data class ReplyData(
         return result.distinctBy { it.rpid }
     }
 }
+
+@Serializable
+data class ReplyVoteCard(
+    @SerialName("vote_id") val voteId: Long = 0L,
+    val title: String = "",
+    val count: Long = 0L,
+    val options: List<ReplyVoteCardOption> = emptyList(),
+    @SerialName("my_vote_option") val myVoteOption: Long? = null,
+)
+
+@Serializable
+data class ReplyVoteCardOption(
+    val idx: Long = 0L,
+    val desc: String = "",
+    val count: Long = 0L,
+)
 
 @Serializable
 data class ReplyPageControl(

@@ -668,8 +668,14 @@ fun WatchLaterScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     // PiliPlus 式默认单列，双指缩放调节列数
-    var pinchListColumns by rememberSaveable { mutableStateOf(1) }
     val windowSizeClass = LocalWindowSizeClass.current
+    val isCompactGridWindow = com.android.purebilibili.feature.home.isCompactHomeFeedScreen(
+        windowSizeClass.widthSizeClass
+    )
+    var pinchColumnsByWindow by rememberSaveable {
+        mutableStateOf(mapOf(false to 1, true to 1))
+    }
+    val pinchListColumns = pinchColumnsByWindow[isCompactGridWindow] ?: 1
     val configuration = LocalConfiguration.current
     val pinchColumnBounds = remember(windowSizeClass.widthSizeClass, configuration.screenWidthDp) {
         resolveHomeFeedPinchColumnBounds(
@@ -746,7 +752,7 @@ fun WatchLaterScreen(
     var pinchPillVisible by remember { mutableStateOf(false) }
     var pinchPillDismissJob by remember { mutableStateOf<kotlinx.coroutines.Job?>(null) }
     val onPinchColumnsChange: (Int) -> Unit = { newColumns ->
-        pinchListColumns = newColumns
+        pinchColumnsByWindow = pinchColumnsByWindow + (isCompactGridWindow to newColumns)
         hapticFeedback.performHapticFeedback(
             androidx.compose.ui.hapticfeedback.HapticFeedbackType.TextHandleMove
         )

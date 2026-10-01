@@ -258,6 +258,7 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                 commentState = VideoContentCommentState(
                                     isRepliesLoading = commentState.isRepliesLoading,
                                     isRepliesEnd = commentState.isRepliesEnd,
+                                    voteCard = commentState.voteCard,
                                     sortMode = commentState.sortMode,
                                     currentMid = commentState.currentMid,
                                     showUpFlag = commentState.showUpFlag,

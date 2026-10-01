@@ -91,6 +91,9 @@ internal fun HomeStyleSingleColumnVideoCard(
     sharedTransitionEnabled: Boolean = transitionEnabled,
     isFollowing: Boolean = false,
     showUpBadge: Boolean = true,
+    durationStyle: com.android.purebilibili.core.store.HomeDurationStyle =
+        com.android.purebilibili.core.store.HomeDurationStyle.OVERLAY_TEXT_ONLY,
+    showPublishTime: Boolean = false,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     onMoreClick: (() -> Unit)? = null,
@@ -187,12 +190,17 @@ internal fun HomeStyleSingleColumnVideoCard(
                     // Single-column paints play/danmaku in the info column (not on cover only).
                     infoPresentation = com.android.purebilibili.core.ui.transition
                         .resolveVideoCardSourceInfoPresentation(
-                            publishTimeText = "",
+                            publishTimeText = if (showPublishTime) {
+                                FormatUtils.formatPublishTime(video.pubdate)
+                            } else {
+                                ""
+                            },
                             showStatsInInfo = true,
                             showOverflowMenu = onMoreClick != null || trailingContent != null,
                         ),
                     coverPresentation = VideoCardSourceCoverPresentation(
-                        showDurationOnCover = true,
+                        showDurationOnCover = durationStyle !=
+                            com.android.purebilibili.core.store.HomeDurationStyle.HIDDEN,
                     ),
                     coverUrl = stationaryCoverUrl,
                     coverCacheKey = stationaryCoverUrl,
@@ -249,6 +257,9 @@ internal fun HomeStyleSingleColumnVideoCard(
             )
         },
         coverOverlayContent = {
+            if (durationStyle == com.android.purebilibili.core.store.HomeDurationStyle.HIDDEN) {
+                return@HorizontalVideoCardFrame
+            }
             AppText(
                 text = FormatUtils.formatDuration(video.duration),
                 color = MediaContrastPalette.Foreground,
@@ -277,6 +288,27 @@ internal fun HomeStyleSingleColumnVideoCard(
 
             UpBadgeName(
                 name = video.owner.name,
+                leadingContent = if (
+                    com.android.purebilibili.core.ui.LocalUpBadgeVisibility.current.showAvatars &&
+                    video.owner.face.isNotBlank()
+                ) {
+                    {
+                        AsyncImage(
+                            model = ImageRequest.Builder(context)
+                                .data(FormatUtils.fixImageUrl(video.owner.face))
+                                .crossfade(false)
+                                .build(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(16.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.surfaceVariant),
+                        )
+                    }
+                } else {
+                    null
+                },
                 inlineTrailingContent = if (isFollowing) {
                     {
                         AppText(
@@ -304,6 +336,16 @@ internal fun HomeStyleSingleColumnVideoCard(
                 playText = FormatUtils.formatStat(video.stat.view.toLong()),
                 danmakuText = FormatUtils.formatStat(video.stat.danmaku.toLong()),
             )
+
+            if (showPublishTime && video.pubdate > 0) {
+                AppText(
+                    text = FormatUtils.formatPublishTime(video.pubdate),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         },
         trailingContent = when {
             trailingContent != null -> {

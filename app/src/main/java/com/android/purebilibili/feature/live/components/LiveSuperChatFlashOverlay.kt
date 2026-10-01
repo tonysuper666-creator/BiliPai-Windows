@@ -214,7 +214,7 @@ fun LiveSuperChatFlashOverlay(
                             color = Color.White,
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontWeight = FontWeight.Medium,
-                                lineHeight = 20.sp
+
                             ),
                             maxLines = 3,
                             overflow = TextOverflow.Ellipsis

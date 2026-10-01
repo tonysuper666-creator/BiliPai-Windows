@@ -162,6 +162,7 @@ fun WebViewScreen(
 
                                             is BilibiliNavigationTarget.Search -> false
                                             is BilibiliNavigationTarget.Article -> false
+                                            is BilibiliNavigationTarget.PopularFeed -> false
                                         }
                                     }
 

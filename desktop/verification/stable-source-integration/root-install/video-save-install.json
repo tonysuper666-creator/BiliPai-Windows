@@ -1,0 +1,23 @@
+{
+  "schema": "stable-video-save-candidate-install-v1",
+  "candidateInstalled": true,
+  "mainInstalled": false,
+  "upstreamStableHelperSha256Lf": "3071039726dcf9070df9a7cb59f198fce2f6c02a4844dc449c0b968a840c449e",
+  "verifiedArtifacts": 68,
+  "installed": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt",
+      "sha256Lf": "dfb6115880896df86d3ae5a46881831a997d01aa4aba8fb20432c831b7124c31"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImageSaveLocations.kt",
+      "sha256Lf": "5f27ef6e0a6db648446430dce3c92204d1317e66830c94b443475ba1908da97c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Lf": "ab708169db40d5ce0c9ec463d21e63d4fbdfca889e1253e861cdad7cc2d1dac4"
+    }
+  ],
+  "wholeStableCompiled": false,
+  "stableRuntimeAccepted": false
+}

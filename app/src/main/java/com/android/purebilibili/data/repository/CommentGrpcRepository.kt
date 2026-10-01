@@ -27,6 +27,8 @@ import com.android.purebilibili.data.model.response.ReplyTop
 import com.android.purebilibili.data.model.response.ReplyUpper
 import com.android.purebilibili.data.model.response.ReplyVipInfo
 import com.android.purebilibili.data.model.response.ReplyVote
+import com.android.purebilibili.data.model.response.ReplyVoteCard
+import com.android.purebilibili.data.model.response.ReplyVoteCardOption
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
@@ -253,6 +255,7 @@ internal object CommentGrpcRepository {
         var upTop: ReplyItem? = null
         var adminTop: ReplyItem? = null
         var voteTop: ReplyItem? = null
+        var voteCard: ReplyVoteCard? = null
         val topReplies = mutableListOf<ReplyItem>()
         val replies = mutableListOf<ReplyItem>()
         var paginationNextOffset = ""
@@ -267,6 +270,7 @@ internal object CommentGrpcRepository {
                 6 -> voteTop = parseReplyInfo(field.bytes)
                 14 -> topReplies += parseReplyInfo(field.bytes)
                 20 -> paginationNextOffset = parseFeedPaginationReplyNextOffset(field.bytes)
+                23 -> voteCard = parseVoteCard(field.bytes)
             }
         }
 
@@ -290,8 +294,41 @@ internal object CommentGrpcRepository {
                 childInputText = subject.childText,
                 uploadPictureIconState = subject.uploadPictureIconState
             ),
+            voteCard = voteCard,
             grpcNextOffset = paginationNextOffset
         )
+    }
+
+    private fun parseVoteCard(bytes: ByteArray): ReplyVoteCard? {
+        var voteId = 0L
+        var title = ""
+        var count = 0L
+        var myVoteOption: Long? = null
+        val options = mutableListOf<ReplyVoteCardOption>()
+        ProtoWire.parseFields(bytes).forEach { field ->
+            when (field.number) {
+                1 -> voteId = field.varint
+                2 -> title = ProtoWire.stringValue(field)
+                3 -> count = field.varint
+                4 -> {
+                    var index = 0L
+                    var description = ""
+                    var optionCount = 0L
+                    ProtoWire.parseFields(field.bytes).forEach { optionField ->
+                        when (optionField.number) {
+                            1 -> index = optionField.varint
+                            2 -> description = ProtoWire.stringValue(optionField)
+                            3 -> optionCount = optionField.varint
+                        }
+                    }
+                    options += ReplyVoteCardOption(index, description, optionCount)
+                }
+                5 -> myVoteOption = field.varint
+            }
+        }
+        return voteId.takeIf { it > 0L }?.let {
+            ReplyVoteCard(it, title, count, options, myVoteOption)
+        }
     }
 
     internal fun parseDetailListReply(bytes: ByteArray): ReplyData {

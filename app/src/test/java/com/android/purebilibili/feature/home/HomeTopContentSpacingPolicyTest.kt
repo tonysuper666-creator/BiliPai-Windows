@@ -6,6 +6,45 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class HomeTopContentSpacingPolicyTest {
+    @Test
+    fun bottomBarSearchRemovesTheHiddenTopSearchReservation() {
+        assertEquals(
+            HomeTopSearchRowMetrics(0.dp, 0.dp),
+            resolveHomeTopSearchRowMetrics(
+                configuredHeight = 48.dp,
+                configuredTabsSpacing = 6.dp,
+                bottomBarSearchEnabled = true,
+                hideTopTabs = false,
+            ),
+        )
+    }
+
+    @Test
+    fun topSearchReservationReturnsWhenTopTabsAreHidden() {
+        assertEquals(
+            HomeTopSearchRowMetrics(48.dp, 6.dp),
+            resolveHomeTopSearchRowMetrics(
+                configuredHeight = 48.dp,
+                configuredTabsSpacing = 6.dp,
+                bottomBarSearchEnabled = true,
+                hideTopTabs = true,
+            ),
+        )
+    }
+
+    @Test
+    fun topSearchReservationRemainsWhenBottomBarSearchIsDisabled() {
+        assertEquals(
+            HomeTopSearchRowMetrics(48.dp, 6.dp),
+            resolveHomeTopSearchRowMetrics(
+                configuredHeight = 48.dp,
+                configuredTabsSpacing = 6.dp,
+                bottomBarSearchEnabled = false,
+                hideTopTabs = false,
+            ),
+        )
+    }
+
 
     @Test
     fun `md3 non glass tightens the reserved tabs to content padding`() {

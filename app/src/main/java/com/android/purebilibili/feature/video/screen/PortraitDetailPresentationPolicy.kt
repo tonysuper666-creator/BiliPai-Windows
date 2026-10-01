@@ -137,10 +137,20 @@ internal fun shouldUseCompactInlinePortraitPlayerForCommentTab(
     isCommentThreadVisible: Boolean = false,
     collapseMode: PortraitPlayerCollapseMode = PortraitPlayerCollapseMode.BOTH,
     isVerticalVideo: Boolean = true,
-    isPlaybackPaused: Boolean = false
+    isPlaybackPaused: Boolean = false,
+    isCompactFoldableCoverWindow: Boolean = false,
 ): Boolean {
     // Switching between 简介/评论 must keep the inline portrait player visible. The player is
-    // collapsed only by the detail list gesture, which also allows an upward drag to restore it.
+    // collapsed only by the detail list gesture, except on short foldable cover windows where
+    // the expanded player leaves no usable comment viewport.
+    if (
+        isCompactFoldableCoverWindow &&
+        useOfficialInlinePortraitDetailExperience &&
+        selectedTabIndex == 1 &&
+        !isPortraitFullscreen
+    ) {
+        return true
+    }
     return false
 }
 
@@ -222,8 +232,15 @@ internal fun resolvePortraitInlinePlayerLayoutSpec(
 ): PortraitInlinePlayerLayoutSpec {
     val width = screenWidthDp
     val standardCollapsedHeight = screenWidthDp * 9f / 16f
-    val collapsedHeight = if (isFoldableCoverWindow && screenHeightDp > 0f) {
-        min(standardCollapsedHeight, screenHeightDp * FOLDABLE_COVER_COMPACT_PLAYER_HEIGHT_FRACTION)
+    val collapsedHeight = if (
+        isFoldableCoverWindow &&
+        screenHeightDp > 0f &&
+        screenHeightDp < FOLDABLE_COVER_COMPACT_HEIGHT_MAX_DP
+    ) {
+        min(
+            standardCollapsedHeight,
+            screenHeightDp * FOLDABLE_COVER_COLLAPSED_PLAYER_HEIGHT_FRACTION,
+        )
     } else {
         standardCollapsedHeight
     }

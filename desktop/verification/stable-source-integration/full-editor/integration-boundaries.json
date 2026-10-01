@@ -1,0 +1,71 @@
+{
+  "scope": "Sole stable full editor producer and 18-image existing adapter delta only",
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceCandidates": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-editor.py",
+      "baseLfSha256": "48ee4bce174611fc6271c6710711334d1a16adc65f6434b18b6f72b1b3e885ff",
+      "candidateLfSha256": "adf02e645c163afc52ba2b63db1f2f2564a1f68cbd58dc8d37590d766cfadac7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "baseLfSha256": "ce08f0d5703f2b447dfcc64db56636bfa696cb39e7584969bb69b93d2f6b5aff",
+      "candidateLfSha256": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "baseLfSha256": "c384ef71279f9c509ddf26ba285b9b7fd90a8567fd5bfddf052cd729fed17d56",
+      "candidateLfSha256": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "baseLfSha256": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810",
+      "candidateLfSha256": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3"
+    }
+  ],
+  "sourceStatesAtFreeze": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-editor.py",
+      "currentLfSha256": "adf02e645c163afc52ba2b63db1f2f2564a1f68cbd58dc8d37590d766cfadac7",
+      "state": "Root-installed candidate"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "currentLfSha256": "ce08f0d5703f2b447dfcc64db56636bfa696cb39e7584969bb69b93d2f6b5aff",
+      "state": "baseline, prepared install payload"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "currentLfSha256": "c384ef71279f9c509ddf26ba285b9b7fd90a8567fd5bfddf052cd729fed17d56",
+      "state": "baseline, prepared install payload"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "currentLfSha256": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810",
+      "state": "baseline, prepared install payload"
+    }
+  ],
+  "requiredExistingIdentityProducerLfSha256": "4bea60a6059c1a8f7b9e42caa8ef825ef84c0c59802d852e61f41130fd07c0e7",
+  "install": "Install exact 4 payloads at their existing paths; apply gradle-input-only.patch in the existing task. Retain the already installed streaming Root/Host/Operations consumer files unchanged.",
+  "fullOriginalUi": "All four complete original stable UI file bodies reconstitute to identical LF bytes after reversing only required platform seams. Original renderer branches and full-window Material sheet remain.",
+  "originalUiChange": "Composer has full-window sheet, 18 images, title, header save/publish, attached vote/reserve and visibility menu; other 3 UI files have unchanged per-method tokens versus alpha9.",
+  "originalSourceAudit": "25 exact manifest LF hashes and fixed Git blobs; 471 method token/original-text records, changed method diffs and full alpha/stable source retention.",
+  "imageSelection": "Same existing SelectedImages, WindowsPickers and GallerySelection raise the publishing capacity to 18. Comment caller capacity stays 9.",
+  "streaming": "The previous frozen stream chain still supplies actual SessionStore owner admission, selected owner lock, live caller job, one-shot RequestBody, 15MiB cap and input close. This lane changes only selected list capacity.",
+  "commentImages": "New stable nine-image comment UI is audited here and owned by separate dynamic_action_review producer lane; this lane does not claim its complete upload/publish path.",
+  "verification": "Accepted run02 manual Kotlin/Compose compile uses original file names, actual Main04 92 pinned artifact bytes and frozen stream payloads; 188 explicit product overrides. Actual Main04 Store/Repository capacity/lifetime proof: 3 cases,16 assertions,0 transports.",
+  "rejectedEvidence": "run01 compile was successful with prefixed frozen Kotlin filenames; runtime failed ClassNotFound because filename altered the JVM facade. Raw failure retained; it is not accepted runtime or actual ABI evidence.",
+  "sourceTestLimitation": "Original stable Android Composer policy test retains removed alpha dialog/liquid string assertions. It is preserved as source, but does not define the new stable full-window UI.",
+  "notProven": [
+    "actual stable whole Main zero-override build",
+    "full mounted editor pointer/keyboard interaction",
+    "real chooser or HWND",
+    "Bilibili upload server acceptance",
+    "Windows EXE deployment"
+  ],
+  "MainWrittenByThisLane": false,
+  "sharedGradle": false,
+  "newDependencies": false,
+  "newHttpOrStore": false,
+  "credentialsSerialized": false
+}

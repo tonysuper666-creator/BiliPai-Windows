@@ -1,0 +1,28 @@
+{
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceCandidates": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-editor.py",
+      "baseLfSha256": "48ee4bce174611fc6271c6710711334d1a16adc65f6434b18b6f72b1b3e885ff",
+      "candidateLfSha256": "adf02e645c163afc52ba2b63db1f2f2564a1f68cbd58dc8d37590d766cfadac7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "baseLfSha256": "ce08f0d5703f2b447dfcc64db56636bfa696cb39e7584969bb69b93d2f6b5aff",
+      "candidateLfSha256": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "baseLfSha256": "c384ef71279f9c509ddf26ba285b9b7fd90a8567fd5bfddf052cd729fed17d56",
+      "candidateLfSha256": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "baseLfSha256": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810",
+      "candidateLfSha256": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3"
+    }
+  ],
+  "requiredIdentityProducerLfSha256": "4bea60a6059c1a8f7b9e42caa8ef825ef84c0c59802d852e61f41130fd07c0e7",
+  "MainChanged": false,
+  "sharedGradle": false
+}

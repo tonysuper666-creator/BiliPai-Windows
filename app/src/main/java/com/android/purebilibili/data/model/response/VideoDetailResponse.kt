@@ -60,17 +60,69 @@ data class ViewInfo(
     @SerialName("is_upower_preview")
     val isUpowerPreview: Boolean = false,
     @SerialName("is_upower_exclusive_with_qa")
-    val isUpowerExclusiveWithQa: Boolean = false
+    val isUpowerExclusiveWithQa: Boolean = false,
+    @SerialName("argue_info")
+    val argueInfo: VideoArgueInfo? = null,
+    @SerialName("honor_reply")
+    val honorReply: VideoHonorReply? = null,
+    /** 新版简介分段:type=2 为 @提及,biz_id 是被@用户 mid,可跳空间。 */
+    @SerialName("desc_v2")
+    val descV2: List<VideoDescSegment> = emptyList()
 ) {
     val isCooperation: Boolean
         get() = rights.isCooperation == 1 || staff.isNotEmpty()
 }
 
 @Serializable
+data class VideoDescSegment(
+    @SerialName("raw_text")
+    val rawText: String = "",
+    val type: Int = 1,
+    @SerialName("biz_id")
+    val bizId: Long = 0
+)
+
+/**
+ * 视频荣誉(入站必刷/每周必看/全站排行榜/热门)。
+ * desc 线上可能是数字或字符串,用 JsonPrimitive 容忍两种形态。
+ */
+@Serializable
+data class VideoHonorReply(
+    val honor: List<VideoHonor> = emptyList()
+)
+
+@Serializable
+data class VideoHonor(
+    val aid: Long = 0,
+    val type: Int = 0,
+    val desc: kotlinx.serialization.json.JsonPrimitive? = null,
+    @SerialName("weekly_recommend_num")
+    val weeklyRecommendNum: Int = 0,
+    @SerialName("honor_name")
+    val honorName: String = "",
+    @SerialName("honor_url")
+    val honorUrl: String = "",
+    @SerialName("honor_icon_url")
+    val honorIconUrl: String = ""
+)
+
+/**
+ * UP 主设置的视频声明（如"虚构演绎,请勿过度解读"）。
+ * 对齐 PiliPlus ArgueInfo:仅 argue_msg 一个有效字段。
+ */
+@Serializable
+data class VideoArgueInfo(
+    @SerialName("argue_msg")
+    val argueMsg: String = ""
+)
+
+@Serializable
 data class VideoDetailRights(
     val elec: Int = 0,
     @SerialName("is_cooperation")
-    val isCooperation: Int = 0
+    val isCooperation: Int = 0,
+    @SerialName("no_reprint")
+    val noReprint: Int = 0
 )
 
 @Serializable
@@ -153,8 +205,13 @@ data class UgcSeason(
     val cover: String = "",
     val mid: Long = 0,
     val ep_count: Int = 0,  // 总集数
+    val intro: String = "", // 合集简介（视图接口返回，PiliPlus 未利用）
+    val desc: String = "",
     val sections: List<UgcSection> = emptyList()
-)
+) {
+    /** 展示用简介：intro 优先，desc 兜底 */
+    val displayIntro: String get() = intro.ifBlank { desc }
+}
 
 @Serializable
 data class UgcSection(

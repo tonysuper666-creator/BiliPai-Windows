@@ -386,18 +386,22 @@ private fun TimelineSection(
         } else {
             104.dp
         }
-        AppThemeAdaptiveTabRow(
-            indicatorPresentation = AppTabRowIndicatorPresentation.TONAL_PILL,
-            options = BangumiTimelineRange.entries.map { range ->
-                AppSegmentOption(range, range.label)
-            },
-            selectedValue = state.range,
-            onSelectionChange = onRangeSelected,
-            minTabWidth = timelineRangeMinWidth,
-            scrollable = true,
-            miuixBackdrop = tabBackdrop,
+        Box(
             modifier = Modifier.fillMaxWidth(),
-        )
+            contentAlignment = Alignment.Center,
+        ) {
+            AppThemeAdaptiveTabRow(
+                indicatorPresentation = AppTabRowIndicatorPresentation.TONAL_PILL,
+                options = BangumiTimelineRange.entries.map { range ->
+                    AppSegmentOption(range, range.label)
+                },
+                selectedValue = state.range,
+                onSelectionChange = onRangeSelected,
+                minTabWidth = timelineRangeMinWidth,
+                scrollable = false,
+                miuixBackdrop = tabBackdrop,
+            )
+        }
         when {
             state.isLoading && state.days.isEmpty() -> BangumiTimelineSkeleton()
             state.error != null && state.days.isEmpty() -> InlineError(state.error, onRetry)

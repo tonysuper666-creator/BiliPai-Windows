@@ -1,0 +1,16 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt",
+    "sha256Lf": "056db2c4d628e38dbfc3b7be5e6dd6b21bd9ff97597f5385f666579a0924785e",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedGitBlob": "ea9cb3af64dc6b179b915a57c962c78c15268226",
+    "currentGitBlob": "ea9cb3af64dc6b179b915a57c962c78c15268226"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/performance/NativeExitTrace.kt",
+    "sha256Lf": "8d0e38625f243072cd72d380cb6c7eb36ec3587deb194c497a7d9a10434be182",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedGitBlob": "070fd26b7103b095ea284a70153551060935b933",
+    "currentGitBlob": "070fd26b7103b095ea284a70153551060935b933"
+  }
+]

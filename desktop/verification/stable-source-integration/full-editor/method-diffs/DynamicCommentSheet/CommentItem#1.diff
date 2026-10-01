@@ -1,0 +1,30 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt:CommentItem#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt:CommentItem#1
+@@ -108,7 +108,12 @@
+                     text = member.uname,
+                     fontSize = VideoCommentTypographyTokens.author,
+                     fontWeight = FontWeight.Medium,
+-                    color = MaterialTheme.colorScheme.primary,
++                    color = resolveUpNameColor(
++                        vipStatus = member.vip?.vipStatus ?: 0,
++                        vipType = member.vip?.vipType ?: 0,
++                        onSurface = MaterialTheme.colorScheme.onSurface,
++                        secondary = MaterialTheme.colorScheme.secondary,
++                    ),
+                     maxLines = 1,
+                     overflow = TextOverflow.Ellipsis,
+                     modifier = Modifier
+@@ -314,7 +319,12 @@
+                                         text = "${subReply.member.uname}:",
+                                         fontSize = VideoCommentTypographyTokens.subReply,
+                                         fontWeight = FontWeight.SemiBold,
+-                                        color = MaterialTheme.colorScheme.primary,
++                                        color = resolveUpNameColor(
++                                            vipStatus = subReply.member.vip?.vipStatus ?: 0,
++                                            vipType = subReply.member.vip?.vipType ?: 0,
++                                            onSurface = MaterialTheme.colorScheme.onSurface,
++                                            secondary = MaterialTheme.colorScheme.secondary,
++                                        ),
+                                         maxLines = 1,
+                                         overflow = TextOverflow.Ellipsis
+                                     )

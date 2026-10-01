@@ -232,6 +232,7 @@ fun CommentInputDialog(
     var mentionSearchText by remember { mutableStateOf("") }
     var currentTab by remember { mutableIntStateOf(0) } // 0=Kaomoji, 1=Emoji, 2+=API Packages
     var selectedImageUris by remember { mutableStateOf(initialImageUris) }
+    var inputWasVisible by remember { mutableStateOf(false) }
     val text = textFieldValue.text
     val canPublish = canPublishCommentDraft(
         text = text,
@@ -296,15 +297,25 @@ fun CommentInputDialog(
     
     // 重置状态
     LaunchedEffect(visible) {
-        if (visible) {
-            // 草稿更新会随每次输入回流，不能作为 effect key，否则会持续覆盖 IME 选区。
-            textFieldValue = commentDraftTextFieldValue(initialText)
-            isForwardToDynamic = initialSyncToDynamic
-            showEmojiPanel = false
-            showMentionPanel = false
-            mentionSearchText = ""
-            selectedImageUris = initialImageUris
+        if (!visible) {
+            // 外部关闭（例如导航离开详情页）也要立即撤销输入焦点，避免输入光标
+            // 在弹层退场期间继续显示在播放详情页上。
+            if (inputWasVisible) {
+                keyboardController?.hide()
+                focusManager.clearFocus(force = true)
+                inputWasVisible = false
+            }
+            return@LaunchedEffect
         }
+
+        inputWasVisible = true
+        // 草稿更新会随每次输入回流，不能作为 effect key，否则会持续覆盖 IME 选区。
+        textFieldValue = commentDraftTextFieldValue(initialText)
+        isForwardToDynamic = initialSyncToDynamic
+        showEmojiPanel = false
+        showMentionPanel = false
+        mentionSearchText = ""
+        selectedImageUris = initialImageUris
     }
     
     // 监听 emoji 面板开关，控制键盘

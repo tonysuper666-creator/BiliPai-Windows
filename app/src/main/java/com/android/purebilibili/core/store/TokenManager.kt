@@ -111,10 +111,14 @@ object TokenManager {
                 val sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
                 //  数据同步：如果 DataStore 有值但 SP 没值 (或值不同)，同步写入 SP (从 V1 迁移到 V2)
                 if (sessDataCache != null && sessDataCache != sp.getString(SP_KEY_SESS, null)) {
-                    sp.edit().putString(SP_KEY_SESS, sessDataCache?.let(SessionStorageCipher::encrypt)).apply()
+                    sessDataCache?.let(SessionStorageCipher::encrypt)?.let { encrypted ->
+                        sp.edit().putString(SP_KEY_SESS, encrypted).apply()
+                    }
                 }
                 if (buvid3Cache != null && buvid3Cache != sp.getString(SP_KEY_BUVID, null)) {
-                    sp.edit().putString(SP_KEY_BUVID, buvid3Cache?.let(SessionStorageCipher::encrypt)).apply()
+                    buvid3Cache?.let(SessionStorageCipher::encrypt)?.let { encrypted ->
+                        sp.edit().putString(SP_KEY_BUVID, encrypted).apply()
+                    }
                 }
             }
         }
@@ -153,8 +157,10 @@ object TokenManager {
     //  [新增] 保存 CSRF Token
     fun saveCsrf(context: Context, csrf: String) {
         csrfCache = csrf
-        context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
-            .edit().putString(SP_KEY_CSRF, SessionStorageCipher.encrypt(csrf)).apply()
+        SessionStorageCipher.encrypt(csrf)?.let { encrypted ->
+            context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+                .edit().putString(SP_KEY_CSRF, encrypted).apply()
+        }
         com.android.purebilibili.core.util.Logger.d("TokenManager", "saveCsrf")
     }
     
@@ -176,12 +182,12 @@ object TokenManager {
         accessTokenCache = accessToken
         refreshTokenCache = refreshToken
         accessTokenPlatformCache = platform
-        context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .putString(SP_KEY_ACCESS_TOKEN, SessionStorageCipher.encrypt(accessToken))
-            .putString(SP_KEY_REFRESH_TOKEN, SessionStorageCipher.encrypt(refreshToken))
-            .putString(SP_KEY_ACCESS_TOKEN_PLATFORM, platform)
-            .apply()
+        val encryptedAccessToken = SessionStorageCipher.encrypt(accessToken)
+        val encryptedRefreshToken = SessionStorageCipher.encrypt(refreshToken)
+        val editor = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE).edit()
+        encryptedAccessToken?.let { editor.putString(SP_KEY_ACCESS_TOKEN, it) }
+        encryptedRefreshToken?.let { editor.putString(SP_KEY_REFRESH_TOKEN, it) }
+        editor.putString(SP_KEY_ACCESS_TOKEN_PLATFORM, platform).apply()
         com.android.purebilibili.core.util.Logger.d("TokenManager", "saveAccessToken")
     }
 
@@ -206,12 +212,14 @@ object TokenManager {
         com.android.purebilibili.core.util.Logger.d("TokenManager", "saveCookies")
         
         // 1. 存入 SP (同步/快速)
-        context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
-            .edit().putString(SP_KEY_SESS, SessionStorageCipher.encrypt(sessData)).apply()
+        SessionStorageCipher.encrypt(sessData)?.let { encrypted ->
+            context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+                .edit().putString(SP_KEY_SESS, encrypted).apply()
+        }
 
         // 2. 存入 DataStore (异步/持久)
-        context.dataStore.edit { prefs ->
-            prefs[SESSDATA_KEY] = SessionStorageCipher.encrypt(sessData)
+        SessionStorageCipher.encrypt(sessData)?.let { encrypted ->
+            context.dataStore.edit { prefs -> prefs[SESSDATA_KEY] = encrypted }
         }
     }
 
@@ -219,12 +227,14 @@ object TokenManager {
         buvid3Cache = buvid3
         
         // 1. 存入 SP
-        context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
-            .edit().putString(SP_KEY_BUVID, SessionStorageCipher.encrypt(buvid3)).apply()
+        SessionStorageCipher.encrypt(buvid3)?.let { encrypted ->
+            context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+                .edit().putString(SP_KEY_BUVID, encrypted).apply()
+        }
 
         // 2. 存入 DataStore
-        context.dataStore.edit { prefs ->
-            prefs[BUVID3_KEY] = SessionStorageCipher.encrypt(buvid3)
+        SessionStorageCipher.encrypt(buvid3)?.let { encrypted ->
+            context.dataStore.edit { prefs -> prefs[BUVID3_KEY] = encrypted }
         }
     }
 
@@ -249,13 +259,12 @@ object TokenManager {
         this.accessTokenPlatformCache = accessTokenPlatform
         isVipCache = isVip
 
-        sp.edit()
-            .putString(SP_KEY_CSRF, csrfCache?.let(SessionStorageCipher::encrypt))
-            .putLong(SP_KEY_MID, midCache ?: 0L)
-            .putString(SP_KEY_ACCESS_TOKEN, accessTokenCache?.let(SessionStorageCipher::encrypt))
-            .putString(SP_KEY_REFRESH_TOKEN, refreshTokenCache?.let(SessionStorageCipher::encrypt))
+        val editor = sp.edit().putLong(SP_KEY_MID, midCache ?: 0L)
             .putString(SP_KEY_ACCESS_TOKEN_PLATFORM, accessTokenPlatformCache)
-            .apply()
+        csrfCache?.let(SessionStorageCipher::encrypt)?.let { editor.putString(SP_KEY_CSRF, it) }
+        accessTokenCache?.let(SessionStorageCipher::encrypt)?.let { editor.putString(SP_KEY_ACCESS_TOKEN, it) }
+        refreshTokenCache?.let(SessionStorageCipher::encrypt)?.let { editor.putString(SP_KEY_REFRESH_TOKEN, it) }
+        editor.apply()
 
         if (buvid3.isNotBlank()) {
             saveBuvid3(context, buvid3)

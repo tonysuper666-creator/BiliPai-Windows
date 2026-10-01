@@ -1,0 +1,618 @@
+{
+  "scope": "Three stable compile07 sole producer repairs only",
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifacts": [
+    {
+      "path": "RepairFixture.kt",
+      "sha256Bytes": "b4274debe3b0f66519d87602160ccc2d4df8a2a4a22f7be6cd1ad8d3d92ee28f",
+      "sizeBytes": 3501
+    },
+    {
+      "path": "audit.py",
+      "sha256Bytes": "0178995bce3471755f7075e7fed21fa668f5db253d06e0b3727a25c13d7ea389",
+      "sizeBytes": 5534
+    },
+    {
+      "path": "candidate-source-inventory.json",
+      "sha256Bytes": "4ed62579422635df0d3edb51dffc282e8ee5a9e2be11b92a12edd2f4e709fc99",
+      "sizeBytes": 1851
+    },
+    {
+      "path": "candidate.patch",
+      "sha256Bytes": "2b7ed36c2e10aa647de883dc11f33bda4f17aad9df8bb6af7c4b7f4fb8858bac",
+      "sizeBytes": 7896
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "39f4c8666a4a902bebc2a43c1d689520749ac59bb940127af24dc98571eccbd4",
+      "sizeBytes": 6547
+    },
+    {
+      "path": "generated-targets.json",
+      "sha256Bytes": "790612f4ea4d5b04b4d4724166d92d94f32e590715127484cd4c53ea47d32c1d",
+      "sizeBytes": 2147
+    },
+    {
+      "path": "generated/diagnostics/reference-only/OriginalDiagnosticsSection.kt",
+      "sha256Bytes": "6f89a37e4bf5a0111a6de5d1469e7de93d01c2ed6880baa5fd9893d70e0ccbe2",
+      "sizeBytes": 6343
+    },
+    {
+      "path": "generated/diagnostics/sources/com/android/purebilibili/core/performance/DesktopOriginalAbnormalProcessExitException.kt",
+      "sha256Bytes": "e24ed8a538d7ae1a0dfed8cfba229d43c393573d29061fd163908c7088afbfa9",
+      "sizeBytes": 1198
+    },
+    {
+      "path": "generated/diagnostics/sources/com/android/purebilibili/core/performance/DesktopOriginalNativeExitTrace.kt",
+      "sha256Bytes": "0e33fb74c8433939444dddcfe6d88a6970fa3eaed46772ee61befcae73c70695",
+      "sizeBytes": 10373
+    },
+    {
+      "path": "generated/diagnostics/sources/com/android/purebilibili/core/util/DesktopDiagnosticCollector.kt",
+      "sha256Bytes": "f4f11fea1b5ea4c9c9f11bdf0d0aaf1d47d1ebd2070d59dba75c98197bfecc0b",
+      "sizeBytes": 11549
+    },
+    {
+      "path": "generated/diagnostics/sources/com/android/purebilibili/core/util/DesktopDiagnosticPolicy.kt",
+      "sha256Bytes": "c0c10a77c7dce2287b4cf998989680d951d8cdce4f03214e4ceee0d23f0fe218",
+      "sizeBytes": 8632
+    },
+    {
+      "path": "generated/diagnostics/sources/com/android/purebilibili/core/util/DesktopLocalCrashPolicy.kt",
+      "sha256Bytes": "55021d2e1e54d52f4fc575ea4fe74dfee4dd87665dac582ee26f495043b1db6d",
+      "sizeBytes": 347
+    },
+    {
+      "path": "generated/diagnostics/sources/com/android/purebilibili/feature/settings/SettingsDiagnosticFields.kt",
+      "sha256Bytes": "0c3ab91e56cf0c364a699bce6a2e6998e89dd4394c22085edb93b93117b69a4f",
+      "sizeBytes": 4467
+    },
+    {
+      "path": "generated/diagnostics/sources/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings.kt",
+      "sha256Bytes": "fcc10840ed98e3a9832f5f9140491aa11443d5107d5337da550339762b0cdb0c",
+      "sizeBytes": 1126
+    },
+    {
+      "path": "generated/diagnostics/sources/com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.kt",
+      "sha256Bytes": "bf15740002759b83339a6672dd7f7ab7b518129be5f6d6d52ebdc27f54805039",
+      "sizeBytes": 2316
+    },
+    {
+      "path": "generated/diagnostics/sources/source-identity.json",
+      "sha256Bytes": "fcd56c6c9a6c5237b3f0c18ad6c799f53a1f7869e3c9fba52031f732f48ced30",
+      "sizeBytes": 2707
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/core/store/DesktopDynamicTabsSettings.kt",
+      "sha256Bytes": "4f8d40c59d1c359dbe386c3ad39838a69e60be7f2c06544a9b72daddcc8b3066",
+      "sizeBytes": 2578
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/core/ui/DesktopOriginalDynamicImmersiveChrome.kt",
+      "sha256Bytes": "ac9a2b4884ca7663b1f9feea6e76feecb8550768f81cf0207dd6eabf4c7a1f7c",
+      "sizeBytes": 364
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/core/ui/components/DesktopOriginalDynamicNativeTabs.kt",
+      "sha256Bytes": "66bfb2ba193a4789232f817a7d31d400695386e16917ffff6686c433eb43fddd",
+      "sizeBytes": 19092
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3TonalPillTabRow.kt",
+      "sha256Bytes": "cff0280579b45893284abc3946846d7f9f215d5f98ca7ce5771b0d609b50c46d",
+      "sizeBytes": 10309
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/data/repository/DesktopOriginalDynamicFollowedLiveUsers.kt",
+      "sha256Bytes": "b089a16cb30dac4b430763ea558f4085d2fc8b7d81139178c2f8fb6efd3eb392",
+      "sizeBytes": 624
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt",
+      "sha256Bytes": "83dedfc25791d02a2567a22cf6a4952abdcbbd88696eda8a158b351a489ff04c",
+      "sizeBytes": 6186
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserControls.kt",
+      "sha256Bytes": "48853a49fb84935a91ecea4f7086f4796cc5938943d034efb2029b08f67a2f9f",
+      "sizeBytes": 12086
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserItemFilter.kt",
+      "sha256Bytes": "ffe28c2f1bdedfa084eaadbf4027e09b6698b1779ecf2681a941f862c353388a",
+      "sizeBytes": 1504
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserLayout.kt",
+      "sha256Bytes": "e5bc3c7d6b23e76ce9e635184cd37c84d2fcfd015d3f500c7d69307b0de80e2c",
+      "sizeBytes": 594
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserRequestPolicy.kt",
+      "sha256Bytes": "375109353f37141fd8931dfc92dd3a8ab9e13685c4ea0efad2cb45079aaa0287",
+      "sizeBytes": 2975
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserStatePolicy.kt",
+      "sha256Bytes": "d34ce7f8ccf9d37de470439399c711812a9763bcbf32100d59e220bc5ad229be",
+      "sizeBytes": 9013
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUsers.kt",
+      "sha256Bytes": "ecbfffe220afe1f51283ae00a0f5f8e09df1488a1258011836df5f2c204aa877",
+      "sizeBytes": 3298
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicNativeSegmentedControl.kt",
+      "sha256Bytes": "835f70e7e148dacbc14df09a13642e058d451f072987d3d846d8406b6ffb7e6c",
+      "sizeBytes": 1177
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/components/DynamicUserLiveBadge.kt",
+      "sha256Bytes": "fd0a8486247e1ab5690ceddffd87a0f1ccaaf8102cdd3988d00ceacf99b66794",
+      "sizeBytes": 3952
+    },
+    {
+      "path": "generated/dynamic-tabs/com/android/purebilibili/feature/settings/DesktopOriginalDynamicTabsFields.kt",
+      "sha256Bytes": "a0dfd8f801a68be727d4d7f5f99bb9b6dfb4f2394bd154de9184c79a5627f918",
+      "sizeBytes": 7159
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/plugin/CastPluginApi.kt",
+      "sha256Bytes": "efa2a8f7098d47644cb598b7724e98cc9589b6d8e711433d36d26cb3353bbc8d",
+      "sizeBytes": 2719
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/plugin/PluginManager.kt",
+      "sha256Bytes": "a2700036d9eaa98662c694fbed4f6186c9929042e3001cb039db826a22f93082",
+      "sizeBytes": 10788
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/plugin/PluginStore.kt",
+      "sha256Bytes": "a4cd98a506320ff79771b5c4115860400d9a84af6846fe51905797a154b7cf2b",
+      "sizeBytes": 3720
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
+      "sha256Bytes": "f7f25be3e4d9d0ed257df37a2a7bafabf1b1f8a5a6818b4314a6d263f829ea09",
+      "sizeBytes": 2685
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
+      "sha256Bytes": "a8bbf85ae9d9751efa2a4e5de09aa72307812f236fa572d34c55d274c3e371a7",
+      "sizeBytes": 3601
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+      "sha256Bytes": "b13587cb8210b0c0a8cc6238210e779aef3526831e4b482bd64fa08db67e333c",
+      "sizeBytes": 8670
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+      "sha256Bytes": "27c21b37464fb6800a65a8d62b2936aa7860a4572a9e8232733accfd7b197e67",
+      "sizeBytes": 3925
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/plugin/feed/FeedTitleResolver.kt",
+      "sha256Bytes": "6529ba2b88dc540908f32dfde2809d2eb92c8e59c63d5c96fc3449abf8940836",
+      "sizeBytes": 2636
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/plugin/json/JsonPluginManager.kt",
+      "sha256Bytes": "d83e977d1f6c598192f3fe4845749cd33a14bb8ad179d68e96e9db92048c3501",
+      "sizeBytes": 22287
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/plugin/json/JsonPluginStatsNotificationPolicy.kt",
+      "sha256Bytes": "3032bab4906aaa34db4882cb403827073d16c2622eb5ad5fdcefc14f8380ce4a",
+      "sizeBytes": 4234
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/plugin/json/RuleEngine.kt",
+      "sha256Bytes": "dbb5f8ed1df25d7a913bcb9d7b60286d4ee766a72406859a24410b617ebb8750",
+      "sizeBytes": 7885
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/core/store/TodayWatchProfileStore.kt",
+      "sha256Bytes": "d6a2333297c5de649ac21d39263889c22471106ba4151eb5a0defa16c78dd268",
+      "sizeBytes": 5102
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "sha256Bytes": "3c95f3d6b937da952e3c20a5996b1ce258959c4a195ded3f68dd002d4e91570c",
+      "sizeBytes": 13348
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/anime4k/Anime4KOutputPolicy.kt",
+      "sha256Bytes": "47b9ac112cf9546b63738f283cd22d4c0acb39e485332635f22702fd63ab499e",
+      "sizeBytes": 1814
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/anime4k/gl/DesktopAnime4KShaderList.kt",
+      "sha256Bytes": "89a11cbe3eb308d6edca391ec5339af576b907e9c1d51b8fb9b253b7dc251001",
+      "sizeBytes": 1195
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/home/DesktopTodayWatchModels.kt",
+      "sha256Bytes": "db9ccb899dde7d3997c5d24ac670007ae4a570f4960e30690c8408742a225142",
+      "sizeBytes": 1216
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/home/DesktopTodayWatchPlanConversion.kt",
+      "sha256Bytes": "122da689b44a06f24c9105f0c3ac18ad9c653bc02941c99da168d47db4658297",
+      "sizeBytes": 1732
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt",
+      "sha256Bytes": "d9b530af837baa647d622fac76359386aae8c881539b31317fc435a81194e4cd",
+      "sizeBytes": 12034
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt",
+      "sha256Bytes": "ac590fffc048bbaee561e796d4436c873be0be428a3cac239c5bf1d36906d951",
+      "sizeBytes": 19772
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt",
+      "sha256Bytes": "defeb391ed207f673cf1db3ba7e8142a79e1c4c7624bf89851a8382890528db0",
+      "sizeBytes": 5874
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+      "sha256Bytes": "dbdf2c9f39d9bd17b532e4995c519f4ab95e5ffa8c9b56a6cf92baafc0d90d67",
+      "sizeBytes": 22326
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/plugin/DanmakuEnhancePlugin.kt",
+      "sha256Bytes": "0592cbbe259f69e55ea48622d3d187a2f3271f43418aef1d38085afd2358f39d",
+      "sizeBytes": 6437
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/plugin/EyeProtectionPlugin.kt",
+      "sha256Bytes": "8e51826facb7e2e38be67a59e9a9de4820aaad5478d22cdd836502edbb4be1b8",
+      "sizeBytes": 14352
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt",
+      "sha256Bytes": "3f06b23a8b4817b519327aee61ed2f42876f080626e580043c1bf9290fd0bf80",
+      "sizeBytes": 2367
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt",
+      "sha256Bytes": "928fd2f8eefcfd9ad9863614f256a952b5ea46d6ff175d4ea8ae65f46eb32aba",
+      "sizeBytes": 12324
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt",
+      "sha256Bytes": "63dbf967cf6a3c7359fa5c26276906896326ba3def963f057a729bc0f92530a3",
+      "sizeBytes": 22085
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt",
+      "sha256Bytes": "3d81c455ab440f84aa8c425dfad698868957b51fb51800f5f7cf5577e0516cd0",
+      "sizeBytes": 2297
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt",
+      "sha256Bytes": "a5c86b580057628e0187acc24b7b1d8151fda371148c9a41f205ba190b5a2ac4",
+      "sizeBytes": 10365
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/video/danmaku/DesktopPluginDanmakuPolicy.kt",
+      "sha256Bytes": "734504e25bca77b00013e51b8ae3c4bb04c5daf6d98d1ffd66147f331cd9fc33",
+      "sizeBytes": 3146
+    },
+    {
+      "path": "generated/plugins/com/android/purebilibili/feature/video/ui/components/Anime4KSettingsUi.kt",
+      "sha256Bytes": "fa2094693f87c3699e96b955806e217b9a9334fb7a7c2b9cebc59bef5858f495",
+      "sizeBytes": 5116
+    },
+    {
+      "path": "generated/plugins/com/bilipai/desktop/player/DesktopFsrShaderLicense.kt",
+      "sha256Bytes": "ee88146c2cfb7914f5fc93095580bcfdd437b70ce4c6b72cd971ce13bff8aa76",
+      "sizeBytes": 1438
+    },
+    {
+      "path": "generated/plugins/com/bilipai/desktop/player/platform/DesktopMedia3ColorTransfers.kt",
+      "sha256Bytes": "7f284b4170efbaa1b25e89682e84add269ced3b24b54e47b136f6d6edca7e6d1",
+      "sizeBytes": 383
+    },
+    {
+      "path": "generated/plugins/com/bilipai/desktop/plugins/DesktopPluginAssetHashes.kt",
+      "sha256Bytes": "7e6b979412679bb9610cd527f902a376e89b25e21b3c56c403603e563ec6f365",
+      "sizeBytes": 1807
+    },
+    {
+      "path": "generated/plugins/com/bilipai/desktop/ui/DesktopVideoEnhancementSettingsContent.kt",
+      "sha256Bytes": "2adee7194347497119a1efa09a39cf81cfd62285443d6ead54284f510e682cbc",
+      "sizeBytes": 6972
+    },
+    {
+      "path": "gradle-input-only.patch",
+      "sha256Bytes": "76a13733d484328afcb1c69830739e6c7e26b5ad19ad495e7827898c34c67cca",
+      "sizeBytes": 936
+    },
+    {
+      "path": "integration-boundaries.json",
+      "sha256Bytes": "645ce883666025a70b1a542f2e5a88bf404968efbd0fd5c50ea10d6001b0a9cb",
+      "sizeBytes": 4200
+    },
+    {
+      "path": "new-helper-source-identity.json",
+      "sha256Bytes": "da0a56e9ed80b6df39e93834d4415b1abd6965eff4dcb7a8cd9ee061d4a922ac",
+      "sizeBytes": 770
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt",
+      "sha256Bytes": "4eac1a71b57f6d6588e2498e09f069d385c91220b569bbe02c3a9e6b24703414",
+      "sizeBytes": 19844
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/core/performance/NativeExitTrace.kt",
+      "sha256Bytes": "6fb23f6858d9b68eaea624ea1e5348597b64935bd4eb206d066b887852896e4b",
+      "sizeBytes": 9244
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/core/util/Logger.kt",
+      "sha256Bytes": "8564e68e99c3e557c9b52811803792fdaa155f483d5b015e5c9a4ab1a1925111",
+      "sizeBytes": 42531
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "sha256Bytes": "141160bfeda1f8aec86c08068cb78c153bb6cff8feccc8c2f2be4ac0672f3560",
+      "sizeBytes": 11287
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "sha256Bytes": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b",
+      "sizeBytes": 102675
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt",
+      "sha256Bytes": "056db2c4d628e38dbfc3b7be5e6dd6b21bd9ff97597f5385f666579a0924785e",
+      "sizeBytes": 20030
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/performance/NativeExitTrace.kt",
+      "sha256Bytes": "8d0e38625f243072cd72d380cb6c7eb36ec3587deb194c497a7d9a10434be182",
+      "sizeBytes": 9920
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/util/Logger.kt",
+      "sha256Bytes": "aa4af545b0c4a59fd7e57d5b2e64b3c1506b7732042a51d1643ca331a05a7c5e",
+      "sizeBytes": 48244
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "sha256Bytes": "eb7b82d766d32fd9be380c491b87c5bd7705fe12f61ef73773067f55de1b9468",
+      "sizeBytes": 12772
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "sha256Bytes": "dad065eba76c2bb51ce9c5775b4e8bf86f21b8230be0ee2606fe53fa77b64f25",
+      "sizeBytes": 102712
+    },
+    {
+      "path": "original-tools/extract-upstream-diagnostics.py",
+      "sha256Bytes": "b8a4a4ee08eceee4edf0af28c5d86087b03e7455e9d297dbce5dd40a0d3c518f",
+      "sizeBytes": 9503
+    },
+    {
+      "path": "original-tools/extract-upstream-dynamic-tabs.py",
+      "sha256Bytes": "2d69ecf0766b7c9c7207f5cf3e8f30396e1364aaae7ee348591c3abaeb87383d",
+      "sizeBytes": 16490
+    },
+    {
+      "path": "original-tools/extract-upstream-plugins.py",
+      "sha256Bytes": "1bc550ca4b2ddd145710cb6601e530b6040d620ece7b094a8f2c23f4b53af310",
+      "sizeBytes": 33589
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "1c92b0156bc286d5c2ac552607ca9b5b835ff023e2705a487941902bd3f4927c",
+      "sizeBytes": 9066
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-diagnostics.py",
+      "sha256Bytes": "5801bc6b79824caa5c01577eedf1a54997b6317f822c5a2d7e6847c5b7f3a29c",
+      "sizeBytes": 10703
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256Bytes": "bca1f195aa5f5fd202cffb759ef208b9715e7f5a834363cce475db48f181f3ab",
+      "sizeBytes": 16555
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-plugins.py",
+      "sha256Bytes": "4cfc9d0f889f4334c292cb12b2a0e5f7441c73df2999bf7504726a058a3b2756",
+      "sizeBytes": 33744
+    },
+    {
+      "path": "registry-append-rows.json",
+      "sha256Bytes": "090cc6ece0676d155481961a8bd8bdb1e54f345f7552a55b7a54a83b23ac3257",
+      "sizeBytes": 570
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "44d642d1a2ef03c0926e4743be516d9ef7ffe7862fc0522e4a540e8874226c38",
+      "sizeBytes": 7137
+    },
+    {
+      "path": "runs/01/accepted-evidence.json",
+      "sha256Bytes": "94a48598748603095979f9258f438b4ea17c2994da82c119f8ef4247309fc2e3",
+      "sizeBytes": 3095
+    },
+    {
+      "path": "runs/01/compile-evidence.json",
+      "sha256Bytes": "1fee9f327427edad13114d1d855b982098c5a92016f77faadd6d4b04f528c46c",
+      "sizeBytes": 43476
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "02e08c242b03ec51f97d1d6d95b7d990eaece853ee859bf70dbfc7f3d47370a9",
+      "sizeBytes": 24943
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "dfd52ebb5011c9c775e6152b6946a79dbdca462797c981e25c390080758ac8ec",
+      "sizeBytes": 217
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopDiagnosticCollector.kt",
+      "sha256Bytes": "6a71f6efde02cdfdd1799014399ce9ce7480cd8b45f5aa605638f8b6a221f47b",
+      "sizeBytes": 11298
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopDiagnosticPolicy.kt",
+      "sha256Bytes": "acc46e2b6dd3a6035a979fbd7ea4040d24597cb28856de0760031384eac60879",
+      "sizeBytes": 8433
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopOriginalAbnormalProcessExitException.kt",
+      "sha256Bytes": "95445df52640102e6ccf93723f41ba587eb9704bab5bd76cda3cd505d53a5412",
+      "sizeBytes": 1166
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopOriginalDynamicTabsFields.kt",
+      "sha256Bytes": "b27376c0dab26792bacd6d8ddc98528e759c7c02d87b5a9ad2fc938996c38961",
+      "sizeBytes": 6995
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopOriginalNativeExitTrace.kt",
+      "sha256Bytes": "c7a01b75195cffd92a9f789d7d87f61c2bbeb0632d15e57029faa25ebfac427b",
+      "sizeBytes": 10122
+    },
+    {
+      "path": "runs/01/frozen-sources/RepairFixture.kt",
+      "sha256Bytes": "b4274debe3b0f66519d87602160ccc2d4df8a2a4a22f7be6cd1ad8d3d92ee28f",
+      "sizeBytes": 3501
+    },
+    {
+      "path": "runs/01/frozen-sources/SponsorBlockRepository.kt",
+      "sha256Bytes": "03cd9020f7c9516281e9da519a70e149f4a041288e81f95fb8c4c5ea58f36ae7",
+      "sizeBytes": 13016
+    },
+    {
+      "path": "runs/01/proof/result.json",
+      "sha256Bytes": "fb047f05323acd5b7333662dd08a8ffa28a6baee07dfb6cb982ad30b3b36851b",
+      "sizeBytes": 193
+    },
+    {
+      "path": "runs/01/run.args",
+      "sha256Bytes": "28472c62d663de97fae500b109934a2a05e39c23280012f114fe7a06bcb21fd4",
+      "sizeBytes": 23656
+    },
+    {
+      "path": "runs/01/run.log",
+      "sha256Bytes": "3e0d0399d874060be297f656d899cffeaf6e11f0fc8bc1b24a53a2a80ffa3c85",
+      "sizeBytes": 76
+    },
+    {
+      "path": "runs/01/runtime-process.json",
+      "sha256Bytes": "0dec81ab25d3aa6f8c2fd39839f132ad502808228b0f7da40b21623e4044666a",
+      "sizeBytes": 198
+    },
+    {
+      "path": "selected-original-body-AbnormalException.kt",
+      "sha256Bytes": "7d50c2fe3b11a31ebfb19ead74383ae7c5acf50a39905955ed5a876973110158",
+      "sizeBytes": 855
+    },
+    {
+      "path": "selected-original-body-Logger.txt",
+      "sha256Bytes": "ac704f000802fa1b06590ac5b5e4a8c81f241dc2393314df56a52132c3fb129c",
+      "sizeBytes": 7947
+    },
+    {
+      "path": "selected-original-body-SponsorLoadSegments.kt",
+      "sha256Bytes": "d95c9da92a2c94a78bf6d58561861acb13998c61078fb910386dbadfd0e7c176",
+      "sizeBytes": 1947
+    },
+    {
+      "path": "selected-original-body-TabsVisibilityItem.kt",
+      "sha256Bytes": "9ee5d15a1b781b822f1a8ca71154801a5d85cbd5859b6d7ceb3d826b83a42ae8",
+      "sizeBytes": 4694
+    },
+    {
+      "path": "source-diffs/Android17Diagnostics.diff",
+      "sha256Bytes": "a7f08765006a79d84f42bbc6e07b9a1e9b82c827291738aeb894653a1437157c",
+      "sizeBytes": 655
+    },
+    {
+      "path": "source-diffs/Logger.diff",
+      "sha256Bytes": "c25973a148463cc8e56d0bb7cea7f3d95abf63b9aff7bb9f5899c27532660a28",
+      "sizeBytes": 15023
+    },
+    {
+      "path": "source-diffs/NativeExitTrace.diff",
+      "sha256Bytes": "75ae4b0e05d625d51894fc519f2fcafbbb7649b762071ff2baee2131a6f729b7",
+      "sizeBytes": 1706
+    },
+    {
+      "path": "source-diffs/SettingsSections.diff",
+      "sha256Bytes": "2ffc81b5e01e84fef5c430b980db88221ea05dfdcf3ea8ef46e775e5b829cd3e",
+      "sizeBytes": 2127
+    },
+    {
+      "path": "source-diffs/SponsorBlockRepository.diff",
+      "sha256Bytes": "c8f57ab2ae4ca854d76abc93776c08379fdfc5e5535719e25028949c95285273",
+      "sizeBytes": 6244
+    },
+    {
+      "path": "source-retention-proof.json",
+      "sha256Bytes": "40f704bc3a4496b6368bea65bf57c8812c81de9e4cfc7519276d4dbadae0d59e",
+      "sizeBytes": 3354
+    },
+    {
+      "path": "source-shadow/desktop/upstream-sources.json",
+      "sha256Bytes": "37562b8bee8d67266cc2d9b36b8a7bc1a4c5d5f4b45e1caf0f10dcae5ce9cd2e",
+      "sizeBytes": 242167
+    }
+  ],
+  "artifactCount": 113,
+  "sourceCandidates": [
+    {
+      "path": "desktop/tools/extract-upstream-diagnostics.py",
+      "baseLfSha256": "b8a4a4ee08eceee4edf0af28c5d86087b03e7455e9d297dbce5dd40a0d3c518f",
+      "candidateLfSha256": "5801bc6b79824caa5c01577eedf1a54997b6317f822c5a2d7e6847c5b7f3a29c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "baseLfSha256": "2d69ecf0766b7c9c7207f5cf3e8f30396e1364aaae7ee348591c3abaeb87383d",
+      "candidateLfSha256": "bca1f195aa5f5fd202cffb759ef208b9715e7f5a834363cce475db48f181f3ab"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "baseLfSha256": "1bc550ca4b2ddd145710cb6601e530b6040d620ece7b094a8f2c23f4b53af310",
+      "candidateLfSha256": "4cfc9d0f889f4334c292cb12b2a0e5f7441c73df2999bf7504726a058a3b2756"
+    }
+  ],
+  "registryAppendRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt",
+      "sha256": "056db2c4d628e38dbfc3b7be5e6dd6b21bd9ff97597f5385f666579a0924785e",
+      "features": [
+        "settings-local-diagnostics-parity"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/performance/NativeExitTrace.kt",
+      "sha256": "8d0e38625f243072cd72d380cb6c7eb36ec3587deb194c497a7d9a10434be182",
+      "features": [
+        "settings-local-diagnostics-parity"
+      ],
+      "mode": "policy-extract"
+    }
+  ],
+  "acceptedEvidencePath": "runs/01/accepted-evidence.json",
+  "acceptedEvidenceSha256": "94a48598748603095979f9258f438b4ea17c2994da82c119f8ef4247309fc2e3",
+  "runtimeReferencesOnly": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-build-repair\\runs\\01\\candidate.jar",
+      "sha256Bytes": "e07a23277c268cca8489f7b66c4406a03ff67d5e54c03f185da8cc3963915eff",
+      "excludedFromFormalGit": true
+    }
+  ],
+  "MainWrittenByThisLane": false,
+  "sharedGradle": false
+}

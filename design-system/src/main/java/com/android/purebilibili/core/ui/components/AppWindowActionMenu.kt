@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.material3.IconButton
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -58,7 +57,7 @@ fun AppWindowActionMenu(
         val visibleGroups = parentActions.lastOrNull()?.let { listOf(it.children) }
             ?: groups.filter { it.isNotEmpty() }
         Box(modifier = modifier) {
-            IconButton(
+            AppIconButton(
                 onClick = {
                     parentActions = emptyList()
                     expanded = true

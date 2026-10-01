@@ -14,8 +14,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -350,28 +351,49 @@ internal fun BiliPaiNavDisplayHost(
             }
         }
     }
-    LaunchedEffect(cardMorphAvailable, videoCardTransitionProgress, heroMotion, sourceMetadata.sourceKey) {
+    LaunchedEffect(
+        cardMorphAvailable,
+        videoCardTransitionProgress,
+        heroMotion,
+        sourceMetadata.sourceKey,
+        currentKey,
+    ) {
         if (!cardMorphAvailable) return@LaunchedEffect
         // Coarse states only: no frame-rate composition reads or competing fallback jobs.
         snapshotFlow { videoCardTransitionProgress.settleStateOrNull() }.collect { state ->
-            if (state != null) {
-                videoCardClock.followNavigationDriver(state, videoCardTransitionProgress.releaseVelocity())
-                if (state == VideoCardTransitionSettleState.Idle) {
-                    // LiveNavTransitionScope reads the shared navigation presentation even after
-                    // its video entry leaves. Release it before another route reuses that driver.
+            if (state == null) {
+                if (isCardMorphDestinationNavKey(currentKey)) return@collect
+                // A pop can dispose its final transition scope without a last Idle transform.
+                // Give NavDisplay one frame to bind any outgoing scope, then release a retained
+                // HELD/RETURNING phase once the card destination is no longer on top.
+                withFrameNanos { }
+                if (
+                    videoCardTransitionProgress.settleStateOrNull() == null &&
+                    !isCardMorphDestinationNavKey(currentKey)
+                ) {
+                    videoCardClock.followNavigationDriver(VideoCardTransitionSettleState.Idle)
                     videoCardTransitionProgress.clear()
                     CardPositionManager.clearNativeVideoCardLayers()
                 }
-                VideoCardTransitionDiagnostics.onMotionPhase(
-                    state, heroMotion, sourceMetadata.sourceLayout, diagnosticConfiguration,
-                )
+                return@collect
             }
+            videoCardClock.followNavigationDriver(state, videoCardTransitionProgress.releaseVelocity())
+            if (state == VideoCardTransitionSettleState.Idle) {
+                // LiveNavTransitionScope reads the shared navigation presentation even after
+                // its video entry leaves. Release it before another route reuses that driver.
+                videoCardTransitionProgress.clear()
+                CardPositionManager.clearNativeVideoCardLayers()
+            }
+            VideoCardTransitionDiagnostics.onMotionPhase(
+                state, heroMotion, sourceMetadata.sourceLayout, diagnosticConfiguration,
+            )
         }
     }
 
     val videoCardSnapshotHandle = rememberVideoCardTransitionSnapshotHandle()
     val transitionMotionTier = if (reduceMotion) MotionTier.Reduced else MotionTier.Normal
-    val effectiveRealtimeBlurEnabled = videoTransitionRealtimeBlurEnabled || miuixTransitionBlurEnabled
+    // Card depth blur and generic Miuix return blur have separate user controls.
+    val effectiveVideoCardBlurEnabled = videoTransitionRealtimeBlurEnabled
     val videoCardProgressProvider = remember(
         cardMorphAvailable,
         videoCardClock,
@@ -467,7 +489,7 @@ internal fun BiliPaiNavDisplayHost(
         videoCardSnapshotHandle,
         transitionMotionTier,
         isLightBackground,
-        effectiveRealtimeBlurEnabled,
+        effectiveVideoCardBlurEnabled,
     ) {
         VideoCardTransitionBackgroundState(
             progressProvider = videoCardProgressProvider,
@@ -483,7 +505,7 @@ internal fun BiliPaiNavDisplayHost(
             preferWholeCardReturnProvider = { latestPreferWholeCardReturn },
             motionTierProvider = { transitionMotionTier },
             isLightBackgroundProvider = { isLightBackground },
-            realtimeBlurEnabledProvider = { effectiveRealtimeBlurEnabled },
+            realtimeBlurEnabledProvider = { effectiveVideoCardBlurEnabled },
         )
     }
     val videoCardLayoutWidthProvider = remember(videoCardTransitionProgress) {
@@ -534,11 +556,11 @@ internal fun BiliPaiNavDisplayHost(
         currentBackTarget,
         transitionMotionTier,
         isLightBackground,
-        effectiveRealtimeBlurEnabled,
+        miuixTransitionBlurEnabled,
     ) {
         PredictiveBackBackgroundState(
             progressProvider = {
-                val blurEnabled = effectiveRealtimeBlurEnabled
+                val blurEnabled = miuixTransitionBlurEnabled
                 if (!blurEnabled || !isCardMorphDestinationNavKey(currentKey)) {
                     0f
                 } else {
@@ -633,7 +655,6 @@ internal fun BiliPaiNavDisplayHost(
     ) {
         VideoCardTransitionHostDepthLayer(
             enabled = cardMorphAvailable &&
-                effectiveRealtimeBlurEnabled &&
                 shouldUseHostOwnedVideoCardTransitionSnapshot(sourceMetadata.sourceRoute),
             snapshotHandle = videoCardSnapshotHandle,
             progressProvider = videoCardProgressProvider,
@@ -642,7 +663,7 @@ internal fun BiliPaiNavDisplayHost(
             isGestureRestoreInProgressProvider = { videoCardClock.gestureRestoreInProgress },
             motionTierProvider = { transitionMotionTier },
             isLightBackgroundProvider = { isLightBackground },
-            realtimeBlurEnabledProvider = { effectiveRealtimeBlurEnabled },
+            realtimeBlurEnabledProvider = { effectiveVideoCardBlurEnabled },
             sourceBoundsProvider = { sourceMetadata.sourceBounds },
         )
         VideoCardTransitionNavBackdrop(

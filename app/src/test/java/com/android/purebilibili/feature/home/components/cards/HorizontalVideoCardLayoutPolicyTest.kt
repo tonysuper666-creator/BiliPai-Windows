@@ -113,8 +113,6 @@ class HorizontalVideoCardLayoutPolicyTest {
             "feature/home/components/cards/VideoCard.kt",
             "feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt",
             "feature/home/components/cards/StoryVideoCard.kt",
-            "feature/home/components/cards/CinematicVideoCard.kt",
-            "feature/home/components/cards/GlassVideoCard.kt",
             "feature/video/ui/components/RelatedVideoItem.kt",
             "feature/space/SpaceScreen.kt",
             "feature/search/SearchScreen.kt",

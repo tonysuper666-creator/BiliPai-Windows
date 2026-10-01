@@ -30,6 +30,9 @@ class AppDialogComponentsPolicyTest {
         )
         val dialogSource = source.readText()
         assertTrue(dialogSource.contains("WindowDialog("))
+        assertTrue(dialogSource.contains("backgroundColor = Color.Transparent"))
+        assertTrue(dialogSource.contains("insideMargin = DpSize(0.dp, 0.dp)"))
+        assertTrue(dialogSource.contains("cornerRadius = 0.dp"))
         assertFalse(dialogSource.contains("LocalAppPopupSurfaceRenderer.current"))
     }
 

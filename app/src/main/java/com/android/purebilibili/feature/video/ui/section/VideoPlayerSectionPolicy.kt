@@ -5,6 +5,8 @@ package com.android.purebilibili.feature.video.ui.section
 import android.view.SurfaceView
 import android.view.TextureView
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.android.purebilibili.core.ui.AppTopTabPresentation
 import com.android.purebilibili.core.ui.transition.VideoSharedTransitionPlaybackIntent
@@ -39,7 +41,12 @@ private const val VIDEO_PLAYER_COVER_FADE_ENTER_DURATION_MILLIS = 200
 private const val VIDEO_PLAYER_COVER_FADE_EXIT_DURATION_MILLIS = 300
 private const val VIDEO_PLAYER_COVER_REVEAL_HOLD_DELAY_MILLIS = 96
 private const val VIDEO_PLAYER_SURFACE_REVEAL_DURATION_MILLIS = 220
-private const val VIDEO_PLAYER_SURFACE_REVEAL_INITIAL_SCALE = 0.985f
+// 揭开起始 scale > 1：视频帧从轻微放大**收缩沉降**到位，读作「对焦落定」；
+// 反向（<1 放大）会读作画面被推远，不符合落定语义。
+private const val VIDEO_PLAYER_SURFACE_REVEAL_INITIAL_SCALE = 1.02f
+// 揭开动画结束后再延迟一小段才允许移除封面垫底，吸收 animateFloatAsState
+// 晚一帧启动的相位差，确保移除瞬间视频 surface 已完全不透明。
+private const val VIDEO_PLAYER_COVER_REVEAL_SETTLE_BUFFER_MILLIS = 48
 private const val LONG_PRESS_SPEED_TAP_SUPPRESSION_WINDOW_MS = 450L
 private const val LONG_PRESS_SPEED_UNLOCK_HOLD_MS = 1_000L
 
@@ -1167,13 +1174,15 @@ internal fun shouldShowCoverImage(
     isFirstFrameRendered: Boolean,
     forceCoverDuringReturnAnimation: Boolean,
     shouldKeepCoverForManualStart: Boolean,
-    hasStartedSmoothReveal: Boolean
+    hasStartedSmoothReveal: Boolean,
+    isSurfaceRevealSettling: Boolean = false
 ): Boolean {
     return shouldHoldEntryCoverUnderlay(
         isFirstFrameRendered = isFirstFrameRendered,
         forceCoverDuringReturnAnimation = forceCoverDuringReturnAnimation,
         shouldKeepCoverForManualStart = shouldKeepCoverForManualStart,
         hasStartedSmoothReveal = hasStartedSmoothReveal,
+        isSurfaceRevealSettling = isSurfaceRevealSettling,
     )
 }
 
@@ -1213,17 +1222,58 @@ internal fun resolveVideoPlayerCoverLayerZIndex(
 /**
  * 即播进场 / CoverFirst / 返回：封面作为不透明垫底，直到首帧揭示或手动起播。
  * 垫底期间禁止淡入淡出与 Coil crossfade，避免 Hero morph 透出黑底。
+ *
+ * [isSurfaceRevealSettling] = 揭开已开始但播放器 surface 尚未淡入完成。此窗口内封面必须
+ * 继续保持不透明：视频是在封面**之上**淡入的，若封面同步淡出，两层半透明叠加会透出
+ * 下方黑底，产生「先变暗再亮起」的亮度凹陷。正确时序是封面全程垫住，等视频完全不透明
+ * 后再无声移除（此时移除不可见）。
  */
 internal fun shouldHoldEntryCoverUnderlay(
     isFirstFrameRendered: Boolean,
     forceCoverDuringReturnAnimation: Boolean,
     shouldKeepCoverForManualStart: Boolean,
     hasStartedSmoothReveal: Boolean,
+    isSurfaceRevealSettling: Boolean = false,
 ): Boolean {
-    return forceCoverDuringReturnAnimation ||
-        shouldKeepCoverForManualStart ||
-        !isFirstFrameRendered ||
-        !hasStartedSmoothReveal
+    if (forceCoverDuringReturnAnimation || shouldKeepCoverForManualStart) return true
+    if (!isFirstFrameRendered) return true
+    return isSurfaceRevealSettling || !hasStartedSmoothReveal
+}
+
+/**
+ * 揭开动画完全落定（视频 surface 不透明）后才移除封面垫底的等待时长。
+ * [surfaceRevealDurationMillis] 之上叠加少量缓冲，吸收动画晚一帧启动的相位差。
+ */
+internal fun resolveVideoPlayerCoverRevealSettleDelayMillis(
+    surfaceRevealDurationMillis: Int,
+): Long {
+    val duration = surfaceRevealDurationMillis.coerceAtLeast(0)
+    return (duration + VIDEO_PLAYER_COVER_REVEAL_SETTLE_BUFFER_MILLIS).toLong()
+}
+
+/** 揭开叠化起点（progress=0）封面的降饱和程度；1.0 为完全不动。 */
+private const val VIDEO_PLAYER_COVER_REVEAL_MIN_SATURATION = 0.90f
+
+/**
+ * 封面在揭开叠化窗口内的饱和度。
+ *
+ * 只降饱和、不动亮度：两层相似画面叠化时色彩会轻微叠加强化，把垫底封面
+ * 略微去色可以让混合窗口读作「同一画面」，视频接管后色彩自然「活过来」；
+ * 若动亮度会重新引入叠加期的亮度凹陷。
+ *
+ * [progress] 0 = 揭开刚提交，1 = 已落定（返回 null 即不加 colorFilter）。
+ */
+internal fun resolveVideoPlayerCoverRevealSaturation(progress: Float): Float {
+    return VIDEO_PLAYER_COVER_REVEAL_MIN_SATURATION +
+        (1f - VIDEO_PLAYER_COVER_REVEAL_MIN_SATURATION) * progress.coerceIn(0f, 1f)
+}
+
+internal fun resolveVideoPlayerCoverRevealColorFilter(progress: Float): ColorFilter? {
+    if (progress >= 0.999f) return null
+    val matrix = ColorMatrix().apply {
+        setToSaturation(resolveVideoPlayerCoverRevealSaturation(progress))
+    }
+    return ColorFilter.colorMatrix(matrix)
 }
 
 internal data class VideoPlayerCoverBootstrapState(

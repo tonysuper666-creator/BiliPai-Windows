@@ -1,0 +1,85 @@
+--- a/desktop/tools/extract-upstream-diagnostics.py
++++ b/desktop/tools/extract-upstream-diagnostics.py
+@@ -6,19 +6,29 @@
+ SETTINGS=BASE+'core/store/SettingsManager.kt'
+ SECTIONS=BASE+'feature/settings/ui/SettingsSections.kt'
+ CRASH=BASE+'core/util/CrashReporter.kt'
++EXIT=BASE+'core/performance/Android17Diagnostics.kt'
++NATIVE=BASE+'core/performance/NativeExitTrace.kt'
+ ASSETS=['ms_pest_control_24']
+ def load(path,name):
+  s=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
+ def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+ def generate(repo,out):
+  host=load(repo/'desktop/tools/extract-upstream-plugins.py','diaghost');media=host.media_extractor(repo);parser=media.parser_for(repo)
+- out.mkdir(parents=True,exist_ok=True);files=[];original=read(repo,LOGGER)
++ identity=load(repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py','diag_fixed_identity')
++ fixed_sources,source_ids=identity.load_pinned_sources(repo,[LOGGER,SETTINGS,SECTIONS,CRASH,EXIT,NATIVE])
++ out.mkdir(parents=True,exist_ok=True);files=[];original=fixed_sources[LOGGER]
++ declaration=load(repo/'desktop/tools/extract-appearance-platform.py','diag_original_exception')
++ exception=declaration.declarations(parser,fixed_sources[EXIT],['AbnormalProcessExitException'])
++ files.append(host.write(out,EXIT,fixed_sources[EXIT],'package com.android.purebilibili.core.performance\nimport java.io.PrintWriter\nimport java.io.PrintStream\n'+exception,'DesktopOriginalAbnormalProcessExitException.kt'))
++ # Pure JVM original tombstone encoding/parsing/summary stays source-owned.
++ files.append(host.write(out,NATIVE,fixed_sources[NATIVE],fixed_sources[NATIVE],'DesktopOriginalNativeExitTrace.kt'))
++ (out/'source-identity.json').write_text(json.dumps(source_ids,indent=2)+'\n',encoding='utf-8')
+  # All pure original functions before the Android Logger object. The reference to the
+  # original singleton becomes the sole platform collector type, not a duplicate buffer.
+  pure=original[original.index('private const val LOG_DIRECTORY_NAME'):original.index('/**\n *  统一日志工具类')]
+  pure=pure.replace('LogCollector.','DesktopDiagnosticCollector.')
+  pure=host.substitute(pure,'appendLine("Android版本: $androidRelease (API $apiLevel)")','appendLine("系统版本: $androidRelease；运行时: $apiLevel")')
+- files.append(host.write(out,LOGGER,original,'package com.android.purebilibili.core.util\nimport java.io.File\nimport java.text.SimpleDateFormat\nimport java.util.*\n\n'+pure,'DesktopDiagnosticPolicy.kt'))
++ files.append(host.write(out,LOGGER,original,'package com.android.purebilibili.core.util\nimport com.android.purebilibili.core.performance.AbnormalProcessExitException\nimport com.android.purebilibili.core.performance.nativeExitTraceSummary\nimport java.io.File\nimport java.text.SimpleDateFormat\nimport java.util.*\n\n'+pure,'DesktopDiagnosticPolicy.kt'))
+  collector=original[original.index('object LogCollector {'):]
+  fields=collector[collector.index('    private const val MAX_ENTRIES'):collector.index('    /**\n     * 日志条目')]
+  fields=fields[:fields.index('    private val dateFormat')]+collector[collector.index('    private var lastEntryFingerprint'):collector.index('    @Volatile\n    private var appContext')]
+@@ -38,7 +48,7 @@
+  files.append(host.write(out,LOGGER,original,source,'DesktopDiagnosticCollector.kt'))
+  # Preserve original settings key/default/body while binding its one DataStore to
+  # the existing Windows atomic settings namespace. Cold-start reads that same key.
+- original=read(repo,SETTINGS)
++ original=fixed_sources[SETTINGS]
+  getter=media.function(original,'getEnhancedDiagnosticLoggingEnabled',parser)
+  setter=media.function(original,'setEnhancedDiagnosticLoggingEnabled',parser)
+  key='KEY_ENHANCED_DIAGNOSTIC_LOGGING_ENABLED'
+@@ -52,7 +62,7 @@
+  setter=host.substitute(setter,'context.settingsDataStore.edit { preferences ->\n        preferences['+key+'] = value\n    }','store.update("settings", mapOf('+key+' to JsonPrimitive(value)))')
+  source='package com.bilipai.desktop.diagnostics\nimport com.bilipai.desktop.plugins.DesktopPluginStore\nimport kotlinx.coroutines.flow.*\nimport kotlinx.serialization.json.*\n\ninternal class DesktopDiagnosticSettings(private val store:DesktopPluginStore) {\n    private val '+key+' = "enhanced_diagnostic_logging_enabled"\n'+getter+'\n'+setter+'\n    fun getEnhancedDiagnosticLoggingEnabledSync():Boolean = store.preferences("settings")['+key+']?.jsonPrimitive?.booleanOrNull ?: false\n}\n'
+  files.append(host.write(out,SETTINGS,original,source,'DesktopDiagnosticSettings.kt'))
+- original=read(repo,SECTIONS);section=media.function(original,'DiagnosticsSection',parser)
++ original=fixed_sources[SECTIONS];section=media.function(original,'DiagnosticsSection',parser)
+  start=section.index('        SettingSwitchItem(\n            icon = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_pest_control_24)')
+  end=section.index('        SettingsAdaptiveDivider()',start)
+  control=section[start:end]
+@@ -73,10 +83,10 @@
+  ref=out.parent/'reference-only';ref.mkdir(exist_ok=True)
+  (ref/'OriginalDiagnosticsSection.kt').write_text('@Composable\n'+section,encoding='utf-8',newline='\n')
+  # No Firebase stub/provider is generated. Local crash-snapshot policy is always true.
+- original=read(repo,CRASH);local=media.function(original,'shouldPersistLocalCrashSnapshot',parser)
++ original=fixed_sources[CRASH];local=media.function(original,'shouldPersistLocalCrashSnapshot',parser)
+  files.append(host.write(out,CRASH,original,'package com.android.purebilibili.core.util\n'+local+'\n','DesktopLocalCrashPolicy.kt'))
+  return files
+-def inventory(repo):return [dict(path=p,mode='policy-extract',features=['settings-local-diagnostics-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in [LOGGER,SETTINGS,SECTIONS,CRASH]]
++def inventory(repo):return [dict(path=p,mode='policy-extract',features=['settings-local-diagnostics-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in [LOGGER,SETTINGS,SECTIONS,CRASH,EXIT,NATIVE]]
+ def resources(repo):return [dict(path='app/src/main/res/drawable/'+a+'.xml',features=['settings-local-diagnostics-symbol'],sha256=hashlib.sha256(read(repo,'app/src/main/res/drawable/'+a+'.xml').encode()).hexdigest()) for a in ASSETS]
+ if __name__=='__main__':
+  c=argparse.ArgumentParser();c.add_argument('--repo',required=True,type=Path);c.add_argument('--output',required=True,type=Path);a=c.parse_args();print(len(generate(a.repo.resolve(),a.output.resolve())))
+--- a/desktop/tools/extract-upstream-dynamic-tabs.py
++++ b/desktop/tools/extract-upstream-dynamic-tabs.py
+@@ -68,6 +68,7 @@
+ import com.android.purebilibili.core.ui.*
+ import com.android.purebilibili.core.ui.components.*
+ import com.android.purebilibili.core.ui.components.AppSwitchPreference as SettingSwitchItem
++import com.android.purebilibili.core.ui.components.AppIconButton
+ import com.android.purebilibili.core.ui.components.AppIconButton as IconButton
+ import com.android.purebilibili.feature.dynamic.*
+ @Composable internal fun DesktopDynamicTabsSettingsFields(
+--- a/desktop/tools/extract-upstream-plugins.py
++++ b/desktop/tools/extract-upstream-plugins.py
+@@ -295,6 +295,7 @@
+     source = read(repo, path)
+     body = substitute(source, "import com.android.purebilibili.core.network.NetworkModule\n", "")
+     body = substitute(body, "NetworkModule.okHttpClient", "com.bilipai.desktop.plugins.DesktopPluginNetwork.publicClient")
++    body = substitute(body, "android.os.SystemClock.elapsedRealtime()", "com.bilipai.desktop.appearance.DesktopMonotonicClock.elapsedRealtime()", count=2)
+     generated.append(write(output, path, source, body))
+ 
+     path = BASE + "feature/plugin/SponsorBlockPlugin.kt"

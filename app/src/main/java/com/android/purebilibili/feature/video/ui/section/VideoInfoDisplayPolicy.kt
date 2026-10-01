@@ -175,3 +175,53 @@ internal fun resolveDynamicPublishTimeRowText(
         "动态发布 $relativeText"
     }
 }
+
+/**
+ * 视频荣誉徽标文案(入站必刷/每周必看/全站排行榜/热门)。
+ * 优先使用接口下发的 honor_name;缺省时按 type 拼 B 站官方文案。
+ */
+internal fun resolveVideoHonorChipText(
+    type: Int,
+    honorName: String,
+    descContent: String?,
+    weeklyRecommendNum: Int
+): String? {
+    honorName.takeIf { it.isNotBlank() }?.let { return it }
+    return when (type) {
+        1 -> "入站必刷收录"
+        2 -> weeklyRecommendNum.takeIf { it > 0 }
+            ?.let { "第$it 期每周必看" }
+            ?: "每周必看"
+        3 -> descContent?.toIntOrNull()
+            ?.let { "全站排行榜最高第$it 名" }
+            ?: "全站排行榜上榜作品"
+        4 -> "热门"
+        else -> null
+    }
+}
+
+/**
+ * 荣誉徽标跳转链接:一律走 bilibili://popular 内部 scheme,
+ * 每周必看携带期号进入原生选期页,其余映射到首页热门区对应子分类。
+ */
+internal fun resolveVideoHonorJumpUrl(
+    type: Int,
+    honorUrl: String,
+    weeklyRecommendNum: Int,
+    honorText: String = ""
+): String? {
+    return when (type) {
+        1 -> "bilibili://popular/all"
+        2 -> {
+            val number = weeklyRecommendNum.takeIf { it > 0 }
+                ?: (com.android.purebilibili.core.util.BilibiliNavigationTargetParser.parse(honorUrl)
+                    as? com.android.purebilibili.core.util.BilibiliNavigationTarget.PopularFeed)?.weeklyNumber
+                ?: Regex("第\\s*(\\d+)\\s*期").find(honorText)
+                    ?.groupValues?.get(1)?.toIntOrNull()?.takeIf { it > 0 }
+            "bilibili://popular/weekly" + (number?.let { "?number=$it" } ?: "")
+        }
+        3 -> "bilibili://popular/rank"
+        4 -> "bilibili://popular/comprehensive"
+        else -> honorUrl.takeIf { it.isNotBlank() }
+    }
+}

@@ -17,6 +17,7 @@ package com.bytedance.danmaku.render.engine.render.draw.text
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.text.TextUtils
 import com.bytedance.danmaku.render.engine.control.DanmakuConfig
 import com.bytedance.danmaku.render.engine.render.draw.DrawItem
@@ -38,11 +39,27 @@ open class TextDrawItem: DrawItem<TextData>() {
     private val mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
     private val mUnderlinePaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
 
+    private val mFontMetrics = Paint.FontMetrics()
+    private var mMetricsValid = false
+    private var mMetricsTextSize = 0f
+    private var mMetricsTypeface: Typeface? = null
+
+    private fun fontMetrics(paint: Paint): Paint.FontMetrics {
+        if (!mMetricsValid || mMetricsTextSize != paint.textSize || mMetricsTypeface != paint.typeface) {
+            paint.getFontMetrics(mFontMetrics)
+            mMetricsTextSize = paint.textSize
+            mMetricsTypeface = paint.typeface
+            mMetricsValid = true
+        }
+        return mFontMetrics
+    }
+
     override fun getDrawType(): Int {
         return DRAW_TYPE_TEXT
     }
 
     override fun onBindData(data: TextData) {
+        mMetricsValid = false
         mTextPaint.flags = Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG
         mUnderlinePaint.flags = Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG
     }
@@ -66,6 +83,8 @@ open class TextDrawItem: DrawItem<TextData>() {
 
     override fun recycle() {
         super.recycle()
+        mMetricsValid = false
+        mMetricsTypeface = null
         mTextPaint.reset()
         mUnderlinePaint.reset()
     }
@@ -117,14 +136,13 @@ open class TextDrawItem: DrawItem<TextData>() {
     }
 
     private fun getFontHeight(includeFontPadding: Boolean, paint: Paint): Float {
-        return if (includeFontPadding)
-            paint.fontMetrics.bottom - paint.fontMetrics.top
-        else
-            paint.fontMetrics.bottom - paint.fontMetrics.ascent
+        val metrics = fontMetrics(paint)
+        return if (includeFontPadding) metrics.bottom - metrics.top else metrics.bottom - metrics.ascent
     }
 
     private fun getBaseline(includeFontPadding: Boolean, top: Float, paint: Paint): Float {
-        return if (includeFontPadding) top - paint.fontMetrics.top else top - paint.fontMetrics.ascent
+        val metrics = fontMetrics(paint)
+        return if (includeFontPadding) top - metrics.top else top - metrics.ascent
     }
 
 }

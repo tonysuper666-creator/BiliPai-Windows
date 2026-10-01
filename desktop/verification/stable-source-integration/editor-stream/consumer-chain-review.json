@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "soleStableMultipartApiInvocationCount": 1,
+  "editorProvider": "Triple<filename,mime,RequestBody>",
+  "rootConsumer": "same remembered forEditor Operations supplies withOwnedEditorImageAdmission to SelectedImages; same selected::read callback",
+  "selectedBoundary": "known-size preflight before input opening, exact selected Paths, no whole-file ByteArray, one-shot stream, captured caller context",
+  "actualOwnerGate": "same repository.dynamicCacheSessionGuard (actual SessionStore) -> selected-owner lock -> context.ensureActive -> bounded IO slice",
+  "close": "selected owner marks retired and drains registered inputs without acquiring SessionStore; whole modal keeps original lifecycle",
+  "unchangedProtocols": "Original detail/reply blocks remain exactly equal to sole stable producers",
+  "oldByteApi": "existing reply byte overload preserved from stable byte helper; dynamic editor Root/Host/provider no longer uses it",
+  "MainChanged": false,
+  "GitObjectWrites": false,
+  "GitIndexWrites": false,
+  "credentialSerializationAdded": false,
+  "newHttpClient": false,
+  "newStore": false
+}

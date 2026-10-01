@@ -21,6 +21,7 @@ import com.android.purebilibili.core.ui.rememberContentCardSurfaceSpec
 
 import com.android.purebilibili.core.ui.OpticalContrastPalette
 import com.android.purebilibili.feature.home.HomeVisualPalette
+import com.android.purebilibili.feature.home.resolveHomeTopSearchRowMetrics
 
 import android.os.Build
 import androidx.compose.foundation.background
@@ -555,7 +556,7 @@ internal fun resolveHomeTopEdgeButtonShape(
 
 /**
  * 顶部行统一控件高度：头像、搜索胶囊、设置按钮共用（36dp），两主题一致。
- * 与下方分栏 tab 行（36/40dp）保持同一视觉尺度。
+ * 与下方分栏 tab 行（32/36dp）保持同一视觉尺度。
  */
 internal fun resolveHomeTopEdgeControlHeight(): Dp =
     AppSpacingTokens.DoubleExtraLarge + AppSpacingTokens.ExtraSmall
@@ -1792,10 +1793,17 @@ fun HomeHeader(
         }
     }
     
-    val searchBarHeightDp = resolveHomeTopSearchBarHeight(topChromePolicy)
+    val hideTopTabs = homeSettings?.hideTopTabs == true
+    val bottomBarSearchEnabled = homeSettings?.isBottomBarSearchEnabled == true && !hideTopTabs
+    val topSearchMetrics = resolveHomeTopSearchRowMetrics(
+        configuredHeight = resolveHomeTopSearchBarHeight(topChromePolicy),
+        configuredTabsSpacing = resolveHomeTopSearchToTabsSpacing(topChromePolicy),
+        bottomBarSearchEnabled = homeSettings?.isBottomBarSearchEnabled == true,
+        hideTopTabs = hideTopTabs,
+    )
+    val searchBarHeightDp = topSearchMetrics.height
     val topTabLabelMode = homeSettings?.topTabLabelMode
         ?: com.android.purebilibili.core.store.SettingsManager.TopTabLabelMode.TEXT_ONLY
-    val hideTopTabs = homeSettings?.hideTopTabs == true
     val tabRowHeightDp = if (hideTopTabs) {
         AppSpacingTokens.None
     } else {
@@ -1897,7 +1905,7 @@ fun HomeHeader(
         chromePolicy = topChromePolicy,
         collapsedIntoStatusBar = integratedCollapsedTopBar
     )
-    val searchToTabsSpacing = resolveHomeTopSearchToTabsSpacing(topChromePolicy)
+    val searchToTabsSpacing = topSearchMetrics.tabsSpacing
     val currentSearchToTabsSpacing = searchToTabsSpacing * searchContentRevealFraction
     val currentUnifiedDividerBottomSpacing = AppSpacingTokens.ExtraSmall * searchContentRevealFraction
 
@@ -2070,6 +2078,7 @@ fun HomeHeader(
     val tabBorderAlpha = if (isTabFloating) tabChromeStyle.borderAlpha else 0f
     val topLayoutOrder = homeSettings?.homeTopLayoutOrder ?: HomeTopLayoutOrder.SEARCH_THEN_TABS
     val topTabsContent: @Composable (Dp) -> Unit = { maxDockWidth ->
+        val renderTabs: @Composable () -> Unit = {
         Box(modifier = Modifier.fillMaxWidth()) {
             uiSkinDecoration?.topTabBackgroundImagePath?.let { tabBackground ->
                 AsyncImage(
@@ -2202,6 +2211,66 @@ fun HomeHeader(
                         LocalAppUiStyle.current == AppUiStyle.MATERIAL3
                 )
             }
+        }
+        }
+
+        if (bottomBarSearchEnabled && !hideTopTabs) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(currentTabHeight)
+                    .padding(horizontal = AppSpacingTokens.Small),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clickable { performHomeTopBarTap(haptic = haptic, onClick = onAvatarClick) }
+                        .semantics { contentDescription = "个人中心" },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Box(
+                        modifier = Modifier.size(resolveHomeTopAvatarInnerSize()).clip(CircleShape),
+                    ) {
+                        HomeTopAvatarContent(
+                            user = user,
+                            shape = CircleShape,
+                            fallbackBackgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+                            fallbackTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+                Box(modifier = Modifier.weight(1f)) {
+                    renderTabs()
+                }
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clickable {
+                            haptic(HapticType.LIGHT)
+                            onTopRightActionClick()
+                        }
+                        .semantics { contentDescription = topRightActionContentDescription },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    AppIcon(
+                        imageVector = topRightActionIcon,
+                        contentDescription = null,
+                        tint = topForegroundColor,
+                        modifier = Modifier.size(resolveHomeTopSettingsIconSize(topChromePolicy)),
+                    )
+                    if (topRightUnreadBadge != null) {
+                        HomeTopUnreadBadge(
+                            text = topRightUnreadBadge,
+                            layout = topRightUnreadBadgeLayout,
+                            borderColor = AppSurfaceTokens.cardContainer(),
+                            modifier = Modifier.align(Alignment.TopEnd),
+                        )
+                    }
+                }
+            }
+        } else {
+            renderTabs()
         }
     }
 

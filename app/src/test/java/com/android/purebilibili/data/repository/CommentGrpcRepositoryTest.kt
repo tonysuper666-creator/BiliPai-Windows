@@ -8,6 +8,38 @@ import kotlin.test.assertFalse
 class CommentGrpcRepositoryTest {
 
     @Test
+    fun `parseMainListReply keeps the vote card above comments`() {
+        val firstOption = ProtoWire.message(
+            ProtoWire.int64(1, 0L),
+            ProtoWire.string(2, "天下第一"),
+            ProtoWire.int64(3, 90L),
+        )
+        val secondOption = ProtoWire.message(
+            ProtoWire.int64(1, 1L),
+            ProtoWire.string(2, "天下第二"),
+            ProtoWire.int64(3, 10L),
+        )
+        val voteCard = ProtoWire.message(
+            ProtoWire.int64(1, 123L),
+            ProtoWire.string(2, "去年约基奇排第几？"),
+            ProtoWire.int64(3, 100L),
+            ProtoWire.bytes(4, firstOption),
+            ProtoWire.bytes(4, secondOption),
+            ProtoWire.int64(5, 0L),
+        )
+        val response = ProtoWire.message(ProtoWire.bytes(23, voteCard))
+
+        val parsed = CommentGrpcRepository.parseMainListReply(response).voteCard
+
+        assertEquals(123L, parsed?.voteId)
+        assertEquals("去年约基奇排第几？", parsed?.title)
+        assertEquals(100L, parsed?.count)
+        assertEquals(listOf(0L, 1L), parsed?.options?.map { it.idx })
+        assertEquals(listOf(90L, 10L), parsed?.options?.map { it.count })
+        assertEquals(0L, parsed?.myVoteOption)
+    }
+
+    @Test
     fun `buildMainListRequest keeps required fields and pagination offset`() {
         val request = CommentGrpcRepository.buildMainListRequest(
             oid = 100L,

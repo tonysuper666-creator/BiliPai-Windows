@@ -1,0 +1,34 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-editor-full-ui\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicPublishVerification.kt",
+    "sha256Bytes": "08c60219806e8940fbe4df9be67b573d91464bd3933869da067ca6bdcc1623a2"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-editor-full-ui\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalDynamicCommentModels.kt",
+    "sha256Bytes": "5f83644477ee9b2f4ac40d08141e31eb6f0a6321658bd9792d5e4fe178f524a0"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-editor-full-ui\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicInlineCommentHeader.kt",
+    "sha256Bytes": "b118a7cdf0d464886f9b910494696e4d2ac38215e656668f4e1690995ccbd48b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-editor-full-ui\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDynamicRichCommentPolicy.kt",
+    "sha256Bytes": "cddea7e6127b342388b193794a989fa5afc4d60f12d446657aae7c45ecd36e0c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-editor-full-ui\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicPublishComposer.kt",
+    "sha256Bytes": "698f7bda2eae2a5a92ecd1e4f9a1bab639e099c5c06718b9968cd3e224d9e47c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-editor-full-ui\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicPublishPickers.kt",
+    "sha256Bytes": "46666bc7ba3cd9f078aced7dfd6b8449c6502a961a57ed1595e0f3fb9559be25"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-editor-full-ui\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicCreateVoteDialog.kt",
+    "sha256Bytes": "77f30c2a2fa21184c0278e445b79093ee83c5599605a6dd4eb055a6f7825556b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-editor-full-ui\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicCreateReserveDialog.kt",
+    "sha256Bytes": "5c2f7a8490b9ad29d89d7b4f64216c4b9720802b97803978e4f891f471a0c206"
+  }
+]

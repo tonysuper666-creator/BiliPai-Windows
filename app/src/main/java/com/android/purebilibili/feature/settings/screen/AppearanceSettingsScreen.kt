@@ -619,7 +619,7 @@ fun AppearanceSettingsContent(
                             Spacer(modifier = Modifier.height(8.dp))
                             SettingsSingleChoicePreference(
                                 title = "屏幕帧率：$selectedScreenDisplayModeLabel",
-                                subtitle = "默认跟随系统自动调节",
+                                subtitle = "默认跟随系统自动调节；手动锁定某一档后，LTPO 设备将暂停自动升降帧率",
                                 options = screenDisplayModeOptions,
                                 selectedValue = selectedScreenDisplayModeId,
                                 enabled = activity != null && supportedDisplayModes.isNotEmpty(),

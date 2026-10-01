@@ -51,6 +51,7 @@ import com.android.purebilibili.core.util.CardPositionManager
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.data.model.response.VideoItem
 import com.android.purebilibili.feature.personal.PersonalCardSelectMask
+import com.android.purebilibili.feature.personal.rememberPersonalCardVideoTransition
 import com.android.purebilibili.feature.personal.PersonalMediaCardFrame
 import com.android.purebilibili.feature.home.components.cards.HorizontalVideoStatRow
 import com.android.purebilibili.feature.home.components.cards.VideoCardCoverDurationText
@@ -79,31 +80,12 @@ internal fun FavoritePersonalCard(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val configuration = LocalConfiguration.current
-    val density = LocalDensity.current
-    val sourceRoute = LocalVideoCardSharedElementSourceRoute.current
-    val sharedTransitionScope = LocalSharedTransitionScope.current
-    val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
-    val speedSettings = LocalVideoSharedTransitionSpeedSettings.current
-    val transitionAdaptiveInfo = com.android.purebilibili.core.ui.transition
-        .LocalVideoTransitionAdaptiveInfo.current
-    val sharedElementReady = transitionEnabled &&
-        item.bvid.isNotBlank() &&
-        sourceRoute != null &&
-        sharedTransitionScope != null &&
-        animatedVisibilityScope != null
-    val motionSpec = remember(sourceRoute, transitionEnabled, speedSettings, transitionAdaptiveInfo) {
-        resolveVideoCardSharedTransitionMotionSpec(
-            sourceRoute,
-            transitionEnabled,
-            speedSettings,
-            adaptiveInfo = transitionAdaptiveInfo,
-        )
-    }
-    val useSharedBounds = shouldUseVideoCardShellSharedBounds(sourceRoute, sharedElementReady)
-    val cardBounds = remember { object { var value: androidx.compose.ui.geometry.Rect? = null } }
-    val coverBounds = remember { object { var value: androidx.compose.ui.geometry.Rect? = null } }
-    val nativeCardSnapshot = rememberNativeVideoCardSnapshotController(item.bvid)
+    val cardShape = AppShapes.container(ContainerLevel.Card)
+    val transition = rememberPersonalCardVideoTransition(
+        bvid = item.bvid,
+        transitionEnabled = transitionEnabled,
+        clipShape = cardShape,
+    )
     val progressState = remember(item.progress, item.duration, item.view_at) {
         resolveVideoDisplayProgressState(
             serverProgressSec = item.progress,
@@ -123,42 +105,33 @@ internal fun FavoritePersonalCard(
     val cardCornerRadiusDp = AppShapes.containerCornerDp(ContainerLevel.Card).value.roundToInt()
     val triggerClick = {
         if (!batchMode) {
-            cardBounds.value?.let { bounds ->
-                val sourceCoverBounds = coverBounds.value
-                CardPositionManager.recordVideoCardPosition(
-                    bvid = item.bvid,
-                    sourceRoute = sourceRoute,
-                    bounds = bounds,
-                    screenWidth = configuration.screenWidthDp * density.density,
-                    screenHeight = configuration.screenHeightDp * density.density,
-                    sourceCornerDp = cardCornerRadiusDp,
-                    coverBounds = sourceCoverBounds,
-                    sourceLayout = if (stacked) VideoCardSourceLayout.STACKED else VideoCardSourceLayout.SIDE_BY_SIDE,
-                    sourceChromeSnapshot = VideoCardSourceChromeSnapshot(
-                        title = item.title,
-                        ownerName = item.owner.name.ifBlank { "未知UP主" },
-                        ownerFaceUrl = item.owner.face,
-                        viewText = FormatUtils.formatStat(item.stat.view.toLong()),
-                        danmakuText = FormatUtils.formatStat(item.stat.danmaku.toLong()),
-                        durationText = FormatUtils.formatDuration(item.duration),
-                        infoPresentation = com.android.purebilibili.core.ui.transition
-                            .resolveVideoCardSourceInfoPresentation(
-                                publishTimeText = resolveFavoriteDateLabel(item.view_at),
-                                showStatsInInfo = true,
-                                ownerBeforePublish = true,
-                                showOverflowMenu = !batchMode && canRemove && onRemove != null,
-                            ),
-                        coverPresentation = VideoCardSourceCoverPresentation(
-                            showDurationOnCover = true,
-                            showHistoryProgressBar = progressState.showProgressBar,
-                            historyProgressFraction = progressState.progressFraction,
+            transition.recordPosition(
+                bvid = item.bvid,
+                stacked = stacked,
+                sourceCornerDp = cardCornerRadiusDp,
+                chrome = VideoCardSourceChromeSnapshot(
+                    title = item.title,
+                    ownerName = item.owner.name.ifBlank { "未知UP主" },
+                    ownerFaceUrl = item.owner.face,
+                    viewText = FormatUtils.formatStat(item.stat.view.toLong()),
+                    danmakuText = FormatUtils.formatStat(item.stat.danmaku.toLong()),
+                    durationText = FormatUtils.formatDuration(item.duration),
+                    infoPresentation = com.android.purebilibili.core.ui.transition
+                        .resolveVideoCardSourceInfoPresentation(
+                            publishTimeText = resolveFavoriteDateLabel(item.view_at),
+                            showStatsInInfo = true,
+                            ownerBeforePublish = true,
+                            showOverflowMenu = !batchMode && canRemove && onRemove != null,
                         ),
-                        coverUrl = stationaryCoverUrl,
-                        coverCacheKey = stationaryCoverUrl,
-                    ).withMeasuredCoverDecodeSize(sourceCoverBounds),
+                    coverPresentation = VideoCardSourceCoverPresentation(
+                        showDurationOnCover = true,
+                        showHistoryProgressBar = progressState.showProgressBar,
+                        historyProgressFraction = progressState.progressFraction,
+                    ),
+                    coverUrl = stationaryCoverUrl,
+                    coverCacheKey = stationaryCoverUrl,
                 )
-                nativeCardSnapshot.capture()
-            }
+            )
         }
         onClick()
     }
@@ -166,22 +139,13 @@ internal fun FavoritePersonalCard(
     PersonalMediaCardFrame(
         stacked = stacked,
         coverModifier = Modifier.onGloballyPositioned {
-            coverBounds.value = it.boundsInRoot()
+            transition.bounds.coverBounds = it.boundsInRoot()
         },
         modifier = modifier
-            .videoCardShellSharedBoundsOrEmpty(
-                enabled = useSharedBounds,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedVisibilityScope = animatedVisibilityScope,
-                bvid = item.bvid,
-                sourceRoute = sourceRoute,
-                motionSpec = motionSpec,
-                clipShape = AppShapes.container(ContainerLevel.Card),
-                crossfadeSourceContent = true,
-            )
-            .onGloballyPositioned { cardBounds.value = it.boundsInRoot() },
-        nativeSnapshotModifier = nativeCardSnapshot.modifier,
-        coverOverlayModifier = nativeCardSnapshot.coverOverlayModifier,
+            .then(transition.shellModifier)
+            .onGloballyPositioned { transition.bounds.cardBounds = it.boundsInRoot() },
+        nativeSnapshotModifier = transition.nativeCardSnapshot.modifier,
+        coverOverlayModifier = transition.nativeCardSnapshot.coverOverlayModifier,
         headlineContent = {
             AppText(
                 text = item.title,

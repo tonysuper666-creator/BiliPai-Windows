@@ -36,7 +36,8 @@ internal fun hasRenderableCommentPayload(data: ReplyData?): Boolean {
     if (data == null) return false
     return data.replies.orEmpty().isNotEmpty() ||
         data.hots.orEmpty().isNotEmpty() ||
-        data.collectTopReplies().isNotEmpty()
+        data.collectTopReplies().isNotEmpty() ||
+        data.voteCard != null
 }
 
 private fun collectRenderableComments(data: ReplyData): Sequence<ReplyItem> {
@@ -55,7 +56,7 @@ internal fun hasAnyReplyLocation(data: ReplyData?): Boolean {
 
 internal fun shouldFallbackGrpcCommentReadOnMissingLocation(data: ReplyData?): Boolean {
     return data != null &&
-        hasRenderableCommentPayload(data) &&
+        collectRenderableComments(data).any() &&
         !hasAnyReplyLocation(data)
 }
 

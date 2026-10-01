@@ -148,6 +148,17 @@ class CommentReadAccessPolicyTest {
     }
 
     @Test
+    fun `vote card alone remains a renderable grpc response`() {
+        val data = ReplyData(voteCard = com.android.purebilibili.data.model.response.ReplyVoteCard(
+            voteId = 123L,
+            title = "投票",
+        ))
+
+        assertTrue(hasRenderableCommentPayload(data))
+        assertFalse(shouldFallbackGrpcCommentReadOnMissingLocation(data))
+    }
+
+    @Test
     fun `grpc comment read falls back when rendered comments all miss ip location`() {
         assertTrue(
             shouldFallbackGrpcCommentReadOnMissingLocation(

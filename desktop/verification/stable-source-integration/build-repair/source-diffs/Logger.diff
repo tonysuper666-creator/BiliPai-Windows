@@ -1,0 +1,280 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/core/util/Logger.kt
++++ v023:app/src/main/java/com/android/purebilibili/core/util/Logger.kt
+@@ -9,6 +9,9 @@
+ import androidx.core.content.FileProvider
+ import com.android.purebilibili.BuildConfig
+ import com.android.purebilibili.core.performance.Android17Diagnostics
++import com.android.purebilibili.core.performance.AbnormalProcessExitException
++import com.android.purebilibili.core.performance.decodeNativeExitTrace
++import com.android.purebilibili.core.performance.nativeExitTraceSummary
+ import java.io.File
+ import java.text.SimpleDateFormat
+ import java.util.*
+@@ -18,7 +21,10 @@
+ private const val RUNTIME_LOG_FILE_NAME = "runtime.log"
+ private const val BASIC_LOG_FILE_NAME = "basic.log"
+ private const val CRASH_SNAPSHOT_FILE_NAME = "last_crash_log.txt"
++private const val RAW_CRASH_TRACE_FILE_NAME = "last_crash_trace.pb"
+ private const val CRASH_SNAPSHOT_MARKER_FILE_NAME = "pending_crash.marker"
++private const val TOMBSTONE_BEGIN = "----- BEGIN TOMBSTONE PROTOBUF BASE64 -----"
++private const val TOMBSTONE_END = "----- END TOMBSTONE PROTOBUF BASE64 -----"
+ private const val DOWNLOAD_LOG_RELATIVE_PATH = "Download/BiliPai/logs"
+ internal const val ENHANCED_DIAGNOSTIC_LOG_PREFS_NAME = "diagnostic_logging"
+ internal const val ENHANCED_DIAGNOSTIC_LOG_PREF_KEY = "enhanced_enabled"
+@@ -33,6 +39,9 @@
+ 
+ internal fun resolveCrashSnapshotFile(baseDir: File): File =
+     File(resolveLogPersistenceDir(baseDir), CRASH_SNAPSHOT_FILE_NAME)
++
++internal fun resolveRawCrashTraceFile(baseDir: File): File =
++    File(resolveLogPersistenceDir(baseDir), RAW_CRASH_TRACE_FILE_NAME)
+ 
+ internal fun resolveCrashSnapshotMarkerFile(baseDir: File): File =
+     File(resolveLogPersistenceDir(baseDir), CRASH_SNAPSHOT_MARKER_FILE_NAME)
+@@ -94,6 +103,49 @@
+ 
+ internal fun sanitizeLogMessage(message: String): String =
+     LogCollector.sanitizeMessage(message)
++
++/** Older snapshots embedded base64 directly. Never run text redaction across that payload. */
++internal fun removeEmbeddedNativeTombstone(content: String): String {
++    val start = content.indexOf(TOMBSTONE_BEGIN)
++    if (start < 0) return content
++    val end = content.indexOf(TOMBSTONE_END, start + TOMBSTONE_BEGIN.length)
++    if (end < 0) return content.substring(0, start) + "原始回溯数据不可用（旧版导出不完整）\n"
++    return content.replaceRange(
++        start,
++        end + TOMBSTONE_END.length,
++        "原始回溯数据已从文本日志中移除；如有保留，可单独分享 .pb 附件"
++    )
++}
++
++/** Keep multiline exceptions attached to their timestamp while merging basic and verbose logs. */
++internal fun groupDiagnosticLogLines(lines: List<String>): List<String> {
++    val entries = mutableListOf<String>()
++    var current: StringBuilder? = null
++    lines.forEach { line ->
++        if (diagnosticTimestampKey(line) != null) {
++            current?.toString()?.takeIf(String::isNotBlank)?.let(entries::add)
++            current = StringBuilder(line)
++        } else if (current != null) {
++            current?.apply { append('\n'); append(line) }
++        } else if (line.isNotBlank()) {
++            entries.add(line)
++        }
++    }
++    current?.toString()?.takeIf(String::isNotBlank)?.let(entries::add)
++    return entries
++}
++
++internal fun mergeDiagnosticLogEntries(
++    persistedEntries: List<String>,
++    inMemoryEntries: List<String>,
++): List<String> = (persistedEntries + inMemoryEntries)
++    .filter(String::isNotBlank)
++    .distinct()
++    .sortedBy { diagnosticTimestampKey(it) ?: "9999-99-99 99:99:99.999" }
++
++private fun diagnosticTimestampKey(entry: String): String? =
++    entry.takeIf { it.length >= 25 && it[0] == '[' && it[24] == ']' }
++        ?.substring(1, 24)
+ 
+ internal fun resolveLogArtifactDirsToClear(
+     filesDir: File,
+@@ -136,7 +188,21 @@
+         appendLine("========================================")
+         appendLine()
+         appendLine("----- Throwable -----")
+-        appendLine(sanitizeLogMessage(throwable.stackTraceToString()))
++        val nativeTrace = (throwable as? AbnormalProcessExitException)?.nativeTrace
++        val throwableText = if (!nativeTrace.isNullOrBlank()) {
++            buildString {
++                appendLine(throwable.toString())
++                appendLine()
++                appendLine("----- 系统异常回溯摘要 -----")
++                appendLine(nativeExitTraceSummary(nativeTrace))
++                if (nativeTrace.contains(TOMBSTONE_BEGIN)) {
++                    appendLine("原始回溯: 不在本文本内；如保存成功，可主动选择分享 .pb 附件")
++                }
++            }
++        } else {
++            throwable.stackTraceToString()
++        }
++        appendLine(sanitizeLogMessage(throwableText))
+         appendLine("----- Recent Logs -----")
+         entries.forEach { appendLine(it.format()) }
+     }
+@@ -712,6 +778,8 @@
+ 
+     fun persistCrashSnapshot(throwable: Throwable) {
+         val context = appContext ?: return
++        val rawTrace = (throwable as? AbnormalProcessExitException)
++            ?.nativeTrace?.let(::decodeNativeExitTrace)
+         val sanitizedEntries = getEntries().map { entry ->
+             entry.copy(message = sanitizeMessage(entry.message))
+         }
+@@ -730,8 +798,15 @@
+                 buildCommit = BuildConfig.BUILD_COMMIT_SHA,
+             )
+             val snapshotFile = resolveCrashSnapshotFile(context.filesDir)
++            val rawTraceFile = resolveRawCrashTraceFile(context.filesDir)
+             val markerFile = resolveCrashSnapshotMarkerFile(context.filesDir)
+             snapshotFile.parentFile?.mkdirs()
++            // A later Java crash must not leave an unrelated earlier native trace attached.
++            rawTraceFile.delete()
++            rawTrace?.let { bytes ->
++                runCatching { rawTraceFile.writeBytes(bytes) }
++                    .onFailure { Log.e("LogCollector", "保存原始系统回溯失败", it) }
++            }
+             snapshotFile.writeText(content)
+             markerFile.writeText(System.currentTimeMillis().toString())
+         }.onFailure {
+@@ -751,6 +826,10 @@
+         }
+     }
+ 
++    fun hasRawCrashTrace(context: Context): Boolean =
++        resolveCrashSnapshotFile(context.filesDir).isFile &&
++            resolveRawCrashTraceFile(context.filesDir).let { it.isFile && it.length() > 0L }
++
+     fun clearPendingCrashSnapshot() {
+         val context = appContext ?: return
+         runCatching {
+@@ -766,7 +845,7 @@
+             val cacheDir = File(context.cacheDir, LOG_DIRECTORY_NAME)
+             cacheDir.mkdirs()
+             val shareFile = File(cacheDir, CRASH_SNAPSHOT_FILE_NAME)
+-            shareFile.writeText(snapshotFile.readText())
++            shareFile.writeText(sanitizeMessage(removeEmbeddedNativeTombstone(snapshotFile.readText())))
+             shareLogFileFromCache(context, shareFile)
+             true
+         }.getOrElse {
+@@ -780,25 +859,48 @@
+      * 
+      * 日志会保存到 Download/BiliPai/logs/ 目录，方便 MT 管理器等工具直接访问
+      */
+-    fun exportAndShare(context: Context, includeSystemDiagnostics: Boolean = true) {
++    fun exportAndShare(
++        context: Context,
++        includeSystemDiagnostics: Boolean = true,
++        includeRawCrashTrace: Boolean = false,
++    ) {
+         init(context)
+         // Queue behind pending writes: exporting immediately after an error must include it.
+         // File reads, MediaStore writes and trace copies must not block the recovery UI.
+         diskWriter.execute {
+             try {
+-                val persistedLines = listOf(
++                val persistedEntries = listOf(
+                     resolveBasicLogFile(context.filesDir),
+                     resolveRuntimeLogFile(context.filesDir),
+                 ).flatMap { file ->
+                     runCatching { if (file.isFile) file.readLines() else emptyList() }
+                         .getOrDefault(emptyList())
++                        .let(::groupDiagnosticLogLines)
+                 }
+-                val logLines = (persistedLines + getEntries().map { it.format() })
+-                    .filter { it.isNotBlank() }
+-                    .distinct()
++                val logEntries = mergeDiagnosticLogEntries(
++                    persistedEntries,
++                    getEntries().map { it.format() },
++                )
+                 // Dismissing the prompt only clears its marker, not the retained evidence.
+                 val crashContent = resolveCrashSnapshotFile(context.filesDir)
+-                    .takeIf(File::isFile)?.readText()?.let(::sanitizeMessage)
++                    .takeIf(File::isFile)?.readText()
++                    ?.let(::removeEmbeddedNativeTombstone)
++                    ?.let(::sanitizeMessage)
++                val rawTraceFile = resolveRawCrashTraceFile(context.filesDir)
++                    .takeIf { includeRawCrashTrace && it.isFile && it.length() > 0L &&
++                        !crashContent.isNullOrBlank() }
++                val exportedAt = Date()
++                val exportStamp = fileDateFormat.format(exportedAt)
++                val shareCacheDir = File(context.cacheDir, LOG_DIRECTORY_NAME).apply { mkdirs() }
++                val rawShareFile = rawTraceFile?.let { source ->
++                    val target = File(shareCacheDir, "bilipai_native_trace_${exportStamp}.pb")
++                    runCatching { source.copyTo(target, overwrite = true) }
++                        .onFailure {
++                            target.delete()
++                            Log.e("LogCollector", "复制原始系统回溯失败", it)
++                        }
++                        .getOrNull()
++                }
+                 val recentProcessExits = if (includeSystemDiagnostics) {
+                     Android17Diagnostics.recentProcessExitSummaries(context)
+                 } else emptyList()
+@@ -806,7 +908,7 @@
+                     Android17Diagnostics.retainedArtifacts(context)
+                 } else emptyList()
+                 if (!hasExportableDiagnostics(
+-                        logCount = logLines.size,
++                        logCount = logEntries.size,
+                         hasCrashSnapshot = !crashContent.isNullOrBlank(),
+                         processExitCount = recentProcessExits.size,
+                         profilingArtifactCount = retainedProfiles.size,
+@@ -815,27 +917,35 @@
+                     return@execute
+                 }
+                 val content = buildString {
+-                    appendLine("BiliPai 应用日志导出")
+-                    appendLine("导出时间: ${dateFormat.format(Date())}")
++                    appendLine("BiliPai 诊断日志")
++                    appendLine("导出时间: ${dateFormat.format(exportedAt)}")
+                     appendLine("应用版本: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
+                     appendLine("构建: ${BuildConfig.BUILD_TYPE} / ${BuildConfig.BUILD_COMMIT_SHA}")
+                     appendLine("设备信息: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}")
+                     appendLine("Android版本: ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT})")
+                     appendLine("基础诊断: 默认保留，滚动上限 64KB")
+                     appendLine("增强诊断: ${if (Logger.areVerboseRuntimeLogsEnabled()) "已开启" else "未开启"}")
+-                    appendLine("历史进程退出记录: ${recentProcessExits.size} 条")
++                    appendLine("内容: ${if (crashContent.isNullOrBlank()) "无崩溃快照" else "最近崩溃快照"}；" +
++                        "系统退出 ${recentProcessExits.size} 条；运行日志 ${logEntries.size} 条")
++                    appendLine("原始系统回溯: ${if (rawShareFile != null) "另附 .pb 文件" else "未包含"}")
++                    appendLine("性能诊断附件: ${retainedProfiles.size} 个")
++                    appendLine("隐私说明: 文本日志已脱敏；原始回溯仅在明确选择后分享")
++                    appendLine()
++                    appendLine("========== 1. 最近一次崩溃 ==========")
++                    if (!crashContent.isNullOrBlank()) {
++                        appendLine(crashContent)
++                    } else {
++                        appendLine("无已保存的崩溃快照")
++                    }
++                    appendLine("========== 2. 系统退出记录 ==========")
++                    if (recentProcessExits.isEmpty()) appendLine("无记录或本次未采集")
+                     recentProcessExits.forEach { appendLine(sanitizeMessage(it)) }
+-                    appendLine("隐私说明: 日志已脱敏，仅在用户主动导出时分享")
+-                    appendLine("----- 运行日志（${logLines.size} 条）-----")
+-                    logLines.forEach { appendLine(sanitizeMessage(it)) }
+-                    if (!crashContent.isNullOrBlank()) {
+-                        appendLine("----- 最近一次崩溃快照 -----")
+-                        appendLine(crashContent)
+-                    }
++                    appendLine("========== 3. 运行日志 ==========")
++                    if (logEntries.isEmpty()) appendLine("无记录")
++                    logEntries.forEach { appendLine(sanitizeMessage(it)) }
+                 }
+-                val fileName = "bilipai_log_${fileDateFormat.format(Date())}.txt"
++                val fileName = "bilipai_log_${exportStamp}.txt"
+                 val savedPath = saveToExternalDownload(context, fileName, content)
+-                val shareCacheDir = File(context.cacheDir, LOG_DIRECTORY_NAME).apply { mkdirs() }
+                 val shareFile = File(shareCacheDir, fileName).apply { writeText(content) }
+                 val profilingFiles = if (retainedProfiles.isNotEmpty()) {
+                     Android17Diagnostics.copyRetainedArtifactsTo(context, shareCacheDir)
+@@ -844,9 +954,14 @@
+                     if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) {
+                         return@post
+                     }
+-                    val message = if (savedPath != null) "日志已保存到 $savedPath" else "日志已准备好，请选择分享方式"
++                    val message = if (savedPath != null) {
++                        "文本日志已保存到 $savedPath"
++                    } else "日志已准备好，请选择分享方式"
+                     Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+-                    shareLogFilesFromCache(context, listOf(shareFile) + profilingFiles)
++                    shareLogFilesFromCache(
++                        context,
++                        listOfNotNull(shareFile, rawShareFile) + profilingFiles
++                    )
+                 }
+             } catch (error: Exception) {
+                 Log.e("LogCollector", "导出日志失败", error)

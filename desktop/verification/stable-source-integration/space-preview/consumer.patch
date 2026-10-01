@@ -1,0 +1,262 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceOverviewScreens.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceOverviewScreens.kt
+@@ -1,5 +1,8 @@
+ package com.bilipai.desktop.ui
+ 
++import androidx.compose.foundation.background
++import androidx.compose.foundation.border
++import androidx.compose.foundation.shape.CircleShape
+ import androidx.compose.foundation.ScrollState
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.horizontalScroll
+@@ -9,11 +12,20 @@
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.draw.alpha
++import androidx.compose.ui.draw.clip
++import androidx.compose.ui.geometry.Rect
+ import androidx.compose.ui.graphics.luminance
++import androidx.compose.ui.platform.LocalWindowInfo
+ import androidx.compose.ui.layout.ContentScale
+ import androidx.compose.ui.unit.dp
+-import androidx.compose.ui.window.Dialog
+ import coil3.compose.AsyncImage
++import coil3.compose.LocalPlatformContext
++import coil3.request.ImageRequest
++import coil3.request.crossfade
++import com.android.purebilibili.core.util.FormatUtils
++import com.android.purebilibili.core.plugin.skin.*
++import com.android.purebilibili.feature.dynamic.components.*
+ import com.android.purebilibili.data.model.response.*
+ import com.android.purebilibili.feature.space.*
+ import com.bilipai.desktop.data.*
+@@ -26,22 +38,54 @@
+ @Composable
+ fun DesktopSpaceHeader(overview: DesktopSpaceOverview, onFollowers: (Long) -> Unit, onFollowings: (Long) -> Unit,
+     onUser: (Long) -> Unit, onLive: (Long) -> Unit, onExternalUrl: (String, String) -> Unit,
+-    modifier: Modifier = Modifier, action: @Composable () -> Unit = {}) {
++    modifier: Modifier = Modifier,
++    onAvatarPreview: ((Rect?) -> Unit)? = null, onTopPhotoPreview: ((Rect?, String?) -> Unit)? = null,
++    isOwner: Boolean = false, action: @Composable () -> Unit = {}) {
+     val user = overview.user
+     val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+     val topItems = user.topImages
+-    val banner = topItems.firstOrNull()?.header ?: if (dark) user.nightTopPhoto.ifBlank { user.topPhoto } else user.topPhoto
+-    var preview by remember(user.mid) { mutableStateOf(false) }
+-    var previewIndex by remember(user.mid) { mutableIntStateOf(0) }
+-    val previews = topItems.ifEmpty { banner.takeIf(String::isNotBlank)?.let { listOf(SpaceTopImageItem(header = it, fullCover = it)) }.orEmpty() }
++    val banner = normalizeSpaceTopPhotoUrl(if (dark && user.nightTopPhoto.isNotBlank()) user.nightTopPhoto else user.topPhoto)
++    val context = LocalPlatformContext.current
++    val window = LocalWindowInfo.current.containerSize
++    val uiSkinState = LocalUiSkinState.current
++    val activeProfileSkin = uiSkinState.activeSkin?.takeIf {
++        uiSkinState.enabled && isOwner && UiSkinSurface.PROFILE in it.manifest.surfaces
++    }
++    val skinSpaceBackgroundPaths = activeProfileSkin?.manifest?.assets?.spaceBackgrounds.orEmpty().mapNotNull { background ->
++        val preferLandscape = window.width > window.height
++        activeProfileSkin?.assetFilePath(if (preferLandscape) background.landscape ?: background.portrait
++            else background.portrait ?: background.landscape)
++    }
++    var currentBannerUrl by remember(user.mid) { mutableStateOf<String?>(null) }
++    val topPhotoRect = rememberImagePreviewSourceRect()
++    val topPhotoHidden = isImagePreviewSourceHidden(topPhotoRect.value, currentBannerUrl)
++    val avatarRect = rememberImagePreviewSourceRect()
++    val avatarHidden = isImagePreviewSourceHidden(avatarRect.value, user.face)
+     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+-        if (banner.isNotBlank()) AsyncImage(model = imageUrl(banner), contentDescription = "空间头图",
+-            contentScale = ContentScale.Crop, alignment = resolveSpaceBannerAlignment(topItems.firstOrNull()?.dy ?: 0f),
+-            colorFilter = resolveSpaceBannerColorFilter(!dark), modifier = Modifier.fillMaxWidth().height(150.dp).clickable {
+-                previewIndex = 0; preview = true
+-            })
++        Box(Modifier.fillMaxWidth().height(150.dp).imagePreviewSourceBounds(topPhotoRect)
++            .alpha(if (topPhotoHidden) 0f else 1f)
++            .clickable(interactionSource = null, indication = null,
++                enabled = onTopPhotoPreview != null && !topPhotoHidden && skinSpaceBackgroundPaths.isEmpty() &&
++                    (shouldEnableSpaceTopPhotoPreview(banner) || topItems.isNotEmpty())) {
++                onTopPhotoPreview?.invoke(topPhotoRect.value, currentBannerUrl)
++            }) {
++            DesktopOriginalSpaceHeaderBanner(topImages = topItems, fallbackTopPhotoUrl = banner,
++                onCurrentBannerUrlChange = { currentBannerUrl = it }, skinBackgroundPaths = skinSpaceBackgroundPaths,
++                isDarkTheme = dark, modifier = Modifier.fillMaxSize())
++        }
+         Row(Modifier.padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
+-            AsyncImage(model = imageUrl(user.face), contentDescription = user.name, modifier = Modifier.size(72.dp).clickable { onUser(user.mid) })
++            Box(Modifier.size(80.dp).imagePreviewSourceBounds(avatarRect).alpha(if (avatarHidden) 0f else 1f)
++                .clickable(interactionSource = null, indication = null, enabled = user.face.isNotBlank() && !avatarHidden) {
++                    onAvatarPreview?.invoke(avatarRect.value) ?: onUser(user.mid)
++                }) {
++                AsyncImage(model = ImageRequest.Builder(context)
++                    .data(FormatUtils.buildSizedImageUrl(user.face, width = 320, height = 320))
++                    .memoryCacheKey(resolveImagePreviewPlaceholderCacheKey(user.face) ?: user.face)
++                    .crossfade(false).build(), contentDescription = null, contentScale = ContentScale.Crop,
++                    modifier = Modifier.fillMaxSize().clip(CircleShape)
++                        .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape)
++                        .background(MaterialTheme.colorScheme.surfaceVariant))
++            }
+             Column(Modifier.weight(1f)) { SelectionContainer { Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                 Text(user.name, style = MaterialTheme.typography.titleLarge)
+                 Text(listOf("LV${user.level}", user.vip.label.text.ifBlank { if (user.vip.type == 2) "年度大会员" else "大会员" }.takeIf { user.vip.status == 1 }.orEmpty())
+@@ -85,20 +129,7 @@
+         }
+         if (user.silence == 1) Text("该账号已被封禁", Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.error)
+     }
+-    if (preview && previews.isNotEmpty()) Dialog(onDismissRequest = { preview = false }) {
+-        Surface(shape = MaterialTheme.shapes.large) { Column(Modifier.widthIn(max = 900.dp).padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+-            val item = previews[previewIndex.coerceIn(previews.indices)]
+-            AsyncImage(model = imageUrl(item.fullCover), contentDescription = item.title?.title ?: "空间头图",
+-                contentScale = ContentScale.Fit, modifier = Modifier.fillMaxWidth().heightIn(min = 240.dp, max = 650.dp))
+-            item.title?.let { title -> if (title.title.isNotBlank()) Text(title.title); if (title.subTitle.isNotBlank()) Text(title.subTitle) }
+-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+-                TextButton(onClick = { previewIndex-- }, enabled = previewIndex > 0) { Text("上一张") }
+-                Text("${previewIndex + 1} / ${previews.size}")
+-                TextButton(onClick = { previewIndex++ }, enabled = previewIndex < previews.lastIndex) { Text("下一张") }
+-                TextButton(onClick = { preview = false }) { Text("关闭") }
+-            }
+-        } }
+-    }
++
+ }
+ 
+ @Composable
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt
+@@ -7,6 +7,7 @@
+ import androidx.compose.material3.*
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.graphics.luminance
+ import androidx.compose.ui.unit.dp
+ import com.android.purebilibili.data.model.response.*
+ import com.android.purebilibili.feature.space.*
+@@ -105,7 +106,8 @@
+     onCollection: (Long, Long, String) -> Unit, onPlaylist: (SpaceExternalPlaylist) -> Unit,
+     onLogin: () -> Unit, onExternalUrl: (String) -> Unit,
+     progressByBvid: Map<String, SpaceWatchProgress> = emptyMap(), localPositionMs: (String) -> Long = { 0L },
+-    locateBvid: String? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {}) {
++    locateBvid: String? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {},
++    onImagePreviewFeedback: (String) -> Unit = {}) {
+     val account by repository.account.collectAsState()
+     val epoch by repository.sessionEpochFlow.collectAsState()
+     val mid = requestedMid.takeIf { it > 0 } ?: account?.mid ?: 0
+@@ -158,7 +160,7 @@
+             state.failure?.let { CommunityFailure(it, onLogin) { scope.launch { loadOverview() } } }
+             // The original aggregate policy requires the legacy profile path when the card is incomplete.
+             if (state.failure != null) DesktopSpaceScreen(mid, repository, social, community, space,
+-                onVideo, onUser, onArticle, onDynamic, onLive, onBangumi, onResource, onCollection, onLogin, onExternalUrl, onTopic = onTopic, onTopicKeyword = onTopicKeyword)
++                onVideo, onUser, onArticle, onDynamic, onLive, onBangumi, onResource, onCollection, onLogin, onExternalUrl, onTopic = onTopic, onTopicKeyword = onTopicKeyword, onImagePreviewFeedback = onImagePreviewFeedback)
+         }
+         return
+     }
+@@ -166,7 +168,7 @@
+     val contribution = resolveSelectedContributionTab(contributionTabs, state.selectedContributionId, state.selectedSubTab)
+     @Composable fun leaf(tab: DesktopSpaceTab) {
+         DesktopSpaceScreen(mid, repository, social, community, space, onVideo, onUser, onArticle, onDynamic,
+-            onLive, onBangumi, onResource, onCollection, onLogin, onExternalUrl, tab, false, state.leaf, onTopic, onTopicKeyword)
++            onLive, onBangumi, onResource, onCollection, onLogin, onExternalUrl, tab, false, state.leaf, onTopic, onTopicKeyword, onImagePreviewFeedback)
+     }
+     @Composable fun contributions(section: DesktopSpaceContributionSection) {
+         DesktopSpaceContributionScreen(mid, section, repository, backend, onVideo, onUser,
+@@ -179,11 +181,18 @@
+                 TextButton(onClick = { scope.launch { loadOverview(); loadCollections() } }, enabled = !loading) { Text("刷新资料") }
+             }
+             if (loading) LinearProgressIndicator(Modifier.fillMaxWidth())
+-            if (state.headerExpanded) DesktopSpaceHeader(overview,
++            if (state.headerExpanded) {
++            val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
++            val topPhotoUrl = normalizeSpaceTopPhotoUrl(if (dark && overview.user.nightTopPhoto.isNotBlank())
++                overview.user.nightTopPhoto else overview.user.topPhoto)
++            DesktopSpaceImagePreviews(repository, mid, overview.user.face, overview.user.topImages,
++                topPhotoUrl, onImagePreviewFeedback) { avatarClick, topPhotoClick ->
++            DesktopSpaceHeader(overview,
+                 onFollowers = { onExternalUrl("https://space.bilibili.com/$it/fans/fans") },
+                 onFollowings = { state.auxiliaryTab = DesktopSpaceTab.FOLLOWINGS }, onUser, onLive,
+                 onExternalUrl = { url, _ -> onExternalUrl(url) },
+-                modifier = Modifier.heightIn(max = 260.dp).verticalScroll(state.headerScroll), action = {
++                modifier = Modifier.heightIn(max = 260.dp).verticalScroll(state.headerScroll),
++                onAvatarPreview = avatarClick, onTopPhotoPreview = topPhotoClick, isOwner = account?.mid == mid, action = {
+                     val user = overview.user
+                     if (account?.mid == mid) TextButton(onClick = { onExternalUrl("https://account.bilibili.com/account/setting") }) { Text("编辑资料") }
+                     else Row {
+@@ -193,6 +202,8 @@
+                             remoteBlocked = user.relationStatus == 128, onChanged = { scope.launch { loadOverview() } })
+                     }
+                 })
++            }
++            }
+             state.failure?.let { CommunityFailure(it, onLogin) { scope.launch { loadOverview() } } }
+             Row(Modifier.horizontalScroll(state.mainScroll), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                 resolveSpaceDisplayedMainTabs(overview.mainTabs, state.selectedMain, overview.hasCheeseTab).forEach { item ->
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt
+@@ -1,5 +1,8 @@
+ package com.bilipai.desktop.ui
+ 
++import androidx.compose.foundation.background
++import androidx.compose.foundation.border
++import androidx.compose.foundation.shape.CircleShape
+ import androidx.compose.foundation.ScrollState
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.horizontalScroll
+@@ -8,8 +11,16 @@
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.draw.alpha
++import androidx.compose.ui.draw.clip
++import androidx.compose.ui.layout.ContentScale
+ import androidx.compose.ui.unit.dp
+ import coil3.compose.AsyncImage
++import coil3.compose.LocalPlatformContext
++import coil3.request.ImageRequest
++import coil3.request.crossfade
++import com.android.purebilibili.core.util.FormatUtils
++import com.android.purebilibili.feature.dynamic.components.*
+ import com.android.purebilibili.data.model.response.*
+ import com.android.purebilibili.feature.space.*
+ import com.bilipai.desktop.data.*
+@@ -48,7 +59,8 @@
+     onCollection: (mid: Long, collectionId: Long, collectionType: String) -> Unit,
+     onLogin: () -> Unit, onExternalUrl: (String) -> Unit,
+     bodyTab: DesktopSpaceTab? = null, headerVisible: Boolean = true,
+-    browseState: DesktopSpaceBrowseState? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {}) {
++    browseState: DesktopSpaceBrowseState? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {},
++    onImagePreviewFeedback: (String) -> Unit = {}) {
+     val account by repository.account.collectAsState()
+     val blocked by community.blockedUps.mids.collectAsState()
+     val dynamicTransform = remember(blocked) { { rows: List<DynamicItem> -> desktopVisibleDynamicItems(rows, blocked) } }
+@@ -78,10 +90,25 @@
+     Column(Modifier.fillMaxSize()) {
+         if (headerVisible) {
+         state.profile?.let { user ->
++            DesktopSpaceImagePreviews(repository, mid, user.avatar, emptyList(), "", onImagePreviewFeedback) { avatarClick, _ ->
++            val avatarRect = rememberImagePreviewSourceRect()
++            val avatarHidden = isImagePreviewSourceHidden(avatarRect.value, user.avatar)
++            val context = LocalPlatformContext.current
+             Box(Modifier.fillMaxWidth()) {
+                 DesktopSkinSpaceBackground(isOwner = account?.mid == user.mid, modifier = Modifier.matchParentSize())
+                 Row(Modifier.padding(20.dp), horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
+-                    AsyncImage(model = imageUrl(user.avatar), contentDescription = user.name, modifier = Modifier.size(72.dp))
++                    Box(Modifier.size(80.dp).imagePreviewSourceBounds(avatarRect).alpha(if (avatarHidden) 0f else 1f)
++                        .clickable(interactionSource = null, indication = null, enabled = user.avatar.isNotBlank() && !avatarHidden) {
++                            avatarClick(avatarRect.value)
++                        }) {
++                        AsyncImage(model = ImageRequest.Builder(context)
++                            .data(FormatUtils.buildSizedImageUrl(user.avatar, width = 320, height = 320))
++                            .memoryCacheKey(resolveImagePreviewPlaceholderCacheKey(user.avatar) ?: user.avatar)
++                            .crossfade(false).build(), contentDescription = null, contentScale = ContentScale.Crop,
++                            modifier = Modifier.fillMaxSize().clip(CircleShape)
++                                .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape)
++                                .background(MaterialTheme.colorScheme.surfaceVariant))
++                    }
+                     Column(Modifier.weight(1f)) {
+                         Text(user.name, style = MaterialTheme.typography.titleLarge)
+                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+@@ -97,6 +124,7 @@
+                         onSuccess = { state.profile = user.copy(isFollowed = !user.isFollowed) })
+                     TextButton(onClick = { scope.launch { loadProfile(); loadSupporters() } }) { Text("刷新资料") }
+                 }
++            }
+             }
+         }
+         state.profileError?.let { CommunityFailure(it, onLogin) { scope.launch { loadProfile() } } }

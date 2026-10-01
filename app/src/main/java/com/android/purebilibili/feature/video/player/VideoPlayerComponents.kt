@@ -75,7 +75,6 @@ fun VideoTitleSection(
             AppText(
                 text = info.title,
                 style = MaterialTheme.typography.titleMedium.copy(
-                    lineHeight = 22.sp,
                     fontWeight = FontWeight.SemiBold
                 ),
                 maxLines = if (expanded) Int.MAX_VALUE else 1,
@@ -128,7 +127,6 @@ fun VideoTitleWithDesc(
             AppText(
                 text = info.title,
                 style = MaterialTheme.typography.titleMedium.copy(
-                    lineHeight = 22.sp,
                     fontWeight = FontWeight.SemiBold
                 ),
                 maxLines = if (expanded) Int.MAX_VALUE else 1,
@@ -659,7 +657,6 @@ fun RelatedVideoItem(video: RelatedVideo, onClick: () -> Unit) {
                 AppText(
                     text = video.title,
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        lineHeight = 19.sp,
                         fontWeight = FontWeight.Medium
                     ),
                     maxLines = 2,

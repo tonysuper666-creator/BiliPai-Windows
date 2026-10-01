@@ -12,6 +12,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.feature.download.DownloadStatus
 import com.android.purebilibili.feature.download.DownloadAssetStatus
+import com.android.purebilibili.feature.download.shouldPauseAllInclude
+import com.android.purebilibili.feature.download.shouldContinueAllInclude
 import com.bilipai.desktop.download.DesktopDownloadManager
 import com.bilipai.desktop.download.DownloadTask
 import com.bilipai.desktop.player.MpvPlayer
@@ -43,6 +45,26 @@ fun DownloadBrowserScreen(
     val overlay = sharedDanmaku ?: ownedOverlay
     val emptyOverlayError = remember { kotlinx.coroutines.flow.MutableStateFlow<String?>(null) }
     val overlayError by (overlay?.loadError ?: emptyOverlayError).collectAsState()
+    var downloadSpeeds by remember(manager) { mutableStateOf<Map<String, Long>>(emptyMap()) }
+    LaunchedEffect(manager) {
+        var previous = emptyMap<String, Long>()
+        var sampledAt = System.nanoTime()
+        while (true) {
+            delay(1_000L)
+            val now = System.nanoTime()
+            val elapsed = (now - sampledAt).coerceAtLeast(1L)
+            val active = manager.tasks.value.filter { it.status == DownloadStatus.DOWNLOADING }
+            downloadSpeeds = active.associate { task ->
+                val bytes = task.downloadedBytes.coerceAtLeast(0L)
+                val before = previous[task.id]
+                val rate = if (before != null && bytes >= before)
+                    ((bytes - before).toDouble() * 1_000_000_000.0 / elapsed).toLong().coerceAtLeast(0L) else 0L
+                task.id to rate
+            }
+            previous = active.associate { it.id to it.downloadedBytes.coerceAtLeast(0L) }
+            sampledAt = now
+        }
+    }
     fun savePosition() { if (sourceVersion == null || sourceVersion != player?.currentSourceVersion) return; current?.let { id -> player?.state?.value?.let { state ->
         runCatching { manager.savePlaybackPosition(id, (state.positionSeconds * 1000).toLong(), (state.durationSeconds * 1000).toLong()) }
     } } }
@@ -120,12 +142,19 @@ fun DownloadBrowserScreen(
         } else {
             Text("下载", style = MaterialTheme.typography.headlineMedium)
             Text("${tasks.size} 个任务", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            val hasActive = tasks.any { shouldPauseAllInclude(it.item) }
+            val hasResumable = tasks.any { shouldContinueAllInclude(it.item) }
+            if (hasActive || hasResumable) TextButton(onClick = {
+                if (hasActive) tasks.filter { shouldPauseAllInclude(it.item) }.forEach { manager.pause(it.id) }
+                else tasks.filter { shouldContinueAllInclude(it.item) }.forEach { manager.resume(it.id) }
+            }) { Text(if (hasActive) "暂停全部" else "继续全部") }
             error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
             if (tasks.isEmpty()) Text("在视频或番剧播放页加入下载后，任务会显示在这里。", color = MaterialTheme.colorScheme.onSurfaceVariant)
             LazyColumn(Modifier.fillMaxWidth().weight(1f), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 items(tasks, key = { it.id }) { task ->
                     DownloadTaskCard(task, onPause = { manager.pause(task.id) }, onResume = { manager.resume(task.id) },
-                        onPlay = { play(task) }, onRemove = { deleting = task; deleteFiles = false })
+                        onPlay = { play(task) }, onRemove = { deleting = task; deleteFiles = false },
+                        speedBytesPerSecond = downloadSpeeds[task.id] ?: 0L)
                 }
             }
         }
@@ -146,7 +175,8 @@ fun DownloadBrowserScreen(
 }
 
 @Composable
-private fun DownloadTaskCard(task: DownloadTask, onPause: () -> Unit, onResume: () -> Unit, onPlay: () -> Unit, onRemove: () -> Unit) {
+private fun DownloadTaskCard(task: DownloadTask, onPause: () -> Unit, onResume: () -> Unit, onPlay: () -> Unit, onRemove: () -> Unit,
+    speedBytesPerSecond: Long = 0L) {
     val status = when (task.status) {
         DownloadStatus.QUEUED, DownloadStatus.PENDING -> "等待下载"
         DownloadStatus.DOWNLOADING -> "正在下载"
@@ -160,6 +190,8 @@ private fun DownloadTaskCard(task: DownloadTask, onPause: () -> Unit, onResume: 
             Text(task.title, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(status)
+                if (task.status == DownloadStatus.DOWNLOADING && speedBytesPerSecond > 0L)
+                    Text("${downloadBytes(speedBytesPerSecond)}/秒")
                 Text("${(task.progress * 100).toInt()}% · ${downloadBytes(task.downloadedBytes)}${if (task.totalBytes > 0) " / ${downloadBytes(task.totalBytes)}" else ""}")
             }
             LinearProgressIndicator(progress = { task.progress.coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth())

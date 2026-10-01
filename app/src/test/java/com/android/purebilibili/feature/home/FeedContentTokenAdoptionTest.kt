@@ -6,8 +6,6 @@ import kotlin.test.assertTrue
 
 class FeedContentTokenAdoptionTest {
     private val cardFiles = listOf(
-        "CinematicVideoCard.kt",
-        "GlassVideoCard.kt",
         "HomeStyleSingleColumnVideoCard.kt",
         "HorizontalVideoCardStats.kt",
         "StoryVideoCard.kt",
@@ -50,9 +48,6 @@ class FeedContentTokenAdoptionTest {
         val tokens = locateDesignSystem(
             "src/main/java/com/android/purebilibili/core/ui/FeedContentTokens.kt",
         ).readText()
-        val cinematic = locate(
-            "src/main/java/com/android/purebilibili/feature/home/components/cards/CinematicVideoCard.kt",
-        ).readText()
         val story = locate(
             "src/main/java/com/android/purebilibili/feature/home/components/cards/StoryVideoCard.kt",
         ).readText()
@@ -62,7 +57,6 @@ class FeedContentTokenAdoptionTest {
         assertTrue(tokens.contains("lineHeight = bodyMedium.fontSize * 1.38f"))
         assertTrue(tokens.contains("letterSpacing = 0.3.sp"))
         assertTrue(!tokens.contains("MaterialTheme.typography.titleLarge"))
-        assertTrue(cinematic.contains("feedContentTypography(FeedTitleHierarchy.Prominent)"))
         assertTrue(story.contains("FeedTitleHierarchy.Standard"))
     }
 

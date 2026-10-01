@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse,hashlib,importlib.util,json,sys
 sys.dont_write_bytecode=True
 SOURCE='app/src/main/java/com/android/purebilibili/MainActivity.kt'
-PIN='9100a8fbea8e7e581f642653cca5a18429d9a1c55ee0bf3189d5a6a2fe725d90'
+PIN='ddfdafed5f2eb7ad153894dd253e3cf079cfae4e5d670a8365ba6e9fb6b4d33a'
 def load(p,name):
     s=importlib.util.spec_from_file_location(name,p);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
 def generate(repo,out):
@@ -40,7 +40,7 @@ def generate(repo,out):
     (base/'DesktopCrashLogPromptPolicy.kt').write_text(header+'package com.android.purebilibili\n'+policy+'\n',encoding='utf-8',newline='\n')
     ui='''package com.android.purebilibili
 import androidx.compose.runtime.Composable
-import androidx.compose.material3.Text
+import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.AppAlertDialog
 import com.android.purebilibili.core.ui.AppDialogAction
 @Composable

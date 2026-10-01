@@ -1,14 +1,24 @@
 package com.android.purebilibili.feature.home.components.cards
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color as AndroidColor
-import android.os.Build
 import android.util.LruCache
 import androidx.compose.ui.graphics.Color
 import androidx.palette.graphics.Palette
-import kotlinx.coroutines.CoroutineScope
+import coil3.BitmapImage
+import coil3.imageLoader
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
+import coil3.request.SuccessResult
+import coil3.request.allowHardware
+import coil3.request.allowRgb565
+import coil3.size.Precision
+import coil3.size.Scale
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 /**
@@ -18,6 +28,7 @@ import kotlinx.coroutines.withContext
 object VideoCardCoverColorStore {
     private const val MAX_CACHE_SIZE = 128
     private val colorCache = LruCache<String, Color>(MAX_CACHE_SIZE)
+    private val extractionMutex = Mutex()
 
     /** 同步获取已缓存的封面代表色。 */
     fun getCachedColor(cacheKey: String): Color? {
@@ -27,28 +38,42 @@ object VideoCardCoverColorStore {
         }
     }
 
-    /** 异步提取封面代表色并存入缓存。 */
-    fun extractColorAsync(
+    /** The caller owns cancellation; serialize small decodes and recheck the color cache. */
+    suspend fun extractColor(
+        context: Context,
         cacheKey: String,
-        bitmap: Bitmap,
-        scope: CoroutineScope,
-        onColorExtracted: (Color) -> Unit
-    ) {
-        if (cacheKey.isBlank()) return
-
-        // 命中内存缓存直接同步返回
-        getCachedColor(cacheKey)?.let {
-            onColorExtracted(it)
-            return
-        }
-
-        scope.launch(Dispatchers.Default) {
-            val color = extractRepresentativeColor(bitmap) ?: return@launch
-            synchronized(colorCache) {
-                colorCache.put(cacheKey, color)
-            }
-            withContext(Dispatchers.Main) {
-                onColorExtracted(color)
+        coverUrl: String,
+    ): Color? = withContext(Dispatchers.Default) {
+        if (cacheKey.isBlank() || coverUrl.isBlank()) return@withContext null
+        extractionMutex.withLock {
+            getCachedColor(cacheKey)?.let { return@withLock it }
+            // Reuse the displayed cover's encoded disk entry, never copy its full hardware bitmap.
+            // Memory reads/writes are disabled so this software sample is privately owned.
+            val request = ImageRequest.Builder(context.applicationContext)
+                .data(coverUrl)
+                .diskCacheKey(cacheKey)
+                .size(96, 96)
+                .scale(Scale.FIT)
+                .precision(Precision.EXACT)
+                .allowHardware(false)
+                .allowRgb565(false)
+                .memoryCachePolicy(CachePolicy.DISABLED)
+                .build()
+            var sample: Bitmap? = null
+            try {
+                val result = context.imageLoader.execute(request) as? SuccessResult
+                    ?: return@withLock null
+                val bitmap = (result.image as? BitmapImage)?.bitmap ?: return@withLock null
+                sample = bitmap
+                val color = extractRepresentativeColor(bitmap) ?: return@withLock null
+                synchronized(colorCache) { colorCache.put(cacheKey, color) }
+                color
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (_: Exception) {
+                null
+            } finally {
+                sample?.recycle()
             }
         }
     }
@@ -60,15 +85,7 @@ object VideoCardCoverColorStore {
         return runCatching {
             if (bitmap.isRecycled) return@runCatching null
 
-            val safeBitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-                bitmap.config == Bitmap.Config.HARDWARE
-            ) {
-                bitmap.copy(Bitmap.Config.ARGB_8888, false) ?: return@runCatching null
-            } else {
-                bitmap
-            }
-
-            val palette = Palette.from(safeBitmap)
+            val palette = Palette.from(bitmap)
                 .resizeBitmapArea(48 * 48)
                 .maximumColorCount(16)
                 .clearFilters()

@@ -2,6 +2,7 @@ package com.android.purebilibili.core.ui
 
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.theme.AppUiStyle
+import com.android.purebilibili.core.ui.components.shouldUseOpaqueMiuixTabBackdrop
 import com.android.purebilibili.core.ui.components.shouldUseCompactMiuixTabRow
 import com.android.purebilibili.core.ui.components.resolveReadableNativeTabMinWidth
 import com.android.purebilibili.core.ui.components.resolveCompactMiuixTabRowWidth
@@ -24,6 +25,13 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class AppSegmentedControlPolicyTest {
+    @Test
+    fun nativeOutlinedItemsNeedOpaqueFillOnlyInsideImmersiveChrome() {
+        assertTrue(shouldUseOpaqueMiuixTabBackdrop(nonGlassMiuix = true, immersiveTopChrome = true))
+        assertFalse(shouldUseOpaqueMiuixTabBackdrop(nonGlassMiuix = true, immersiveTopChrome = false))
+        assertFalse(shouldUseOpaqueMiuixTabBackdrop(nonGlassMiuix = false, immersiveTopChrome = true))
+    }
+
 
     @Test
     fun `non glass Miuix removes outer dock while keeping readable labels`() {
@@ -40,7 +48,11 @@ class AppSegmentedControlPolicyTest {
             "src/main/java/com/android/purebilibili/core/ui/renderer/miuix/" +
                 "AppMiuixSegmentedControl.kt"
         )
-        assertTrue(source.contains("else -> tabColors.backgroundColor"))
+        assertTrue(source.contains("else -> inactiveItemBackground"))
+        assertTrue(source.contains("drawPath(path, itemBackground)"))
+        val entrySource = loadSource("src/main/java/com/android/purebilibili/core/ui/components/AppSegmentedControl.kt")
+        assertFalse(entrySource.contains("readingPlaneModifier"))
+        assertFalse(entrySource.contains("Modifier.background("))
         assertFalse(source.contains("adaptiveSquircleBackground(\n                color = trackColor"))
         assertTrue(source.contains("AppMiuixNonGlassTabs("))
         assertTrue(source.contains("Arrangement.spacedBy(AppSpacingTokens.Small)"))
@@ -330,7 +342,8 @@ class AppSegmentedControlPolicyTest {
         val tabRow = materialSource.substringAfter("internal fun <T> AppMaterial3TabRow(")
 
         assertTrue(tabRow.contains("text = {"))
-        assertTrue(tabRow.contains("resolveAppSegmentedLabelFontSizeSp("))
+        assertTrue(tabRow.contains("resolveAppSegmentedLabelFontSize("))
+        assertTrue(tabRow.contains("MaterialTheme.typography.labelLarge.fontSize"))
         assertTrue(tabRow.contains("allowLabelOverflow"))
         assertTrue(tabRow.contains("wrapContentWidth("))
         assertTrue(tabRow.contains("unbounded = true"))

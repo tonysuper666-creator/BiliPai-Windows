@@ -45,6 +45,7 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
     private var mHeight = 0
     private var mSaveLayerValue = 0
     private val mDrawItems = ArrayList<DrawItem<DanmakuData>>()
+    private val mIncomingItems = ArrayList<DrawItem<DanmakuData>>()
     private val mDrawOrderComparator = compareBy<DrawItem<DanmakuData>>(
         { it.data?.drawOrder },
         { it.layerZIndex },
@@ -93,8 +94,21 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
 
     fun addItems(playTime: Long, items: List<DanmakuData>) {
         mRenderLayers.forEach { layer ->
-            items.filter { it.layerType == layer.getLayerType() }.takeIf { it.isNotEmpty() }?.let { list ->
-                layer.addItems(playTime, list.map { wrapData(layer, it) })
+            // Built-in layers synchronously copy/consume the batch. Custom layers retain the
+            // original independently owned list contract.
+            if (layer is ScrollLayer || layer is TopCenterLayer || layer is BottomCenterLayer || layer is MaskLayer) {
+                try {
+                    for (data in items) {
+                        if (data.layerType == layer.getLayerType()) mIncomingItems.add(wrapData(layer, data))
+                    }
+                    if (mIncomingItems.isNotEmpty()) layer.addItems(playTime, mIncomingItems)
+                } finally {
+                    mIncomingItems.clear()
+                }
+            } else {
+                items.filter { it.layerType == layer.getLayerType() }.takeIf { it.isNotEmpty() }?.let { list ->
+                    layer.addItems(playTime, list.map { wrapData(layer, it) })
+                }
             }
         }
     }
@@ -118,7 +132,7 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
             mDrawItems.addAll(it.getPreDrawItems())
         }
 
-        mDrawItems.sortWith(mDrawOrderComparator)
+        sortOnlyIfOutOfOrder(mDrawItems, mDrawOrderComparator)
 
         if (mController.config.mask.enable) {
             @Suppress("DEPRECATION")

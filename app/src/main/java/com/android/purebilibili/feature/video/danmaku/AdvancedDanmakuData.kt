@@ -174,5 +174,6 @@ enum class BasEasing(val transform: (Float) -> Float) {
  */
 data class ParsedDanmaku(
     val standardList: List<com.android.purebilibili.danmaku.engine.DanmakuItem>,
-    val advancedList: List<AdvancedDanmakuData>
+    val advancedList: List<AdvancedDanmakuData>,
+    val serverDisabled: Boolean = false
 )

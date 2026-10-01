@@ -332,15 +332,34 @@ internal fun resolveMaterialColorSchemeFromMiuixBridge(
 
 /**
  * Keep upstream neutral/control roles; only the user's accent is adapted from Material.
- * `background`/`surface` keep the upstream values, so the page canvas follows the
- * upstream `surface` role and grouped cards on `surfaceContainer` retain the upstream
- * tonal hierarchy when liquid glass is disabled.
+ * Dark canvas roles honor the ordinary/AMOLED preference; light colors and native
+ * control roles retain Miuix defaults. Both theme APIs consume this resolved palette.
  */
 internal fun resolveNativeMiuixColors(
     scheme: ColorScheme,
     darkTheme: Boolean,
+    amoledDarkTheme: Boolean = false,
 ): top.yukonga.miuix.kmp.theme.Colors {
-    val base = if (darkTheme) miuixDarkColorScheme() else miuixLightColorScheme()
+    val upstream = if (darkTheme) miuixDarkColorScheme() else miuixLightColorScheme()
+    // Upstream's dark surface is already pure black. Give ordinary dark mode a
+    // charcoal canvas, and apply AMOLED roles before bridging both theme APIs.
+    val base = when {
+        !darkTheme -> upstream
+        amoledDarkTheme -> {
+            val amoled = applyAmoledSurfaceOverrides(scheme)
+            upstream.copy(
+                background = amoled.background,
+                surface = amoled.surface,
+                surfaceVariant = amoled.surfaceVariant,
+                surfaceContainer = amoled.surfaceContainer,
+                surfaceContainerHigh = amoled.surfaceContainerHigh,
+                surfaceContainerHighest = amoled.surfaceContainerHighest,
+                outline = amoled.outline,
+                dividerLine = amoled.outlineVariant,
+            )
+        }
+        else -> upstream.copy(background = Color(0xFF121212), surface = Color(0xFF121212))
+    }
     val accentContainer = opaqueCompositeOver(scheme.primary.copy(alpha = 0.2f), base.surface)
     val accentScheme = scheme.copy(
         surface = base.surface,
@@ -886,11 +905,12 @@ fun PureBiliBiliTheme(
             resolveMiuixColorsFromMaterialBridge(createMiuixMaterialBridge(resolvedLightMaterialScheme), false)
         }
     }
-    val miuixDarkColors = remember(resolvedDarkMaterialScheme, useNativeMiuix) {
+    val miuixDarkColors = remember(resolvedDarkMaterialScheme, useNativeMiuix, amoledDarkTheme) {
         if (useNativeMiuix) {
             resolveNativeMiuixColors(
                 resolvedDarkMaterialScheme,
                 darkTheme = true,
+                amoledDarkTheme = amoledDarkTheme,
             )
         } else {
             resolveMiuixColorsFromMaterialBridge(createMiuixMaterialBridge(resolvedDarkMaterialScheme), true)

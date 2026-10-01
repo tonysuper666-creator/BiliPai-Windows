@@ -115,6 +115,7 @@ internal data class VideoPlayerSectionActions(
     val onSponsorDismiss: () -> Unit = {},
     val onSponsorVote: (Int) -> Unit = {},
     val onSponsorContributionMarkBoundary: () -> Unit = {},
+    val onSponsorContributionMarkWholeVideo: () -> Unit = {},
     val onSponsorContributionCategoryChange: (String) -> Unit = {},
     val onSponsorContributionActionTypeChange: (String) -> Unit = {},
     val onSponsorContributionSubmit: () -> Unit = {},
@@ -148,5 +149,9 @@ internal data class VideoPlayerSectionActions(
     val onSubtitleDisplayModePreferenceOverrideChange: (SubtitleDisplayMode) -> Unit = {},
     val onSubtitleTrackSelected: (String) -> Unit = {},
     val onLikeDanmaku: (Long) -> Unit = {},
+    val onLikeDanmakuToggle: (dmid: Long, like: Boolean) -> Unit = { _, _ -> },
+    val likedDanmakuIds: kotlinx.coroutines.flow.StateFlow<Set<Long>> =
+        kotlinx.coroutines.flow.MutableStateFlow(emptySet()),
+    val onReportDanmaku: (dmid: Long, reason: Int) -> Unit = { _, _ -> },
     val onRecallDanmaku: (Long) -> Unit = {},
 )

@@ -15,7 +15,7 @@ class FloatingBottomBarGeometryTest {
     }
 
     @Test
-    fun `home top icon text and combined modes keep fuller flat indicators`() {
+    fun `home top label modes keep a flat pill inside each tab slot`() {
         // 0: icon + label, 1: icon only, 2: label only. Use the actual dock width policy.
         for (mode in listOf(0, 1, 2)) {
             val width = resolveHomeTopTabFloatingDockWidth(393.dp, 5, mode)
@@ -23,18 +23,14 @@ class FloatingBottomBarGeometryTest {
             val height = resolveFloatingDockIndicatorHeightDp(
                 52f, slot, FloatingBottomBarGeometryMode.TopNavigation, 56f,
             )
-            val previous = resolveFloatingDockIndicatorHeightDp(
-                52f, slot, FloatingBottomBarGeometryMode.Segmented, 56f,
-            )
-            assertTrue(height >= previous, "label mode $mode")
-            assertEquals(minOf(52f, slot / 1.35f), height, 0.001f)
-            assertTrue(slot / height >= 1.35f - 0.001f)
+            assertEquals(minOf(52f, slot / FLOATING_DOCK_MIN_INDICATOR_ASPECT), height, 0.001f, "label mode $mode")
+            assertTrue(slot / height >= FLOATING_DOCK_MIN_INDICATOR_ASPECT)
         }
     }
 
     @Test
     fun `dynamic top navigation fills its shell while comment controls stay compact`() {
-        assertEquals(46f, resolveFloatingDockIndicatorHeightDp(
+        assertEquals(38f, resolveFloatingDockIndicatorHeightDp(
             38f, 70f, FloatingBottomBarGeometryMode.TopNavigation, 50f,
         ), 0.001f)
         assertEquals(36f, resolveFloatingDockIndicatorHeightDp(

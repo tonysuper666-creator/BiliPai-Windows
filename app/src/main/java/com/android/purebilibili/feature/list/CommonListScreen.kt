@@ -251,9 +251,17 @@ fun CommonListScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     // 个人列表（历史/收藏）默认单列，列数由双指缩放调节；其余页面保持双列默认。
     val personalListPage = viewModel is HistoryViewModel || viewModel is FavoriteViewModel
-    var pinchListColumns by rememberSaveable(viewModel) {
-        androidx.compose.runtime.mutableIntStateOf(if (personalListPage) 1 else 2)
+    val windowSizeClass = LocalWindowSizeClass.current
+    val isCompactGridWindow = com.android.purebilibili.feature.home.isCompactHomeFeedScreen(
+        windowSizeClass.widthSizeClass
+    )
+    val defaultPersonalColumns = if (personalListPage) 1 else 2
+    var pinchColumnsByWindow by rememberSaveable(viewModel) {
+        androidx.compose.runtime.mutableStateOf(
+            mapOf(false to defaultPersonalColumns, true to defaultPersonalColumns)
+        )
     }
+    val pinchListColumns = pinchColumnsByWindow[isCompactGridWindow] ?: defaultPersonalColumns
     val primaryGridState = rememberLazyGridState()
     val subscribedFolderListState = androidx.compose.foundation.lazy.rememberLazyListState()
     val favoriteFolderListState = androidx.compose.foundation.lazy.rememberLazyListState()
@@ -274,7 +282,6 @@ fun CommonListScreen(
     val liquidGlassEnabled = rememberAppChromeLiquidGlassEnabled(
         androidNativeEnabled = homeSettings.androidNativeLiquidGlassEnabled,
     )
-    val windowSizeClass = LocalWindowSizeClass.current
     val deviceUiProfile = remember(windowSizeClass.widthSizeClass) {
         resolveDeviceUiProfile(
             widthSizeClass = windowSizeClass.widthSizeClass
@@ -697,7 +704,7 @@ fun CommonListScreen(
     var pinchPillVisible by remember { mutableStateOf(false) }
     var pinchPillDismissJob by remember { androidx.compose.runtime.mutableStateOf<Job?>(null) }
     val onPinchColumnsChange: (Int) -> Unit = { newColumns ->
-        pinchListColumns = newColumns
+        pinchColumnsByWindow = pinchColumnsByWindow + (isCompactGridWindow to newColumns)
         hapticFeedback.performHapticFeedback(
             androidx.compose.ui.hapticfeedback.HapticFeedbackType.TextHandleMove
         )

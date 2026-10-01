@@ -1,0 +1,75 @@
+{
+  "scope": "Three compile07 sole-producer repairs, prepared only",
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceCandidates": [
+    {
+      "path": "desktop/tools/extract-upstream-diagnostics.py",
+      "baseLfSha256": "b8a4a4ee08eceee4edf0af28c5d86087b03e7455e9d297dbce5dd40a0d3c518f",
+      "candidateLfSha256": "5801bc6b79824caa5c01577eedf1a54997b6317f822c5a2d7e6847c5b7f3a29c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "baseLfSha256": "2d69ecf0766b7c9c7207f5cf3e8f30396e1364aaae7ee348591c3abaeb87383d",
+      "candidateLfSha256": "bca1f195aa5f5fd202cffb759ef208b9715e7f5a834363cce475db48f181f3ab"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "baseLfSha256": "1bc550ca4b2ddd145710cb6601e530b6040d620ece7b094a8f2c23f4b53af310",
+      "candidateLfSha256": "4cfc9d0f889f4334c292cb12b2a0e5f7441c73df2999bf7504726a058a3b2756"
+    }
+  ],
+  "sourceStatesAtFreeze": [
+    {
+      "path": "desktop/tools/extract-upstream-diagnostics.py",
+      "currentLfSha256": "5801bc6b79824caa5c01577eedf1a54997b6317f822c5a2d7e6847c5b7f3a29c",
+      "state": "Root-installed candidate"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "currentLfSha256": "bca1f195aa5f5fd202cffb759ef208b9715e7f5a834363cce475db48f181f3ab",
+      "state": "Root-installed candidate"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "currentLfSha256": "4cfc9d0f889f4334c292cb12b2a0e5f7441c73df2999bf7504726a058a3b2756",
+      "state": "Root-installed candidate"
+    }
+  ],
+  "registryAppendRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt",
+      "sha256": "056db2c4d628e38dbfc3b7be5e6dd6b21bd9ff97597f5385f666579a0924785e",
+      "features": [
+        "settings-local-diagnostics-parity"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/performance/NativeExitTrace.kt",
+      "sha256": "8d0e38625f243072cd72d380cb6c7eb36ec3587deb194c497a7d9a10434be182",
+      "features": [
+        "settings-local-diagnostics-parity"
+      ],
+      "mode": "policy-extract"
+    }
+  ],
+  "install": "Append the two new fixed source rows to the current manifest without replacing other Root changes. Install exact three existing producer payloads and diagnostics task-input patch.",
+  "diagnostics": "Preserve current fixed Logger entire pure region and its nativeTrace branch; original pure JVM exception class selected from Android17Diagnostics and full pure NativeExitTrace file supplied once by this diagnostics producer. No Android profiling hooks or system-exit capture is added.",
+  "sourceGate": "Diagnostics six source inputs match the current manifest LF hashes and exact fixed stable Git blobs; the .local source-shadow adds only two required registry rows for preparing this consumer.",
+  "tabs": "One explicit AppIconButton original-name import resolves alias suppression; FeedDynamicTabVisibilityItem complete original body remains exact.",
+  "plugins": "Only SponsorBlockRepository two android.os.SystemClock elapsed calls change to existing DesktopMonotonicClock; existing public client, complete TTL/cache generation/limit/endpoint logic retained.",
+  "compile": "Six selected generated source targets compiled with existing Compose and serialization plugins against immutable actual Main04 92 pinned artifacts. 25 product class overrides are explicit; this is not whole stable Main verification.",
+  "runtime": "Three data semantics/actual existing clock cases, twelve assertions; original trace roundtrip/cap, crash snapshot raw-payload exclusion, normal throwable branch and actual Main04 clock binding. No network, chooser, GUI or native process-exit trigger.",
+  "MainWrittenByThisLane": false,
+  "sharedGradle": false,
+  "newDependencies": false,
+  "newHttpOrStore": false,
+  "credentialsSerialized": false,
+  "notProven": [
+    "whole current stable Main build",
+    "Windows system process exit capture or native .pb generation",
+    "SponsorBlock real server acceptance",
+    "HWND/editor interaction",
+    "EXE packaging"
+  ]
+}

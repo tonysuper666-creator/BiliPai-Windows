@@ -1,6 +1,6 @@
 package com.android.purebilibili.core.ui.components
 
-import androidx.compose.material3.Surface
+import com.android.purebilibili.core.ui.components.AppSurface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,7 +20,7 @@ object BiliPaiPopupSurfaceRenderer : AppPopupSurfaceRenderer {
         tonalElevation: Dp,
         content: @Composable () -> Unit,
     ) {
-        Surface(
+        AppSurface(
             modifier = modifier,
             shape = shape,
             color = containerColor,

@@ -1,0 +1,193 @@
+--- a/desktop/tools/extract-upstream-dynamic-detail.py
++++ b/desktop/tools/extract-upstream-dynamic-detail.py
+@@ -38,6 +38,14 @@
+         if (dynamicId != subjectId || !isOwned()) return null
+         return _selectedDynamic.value?.takeIf { it.id_str == dynamicId } ?: seedItem()?.takeIf { it.id_str == subjectId }
+     }''',1)
++    # Only Android ContentResolver/Uri admission is adapted. The original 9-image
++    # validation, reply prohibition, ordered map, pictures payload and callbacks remain.
++    upload = textwrap.indent(media.function(original,'uploadCommentPictures',parser).strip(),'    ')
++    assert upload in body
++    body=body.replace(upload,'    private suspend fun uploadCommentPictures(imageUris: List<String>): List<ReplyPicture> =\n        withContext(Dispatchers.IO) {\n            require(imageUris.size <= 9) { "最多选择 9 张图片" }\n            imageUris.mapIndexed { index, uri ->\n                requests.uploadCommentPicture(uri, index).getOrElse { throw it }\n            }\n        }',1)
++    body=body.replace('List<Uri>', 'List<String>')
++    body=body.replace('                val pictures = uploadCommentPictures(imageUris)\n',
++                      '                val pictures = uploadCommentPictures(imageUris)\n                ensureRequestOwned()\n')
+     body=body.replace('CommentRepository.','requests.')
+     body=body.replace('        _selectedDynamic.value = item\n',
+                       '        if (!isOwned()) return\n        _selectedDynamic.value = item\n')
+--- a/desktop/tools/extract-upstream-dynamic-reply.py
++++ b/desktop/tools/extract-upstream-dynamic-reply.py
+@@ -235,6 +235,15 @@
+     original = read(repo, SHEET)
+     declarations = media.function(original, 'dynamicInlineCommentItems', parser) + '\n\n' + appearance.declarations(parser, original,
+         ['DynamicInlineCommentComposer', 'DynamicCommentComposer'])
++    # Android Uri is represented by the existing owner-selected file URI on Windows.
++    declarations = declarations.replace('List<Uri>', 'List<String>')
++    picker_begin = declarations.index('    val picker = rememberLauncherForActivityResult(')
++    picker_end = declarations.index('    LaunchedEffect(onClearReplyTarget != null)', picker_begin)
++    picker_original = declarations[picker_begin:picker_end]
++    assert 'maxItems = 9' in picker_original and '.distinct().take(9)' in picker_original
++    declarations = declarations[:picker_begin] + '    val platform = LocalDesktopCommentBindings.current\n    val onImagesSelected by rememberUpdatedState<(List<String>) -> Unit> { uris ->\n        if (!isSending && onClearReplyTarget == null) {\n            selectedImages = (selectedImages + uris).distinct().take(9)\n        }\n    }\n    fun pickImages() {\n        if (!platform.isOwned()) return\n        platform.pickCommentImages(9) { uris ->\n            if (platform.isOwned()) onImagesSelected(uris)\n        }\n    }\n' + declarations[picker_end:]
++    declarations = replace_once(declarations,
++        'picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))', 'pickImages()')
+     declarations = declarations.replace('val keyboardController = LocalSoftwareKeyboardController.current',
+                                         '// Physical Windows keyboard; original focus and IME action are retained.')
+     declarations = declarations.replace('                keyboardController?.show()\n', '')
+@@ -254,6 +263,7 @@
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.*
+ import androidx.compose.foundation.lazy.LazyListScope
++import androidx.compose.foundation.lazy.LazyRow
+ import androidx.compose.foundation.lazy.items
+ import androidx.compose.foundation.text.KeyboardActions
+ import androidx.compose.foundation.text.KeyboardOptions
+@@ -265,6 +275,11 @@
+ import androidx.compose.ui.focus.FocusRequester
+ import androidx.compose.ui.focus.focusRequester
+ import androidx.compose.ui.platform.LocalFocusManager
++import androidx.compose.ui.layout.ContentScale
++import androidx.compose.material.icons.Icons
++import androidx.compose.material.icons.outlined.Image
++import coil3.compose.AsyncImage
++import com.bilipai.desktop.ui.LocalDesktopCommentBindings
+ import androidx.compose.ui.text.input.ImeAction
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt
+@@ -101,6 +101,8 @@
+     fun owned()=alive.get()&&imageSaveLocations.isActive()&&exportOwner.epoch==capturedEpoch&&cardSession.isOwned()&&repository.sessionEpoch==capturedEpoch
+     val operations=remember(alive){DesktopDynamicCardOperations(repository,capturedEpoch,
+         stillOwned=::owned,sharedEmotes=cardSession.emotes)}
++    val selectedCommentImages=remember(alive){DesktopDynamicEditorSelectedImages(::owned,operations::withOwnedEditorImageAdmission)}
++    val saveParent=LocalDesktopDynamicSaveParent.current
+     var data by remember(id,capturedEpoch) { mutableStateOf<DynamicDetailData?>(null) }
+     var error by remember(id,capturedEpoch) { mutableStateOf<Throwable?>(null) }
+     var loading by remember(id,capturedEpoch) { mutableStateOf(true) }
+@@ -115,10 +117,12 @@
+     val requests=remember(operations){DesktopDynamicReplyOperationsBinding(operations,
+         csrfAvailable={!repository.authCookies()["bili_jct"].isNullOrBlank()},
+         detailLoader={target->operations.getDynamicDetail(target,latestItem?.takeIf{it.id_str==target},
+-            onArticleViewed=history)})}
++            onArticleViewed=history)},imageProvider=selectedCommentImages::read)}
+     val replySession=remember(alive){DesktopOriginalDynamicReplySession(id,pageScope,requests,
+         seedItem={latestItem?.takeIf{it.id_str==id}},stillOwned=::owned)}
+     val snackbar=remember(alive){SnackbarHostState()}
++    val commentPickers=remember(alive,saveParent){DesktopDynamicEditorWindowsPickers(selectedCommentImages,::owned,
++        {saveParent},onFailure={message->if(owned())pageScope.launch{snackbar.showSnackbar(message)}})}
+     val clipboard=LocalDesktopTextClipboard.current
+     val platform=remember(alive,clipboard,imageSaveLocations){DesktopDynamicCommentPlatform(preferences.context,cardSession.emotes,
+         repository,community,operations,capturedEpoch,::owned,clipboard,
+@@ -137,8 +141,8 @@
+                 writeDesktopReplyCommentImage(spec,target.path,::owned,replaceExisting=target.replaceExisting,
+                     withOwnedCommit=commitOwned)
+             }
+-        })}
+-    DisposableEffect(alive){onDispose{synchronized(exportOwnerLock){alive.set(false)};replySession.close();pageScope.cancel()}}
++        },pickImages=commentPickers::pickImages)}
++    DisposableEffect(alive){onDispose{synchronized(exportOwnerLock){alive.set(false)};replySession.close();selectedCommentImages.close();pageScope.cancel()}}
+     val contentRevision by cardSession.contentRevision.collectAsState()
+     val rootMutations=checkNotNull(LocalDesktopDynamicCardMutations.current)
+     fun mutateDetail(transform:(List<DynamicItem>)->List<DynamicItem>) {
+@@ -195,6 +199,7 @@
+         ?:data?.item?.let{DesktopOriginalDynamicDetailUiState.Success(it)}
+         ?:DesktopOriginalDynamicDetailUiState.Loading
+     Box(Modifier.fillMaxSize()) {
++        key(alive) {
+         CompositionLocalProvider(LocalDesktopDynamicCardMutations provides detailMutations,
+             LocalDesktopCommentBindings provides platform) {
+             DesktopDetailWindow {
+@@ -206,6 +211,7 @@
+                         detailImageLayoutOverride=layout,onDetailCommentClick=onCommentClick)}
+                 }
+             }
++        }
+         }
+         SnackbarHost(snackbar,Modifier.align(Alignment.BottomCenter))
+     }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt
+@@ -15,6 +15,7 @@
+     val subReplyLoadedCountEnabled: Flow<Boolean>
+     val emotes: DesktopDynamicEmotes
+     fun isOwned(): Boolean
++    fun pickCommentImages(maxItems: Int, onSelected: (List<String>) -> Unit)
+     fun showFeedback(message: String)
+     fun copyText(text: String, label: String)
+     fun shareText(text: String, title: String)
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt
+@@ -25,10 +25,16 @@
+     private val clipboard: DesktopTextClipboard,
+     private val feedback: (String) -> Unit,
+     private val saveImage: suspend (ReplyCommentImageSpec) -> Boolean,
++    private val pickImages: (Int, (List<String>) -> Unit) -> Unit,
+ ) : DesktopCommentPlatform {
+     override val collapsedReplyPreviewLimit get() = DesktopOriginalReplySettings.getCommentCollapsedReplyPreviewLimitSync(context)
+     override val subReplyLoadedCountEnabled = DesktopOriginalReplySettings.getSubReplyLoadedCountEnabled(context)
+     override fun isOwned() = stillOwned() && operations.isOwned() && repository.sessionEpoch == expectedEpoch
++    override fun pickCommentImages(maxItems: Int, onSelected: (List<String>) -> Unit) {
++        if (!isOwned()) return
++        require(maxItems in 1..9) { "最多选择 9 张图片" }
++        pickImages(maxItems) { images -> if (isOwned()) onSelected(images) }
++    }
+     override fun showFeedback(message: String) { if (isOwned()) feedback(message) }
+     override fun copyText(text: String, label: String) {
+         if (isOwned() && !clipboard.copyText(text)) showFeedback("复制失败，请重试")
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt
+@@ -2,6 +2,10 @@
+ 
+ import com.android.purebilibili.data.model.response.*
+ import com.bilipai.desktop.data.DesktopDynamicCardOperations
++import kotlinx.coroutines.CancellationException
++import kotlinx.coroutines.currentCoroutineContext
++import kotlinx.coroutines.ensureActive
++import okhttp3.RequestBody
+ 
+ /** An existing session's original endpoint binding, never another account/API.
+  * The detail loader must implement the original web/opus/desktop/seed policy;
+@@ -15,7 +19,8 @@
+         paginationOffset: String? = null, fallbackOnMissingLocation: Boolean = false): Result<ReplyData>
+     suspend fun getSortedSubCommentsForSubject(oid: Long, type: Int, rootId: Long, mode: Int,
+         paginationOffset: String? = null, targetReplyId: Long = 0): Result<ReplyData>
+-    suspend fun addCommentForSubject(oid: Long, type: Int, message: String, root: Long = 0, parent: Long = 0): Result<ReplyItem?>
++    suspend fun uploadCommentPicture(source: String, index: Int): Result<ReplyPicture>
++    suspend fun addCommentForSubject(oid: Long, type: Int, message: String, root: Long = 0, parent: Long = 0, pictures: List<ReplyPicture> = emptyList()): Result<ReplyItem?>
+     suspend fun likeCommentForSubject(oid: Long, type: Int, rpid: Long, like: Boolean): Result<Unit>
+     suspend fun hateCommentForSubject(oid: Long, type: Int, rpid: Long, hate: Boolean): Result<Unit>
+     suspend fun deleteCommentForSubject(oid: Long, type: Int, rpid: Long): Result<Unit>
+@@ -27,6 +32,7 @@
+     private val operations: DesktopDynamicCardOperations,
+     private val csrfAvailable: () -> Boolean,
+     private val detailLoader: suspend (String) -> Result<DynamicItem>,
++    private val imageProvider: suspend (String) -> Triple<String?, String?, RequestBody>,
+ ) : DesktopDynamicReplyRequests {
+     override fun isOwned() = operations.isOwned()
+     override fun hasCsrf() = isOwned() && csrfAvailable()
+@@ -38,8 +44,23 @@
+     override suspend fun getSortedSubCommentsForSubject(oid: Long, type: Int, rootId: Long, mode: Int,
+         paginationOffset: String?, targetReplyId: Long) = operations.getSortedSubCommentsForSubject(
+             oid, type, rootId, mode, paginationOffset, targetReplyId)
+-    override suspend fun addCommentForSubject(oid: Long, type: Int, message: String, root: Long, parent: Long) =
+-        operations.addCommentForSubject(oid, type, message, root, parent)
++    private suspend fun ensureOwned() {
++        currentCoroutineContext().ensureActive()
++        if (!isOwned()) throw CancellationException("Reply image owner retired")
++    }
++    override suspend fun uploadCommentPicture(source: String, index: Int): Result<ReplyPicture> {
++        ensureOwned()
++        return try {
++            val selected = imageProvider(source)
++            ensureOwned()
++            operations.uploadCommentImageBody(
++                selected.first ?: "comment_${System.currentTimeMillis()}_${index + 1}.jpg",
++                selected.second ?: "image/jpeg", selected.third).also { ensureOwned() }
++        } catch (cancelled: CancellationException) { throw cancelled }
++        catch (failure: Exception) { ensureOwned(); Result.failure(failure) }
++    }
++    override suspend fun addCommentForSubject(oid: Long, type: Int, message: String, root: Long, parent: Long,
++        pictures: List<ReplyPicture>) = operations.addCommentForSubject(oid, type, message, root, parent, pictures)
+     override suspend fun likeCommentForSubject(oid: Long, type: Int, rpid: Long, like: Boolean) = operations.likeCommentForSubject(oid, type, rpid, like)
+     override suspend fun hateCommentForSubject(oid: Long, type: Int, rpid: Long, hate: Boolean) = operations.hateCommentForSubject(oid, type, rpid, hate)
+     override suspend fun deleteCommentForSubject(oid: Long, type: Int, rpid: Long) = operations.deleteCommentForSubject(oid, type, rpid)

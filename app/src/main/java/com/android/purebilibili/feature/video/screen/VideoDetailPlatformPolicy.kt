@@ -711,7 +711,7 @@ internal fun resolvePhoneVideoRequestedOrientation(
             else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
     }
-    return if (isFullscreenMode || manualFullscreenRequested) {
+    return if (manualFullscreenRequested) {
         val fullscreenOrientation = resolvePhoneFullscreenEnterOrientation(
             fullscreenMode = fullscreenMode,
             isVerticalVideo = isVerticalVideo,
@@ -723,7 +723,8 @@ internal fun resolvePhoneVideoRequestedOrientation(
             autoRotateEnabled = autoRotateEnabled
         )
     } else {
-        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        // System rotation can now enter and leave landscape fullscreen on its own.
+        ActivityInfo.SCREEN_ORIENTATION_USER
     }
 }
 
@@ -976,7 +977,10 @@ internal fun shouldObservePhoneAutoRotate(
 ): Boolean {
     // A cover display may be classified as a compact phone when its metrics refresh.
     // Keep tracking both landscape sides throughout fullscreen, regardless of that label.
-    if (!autoRotateEnabled && !observeWhenAutoRotateDisabled && !isFullscreenMode) return false
+    // Even with the app's auto-rotate switch off, an explicit fullscreen exit holds
+    // portrait until the device is upright. Keep observing long enough to release it.
+    if (!autoRotateEnabled && !observeWhenAutoRotateDisabled && !isFullscreenMode &&
+        !manualPortraitHoldActive) return false
     if (isInMultiWindowMode || isInPictureInPictureMode) return false
     // BiliPai-style: vertical immersive FS is not kicked by gravity / sensor landscape.
     if (isPortraitFullscreen) return false

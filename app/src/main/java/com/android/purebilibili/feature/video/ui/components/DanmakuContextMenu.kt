@@ -32,6 +32,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Report
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Reply
@@ -82,6 +83,35 @@ internal fun resolveDanmakuBlockActionFeedbackMessage(
     }
 }
 
+/** 举报原因（label, API reason code），弹幕点按菜单与弹幕列表共用 */
+internal val DanmakuReportReasons: List<Pair<String, Int>> = listOf(
+    "违法违禁" to 1,
+    "色情低俗" to 2,
+    "赌博诈骗" to 3,
+    "引战" to 4,
+    "人身攻击" to 5,
+    "剧透" to 6,
+    "刷屏" to 7,
+    "其他" to 8
+)
+
+private val DanmakuTimestampJumpRegex = Regex("(\\d{1,2}):(\\d{2})(?::(\\d{2}))?")
+
+/**
+ * 从弹幕文本中解析可跳转的时间戳（mm:ss 或 h:mm:ss），返回目标位置毫秒数；
+ * 无匹配或分秒越界时返回 null。
+ */
+internal fun resolveDanmakuTimestampJumpMs(text: String): Long? {
+    val match = DanmakuTimestampJumpRegex.find(text) ?: return null
+    val first = match.groupValues[1].toInt()
+    val second = match.groupValues[2].toInt()
+    val third = match.groupValues[3].takeIf { it.isNotEmpty() }?.toInt()
+    return when (third) {
+        null -> if (second < 60) (first * 60L + second) * 1000L else null
+        else -> if (second < 60 && third < 60) ((first * 60L + second) * 60L + third) * 1000L else null
+    }
+}
+
 @Composable
 fun DanmakuContextMenu(
     text: String,
@@ -94,6 +124,8 @@ fun DanmakuContextMenu(
     hasLiked: Boolean = false,
     voteLoading: Boolean = false,
     canVote: Boolean = false,
+    timestampJumpMs: Long? = null,
+    onSeekToTimestamp: (Long) -> Unit = {},
     onBlockKeyword: () -> Unit = {},
     canBlockKeyword: Boolean = true,
     canBlockUser: Boolean = true,
@@ -157,6 +189,11 @@ fun DanmakuContextMenu(
                             voteLoading = voteLoading,
                             canVote = canVote,
                             canRecall = canRecall,
+                            timestampJumpMs = timestampJumpMs,
+                            onSeekToTimestamp = {
+                                onSeekToTimestamp(it)
+                                onDismiss()
+                            },
                             onLike = {
                                 onLike()
                                 onDismiss()
@@ -277,6 +314,8 @@ private fun MainMenu(
     voteLoading: Boolean,
     canVote: Boolean,
     canRecall: Boolean,
+    timestampJumpMs: Long? = null,
+    onSeekToTimestamp: (Long) -> Unit = {},
     onLike: () -> Unit,
     onRecall: () -> Unit,
     onReportClick: () -> Unit,
@@ -344,6 +383,15 @@ private fun MainMenu(
         )
 
         MenuSeparator()
+
+        if (timestampJumpMs != null) {
+            MenuItem(
+                label = "跳转到 ${formatDanmakuTimestampJumpLabel(timestampJumpMs)}",
+                icon = Icons.Filled.PlayArrow,
+                onClick = { onSeekToTimestamp(timestampJumpMs) }
+            )
+            MenuSeparator()
+        }
 
         MenuItem(
             label = "选择内容",
@@ -429,16 +477,7 @@ private fun ReportReasonMenu(
 
         MenuSeparator()
 
-        val reasons = listOf(
-            Pair("违法违禁", 1),
-            Pair("色情低俗", 2),
-            Pair("赌博诈骗", 3), // mapped to 'Advertising' or similar in API usually? API doc said: 1=违法/2=色情/3=广告/4=引战/5=辱骂/6=剧透/7=刷屏/8=其他
-            Pair("人身攻击", 5),
-            Pair("引战", 4),
-            Pair("剧透", 6),
-            Pair("刷屏", 7),
-            Pair("其他", 8)
-        )
+        val reasons = DanmakuReportReasons
 
         reasons.forEachIndexed { index, (label, code) ->
             MenuItem(
@@ -458,6 +497,18 @@ private fun formatVoteCount(rawCount: Int): String {
     if (count < 10_000) return count.toString()
     val compact = ((count / 1000) / 10f).toString().removeSuffix(".0")
     return "${compact}万"
+}
+
+private fun formatDanmakuTimestampJumpLabel(timeMs: Long): String {
+    val totalSeconds = timeMs / 1000L
+    val hours = totalSeconds / 3600L
+    val minutes = (totalSeconds % 3600L) / 60L
+    val seconds = totalSeconds % 60L
+    return if (hours > 0L) {
+        "%d:%02d:%02d".format(hours, minutes, seconds)
+    } else {
+        "%d:%02d".format(minutes, seconds)
+    }
 }
 
 @Composable

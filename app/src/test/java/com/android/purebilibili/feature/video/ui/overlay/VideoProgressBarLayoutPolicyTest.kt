@@ -2,8 +2,28 @@ package com.android.purebilibili.feature.video.ui.overlay
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
+import com.android.purebilibili.feature.video.ui.components.resolveSeekPreviewBubbleHeightDp
 
 class VideoProgressBarLayoutPolicyTest {
+    @Test
+    fun draggingPreview_reservesFullImageHeightAndGapWithOrWithoutChapter() {
+        listOf(420, 720, 1024, 1920).forEach { width ->
+            val policy = resolveVideoProgressBarLayoutPolicy(width)
+            val imageHeight = resolveSeekPreviewBubbleHeightDp(width)
+            listOf(false, true).forEach { hasChapter ->
+                val areaHeight = resolveVideoProgressPreviewAreaHeightDp(policy, hasChapter, imageHeight)
+                assertTrue(areaHeight - policy.previewBottomPaddingDp >= imageHeight)
+            }
+        }
+    }
+
+    @Test
+    fun draggingWithoutPreviewImage_keepsExistingTextPreviewSpace() {
+        val policy = resolveVideoProgressBarLayoutPolicy(720)
+        assertEquals(74, resolveVideoProgressPreviewAreaHeightDp(policy, true, null))
+    }
+
 
     @Test
     fun compactPhone_usesDenseProgressBarLayout() {

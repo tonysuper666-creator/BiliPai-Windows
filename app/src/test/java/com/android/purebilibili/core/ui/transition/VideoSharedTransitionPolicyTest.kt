@@ -580,12 +580,9 @@ class VideoSharedTransitionPolicyTest {
             "src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
             "src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt",
             "src/main/java/com/android/purebilibili/feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt",
-            "src/main/java/com/android/purebilibili/feature/list/FavoritePersonalCard.kt",
-            "src/main/java/com/android/purebilibili/feature/list/HistoryPersonalCard.kt",
+            "src/main/java/com/android/purebilibili/feature/personal/PersonalCardVideoTransition.kt",
             "src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
             "src/main/java/com/android/purebilibili/feature/dynamic/components/VideoCards.kt",
-            "src/main/java/com/android/purebilibili/feature/home/components/cards/GlassVideoCard.kt",
-            "src/main/java/com/android/purebilibili/feature/home/components/cards/CinematicVideoCard.kt",
             "src/main/java/com/android/purebilibili/feature/home/components/cards/StoryVideoCard.kt",
         )
         cardSources.forEach { path ->
@@ -766,12 +763,6 @@ class VideoSharedTransitionPolicyTest {
         val relatedCardSource = File(
             "src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt"
         ).readText()
-        val cinematicCardSource = File(
-            "src/main/java/com/android/purebilibili/feature/home/components/cards/CinematicVideoCard.kt"
-        ).readText()
-        val glassCardSource = File(
-            "src/main/java/com/android/purebilibili/feature/home/components/cards/GlassVideoCard.kt"
-        ).readText()
         val dynamicCardSource = File(
             "src/main/java/com/android/purebilibili/feature/dynamic/components/VideoCards.kt"
         ).readText()
@@ -818,10 +809,6 @@ class VideoSharedTransitionPolicyTest {
         assertFalse(relatedCardSource.contains("videoCardShellReturnCoverAlpha("))
         assertFalse(relatedCardSource.contains("followShellMotion = true"))
         assertFalse(partitionSource.contains("videoTitleSharedElementKey("))
-        assertTrue(cinematicCardSource.contains("videoCardShellSharedBoundsOrEmpty("))
-        assertFalse(cinematicCardSource.contains("videoTitleSharedElementKey("))
-        assertTrue(glassCardSource.contains("videoCardShellSharedBoundsOrEmpty("))
-        assertFalse(glassCardSource.contains("videoTitleSharedElementKey("))
         assertTrue(dynamicCardSource.contains("videoCardShellSharedBoundsOrEmpty("))
         assertFalse(dynamicCardSource.contains("videoTitleSharedElementKey("))
         assertTrue(watchLaterSource.contains("videoCardShellSharedBoundsOrEmpty("))

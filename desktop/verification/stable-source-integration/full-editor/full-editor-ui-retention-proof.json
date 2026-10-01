@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "fullOriginalBodyReconstitutedLfByteEqualForAllFourUiFiles": true,
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposer.kt",
+      "entireOriginalBodyLfSha256": "4c3572bd566235e6bea167dc3867df8f95c48ae888a0541a569db7cc08aea983",
+      "reconstitutedBodyLfSha256": "4c3572bd566235e6bea167dc3867df8f95c48ae888a0541a569db7cc08aea983",
+      "byteEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishPickers.kt",
+      "entireOriginalBodyLfSha256": "41b5cdd942dc03b46e00afeb90c0898f8363e934140faac08b2f0af16a8ac107",
+      "reconstitutedBodyLfSha256": "41b5cdd942dc03b46e00afeb90c0898f8363e934140faac08b2f0af16a8ac107",
+      "byteEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateVoteDialog.kt",
+      "entireOriginalBodyLfSha256": "2fd68bdd55c80ba9ff359e9d569a09b65529ebbac9269a7b9aa21b437fe65f77",
+      "reconstitutedBodyLfSha256": "2fd68bdd55c80ba9ff359e9d569a09b65529ebbac9269a7b9aa21b437fe65f77",
+      "byteEqual": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateReserveDialog.kt",
+      "entireOriginalBodyLfSha256": "cf38c36ddd7d68948ff34680ce72125903314ad16dfeadea6bd1bd895b1da895",
+      "reconstitutedBodyLfSha256": "cf38c36ddd7d68948ff34680ce72125903314ad16dfeadea6bd1bd895b1da895",
+      "byteEqual": true
+    }
+  ],
+  "reversedPlatformSeams": [
+    "Android gallery activity callback",
+    "existing current Operations and emote catalog binding",
+    "Android date/time dialogs mapped to existing Windows callback"
+  ],
+  "renderersStripped": false,
+  "secondEditor": false,
+  "newHttpOrStore": false,
+  "UIInteractionMeasured": false
+}

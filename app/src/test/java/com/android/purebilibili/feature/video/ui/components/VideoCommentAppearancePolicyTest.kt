@@ -1,20 +1,26 @@
 package com.android.purebilibili.feature.video.ui.components
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
+import com.android.purebilibili.core.theme.scaled
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class VideoCommentAppearancePolicyTest {
 
     @Test
-    fun `shared comment typography matches video detail scale`() {
-        assertEquals(13.sp, VideoCommentTypographyTokens.author)
-        assertEquals(12.sp, VideoCommentTypographyTokens.metadata)
-        assertEquals(15.sp, VideoCommentTypographyTokens.body)
-        assertEquals(13.sp, VideoCommentTypographyTokens.action)
-        assertEquals(12.sp, VideoCommentTypographyTokens.actionCount)
-        assertEquals(13.sp, VideoCommentTypographyTokens.subReply)
+    fun `shared comment typography follows both themes and app font scale`() {
+        for (base in listOf(
+            com.android.purebilibili.core.theme.BiliMiuixTypography,
+            com.android.purebilibili.core.theme.Md3Typography
+        )) {
+            val typography = base.scaled(1.3f)
+            assertEquals(typography.bodySmall.fontSize, resolveVideoCommentFontSize(typography, VideoCommentTextRole.AUTHOR))
+            assertEquals(typography.labelSmall.fontSize, resolveVideoCommentFontSize(typography, VideoCommentTextRole.METADATA))
+            assertEquals(typography.bodyLarge.fontSize, resolveVideoCommentFontSize(typography, VideoCommentTextRole.BODY))
+            assertEquals(typography.labelMedium.fontSize, resolveVideoCommentFontSize(typography, VideoCommentTextRole.ACTION))
+            assertEquals(typography.labelSmall.fontSize, resolveVideoCommentFontSize(typography, VideoCommentTextRole.ACTION_COUNT))
+            assertEquals(typography.bodySmall.fontSize, resolveVideoCommentFontSize(typography, VideoCommentTextRole.SUB_REPLY))
+        }
     }
 
     @Test

@@ -1,0 +1,39 @@
+{
+  "schema": "stable-comment-images-candidate-install-v1",
+  "candidateInstalled": true,
+  "mainInstalled": false,
+  "installed": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail.py",
+      "sha256LF": "c4ff1fc6c8094c40ad8b1890dc818ea20c3a97130fd34c03c0d6fff453e051be"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "sha256LF": "08d90e18d71b27aedc951f010d6b08da02b0a2fc90d61ba1e164763e7234e447"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256LF": "37caa1356b3ffa001e8b6257ec31b1eb383a062e52be3d1f299148ecd89bc16f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt",
+      "sha256LF": "ef7c259d8343e773f84454dc262b3d3d6f20651214d00e732ea553bbc44f4eaf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+      "sha256LF": "b20d4abbbed3b126a10dd5d455b57056758096d2022141e5b55392f58e0fee6f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt",
+      "sha256LF": "f8e8701c4b37a76286c501ae092069404c96246559034401c3fa8b63a51a5588"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sha256LF": "e27206e43fb3e9bd74b8f05b7088fb049ba87f81f1b5d02c7eae077db860e034"
+    }
+  ],
+  "maximumCommentImages": 9,
+  "wholeStableCompiled": false,
+  "stableRuntimeAccepted": false,
+  "validation": "Prepared targeted compile PASS; whole candidate compile is next."
+}

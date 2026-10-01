@@ -50,3 +50,43 @@ data class DanmakuActionResponse(
     val message: String = "",
     val ttl: Int = 1
 )
+
+/**
+ * 云端弹幕屏蔽规则 (x/dm/filter/user 系列)
+ * type: 0=关键词, 1=正则, 2=UID(crc32 hex)
+ */
+@Serializable
+data class DanmakuFilterRuleItem(
+    val id: Long = 0,
+    val type: Int = 0,
+    val filter: String = ""
+)
+
+@Serializable
+data class DanmakuFilterRulesData(
+    val rule: List<DanmakuFilterRuleItem> = emptyList(),
+    val rule1: List<DanmakuFilterRuleItem> = emptyList(),
+    val rule2: List<DanmakuFilterRuleItem> = emptyList(),
+    val toast: String? = null
+)
+
+@Serializable
+data class DanmakuFilterRulesResponse(
+    val code: Int = 0,
+    val message: String = "",
+    val data: DanmakuFilterRulesData? = null
+)
+
+@Serializable
+data class DanmakuFilterAddData(
+    val id: Long = 0,
+    val type: Int = 0,
+    val filter: String = ""
+)
+
+@Serializable
+data class DanmakuFilterAddResponse(
+    val code: Int = 0,
+    val message: String = "",
+    val data: DanmakuFilterAddData? = null
+)

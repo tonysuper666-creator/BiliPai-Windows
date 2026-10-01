@@ -1,0 +1,157 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt
+@@ -8,7 +8,7 @@
+ import com.sun.jna.win32.StdCallLibrary
+ import java.nio.file.Path
+ 
+-/** Windows boundary only. Resolves the current user's redirected Pictures/BiliPai;
++/** Windows boundary only. Resolves the current user's redirected Pictures/BiliPai or Videos/BiliPai;
+  * never creates directories, reads preferences, selects a folder or saves a file.
+  * Failure belongs to the existing chooser/error flow; no USERPROFILE path fallback.
+  */
+@@ -18,9 +18,25 @@
+         native = { JnaWindowsKnownFolderNative },
+     )
+ 
++    fun resolveDefaultVideo(): Result<Path> = resolveDefaultVideo(
++        windows = Platform.isWindows(),
++        native = { JnaWindowsKnownFolderNative },
++    )
++
+     internal fun resolveDefault(
+         windows: Boolean,
+         native: () -> DesktopWindowsKnownFolderNative,
++    ): Result<Path> = resolveKnownFolder(windows, native, video = false)
++
++    internal fun resolveDefaultVideo(
++        windows: Boolean,
++        native: () -> DesktopWindowsKnownFolderNative,
++    ): Result<Path> = resolveKnownFolder(windows, native, video = true)
++
++    private fun resolveKnownFolder(
++        windows: Boolean,
++        native: () -> DesktopWindowsKnownFolderNative,
++        video: Boolean,
+     ): Result<Path> {
+         if (!windows) return Result.failure(DesktopKnownFolderFailure("platform"))
+         return try {
+@@ -37,25 +53,37 @@
+                 val output = PointerByReference()
+                 try {
+                     // SDK GUID layout: DWORD, WORD, WORD, BYTE[8], total 16 bytes.
+-                    // FOLDERID_Pictures, not FOLDERID_PicturesLibrary.
++                    // Actual user folders, not the Pictures/Videos libraries.
+                     Memory(16).use { folderId ->
+-                        folderId.setInt(0, 0x33e28130)
+-                        folderId.setShort(4, 0x4e1e.toShort())
+-                        folderId.setShort(6, 0x4676.toShort())
+-                        folderId.write(8, byteArrayOf(
+-                            0x83.toByte(), 0x5a, 0x98.toByte(), 0x39,
+-                            0x5c, 0x3b, 0xc3.toByte(), 0xbb.toByte(),
+-                        ), 0, 8)
++                        if (video) {
++                            // FOLDERID_Videos maps the original Movies/BiliPai album.
++                            folderId.setInt(0, 0x18989b1d)
++                            folderId.setShort(4, 0x99b5.toShort())
++                            folderId.setShort(6, 0x455b.toShort())
++                            folderId.write(8, byteArrayOf(
++                                0x84.toByte(), 0x1c, 0xab.toByte(), 0x7c,
++                                0x74, 0xe4.toByte(), 0xdd.toByte(), 0xfc.toByte(),
++                            ), 0, 8)
++                        } else {
++                            // Preserve the existing FOLDERID_Pictures mapping.
++                            folderId.setInt(0, 0x33e28130)
++                            folderId.setShort(4, 0x4e1e.toShort())
++                            folderId.setShort(6, 0x4676.toShort())
++                            folderId.write(8, byteArrayOf(
++                                0x83.toByte(), 0x5a, 0x98.toByte(), 0x39,
++                                0x5c, 0x3b, 0xc3.toByte(), 0xbb.toByte(),
++                            ), 0, 8)
++                        }
+                         val hr = api.getKnownFolderPath(folderId, KF_FLAG_DEFAULT, null, output)
+                         if (hr != S_OK) throw DesktopKnownFolderFailure("SHGetKnownFolderPath", hr)
+                         val pointer = output.value ?: throw DesktopKnownFolderFailure("empty-result")
+                         val value = api.readWideString(pointer)
+                         if (value.isBlank()) throw DesktopKnownFolderFailure("empty-path")
+-                        val pictures = try { Path.of(value) } catch (_: Exception) {
++                        val base = try { Path.of(value) } catch (_: Exception) {
+                             throw DesktopKnownFolderFailure("invalid-path")
+                         }
+-                        if (!pictures.isAbsolute) throw DesktopKnownFolderFailure("relative-path")
+-                        Result.success(pictures.resolve("BiliPai"))
++                        if (!base.isAbsolute) throw DesktopKnownFolderFailure("relative-path")
++                        Result.success(base.resolve("BiliPai"))
+                     }
+                 } finally {
+                     // The SDK requires release even when SHGetKnownFolderPath fails.
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImageSaveLocations.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImageSaveLocations.kt
+@@ -38,6 +38,7 @@
+     private val preferences: DesktopImageSaveLocationPreferences,
+     private val stillActive: () -> Boolean,
+     private val withActiveCommit: ((() -> Unit) -> Boolean),
++    private val resolveDefaultVideoDirectory: () -> Result<Path> = DesktopWindowsImageSaveDirectory::resolveDefaultVideo,
+     private val resolveDefaultDirectory: () -> Result<Path> = DesktopWindowsImageSaveDirectory::resolveDefault,
+ ) {
+     fun isActive(): Boolean = stillActive()
+@@ -51,11 +52,32 @@
+         checkpoint: suspend () -> Unit,
+         withOwnedCommit: ((() -> Unit) -> Boolean),
+         write: suspend (DesktopDynamicSaveTarget) -> Boolean,
++    ): Boolean = saveResolved(fileName, checkpoint, withOwnedCommit,
++        useCustomImageDirectory = true, resolveDefaultDirectory, write)
++
++    /** Standalone original live video always uses Movies/BiliPai, independently
++     * of the image tree preference. Windows maps that album to Videos/BiliPai.
++     */
++    suspend fun saveDefaultVideo(
++        fileName: String,
++        checkpoint: suspend () -> Unit,
++        withOwnedCommit: ((() -> Unit) -> Boolean),
++        write: suspend (DesktopDynamicSaveTarget) -> Boolean,
++    ): Boolean = saveResolved(fileName, checkpoint, withOwnedCommit,
++        useCustomImageDirectory = false, resolveDefaultVideoDirectory, write)
++
++    private suspend fun saveResolved(
++        fileName: String,
++        checkpoint: suspend () -> Unit,
++        withOwnedCommit: ((() -> Unit) -> Boolean),
++        useCustomImageDirectory: Boolean,
++        resolveDirectory: () -> Result<Path>,
++        write: suspend (DesktopDynamicSaveTarget) -> Boolean,
+     ): Boolean = withContext(Dispatchers.IO) {
+         require(Path.of(fileName).fileName.toString() == fileName && fileName.isNotBlank())
+         checkpoint()
+         val context = currentCoroutineContext()
+-        val saved = preferences.getImageSaveTreeUriSync()
++        val saved = if (useCustomImageDirectory) preferences.getImageSaveTreeUriSync() else null
+         var customFailure: Exception? = null
+         suspend fun attempt(directory: Path, createDefault: Boolean): Boolean {
+             checkpoint()
+@@ -110,7 +132,7 @@
+         }
+         try {
+             checkpoint()
+-            attempt(resolveDefaultDirectory().getOrThrow(), true)
++            attempt(resolveDirectory().getOrThrow(), true)
+         } catch (cancelled: CancellationException) {
+             throw cancelled
+         } catch (failure: Exception) {
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt
+@@ -106,8 +106,13 @@
+     suspend fun saveLivePhotoVideo(rawUrl: String): Boolean = saveMutex.withLock {
+         checkpoint()
+         val url = normalizeLivePhotoVideoUrl(rawUrl) ?: error("实况视频地址不受支持")
+-        val target = selectTarget("BiliPai_Live_${System.currentTimeMillis()}.mp4", "video/mp4") ?: return@withLock false
+-        checkpoint(); writeRaw(url, target, MAX_VIDEO_BYTES)
++        val name = "BiliPai_Live_${System.currentTimeMillis()}.mp4"
++        if (imageSaveLocations == null) {
++            val target = selectTarget(name, "video/mp4") ?: return@withLock false
++            checkpoint(); writeRaw(url, target, MAX_VIDEO_BYTES)
++        } else imageSaveLocations.saveDefaultVideo(name, ::checkpoint, ::commitOwned) {
++            writeRaw(url, it, MAX_VIDEO_BYTES)
++        }
+     }
+     suspend fun saveMotionPhoto(rawImageUrl: String, rawVideoUrl: String): Boolean = saveMutex.withLock {
+         checkpoint()

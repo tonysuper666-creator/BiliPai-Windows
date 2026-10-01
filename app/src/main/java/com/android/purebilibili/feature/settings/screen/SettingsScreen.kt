@@ -189,6 +189,7 @@ fun SettingsScreen(
     }
     var versionClickCount by remember { mutableIntStateOf(0) }
     var showEasterEggDialog by remember { mutableStateOf(false) }
+    var showLogExportDialog by remember { mutableStateOf(false) }
     var showPathDialog by remember { mutableStateOf(false) }
     var showImageSavePathDialog by remember { mutableStateOf(false) }
     // [新增] 打赏对话框
@@ -374,7 +375,7 @@ fun SettingsScreen(
         }
     }
     
-    val onExportLogsAction: () -> Unit = { LogCollector.exportAndShare(context) }
+    val onExportLogsAction: () -> Unit = { showLogExportDialog = true }
     val onTelegramClick: () -> Unit = { uriHandler.openUri(OFFICIAL_TELEGRAM_CHANNEL_URL) }
     val onTelegramGroupClick: () -> Unit = { uriHandler.openUri(OFFICIAL_TELEGRAM_GROUP_URL) }
     val onTwitterClick: () -> Unit = { uriHandler.openUri("https://x.com/YangY_0x00") }
@@ -507,6 +508,42 @@ fun SettingsScreen(
     }
 
     // Dialogs
+    if (showLogExportDialog) {
+        val rawTraceAvailable = LogCollector.hasRawCrashTrace(context)
+        com.android.purebilibili.core.ui.AppAlertDialog(
+            onDismissRequest = { showLogExportDialog = false },
+            title = { AppText("导出诊断日志") },
+            text = {
+                Column {
+                    AppText(
+                        "普通导出包含脱敏的崩溃摘要、系统退出记录和运行日志，以及已有的性能诊断附件。"
+                    )
+                    if (rawTraceAvailable) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        AppText("原始系统回溯可能包含设备路径等敏感信息。")
+                        com.android.purebilibili.core.ui.AppDialogAction(onClick = {
+                            showLogExportDialog = false
+                            LogCollector.exportAndShare(context, includeRawCrashTrace = true)
+                        }) { AppText("导出并附原始回溯") }
+                    } else {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        AppText("当前没有可单独分享的原始系统回溯。")
+                    }
+                }
+            },
+            confirmButton = {
+                com.android.purebilibili.core.ui.AppDialogAction(onClick = {
+                    showLogExportDialog = false
+                    LogCollector.exportAndShare(context)
+                }) { AppText("普通导出") }
+            },
+            dismissButton = {
+                com.android.purebilibili.core.ui.AppDialogAction(
+                    onClick = { showLogExportDialog = false }
+                ) { AppText("取消") }
+            },
+        )
+    }
     if (showCacheDialog) {
         CacheClearConfirmDialog(
             breakdown = state.cacheBreakdown,

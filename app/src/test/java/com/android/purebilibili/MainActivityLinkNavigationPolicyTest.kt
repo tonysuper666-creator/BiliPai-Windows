@@ -6,6 +6,13 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class MainActivityLinkNavigationPolicyTest {
+    @Test
+    fun weeklyColdStartPreservesHistoricalPeriod() {
+        val navigation = resolveMainActivityLinkNavigation(BilibiliNavigationTarget.PopularFeed("weekly", 133))
+        assertEquals("weekly_series?number=133", navigation?.pendingNavigationRoute)
+        assertNull(navigation?.pendingVideoId)
+    }
+
 
     @Test
     fun spaceTarget_mapsToSpaceRoute() {
@@ -55,12 +62,12 @@ class MainActivityLinkNavigationPolicyTest {
     }
 
     @Test
-    fun musicTarget_ignoresUnsupportedNonAuIds() {
+    fun musicTarget_routesCopyrightMusicToNativeDetail() {
         val navigation = resolveMainActivityLinkNavigation(
             BilibiliNavigationTarget.Music("ma123")
         )
 
-        assertNull(navigation)
+        assertEquals("bgm_detail?musicId=ma123&aid=0&cid=0&showVideos=false", navigation?.pendingNavigationRoute)
     }
 
     @Test

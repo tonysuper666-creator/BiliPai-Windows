@@ -1,0 +1,29 @@
+{
+  "baseCommit": "bd094f91a637fbbc179a6d266a696101946c67f6",
+  "stableOriginalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "stableScope": "standalone saveLivePhotoVideoToGallery helper only; exact LF equality to alpha.9",
+  "installation": "Root must review and apply exact three candidates, then compile actual Main and pin a new immutable snapshot",
+  "ownedCommitOrder": [
+    "actual SessionStore current-owner monitor",
+    "existing Assets close lock",
+    "same Root global application/window save lifetime",
+    "current save-job ensureActive + no-clobber Files move"
+  ],
+  "preferences": "No new key/store/second prefs, no image-tree read for standalone video, no MID/epoch preference binding",
+  "existingPictures": "Same ctor last trailing Pictures resolver and same save API; only one actual Root construction, which supplies first three args",
+  "nativeKnownFolder": "Existing JNA core only, FOLDERID_Videos not VideosLibrary, flags0 NULL token, COM ref and output memory ownership retained",
+  "failure": "Native failure remains failure; no USERPROFILE path guess, Pictures/custom-tree fallback or chooser in Root default-video path",
+  "saveAs": "Null imageSaveLocations legacy explicit chooser seam retained; not exercised as native UI",
+  "streaming": "Existing raw writer and anonymous HTTP unchanged; 64KiB bounded copy, 200MiB limit, callback drain before cleanup",
+  "windowsDifference": "Uses redirected Videos/BiliPai and collision-only suffix; Windows Photos indexing and Android MediaStore permission behavior not claimed",
+  "notProven": [
+    "Main installation/zero product overrides",
+    "whole Root mounted flow",
+    "actual Windows SaveAs/chooser/HWND",
+    "new desktop EXE/package",
+    "system Photos indexing",
+    "all v0.2.3 functions"
+  ],
+  "network": "Three isolated 127.0.0.1 GETs only, external DNS/hosts rejected; no external network",
+  "writes": "All save paths/settings fixtures and native extraction within this new .local lane; real KnownFolder queries read-only"
+}

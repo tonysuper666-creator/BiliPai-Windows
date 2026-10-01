@@ -1,4 +1,4 @@
-"""Verify the reviewed alpha.9 packing/gallery bodies against fresh extraction."""
+"""Verify the reviewed v0.2.3 packing/gallery bodies against fresh extraction."""
 from pathlib import Path
 import argparse
 import hashlib
@@ -12,7 +12,7 @@ EXPECTED = {
     'com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt':
         '4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a',
     'com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt':
-        '5659afa26c7eea3b21fe59f9cb158e1457b7315b2d2069c04e023dc11543384d',
+        '52f013d2128d8689cc55e685d1a1c6e5aebaedfb5066b2bae61025bb748207a2',
 }
 
 def verify(repo, generated, output):
@@ -30,6 +30,8 @@ def verify(repo, generated, output):
             assert hashlib.sha256(data).hexdigest() == expected, path + ' exceeds reviewed adaptations'
             assert (generated / path).read_bytes() == data, path + ' differs from the sole producer'
         receipt = json.loads((fresh / 'producer-receipt.json').read_text(encoding='utf-8'))
+        assert receipt['originalCommit'] == '3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+        assert receipt['originalTag'] == 'v0.2.3'
         assert receipt['selectedPacking']['deletedExactLines'] == [
             '        GCamera:MotionPhoto="1"',
             '        GCamera:MotionPhotoVersion="1"',

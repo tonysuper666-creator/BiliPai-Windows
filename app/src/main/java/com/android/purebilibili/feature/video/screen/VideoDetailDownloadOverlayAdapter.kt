@@ -66,17 +66,10 @@ internal fun VideoDetailDownloadOverlayAdapter(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            // 检查任务状态
-                            val existingTask = com.android.purebilibili.feature.download.DownloadManager.getVideoTask(successForDownload.info.bvid, successForDownload.info.cid)
-                            if (existingTask != null && !existingTask.isFailed) {
-                                if (existingTask.isComplete) viewModel.toast("视频已缓存")
-                                else viewModel.toast("正在下载中...")
-                                viewModel.closeDownloadDialog()
-                            } else {
-                                // 打开画质选择
-                                showQualitySelection = true
-                                viewModel.closeDownloadDialog()
-                            }
+                            // 始终打开画质选择：同一 cid 已有非失败任务时由
+                            // addTask 按「bvid_cid_画质」id 判重——不同画质允许重下
+                            showQualitySelection = true
+                            viewModel.closeDownloadDialog()
                         }
                         .padding(horizontal = 16.dp, vertical = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -151,7 +144,10 @@ internal fun VideoDetailDownloadOverlayAdapter(
                                 videoUrl = "",
                                 audioUrl = successForDownload.audioUrl ?: "",
                                 isAudioOnly = true,
-                                isVerticalVideo = false
+                                isVerticalVideo = false,
+                                options = com.android.purebilibili.feature.download.DownloadOptions(
+                                    includeDanmaku = false
+                                )
                             )
                             if (task.audioUrl.isNotEmpty()) {
                                 val started = com.android.purebilibili.feature.download.DownloadManager.addTask(task)

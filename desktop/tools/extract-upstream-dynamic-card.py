@@ -194,23 +194,18 @@ object DesktopDynamicCardSettings {
  f=f.replace('val shareIntent = TextSelectionPolicy.createShareIntent(shareTarget, resolvedTitle)\n                            context.startActivity(shareIntent)','platform.shareText(shareTarget)')
  emit(p,'@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)\npackage com.android.purebilibili.core.ui.common\n'+imports+'\n@Composable\n'+f+'\n','DesktopOriginalTextSelectionBottomSheet.kt')
  p=COMP+'ImagePreviewDialog.kt';s=read(repo,p)
- emit(p,'package com.android.purebilibili.feature.dynamic.components\n'+fun(s,'normalizeImageUrl')+'\n'+fun(s,'resolveImageShareMimeType')+'\n','DesktopOriginalImageUrlPolicy.kt')
- body=s[:s.index('// 辅助数据类')]
+ emit(p,'package com.android.purebilibili.feature.dynamic.components\n'+fun(s,'normalizeImageUrl')+'\n'+fun(s,'resolveImagePreviewPlaceholderCacheKey')+'\n'+fun(s,'resolveImageShareMimeType')+'\n','DesktopOriginalImageUrlPolicy.kt')
+ # Stable removes the obsolete Quad footer. Select the complete renderer prefix
+ # before the URL-policy functions, retaining every original preview declaration.
+ body=s[:s.index('/**\n *  规范化图片 URL')]
+ # Android navigation-bar animation has no existing desktop equivalent. Its
+ # Activity/window lifecycle is removed below, so remove only this new helper.
+ body=replace(body,fun(s,'animateWindowNavigationBarColor'),'')
  body='\n'.join(l for l in body.splitlines() if not (l.startswith('import android.') or l.startswith('import androidx.core.') or l.startswith('import androidx.navigationevent') or any(l.startswith('import '+x) for x in ['androidx.compose.ui.platform.LocalView','androidx.compose.ui.window.DialogWindowProvider','androidx.compose.ui.graphics.asComposeRenderEffect','com.android.purebilibili.core.ui.setWindowNavigationBarColor','com.android.purebilibili.core.ui.LocalPredictiveBackGestureEnabled','com.android.purebilibili.core.util.rememberHapticFeedback','androidx.media3.common.Player','coil3.imageLoader'])))+'\n'
  body=body.replace('import androidx.compose.ui.platform.LocalContext','import coil3.compose.LocalPlatformContext as LocalContext').replace('import androidx.lifecycle.compose.collectAsStateWithLifecycle','import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle')
  body=body.replace('.collectAsStateWithLifecycle(initialValue =','.collectAsStateWithLifecycle(initial =')
  body=body.replace('import com.android.purebilibili.core.store.SettingsManager','import com.android.purebilibili.core.store.DesktopDynamicCardSettings as SettingsManager')
- quad_start=s.index('data class Quad(');quad_end=s.index('\n\n',quad_start)
- body+='\n'+s[quad_start:quad_end]+'\n'
  body+='\n@Composable\n'+fun(s,'LivePhotoIcon')+'\n@Composable\n'+fun(s,'LivePhotoOffIcon')+'\n'+fun(s,'resolveLivePhotoVideoUrl')+'\n'
- body=replace(body,decl(body,'ImagePreviewBlurEffectCache'),'''private class ImagePreviewBlurEffectCache {
-    private val effects = mutableMapOf<Int, androidx.compose.ui.graphics.RenderEffect>()
-    fun resolve(radiusPx: Float): androidx.compose.ui.graphics.RenderEffect? {
-        if (radiusPx <= 0.01f) return null
-        val radiusKey=radiusPx.toInt().coerceAtLeast(1)
-        return effects.getOrPut(radiusKey){androidx.compose.ui.graphics.BlurEffect(radiusKey.toFloat(),radiusKey.toFloat(),androidx.compose.ui.graphics.TileMode.Clamp)}
-    }
-}''')
  body=body.replace('    val token: Long,','    val token: Long,\n    val platform: com.bilipai.desktop.ui.DesktopDynamicCardPlatform,',1)
  body=body.replace('    val latestOnDismiss by rememberUpdatedState(onDismiss)','    val platform = com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings.current\n    val latestOnDismiss by rememberUpdatedState(onDismiss)',1)
  body=body.replace('                token = requestToken,','                token = requestToken,\n                platform = platform,',1)

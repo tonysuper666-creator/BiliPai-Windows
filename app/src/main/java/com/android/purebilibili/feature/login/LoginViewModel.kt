@@ -178,7 +178,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                             //  新增: 已扫描待确认
                             Logger.d("LoginDebug", " 二维码已扫描，等待确认...")
                             currentBitmap?.let { bitmap ->
-                                withContext(Dispatchers.Main) {
+                                withContext(Dispatchers.Main.immediate) {
                                     _state.value = LoginState.Scanned(bitmap)
                                 }
                             }
@@ -850,7 +850,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private suspend fun finishLogin(source: String, hasHighQualityCredential: Boolean) {
         syncCurrentAccountSession()
-        withContext(Dispatchers.Main) {
+        withContext(Dispatchers.Main.immediate) {
             _state.value = if (hasHighQualityCredential) {
                 LoginState.Success
             } else {
@@ -1066,7 +1066,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                             // 已扫码待确认
                             Logger.d("TvLogin", " 二维码已扫描，等待确认...")
                             currentBitmap?.let { bitmap ->
-                                withContext(Dispatchers.Main) {
+                                withContext(Dispatchers.Main.immediate) {
                                     _state.value = LoginState.Scanned(bitmap)
                                 }
                             }

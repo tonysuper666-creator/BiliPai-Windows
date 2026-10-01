@@ -321,6 +321,7 @@ internal fun PortraitInlineVideoPlayerHost(
                 onSponsorDismiss = { playbackActions.dismissSponsorSkipButton() },
                 onSponsorVote = { playbackActions.voteSponsorSegment(it) },
                 onSponsorContributionMarkBoundary = { playbackActions.markSponsorContributionBoundary() },
+                onSponsorContributionMarkWholeVideo = { playbackActions.markWholeVideoAsSponsor() },
                 onSponsorContributionCategoryChange = { playbackActions.setSponsorContributionCategory(it) },
                 onSponsorContributionActionTypeChange = { playbackActions.setSponsorContributionActionType(it) },
                 onSponsorContributionSubmit = { playbackActions.submitSponsorContribution() },
@@ -356,6 +357,9 @@ internal fun PortraitInlineVideoPlayerHost(
                     onSubtitleDisplayModePreferenceOverrideChange,
                 onSubtitleTrackSelected = playbackActions.selectSubtitleTrack,
                 onLikeDanmaku = playbackActions.likeDanmaku,
+                onLikeDanmakuToggle = playbackActions.likeDanmakuToggle,
+                likedDanmakuIds = playbackActions.likedDanmakuIds,
+                onReportDanmaku = playbackActions.reportDanmaku,
                 onRecallDanmaku = playbackActions.recallDanmaku,
             ),
         )

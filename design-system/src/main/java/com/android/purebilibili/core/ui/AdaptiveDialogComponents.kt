@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.android.purebilibili.core.theme.AppUiStyle
@@ -106,6 +107,11 @@ internal fun AdaptiveAlertDialog(
                 show = true,
                 onDismissRequest = onDismissRequest,
                 maxWidth = contentLayout.maxWidthDp.dp,
+                // WindowDialog 自带背景、圆角和 24dp 内边距。这里只用其窗口/动画，
+                // 外观由 AppPopupSurface 负责，避免内外两张圆角卡片叠加。
+                backgroundColor = Color.Transparent,
+                insideMargin = DpSize(0.dp, 0.dp),
+                cornerRadius = 0.dp,
             ) {
                 AppPopupSurface(
                     type = AppPopupSurfaceType.DIALOG,
@@ -236,7 +242,7 @@ internal fun AdaptiveDialogAction(
                 if (layoutPolicy.expandToContainer) {
                     Modifier.fillMaxSize()
                 } else {
-                    Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 40.dp)
+                    Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 48.dp)
                 }
             )
             .clickable(onClick = onClick),

@@ -1,0 +1,276 @@
+{
+  "scope": "prepared full editor streaming chain only",
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifacts": [
+    {
+      "path": "DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "ce08f0d5703f2b447dfcc64db56636bfa696cb39e7584969bb69b93d2f6b5aff",
+      "sizeBytes": 6363
+    },
+    {
+      "path": "EditorStreamFixture.kt",
+      "sha256Bytes": "e803419f8e95702ac5b06802906e685d061cc7326cbe3c73f3abb6dc7ce61a1d",
+      "sizeBytes": 13233
+    },
+    {
+      "path": "candidate-source-inventory.json",
+      "sha256Bytes": "acf41aa82d26ded6c25376411cb297149df47fc6efbe2789465ed1c03e410984",
+      "sizeBytes": 2640
+    },
+    {
+      "path": "consumer-chain-review.json",
+      "sha256Bytes": "6f89f5891ebe13cf59906c23769401c1c0eb954a1763a3e31806c03743e87700",
+      "sizeBytes": 1124
+    },
+    {
+      "path": "detail-reply-verify.log",
+      "sha256Bytes": "9181249fdfafee6a1d47a6df4170f3359dfe7cdba859be6fbbb6158128aadff9",
+      "sizeBytes": 86
+    },
+    {
+      "path": "editor-sole-producer-proof.json",
+      "sha256Bytes": "666c479cd9df8623cf14885fd7f4c4025ff6d6eb02a7b15e9ab5413b2c7dc688",
+      "sizeBytes": 373
+    },
+    {
+      "path": "editor-verify.log",
+      "sha256Bytes": "689cccd145f82d89b1d2159cd3ad007d0d1481ee8ac530e0b2ab94ca13564219",
+      "sizeBytes": 77
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "2c410a4d8a90d49113505b82bd616225fb21b570bd6f60fb0b3bc6b36b1161a7",
+      "sizeBytes": 7031
+    },
+    {
+      "path": "generated/EditorOperations.fragment.kt",
+      "sha256Bytes": "aecbfc16bbef6307e0b22c9b9fb1a5037afcf79b3dac3db7d1f99a35b78886d3",
+      "sizeBytes": 12335
+    },
+    {
+      "path": "gradle-input-only.patch",
+      "sha256Bytes": "88d2991169597634ab09d520f8b2ca94d9b98bdc32f959fe79955e0fe5caa575",
+      "sizeBytes": 732
+    },
+    {
+      "path": "integration-boundaries.json",
+      "sha256Bytes": "426159a081b493f2124f90c8953535611e951d38c1d797588fd51c609563b6f0",
+      "sizeBytes": 4205
+    },
+    {
+      "path": "original/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+      "sizeBytes": 33869
+    },
+    {
+      "path": "original/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorRoot.kt",
+      "sha256Bytes": "7b8848caec0b6d19be856b90f0ca8e76858ea28383a2d97aa4daf10429e99234",
+      "sizeBytes": 5064
+    },
+    {
+      "path": "original/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "84389c917a95da7d5f4626565785f7ccec7e947b807ee1dbe0d45744edc012eb",
+      "sizeBytes": 1849
+    },
+    {
+      "path": "original/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHost.kt",
+      "sha256Bytes": "7a4e8a76945d923dc6bcc1ff1d10ee623253330e70fb04c932424ee458a2c718",
+      "sizeBytes": 3540
+    },
+    {
+      "path": "original/desktop/tools/extract-upstream-dynamic-editor-protocol.py",
+      "sha256Bytes": "85efcbef79934a5444fa53f417a9f2f949d4ea4ee38e8b232418c07f95fcaaae",
+      "sizeBytes": 7337
+    },
+    {
+      "path": "original/desktop/tools/verify-upstream-dynamic-editor-protocol.py",
+      "sha256Bytes": "b15f19eb220550ec18e7f66806deba9d1e10c889f252932f0e005eb03f6d34a4",
+      "sizeBytes": 2316
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "17e035df5ad8ebe6825c9b58c5231a880fad0918a4bbc26b6ece5426f1bd3661",
+      "sizeBytes": 10694
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2",
+      "sizeBytes": 34757
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorRoot.kt",
+      "sha256Bytes": "e01961364d0f4ae063b85e94f2026b1c00d2f37a051b9f1fd4ffd07f81414602",
+      "sizeBytes": 5139
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "ce08f0d5703f2b447dfcc64db56636bfa696cb39e7584969bb69b93d2f6b5aff",
+      "sizeBytes": 6363
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHost.kt",
+      "sha256Bytes": "28235cfe6d786e82804149265ab4d3ce61df433f378c628997bb015246c55b49",
+      "sizeBytes": 3550
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-editor-protocol.py",
+      "sha256Bytes": "cf0cd7c2a1d3fdfa1b8232035d175ace1851bef6ae22b918c790acaaa0630abc",
+      "sizeBytes": 8405
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "sha256Bytes": "4bea60a6059c1a8f7b9e42caa8ef825ef84c0c59802d852e61f41130fd07c0e7",
+      "sizeBytes": 21834
+    },
+    {
+      "path": "prepared/desktop/tools/verify-upstream-dynamic-editor-protocol.py",
+      "sha256Bytes": "b15f19eb220550ec18e7f66806deba9d1e10c889f252932f0e005eb03f6d34a4",
+      "sizeBytes": 2316
+    },
+    {
+      "path": "prove-sole-producers.py",
+      "sha256Bytes": "5c01be75a5eccaec8bc5f5d494614d52cb74d14cc3c7b6e468575e833afe2684",
+      "sizeBytes": 4512
+    },
+    {
+      "path": "retained-detail-reply-proof.json",
+      "sha256Bytes": "946e9a4b4f67b08fa3f984ffbb628b049593cf39ab5070574de92dcbc38d9278",
+      "sizeBytes": 382
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "1d573d1dbfc5001ad46d0d56d9420981c8ef3b5b865a9ba6a380f9c2c4f11050",
+      "sizeBytes": 6128
+    },
+    {
+      "path": "runs/01/accepted-evidence.json",
+      "sha256Bytes": "54dae58fbdb38534b7b5c6934d2e9c12c823c5094f4b985ee7e9ad1a52f33be6",
+      "sizeBytes": 13357
+    },
+    {
+      "path": "runs/01/compile-evidence.json",
+      "sha256Bytes": "6385e8156fa284a08a581d1d0134a6af8a0058ca22223770422c5a77da80157b",
+      "sizeBytes": 49612
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "facb6edf0f4305522cef423f620969fcc5557bb718799cb46bdc652420e05d1a",
+      "sizeBytes": 24311
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "e708ab818a625711b31bab20e3fe9e66a09899a99c8e3b9703d669dcb64b9cfe",
+      "sizeBytes": 680
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2",
+      "sizeBytes": 34757
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopDynamicEditorRoot.kt",
+      "sha256Bytes": "e01961364d0f4ae063b85e94f2026b1c00d2f37a051b9f1fd4ffd07f81414602",
+      "sizeBytes": 5139
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "ce08f0d5703f2b447dfcc64db56636bfa696cb39e7584969bb69b93d2f6b5aff",
+      "sizeBytes": 6363
+    },
+    {
+      "path": "runs/01/frozen-sources/DesktopOriginalDynamicEditorHost.kt",
+      "sha256Bytes": "28235cfe6d786e82804149265ab4d3ce61df433f378c628997bb015246c55b49",
+      "sizeBytes": 3550
+    },
+    {
+      "path": "runs/01/frozen-sources/EditorStreamFixture.kt",
+      "sha256Bytes": "e803419f8e95702ac5b06802906e685d061cc7326cbe3c73f3abb6dc7ce61a1d",
+      "sizeBytes": 13233
+    },
+    {
+      "path": "runs/01/proof/result.json",
+      "sha256Bytes": "cd949b30636ce880b32fcc8be53ce861cff9d880091100387d4cfb6c5a0edd5c",
+      "sizeBytes": 613
+    },
+    {
+      "path": "runs/01/run.args",
+      "sha256Bytes": "a3c02f30dac38c446362a2d064b8104422083b0fe24088624f74778308ca7525",
+      "sizeBytes": 23700
+    },
+    {
+      "path": "runs/01/run.log",
+      "sha256Bytes": "d5f957320b0254d4152e70826f5b8d199e9fa1f38aba30630c4a45e5e4ff1823",
+      "sizeBytes": 100
+    },
+    {
+      "path": "runs/01/runtime-process.json",
+      "sha256Bytes": "ceeffb1946da6bb1aa448b1d02b1ef7d7d426c5d352975e2ccd768d988bc21f6",
+      "sizeBytes": 198
+    },
+    {
+      "path": "stable-upload-source-map.json",
+      "sha256Bytes": "a8b446bcca1809c23d7db1b26a3017b82a234e42be8ee59870cf4afcf52ddac0",
+      "sizeBytes": 42538
+    },
+    {
+      "path": "stream-upload.patch",
+      "sha256Bytes": "d08016533ee18f1b06d83182fcf4f7c6232f896ac59cb01f96bd187c849e6764",
+      "sizeBytes": 22897
+    },
+    {
+      "path": "used-contract-stable-comparison.json",
+      "sha256Bytes": "0ffc332747cd8c665e27cdb82b14c9222a88f800aaa026fce536cbae0bca6048",
+      "sizeBytes": 5089
+    }
+  ],
+  "artifactCount": 44,
+  "runtimeReferencesOnly": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-editor-stream-upload\\runs\\01\\candidate.jar",
+      "sha256Bytes": "c7920836e05173b98401e263e1b80beec2d43f5d29e42872b558a644f2f8b99a",
+      "excludedFromFormalGit": true
+    }
+  ],
+  "acceptedEvidencePath": "runs/01/accepted-evidence.json",
+  "acceptedEvidenceSha256": "54dae58fbdb38534b7b5c6934d2e9c12c823c5094f4b985ee7e9ad1a52f33be6",
+  "sourceCandidates": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-editor-protocol.py",
+      "baseLfSha256": "85efcbef79934a5444fa53f417a9f2f949d4ea4ee38e8b232418c07f95fcaaae",
+      "candidateLfSha256": "cf0cd7c2a1d3fdfa1b8232035d175ace1851bef6ae22b918c790acaaa0630abc",
+      "changed": true
+    },
+    {
+      "path": "desktop/tools/verify-upstream-dynamic-editor-protocol.py",
+      "baseLfSha256": "b15f19eb220550ec18e7f66806deba9d1e10c889f252932f0e005eb03f6d34a4",
+      "candidateLfSha256": "b15f19eb220550ec18e7f66806deba9d1e10c889f252932f0e005eb03f6d34a4",
+      "changed": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "baseLfSha256": "a7a6084a0b9f688f847bf22c82b0351b7740551ddbb4e108dbd391f911d7df30",
+      "candidateLfSha256": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2",
+      "changed": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "baseLfSha256": "84389c917a95da7d5f4626565785f7ccec7e947b807ee1dbe0d45744edc012eb",
+      "candidateLfSha256": "ce08f0d5703f2b447dfcc64db56636bfa696cb39e7584969bb69b93d2f6b5aff",
+      "changed": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHost.kt",
+      "baseLfSha256": "7a4e8a76945d923dc6bcc1ff1d10ee623253330e70fb04c932424ee458a2c718",
+      "candidateLfSha256": "28235cfe6d786e82804149265ab4d3ce61df433f378c628997bb015246c55b49",
+      "changed": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorRoot.kt",
+      "baseLfSha256": "7b8848caec0b6d19be856b90f0ca8e76858ea28383a2d97aa4daf10429e99234",
+      "candidateLfSha256": "e01961364d0f4ae063b85e94f2026b1c00d2f37a051b9f1fd4ffd07f81414602",
+      "changed": true
+    }
+  ],
+  "MainChanged": false,
+  "sharedGradle": false
+}

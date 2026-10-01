@@ -42,4 +42,6 @@ data class ImagePreviewSourceAnchor(
     val cornerRadiusDp: Float,
     /** Bounds for the other thumbnails in this same gallery, keyed by preview page index. */
     val galleryRects: Map<Int, Rect> = emptyMap(),
+    /** 稳定身份键（如图片 URL）：预览期间隐藏原位卡片优先按它匹配，几何判定兜底。 */
+    val sourceKey: String? = null,
 )

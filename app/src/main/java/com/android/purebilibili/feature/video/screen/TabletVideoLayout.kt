@@ -465,6 +465,9 @@ internal fun TabletVideoLayout(
                                     onSubtitleTrackSelected = playbackActions.selectSubtitleTrack,
                                     onDanmakuInputClick = playbackActions.showDanmakuSendDialog,
                                     onLikeDanmaku = playbackActions.likeDanmaku,
+                                    onLikeDanmakuToggle = playbackActions.likeDanmakuToggle,
+                                    likedDanmakuIds = playbackActions.likedDanmakuIds,
+                                    onReportDanmaku = playbackActions.reportDanmaku,
                                     onRecallDanmaku = playbackActions.recallDanmaku,
                                 ),
                             )
@@ -1071,6 +1074,14 @@ internal fun TabletSecondaryContent(
                                     bottom = 104.dp,
                                 )
                             ) {
+                            commentState.voteCard?.let { card ->
+                                item(key = "tablet_vote_${card.voteId}") {
+                                    VideoCommentVoteCard(
+                                        card = card,
+                                        modifier = Modifier.fillMaxWidth().padding(12.dp),
+                                    )
+                                }
+                            }
                             items(
                                 items = commentState.replies,
                                 key = { "reply_${it.rpid}" },
@@ -1623,7 +1634,7 @@ private fun ScrollableVideoInfoSection(
                                 color = MaterialTheme.colorScheme.onSurface,
                                 maxLines = 2,
                                 overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-                                lineHeight = 16.sp
+
                             )
                             Spacer(modifier = Modifier.height(2.dp))
                             AppText(

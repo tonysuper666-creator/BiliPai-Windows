@@ -955,10 +955,16 @@ interface BilibiliApi {
 
     @GET("x/copyright-music-publicity/bgm/detail")
     suspend fun getBgmDetail(
-        @Query("music_id") musicId: String,
-        @Query("aid") aid: Long,
-        @Query("cid") cid: Long
+        @QueryMap params: Map<String, String>
     ): com.android.purebilibili.data.model.response.BgmDetailResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @POST("x/copyright-music-publicity/bgm/wish/update")
+    suspend fun updateBgmWish(
+        @retrofit2.http.Field("music_id") musicId: String,
+        @retrofit2.http.Field("state") state: Int,
+        @retrofit2.http.Field("csrf") csrf: String
+    ): SimpleApiResponse
 
     @GET("x/copyright-music-publicity/bgm/recommend_list")
     suspend fun getBgmRecommendList(
@@ -967,6 +973,12 @@ interface BilibiliApi {
         @Query("cid") cid: Long,
         @Query("pn") pn: Int = 1,
         @Query("ps") ps: Int = 5
+    ): com.android.purebilibili.data.model.response.BgmRecommendListResponse
+
+    // 音乐详情页与 PiliPlus 一致，取完整列表而非视频内发现音乐的分页窗口。
+    @GET("x/copyright-music-publicity/bgm/recommend_list")
+    suspend fun getAllBgmRecommendList(
+        @Query("music_id") musicId: String
     ): com.android.purebilibili.data.model.response.BgmRecommendListResponse
 
     @GET("x/stein/edgeinfo_v2")
@@ -1050,6 +1062,27 @@ interface BilibiliApi {
 
     @GET
     suspend fun getDanmakuSpecialDm(@retrofit2.http.Url url: String): ResponseBody
+
+    // [新增] 云端弹幕屏蔽规则列表
+    @retrofit2.http.GET("x/dm/filter/user")
+    suspend fun getDanmakuFilterRules(): DanmakuFilterRulesResponse
+
+    // [新增] 添加云端弹幕屏蔽规则 (type: 0=关键词, 1=正则, 2=UID crc32 hex)
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("x/dm/filter/user/add")
+    suspend fun addDanmakuFilterRule(
+        @retrofit2.http.Field("type") type: Int,
+        @retrofit2.http.Field("filter") filter: String,
+        @retrofit2.http.Field("csrf") csrf: String
+    ): DanmakuFilterAddResponse
+
+    // [新增] 删除云端弹幕屏蔽规则
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("x/dm/filter/user/del")
+    suspend fun deleteDanmakuFilterRule(
+        @retrofit2.http.Field("ids") ids: Long,
+        @retrofit2.http.Field("csrf") csrf: String
+    ): DanmakuActionResponse
 
     // [新增] 打分弹幕提交 (x/v2/dm/command/grade/post)
     // 互动投票/打分弹幕的提交端点；grade_score 为偶数，最大 10

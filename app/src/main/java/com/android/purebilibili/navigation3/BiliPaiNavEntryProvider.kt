@@ -104,6 +104,8 @@ internal fun NavEntryBuilder.biliPaiNavEntries(
         swipeDismiss = NavSwipeDirection.None,
         content = content,
     )
+    entry<BiliPaiNavKey.WeeklySeries>(content = content)
+    entry<BiliPaiNavKey.BgmDetail>(content = content)
     entry<BiliPaiNavKey.MusicDetail>(
         transition = predictiveBackExcludedTransition,
         swipeDismiss = NavSwipeDirection.None,

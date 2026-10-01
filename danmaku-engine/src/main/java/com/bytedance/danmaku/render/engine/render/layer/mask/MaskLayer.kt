@@ -61,7 +61,7 @@ class MaskLayer: IRenderLayer {
     override fun addItems(playTime: Long, list: List<DrawItem<DanmakuData>>) {
         if (list.isNotEmpty()) {
             mCurrentItem?.let(::releaseItem)
-            list.dropLast(1).forEach(::releaseItem)
+            for (index in 0 until list.lastIndex) releaseItem(list[index])
             mCurrentItem = list.last()
             (mCurrentItem as? MaskDrawItem)?.let {
                 generateDrawPath(it)

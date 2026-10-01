@@ -4,6 +4,26 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.theme.AppUiStyle
 
+internal data class HomeTopSearchRowMetrics(
+    val height: Dp,
+    val tabsSpacing: Dp,
+)
+
+/** Resolve reserved search-row space from the same visibility rules used by HomeHeader. */
+internal fun resolveHomeTopSearchRowMetrics(
+    configuredHeight: Dp,
+    configuredTabsSpacing: Dp,
+    bottomBarSearchEnabled: Boolean,
+    hideTopTabs: Boolean,
+): HomeTopSearchRowMetrics {
+    val searchLivesInTopChrome = !bottomBarSearchEnabled || hideTopTabs
+    return if (searchLivesInTopChrome) {
+        HomeTopSearchRowMetrics(configuredHeight, configuredTabsSpacing)
+    } else {
+        HomeTopSearchRowMetrics(0.dp, 0.dp)
+    }
+}
+
 /**
  * 顶 Tab 与首个内容的紧凑收紧量。
  *

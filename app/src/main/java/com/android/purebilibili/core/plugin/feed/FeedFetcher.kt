@@ -183,7 +183,7 @@ suspend fun loadFeedSources(
                     .onFailure { error -> errors += friendlyFeedError(source.title, error) }
                 publish()
             }
-            withContext(Dispatchers.Main) { onUpdate(snapshot) }
+            withContext(Dispatchers.Main.immediate) { onUpdate(snapshot) }
         }
     }.awaitAll()
     synchronized(items) { publish() }

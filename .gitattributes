@@ -38,3 +38,7 @@ desktop/verification/dynamic-detail-container/** -text
 desktop/verification/dynamic-media/** -text
 
 desktop/verification/image-saving/** -text
+desktop/verification/upstream-v023/** -text
+desktop/third-party/google-cast-v2/licenses/** -text
+desktop/src/main/resources/licenses/google-cast-v2/** -text
+desktop/verification/stable-source-integration/** -text

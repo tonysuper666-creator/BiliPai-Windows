@@ -207,10 +207,12 @@ object AccountSessionStore {
         accounts: List<StoredAccountSession>
     ) {
         val payload = json.encodeToString(accounts)
-        context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .putString(KEY_ACCOUNTS, SessionStorageCipher.encrypt(payload))
-            .apply()
+        SessionStorageCipher.encrypt(payload)?.let { encrypted ->
+            context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putString(KEY_ACCOUNTS, encrypted)
+                .apply()
+        }
     }
 
     private fun setActiveAccountMid(context: Context, mid: Long) {

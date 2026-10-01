@@ -1,0 +1,875 @@
+{
+  "scope": "Prepared complete stable editor UI producer plus 18-image adapter only",
+  "fixedStableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifactCount": 167,
+  "artifacts": [
+    {
+      "path": "CapacityFixture.kt",
+      "sha256Bytes": "60e2547b4e51d67f472c29f53f0d243e9823eadb73caa6b99e82d1c0c3170c15",
+      "sizeBytes": 4570
+    },
+    {
+      "path": "audit.py",
+      "sha256Bytes": "7cdb87cf40191dc6272b7604c69c5b38602170eb765f1f5f20e479631c075f3e",
+      "sizeBytes": 10906
+    },
+    {
+      "path": "candidate-source-inventory.json",
+      "sha256Bytes": "ae023efaae31a5d95240b272c0a629d9524e88fbd0b10907897912870c7357b5",
+      "sizeBytes": 1409
+    },
+    {
+      "path": "candidate.patch",
+      "sha256Bytes": "78830251eda2ef4335f8dafeca35cdba2ed4e24e58b832f1bb94ef962190af34",
+      "sizeBytes": 12968
+    },
+    {
+      "path": "comment-image-boundary-audit.json",
+      "sha256Bytes": "bdc495c462d4b3e6d2adb970cedf4008fcecad35d493667d3a728a45373596e7",
+      "sizeBytes": 11016
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "7b4319599214bdabb88088fb90d3ffdc574974b6f281d32e1beabda4b39fb1d5",
+      "sizeBytes": 7376
+    },
+    {
+      "path": "full-composer-reconstituted-original-body.kt",
+      "sha256Bytes": "4c3572bd566235e6bea167dc3867df8f95c48ae888a0541a569db7cc08aea983",
+      "sizeBytes": 16119
+    },
+    {
+      "path": "full-composer-retention-proof.json",
+      "sha256Bytes": "884e234e13eca515055427729c86b88f218fa1353efe5e0edcd4c9cf18a73af2",
+      "sizeBytes": 852
+    },
+    {
+      "path": "full-editor-ui-retention-proof.json",
+      "sha256Bytes": "7c21a6658d274304a483ea59631f7ae4dd65c658b7d3a7b47f362bb67a2dc5da",
+      "sizeBytes": 1928
+    },
+    {
+      "path": "generated-inventory.json",
+      "sha256Bytes": "6eead920a2fb5057a351502f36214721d163b4f4f7f648056313954bf1632a79",
+      "sizeBytes": 2898
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicPublishVerification.kt",
+      "sha256Bytes": "08c60219806e8940fbe4df9be67b573d91464bd3933869da067ca6bdcc1623a2",
+      "sizeBytes": 1073
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateReserveDialog.kt",
+      "sha256Bytes": "5c2f7a8490b9ad29d89d7b4f64216c4b9720802b97803978e4f891f471a0c206",
+      "sizeBytes": 5438
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateVoteDialog.kt",
+      "sha256Bytes": "77f30c2a2fa21184c0278e445b79093ee83c5599605a6dd4eb055a6f7825556b",
+      "sizeBytes": 7413
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineCommentHeader.kt",
+      "sha256Bytes": "b118a7cdf0d464886f9b910494696e4d2ac38215e656668f4e1690995ccbd48b",
+      "sizeBytes": 4420
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposer.kt",
+      "sha256Bytes": "698f7bda2eae2a5a92ecd1e4f9a1bab639e099c5c06718b9968cd3e224d9e47c",
+      "sizeBytes": 20388
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickers.kt",
+      "sha256Bytes": "46666bc7ba3cd9f078aced7dfd6b8449c6502a961a57ed1595e0f3fb9559be25",
+      "sizeBytes": 9442
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDynamicRichCommentPolicy.kt",
+      "sha256Bytes": "cddea7e6127b342388b193794a989fa5afc4d60f12d446657aae7c45ecd36e0c",
+      "sizeBytes": 39744
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDynamicCommentModels.kt",
+      "sha256Bytes": "5f83644477ee9b2f4ac40d08141e31eb6f0a6321658bd9792d5e4fe178f524a0",
+      "sizeBytes": 1441
+    },
+    {
+      "path": "generated/original-editor-source-bodies.json",
+      "sha256Bytes": "4fa12fe414b8b57d9d5cb02220090c5aad11ca2b906bc140c1adb3c4a6d7a2fd",
+      "sizeBytes": 43598
+    },
+    {
+      "path": "generated/source-identity.json",
+      "sha256Bytes": "0680b97c2b44fe784e2e794a4cbe3e76fb9153eb738a2ca7b9410c866b4a4951",
+      "sizeBytes": 10758
+    },
+    {
+      "path": "gradle-input-only.patch",
+      "sha256Bytes": "03da61de347734253ad487e3f453f2e8fd40e3208d0b8d046b8ffc5d26d0c35f",
+      "sizeBytes": 885
+    },
+    {
+      "path": "integration-boundaries.json",
+      "sha256Bytes": "a8917188a603a374c51b432e5cd8a1190b7d5e65371aec00001f8fde7fe8bf7a",
+      "sizeBytes": 4970
+    },
+    {
+      "path": "method-diffs/CommentRepository/contentLength#1.diff",
+      "sha256Bytes": "13c33c2a3e703f388058b33a2ffb8e89df512a4ddb747239db1e4ea41487d676",
+      "sizeBytes": 285
+    },
+    {
+      "path": "method-diffs/CommentRepository/contentType#1.diff",
+      "sha256Bytes": "c9ab29d5ddba3f7b80117308ae25c7008467bb88e009b4ee6774207c18396b0e",
+      "sizeBytes": 280
+    },
+    {
+      "path": "method-diffs/CommentRepository/getCommentsForSubject#1.diff",
+      "sha256Bytes": "df2afc56fc52c6de4a45512e647bf84e9888247eaaa21568e8b4197b214dcce8",
+      "sizeBytes": 709
+    },
+    {
+      "path": "method-diffs/CommentRepository/isOneShot#1.diff",
+      "sha256Bytes": "8b05ff19c1994abbc2f7b14fa4a06755fbcbbba6329dd78ab7b7c3db2c133d14",
+      "sizeBytes": 267
+    },
+    {
+      "path": "method-diffs/CommentRepository/queryContentImageSize#1.diff",
+      "sha256Bytes": "5cee49dd3295103d1238cef2e957ae992052621fc0c7312b1995bb903c56ef84",
+      "sizeBytes": 703
+    },
+    {
+      "path": "method-diffs/CommentRepository/uploadCommentImage#1.diff",
+      "sha256Bytes": "ba92abe9e015ac238b9ee7bf283ddbd7aa9e88214f9a79567bdb626ab3219c0b",
+      "sizeBytes": 2686
+    },
+    {
+      "path": "method-diffs/CommentRepository/uploadCommentImage#2.diff",
+      "sha256Bytes": "9927e3a055b132725ab5faad86e3491a4b0b8612ca82ef1364cd3ee42b60f0b5",
+      "sizeBytes": 1805
+    },
+    {
+      "path": "method-diffs/CommentRepository/uploadCommentImagePart#1.diff",
+      "sha256Bytes": "9c411cb469a2f6e53765760d6ef92b972ceee4418f8181e8163b379a795593fb",
+      "sizeBytes": 2412
+    },
+    {
+      "path": "method-diffs/CommentRepository/writeTo#1.diff",
+      "sha256Bytes": "9a12ee3229ca817bb0e39f8a537cb7c29e57a7f321acba979d06ca611a4dccca",
+      "sizeBytes": 436
+    },
+    {
+      "path": "method-diffs/DynamicCommentSheet/CommentItem#1.diff",
+      "sha256Bytes": "31b9d06e1d642ba67ffcd5f5868825e95472262a8edeb22bee7d35e3b14d617d",
+      "sizeBytes": 1962
+    },
+    {
+      "path": "method-diffs/DynamicCommentSheet/DynamicCommentComposer#1.diff",
+      "sha256Bytes": "9c65772e94ae2aabdaa6515dd00348b31917f7a8a36b1b2e470105c10b25bb93",
+      "sizeBytes": 15804
+    },
+    {
+      "path": "method-diffs/DynamicCommentSheet/DynamicCommentOverlayHost#1.diff",
+      "sha256Bytes": "6a517edccbc02b26b79edbca47d09b23d4a763e21a109815139072b76f2774dc",
+      "sizeBytes": 1057
+    },
+    {
+      "path": "method-diffs/DynamicCommentSheet/DynamicCommentSheet#1.diff",
+      "sha256Bytes": "a3758fe2e2eed0f86df2ab8cd3f4b947833e78ba582b09c502e2400cd749585d",
+      "sizeBytes": 1838
+    },
+    {
+      "path": "method-diffs/DynamicCommentSheet/DynamicInlineCommentComposer#1.diff",
+      "sha256Bytes": "6588d00feeceb5028226fa87dc5738fed615f82fb0b7f01c9b698915cf75b3fd",
+      "sizeBytes": 1511
+    },
+    {
+      "path": "method-diffs/DynamicCommentSheet/submit#1.diff",
+      "sha256Bytes": "992a893148abdcabe2ce1eb22530c68f810af10bb1a48b980491ac359f9d2fca",
+      "sizeBytes": 480
+    },
+    {
+      "path": "method-diffs/DynamicCreateRepository/uploadImage#1.diff",
+      "sha256Bytes": "1cb5efcf9e691af913776901128140c0cf31a7ac37c2e1e39f831c3f95205835",
+      "sizeBytes": 1237
+    },
+    {
+      "path": "method-diffs/DynamicDetailScreen/DynamicDetailScreen#1.diff",
+      "sha256Bytes": "e13c23432bd836914769c2cc4888b56236067f578609a25f696570181292c724",
+      "sizeBytes": 1598
+    },
+    {
+      "path": "method-diffs/DynamicPublishComposer/DynamicPublishComposer#1.diff",
+      "sha256Bytes": "bed19c8dd66d381be6b0e372da0b65ca2766e1a3c791417a2325099c741a5359",
+      "sizeBytes": 21622
+    },
+    {
+      "path": "method-diffs/DynamicPublishComposer/PublishAttachedItem#1.diff",
+      "sha256Bytes": "5cfb63c400476286cabb9559e19461e7cd533f3c0dc262dd27092d5d1b492e34",
+      "sizeBytes": 1200
+    },
+    {
+      "path": "method-diffs/DynamicPublishComposer/submitDraft#1.diff",
+      "sha256Bytes": "1ac7317d1ea23c7bc0f4739b6313db4e4b72bacfe67fc789de41fc8e316cc080",
+      "sizeBytes": 900
+    },
+    {
+      "path": "method-diffs/DynamicViewModel/postComment#1.diff",
+      "sha256Bytes": "8b4a760f7252037fa074271b9a61664af87ddacc05d77aafc840fbeb1722040b",
+      "sizeBytes": 2076
+    },
+    {
+      "path": "method-diffs/DynamicViewModel/uploadCommentPictures#1.diff",
+      "sha256Bytes": "cdcc442e64b9c438b370691afef9354adb72527435ea67c33fd6b714c0ec3f42",
+      "sizeBytes": 1398
+    },
+    {
+      "path": "method-diffs/FloatingBottomBarGeometry/resolveFloatingDockIndicatorHeightDp#1.diff",
+      "sha256Bytes": "edf4653288191a4cef3e9c19c8b8a95120ebc44fc727b81222ceb69fd74a95f8",
+      "sizeBytes": 1560
+    },
+    {
+      "path": "method-diffs/ReplyComponents/CommentPictures#1.diff",
+      "sha256Bytes": "8d7dbb34797f1ac019c3d4e0cc93b5f27bbbf684864304bdbe0aef0f1f9c627a",
+      "sizeBytes": 5829
+    },
+    {
+      "path": "method-diffs/ReplyComponents/ReplyItemView#1.diff",
+      "sha256Bytes": "94cf698315a5045f74bb1e8ba76b94481de8f457eeaf3c532c86ebae486573d5",
+      "sizeBytes": 1835
+    },
+    {
+      "path": "method-diffs/ReplyComponents/isGif#1.diff",
+      "sha256Bytes": "e90befa755174d75867458a2490b7546cbe3fb11dbcbdafcfe7ea399d9d195c1",
+      "sizeBytes": 5807
+    },
+    {
+      "path": "method-diffs/SubReplyDetailComponents/SubReplyDetailItem#1.diff",
+      "sha256Bytes": "7617ed3f9526abc7ae5f17c9e4e0ba941e206d1acbdc46f317d0aaaf37f9f3b5",
+      "sizeBytes": 922
+    },
+    {
+      "path": "method-diffs/VideoCommentAppearance/resolveVideoCommentFontSize#1.diff",
+      "sha256Bytes": "ee9fc7b7fcebc0523f4299a13ca99675b2f6503420b119392df2a88aa079171e",
+      "sizeBytes": 771
+    },
+    {
+      "path": "method-diffs/VideoCommentViewModel/loadComments#1.diff",
+      "sha256Bytes": "6d43434fc0879294f9d3846e2d8ba660971a0cc3045196dbba6741ff3ddfd12f",
+      "sizeBytes": 1117
+    },
+    {
+      "path": "method-diffs/VideoCommentViewModel/reloadCommentsFromStart#1.diff",
+      "sha256Bytes": "2aace3219bcf42a49d98b6b761ed69edae48e14fabfa2771e17b90e811d3c842",
+      "sizeBytes": 559
+    },
+    {
+      "path": "method-diffs/VideoCommentViewModel/uploadCommentPictures#1.diff",
+      "sha256Bytes": "e9491c9a999ec83ca96f9705b5fcc00c61fcda85a63d0cff58925d11c45514ea",
+      "sizeBytes": 1423
+    },
+    {
+      "path": "method-token-original-diff.json",
+      "sha256Bytes": "3920dbb6b06da6e9935e052948399468dc2500f1bda44690b21fd932729d305d",
+      "sizeBytes": 1654124
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/core/util/GalleryVisualMediaContracts.kt",
+      "sha256Bytes": "ec395620e07c73be2d830d274cdebb525bba07fe607f44b235634ec6c4a84549",
+      "sizeBytes": 3170
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/data/model/response/DynamicCreateModels.kt",
+      "sha256Bytes": "319289227083e60e04943ab9bb15c0c500dd5bab452ca658f1372937cda4afaa",
+      "sizeBytes": 6416
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256Bytes": "80fe4b7dc2d388641b3b5a5cf0cb287567274d91379816131fd1c354707cd998",
+      "sizeBytes": 69461
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "sha256Bytes": "f204c21e0e5a21e83b5b2b20ce59d822f8ac74cc8f109663da408e250506a373",
+      "sizeBytes": 12040
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicCommentLoadPolicy.kt",
+      "sha256Bytes": "7325a91f8adddc7701957350a248553ef322f37af07ef03caa0b228a22541447",
+      "sizeBytes": 4417
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicCommentReplyPolicy.kt",
+      "sha256Bytes": "fe4b90db80b4ee303b0f85ddc2359a1a31c13dbc06158caf6306906153e2efa2",
+      "sizeBytes": 4936
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "sha256Bytes": "eb0eefcbfb12d5ee5e06d312095797fcf67cbf7264fb32040cd4391f38d1d0cf",
+      "sizeBytes": 46697
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "sha256Bytes": "9981e964c6b90b51b93bfc7808490043fe60b460a8cc6491027afbbe2d0d13f5",
+      "sizeBytes": 97013
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicAdaptiveSegmentedControl.kt",
+      "sha256Bytes": "a18b0abaea2466d176809280036055288a0104fbe38478517c2f5e1ae7ef4208",
+      "sizeBytes": 2329
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentActionPolicy.kt",
+      "sha256Bytes": "03dd33c10976d1c0504d759d0b2045765f04f869e05b5b33c9a752d06bcf1581",
+      "sizeBytes": 1566
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
+      "sha256Bytes": "cbc5bbcabd8ef19c6c73fb13dca6ff7248bf208cc8128a6dd240fc9f93233c05",
+      "sizeBytes": 67929
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateReserveDialog.kt",
+      "sha256Bytes": "4f1ae75ed1d8779ef2ecb0c53808fa63860dfc906de45c0e99dededa7dd80191",
+      "sizeBytes": 5920
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateVoteDialog.kt",
+      "sha256Bytes": "9c25035c25bc149016db553e2a916516fd4dc63ac14f65862f17b5b24ef47e4e",
+      "sizeBytes": 7030
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposer.kt",
+      "sha256Bytes": "875a12047cb71c0cdfcf893538f56f3b20ae2e75894a6326c66d264a3175bad1",
+      "sizeBytes": 16343
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishPickers.kt",
+      "sha256Bytes": "be5e3aa6604fe22801c414366da78afb15184082dee71f548dd15a243646609a",
+      "sizeBytes": 8922
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "sha256Bytes": "c14981b9fa8fec1795598356d7f118b08cd3dedc248b074fa4c9b91075a08e10",
+      "sizeBytes": 30498
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "sha256Bytes": "a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad",
+      "sizeBytes": 23197
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "sha256Bytes": "78b6de6cbe2e8f401d20fa43d3ae9a8d48d95bcd0f7f47c1d4a068e271316ef6",
+      "sizeBytes": 15299
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputBar.kt",
+      "sha256Bytes": "97c0a524fb6df7685dda7efa45ba10cb7a39d8456f4dfffa90e978d25a8403ea",
+      "sizeBytes": 11617
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+      "sha256Bytes": "1a0194f25ecb50c38b100d2f3a7dacf8a09eecd22745a763dfb3519fb88dc909",
+      "sizeBytes": 121524
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt",
+      "sha256Bytes": "4dd624d29a99ad189234ed823fe3aeebd0613a49571b765f55e9bc79740a0821",
+      "sizeBytes": 68651
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt",
+      "sha256Bytes": "8f0c22cc7f0c0393218d2ff511b4a86a9171604674fecdfc054308b74a38e5e7",
+      "sizeBytes": 3242
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/SubReplySortPolicy.kt",
+      "sha256Bytes": "426ac796a1a629b900fdad1eda59010a0ff457047584932d51e1c117853734bd",
+      "sizeBytes": 852
+    },
+    {
+      "path": "original-alpha9/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "sha256Bytes": "8d637e44848bd3bfeaa29a2199d9d68aa3884665bb3650e932d405e4b220ee74",
+      "sizeBytes": 55651
+    },
+    {
+      "path": "original-alpha9/design-system/src/main/java/com/android/purebilibili/core/ui/OfficialVerifyBadgePolicy.kt",
+      "sha256Bytes": "1c3378917d1f1d554c60866e59a588e803f475162649692d9b81ed3338f08ee4",
+      "sizeBytes": 4543
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/util/GalleryVisualMediaContracts.kt",
+      "sha256Bytes": "ec395620e07c73be2d830d274cdebb525bba07fe607f44b235634ec6c4a84549",
+      "sizeBytes": 3170
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/model/response/DynamicCreateModels.kt",
+      "sha256Bytes": "319289227083e60e04943ab9bb15c0c500dd5bab452ca658f1372937cda4afaa",
+      "sizeBytes": 6416
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256Bytes": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "sizeBytes": 73462
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "sha256Bytes": "2f85544e1e973dd0e7178077ef5c1f439b798a1d86b46701803adeb2a7c0364f",
+      "sizeBytes": 11927
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicCommentLoadPolicy.kt",
+      "sha256Bytes": "7325a91f8adddc7701957350a248553ef322f37af07ef03caa0b228a22541447",
+      "sizeBytes": 4417
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicCommentReplyPolicy.kt",
+      "sha256Bytes": "fe4b90db80b4ee303b0f85ddc2359a1a31c13dbc06158caf6306906153e2efa2",
+      "sizeBytes": 4936
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "sha256Bytes": "ab0d6cf956ba9915445f421f299ea48e14a7561edd2a609973700531bf0f67b4",
+      "sizeBytes": 46845
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "sha256Bytes": "8b9186a097d15302f33e5439f28c94dd8a124235937d9fe7404a30c85731918c",
+      "sizeBytes": 98895
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicAdaptiveSegmentedControl.kt",
+      "sha256Bytes": "a18b0abaea2466d176809280036055288a0104fbe38478517c2f5e1ae7ef4208",
+      "sizeBytes": 2329
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentActionPolicy.kt",
+      "sha256Bytes": "03dd33c10976d1c0504d759d0b2045765f04f869e05b5b33c9a752d06bcf1581",
+      "sizeBytes": 1566
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
+      "sha256Bytes": "0b6c8d1589b6be0ebcec709f2c04b5154afca6411559ac3c115bce122ff26ba9",
+      "sizeBytes": 73364
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateReserveDialog.kt",
+      "sha256Bytes": "4f1ae75ed1d8779ef2ecb0c53808fa63860dfc906de45c0e99dededa7dd80191",
+      "sizeBytes": 5920
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateVoteDialog.kt",
+      "sha256Bytes": "9c25035c25bc149016db553e2a916516fd4dc63ac14f65862f17b5b24ef47e4e",
+      "sizeBytes": 7030
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposer.kt",
+      "sha256Bytes": "2321fb5c86497cd726aaa73468884c568e7f36fab9641022cb7b1df38664617c",
+      "sizeBytes": 19677
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishPickers.kt",
+      "sha256Bytes": "be5e3aa6604fe22801c414366da78afb15184082dee71f548dd15a243646609a",
+      "sizeBytes": 8922
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "sha256Bytes": "c14981b9fa8fec1795598356d7f118b08cd3dedc248b074fa4c9b91075a08e10",
+      "sizeBytes": 30498
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "sha256Bytes": "a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad",
+      "sizeBytes": 23197
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "sha256Bytes": "3446beb510a4f4164426081c9e139181b33a8cf77612c05a6198fbd994af534c",
+      "sizeBytes": 15588
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputBar.kt",
+      "sha256Bytes": "97c0a524fb6df7685dda7efa45ba10cb7a39d8456f4dfffa90e978d25a8403ea",
+      "sizeBytes": 11617
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+      "sha256Bytes": "c9897c512da820ad9fcee9b3f35c4915c556623723d5da3cc7f574b653c3c267",
+      "sizeBytes": 123295
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt",
+      "sha256Bytes": "afb7b4f99a982e7cd29dce6442ad71d59ba9ac97a2e941f2bc7b982c1b60d606",
+      "sizeBytes": 68830
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt",
+      "sha256Bytes": "70819f7697852b209898f2868b9ccc1bc55a796e1244586c61a19653d3a42f40",
+      "sizeBytes": 4816
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/SubReplySortPolicy.kt",
+      "sha256Bytes": "426ac796a1a629b900fdad1eda59010a0ff457047584932d51e1c117853734bd",
+      "sizeBytes": 852
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "sha256Bytes": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517",
+      "sizeBytes": 55780
+    },
+    {
+      "path": "original-stable/app/src/test/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposerPolicyTest.kt",
+      "sha256Bytes": "43a5b9838f9623a4c0b0c65f4b05cc07cc99b28b8a2df1ae9c3b2ce2454810dc",
+      "sizeBytes": 2278
+    },
+    {
+      "path": "original-stable/design-system/src/main/java/com/android/purebilibili/core/ui/OfficialVerifyBadgePolicy.kt",
+      "sha256Bytes": "1c3378917d1f1d554c60866e59a588e803f475162649692d9b81ed3338f08ee4",
+      "sizeBytes": 4543
+    },
+    {
+      "path": "original/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "ce08f0d5703f2b447dfcc64db56636bfa696cb39e7584969bb69b93d2f6b5aff",
+      "sizeBytes": 6363
+    },
+    {
+      "path": "original/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "sha256Bytes": "c384ef71279f9c509ddf26ba285b9b7fd90a8567fd5bfddf052cd729fed17d56",
+      "sizeBytes": 3052
+    },
+    {
+      "path": "original/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "sha256Bytes": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810",
+      "sizeBytes": 1563
+    },
+    {
+      "path": "original/desktop/tools/extract-upstream-dynamic-editor.py",
+      "sha256Bytes": "48ee4bce174611fc6271c6710711334d1a16adc65f6434b18b6f72b1b3e885ff",
+      "sizeBytes": 13429
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "9b89ad3630340ddacf9fd570b5f66584a3358ca69f8b43c715f2cd68e67a02d4",
+      "sizeBytes": 8201
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34",
+      "sizeBytes": 6364
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "sha256Bytes": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa",
+      "sizeBytes": 3053
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "sha256Bytes": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3",
+      "sizeBytes": 1565
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-editor.py",
+      "sha256Bytes": "adf02e645c163afc52ba2b63db1f2f2564a1f68cbd58dc8d37590d766cfadac7",
+      "sizeBytes": 13700
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "sha256Bytes": "4bea60a6059c1a8f7b9e42caa8ef825ef84c0c59802d852e61f41130fd07c0e7",
+      "sizeBytes": 21834
+    },
+    {
+      "path": "reconstituted-original-bodies/DynamicCreateReserveDialog.kt",
+      "sha256Bytes": "cf38c36ddd7d68948ff34680ce72125903314ad16dfeadea6bd1bd895b1da895",
+      "sizeBytes": 4549
+    },
+    {
+      "path": "reconstituted-original-bodies/DynamicCreateVoteDialog.kt",
+      "sha256Bytes": "2fd68bdd55c80ba9ff359e9d569a09b65529ebbac9269a7b9aa21b437fe65f77",
+      "sizeBytes": 5606
+    },
+    {
+      "path": "reconstituted-original-bodies/DynamicPublishPickers.kt",
+      "sha256Bytes": "41b5cdd942dc03b46e00afeb90c0898f8363e934140faac08b2f0af16a8ac107",
+      "sizeBytes": 7006
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "ad07524ba094893cdac62c2d6475ecd7d9388d2b42d2ddbc8ce06e5b9fa65116",
+      "sizeBytes": 7635
+    },
+    {
+      "path": "runs/01/compile-evidence.json",
+      "sha256Bytes": "49a6e455af4e2cda93636223555cddaacb5b7d95e1abee019b3b8158041124c2",
+      "sizeBytes": 60042
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "35a76a41baabb048b47064768a7e9a5298fa4fe0264871a6d7faf9ea78836642",
+      "sizeBytes": 26474
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "eca14a625526ff0338a0030ab97f5309eb1dd7aba8eedafb90da270c8b5350a1",
+      "sizeBytes": 1831
+    },
+    {
+      "path": "runs/01/frozen-sources/00-DesktopOriginalDynamicPublishVerification.kt",
+      "sha256Bytes": "ec4ef5f72edfdd2ba69ad1e97c0376214526759420ccd82417321652a80e2844",
+      "sizeBytes": 1051
+    },
+    {
+      "path": "runs/01/frozen-sources/01-DesktopOriginalDynamicCommentModels.kt",
+      "sha256Bytes": "46c2a12c90603eb394d1c0445a6f84307df0b6bbc70372f20c6c1a1da5394694",
+      "sizeBytes": 1406
+    },
+    {
+      "path": "runs/01/frozen-sources/02-DesktopOriginalDynamicInlineCommentHeader.kt",
+      "sha256Bytes": "b141f7ed3b0db921d3b49868c8a81324b2e018629c28be219595e733f926ed1b",
+      "sizeBytes": 4318
+    },
+    {
+      "path": "runs/01/frozen-sources/03-DesktopOriginalDynamicRichCommentPolicy.kt",
+      "sha256Bytes": "f6bbc7d1098ad7c47abde22c93a166e7cd30710ec116f2e8013f3f35e856b5a0",
+      "sizeBytes": 38673
+    },
+    {
+      "path": "runs/01/frozen-sources/04-DesktopOriginalDynamicPublishComposer.kt",
+      "sha256Bytes": "22ea87837ca9354aa209bd0c3af71f3b515593417c41bdbe691f365e198afc0a",
+      "sizeBytes": 19942
+    },
+    {
+      "path": "runs/01/frozen-sources/05-DesktopOriginalDynamicPublishPickers.kt",
+      "sha256Bytes": "fe939402c0c2ee005dafa9dbfdf7d39a9f79c04b047ceec45fa70fde7cd5951b",
+      "sizeBytes": 9214
+    },
+    {
+      "path": "runs/01/frozen-sources/06-DesktopOriginalDynamicCreateVoteDialog.kt",
+      "sha256Bytes": "364e32aa7cf6e7895156dabe92d3c520de82d285b1ce907a7c1e8b4673214c8e",
+      "sizeBytes": 7271
+    },
+    {
+      "path": "runs/01/frozen-sources/07-DesktopOriginalDynamicCreateReserveDialog.kt",
+      "sha256Bytes": "e8b2f2424715b7ea2e687eb9206bce542eb807557e0d662373d72b5a1259ce35",
+      "sizeBytes": 5315
+    },
+    {
+      "path": "runs/01/frozen-sources/08-DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34",
+      "sizeBytes": 6364
+    },
+    {
+      "path": "runs/01/frozen-sources/09-DesktopDynamicEditorWindowsPickers.kt",
+      "sha256Bytes": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa",
+      "sizeBytes": 3053
+    },
+    {
+      "path": "runs/01/frozen-sources/10-DesktopDynamicGallerySelection.kt",
+      "sha256Bytes": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3",
+      "sizeBytes": 1565
+    },
+    {
+      "path": "runs/01/frozen-sources/11-DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2",
+      "sizeBytes": 34757
+    },
+    {
+      "path": "runs/01/frozen-sources/12-DesktopOriginalDynamicEditorHost.kt",
+      "sha256Bytes": "28235cfe6d786e82804149265ab4d3ce61df433f378c628997bb015246c55b49",
+      "sizeBytes": 3550
+    },
+    {
+      "path": "runs/01/frozen-sources/13-DesktopDynamicEditorRoot.kt",
+      "sha256Bytes": "e01961364d0f4ae063b85e94f2026b1c00d2f37a051b9f1fd4ffd07f81414602",
+      "sizeBytes": 5139
+    },
+    {
+      "path": "runs/01/frozen-sources/14-DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+      "sizeBytes": 1664
+    },
+    {
+      "path": "runs/01/frozen-sources/15-CapacityFixture.kt",
+      "sha256Bytes": "60e2547b4e51d67f472c29f53f0d243e9823eadb73caa6b99e82d1c0c3170c15",
+      "sizeBytes": 4570
+    },
+    {
+      "path": "runs/01/run.args",
+      "sha256Bytes": "eb7ee35b34e895205773c4ef91b386333bfbc85b714ae1685e512d7c10312bd7",
+      "sizeBytes": 23666
+    },
+    {
+      "path": "runs/01/run.log",
+      "sha256Bytes": "23264da508e6a2db47e9952c0b5e28c8d4fe16668b7c8a23e8b878bc18d8f67d",
+      "sizeBytes": 229
+    },
+    {
+      "path": "runs/01/runtime-process.json",
+      "sha256Bytes": "ed41fee4dd1b257ddb81018aab32053e3775aa4b7c0af16379552666a96eccd0",
+      "sizeBytes": 198
+    },
+    {
+      "path": "runs/02/accepted-evidence.json",
+      "sha256Bytes": "c54c02de1f6b95616c4aaee057692c71f4d9921511445f15afae94ff520a3b82",
+      "sizeBytes": 18293
+    },
+    {
+      "path": "runs/02/compile-evidence.json",
+      "sha256Bytes": "5e190955bffe55bafcc25c966ab5c897d109c968308760247c745cf1c5abab96",
+      "sizeBytes": 64626
+    },
+    {
+      "path": "runs/02/compile.args",
+      "sha256Bytes": "cd68ff7e29e98a7cca8c9d0ab86a7626a20edaaecdf3fb48d7fb5120f7ca24b3",
+      "sizeBytes": 26426
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "7a5d25412ffbc9881e8e3c45f0d3da3dc15e483bc7faf3b41f68c41d39b38980",
+      "sizeBytes": 1807
+    },
+    {
+      "path": "runs/02/frozen-sources/CapacityFixture.kt",
+      "sha256Bytes": "60e2547b4e51d67f472c29f53f0d243e9823eadb73caa6b99e82d1c0c3170c15",
+      "sizeBytes": 4570
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2",
+      "sizeBytes": 34757
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopDynamicEditorRoot.kt",
+      "sha256Bytes": "e01961364d0f4ae063b85e94f2026b1c00d2f37a051b9f1fd4ffd07f81414602",
+      "sizeBytes": 5139
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34",
+      "sizeBytes": 6364
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopDynamicEditorWindowsPickers.kt",
+      "sha256Bytes": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa",
+      "sizeBytes": 3053
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopDynamicGallerySelection.kt",
+      "sha256Bytes": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3",
+      "sizeBytes": 1565
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopOriginalDynamicCommentModels.kt",
+      "sha256Bytes": "46c2a12c90603eb394d1c0445a6f84307df0b6bbc70372f20c6c1a1da5394694",
+      "sizeBytes": 1406
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopOriginalDynamicCreateReserveDialog.kt",
+      "sha256Bytes": "e8b2f2424715b7ea2e687eb9206bce542eb807557e0d662373d72b5a1259ce35",
+      "sizeBytes": 5315
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopOriginalDynamicCreateVoteDialog.kt",
+      "sha256Bytes": "364e32aa7cf6e7895156dabe92d3c520de82d285b1ce907a7c1e8b4673214c8e",
+      "sizeBytes": 7271
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopOriginalDynamicEditorHost.kt",
+      "sha256Bytes": "28235cfe6d786e82804149265ab4d3ce61df433f378c628997bb015246c55b49",
+      "sizeBytes": 3550
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopOriginalDynamicInlineCommentHeader.kt",
+      "sha256Bytes": "b141f7ed3b0db921d3b49868c8a81324b2e018629c28be219595e733f926ed1b",
+      "sizeBytes": 4318
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopOriginalDynamicPublishComposer.kt",
+      "sha256Bytes": "22ea87837ca9354aa209bd0c3af71f3b515593417c41bdbe691f365e198afc0a",
+      "sizeBytes": 19942
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopOriginalDynamicPublishPickers.kt",
+      "sha256Bytes": "fe939402c0c2ee005dafa9dbfdf7d39a9f79c04b047ceec45fa70fde7cd5951b",
+      "sizeBytes": 9214
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopOriginalDynamicPublishVerification.kt",
+      "sha256Bytes": "ec4ef5f72edfdd2ba69ad1e97c0376214526759420ccd82417321652a80e2844",
+      "sizeBytes": 1051
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopOriginalDynamicRichCommentPolicy.kt",
+      "sha256Bytes": "f6bbc7d1098ad7c47abde22c93a166e7cd30710ec116f2e8013f3f35e856b5a0",
+      "sizeBytes": 38673
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopOriginalGalleryResultPolicy.kt",
+      "sha256Bytes": "4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a",
+      "sizeBytes": 1664
+    },
+    {
+      "path": "runs/02/proof/result.json",
+      "sha256Bytes": "4d73a6283858fa3a6b3fe54bdff5b4150aa5f257c719df3b5e2e99f6ac63e183",
+      "sizeBytes": 242
+    },
+    {
+      "path": "runs/02/run.args",
+      "sha256Bytes": "2c103b377464ca349a8e943d18b5c1a94d1f593a93d1050f16ffd2f1a0689c11",
+      "sizeBytes": 23666
+    },
+    {
+      "path": "runs/02/run.log",
+      "sha256Bytes": "dd22690115cf38c9bdfe2a4506ecab741dd68d91b328c9764c5e61c9f8010189",
+      "sizeBytes": 86
+    },
+    {
+      "path": "runs/02/runtime-process.json",
+      "sha256Bytes": "1ab2ab7158e96679a0915866fe8bac1a2732acadd6698b1c17ed83e84d676733",
+      "sizeBytes": 198
+    },
+    {
+      "path": "selected-editor-source-summary.json",
+      "sha256Bytes": "2793e7a184b1eb63e3e1789d9ab86667f66ffd2a503b2d6cd08aa79f761a45de",
+      "sizeBytes": 78175
+    },
+    {
+      "path": "source-delta.json",
+      "sha256Bytes": "f543ed1038ae80ed5ced479f0ff695d35f4ada936f48809c3a072246b0a01e35",
+      "sizeBytes": 23159
+    }
+  ],
+  "sourceCandidates": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-editor.py",
+      "baseLfSha256": "48ee4bce174611fc6271c6710711334d1a16adc65f6434b18b6f72b1b3e885ff",
+      "candidateLfSha256": "adf02e645c163afc52ba2b63db1f2f2564a1f68cbd58dc8d37590d766cfadac7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "baseLfSha256": "ce08f0d5703f2b447dfcc64db56636bfa696cb39e7584969bb69b93d2f6b5aff",
+      "candidateLfSha256": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "baseLfSha256": "c384ef71279f9c509ddf26ba285b9b7fd90a8567fd5bfddf052cd729fed17d56",
+      "candidateLfSha256": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "baseLfSha256": "e2685f411ac70b0386f4db6e1cb44cef3616143e51bbe313f5bf7901dbcd1810",
+      "candidateLfSha256": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3"
+    }
+  ],
+  "acceptedEvidencePath": "runs/02/accepted-evidence.json",
+  "acceptedEvidenceSha256": "c54c02de1f6b95616c4aaee057692c71f4d9921511445f15afae94ff520a3b82",
+  "runtimeReferencesOnly": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-editor-full-ui\\runs\\02\\candidate.jar",
+      "sha256Bytes": "9e865aef8d29e820d73f79a6705b5c551e07208b5710ed14d72ac6c64136a15f",
+      "excludedFromFormalGit": true
+    }
+  ],
+  "MainWrittenByThisLane": false,
+  "sharedGradle": false
+}

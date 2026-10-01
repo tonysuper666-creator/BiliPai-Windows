@@ -1,0 +1,11 @@
+--- a/desktop/build.gradle.kts
++++ b/desktop/build.gradle.kts
+@@ -433,7 +433,7 @@
+     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-diagnostics.py",
+         "--repo", repositoryRoot.absolutePath,
+         "--output", layout.buildDirectory.dir("generated/diagnostics/sources").get().asFile.absolutePath)
+-    inputs.files("tools/extract-upstream-diagnostics.py", "tools/extract-upstream-plugins.py",
++    inputs.files("tools/extract-upstream-diagnostics.py", "tools/extract-upstream-dynamic-reply-protocol.py", "tools/extract-appearance-platform.py", "upstream-sources.json", "tools/extract-upstream-plugins.py",
+         "tools/extract-upstream-media.py", "tools/extract-upstream-api.py",
+         "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
+     inputs.files(sources.filter { "settings-local-diagnostics-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }

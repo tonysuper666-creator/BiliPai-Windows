@@ -1,0 +1,558 @@
+{
+  "status": "FROZEN prepared only",
+  "cohort": "original stable comment9 source/transport first closure",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceAuditSha256Bytes": "f5edb7b00b52726e4dac73dffa4645d7df43a517225e54adb6c30476fdd4aefe",
+  "narrowCompileResultSha256Bytes": "d9deac3c5b5657e361414beb0923ac3398e5d7c6f152d8ce5a8cca2b4b5ed4b5",
+  "focusedAcceptedResultSha256Bytes": "b9407aae5c1dc60dcf405f0a0f065c17a69c3f3f107cd910aa8c685a119ba6b6",
+  "handoffReviewSha256Bytes": "3cb069de0c4ef2dca2548f67cf4eb64b9c4d07078d4b1335d721c2405c1463dc",
+  "artifactCount": 109,
+  "artifacts": [
+    {
+      "path": "CommentImageFixture.kt",
+      "sha256Bytes": "683fc92fe58d51974a9538233ac64a993e417ae950d9cf88e14202b96008bc84",
+      "sizeBytes": 14331
+    },
+    {
+      "path": "base-inputs/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2",
+      "sizeBytes": 34757
+    },
+    {
+      "path": "base-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Bytes": "e639074224211beffbd758dce0315dc28f8e46927abc67df33187ba52d8dc088",
+      "sizeBytes": 19806
+    },
+    {
+      "path": "base-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt",
+      "sha256Bytes": "3a899c08cfb6a17ae6d2e2efcc1e69cedc78ee10450a22614ab79318c4966849",
+      "sizeBytes": 1422
+    },
+    {
+      "path": "base-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+      "sha256Bytes": "aa8bb5966ac9793578cd67d98933d5fe2b9f5806cfb2e8068a04001600de9ccf",
+      "sizeBytes": 3399
+    },
+    {
+      "path": "base-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34",
+      "sizeBytes": 6364
+    },
+    {
+      "path": "base-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "sha256Bytes": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa",
+      "sizeBytes": 3053
+    },
+    {
+      "path": "base-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "sha256Bytes": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3",
+      "sizeBytes": 1565
+    },
+    {
+      "path": "base-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt",
+      "sha256Bytes": "1babe9e62147f48eb40c12696283b168a77ba5f8be6ec7b6d873a254c527a181",
+      "sizeBytes": 3754
+    },
+    {
+      "path": "base-inputs/desktop/tools/extract-upstream-dynamic-detail.py",
+      "sha256Bytes": "71a77a716758a0166cb8c548c911715844e2ebc7569b88269c9b3306cc8c98a1",
+      "sizeBytes": 15797
+    },
+    {
+      "path": "base-inputs/desktop/tools/extract-upstream-dynamic-reply.py",
+      "sha256Bytes": "882d4a32047bcfe9c4e29edd87b1fc572419d38c7d7cdf5c038aca82e7141852",
+      "sizeBytes": 35913
+    },
+    {
+      "path": "base-source-pins.json",
+      "sha256Bytes": "28783eff7fe77109cb6c93c795d05c5fbc5f055fc142b3853a70244253be2190",
+      "sizeBytes": 2677
+    },
+    {
+      "path": "compile-01/compile-result.json",
+      "sha256Bytes": "d9deac3c5b5657e361414beb0923ac3398e5d7c6f152d8ce5a8cca2b4b5ed4b5",
+      "sizeBytes": 29305
+    },
+    {
+      "path": "compile-01/compiler-inputs.json",
+      "sha256Bytes": "92030b82f997e9ab037836ca9d56ec8da9f2ff39d46a4d4394e074173179078b",
+      "sizeBytes": 3668
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "sha256Bytes": "157c839876f50aec6630192e9941d0359f96eabe07920c5a11d398740bf554b4",
+      "sizeBytes": 25641
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "sha256Bytes": "80c44f80409b6e844b94caecdc60545fdf276a58816b025f26ecc9eaf68e0579",
+      "sizeBytes": 2412
+    },
+    {
+      "path": "compile-01/input-main04-manifest.json",
+      "sha256Bytes": "7bc5ac8875dadf38510120db6619bd6e748e7f790a47afc11374e14114f25865",
+      "sizeBytes": 253558
+    },
+    {
+      "path": "compile-01/input-ordered-runtime-cp.json",
+      "sha256Bytes": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2",
+      "sizeBytes": 34464
+    },
+    {
+      "path": "compile-01/prepared-comment-images.jar",
+      "sha256Bytes": "0aab1fb8991e21af7968d2e6fdc7e061343f23fa3211b54c28926e761cc61e61",
+      "sizeBytes": 569240
+    },
+    {
+      "path": "compile-01/runtime-pins-after.json",
+      "sha256Bytes": "41c6e737d68e91d261071ad5f7a60e02ce9bb1d43b6fb946a6829446f292b4ad",
+      "sizeBytes": 41526
+    },
+    {
+      "path": "compile-01/runtime-pins-before.json",
+      "sha256Bytes": "41c6e737d68e91d261071ad5f7a60e02ce9bb1d43b6fb946a6829446f292b4ad",
+      "sizeBytes": 41526
+    },
+    {
+      "path": "compile-01/source-inputs/CommunityDynamicScreens.kt",
+      "sha256Bytes": "37caa1356b3ffa001e8b6257ec31b1eb383a062e52be3d1f299148ecd89bc16f",
+      "sizeBytes": 20357
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopCommentPlatform.kt",
+      "sha256Bytes": "ef7c259d8343e773f84454dc262b3d3d6f20651214d00e732ea553bbc44f4eaf",
+      "sizeBytes": 1499
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "e27206e43fb3e9bd74b8f05b7088fb049ba87f81f1b5d02c7eae077db860e034",
+      "sizeBytes": 35094
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopDynamicCommentPlatform.kt",
+      "sha256Bytes": "b20d4abbbed3b126a10dd5d455b57056758096d2022141e5b55392f58e0fee6f",
+      "sizeBytes": 3733
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34",
+      "sizeBytes": 6364
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopDynamicEditorWindowsPickers.kt",
+      "sha256Bytes": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa",
+      "sizeBytes": 3053
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopDynamicGallerySelection.kt",
+      "sha256Bytes": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3",
+      "sizeBytes": 1565
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopDynamicReplyRequests.kt",
+      "sha256Bytes": "f8e8701c4b37a76286c501ae092069404c96246559034401c3fa8b63a51a5588",
+      "sizeBytes": 4953
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopOriginalDynamicCommentPanel.kt",
+      "sha256Bytes": "ff65dd544496f64f2da29117c5e0716138734ff5251db509401860a9ba2ca67c",
+      "sizeBytes": 6335
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopOriginalDynamicInlineReplyUi.kt",
+      "sha256Bytes": "8f91a13f726d87f70d9f2d04941cb138d132f1469c1cae858e8ca84e17494dc0",
+      "sizeBytes": 15869
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopOriginalDynamicReplySession.kt",
+      "sha256Bytes": "c75caf75e9a978c01c9bf406def39cca22e33bbe7199cc56de6be1a4e29fa64e",
+      "sizeBytes": 37698
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "8afe7c98c18de1420d00ded121f9fd2ec70115d01d8a85dca8e9210fc64f3c74",
+      "sizeBytes": 4757
+    },
+    {
+      "path": "fixture-01/CommentImageFixture.kt",
+      "sha256Bytes": "683fc92fe58d51974a9538233ac64a993e417ae950d9cf88e14202b96008bc84",
+      "sizeBytes": 14331
+    },
+    {
+      "path": "fixture-01/accepted-result.json",
+      "sha256Bytes": "b9407aae5c1dc60dcf405f0a0f065c17a69c3f3f107cd910aa8c685a119ba6b6",
+      "sizeBytes": 633
+    },
+    {
+      "path": "fixture-01/comment-image-fixture.jar",
+      "sha256Bytes": "752bdf46e8fb66019cce3b626796db259f4b8e7009006ec4a80991fef57593f4",
+      "sizeBytes": 69283
+    },
+    {
+      "path": "fixture-01/compiler.args",
+      "sha256Bytes": "68ecac53637440e1480b7dcf6b1e0ed2f581c3e666f6d4df23aaa6550ff1682f",
+      "sizeBytes": 23619
+    },
+    {
+      "path": "fixture-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "fixture-01/runtime-pins-after.json",
+      "sha256Bytes": "41c6e737d68e91d261071ad5f7a60e02ce9bb1d43b6fb946a6829446f292b4ad",
+      "sizeBytes": 41526
+    },
+    {
+      "path": "fixture-01/runtime-pins-before.json",
+      "sha256Bytes": "41c6e737d68e91d261071ad5f7a60e02ce9bb1d43b6fb946a6829446f292b4ad",
+      "sizeBytes": 41526
+    },
+    {
+      "path": "fixture-01/runtime.log",
+      "sha256Bytes": "c40c0104ff0a0c4e1ff68243aef91922fbeeef6c034ab24917df67198bf8b248",
+      "sizeBytes": 3101
+    },
+    {
+      "path": "fixture-01/scratch/blank-and-ten-rejected-before-transport/selected_0.png",
+      "sha256Bytes": "4ee6c5565953621f143c93918f040f9806dfeac41d2e9bb9528beba388726f1a",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/blank-and-ten-rejected-before-transport/selected_1.png",
+      "sha256Bytes": "59d280c1a76a860a295ecfe82d1281f86b5f4e928b606cde2df22f1f96d967b8",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/blank-and-ten-rejected-before-transport/selected_2.png",
+      "sha256Bytes": "898def5f1ca60c01aaee73f5a871b849e6bab7a5fe393ee22f31f331782c510c",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/blank-and-ten-rejected-before-transport/selected_3.png",
+      "sha256Bytes": "acb6d5f602701394cb2ad3cc48ad20b7281e3e8343fb952402f6bff32a27715c",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/blank-and-ten-rejected-before-transport/selected_4.png",
+      "sha256Bytes": "49613a81d59914d5ac19ef2bd45a908840faf31c83a55304f221b480db020129",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/blank-and-ten-rejected-before-transport/selected_5.png",
+      "sha256Bytes": "c98a73deb2deaef7d53abd48aad7b095a3aaf26d6f0c341e27323d7114fd6d2a",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/blank-and-ten-rejected-before-transport/selected_6.png",
+      "sha256Bytes": "74a6657b9b1ae11c831fef8c4a9e27dea90966d5968c0bbf4e24bc6f688631bb",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/blank-and-ten-rejected-before-transport/selected_7.png",
+      "sha256Bytes": "c1da3126f1b165eacf14cf8428a2edc1ccb1e03b8ecb0b45e097b11965ffa4b9",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/blank-and-ten-rejected-before-transport/selected_8.png",
+      "sha256Bytes": "982484bf40731aab17ca690050e9d77960bdafd3553fb47d61464e4a7aae4eeb",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/closed-page-keeps-account-no-late-post-or-callback/selected_0.png",
+      "sha256Bytes": "4ee6c5565953621f143c93918f040f9806dfeac41d2e9bb9528beba388726f1a",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/image-only-nine-ordered-original-wire/selected_0.png",
+      "sha256Bytes": "4ee6c5565953621f143c93918f040f9806dfeac41d2e9bb9528beba388726f1a",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/image-only-nine-ordered-original-wire/selected_1.png",
+      "sha256Bytes": "59d280c1a76a860a295ecfe82d1281f86b5f4e928b606cde2df22f1f96d967b8",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/image-only-nine-ordered-original-wire/selected_2.png",
+      "sha256Bytes": "898def5f1ca60c01aaee73f5a871b849e6bab7a5fe393ee22f31f331782c510c",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/image-only-nine-ordered-original-wire/selected_3.png",
+      "sha256Bytes": "acb6d5f602701394cb2ad3cc48ad20b7281e3e8343fb952402f6bff32a27715c",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/image-only-nine-ordered-original-wire/selected_4.png",
+      "sha256Bytes": "49613a81d59914d5ac19ef2bd45a908840faf31c83a55304f221b480db020129",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/image-only-nine-ordered-original-wire/selected_5.png",
+      "sha256Bytes": "c98a73deb2deaef7d53abd48aad7b095a3aaf26d6f0c341e27323d7114fd6d2a",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/image-only-nine-ordered-original-wire/selected_6.png",
+      "sha256Bytes": "74a6657b9b1ae11c831fef8c4a9e27dea90966d5968c0bbf4e24bc6f688631bb",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/image-only-nine-ordered-original-wire/selected_7.png",
+      "sha256Bytes": "c1da3126f1b165eacf14cf8428a2edc1ccb1e03b8ecb0b45e097b11965ffa4b9",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/image-only-nine-ordered-original-wire/selected_8.png",
+      "sha256Bytes": "982484bf40731aab17ca690050e9d77960bdafd3553fb47d61464e4a7aae4eeb",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/ordinary-add-failure-and-next-attempt/selected_0.png",
+      "sha256Bytes": "4ee6c5565953621f143c93918f040f9806dfeac41d2e9bb9528beba388726f1a",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/ordinary-upload-failure-and-next-attempt/selected_0.png",
+      "sha256Bytes": "4ee6c5565953621f143c93918f040f9806dfeac41d2e9bb9528beba388726f1a",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/ordinary-upload-failure-and-next-attempt/selected_1.png",
+      "sha256Bytes": "59d280c1a76a860a295ecfe82d1281f86b5f4e928b606cde2df22f1f96d967b8",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/ordinary-upload-failure-and-next-attempt/selected_2.png",
+      "sha256Bytes": "898def5f1ca60c01aaee73f5a871b849e6bab7a5fe393ee22f31f331782c510c",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/reply-image-prohibition-before-upload/selected_0.png",
+      "sha256Bytes": "4ee6c5565953621f143c93918f040f9806dfeac41d2e9bb9528beba388726f1a",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/request-generation-change-after-upload-no-late-post/selected_0.png",
+      "sha256Bytes": "4ee6c5565953621f143c93918f040f9806dfeac41d2e9bb9528beba388726f1a",
+      "sizeBytes": 16
+    },
+    {
+      "path": "fixture-01/scratch/result.json",
+      "sha256Bytes": "fd289e62e4dcdcae9caf282b3445d9918cfe1fd2b94848b0fd04cdb968edaee9",
+      "sizeBytes": 3685
+    },
+    {
+      "path": "fixture-01/scratch/same-mid-account-replacement-no-late-post-or-callback/selected_0.png",
+      "sha256Bytes": "4ee6c5565953621f143c93918f040f9806dfeac41d2e9bb9528beba388726f1a",
+      "sizeBytes": 16
+    },
+    {
+      "path": "generated/detail/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplyPagingGuard.kt",
+      "sha256Bytes": "a577efbe673a821abf08cbd09a1fe2cf5f916e52812a3861026e32b8baef0378",
+      "sizeBytes": 720
+    },
+    {
+      "path": "generated/detail/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplySession.kt",
+      "sha256Bytes": "c75caf75e9a978c01c9bf406def39cca22e33bbe7199cc56de6be1a4e29fa64e",
+      "sizeBytes": 37698
+    },
+    {
+      "path": "generated/detail/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDynamicReplyCountPolicies.kt",
+      "sha256Bytes": "04ba5f20a70a2d2dee1bd176e5f87eab6cb7b62cd3d57fef593b280bf7bf7453",
+      "sizeBytes": 1738
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/core/store/DesktopOriginalReplySettings.kt",
+      "sha256Bytes": "1858d62e31d0282561fffe7a7390f2cc55742dbed854860b70613966357aec2a",
+      "sizeBytes": 3040
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/core/store/DesktopOriginalReplySkeletonSettingsStore.kt",
+      "sha256Bytes": "a04fbc6a5094b14cb0173d3fd33e2182058cbf75589a57dd515a267997711cd6",
+      "sizeBytes": 898
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/core/ui/common/DesktopOriginalReplyClipboard.kt",
+      "sha256Bytes": "2a767ac4af4a5f097470ab0f6c9e475cb35fecc0d96a37a2951f75a449808438",
+      "sizeBytes": 1216
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplyLoadingSkeletons.kt",
+      "sha256Bytes": "159cfcdbba32b227ec9dd63317d327c067544787395c3ca26f0f59a5ffed9958",
+      "sizeBytes": 4949
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplySkeletonBreathing.kt",
+      "sha256Bytes": "0f403f52431998f06e91695469b470ec0466c701485be118353e731a0664e36d",
+      "sizeBytes": 1852
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/feature/aicu/DesktopOriginalReplyAicuNavigation.kt",
+      "sha256Bytes": "64ab4e1518681db26626551fcdd4bf0a25c2f6b472afef140756b673a040f26c",
+      "sizeBytes": 400
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUi.kt",
+      "sha256Bytes": "8f91a13f726d87f70d9f2d04941cb138d132f1469c1cae858e8ca84e17494dc0",
+      "sizeBytes": 15869
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/feature/home/components/DesktopOriginalReplyCapsuleShape.kt",
+      "sha256Bytes": "f482a95bd997d766859dcf5650192420c5d4319f66b052e350e00b3dd55a5673",
+      "sizeBytes": 451
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyCommentImageSpec.kt",
+      "sha256Bytes": "66ee63530154e4951451f4abbf4de67a93ddc8fab45c3625e053555c0f8d45fe",
+      "sizeBytes": 1524
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponents.kt",
+      "sha256Bytes": "761b336ff007821d34489d5b9b7db96bc3e27f767998ca0cc01c9d9f025c16da",
+      "sizeBytes": 88822
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyImageRenderer.kt",
+      "sha256Bytes": "0866b1077fc93ff5325576f2b96140ca9d54507dab1e14cefb282ea978e32280",
+      "sizeBytes": 4803
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyReportReasonDialog.kt",
+      "sha256Bytes": "15ea696907c032994162e84b4a25df1c572f4d86bc5307f1faed180e36b7ff63",
+      "sizeBytes": 1988
+    },
+    {
+      "path": "generated/reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponents.kt",
+      "sha256Bytes": "97e4d94340e12d3ac6d0a51cb537bf68bd8d0c419814142a71f15633ab7f2e01",
+      "sizeBytes": 67989
+    },
+    {
+      "path": "generated/reply/com/bilipai/desktop/ui/DesktopOriginalDynamicCommentPanel.kt",
+      "sha256Bytes": "ff65dd544496f64f2da29117c5e0716138734ff5251db509401860a9ba2ca67c",
+      "sizeBytes": 6335
+    },
+    {
+      "path": "generated/reply/com/bilipai/desktop/ui/DesktopOriginalDynamicThreadContent.kt",
+      "sha256Bytes": "2622aca6fcda5c7520e094a707debca4c4c4fd3be5a7348dc6f7357a4b8d9c65",
+      "sizeBytes": 3929
+    },
+    {
+      "path": "generated/reply/com/bilipai/desktop/ui/DesktopOriginalReplyFailedCaptureDissolve.kt",
+      "sha256Bytes": "4864474c76c50b581c304a4c789d2b8be1edbfce0bcc09112af780504fa70c5f",
+      "sizeBytes": 8605
+    },
+    {
+      "path": "handoff-review.json",
+      "sha256Bytes": "3cb069de0c4ef2dca2548f67cf4eb64b9c4d07078d4b1335d721c2405c1463dc",
+      "sizeBytes": 4151
+    },
+    {
+      "path": "installation-recipe.json",
+      "sha256Bytes": "20a2c325409e4b17c724e26f7c517852a3d8bafb539679c0389fd6fbf7859ed2",
+      "sizeBytes": 5078
+    },
+    {
+      "path": "necessary-source.patch",
+      "sha256Bytes": "d18a325e02728dbb5af50ce7dd886a7e1a7b958227dbd7a53c84daf12b17d8c1",
+      "sizeBytes": 13681
+    },
+    {
+      "path": "operations-member.fragment.kt",
+      "sha256Bytes": "088752cc4502a64464042952862b760016a71dce7c0a43fb7956954254d6169d",
+      "sizeBytes": 336
+    },
+    {
+      "path": "original-source-pins.json",
+      "sha256Bytes": "91088d5543f0c2f84718780f4fe90ef7e238076378f3710ac2e368218a014c33",
+      "sizeBytes": 997
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256Bytes": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "sizeBytes": 73462
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "sha256Bytes": "ab0d6cf956ba9915445f421f299ea48e14a7561edd2a609973700531bf0f67b4",
+      "sizeBytes": 46845
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "sha256Bytes": "8b9186a097d15302f33e5439f28c94dd8a124235937d9fe7404a30c85731918c",
+      "sizeBytes": 98895
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
+      "sha256Bytes": "0b6c8d1589b6be0ebcec709f2c04b5154afca6411559ac3c115bce122ff26ba9",
+      "sizeBytes": 73364
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "b8631473bf0ce9e7821a1e12428e81fc2884754714957c4418a653884c57ddd7",
+      "sizeBytes": 12575
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Bytes": "37caa1356b3ffa001e8b6257ec31b1eb383a062e52be3d1f299148ecd89bc16f",
+      "sizeBytes": 20357
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt",
+      "sha256Bytes": "ef7c259d8343e773f84454dc262b3d3d6f20651214d00e732ea553bbc44f4eaf",
+      "sizeBytes": 1499
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+      "sha256Bytes": "b20d4abbbed3b126a10dd5d455b57056758096d2022141e5b55392f58e0fee6f",
+      "sizeBytes": 3733
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt",
+      "sha256Bytes": "f8e8701c4b37a76286c501ae092069404c96246559034401c3fa8b63a51a5588",
+      "sizeBytes": 4953
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-detail.py",
+      "sha256Bytes": "c4ff1fc6c8094c40ad8b1890dc818ea20c3a97130fd34c03c0d6fff453e051be",
+      "sizeBytes": 16763
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-reply.py",
+      "sha256Bytes": "08d90e18d71b27aedc951f010d6b08da02b0a2fc90d61ba1e164763e7234e447",
+      "sizeBytes": 37416
+    },
+    {
+      "path": "prepared_detail-generated.json",
+      "sha256Bytes": "ef6fe389d0a1101a83590109e7d2ad4e6c375926804251ca5ea95b7911a1b02e",
+      "sizeBytes": 1135
+    },
+    {
+      "path": "prepared_reply-generated.json",
+      "sha256Bytes": "3a99780f720a8c7d6a7fe48ed92d8b03aa14bb5d7b9402a3dff7d4ac4944b3d3",
+      "sizeBytes": 5962
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "e27206e43fb3e9bd74b8f05b7088fb049ba87f81f1b5d02c7eae077db860e034",
+      "sizeBytes": 35094
+    },
+    {
+      "path": "run-fixture.py",
+      "sha256Bytes": "cd29b975df76528a8877241ef28ab88abc948fce5b2d75554e6b25a456a37a2e",
+      "sizeBytes": 3561
+    },
+    {
+      "path": "source-audit.py",
+      "sha256Bytes": "de635619cb92fc6375090ca39ccc41abc0e2739a9547725dc71d0698734ed477",
+      "sizeBytes": 8524
+    },
+    {
+      "path": "source-contract-result.json",
+      "sha256Bytes": "f5edb7b00b52726e4dac73dffa4645d7df43a517225e54adb6c30476fdd4aefe",
+      "sizeBytes": 3276
+    }
+  ],
+  "doNotModifyFrozenCohort": true
+}

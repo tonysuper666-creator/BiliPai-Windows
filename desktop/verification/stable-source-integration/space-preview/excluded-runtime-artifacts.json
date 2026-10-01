@@ -1,0 +1,14 @@
+[
+  {
+    "path": "compile-02/candidate.jar",
+    "sha256Bytes": "3b1326e2cb4a8e2ed67f7e82ede157bc18d522e09fe2463ecf48ff6f2d0854b0",
+    "sizeBytes": 285550,
+    "reason": "Task compiled candidate/runtime binary; evidence reference only, never install or commit."
+  },
+  {
+    "path": "compile-03/candidate.jar",
+    "sha256Bytes": "3b1326e2cb4a8e2ed67f7e82ede157bc18d522e09fe2463ecf48ff6f2d0854b0",
+    "sizeBytes": 285550,
+    "reason": "Task compiled candidate/runtime binary; evidence reference only, never install or commit."
+  }
+]

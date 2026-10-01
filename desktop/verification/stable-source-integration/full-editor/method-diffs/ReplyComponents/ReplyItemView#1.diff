@@ -1,0 +1,29 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt:ReplyItemView#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt:ReplyItemView#1
+@@ -372,11 +372,12 @@
+                                 text = item.member.uname,
+                                 fontSize = VideoCommentTypographyTokens.author,
+                                 fontWeight = FontWeight.SemiBold,
+-                                color = if (item.member.vip?.vipStatus == 1) {
+-                                    appearance.accentColor
+-                                } else {
+-                                    appearance.primaryTextColor.copy(alpha = 0.9f)
+-                                },
++                                color = resolveUpNameColor(
++                                    vipStatus = item.member.vip?.vipStatus ?: 0,
++                                    vipType = item.member.vip?.vipType ?: 0,
++                                    onSurface = appearance.primaryTextColor.copy(alpha = 0.9f),
++                                    secondary = MaterialTheme.colorScheme.secondary,
++                                ),
+                                 maxLines = 1,
+                                 overflow = TextOverflow.Ellipsis,
+                                 modifier = Modifier.weight(1f, fill = false)
+@@ -412,7 +413,7 @@
+                         AppText(
+                             text = metadataText,
+                             fontSize = VideoCommentTypographyTokens.metadata,
+-                            lineHeight = 16.sp,
++                            lineHeight = VideoCommentTypographyTokens.metadataLineHeight,
+                             color = appearance.secondaryTextColor
+                         )
+                     }

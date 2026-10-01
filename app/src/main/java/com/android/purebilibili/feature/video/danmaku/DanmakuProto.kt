@@ -31,6 +31,13 @@ import java.nio.charset.StandardCharsets
      *   - isSelf (field 29, bool) - 当前账号发送
      */
 object DanmakuProto {
+
+    /** DmSegMobileReply 解析结果：elems + 顶层 state（1 = UP主已关闭弹幕） */
+    data class DanmakuSegReply(
+        val elems: List<DanmakuElem>,
+        val state: Int
+    )
+
     
     private const val TAG = "DanmakuProto"
     
@@ -425,23 +432,27 @@ object DanmakuProto {
      * @param data 原始 Protobuf 字节数组
      * @return 弹幕元素列表
      */
-    fun parse(data: ByteArray): List<DanmakuElem> {
+    fun parse(data: ByteArray): List<DanmakuElem> = parseReply(data).elems
+
+    /** 解析 DmSegMobileReply，同时返回 state 字段（1 = UP主已关闭弹幕） */
+    fun parseReply(data: ByteArray): DanmakuSegReply {
         val result = mutableListOf<DanmakuElem>()
-        
+        var state = 0
+
         if (data.isEmpty()) {
             Log.w(TAG, " Empty data received")
-            return result
+            return DanmakuSegReply(result, state)
         }
-        
+
         try {
             val input = ProtoInput(data)
-            
-            // DmSegMobileReply 的 field 1 是 repeated DanmakuElem
+
+            // DmSegMobileReply: field 1 = repeated DanmakuElem, field 2 = state
             while (!input.isAtEnd()) {
                 val tag = input.readTag()
                 val fieldNumber = tag ushr 3
                 val wireType = tag and 0x07
-                
+
                 when (fieldNumber) {
                     1 -> {
                         // DanmakuElem 是 length-delimited (wireType = 2)
@@ -455,17 +466,24 @@ object DanmakuProto {
                             input.skipField(wireType)
                         }
                     }
+                    2 -> {
+                        if (wireType == 0) {
+                            state = input.readVarint().toInt()
+                        } else {
+                            input.skipField(wireType)
+                        }
+                    }
                     else -> input.skipField(wireType)
                 }
             }
-            
-            Log.d(TAG, " Parsed ${result.size} danmakus from protobuf")
-            
+
+            Log.d(TAG, " Parsed ${result.size} danmakus from protobuf (state=$state)")
+
         } catch (e: Exception) {
             Log.e(TAG, " Parse protobuf error: ${e.message}", e)
         }
-        
-        return result
+
+        return DanmakuSegReply(result, state)
     }
     
     /**

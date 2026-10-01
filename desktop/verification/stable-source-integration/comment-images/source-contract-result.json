@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "postComment complete original business body reverse-normalized byte equality",
+      "status": "PASS",
+      "originalBodySha256LF": "a2196919944db0d582149156fb10bb337d1430e59ab36bd66393668006416661",
+      "candidateBodySha256LF": "759dee369e50a4f9a25e4a55920d452e3c19e88ed4d06c3adc4fe942cc143583",
+      "adaptations": [
+        "Uri->fileURI String",
+        "owned request launch/epoch checks",
+        "existing csrf owner",
+        "immutable synchronous reply target capture",
+        "post-upload request generation guard"
+      ]
+    },
+    {
+      "name": "inline wrapper entire original body except declared keyboard/URI platform mappings",
+      "status": "PASS",
+      "originalBodySha256LF": "0b17da41ef0ca5ab62dbd385cc48d84e1b084f33906df11ec1f8147f9eafee4f",
+      "candidateBodySha256LF": "6b69bd938bfbf01eabd6c5795fe6522a0c9616c7b9fcd176ff76ed401faac333"
+    },
+    {
+      "name": "composer complete original UI body reverse-normalized byte equality",
+      "status": "PASS",
+      "originalBodySha256LF": "6e2de57259c4d03f287c4fb73eaea31a2614ef986e954c2441f5fb7548f29163",
+      "candidateBodySha256LF": "7cb51392ce771acf0539842e0c0f1a5be8ef3f540ce7a1d5ef56ec727ea73485",
+      "adaptations": [
+        "Uri->existing selected fileURI String",
+        "real owned Windows picker callback with rememberUpdatedState",
+        "existing explicit native dock capability fallback retained"
+      ]
+    },
+    {
+      "name": "original upload nine bound ordered map/index and failure propagation retained",
+      "status": "PASS"
+    },
+    {
+      "name": "existing sole stream multipart/upload/parser body byte unchanged",
+      "status": "PASS",
+      "bodySha256LF": "ba51b1ee29db289ffe50bc3d76be375d7b2bc8adda814299c9848d00a28efabf"
+    },
+    {
+      "name": "existing addCommentForSubject complete original protocol body byte unchanged",
+      "status": "PASS",
+      "bodySha256LF": "5d28eb50f8146451c6cb1a1951d2255b852082384a61a3b48286e25a60bf0f91"
+    },
+    {
+      "name": "single additive comment member reaches same original streamed body",
+      "status": "PASS"
+    },
+    {
+      "name": "original comment filename/MIME fallback keys reused",
+      "status": "PASS"
+    },
+    {
+      "name": "upload adapter cancellation rethrows and gates provider and result",
+      "status": "PASS"
+    },
+    {
+      "name": "same detail owner uses sole existing stream selection and Root parent",
+      "status": "PASS"
+    },
+    {
+      "name": "same owner actual Root picker and platform required callback connected",
+      "status": "PASS"
+    },
+    {
+      "name": "owner replacement disposes composer state and closes selected streams",
+      "status": "PASS"
+    },
+    {
+      "name": "picker latest callback cannot attach after reply transition",
+      "status": "PASS"
+    },
+    {
+      "name": "original image-only submit, send disable, reply clear and 9 labels retained",
+      "status": "PASS"
+    }
+  ],
+  "checkCount": 14,
+  "preparedOnly": true,
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "scope": "full original inline composer + post business, owned streaming platform seams only",
+  "noClaimFullLiquidDock": true,
+  "noClaimChooserOrRootButtonE2E": true
+}

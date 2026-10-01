@@ -1,0 +1,59 @@
+{
+  "status": "prepared narrow compile PASS; terminal fixture pending; not frozen yet",
+  "installTarget": "sibling BiliPai-v023 desktop/v023-parity only",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "installPath": "desktop/tools/extract-upstream-dynamic-detail.py",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\prepared\\desktop\\tools\\extract-upstream-dynamic-detail.py",
+      "baseSha256LF": "71a77a716758a0166cb8c548c911715844e2ebc7569b88269c9b3306cc8c98a1",
+      "candidateSha256LF": "c4ff1fc6c8094c40ad8b1890dc818ea20c3a97130fd34c03c0d6fff453e051be"
+    },
+    {
+      "installPath": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\prepared\\desktop\\tools\\extract-upstream-dynamic-reply.py",
+      "baseSha256LF": "882d4a32047bcfe9c4e29edd87b1fc572419d38c7d7cdf5c038aca82e7141852",
+      "candidateSha256LF": "08d90e18d71b27aedc951f010d6b08da02b0a2fc90d61ba1e164763e7234e447"
+    },
+    {
+      "installPath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\CommunityDynamicScreens.kt",
+      "baseSha256LF": "e639074224211beffbd758dce0315dc28f8e46927abc67df33187ba52d8dc088",
+      "candidateSha256LF": "37caa1356b3ffa001e8b6257ec31b1eb383a062e52be3d1f299148ecd89bc16f"
+    },
+    {
+      "installPath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCommentPlatform.kt",
+      "baseSha256LF": "3a899c08cfb6a17ae6d2e2efcc1e69cedc78ee10450a22614ab79318c4966849",
+      "candidateSha256LF": "ef7c259d8343e773f84454dc262b3d3d6f20651214d00e732ea553bbc44f4eaf"
+    },
+    {
+      "installPath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicCommentPlatform.kt",
+      "baseSha256LF": "aa8bb5966ac9793578cd67d98933d5fe2b9f5806cfb2e8068a04001600de9ccf",
+      "candidateSha256LF": "b20d4abbbed3b126a10dd5d455b57056758096d2022141e5b55392f58e0fee6f"
+    },
+    {
+      "installPath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicReplyRequests.kt",
+      "baseSha256LF": "1babe9e62147f48eb40c12696283b168a77ba5f8be6ec7b6d873a254c527a181",
+      "candidateSha256LF": "f8e8701c4b37a76286c501ae092069404c96246559034401c3fa8b63a51a5588"
+    }
+  ],
+  "operations": {
+    "baseSha256LF": "833678b38f32928f0cbdc837e7bf380b7208f7ef62575fe654af402e09d0fda2",
+    "memberFragment": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\operations-member.fragment.kt",
+    "memberFragmentSha256Bytes": "088752cc4502a64464042952862b760016a71dce7c0a43fb7956954254d6169d",
+    "insertionAnchor": "adjacent existing public uploadCommentImage(fileName:String,mimeType:String,bytes:ByteArray)",
+    "doNotInstallProofOnlyWholeOperations": true,
+    "preserveParentGradeClassTailHunk": true
+  },
+  "recipe": [
+    "Apply necessary-source.patch only when each six source base LF SHA matches, or review independent hunks if Root has since changed a source.",
+    "Insert Operations member fragment adjacent existing public uploadCommentImage; retain all existing833stream and parentgrade methods.",
+    "Run existing sibling source generation of dynamic-reply and dynamic-detail from updated sole producers; generated full replay already PASS in own lane.",
+    "Root runs whole stable Gradle classes; Main04 narrow compile is explicit historical92CP only."
+  ],
+  "compileResult": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-dynamic-reply-image-composer-parity\\compile-01\\compile-result.json",
+  "compileResultSha256Bytes": "d9deac3c5b5657e361414beb0923ac3398e5d7c6f152d8ce5a8cca2b4b5ed4b5"
+}

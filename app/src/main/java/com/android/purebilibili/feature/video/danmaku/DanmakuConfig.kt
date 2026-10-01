@@ -65,6 +65,8 @@ class DanmakuConfig {
     var allowBottom = true
     var allowColorful = true
     var allowSpecial = true
+    /** 智能云屏蔽等级 (0=关闭)；低于该权重且非自己发送的弹幕会被过滤 */
+    var weightFilterLevel = 0
     var blockedRules: List<String> = emptyList()
 
     // [新增] 智能避脸：根据检测到的人脸动态调整弹幕可显示带

@@ -683,7 +683,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
-                withContext(Dispatchers.Main) {
+                withContext(Dispatchers.Main.immediate) {
                     android.widget.Toast.makeText(getApplication(), error.message ?: "壁纸导入失败", android.widget.Toast.LENGTH_LONG).show()
                 }
             }
@@ -902,7 +902,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                     
                     loadProfile(force = true) // 刷新
                     
-                    withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main.immediate) {
                         _wallpaperSaveState.value = WallpaperSaveState.Success
                         onComplete()
                     }
@@ -977,7 +977,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                          saveImageToGallery(context, bytes, "bili_splash_${System.currentTimeMillis()}.jpg")
                     }
 
-                    withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main.immediate) {
                         _splashSaveState.value = WallpaperSaveState.Success
                         onComplete()
                     }
@@ -1013,7 +1013,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                 mobileBias?.let { SettingsManager.setSplashAlignment(context, isTablet = false, bias = it) }
                 tabletBias?.let { SettingsManager.setSplashAlignment(context, isTablet = true, bias = it) }
 
-                withContext(Dispatchers.Main) {
+                withContext(Dispatchers.Main.immediate) {
                     _splashSaveState.value = WallpaperSaveState.Success
                     onComplete()
                 }
@@ -1065,7 +1065,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                         saveImageToGallery(context, bytes, "bili_home_${System.currentTimeMillis()}.jpg")
                     }
 
-                    withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main.immediate) {
                         _splashSaveState.value = WallpaperSaveState.Success
                         onComplete()
                     }
@@ -1094,7 +1094,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                 val wallpaper = importWallpaperMedia(context, Uri.parse(uri), File(context.filesDir, "home_wallpaper"))
                 SettingsManager.setHomeWallpaperUri(context, Uri.fromFile(wallpaper).toString())
 
-                withContext(Dispatchers.Main) {
+                withContext(Dispatchers.Main.immediate) {
                     _splashSaveState.value = WallpaperSaveState.Success
                     onComplete()
                 }

@@ -1,7 +1,6 @@
 """Original selected protocol producer; no snapshot or .local dependency."""
 from pathlib import Path
 import hashlib, re, subprocess, json
-TAG = 'v0.2.3-alpha.9'
 
 def generate(repo: Path, output: Path):
     ROOT = repo
@@ -44,14 +43,7 @@ def generate(repo: Path, output: Path):
     article_path = A + 'data/repository/ArticleRepository.kt'
     policy_path = A + 'data/repository/DynamicDetailFallbackPolicy.kt'
     paths = [repo_path, article_path, policy_path, A + 'feature/article/ArticleContentLoadPolicy.kt', A + 'core/network/ApiClient.kt', A + 'feature/dynamic/DynamicDetailScreen.kt']
-    sources = {}
-    ids = []
-    for path in paths:
-        sources[path] = read(ROOT / path)
-        blob = subprocess.check_output(['git', 'rev-parse', 'v0.2.3-alpha.9:' + path], cwd=ROOT, text=True).strip()
-        current = subprocess.check_output(['git', 'hash-object', '--path=' + path, path], cwd=ROOT, text=True).strip()
-        assert blob == current, path
-        ids.append(dict(path=path, tagBlob=blob, currentGitBlob=current, sha256LfUtf8=digest(sources[path]), matchesTag=True))
+    sources, ids = protocol.load_pinned_sources(ROOT, paths)
 
     def adapt(block):
         block = drop_logs(block).replace('e.printStackTrace()', '').replace('runCatching', 'ownedCatching')
@@ -109,6 +101,8 @@ def generate(repo: Path, output: Path):
     write(HERE / 'generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt', article_helper)
     fragment = "// Additional members inside the existing DesktopDynamicCardOperations; no replacement Ops file.\n// Seed is the original DynamicItem captured by the owner's caller. No new seed cache.\n// Null history callback explicitly leaves the original best-effort article history side effect unbound.\nsuspend fun getDynamicDetail(\n    dynamicId:String,\n    seedItem:DynamicItem?,\n    onArticleViewed:(suspend (Long)->Unit)?=null,\n):Result<DynamicItem> = result { read {\n    val articleProtocol=com.android.purebilibili.data.repository.DesktopDynamicDetailArticleProtocol(\n        web.create(ArticleApi::class.java), dynamic, ::signOriginalDetailParams, ::assertOwned, onArticleViewed)\n    val protocol=com.android.purebilibili.data.repository.DesktopDynamicDetailProtocol(\n        dynamic, ::signOriginalDetailParams,\n        { id -> articleProtocol.getArticleDetail(id).getOrNull() }, ::assertOwned)\n    protocol.getDynamicDetail(dynamicId,seedItem).getOrThrow()\n} }\nprivate suspend fun signOriginalDetailParams(params:Map<String,String>):Map<String,String> {\n    coroutineContext.ensureActive();assertOwned()\n    return try { repository.signWebParams(params).also { coroutineContext.ensureActive();assertOwned() }\n    } catch(cancelled:CancellationException) { throw cancelled\n    } catch(failure:Exception) { coroutineContext.ensureActive();assertOwned();params }\n}\n"
     write(HERE / 'DesktopDynamicDetailOperations.fragment.kt', fragment)
+    write(HERE / 'source-identity.json', json.dumps(ids, indent=2) + '\n')
+    write(HERE / 'selected-source-bodies.json', json.dumps(records, indent=2) + '\n')
     return sorted(HERE.rglob('generated/**/*.kt'))
 if __name__ == '__main__':
     import argparse

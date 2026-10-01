@@ -60,6 +60,8 @@ import com.android.purebilibili.core.ui.AppSurfaceTokens
 import com.android.purebilibili.core.ui.ContainerLevel
 import com.android.purebilibili.core.ui.LocalAnimatedVisibilityScope
 import com.android.purebilibili.core.ui.LocalSharedTransitionEnabled
+import com.android.purebilibili.core.ui.videoCardTitleMaxLines
+import com.android.purebilibili.core.ui.videoCardTitleOverflow
 import com.android.purebilibili.core.ui.LocalSharedTransitionScope
 import com.android.purebilibili.core.ui.components.UpBadgeName
 import com.android.purebilibili.core.ui.transition.LocalVideoCardSharedElementSourceRoute
@@ -166,6 +168,8 @@ internal fun rememberRelatedVideoCardLayout(): HomeFeedCardLayout {
         resolveHomeFeedCardLayout(homeFeedCardStyle)
     }
 }
+
+
 
 /**
  * 相关推荐单列横卡：点击时冻结来源标识、几何与 chrome，供整卡 Morph 及逐层返回。
@@ -352,9 +356,9 @@ fun RelatedVideoItem(
                 AppText(
                     text = video.title,
                     style = contentTypography.title,
-                    maxLines = 2,
+                    maxLines = videoCardTitleMaxLines(),
                     minLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    overflow = videoCardTitleOverflow(),
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -498,7 +502,7 @@ internal fun RelatedVideoGridRow(
                 video = video,
                 isFollowed = video.owner.mid in followingMids,
                 showUpBadge = showUpBadge,
-                coverAspectRatio = RELATED_VIDEO_CARD_COVER_ASPECT_RATIO,
+                coverAspectRatio = cardLayout.coverAspectRatio,
                 stacked = resolvedCardPresentation == RelatedVideoCardLayout.STACKED,
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { onVideoClick(video) },

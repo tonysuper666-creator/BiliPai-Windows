@@ -2098,7 +2098,7 @@ private fun InstalledUiSkinItem(
                 text = buildInstalledUiSkinSubtitle(skin.manifest),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                lineHeight = 18.sp,
+
                 maxLines = 2
             )
         }

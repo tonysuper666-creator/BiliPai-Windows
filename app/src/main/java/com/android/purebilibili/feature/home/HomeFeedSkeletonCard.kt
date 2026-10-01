@@ -26,11 +26,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.unit.dp
@@ -40,13 +41,18 @@ import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
 import com.android.purebilibili.core.ui.transition.VIDEO_SHARED_COVER_ASPECT_RATIO
 
+/**
+ * 首页骨架脉冲的唯一读口。返回 [State] 而非裸 Float:
+ * 调用方把 state 包进 provider 传给骨架卡,值只在 draw 阶段被 [drawBehind] 读取,
+ * 骨架展示期间逐帧仅触发重绘,不再让屏幕级组合作用域逐帧失效。
+ */
 @Composable
-internal fun rememberHomeFeedSkeletonPulse(): Float {
+internal fun rememberHomeFeedSkeletonPulseState(): State<Float> {
     if (com.android.purebilibili.core.ui.skeleton.rememberSkeletonBreathingEnabled()) {
-        return com.android.purebilibili.core.ui.skeleton.rememberGentleSkeletonPulse().value
+        return com.android.purebilibili.core.ui.skeleton.rememberGentleSkeletonPulse()
     }
     val transition = rememberInfiniteTransition(label = "homeFeedSkeletonPulse")
-    val pulse by transition.animateFloat(
+    return transition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
@@ -58,12 +64,11 @@ internal fun rememberHomeFeedSkeletonPulse(): Float {
         ),
         label = "homeFeedSkeletonPulseAlpha"
     )
-    return pulse
 }
 
 @Composable
 internal fun HomeFeedSkeletonCard(
-    pulse: Float,
+    pulse: () -> Float,
     wallpaperTintEnabled: Boolean,
     wallpaperEffectMode: HomeWallpaperEffectMode,
     isDataSaverActive: Boolean,
@@ -86,10 +91,7 @@ internal fun HomeFeedSkeletonCard(
             isDataSaverActive = isDataSaverActive
         )
     }
-    val blockColor = rememberHomeFeedSkeletonBlockColor(
-        pulse = pulse,
-        isDarkTheme = isDarkCardTheme
-    )
+    val blockBaseColor = MaterialTheme.colorScheme.onSurface
     val coverShape = remember(cardCornerRadius, infoSurfaceAppearance.useTintedSurface) {
         if (infoSurfaceAppearance.useTintedSurface) {
             resolveHomeSkeletonCoverShape(cardCornerRadius)
@@ -110,7 +112,7 @@ internal fun HomeFeedSkeletonCard(
                 .fillMaxWidth()
                 .aspectRatio(coverAspectRatio)
                 .clip(coverShape)
-                .background(blockColor)
+                .homeFeedSkeletonBlockBackground(pulse, blockBaseColor, isDarkCardTheme)
         )
 
         val infoModifier = if (infoSurfaceAppearance.useTintedSurface) {
@@ -138,15 +140,27 @@ internal fun HomeFeedSkeletonCard(
             if (!infoSurfaceAppearance.useTintedSurface) {
                 Spacer(modifier = Modifier.height(AppSpacingTokens.Small))
             }
-            HomeFeedSkeletonTitleRow(blockColor = blockColor)
+            HomeFeedSkeletonTitleRow(
+                pulse = pulse,
+                baseColor = blockBaseColor,
+                isDarkTheme = isDarkCardTheme
+            )
             Spacer(modifier = Modifier.height(AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro))
-            HomeFeedSkeletonMetaRow(blockColor = blockColor)
+            HomeFeedSkeletonMetaRow(
+                pulse = pulse,
+                baseColor = blockBaseColor,
+                isDarkTheme = isDarkCardTheme
+            )
         }
     }
 }
 
 @Composable
-private fun HomeFeedSkeletonTitleRow(blockColor: Color) {
+private fun HomeFeedSkeletonTitleRow(
+    pulse: () -> Float,
+    baseColor: Color,
+    isDarkTheme: Boolean
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -154,14 +168,18 @@ private fun HomeFeedSkeletonTitleRow(blockColor: Color) {
     ) {
         Column(modifier = Modifier.weight(1f)) {
             HomeFeedSkeletonBlock(
-                color = blockColor,
+                pulse = pulse,
+                baseColor = baseColor,
+                isDarkTheme = isDarkTheme,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(AppSpacingTokens.Large)
             )
             Spacer(modifier = Modifier.height(AppSpacingTokens.Small))
             HomeFeedSkeletonBlock(
-                color = blockColor,
+                pulse = pulse,
+                baseColor = baseColor,
+                isDarkTheme = isDarkTheme,
                 modifier = Modifier
                     .fillMaxWidth(0.72f)
                     .height(AppSpacingTokens.Large)
@@ -169,7 +187,9 @@ private fun HomeFeedSkeletonTitleRow(blockColor: Color) {
         }
         Spacer(modifier = Modifier.width(AppSpacingTokens.Small))
         HomeFeedSkeletonBlock(
-            color = blockColor,
+            pulse = pulse,
+            baseColor = baseColor,
+            isDarkTheme = isDarkTheme,
             modifier = Modifier.size(AppSpacingTokens.Large + AppSpacingTokens.ExtraSmall),
             shape = CircleShape
         )
@@ -177,19 +197,27 @@ private fun HomeFeedSkeletonTitleRow(blockColor: Color) {
 }
 
 @Composable
-private fun HomeFeedSkeletonMetaRow(blockColor: Color) {
+private fun HomeFeedSkeletonMetaRow(
+    pulse: () -> Float,
+    baseColor: Color,
+    isDarkTheme: Boolean
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro)
     ) {
         HomeFeedSkeletonBlock(
-            color = blockColor,
+            pulse = pulse,
+            baseColor = baseColor,
+            isDarkTheme = isDarkTheme,
             modifier = Modifier
                 .width(AppSpacingTokens.ExtraLarge + AppSpacingTokens.ExtraSmall)
                 .height(AppSpacingTokens.Medium + AppSpacingTokens.Micro)
         )
         HomeFeedSkeletonBlock(
-            color = blockColor,
+            pulse = pulse,
+            baseColor = baseColor,
+            isDarkTheme = isDarkTheme,
             modifier = Modifier
                 .width(AppSpacingTokens.TripleExtraLarge * 2)
                 .height(AppSpacingTokens.Medium + AppSpacingTokens.Micro)
@@ -199,7 +227,9 @@ private fun HomeFeedSkeletonMetaRow(blockColor: Color) {
 
 @Composable
 private fun HomeFeedSkeletonBlock(
-    color: Color,
+    pulse: () -> Float,
+    baseColor: Color,
+    isDarkTheme: Boolean,
     modifier: Modifier,
     shape: androidx.compose.ui.graphics.Shape? = null
 ) {
@@ -207,7 +237,7 @@ private fun HomeFeedSkeletonBlock(
     Box(
         modifier = modifier
             .clip(resolvedShape)
-            .background(color)
+            .homeFeedSkeletonBlockBackground(pulse, baseColor, isDarkTheme)
     )
 }
 
@@ -217,15 +247,12 @@ private fun HomeFeedSkeletonBlock(
  */
 @Composable
 internal fun HomeFeedHeroCarouselSkeleton(
-    pulse: Float,
+    pulse: () -> Float,
     modifier: Modifier = Modifier
 ) {
     val cardShape = AppShapes.container(ContainerLevel.Card)
     val isDarkCardTheme = AppSurfaceTokens.chromeBackground().luminance() < 0.5f
-    val blockColor = rememberHomeFeedSkeletonBlockColor(
-        pulse = pulse,
-        isDarkTheme = isDarkCardTheme
-    )
+    val blockBaseColor = MaterialTheme.colorScheme.onSurface
     val windowSizeClass = com.android.purebilibili.core.util.LocalWindowSizeClass.current
     BoxWithConstraints(
         modifier = modifier
@@ -248,25 +275,31 @@ internal fun HomeFeedHeroCarouselSkeleton(
                 .width(layout.widthDp.dp)
                 .aspectRatio(layout.aspectRatio)
                 .clip(cardShape)
-                .background(blockColor)
+                .homeFeedSkeletonBlockBackground(pulse, blockBaseColor, isDarkCardTheme)
                 .align(Alignment.Center)
         )
     }
 }
 
-@Composable
-private fun rememberHomeFeedSkeletonBlockColor(
-    pulse: Float,
+/**
+ * 骨架块背景:脉冲值在 draw 阶段读取,逐帧仅触发本层重绘,不触发重组。
+ * 与旧的 `background(onSurface.copy(alpha))` 合成结果一致。
+ */
+private fun Modifier.homeFeedSkeletonBlockBackground(
+    pulse: () -> Float,
+    baseColor: Color,
     isDarkTheme: Boolean
-): Color {
-    val alpha = if (isDarkTheme) {
+): Modifier = drawBehind {
+    drawRect(baseColor.copy(alpha = homeFeedSkeletonBlockAlpha(pulse(), isDarkTheme)))
+}
+
+private fun homeFeedSkeletonBlockAlpha(pulse: Float, isDarkTheme: Boolean): Float =
+    if (isDarkTheme) {
         HOME_FEED_SKELETON_DARK_MIN_ALPHA +
             (HOME_FEED_SKELETON_DARK_MAX_ALPHA - HOME_FEED_SKELETON_DARK_MIN_ALPHA) * pulse
     } else {
         HOME_FEED_SKELETON_LIGHT_MIN_ALPHA +
             (HOME_FEED_SKELETON_LIGHT_MAX_ALPHA - HOME_FEED_SKELETON_LIGHT_MIN_ALPHA) * pulse
-    }
-    return MaterialTheme.colorScheme.onSurface.copy(alpha = alpha)
 }
 
 private const val HOME_FEED_SKELETON_PULSE_DURATION_MILLIS = 2_000

@@ -29,7 +29,9 @@ import kotlinx.coroutines.launch
 fun DynamicVoteDialog(
     voteId: Long,
     dynamicId: String,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    initialOptionIndex: Int? = null,
+    onVoteSuccess: (DynamicVoteInfo) -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
     var loading by remember(voteId) { mutableStateOf(true) }
@@ -44,7 +46,10 @@ fun DynamicVoteDialog(
         DynamicVoteRepository.getVoteInfo(voteId).fold(
             onSuccess = { info ->
                 voteInfo = info
-                selectedIndexes = info.my_votes.toSet()
+                selectedIndexes = info.my_votes.toSet().ifEmpty {
+                    initialOptionIndex?.takeIf { index -> info.options.any { it.opt_idx == index } }
+                        ?.let { setOf(it) } ?: emptySet()
+                }
             },
             onFailure = { error ->
                 errorMessage = error.message ?: "投票信息加载失败"
@@ -173,6 +178,7 @@ fun DynamicVoteDialog(
                             onSuccess = { result ->
                                 voteInfo = result
                                 selectedIndexes = result.my_votes.toSet()
+                                onVoteSuccess(result)
                                 submitting = false
                             },
                             onFailure = { error ->

@@ -1,0 +1,8 @@
+{
+  "actualMain04BaseSha256Lf": "3e3f79e26f3155c234ec4b77d152c471c03fcc4cfbac944944e5e6718e9ef1e9",
+  "method": "DesktopCompleteSpaceScreen",
+  "tail": "onImagePreviewFeedback: (String) -> Unit = {}",
+  "binding": "onImagePreviewFeedback = { error = it }",
+  "manualRootMergeOnly": true,
+  "MainChanged": false
+}

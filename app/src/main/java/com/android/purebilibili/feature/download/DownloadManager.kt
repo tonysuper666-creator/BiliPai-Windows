@@ -254,8 +254,21 @@ object DownloadManager {
      * 执行下载
      */
     private suspend fun downloadTask(taskId: String) {
-        val task = _tasks.value[taskId] ?: throw IllegalStateException("任务不存在: $taskId")
+        var task = _tasks.value[taskId] ?: throw IllegalStateException("任务不存在: $taskId")
         updateTask(task.id) { it.copy(status = DownloadStatus.DOWNLOADING) }
+
+        // 串行队列里排了很久的任务，入队时解析的 DASH 地址大概率已过期
+        if (shouldRefreshStaleDownloadUrls(
+                createdAtMs = task.createdAt,
+                nowMs = System.currentTimeMillis()
+            )
+        ) {
+            com.android.purebilibili.core.util.Logger.d(
+                "DownloadManager",
+                "🔄 Stale queued task, refreshing playurl before download: $taskId"
+            )
+            task = refreshTaskDownloadUrls(task)
+        }
         
         val videoFile = getVideoFile(task.id)
         val audioFile = getAudioFile(task.id)
@@ -485,96 +498,25 @@ object DownloadManager {
     }
     
     /**
-     * 单线程下载（降级方案）
-     */
-    private suspend fun downloadFileSingleThread(
-        url: String,
-        file: File,
-        cookieString: String,
-        taskId: String,
-        plan: ResumableDownloadPlan,
-        onProgress: (Float) -> Unit
-    ): Unit = withContext(Dispatchers.IO) {
-        if (!plan.append && file.exists() && file.length() > 0L) {
-            file.delete()
-        }
-
-        val requestBuilder = Request.Builder()
-            .url(url)
-            .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-            .header("Referer", "https://www.bilibili.com")
-            .header("Cookie", cookieString)
-        if (plan.append) {
-            requestBuilder.header("Range", "bytes=${plan.rangeStartBytes}-")
-        }
-
-        val response = client.newCall(requestBuilder.build()).execute()
-        if (!response.isSuccessful) {
-            throw Exception("HTTP ${response.code}")
-        }
-
-        if (plan.append && response.code != 206) {
-            response.close()
-            file.delete()
-            val restartedPlan = plan.copy(
-                append = false,
-                rangeStartBytes = 0L,
-                initialDownloadedBytes = 0L
-            )
-            downloadFileSingleThread(url, file, cookieString, taskId, restartedPlan, onProgress)
-            return@withContext
-        }
-
-        val body = response.body
-        val totalResponseBytes = plan.totalBytes.takeIf { it > 0L } ?: run {
-            val bodyBytes = body.contentLength()
-            if (bodyBytes > 0L) bodyBytes + plan.initialDownloadedBytes else 0L
-        }
-        var downloadedBytes = plan.initialDownloadedBytes
-
-        if (totalResponseBytes > 0L) {
-            onProgress(downloadedBytes.toFloat() / totalResponseBytes.toFloat())
-        }
-
-        FileOutputStream(file, plan.append).use { output ->
-            body.byteStream().use { input ->
-                val buffer = ByteArray(8192)
-                var bytesRead: Int
-                while (input.read(buffer).also { bytesRead = it } != -1) {
-                    ensureTaskCanRun(taskId)
-                    output.write(buffer, 0, bytesRead)
-                    downloadedBytes += bytesRead
-                    if (totalResponseBytes > 0L) {
-                        onProgress(downloadedBytes.toFloat() / totalResponseBytes.toFloat())
-                    }
-                }
-            }
-        }
-
-        if (totalResponseBytes > 0L && downloadedBytes < totalResponseBytes) {
-            throw IOException("下载未完成: $downloadedBytes/$totalResponseBytes")
-        }
-    }
-
-    
-    /**
      * 使用 Android MediaMuxer 合并音视频
      * 将分离的视频流和音频流合并为完整的 MP4 文件
      */
     @android.annotation.SuppressLint("WrongConstant")
     private suspend fun mergeVideoAudio(video: File?, audio: File, output: File) = withContext(Dispatchers.IO) {
+        // 提取器/Muxer 提升到 try 外，异常路径也能释放，避免泄漏 native 资源
+        var muxer: android.media.MediaMuxer? = null
+        val videoExtractor = android.media.MediaExtractor()
+        val audioExtractor = android.media.MediaExtractor()
         try {
             com.android.purebilibili.core.util.Logger.d("DownloadManager", " Starting MediaMuxer merge...")
-            
+
             // 创建 MediaMuxer
-            val muxer = android.media.MediaMuxer(
+            muxer = android.media.MediaMuxer(
                 output.absolutePath,
                 android.media.MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4
             )
-            
-            // 提取视频轨道
+
             // 提取视频轨道 (仅当 video 不为空时)
-            val videoExtractor = android.media.MediaExtractor()
             var videoTrackMaxInputSize = -1
             if (video != null) {
                 videoExtractor.setDataSource(video.absolutePath)
@@ -587,7 +529,7 @@ object DownloadManager {
                 val mime = format.getString(android.media.MediaFormat.KEY_MIME) ?: continue
                 if (mime.startsWith("video/")) {
                     videoExtractor.selectTrack(i)
-                    videoMuxerTrackIndex = muxer.addTrack(format)
+                    videoMuxerTrackIndex = muxer!!.addTrack(format)
                     videoTrackIndex = i
                     if (format.containsKey(android.media.MediaFormat.KEY_MAX_INPUT_SIZE)) {
                         videoTrackMaxInputSize = format.getInteger(android.media.MediaFormat.KEY_MAX_INPUT_SIZE)
@@ -602,7 +544,6 @@ object DownloadManager {
             }
             
             // 提取音频轨道
-            val audioExtractor = android.media.MediaExtractor()
             audioExtractor.setDataSource(audio.absolutePath)
             var audioTrackIndex = -1
             var audioMuxerTrackIndex = -1
@@ -613,7 +554,7 @@ object DownloadManager {
                 val mime = format.getString(android.media.MediaFormat.KEY_MIME) ?: continue
                 if (mime.startsWith("audio/")) {
                     audioExtractor.selectTrack(i)
-                    audioMuxerTrackIndex = muxer.addTrack(format)
+                    audioMuxerTrackIndex = muxer!!.addTrack(format)
                     audioTrackIndex = i
                     if (format.containsKey(android.media.MediaFormat.KEY_MAX_INPUT_SIZE)) {
                         audioTrackMaxInputSize = format.getInteger(android.media.MediaFormat.KEY_MAX_INPUT_SIZE)
@@ -624,15 +565,13 @@ object DownloadManager {
             
             if ((video != null && videoTrackIndex == -1) || audioTrackIndex == -1) {
                 com.android.purebilibili.core.util.Logger.e("DownloadManager", " Failed to find video or audio track")
-                // 降级：直接复制视频
-                if (video != null) video.copyTo(output, overwrite = true)
-                videoExtractor.release()
-                audioExtractor.release()
-                return@withContext
+                throw IllegalStateException(
+                    "音视频轨道解析失败（videoTrack=$videoTrackIndex, audioTrack=$audioTrackIndex）"
+                )
             }
             
             // 开始合并
-            muxer.start()
+            muxer!!.start()
             
             val buffer = java.nio.ByteBuffer.allocate(
                 resolveMuxerSampleBufferSize(
@@ -653,7 +592,7 @@ object DownloadManager {
                     bufferInfo.presentationTimeUs = videoExtractor.sampleTime
                     bufferInfo.flags = videoExtractor.sampleFlags
                     
-                    muxer.writeSampleData(videoMuxerTrackIndex, buffer, bufferInfo)
+                    muxer!!.writeSampleData(videoMuxerTrackIndex, buffer, bufferInfo)
                     videoExtractor.advance()
                 }
             }
@@ -669,22 +608,27 @@ object DownloadManager {
                 bufferInfo.presentationTimeUs = audioExtractor.sampleTime
                 bufferInfo.flags = audioExtractor.sampleFlags
                 
-                muxer.writeSampleData(audioMuxerTrackIndex, buffer, bufferInfo)
+                muxer!!.writeSampleData(audioMuxerTrackIndex, buffer, bufferInfo)
                 audioExtractor.advance()
             }
             
             // 清理
             videoExtractor.release()
             audioExtractor.release()
-            muxer.stop()
-            muxer.release()
+            muxer!!.stop()
+            muxer!!.release()
             
             com.android.purebilibili.core.util.Logger.d("DownloadManager", " MediaMuxer merge completed: ${output.name}")
             
         } catch (e: Exception) {
             com.android.purebilibili.core.util.Logger.e("DownloadManager", " MediaMuxer merge failed", e)
-            // 降级：直接复制视频
-            video?.copyTo(output, overwrite = true)
+            runCatching { muxer?.release() }
+            videoExtractor.release()
+            audioExtractor.release()
+            // 删除半成品并向上抛出：任务转入可重试的失败态，
+            // 避免静默产出无音轨文件或（纯音频任务）空文件被标记为已完成
+            output.delete()
+            throw IllegalStateException("音视频合成失败: ${e.message}", e)
         }
     }
     
@@ -803,18 +747,28 @@ object DownloadManager {
             val playUrlData = VideoRepository.getPlayUrlData(task.bvid, task.cid, requestedQuality)
                 ?: return task
             val refreshedAudioUrl = playUrlData.dash?.getBestAudio()?.getValidUrl().orEmpty()
-            val refreshedVideoUrl = if (task.isAudioOnly) {
-                ""
-            } else {
-                playUrlData.dash?.getBestVideo(task.quality)?.getValidUrl().orEmpty()
-            }
+            val refreshedVideo = if (task.isAudioOnly) null else playUrlData.dash?.getBestVideo(task.quality)
+            val refreshedVideoUrl = refreshedVideo?.getValidUrl().orEmpty()
+
+            // 刷新后源站可能不再提供原画质：同步实际画质，避免文件与“1080P”标签不符
+            val refreshedQualityDesc = refreshedVideo?.id
+                ?.takeIf { it != task.quality }
+                ?.let { id ->
+                    com.android.purebilibili.data.model.VideoQuality.fromCode(id)?.description
+                }
+                ?: task.qualityDesc
 
             val refreshedTask = when {
                 task.isAudioOnly && refreshedAudioUrl.isNotBlank() -> {
                     task.copy(audioUrl = refreshedAudioUrl)
                 }
                 !task.isAudioOnly && refreshedVideoUrl.isNotBlank() && refreshedAudioUrl.isNotBlank() -> {
-                    task.copy(videoUrl = refreshedVideoUrl, audioUrl = refreshedAudioUrl)
+                    task.copy(
+                        videoUrl = refreshedVideoUrl,
+                        audioUrl = refreshedAudioUrl,
+                        quality = refreshedVideo?.id ?: task.quality,
+                        qualityDesc = refreshedQualityDesc
+                    )
                 }
                 else -> task
             }
@@ -823,7 +777,9 @@ object DownloadManager {
                 updateTask(task.id, persist = false) {
                     it.copy(
                         videoUrl = refreshedTask.videoUrl,
-                        audioUrl = refreshedTask.audioUrl
+                        audioUrl = refreshedTask.audioUrl,
+                        quality = refreshedTask.quality,
+                        qualityDesc = refreshedTask.qualityDesc
                     )
                 }
             }
@@ -845,8 +801,7 @@ object DownloadManager {
     }
 
     private fun scheduleNextQueuedDownload() {
-        val nextTaskId = resolveNextQueuedDownloadTaskId(_tasks.value.values) ?: return
-        enqueueDownload(nextTaskId)
+        resolveNextQueuedDownloadTaskIds(_tasks.value.values).forEach(::enqueueDownload)
     }
 
     private fun ensureTaskCanRun(taskId: String) {

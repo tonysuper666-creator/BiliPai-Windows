@@ -10,6 +10,14 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class BgmDiscoverySheetPolicyTest {
+    @Test
+    fun bgmTagsOpenMusicDetailsWhileOrdinaryTagsKeepSearch() {
+        val tag = com.android.purebilibili.data.model.response.VideoTag(tag_type = "bgm", music_id = "MA123", tag_name = "发现音乐")
+        assertEquals("MA123", resolveBgmTagInfo(tag)?.musicId)
+        assertEquals(null, resolveBgmTagInfo(tag.copy(tag_type = "")))
+        assertEquals(null, resolveBgmTagInfo(tag.copy(music_id = "")))
+    }
+
 
     @Test
     fun itemKey_includesIndexToAvoidDuplicateMusicIdsColliding() {

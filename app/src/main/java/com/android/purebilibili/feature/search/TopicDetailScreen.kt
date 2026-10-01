@@ -69,7 +69,7 @@ import com.android.purebilibili.feature.dynamic.components.DynamicCardActions
 import com.android.purebilibili.feature.dynamic.components.DynamicCardInteractionActions
 import com.android.purebilibili.feature.dynamic.components.DynamicCardNavigationActions
 import com.android.purebilibili.feature.dynamic.components.DynamicFeedSkeletonCard
-import com.android.purebilibili.feature.dynamic.components.rememberDynamicFeedSkeletonPulse
+import com.android.purebilibili.feature.dynamic.components.rememberDynamicFeedSkeletonPulseState
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
 import com.android.purebilibili.R
@@ -280,8 +280,10 @@ fun TopicDetailScreen(
 
 @Composable
 private fun TopicDetailLoadingSkeleton(modifier: Modifier = Modifier) {
-    val dynamicPulse = rememberDynamicFeedSkeletonPulse()
-    val headerBlockColor = rememberContentSkeletonBlockColor(dynamicPulse)
+    val dynamicPulseState = rememberDynamicFeedSkeletonPulseState()
+    // provider 保持稳定实例,骨架卡的脉冲值在 draw 阶段读取,卡片内容不逐帧重组。
+    val dynamicPulseProvider = remember(dynamicPulseState) { { dynamicPulseState.value } }
+    val headerBlockColor = rememberContentSkeletonBlockColor(dynamicPulseProvider())
     LazyColumn(
         contentPadding = PaddingValues(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -337,7 +339,7 @@ private fun TopicDetailLoadingSkeleton(modifier: Modifier = Modifier) {
             }
         }
         items(6) {
-            DynamicFeedSkeletonCard(pulse = dynamicPulse)
+            DynamicFeedSkeletonCard(pulse = dynamicPulseProvider)
         }
     }
 }

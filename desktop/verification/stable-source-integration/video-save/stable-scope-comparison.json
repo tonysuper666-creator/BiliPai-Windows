@@ -1,0 +1,14 @@
+{
+  "alpha9Commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "alpha9StartLine": 2564,
+  "stableStartLine": 2846,
+  "alpha9HelperLfSha256": "3071039726dcf9070df9a7cb59f198fce2f6c02a4844dc449c0b968a840c449e",
+  "stableHelperLfSha256": "3071039726dcf9070df9a7cb59f198fce2f6c02a4844dc449c0b968a840c449e",
+  "standaloneHelperByteEqual": true,
+  "scope": "Only standalone saveLivePhotoVideoToGallery; not all stable functions",
+  "helperReadsImageTreePreference": false,
+  "relativePath": "Movies/BiliPai",
+  "mimeType": "video/mp4",
+  "displayName": "BiliPai_Live_<timestamp>.mp4"
+}

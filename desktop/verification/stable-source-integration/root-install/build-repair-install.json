@@ -1,0 +1,41 @@
+{
+  "schema": "stable-build-repair-candidate-install-v1",
+  "candidateInstalled": true,
+  "mainInstalled": false,
+  "payloads": [
+    {
+      "path": "desktop/tools/extract-upstream-diagnostics.py",
+      "sha256Lf": "5801bc6b79824caa5c01577eedf1a54997b6317f822c5a2d7e6847c5b7f3a29c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256Lf": "bca1f195aa5f5fd202cffb759ef208b9715e7f5a834363cce475db48f181f3ab"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "sha256Lf": "4cfc9d0f889f4334c292cb12b2a0e5f7441c73df2999bf7504726a058a3b2756"
+    }
+  ],
+  "sourceRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt",
+      "sha256": "056db2c4d628e38dbfc3b7be5e6dd6b21bd9ff97597f5385f666579a0924785e",
+      "features": [
+        "settings-local-diagnostics-parity"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/performance/NativeExitTrace.kt",
+      "sha256": "8d0e38625f243072cd72d380cb6c7eb36ec3587deb194c497a7d9a10434be182",
+      "features": [
+        "settings-local-diagnostics-parity"
+      ],
+      "mode": "policy-extract"
+    }
+  ],
+  "registryCount": 626,
+  "preparedAgentEvidenceAwaitingFreeze": true,
+  "wholeStableCompiled": false,
+  "stableRuntimeAccepted": false
+}

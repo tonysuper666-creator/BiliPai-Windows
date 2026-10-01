@@ -270,6 +270,16 @@ sealed class ScreenRoutes(val route: String) {
     }
     
     // [新增] Audio Player
+    object WeeklySeries : ScreenRoutes("weekly_series?number={number}") {
+        fun createRoute(number: Int? = null): String =
+            "weekly_series" + (number?.takeIf { it > 0 }?.let { "?number=$it" } ?: "")
+    }
+
+    object BgmDetail : ScreenRoutes("bgm_detail") {
+        fun createRoute(musicId: String, aid: Long = 0, cid: Long = 0, showVideos: Boolean = false): String =
+            "bgm_detail?musicId=${encodeUrlComponentCompat(musicId)}&aid=$aid&cid=$cid&showVideos=$showVideos"
+    }
+
     object MusicDetail : ScreenRoutes("music/{sid}") {
         fun createRoute(sid: Long): String {
             return "music/$sid"
@@ -282,4 +292,16 @@ sealed class ScreenRoutes(val route: String) {
             return "native_music?title=${encodeUrlComponentCompat(title)}&bvid=${encodeUrlComponentCompat(bvid)}&cid=$cid"
         }
     }
+    companion object {
+        fun createMusicRoute(musicId: String): String? {
+            val id = musicId.trim()
+            val auSid = id.removePrefix("au").removePrefix("AU").toLongOrNull()
+            return when {
+                auSid != null && auSid > 0 -> MusicDetail.createRoute(auSid)
+                Regex("MA[0-9A-Za-z]+", RegexOption.IGNORE_CASE).matches(id) -> BgmDetail.createRoute(id)
+                else -> null
+            }
+        }
+    }
+
 }

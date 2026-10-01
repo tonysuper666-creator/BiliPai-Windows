@@ -20,11 +20,22 @@ internal data class VideoSharePayload(
 )
 
 internal enum class VideoShareTarget(val packageName: String?) {
+    BILIBILI_FRIENDS(null),
     WECHAT(WECHAT_PACKAGE_NAME),
     QQ(QQ_PACKAGE_NAME),
     COPY_LINK(null),
     MORE(null)
 }
+
+internal fun resolveVideoShareRecipientIds(
+    selectedIds: Set<Long>,
+    followings: List<com.android.purebilibili.data.model.response.FollowingUser>,
+    selfMid: Long,
+): List<Long> = followings.asSequence()
+    .map { it.mid }
+    .filter { it > 0L && it != selfMid && it in selectedIds }
+    .distinct()
+    .toList()
 
 internal enum class VideoShareStyle {
     LINK,

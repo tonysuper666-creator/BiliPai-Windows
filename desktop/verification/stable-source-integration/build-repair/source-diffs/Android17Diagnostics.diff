@@ -1,0 +1,12 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt
++++ v023:app/src/main/java/com/android/purebilibili/core/performance/Android17Diagnostics.kt
+@@ -304,6 +304,9 @@
+             val details = buildString {
+                 append("系统记录的上次异常退出：")
+                 append(reason)
++                append("；退出时间=")
++                append(SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
++                    .format(Date(exitInfo.timestamp)))
+                 append("；status=")
+                 append(exitInfo.status)
+                 append("；importance=")

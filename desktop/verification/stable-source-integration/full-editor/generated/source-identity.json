@@ -1,0 +1,209 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposer.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "fedcfd2f1f049733fa30086269e55d3b843a6ba3",
+    "currentGitBlob": "fedcfd2f1f049733fa30086269e55d3b843a6ba3",
+    "sha256LfUtf8": "2321fb5c86497cd726aaa73468884c568e7f36fab9641022cb7b1df38664617c",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishPickers.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "53f76199dcaea738b25f4ea064ba5a3916d48c98",
+    "currentGitBlob": "53f76199dcaea738b25f4ea064ba5a3916d48c98",
+    "sha256LfUtf8": "be5e3aa6604fe22801c414366da78afb15184082dee71f548dd15a243646609a",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateVoteDialog.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "391dc5f38ba65b8e95b6cee8dc535369b690c194",
+    "currentGitBlob": "391dc5f38ba65b8e95b6cee8dc535369b690c194",
+    "sha256LfUtf8": "9c25035c25bc149016db553e2a916516fd4dc63ac14f65862f17b5b24ef47e4e",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateReserveDialog.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "f76067097b4bbe86011c5e944ee35dc275e8e4f0",
+    "currentGitBlob": "f76067097b4bbe86011c5e944ee35dc275e8e4f0",
+    "sha256LfUtf8": "4f1ae75ed1d8779ef2ecb0c53808fa63860dfc906de45c0e99dededa7dd80191",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicCommentReplyPolicy.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "fd4a01ce9dbd1a53622fd36a1fde6acf49939d23",
+    "currentGitBlob": "fd4a01ce9dbd1a53622fd36a1fde6acf49939d23",
+    "sha256LfUtf8": "fe4b90db80b4ee303b0f85ddc2359a1a31c13dbc06158caf6306906153e2efa2",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentActionPolicy.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "1cc3c0bf50a29be9a490677a509ab668a62562d1",
+    "currentGitBlob": "1cc3c0bf50a29be9a490677a509ab668a62562d1",
+    "sha256LfUtf8": "03dd33c10976d1c0504d759d0b2045765f04f869e05b5b33c9a752d06bcf1581",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicCommentLoadPolicy.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "ac53c4b0d54ca09a786429054e3dcc2e7b3f12f0",
+    "currentGitBlob": "ac53c4b0d54ca09a786429054e3dcc2e7b3f12f0",
+    "sha256LfUtf8": "7325a91f8adddc7701957350a248553ef322f37af07ef03caa0b228a22541447",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/SubReplySortPolicy.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "739cbbc682e49f266a2bbea5269a6bb9b4d66442",
+    "currentGitBlob": "739cbbc682e49f266a2bbea5269a6bb9b4d66442",
+    "sha256LfUtf8": "426ac796a1a629b900fdad1eda59010a0ff457047584932d51e1c117853734bd",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "a31c42e14f1eb096cac928f744da0684da7035b1",
+    "currentGitBlob": "a31c42e14f1eb096cac928f744da0684da7035b1",
+    "sha256LfUtf8": "70819f7697852b209898f2868b9ccc1bc55a796e1244586c61a19653d3a42f40",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/OfficialVerifyBadgePolicy.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "ea0251ce00fddcaf3846b41035201301ed3a2fae",
+    "currentGitBlob": "ea0251ce00fddcaf3846b41035201301ed3a2fae",
+    "sha256LfUtf8": "1c3378917d1f1d554c60866e59a588e803f475162649692d9b81ed3338f08ee4",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/model/response/DynamicCreateModels.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "a79cbbadfce81cfe3854b6350d11f20e75c14042",
+    "currentGitBlob": "a79cbbadfce81cfe3854b6350d11f20e75c14042",
+    "sha256LfUtf8": "319289227083e60e04943ab9bb15c0c500dd5bab452ca658f1372937cda4afaa",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "9288ff19be144f051ef2dfe1917685289538e897",
+    "currentGitBlob": "9288ff19be144f051ef2dfe1917685289538e897",
+    "sha256LfUtf8": "2f85544e1e973dd0e7178077ef5c1f439b798a1d86b46701803adeb2a7c0364f",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+    "currentGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+    "sha256LfUtf8": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "6c099b54477ede53ffad412f05ebbd61aa098bea",
+    "currentGitBlob": "6c099b54477ede53ffad412f05ebbd61aa098bea",
+    "sha256LfUtf8": "ab0d6cf956ba9915445f421f299ea48e14a7561edd2a609973700531bf0f67b4",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "0a9ecea12d638350aea17c17cbcaaa491fa6372e",
+    "currentGitBlob": "0a9ecea12d638350aea17c17cbcaaa491fa6372e",
+    "sha256LfUtf8": "0b6c8d1589b6be0ebcec709f2c04b5154afca6411559ac3c115bce122ff26ba9",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "581087a8561b81cbe391daffbabc6a658a05c136",
+    "currentGitBlob": "581087a8561b81cbe391daffbabc6a658a05c136",
+    "sha256LfUtf8": "c9897c512da820ad9fcee9b3f35c4915c556623723d5da3cc7f574b653c3c267",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "db266d68ac78e967c866ea6ed0bafd3a93643955",
+    "currentGitBlob": "db266d68ac78e967c866ea6ed0bafd3a93643955",
+    "sha256LfUtf8": "afb7b4f99a982e7cd29dce6442ad71d59ba9ac97a2e941f2bc7b982c1b60d606",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "6f3c711465b6bd893e5dc8a4465b0e8ecdeb0ea3",
+    "currentGitBlob": "6f3c711465b6bd893e5dc8a4465b0e8ecdeb0ea3",
+    "sha256LfUtf8": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "efecef516545215cca19f1ea7eb4b4a04f54a0d3",
+    "currentGitBlob": "efecef516545215cca19f1ea7eb4b4a04f54a0d3",
+    "sha256LfUtf8": "a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "3e566f765a510a35c88fc636dbcc0e844f9cc719",
+    "currentGitBlob": "3e566f765a510a35c88fc636dbcc0e844f9cc719",
+    "sha256LfUtf8": "c14981b9fa8fec1795598356d7f118b08cd3dedc248b074fa4c9b91075a08e10",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "d2175bfec29633035f2824a2b0b9e4a45d97898e",
+    "currentGitBlob": "d2175bfec29633035f2824a2b0b9e4a45d97898e",
+    "sha256LfUtf8": "3446beb510a4f4164426081c9e139181b33a8cf77612c05a6198fbd994af534c",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicAdaptiveSegmentedControl.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "8e6887882c2463632027f6987457655ec4df04c6",
+    "currentGitBlob": "8e6887882c2463632027f6987457655ec4df04c6",
+    "sha256LfUtf8": "a18b0abaea2466d176809280036055288a0104fbe38478517c2f5e1ae7ef4208",
+    "matchesPinnedCommit": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "fcc55caa16700d973d62af03a97f7426a2f67457",
+    "currentGitBlob": "fcc55caa16700d973d62af03a97f7426a2f67457",
+    "sha256LfUtf8": "8b9186a097d15302f33e5439f28c94dd8a124235937d9fe7404a30c85731918c",
+    "matchesPinnedCommit": true
+  }
+]

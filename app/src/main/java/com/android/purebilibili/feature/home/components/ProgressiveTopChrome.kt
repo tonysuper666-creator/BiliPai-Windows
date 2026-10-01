@@ -17,6 +17,8 @@ import top.yukonga.miuix.kmp.blur.Backdrop
 import top.yukonga.miuix.kmp.blur.BlendColorEntry
 import top.yukonga.miuix.kmp.blur.BlurColors
 import top.yukonga.miuix.kmp.blur.ProgressiveBlur
+import top.yukonga.miuix.kmp.blur.drawBackdrop
+import top.yukonga.miuix.kmp.blur.progressiveTextureBlurEffect
 import top.yukonga.miuix.kmp.blur.progressiveTextureBlur
 
 internal const val BILIPAI_PROGRESSIVE_TOP_BLUR_RADIUS_DP = 10f
@@ -79,6 +81,7 @@ internal fun Modifier.biliPaiProgressiveTopBlur(
     blurRadiusDp: Float = BILIPAI_PROGRESSIVE_TOP_BLUR_RADIUS_DP,
     gradient: ProgressiveBlur = BILIPAI_PROGRESSIVE_TOP_BLUR_DEFAULT_GRADIENT,
     colors: BlurColors = BlurColors(),
+    progressiveCompositeEnabled: Boolean = true,
 ): Modifier {
     if (
         !shouldUseBiliPaiProgressiveTopBlur(enabled, backdrop != null) ||
@@ -93,13 +96,25 @@ internal fun Modifier.biliPaiProgressiveTopBlur(
         // Keep their identity while the material is unchanged, so an unrelated header
         // recomposition does not rebuild the progressive stack and its sharp-end effect.
         // Geometry changes and source redraws are still handled by Miuix's draw node.
-        val effect = remember(source, shape, blurRadiusDp, gradient, colors) {
-            Modifier.progressiveTextureBlur(
+        val effect = remember(source, shape, blurRadiusDp, gradient, colors, progressiveCompositeEnabled) {
+            if (progressiveCompositeEnabled) Modifier.progressiveTextureBlur(
                 backdrop = source,
                 shape = shape,
                 blurRadius = blurRadiusDp,
                 gradient = gradient,
                 colors = colors,
+            ) else Modifier.drawBackdrop(
+                backdrop = source,
+                shape = { shape },
+                effects = {
+                    // Omitting progressiveGradient avoids the downscaled multi-level composite.
+                    // The effect itself still varies the blur radius continuously with height.
+                    progressiveTextureBlurEffect(
+                        blurRadiusX = blurRadiusDp,
+                        gradient = gradient,
+                        colors = colors,
+                    )
+                },
             )
         }
         this.then(effect)
@@ -149,6 +164,7 @@ internal fun BiliPaiImmersiveTopBar(
     fadeEnabled: Boolean? = null,
     extendBelowBounds: Boolean = false,
     opaqueBackgroundFallback: Boolean = true,
+    progressiveCompositeEnabled: Boolean = true,
     content: @androidx.compose.runtime.Composable () -> Unit,
 ) {
     val themeConfig = com.android.purebilibili.core.ui.LocalAppThemeConfig.current
@@ -190,6 +206,7 @@ internal fun BiliPaiImmersiveTopBar(
                         backdrop = backdrop,
                         enabled = true,
                         shape = androidx.compose.ui.graphics.RectangleShape,
+                        progressiveCompositeEnabled = progressiveCompositeEnabled,
                     ),
             )
         }

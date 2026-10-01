@@ -1,10 +1,11 @@
 // 文件路径: core/ui/LottieComponents.kt
 package com.android.purebilibili.core.ui
 
+import com.android.purebilibili.core.ui.components.AppText
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -89,7 +90,7 @@ fun LoadingAnimation(
         }
         if (text != null) {
             Spacer(modifier = Modifier.height(AppSpacingTokens.Small))
-            Text(
+            AppText(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
@@ -179,7 +180,7 @@ fun EmptyState(
         Spacer(modifier = Modifier.height(AppSpacingTokens.Large))
         
         //  显示彩蛋消息或默认消息（使用柔和的主题色）
-        Text(
+        AppText(
             text = easterEggMessage ?: message,
             style = MaterialTheme.typography.bodyLarge,
             color = if (easterEggMessage != null) 
@@ -190,7 +191,7 @@ fun EmptyState(
         
         if (actionText != null && onAction != null) {
             Spacer(modifier = Modifier.height(AppSpacingTokens.Medium))
-            Text(
+            AppText(
                 text = actionText,
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary,
@@ -258,7 +259,7 @@ fun ErrorState(
             iterations = 1
         )
         Spacer(modifier = Modifier.height(AppSpacingTokens.Large))
-        Text(
+        AppText(
             text = displayMessage,
             style = MaterialTheme.typography.bodyLarge,
             color = if (showEncouragement)
@@ -268,7 +269,7 @@ fun ErrorState(
         )
         if (onRetry != null) {
             Spacer(modifier = Modifier.height(AppSpacingTokens.Medium))
-            Text(
+            AppText(
                 text = if (showEncouragement) "冲鸭！" else "点击重试",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary,

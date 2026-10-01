@@ -140,8 +140,7 @@ fun TextSelectionBottomSheet(
                 AppText(
                     text = resolvedTitle,
                     style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 18.sp
+                        fontWeight = FontWeight.SemiBold
                     )
                 )
                 AppIconButton(
@@ -184,8 +183,6 @@ fun TextSelectionBottomSheet(
                     onValueChange = { textFieldValue = it },
                     readOnly = true,
                     textStyle = MaterialTheme.typography.bodyLarge.copy(
-                        fontSize = 17.sp,
-                        lineHeight = 26.sp,
                         color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Normal
                     ),

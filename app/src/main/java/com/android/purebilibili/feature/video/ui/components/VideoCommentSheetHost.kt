@@ -948,6 +948,16 @@ internal fun VideoCommentMainList(
                         .layerBackdrop(commentChromeBackdrop),
                     contentPadding = WindowInsets.navigationBars.asPaddingValues()
                 ) {
+                    state.voteCard?.let { card ->
+                        item(key = "comment_vote_${card.voteId}") {
+                            VideoCommentVoteCard(
+                                card = card,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 14.dp, vertical = 8.dp),
+                            )
+                        }
+                    }
                     item {
                         AppSurface(
                             modifier = Modifier

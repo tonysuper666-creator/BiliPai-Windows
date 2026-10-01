@@ -7,6 +7,18 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class AppPrimitiveComponentsStructureTest {
+    @Test
+    fun menuItemsUseNativeMiuixSurfacesBeforeMaterialFallback() {
+        val source = loadSource().substringAfter("fun AppDropdownMenuItem(")
+            .substringBefore("fun AppModalNavigationDrawer(")
+        assertTrue(source.contains("LocalAppUiStyle.current == AppUiStyle.MIUIX"))
+        assertTrue(source.contains("AppSurface("))
+        assertTrue(source.contains("enabled = enabled"))
+        assertTrue(source.contains("leadingIcon?.invoke()"))
+        assertTrue(source.contains("trailingIcon?.invoke()"))
+        assertTrue(source.indexOf("AppSurface(") < source.indexOf("DropdownMenuItem("))
+    }
+
 
     @Test
     fun singleChoiceRowsDelegateSelectionAndColorsToTheSharedThemeLayer() {

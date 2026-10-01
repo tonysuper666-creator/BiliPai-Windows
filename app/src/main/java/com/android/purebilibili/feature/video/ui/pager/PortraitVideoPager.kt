@@ -412,23 +412,29 @@ fun PortraitVideoPager(
     val prefetchVideoEnabled by SettingsManager.getPrefetchVideo(context)
         .collectAsStateWithLifecycle(initialValue = false)
     // Align portrait pager playurl qn with detail-page playable default (Wi‑Fi / VIP / auto-highest).
-    val portraitDefaultQuality = remember(context) {
-        NetworkUtils.getPlayableDefaultQualityId(
-            context = context,
-            isLoggedIn = VideoRepository.isPlaybackLoggedIn(),
-            isVip = VideoRepository.isPlaybackVip()
-        )
-    }
-    var portraitSelectedQuality by remember {
-        mutableIntStateOf(resolvePortraitPlaybackTargetQuality(portraitDefaultQuality))
-    }
-    var portraitDisplayedQuality by remember {
-        mutableIntStateOf(resolvePortraitPlaybackTargetQuality(portraitDefaultQuality))
-    }
-    var portraitAvailableQualityIds by remember {
-        mutableStateOf(
-            listOf(resolvePortraitPlaybackTargetQuality(portraitDefaultQuality))
-        )
+    // 默认画质解析含 SP 与 ConnectivityManager 读取,不能在组合期同步执行;
+    // 先以 0 占位,首个播放请求由占位守卫挡下,待解析完成后补发。
+    var portraitSelectedQuality by remember { mutableIntStateOf(0) }
+    var portraitDisplayedQuality by remember { mutableIntStateOf(0) }
+    var portraitAvailableQualityIds by remember { mutableStateOf(listOf<Int>()) }
+    LaunchedEffect(context) {
+        val defaultQuality = withContext(Dispatchers.IO) {
+            NetworkUtils.getPlayableDefaultQualityId(
+                context = context,
+                isLoggedIn = VideoRepository.isPlaybackLoggedIn(),
+                isVip = VideoRepository.isPlaybackVip()
+            )
+        }
+        if (portraitSelectedQuality <= 0) {
+            val resolved = resolvePortraitPlaybackTargetQuality(defaultQuality)
+            portraitSelectedQuality = resolved
+            if (portraitDisplayedQuality <= 0) {
+                portraitDisplayedQuality = resolved
+            }
+            if (portraitAvailableQualityIds.isEmpty()) {
+                portraitAvailableQualityIds = listOf(resolved)
+            }
+        }
     }
     val portraitQualityLabel = remember(portraitDisplayedQuality) {
         resolvePortraitQualityLabel(portraitDisplayedQuality)
@@ -1001,6 +1007,12 @@ fun PortraitVideoPager(
             return false
         }
 
+        if (portraitSelectedQuality <= 0) {
+            // 默认画质尚未异步解析完成,解析完成后由 PortraitDefaultQualityEffect 补发请求。
+            isLoading = false
+            return false
+        }
+
         if (
             !forceReload &&
             shouldSkipPortraitReloadForCurrentMedia(
@@ -1253,6 +1265,11 @@ fun PortraitVideoPager(
             if (!portraitPrefetchedPlayUrlBvids.add(identity.bvid)) return@collect
 
             launch(Dispatchers.IO) {
+                if (portraitSelectedQuality <= 0) {
+                    // 默认画质未就绪时不做错误档位预取,交还原 bvid 允许后续重试。
+                    portraitPrefetchedPlayUrlBvids.remove(identity.bvid)
+                    return@launch
+                }
                 runCatching {
                     val targetQuality = resolvePortraitPlaybackTargetQuality(portraitSelectedQuality)
                     val playData = VideoRepository.preloadPortraitPlayUrl(
@@ -1272,6 +1289,20 @@ fun PortraitVideoPager(
                 }
             }
         }
+    }
+
+    // 默认画质异步解析完成后补发首屏播放请求:
+    // 组合页流程可能早于解析完成触发并被占位守卫挡下,这里负责补发。
+    // 用户手动切档时 currentPlayingBvid 非空,不会误触。
+    LaunchedEffect(portraitSelectedQuality) {
+        if (portraitSelectedQuality <= 0 || !currentPlayingBvid.isNullOrBlank() || pageItems.isEmpty()) {
+            return@LaunchedEffect
+        }
+        val initialPage = pagerState.currentPage
+        requestPortraitPlaybackForPage(
+            targetPage = initialPage,
+            applyInitialSeekOnFirstPage = initialPage == 0
+        )
     }
 
     LaunchedEffect(pagerState, pageItems, isPortraitPlaybackAllowed, portraitSelectedQuality) {
@@ -1424,6 +1455,10 @@ fun PortraitVideoPager(
                 )
 
                 launch(Dispatchers.IO) {
+                    if (portraitSelectedQuality <= 0) {
+                        // 默认画质未就绪时跳过本页预取,避免以 720P 兜底档错误预热。
+                        return@launch
+                    }
                     val pageSnapshot = pageItems.toList()
                     val preloadCount = resolvePortraitPlayUrlPreloadCount(
                         prefetchVideoEnabled = prefetchVideoEnabled,

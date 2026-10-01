@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.shape.RoundedCornerShape
 import com.android.purebilibili.core.ui.components.AppText
 import androidx.compose.material3.MaterialTheme
@@ -64,6 +66,12 @@ internal enum class SeekPreviewBubblePlacement {
 
 internal const val PORTRAIT_SEEK_PREVIEW_ASPECT_RATIO = 9f / 16f
 
+/** 借鉴 PiliPlus compatHeight：预览高度不得超过播放区高度减去该安全边距。 */
+internal const val SEEK_PREVIEW_CONTAINER_MARGIN_DP = 140
+
+/** 低于该值的 clamp 结果直接放弃，避免把预览压成不可读的小条。 */
+internal const val SEEK_PREVIEW_MIN_HEIGHT_CAP_DP = 120
+
 private data class SeekPreviewBubbleStyle(
     val widthDp: Int,
     val heightDp: Int,
@@ -92,7 +100,8 @@ internal fun resolveCompactSeekPreviewSize(
     sourceWidthPx: Int,
     sourceHeightPx: Int,
     screenWidthDp: Int,
-    videoAspectRatio: Float? = null
+    videoAspectRatio: Float? = null,
+    containerHeightDp: Int? = null
 ): CompactSeekPreviewSize {
     val safeWidth = sourceWidthPx.coerceAtLeast(1)
     val safeHeight = sourceHeightPx.coerceAtLeast(1)
@@ -110,9 +119,15 @@ internal fun resolveCompactSeekPreviewSize(
     val widthDp = (baseWidthDp * scale).roundToInt()
     val minHeightDp = ((if (isPortraitVideo) 144 else 72) * scale).roundToInt()
     val maxHeightDp = ((if (isPortraitVideo) 224 else 164) * scale).roundToInt()
-    val heightDp = (widthDp / effectiveAspectRatio)
+    var heightDp = (widthDp / effectiveAspectRatio)
         .roundToInt()
         .coerceIn(minHeightDp, maxHeightDp)
+    val maxHeightCapDp = containerHeightDp
+        ?.takeIf { it > 0 }
+        ?.let { it - SEEK_PREVIEW_CONTAINER_MARGIN_DP }
+    if (maxHeightCapDp != null && maxHeightCapDp >= SEEK_PREVIEW_MIN_HEIGHT_CAP_DP) {
+        heightDp = heightDp.coerceAtMost(maxHeightCapDp)
+    }
     return CompactSeekPreviewSize(widthDp = widthDp, heightDp = heightDp)
 }
 
@@ -192,6 +207,9 @@ private fun resolveSeekPreviewBubbleStyle(widthDp: Int): SeekPreviewBubbleStyle 
         )
     }
 }
+
+internal fun resolveSeekPreviewBubbleHeightDp(screenWidthDp: Int): Int =
+    resolveSeekPreviewBubbleStyle(screenWidthDp).heightDp
 
 internal fun resolveSeekPreviewBubbleOffsetPx(
     placement: SeekPreviewBubblePlacement,
@@ -298,8 +316,11 @@ internal fun SeekPreviewBubble(
                     Modifier
                 }
             )
-            .width(style.widthDp.dp)
-            .height(style.heightDp.dp)
+            .sizeIn(maxWidth = style.widthDp.dp, maxHeight = style.heightDp.dp)
+            .aspectRatio(
+                ratio = style.widthDp.toFloat() / style.heightDp,
+                matchHeightConstraintsFirst = true
+            )
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             SeekPreviewImage(
@@ -344,6 +365,7 @@ internal fun CompactSeekPreview(
     targetPositionMs: Long,
     durationMs: Long,
     videoAspectRatio: Float? = null,
+    containerHeightDp: Int? = null,
     modifier: Modifier = Modifier
 ) {
     val configuration = LocalConfiguration.current
@@ -351,13 +373,15 @@ internal fun CompactSeekPreview(
         videoshotData.img_x_size,
         videoshotData.img_y_size,
         configuration.screenWidthDp,
-        videoAspectRatio
+        videoAspectRatio,
+        containerHeightDp
     ) {
         resolveCompactSeekPreviewSize(
             sourceWidthPx = videoshotData.img_x_size,
             sourceHeightPx = videoshotData.img_y_size,
             screenWidthDp = configuration.screenWidthDp,
-            videoAspectRatio = videoAspectRatio
+            videoAspectRatio = videoAspectRatio,
+            containerHeightDp = containerHeightDp
         )
     }
     val previewAnchorPositionMs = remember(videoshotData, targetPositionMs, durationMs) {
@@ -441,14 +465,17 @@ private fun SeekPreviewImage(
     val context = LocalContext.current
     val (rawImageUrl, spriteOffsetX, spriteOffsetY) = currentPreviewInfo
     val imageUrl = if (rawImageUrl.startsWith("//")) "https:$rawImageUrl" else rawImageUrl
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(context)
+    val imageRequest = remember(context, imageUrl) {
+        ImageRequest.Builder(context)
             .data(imageUrl)
             .size(Size.ORIGINAL)
             .crossfade(false)
             .memoryCachePolicy(CachePolicy.ENABLED)
             .diskCachePolicy(CachePolicy.ENABLED)
-            .build(),
+            .build()
+    }
+    val painter = rememberAsyncImagePainter(
+        model = imageRequest,
         contentScale = ContentScale.Crop
     )
 

@@ -123,6 +123,7 @@ import com.android.purebilibili.feature.dynamic.components.ImagePreviewDialog
 import com.android.purebilibili.feature.dynamic.components.isImagePreviewSourceHidden
 import com.android.purebilibili.feature.dynamic.components.imagePreviewSourceBounds
 import com.android.purebilibili.feature.dynamic.components.rememberImagePreviewSourceRect
+import com.android.purebilibili.feature.dynamic.components.prepareImagePreviewSourceTransition
 import com.android.purebilibili.feature.home.homeFeedPinchZoom
 import java.time.Instant
 import java.time.ZoneId
@@ -912,7 +913,14 @@ private fun FeedArticleImage(
                 .onGloballyPositioned { coordinates ->
                     galleryRects[pageIndex] = coordinates.boundsInWindow()
                 }
-                .clickable(enabled = !sourceHidden) { onClick(sourceRect.value) },
+                .clickable(
+                    interactionSource = null,
+                    indication = null,
+                    enabled = !sourceHidden,
+                ) {
+                    prepareImagePreviewSourceTransition(sourceRect.value)
+                    onClick(sourceRect.value)
+                },
             contentScale = ContentScale.Fit,
             onError = { failed = true },
         )

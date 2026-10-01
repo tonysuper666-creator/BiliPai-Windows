@@ -36,6 +36,7 @@ import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulse
 import com.android.purebilibili.core.util.LocalWindowSizeClass
 import com.android.purebilibili.core.util.responsiveContentWidth
 import com.android.purebilibili.feature.home.resolveHomeFeedCardLayout
+import com.android.purebilibili.feature.home.resolveHomeFeedStoredColumnCount
 import kotlin.math.roundToInt
 
 /** UP 空间首屏骨架：资料头、主标签和投稿网格均与真实 SpaceContent 同构。 */
@@ -56,7 +57,11 @@ internal fun SpaceLoadingSkeleton(modifier: Modifier = Modifier) {
     }
     val columns = resolveSpaceContentGridColumnCount(
         widthDp = windowWidthDp,
-        fixedColumnCount = settings.gridColumnCount,
+        fixedColumnCount = resolveHomeFeedStoredColumnCount(
+            widthSizeClass = windowSizeClass.widthSizeClass,
+            compactColumnCount = settings.gridColumnCountCompact,
+            defaultColumnCount = settings.gridColumnCount,
+        ),
         cardWidthPreset = settings.homeFeedCardWidthPreset,
         contentMaxWidthDp = adaptiveLayoutSpec.contentMaxWidthDp,
         widthSizeClass = windowSizeClass.widthSizeClass,

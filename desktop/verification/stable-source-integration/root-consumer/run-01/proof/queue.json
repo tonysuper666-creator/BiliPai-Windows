@@ -1,0 +1,131 @@
+[
+    {
+        "item": {
+            "bvid": "BV-fixture-0",
+            "cid": 1,
+            "title": "task-0",
+            "cover": "",
+            "ownerName": "",
+            "ownerFace": "",
+            "duration": 0,
+            "quality": 0,
+            "qualityDesc": "",
+            "videoUrl": "https://cdn.example/task-0",
+            "audioUrl": "",
+            "status": "COMPLETED",
+            "progress": 1.0,
+            "filePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-root-consumer-proof\\run-01\\proof\\downloads\\download-1a5bc0e34f4a16c2c4dd817d\\task-0.mp4",
+            "fileSize": 3,
+            "downloadedSize": 32,
+            "createdAt": 1790823482661,
+            "options": {
+                "includeDanmaku": false
+            },
+            "assets": [
+                {
+                    "kind": "VIDEO",
+                    "status": "COMPLETED",
+                    "totalBytes": 32,
+                    "downloadedBytes": 32,
+                    "filePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-root-consumer-proof\\run-01\\proof\\downloads\\download-1a5bc0e34f4a16c2c4dd817d\\video.m4s",
+                    "segmentCount": 1
+                },
+                {
+                    "kind": "COVER",
+                    "status": "SKIPPED"
+                },
+                {
+                    "kind": "DANMAKU",
+                    "status": "SKIPPED"
+                }
+            ]
+        },
+        "destinationRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-root-consumer-proof\\run-01\\proof\\downloads"
+    },
+    {
+        "item": {
+            "bvid": "BV-fixture-1",
+            "cid": 2,
+            "title": "task-1",
+            "cover": "",
+            "ownerName": "",
+            "ownerFace": "",
+            "duration": 0,
+            "quality": 0,
+            "qualityDesc": "",
+            "videoUrl": "https://cdn.example/task-1",
+            "audioUrl": "",
+            "status": "COMPLETED",
+            "progress": 1.0,
+            "filePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-root-consumer-proof\\run-01\\proof\\downloads\\download-ee9ce51dfcfee928666d450c\\task-1.mp4",
+            "fileSize": 3,
+            "downloadedSize": 32,
+            "createdAt": 1790823482684,
+            "options": {
+                "includeDanmaku": false
+            },
+            "assets": [
+                {
+                    "kind": "VIDEO",
+                    "status": "COMPLETED",
+                    "totalBytes": 32,
+                    "downloadedBytes": 32,
+                    "filePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-root-consumer-proof\\run-01\\proof\\downloads\\download-ee9ce51dfcfee928666d450c\\video.m4s",
+                    "segmentCount": 1
+                },
+                {
+                    "kind": "COVER",
+                    "status": "SKIPPED"
+                },
+                {
+                    "kind": "DANMAKU",
+                    "status": "SKIPPED"
+                }
+            ]
+        },
+        "destinationRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-root-consumer-proof\\run-01\\proof\\downloads"
+    },
+    {
+        "item": {
+            "bvid": "BV-fixture-2",
+            "cid": 3,
+            "title": "task-2",
+            "cover": "",
+            "ownerName": "",
+            "ownerFace": "",
+            "duration": 0,
+            "quality": 0,
+            "qualityDesc": "",
+            "videoUrl": "https://cdn.example/task-2",
+            "audioUrl": "",
+            "status": "COMPLETED",
+            "progress": 1.0,
+            "filePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-root-consumer-proof\\run-01\\proof\\downloads\\download-b23b9c647bfd72dec65c5f08\\task-2.mp4",
+            "fileSize": 3,
+            "downloadedSize": 32,
+            "createdAt": 1790823482690,
+            "options": {
+                "includeDanmaku": false
+            },
+            "assets": [
+                {
+                    "kind": "VIDEO",
+                    "status": "COMPLETED",
+                    "totalBytes": 32,
+                    "downloadedBytes": 32,
+                    "filePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-root-consumer-proof\\run-01\\proof\\downloads\\download-b23b9c647bfd72dec65c5f08\\video.m4s",
+                    "segmentCount": 1
+                },
+                {
+                    "kind": "COVER",
+                    "status": "SKIPPED"
+                },
+                {
+                    "kind": "DANMAKU",
+                    "status": "SKIPPED"
+                }
+            ]
+        },
+        "destinationRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-root-consumer-proof\\run-01\\proof\\downloads"
+    }
+]

@@ -1,0 +1,17 @@
+--- alpha9:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt:DynamicCommentOverlayHost#1
++++ v023:app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt:DynamicCommentOverlayHost#1
+@@ -37,11 +37,12 @@
+             isLoadingMore = commentsLoadingMore,
+             onDismiss = { viewModel.closeCommentSheet() },
+             onSortModeChange = { viewModel.setDynamicCommentSortMode(it) },
+-            onPostComment = { message ->
+-                viewModel.postComment(dynamicId, message) { _, msg ->
++            onPostComment = { message, images, onResult ->
++                viewModel.postComment(dynamicId, message, images) { success, msg ->
+                     if (!inspectionMode) {
+                         android.widget.Toast.makeText(toastContext, msg, android.widget.Toast.LENGTH_SHORT).show()
+                     }
++                    onResult(success)
+                 }
+             },
+             onViewReplies = { reply -> viewModel.openSubReply(reply) },

@@ -70,7 +70,7 @@ class BiliPaiJsRuntime(
         script: String,
         expression: String
     ): String = withTimeout(timeoutMillis) {
-        withContext(Dispatchers.Main) {
+        withContext(Dispatchers.Main.immediate) {
             val callId = UUID.randomUUID().toString()
             val result = CompletableDeferred<String>()
             val webView = WebView(appContext)

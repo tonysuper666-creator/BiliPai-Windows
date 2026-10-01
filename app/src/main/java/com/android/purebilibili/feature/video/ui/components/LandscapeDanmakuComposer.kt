@@ -100,6 +100,8 @@ fun LandscapeDanmakuComposer(
     val useMiuixSpring = com.android.purebilibili.core.theme.LocalAppUiStyle.current == com.android.purebilibili.core.theme.AppUiStyle.MIUIX
     var showStylePanel by remember { mutableStateOf(false) }
     var showAdvancedOptions by remember { mutableStateOf(false) }
+    var showCustomColorPicker by remember { mutableStateOf(false) }
+    var lastCustomColor by remember { mutableIntStateOf(0x66CCFF) }
 
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -206,6 +208,44 @@ fun LandscapeDanmakuComposer(
                                             }
                                         )
                                         .clickable { selectedColor = option.value }
+                                )
+                            }
+                            val isCustomSelection = selectedColor >= 0 &&
+                                colorOptions.none { it.value == selectedColor }
+                            Box(
+                                modifier = Modifier
+                                    .size(30.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        Brush.linearGradient(
+                                            colors = listOf(
+                                                Color(0xFFFF5252),
+                                                Color(0xFFFFEB3B),
+                                                Color(0xFF4CAF50),
+                                                Color(0xFF00BCD4),
+                                                Color(0xFF3F51B5),
+                                                Color(0xFFE040FB)
+                                            )
+                                        )
+                                    )
+                                    .then(
+                                        if (isCustomSelection) {
+                                            Modifier.border(
+                                                width = 2.dp,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                shape = CircleShape
+                                            )
+                                        } else {
+                                            Modifier
+                                        }
+                                    )
+                                    .clickable { showCustomColorPicker = true },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                AppText(
+                                    text = "自定义",
+                                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                    color = Color.White
                                 )
                             }
                         }
@@ -425,5 +465,17 @@ fun LandscapeDanmakuComposer(
                 }
             }
         }
+    }
+
+    if (showCustomColorPicker) {
+        DanmakuCustomColorPickerDialog(
+            initialColor = lastCustomColor,
+            onConfirm = { picked ->
+                lastCustomColor = picked
+                selectedColor = picked
+                showCustomColorPicker = false
+            },
+            onDismiss = { showCustomColorPicker = false }
+        )
     }
 }

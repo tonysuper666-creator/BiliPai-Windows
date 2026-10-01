@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
@@ -16,14 +18,17 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.android.purebilibili.core.ui.AppSpacingTokens
 import com.android.purebilibili.core.ui.AppSemanticIconFamily
 import com.android.purebilibili.core.ui.AppTopTabPresentation
@@ -115,6 +120,7 @@ internal fun HomeTopTabFloatingDock(
     modifier: Modifier = Modifier,
 ) {
     if (categories.isEmpty()) return
+    val fontScale = LocalDensity.current.fontScale.coerceAtLeast(0.01f)
     if (
         shouldUseOfficialMd3HomeTopToolbar(
             uiStyle = LocalAppUiStyle.current,
@@ -264,6 +270,7 @@ internal fun HomeTopTabFloatingDock(
                             selected = selected,
                         ),
                         contentDescription = label,
+                        modifier = Modifier.size(resolveTopTabIconSizeDp(if (showText) 0 else 1).dp),
                         tint = contentColor,
                     )
                 }
@@ -271,8 +278,18 @@ internal fun HomeTopTabFloatingDock(
             if (showText) {
                 AppText(
                     text = label,
+                    modifier = Modifier.fillMaxWidth(),
                     color = contentColor,
                     fontSize = labelFontSize,
+                    lineHeight = resolveFloatingDockLabelLineHeight(
+                        showIcon = showIcon,
+                        fontScale = fontScale,
+                    ),
+                    autoSize = TextAutoSize.StepBased(
+                        minFontSize = (9f / fontScale).sp,
+                        maxFontSize = labelFontSize,
+                        stepSize = (0.5f / fontScale).sp,
+                    ),
                     fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

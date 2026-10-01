@@ -11,7 +11,7 @@ lifecycleRuntimeKtx = "2.11.0"
 activityCompose = "1.13.0"
 composeBom = "2026.06.00"
 window = "1.5.1"
-miuix = "0.9.4-5157b503-SNAPSHOT"
+miuix = "0.9.4-5c91d5e5-SNAPSHOT"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

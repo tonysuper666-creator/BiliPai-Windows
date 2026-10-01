@@ -1,0 +1,14 @@
+{
+  "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\KnownFolders.h",
+  "sha256Bytes": "c0b5033fa5d65c2d27213ea6cbd2ad13a0cdb2091406dae366d2a4fafa8afcd4",
+  "lines": [
+    {
+      "line": 188,
+      "text": "// {18989B1D-99B5-455B-841C-AB7C74E4DDFC}"
+    },
+    {
+      "line": 189,
+      "text": "DEFINE_KNOWN_FOLDER(FOLDERID_Videos,              0x18989B1D, 0x99B5, 0x455B, 0x84, 0x1C, 0xAB, 0x7C, 0x74, 0xE4, 0xDD, 0xFC);"
+    }
+  ]
+}

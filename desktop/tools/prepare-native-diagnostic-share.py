@@ -12,6 +12,11 @@ def sha(path):
 
 
 def atomic_write(path, data):
+    if os.name == 'nt':
+        value = os.path.abspath(os.fspath(path))
+        if not value.startswith('\\\\?\\'):
+            value = ('\\\\?\\UNC\\' + value[2:]) if value.startswith('\\\\') else ('\\\\?\\' + value)
+        path = Path(value)
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.is_file() and path.read_bytes() == data:
         return

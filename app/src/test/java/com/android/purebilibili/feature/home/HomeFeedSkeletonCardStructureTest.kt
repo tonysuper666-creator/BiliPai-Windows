@@ -14,7 +14,8 @@ class HomeFeedSkeletonCardStructureTest {
             .substringAfter("Loading Skeleton per page")
             .substringBefore("} else if (categoryState.error")
 
-        assertTrue(loadingGridSource.contains("val skeletonPulse = rememberHomeFeedSkeletonPulse()"))
+        assertTrue(loadingGridSource.contains("val skeletonPulseState = rememberHomeFeedSkeletonPulseState()"))
+        assertTrue(loadingGridSource.contains("pulse = { skeletonPulseState.value }"))
         assertTrue(loadingGridSource.contains("HomeFeedSkeletonCard("))
         assertTrue(loadingGridSource.contains("contentType = { \"home_feed_skeleton_card\" }"))
         assertFalse(loadingGridSource.contains("VideoCardSkeleton("))

@@ -1,0 +1,40 @@
+{
+  "status": "prepared-source-and-declared-terminal-transport-PASS",
+  "installTarget": "sibling BiliPai-v023 desktop/v023-parity",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "scope": [
+    "Sole DynamicInlineCommentComposer/DynamicCommentComposer original inline UI bodies; comment capacity remains9 while shared editor selected handles permit18.",
+    "Sole original DynamicReplySession.postComment validation/order/pictures/success body; Android Uri and ContentResolver map to existing selected fileURI stream.",
+    "Requests pictures+required image provider, required CommentPlatform picker, same actual detail/page/SessionStore owner and Root parent selection.",
+    "Ops additive public streamed comment image member reuses existing833 private upload body and same API."
+  ],
+  "runtimeEvidence": {
+    "compile": "11source prepared narrow compile against immutable alpha9 Main04 92CP with declared stream/adapter overlays; no stable whole-product acceptance claim",
+    "terminalFixture": "9cases/65assertions;9 actual class sources; actual Store/Repository/API/model from immutableMain04; terminal interceptor no proceed/socket",
+    "sourceAudit": "14 checks; complete post/wrapper/composer reverse-normalized byte equality after declared platform mappings; existing multipart upload and reply add bodies unchanged"
+  },
+  "actualCaller": "CommunityDynamicDetail -> generated DesktopOriginalDynamicDetailLayout.kt253 DynamicInlineCommentComposer -> same session.postComment(id,message,images). Generated raw Panel also references same composer, not a second producer.",
+  "interfaces": {
+    "DesktopDynamicReplyRequests.uploadCommentPicture": "suspend(source:String,index:Int):Result<ReplyPicture>",
+    "DesktopDynamicReplyRequests.addCommentForSubject": "suspend(oid:Long,type:Int,message:String,root:Long=0,parent:Long=0,pictures:List<ReplyPicture>=emptyList()):Result<ReplyItem?>",
+    "DesktopDynamicReplyOperationsBinding.imageProvider": "required suspend(String)->Triple<String?,String?,okhttp3.RequestBody>",
+    "DesktopCommentPlatform.pickCommentImages": "required (maxItems:Int,onSelected:(List<String>)->Unit)",
+    "DesktopDynamicCommentPlatform.pickImages": "required (Int,(List<String>)->Unit)->Unit",
+    "Operations.uploadCommentImageBody": "suspend(fileName:String,mimeType:String,fileBody:okhttp3.RequestBody):Result<ReplyPicture>"
+  },
+  "ownership": {
+    "sharedAuthority": "existing actual SessionStore dynamicCacheOwner captured by same epoch Ops; existing SelectedImages withOwnedEditorImageAdmission; no new store/client/account/cache/model",
+    "boundedStream": "oneShot RequestBody actual local file known-size empty/15MiB validation;64KiB slices under actual Store -> selected-owner gate; captured caller coroutine job",
+    "pageReplacement": "key(alive) retires old composer text/selected/busy state; onDispose sets alive=false then closes session/selected and child scope",
+    "picker": "actual existing Root parent JFileChooser adapter; rememberUpdatedState retains latest reply/sending state; callback checks original owner",
+    "post": "original validation blocks >9, blank/noimages and replyimages before upload; ordered map; final upload await request-generation gate before add; success original clears target/text/images"
+  },
+  "boundaries": [
+    "No chooser/native window/Root button pointer E2E or external HTTP/real account operation executed.",
+    "Existing explicit native dock fallback retained; no claim complete installed liquid renderer.",
+    "Dynamic Session is raw DynamicItem subject-specific; BGM(type47) needs its own original BGM/comment subject owner, can reuse generic requests/Reply primitives.",
+    "Root whole stable compile pending; Root reported protocol verifier needed same new member in sole protocol producer and fixed it independently.",
+    "Same-owner refresh/sort during upload suppresses old post and receipt but may leave original composer busy; Root authorized separate delta to release only matching same-owner submission. This frozen cohort is unchanged and does not claim that next delta."
+  ],
+  "noMainOrSharedGradleEdits": true
+}

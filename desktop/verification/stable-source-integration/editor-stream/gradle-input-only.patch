@@ -1,0 +1,10 @@
+--- a/desktop/build.gradle.kts
++++ b/desktop/build.gradle.kts
+@@ -568,6 +568,7 @@
+         "--repo", repositoryRoot.absolutePath,
+         "--output", layout.buildDirectory.file("generated/dynamic-editor-protocol/verification.json").get().asFile.absolutePath)
+     inputs.files("tools/verify-upstream-dynamic-editor-protocol.py", "tools/extract-upstream-dynamic-editor-protocol.py",
++        "tools/extract-upstream-dynamic-reply-protocol.py",
+         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
+         "src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt")
+     inputs.files(sources.filter { "dynamic-editor-detail-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
