@@ -17,12 +17,7 @@ internal interface DesktopPlaybackPublication {
 }
 
 /** Native command admission survives successful request completion, but not cancellation. */
-public fun interface DesktopNativePlaybackPublication {
-    public fun admit(command: () -> Unit): Boolean
-    /** Native actor acknowledgement only. Implementations may set an atomic flag;
-     * no business work, IO or waiting is allowed inside this callback. */
-    public fun onLoadCommandAccepted() { }
-}
+public fun interface DesktopNativePlaybackPublication { public fun admit(command: () -> Unit): Boolean }
 
 internal fun DesktopPlaybackPublication.ownedSource(source: PlaybackSource, stillOwned: () -> Boolean): PlaybackSource =
     source.copy(nativePublication = DesktopNativePlaybackPublication { command ->

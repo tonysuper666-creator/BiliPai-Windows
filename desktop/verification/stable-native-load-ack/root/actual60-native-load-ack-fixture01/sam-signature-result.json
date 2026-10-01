@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "singleAbstractMethod": true,
+  "hookIsJvmDefault": true,
+  "productJarSha256Bytes": "ac53148e06d12903fa1e453456db8d03a0f3ede1e9c926fde6d87e0ad5dcd2d5",
+  "javapSha256Bytes": "edc73c5ef6d21a5058e3e4594f6907a7d6c9813ed3ddb55806f708debfcf8488"
+}

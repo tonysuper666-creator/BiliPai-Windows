@@ -1,0 +1,131 @@
+{
+  "artifacts": [
+    {
+      "path": "root/source-packet/NativeLoadAckFixture.kt",
+      "sha256Bytes": "2cca70ec7b781904f0f447a2212dd002747e74f198e86c88658c6529a90e8743",
+      "sizeBytes": 7833
+    },
+    {
+      "path": "root/source-packet/after/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackPublication.kt",
+      "sha256Bytes": "7c513815b5a8319ab7ea47408e8f420e09bb3f3eb9fc396b0e349ba25f56cc26",
+      "sizeBytes": 7569
+    },
+    {
+      "path": "root/source-packet/after/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "86f9090b7726eb6082116783d6cfe359c3f4704d3de4325c654d0378b9c74d90",
+      "sizeBytes": 64740
+    },
+    {
+      "path": "root/source-packet/before/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackPublication.kt",
+      "sha256Bytes": "35d8e32aece6fadf98eaf340f1be23d21796902f7bfc0a2d0cb1451feaac74eb",
+      "sizeBytes": 7364
+    },
+    {
+      "path": "root/source-packet/before/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "d974a2a05eaee2217f75fc21fcd3d43e07aaf2a87a028333f412cd38802125e9",
+      "sizeBytes": 64632
+    },
+    {
+      "path": "root/source-packet/source-delta.json",
+      "sha256Bytes": "dce484978d2fb2a1ad51f1eebc2356db89cb0e110815e624173b06fb686924f6",
+      "sizeBytes": 956
+    },
+    {
+      "path": "root/actual60-native-load-ack-fixture01/NativeLoadAckFixture.kt",
+      "sha256Bytes": "2cca70ec7b781904f0f447a2212dd002747e74f198e86c88658c6529a90e8743",
+      "sizeBytes": 7833
+    },
+    {
+      "path": "root/actual60-native-load-ack-fixture01/compile.args",
+      "sha256Bytes": "e783d7323633a4ece497a7772cfc84f09e56ec4be5f3ef54ff85f4db24372c99",
+      "sizeBytes": 25535
+    },
+    {
+      "path": "root/actual60-native-load-ack-fixture01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual60-native-load-ack-fixture01/pins-after.json",
+      "sha256Bytes": "de9f868ad5b4daeee443ed399107f3436091655145805940215a9c8f4d7dcabe",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual60-native-load-ack-fixture01/pins-before.json",
+      "sha256Bytes": "de9f868ad5b4daeee443ed399107f3436091655145805940215a9c8f4d7dcabe",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual60-native-load-ack-fixture01/result.json",
+      "sha256Bytes": "84f9b91ae892762f7d8a61ce6e6fa25b37b7d8c3e12188888b76173f6e97ee65",
+      "sizeBytes": 1769
+    },
+    {
+      "path": "root/actual60-native-load-ack-fixture01/run.log",
+      "sha256Bytes": "a44c5198bc5fab87863e509d1f043e00b0616cfeea0752e48f35194a32b06e3c",
+      "sizeBytes": 54
+    },
+    {
+      "path": "root/actual60-native-load-ack-fixture01/runner-result.json",
+      "sha256Bytes": "0f1d42eeef108f0db1416da5ac72ed61d8d3839234a80e00e0298f295c8b6430",
+      "sizeBytes": 1363
+    },
+    {
+      "path": "root/actual60-native-load-ack-fixture01/sam-signature-result.json",
+      "sha256Bytes": "f84c04607794b1351e5625f5f4c865d4a51fcc4c7338c04d76c274837ca093d0",
+      "sizeBytes": 266
+    },
+    {
+      "path": "root/actual60-native-load-ack-fixture01/sam-signature.log",
+      "sha256Bytes": "d910de7d94e8f81897e4238b8bd8a63a5921d7a0b01d770295bd71c4406f5e8a",
+      "sizeBytes": 373
+    },
+    {
+      "path": "root/snapshot60/manifest.json",
+      "sha256Bytes": "0867887c14dcb09600aa18192ddcc970153498fdfd9ad37a2387ca201d0d7b05",
+      "sizeBytes": 147578
+    },
+    {
+      "path": "root/snapshot60/ordered-runtime-cp.json",
+      "sha256Bytes": "b82e3c215374b0be98d2018316487514cb00a747dc589828ea504e053cd0ee8e",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-60.log",
+      "sha256Bytes": "0498399c155c686a7cd479c7a13cae534ad21ddf0e7ac073dc704d7aeb40049e",
+      "sizeBytes": 10001
+    },
+    {
+      "path": "root/classpath-60.log",
+      "sha256Bytes": "7c162df127e6e77117fbaa124774a5dc00a562d0ef4fd8adfca638e66ec2c51d",
+      "sizeBytes": 287
+    },
+    {
+      "path": "root/run-actual60-native-load-ack-fixture.py",
+      "sha256Bytes": "f19d5b74be8a633820dd4e93be5e267a2f16b14357bedb89fef27a09a0eebeae",
+      "sizeBytes": 6383
+    },
+    {
+      "path": "root/freeze-native-load-ack60.py",
+      "sha256Bytes": "3895c9b109b57b7115a95f88ce7bd9c2efe9805577a4c50fa50bf264c67ceaad",
+      "sizeBytes": 6107
+    },
+    {
+      "path": "root/jvm-method-name-audit-60.json",
+      "sha256Bytes": "c2950ffcc6be1494dea1e7ffb077b55ed73186ee6a59f233ed75772ef7adb6ef",
+      "sizeBytes": 240
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "df7497818ca707b29414f61779da01a47b5abea5d1591055eca33b9dccbae984",
+      "sizeBytes": 2644
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "root/actual60-native-load-ack-fixture01/fixture.jar",
+      "sha256Bytes": "78320b54b07594ee460c06b23beafa24d37ed8d5bf42756f7aa732801d195bae",
+      "reason": "Rebuildable binary or private rendered output"
+    }
+  ]
+}

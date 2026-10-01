@@ -1,0 +1,22 @@
+{
+  "baselineCommit": "82490f45ea5a94cf6ec53f0a538322867f2dc848",
+  "sources": [
+    {
+      "sourcePath": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackPublication.kt",
+      "baselineLFsha256": "35d8e32aece6fadf98eaf340f1be23d21796902f7bfc0a2d0cb1451feaac74eb",
+      "candidateLFsha256": "7c513815b5a8319ab7ea47408e8f420e09bb3f3eb9fc396b0e349ba25f56cc26"
+    },
+    {
+      "sourcePath": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "baselineLFsha256": "d974a2a05eaee2217f75fc21fcd3d43e07aaf2a87a028333f412cd38802125e9",
+      "candidateLFsha256": "86f9090b7726eb6082116783d6cfe359c3f4704d3de4325c654d0378b9c74d90"
+    }
+  ],
+  "oneDefaultAckHook": true,
+  "ackOnlyAfterSuccessfulLoadfileAndNonNullEntryReadback": true,
+  "noAckOnStaleUnitNoOpOrRejectedAdmission": true,
+  "hookMustOnlySetAtomicFlag": true,
+  "newSourceIdentities": 0,
+  "newDependencies": 0,
+  "fullOriginalOwnerMountAccepted": false
+}

@@ -1,0 +1,6 @@
+Compiled from "DesktopPlaybackPublication.kt"
+public interface com.bilipai.desktop.player.DesktopNativePlaybackPublication {
+  public abstract boolean admit(kotlin.jvm.functions.Function0<kotlin.Unit>);
+  public default void onLoadCommandAccepted();
+  public static void access$onLoadCommandAccepted$jd(com.bilipai.desktop.player.DesktopNativePlaybackPublication);
+}

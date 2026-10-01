@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "compileExitCode": 0,
+  "runExitCode": 0,
+  "actualProductSnapshot": 60,
+  "runtimeEntries": 101,
+  "fixtureClasses": 10,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersections": [],
+  "fixtureJarSha256Bytes": "78320b54b07594ee460c06b23beafa24d37ed8d5bf42756f7aa732801d195bae",
+  "byteVerifiedProductOrigins": [
+    {
+      "class": "com.bilipai.desktop.player.MpvPlayer",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-60/main-kotlin.jar",
+      "sha256ClassBytes": "ac127a55ae4dfb2ecbfb51997ccbae0968932dc3df8740bdc3dbf84b40f56c87"
+    },
+    {
+      "class": "com.bilipai.desktop.player.DesktopNativePlaybackPublication",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-60/main-kotlin.jar",
+      "sha256ClassBytes": "025e66c95747b7d869b595a2b3f38b28767ee4809ceab458f75a0d66fef6e596"
+    }
+  ],
+  "fixtureSourceUnchanged": true,
+  "fixtureIsRootOwned": true,
+  "sameSocketFreeChecksReplayed": true,
+  "actualAccountUsed": false,
+  "nativeExecuted": true,
+  "actualLocalNativeClip": true,
+  "fullControllerDrainAccepted": false,
+  "independentVisualAcceptance": false,
+  "fullOrdinaryVideoRootMountAccepted": false
+}

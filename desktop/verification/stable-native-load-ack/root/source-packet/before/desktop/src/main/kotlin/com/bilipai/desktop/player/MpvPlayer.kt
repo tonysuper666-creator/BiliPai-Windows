@@ -642,7 +642,6 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         }
                         // loadfile synchronously installs the new playlist entry before its asynchronous events.
                         expectedEntry = property(native, handle, "playlist/0/id")?.toLongOrNull()
-                        if (expectedEntry != null) action.source.nativePublication?.onLoadCommandAccepted()
                         } }
                         val admission = action.source.nativePublication
                         if (admission != null) admission.admit(command)
