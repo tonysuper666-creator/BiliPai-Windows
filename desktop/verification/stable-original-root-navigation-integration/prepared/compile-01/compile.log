@@ -1,0 +1,57 @@
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\DesktopOriginalMainHostPager.kt:55:43: error: unresolved reference 'resolveBottomPagerBeyondViewportPageCount'.
+                beyondViewportPageCount = resolveBottomPagerBeyondViewportPageCount(
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\DesktopOriginalMainHostPager.kt:58:32: error: unresolved reference 'BOTTOM_PAGER_MAX_PRELOAD_DISTANCE'.
+                ).coerceAtMost(BOTTOM_PAGER_MAX_PRELOAD_DISTANCE),
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\DesktopOriginalMainHostPager.kt:59:37: error: unresolved reference 'shouldEnableBottomPagerUserScroll'.
+                userScrollEnabled = shouldEnableBottomPagerUserScroll()
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\DesktopOriginalMainHostPager.kt:63:21: error: unresolved reference 'shouldComposeBottomPagerPage'.
+                    shouldComposeBottomPagerPage(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\DesktopOriginalMainHostPager.kt:75:25: error: unresolved reference 'resolveBottomPagerSaveableStateKey'.
+                        resolveBottomPagerSaveableStateKey(slotItem)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\bilipai\desktop\ui\DesktopOriginalRootSessionKeys.kt:18:54: error: unresolved reference 'uptimeMillis'.
+                                    DesktopHomeClock.uptimeMillis(),
+                                                     ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\bilipai\desktop\ui\DesktopOriginalRootSessionKeys.kt:30:54: error: unresolved reference 'uptimeMillis'.
+                                    DesktopHomeClock.uptimeMillis(),
+                                                     ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\bilipai\desktop\ui\DesktopOriginalRootSessionKeys.kt:42:54: error: unresolved reference 'uptimeMillis'.
+                                    DesktopHomeClock.uptimeMillis(),
+                                                     ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\bilipai\desktop\ui\DesktopOriginalRootSessionKeys.kt:51:50: error: unresolved reference 'uptimeMillis'.
+                                DesktopHomeClock.uptimeMillis(),
+                                                 ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:71:24: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val visibleItems = remember(navigationSettings.orderedVisibleTabIds) {
+                       ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:72:9: error: unresolved reference 'resolveVisibleBottomBarItems'.
+        resolveVisibleBottomBarItems(navigationSettings.orderedVisibleTabIds)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:74:68: error: unresolved reference 'size'.
+    val pagerState = rememberPagerState(pageCount = { visibleItems.size.coerceAtLeast(1) })
+                                                                   ^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:82:18: error: 'operator' modifier is required on 'fun <T> Comparable<T>.compareTo(other: T): Int'.
+        if (last >= 0 && mainPager.selectedPage > last) mainPager.switchToPage(last)
+                 ^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:84:23: error: unresolved reference 'resolveBottomPagerItemForPage'.
+    val currentItem = resolveBottomPagerItemForPage(mainPager.selectedPage, visibleItems)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:87:24: error: unresolved reference 'resolveBottomPagerPageForRoute'.
+            val page = resolveBottomPagerPageForRoute(key.toLegacyRoute(), visibleItems)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:90:21: error: unresolved reference 'shouldResetNavigation3BackStackForBottomPager'.
+                if (shouldResetNavigation3BackStackForBottomPager(routes.stack)) routes.returnToMainHostAdmitted()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:91:40: error: argument type mismatch: actual type is 'Any', but 'Int' was expected.
+                mainPager.switchToPage(page)
+                                       ^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:138:93: error: unresolved reference 'it'.
+                    showHistoryService = shouldShowProfileHistoryService(visibleItems.map { it.name }),
+                                                                                            ^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:143:50: error: unresolved reference 'resolveBottomPagerRenderBudget'.
+                    deferImmersiveRenderBudget = resolveBottomPagerRenderBudget(mainPager.isNavigating).deferProfileImmersiveBackground,
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

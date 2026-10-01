@@ -1,0 +1,356 @@
+{
+  "scope": "source-only-root-home-stack-chrome; mounted Shell pending",
+  "artifacts": [
+    {
+      "path": "GRADLE-SNIPPET.txt",
+      "sha256Bytes": "a3ff4918c35cb72a477981d8e4ee96176c465a76cc2b65b22c3e4146fe79d92d"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "77f01ee4737ab50d30b50210f73f0a785f49a7aabfb37b210f8cd417681315b6"
+    },
+    {
+      "path": "SCOPE.json",
+      "sha256Bytes": "c4062447f9269a117ce44b955bef08989e48ca1d1fbaa374aa50281ee64b0d55"
+    },
+    {
+      "path": "compile-01/compile.args",
+      "sha256Bytes": "d2744e289e8b6962a94301a3d81365156b8a771513b21e42830ee07474171b3f"
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "d7c8038325b93a2f90756b05f6308955624d805546199295d9543a14f3a26eb1"
+    },
+    {
+      "path": "compile-01/inputs.json",
+      "sha256Bytes": "b2a8e7950a9fdccab8ad8d50a421a047c06a445f5f490b4bebc4ef0759c6e018"
+    },
+    {
+      "path": "compile-02/compile.args",
+      "sha256Bytes": "e609da40c9a03251883c909153fc7608181607c4025d17053036db51e89270b7"
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "b3585c1e997b66993c90d84d30e61257cac3121cc3e64efdb5e856e5f446dea8"
+    },
+    {
+      "path": "compile-02/inputs.json",
+      "sha256Bytes": "4ce93e17b201310489a894d97670fe3aff1c8c86542cb4c5e5fa3b0dce969ca7"
+    },
+    {
+      "path": "compile-03/class-overlap.json",
+      "sha256Bytes": "38f5aab5894aa7dc8223592df36b6a318a446b24d0549bdd6d6ada2e0fb4502c"
+    },
+    {
+      "path": "compile-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "b7f14a7fecedb7aa20c9821c8dd1c5c952e47e59a6610980f500478d2fe7f22b"
+    },
+    {
+      "path": "compile-03/compile.args",
+      "sha256Bytes": "aa40aff4803efcc6628af94fc40762c95481cd5ab9ddfae75928cd1e37b4d379"
+    },
+    {
+      "path": "compile-03/compile.log",
+      "sha256Bytes": "8e344e5e62d1fcb462969e797ecbbcea84fce52845e5723a8707d8b3c14d2d92"
+    },
+    {
+      "path": "compile-03/inputs.json",
+      "sha256Bytes": "b7e5e317561e59d00ae438f5ef595f577042fa4bb00102072d54b7b1cad87bed"
+    },
+    {
+      "path": "compile-04/compile.args",
+      "sha256Bytes": "4d9190883e18db373f853e049736dcf764ed699d97d33428b01b9e5caa4c20f7"
+    },
+    {
+      "path": "compile-04/compile.log",
+      "sha256Bytes": "1d9a560456886da19e7a188b904b76abe13436d493677fce86562cbc3548d4b4"
+    },
+    {
+      "path": "compile-04/inputs.json",
+      "sha256Bytes": "137a27291e3669f7bcbcde7726cc61d74392bb75a980215c61af23e231b47ff0"
+    },
+    {
+      "path": "compile-05/compile.args",
+      "sha256Bytes": "fb1f905f0fafe042a27f35b8f2f579cb19cb9036ebb5a72c0b2139105cb5a776"
+    },
+    {
+      "path": "compile-05/compile.log",
+      "sha256Bytes": "deebdd2e9a02c6f7a05c6aa1e6db51447cec042942213602f71a64f560e07ca0"
+    },
+    {
+      "path": "compile-05/inputs.json",
+      "sha256Bytes": "0102092a74f73aa1c22b1aa306b4627e73466cc10b744e931c0377cd54251413"
+    },
+    {
+      "path": "compile-06/class-overlap.json",
+      "sha256Bytes": "d90bb0563418ed48296b8d219801760129075ad396785433c9548e75e8c6ee78"
+    },
+    {
+      "path": "compile-06/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "ef05204a2866bacaaf5ef70c56cc638d50a89e2f116c58a214bd5813984a989b"
+    },
+    {
+      "path": "compile-06/compile.args",
+      "sha256Bytes": "f8282444ebe52a42304d198419ce4d152b0d8f2bc6c7f3a0a6c2c3df4075dd26"
+    },
+    {
+      "path": "compile-06/compile.log",
+      "sha256Bytes": "8509584e001534fc03bb940a38104aa3c994e99f7e98891de6421ed60d399769"
+    },
+    {
+      "path": "compile-06/inputs.json",
+      "sha256Bytes": "fc4e324e813049524cc38493e6c4804c57586bd905bab7c5dd4f6c620687c422"
+    },
+    {
+      "path": "compile-07/compile.args",
+      "sha256Bytes": "07aaf822e2d9794c9c14189c0c141dcc61f52751c355f8e021f89291ab8063e1"
+    },
+    {
+      "path": "compile-07/compile.log",
+      "sha256Bytes": "dd1a677efbfb5e7943d1e734db94ccd9d6f3efb51e03a60b1d681e487529ad18"
+    },
+    {
+      "path": "compile-07/inputs.json",
+      "sha256Bytes": "035332729687e0bfff73362a04466ef9d4916939c5c66e138c1fcb147da03407"
+    },
+    {
+      "path": "compile-08/class-overlap.json",
+      "sha256Bytes": "4f02ae989b65f91742706776306b402d41dfc1f721aa41b53fe48171e95fac44"
+    },
+    {
+      "path": "compile-08/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "165d19855ceb5c7598f6ba349aac2dfe21de85efabb3d8a38fe1fdf0c7455f59"
+    },
+    {
+      "path": "compile-08/compile.args",
+      "sha256Bytes": "004d661a920b44716d3959af608cbc16a8f7e1460daa42f667d43338976373e2"
+    },
+    {
+      "path": "compile-08/compile.log",
+      "sha256Bytes": "8509584e001534fc03bb940a38104aa3c994e99f7e98891de6421ed60d399769"
+    },
+    {
+      "path": "compile-08/declared-family-overlap.json",
+      "sha256Bytes": "ff10108d5e2e22cfec47e1b6eece674f27a89d21ce7457dac63610d77292fc47"
+    },
+    {
+      "path": "compile-08/inputs.json",
+      "sha256Bytes": "41a0f8e379f40cce0e2c0c0292f791cb82dcfe5f170eeaec359fe01cca75641d"
+    },
+    {
+      "path": "compile-09/compile.args",
+      "sha256Bytes": "f7b810ca205d73d68ca198c0fcef8ef931ace3b8df5d127ff31697f881f066b0"
+    },
+    {
+      "path": "compile-09/compile.log",
+      "sha256Bytes": "e6acc40f549e878a3e2cf1173de0fb44f12623f6e95a53998687750aacda948a"
+    },
+    {
+      "path": "compile-09/inputs.json",
+      "sha256Bytes": "99319c2c1fe1f226af5f32dcafa9e1877c49350c399dcb81dec0012014c88ce8"
+    },
+    {
+      "path": "compile-10/class-overlap.json",
+      "sha256Bytes": "dbe7564d0817801ad29c7f76f7fe42ceea5a1137ea2f6e6feb2067128269aa0b"
+    },
+    {
+      "path": "compile-10/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "c061183cabed242f53b4cbfe5671bc4ac21c2da2872784c5d5bbd0230396eb61"
+    },
+    {
+      "path": "compile-10/compile.args",
+      "sha256Bytes": "7eaa314b302a6f38ce3acc920099afda770e706d7fd05ab0079b3f94b761e79e"
+    },
+    {
+      "path": "compile-10/compile.log",
+      "sha256Bytes": "631dfb372488c1f38ac523c86b904255abdbbd708ab8924c1a10af1176d2f691"
+    },
+    {
+      "path": "compile-10/declared-family-overlap.json",
+      "sha256Bytes": "ff10108d5e2e22cfec47e1b6eece674f27a89d21ce7457dac63610d77292fc47"
+    },
+    {
+      "path": "compile-10/inputs.json",
+      "sha256Bytes": "838fe03039415aa839f800ccd14347ffb241798a5b881a1b8f986a4b17f27e8d"
+    },
+    {
+      "path": "compile-11/class-overlap.json",
+      "sha256Bytes": "dbe7564d0817801ad29c7f76f7fe42ceea5a1137ea2f6e6feb2067128269aa0b"
+    },
+    {
+      "path": "compile-11/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "c061183cabed242f53b4cbfe5671bc4ac21c2da2872784c5d5bbd0230396eb61"
+    },
+    {
+      "path": "compile-11/compile.args",
+      "sha256Bytes": "be1288869a139f847fb1f3a0e1311900e55bf2ef338f8e9a348a77bfc799e943"
+    },
+    {
+      "path": "compile-11/compile.log",
+      "sha256Bytes": "631dfb372488c1f38ac523c86b904255abdbbd708ab8924c1a10af1176d2f691"
+    },
+    {
+      "path": "compile-11/declared-family-overlap.json",
+      "sha256Bytes": "ff10108d5e2e22cfec47e1b6eece674f27a89d21ce7457dac63610d77292fc47"
+    },
+    {
+      "path": "compile-11/inputs.json",
+      "sha256Bytes": "37c4c885792cc0b092ac7f772d525cf730b129e3e42ffdb2a07179c2e8cdf259"
+    },
+    {
+      "path": "compile_candidate.py",
+      "sha256Bytes": "6df3fdcfcd1f55cc8ef844955516f1c265cb8cad26734bdb996f57bd9d6d914d"
+    },
+    {
+      "path": "existing-hunks-pins.json",
+      "sha256Bytes": "100e4a878e265cb7cbb3efc1036d90adbd0e3ecc9d48685a7dde2f63573bfb83"
+    },
+    {
+      "path": "existing-hunks.patch",
+      "sha256Bytes": "c694fdf7fd28b0295db366b5012ef5086ca7de13dc4294ef75902da08e4eb698"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "771869cb6059d73e735e96406f3808677b182c80a0c54babeac6b19ca5845f42"
+    },
+    {
+      "path": "generated-protocol/com/android/purebilibili/data/repository/DesktopHomePreloadPolicy.kt",
+      "sha256Bytes": "98b787979964036ca4def1eb77faea9f035d0586a36ab3ea81f1493df92e75df"
+    },
+    {
+      "path": "generated-protocol/com/android/purebilibili/data/repository/DesktopOriginalHomeActionProtocol.kt",
+      "sha256Bytes": "dc745488a54c2b1d292fa0411dc56fd909be4a91f67009a9272fa2788380707d"
+    },
+    {
+      "path": "generated-protocol/com/android/purebilibili/data/repository/DesktopOriginalHomeHistoryProtocol.kt",
+      "sha256Bytes": "9a34f7cbec6112d7c7ab96016488dd881ca18bd37e39b725bb6a45ca472599e9"
+    },
+    {
+      "path": "generated-protocol/com/android/purebilibili/data/repository/DesktopOriginalHomeLiveProtocol.kt",
+      "sha256Bytes": "1cc4f211f9470b989869e991140ce43ea9fd70e06833f20987340591bc958393"
+    },
+    {
+      "path": "generated-protocol/com/android/purebilibili/data/repository/DesktopOriginalHomeMessageProtocol.kt",
+      "sha256Bytes": "102c147f9c3910036e5b481b1cc292627e0acccb697ee69ec31ab223a33d7b79"
+    },
+    {
+      "path": "generated-protocol/com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt",
+      "sha256Bytes": "2365c5a7bbce690e35cc34e8ddfd8f0d4aabeb210f46d35396d5c87e02b2297e"
+    },
+    {
+      "path": "generated-protocol/home-protocol-identities.json",
+      "sha256Bytes": "e929e2dfec6553d3c7ac8a982c5aee4e50f6664906573c426a955d07550e6c88"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/BottomBarContentPaddingPolicy.kt",
+      "sha256Bytes": "6c0519edb56cba8c14c70499a73b4f20e7e35c3bb6c13fd838d47389f94c0e84"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/transition/DesktopOriginalRootChromeReveal.kt",
+      "sha256Bytes": "7a9059c3cc1c2618e3cd85f0dca1549a0fc0f6752ec3d15cd5227bd92ecc3d65"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/download/OfflineVideoRoutingPolicy.kt",
+      "sha256Bytes": "5b1f4e72c8db8f2b49b007a15745622cd1b9e1f08825e9838ed0011261b354e0"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/DesktopOriginalRootDepthWallpaper.kt",
+      "sha256Bytes": "5d8631881badeecdbf6ebda3258b24dad1053355c938d9371051a55da19136e2"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation/AppNavigationMotionSpec.kt",
+      "sha256Bytes": "982d3e28ebc8df788f80844efb085d3afa66cc284f5fde74e5d78038bee83a71"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation/DesktopOriginalMainHostPager.kt",
+      "sha256Bytes": "781843467757956f53a544c3c0ee44e897d00a0bae8d7878b73f279cb5562452"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation/DesktopOriginalRootPagerPolicy.kt",
+      "sha256Bytes": "203009060e51e4b57082ca473ed3c97d44ac6d33668e9e52b1748a0ae91480ed"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation/DesktopOriginalRootPlaybackChromePolicy.kt",
+      "sha256Bytes": "365bbd09822244e89c0d3cfa474b6bd2f01f6737ac4a7d211204168c26a85ae7"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation/DesktopOriginalRootStandardVideoRoute.kt",
+      "sha256Bytes": "c381cf659506c92a4c7f1cfc5689e00aad69c50e73a43b3204f1c123029e771e"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation/MainBottomPagerState.kt",
+      "sha256Bytes": "44d89bdd449b5d0ee278b41b97bd2ab425de90118ef32489ad17a921b58f4ed9"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/ui/DesktopOriginalRootChromeState.kt",
+      "sha256Bytes": "87386aebe37ae4e45cf4e95e50ea24b6d9b3a6b9a42f3f777a6b71f6460be1a7"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/ui/DesktopOriginalRootSessionKeys.kt",
+      "sha256Bytes": "c4a324a50bcf6780f7f39a8787ec938729c2d787f938bd5928981f4caddc52f0"
+    },
+    {
+      "path": "generated/source-receipt.json",
+      "sha256Bytes": "b7908b5519694f05e7a452df86fcc80ed001741046cb533d400f4fe6c54730a9"
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "231eacffa496806c190baec389cdfddc841fcbd3c9b45aa3999e17bcc63e441f"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+      "sha256Bytes": "ab1413ae2215001453b88dd65dfc88d1e39c4c7dec23f3b6a6f3cc7b5607e31a"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRequestPorts.kt",
+      "sha256Bytes": "b195685ad81a1e8332ed9524c8b11adc756aa93dfde58b601442ad0cbf487be9"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "sha256Bytes": "8946105ca929671198ece690a061c5ca45b3449e0c8c22f0921c59228669cb80"
+    },
+    {
+      "path": "prepared/existing/desktop/tools/extract-upstream-home-protocols.py",
+      "sha256Bytes": "deb0f87478ae1cef8584e578debf63e7f07ad154da00c7ff7b959fe57f9e923b"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+      "sha256Bytes": "017f690836d092e283dd59052e30118490b2c6e005573e27147c750cb5a4fecc"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootNavigationPreferences.kt",
+      "sha256Bytes": "afb49956f98c0e78c1d148642941ae47b55e0c7a39e01829a3fa0268fd2ea834"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+      "sha256Bytes": "a5ddf1b39375411505edb32edd92ccae1bb78735a834b67dec4594c1e23f3fd2"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+      "sha256Bytes": "58c0c04f6ac83fe5e61e12647026be00b8b074f20a576e69d3c8ecf1e646c26d"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "sha256Bytes": "a238c5ef299b9bede7c21d245c2674bd9be4705073760447df0068d9fb1953bd"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootVideoResolver.kt",
+      "sha256Bytes": "c5396399c26e3f93398c991b620ec3cc23b7a619e9b2557cc69ff73338e20587"
+    },
+    {
+      "path": "prepared/tools/extract-upstream-home-protocols.py",
+      "sha256Bytes": "deb0f87478ae1cef8584e578debf63e7f07ad154da00c7ff7b959fe57f9e923b"
+    },
+    {
+      "path": "prepared/tools/extract-upstream-root-home-navigation.py",
+      "sha256Bytes": "78ea6e13aaddb2b836b5dc8318f61363228018ed70d428211fc8bab932c3c38e"
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "3861afdc9dbdcbb1f343e7218ce1c35440ffdf84cd4bda0e6e37c6b1a156da2e"
+    }
+  ],
+  "installWhitelist": "install-whitelist.json",
+  "compile": "compile-11/inputs.json",
+  "sourceInventory": "source-inventory.json"
+}

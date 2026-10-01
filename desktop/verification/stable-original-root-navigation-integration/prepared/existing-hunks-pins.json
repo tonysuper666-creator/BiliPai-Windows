@@ -1,0 +1,22 @@
+[
+  {
+    "path": "desktop/tools/extract-upstream-home-protocols.py",
+    "baseSha256LF": "ac9f13b5c84b824e57215caacbd527f01e1e6b26738b854569dc6c5877dca5ed",
+    "desiredSha256LF": "deb0f87478ae1cef8584e578debf63e7f07ad154da00c7ff7b959fe57f9e923b"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+    "baseSha256LF": "a6f4ba7834ddc5bee8bc0e258b5d38c190d98a8de956d6bd1c4b8facdac20e53",
+    "desiredSha256LF": "ab1413ae2215001453b88dd65dfc88d1e39c4c7dec23f3b6a6f3cc7b5607e31a"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRequestPorts.kt",
+    "baseSha256LF": "4be042dd1a85af5e0b9db3f2f7cbf5b499fda4d333cb409f6053d589477f468e",
+    "desiredSha256LF": "b195685ad81a1e8332ed9524c8b11adc756aa93dfde58b601442ad0cbf487be9"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+    "baseSha256LF": "f4bdd68dad6bb26fca39d737625ec0836cbbd427284cede41affcc148697b5d9",
+    "desiredSha256LF": "8946105ca929671198ece690a061c5ca45b3449e0c8c22f0921c59228669cb80"
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-43",
+  "manifestSha": "6252d7e16a2f413d48de0265dc7debb315b2eaefca0b58cde0d34d9258feb362",
+  "orderedCpSha": "0785ee7cbe88b2615d9193882310a1fe36c368c71f9180b2a418a17136ab8440",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootRouteActions.kt",
+      "sha256Bytes": "a5ddf1b39375411505edb32edd92ccae1bb78735a834b67dec4594c1e23f3fd2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootRouteAssembly.kt",
+      "sha256Bytes": "d79a6ef0a23b3bebd33f547249b5a9092c018163d3abafd236c3afa8e45e1070"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootStack.kt",
+      "sha256Bytes": "a16cd13dc7efdaae2d646687e49ccad1ed2a7c67df91510af0a017f7615ed1c0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\navigation\\DesktopOriginalMainHostPager.kt",
+      "sha256Bytes": "781843467757956f53a544c3c0ee44e897d00a0bae8d7878b73f279cb5562452"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\navigation\\MainBottomPagerState.kt",
+      "sha256Bytes": "44d89bdd449b5d0ee278b41b97bd2ab425de90118ef32489ad17a921b58f4ed9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootSessionKeys.kt",
+      "sha256Bytes": "a1596f43388819675776974133927fc49e4133533416efd720454aa81d7af1c8"
+    }
+  ],
+  "prepared": true,
+  "rootMounted": false,
+  "mainIntegration": false,
+  "productOverrides": 0,
+  "exit": 1
+}

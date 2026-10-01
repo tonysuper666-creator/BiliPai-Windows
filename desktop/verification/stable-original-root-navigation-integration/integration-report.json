@@ -1,0 +1,41 @@
+{
+  "wholeClassesPhase": 46,
+  "wholeClassesPassed": true,
+  "wholeTestSourcesCompiled": true,
+  "sourceIdentityCount": 935,
+  "resourceCount": 213,
+  "actualRuntimeEntries": 97,
+  "actualKotlinClasses": 11954,
+  "invalidJvmMethodNames": 0,
+  "actualClassDefinitionsProof": {
+    "passed": true,
+    "actualSnapshot": 46,
+    "runtimeEntries": 97,
+    "productionOverrides": 0,
+    "newClassDefinitionsLoaded": 62,
+    "declaredMethodsResolved": true,
+    "actualKotlinProductSha256Bytes": "5f4461e7921581157ac828f93498f3acc9b09d9eea1fbf3c5abfbb34cf82aeca",
+    "actualOrderedCpSha256Bytes": "8ad3f3ced5fda25fea2f869617a251306c9a8cdb7178f07edceb93ac6e056789",
+    "newTopFunctionChromeHasOnlyExistingCanonicalOwner": true,
+    "classInitialization": false,
+    "rootUiMounted": false,
+    "externalHttp": false
+  },
+  "productionOverrides": 0,
+  "fullOriginalMainHostPagerCompiled": true,
+  "originalSideBarAndFullDockCompiled": true,
+  "typedRootStackHomeProfileCategoryLiveExecutableSources": true,
+  "paletteCallbackCapturesImmutableGate": true,
+  "soleOriginalChromeRevealProducer": true,
+  "fullRootMountedInShell": false,
+  "windowFactoryMounted": false,
+  "newRuntimeArtifacts": 0,
+  "newWindowsExeDeployed": false,
+  "failedCompiler": "Duplicate internal videoCardTransitionChromeReveal was hidden by prospective classpath resolution. Whole compiler rejected duplicate. Remove new emission and consume full original existing Home-card implementation; keep old prepared packet unchanged. Delete only its known stale generated filename through the existing long-path helper.",
+  "classProbeFailure": "First runner incorrectly equated net61 extra class entries with62 new class definitions. Fixture-only runner corrected; source/classes unchanged.",
+  "pending": [
+    "Concrete Window/Profile/account factory and actual Shell leaf mount",
+    "Full typed VideoDetail parameters and initial offline taskId consumer",
+    "Root/Window/native/account acceptance and portable EXE"
+  ]
+}

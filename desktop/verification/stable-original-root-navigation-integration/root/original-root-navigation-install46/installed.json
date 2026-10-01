@@ -1,0 +1,84 @@
+{
+  "payloads": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+      "sha256LF": "017f690836d092e283dd59052e30118490b2c6e005573e27147c750cb5a4fecc"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootNavigationPreferences.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootNavigationPreferences.kt",
+      "sha256LF": "afb49956f98c0e78c1d148642941ae47b55e0c7a39e01829a3fa0268fd2ea834"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+      "sha256LF": "a5ddf1b39375411505edb32edd92ccae1bb78735a834b67dec4594c1e23f3fd2"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+      "sha256LF": "58c0c04f6ac83fe5e61e12647026be00b8b074f20a576e69d3c8ecf1e646c26d"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "sha256LF": "a238c5ef299b9bede7c21d245c2674bd9be4705073760447df0068d9fb1953bd"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootVideoResolver.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootVideoResolver.kt",
+      "sha256LF": "c5396399c26e3f93398c991b620ec3cc23b7a619e9b2557cc69ff73338e20587"
+    },
+    {
+      "source": "prepared/tools/extract-upstream-root-home-navigation.py",
+      "target": "desktop/tools/extract-upstream-root-home-navigation.py",
+      "sha256LF": "78ea6e13aaddb2b836b5dc8318f61363228018ed70d428211fc8bab932c3c38e"
+    }
+  ],
+  "existingHunks": [
+    {
+      "path": "desktop/tools/extract-upstream-home-protocols.py",
+      "before": "      s=s[:begin]+indent+'val feedApiType = environment.feedApiType()\\n'+s[end:]\n      s=s.replace('} catch (e: Exception) {','} catch (cancelled: CancellationException) { throw cancelled\\n        } catch (e: Exception) {')\n     s=s.replace('e.printStackTrace()','// Windows boundary does not print raw URL/response exceptions.')\n     if name in ['getNavInfo','fetchAsGuestFallback']:\n      s=s.replace('} catch (e: Exception) {','} catch (cancelled: CancellationException) { throw cancelled\\n    } catch (e: Exception) {')\n     return s\n",
+      "after": "      s=s[:begin]+indent+'val feedApiType = environment.feedApiType()\\n'+s[end:]\n      s=s.replace('} catch (e: Exception) {','} catch (cancelled: CancellationException) { throw cancelled\\n        } catch (e: Exception) {')\n     s=s.replace('e.printStackTrace()','// Windows boundary does not print raw URL/response exceptions.')\n     if name=='isVerticalVideo':\n      s=s.replace('} catch (_: Exception) {','} catch (cancelled: CancellationException) { throw cancelled\\n        } catch (_: Exception) {')\n     if name in ['getNavInfo','fetchAsGuestFallback']:\n      s=s.replace('} catch (e: Exception) {','} catch (cancelled: CancellationException) { throw cancelled\\n    } catch (e: Exception) {')\n     return s\n"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-protocols.py",
+      "before": "import com.android.purebilibili.data.model.response.*\nimport com.bilipai.desktop.ui.DesktopHomeProtocolEnvironment\nimport kotlinx.coroutines.*\n'''\n    write(OUT/'com/android/purebilibili/data/repository/DesktopHomePreloadPolicy.kt',imports+'\\n'+helperBody+'\\n')\n    methods=['isHomeDataReady','preloadHomeData','awaitHomePreloadResult','consumePreloadedHomeVideos','getHomeVideos','getHomeVideosInternal','fetchWebFeed','fetchMobileFeed','fetchMergedWebFeed','fetchMergedMobileFeed','getPopularVideos','getRankingVideos','getPreciousVideos','getWeeklyMustWatchVideos','getRegionVideos','getNavInfo','getPreviewVideoUrl','fetchAsGuestFallback']\n    originalFields='''    @Volatile private var preloadedHomeVideos: Result<List<VideoItem>>? = null\n    @Volatile private var homePreloadDeferred: Deferred<Result<List<VideoItem>>>? = null\n    @Volatile private var hasCompletedHomePreload = false'''\n    for l in originalFields.splitlines():assert l.strip() in video,l\n    body='\\n\\n'.join(textwrap.indent(method(videoPath,video,n,lambda s,n=n:video_adapt(n,s)),'    ') for n in methods)\n    write(OUT/'com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt',imports+'''\n",
+      "after": "import com.android.purebilibili.data.model.response.*\nimport com.bilipai.desktop.ui.DesktopHomeProtocolEnvironment\nimport kotlinx.coroutines.*\nimport java.util.concurrent.ConcurrentHashMap\n'''\n    write(OUT/'com/android/purebilibili/data/repository/DesktopHomePreloadPolicy.kt',imports+'\\n'+helperBody+'\\n')\n    methods=['isHomeDataReady','preloadHomeData','awaitHomePreloadResult','consumePreloadedHomeVideos','getHomeVideos','getHomeVideosInternal','fetchWebFeed','fetchMobileFeed','fetchMergedWebFeed','fetchMergedMobileFeed','getPopularVideos','getRankingVideos','getPreciousVideos','getWeeklyMustWatchVideos','getRegionVideos','getNavInfo','getPreviewVideoUrl','isVerticalVideo','fetchAsGuestFallback']\n    originalFields='''    @Volatile private var preloadedHomeVideos: Result<List<VideoItem>>? = null\n    @Volatile private var homePreloadDeferred: Deferred<Result<List<VideoItem>>>? = null\n    @Volatile private var hasCompletedHomePreload = false\n    private val verticalVideoCache = ConcurrentHashMap<String, Boolean>()'''\n    for l in originalFields.splitlines():assert l.strip() in video,l\n    body='\\n\\n'.join(textwrap.indent(method(videoPath,video,n,lambda s,n=n:video_adapt(n,s)),'    ') for n in methods)\n    write(OUT/'com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt',imports+'''\n"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-protocols.py",
+      "before": "internal class DesktopOriginalHomeVideoProtocol(private val environment:DesktopHomeProtocolEnvironment) : AutoCloseable {\n    private val api get()=environment.api\n'''+originalFields+'\\n\\n'+body+'''\n    override fun close() { homePreloadDeferred?.cancel(); homePreloadDeferred=null; preloadedHomeVideos=null }\n}\n''')\n\n",
+      "after": "internal class DesktopOriginalHomeVideoProtocol(private val environment:DesktopHomeProtocolEnvironment) : AutoCloseable {\n    private val api get()=environment.api\n'''+originalFields+'\\n\\n'+body+'''\n    override fun close() { homePreloadDeferred?.cancel(); homePreloadDeferred=null; preloadedHomeVideos=null; verticalVideoCache.clear() }\n}\n''')\n\n"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+      "before": " suspend fun getRegionVideos(tid:Int,page:Int):Result<List<VideoItem>>\n suspend fun getNavInfo():Result<NavData>\n suspend fun getPreviewVideoUrl(bvid:String,cid:Long):String?\n}\ninternal interface DesktopHomeHistoryRequests {suspend fun getHistoryList(ps:Int,max:Long,viewAt:Long,business:String):Result<HistoryResult>}\ninternal interface DesktopHomeLiveRequests {suspend fun getFollowedLive(page:Int):Result<List<LiveRoom>>;suspend fun getLiveRooms(page:Int):Result<List<LiveRoom>>}\n",
+      "after": " suspend fun getRegionVideos(tid:Int,page:Int):Result<List<VideoItem>>\n suspend fun getNavInfo():Result<NavData>\n suspend fun getPreviewVideoUrl(bvid:String,cid:Long):String?\n suspend fun isVerticalVideo(bvid:String,aid:Long=0L):Boolean\n}\ninternal interface DesktopHomeHistoryRequests {suspend fun getHistoryList(ps:Int,max:Long,viewAt:Long,business:String):Result<HistoryResult>}\ninternal interface DesktopHomeLiveRequests {suspend fun getFollowedLive(page:Int):Result<List<LiveRoom>>;suspend fun getLiveRooms(page:Int):Result<List<LiveRoom>>}\n"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRequestPorts.kt",
+      "before": "        override suspend fun getRegionVideos(tid:Int,page:Int)=result {originalVideo.getRegionVideos(tid,page)}\n        override suspend fun getNavInfo()=result {originalVideo.getNavInfo()}\n        override suspend fun getPreviewVideoUrl(bvid:String,cid:Long)=owned {originalVideo.getPreviewVideoUrl(bvid,cid)}\n    }\n    val history=object:DesktopHomeHistoryRequests {\n        override suspend fun getHistoryList(ps:Int,max:Long,viewAt:Long,business:String)=result {\n",
+      "after": "        override suspend fun getRegionVideos(tid:Int,page:Int)=result {originalVideo.getRegionVideos(tid,page)}\n        override suspend fun getNavInfo()=result {originalVideo.getNavInfo()}\n        override suspend fun getPreviewVideoUrl(bvid:String,cid:Long)=owned {originalVideo.getPreviewVideoUrl(bvid,cid)}\n        override suspend fun isVerticalVideo(bvid:String,aid:Long)=owned {originalVideo.isVerticalVideo(bvid,aid)}\n    }\n    val history=object:DesktopHomeHistoryRequests {\n        override suspend fun getHistoryList(ps:Int,max:Long,viewAt:Long,business:String)=result {\n"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "before": "    val textShare: DesktopTextShareBindings,\n    val diagnostics: DesktopDiagnostics?,\n    val wallpaperPalette: StateFlow<WallpaperPalette?>,\n    val loadWallpaperPalette: (String, CoroutineScope) -> Unit,\n    val musicOverlayVisible: StateFlow<Boolean>,\n    val sourceForMediaUrl: (String) -> PlaybackSource,\n    val isVideoWallpaper: (String) -> Boolean,\n",
+      "after": "    val textShare: DesktopTextShareBindings,\n    val diagnostics: DesktopDiagnostics?,\n    val wallpaperPalette: StateFlow<WallpaperPalette?>,\n    val loadWallpaperPalette: (DesktopHomeRetainedGate, String, CoroutineScope) -> Unit,\n    val musicOverlayVisible: StateFlow<Boolean>,\n    val sourceForMediaUrl: (String) -> PlaybackSource,\n    val isVideoWallpaper: (String) -> Boolean,\n"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "before": "            val environment = DesktopHomeEnvironment(window.settings, window.context, window.lifecycle,\n                subscriptionEnabled, analytics,\n                { name -> DesktopOriginalHomeGlobalNamespace(runtime.store, name) },\n                window.wallpaperPalette, window.loadWallpaperPalette,\n                window.resources.clientPolicy::ensureEdgeToEdge,\n                window.resources.clientPolicy::applyHomeSystemBars, aggregate,\n                { url, _ -> aggregate.gallery.saveImage(url) },\n",
+      "after": "            val environment = DesktopHomeEnvironment(window.settings, window.context, window.lifecycle,\n                subscriptionEnabled, analytics,\n                { name -> DesktopOriginalHomeGlobalNamespace(runtime.store, name) },\n                window.wallpaperPalette, { uri, pageScope -> window.loadWallpaperPalette(gate, uri, pageScope) },\n                window.resources.clientPolicy::ensureEdgeToEdge,\n                window.resources.clientPolicy::applyHomeSystemBars, aggregate,\n                { url, _ -> aggregate.gallery.saveImage(url) },\n"
+    }
+  ],
+  "newOriginalIdentities": 4,
+  "sourceCountBefore": 931,
+  "sourceCountAfter": 935,
+  "newRuntimeArtifacts": 0,
+  "concreteRootMainHostCompiledPending": true,
+  "rootMounted": false,
+  "fullMainHostPaletteCapturedGate": true,
+  "newExeDeployed": false
+}

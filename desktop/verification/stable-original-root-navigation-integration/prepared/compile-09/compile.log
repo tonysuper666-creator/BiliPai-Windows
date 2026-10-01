@@ -1,0 +1,42 @@
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\feature\home\DesktopOriginalRootDepthWallpaper.kt:10:48: error: unresolved reference 'rememberSystemReduceMotion'.
+import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\feature\home\DesktopOriginalRootDepthWallpaper.kt:33:13: error: unresolved reference 'rememberSystemReduceMotion'.
+        if (rememberSystemReduceMotion()) MotionTier.Reduced else MotionTier.Normal
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:173:94: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PlaylistItem?'.
+                        (returns.isReturningFromDetail&&returns.transitionSession?.bvid==item.bvid)
+                                                                                             ^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:178:78: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PlaylistItem?'.
+                        AudioNowPlayingBar(state=AudioNowPlayingBarState(item.bvid,item.title,item.owner,item.ownerFace,item.cover,
+                                                                             ^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:178:88: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PlaylistItem?'.
+                        AudioNowPlayingBar(state=AudioNowPlayingBarState(item.bvid,item.title,item.owner,item.ownerFace,item.cover,
+                                                                                       ^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:178:99: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PlaylistItem?'.
+                        AudioNowPlayingBar(state=AudioNowPlayingBarState(item.bvid,item.title,item.owner,item.ownerFace,item.cover,
+                                                                                                  ^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:178:110: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PlaylistItem?'.
+                        AudioNowPlayingBar(state=AudioNowPlayingBarState(item.bvid,item.title,item.owner,item.ownerFace,item.cover,
+                                                                                                             ^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:178:125: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'PlaylistItem?'.
+                        AudioNowPlayingBar(state=AudioNowPlayingBarState(item.bvid,item.title,item.owner,item.ownerFace,item.cover,
+                                                                                                                            ^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:180:87: error: argument type mismatch: actual type is 'PlaylistItem?', but 'PlaylistItem' was expected.
+                            sourceIsOwned={binding.owner.isOwned()&&audio.ownsCurrent(item)},
+                                                                                      ^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:182:52: error: argument type mismatch: actual type is 'PlaylistItem?', but 'PlaylistItem' was expected.
+                            onExpand={audio.expand(item,actualNowNavigation)},onPlayPause={audio.playPause(item,actualNowNavigation)},
+                                                   ^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:182:108: error: argument type mismatch: actual type is 'PlaylistItem?', but 'PlaylistItem' was expected.
+                            onExpand={audio.expand(item,actualNowNavigation)},onPlayPause={audio.playPause(item,actualNowNavigation)},
+                                                                                                           ^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:183:52: error: argument type mismatch: actual type is 'PlaylistItem?', but 'PlaylistItem' was expected.
+                            onSkipNext={audio.next(item)},onSkipPrevious={audio.previous(item)},onDismiss={audio.dismiss(item,actualNowNavigation)},
+                                                   ^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:183:90: error: argument type mismatch: actual type is 'PlaylistItem?', but 'PlaylistItem' was expected.
+                            onSkipNext={audio.next(item)},onSkipPrevious={audio.previous(item)},onDismiss={audio.dismiss(item,actualNowNavigation)},
+                                                                                         ^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:183:122: error: argument type mismatch: actual type is 'PlaylistItem?', but 'PlaylistItem' was expected.
+                            onSkipNext={audio.next(item)},onSkipPrevious={audio.previous(item)},onDismiss={audio.dismiss(item,actualNowNavigation)},
+                                                                                                                         ^^^^

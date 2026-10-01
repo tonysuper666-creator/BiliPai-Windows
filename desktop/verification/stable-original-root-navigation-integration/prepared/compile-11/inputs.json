@@ -1,0 +1,101 @@
+{
+  "actualSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-43",
+  "manifestSha": "6252d7e16a2f413d48de0265dc7debb315b2eaefca0b58cde0d34d9258feb362",
+  "orderedCpSha": "0785ee7cbe88b2615d9193882310a1fe36c368c71f9180b2a418a17136ab8440",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootChrome.kt",
+      "sha256Bytes": "017f690836d092e283dd59052e30118490b2c6e005573e27147c750cb5a4fecc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootNavigationPreferences.kt",
+      "sha256Bytes": "afb49956f98c0e78c1d148642941ae47b55e0c7a39e01829a3fa0268fd2ea834"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootRouteActions.kt",
+      "sha256Bytes": "a5ddf1b39375411505edb32edd92ccae1bb78735a834b67dec4594c1e23f3fd2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootRouteAssembly.kt",
+      "sha256Bytes": "58c0c04f6ac83fe5e61e12647026be00b8b074f20a576e69d3c8ecf1e646c26d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootStack.kt",
+      "sha256Bytes": "a238c5ef299b9bede7c21d245c2674bd9be4705073760447df0068d9fb1953bd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootVideoResolver.kt",
+      "sha256Bytes": "c5396399c26e3f93398c991b620ec3cc23b7a619e9b2557cc69ff73338e20587"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\navigation\\AppNavigationMotionSpec.kt",
+      "sha256Bytes": "982d3e28ebc8df788f80844efb085d3afa66cc284f5fde74e5d78038bee83a71"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\navigation\\DesktopOriginalMainHostPager.kt",
+      "sha256Bytes": "781843467757956f53a544c3c0ee44e897d00a0bae8d7878b73f279cb5562452"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\navigation\\DesktopOriginalRootPagerPolicy.kt",
+      "sha256Bytes": "203009060e51e4b57082ca473ed3c97d44ac6d33668e9e52b1748a0ae91480ed"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\navigation\\DesktopOriginalRootPlaybackChromePolicy.kt",
+      "sha256Bytes": "365bbd09822244e89c0d3cfa474b6bd2f01f6737ac4a7d211204168c26a85ae7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\navigation\\DesktopOriginalRootStandardVideoRoute.kt",
+      "sha256Bytes": "c381cf659506c92a4c7f1cfc5689e00aad69c50e73a43b3204f1c123029e771e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\navigation\\MainBottomPagerState.kt",
+      "sha256Bytes": "44d89bdd449b5d0ee278b41b97bd2ab425de90118ef32489ad17a921b58f4ed9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\core\\ui\\BottomBarContentPaddingPolicy.kt",
+      "sha256Bytes": "6c0519edb56cba8c14c70499a73b4f20e7e35c3bb6c13fd838d47389f94c0e84"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\core\\ui\\transition\\DesktopOriginalRootChromeReveal.kt",
+      "sha256Bytes": "7a9059c3cc1c2618e3cd85f0dca1549a0fc0f6752ec3d15cd5227bd92ecc3d65"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\feature\\download\\OfflineVideoRoutingPolicy.kt",
+      "sha256Bytes": "5b1f4e72c8db8f2b49b007a15745622cd1b9e1f08825e9838ed0011261b354e0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalRootDepthWallpaper.kt",
+      "sha256Bytes": "5d8631881badeecdbf6ebda3258b24dad1053355c938d9371051a55da19136e2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootChromeState.kt",
+      "sha256Bytes": "87386aebe37ae4e45cf4e95e50ea24b6d9b3a6b9a42f3f777a6b71f6460be1a7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootSessionKeys.kt",
+      "sha256Bytes": "c4a324a50bcf6780f7f39a8787ec938729c2d787f938bd5928981f4caddc52f0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeDataEnvironment.kt",
+      "sha256Bytes": "ab1413ae2215001453b88dd65dfc88d1e39c4c7dec23f3b6a6f3cc7b5607e31a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeRequestPorts.kt",
+      "sha256Bytes": "b195685ad81a1e8332ed9524c8b11adc756aa93dfde58b601442ad0cbf487be9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeRootFactory.kt",
+      "sha256Bytes": "8946105ca929671198ece690a061c5ca45b3449e0c8c22f0921c59228669cb80"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-root-route-assembly-parity\\generated-protocol\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalHomeVideoProtocol.kt",
+      "sha256Bytes": "2365c5a7bbce690e35cc34e8ddfd8f0d4aabeb210f46d35396d5c87e02b2297e"
+    }
+  ],
+  "prepared": true,
+  "rootMounted": false,
+  "mainIntegration": false,
+  "productOverrides": "EXPLICIT same original VideoProtocol + existing interface/facade + captured Palette factory seam",
+  "exit": 0
+}

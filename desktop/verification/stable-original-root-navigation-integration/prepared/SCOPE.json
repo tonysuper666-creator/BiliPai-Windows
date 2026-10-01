@@ -1,0 +1,17 @@
+{
+  "prepared": true,
+  "mainIntegration": false,
+  "rootMounted": false,
+  "target": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "basis": {
+    "manifestSha256": "6252d7e16a2f413d48de0265dc7debb315b2eaefca0b58cde0d34d9258feb362",
+    "cpSha256": "0785ee7cbe88b2615d9193882310a1fe36c368c71f9180b2a418a17136ab8440",
+    "entries": 97
+  },
+  "compile": "compile-11",
+  "sameOriginalFamilyOverrides": "compile-11/declared-family-overlap.json",
+  "noSharedBuild": true,
+  "noNativeWindow": true,
+  "noAccountRequest": true,
+  "noExeAcceptance": true
+}

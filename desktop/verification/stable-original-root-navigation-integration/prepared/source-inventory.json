@@ -1,0 +1,101 @@
+{
+  "target": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "newIdentities": 4,
+  "rows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "policy-extract",
+      "operation": "merge-feature-preserve-owner-and-mode"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/MainBottomPagerState.kt",
+      "sha256": "44d89bdd449b5d0ee278b41b97bd2ab425de90118ef32489ad17a921b58f4ed9",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "direct",
+      "operation": "append-new-identity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt",
+      "sha256": "cbb6d92e8bcba3dfdf5df6dff06b8e61ccccaea9973a2d5e04fd0b5cd54917e6",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "selected",
+      "operation": "merge-feature-preserve-owner-and-mode"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/BottomBarContentPaddingPolicy.kt",
+      "sha256": "8671a6e01926492511e59db960787d808b42827cbc26150356975750b43386c3",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "policy-extract",
+      "operation": "append-new-identity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationMotionSpec.kt",
+      "sha256": "e762a6582dadc1e9ed337e49b94b861422f4e93d386340a16729d3d1108727fc",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "policy-extract",
+      "operation": "append-new-identity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationPlaybackPolicy.kt",
+      "sha256": "e0165d4a922cdd613fcda87100f8344f572ba8e5afd22ce6c1c603eba8fec758",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "policy-extract",
+      "operation": "merge-feature-preserve-owner-and-mode"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+      "sha256": "e7ee5766b05d05a39e81f0a81774c0870eb340879493df4397f94864b9d386f8",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "policy-extract",
+      "operation": "merge-feature-preserve-owner-and-mode"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoRoutingPolicy.kt",
+      "sha256": "5b1f4e72c8db8f2b49b007a15745622cd1b9e1f08825e9838ed0011261b354e0",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "direct",
+      "operation": "append-new-identity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeWallpaperBackdrop.kt",
+      "sha256": "d966dbd9074fdf29b97785ebf7a724e5635e8098abf2f44c9d2ccf31eb38d2f6",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "policy-extract",
+      "operation": "merge-feature-preserve-owner-and-mode"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "sha256": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "policy-extract",
+      "operation": "merge-feature-preserve-owner-and-mode"
+    }
+  ],
+  "productionDirectCopiedOnlyBySync": [
+    "app/src/main/java/com/android/purebilibili/navigation/MainBottomPagerState.kt",
+    "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoRoutingPolicy.kt"
+  ],
+  "standaloneOnly": "isolated source closure tests explicitly pass --standalone; production omits both DIRECT outputs"
+}

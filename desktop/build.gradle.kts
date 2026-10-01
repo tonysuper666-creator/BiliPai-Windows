@@ -665,6 +665,24 @@ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.named("compileKotlin") { dependsOn(extractOriginalVideoShareConsent) }
 
 // Complete original navigation host; the 22 DIRECT declarations retain sync's sole ownership.
+// Insert beside extractNavigation3Host. No new dependency.
+val extractOriginalRootHomeNavigation by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-root-home-navigation.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-root-home-navigation").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-root-home-navigation.py", "tools/sync-upstream.py",
+        "tools/extract-upstream-navigation3-host.py", "tools/extract-upstream-media.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-root-home-navigation" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-root-home-navigation"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-root-home-navigation")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalRootHomeNavigation) }
+// Preserve originalHomeProtocols registration; its sole producer now includes the original vertical-video method/cache.
+
 val extractNavigation3Host by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)

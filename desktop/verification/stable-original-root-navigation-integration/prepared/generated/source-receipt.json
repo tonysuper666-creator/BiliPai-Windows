@@ -1,0 +1,181 @@
+{
+  "target": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256LF": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "mode": "existing-feature-merge"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/MainBottomPagerState.kt",
+      "sha256LF": "44d89bdd449b5d0ee278b41b97bd2ab425de90118ef32489ad17a921b58f4ed9",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt",
+      "sha256LF": "cbb6d92e8bcba3dfdf5df6dff06b8e61ccccaea9973a2d5e04fd0b5cd54917e6",
+      "mode": "existing-feature-merge"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/BottomBarContentPaddingPolicy.kt",
+      "sha256LF": "8671a6e01926492511e59db960787d808b42827cbc26150356975750b43386c3",
+      "mode": "policy-extract",
+      "selectedDeclarations": [
+        "BottomBarContentPaddingSpec",
+        "resolveBottomBarContentPaddingSpec",
+        "resolveBottomBarContentPadding",
+        "rememberAppBottomBarContentPadding",
+        "calculateBottomBarContentPadding"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationMotionSpec.kt",
+      "sha256LF": "e762a6582dadc1e9ed337e49b94b861422f4e93d386340a16729d3d1108727fc",
+      "mode": "policy-extract",
+      "selectedDeclarations": [
+        "AppNavigationMotionSpec",
+        "FALLBACK_FADE_DURATION_MILLIS",
+        "QUICK_RETURN_FADE_DURATION_MILLIS",
+        "SEAMLESS_FADE_DURATION_MILLIS",
+        "CARD_DISABLED_TARGET_SLIDE_MAX_DURATION_MILLIS",
+        "CARD_TARGET_FALLBACK_SLIDE_MAX_DURATION_MILLIS",
+        "resolveAppNavigationMotionSpec"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationPlaybackPolicy.kt",
+      "sha256LF": "e0165d4a922cdd613fcda87100f8344f572ba8e5afd22ce6c1c603eba8fec758",
+      "mode": "policy-extract",
+      "selectedDeclarations": [
+        "shouldDeferBottomBarRevealOnVideoReturn",
+        "shouldDelayBottomBarRevealAfterVideoReturn",
+        "resolveVideoReturnBottomBarRevealDelayMs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+      "sha256LF": "e7ee5766b05d05a39e81f0a81774c0870eb340879493df4397f94864b9d386f8",
+      "mode": "policy-extract",
+      "selectedDeclarations": [
+        "videoCardTransitionChromeReveal"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256LF": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "mode": "policy-extract",
+      "selectedDeclarations": [
+        "shouldAutoEnterPortraitForStandardVideoNavigation",
+        "resolveStandardVideoRoute"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoRoutingPolicy.kt",
+      "sha256LF": "5b1f4e72c8db8f2b49b007a15745622cd1b9e1f08825e9838ed0011261b354e0",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeWallpaperBackdrop.kt",
+      "sha256LF": "d966dbd9074fdf29b97785ebf7a724e5635e8098abf2f44c9d2ccf31eb38d2f6",
+      "mode": "policy-extract",
+      "selectedDeclarations": [
+        "DepthSyncedGlobalHomeWallpaperBackdrop"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "path": "com/android/purebilibili/navigation/DesktopOriginalMainHostPager.kt",
+      "sha256LF": "781843467757956f53a544c3c0ee44e897d00a0bae8d7878b73f279cb5562452"
+    },
+    {
+      "path": "com/bilipai/desktop/ui/DesktopOriginalRootSessionKeys.kt",
+      "sha256LF": "c4a324a50bcf6780f7f39a8787ec938729c2d787f938bd5928981f4caddc52f0"
+    },
+    {
+      "path": "com/android/purebilibili/navigation/MainBottomPagerState.kt",
+      "sha256LF": "44d89bdd449b5d0ee278b41b97bd2ab425de90118ef32489ad17a921b58f4ed9"
+    },
+    {
+      "path": "com/android/purebilibili/navigation/DesktopOriginalRootPagerPolicy.kt",
+      "sha256LF": "203009060e51e4b57082ca473ed3c97d44ac6d33668e9e52b1748a0ae91480ed"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/BottomBarContentPaddingPolicy.kt",
+      "sha256LF": "6c0519edb56cba8c14c70499a73b4f20e7e35c3bb6c13fd838d47389f94c0e84"
+    },
+    {
+      "path": "com/android/purebilibili/navigation/AppNavigationMotionSpec.kt",
+      "sha256LF": "982d3e28ebc8df788f80844efb085d3afa66cc284f5fde74e5d78038bee83a71"
+    },
+    {
+      "path": "com/android/purebilibili/navigation/DesktopOriginalRootPlaybackChromePolicy.kt",
+      "sha256LF": "365bbd09822244e89c0d3cfa474b6bd2f01f6737ac4a7d211204168c26a85ae7"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/DesktopOriginalRootChromeReveal.kt",
+      "sha256LF": "7a9059c3cc1c2618e3cd85f0dca1549a0fc0f6752ec3d15cd5227bd92ecc3d65"
+    },
+    {
+      "path": "com/android/purebilibili/navigation/DesktopOriginalRootStandardVideoRoute.kt",
+      "sha256LF": "c381cf659506c92a4c7f1cfc5689e00aad69c50e73a43b3204f1c123029e771e"
+    },
+    {
+      "path": "com/android/purebilibili/feature/download/OfflineVideoRoutingPolicy.kt",
+      "sha256LF": "5b1f4e72c8db8f2b49b007a15745622cd1b9e1f08825e9838ed0011261b354e0"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/DesktopOriginalRootDepthWallpaper.kt",
+      "sha256LF": "5d8631881badeecdbf6ebda3258b24dad1053355c938d9371051a55da19136e2"
+    },
+    {
+      "path": "com/bilipai/desktop/ui/DesktopOriginalRootChromeState.kt",
+      "sha256LF": "87386aebe37ae4e45cf4e95e50ea24b6d9b3a6b9a42f3f777a6b71f6460be1a7"
+    }
+  ],
+  "selected": [
+    {
+      "name": "MAIN_HOST",
+      "sha256OriginalBlock": "ec813aa53421f6ad47cb0491fe6e3d6197ff9ae139587903419b84903771d416"
+    },
+    {
+      "name": "bottomPagerNavKeyForItem",
+      "sha256OriginalBlock": "22f33745c398e779fece0b4473e635698dc2b5fed3e8fa4a4fe7a6fe9080d52f",
+      "adaptation": "function-scope to internal top-level"
+    },
+    {
+      "name": "sessionScopedKey",
+      "sha256OriginalBlock": "1755f31b4a4c9bc22e788a763db6e64418921b0050a833940b7f87393f067b28"
+    },
+    {
+      "name": "pager-policy",
+      "declarations": [
+        "BottomPagerRenderBudget",
+        "BOTTOM_BAR_MAX_VISIBLE_ITEMS",
+        "BOTTOM_PAGER_MAX_PRELOAD_DISTANCE",
+        "resolveBottomPagerPageForRoute",
+        "resolveBottomPagerItemForPage",
+        "shouldResetNavigation3BackStackForBottomPager",
+        "resolveVisibleBottomBarItems",
+        "resolveActiveBottomTabRoute",
+        "shouldShowBottomBarForNavigation",
+        "shouldMountSidebarForNavigation",
+        "resolveBottomPagerSaveableStateKey",
+        "resolveBottomPagerBeyondViewportPageCount",
+        "resolveBottomPagerRenderBudget",
+        "shouldEnableBottomPagerUserScroll",
+        "shouldComposeBottomPagerPage"
+      ],
+      "sha256OriginalBlock": "5c90d79e5759711c4a1603d9fb6c19f3f0e4db53e620ae96f2f2204b43ebf442"
+    },
+    {
+      "name": "full-original-chrome-state",
+      "sha256OriginalBlock": "f17976190b6b1c224b4db487f61ac1847f3bc6e654783925b1225b15ada37be5",
+      "platformChanges": [
+        "caller-owned state/getters",
+        "current Windows inset",
+        "visibility setter typed port"
+      ]
+    }
+  ]
+}

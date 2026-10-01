@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "actualSnapshot": 46,
+  "runtimeEntries": 97,
+  "productionOverrides": 0,
+  "newClassDefinitionsLoaded": 62,
+  "declaredMethodsResolved": true,
+  "actualKotlinProductSha256Bytes": "5f4461e7921581157ac828f93498f3acc9b09d9eea1fbf3c5abfbb34cf82aeca",
+  "actualOrderedCpSha256Bytes": "8ad3f3ced5fda25fea2f869617a251306c9a8cdb7178f07edceb93ac6e056789",
+  "newTopFunctionChromeHasOnlyExistingCanonicalOwner": true,
+  "classInitialization": false,
+  "rootUiMounted": false,
+  "externalHttp": false
+}

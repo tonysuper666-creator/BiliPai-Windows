@@ -1601,7 +1601,8 @@
         "discovery",
         "stable-weekly-series-parity",
         "weekly",
-        "home-protocols"
+        "home-protocols",
+        "stable-root-home-navigation"
       ],
       "mode": "policy-extract"
     },
@@ -4377,7 +4378,8 @@
       "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationPlaybackPolicy.kt",
       "mode": "policy-extract",
       "features": [
-        "home-full-card"
+        "home-full-card",
+        "stable-root-home-navigation"
       ],
       "sha256": "e0165d4a922cdd613fcda87100f8344f572ba8e5afd22ce6c1c603eba8fec758"
     },
@@ -4391,7 +4393,8 @@
         "stable-home-retained-navigation",
         "live-home-list",
         "stable-home-return-navigation",
-        "live-sub-navigation"
+        "live-sub-navigation",
+        "stable-root-home-navigation"
       ],
       "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59"
     },
@@ -4437,7 +4440,8 @@
       "mode": "policy-extract",
       "features": [
         "home-full-card",
-        "home-page"
+        "home-page",
+        "stable-root-home-navigation"
       ],
       "sha256": "e7ee5766b05d05a39e81f0a81774c0870eb340879493df4397f94864b9d386f8"
     },
@@ -6252,7 +6256,8 @@
       "features": [
         "stable-favorites",
         "stable-home-return-navigation",
-        "stable-navigation3-host"
+        "stable-navigation3-host",
+        "stable-root-home-navigation"
       ],
       "mode": "selected"
     },
@@ -6695,7 +6700,8 @@
       "sha256": "d966dbd9074fdf29b97785ebf7a724e5635e8098abf2f44c9d2ccf31eb38d2f6",
       "mode": "policy-extract",
       "features": [
-        "home-page"
+        "home-page",
+        "stable-root-home-navigation"
       ]
     },
     {
@@ -7822,6 +7828,38 @@
         "stable-profile-windows-platform"
       ],
       "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/MainBottomPagerState.kt",
+      "sha256": "44d89bdd449b5d0ee278b41b97bd2ab425de90118ef32489ad17a921b58f4ed9",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/BottomBarContentPaddingPolicy.kt",
+      "sha256": "8671a6e01926492511e59db960787d808b42827cbc26150356975750b43386c3",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationMotionSpec.kt",
+      "sha256": "e762a6582dadc1e9ed337e49b94b861422f4e93d386340a16729d3d1108727fc",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoRoutingPolicy.kt",
+      "sha256": "5b1f4e72c8db8f2b49b007a15745622cd1b9e1f08825e9838ed0011261b354e0",
+      "features": [
+        "stable-root-home-navigation"
+      ],
+      "mode": "direct"
     }
   ],
   "featureCoverage": {

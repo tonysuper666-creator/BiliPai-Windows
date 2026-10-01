@@ -1,0 +1,11 @@
+{
+  "path": "desktop/tools/extract-upstream-root-home-navigation.py",
+  "before": "    selected('app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt',\n        ['videoCardTransitionChromeReveal'],\n        'com/android/purebilibili/core/ui/transition/DesktopOriginalRootChromeReveal.kt',\n        'package com.android.purebilibili.core.ui.transition\\nimport androidx.compose.ui.Modifier\\nimport androidx.compose.ui.graphics.graphicsLayer\\nimport androidx.compose.ui.layout.layout\\nimport kotlin.math.roundToInt\\n\\n')",
+  "after": "    # Reuse the already emitted full original policy in home-full-card; one top-function owner.\n    stale_chrome = out / 'com/android/purebilibili/core/ui/transition/DesktopOriginalRootChromeReveal.kt'\n    if stale_chrome.exists():\n        stale_chrome.unlink()",
+  "baseSha256LF": "78ea6e13aaddb2b836b5dc8318f61363228018ed70d428211fc8bab932c3c38e",
+  "candidateSha256LF": "04bdf7767ffdf2b4403c4a0bc05c66f4b1963593b7dcc062ec7c75a5c6282e14",
+  "reason": "Whole source compiler caught duplicate internal top function already owned by full original Home card policy; Root directly consumes that existing same-module function",
+  "sameOriginalFunctionBodyPreserved": true,
+  "sourceRegistryIdentityUnchanged": true,
+  "staleOutputCleanupOneExactFile": true
+}

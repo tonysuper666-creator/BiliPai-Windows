@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootVideoResolver.kt:37:50: error: argument type mismatch: actual type is 'Boolean', but 'Float' was expected.
+                key.bvid, key.cid, key.coverUrl, cardTransition)?.let { seed ->
+                                                 ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootVideoResolver.kt:56:60: error: unresolved reference 'isVerticalVideo'.
+            val vertical = root.entry.requests.ports.video.isVerticalVideo(key.bvid)
+                                                           ^^^^^^^^^^^^^^^

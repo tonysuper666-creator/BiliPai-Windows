@@ -1,0 +1,24 @@
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:83:16: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val motion=remember(windowClass.isTablet,binding.cardTransitionEnabled()){
+               ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:84:9: error: unresolved reference 'resolveAppNavigationMotionSpec'.
+        resolveAppNavigationMotionSpec(windowClass.isTablet,binding.cardTransitionEnabled())}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:108:68: error: unresolved reference 'slowFadeDurationMillis'.
+                                fadeIn(emphasizedEnterTween(motion.slowFadeDurationMillis)),
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:109:96: error: unresolved reference 'fastFadeDurationMillis'.
+                            exit=slideOutHorizontally(animationSpec=emphasizedExitTween(motion.fastFadeDurationMillis),targetOffsetX={-it})+
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:110:68: error: unresolved reference 'fastFadeDurationMillis'.
+                                fadeOut(emphasizedExitTween(motion.fastFadeDurationMillis))) {
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:130:60: error: unresolved reference 'slowFadeDurationMillis'.
+                            enterFadeDurationMillis=motion.slowFadeDurationMillis,exitFadeDurationMillis=motion.fastFadeDurationMillis) {
+                                                           ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:130:113: error: unresolved reference 'fastFadeDurationMillis'.
+                            enterFadeDurationMillis=motion.slowFadeDurationMillis,exitFadeDurationMillis=motion.fastFadeDurationMillis) {
+                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalRootChrome.kt:137:96: error: unresolved reference 'isPagerScrollInProgress'.
+                                    MotionTier.Normal,{mainPager.indicatorPosition},{mainPager.isPagerScrollInProgress},
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^

@@ -1,0 +1,63 @@
+{
+  "newPayloads": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+      "sha256LF": "017f690836d092e283dd59052e30118490b2c6e005573e27147c750cb5a4fecc"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootNavigationPreferences.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootNavigationPreferences.kt",
+      "sha256LF": "afb49956f98c0e78c1d148642941ae47b55e0c7a39e01829a3fa0268fd2ea834"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+      "sha256LF": "a5ddf1b39375411505edb32edd92ccae1bb78735a834b67dec4594c1e23f3fd2"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+      "sha256LF": "58c0c04f6ac83fe5e61e12647026be00b8b074f20a576e69d3c8ecf1e646c26d"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "sha256LF": "a238c5ef299b9bede7c21d245c2674bd9be4705073760447df0068d9fb1953bd"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalRootVideoResolver.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootVideoResolver.kt",
+      "sha256LF": "c5396399c26e3f93398c991b620ec3cc23b7a619e9b2557cc69ff73338e20587"
+    },
+    {
+      "source": "prepared/tools/extract-upstream-root-home-navigation.py",
+      "target": "desktop/tools/extract-upstream-root-home-navigation.py",
+      "sha256LF": "78ea6e13aaddb2b836b5dc8318f61363228018ed70d428211fc8bab932c3c38e"
+    }
+  ],
+  "existingTargets": [
+    {
+      "path": "desktop/tools/extract-upstream-home-protocols.py",
+      "baseSha256LF": "ac9f13b5c84b824e57215caacbd527f01e1e6b26738b854569dc6c5877dca5ed",
+      "desiredSha256LF": "deb0f87478ae1cef8584e578debf63e7f07ad154da00c7ff7b959fe57f9e923b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+      "baseSha256LF": "a6f4ba7834ddc5bee8bc0e258b5d38c190d98a8de956d6bd1c4b8facdac20e53",
+      "desiredSha256LF": "ab1413ae2215001453b88dd65dfc88d1e39c4c7dec23f3b6a6f3cc7b5607e31a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRequestPorts.kt",
+      "baseSha256LF": "4be042dd1a85af5e0b9db3f2f7cbf5b499fda4d333cb409f6053d589477f468e",
+      "desiredSha256LF": "b195685ad81a1e8332ed9524c8b11adc756aa93dfde58b601442ad0cbf487be9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "baseSha256LF": "f4bdd68dad6bb26fca39d737625ec0836cbbd427284cede41affcc148697b5d9",
+      "desiredSha256LF": "8946105ca929671198ece690a061c5ca45b3449e0c8c22f0921c59228669cb80"
+    }
+  ],
+  "applyExisting": "existing-hunks.patch only, retain current unrelated Root hunks; never replace Shell/build/registry",
+  "excluded": "generated proofs, classes/JARs, duplicate prepared/existing producer copy, stores are not installation payloads"
+}

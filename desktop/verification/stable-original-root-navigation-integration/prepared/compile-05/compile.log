@@ -1,0 +1,36 @@
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:27:42: error: unresolved reference 'FALLBACK_FADE_DURATION_MILLIS'.
+            fallbackFadeDurationMillis = FALLBACK_FADE_DURATION_MILLIS,
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:28:45: error: unresolved reference 'QUICK_RETURN_FADE_DURATION_MILLIS'.
+            quickReturnFadeDurationMillis = QUICK_RETURN_FADE_DURATION_MILLIS,
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:29:42: error: unresolved reference 'SEAMLESS_FADE_DURATION_MILLIS'.
+            seamlessFadeDurationMillis = SEAMLESS_FADE_DURATION_MILLIS,
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:30:56: error: unresolved reference 'CARD_DISABLED_TARGET_SLIDE_MAX_DURATION_MILLIS'.
+            cardTargetFallbackSlideMaxDurationMillis = CARD_DISABLED_TARGET_SLIDE_MAX_DURATION_MILLIS
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:40:42: error: unresolved reference 'FALLBACK_FADE_DURATION_MILLIS'.
+            fallbackFadeDurationMillis = FALLBACK_FADE_DURATION_MILLIS,
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:41:45: error: unresolved reference 'QUICK_RETURN_FADE_DURATION_MILLIS'.
+            quickReturnFadeDurationMillis = QUICK_RETURN_FADE_DURATION_MILLIS,
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:42:42: error: unresolved reference 'SEAMLESS_FADE_DURATION_MILLIS'.
+            seamlessFadeDurationMillis = SEAMLESS_FADE_DURATION_MILLIS,
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:43:56: error: unresolved reference 'CARD_TARGET_FALLBACK_SLIDE_MAX_DURATION_MILLIS'.
+            cardTargetFallbackSlideMaxDurationMillis = CARD_TARGET_FALLBACK_SLIDE_MAX_DURATION_MILLIS
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:51:42: error: unresolved reference 'FALLBACK_FADE_DURATION_MILLIS'.
+            fallbackFadeDurationMillis = FALLBACK_FADE_DURATION_MILLIS,
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:52:45: error: unresolved reference 'QUICK_RETURN_FADE_DURATION_MILLIS'.
+            quickReturnFadeDurationMillis = QUICK_RETURN_FADE_DURATION_MILLIS,
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:53:42: error: unresolved reference 'SEAMLESS_FADE_DURATION_MILLIS'.
+            seamlessFadeDurationMillis = SEAMLESS_FADE_DURATION_MILLIS,
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-root-route-assembly-parity\generated\com\android\purebilibili\navigation\AppNavigationMotionSpec.kt:54:56: error: unresolved reference 'CARD_TARGET_FALLBACK_SLIDE_MAX_DURATION_MILLIS'.
+            cardTargetFallbackSlideMaxDurationMillis = CARD_TARGET_FALLBACK_SLIDE_MAX_DURATION_MILLIS
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
