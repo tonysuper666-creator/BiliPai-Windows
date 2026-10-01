@@ -1,0 +1,33 @@
+{
+  "preparedSourceManifestSha256Bytes": "5f263de98a14de263168a646a0937ba9e3359fa668a7cec1d126d5be489f3fb9",
+  "sourceSha256Bytes": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92",
+  "controlledCompilerScriptSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
+  "freshDllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06",
+  "sameExistingSessionRegistryAndOwnerDispatcher": true,
+  "mediaPreparationRequiresRealLocalFile": true,
+  "maximumBytes": 33554432,
+  "mediaFormats": [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".webp"
+  ],
+  "generatedPosterExtension": ".jpg",
+  "registryMaximum": 8,
+  "realOwnerDrainAndDataSuppliedRetirementPolicyPreserved": true,
+  "sourceReview": [
+    "All five local C++ hunks match the frozen source recipe; no new COM/session/dispatcher authority",
+    "Media Title/Text add to existing StorageItems callback path; old diagnostic and text branches retained",
+    "No network or user account operation; fixed synthetic local file native7 groups accepted",
+    "Token is assigned only after bounded registry publication; preparation exceptions leave caller token zero",
+    "Grant cancellation/revocation remains on actual owner thread; unknown supplied state does not authorize automatic file deletion"
+  ],
+  "transitiveHeaders": 369,
+  "searchedLibraries": 11,
+  "compilerFiles": 64,
+  "compilerGraphUnchangedExceptSourceAndOutput": true,
+  "HWND": false,
+  "ShareUI": false,
+  "externalReceiver": false,
+  "actualRootOrFinalExeAccepted": false
+}

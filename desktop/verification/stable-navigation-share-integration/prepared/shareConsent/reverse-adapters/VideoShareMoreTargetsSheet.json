@@ -1,0 +1,188 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
+  "output": "com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
+  "originalSha256LF": "5defed29dba05655b77696fb80f12abcff16da3d8e01068107a1f6dbd7fd370b",
+  "preparedSha256LF": "e568caadfcd97ef88aedec1b82781e076508ea694f2504eaecde72119caf3f22",
+  "changes": [
+    {
+      "tag": "delete",
+      "originalLine": 3,
+      "preparedLine": 3,
+      "before": "import android.content.Context\nimport android.content.Intent\nimport android.content.pm.PackageManager\nimport android.graphics.drawable.Drawable\nimport android.os.Build\nimport android.widget.ImageView\n",
+      "after": "",
+      "originalRange": [
+        2,
+        8
+      ],
+      "preparedRange": [
+        2,
+        2
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 29,
+      "preparedLine": 23,
+      "before": "import androidx.compose.ui.platform.LocalConfiguration\nimport androidx.compose.ui.platform.LocalContext\n",
+      "after": "",
+      "originalRange": [
+        28,
+        30
+      ],
+      "preparedRange": [
+        22,
+        22
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 32,
+      "preparedLine": 24,
+      "before": "import androidx.compose.ui.viewinterop.AndroidView\n",
+      "after": "",
+      "originalRange": [
+        31,
+        32
+      ],
+      "preparedRange": [
+        23,
+        23
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 41,
+      "preparedLine": 32,
+      "before": "    val packageName: String,\n    val activityClassName: String,\n",
+      "after": "    val target: VideoShareTarget,\n",
+      "originalRange": [
+        40,
+        42
+      ],
+      "preparedRange": [
+        31,
+        32
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 44,
+      "preparedLine": 34,
+      "before": "    val icon: Drawable,\n",
+      "after": "    val icon: androidx.compose.ui.graphics.vector.ImageVector,\n",
+      "originalRange": [
+        43,
+        44
+      ],
+      "preparedRange": [
+        33,
+        34
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 47,
+      "preparedLine": 37,
+      "before": "internal fun findVideoShareAppTargets(context: Context, mimeType: String): List<VideoShareAppTarget> =\n    runCatching {\n        val manager = context.packageManager\n        val query = Intent(Intent.ACTION_SEND).apply { type = mimeType }\n        val activities = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {\n            manager.queryIntentActivities(\n                query,\n                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong()),\n            )\n        } else {\n            @Suppress(\"DEPRECATION\")\n            manager.queryIntentActivities(query, PackageManager.MATCH_DEFAULT_ONLY)\n        }\n        activities.asSequence()\n            .filter { it.activityInfo != null && it.activityInfo.packageName != context.packageName }\n            .groupBy { it.activityInfo.packageName }\n            .mapNotNull { (packageName, candidates) ->\n                val preferred = resolvePreferredShareActivity(candidates.map { candidate ->\n                    ShareActivityCandidate(\n                        packageName = packageName,\n                        className = candidate.activityInfo.name,\n                        label = candidate.loadLabel(manager).toString(),\n                    )\n                }) ?: return@mapNotNull null\n                val resolved = candidates.firstOrNull { it.activityInfo.name == preferred.className }\n                    ?: return@mapNotNull null\n                VideoShareAppTarget(\n                    packageName = packageName,\n                    activityClassName = preferred.className,\n                    label = resolved.loadLabel(manager).toString(),\n                    icon = resolved.loadIcon(manager),\n                )\n            }\n            .sortedBy { it.label.lowercase() }\n    }.getOrDefault(emptyList())\n",
+      "after": "internal fun findVideoShareAppTargets(context: com.bilipai.desktop.ui.DesktopVideoShareBindings, mimeType: String): List<VideoShareAppTarget> =\n    context.availableTargets(mimeType)\n",
+      "originalRange": [
+        46,
+        81
+      ],
+      "preparedRange": [
+        36,
+        38
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 91,
+      "preparedLine": 48,
+      "before": "    val context = LocalContext.current\n",
+      "after": "    val context = com.bilipai.desktop.ui.LocalDesktopVideoShareBindings.current\n",
+      "originalRange": [
+        90,
+        91
+      ],
+      "preparedRange": [
+        47,
+        48
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 96,
+      "preparedLine": 53,
+      "before": "    val maxListHeight = (LocalConfiguration.current.screenHeightDp - 220).coerceIn(160, 440).dp\n",
+      "after": "    val maxListHeight = (com.bilipai.desktop.ui.LocalDesktopVideoShareBindings.current.screenHeightDp - 220).coerceIn(160, 440).dp\n",
+      "originalRange": [
+        95,
+        96
+      ],
+      "preparedRange": [
+        52,
+        53
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 115,
+      "preparedLine": 72,
+      "before": "            AppText(\"选择应用继续分享\", style = MaterialTheme.typography.bodySmall)\n",
+      "after": "            AppText(\"选择实际可用的 Windows 分享方式\", style = MaterialTheme.typography.bodySmall)\n",
+      "originalRange": [
+        114,
+        115
+      ],
+      "preparedRange": [
+        71,
+        72
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 117,
+      "preparedLine": 74,
+      "before": "                items(targets, key = { it.packageName }) { target ->\n",
+      "after": "                items(targets, key = { it.target.name }) { target ->\n",
+      "originalRange": [
+        116,
+        117
+      ],
+      "preparedRange": [
+        73,
+        74
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 121,
+      "preparedLine": 78,
+      "before": "                            AndroidView(\n                                factory = { viewContext -> ImageView(viewContext).apply {\n                                    scaleType = ImageView.ScaleType.FIT_CENTER\n                                } },\n                                update = { it.setImageDrawable(target.icon) },\n",
+      "after": "                            com.android.purebilibili.core.ui.components.AppIcon(\n                                imageVector = target.icon,\n                                contentDescription = target.label,\n",
+      "originalRange": [
+        120,
+        125
+      ],
+      "preparedRange": [
+        77,
+        80
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 152,
+      "preparedLine": 107,
+      "before": "                \"系统面板的屏幕方向由设备决定\",\n",
+      "after": "                \"系统面板列出由 Windows 注册的接收应用；是否接收由该应用决定\",\n",
+      "originalRange": [
+        151,
+        152
+      ],
+      "preparedRange": [
+        106,
+        107
+      ]
+    }
+  ]
+}

@@ -1,0 +1,577 @@
+{
+  "target": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiCardMorphDestinationPolicy.kt",
+      "sha256LF": "086ee2ff63c73e6340412079a67f0ad4340048be6cb661a801da6052d1d24402",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavBackStackController.kt",
+      "sha256LF": "81a43198879bb0844e633000ba768efa462fa31b864b94af1ff073094f984154",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavBackStackPolicy.kt",
+      "sha256LF": "f0e2d00adaac936b63824d77fb76e144eb0511e0208e9a93f9d4fd95deb4d54a",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavContentTransformPolicy.kt",
+      "sha256LF": "cc381f04fadc094a91c6f643f70143065ab91a27742980569bf79cdd20a2d72b",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavEntryContentPolicy.kt",
+      "sha256LF": "cb1d370f7b79fe10a43bb1d3c42938da146da886f9522e5ff7ee30ee0248b158",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavEntryProvider.kt",
+      "sha256LF": "862a3c54e37997a1cdc9ec5e9c9eef636c51341b5a80f77e01b1cf97dbc1b09e",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavMotionPolicy.kt",
+      "sha256LF": "4261ad450572c8fb1aee5f7c3f8b8890f58d1d604de0b29c54674c7beb99c744",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/AospNavTransition.kt",
+      "sha256LF": "d2a01b3f5b53f97b1c2430982b4d42e09e8c6c0aa29569e0a93f7a8c1d2e09ee",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackAnimationStyle.kt",
+      "sha256LF": "27f6ffae3156255f3887231b8d05e58a2d86929b007457ff8e540fd7a9914284",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirection.kt",
+      "sha256LF": "897f95ba8f103494fc8ad117c7a757a595d81e007c79948b7fb94eac48702fe5",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirectionPolicy.kt",
+      "sha256LF": "f168faf515bb28caea21e723a1620cc05fc22b8c956c3a80f1eb0b40deb9fd1c",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/ClassicNavTransition.kt",
+      "sha256LF": "1c6dc30c724418fe02386660dce1536dd6538dcfa9e6d51ba9af1aeee9d1aa82",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/MiuixPredictiveBackProgressTransition.kt",
+      "sha256LF": "3b567320ea162d1c091fa4d814f3ee6bc312a9ce10af6d907793b740c1bd23b2",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardNavTransition.kt",
+      "sha256LF": "ee69a6ead48d12291c21324630188db7ae66012d1bc4e6e3c6b532cd3eb70660",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/NavTransitionEasing.kt",
+      "sha256LF": "aa9b973d8fcf2f585ea1a4277b1715f45e1a94bc4b6e6486de065fe4eeab4d14",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/NavTransitionGeometry.kt",
+      "sha256LF": "624d58d5e147dc49a30e1f2da0c2c685d64726c87f5de876c4d2839e010b6d9f",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/NoPredictiveBackTransition.kt",
+      "sha256LF": "cd590bc2d0900dd213671ebd217fefbe6c22a929f0f8f39c219e391e89d524c2",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/ScaleNavTransition.kt",
+      "sha256LF": "5143b16068a1e9877e214aa7d9fc74c9e0a76c81c7d656ad12b012d9465608d9",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/NavigationSlideSpring.kt",
+      "sha256LF": "b51afba1d148dfcd47c69d3aea727a1cada5c0d26a896f9a6f8d5dcbf3d3f0e4",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/BottomBarLikeContentTransformPolicy.kt",
+      "sha256LF": "139b331c03ec653ce9d0142b50e2cf1fb0acb08d0ff97cf3a0a79a6183a33c5f",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/SettingsIosPushContentTransformPolicy.kt",
+      "sha256LF": "9794b9e7d0685710e8ce2e68d7dd8f17297489241bd1c3dac50d2e712ff791cb",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionNavBackdrop.kt",
+      "sha256LF": "19ebb881c55aa0490b1b7e586cfb84d2dfbb4cb00dee5070b453808c7c6e2a11",
+      "mode": "direct",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt",
+      "sha256LF": "cbb6d92e8bcba3dfdf5df6dff06b8e61ccccaea9973a2d5e04fd0b5cd54917e6",
+      "mode": "existing-feature-merge",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsNavHierarchyPolicy.kt",
+      "sha256LF": "ced1fdca02adbf8229bf57bab696704babf4a5ac88ca3a2c1732adc305f572bd",
+      "mode": "existing-feature-merge",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionHostDepthLayer.kt",
+      "sha256LF": "2e5da7bef26c7aa839775a2a123b5b14f528db1b1e999748dccc924a6db6d02a",
+      "mode": "existing-feature-merge",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/PredictiveBackBackgroundPolicy.kt",
+      "sha256LF": "91e865c640c91c5c4d83d0e033fac3a42cda407bdae6a83821e6df9049f3f632",
+      "mode": "existing-feature-merge",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavDisplayHost.kt",
+      "sha256LF": "8cc7d03edb6d8745ce9fcd1c04333e24ada3de61e6f0c89172d93e77c24bbc5e",
+      "mode": "platform-extract",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiMiuixNavTransition.kt",
+      "sha256LF": "62ad6ab79de62c7a4e9441a9c192fb84ff2a70bdf34feee38203b451d01a78d4",
+      "mode": "platform-extract",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "mode": "existing-feature-merge",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/navigation/NavigationSettingsStore.kt",
+      "sha256LF": "b4176bb2ec022b87b955b6823777d43f507d5bdb4b7103903bbb77a213fb3cad",
+      "mode": "policy-extract",
+      "features": [
+        "stable-navigation3-host"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "path": "com/android/purebilibili/navigation3/BiliPaiCardMorphDestinationPolicy.kt",
+      "sha256LF": "086ee2ff63c73e6340412079a67f0ad4340048be6cb661a801da6052d1d24402"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/BiliPaiNavBackStackController.kt",
+      "sha256LF": "81a43198879bb0844e633000ba768efa462fa31b864b94af1ff073094f984154"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/BiliPaiNavBackStackPolicy.kt",
+      "sha256LF": "f0e2d00adaac936b63824d77fb76e144eb0511e0208e9a93f9d4fd95deb4d54a"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/BiliPaiNavContentTransformPolicy.kt",
+      "sha256LF": "cc381f04fadc094a91c6f643f70143065ab91a27742980569bf79cdd20a2d72b"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/BiliPaiNavEntryContentPolicy.kt",
+      "sha256LF": "cb1d370f7b79fe10a43bb1d3c42938da146da886f9522e5ff7ee30ee0248b158"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/BiliPaiNavEntryProvider.kt",
+      "sha256LF": "862a3c54e37997a1cdc9ec5e9c9eef636c51341b5a80f77e01b1cf97dbc1b09e"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/BiliPaiNavMotionPolicy.kt",
+      "sha256LF": "4261ad450572c8fb1aee5f7c3f8b8890f58d1d604de0b29c54674c7beb99c744"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/AospNavTransition.kt",
+      "sha256LF": "d2a01b3f5b53f97b1c2430982b4d42e09e8c6c0aa29569e0a93f7a8c1d2e09ee"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackAnimationStyle.kt",
+      "sha256LF": "27f6ffae3156255f3887231b8d05e58a2d86929b007457ff8e540fd7a9914284"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirection.kt",
+      "sha256LF": "897f95ba8f103494fc8ad117c7a757a595d81e007c79948b7fb94eac48702fe5"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirectionPolicy.kt",
+      "sha256LF": "f168faf515bb28caea21e723a1620cc05fc22b8c956c3a80f1eb0b40deb9fd1c"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/ClassicNavTransition.kt",
+      "sha256LF": "1c6dc30c724418fe02386660dce1536dd6538dcfa9e6d51ba9af1aeee9d1aa82"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/MiuixPredictiveBackProgressTransition.kt",
+      "sha256LF": "3b567320ea162d1c091fa4d814f3ee6bc312a9ce10af6d907793b740c1bd23b2"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardNavTransition.kt",
+      "sha256LF": "ee69a6ead48d12291c21324630188db7ae66012d1bc4e6e3c6b532cd3eb70660"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/NavTransitionEasing.kt",
+      "sha256LF": "aa9b973d8fcf2f585ea1a4277b1715f45e1a94bc4b6e6486de065fe4eeab4d14"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/NavTransitionGeometry.kt",
+      "sha256LF": "624d58d5e147dc49a30e1f2da0c2c685d64726c87f5de876c4d2839e010b6d9f"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/NoPredictiveBackTransition.kt",
+      "sha256LF": "cd590bc2d0900dd213671ebd217fefbe6c22a929f0f8f39c219e391e89d524c2"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/ScaleNavTransition.kt",
+      "sha256LF": "5143b16068a1e9877e214aa7d9fc74c9e0a76c81c7d656ad12b012d9465608d9"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/motion/NavigationSlideSpring.kt",
+      "sha256LF": "b51afba1d148dfcd47c69d3aea727a1cada5c0d26a896f9a6f8d5dcbf3d3f0e4"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/motion/BottomBarLikeContentTransformPolicy.kt",
+      "sha256LF": "139b331c03ec653ce9d0142b50e2cf1fb0acb08d0ff97cf3a0a79a6183a33c5f"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/motion/SettingsIosPushContentTransformPolicy.kt",
+      "sha256LF": "9794b9e7d0685710e8ce2e68d7dd8f17297489241bd1c3dac50d2e712ff791cb"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/VideoCardTransitionNavBackdrop.kt",
+      "sha256LF": "19ebb881c55aa0490b1b7e586cfb84d2dfbb4cb00dee5070b453808c7c6e2a11"
+    },
+    {
+      "path": "com/android/purebilibili/navigation/DesktopOriginalNavigationSystemBack.kt",
+      "sha256LF": "d29a70eaf0adcf0f3b77a255f4ed738351c49ff3c29200444785e98517cec20c"
+    },
+    {
+      "path": "com/android/purebilibili/feature/settings/DesktopOriginalNavigationSettingsPop.kt",
+      "sha256LF": "a2454b7583c3e57e3876fce953d11d6edf4f6fea97cf7f783595ca851ee8311e"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationHostDepth.kt",
+      "sha256LF": "e62093e740922c14aac7fc8ac2f09658ba1ecd1982358389361d3ef2e437aee9"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationPredictiveBackground.kt",
+      "sha256LF": "453f23638d1a2b4ecfb8012f9458b96f8ec3d8b9b3664b28779fe0d9d893f8fe"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/BiliPaiNavDisplayHost.kt",
+      "sha256LF": "b90abab4de6ca48ff55dc793bfbf5a12c5cb4bc11f7728da28941643dc10ee4a"
+    },
+    {
+      "path": "com/android/purebilibili/navigation3/predictiveback/BiliPaiMiuixNavTransition.kt",
+      "sha256LF": "07ec06f4021eb7fe391c639356473bf7892f3df92c728398cd4495db9f8fecff"
+    },
+    {
+      "path": "com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings.kt",
+      "sha256LF": "903f74c43374a2d5f2b58e926f243c1f64ef68b6db58af323aaa5ad723803d49"
+    }
+  ],
+  "replacements": {
+    "app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt": [],
+    "app/src/main/java/com/android/purebilibili/feature/settings/SettingsNavHierarchyPolicy.kt": [],
+    "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionHostDepthLayer.kt": [
+      {
+        "before": "    val view = LocalView.current",
+        "after": "    val platform = LocalDesktopNavigationHostEnvironment.current\n    val platformDensity = LocalDensity.current"
+      },
+      {
+        "before": "deviceCornerRadiusPx = resolveDeviceDisplayCornerRadiusPx(view.rootWindowInsets)",
+        "after": "deviceCornerRadiusPx = platform.cornerRadiusQuery()?.let { with(platformDensity) { it.toPx() } } ?: 0f"
+      },
+      {
+        "before": "sdkInt: Int = Build.VERSION.SDK_INT",
+        "after": "renderEffectSupported: Boolean = desktopDetailRenderEffectsSupported()"
+      },
+      {
+        "before": "if (sdkInt < Build.VERSION_CODES.S) return false",
+        "after": "if (!renderEffectSupported) return false"
+      }
+    ],
+    "app/src/main/java/com/android/purebilibili/core/ui/transition/PredictiveBackBackgroundPolicy.kt": [
+      {
+        "before": "Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && frame.blurRadiusPx > 0.01f",
+        "after": "desktopDetailRenderEffectsSupported() && frame.blurRadiusPx > 0.01f"
+      },
+      {
+        "before": "RenderEffect\n                .createBlurEffect(\n                    frame.blurRadiusPx,\n                    frame.blurRadiusPx,\n                    Shader.TileMode.CLAMP,\n                )\n                .asComposeRenderEffect()",
+        "after": "BlurEffect(\n                    frame.blurRadiusPx,\n                    frame.blurRadiusPx,\n                    TileMode.Clamp,\n                )"
+      }
+    ],
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavDisplayHost.kt": [
+      {
+        "before": "import android.app.Application",
+        "after": "import com.bilipai.desktop.ui.DesktopNavigationEntryViewModelPlatform as Application"
+      },
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext",
+        "after": "import com.bilipai.desktop.ui.LocalDesktopNavigationHostEnvironment"
+      },
+      {
+        "before": "    val application = LocalContext.current.applicationContext as Application",
+        "after": "    val application = LocalDesktopNavigationHostEnvironment.current.entryViewModels"
+      },
+      {
+        "before": "rememberDeviceCornerRadius(defaultRadius = 0.dp)",
+        "after": "LocalDesktopNavigationHostEnvironment.current.cornerRadiusQuery() ?: 0.dp"
+      },
+      {
+        "before": "com.android.purebilibili.core.store.SettingsManager\n            .getFullScreenSwipeBackEnabled(LocalContext.current)",
+        "after": "com.bilipai.desktop.ui.DesktopOriginalNavigationHostSettings\n            .getFullScreenSwipeBackEnabled(LocalDesktopNavigationHostEnvironment.current.context)"
+      },
+      {
+        "before": "com.android.purebilibili.core.store.SettingsManager\n        .getClickToPlay(LocalContext.current)",
+        "after": "com.bilipai.desktop.ui.DesktopOriginalNavigationHostSettings\n        .getClickToPlay(LocalDesktopNavigationHostEnvironment.current.context)"
+      },
+      {
+        "before": "com.android.purebilibili.core.store.SettingsManager.getClickToPlaySync(LocalContext.current)",
+        "after": "com.bilipai.desktop.ui.DesktopOriginalNavigationHostSettings.getClickToPlaySync(LocalDesktopNavigationHostEnvironment.current.context)"
+      },
+      {
+        "before": "com.android.purebilibili.core.store.SettingsManager\n        .getDynamicImagePreviewTextVisible(LocalContext.current)",
+        "after": "com.android.purebilibili.core.store.DesktopDynamicCardSettings\n        .getDynamicImagePreviewTextVisible(LocalDesktopNavigationHostEnvironment.current.context)"
+      },
+      {
+        "before": "    val patchedCreationExtras = MutableCreationExtras(defaultCreationExtras).apply {\n        set(ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY, application)\n    }",
+        "after": "    val patchedCreationExtras = application.patchCreationExtras(navEntryOwner, defaultCreationExtras)"
+      },
+      {
+        "before": "ViewModelProvider.AndroidViewModelFactory.getInstance(application)",
+        "after": "application.defaultFactory(navEntryOwner)"
+      }
+    ],
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiMiuixNavTransition.kt": [
+      {
+        "before": "import android.graphics.RenderEffect as AndroidRenderEffect\nimport android.graphics.Shader\nimport android.os.Build\n",
+        "after": ""
+      },
+      {
+        "before": "import androidx.compose.ui.graphics.asComposeRenderEffect",
+        "after": "import androidx.compose.ui.graphics.BlurEffect\nimport androidx.compose.ui.graphics.TileMode"
+      },
+      {
+        "before": "Build.VERSION.SDK_INT < Build.VERSION_CODES.S || radiusPx <= 0.5f",
+        "after": "radiusPx <= 0.5f"
+      },
+      {
+        "before": "AndroidRenderEffect.createBlurEffect(\n                quantizedRadius,\n                quantizedRadius,\n                Shader.TileMode.CLAMP,\n            ).asComposeRenderEffect()",
+        "after": "BlurEffect(\n                quantizedRadius,\n                quantizedRadius,\n                TileMode.Clamp,\n            )"
+      }
+    ]
+  },
+  "selectedDeclarations": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt",
+      "names": [
+        "AppSystemBackAction",
+        "resolveAppSystemBackAction",
+        "shouldInterceptSystemBackForAppAction"
+      ],
+      "originalBody": "internal enum class AppSystemBackAction {\n    RETURN_TO_HOME_TAB,\n    NAVIGATE_UP,\n    FINISH_ACTIVITY\n}\n\ninternal fun resolveAppSystemBackAction(\n    isAtMainHostRoot: Boolean,\n    currentBottomItem: BottomNavItem,\n    homeItem: BottomNavItem = BottomNavItem.HOME\n): AppSystemBackAction {\n    if (!isAtMainHostRoot) {\n        return AppSystemBackAction.NAVIGATE_UP\n    }\n    if (currentBottomItem != homeItem) {\n        return AppSystemBackAction.RETURN_TO_HOME_TAB\n    }\n    return AppSystemBackAction.FINISH_ACTIVITY\n}\n\ninternal fun shouldInterceptSystemBackForAppAction(\n    action: AppSystemBackAction\n): Boolean {\n    return action == AppSystemBackAction.RETURN_TO_HOME_TAB\n}\n",
+      "originalSha256LF": "f9017a42535807ecd9b946afda96e203353d3755a895dec4e5d058087417b18f",
+      "generatedSha256LF": "f9017a42535807ecd9b946afda96e203353d3755a895dec4e5d058087417b18f"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsNavHierarchyPolicy.kt",
+      "names": [
+        "resolveSettingsNavPopTransition",
+        "isSettingsNavPopTransition"
+      ],
+      "originalBody": "internal fun resolveSettingsNavPopTransition(\n    fromRoute: String?,\n    toRoute: String?,\n    activeMainHostRoute: String? = null,\n): BiliPaiNavRouteTransition? {\n    if (!isSettingsSubtreeRoute(fromRoute)) return null\n    val normalizedTo = toRoute?.substringBefore(\"?\")?.takeIf { it.isNotBlank() } ?: return null\n    val normalizedActive = activeMainHostRoute?.substringBefore(\"?\")?.takeIf { it.isNotBlank() }\n    // \u53ea\u8981\u5e95\u680f\u6709\u6d3b\u8dc3 tab\uff0cpop \u56de MainHost \u65f6\u5c31\u4ee5\u8be5 tab \u4f5c\u4e3a\u8bbe\u7f6e\u6811\u7684\u201c\u7236\u7ea7\u201d\uff0c\n    // \u4f7f\u9996\u9875/\u52a8\u6001/\u6211\u7684\u7b49\u4efb\u610f\u5165\u53e3\u6253\u5f00\u8bbe\u7f6e\u6839\u9875\u540e\u90fd\u80fd\u547d\u4e2d\u8bbe\u7f6e\u6811 iOS pop \u52a8\u753b\u3002\n    val effectiveParentRoute = if (\n        normalizedTo == BiliPaiNavKey.MainHost.routeBase &&\n        normalizedActive != null\n    ) {\n        normalizedActive\n    } else {\n        normalizedTo\n    }\n    if (isSettingsNavHierarchyTransition(\n            parentRoute = effectiveParentRoute,\n            childRoute = fromRoute,\n        )\n    ) {\n        return BiliPaiNavRouteTransition.SETTINGS_IOS_PUSH_POP\n    }\n    // \u8bbe\u7f6e\u5b50\u6811\u4efb\u610f\u9875\u76f4\u63a5\u56de\u5230 MainHost\uff0c\u4e14\u5e95\u680f\u4ecd\u5728 Settings\uff1a\u7edf\u4e00\u8d70\u8bbe\u7f6e iOS pop\uff0c\n    // \u8986\u76d6\u975e\u4e25\u683c\u7236\u5b50\u8fb9\uff08\u5982\u641c\u7d22\u76f4\u8fbe animation \u540e\u4e00\u952e\u8fd4\u56de\uff09\u3002\n    if (normalizedTo == BiliPaiNavKey.MainHost.routeBase && isSettingsSubtreeRoute(normalizedActive)) {\n        return BiliPaiNavRouteTransition.SETTINGS_IOS_PUSH_POP\n    }\n    return null\n}\n\ninternal fun resolveSettingsNavPopTransition(\n    fromKey: BiliPaiNavKey?,\n    toKey: BiliPaiNavKey?,\n    activeMainHostRoute: String? = null,\n): BiliPaiNavRouteTransition? {\n    if (fromKey == null || toKey == null) return null\n    return resolveSettingsNavPopTransition(\n        fromRoute = fromKey.routeBase,\n        toRoute = toKey.routeBase,\n        activeMainHostRoute = activeMainHostRoute,\n    )\n}\n\ninternal fun isSettingsNavPopTransition(\n    fromKey: BiliPaiNavKey?,\n    toKey: BiliPaiNavKey?,\n    activeMainHostRoute: String? = null,\n): Boolean {\n    return resolveSettingsNavPopTransition(\n        fromKey = fromKey,\n        toKey = toKey,\n        activeMainHostRoute = activeMainHostRoute,\n    ) != null\n}\n",
+      "originalSha256LF": "020c28d9ce610c5484f653fcd6951e6166afe963b1516a3924b6e50d2c51f37c",
+      "generatedSha256LF": "020c28d9ce610c5484f653fcd6951e6166afe963b1516a3924b6e50d2c51f37c"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionHostDepthLayer.kt",
+      "names": [
+        "VideoCardTransitionHostDepthLayer",
+        "shouldPaintHostOwnedDepthLayer",
+        "resolveHostOwnedDepthProgress",
+        "shouldMarkDisplayListStaleOnHostOwnedSourceDispose",
+        "shouldReleaseHostOwnedDepthLayer"
+      ],
+      "originalBody": "@Composable\ninternal fun VideoCardTransitionHostDepthLayer(\n    enabled: Boolean,\n    snapshotHandle: VideoCardTransitionSnapshotHandle,\n    progressProvider: () -> Float,\n    phaseProvider: () -> VideoCardTransitionBackgroundPhase,\n    exposureProvider: () -> VideoCardTransitionExposure,\n    isGestureRestoreInProgressProvider: () -> Boolean = { false },\n    motionTierProvider: () -> MotionTier = { MotionTier.Normal },\n    isLightBackgroundProvider: () -> Boolean = { false },\n    realtimeBlurEnabledProvider: () -> Boolean = { false },\n    scaleReductionProvider: () -> Float = { VIDEO_CARD_TRANSITION_BACKGROUND_SCALE_REDUCTION },\n    sourceBoundsProvider: () -> Rect? = { null },\n    modifier: Modifier = Modifier,\n) {\n    val contentLayer = snapshotHandle.contentLayer\n    val snapshotState = snapshotHandle.state\n    if (!enabled) {\n        SideEffect { snapshotHandle.clearRenderEffect() }\n        return\n    }\n    val view = LocalView.current\n    var deviceCornerRadiusPx by remember { mutableFloatStateOf(0f) }\n    SideEffect {\n        deviceCornerRadiusPx = resolveDeviceDisplayCornerRadiusPx(view.rootWindowInsets)\n        if (!realtimeBlurEnabledProvider()) snapshotHandle.clearRenderEffect()\n    }\n    Box(\n        modifier = modifier\n            .fillMaxSize()\n            .drawWithContent {\n                // Host \u5c42\u65e0\u5b50\u5185\u5bb9\uff1b\u53ea\u7ed8\u5236\u51bb\u7ed3\u5feb\u7167\u3002\n                val exposure = exposureProvider()\n                val motionTier = motionTierProvider()\n                val realtimeBlur = realtimeBlurEnabledProvider()\n                if (\n                    !shouldPaintHostOwnedDepthLayer(\n                        exposure = exposure,\n                        hasRecordedContent = snapshotState.hasRecordedContent,\n                        displayListStale = snapshotState.displayListStale,\n                        motionTier = motionTier,\n                        realtimeBlurEnabled = realtimeBlur,\n                    )\n                ) {\n                    return@drawWithContent\n                }\n                val phase = phaseProvider()\n                // SettledHidden\uff1a\u8be6\u60c5\u76d6\u4f4f\u65f6\u4ecd\u4fdd\u6301\u6ee1\u7cca\uff0c\u624b\u52bf\u9996\u5e27\u65e0\u300c\u5148\u6e05\u6670\u518d\u7cca\u300d\u8df3\u53d8\u3002\n                val progress = resolveHostOwnedDepthProgress(\n                    exposure = exposure,\n                    liveProgress = progressProvider(),\n                )\n                val frame = snapshotState.frameCache.resolve(\n                    progress = progress,\n                    phase = phase,\n                    motionTier = motionTier,\n                    isLightBackground = isLightBackgroundProvider(),\n                    isGestureRestoreInProgress = isGestureRestoreInProgressProvider(),\n                    density = density,\n                    deviceCornerRadiusPx = deviceCornerRadiusPx,\n                    scaleReduction = scaleReductionProvider(),\n                )\n                applyVideoCardTransitionSnapshotFrame(\n                    contentLayer = contentLayer,\n                    snapshotState = snapshotState,\n                    frame = frame,\n                    canvasSize = size,\n                    sourceBounds = sourceBoundsProvider(),\n                )\n                if (shouldDrawVideoCardTransitionScaleGapFill(frame.contentScale)) {\n                    drawRect(\n                        resolveVideoCardTransitionScaleGapFillColor(\n                            isLightBackground = frame.useLightScrimTint,\n                            scrimAlpha = frame.scrimAlpha,\n                        )\n                    )\n                }\n                val frozenLayerAlpha = resolveVideoCardTransitionFrozenLayerAlpha(\n                    exposure = exposure,\n                    depthProgress = progress,\n                )\n                contentLayer.alpha = frozenLayerAlpha\n                if (frozenLayerAlpha > 0.001f) {\n                    drawLayer(contentLayer)\n                    VideoCardTransitionDiagnostics.onSourceLayerDrawn()\n                }\n                if (frame.scrimAlpha > 0.001f) {\n                    val scrimColor = if (frame.useLightScrimTint) {\n                        VIDEO_CARD_TRANSITION_LIGHT_SCRIM_TINT\n                    } else {\n                        Color.Black\n                    }\n                    drawRect(scrimColor.copy(alpha = frame.scrimAlpha))\n                }\n            },\n    )\n}\n\n/**\n * Host \u5c42\u4f55\u65f6\u7ed8\u5236\uff1a\u6709**\u53ef\u7528**\u51bb\u7ed3\u5185\u5bb9\u65f6\u3002\n *\n * - stale / \u65e0\u5185\u5bb9\uff1a\u6c38\u4e0d paint\uff08\u9632\u9ed1\u5c4f\uff09\u3002\n * - [SettledHidden]\uff1a\u8be6\u60c5\u4e0b\u9884\u70ed\u6ee1\u7cca\u3002\n * - [BackPreview]/[Returning]/[Restoring]\uff1adrawable \u65f6\u57ab\u8ddf\u624b/\u6d88\u7cca\u666f\u6df1\uff1b\n *   \u6e90 dispose \u540e DL \u5931\u6548\u65f6 stale=true\uff0cHost \u4e0d\u753b\uff0c\u7b49\u6e90\u91cd\u5f55\u3002\n */\n\ninternal fun shouldPaintHostOwnedDepthLayer(\n    exposure: VideoCardTransitionExposure,\n    hasRecordedContent: Boolean,\n    displayListStale: Boolean = false,\n    motionTier: MotionTier,\n    realtimeBlurEnabled: Boolean,\n    sdkInt: Int = Build.VERSION.SDK_INT,\n): Boolean {\n    if (\n        !isVideoCardTransitionSnapshotDrawable(\n            hasRecordedContent = hasRecordedContent,\n            displayListStale = displayListStale,\n        )\n    ) {\n        return false\n    }\n    if (motionTier == MotionTier.Reduced) return false\n    if (!realtimeBlurEnabled) return false\n    if (sdkInt < Build.VERSION_CODES.S) return false\n    return when (exposure) {\n        // SettledHidden\uff1a\u8be6\u60c5\u4e0b\u9884\u70ed\uff08\u987b drawable\uff09\u3002\n        // BackPreview/Returning\uff1adrawable \u65f6 Host \u5728 NavDisplay \u4e0b\u57ab\u4e00\u5c42\u8ddf\u624b\u7cca\uff1b\n        // \u6e90\u9875\u91cd\u5f55\u540e\u4f1a\u5728\u5176\u4e0a\u753b\u540c layer\u3002stale \u65f6 Host \u4e0d\u753b\uff08\u9632\u9ed1\uff09\uff0c\u6e90 live/\u91cd\u5f55\u63a5\u624b\u3002\n        VideoCardTransitionExposure.SettledHidden,\n        VideoCardTransitionExposure.BackPreview,\n        VideoCardTransitionExposure.Restoring,\n        VideoCardTransitionExposure.Returning,\n        -> true\n        VideoCardTransitionExposure.Opening,\n        VideoCardTransitionExposure.Idle,\n        -> false\n    }\n}\n\n/** SettledHidden \u5f3a\u5236\u6ee1\u7cca\uff1b\u5176\u4f59\u8ddf live progress\uff08\u542b\u9884\u6d4b\u624b\u52bf 1\u21920\uff09\u3002 */\n\ninternal fun resolveHostOwnedDepthProgress(\n    exposure: VideoCardTransitionExposure,\n    liveProgress: Float,\n): Float {\n    return when (exposure) {\n        VideoCardTransitionExposure.SettledHidden -> 1f\n        else -> liveProgress.coerceIn(0f, 1f)\n    }\n}\n\n/**\n * \u6765\u6e90 Scene \u7684 DisposableEffect \u662f\u5426\u53ef\u9500\u6bc1 Host \u5feb\u7167\u3002\n * Host \u5171\u4eab handle \u65f6\u7981\u6b62 dispose \u6e05\u5c42\uff0c\u5426\u5219\u9884\u6d4b\u8fd4\u56de\u65e0\u7cca\u53ef\u7528\u3002\n */\n\ninternal fun shouldMarkDisplayListStaleOnHostOwnedSourceDispose(): Boolean = false\n\n/**\n * \u4ec5 IDLE \u624d\u91ca\u653e Host \u5feb\u7167 / BlurEffect\uff1bSettledHidden \u5fc5\u987b\u4fdd\u7559\u6ee1\u7cca\u5c42\u3002\n */\n\ninternal fun shouldReleaseHostOwnedDepthLayer(\n    exposure: VideoCardTransitionExposure,\n): Boolean = exposure == VideoCardTransitionExposure.Idle\n",
+      "originalSha256LF": "4bd783e382958eb746aaef5459dd4c07d8edd90aaec4e6b6f1a6faebde37cdbe",
+      "generatedSha256LF": "6736b124d685e4639edb3e9079aac58942be067b2c80fddd1f8c1031c5ae11da"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/transition/PredictiveBackBackgroundPolicy.kt",
+      "names": [
+        "PREDICTIVE_BACK_BACKGROUND_COMMIT_DURATION_MS",
+        "PREDICTIVE_BACK_BACKGROUND_CANCEL_DURATION_MS",
+        "PredictiveBackBackgroundState",
+        "LocalPredictiveBackBackgroundState",
+        "resolvePredictiveBackGestureBlurProgress",
+        "shouldApplyPredictiveBackGestureBlur",
+        "shouldApplyPredictiveBackBlurToRoute",
+        "resolvePredictiveBackCommitBlurDurationMs",
+        "PredictiveBackBlurFrameCache",
+        "predictiveBackBackgroundEffect"
+      ],
+      "originalBody": "internal const val PREDICTIVE_BACK_BACKGROUND_COMMIT_DURATION_MS = 200\n\ninternal const val PREDICTIVE_BACK_BACKGROUND_CANCEL_DURATION_MS = 160\n\ninternal data class PredictiveBackBackgroundState(\n    val progressProvider: () -> Float = { 0f },\n    val targetKeyProvider: () -> BiliPaiNavKey? = { null },\n    val motionTierProvider: () -> MotionTier = { MotionTier.Normal },\n    val isLightBackgroundProvider: () -> Boolean = { false },\n)\n\ninternal val LocalPredictiveBackBackgroundState = compositionLocalOf {\n    PredictiveBackBackgroundState()\n}\n\n/**\n * \u9884\u6d4b\u5f0f\u8fd4\u56de\u624b\u52bf\u8fdb\u884c\u4e2d\uff0c\u628a\u7cfb\u7edf\u56de\u9000\u8fdb\u5ea6(0\u21921)\u6620\u5c04\u4e3a\u5e95\u5c42\u9875\u6a21\u7cca\u5f3a\u5ea6\u3002\n *\n * \u7edf\u4e00\u4e3a\u968f\u624b\u52bf\u51cf\u5f31(1\u21920)\uff1a\u5e95\u5c42\u9875\u968f\u8fd4\u56de\u9732\u51fa\u6765\u5e94\u9010\u6e10\u6e05\u6670\u3002\n * \uff08\u65e7\u7248 CLASSIC_CARD \u7b49\u7528 0\u21921 \u589e\u5f3a\u6a21\u7cca\uff0c\u4f53\u611f\u4e0e\u8bbe\u7f6e\u9875\u76f8\u53cd\uff0c\u5df2\u7edf\u4e00\u3002\uff09\n */\n\ninternal fun resolvePredictiveBackGestureBlurProgress(\n    backProgress: Float,\n    routeTransition: BiliPaiNavRouteTransition? = null,\n): Float {\n    @Suppress(\"UNUSED_PARAMETER\")\n    val ignoredTransition = routeTransition\n    val clamped = backProgress.coerceIn(0f, 1f)\n    // 1:1 \u8ddf\u624b\u7ebf\u6027\u6e10\u53d8\uff1a\u624b\u6307\u62d6\u51fa\u591a\u5c11\u6bd4\u4f8b\uff0c\u5e95\u5c42\u6a21\u7cca\u5c31\u7ebf\u6027\u9000\u53bb\u591a\u5c11\uff1b\u53cd\u5411\u63a8\u56de\u5219\u7b49\u6bd4\u6062\u590d\uff0c\u624b\u611f\u4e1d\u6ed1\u8fde\u8d2f\u3002\n    return 1f - clamped\n}\n\ninternal fun shouldApplyPredictiveBackGestureBlur(\n    routeTransition: BiliPaiNavRouteTransition,\n    predictiveBackEnabled: Boolean,\n    gestureReturningVideoCard: Boolean,\n    motionTier: MotionTier,\n): Boolean {\n    if (!predictiveBackEnabled) return false\n    if (gestureReturningVideoCard) return false\n    if (motionTier == MotionTier.Reduced) return false\n    if (routeTransition == BiliPaiNavRouteTransition.NO_OP_SHARED_ELEMENT) return false\n    // \u8bbe\u7f6e iOS \u9884\u6d4b\u8fd4\u56de\u5df2\u9760\u6a2a\u6ed1\u9732\u51fa\u5b8c\u6574\u5e95\u5c42\u9875\uff1b\u518d\u53e0\u6ee1\u5c4f GPU \u6a21\u7cca\u4f1a\u8d77\u624b\u53d1\u7070\u3001\u8ddf\u624b\u53d1\u6c89\u3002\n    if (routeTransition == BiliPaiNavRouteTransition.SETTINGS_IOS_PUSH_POP) return false\n    return routeTransition == BiliPaiNavRouteTransition.CLASSIC_CARD ||\n        routeTransition == BiliPaiNavRouteTransition.BOTTOM_BAR_SIBLING_POP ||\n        routeTransition == BiliPaiNavRouteTransition.LIGHT_SIBLING_POP\n}\n\ninternal fun shouldApplyPredictiveBackBlurToRoute(\n    entryKey: BiliPaiNavKey,\n    targetBackKey: BiliPaiNavKey?,\n    videoCardBackgroundApplied: Boolean = false,\n): Boolean {\n    return !videoCardBackgroundApplied && targetBackKey != null && entryKey == targetBackKey\n}\n\ninternal fun resolvePredictiveBackCommitBlurDurationMs(startProgress: Float): Int {\n    val clamped = startProgress.coerceIn(0f, 1f)\n    if (clamped <= 0f) {\n        return PREDICTIVE_BACK_BACKGROUND_CANCEL_DURATION_MS\n    }\n    return (PREDICTIVE_BACK_BACKGROUND_COMMIT_DURATION_MS * clamped)\n        .roundToInt()\n        .coerceIn(1, PREDICTIVE_BACK_BACKGROUND_COMMIT_DURATION_MS)\n}\n\nprivate class PredictiveBackBlurFrameCache {\n    private var lastProgress = Float.NaN\n    private var lastMotionTier: MotionTier? = null\n    private var lastIsLightBackground: Boolean? = null\n    private var cached = PredictiveBackBlurFrame(blurRadiusPx = 0f)\n\n    fun resolve(\n        progress: Float,\n        motionTier: MotionTier,\n        isLightBackground: Boolean,\n    ): PredictiveBackBlurFrame {\n        if (\n            progress != lastProgress ||\n            motionTier != lastMotionTier ||\n            isLightBackground != lastIsLightBackground\n        ) {\n            lastProgress = progress\n            lastMotionTier = motionTier\n            lastIsLightBackground = isLightBackground\n            cached = resolvePredictiveBackBlurFrame(\n                progress = progress,\n                motionTier = motionTier,\n                isLightBackground = isLightBackground,\n            )\n        }\n        return cached\n    }\n}\n\ninternal fun Modifier.predictiveBackBackgroundEffect(\n    progressProvider: () -> Float,\n    motionTierProvider: () -> MotionTier = { MotionTier.Normal },\n    isLightBackgroundProvider: () -> Boolean = { false },\n): Modifier {\n    val frameCache = PredictiveBackBlurFrameCache()\n    return graphicsLayer {\n        val frame = frameCache.resolve(\n            progressProvider(),\n            motionTierProvider(),\n            isLightBackgroundProvider(),\n        )\n        renderEffect = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && frame.blurRadiusPx > 0.01f) {\n            RenderEffect\n                .createBlurEffect(\n                    frame.blurRadiusPx,\n                    frame.blurRadiusPx,\n                    Shader.TileMode.CLAMP,\n                )\n                .asComposeRenderEffect()\n        } else {\n            null\n        }\n    }.drawWithContent {\n        drawContent()\n        val frame = frameCache.resolve(\n            progressProvider(),\n            motionTierProvider(),\n            isLightBackgroundProvider(),\n        )\n        if (frame.separationTintAlpha > 0.001f) {\n            val tintColor = if (frame.useLightSeparationTint) Color.White else Color.Black\n            drawRect(tintColor.copy(alpha = frame.separationTintAlpha))\n        }\n    }\n}\n",
+      "originalSha256LF": "c4d44562efbfed6e93392346f60ccb0bde50cda3ca969108dfc7e8e3999395dd",
+      "generatedSha256LF": "4e520c312198261b8f4459aafc0f80d87eb4b105b546b54b866885eef794cbff"
+    }
+  ],
+  "selections": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "name": "getClickToPlay",
+      "sha256LF": "7e423c2624a625afd5ac9f661b4e432f0b5100b45c4af36c5f951116f76bd517",
+      "body": "fun getClickToPlay(context: Context): Flow<Boolean> = context.settingsDataStore.data\n    .map { preferences -> preferences[KEY_CLICK_TO_PLAY] ?: true }"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "name": "setClickToPlay",
+      "sha256LF": "0819355d5c5e746f218550f091414dc025b11a47af60ae88464f8f0c14b06584",
+      "body": "suspend fun setClickToPlay(context: Context, value: Boolean) {\n    context.settingsDataStore.edit { preferences -> preferences[KEY_CLICK_TO_PLAY] = value }\n    // Sync to SharedPreferences for synchronous access\n    context.getSharedPreferences(\"auto_play_cache\", Context.MODE_PRIVATE)\n        .edit().putBoolean(\"click_to_play_enabled\", value).apply()\n}"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "name": "getClickToPlaySync",
+      "sha256LF": "cd5106b54341c32c93dea75df2baef7110b436088ab82f71d81bf9331f2a0f3a",
+      "body": "fun getClickToPlaySync(context: Context): Boolean {\n    return context.getSharedPreferences(\"auto_play_cache\", Context.MODE_PRIVATE)\n        .getBoolean(\"click_to_play_enabled\", true)\n}"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "name": "getVideoTransitionRealtimeBlurEnabled",
+      "sha256LF": "37cf96b5968d859c6274f2481e68e0a5cc8bf41e32ddb0a88753354a7de37248",
+      "body": "fun getVideoTransitionRealtimeBlurEnabled(context: Context): Flow<Boolean> =\n    context.settingsDataStore.data\n        .map { preferences -> preferences[KEY_VIDEO_TRANSITION_REALTIME_BLUR_ENABLED] ?: false }"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "name": "setVideoTransitionRealtimeBlurEnabled",
+      "sha256LF": "e0e81569cebfb8fcef63431231eaadc669e82545eceea988457d84425a476f16",
+      "body": "suspend fun setVideoTransitionRealtimeBlurEnabled(context: Context, value: Boolean) {\n    context.settingsDataStore.edit { preferences ->\n        preferences[KEY_VIDEO_TRANSITION_REALTIME_BLUR_ENABLED] = value\n    }\n}"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "name": "getRelatedVideoTransitionEnabled",
+      "sha256LF": "eb17ef40a75cdc663c7837d19f295a1b05a50327a4a2a33ead3cb164b11dc577",
+      "body": "fun getRelatedVideoTransitionEnabled(context: Context): Flow<Boolean> =\n    context.settingsDataStore.data.map { preferences ->\n        preferences[KEY_RELATED_VIDEO_TRANSITION_ENABLED] ?: true\n    }"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "name": "setRelatedVideoTransitionEnabled",
+      "sha256LF": "ebf89e698f7b28f01d24d36d3ca3dde9fa2ea276c32044235f03f08d8fd5a1c6",
+      "body": "suspend fun setRelatedVideoTransitionEnabled(context: Context, value: Boolean) {\n    context.settingsDataStore.edit { preferences ->\n        preferences[KEY_RELATED_VIDEO_TRANSITION_ENABLED] = value\n    }\n}"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/navigation/NavigationSettingsStore.kt",
+      "name": "getFullScreenSwipeBackEnabled",
+      "sha256LF": "28a7f8e79f23c6f36eecf525c209dc12424c9f0116f715062f318b4b507a5299",
+      "body": "fun getFullScreenSwipeBackEnabled(context: Context): Flow<Boolean> =\n    context.settingsDataStore.data\n        .map { preferences -> preferences[keyFullScreenSwipeBackEnabled] ?: false }"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/navigation/NavigationSettingsStore.kt",
+      "name": "setFullScreenSwipeBackEnabled",
+      "sha256LF": "ac3e12f2cc402b993fdb2fbab0cfd5180ead34f541af959028f698226e12665a",
+      "body": "suspend fun setFullScreenSwipeBackEnabled(context: Context, enabled: Boolean) {\n    context.settingsDataStore.edit { preferences ->\n        preferences[keyFullScreenSwipeBackEnabled] = enabled\n    }\n}"
+    }
+  ],
+  "references": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiDeviceCornerRadius.kt",
+      "sha256LF": "a3e474382c6c844e42b4c2bf3625306df05b23616e411b4d05f968b0972cfc87",
+      "reason": "Android WindowInsets/RoundedCorner capability unavailable; required nullable Windows client query, original host fallback retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationAppearancePolicy.kt",
+      "sha256LF": "c05d491f60caeecb0b64218e8dc7f8565b099790e55a6aa4410d9f7339715490",
+      "reason": "Whole original policy already compiled by sole full Home producer; actual40 classes reused without override."
+    }
+  ]
+}

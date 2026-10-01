@@ -1,0 +1,212 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources
+> Task :extractBgmDetail
+> Task :extractCommentFraudProtocol
+> Task :extractFrostedAudioRenderer
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 93}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform UP-TO-DATE
+> Task :extractImageSaveSettingsUi UP-TO-DATE
+> Task :extractLinkedDock
+> Task :extractNativeMusicRoot UP-TO-DATE
+> Task :extractNavigation3Host
+> Task :extractOriginalDanmakuListMenu
+> Task :extractOriginalDanmakuSettings
+
+> Task :extractOriginalFavoriteFolder
+generated original favorite drawer, policy, protocol and session closure
+
+> Task :extractOriginalFavorites
+
+> Task :extractOriginalHomeBangumiPage
+Complete original Home Bangumi Hub emitted
+
+> Task :extractOriginalHomePage
+57 source outputs
+original settings keys 82
+original Home outputs 71
+
+> Task :extractOriginalHomePartition
+Complete original Partition Screen/Content/VM and shared media skeleton produced
+
+> Task :extractOriginalHomeProtocols UP-TO-DATE
+> Task :extractOriginalHomeViewModel UP-TO-DATE
+> Task :extractOriginalLiveList
+> Task :extractOriginalLiveNavigation
+> Task :extractOriginalProfileMain
+
+> Task :extractOriginalSubscriptionPage
+Original Subscription UI outputs 1
+
+> Task :extractOriginalVideoShareConsent
+> Task :extractPlaybackSettings UP-TO-DATE
+> Task :extractPlaybackWatchdogs UP-TO-DATE
+> Task :extractSharedLiquidTabs
+> Task :extractStableCollectionSheet
+> Task :extractStableVideoMetadata
+> Task :extractStableWeeklySeries UP-TO-DATE
+> Task :extractSubtitleLoadPolicy UP-TO-DATE
+
+> Task :extractUpstreamApi
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\api\com\android\purebilibili\core\network\DesktopUpstreamApi.kt
+
+> Task :extractUpstreamAppearance UP-TO-DATE
+> Task :extractUpstreamAudio UP-TO-DATE
+> Task :extractUpstreamDiscovery UP-TO-DATE
+> Task :extractUpstreamBlockedUp UP-TO-DATE
+> Task :extractUpstreamSettingsSearch UP-TO-DATE
+> Task :extractUpstreamSettingsCategories UP-TO-DATE
+> Task :extractUpstreamBlockedListUi UP-TO-DATE
+> Task :extractUpstreamCast UP-TO-DATE
+> Task :extractUpstreamComponents UP-TO-DATE
+> Task :extractUpstreamCrashPrompt UP-TO-DATE
+> Task :extractUpstreamDanmaku UP-TO-DATE
+
+> Task :extractUpstreamDiagnostics
+8
+
+> Task :extractUpstreamDynamicDetail UP-TO-DATE
+> Task :extractUpstreamDynamicDetailContainer UP-TO-DATE
+> Task :extractUpstreamDynamicDetailProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicEditor
+> Task :extractUpstreamSettingsHome UP-TO-DATE
+> Task :extractUpstreamDynamicSettings UP-TO-DATE
+> Task :extractUpstreamDynamicTabs UP-TO-DATE
+> Task :extractUpstreamDynamicFollow UP-TO-DATE
+> Task :extractUpstreamDynamicFullCard UP-TO-DATE
+> Task :extractUpstreamDynamicReply UP-TO-DATE
+> Task :extractUpstreamDynamicReplyProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicStaticImageCodec UP-TO-DATE
+> Task :extractUpstreamHomeCards UP-TO-DATE
+> Task :extractUpstreamHomeFullCard UP-TO-DATE
+> Task :extractUpstreamJs UP-TO-DATE
+> Task :extractUpstreamLogin UP-TO-DATE
+> Task :extractUpstreamMedia UP-TO-DATE
+> Task :extractUpstreamNetworkProxy UP-TO-DATE
+> Task :extractUpstreamPackages UP-TO-DATE
+> Task :extractUpstreamPlayback UP-TO-DATE
+> Task :extractUpstreamPlugins UP-TO-DATE
+> Task :extractUpstreamPreferences UP-TO-DATE
+> Task :extractUpstreamSearch UP-TO-DATE
+> Task :extractUpstreamSettings UP-TO-DATE
+> Task :extractUpstreamSettingsEntries UP-TO-DATE
+> Task :extractUpstreamSettingsPrivacy UP-TO-DATE
+> Task :extractUpstreamSettingsStorageEntries UP-TO-DATE
+> Task :extractUpstreamSpace UP-TO-DATE
+> Task :extractUpstreamSpaceContributions UP-TO-DATE
+> Task :extractUpstreamSpaceImagePreviews UP-TO-DATE
+> Task :extractUpstreamSpaceOverview UP-TO-DATE
+> Task :extractUpstreamStoryTopic UP-TO-DATE
+> Task :extractVideoCommentUi
+> Task :convertXmlValueResourcesForMain NO-SOURCE
+> Task :copyNonXmlValueResourcesForMain NO-SOURCE
+> Task :prepareComposeResourcesTaskForMain NO-SOURCE
+> Task :generateResourceAccessorsForMain SKIPPED
+> Task :generateActualResourceCollectorsForMain SKIPPED
+> Task :generateComposeResClass SKIPPED
+> Task :fetchJsWorkerJdk UP-TO-DATE
+> Task :prepareJsWorker UP-TO-DATE
+
+> Task :prepareNativeDiagnosticShare
+{"passed": true, "headers": 369, "searchedLibraries": 11, "compilerFiles": 64, "dllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06"}
+{"passed": true, "freshBuild": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\07417623-09dc-4254-a665-5d09948409e1", "approvedSourceManifestSha256Bytes": "e13c4d6775a942343039d5602d52ee02bd92fe3f83155f80f67da67160dd62b1", "sourceSha256Bytes": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92", "compilerDriverSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861", "expectedDllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06", "stagedDllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06", "actualBuildGraph": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\07417623-09dc-4254-a665-5d09948409e1\\producer-input-graph.json", "actualBuildGraphSha256Bytes": "f885ae9e65e9c8000262692b6688a988975e0fafc7e5857b8bc2bc949f31be0a", "cachedOutputTrusted": false, "freshCompilationOnEveryInvocation": true, "resolvedGraphMatchesReviewedBuild": true, "publicReleaseAuthorizationVerified": false}
+
+> Task :prepareOriginalCategoryPage
+Original Category outputs 1
+
+> Task :prepareOriginalHomeReturnNavigation
+
+> Task :verifyAppearanceDependencies
+Verified eight fixed appearance runtime dependencies and six source notices.
+
+> Task :verifyDynamicMediaDependencies
+Verified three approved image metadata runtime dependencies and six Apache notices.
+
+> Task :verifySettingsSearchDependencies
+Verified original pinyin4j runtime and all five source/license files; POM/source license conflict retained.
+
+> Task :extractStableVideoVotes
+
+> Task :verifyUpstreamDynamicDetailReplyProtocol
+PASS five exact original-source request families in the existing Operations class
+
+> Task :verifyUpstreamDynamicEditorProtocol
+PASS original-source editor request members in the existing Operations class
+
+> Task :extractUpstreamDynamicGalleryMotionPhoto UP-TO-DATE
+> Task :verifyUpstreamDynamicMedia UP-TO-DATE
+
+> Task :miuix5157:verifyPinnedSource
+Exact Miuix5c91 pinned source PASS: 225 files; 195 compiled source files
+
+> Task :miuix5157:bakeSquircleSdf UP-TO-DATE
+> Task :miuix5157:kmpPartiallyResolvedDependenciesChecker
+> Task :miuix5157:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :miuix5157:compileKotlinJvm UP-TO-DATE
+> Task :miuix5157:compileJvmMainJava NO-SOURCE
+> Task :miuix5157:jvmProcessResources NO-SOURCE
+> Task :miuix5157:processJvmMainResources SKIPPED
+> Task :miuix5157:jvmMainClasses UP-TO-DATE
+> Task :miuix5157:jvmJar UP-TO-DATE
+> Task :assembleMainResources UP-TO-DATE
+> Task :prepareOriginalPluginResources
+> Task :processResources
+
+> Task :compileKotlin
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt:619:29 'when' is exhaustive so 'else' is redundant here.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/video-share-consent/com/android/purebilibili/feature/video/share/VideoShareCoverService.kt:20:151 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/video-share-consent/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt:50:22 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/video-share-consent/com/android/purebilibili/feature/video/share/VideoShareSheet.kt:77:22 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/video-share-consent/com/android/purebilibili/feature/video/share/VideoShareToFollowingDialog.kt:52:22 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:626:17 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:650:17 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:672:17 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:701:17 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:727:17 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:743:12 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:829:60 The corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt:51:52 The corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt:202:37 'val Canvas.nativeCanvas: Canvas' is deprecated. Naming alignment to avoid ambiguity: use [Canvas.skiaCanvas] extension instead.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt:146:85 Unnecessary safe call on a non-null receiver of type 'DesktopHomeMediaLease'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt:93:40 'val Canvas.nativeCanvas: Canvas' is deprecated. Naming alignment to avoid ambiguity: use [Canvas.skiaCanvas] extension instead.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareImageTransport.kt:24:50 The corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt:619:29 'when' is exhaustive so 'else' is redundant here.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/video-share-consent/com/android/purebilibili/feature/video/share/VideoShareCoverService.kt:20:151 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/video-share-consent/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt:50:22 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/video-share-consent/com/android/purebilibili/feature/video/share/VideoShareSheet.kt:77:22 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/video-share-consent/com/android/purebilibili/feature/video/share/VideoShareToFollowingDialog.kt:52:22 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:878:66 Elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1037:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1038:48 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1039:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1041:53 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1042:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1199:34 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1285:49 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1307:49 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1412:61 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/Main.kt:151:20 'fun painterResource(resourcePath: String): Painter' is deprecated. Migrate to the Compose resources library. See https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-images-resources.html If you need to load resources specificly from Java classpath, you should still use the new resource library and use a snippet from https://github.com/JetBrains/compose-multiplatform-core/pull/1457.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:626:17 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:650:17 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:672:17 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:701:17 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:727:17 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:743:12 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt:829:60 The corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt:51:52 The corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt:202:37 'val Canvas.nativeCanvas: Canvas' is deprecated. Naming alignment to avoid ambiguity: use [Canvas.skiaCanvas] extension instead.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt:146:85 Unnecessary safe call on a non-null receiver of type 'DesktopHomeMediaLease'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt:93:40 'val Canvas.nativeCanvas: Canvas' is deprecated. Naming alignment to avoid ambiguity: use [Canvas.skiaCanvas] extension instead.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareImageTransport.kt:24:50 The corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+
+> Task :compileJava UP-TO-DATE
+> Task :classes
+
+[Incubating] Problems report is available at: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 1m 17s
+100 actionable tasks: 40 executed, 60 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html

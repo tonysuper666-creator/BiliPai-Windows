@@ -1,0 +1,33 @@
+[
+  {
+    "lane": "shareConsent",
+    "path": "compile-07/original-video-share-consent.jar",
+    "sha256Bytes": "f12c47e57b7de4a96090cb1be0117195ee2415b3c2c144283ac09e5e462471dc",
+    "reason": "Rebuildable prepared proof output"
+  },
+  {
+    "path": "root/video-share-native-build42/DesktopDiagnosticShare.obj",
+    "sha256Bytes": "ddb760277547738350b8537fb7acd6bb5fdc2907b27d114ef35a103fd218e65a",
+    "reason": "Rebuildable compiler/native output"
+  },
+  {
+    "path": "root/video-share-native-build42/bilipai-diagnostic-share.dll",
+    "sha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06",
+    "reason": "Rebuildable compiler/native output"
+  },
+  {
+    "path": "root/video-share-native-build42/bilipai-diagnostic-share.exp",
+    "sha256Bytes": "0008afd633b90f19f1130dbaee8c101b1f775f266bc231a55bf62183eed2a5d1",
+    "reason": "Rebuildable compiler/native output"
+  },
+  {
+    "path": "root/video-share-native-build42/bilipai-diagnostic-share.lib",
+    "sha256Bytes": "caffe80afe884a763ba6f7564d047611c318884e1fe7791432c30a3f9876f158",
+    "reason": "Rebuildable compiler/native output"
+  },
+  {
+    "path": "root/navigation-share-actual42-02/fixture.jar",
+    "sha256Bytes": "8393f823c02a76605588905e76711954eb52e74a7f769b5b36a5eb3fa99cabad",
+    "reason": "Rebuildable compiler/native output"
+  }
+]

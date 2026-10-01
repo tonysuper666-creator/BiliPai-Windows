@@ -1,0 +1,153 @@
+{
+  "nativeCompiled": false,
+  "nativeDLLReplaced": false,
+  "sameActorAndBridge": true,
+  "rows": [
+    {
+      "target": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "before": "    bool textOnly=false;",
+      "after": "    bool textOnly=false;\n    bool mediaFile=false;",
+      "beforeSha256LF": "318660dc4f24a497f4dfb1295c60e8f25bae58e34062d6b89c4835cf755789d4",
+      "afterSha256LF": "27a437c0a8178c6efa9e57c9badb3101f2c9d300950dd5cc20029c3e53dda89c"
+    },
+    {
+      "target": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "before": "namespace bilipai_native_diagnostic_share_detail {\nHRESULT bindOnOwnerThread",
+      "after": "// General video image payload; same Session / owner dispatcher / callback drain.\nextern \"C\" __declspec(dllexport) HRESULT WINAPI BilipaiSharePrepareMedia(wchar_t const* path,wchar_t const* title,wchar_t const* text,uint64_t* result) noexcept {\n    if(!path||!title||!text||!result)return E_POINTER;\n    *result=0;\n    try {\n        auto pathLength=wcsnlen_s(path,32761),titleLength=wcsnlen_s(title,257),textLength=wcsnlen_s(text,65537);\n        if(pathLength==0||pathLength>=32761||titleLength==0||titleLength>256||textLength>65536)return E_INVALIDARG;\n        apartment init(RO_INIT_MULTITHREADED);\n        auto attributes=GetFileAttributesW(path);\n        if(attributes==INVALID_FILE_ATTRIBUTES||(attributes&(FILE_ATTRIBUTE_DIRECTORY|FILE_ATTRIBUTE_REPARSE_POINT)))return E_INVALIDARG;\n        auto value=std::make_shared<Session>();\n        value->file=StorageFile::GetFileFromPathAsync(path).get();\n        auto size=value->file.GetBasicPropertiesAsync().get().Size();\n        auto extension=value->file.FileType();\n        if(size==0||size>32ULL*1024*1024 || (extension!=L\".jpg\"&&extension!=L\".jpeg\"&&extension!=L\".png\"&&extension!=L\".webp\"))return E_INVALIDARG;\n        value->mediaFile=true;value->shareTitle=hstring(title);value->shareText=hstring(text);\n        auto token=nextToken.fetch_add(1);\n        std::lock_guard lock(registryGate);\n        if(sessions.size()>=8)return HRESULT_FROM_WIN32(ERROR_TOO_MANY_OPEN_FILES);\n        sessions.emplace(token,std::move(value));*result=token;return S_OK;\n    }catch(...){return to_hresult();}\n}\n\nnamespace bilipai_native_diagnostic_share_detail {\nHRESULT bindOnOwnerThread",
+      "beforeSha256LF": "ac4e55b353d85a2c8071c105968430753677d1f63bc4e24a5f9f576a81300263",
+      "afterSha256LF": "bbf096444b1e28c83182f416b60e1a9e58df33ae522434974d91bd5bd0a367ba"
+    },
+    {
+      "target": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "before": "value->package.Properties().Title(value->textOnly ? value->shareTitle",
+      "after": "value->package.Properties().Title((value->textOnly || value->mediaFile) ? value->shareTitle",
+      "beforeSha256LF": "e0a1576f6c1c1ee6951ac93b7dd90be28ad3f93bf8afd5fef8c46c3fd16ce001",
+      "afterSha256LF": "c7170a21ba116f84dd95c423178f04e67c972581c45cc0324aa28b82fb99cf1d"
+    },
+    {
+      "target": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "before": "value->package.Properties().Description(value->textOnly ? value->shareTitle",
+      "after": "value->package.Properties().Description((value->textOnly || value->mediaFile) ? value->shareTitle",
+      "beforeSha256LF": "224dddcdf3993db5956411e7b09bded6a730764bb4325c5ae63b40bc68a151d5",
+      "afterSha256LF": "a363840602d36b2e5f9fd0450e824014ceef338d76f9217b926aa7fef599ecc3"
+    },
+    {
+      "target": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "before": "if(!value->textOnly)value->package.SetText(L\"请查看附件中的日志文件\");",
+      "after": "if(value->mediaFile)value->package.SetText(value->shareText);\n                else if(!value->textOnly)value->package.SetText(L\"请查看附件中的日志文件\");",
+      "beforeSha256LF": "9387ce55d310975107064a34ee7aea6cde96136ac2f2846b0f3ec4bc28efd916",
+      "afterSha256LF": "1eedc0e3501fb9951ce601ea6af1306f2a0b4ba98d2cdaa58c1efc62cb223a5f"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "before": "        fun BilipaiSharePrepareText(title: WString, text: WString, result: LongByReference): Int\n",
+      "after": "        fun BilipaiShareProbe():Int\n        fun BilipaiSharePrepareText(title: WString, text: WString, result: LongByReference): Int\n",
+      "beforeSha256LF": "d2b7fff589064d878ae779378b1ca0a5d1b9d77899cbd7150168c6a2d9597dfd",
+      "afterSha256LF": "afb4e71db21b70d5e22f356d2aa4709531dff976724cb523616dea85d1f04157"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "before": "        fun BilipaiSharePrepareText(title: WString, text: WString, result: LongByReference): Int",
+      "after": "        fun BilipaiSharePrepareText(title: WString, text: WString, result: LongByReference): Int\n        fun BilipaiSharePrepareMedia(path:WString,title:WString,text:WString,result:LongByReference):Int",
+      "beforeSha256LF": "4e99d4b541958ee40339e68b40b25d2ca81bf31feda1899976b7393c8570bbe5",
+      "afterSha256LF": "484c0ec416e103a9571e8db03212af913bcfd1d0f88a6d438f1197cfcd2d3245"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "before": "    private var active: Long? = null",
+      "after": "    private var active: Long? = null\n    private var activeMediaRetirement:((Boolean)->Unit)? = null",
+      "beforeSha256LF": "a00905c539596c03a986ef9ec4016c2bd8318405a60957f5c593ca95bdd31c7a",
+      "afterSha256LF": "da98d3d8ca1cabe18236f2eacb1b6e1566682abbb43dfd4e16f7afd2ffa477ad"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "before": "            check(api.BilipaiShareRetire(token, IntByReference(), IntByReference()) >= 0) { \"原生分享尚未释放\" }\n            active = null",
+      "after": "            val state=IntByReference(-1);val supplied=IntByReference(1)\n            check(api.BilipaiShareRetire(token,state,supplied) >= 0) { \"原生分享尚未释放\" }\n            active = null\n            val retirement=activeMediaRetirement;activeMediaRetirement=null\n            retirement?.invoke(state.value==3 || state.value==4 || supplied.value==0)",
+      "beforeSha256LF": "4c0b2f6f29bf1c4da09e86feebc5a6e15fc3c3cd67a241a35f95fc89dc6ae447",
+      "afterSha256LF": "41ed904ffc6d53c75f92b0c59463aac423b34f99a40dea89e72a80206608bc51"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "before": "    suspend fun share(title: String, text: String, stillOwned: () -> Boolean): Boolean = operations.withLock {",
+      "after": "    suspend fun share(title:String,text:String,stillOwned:()->Boolean):Boolean =\n        sharePrepared(title,text,stillOwned,null) { result -> api.BilipaiSharePrepareText(WString(title.ifBlank { \"BiliPai 分享\" }),WString(text),result) }\n\n    /** The SAME serialized native actor retains the file grant until a real native\n     * terminal event/revocation. false never claims receiver delivery. */\n    suspend fun shareMedia(path:Path,title:String,text:String,stillOwned:()->Boolean,onRetired:(Boolean)->Unit):Boolean {\n        var prepared=false\n        var retired=false\n        val retirement:(Boolean)->Unit={safe ->if(!retired){retired=true;onRetired(safe)}}\n        try {\n            val verified=UpdateStorage.existingPathWithoutLinks(path.toAbsolutePath())\n            require(Files.isRegularFile(verified,LinkOption.NOFOLLOW_LINKS) && Files.size(verified) in 1..32L*1024*1024)\n            require(verified.fileName.toString().substringAfterLast('.').lowercase() in setOf(\"jpg\",\"jpeg\",\"png\",\"webp\"))\n            return sharePrepared(title,text,stillOwned,retirement) { result ->\n                val hr=api.BilipaiSharePrepareMedia(WString(verified.toString()),WString(title.ifBlank {\"BiliPai 分享\"}),WString(text),result)\n                prepared=result.value!=0L\n                hr\n            }\n        } finally {if(!prepared)retirement(true)}\n    }\n    private suspend fun sharePrepared(title:String,text:String,stillOwned:()->Boolean,onRetired:((Boolean)->Unit)?,prepare:(LongByReference)->Int):Boolean = operations.withLock {",
+      "beforeSha256LF": "aad024c4b6b3fe963966655a66e37438d346cd75852181a4c9704da11d49bf9b",
+      "afterSha256LF": "27150ed9955ed90c8eee95d49fa2e9da19fd53d38457abda1e44746a0c64a6cc"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "before": "    fun retire() { closing.set(true) }",
+      "after": "    fun probeMediaAvailable():Boolean = try { !closing.get() && api.BilipaiShareProbe() >= 0 } catch(_:Exception) {false} catch(_:LinkageError) {false}\n    fun retire() { closing.set(true) }",
+      "beforeSha256LF": "f8c620384052e66b2738d2f88f0d44779a78dce2a8bbc494739332f2037ca1c9",
+      "afterSha256LF": "da1b058b7e0e7f429402647d7d0894e997f701ef2dffee391b3dcbc1a5af16e7"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "before": "            check(api.BilipaiSharePrepareText(WString(title.ifBlank { \"BiliPai 分享\" }), WString(text), result) >= 0 && result.value != 0L)",
+      "after": "            check(prepare(result) >= 0 && result.value != 0L)",
+      "beforeSha256LF": "419cbb5cce0773e9e7ad8da84c08fc0a1ac7b2c5fa4b857891ec4de117ca005a",
+      "afterSha256LF": "b642ae864e2600e7e0e9f943268478141806555159b983b4f82b879cca14e23b"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "before": "        active = result.value",
+      "after": "        active = result.value\n        activeMediaRetirement = onRetired",
+      "beforeSha256LF": "d7675c7972372e4fe19b582c3da08e20d5e51d9de3ec96d6d7f181dbea03452e",
+      "afterSha256LF": "b9529c2b761b5422031427f2a749a1d85c558cb863e1686cf5b2bb1833c916fc"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "before": "        withContext(NonCancellable + Dispatchers.IO) {\n            check(prepare(result) >= 0 && result.value != 0L)\n        }\n        active = result.value\n        activeMediaRetirement = onRetired\n        try {",
+      "after": "        try {\n        withContext(NonCancellable + Dispatchers.IO) {\n            check(prepare(result) >= 0 && result.value != 0L)\n            active = result.value\n            activeMediaRetirement = onRetired\n        }",
+      "beforeSha256LF": "5c189d5d8d1568f6a7bf9d218ede4bd89f84e1343cc862d5faf50794a330a77e",
+      "afterSha256LF": "056e80fefd6199c63e1746b13e5f1439658dbd3421fe79f826e95f2d9a0aec4d"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "before": "    suspend fun shutdown() = withContext(NonCancellable) {",
+      "after": "    /** Explicit user cache clear on the same actor; it does not shut down future shares. */\n    suspend fun clearVideoShareFiles(clear:()->Unit) = operations.withLock {\n        currentCoroutineContext().ensureActive();check(!closing.get())\n        watcher?.cancel();watcher=null\n        closeActive()\n        withContext(Dispatchers.IO) { clear() }\n    }\n    suspend fun shutdown() = withContext(NonCancellable) {",
+      "beforeSha256LF": "aff17cdea406581d6ab8cc4fcb61892b9ab564255fdea0a35ef67f162ff6a603",
+      "afterSha256LF": "d3649c694ec04dca795444f0fbae756bce4d2d5b86582c61876024c03569e618"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "before": "    store:DesktopPluginStore,",
+      "after": "    private val store:DesktopPluginStore,",
+      "beforeSha256LF": "93269bfca9b36028842bfddf13d71f6547573654160a1000d8450f036f9ed589",
+      "afterSha256LF": "ee10e8b848f477e7bed941217a07652f9d53eae28bd32d36ae5a6f598b76e6dc"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "before": "    suspend fun setEnhancedEnabled(enabled:Boolean)",
+      "after": "    /** Explicit original consent on the same serial writer. All three original\n     * keys publish atomically; capture the caller Job before entering the actor. */\n    suspend fun setOriginalCrashConsent(enabled:Boolean,stillOwned:()->Boolean,commit:((()->Unit)->Boolean)) {\n        val caller=kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]\n        await(submit {\n            caller?.ensureActive()\n            if(!stillOwned())throw kotlinx.coroutines.CancellationException(\"诊断授权页面已退役\")\n            if(!commit {\n                caller?.ensureActive()\n                if(!stillOwned())throw kotlinx.coroutines.CancellationException(\"诊断授权页面已退役\")\n                store.update(\"settings\",mapOf(\n                    \"crash_tracking_enabled\" to kotlinx.serialization.json.JsonPrimitive(enabled),\n                    \"crash_tracking_consent_shown\" to kotlinx.serialization.json.JsonPrimitive(true),\n                    \"enhanced_diagnostic_logging_enabled\" to kotlinx.serialization.json.JsonPrimitive(enabled)))\n                mutableEnhanced.value=enabled\n                if(enabled)recordSessionStart()\n                else {collector.clearRuntimeDiagnostics();deletePrivate(resolveRuntimeLogFile(root.toFile()).toPath())}\n                mutableError.value=null\n            })throw kotlinx.coroutines.CancellationException(\"诊断授权写入已退役\")\n            Unit\n        })\n    }\n\n    suspend fun setEnhancedEnabled(enabled:Boolean)",
+      "beforeSha256LF": "adec2344c8ba5ac1b48c8930eeff231c249ec852179ae66e8aaca42e727b0e8f",
+      "afterSha256LF": "d652cff130d1ff6014057e6de1ee5cc2f59062fc2b1ac21c0add70d2b2fd9f20"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "before": "import kotlinx.coroutines.Dispatchers\n",
+      "after": "import kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.ensureActive\n",
+      "beforeSha256LF": "957059ba78091cb9c4c843a4aac651e1eabcc15a306a859828b34a7e44f4658b",
+      "afterSha256LF": "0e81b45d80e789f8033c8cb743aa45f257c4de8f8e6ee6fd797dc41b554faddd"
+    }
+  ],
+  "targets": [
+    {
+      "target": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "baseSha256LF": "19ac663f66cb6d9eb585a4dd8e2651c9d735a8ee48142ab8eed891bfe0557418",
+      "candidateSha256LF": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92",
+      "hunks": 5
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "baseSha256LF": "113bacf17cf995f15de87ecd233f68b9f9b16ff88dae0f11354098a52de8d127",
+      "candidateSha256LF": "2171801494bfaaa5f60616b3b6a1a6edeb9e48a5997603fa2dc3d6b2bf806450",
+      "hunks": 10
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "baseSha256LF": "33a276ea46e578ba8b8a63abbe5b1b68e2cacc2fe14942bcd0c639e487356014",
+      "candidateSha256LF": "76f9d6a63381cdc535c4ba1c2bc124e4ea5363996f78493b66aeff6c6fa5e066",
+      "hunks": 3
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+ORIGIN com.bilipai.desktop.ui.DesktopVideoShareFiles file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar
+ORIGIN com.bilipai.desktop.ui.DesktopVideoShareImageTransport file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar
+ORIGIN com.android.purebilibili.data.repository.DesktopOriginalVideoShareMessages file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar
+PASS 4 groups / 24 assertions; actual40/97 + new-only prepared jar; no HWND/network/account

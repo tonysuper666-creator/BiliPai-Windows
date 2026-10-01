@@ -1,0 +1,98 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoSharePolicy.kt",
+  "output": "com/android/purebilibili/feature/video/share/DesktopOriginalVideoSharePolicy.kt",
+  "originalSha256LF": "97b76d437936dddfccb4b0f553b14f3b3105ef012fdd520ac293d5863a5fcced",
+  "preparedSha256LF": "20abeee2a72f1cd63d9f643210201360caf0df31cc28419958967197a3b86c4b",
+  "changes": [
+    {
+      "tag": "replace",
+      "originalLine": 2,
+      "preparedLine": 2,
+      "before": "\nimport android.content.ClipData\nimport android.content.ComponentName\nimport android.content.ContentResolver\nimport android.content.Intent\nimport android.net.Uri\n\ninternal const val WECHAT_PACKAGE_NAME = \"com.tencent.mm\"\ninternal const val QQ_PACKAGE_NAME = \"com.tencent.mobileqq\"\n\ninternal data class VideoSharePayload(\n    val title: String,\n    val bvid: String,\n    val coverUrl: String,\n    val url: String,\n    val text: String,\n    val upName: String = \"\",\n    val playCountText: String = \"\",\n)\n\ninternal enum class VideoShareTarget(val packageName: String?) {\n    BILIBILI_FRIENDS(null),\n    WECHAT(WECHAT_PACKAGE_NAME),\n    QQ(QQ_PACKAGE_NAME),\n    COPY_LINK(null),\n    MORE(null)\n}\n",
+      "after": "import com.android.purebilibili.data.model.response.FollowingUser\n",
+      "originalRange": [
+        1,
+        28
+      ],
+      "preparedRange": [
+        1,
+        2
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 43,
+      "preparedLine": 17,
+      "before": "}\n\ninternal fun buildVideoSharePayload(\n    title: String,\n    bvid: String,\n    coverUrl: String = \"\",\n    upName: String = \"\",\n    playCountText: String = \"\",\n): VideoSharePayload {\n    val cleanTitle = title.trim()\n    val cleanBvid = bvid.trim()\n    val fallbackTitle = cleanTitle.ifBlank { cleanBvid }\n    val url = \"https://www.bilibili.com/video/$cleanBvid\"\n    return VideoSharePayload(\n        title = fallbackTitle,\n        bvid = cleanBvid,\n        coverUrl = coverUrl.trim(),\n        url = url,\n        text = \"【$fallbackTitle】\\n$url\",\n        upName = upName.trim(),\n        playCountText = playCountText.trim(),\n    )\n",
+      "after": "",
+      "originalRange": [
+        42,
+        64
+      ],
+      "preparedRange": [
+        16,
+        16
+      ]
+    },
+    {
+      "tag": "insert",
+      "originalLine": 82,
+      "preparedLine": 34,
+      "before": "",
+      "after": "\n",
+      "originalRange": [
+        81,
+        81
+      ],
+      "preparedRange": [
+        33,
+        34
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 97,
+      "preparedLine": 50,
+      "before": "internal fun buildVideoShareIntent(payload: VideoSharePayload): Intent {\n    return Intent(Intent.ACTION_SEND).apply {\n        type = \"text/plain\"\n        putExtra(Intent.EXTRA_SUBJECT, payload.title)\n        putExtra(Intent.EXTRA_TEXT, payload.text)\n    }\n}\n\ninternal fun buildTargetedShareIntent(\n    payload: VideoSharePayload,\n    packageName: String,\n    activityClassName: String? = null,\n): Intent {\n    return buildVideoShareIntent(payload).apply {\n        setPackage(packageName)\n        if (activityClassName != null) {\n            setComponent(ComponentName(packageName, activityClassName))\n        }\n    }\n}\n\n/**\n * 卡片图分享：标题走 EXTRA_TITLE/SUBJECT，正文只带链接便于跳转。\n */\ninternal fun buildVideoCoverShareIntent(\n    payload: VideoSharePayload,\n    coverUri: Uri,\n    mimeType: String,\n    packageName: String? = null,\n    activityClassName: String? = null,\n    contentResolver: ContentResolver? = null\n): Intent {\n    return Intent(Intent.ACTION_SEND).apply {\n        type = mimeType\n        putExtra(Intent.EXTRA_SUBJECT, payload.title)\n        putExtra(Intent.EXTRA_TITLE, payload.title)\n        putExtra(Intent.EXTRA_TEXT, payload.url)\n        putExtra(Intent.EXTRA_STREAM, coverUri)\n        clipData = ClipData.newUri(contentResolver, payload.title, coverUri)\n        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)\n        packageName?.let { setPackage(it) }\n        if (packageName != null && activityClassName != null) {\n            setComponent(ComponentName(packageName, activityClassName))\n        }\n    }\n}\n\n",
+      "after": "",
+      "originalRange": [
+        96,
+        143
+      ],
+      "preparedRange": [
+        49,
+        49
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 151,
+      "preparedLine": 57,
+      "before": "internal data class ShareActivityCandidate(\n    val packageName: String,\n    val className: String,\n    val label: String,\n)\n",
+      "after": "",
+      "originalRange": [
+        150,
+        155
+      ],
+      "preparedRange": [
+        56,
+        56
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 157,
+      "preparedLine": 58,
+      "before": "private val SHARE_EXCLUDE_LABEL_TOKENS = listOf(\n    \"收藏\",\n    \"电脑\",\n    \"闪传\",\n    \"传输\",\n    \"空间\",\n    \"朋友圈\",\n    \"时间线\",\n    \"卡包\",\n    \"表情\",\n    \"钱包\",\n    \"Favorite\",\n    \"Timeline\",\n    \"TimeLine\",\n    \"Flash\",\n    \"Wallet\",\n)\n\nprivate val SHARE_EXCLUDE_CLASS_TOKENS = listOf(\n    \"AddFavorite\",\n    \"Favorite\",\n    \"Fav\",\n    \"Timeline\",\n    \"TimeLine\",\n    \"FlashTransfer\",\n    \"QfileJump\",\n    \"MyComputer\",\n    \"Wallet\",\n    \"QZone\",\n    \"Qzone\",\n)\n\nprivate val SHARE_FRIEND_LABEL_TOKENS = listOf(\n    \"发送给\",\n    \"发给\",\n    \"朋友\",\n    \"好友\",\n    \"聊天\",\n    \"SendTo\",\n    \"Send to\",\n    \"Friend\",\n    \"Chat\",\n)\n\nprivate val SHARE_FRIEND_CLASS_TOKENS = listOf(\n    \"SendToFriend\",\n    \"ShareToFriend\",\n    \"ShareImgUI\",\n    \"SendToFriendUI\",\n    \"JumpActivity\",\n    \"ShareUI\",\n)\n\nprivate fun containsAnyToken(value: String, tokens: List<String>): Boolean {\n    return tokens.any { token -> value.contains(token, ignoreCase = true) }\n}\n\n/**\n * 排除收藏 / 闪传 / 我的电脑等非「发给好友」入口，避免系统 Resolver 二次选择。\n */\ninternal fun isExcludedShareActivity(candidate: ShareActivityCandidate): Boolean {\n    return containsAnyToken(candidate.label, SHARE_EXCLUDE_LABEL_TOKENS) ||\n        containsAnyToken(candidate.className, SHARE_EXCLUDE_CLASS_TOKENS)\n}\n\n/**\n * 为分享入口打分：好友聊天入口优先；被排除的入口返回 0。\n */\ninternal fun scoreShareActivityCandidate(candidate: ShareActivityCandidate): Int {\n    if (isExcludedShareActivity(candidate)) return 0\n    var score = 1\n    if (containsAnyToken(candidate.label, SHARE_FRIEND_LABEL_TOKENS)) {\n        score += 12\n    }\n    val simpleName = candidate.className.substringAfterLast('.')\n    if (containsAnyToken(candidate.className, SHARE_FRIEND_CLASS_TOKENS) ||\n        containsAnyToken(simpleName, SHARE_FRIEND_CLASS_TOKENS)\n    ) {\n        score += 10\n    }\n    if (simpleName.length <= 20) {\n        score += 1\n    }\n    return score\n}\n\n/**\n * 从候选中选出最接近「发送给好友 / 选一个聊天」的 Activity；全部不达标时返回 null，回退包级分享。\n */\ninternal fun resolvePreferredShareActivity(\n    candidates: List<ShareActivityCandidate>,\n): ShareActivityCandidate? {\n    return candidates\n        .mapNotNull { candidate ->\n            val score = scoreShareActivityCandidate(candidate)\n            if (score <= 0) null else candidate to score\n        }\n        .maxByOrNull { it.second }\n        ?.first\n}\n",
+      "after": "internal enum class VideoShareTarget { BILIBILI_FRIENDS,SYSTEM_SHARE,SAVE_CARD,COPY_LINK,MORE }\n",
+      "originalRange": [
+        156,
+        256
+      ],
+      "preparedRange": [
+        57,
+        58
+      ]
+    }
+  ]
+}

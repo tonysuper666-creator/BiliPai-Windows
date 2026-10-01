@@ -1,0 +1,1092 @@
+{
+  "artifacts": [
+    {
+      "path": "compile-06/candidate.jar",
+      "sha256Bytes": "6008801cc675e7893739f0b5489ea489c1f41e168fdb9aeed6428a3ddd6711d6",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation/AppSystemBackAction.class",
+      "sha256Bytes": "01c0e1b7bfd5ed56b70a02d041a74dbad7d855f6b7085dd4816326288f2d1098",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation/DesktopOriginalNavigationSystemBackKt.class",
+      "sha256Bytes": "acbf8c96494a4c3bc8ad4e8f44a18dbadd0582d3694553baae93bea458d015e4",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiBackGestureDecision.class",
+      "sha256Bytes": "af4b202560f6184e7681d78728f2f89703d15dc057cc8c44c64accd7a15aa9de",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiCardMorphDestinationPolicyKt.class",
+      "sha256Bytes": "4ce8edd67d1fabb7f6d22843962dacc5e77a63d4d16d6ecdb3c4f8ed9ceace54",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavBackStackController.class",
+      "sha256Bytes": "a2b6b3476db22ba61aac2989766818911cecabb5a90d5b1a7bb69f516cf34290",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavBackStackPolicyKt.class",
+      "sha256Bytes": "401575d2759d1a01fba9818096bac7d8eae06311d5984fad99a2298408e86208",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavContentTransformPolicyKt$WhenMappings.class",
+      "sha256Bytes": "65f271f482293377d3461695a072076943f56552f1f20469c2bc1bf53deaac5e",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavContentTransformPolicyKt.class",
+      "sha256Bytes": "60153da2dfd75088977703e975648e1e0ea5446cb7c837a72d6443fa57840844",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavDisplayHostKt$BiliPaiNavDisplayHost$3$3$1.class",
+      "sha256Bytes": "5c342599aa7e5802f1aebab81c329a8f18731ce4e92510edc94705dfb4abe0ff",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavDisplayHostKt$BiliPaiNavDisplayHost$3$4$1$2$emit$1.class",
+      "sha256Bytes": "c5e7b731652902551915cbff0575de6fd892421f256fa166cf7e6d146166ccfc",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavDisplayHostKt$BiliPaiNavDisplayHost$3$4$1$2.class",
+      "sha256Bytes": "d3ba5171ed2c423a12b2b004f394b710a91dbac5dbfaed93230526c05d715b2a",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavDisplayHostKt$BiliPaiNavDisplayHost$3$4$1.class",
+      "sha256Bytes": "0d3769903c729ecfdd694b03a838389b548795fdb49a5f7d03250ee6390f2c24",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavDisplayHostKt$BiliPaiNavDisplayHost$3$5$1.class",
+      "sha256Bytes": "bbc9d1728e21f82cfcac3290a82f4d9bca74a4fe0676774f88b8ea2828db0ba9",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavDisplayHostKt$BiliPaiNavDisplayHost$3$6$1.class",
+      "sha256Bytes": "2bac7f377ebeccd3e69c628dbba3d07d9b3b32d64ed0b02f394b9ea9429b9feb",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavDisplayHostKt$BiliPaiNavDisplayHost$lambda$2$14$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "86dbe9822d2dac7248b129d6665c452f8bfa984ba5b55a02ae67c26a1c3e84da",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavDisplayHostKt$BiliPaiNavDisplayHost$lambda$2$22$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "1b57d8dea17b5040c137e14078a6ec4066b844692807e3267928ebee54790e4d",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavDisplayHostKt$buildMiuixNavViewModelStoreOwner$1.class",
+      "sha256Bytes": "2accd464ff508b906e9a62153a61d47d0ea3e68482035ffe336dace70ddc7451",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavDisplayHostKt$WhenMappings.class",
+      "sha256Bytes": "9e9633265781c470120838b0fbcc85edec44bbf370a8e62b2e2bc1fe70260df9",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavDisplayHostKt.class",
+      "sha256Bytes": "448210e2ba85082b294f7769a2456f47e1dd14fc28cb931810157c0848ca4ec5",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryContentPolicyKt.class",
+      "sha256Bytes": "b74210e0512495f41ee4e90abdde8ff83f23dd5cb326cec52c9c14350bd9f703",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryContentRole.class",
+      "sha256Bytes": "7187e668b538678400eff813cb5ff0708121db91566a9922de387dceb3bc9377",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$1.class",
+      "sha256Bytes": "62b8bcaa0bc7a9a3cc30e2884abd6511b5c46423b813abee523577ecfccbf0ac",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$10.class",
+      "sha256Bytes": "0df99b123ef5ba4526618bd31a4f9e38da1bbe51fae5688970858d064a58c88a",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$11.class",
+      "sha256Bytes": "7080fb786f054ea6cb5c6741c8edbaeafa0a598d575fdc19f1d5cb9f7bbd4394",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$12.class",
+      "sha256Bytes": "0524a9795b6735b6e45cdb2adedd959d3c17ad2bfad3df5a436cb430b7e02eae",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$13.class",
+      "sha256Bytes": "c34da371ca7bd757fb98ae2b16d0a88f02a9af3728c99f735ba1a035a339bc08",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$14.class",
+      "sha256Bytes": "866a5c2fb700f7f1f695077a174bad55cefe587c4b309891612c0893511a8c30",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$15.class",
+      "sha256Bytes": "6bff3eb567a2239645a0bfc398e5cc2729d05216b76405dd4c2db7b1910a58f4",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$16.class",
+      "sha256Bytes": "a5ee7e87d64fe942cbbfa9aacc2e89170e677268f7ec2ab3e5150a0412679072",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$17.class",
+      "sha256Bytes": "b0dc3628f1e0e243f4626ab5440be3b09d5964e274c05b597942544318e5bd5b",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$18.class",
+      "sha256Bytes": "9ec0ecefcfcb685ca117320c14232e7f14e39bf77e5b07fcf06573e97a83b30a",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$19.class",
+      "sha256Bytes": "0478178108f6e64a4c3c61951c7f7c38511fd55da59b9d3b5a3931f073b92070",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$2.class",
+      "sha256Bytes": "71f26c21add222e5d7cd59f4aff9fc7f1a246c1a0b71887829eaa9dd6d440a44",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$20.class",
+      "sha256Bytes": "37bdd1b223913c7d1a212495fb7ce8a686ab38999dd7cf052272ec9338ed299e",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$21.class",
+      "sha256Bytes": "d8caf43b294665ce888f5356cf427b2364a0d75696718c0c7677092d3238e1ac",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$22.class",
+      "sha256Bytes": "8d35deb7341b68c70881b29a4e80edf4b9a93687d4d22bbc533f3cd8a7c045a4",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$23.class",
+      "sha256Bytes": "d669709b8a3a90655f5aade120ff3c674220d463ca9ccd6a7109b3ce580d78e6",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$24.class",
+      "sha256Bytes": "716bdffb31e7c4b496dda8d88e59d6e1a9b6145617ed56964abbaffba5da066d",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$25.class",
+      "sha256Bytes": "bc826401ab9b9f1c6bfb63f594704e415680aa8adf4c1813ac68b7168cd38337",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$26.class",
+      "sha256Bytes": "25ad93a8070af2f2612de58206408e9356b82f3d442d42b212ba6b63f2ee2346",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$27.class",
+      "sha256Bytes": "51695a8a6ef77b387f2291e82f578b6baf3b5896a9c21f84b72bf3042b7412e2",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$28.class",
+      "sha256Bytes": "ddd516e462380c1a085f48dab883d38aa633d42afce41c1eb45aba564b271280",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$29.class",
+      "sha256Bytes": "4ddf500d6ebbbc96ea2dc91d3444a166444947652cbe693d30a743fae8c75347",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$3.class",
+      "sha256Bytes": "cb0324f7bbc7bd7964ed0c871bef072d2f9388fb200558fb2ec812843731204b",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$30.class",
+      "sha256Bytes": "0c5214fa2b2da16efc9c9df65093694f6f12a19ef6d079974a2881ea7c3ae5b9",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$31.class",
+      "sha256Bytes": "2cb88d66af78e75882f1f7faf109b2ebfcf469d6812d452235a623f213377a93",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$32.class",
+      "sha256Bytes": "0acd0c5f44979e03cc0577d0a06a9873957bec29cee9711b42f5f3700b3118b6",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$33.class",
+      "sha256Bytes": "47e01f5830b7ffc462cca7bd8d1c0661e5ba008397b86782fadeb292c14c406d",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$34.class",
+      "sha256Bytes": "cf54f7dd440a25696b127897457cae2bc25f8943ad4892b6af339d2c8b50b00c",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$35.class",
+      "sha256Bytes": "9b73e17e02371401da47feaeef2eac059fc5d78df341142152e4766509618caa",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$36.class",
+      "sha256Bytes": "72f5e52b130a2b64b76bda1931056fb1eadf3a620bdbbf8f97bee50a6f2af919",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$37.class",
+      "sha256Bytes": "809e0fa607ed292c68b01f9ea51e737a61dba0a388a57f7dbbc5bb965f1575c1",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$38.class",
+      "sha256Bytes": "1b03cb8ce5ee4f2bf196d756eef4f0032b7e5e044ba41c81d01f2171cb2b7932",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$39.class",
+      "sha256Bytes": "a6f2ad43854b6be4afb50a5d10e4697a0f7287608cc68ee02a712081eee7adc2",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$4.class",
+      "sha256Bytes": "d2780d5c05166a8378e95fe97246b43d56cf17e6a0a5ca9a24e25b7da9cfef3d",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$40.class",
+      "sha256Bytes": "94df252486a5d18db7f1d1b12734c3ff97712eec422174eb1829bb9b45e018e1",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$41.class",
+      "sha256Bytes": "19040f6b13e8370d232b0b40635b53402326ef8189059c6a29937ec78eecbd6b",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$42.class",
+      "sha256Bytes": "055dc73a3af5fbf8f21087af5f34ba50aa512b3eefb0dc55df96ba545f686b73",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$43.class",
+      "sha256Bytes": "a20fff34f2035de063afee48820db1158e0cf481f959c5783f867f8bb60a300d",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$44.class",
+      "sha256Bytes": "6c4b2e1f4638336e7463c7460ca53813037dd3a6b4dafea53f58fe9674049191",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$45.class",
+      "sha256Bytes": "137fab2ce00ec4c881cf13ff194287fa78231fb03c6df5d121dab582dfc81e03",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$46.class",
+      "sha256Bytes": "d33d9e96ef027bb007cbd42bf9805b847d1d20c63d135b07a442623abcb97eff",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$47.class",
+      "sha256Bytes": "2f6dba3d0c6ef358109c7f54acbf714c40dc513332558b2f7b38a6515af0cfaf",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$48.class",
+      "sha256Bytes": "e7c5faf1c1be3558cb2512c0b1d3cef563be450c24126fcbed47ef72b2bc0f74",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$49.class",
+      "sha256Bytes": "0ac412a1ce225fee54732ab1ac02572c2cc14eb838133c7394548d36675e3af4",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$5.class",
+      "sha256Bytes": "d10c9eb8aa02346f0000b8ef5bebd5ecabb76756513e5d401572391900fd128b",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$50.class",
+      "sha256Bytes": "30b3e224de8b449e3e06a62aceac2844c6015790a10f725829077304784b6904",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$51.class",
+      "sha256Bytes": "bf450d702fd94ed341044c943d840206e951c064016c8b35c529a06e5e21dfc4",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$52.class",
+      "sha256Bytes": "09bf723ea7c198dcf1c6362385c45fe0f264d26c1ae2c5e3360f9ba79d13f8da",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$53.class",
+      "sha256Bytes": "ed3008a695d082bb93bb2f1ce676505b45f4d9ecf46b9d6418cc2be0bdaaa382",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$54.class",
+      "sha256Bytes": "2a94ed59acb1c24008026d819ba856c81a7d968926f0a19e0807343508e687c9",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$55.class",
+      "sha256Bytes": "d4bd97bc408fc2d0334059cd47de8d881df930ddbd4b436f308a8857f83875f5",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$56.class",
+      "sha256Bytes": "cc2a2a5edc608298ee15d24624634db1856c6b3fa61aaf873a4f9c27505bf7f1",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$57.class",
+      "sha256Bytes": "9615e828927cba9adcbb47facc6086f4c41eddf3a2bf8e412bb74e0c767da7e3",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$58.class",
+      "sha256Bytes": "250603c841b70aad7a38ea68028a2799cf758a9697dc7c08ecfdec6d9c072bfb",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$59.class",
+      "sha256Bytes": "c1d8a3f0a1a585d8b51fa4f8141c09e9884a1e5141e34eea77a3060c28512c9e",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$6.class",
+      "sha256Bytes": "0feab80e5afd7ce5224f25ce16cc97ee4e760f142206b4ddbc44a1674098e598",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$60.class",
+      "sha256Bytes": "44595df75b10beee1866aa85473b6678ca638c8b149d539a0c3b7182d8c5921a",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$61.class",
+      "sha256Bytes": "5ffb68b1729e3b29d2ea7bff32a86845dcaa6a761648cc2137310a17d1ff2698",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$62.class",
+      "sha256Bytes": "8d876984ec73da365d47e18eb45a95203f911f3f05f704633be7cb52d625a645",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$63.class",
+      "sha256Bytes": "2e66514cee2cfdbba56cd5c726bc1a3da76587660f376a9ae1b007ee78364d8b",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$64.class",
+      "sha256Bytes": "b5bf9fdfd2786875028b372b92ab41341764864e28e046fa2f38cea8d8319062",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$65.class",
+      "sha256Bytes": "26822879ca05f97b9a97d46f33434f94507ccad8cc9840a143ff682177a893cb",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$66.class",
+      "sha256Bytes": "a4e04f541ee7e73c30511802e6b22909627d46b4e2ceb9383440af61f8a548c2",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$67.class",
+      "sha256Bytes": "0d8afdb08f2f473e90e2f453e2c7569446f56168ce3b40d57419ba1b204e85a7",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$68.class",
+      "sha256Bytes": "7cef53182362c5de7fad27d121b2620eb0c0fb62b01fb745dbbb6fb12113e627",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$69.class",
+      "sha256Bytes": "064b1e366889da4622eed9e3262cbe24a392f6797fd1561c5469e37ab8c177bd",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$7.class",
+      "sha256Bytes": "3d32d3a19e2dac1dd04f8b50e8a0346c9f5d365f8905e3702faaad3cf26d5aa0",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$70.class",
+      "sha256Bytes": "0e61feb58df5eed1d9665043c9cff559fb7b2c0105ae3d35e701f0f9a627da3d",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$71.class",
+      "sha256Bytes": "231981a800ea8c008aedaea6487daf9632a708dca4f32b65937d49c0e8711835",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$72.class",
+      "sha256Bytes": "11fac3e9df107d4cc9374f47283b4f7a19d20397a5d9e60067720ee37b2c3940",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$73.class",
+      "sha256Bytes": "0736df96e94b3bf4197a5f3f84d38de38cf27a310cda341b29efbe7472977e5f",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$74.class",
+      "sha256Bytes": "700e83ed5c5341916d7d282d331790e0d24b61ce41da667a88f85d42f6e2b63c",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$75.class",
+      "sha256Bytes": "abc563b32171d9a91096304a91e4078b32b47f5100cd0b221b520d6c608f9955",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$76.class",
+      "sha256Bytes": "f5858149f5f42fe80274ecff27751a63fec10b746b5bf34dc5063fbc1cecfcd7",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$77.class",
+      "sha256Bytes": "fac9809c592b2edc581396fc92b4e213020b78a0fd136c562d1f808ed04c6277",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$8.class",
+      "sha256Bytes": "dc03358382bc91d1a72540e63cab237bd24e9bb63d0769ba49c8b807273a35e5",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt$biliPaiNavEntries$$inlined$entry$default$9.class",
+      "sha256Bytes": "469d6cac89963f8074f13fe2c22a40fddf2767adb238abfa5c72f3721541dbbb",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavEntryProviderKt.class",
+      "sha256Bytes": "a7656fa26f4090a793f8e610b8c00a0bb61fac46d6006591581ed26d838ef23d",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavMotionDecision.class",
+      "sha256Bytes": "1d9b8ca5b66d18bace59eeb995c36344b3a96f5243c53df83461ea63dcaf2fbf",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavMotionMode.class",
+      "sha256Bytes": "dbde283e06d193e29a5b1b545d93f91ee8c89c0fe025b93d82a980583e4ab08b",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavMotionPolicyKt$WhenMappings.class",
+      "sha256Bytes": "b96bc44113aea3b4aae6905668f4babbe9e9dc70efca167bb57e4a599f95cf95",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavMotionPolicyKt.class",
+      "sha256Bytes": "d5f75a70e871d6fc0315095baaaaef00b3494e4dbb201c06df7e70c4cc110a1e",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiNavRouteTransition.class",
+      "sha256Bytes": "41e913c9a07b907e6f2c059bad941b6fff8f663a39d198348aa0e04ba1b1e703",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/BiliPaiProgrammaticBackDispatcher.class",
+      "sha256Bytes": "793b03e303a61ced14fc658b1ee94ade98ebd422e587fdba4b95bed4c1b591bf",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/core/ui/motion/BottomBarLikeContentTransformPolicyKt.class",
+      "sha256Bytes": "614874ef589f3bcaee3616585a29751707909fa004e5c5191b94794b1ea433e5",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/core/ui/motion/NavigationSlideSpringKt.class",
+      "sha256Bytes": "306c2f617596df7a50dd4d48799abfe169cef50b2ab75af47dbaa78ea20b924f",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/core/ui/motion/SettingsIosPushContentTransformPolicyKt.class",
+      "sha256Bytes": "0296d147395473acbe7f5fe11f08807c8d3cb826aaae07344e97fbeb812482ff",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationHostDepthKt$WhenMappings.class",
+      "sha256Bytes": "f5381202a2afafdcef903287389338659a2a8f6a3726bbcf84eb55a54c210f3e",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationHostDepthKt.class",
+      "sha256Bytes": "fd54dbe468dbca791c23a452d8ae9ffab80b67edb6e8861bed47fcb840152dcc",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationPredictiveBackgroundKt.class",
+      "sha256Bytes": "5e2ceac784f647e79ad77f5296bddf0d7920a15a76d28380996aa59bf3524dbd",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/core/ui/transition/PredictiveBackBackgroundState.class",
+      "sha256Bytes": "8c1fcc796db40d4a6e07eaa880d634e53706b1d7ade4d9db7f0aeb3021d7aed4",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/core/ui/transition/PredictiveBackBlurFrameCache.class",
+      "sha256Bytes": "08cc5735ad3c92b08c6b57d882d9f1b7a0f22e142728b63f4c58380133d8fca7",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/core/ui/transition/VideoCardTransitionNavBackdropKt.class",
+      "sha256Bytes": "c3358a48cf321e0d8189ceec14b4989024f42a189f2a099953e8e2fb5d9c37c7",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/feature/settings/DesktopOriginalNavigationSettingsPopKt.class",
+      "sha256Bytes": "9c617a3be653c5ac2ab6642070e3b7ed321f22aee9f885fb6626a4a2563b5250",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/AospNavTransitionKt.class",
+      "sha256Bytes": "9f5291f4f806101de3e875af87655365f85c91591ddfff813767f536b4693415",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/BiliPaiMiuixNavTransitionKt$realtimeCoveredBlurTransition$1.class",
+      "sha256Bytes": "8e2099c7a1680a05d7eb17a336a64e55ed22b5475b8568eb67c0cc718ec19d9b",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/BiliPaiMiuixNavTransitionKt$WhenMappings.class",
+      "sha256Bytes": "33a6935fa0409029d511743a47e2964c273935ae9a317ba3fe29671d312970ca",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/BiliPaiMiuixNavTransitionKt.class",
+      "sha256Bytes": "bf503751e236f2be9d0468041511924dc177d5ae0381adc5dc5f7c2885c71ae2",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackAnimationStyle$Companion.class",
+      "sha256Bytes": "906891a7166a463ef62c27c605ad0f78ebeece40302caa6ffa43c9ed4f7de0da",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackAnimationStyle.class",
+      "sha256Bytes": "bd97c72945a4d832837b1e1ed8b36666c0f6f3d30a694248c376dcfd8ab730cb",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirection$Companion.class",
+      "sha256Bytes": "9e6f5503e633c02081b93b26934229ef628f6510ac262c1291630cda29840450",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirection.class",
+      "sha256Bytes": "72be63f91cbb2c276769a538f17ed3cf78cfdb4bdc948a716cea2bf90894f58d",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirectionPolicyKt$WhenMappings.class",
+      "sha256Bytes": "0142029a2c9138458ded1c6e24901a9adc89dca80d844603b3b846c536ca287c",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirectionPolicyKt.class",
+      "sha256Bytes": "2b9626e7b6d160219f38e715473f3141b649323246d2c19f2e85857c9e32f06a",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/ClassicNavTransitionKt$ClassicScalePop$1.class",
+      "sha256Bytes": "a0d9ebd986081a028f94acb9cc7cf07ef7f781c7fa9fb1b94bf576d8cd3bdc69",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/ClassicNavTransitionKt.class",
+      "sha256Bytes": "747cdc60809e66fb879eb2fd21d9f857bb3fc9c369dff77cf6253e2b38357336",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixCoveredBlurRenderEffectCache.class",
+      "sha256Bytes": "7ebca79798d5e83e22f18f3d04f1ba04cc832715babb1c851a085d0886946b51",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixPredictiveBackProgressTransitionKt$miuixPredictiveBackProgressTransition$pop$1.class",
+      "sha256Bytes": "797e74a0dac834600fb8a97feaec27ecb8940d09f0046179724ff433486f4ab1",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixPredictiveBackProgressTransitionKt$WhenMappings.class",
+      "sha256Bytes": "17ecea9e04ae2cd00ace86b27efafc07a37f726da1df781c63224b2a6903b74a",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixPredictiveBackProgressTransitionKt.class",
+      "sha256Bytes": "c6fc6d98473487393c1846f11293384ee6471bd9a7a0776d04a2c8e70d46eb58",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardClipRadii.class",
+      "sha256Bytes": "7654cdfafaceaae0231bb4c31ad0cd37be1b236d1c8cd6296181efcf013d764c",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardClipShape.class",
+      "sha256Bytes": "7aa7919d88c58ac3305faf98830ba4609342fd3ab1f4c8641bd72498f24b6e38",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardContentCompensation.class",
+      "sha256Bytes": "d9c4d0e43ada7c73fa39548e71380cc032dd7ad93be45c1c96056de8f42b1ee9",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardContentScale.class",
+      "sha256Bytes": "ddc0761e56d02239ca8218518d2d84f9c5106617d0f4470e9b919b6e5c825f6f",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardGestureTransform.class",
+      "sha256Bytes": "9f4f78b65a58dc27e3af053a71c5c45a278c2c779ea5732c2636a2f176500075",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardInverseScale.class",
+      "sha256Bytes": "f77ff63a45630bd22d9d072705120b75cbc9c9605ffc28faf33a8812dda25279",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardNavTransitionKt$miuixVideoCardNavTransition$2$WhenMappings.class",
+      "sha256Bytes": "ba504ee3ca3312652670dc1fbbada10b23fd487ee63fe71c2b6dfe3c8dc2d057",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardNavTransitionKt$miuixVideoCardNavTransition$2.class",
+      "sha256Bytes": "2a92b53ac922c7b9c3f69fbb38a342a7f7f3db3796b18f095dd9f486733195db",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardNavTransitionKt$WhenMappings.class",
+      "sha256Bytes": "d1d527c63b092bf1149d65c39473b8dcb813156a59a0dcddab0d07c91db8c757",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardNavTransitionKt.class",
+      "sha256Bytes": "4461854e218e79af983f80a874aec035505a66afbcdab1f8780e423db488289e",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardTransitionProgress$observe$1.class",
+      "sha256Bytes": "f7dd5eed9e6251af572103fbc9ab33998185b4c310d02d69afa262c616e54ae2",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardTransitionProgress$WhenMappings.class",
+      "sha256Bytes": "c6662f383d8ce996fb9141d3aa6c4c3eed8a60a20a16f51554bc2cdcd052e950",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardTransitionProgress.class",
+      "sha256Bytes": "14d3c9783016d36858e432fdc5c7068f427a278e7de96f551fd6c3e12157af68",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/NavTransitionEasingKt.class",
+      "sha256Bytes": "9421976b70befdc2be515a722a60c38dfc4e45d273c7e37ad6374108d178ed38",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/NavTransitionGeometryKt.class",
+      "sha256Bytes": "9e202266df9829aadee3721bfd87b735fa915911003ed5eb872c39c6d7fda15d",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/NoPredictiveBackTransitionKt$WhenMappings.class",
+      "sha256Bytes": "3cff8bdb9afe36de16c7a2ebbdf7348cc73aa1860b83afc4f4db832ec726cc53",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/NoPredictiveBackTransitionKt.class",
+      "sha256Bytes": "1a36239e4e6462a89c662465669ee464d636093535cc7bca3d3accb217ee056a",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/ScaleGestureCardTransform.class",
+      "sha256Bytes": "66b4de3de7dc61f4be4ab1c370d42c1027ba5e4569696fa9d647b6a49561147b",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/ScaleNavTransitionKt$WhenMappings.class",
+      "sha256Bytes": "2d936919abd01f90ba1777134e3f7a65511b31345dac769be4dbb0a1ba4e20c2",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/android/purebilibili/navigation3/predictiveback/ScaleNavTransitionKt.class",
+      "sha256Bytes": "c3aceba4e14526d63417fd6596f7fbed722fc847012a9630c3a123acae4a5c35",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopNavigationEntryViewModelPlatform.class",
+      "sha256Bytes": "f822e24b3f4e77893c88efbdc9f10744194c6f9d0f413ee6ae730e215bc0a3af",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopNavigationHostEnvironment.class",
+      "sha256Bytes": "e8b58c233fb23dabf6e1a80dd49973c0b4acb2329956e4e463e5107e481e4ecb",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopNavigationHostEnvironmentKt.class",
+      "sha256Bytes": "a47c89b264c5804a55717470111d879e3cd0f2d0502d92c4328df3e447e47a1a",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostKt.class",
+      "sha256Bytes": "f2f431415ed3b40e5f55179f0d8b80a6927a7eb56ec249ad690826829b4588ce",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getClickToPlay$$inlined$map$1$1.class",
+      "sha256Bytes": "873b4939ca0bdc28d9db2cec33e50e79a89aa6a81f2eee31e04655ac84fb8dc7",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getClickToPlay$$inlined$map$1$2$1.class",
+      "sha256Bytes": "f6ee66ea300308b29d83d1f7ab14f2392dcd6f90649ce79a997125485d7c2424",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getClickToPlay$$inlined$map$1$2.class",
+      "sha256Bytes": "4a635d859ba50f8ba8c1255a5d45c29c9b4658a060dc99c545179ab9d29ce567",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getClickToPlay$$inlined$map$1.class",
+      "sha256Bytes": "6d10b3f30dd56708726ee4aa30727a40aef3a10fce4055cecfa7a32242e25da5",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getFullScreenSwipeBackEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "e9117def0810387af3e83f5e882ebd84a08fee30b9f62e3feef7ae1d625971f5",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getFullScreenSwipeBackEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "c0bb57ff902f318b61352411ab46d9bca79e589751fdb1af93a032fb7e4abdf6",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getFullScreenSwipeBackEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "8020a183dad6f17d93c8291f3fe79fdf7d608eae059aaa8cb94fa69d0f16e08c",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getFullScreenSwipeBackEnabled$$inlined$map$1.class",
+      "sha256Bytes": "f7ca65648ccfd92d66d573729f3846e14c9be9206f703afd5686287e0eab0703",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getRelatedVideoTransitionEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "b59972c9556227f789fee15571917825c01d97c3d8a30e8aae72e032005cc0f0",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getRelatedVideoTransitionEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "b76e8d3ccc04b4b1862c6df64e248f45c5beb75d36d4e59a81ddabd270ab75eb",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getRelatedVideoTransitionEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "6ad6b0a15f046bd92cb619e2d12fee9f83ad67f6dbd703ee063372adc290faa3",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getRelatedVideoTransitionEnabled$$inlined$map$1.class",
+      "sha256Bytes": "69c6378a2630ab925a4ecf24e13c5b2ef1ad5bf79512f5d20ad1cf5577f7fc0a",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getVideoTransitionRealtimeBlurEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "bfb63240488b4b3b84c3f8763756e4e3c3923caa44f1889a427e745e995d51df",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getVideoTransitionRealtimeBlurEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "21e07f7c317a1dc008fec7b03f21abe4042beacc05613fb6d70f6f14fdce228b",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getVideoTransitionRealtimeBlurEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "546fb2d24ce3150b0fee300414f0d64b620ed5ea67cc99bf91256e1b1adabbed",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$getVideoTransitionRealtimeBlurEnabled$$inlined$map$1.class",
+      "sha256Bytes": "a212f44ca1caecf593832a1e914836194fb7ae187faada4648a9315e48ddca24",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings$setClickToPlay$1.class",
+      "sha256Bytes": "8812ee0860308526d136027f2b157034b01d9cb912f381bc777e963dc55b78a8",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-06/classes/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings.class",
+      "sha256Bytes": "a4d226a18a62a6f75435d8c8fc3b12480d678b7a499ef218d287089056ef9fa3",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "proof-05/classes/com/bilipai/desktop/ui/FixtureViewModel$Companion.class",
+      "sha256Bytes": "94b87a56e47f94908bae25b2399b2ac046b0599998e1fdec8cb71a03c93b7a55",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "proof-05/classes/com/bilipai/desktop/ui/FixtureViewModel.class",
+      "sha256Bytes": "27c3a37fb7dce6a1e564e77d705e3cbfeef01efec29e7bba69ffa5731f2d6b1e",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "proof-05/classes/com/bilipai/desktop/ui/NavigationHostFixtureKt$main$1$entry$1.class",
+      "sha256Bytes": "5cbc474818d79db74a6fb5e6821c7d9a8452dc18b201ebe77e58081aa23a7142",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "proof-05/classes/com/bilipai/desktop/ui/NavigationHostFixtureKt$main$1.class",
+      "sha256Bytes": "d0fd23134d798aa607fa54cccd7e26b28350a5db5072587e6316c93527ebde80",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "proof-05/classes/com/bilipai/desktop/ui/NavigationHostFixtureKt$OWNER_KEY$1.class",
+      "sha256Bytes": "0511649c5910d6ff4a772e5027a025bdc474e82b1fd435fad69b6ea1360e78f0",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "proof-05/classes/com/bilipai/desktop/ui/NavigationHostFixtureKt.class",
+      "sha256Bytes": "1b4d7b525771fba388c16c3c718c796730f17a241018fe7c33dee4bd623af1f2",
+      "install": false,
+      "git": false
+    },
+    {
+      "path": "compile-05/candidate-incomplete-longpath.jar",
+      "sha256Bytes": "c6a6768b8a2ad3cedd662093f4257af886a13620c806ab06716935fb80b19d3e",
+      "install": false,
+      "git": false,
+      "historicalIncompleteJar": true
+    }
+  ],
+  "reason": "task compiled classes/Jars are local proof only, never install or Git"
+}

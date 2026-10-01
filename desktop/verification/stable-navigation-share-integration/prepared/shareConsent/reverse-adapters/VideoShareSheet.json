@@ -1,0 +1,323 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheet.kt",
+  "output": "com/android/purebilibili/feature/video/share/VideoShareSheet.kt",
+  "originalSha256LF": "1316c7769903345835c34e7b38922a24caefd970070bd48007cc505b2db7f6fd",
+  "preparedSha256LF": "bac6e4169f743a7b109329ac9b48e4079be4e1283919798493aa300ba5351480",
+  "changes": [
+    {
+      "tag": "delete",
+      "originalLine": 4,
+      "preparedLine": 4,
+      "before": "import android.app.Activity\nimport android.content.ActivityNotFoundException\nimport android.content.Context\nimport android.content.Intent\nimport android.content.pm.PackageManager\nimport android.widget.ImageView\nimport android.widget.Toast\n",
+      "after": "",
+      "originalRange": [
+        3,
+        10
+      ],
+      "preparedRange": [
+        3,
+        3
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 49,
+      "preparedLine": 42,
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "",
+      "originalRange": [
+        48,
+        49
+      ],
+      "preparedRange": [
+        41,
+        41
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 53,
+      "preparedLine": 45,
+      "before": "import androidx.compose.ui.viewinterop.AndroidView\n",
+      "after": "",
+      "originalRange": [
+        52,
+        53
+      ],
+      "preparedRange": [
+        44,
+        44
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 59,
+      "preparedLine": 50,
+      "before": "import com.android.purebilibili.core.ui.common.copyPlainTextToClipboard\n",
+      "after": "",
+      "originalRange": [
+        58,
+        59
+      ],
+      "preparedRange": [
+        49,
+        49
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 85,
+      "preparedLine": 75,
+      "before": "    val context = LocalContext.current\n",
+      "after": "    val context = com.bilipai.desktop.ui.LocalDesktopVideoShareBindings.current\n",
+      "originalRange": [
+        84,
+        85
+      ],
+      "preparedRange": [
+        74,
+        75
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 114,
+      "preparedLine": 104,
+      "before": "            target = VideoShareTarget.WECHAT,\n            label = \"微信\",\n            iconText = \"微\",\n",
+      "after": "            target = VideoShareTarget.SYSTEM_SHARE,\n            label = \"系统分享\",\n            iconText = \"享\",\n",
+      "originalRange": [
+        113,
+        116
+      ],
+      "preparedRange": [
+        103,
+        106
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 122,
+      "preparedLine": 112,
+      "before": "            target = VideoShareTarget.QQ,\n            label = \"QQ\",\n            iconText = \"Q\",\n",
+      "after": "            target = VideoShareTarget.SAVE_CARD,\n            label = \"保存卡片\",\n            iconText = \"存\",\n",
+      "originalRange": [
+        121,
+        124
+      ],
+      "preparedRange": [
+        111,
+        114
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 152,
+      "preparedLine": 142,
+      "before": "                Toast.makeText(context, \"已发送给 $count 位 B 站好友\", Toast.LENGTH_SHORT).show()\n",
+      "after": "                context.showFeedback(\"已发送给 $count 位 B 站好友\")\n",
+      "originalRange": [
+        151,
+        152
+      ],
+      "preparedRange": [
+        141,
+        142
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 162,
+      "preparedLine": 152,
+      "before": "                context.startTargetedVideoShare(\n                    payload = payload,\n                    packageName = target.packageName,\n                    appName = target.label,\n                    shareMedia = moreShareMedia,\n                    preferredActivityClassName = target.activityClassName,\n                )\n                onDismiss()\n",
+      "after": "                shareScope.launch {\n                    context.performTarget(target.target, payload, moreShareMedia)\n                    onDismiss()\n                }\n",
+      "originalRange": [
+        161,
+        169
+      ],
+      "preparedRange": [
+        151,
+        155
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 172,
+      "preparedLine": 158,
+      "before": "                context.startMoreVideoShare(payload, moreShareMedia)\n                onDismiss()\n",
+      "after": "                shareScope.launch { context.performTarget(VideoShareTarget.SYSTEM_SHARE,payload,moreShareMedia);onDismiss() }\n",
+      "originalRange": [
+        171,
+        173
+      ],
+      "preparedRange": [
+        157,
+        158
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 247,
+      "preparedLine": 232,
+      "before": "                                VideoShareTarget.WECHAT,\n                                VideoShareTarget.QQ -> {\n                                    val packageName = item.target.packageName ?: return@VideoShareSheetItemView\n",
+      "after": "                                VideoShareTarget.SYSTEM_SHARE,\n                                VideoShareTarget.SAVE_CARD -> {\n",
+      "originalRange": [
+        246,
+        249
+      ],
+      "preparedRange": [
+        231,
+        233
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 257,
+      "preparedLine": 241,
+      "before": "                                                style = shareStyle,\n",
+      "after": "                                                style = if(item.target == VideoShareTarget.SAVE_CARD) VideoShareStyle.CARD else shareStyle,\n",
+      "originalRange": [
+        256,
+        257
+      ],
+      "preparedRange": [
+        240,
+        241
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 261,
+      "preparedLine": 245,
+      "before": "                                            context.startTargetedVideoShare(\n                                                payload = payload,\n                                                packageName = packageName,\n                                                appName = item.label,\n                                                shareMedia = shareMedia,\n                                            )\n",
+      "after": "                                            context.performTarget(item.target,payload,shareMedia)\n",
+      "originalRange": [
+        260,
+        266
+      ],
+      "preparedRange": [
+        244,
+        245
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 274,
+      "preparedLine": 253,
+      "before": "                                    copyPlainTextToClipboard(context, payload.url, \"视频链接\")\n                                    Toast.makeText(context, \"已复制链接\", Toast.LENGTH_SHORT).show()\n",
+      "after": "                                    context.copyText(payload.url)\n                                    context.showFeedback(\"已复制链接\")\n",
+      "originalRange": [
+        273,
+        275
+      ],
+      "preparedRange": [
+        252,
+        254
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 299,
+      "preparedLine": 278,
+      "before": "                                                context.startMoreVideoShare(payload, shareMedia)\n",
+      "after": "                                                context.performTarget(VideoShareTarget.SYSTEM_SHARE,payload,shareMedia)\n",
+      "originalRange": [
+        298,
+        299
+      ],
+      "preparedRange": [
+        277,
+        278
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 352,
+      "preparedLine": 331,
+      "before": "    val context = LocalContext.current\n    val appIcon = remember(context, item.target) {\n        item.target.packageName?.let { packageName ->\n            try {\n                context.packageManager.getApplicationIcon(packageName)\n            } catch (_: PackageManager.NameNotFoundException) {\n                null\n            }\n        }\n    }\n",
+      "after": "    val context = com.bilipai.desktop.ui.LocalDesktopVideoShareBindings.current\n\n",
+      "originalRange": [
+        351,
+        361
+      ],
+      "preparedRange": [
+        330,
+        332
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 374,
+      "preparedLine": 345,
+      "before": "            if (appIcon != null) {\n                AndroidView(\n                    factory = { viewContext -> ImageView(viewContext).apply {\n                        scaleType = ImageView.ScaleType.FIT_CENTER\n                    } },\n                    update = { it.setImageDrawable(appIcon) },\n                    modifier = Modifier.size(58.dp),\n                )\n            } else if (item.iconVector != null) {\n",
+      "after": "            if (item.iconVector != null) {\n",
+      "originalRange": [
+        373,
+        382
+      ],
+      "preparedRange": [
+        344,
+        345
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 436,
+      "preparedLine": 399,
+      "before": "    context: Context,\n",
+      "after": "    context: com.bilipai.desktop.ui.DesktopVideoShareBindings,\n",
+      "originalRange": [
+        435,
+        436
+      ],
+      "preparedRange": [
+        398,
+        399
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 444,
+      "preparedLine": 407,
+      "before": "            Toast.makeText(context, progressMessage, Toast.LENGTH_SHORT).show()\n",
+      "after": "            context.showFeedback(progressMessage)\n",
+      "originalRange": [
+        443,
+        444
+      ],
+      "preparedRange": [
+        406,
+        407
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 447,
+      "preparedLine": 410,
+      "before": "                Toast.makeText(context, \"卡片生成失败，已改用链接分享\", Toast.LENGTH_SHORT).show()\n",
+      "after": "                context.showFeedback(\"卡片生成失败，已改用链接分享\")\n",
+      "originalRange": [
+        446,
+        447
+      ],
+      "preparedRange": [
+        409,
+        410
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 454,
+      "preparedLine": 417,
+      "before": "private fun Context.startTargetedVideoShare(\n    payload: VideoSharePayload,\n    packageName: String,\n    appName: String,\n    shareMedia: VideoShareCoverFile?,\n    preferredActivityClassName: String? = null,\n) {\n    try {\n        val mimeType = shareMedia?.mimeType ?: \"text/plain\"\n        val activityClassName = preferredActivityClassName ?: resolveShareActivityClassName(\n            packageName = packageName,\n            mimeType = mimeType,\n        )\n        val intent = if (shareMedia != null) {\n            buildVideoCoverShareIntent(\n                payload = payload,\n                coverUri = shareMedia.uri,\n                mimeType = shareMedia.mimeType,\n                packageName = packageName,\n                activityClassName = activityClassName,\n                contentResolver = contentResolver\n            )\n        } else {\n            buildTargetedShareIntent(\n                payload = payload,\n                packageName = packageName,\n                activityClassName = activityClassName,\n            )\n        }\n        startActivityWithTaskFlag(intent)\n    } catch (_: ActivityNotFoundException) {\n        Toast.makeText(this, \"未安装$appName\", Toast.LENGTH_SHORT).show()\n    } catch (_: Exception) {\n        Toast.makeText(this, \"无法打开$appName\", Toast.LENGTH_SHORT).show()\n    }\n}\n\nprivate fun Context.startMoreVideoShare(\n    payload: VideoSharePayload,\n    shareMedia: VideoShareCoverFile?,\n) {\n    try {\n        val sendIntent = if (shareMedia != null) {\n            buildVideoCoverShareIntent(\n                payload = payload,\n                coverUri = shareMedia.uri,\n                mimeType = shareMedia.mimeType,\n                contentResolver = contentResolver\n            )\n        } else {\n            buildVideoShareIntent(payload)\n        }\n        val chooser = Intent.createChooser(sendIntent, resolveVideoShareChooserTitle(payload))\n        if (shareMedia != null) {\n            chooser.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)\n        }\n        startActivityWithTaskFlag(chooser)\n    } catch (_: ActivityNotFoundException) {\n        Toast.makeText(this, \"无法打开分享面板\", Toast.LENGTH_SHORT).show()\n    } catch (_: Exception) {\n        Toast.makeText(this, \"分享失败\", Toast.LENGTH_SHORT).show()\n    }\n}\n\nprivate fun Context.startActivityWithTaskFlag(intent: Intent) {\n    if (this !is Activity) {\n        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)\n    }\n    startActivity(intent)\n}\n\n/**\n * 锁定「发给好友 / 选一个聊天」入口，避免同包多 Activity 触发系统 Resolver。\n */\nprivate fun Context.resolveShareActivityClassName(\n    packageName: String,\n    mimeType: String,\n): String? {\n    val query = Intent(Intent.ACTION_SEND).apply {\n        type = mimeType\n        setPackage(packageName)\n    }\n    val resolveInfos = packageManager.queryIntentActivities(query, 0)\n    if (resolveInfos.isEmpty()) return null\n    val candidates = resolveInfos.map { info ->\n        ShareActivityCandidate(\n            packageName = info.activityInfo.packageName,\n            className = info.activityInfo.name,\n            label = info.loadLabel(packageManager).toString(),\n        )\n    }\n    return resolvePreferredShareActivity(candidates)?.className\n}\n",
+      "after": "",
+      "originalRange": [
+        453,
+        546
+      ],
+      "preparedRange": [
+        416,
+        416
+      ]
+    }
+  ]
+}

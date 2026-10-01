@@ -1,0 +1,28 @@
+{
+  "installOnly": [
+    {
+      "source": "prepared/tools/extract-upstream-navigation3-host.py",
+      "destination": "desktop/tools/extract-upstream-navigation3-host.py",
+      "sha256Bytes": "71f882f8e822d0f1073ded480706875989b4a87517abbe3cc549813b7eb46362"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopNavigationHostEnvironment.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopNavigationHostEnvironment.kt",
+      "sha256Bytes": "74c1956020fced0fae3b4bab8bcbf45d0042ea4c23fcbc952597f1ac3fed0d21"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalNavigationHost.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNavigationHost.kt",
+      "sha256Bytes": "88929e54e9269806bc42fee85e017608c5971d686adfe25b0fba27ff68c9d4a0"
+    }
+  ],
+  "wholeSharedSourceReplacement": false,
+  "rootOwns": [
+    "Gradle",
+    "registry",
+    "Shell",
+    "actual parent window lifecycle/ViewModel/Event owners",
+    "typed destination callbacks",
+    "planner retirement"
+  ]
+}

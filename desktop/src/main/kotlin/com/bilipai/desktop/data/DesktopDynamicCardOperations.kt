@@ -239,6 +239,21 @@ internal class DesktopDynamicCardOperations(
         mutate { originalDanmakuCloudRules.syncDanmakuCloudConfig(settings).getOrThrow() }
     }
 
+    // Original MessageRepository sendTextMessage/sendMessage; same Ops message API/epoch.
+    private val videoShareMessageDeviceId by lazy { java.util.UUID.randomUUID().toString() }
+    private val videoShareMessages by lazy {
+        com.android.purebilibili.data.repository.DesktopOriginalVideoShareMessages(messages,
+            { assertOwned(); repository.authCookies()["bili_jct"] },
+            { assertOwned(); repository.account.value?.mid },
+            { assertOwned(); videoShareMessageDeviceId })
+    }
+    suspend fun sendVideoShareText(receiverId:Long,content:String):Result<SendMessageData> = result {
+        mutate { videoShareMessages.sendTextMessage(receiverId,content).getOrThrow() }
+    }
+    suspend fun downloadVideoShareCover(url:String):ByteArray = read {
+        com.bilipai.desktop.ui.DesktopVideoShareImageTransport.download(guestWeb.callFactory(),url,::isOwned)
+    }
+
 // GENERATED original editor members; do not hand-maintain a second request algorithm.
 // ORIGINAL app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt
 // LF-normalized SHA-256: 2f85544e1e973dd0e7178077ef5c1f439b798a1d86b46701803adeb2a7c0364f

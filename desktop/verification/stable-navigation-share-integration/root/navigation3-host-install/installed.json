@@ -1,0 +1,101 @@
+{
+  "preparedManifestSHA256": "317a635bc0dd27454f0fcdf351050672fd6f5490a0b4f3195581dc5a9bce625d",
+  "payloads": [
+    {
+      "target": "desktop/tools/extract-upstream-navigation3-host.py",
+      "sha256Bytes": "71f882f8e822d0f1073ded480706875989b4a87517abbe3cc549813b7eb46362",
+      "newPayload": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopNavigationHostEnvironment.kt",
+      "sha256Bytes": "74c1956020fced0fae3b4bab8bcbf45d0042ea4c23fcbc952597f1ac3fed0d21",
+      "newPayload": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNavigationHost.kt",
+      "sha256Bytes": "88929e54e9269806bc42fee85e017608c5971d686adfe25b0fba27ff68c9d4a0",
+      "newPayload": true
+    }
+  ],
+  "newOriginalIdentities": [
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiCardMorphDestinationPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavBackStackController.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavBackStackPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavContentTransformPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavEntryContentPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavEntryProvider.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavMotionPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/AospNavTransition.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackAnimationStyle.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirection.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirectionPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/ClassicNavTransition.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/MiuixPredictiveBackProgressTransition.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardNavTransition.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/NavTransitionEasing.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/NavTransitionGeometry.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/NoPredictiveBackTransition.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/ScaleNavTransition.kt",
+    "design-system/src/main/java/com/android/purebilibili/core/ui/motion/NavigationSlideSpring.kt",
+    "design-system/src/main/java/com/android/purebilibili/core/ui/motion/BottomBarLikeContentTransformPolicy.kt",
+    "design-system/src/main/java/com/android/purebilibili/core/ui/motion/SettingsIosPushContentTransformPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionNavBackdrop.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavDisplayHost.kt",
+    "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiMiuixNavTransition.kt"
+  ],
+  "featureMerges": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt",
+      "sha256": "cbb6d92e8bcba3dfdf5df6dff06b8e61ccccaea9973a2d5e04fd0b5cd54917e6",
+      "appendFeatures": [
+        "stable-navigation3-host"
+      ],
+      "preserveExistingMode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsNavHierarchyPolicy.kt",
+      "sha256": "ced1fdca02adbf8229bf57bab696704babf4a5ac88ca3a2c1732adc305f572bd",
+      "appendFeatures": [
+        "stable-navigation3-host"
+      ],
+      "preserveExistingMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionHostDepthLayer.kt",
+      "sha256": "2e5da7bef26c7aa839775a2a123b5b14f528db1b1e999748dccc924a6db6d02a",
+      "appendFeatures": [
+        "stable-navigation3-host"
+      ],
+      "preserveExistingMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/PredictiveBackBackgroundPolicy.kt",
+      "sha256": "91e865c640c91c5c4d83d0e033fac3a42cda407bdae6a83821e6df9049f3f632",
+      "appendFeatures": [
+        "stable-navigation3-host"
+      ],
+      "preserveExistingMode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "appendFeatures": [
+        "stable-navigation3-host"
+      ],
+      "preserveExistingMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/navigation/NavigationSettingsStore.kt",
+      "sha256": "b4176bb2ec022b87b955b6823777d43f507d5bdb4b7103903bbb77a213fb3cad",
+      "appendFeatures": [
+        "stable-navigation3-host"
+      ],
+      "preserveExistingMode": "policy-extract"
+    }
+  ],
+  "sourceCountBefore": 902,
+  "sourceCountAfter": 926,
+  "existingRuntimeLifecycleModulesExposed": 3,
+  "newRuntimeArtifactClaimed": false,
+  "rootMounted": false
+}

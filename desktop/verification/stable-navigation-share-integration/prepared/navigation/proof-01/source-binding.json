@@ -1,0 +1,12 @@
+{
+  "candidateSha": "c6a6768b8a2ad3cedd662093f4257af886a13620c806ab06716935fb80b19d3e",
+  "actualManifestSha": "568846a4ca40019b33ef554a4c679cbe79296d8e2760173352da8a09a9d81903",
+  "cpSha": "3f3dc7c6fd682df07afa523fc31c0c43804549c0e1c0dbea81cf264a6062738d",
+  "fixtureSha": "9a0fe2a2ccabc51b786e85d6a8b93891bd679a2e47381557f4d2bf4da8becdc8",
+  "compileExit": 2,
+  "productOverrideCount": 0,
+  "prospectiveInputCount": 1,
+  "mainMounted": false,
+  "nativeWindow": false,
+  "originalBusinessRequest": false
+}

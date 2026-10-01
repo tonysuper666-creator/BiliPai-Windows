@@ -1,0 +1,136 @@
+{
+  "actualMain": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-40",
+  "manifestSha": "568846a4ca40019b33ef554a4c679cbe79296d8e2760173352da8a09a9d81903",
+  "cpSha": "3f3dc7c6fd682df07afa523fc31c0c43804549c0e1c0dbea81cf264a6062738d",
+  "cpEntries": 97,
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation\\DesktopOriginalNavigationSystemBack.kt",
+      "sha256Bytes": "d29a70eaf0adcf0f3b77a255f4ed738351c49ff3c29200444785e98517cec20c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\BiliPaiCardMorphDestinationPolicy.kt",
+      "sha256Bytes": "086ee2ff63c73e6340412079a67f0ad4340048be6cb661a801da6052d1d24402"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\BiliPaiNavBackStackController.kt",
+      "sha256Bytes": "81a43198879bb0844e633000ba768efa462fa31b864b94af1ff073094f984154"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\BiliPaiNavBackStackPolicy.kt",
+      "sha256Bytes": "f0e2d00adaac936b63824d77fb76e144eb0511e0208e9a93f9d4fd95deb4d54a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\BiliPaiNavContentTransformPolicy.kt",
+      "sha256Bytes": "cc381f04fadc094a91c6f643f70143065ab91a27742980569bf79cdd20a2d72b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\BiliPaiNavDisplayHost.kt",
+      "sha256Bytes": "b90abab4de6ca48ff55dc793bfbf5a12c5cb4bc11f7728da28941643dc10ee4a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\BiliPaiNavEntryContentPolicy.kt",
+      "sha256Bytes": "cb1d370f7b79fe10a43bb1d3c42938da146da886f9522e5ff7ee30ee0248b158"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\BiliPaiNavEntryProvider.kt",
+      "sha256Bytes": "862a3c54e37997a1cdc9ec5e9c9eef636c51341b5a80f77e01b1cf97dbc1b09e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\BiliPaiNavMotionPolicy.kt",
+      "sha256Bytes": "4261ad450572c8fb1aee5f7c3f8b8890f58d1d604de0b29c54674c7beb99c744"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\core\\ui\\motion\\BottomBarLikeContentTransformPolicy.kt",
+      "sha256Bytes": "139b331c03ec653ce9d0142b50e2cf1fb0acb08d0ff97cf3a0a79a6183a33c5f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\core\\ui\\motion\\NavigationSlideSpring.kt",
+      "sha256Bytes": "b51afba1d148dfcd47c69d3aea727a1cada5c0d26a896f9a6f8d5dcbf3d3f0e4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\core\\ui\\motion\\SettingsIosPushContentTransformPolicy.kt",
+      "sha256Bytes": "9794b9e7d0685710e8ce2e68d7dd8f17297489241bd1c3dac50d2e712ff791cb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\core\\ui\\transition\\DesktopOriginalNavigationHostDepth.kt",
+      "sha256Bytes": "e62093e740922c14aac7fc8ac2f09658ba1ecd1982358389361d3ef2e437aee9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\core\\ui\\transition\\DesktopOriginalNavigationPredictiveBackground.kt",
+      "sha256Bytes": "453f23638d1a2b4ecfb8012f9458b96f8ec3d8b9b3664b28779fe0d9d893f8fe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionNavBackdrop.kt",
+      "sha256Bytes": "19ebb881c55aa0490b1b7e586cfb84d2dfbb4cb00dee5070b453808c7c6e2a11"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalNavigationSettingsPop.kt",
+      "sha256Bytes": "a2454b7583c3e57e3876fce953d11d6edf4f6fea97cf7f783595ca851ee8311e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\AospNavTransition.kt",
+      "sha256Bytes": "d2a01b3f5b53f97b1c2430982b4d42e09e8c6c0aa29569e0a93f7a8c1d2e09ee"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\BiliPaiMiuixNavTransition.kt",
+      "sha256Bytes": "07ec06f4021eb7fe391c639356473bf7892f3df92c728398cd4495db9f8fecff"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\BiliPaiPredictiveBackAnimationStyle.kt",
+      "sha256Bytes": "27f6ffae3156255f3887231b8d05e58a2d86929b007457ff8e540fd7a9914284"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\BiliPaiPredictiveBackExitDirection.kt",
+      "sha256Bytes": "897f95ba8f103494fc8ad117c7a757a595d81e007c79948b7fb94eac48702fe5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\BiliPaiPredictiveBackExitDirectionPolicy.kt",
+      "sha256Bytes": "f168faf515bb28caea21e723a1620cc05fc22b8c956c3a80f1eb0b40deb9fd1c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\ClassicNavTransition.kt",
+      "sha256Bytes": "1c6dc30c724418fe02386660dce1536dd6538dcfa9e6d51ba9af1aeee9d1aa82"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\MiuixPredictiveBackProgressTransition.kt",
+      "sha256Bytes": "3b567320ea162d1c091fa4d814f3ee6bc312a9ce10af6d907793b740c1bd23b2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\MiuixVideoCardNavTransition.kt",
+      "sha256Bytes": "ee69a6ead48d12291c21324630188db7ae66012d1bc4e6e3c6b532cd3eb70660"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\NavTransitionEasing.kt",
+      "sha256Bytes": "aa9b973d8fcf2f585ea1a4277b1715f45e1a94bc4b6e6486de065fe4eeab4d14"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\NavTransitionGeometry.kt",
+      "sha256Bytes": "624d58d5e147dc49a30e1f2da0c2c685d64726c87f5de876c4d2839e010b6d9f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\NoPredictiveBackTransition.kt",
+      "sha256Bytes": "cd590bc2d0900dd213671ebd217fefbe6c22a929f0f8f39c219e391e89d524c2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\android\\purebilibili\\navigation3\\predictiveback\\ScaleNavTransition.kt",
+      "sha256Bytes": "5143b16068a1e9877e214aa7d9fc74c9e0a76c81c7d656ad12b012d9465608d9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\generated\\com\\bilipai\\desktop\\ui\\DesktopOriginalNavigationHostSettings.kt",
+      "sha256Bytes": "903f74c43374a2d5f2b58e926f243c1f64ef68b6db58af323aaa5ad723803d49"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopNavigationHostEnvironment.kt",
+      "sha256Bytes": "74c1956020fced0fae3b4bab8bcbf45d0042ea4c23fcbc952597f1ac3fed0d21"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-navigation3-host-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalNavigationHost.kt",
+      "sha256Bytes": "88929e54e9269806bc42fee85e017608c5971d686adfe25b0fba27ff68c9d4a0"
+    }
+  ],
+  "prospectiveSourceOnly": true,
+  "mainIntegration": false,
+  "productSourceOverrides": 0,
+  "exit": 0
+}

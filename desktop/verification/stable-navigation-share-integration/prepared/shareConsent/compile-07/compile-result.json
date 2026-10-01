@@ -1,0 +1,71 @@
+{
+  "exitCode": 0,
+  "sources": 14,
+  "sourcePins": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalVideoShareMessages.kt",
+      "sha256Bytes": "8ab9ff264a054110b6de616faa90df04a250df579acd6bfbf0d29ecb0539bd6e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\home\\components\\CrashTrackingConsentDialog.kt",
+      "sha256Bytes": "8828391d7a325179cf30c100cc90c84fa5e6a5777584c96d60b500116fb680cd"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\share\\DesktopOriginalVideoSharePolicy.kt",
+      "sha256Bytes": "20abeee2a72f1cd63d9f643210201360caf0df31cc28419958967197a3b86c4b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\share\\VideoShareCardService.kt",
+      "sha256Bytes": "13e77474d16016a690504c483e0f73f3103f5df6de53da2e0174958724e400b0"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\share\\VideoShareCoverService.kt",
+      "sha256Bytes": "9a3c2eefff18d9d7cc03c470b62ab34aa88eaecc795b5bd402355b3a27fb0ffe"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\share\\VideoShareMoreTargetsSheet.kt",
+      "sha256Bytes": "e568caadfcd97ef88aedec1b82781e076508ea694f2504eaecde72119caf3f22"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\share\\VideoShareSheet.kt",
+      "sha256Bytes": "bac6e4169f743a7b109329ac9b48e4079be4e1283919798493aa300ba5351480"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\share\\VideoShareSheetMotion.kt",
+      "sha256Bytes": "73c5c88109713eb47ec57d9a3381efaa1ce1c4cd2b81d9bb4fef3e1c980c6fc2"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\share\\VideoShareToFollowingDialog.kt",
+      "sha256Bytes": "c86a019deca0bd376badd56c567ebbfecad41287bd9d95bff1faab4aca0a67ba"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalCrashConsentBinding.kt",
+      "sha256Bytes": "9198f7343e0aec8f0ffb871aa45cacd9841e2b596e398208d4a206a533d7a3b0"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalHomeOverlayBindings.kt",
+      "sha256Bytes": "907d89358502c3e213c6fddd575af6f750febecd56f765e8ced90aac2ded56e2"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopVideoShareBindings.kt",
+      "sha256Bytes": "eca7a43c513b7287ab38b128780a602ec210ace68797f146373bf70b8ce86d30"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopVideoShareFiles.kt",
+      "sha256Bytes": "574dd690425a3a569c6d2ad07f318a3f49d344b3e60c19ce7ad46240f73b3729"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopVideoShareImageTransport.kt",
+      "sha256Bytes": "2336666e5936b24b2f41bcbb9f80c9edff81becc1b9994637fc141ce009ecb65"
+    }
+  ],
+  "actualProductEntries": 97,
+  "declaredProspectiveEntries": 0,
+  "runtimeSourceOverrides": 0,
+  "classFqnOverlap": [],
+  "classes": 83,
+  "jar": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\compile-07\\original-video-share-consent.jar",
+  "jarSha256Bytes": "f12c47e57b7de4a96090cb1be0117195ee2415b3c2c144283ac09e5e462471dc",
+  "sharedGradleRun": false,
+  "actualRootRuntime": false
+}

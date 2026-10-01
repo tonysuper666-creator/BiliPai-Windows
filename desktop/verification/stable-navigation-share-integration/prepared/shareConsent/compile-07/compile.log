@@ -1,0 +1,15 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-video-share-consent-parity\prepared\generated\com\android\purebilibili\feature\video\share\VideoShareCoverService.kt:20:151: warning: expression is unused.
+            context.files.publish("BiliPai_share_${bvid}.${resolveVideoShareCoverExtension(mimeType)}",mimeType) {target -> Files.write(target,bytes);Unit}
+                                                                                                                                                      ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-video-share-consent-parity\prepared\generated\com\android\purebilibili\feature\video\share\VideoShareMoreTargetsSheet.kt:50:22: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-video-share-consent-parity\prepared\generated\com\android\purebilibili\feature\video\share\VideoShareSheet.kt:77:22: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-video-share-consent-parity\prepared\generated\com\android\purebilibili\feature\video\share\VideoShareToFollowingDialog.kt:52:22: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.local\stable-video-share-consent-parity\prepared\manual\com\bilipai\desktop\ui\DesktopVideoShareImageTransport.kt:24:50: warning: the corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+                override fun onFailure(call:Call,failure:IOException) {
+                                                 ^^^^^^^

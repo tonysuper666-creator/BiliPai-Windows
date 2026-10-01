@@ -1,0 +1,68 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt",
+  "output": "com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt",
+  "originalSha256LF": "f734b125809387511ffce1231599717d9de6357f2785e314fc33164e37a84efd",
+  "preparedSha256LF": "73c5c88109713eb47ec57d9a3381efaa1ce1c4cd2b81d9bb4fef3e1c980c6fc2",
+  "changes": [
+    {
+      "tag": "delete",
+      "originalLine": 3,
+      "preparedLine": 3,
+      "before": "import android.content.res.Configuration\n",
+      "after": "",
+      "originalRange": [
+        2,
+        3
+      ],
+      "preparedRange": [
+        2,
+        2
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 15,
+      "preparedLine": 14,
+      "before": "import androidx.compose.ui.platform.LocalConfiguration\n",
+      "after": "",
+      "originalRange": [
+        14,
+        15
+      ],
+      "preparedRange": [
+        13,
+        13
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 18,
+      "preparedLine": 16,
+      "before": "import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion\n",
+      "after": "import com.bilipai.desktop.ui.rememberDesktopDynamicReduceMotion as rememberSystemReduceMotion\n",
+      "originalRange": [
+        17,
+        18
+      ],
+      "preparedRange": [
+        15,
+        16
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 26,
+      "preparedLine": 24,
+      "before": "    LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE\n",
+      "after": "    com.bilipai.desktop.ui.LocalDesktopVideoShareBindings.current.isLandscape\n",
+      "originalRange": [
+        25,
+        26
+      ],
+      "preparedRange": [
+        23,
+        24
+      ]
+    }
+  ]
+}

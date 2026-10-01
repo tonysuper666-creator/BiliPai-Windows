@@ -1,0 +1,143 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/home/components/CrashTrackingConsentDialog.kt",
+  "output": "com/android/purebilibili/feature/home/components/CrashTrackingConsentDialog.kt",
+  "originalSha256LF": "ef6c64d8ece6629745cdc97429c04ab18cfac1ed8c14e9aa8bb96d8fc89e3e69",
+  "preparedSha256LF": "8828391d7a325179cf30c100cc90c84fa5e6a5777584c96d60b500116fb680cd",
+  "changes": [
+    {
+      "tag": "delete",
+      "originalLine": 18,
+      "preparedLine": 18,
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "",
+      "originalRange": [
+        17,
+        18
+      ],
+      "preparedRange": [
+        17,
+        17
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 22,
+      "preparedLine": 21,
+      "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+      "after": "",
+      "originalRange": [
+        21,
+        22
+      ],
+      "preparedRange": [
+        20,
+        20
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalLine": 29,
+      "preparedLine": 27,
+      "before": "import com.android.purebilibili.core.util.CrashReporter\n",
+      "after": "",
+      "originalRange": [
+        28,
+        29
+      ],
+      "preparedRange": [
+        26,
+        26
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 40,
+      "preparedLine": 37,
+      "before": "    val context = LocalContext.current\n",
+      "after": "    val context = com.bilipai.desktop.ui.LocalDesktopCrashConsentBindings.current\n",
+      "originalRange": [
+        39,
+        40
+      ],
+      "preparedRange": [
+        36,
+        37
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 42,
+      "preparedLine": 39,
+      "before": "    var isEnabled by remember { mutableStateOf(true) }\n",
+      "after": "    var isEnabled by remember { mutableStateOf(context.enhancedEnabled) }\n",
+      "originalRange": [
+        41,
+        42
+      ],
+      "preparedRange": [
+        38,
+        39
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 50,
+      "preparedLine": 47,
+      "before": "                SettingsManager.setCrashTrackingEnabled(context, isEnabled)\n                SettingsManager.setCrashTrackingConsentShown(context, true)\n                CrashReporter.setEnabled(isEnabled)\n",
+      "after": "                context.saveChoice(isEnabled)\n",
+      "originalRange": [
+        49,
+        52
+      ],
+      "preparedRange": [
+        46,
+        47
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 85,
+      "preparedLine": 80,
+      "before": "                        \"默认仅启用崩溃追踪；使用情况统计默认关闭。播放器诊断日志仍可手动开启，便于排查黑屏、卡顿等播放问题。\\n\\n\" +\n                        \"数据仅用于改善稳定性，之后可随时在「设置」中调整。\",\n",
+      "after": "                        \"Windows 版本仅在本地保存脱敏的基础错误与崩溃快照；不自动上传。增强本地诊断默认关闭，便于排查黑屏、卡顿等播放问题。\\n\\n\" +\n                        \"增强日志仅用于改善稳定性，可随时在「设置」中调整、清理或主动导出。\",\n",
+      "originalRange": [
+        84,
+        86
+      ],
+      "preparedRange": [
+        79,
+        81
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 94,
+      "preparedLine": 89,
+      "before": "                            text = \"启用崩溃追踪\",\n",
+      "after": "                            text = \"启用增强本地诊断\",\n",
+      "originalRange": [
+        93,
+        94
+      ],
+      "preparedRange": [
+        88,
+        89
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalLine": 101,
+      "preparedLine": 96,
+      "before": "                            text = if (isEnabled) \"开启后将在崩溃时上传诊断信息\" else \"关闭后不上传崩溃报告\",\n",
+      "after": "                            text = if (isEnabled) \"开启后额外保留本地运行诊断（最多 256KB）\" else \"关闭后不保留增强日志；基础错误与崩溃快照仍保留\",\n",
+      "originalRange": [
+        100,
+        101
+      ],
+      "preparedRange": [
+        95,
+        96
+      ]
+    }
+  ]
+}

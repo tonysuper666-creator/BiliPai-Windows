@@ -1,0 +1,11 @@
+{
+  "compile01": "missing original small closure, not acceptance",
+  "compile02": "partial failed generation followed by unsuccessful compile; historical only",
+  "compile03": "task-only Density local shadowing; fixed to platformDensity",
+  "compile04": "compiler succeeded but FQN audit rejected duplicate existing AppNavigationAppearance; reference-only corrected",
+  "compile05": "173 source classes compiled successfully before adding mandatory actual Root NavigationEvent owner seam",
+  "proof01": "fixture CLI friend-list separator error; no runtime acceptance",
+  "proof02_03": "task Jar longpath is_file omitted Companion entries; missing method was harness packaging, not original enum; original incomplete Jar retained",
+  "proof04": "completed pre-final event-owner-seam source runtime proof; historical successful scope, not final source pin",
+  "final": "compile06/proof05/source-audit81; source-only, no windows/NavDisplay compose/HTTP/account/EXE"
+}

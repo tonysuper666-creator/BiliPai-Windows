@@ -1,0 +1,82 @@
+{
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\tools\\extract-upstream-video-share-consent.py",
+      "target": "desktop/tools/extract-upstream-video-share-consent.py",
+      "sha256Bytes": "55c9844151939e669fe0cdf5e420acae3a58855a0289f15528d7d496dddee203"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalCrashConsentBinding.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCrashConsentBinding.kt",
+      "sha256Bytes": "9198f7343e0aec8f0ffb871aa45cacd9841e2b596e398208d4a206a533d7a3b0",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalHomeOverlayBindings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeOverlayBindings.kt",
+      "sha256Bytes": "907d89358502c3e213c6fddd575af6f750febecd56f765e8ced90aac2ded56e2",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopVideoShareBindings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareBindings.kt",
+      "sha256Bytes": "eca7a43c513b7287ab38b128780a602ec210ace68797f146373bf70b8ce86d30",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopVideoShareFiles.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt",
+      "sha256Bytes": "574dd690425a3a569c6d2ad07f318a3f49d344b3e60c19ce7ad46240f73b3729",
+      "newSoleDefinition": true
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-video-share-consent-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopVideoShareImageTransport.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareImageTransport.kt",
+      "sha256Bytes": "2336666e5936b24b2f41bcbb9f80c9edff81becc1b9994637fc141ce009ecb65",
+      "newSoleDefinition": true
+    }
+  ],
+  "generatedPreparedFilesInstall": false,
+  "proofJarInstall": false,
+  "generatedProductionSources": 9,
+  "manualProductionSources": 5,
+  "registryRecipe": "registry-merge-recipe.json",
+  "gradleRecipe": "gradle-tasks.snippet.kts",
+  "rootBindings": "ROOT-INTEGRATION.md",
+  "operationsFragmentAndExactHunk": "operations-local-hunk.json",
+  "platformNativeDiagnosticExactHunks": "native-local-hunks.json",
+  "platformNativeDiagnosticHunks": 18,
+  "nativeRebuildFreshStageRequired": true,
+  "nativeTargets": [
+    {
+      "target": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "baseSha256LF": "19ac663f66cb6d9eb585a4dd8e2651c9d735a8ee48142ab8eed891bfe0557418",
+      "candidateSha256LF": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92",
+      "hunks": 5
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "baseSha256LF": "113bacf17cf995f15de87ecd233f68b9f9b16ff88dae0f11354098a52de8d127",
+      "candidateSha256LF": "2171801494bfaaa5f60616b3b6a1a6edeb9e48a5997603fa2dc3d6b2bf806450",
+      "hunks": 10
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "baseSha256LF": "33a276ea46e578ba8b8a63abbe5b1b68e2cacc2fe14942bcd0c639e487356014",
+      "candidateSha256LF": "76f9d6a63381cdc535c4ba1c2bc124e4ea5363996f78493b66aeff6c6fa5e066",
+      "hunks": 3
+    }
+  ],
+  "newDependencies": 0,
+  "newHttpClients": 0,
+  "newPersistentStores": 0,
+  "rootMounted": false,
+  "mandatoryActualEffects": [
+    "same owner raw following/send text Ops",
+    "actual Root Window chooser/clipboard/nativeTextShare",
+    "verified rebuilt native media export/DLL hash",
+    "same diagnostic actor consent queue/global original keys",
+    "native grant revocation before explicit cache clear"
+  ]
+}

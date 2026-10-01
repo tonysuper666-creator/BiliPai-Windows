@@ -1,0 +1,5 @@
+desktop\.local\upstream-v023-audit\navigation-share-actual42\NativeShareConsentFixture.kt:67:76: error: overload resolution ambiguity between candidates:
+typealias CancellationException = CancellationException
+class CancellationException : IllegalStateException
+        expect(runCatching {binding.saveChoice(true)}.exceptionOrNull() is CancellationException)
+                                                                           ^^^^^^^^^^^^^^^^^^^^^

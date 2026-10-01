@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "groups": 7,
+  "validFormats": 3,
+  "nativeRegistryLimit": 8,
+  "actualNativeExports": [
+    "BilipaiSharePrepareMedia",
+    "BilipaiShareState",
+    "BilipaiShareRetire",
+    "BilipaiShareProbe"
+  ],
+  "nativeProbeAvailable": true,
+  "dllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06",
+  "sourceSha256Bytes": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92",
+  "events": [
+    {
+      "file": "card.jpg",
+      "prepare": true,
+      "preparedState": true,
+      "retiredWithoutGrant": true,
+      "tokenNoLongerValid": true
+    },
+    {
+      "file": "card.png",
+      "prepare": true,
+      "preparedState": true,
+      "retiredWithoutGrant": true,
+      "tokenNoLongerValid": true
+    },
+    {
+      "file": "card.webp",
+      "prepare": true,
+      "preparedState": true,
+      "retiredWithoutGrant": true,
+      "tokenNoLongerValid": true
+    },
+    {
+      "file": "empty.jpg",
+      "rejected": true
+    },
+    {
+      "file": "wrong.txt",
+      "rejected": true
+    },
+    {
+      "case": "missing",
+      "rejected": true
+    },
+    {
+      "case": "boundedNativeRegistry8",
+      "rejected9th": true
+    }
+  ],
+  "HWND": false,
+  "ShareUI": false,
+  "externalReceiver": false,
+  "realAccountRead": false,
+  "scope": "Fresh DLL preparation/state/bounded token registry and real retirement, synthetic local images only"
+}

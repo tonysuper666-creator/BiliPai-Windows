@@ -1,0 +1,8 @@
+{
+    "settings": {
+        "sentinel": "preserve",
+        "crash_tracking_enabled": false,
+        "crash_tracking_consent_shown": true,
+        "enhanced_diagnostic_logging_enabled": false
+    }
+}

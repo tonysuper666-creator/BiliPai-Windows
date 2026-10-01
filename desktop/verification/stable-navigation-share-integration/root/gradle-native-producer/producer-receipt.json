@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "freshBuild": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\07417623-09dc-4254-a665-5d09948409e1",
+  "approvedSourceManifestSha256Bytes": "e13c4d6775a942343039d5602d52ee02bd92fe3f83155f80f67da67160dd62b1",
+  "sourceSha256Bytes": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92",
+  "compilerDriverSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
+  "expectedDllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06",
+  "stagedDllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06",
+  "actualBuildGraph": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\07417623-09dc-4254-a665-5d09948409e1\\producer-input-graph.json",
+  "actualBuildGraphSha256Bytes": "f885ae9e65e9c8000262692b6688a988975e0fafc7e5857b8bc2bc949f31be0a",
+  "cachedOutputTrusted": false,
+  "freshCompilationOnEveryInvocation": true,
+  "resolvedGraphMatchesReviewedBuild": true,
+  "publicReleaseAuthorizationVerified": false
+}

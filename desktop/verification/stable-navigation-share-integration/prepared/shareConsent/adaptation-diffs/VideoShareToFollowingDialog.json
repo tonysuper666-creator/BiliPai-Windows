@@ -1,0 +1,137 @@
+[
+  {
+    "tag": "delete",
+    "originalLine": 27,
+    "preparedLine": 27,
+    "before": "import androidx.compose.ui.platform.LocalConfiguration\n",
+    "after": "",
+    "originalRange": [
+      26,
+      27
+    ],
+    "preparedRange": [
+      26,
+      26
+    ]
+  },
+  {
+    "tag": "delete",
+    "originalLine": 31,
+    "preparedLine": 30,
+    "before": "import com.android.purebilibili.core.network.NetworkModule\nimport com.android.purebilibili.core.store.TokenManager\n",
+    "after": "",
+    "originalRange": [
+      30,
+      32
+    ],
+    "preparedRange": [
+      29,
+      29
+    ]
+  },
+  {
+    "tag": "delete",
+    "originalLine": 41,
+    "preparedLine": 38,
+    "before": "import com.android.purebilibili.data.repository.MessageRepository\n",
+    "after": "",
+    "originalRange": [
+      40,
+      41
+    ],
+    "preparedRange": [
+      37,
+      37
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 53,
+    "preparedLine": 49,
+    "before": "    val selfMid = TokenManager.midCache?.takeIf { it > 0L }\n",
+    "after": "    val context = com.bilipai.desktop.ui.LocalDesktopVideoShareBindings.current\n    val selfMid = context.currentMid()?.takeIf { it > 0L }\n",
+    "originalRange": [
+      52,
+      53
+    ],
+    "preparedRange": [
+      48,
+      50
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 67,
+    "preparedLine": 64,
+    "before": "    val listMaxHeight = (LocalConfiguration.current.screenHeightDp - 320).coerceIn(180, 440).dp\n",
+    "after": "    val listMaxHeight = (com.bilipai.desktop.ui.LocalDesktopVideoShareBindings.current.screenHeightDp - 320).coerceIn(180, 440).dp\n",
+    "originalRange": [
+      66,
+      67
+    ],
+    "preparedRange": [
+      63,
+      64
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 74,
+    "preparedLine": 71,
+    "before": "            val response = NetworkModule.api.getFollowings(selfMid, pn = nextPage, ps = 50)\n            if (response.code != 0 || response.data == null) {\n",
+    "after": "            val response = context.getFollowings(selfMid, nextPage, 50)\n            val data = response.data\n            if (response.code != 0 || data == null) {\n",
+    "originalRange": [
+      73,
+      75
+    ],
+    "preparedRange": [
+      70,
+      73
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 79,
+    "preparedLine": 77,
+    "before": "            val page = response.data.list.orEmpty().filter { it.mid > 0L && it.mid != selfMid }\n",
+    "after": "            val page = data.list.orEmpty().filter { it.mid > 0L && it.mid != selfMid }\n",
+    "originalRange": [
+      78,
+      79
+    ],
+    "preparedRange": [
+      76,
+      77
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 81,
+    "preparedLine": 79,
+    "before": "            total = response.data.total\n",
+    "after": "            total = data.total\n",
+    "originalRange": [
+      80,
+      81
+    ],
+    "preparedRange": [
+      78,
+      79
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 204,
+    "preparedLine": 202,
+    "before": "                                val result = MessageRepository.sendTextMessage(\n",
+    "after": "                                val result = context.sendTextMessage(\n",
+    "originalRange": [
+      203,
+      204
+    ],
+    "preparedRange": [
+      201,
+      202
+    ]
+  }
+]

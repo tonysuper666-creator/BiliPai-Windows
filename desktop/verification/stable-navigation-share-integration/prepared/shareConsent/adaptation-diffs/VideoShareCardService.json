@@ -1,0 +1,287 @@
+[
+  {
+    "tag": "delete",
+    "originalLine": 3,
+    "preparedLine": 3,
+    "before": "import android.content.Context\nimport android.graphics.Bitmap\nimport android.graphics.BitmapFactory\nimport android.graphics.Canvas\nimport android.graphics.Color\nimport android.graphics.Paint\nimport android.graphics.Path\nimport android.graphics.RectF\nimport android.graphics.Typeface\nimport android.text.Layout\nimport android.text.StaticLayout\nimport android.text.TextPaint\nimport android.text.TextUtils\nimport android.util.Log\nimport androidx.core.content.FileProvider\n",
+    "after": "",
+    "originalRange": [
+      2,
+      17
+    ],
+    "preparedRange": [
+      2,
+      2
+    ]
+  },
+  {
+    "tag": "insert",
+    "originalLine": 19,
+    "preparedLine": 4,
+    "before": "",
+    "after": "import com.bilipai.desktop.ui.DesktopVideoShareBindings\n",
+    "originalRange": [
+      18,
+      18
+    ],
+    "preparedRange": [
+      3,
+      4
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 21,
+    "preparedLine": 7,
+    "before": "import java.io.File\nimport java.net.HttpURLConnection\nimport java.net.URL\nimport kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.withContext\n",
+    "after": "import kotlinx.coroutines.*\nimport java.awt.Color\nimport java.awt.Font\nimport java.awt.Graphics2D\nimport java.awt.RenderingHints\nimport java.awt.image.BufferedImage\nimport java.awt.font.FontRenderContext\nimport java.awt.font.LineBreakMeasurer\nimport java.awt.font.TextAttribute\nimport java.awt.geom.RoundRectangle2D\nimport java.text.AttributedString\n",
+    "originalRange": [
+      20,
+      25
+    ],
+    "preparedRange": [
+      6,
+      17
+    ]
+  },
+  {
+    "tag": "insert",
+    "originalLine": 27,
+    "preparedLine": 19,
+    "before": "",
+    "after": "/* Original scalar values and complete drawing geometry. Java2D replaces only\n * Android Canvas/TextPaint/StaticLayout and bitmap resource management. */\n",
+    "originalRange": [
+      26,
+      26
+    ],
+    "preparedRange": [
+      18,
+      20
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 42,
+    "preparedLine": 36,
+    "before": "/**\n * 合成可分享的视频卡片图（标题 + 数据 + 封面 + 署名 + 二维码）。\n * 成功时返回可被微信/QQ 当作图片消息接收的 FileProvider Uri。\n */\ninternal suspend fun prepareVideoShareCardFile(\n    context: Context,\n    payload: VideoSharePayload\n): VideoShareCoverFile? {\n    if (payload.coverUrl.isBlank()) return null\n    val coverUrl = FormatUtils.resolveVideoCoverUrl(\n        url = payload.coverUrl,\n        useLowQuality = false\n    )\n    if (coverUrl.isBlank()) return null\n",
+    "after": "internal suspend fun prepareVideoShareCardFile(context:DesktopVideoShareBindings,payload:VideoSharePayload):VideoShareCoverFile? {\n    if(payload.coverUrl.isBlank())return null\n    val coverUrl=FormatUtils.resolveVideoCoverUrl(url=payload.coverUrl,useLowQuality=false)\n    if(coverUrl.isBlank())return null\n",
+    "originalRange": [
+      41,
+      55
+    ],
+    "preparedRange": [
+      35,
+      39
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 57,
+    "preparedLine": 41,
+    "before": "        runCatching {\n            val coverBitmap = downloadVideoShareBitmap(coverUrl)\n                ?: error(\"Cover bitmap decode failed\")\n            val cardBitmap = renderVideoShareCardBitmap(\n                payload = payload,\n                coverBitmap = coverBitmap\n            )\n            coverBitmap.recycle()\n            val cacheDir = File(context.cacheDir, \"shared_images\").apply { mkdirs() }\n            cleanupVideoShareCardCache(cacheDir)\n            val outputFile = File(cacheDir, resolveVideoShareCardFileName(payload))\n            outputFile.outputStream().use { output ->\n                cardBitmap.compress(Bitmap.CompressFormat.JPEG, 92, output)\n            }\n            cardBitmap.recycle()\n            val uri = FileProvider.getUriForFile(\n                context,\n                \"${context.packageName}.fileprovider\",\n                outputFile\n            )\n            VideoShareCoverFile(uri = uri, mimeType = \"image/jpeg\")\n        }.onFailure { error ->\n            Log.e(\"VideoShare\", \"Prepare video share card failed\", error)\n        }.getOrNull()\n",
+    "after": "        try {\n            val cover=context.files.bitmap(coverUrl) ?: error(\"Cover bitmap decode failed\")\n            val card=try { renderVideoShareCardBitmap(payload,cover) }finally {cover.flush()}\n            try { context.files.jpeg(resolveVideoShareCardFileName(payload),card) }finally {card.flush()}\n        } catch(cancelled:CancellationException) {throw cancelled}\n        catch(failure:Exception) {currentCoroutineContext().ensureActive();if(!context.isOwned())throw CancellationException(\"分享页面已退役\");null}\n",
+    "originalRange": [
+      56,
+      80
+    ],
+    "preparedRange": [
+      40,
+      46
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 84,
+    "preparedLine": 50,
+    "before": "internal fun renderVideoShareCardBitmap(\n    payload: VideoSharePayload,\n    coverBitmap: Bitmap\n): Bitmap {\n",
+    "after": "internal fun renderVideoShareCardBitmap(payload:VideoSharePayload,coverBitmap:BufferedImage):BufferedImage {\n",
+    "originalRange": [
+      83,
+      87
+    ],
+    "preparedRange": [
+      49,
+      50
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 90,
+    "preparedLine": 53,
+    "before": "    val titlePaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {\n        color = Color.parseColor(\"#1F1F1F\")\n        textSize = 52f\n        typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)\n    }\n    val metaPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {\n        color = Color.parseColor(\"#7A7A7A\")\n        textSize = 36f\n    }\n    // 右侧留给二维码，标题/数据行限宽，避免与码重叠。\n",
+    "after": "    val titlePaint = Font(\"Dialog\", Font.BOLD, 52)\n    val metaPaint = Font(\"Dialog\", Font.PLAIN, 36)\n",
+    "originalRange": [
+      89,
+      99
+    ],
+    "preparedRange": [
+      52,
+      54
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 101,
+    "preparedLine": 56,
+    "before": "    val titleLayout = buildShareCardTitleLayout(\n        title = payload.title,\n        paint = titlePaint,\n        maxWidth = textMaxWidth\n    )\n",
+    "after": "    val titleLayout = buildShareCardTitleLayout(payload.title,titlePaint,textMaxWidth)\n",
+    "originalRange": [
+      100,
+      105
+    ],
+    "preparedRange": [
+      55,
+      56
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 107,
+    "preparedLine": 58,
+    "before": "    val titleLineCount = titleLayout.lineCount\n",
+    "after": "    val titleLineCount = titleLayout.size\n",
+    "originalRange": [
+      106,
+      107
+    ],
+    "preparedRange": [
+      57,
+      58
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 111,
+    "preparedLine": 62,
+    "before": "    val gapMetaCover = if (metaBlockHeight == 0) {\n        CARD_GAP_META_COVER_WITHOUT_META\n    } else {\n        CARD_GAP_META_COVER_WITH_META\n    }\n",
+    "after": "    val gapMetaCover = if (metaBlockHeight == 0) CARD_GAP_META_COVER_WITHOUT_META else CARD_GAP_META_COVER_WITH_META\n",
+    "originalRange": [
+      110,
+      115
+    ],
+    "preparedRange": [
+      61,
+      62
+    ]
+  },
+  {
+    "tag": "delete",
+    "originalLine": 117,
+    "preparedLine": 64,
+    "before": "\n    // 与绘制共用同一套基线坐标，再反推总高，避免底部被裁切。\n",
+    "after": "",
+    "originalRange": [
+      116,
+      118
+    ],
+    "preparedRange": [
+      63,
+      63
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 123,
+    "preparedLine": 68,
+    "before": "\n    val bitmap = Bitmap.createBitmap(CARD_WIDTH, cardHeight, Bitmap.Config.ARGB_8888)\n    val canvas = Canvas(bitmap)\n    canvas.drawColor(Color.WHITE)\n\n    // 标题按基线逐行绘制，保证与数据行的间距稳定。\n    var baseline = CARD_PADDING + CARD_TITLE_FIRST_BASELINE\n    for (index in 0 until titleLineCount) {\n        val line = titleLayout.text\n            .subSequence(titleLayout.getLineStart(index), titleLayout.getLineEnd(index))\n            .toString()\n        canvas.drawText(line, CARD_PADDING.toFloat(), baseline, titlePaint)\n        baseline += CARD_TITLE_LINE_HEIGHT\n    }\n    if (metaBlockHeight > 0) {\n        baseline += gapTitleMeta\n        canvas.drawText(metaLine, CARD_PADDING.toFloat(), baseline, metaPaint)\n        baseline += metaBlockHeight\n    }\n    drawRoundedBitmap(\n        canvas = canvas,\n        bitmap = coverBitmap,\n        left = CARD_PADDING.toFloat(),\n        top = coverTop,\n        width = contentWidth.toFloat(),\n        height = coverHeight.toFloat(),\n        radius = CARD_CORNER_RADIUS\n    )\n\n    // 二维码置于标题区右侧，与标题+数据块垂直居中。\n    val textBlockTop = CARD_PADDING.toFloat()\n    val textBlockBottom = CARD_PADDING + headerTextHeight\n    val qrLeft = (CARD_WIDTH - CARD_PADDING - CARD_QR_SIZE).toFloat()\n    val qrTop = textBlockTop + (textBlockBottom - textBlockTop - CARD_QR_SIZE) / 2f\n    drawShareCardQrPlate(\n        canvas = canvas,\n        url = payload.url,\n        left = qrLeft,\n        top = qrTop.coerceAtLeast(textBlockTop),\n        size = CARD_QR_SIZE.toFloat()\n    )\n",
+    "after": "    val bitmap=BufferedImage(CARD_WIDTH,cardHeight,BufferedImage.TYPE_INT_ARGB)\n    val canvas=bitmap.createGraphics()\n    try {\n        canvas.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)\n        canvas.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON)\n        canvas.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,RenderingHints.VALUE_FRACTIONALMETRICS_ON)\n        canvas.color=Color.WHITE;canvas.fillRect(0,0,bitmap.width,bitmap.height)\n        var baseline = CARD_PADDING + CARD_TITLE_FIRST_BASELINE\n        canvas.font=titlePaint;canvas.color=Color(0x1F1F1F)\n        for(index in 0 until titleLineCount) {\n            canvas.drawString(titleLayout[index],CARD_PADDING.toFloat(),baseline)\n            baseline += CARD_TITLE_LINE_HEIGHT\n        }\n        if (metaBlockHeight > 0) {\n            baseline += gapTitleMeta\n            canvas.font=metaPaint;canvas.color=Color(0x7A7A7A)\n            canvas.drawString(metaLine,CARD_PADDING.toFloat(),baseline)\n            baseline += metaBlockHeight\n        }\n        drawRoundedBitmap(canvas,coverBitmap,CARD_PADDING.toFloat(),coverTop,contentWidth.toFloat(),coverHeight.toFloat(),CARD_CORNER_RADIUS)\n        val textBlockTop = CARD_PADDING.toFloat()\n        val textBlockBottom = CARD_PADDING + headerTextHeight\n        val qrLeft = (CARD_WIDTH - CARD_PADDING - CARD_QR_SIZE).toFloat()\n        val qrTop = textBlockTop + (textBlockBottom - textBlockTop - CARD_QR_SIZE) / 2f\n        drawShareCardQrPlate(canvas,payload.url,qrLeft,qrTop.coerceAtLeast(textBlockTop),CARD_QR_SIZE.toFloat())\n    } finally {canvas.dispose()}\n",
+    "originalRange": [
+      122,
+      163
+    ],
+    "preparedRange": [
+      67,
+      93
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 167,
+    "preparedLine": 97,
+    "before": "internal fun buildShareCardTitleLayout(\n    title: String,\n    paint: TextPaint,\n    maxWidth: Int\n): StaticLayout {\n    val source = title.trim().ifBlank { \" \" }\n    return StaticLayout.Builder\n        .obtain(source, 0, source.length, paint, maxWidth.coerceAtLeast(1))\n        .setMaxLines(CARD_TITLE_MAX_LINES)\n        .setEllipsize(TextUtils.TruncateAt.END)\n        .setAlignment(Layout.Alignment.ALIGN_NORMAL)\n        .setIncludePad(false)\n        .build()\n",
+    "after": "/** Full Windows text shaping/breaking; original trim/3-line/END/no-pad contract.\n * Platform font shaping differs from Android; pixel-identical glyphs are not claimed. */\ninternal fun buildShareCardTitleLayout(title:String,paint:Font,maxWidth:Int):List<String> {\n    val source=title.trim().ifBlank {\" \"}\n    val frc=FontRenderContext(null,true,true)\n    val attributed=AttributedString(source).apply {addAttribute(TextAttribute.FONT,paint)}\n    val measurer=LineBreakMeasurer(attributed.iterator,frc)\n    val lines=mutableListOf<String>()\n    while(measurer.position<source.length && lines.size<CARD_TITLE_MAX_LINES) {\n        val begin=measurer.position\n        val newline=source.indexOf('\\n',begin).let {if(it<0)source.length else it}\n        if(newline==begin) {lines.add(\"\");measurer.position=begin+1;continue}\n        measurer.nextLayout(maxWidth.coerceAtLeast(1).toFloat(),newline,false)\n        val end=measurer.position.coerceAtLeast(begin+Character.charCount(source.codePointAt(begin))).coerceAtMost(newline)\n        measurer.position=end\n        var line=source.substring(begin,end)\n        if(lines.size==CARD_TITLE_MAX_LINES-1 && end<source.length) {\n            while(line.isNotEmpty() && paint.getStringBounds(line+\"…\",frc).width>maxWidth) {\n                line=line.substring(0,line.offsetByCodePoints(line.length,-1))\n            }\n            line+=\"…\"\n        }\n        lines.add(line)\n        if(end==newline && end<source.length)measurer.position=end+1\n    }\n    return lines\n",
+    "originalRange": [
+      166,
+      179
+    ],
+    "preparedRange": [
+      96,
+      122
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 182,
+    "preparedLine": 125,
+    "before": "private fun drawShareCardQrPlate(\n    canvas: Canvas,\n    url: String,\n    left: Float,\n    top: Float,\n    size: Float\n) {\n    val platePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {\n        color = Color.WHITE\n    }\n    val plateRect = RectF(left, top, left + size, top + size)\n    canvas.drawRoundRect(plateRect, CARD_QR_CORNER, CARD_QR_CORNER, platePaint)\n\n    val qrBitmap = createShareCardQrBitmap(url, CARD_QR_SIZE)\n    val qrPadding = 8f\n    val dst = RectF(\n        left + qrPadding,\n        top + qrPadding,\n        left + size - qrPadding,\n        top + size - qrPadding\n    )\n    canvas.drawBitmap(qrBitmap, null, dst, Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG))\n    qrBitmap.recycle()\n",
+    "after": "private fun drawShareCardQrPlate(canvas:Graphics2D,url:String,left:Float,top:Float,size:Float) {\n    canvas.color=Color.WHITE\n    canvas.fill(RoundRectangle2D.Float(left,top,size,size,CARD_QR_CORNER*2,CARD_QR_CORNER*2))\n    val qrBitmap=createShareCardQrBitmap(url,CARD_QR_SIZE)\n    val qrPadding=8f\n    try {canvas.drawImage(qrBitmap,(left+qrPadding).toInt(),(top+qrPadding).toInt(),(left+size-qrPadding).toInt(),(top+size-qrPadding).toInt(),0,0,qrBitmap.width,qrBitmap.height,null)}\n    finally {qrBitmap.flush()}\n",
+    "originalRange": [
+      181,
+      204
+    ],
+    "preparedRange": [
+      124,
+      131
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 207,
+    "preparedLine": 134,
+    "before": "private fun createShareCardQrBitmap(url: String, size: Int): Bitmap {\n",
+    "after": "private fun createShareCardQrBitmap(url:String,size:Int):BufferedImage {\n",
+    "originalRange": [
+      206,
+      207
+    ],
+    "preparedRange": [
+      133,
+      134
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 218,
+    "preparedLine": 145,
+    "before": "    return Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888).also { bitmap ->\n        for (x in 0 until size) {\n            for (y in 0 until size) {\n                bitmap.setPixel(x, y, if (matrix[x, y]) Color.BLACK else Color.WHITE)\n            }\n        }\n",
+    "after": "    return BufferedImage(size,size,BufferedImage.TYPE_INT_ARGB).also { bitmap ->\n        for(x in 0 until size)for(y in 0 until size)bitmap.setRGB(x,y,if(matrix[x,y])Color.BLACK.rgb else Color.WHITE.rgb)\n",
+    "originalRange": [
+      217,
+      223
+    ],
+    "preparedRange": [
+      144,
+      146
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 227,
+    "preparedLine": 150,
+    "before": "private fun drawRoundedBitmap(\n    canvas: Canvas,\n    bitmap: Bitmap,\n    left: Float,\n    top: Float,\n    width: Float,\n    height: Float,\n    radius: Float\n) {\n    val path = Path()\n    val rect = RectF(left, top, left + width, top + height)\n    path.addRoundRect(rect, radius, radius, Path.Direction.CW)\n    canvas.save()\n    canvas.clipPath(path)\n    val src = android.graphics.Rect(0, 0, bitmap.width, bitmap.height)\n    canvas.drawBitmap(bitmap, src, rect, Paint(Paint.ANTI_ALIAS_FLAG))\n    canvas.restore()\n",
+    "after": "private fun drawRoundedBitmap(canvas:Graphics2D,bitmap:BufferedImage,left:Float,top:Float,width:Float,height:Float,radius:Float) {\n    val clip=canvas.clip\n    try {\n        canvas.clip(RoundRectangle2D.Float(left,top,width,height,radius*2,radius*2))\n        canvas.drawImage(bitmap,left.toInt(),top.toInt(),(left+width).toInt(),(top+height).toInt(),0,0,bitmap.width,bitmap.height,null)\n    } finally {canvas.clip=clip}\n",
+    "originalRange": [
+      226,
+      243
+    ],
+    "preparedRange": [
+      149,
+      155
+    ]
+  },
+  {
+    "tag": "delete",
+    "originalLine": 245,
+    "preparedLine": 157,
+    "before": "\nprivate fun downloadVideoShareBitmap(coverUrl: String): Bitmap? {\n    val connection = URL(coverUrl).openConnection() as HttpURLConnection\n    try {\n        connection.setRequestProperty(\"Referer\", \"https://www.bilibili.com/\")\n        connection.connect()\n        check(connection.responseCode in 200..299) {\n            \"Cover download failed: ${connection.responseCode}\"\n        }\n        return connection.inputStream.use { input ->\n            BitmapFactory.decodeStream(input)\n        }\n    } finally {\n        connection.disconnect()\n    }\n}\n\nprivate fun cleanupVideoShareCardCache(cacheDir: File) {\n    val now = System.currentTimeMillis()\n    cacheDir.listFiles()\n        ?.filter { file ->\n            file.name.startsWith(\"BiliPai_share_card_\") &&\n                now - file.lastModified() > VIDEO_SHARE_CARD_CACHE_TTL_MS\n        }\n        ?.forEach { file -> file.delete() }\n}\n\nprivate const val VIDEO_SHARE_CARD_CACHE_TTL_MS = 24L * 60L * 60L * 1000L\n",
+    "after": "",
+    "originalRange": [
+      244,
+      272
+    ],
+    "preparedRange": [
+      156,
+      156
+    ]
+  }
+]

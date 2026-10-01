@@ -1,0 +1,510 @@
+{
+  "target": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifactCount": 121,
+  "artifacts": [
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "e4dcb95e0381dee5f045f67a1d925af3ec6f09da6d7415e777190f04df315dfc"
+    },
+    {
+      "path": "audit_sources.py",
+      "sha256Bytes": "12b5bf8999083ee539b9d3cb9758f485ae9f25f7d066db8317523eefece40723"
+    },
+    {
+      "path": "compile-01/compile.args",
+      "sha256Bytes": "66a6fc29a8a61e2ab29d6ddcfd81186eae1d67381cdce312f95cb30b9e124abe"
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "d8750770c05e6bc1b47d8c471c03e69ce6ac15f0036afba27c8e098880bd4bd3"
+    },
+    {
+      "path": "compile-01/inputs.json",
+      "sha256Bytes": "4de673f7d048eec98eb7e093d8b2a2d8ef15aa1e5c6a51eb2362f6ed17b4f5f4"
+    },
+    {
+      "path": "compile-02/compile.args",
+      "sha256Bytes": "6b6179ff47861bb15d2ddf5b50b8ee1cc516fe0b4ec07e0ff6b9d7271e872088"
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "916d5c0c072a2abad9b2237d0be0d5ff10ed5b39464a74eb0d3db07038e831d3"
+    },
+    {
+      "path": "compile-02/inputs.json",
+      "sha256Bytes": "ade6c3ee2dd3129d57938bc53dc222050ab24d1a85780d1ba5725c85e9ec1168"
+    },
+    {
+      "path": "compile-03/compile.args",
+      "sha256Bytes": "e7a56edd30c0563c03823fb9226624a8cd5e84bf01812cecadb4c74d4079f2c7"
+    },
+    {
+      "path": "compile-03/compile.log",
+      "sha256Bytes": "27713b2c7e7cc81e1890f6a5d757a65eba8b7edc2e5784c11b1b2e6a1ad83978"
+    },
+    {
+      "path": "compile-03/inputs.json",
+      "sha256Bytes": "634c704ad524a823658910f8fc2405d37f6c1d5b3d0ef23a29e453281afec308"
+    },
+    {
+      "path": "compile-04/class-overlap.json",
+      "sha256Bytes": "b4fe54a4d692bf73f28673b8cf2d536dbfc05a7e80dc2c447dba1cf1a4f1af63"
+    },
+    {
+      "path": "compile-04/compile.args",
+      "sha256Bytes": "4b7c29e505b51e08d06ee21966a423483f630d010342b61e3ca29aa9de45bd6c"
+    },
+    {
+      "path": "compile-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-04/inputs.json",
+      "sha256Bytes": "84fc0cd254fff14f6b141bcde9658c89ccdc8447eb638bb8e3e950683e5cda9c"
+    },
+    {
+      "path": "compile-05/class-overlap.json",
+      "sha256Bytes": "4d937d01989154695026617148d66eec35f5e8fbd0114ac22ca9f560e1d457fe"
+    },
+    {
+      "path": "compile-05/compile.args",
+      "sha256Bytes": "640a5b85ce9352c119efae53ac127f23c9738cf31cb977f109ef625b0e0b2b07"
+    },
+    {
+      "path": "compile-05/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-05/inputs.json",
+      "sha256Bytes": "4df4ade0c981e046b9437a99e7335bba340b01a6d95701ef20e7365beb3dbaa0"
+    },
+    {
+      "path": "compile-06/class-overlap.json",
+      "sha256Bytes": "4d937d01989154695026617148d66eec35f5e8fbd0114ac22ca9f560e1d457fe"
+    },
+    {
+      "path": "compile-06/compile.args",
+      "sha256Bytes": "9ce1048fdce2ad19a7ce94fe8629eecbe7ad9c16c799c7dfd268137376871faf"
+    },
+    {
+      "path": "compile-06/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-06/inputs.json",
+      "sha256Bytes": "6257ef0df4604fcefb842ed8b85220100edd0bd2594d8aff563673ccd1cb07d0"
+    },
+    {
+      "path": "compile_candidate.py",
+      "sha256Bytes": "630a3c257c1ea8e3bdf57d5eb8c494f6bd7e9d11ab05fad60df8a10587b4b3fb"
+    },
+    {
+      "path": "excluded-runtime-artifacts.json",
+      "sha256Bytes": "bf8d13c76291499b3be71fab4501e872050c860627936b05bd7d7480c32b773f"
+    },
+    {
+      "path": "fixtures/NavigationHostFixture.kt",
+      "sha256Bytes": "8465ad602368b25058855c2e73768f9a836e7867a7de6acee8b5caa8e0c293f9"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "e0f5945f1edfcf8169f0a8c37ff9227ddf75091e5cce32d12097868a86d2b421"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/motion/BottomBarLikeContentTransformPolicy.kt",
+      "sha256Bytes": "139b331c03ec653ce9d0142b50e2cf1fb0acb08d0ff97cf3a0a79a6183a33c5f"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/motion/NavigationSlideSpring.kt",
+      "sha256Bytes": "b51afba1d148dfcd47c69d3aea727a1cada5c0d26a896f9a6f8d5dcbf3d3f0e4"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/motion/SettingsIosPushContentTransformPolicy.kt",
+      "sha256Bytes": "9794b9e7d0685710e8ce2e68d7dd8f17297489241bd1c3dac50d2e712ff791cb"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationHostDepth.kt",
+      "sha256Bytes": "e62093e740922c14aac7fc8ac2f09658ba1ecd1982358389361d3ef2e437aee9"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationPredictiveBackground.kt",
+      "sha256Bytes": "453f23638d1a2b4ecfb8012f9458b96f8ec3d8b9b3664b28779fe0d9d893f8fe"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/transition/VideoCardTransitionNavBackdrop.kt",
+      "sha256Bytes": "19ebb881c55aa0490b1b7e586cfb84d2dfbb4cb00dee5070b453808c7c6e2a11"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/DesktopOriginalNavigationSettingsPop.kt",
+      "sha256Bytes": "a2454b7583c3e57e3876fce953d11d6edf4f6fea97cf7f783595ca851ee8311e"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation/DesktopOriginalNavigationSystemBack.kt",
+      "sha256Bytes": "d29a70eaf0adcf0f3b77a255f4ed738351c49ff3c29200444785e98517cec20c"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/BiliPaiCardMorphDestinationPolicy.kt",
+      "sha256Bytes": "086ee2ff63c73e6340412079a67f0ad4340048be6cb661a801da6052d1d24402"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/BiliPaiNavBackStackController.kt",
+      "sha256Bytes": "81a43198879bb0844e633000ba768efa462fa31b864b94af1ff073094f984154"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/BiliPaiNavBackStackPolicy.kt",
+      "sha256Bytes": "f0e2d00adaac936b63824d77fb76e144eb0511e0208e9a93f9d4fd95deb4d54a"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/BiliPaiNavContentTransformPolicy.kt",
+      "sha256Bytes": "cc381f04fadc094a91c6f643f70143065ab91a27742980569bf79cdd20a2d72b"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/BiliPaiNavDisplayHost.kt",
+      "sha256Bytes": "b90abab4de6ca48ff55dc793bfbf5a12c5cb4bc11f7728da28941643dc10ee4a"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/BiliPaiNavEntryContentPolicy.kt",
+      "sha256Bytes": "cb1d370f7b79fe10a43bb1d3c42938da146da886f9522e5ff7ee30ee0248b158"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/BiliPaiNavEntryProvider.kt",
+      "sha256Bytes": "862a3c54e37997a1cdc9ec5e9c9eef636c51341b5a80f77e01b1cf97dbc1b09e"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/BiliPaiNavMotionPolicy.kt",
+      "sha256Bytes": "4261ad450572c8fb1aee5f7c3f8b8890f58d1d604de0b29c54674c7beb99c744"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/AospNavTransition.kt",
+      "sha256Bytes": "d2a01b3f5b53f97b1c2430982b4d42e09e8c6c0aa29569e0a93f7a8c1d2e09ee"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/BiliPaiMiuixNavTransition.kt",
+      "sha256Bytes": "07ec06f4021eb7fe391c639356473bf7892f3df92c728398cd4495db9f8fecff"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackAnimationStyle.kt",
+      "sha256Bytes": "27f6ffae3156255f3887231b8d05e58a2d86929b007457ff8e540fd7a9914284"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirection.kt",
+      "sha256Bytes": "897f95ba8f103494fc8ad117c7a757a595d81e007c79948b7fb94eac48702fe5"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirectionPolicy.kt",
+      "sha256Bytes": "f168faf515bb28caea21e723a1620cc05fc22b8c956c3a80f1eb0b40deb9fd1c"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/ClassicNavTransition.kt",
+      "sha256Bytes": "1c6dc30c724418fe02386660dce1536dd6538dcfa9e6d51ba9af1aeee9d1aa82"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/MiuixPredictiveBackProgressTransition.kt",
+      "sha256Bytes": "3b567320ea162d1c091fa4d814f3ee6bc312a9ce10af6d907793b740c1bd23b2"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardNavTransition.kt",
+      "sha256Bytes": "ee69a6ead48d12291c21324630188db7ae66012d1bc4e6e3c6b532cd3eb70660"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/NavTransitionEasing.kt",
+      "sha256Bytes": "aa9b973d8fcf2f585ea1a4277b1715f45e1a94bc4b6e6486de065fe4eeab4d14"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/NavTransitionGeometry.kt",
+      "sha256Bytes": "624d58d5e147dc49a30e1f2da0c2c685d64726c87f5de876c4d2839e010b6d9f"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/NoPredictiveBackTransition.kt",
+      "sha256Bytes": "cd590bc2d0900dd213671ebd217fefbe6c22a929f0f8f39c219e391e89d524c2"
+    },
+    {
+      "path": "generated/com/android/purebilibili/navigation3/predictiveback/ScaleNavTransition.kt",
+      "sha256Bytes": "5143b16068a1e9877e214aa7d9fc74c9e0a76c81c7d656ad12b012d9465608d9"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings.kt",
+      "sha256Bytes": "903f74c43374a2d5f2b58e926f243c1f64ef68b6db58af323aaa5ad723803d49"
+    },
+    {
+      "path": "history-boundaries.json",
+      "sha256Bytes": "fc99c939d967d88504db52b6592f829509bb4d9bba66561dd1cc42df0219d49f"
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "3ee7fd05d208bb000fe622ab23493180d0100c61a0c78d2cae52e75287e274a0"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/navigation/NavigationSettingsStore.kt",
+      "sha256Bytes": "b4176bb2ec022b87b955b6823777d43f507d5bdb4b7103903bbb77a213fb3cad"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/ui/transition/PredictiveBackBackgroundPolicy.kt",
+      "sha256Bytes": "91e865c640c91c5c4d83d0e033fac3a42cda407bdae6a83821e6df9049f3f632"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionHostDepthLayer.kt",
+      "sha256Bytes": "2e5da7bef26c7aa839775a2a123b5b14f528db1b1e999748dccc924a6db6d02a"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionNavBackdrop.kt",
+      "sha256Bytes": "19ebb881c55aa0490b1b7e586cfb84d2dfbb4cb00dee5070b453808c7c6e2a11"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/settings/SettingsNavHierarchyPolicy.kt",
+      "sha256Bytes": "ced1fdca02adbf8229bf57bab696704babf4a5ac88ca3a2c1732adc305f572bd"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation/AppNavigationAppearancePolicy.kt",
+      "sha256Bytes": "c05d491f60caeecb0b64218e8dc7f8565b099790e55a6aa4410d9f7339715490"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt",
+      "sha256Bytes": "cbb6d92e8bcba3dfdf5df6dff06b8e61ccccaea9973a2d5e04fd0b5cd54917e6"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiCardMorphDestinationPolicy.kt",
+      "sha256Bytes": "086ee2ff63c73e6340412079a67f0ad4340048be6cb661a801da6052d1d24402"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiDeviceCornerRadius.kt",
+      "sha256Bytes": "a3e474382c6c844e42b4c2bf3625306df05b23616e411b4d05f968b0972cfc87"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavBackStackController.kt",
+      "sha256Bytes": "81a43198879bb0844e633000ba768efa462fa31b864b94af1ff073094f984154"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavBackStackPolicy.kt",
+      "sha256Bytes": "f0e2d00adaac936b63824d77fb76e144eb0511e0208e9a93f9d4fd95deb4d54a"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavContentTransformPolicy.kt",
+      "sha256Bytes": "cc381f04fadc094a91c6f643f70143065ab91a27742980569bf79cdd20a2d72b"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavDisplayHost.kt",
+      "sha256Bytes": "8cc7d03edb6d8745ce9fcd1c04333e24ada3de61e6f0c89172d93e77c24bbc5e"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavEntryContentPolicy.kt",
+      "sha256Bytes": "cb1d370f7b79fe10a43bb1d3c42938da146da886f9522e5ff7ee30ee0248b158"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavEntryProvider.kt",
+      "sha256Bytes": "862a3c54e37997a1cdc9ec5e9c9eef636c51341b5a80f77e01b1cf97dbc1b09e"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavMotionPolicy.kt",
+      "sha256Bytes": "4261ad450572c8fb1aee5f7c3f8b8890f58d1d604de0b29c54674c7beb99c744"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/AospNavTransition.kt",
+      "sha256Bytes": "d2a01b3f5b53f97b1c2430982b4d42e09e8c6c0aa29569e0a93f7a8c1d2e09ee"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiMiuixNavTransition.kt",
+      "sha256Bytes": "62ad6ab79de62c7a4e9441a9c192fb84ff2a70bdf34feee38203b451d01a78d4"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackAnimationStyle.kt",
+      "sha256Bytes": "27f6ffae3156255f3887231b8d05e58a2d86929b007457ff8e540fd7a9914284"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirection.kt",
+      "sha256Bytes": "897f95ba8f103494fc8ad117c7a757a595d81e007c79948b7fb94eac48702fe5"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/BiliPaiPredictiveBackExitDirectionPolicy.kt",
+      "sha256Bytes": "f168faf515bb28caea21e723a1620cc05fc22b8c956c3a80f1eb0b40deb9fd1c"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/ClassicNavTransition.kt",
+      "sha256Bytes": "1c6dc30c724418fe02386660dce1536dd6538dcfa9e6d51ba9af1aeee9d1aa82"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/MiuixPredictiveBackProgressTransition.kt",
+      "sha256Bytes": "3b567320ea162d1c091fa4d814f3ee6bc312a9ce10af6d907793b740c1bd23b2"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardNavTransition.kt",
+      "sha256Bytes": "ee69a6ead48d12291c21324630188db7ae66012d1bc4e6e3c6b532cd3eb70660"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/NavTransitionEasing.kt",
+      "sha256Bytes": "aa9b973d8fcf2f585ea1a4277b1715f45e1a94bc4b6e6486de065fe4eeab4d14"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/NavTransitionGeometry.kt",
+      "sha256Bytes": "624d58d5e147dc49a30e1f2da0c2c685d64726c87f5de876c4d2839e010b6d9f"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/NoPredictiveBackTransition.kt",
+      "sha256Bytes": "cd590bc2d0900dd213671ebd217fefbe6c22a929f0f8f39c219e391e89d524c2"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/navigation3/predictiveback/ScaleNavTransition.kt",
+      "sha256Bytes": "5143b16068a1e9877e214aa7d9fc74c9e0a76c81c7d656ad12b012d9465608d9"
+    },
+    {
+      "path": "original-stable/design-system/src/main/java/com/android/purebilibili/core/ui/motion/BottomBarLikeContentTransformPolicy.kt",
+      "sha256Bytes": "139b331c03ec653ce9d0142b50e2cf1fb0acb08d0ff97cf3a0a79a6183a33c5f"
+    },
+    {
+      "path": "original-stable/design-system/src/main/java/com/android/purebilibili/core/ui/motion/NavigationSlideSpring.kt",
+      "sha256Bytes": "b51afba1d148dfcd47c69d3aea727a1cada5c0d26a896f9a6f8d5dcbf3d3f0e4"
+    },
+    {
+      "path": "original-stable/design-system/src/main/java/com/android/purebilibili/core/ui/motion/SettingsIosPushContentTransformPolicy.kt",
+      "sha256Bytes": "9794b9e7d0685710e8ce2e68d7dd8f17297489241bd1c3dac50d2e712ff791cb"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopNavigationHostEnvironment.kt",
+      "sha256Bytes": "74c1956020fced0fae3b4bab8bcbf45d0042ea4c23fcbc952597f1ac3fed0d21"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalNavigationHost.kt",
+      "sha256Bytes": "88929e54e9269806bc42fee85e017608c5971d686adfe25b0fba27ff68c9d4a0"
+    },
+    {
+      "path": "prepared/tools/extract-upstream-navigation3-host.py",
+      "sha256Bytes": "71f882f8e822d0f1073ded480706875989b4a87517abbe3cc549813b7eb46362"
+    },
+    {
+      "path": "production-generated-audit/com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationHostDepth.kt",
+      "sha256Bytes": "e62093e740922c14aac7fc8ac2f09658ba1ecd1982358389361d3ef2e437aee9"
+    },
+    {
+      "path": "production-generated-audit/com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationPredictiveBackground.kt",
+      "sha256Bytes": "453f23638d1a2b4ecfb8012f9458b96f8ec3d8b9b3664b28779fe0d9d893f8fe"
+    },
+    {
+      "path": "production-generated-audit/com/android/purebilibili/feature/settings/DesktopOriginalNavigationSettingsPop.kt",
+      "sha256Bytes": "a2454b7583c3e57e3876fce953d11d6edf4f6fea97cf7f783595ca851ee8311e"
+    },
+    {
+      "path": "production-generated-audit/com/android/purebilibili/navigation/DesktopOriginalNavigationSystemBack.kt",
+      "sha256Bytes": "d29a70eaf0adcf0f3b77a255f4ed738351c49ff3c29200444785e98517cec20c"
+    },
+    {
+      "path": "production-generated-audit/com/android/purebilibili/navigation3/BiliPaiNavDisplayHost.kt",
+      "sha256Bytes": "b90abab4de6ca48ff55dc793bfbf5a12c5cb4bc11f7728da28941643dc10ee4a"
+    },
+    {
+      "path": "production-generated-audit/com/android/purebilibili/navigation3/predictiveback/BiliPaiMiuixNavTransition.kt",
+      "sha256Bytes": "07ec06f4021eb7fe391c639356473bf7892f3df92c728398cd4495db9f8fecff"
+    },
+    {
+      "path": "production-generated-audit/com/bilipai/desktop/ui/DesktopOriginalNavigationHostSettings.kt",
+      "sha256Bytes": "903f74c43374a2d5f2b58e926f243c1f64ef68b6db58af323aaa5ad723803d49"
+    },
+    {
+      "path": "proof-01/compile.args",
+      "sha256Bytes": "a43f6d91e7c07350abe3f47b55394af86f5a500f29c1219c96996c1ef03a7d2c"
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "90dfb8deb5cf069cc5a43b48d32992eb856836a48e6ad8dc7d644eefe96c30f0"
+    },
+    {
+      "path": "proof-01/source-binding.json",
+      "sha256Bytes": "f26420c8fe3582278e8442326e4706b7e440636491c42df52fd9fdc79046c44b"
+    },
+    {
+      "path": "proof-02/compile.args",
+      "sha256Bytes": "79ff937d2c79f41106cf232c7950182429f3255b9721cd136c0181f20745f437"
+    },
+    {
+      "path": "proof-02/compile.log",
+      "sha256Bytes": "90ef4e50420da3c19db388eec32001cd37e2a8b501da1163267efaa59f4f87e5"
+    },
+    {
+      "path": "proof-02/source-binding.json",
+      "sha256Bytes": "260966f966e34c0e2f34bc4061409036bfd57103e585aeb91c59811dd97addf5"
+    },
+    {
+      "path": "proof-03/compile.args",
+      "sha256Bytes": "3a3aa6d67836a64889ec8398b0a2f8fc2acec3fe071ce29c7d2199226db25b1d"
+    },
+    {
+      "path": "proof-03/compile.log",
+      "sha256Bytes": "90ef4e50420da3c19db388eec32001cd37e2a8b501da1163267efaa59f4f87e5"
+    },
+    {
+      "path": "proof-03/source-binding.json",
+      "sha256Bytes": "eede3caf36d3d6c097a97069b777156d513a233345afa0dcdef81cc5342bcd52"
+    },
+    {
+      "path": "proof-04/compile.args",
+      "sha256Bytes": "ea7449e9df3b093800e2297ffb71241d8a8282cc5dc4c852ed7ea8b93f5b38e1"
+    },
+    {
+      "path": "proof-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-04/run.log",
+      "sha256Bytes": "e223904f409b825d8cd82ceda2e35c00d1afdf274d8809b70976e34b75a82a9e"
+    },
+    {
+      "path": "proof-04/source-binding.json",
+      "sha256Bytes": "52f457aa16de351ba3fb0d9fa823e82d6c55491b7382832f70ba09f13206e2ff"
+    },
+    {
+      "path": "proof-05/compile.args",
+      "sha256Bytes": "0904b70eec84e137af04e5ce94961c41ecff55533ecd929259b4fa7d1c275c8c"
+    },
+    {
+      "path": "proof-05/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-05/run.log",
+      "sha256Bytes": "e223904f409b825d8cd82ceda2e35c00d1afdf274d8809b70976e34b75a82a9e"
+    },
+    {
+      "path": "proof-05/source-binding.json",
+      "sha256Bytes": "6ab44f43de253470a48622f99a32aba9f37ca04bf6a5723d95e6ce7ba78eb0e7"
+    },
+    {
+      "path": "prove_candidate.py",
+      "sha256Bytes": "0943f24dc204cba82289f7d77b282805f75a03e0c79d2f7b0e84d1f3adb4ff2f"
+    },
+    {
+      "path": "registry-delta.json",
+      "sha256Bytes": "126f364a817713b5b7ffc65a00d53830944a7ac581d137c0dd182978efc42c7f"
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "5e53dc1821eb6c2532050c32568d5a6ab1bf63f1c582d6ac1e0ee25c41d7b726"
+    },
+    {
+      "path": "source-receipt.json",
+      "sha256Bytes": "14f36b09546510739f8b543fe60352a1ab787e7aed17eb886a9a1b5f00cbd1c8"
+    }
+  ],
+  "installWhitelistSha": "3ee7fd05d208bb000fe622ab23493180d0100c61a0c78d2cae52e75287e274a0",
+  "registryDeltaSha": "126f364a817713b5b7ffc65a00d53830944a7ac581d137c0dd182978efc42c7f",
+  "actualMainManifest": "568846a4ca40019b33ef554a4c679cbe79296d8e2760173352da8a09a9d81903",
+  "actualMainCp": "3f3dc7c6fd682df07afa523fc31c0c43804549c0e1c0dbea81cf264a6062738d",
+  "actualCpCount": 97,
+  "candidateInputCount": 31,
+  "candidateClassCount": 173,
+  "classOverlap": 0,
+  "sourceAuditChecks": 81,
+  "originalNewIdentities": 24,
+  "existingFeatureMerges": 6,
+  "productionSelectedOutputs": 7,
+  "directSyncCopyCount": 22,
+  "mainEdited": false,
+  "candidateSharedEdited": false,
+  "nativeWindow": false,
+  "navDisplayMounted": false,
+  "accountOrNetworkRequest": false,
+  "packageOrExeAccepted": false,
+  "fullAppNavigationDestinationsComplete": false
+}

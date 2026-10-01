@@ -1,0 +1,3 @@
+desktop\.local\stable-home-navigation3-host-parity\fixtures\NavigationHostFixture.kt:73:47: error: unresolved reference 'fromStorageValue'.
+    check(BiliPaiPredictiveBackAnimationStyle.fromStorageValue("classic") == BiliPaiPredictiveBackAnimationStyle.CLASSIC)
+                                              ^^^^^^^^^^^^^^^^

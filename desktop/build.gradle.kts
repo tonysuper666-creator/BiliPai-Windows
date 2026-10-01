@@ -648,6 +648,38 @@ val extractOriginalLiveNavigation by tasks.registering(Exec::class) {
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/live-navigation")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalLiveNavigation) }
 
+// Merge only, no dependencies. Same original UI/shared renderer owners stay unique.
+val extractOriginalVideoShareConsent by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalHomeProtocols)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-share-consent.py",
+        "--source-repo", repositoryRoot.absolutePath,
+        "--output-dir", layout.buildDirectory.dir("generated/video-share-consent").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-video-share-consent.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "video-share-original-windows" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/video-share-consent"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/video-share-consent")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalVideoShareConsent) }
+
+// Complete original navigation host; the 22 DIRECT declarations retain sync's sole ownership.
+val extractNavigation3Host by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-navigation3-host.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-navigation3-host").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-navigation3-host.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-navigation3-host" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-navigation3-host"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-navigation3-host")) }
+tasks.named("compileKotlin") { dependsOn(extractNavigation3Host) }
+
 val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories, extractUpstreamHomeCards, extractOriginalHomePage)
     workingDir(projectDir)
@@ -1412,6 +1444,10 @@ tasks.withType<JavaExec>().configureEach {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    // Expose existing exact runtime97 Lifecycle modules through Miuix's implementation boundary.
+    implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.11.0")
+    implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0")
+    implementation("org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:2.11.0")
     implementation("org.jetbrains.compose.material3:material3:1.12.0-alpha03")
     // Original comment sheets use this API directly; Material3 only brings its
     // desktop implementation onto runtimeClasspath transitively.

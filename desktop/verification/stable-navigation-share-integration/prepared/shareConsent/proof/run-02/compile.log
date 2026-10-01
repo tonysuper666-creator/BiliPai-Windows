@@ -1,0 +1,18 @@
+work\BiliPai-v023\desktop\.local\stable-video-share-consent-parity\proof\VideoShareProof.kt:26:26: warning: the corresponding parameter in the supertype 'Call' is named 'responseCallback'. This may cause problems when calling this function with named arguments.
+    override fun enqueue(callback:Callback) {callback.onResponse(this,response)}
+                         ^^^^^^^^
+work\BiliPai-v023\desktop\.local\stable-video-share-consent-parity\proof\VideoShareProof.kt:66:103: warning: expression is unused.
+    val file=files.publish("BiliPai_share_test.jpg","image/jpeg") {Files.write(it,byteArrayOf(1,2,3));Unit}
+                                                                                                      ^^^^
+work\BiliPai-v023\desktop\.local\stable-video-share-consent-parity\proof\VideoShareProof.kt:79:152: warning: expression is unused.
+        runCatching {files.publish("BiliPai_share_cancel.jpg","image/jpeg") {Files.write(it,byteArrayOf(1));currentCoroutineContextForProof!!.cancel();Unit}}
+                                                                                                                                                       ^^^^
+work\BiliPai-v023\desktop\.local\stable-video-share-consent-parity\proof\VideoShareProof.kt:92:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Array<out Any?>'.
+    expect(sentArgs!!.contains(100L) && sentArgs!!.contains(200L) && sentArgs!!.count {it=="fixture-csrf"}==2,"sender receiver and both CSRF fields")
+                                                ^^
+work\BiliPai-v023\desktop\.local\stable-video-share-consent-parity\proof\VideoShareProof.kt:92:78: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Array<out Any?>'.
+    expect(sentArgs!!.contains(100L) && sentArgs!!.contains(200L) && sentArgs!!.count {it=="fixture-csrf"}==2,"sender receiver and both CSRF fields")
+                                                                             ^^
+work\BiliPai-v023\desktop\.local\stable-video-share-consent-parity\proof\VideoShareProof.kt:107:57: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Request'.
+    expect(observed!!.header("Cookie")==null && observed!!.header("Referer")=="https://www.bilibili.com/","anonymous cover request and original Referer")
+                                                        ^^

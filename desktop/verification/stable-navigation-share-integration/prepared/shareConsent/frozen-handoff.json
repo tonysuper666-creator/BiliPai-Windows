@@ -1,0 +1,383 @@
+{
+  "scope": "entire original video share/consent renderer and explicit physical Windows effects source-only closure",
+  "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualSnapshot": 40,
+  "actualRuntimeEntries": 97,
+  "actualOrderedClasspathSha256Bytes": "3f3dc7c6fd682df07afa523fc31c0c43804549c0e1c0dbea81cf264a6062738d",
+  "compile": {
+    "sources": 14,
+    "classes": 83,
+    "methods": 498,
+    "jarSha256Bytes": "f12c47e57b7de4a96090cb1be0117195ee2415b3c2c144283ac09e5e462471dc",
+    "runtimeOverrides": 0,
+    "classAndTopMethodOverlap": 0,
+    "invalidMethodNames": 0,
+    "classesLoadedWithoutInit": 83
+  },
+  "proof": {
+    "groups": 4,
+    "assertions": 24,
+    "sourceReplayReverseChecks": 96,
+    "completeOriginalSourcesReverseRecovered": 9,
+    "physicalWindowsLocalFileAndNativeSkikoWebP": true,
+    "nativeShareHWNDOrAccountNetwork": false
+  },
+  "installPayloads": 6,
+  "operationsExactHunks": 1,
+  "nativeDiagnosticExactHunks": 18,
+  "nativeBuilt": false,
+  "actualRootMounted": false,
+  "sharedSourcesOrGradleModified": false,
+  "deployedExe": false,
+  "installContractSha256Bytes": "33411a1091ab3f236a5af5d863f7a747865b48cc7c487bc1142991acb8d985bc",
+  "artifacts": [
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "2f9baa4ecf620ad568d01d8d0600188cbee7eb35d899113fa968902d9f8235c0"
+    },
+    {
+      "path": "abi-audit.json",
+      "sha256Bytes": "fa9140b061f63c67ca99f7a0fe06e3904079aff1a1ca6ab2541db3279ef547d3"
+    },
+    {
+      "path": "adaptation-diffs/CrashTrackingConsentDialog.json",
+      "sha256Bytes": "6ac2d9a4c7082bd53c98a21422beb704b75edcdc0d35c004ebe7bb95856f6d35"
+    },
+    {
+      "path": "adaptation-diffs/MessageRepository.json",
+      "sha256Bytes": "4d24948b518d0de497cc757ade7f4cc54e3fc3bab9f80be04333f6de318791aa"
+    },
+    {
+      "path": "adaptation-diffs/VideoShareCardService.json",
+      "sha256Bytes": "28dae38c478b60e5496a6cfa309e0a04413572425d432ce169b7559c59934bc5"
+    },
+    {
+      "path": "adaptation-diffs/VideoShareCoverService.json",
+      "sha256Bytes": "8cb3a80a8ca80e507bb12a0282326465428d55db6faeca9cddf8f0c938bd9309"
+    },
+    {
+      "path": "adaptation-diffs/VideoShareMoreTargetsSheet.json",
+      "sha256Bytes": "afbb4704e400b9fd7f6f40e3290c4c270bb32932872d3829cf509a539da3455f"
+    },
+    {
+      "path": "adaptation-diffs/VideoSharePolicy.json",
+      "sha256Bytes": "c6eb175d063f50cf7859505c28f65cc8142d4366d75ecb6172e02879063ac540"
+    },
+    {
+      "path": "adaptation-diffs/VideoShareSheet.json",
+      "sha256Bytes": "654ab470efbe0531173107314c9a936d5568786448555fb89bd5956816782f88"
+    },
+    {
+      "path": "adaptation-diffs/VideoShareSheetMotion.json",
+      "sha256Bytes": "6af6f2eb2ba8dc7cb6b6623ece575b6485c09bc8eb519c4ec95cad62ef0ff262"
+    },
+    {
+      "path": "adaptation-diffs/VideoShareToFollowingDialog.json",
+      "sha256Bytes": "aaba9ca5260a9cb92cab51f06e2894b257169979c5532b0412dab7c15ea6e8ed"
+    },
+    {
+      "path": "audit_abi.py",
+      "sha256Bytes": "cbecfa12a58cad0a842f3ed19a3eecaafd8549e53ae7285b0d1b0578f2ecffe1"
+    },
+    {
+      "path": "classload-proof/ProfileClassLoadProof.java",
+      "sha256Bytes": "4ec3b0336b42032356ebc7c4037382b6765abb76a9e9239c6839c39e851c08f8"
+    },
+    {
+      "path": "classload-proof/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "classload-proof/run.log",
+      "sha256Bytes": "7bf9c0d8a7a6f910e1a1a1cd0a224bc62ea3b6bfcf74e38f21e0be6524b18ad2"
+    },
+    {
+      "path": "compile-07/compile-result.json",
+      "sha256Bytes": "ed8b22ca500695d71c9f1bb5771262ad3710dd5739daf31ee4cf4732b3187b28"
+    },
+    {
+      "path": "compile-07/compile.log",
+      "sha256Bytes": "229bed8a65ee012738bdda8363fd905eb409825fedecd106460c1a7c225aa5e0"
+    },
+    {
+      "path": "compile-07/original-video-share-consent.jar",
+      "sha256Bytes": "f12c47e57b7de4a96090cb1be0117195ee2415b3c2c144283ac09e5e462471dc"
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "523e2a2737291a91865ec4753a4132e547fc3e2be982428dffd1bbbb2b09677c"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "3028221177a9b60f185a0e94602b87d7916715ad0a7891dac4b3a7f27ddb314f"
+    },
+    {
+      "path": "generation-records.json",
+      "sha256Bytes": "81bdd48512094b9c5302d24d1ca7ecc0df32e1b76074f385c31a232644ddb0bc"
+    },
+    {
+      "path": "gradle-tasks.snippet.kts",
+      "sha256Bytes": "b65a39be6af09728ed8f280f2607098ecb22d72ebabba7a61bf806d4da29414f"
+    },
+    {
+      "path": "input-audit.json",
+      "sha256Bytes": "7d39cd658bf8f78538497e2112a23879759b5f12f3458845b774884ba6ad28b8"
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "33411a1091ab3f236a5af5d863f7a747865b48cc7c487bc1142991acb8d985bc"
+    },
+    {
+      "path": "native-local-hunks.json",
+      "sha256Bytes": "45da713435c33ae740238da92296aded28c789c71063af41828e0c949ee97568"
+    },
+    {
+      "path": "operations-local-hunk.json",
+      "sha256Bytes": "5eb00a8257f3a87e71018c72d0d39f5ba281a1bd45e39dbe749bb3c95ddd6d46"
+    },
+    {
+      "path": "operations-member.fragment.kt",
+      "sha256Bytes": "fd7e3d0b71ba97726fa3f5932bb5193bb271801bd97cb097067232b831a339c3"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/core/ui/common/ClipboardUtils.kt",
+      "sha256Bytes": "4d88d3cd243eeb5b5ab8c555a0321255f43c4ed8d468ce8ac27de5df0649fd7f"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt",
+      "sha256Bytes": "405e952ef30ec06f14a155599a92641d533e73f28ea198f0aebfda90960a4bc8"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/home/components/CrashTrackingConsentDialog.kt",
+      "sha256Bytes": "ef6c64d8ece6629745cdc97429c04ab18cfac1ed8c14e9aa8bb96d8fc89e3e69"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareCardService.kt",
+      "sha256Bytes": "3b4457cc2cafe715f096b672c4dcdf20cdb4e439c8ed28529bf3c7bd672f843f"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareCoverService.kt",
+      "sha256Bytes": "3522337b258e940bbed464b183d06a4b92ceef128f524c84afbbdd7d757ccffc"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
+      "sha256Bytes": "5defed29dba05655b77696fb80f12abcff16da3d8e01068107a1f6dbd7fd370b"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/share/VideoSharePolicy.kt",
+      "sha256Bytes": "97b76d437936dddfccb4b0f553b14f3b3105ef012fdd520ac293d5863a5fcced"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheet.kt",
+      "sha256Bytes": "1316c7769903345835c34e7b38922a24caefd970070bd48007cc505b2db7f6fd"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt",
+      "sha256Bytes": "f734b125809387511ffce1231599717d9de6357f2785e314fc33164e37a84efd"
+    },
+    {
+      "path": "original-stable/app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareToFollowingDialog.kt",
+      "sha256Bytes": "36e532aab50b6d85f9f0a0cb2e0d547ae46722052c0aefdbddec0c426e4e2400"
+    },
+    {
+      "path": "pack.py",
+      "sha256Bytes": "1d5fed027a5b40cd5ddebdabd476e8a776ac25e7efb04e6b70a49abb447deb11"
+    },
+    {
+      "path": "pins.json",
+      "sha256Bytes": "0001ec187c46d032a505832658508899b7359cb45aec754d44312510acd37a93"
+    },
+    {
+      "path": "platform-card.template.kt",
+      "sha256Bytes": "dad5b4056f2701dc8246fa62c57c31ea55991d9c8e5422c637aa55365a333b1f"
+    },
+    {
+      "path": "platform-cover.template.kt",
+      "sha256Bytes": "7066c8795cefccc63648ba486d5dec1d61d1377b66cb56da51d5bbbf186fca7d"
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "5c2254d069a66667b19f9e098ed16dd3ff9dde34ad8cfb0590ad7d8743245240"
+    },
+    {
+      "path": "prepare_native_delta.py",
+      "sha256Bytes": "5e0b50d674526daa685e8524c0d09bb6d063786af0157cb365b0dbe26b8be27f"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/data/repository/DesktopOriginalVideoShareMessages.kt",
+      "sha256Bytes": "8ab9ff264a054110b6de616faa90df04a250df579acd6bfbf0d29ecb0539bd6e"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/CrashTrackingConsentDialog.kt",
+      "sha256Bytes": "8828391d7a325179cf30c100cc90c84fa5e6a5777584c96d60b500116fb680cd"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/share/DesktopOriginalVideoSharePolicy.kt",
+      "sha256Bytes": "20abeee2a72f1cd63d9f643210201360caf0df31cc28419958967197a3b86c4b"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/share/VideoShareCardService.kt",
+      "sha256Bytes": "13e77474d16016a690504c483e0f73f3103f5df6de53da2e0174958724e400b0"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/share/VideoShareCoverService.kt",
+      "sha256Bytes": "9a3c2eefff18d9d7cc03c470b62ab34aa88eaecc795b5bd402355b3a27fb0ffe"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
+      "sha256Bytes": "e568caadfcd97ef88aedec1b82781e076508ea694f2504eaecde72119caf3f22"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/share/VideoShareSheet.kt",
+      "sha256Bytes": "bac6e4169f743a7b109329ac9b48e4079be4e1283919798493aa300ba5351480"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt",
+      "sha256Bytes": "73c5c88109713eb47ec57d9a3381efaa1ce1c4cd2b81d9bb4fef3e1c980c6fc2"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/share/VideoShareToFollowingDialog.kt",
+      "sha256Bytes": "c86a019deca0bd376badd56c567ebbfecad41287bd9d95bff1faab4aca0a67ba"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalCrashConsentBinding.kt",
+      "sha256Bytes": "9198f7343e0aec8f0ffb871aa45cacd9841e2b596e398208d4a206a533d7a3b0"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomeOverlayBindings.kt",
+      "sha256Bytes": "907d89358502c3e213c6fddd575af6f750febecd56f765e8ced90aac2ded56e2"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopVideoShareBindings.kt",
+      "sha256Bytes": "eca7a43c513b7287ab38b128780a602ec210ace68797f146373bf70b8ce86d30"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt",
+      "sha256Bytes": "574dd690425a3a569c6d2ad07f318a3f49d344b3e60c19ce7ad46240f73b3729"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopVideoShareImageTransport.kt",
+      "sha256Bytes": "2336666e5936b24b2f41bcbb9f80c9edff81becc1b9994637fc141ce009ecb65"
+    },
+    {
+      "path": "prepared/tools/extract-upstream-video-share-consent.py",
+      "sha256Bytes": "55c9844151939e669fe0cdf5e420acae3a58855a0289f15528d7d496dddee203"
+    },
+    {
+      "path": "proof.py",
+      "sha256Bytes": "d83e991cec1795df6e64aae22267893d7263bebece8ba03fa934adbe749dcdac"
+    },
+    {
+      "path": "proof/VideoShareProof.kt",
+      "sha256Bytes": "690830e0193d97909781671f92f540e743122004d07e9ecadde67345ede88566"
+    },
+    {
+      "path": "proof/run-02/compile.log",
+      "sha256Bytes": "89f44b68a23d94da5711830de986842d4f7cc86b4bc3f524ebe83fb0d0d2036d"
+    },
+    {
+      "path": "proof/run-02/run.log",
+      "sha256Bytes": "0ebbdf50801bb1fbbbb2dc4990454f22058a66b24e3f5cae46463ab7a97e5b66"
+    },
+    {
+      "path": "registry-merge-recipe.json",
+      "sha256Bytes": "c6a09c4cd6add918702f77cf7315445ee72c19bbf39e91659ddab84af09b9b6c"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/data/repository/DesktopOriginalVideoShareMessages.kt",
+      "sha256Bytes": "8ab9ff264a054110b6de616faa90df04a250df579acd6bfbf0d29ecb0539bd6e"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/home/components/CrashTrackingConsentDialog.kt",
+      "sha256Bytes": "8828391d7a325179cf30c100cc90c84fa5e6a5777584c96d60b500116fb680cd"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/video/share/DesktopOriginalVideoSharePolicy.kt",
+      "sha256Bytes": "20abeee2a72f1cd63d9f643210201360caf0df31cc28419958967197a3b86c4b"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/video/share/VideoShareCardService.kt",
+      "sha256Bytes": "13e77474d16016a690504c483e0f73f3103f5df6de53da2e0174958724e400b0"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/video/share/VideoShareCoverService.kt",
+      "sha256Bytes": "9a3c2eefff18d9d7cc03c470b62ab34aa88eaecc795b5bd402355b3a27fb0ffe"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
+      "sha256Bytes": "e568caadfcd97ef88aedec1b82781e076508ea694f2504eaecde72119caf3f22"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/video/share/VideoShareSheet.kt",
+      "sha256Bytes": "bac6e4169f743a7b109329ac9b48e4079be4e1283919798493aa300ba5351480"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt",
+      "sha256Bytes": "73c5c88109713eb47ec57d9a3381efaa1ce1c4cd2b81d9bb4fef3e1c980c6fc2"
+    },
+    {
+      "path": "replay-production/com/android/purebilibili/feature/video/share/VideoShareToFollowingDialog.kt",
+      "sha256Bytes": "c86a019deca0bd376badd56c567ebbfecad41287bd9d95bff1faab4aca0a67ba"
+    },
+    {
+      "path": "reverse-adapters/CrashTrackingConsentDialog.json",
+      "sha256Bytes": "d6441ad09752387aff337f2bf4dd969e5aa0d97a91b0a853dffa323a5b493bf4"
+    },
+    {
+      "path": "reverse-adapters/MessageRepository.json",
+      "sha256Bytes": "83c84eb65f0e9b73c2e633ec911dcab64fcb95eaff3930b9529e9befcaee176b"
+    },
+    {
+      "path": "reverse-adapters/VideoShareCardService.json",
+      "sha256Bytes": "00d0f6147f6b8da2bd8123c443bf8091fe1732730809fbc705e4937e10909e58"
+    },
+    {
+      "path": "reverse-adapters/VideoShareCoverService.json",
+      "sha256Bytes": "dfb16fff2c7d6e53efa131c018377a5dbe0827fad612b5365ee5a5136d337b20"
+    },
+    {
+      "path": "reverse-adapters/VideoShareMoreTargetsSheet.json",
+      "sha256Bytes": "9ca62cc23a011ba1ec2344dec5e279792dd1908fc841a40eb20338cf3f9bb0cf"
+    },
+    {
+      "path": "reverse-adapters/VideoSharePolicy.json",
+      "sha256Bytes": "4d33a1637dee120ee4bd8f5b84557653357dc6b7f0fd89173d3f8be17eca56e4"
+    },
+    {
+      "path": "reverse-adapters/VideoShareSheet.json",
+      "sha256Bytes": "a7d69ebcd2f734cf2573f4c8cbc0f71590a6ccc681edcb7c760ad5a10937b4d9"
+    },
+    {
+      "path": "reverse-adapters/VideoShareSheetMotion.json",
+      "sha256Bytes": "06f51b9a51e0b59d79b692b06ed789163a72b72f28172cb050cea78bde7ed7a9"
+    },
+    {
+      "path": "reverse-adapters/VideoShareToFollowingDialog.json",
+      "sha256Bytes": "3fa1dca72badd48ddf8da20e99874a9469c392952e3d59bfeb620cf6a43d349e"
+    },
+    {
+      "path": "review-only-native/desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "sha256Bytes": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92"
+    },
+    {
+      "path": "review-only-native/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "sha256Bytes": "76f9d6a63381cdc535c4ba1c2bc124e4ea5363996f78493b66aeff6c6fa5e066"
+    },
+    {
+      "path": "review-only-native/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "sha256Bytes": "2171801494bfaaa5f60616b3b6a1a6edeb9e48a5997603fa2dc3d6b2bf806450"
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "a86f61a88f022a8eedac8858bec0806903f549244f0023fbf4ac5d9d66dc3841"
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "46ccf27a754fa77c0566ddae3119bda4682f952c9323481f27316cf07e006c0e"
+    }
+  ]
+}

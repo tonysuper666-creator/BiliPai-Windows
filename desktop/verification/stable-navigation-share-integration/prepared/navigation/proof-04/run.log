@@ -1,0 +1,5 @@
+PASS all 173 candidate JVM classes actually load against immutable actual40
+PASS original host's actual helper preserves KMP factory/extras/exact per-entry store and clear isolation
+PASS original stack and drawable-only retained depth/gesture policies
+PASS four original settings keys/defaults/writers and synchronous autoplay cache use the same actual global disk backing
+Scope: prepared source and offline actors only; no Root NavDisplay mounting, Android capability, HWND, gesture, native rendering or account/API

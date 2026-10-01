@@ -1,0 +1,92 @@
+[
+  {
+    "tag": "insert",
+    "originalLine": 2,
+    "preparedLine": 2,
+    "before": "",
+    "after": "import com.bilipai.desktop.ui.DesktopVideoShareBindings\nimport com.android.purebilibili.core.util.FormatUtils\nimport kotlinx.coroutines.*\nimport java.nio.file.Path\nimport java.nio.file.Files\n",
+    "originalRange": [
+      1,
+      1
+    ],
+    "preparedRange": [
+      1,
+      6
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 3,
+    "preparedLine": 8,
+    "before": "import android.content.Context\nimport android.net.Uri\nimport android.util.Log\nimport androidx.core.content.FileProvider\nimport com.android.purebilibili.core.util.FormatUtils\nimport java.io.File\nimport java.net.HttpURLConnection\nimport java.net.URL\nimport kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.withContext\n\ninternal data class VideoShareCoverFile(\n    val uri: Uri,\n    val mimeType: String\n)\n\ninternal suspend fun prepareVideoShareCoverFile(\n    context: Context,\n    payload: VideoSharePayload\n): VideoShareCoverFile? {\n    val coverUrl = FormatUtils.resolveVideoCoverUrl(\n        url = payload.coverUrl,\n        useLowQuality = false\n    )\n    if (coverUrl.isBlank()) return null\n",
+    "after": "internal data class VideoShareCoverFile(val path:Path,val mimeType:String) {\n    val uri:java.net.URI get()=path.toUri()\n}\ninternal suspend fun prepareVideoShareCoverFile(context:DesktopVideoShareBindings,payload:VideoSharePayload):VideoShareCoverFile? {\n    val coverUrl=FormatUtils.resolveVideoCoverUrl(url=payload.coverUrl,useLowQuality=false)\n    if(coverUrl.isBlank())return null\n",
+    "originalRange": [
+      2,
+      27
+    ],
+    "preparedRange": [
+      7,
+      13
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 29,
+    "preparedLine": 15,
+    "before": "        runCatching {\n            val mimeType = resolveVideoShareCoverMimeType(coverUrl)\n            val cacheFile = downloadVideoShareCover(\n                context = context,\n                coverUrl = coverUrl,\n                bvid = payload.bvid,\n                mimeType = mimeType\n            )\n            val uri = FileProvider.getUriForFile(\n                context,\n                \"${context.packageName}.fileprovider\",\n                cacheFile\n            )\n            VideoShareCoverFile(uri = uri, mimeType = mimeType)\n        }.onFailure { error ->\n            Log.e(\"VideoShare\", \"Prepare video share cover failed\", error)\n        }.getOrNull()\n",
+    "after": "        try {\n            val mimeType=resolveVideoShareCoverMimeType(coverUrl)\n            val bytes=context.files.bytes(coverUrl)\n            val bvid=payload.bvid.ifBlank {\"video\"}\n            require(bvid.matches(Regex(\"[A-Za-z0-9_-]+\")))\n            context.files.publish(\"BiliPai_share_${bvid}.${resolveVideoShareCoverExtension(mimeType)}\",mimeType) {target -> Files.write(target,bytes);Unit}\n        } catch(cancelled:CancellationException) {throw cancelled}\n        catch(failure:Exception) {currentCoroutineContext().ensureActive();if(!context.isOwned())throw CancellationException(\"分享页面已退役\");null}\n",
+    "originalRange": [
+      28,
+      45
+    ],
+    "preparedRange": [
+      14,
+      22
+    ]
+  },
+  {
+    "tag": "delete",
+    "originalLine": 48,
+    "preparedLine": 25,
+    "before": "\n",
+    "after": "",
+    "originalRange": [
+      47,
+      48
+    ],
+    "preparedRange": [
+      24,
+      24
+    ]
+  },
+  {
+    "tag": "delete",
+    "originalLine": 57,
+    "preparedLine": 33,
+    "before": "\nprivate fun downloadVideoShareCover(\n    context: Context,\n    coverUrl: String,\n    bvid: String,\n    mimeType: String\n): File {\n    val cacheDir = File(context.cacheDir, \"shared_images\").apply { mkdirs() }\n    cleanupVideoShareCoverCache(cacheDir)\n    val outputFile = File(\n        cacheDir,\n        \"BiliPai_share_${bvid.ifBlank { \"video\" }}.${resolveVideoShareCoverExtension(mimeType)}\"\n    )\n    val connection = URL(coverUrl).openConnection() as HttpURLConnection\n    try {\n        connection.setRequestProperty(\"Referer\", \"https://www.bilibili.com/\")\n        connection.connect()\n        check(connection.responseCode in 200..299) {\n            \"Cover download failed: ${connection.responseCode}\"\n        }\n        connection.inputStream.use { input ->\n            outputFile.outputStream().use { output ->\n                input.copyTo(output)\n            }\n        }\n        return outputFile\n    } finally {\n        connection.disconnect()\n    }\n}\n\n",
+    "after": "",
+    "originalRange": [
+      56,
+      87
+    ],
+    "preparedRange": [
+      32,
+      32
+    ]
+  },
+  {
+    "tag": "delete",
+    "originalLine": 95,
+    "preparedLine": 40,
+    "before": "\nprivate fun cleanupVideoShareCoverCache(cacheDir: File) {\n    val now = System.currentTimeMillis()\n    cacheDir.listFiles()\n        ?.filter { file ->\n            file.name.startsWith(\"BiliPai_share_\") &&\n                now - file.lastModified() > VIDEO_SHARE_COVER_CACHE_TTL_MS\n        }\n        ?.forEach { file -> file.delete() }\n}\n\nprivate const val VIDEO_SHARE_COVER_CACHE_TTL_MS = 24L * 60L * 60L * 1000L\n",
+    "after": "",
+    "originalRange": [
+      94,
+      106
+    ],
+    "preparedRange": [
+      39,
+      39
+    ]
+  }
+]

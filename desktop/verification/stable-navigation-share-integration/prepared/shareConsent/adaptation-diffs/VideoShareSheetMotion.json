@@ -1,0 +1,62 @@
+[
+  {
+    "tag": "delete",
+    "originalLine": 3,
+    "preparedLine": 3,
+    "before": "import android.content.res.Configuration\n",
+    "after": "",
+    "originalRange": [
+      2,
+      3
+    ],
+    "preparedRange": [
+      2,
+      2
+    ]
+  },
+  {
+    "tag": "delete",
+    "originalLine": 15,
+    "preparedLine": 14,
+    "before": "import androidx.compose.ui.platform.LocalConfiguration\n",
+    "after": "",
+    "originalRange": [
+      14,
+      15
+    ],
+    "preparedRange": [
+      13,
+      13
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 18,
+    "preparedLine": 16,
+    "before": "import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion\n",
+    "after": "import com.bilipai.desktop.ui.rememberDesktopDynamicReduceMotion as rememberSystemReduceMotion\n",
+    "originalRange": [
+      17,
+      18
+    ],
+    "preparedRange": [
+      15,
+      16
+    ]
+  },
+  {
+    "tag": "replace",
+    "originalLine": 26,
+    "preparedLine": 24,
+    "before": "    LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE\n",
+    "after": "    com.bilipai.desktop.ui.LocalDesktopVideoShareBindings.current.isLandscape\n",
+    "originalRange": [
+      25,
+      26
+    ],
+    "preparedRange": [
+      23,
+      24
+    ]
+  }
+]

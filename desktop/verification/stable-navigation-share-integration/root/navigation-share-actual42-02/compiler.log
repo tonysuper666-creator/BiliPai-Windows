@@ -1,0 +1,18 @@
+desktop\.local\upstream-v023-audit\navigation-share-actual42-02\VideoShareProof.kt:26:26: warning: the corresponding parameter in the supertype 'Call' is named 'responseCallback'. This may cause problems when calling this function with named arguments.
+    override fun enqueue(callback:Callback) {callback.onResponse(this,response)}
+                         ^^^^^^^^
+desktop\.local\upstream-v023-audit\navigation-share-actual42-02\VideoShareProof.kt:72:103: warning: expression is unused.
+    val file=files.publish("BiliPai_share_test.jpg","image/jpeg") {Files.write(it,byteArrayOf(1,2,3));Unit}
+                                                                                                      ^^^^
+desktop\.local\upstream-v023-audit\navigation-share-actual42-02\VideoShareProof.kt:85:152: warning: expression is unused.
+        runCatching {files.publish("BiliPai_share_cancel.jpg","image/jpeg") {Files.write(it,byteArrayOf(1));currentCoroutineContextForProof!!.cancel();Unit}}
+                                                                                                                                                       ^^^^
+desktop\.local\upstream-v023-audit\navigation-share-actual42-02\VideoShareProof.kt:98:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Array<out Any?>'.
+    expect(sentArgs!!.contains(100L) && sentArgs!!.contains(200L) && sentArgs!!.count {it=="fixture-csrf"}==2,"sender receiver and both CSRF fields")
+                                                ^^
+desktop\.local\upstream-v023-audit\navigation-share-actual42-02\VideoShareProof.kt:98:78: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Array<out Any?>'.
+    expect(sentArgs!!.contains(100L) && sentArgs!!.contains(200L) && sentArgs!!.count {it=="fixture-csrf"}==2,"sender receiver and both CSRF fields")
+                                                                             ^^
+desktop\.local\upstream-v023-audit\navigation-share-actual42-02\VideoShareProof.kt:113:57: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Request'.
+    expect(observed!!.header("Cookie")==null && observed!!.header("Referer")=="https://www.bilibili.com/","anonymous cover request and original Referer")
+                                                        ^^

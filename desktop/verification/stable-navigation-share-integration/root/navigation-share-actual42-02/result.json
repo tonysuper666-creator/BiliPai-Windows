@@ -1,0 +1,74 @@
+{
+  "actualPhase": 42,
+  "passed": true,
+  "actualRuntimeEntries": 97,
+  "productionOverrides": 0,
+  "actualProductClassOrigins": 14,
+  "navigationGroups": 4,
+  "navigationInstalledClassLoadCount": 173,
+  "navigationClassInitialization": false,
+  "shareAssertions": 24,
+  "shareGroups": 4,
+  "actorAssertions": 25,
+  "nativeActorAssertions": 16,
+  "consentActorAssertions": 9,
+  "actorGroups": 3,
+  "originalFixtureBodiesPreservedExceptOriginVerification": true,
+  "fixtureSources": [
+    {
+      "path": "NavigationHostFixture.kt",
+      "sha256Bytes": "a1c463da82c5e3c79dbd5be0e08040644eae3ab89e61389431e05b07e9d03768"
+    },
+    {
+      "path": "VideoShareProof.kt",
+      "sha256Bytes": "8090ccb973427c77c70f0f1b015d1c2792dac8da10bf840cc1cd339e19dde3af"
+    },
+    {
+      "path": "NativeShareConsentFixture.kt",
+      "sha256Bytes": "183d085e763129edb6d87428820aa97dd0abd78886a1ac0a0ebc18d00951b3b6"
+    }
+  ],
+  "snapshotManifestSha256Bytes": "d84593c1a3dc908015f0526ae17375027082d91a9eba12e81b70dadde9779d54",
+  "orderedClasspathSha256Bytes": "6fb3e971ee12e0f77c7a7dd6e54a4af64456b3e8bab8446660c1f10947b2d63c",
+  "nativeAssetSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06",
+  "results": [
+    {
+      "group": "nav",
+      "passed": true,
+      "productClassOrigins": [
+        "ORIGIN com.android.purebilibili.navigation3.BiliPaiNavBackStackController file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar",
+        "ORIGIN com.android.purebilibili.navigation3.BiliPaiNavKey file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.ui.DesktopNavigationEntryViewModelPlatform file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.ui.DesktopOriginalNavigationHostSettings file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar",
+        "ORIGIN com.android.purebilibili.core.ui.transition.VideoCardTransitionClock file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.plugins.DesktopPluginStore file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar"
+      ]
+    },
+    {
+      "group": "share",
+      "passed": true,
+      "productClassOrigins": [
+        "ORIGIN com.bilipai.desktop.ui.DesktopVideoShareFiles file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.ui.DesktopVideoShareImageTransport file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar",
+        "ORIGIN com.android.purebilibili.data.repository.DesktopOriginalVideoShareMessages file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar"
+      ]
+    },
+    {
+      "group": "actors",
+      "passed": true,
+      "productClassOrigins": [
+        "ORIGIN com.bilipai.desktop.diagnostics.DesktopNativeTextShare file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.diagnostics.DesktopDiagnostics file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.ui.DesktopOriginalCrashConsentBinding file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.diagnostics.DesktopNativeDiagnosticShareAssetHash file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar",
+        "ORIGIN com.bilipai.desktop.plugins.DesktopPluginStore file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-42/main-kotlin.jar"
+      ]
+    }
+  ],
+  "actualRootAccountOrNavigationIntegrated": false,
+  "physicalWindowAccepted": false,
+  "ShareUI": false,
+  "externalReceiver": false,
+  "HTTP": false,
+  "realAccountMutation": false
+}

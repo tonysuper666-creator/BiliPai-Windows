@@ -1,0 +1,114 @@
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:13:48: error: unresolved reference 'SETTINGS_IOS_PUSH_DURATION_MS'.
+import com.android.purebilibili.core.ui.motion.SETTINGS_IOS_PUSH_DURATION_MS
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:14:48: error: unresolved reference 'navigationSlideSpring'.
+import com.android.purebilibili.core.ui.motion.navigationSlideSpring
+                                               ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:15:48: error: unresolved reference 'resolveBottomBarLikeHorizontalContentTransform'.
+import com.android.purebilibili.core.ui.motion.resolveBottomBarLikeHorizontalContentTransform
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:16:48: error: unresolved reference 'resolveSettingsIosPushForwardContentTransform'.
+import com.android.purebilibili.core.ui.motion.resolveSettingsIosPushForwardContentTransform
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:17:48: error: unresolved reference 'resolveSettingsIosPushPopContentTransform'.
+import com.android.purebilibili.core.ui.motion.resolveSettingsIosPushPopContentTransform
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:69:5: error: unresolved reference 'resolveSettingsIosPushForwardContentTransform'.
+    resolveSettingsIosPushForwardContentTransform(durationMillis = SETTINGS_IOS_PUSH_DURATION_MS)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:69:68: error: unresolved reference 'SETTINGS_IOS_PUSH_DURATION_MS'.
+    resolveSettingsIosPushForwardContentTransform(durationMillis = SETTINGS_IOS_PUSH_DURATION_MS)
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:75:5: error: unresolved reference 'resolveSettingsIosPushPopContentTransform'.
+    resolveSettingsIosPushPopContentTransform(durationMillis = SETTINGS_IOS_PUSH_DURATION_MS)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:75:64: error: unresolved reference 'SETTINGS_IOS_PUSH_DURATION_MS'.
+    resolveSettingsIosPushPopContentTransform(durationMillis = SETTINGS_IOS_PUSH_DURATION_MS)
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:78:23: error: unresolved reference 'navigationSlideSpring'.
+    val spatialSpec = navigationSlideSpring(NAV3_SPACE_FORWARD_MILLIS)
+                      ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:88:23: error: unresolved reference 'navigationSlideSpring'.
+    val spatialSpec = navigationSlideSpring(NAV3_LIGHT_SIBLING_MILLIS)
+                      ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:98:23: error: unresolved reference 'navigationSlideSpring'.
+    val spatialSpec = navigationSlideSpring(NAV3_LIGHT_SIBLING_MILLIS)
+                      ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:109:5: error: unresolved reference 'resolveBottomBarLikeHorizontalContentTransform'.
+    resolveBottomBarLikeHorizontalContentTransform(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavContentTransformPolicy.kt:115:5: error: unresolved reference 'resolveBottomBarLikeHorizontalContentTransform'.
+    resolveBottomBarLikeHorizontalContentTransform(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:51:52: error: unresolved reference 'LocalPredictiveBackBackgroundState'.
+import com.android.purebilibili.core.ui.transition.LocalPredictiveBackBackgroundState
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:52:52: error: unresolved reference 'PredictiveBackBackgroundState'.
+import com.android.purebilibili.core.ui.transition.PredictiveBackBackgroundState
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:54:52: error: unresolved reference 'VideoCardTransitionHostDepthLayer'.
+import com.android.purebilibili.core.ui.transition.VideoCardTransitionHostDepthLayer
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:55:52: error: unresolved reference 'VideoCardTransitionNavBackdrop'.
+import com.android.purebilibili.core.ui.transition.VideoCardTransitionNavBackdrop
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:63:52: error: unresolved reference 'resolvePredictiveBackGestureBlurProgress'.
+import com.android.purebilibili.core.ui.transition.resolvePredictiveBackGestureBlurProgress
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:64:52: error: unresolved reference 'shouldReleaseHostOwnedDepthLayer'.
+import com.android.purebilibili.core.ui.transition.shouldReleaseHostOwnedDepthLayer
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:471:13: error: unresolved reference 'shouldReleaseHostOwnedDepthLayer'.
+        if (shouldReleaseHostOwnedDepthLayer(effectiveVideoCardExposure)) {
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:552:41: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val predictiveBackBackgroundState = remember(
+                                        ^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:561:9: error: unresolved reference 'PredictiveBackBackgroundState'.
+        PredictiveBackBackgroundState(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:569:33: error: unresolved reference 'resolvePredictiveBackGestureBlurProgress'.
+                        ?.let { resolvePredictiveBackGestureBlurProgress(it) }
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:656:9: error: unresolved reference 'VideoCardTransitionHostDepthLayer'.
+        VideoCardTransitionHostDepthLayer(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:669:9: error: unresolved reference 'VideoCardTransitionNavBackdrop'.
+        VideoCardTransitionNavBackdrop(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavDisplayHost.kt:703:25: error: unresolved reference 'LocalPredictiveBackBackgroundState'.
+                        LocalPredictiveBackBackgroundState provides predictiveBackBackgroundState,
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavMotionPolicy.kt:3:50: error: unresolved reference 'resolveSettingsNavPopTransition'.
+import com.android.purebilibili.feature.settings.resolveSettingsNavPopTransition
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavMotionPolicy.kt:4:44: error: unresolved reference 'AppSystemBackAction'.
+import com.android.purebilibili.navigation.AppSystemBackAction
+                                           ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavMotionPolicy.kt:5:44: error: unresolved reference 'shouldInterceptSystemBackForAppAction'.
+import com.android.purebilibili.navigation.shouldInterceptSystemBackForAppAction
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavMotionPolicy.kt:87:23: error: unresolved reference 'AppSystemBackAction'.
+    systemBackAction: AppSystemBackAction,
+                      ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavMotionPolicy.kt:101:43: error: unresolved reference 'AppSystemBackAction'.
+    val isAppAction = systemBackAction == AppSystemBackAction.RETURN_TO_HOME_TAB
+                                          ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavMotionPolicy.kt:108:31: error: unresolved reference 'shouldInterceptSystemBackForAppAction'.
+        interceptSystemBack = shouldInterceptSystemBackForAppAction(systemBackAction)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavMotionPolicy.kt:168:5: error: unresolved reference 'resolveSettingsNavPopTransition'.
+    resolveSettingsNavPopTransition(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavMotionPolicy.kt:172:8: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    )?.let { return it }
+       ^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavMotionPolicy.kt:172:8: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+    )?.let { return it }
+       ^^^
+desktop\.local\stable-home-navigation3-host-parity\generated\com\android\purebilibili\navigation3\BiliPaiNavMotionPolicy.kt:172:12: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    )?.let { return it }
+           ^^^^^^^^^^^^^
+desktop\.local\stable-home-navigation3-host-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalNavigationHost.kt:49:63: error: unresolved reference 'videoTransitionRealtimeBlurEnabled'.
+            videoTransitionRealtimeBlurEnabled = homeSettings.videoTransitionRealtimeBlurEnabled,
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

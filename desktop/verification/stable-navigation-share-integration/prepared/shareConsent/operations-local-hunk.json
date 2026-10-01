@@ -1,0 +1,8 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+  "observedBaseSha256LF": "f569b4058d84de15f08e24207f620aa90f982306a53028f08888b717d578842f",
+  "before": "// GENERATED original editor members; do not hand-maintain a second request algorithm.\n",
+  "after": "    // Original MessageRepository sendTextMessage/sendMessage; same Ops message API/epoch.\n    private val videoShareMessageDeviceId by lazy { java.util.UUID.randomUUID().toString() }\n    private val videoShareMessages by lazy {\n        com.android.purebilibili.data.repository.DesktopOriginalVideoShareMessages(messages,\n            { assertOwned(); repository.authCookies()[\"bili_jct\"] },\n            { assertOwned(); repository.account.value?.mid },\n            { assertOwned(); videoShareMessageDeviceId })\n    }\n    suspend fun sendVideoShareText(receiverId:Long,content:String):Result<SendMessageData> = result {\n        mutate { videoShareMessages.sendTextMessage(receiverId,content).getOrThrow() }\n    }\n    suspend fun downloadVideoShareCover(url:String):ByteArray = read {\n        com.bilipai.desktop.ui.DesktopVideoShareImageTransport.download(guestWeb.callFactory(),url,::isOwned)\n    }\n\n// GENERATED original editor members; do not hand-maintain a second request algorithm.\n",
+  "candidateSha256LF": "cb1738d85f6be3477e5d4678c992ba52b3842fea5f2ddb925fa8ba16f0fb4e30",
+  "insertionOutsideCanonicalEditorRange": true
+}
