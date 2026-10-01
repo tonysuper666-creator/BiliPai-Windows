@@ -1,0 +1,154 @@
+{
+  "artifacts": [
+    {
+      "path": "attempts/run-01/fixture.jar",
+      "bytes": 36283,
+      "sha256Bytes": "e69cb23178bb389002f5d836e220e50b9f63f468280981e97cdce8f128baed89",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-01/private-environment/.skiko/.skiko.lock",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-01/private-environment/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/icudtl.dat",
+      "bytes": 10468208,
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-01/private-environment/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/skiko-windows-x64.dll",
+      "bytes": 14109696,
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-01/private-environment/global-prefs/plugin-settings.json",
+      "bytes": 427,
+      "sha256Bytes": "8f41f1e4cb83d0f5906439fff3b6f4936d9b230391e783ccf0ad3fba4439b2af",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-01/private-environment/jna2432657929097441958.dll",
+      "bytes": 273408,
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-01/private-environment/jna2432657929097441958.dll.x",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-02/fixture.jar",
+      "bytes": 36283,
+      "sha256Bytes": "e69cb23178bb389002f5d836e220e50b9f63f468280981e97cdce8f128baed89",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-02/native/icudtl.dat",
+      "bytes": 10468208,
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-02/native/skiko-windows-x64.dll",
+      "bytes": 14109696,
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-02/private-environment/global-prefs/plugin-settings.json",
+      "bytes": 490,
+      "sha256Bytes": "35eb013621d5be379aad47d8aac22b45a6764063da5ff26841c89bd1d0d6fa12",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-02/private-environment/jna8634708015786224084.dll",
+      "bytes": 273408,
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-02/private-environment/jna8634708015786224084.dll.x",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-03/fixture.jar",
+      "bytes": 38117,
+      "sha256Bytes": "8a38c94ed1d32eaf53f7f6626eb7bd8c9b736f74dc040ac9c8002509da9cea39",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-03/native/icudtl.dat",
+      "bytes": 10468208,
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-03/native/skiko-windows-x64.dll",
+      "bytes": 14109696,
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-03/private-environment/global-prefs/plugin-settings.json",
+      "bytes": 490,
+      "sha256Bytes": "c2d7d57565f731df4afd9e55a378234cab6ae6f09e59fa61bcf34b959791c7d8",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-03/private-environment/jna5432618630637396941.dll",
+      "bytes": 273408,
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-03/private-environment/jna5432618630637396941.dll.x",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-04/fixture.jar",
+      "bytes": 38731,
+      "sha256Bytes": "37cd492286e33ea975b06f2d59b1bd73b67f28dadda8b3e7fc7b8856e79902fc",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-04/native/icudtl.dat",
+      "bytes": 10468208,
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-04/native/skiko-windows-x64.dll",
+      "bytes": 14109696,
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-04/private-environment/global-prefs/plugin-settings.json",
+      "bytes": 241,
+      "sha256Bytes": "611cf91f3d94abd7856afba3b93eb5b2fec3f73c1a6af0f04c42c072e30c8e50",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-04/private-environment/jna6495575659611485538.dll",
+      "bytes": 273408,
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    },
+    {
+      "path": "attempts/run-04/private-environment/jna6495575659611485538.dll.x",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Runtime binary or temporary task backing; evidence only, never product/install/commit payload."
+    }
+  ]
+}

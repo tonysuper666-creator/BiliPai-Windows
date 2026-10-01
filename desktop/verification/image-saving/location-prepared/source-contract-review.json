@@ -1,0 +1,81 @@
+{
+  "verdict": "Prepared preference/source contract is reviewable and independently compiled; static codec/default-directory consumer remains pending.",
+  "originalTag": "v0.2.3-alpha.9",
+  "originalCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "originalSourceCount": 6,
+  "originalIdentitiesRecheckedFromGit": true,
+  "originalPurePolicyBodyByteEqual": true,
+  "preparedPolicySha256Bytes": "4a7892023f8c89913f3fe11b5d4ba7ec2bd8283438d710474f64d5a9361a41e2",
+  "preparedPreferencesSha256Bytes": "83df4f8424f22c8ee00d81f3de4a79dc658206c1bf5aa65b683f3ed9a372d370",
+  "compileEvidencePath": "compile-01/compile-evidence.json",
+  "compileEvidenceSha256Bytes": "2c01b2c2e8869bf47c9d6d75994ade4f75cfe4df33568fa5694f8930ede753c6",
+  "actualCompileBase": "Main02 snapshot f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17; 89 ordered runtime binaries, pre/post verified by compile script.",
+  "currentMutableMainSourceReadbackOnly": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "5ed7475e399b768f1090e3f4a22d15f26c45c6debdb336422a0bfb774f02c868"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "702e37833b3ef68bb73c677e6f81cc77b77a98a2cdef3eca07f9d135c2b6738e"
+    }
+  ],
+  "currentMutableMainAssetsFullBytesEqual114": false,
+  "currentMutableMainAssetsEquals114AfterDeclaredPickerOwnerAdapterReversal": true,
+  "currentMutableMainAssetsAdapter": [
+    "Component import",
+    "Parent-aware target/directory chooser and overwrite confirmation",
+    "Default function references -> lambdas matching parent-default signatures",
+    "Directory picker visibility private -> internal",
+    "Remove task-only SaveTarget comment"
+  ],
+  "currentMutableMainFilesEqualsApproved34Bytes": true,
+  "currentMainRuntimeOrMain03SnapshotVerified": false,
+  "compiledSourceCount": 2,
+  "compiledClassCount": 8,
+  "classFqnIntersection": [],
+  "purePackageMethodSignatureCounts": {
+    "candidate": 3,
+    "actualMain02": 167
+  },
+  "methodSignatureIntersection": [],
+  "preferences": {
+    "backing": "Caller existing DesktopPluginStore",
+    "namespace": "settings",
+    "key": "image_save_tree_uri",
+    "valueType": "nullable String",
+    "absentDefault": null,
+    "sameFlowAndSyncBacking": true,
+    "setterUsesRequiredRootOwnerCommitGate": true,
+    "setterChecksCoroutineInsideGate": true,
+    "storeWritesFrozenAuthorityRetained": true,
+    "androidSyncMirror": "Original Android image_save_prefs/tree_uri collapses into the same Windows primary-key backing; not a second namespace/store."
+  },
+  "actualExistingOwners": [
+    "DesktopDynamicImageAssets",
+    "DesktopDynamicCacheSessionGuard",
+    "DesktopDynamicCardOperations",
+    "Root picker/window",
+    "Root global DesktopPluginStore"
+  ],
+  "knownPending": [
+    "Windows directory picker + persistent selection UI",
+    "Canonical file URI serialization/validation and foreign content URI boundary",
+    "Actual SHGetKnownFolderPath redirected Pictures default consumer",
+    "Static decoded PNG/JPEG95 transport codec",
+    "Original all-images attempt-all aggregation and naming contract",
+    "Settings setter/restore runtime proof"
+  ],
+  "scope": {
+    "MainEdited": false,
+    "sharedGradle": false,
+    "registryEdited": false,
+    "oldFreezeEdited": false,
+    "HTTP": false,
+    "HWND": false,
+    "windowChooserExecuted": false,
+    "nativeKnownFolderCallExecuted": false,
+    "runtimePreferencesFixtureExecuted": false,
+    "codecFixtureExecuted": false
+  }
+}

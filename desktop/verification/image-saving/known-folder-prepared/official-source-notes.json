@@ -1,0 +1,42 @@
+{
+  "checkedDate": "2026-10-01",
+  "sources": [
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath",
+      "supports": "The Shell32 function takes a known-folder GUID reference, DWORD flags, optional HANDLE and PWSTR output pointer. NULL token addresses the current user. Returned allocation must be released using CoTaskMemFree even on failure. S_OK is successful."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/ne-shlobj_core-known_folder_flag",
+      "supports": "Flags zero have no special options. Omitting DEFAULT_PATH selects the current possibly redirected folder. Omitting CREATE avoids folder creation. With DONT_VERIFY unset, a missing or inaccessible folder may produce failure."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid",
+      "supports": "Pictures has GUID 33E28130-4E1E-4676-835A-98395C3BC3BB. PicturesLibrary is a different known folder; it is not the physical Pictures directory."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/shell/known-folders",
+      "supports": "New native code should query known-folder IDs rather than legacy CSIDL. COM must already be initialized on the thread that calls SHGetKnownFolderPath."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coinitializeex",
+      "supports": "S_OK and S_FALSE successful initialization calls must each be balanced with CoUninitialize. RPC_E_CHANGED_MODE means an existing incompatible apartment or a neutral-apartment transition; that unsuccessful initialization must not be balanced by this caller."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cotaskmemfree",
+      "supports": "CoTaskMemFree releases an allocation of the COM task allocator; NULL is a no-op. The returned string cannot be used after release."
+    }
+  ],
+  "localSdk": "Windows SDK 10.0.26100.0",
+  "mapping": {
+    "guidBytes": "3081e2331e4e7646835a98395c3bc3bb",
+    "guidSize": 16,
+    "hresultAndDwordJvmType": "Int (32 bits)",
+    "handleAndRefKnownFolderIdJvmType": "Pointer",
+    "pwstrOutputJvmType": "PointerByReference, getWideString(0)",
+    "callingConvention": "JNA core StdCallLibrary",
+    "testedProcess": "Windows 11 amd64, pointer 8 bytes, WCHAR 2 bytes"
+  },
+  "apartmentBoundary": "The resolver asks for MTA. S_OK/S_FALSE owns exactly one balanced initialization reference. When an existing STA rejects the MTA request with RPC_E_CHANGED_MODE, the synchronous Shell query uses the already initialized thread and never uninitializes that caller-owned STA. The real OS fixture proved this on this machine; no COM interface pointer is stored or transferred between threads.",
+  "realRedirectedMachineTest": false,
+  "notes": "Flags0 semantics preserve redirection by API contract. The tested machine currently returns the ordinary current Pictures path; a real OneDrive/network redirection configuration was not changed or separately tested."
+}

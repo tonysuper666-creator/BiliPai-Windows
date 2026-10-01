@@ -1,0 +1,57 @@
+{
+  "mainSnapshotManifestSha256": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+  "mainRuntimeClasspathSha256": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+  "immutableMainClasspathEntriesVerified": 92,
+  "compiler": "Kotlin 2.4.0",
+  "jvmTarget": 21,
+  "compilerInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-compiler-embeddable\\2.4.0\\f1a24af8bd111a83950236b1aec7a6d72a97e92c\\kotlin-compiler-embeddable-2.4.0.jar",
+      "sha256Bytes": "c2b25e8c1c93ec416ba4327f5e31eaec0f0c8847241b9353e294b8db9dce564f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-build-tools-api\\2.4.0\\46429d5887df2d02f33fe11a0c8444c5be5fd8da\\kotlin-build-tools-api-2.4.0.jar",
+      "sha256Bytes": "66917335497f9ab75a36c34b3d90bad2bc8dc256c34b2413ecd0c9467fcf597d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-stdlib\\2.4.0\\4e9f4b531dce5c7dee58ed2de9a8b9a763c8dc6c\\kotlin-stdlib-2.4.0.jar",
+      "sha256Bytes": "ccb14ff83fabcb11458b798dbc9824748ccdffeec79c9aba789e6ed1cda86b1c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-script-runtime\\2.4.0\\1de03f0ef3e208ab5f97ee6a587e9b8480447df6\\kotlin-script-runtime-2.4.0.jar",
+      "sha256Bytes": "196e8ecbf63daf477e34e67c2f871ee232ae7bf8b377432d876d1bbf9d273de3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-daemon-embeddable\\2.4.0\\1ecabef3a8ba6a8e25654573d54edb7e4136e903\\kotlin-daemon-embeddable-2.4.0.jar",
+      "sha256Bytes": "383093af5e078435b60043d19bfa83eb6191be0f4d13a28fb1c8a0f3ab24fe66"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-reflect\\1.6.10\\1cbe9c92c12a94eea200d23c2bbaedaf3daf5132\\kotlin-reflect-1.6.10.jar",
+      "sha256Bytes": "3277ac102ae17aad10a55abec75ff5696c8d109790396434b496e75087854203"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-coroutines-core-jvm\\1.8.0\\ac1dc37a30a93150b704022f8d895ee1bd3a36b3\\kotlinx-coroutines-core-jvm-1.8.0.jar",
+      "sha256Bytes": "9860906a1937490bf5f3b06d2f0e10ef451e65b95b269f22daf68a3d1f5065c5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains\\annotations\\23.0.0\\8cc20c07506ec18e0834947b84a864bfc094484e\\annotations-23.0.0.jar",
+      "sha256Bytes": "7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05"
+    }
+  ],
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-known-folder-save-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\platform\\DesktopWindowsImageSaveDirectory.kt",
+      "sha256Bytes": "0ad0fcbd85e20264a827e7be28273eb9fc756a5cf2de8a8deb19449a6dda8fe9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-known-folder-save-parity\\KnownFolderFixture.kt",
+      "sha256Bytes": "2b2ec91fbadfd94b68eda1761fa71450d8fb8bdb09cc099d45ae0ef534e2a5c7"
+    }
+  ],
+  "candidateJarSha256": "8da66a9c31042a136c882b68d46d9a627b01b7e07a06bf9b4f11cf09f790bb2e",
+  "compiledClasses": 9,
+  "productClassOverlap": [],
+  "mainSourceChanged": false,
+  "mainIntegrated": false,
+  "dependenciesAdded": false
+}

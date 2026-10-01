@@ -1,0 +1,68 @@
+{
+  "base": "e8a89e11be5ece570fff0d762609644c3cd2b471",
+  "pins": [
+    [
+      "dynamic-detail-reply-parity/detail-container-next/static-save-location-next",
+      "evidence-manifest.json",
+      "34a233ab8d023a65e1e1f4851dc192f66f2f8728fb4fbc865fe332fd55780cbf"
+    ],
+    [
+      "native-known-folder-save-parity",
+      "evidence-manifest.json",
+      "32763d32b459cf94a2a2dbb2d31ea76bcde9f7d7b217e84381cad60e43569d3e"
+    ],
+    [
+      "dynamic-detail-reply-parity/detail-container-next/static-save-codec-next",
+      "evidence-manifest.json",
+      "8e8317154054295aa85b3042fff5a27289432d625f311e92bd7b28e6c47db694"
+    ],
+    [
+      "settings-image-save-path-parity",
+      "evidence-manifest.json",
+      "e91ad2ea410588f4152830ef8f0d2919eb79887f3d0692f357845dc28194577e"
+    ],
+    [
+      "dynamic-batch-save-parity",
+      "frozen-handoff.json",
+      "cab609ecb97799ab21231998b31cf514cff924e01e764f6709f77137cc997cc0"
+    ]
+  ],
+  "payloads": [
+    {
+      "source": "dynamic-detail-reply-parity/detail-container-next/static-save-location-next/prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSaveLocationPreferences.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSaveLocationPreferences.kt",
+      "sha256Lf": "83df4f8424f22c8ee00d81f3de4a79dc658206c1bf5aa65b683f3ed9a372d370"
+    },
+    {
+      "source": "native-known-folder-save-parity/prepared/desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt",
+      "sha256Lf": "0ad0fcbd85e20264a827e7be28273eb9fc756a5cf2de8a8deb19449a6dda8fe9"
+    },
+    {
+      "source": "dynamic-detail-reply-parity/detail-container-next/static-save-codec-next/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicStaticImageCodec.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicStaticImageCodec.kt",
+      "sha256Lf": "347897e987f4a5dac782e9e6c420079c90d93fdec1179395ce4cfb7af4bf5b0d"
+    },
+    {
+      "source": "dynamic-detail-reply-parity/detail-container-next/static-save-codec-next/prepared/desktop/tools/extract-upstream-dynamic-static-image-codec.py",
+      "target": "desktop/tools/extract-upstream-dynamic-static-image-codec.py",
+      "sha256Lf": "b0af5d6a415981fd783c4acb5c92099e2e35d3eea4adbb48084a32137893de16"
+    },
+    {
+      "source": "settings-image-save-path-parity/prepared/desktop/tools/extract-image-save-settings-ui.py",
+      "target": "desktop/tools/extract-image-save-settings-ui.py",
+      "sha256Lf": "17658d519f5460c4c47ceb4907007cfe489277520465ea6e9f2ed6fcd3359734"
+    },
+    {
+      "source": "settings-image-save-path-parity/prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSavePathSettings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSavePathSettings.kt",
+      "sha256Lf": "df5344e0105c316480ae4830fd1471e779a89335400216331d74277747e3f68a"
+    }
+  ],
+  "registryCount": 622,
+  "platformBoundaries": [
+    "Native Windows codec and KnownFolder mapping",
+    "Windows file URI and collision suffix",
+    "Production CLI adapter only for static producer"
+  ]
+}

@@ -1,0 +1,1788 @@
+{
+  "locallyVerified": true,
+  "binariesCommitted": false,
+  "artifacts": [
+    {
+      "cohort": "location-prepared",
+      "path": "compile-01/candidate-preferences-policy.jar",
+      "sha256Bytes": "3dae9db40e9539eb22a336b30d31c600742e233814fc3c858b7d659417364d6c",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "known-folder-prepared",
+      "path": "task-native-temp/jna9954565643392076288.dll.x",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "known-folder-prepared",
+      "path": "known-folder-candidate.jar",
+      "sha256Bytes": "8da66a9c31042a136c882b68d46d9a627b01b7e07a06bf9b4f11cf09f790bb2e",
+      "reason": "task compilation/JNA extraction only; do not install or commit"
+    },
+    {
+      "cohort": "known-folder-prepared",
+      "path": "task-native-temp/jna9954565643392076288.dll",
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "reason": "task compilation/JNA extraction only; do not install or commit"
+    },
+    {
+      "cohort": "codec-prepared",
+      "path": "proof-01/candidate-codec-fixture.jar",
+      "sha256Bytes": "068ad101603fd8cdb71e4ee75986ab84a503507eeec761811439c63a7ae3bd48",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "codec-prepared",
+      "path": "proof-01/private-home/.skiko/.skiko.lock",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "codec-prepared",
+      "path": "proof-01/private-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/icudtl.dat",
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "codec-prepared",
+      "path": "proof-01/private-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/skiko-windows-x64.dll",
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "codec-prepared",
+      "path": "proof-02/candidate-codec-fixture.jar",
+      "sha256Bytes": "068ad101603fd8cdb71e4ee75986ab84a503507eeec761811439c63a7ae3bd48",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "codec-prepared",
+      "path": "proof-02/private-home/.skiko/.skiko.lock",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "codec-prepared",
+      "path": "proof-02/private-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/icudtl.dat",
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "codec-prepared",
+      "path": "proof-02/private-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/skiko-windows-x64.dll",
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "settings-prepared",
+      "path": "settings-image-path-candidate.jar",
+      "sha256Bytes": "5442e37742d77979e4d0d04906d2065730ce01207bc257f668cc90de37c81488",
+      "reason": "task compiled classes/store only, do not install or commit"
+    },
+    {
+      "cohort": "settings-prepared",
+      "path": "task-store/plugin-settings.json",
+      "sha256Bytes": "caddcbcc5dafdfe18b362149609646bb6770ed4e19f3ca235ef2eaf819a89849",
+      "reason": "task compiled classes/store only, do not install or commit"
+    },
+    {
+      "cohort": "batch-prepared",
+      "path": "runs/02/candidate-and-fixture.jar",
+      "sha256Bytes": "7ad09d01a12e2a9c1c55d580b2194185dfe91ba566c2bebb6332635d02c9d1f8",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "actual-comment-png-location",
+      "path": "proof-01/fixture-only.jar",
+      "sha256Bytes": "bff521939f0e9c505d89a3ec89276d3eea23ce9da3047a398e3bdd28e27c670c",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/01/compiler.args",
+      "sha256Bytes": "1653d0d405da9d2d00bff9795162a60ed6ec2f98aa1890709db2bc06b0042229",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/fixture-only.jar",
+      "sha256Bytes": "21dcc805a924207e0420ca1aa44609f4fae3d4594ae04f9b456f8c4b6af14f15",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/01/frozen-sources/IntegrationFixture.kt",
+      "sha256Bytes": "fcba84dbf9dfbbecc8b8b49e45b7d98a37e4ccdef8a55e45dc99901dc77f28f8",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431406.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431407.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431408.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431409.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431410.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431411.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431412.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431413.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431414.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431415.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431416.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431417.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431418.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431419.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431420.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431421.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431422.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431423.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431424.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431425.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431426.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431427.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431428.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431429.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431430.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431431.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431432.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431433.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431434.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431435.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431436.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/global-settings/plugin-settings.json",
+      "sha256Bytes": "690a6c894b5c4fd0f9304410a1bb7cd3aa720c2ea2fbd14195c5a25e49b566c8",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431724.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431725.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431726.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431727.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431728.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431729.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431730.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431731.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431732.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431733.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431734.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431735.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431736.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431737.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431738.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431739.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431740.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431741.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431742.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431743.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431744.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431745.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431746.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431747.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431748.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431749.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431750.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431751.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431752.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431753.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431754.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431755.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431756.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431757.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431758.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431759.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431760.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431761.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431762.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431763.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431764.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431765.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431766.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431767.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431768.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431769.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431770.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431771.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431772.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431773.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431774.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431775.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431776.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431777.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431778.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431779.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431780.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431781.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431782.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431783.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431784.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431785.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431786.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431787.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431788.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431789.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431790.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431791.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431792.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431793.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431794.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431795.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431796.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431797.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431798.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431799.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431800.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431801.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431802.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431803.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431804.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431805.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431806.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431807.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431808.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431809.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431810.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431811.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431812.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431813.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431814.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431815.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431816.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431817.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431818.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431819.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431820.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431821.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431822.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431823.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431824.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431825.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431826.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431827.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431828.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431829.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431830.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431831.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431832.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431833.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431834.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431835.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431836.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431837.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431838.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431839.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431840.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431841.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431842.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431843.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431844.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431845.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431846.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431847.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431848.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431849.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431850.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431851.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431852.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431853.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431854.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431855.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431856.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431857.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431858.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431859.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431860.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431861.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431862.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431863.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431864.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431865.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431866.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431867.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431868.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431869.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431870.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431871.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431872.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431873.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431874.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431875.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431876.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431877.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431878.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431879.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431880.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431881.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431882.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431883.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431884.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431885.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431886.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431887.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431888.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431889.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431890.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431891.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431892.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431893.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431894.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431895.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431896.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431897.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431898.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431899.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431900.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431901.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431902.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431903.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431904.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431905.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431906.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431907.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431908.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431909.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431910.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431911.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431912.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431913.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431914.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431915.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431916.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431917.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431918.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431919.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431920.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431921.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431922.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431923.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431924.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431925.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431926.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431927.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431928.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431929.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431930.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431931.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431932.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431933.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431934.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431935.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431936.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431937.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431938.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431939.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431940.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431941.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431942.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431943.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431944.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431945.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431946.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431947.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431948.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431949.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431950.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431951.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431952.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431953.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431954.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431955.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431956.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431957.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431958.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431959.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431960.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431961.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431962.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431963.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431964.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/proof/default-base/BiliPai/declared-boolean-contract.png",
+      "sha256Bytes": "0b0562deb5188946f429a4309bf24161e185cb6afb9aaac150e64fa683ecd182",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/task-home/.skiko/.skiko.lock",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/task-home/temp/jna-80007053/jna14200203307017391827.dll",
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "actual-static-assets-location",
+      "path": "runs/02/task-home/temp/jna-80007053/jna14200203307017391827.dll.x",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "cohort": "source-reuse-measurement",
+      "path": "reviewed-main04-source.zip",
+      "sha256Bytes": "83e0477886f8be37ee1dd953052c4de0846a3473a008fdec6c1316e935662ebd",
+      "reason": "Locally verified compiled/runtime artifact; not committed."
+    }
+  ]
+}

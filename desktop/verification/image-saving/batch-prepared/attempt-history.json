@@ -1,0 +1,18 @@
+{
+  "compile01": {
+    "accepted": false,
+    "reason": "Fixture-only CancellationException constructor import ambiguity; changed only fixture call to saving.cancel().",
+    "logSha256Bytes": "199c368d98a082ff80d7526b4ba92b57383fccbd43bb870a5cd69f76d92672b8"
+  },
+  "compile02": {
+    "accepted": true,
+    "logSha256Bytes": "ce6e0592a425bcb2ede6c535234d15bffb963ea829df8cd2e3e75cfbf368321d"
+  },
+  "runtime02": {
+    "fixturePassed": true,
+    "assertions": 36,
+    "cases": 4,
+    "logSha256Bytes": "d1dbee8b75d6146fe5a2c4b55bb1459085bac0e66b620e600b1af74f19eac52a",
+    "acceptRecorderRepair": "After successful fixture execution, duplicate MainInstalledIntegration keyword in Python record assembly was removed; accept mode finalized that same proof without rerunning fixture."
+  }
+}

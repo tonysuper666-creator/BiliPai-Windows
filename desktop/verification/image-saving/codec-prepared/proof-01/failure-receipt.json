@@ -1,0 +1,17 @@
+{
+  "accepted": false,
+  "scope": "First independent PNG fixture expectation was stronger than native raster re-encoding contract; original output and logs are retained.",
+  "kotlinResult": "fixture/kotlin-result.json",
+  "kotlinAssertionsPassed": 40,
+  "kotlinCaseCount": 15,
+  "failedIndependentAssertion": "decoded PNG full RGBA pixels exact",
+  "sourceOpaquePixelsExact": true,
+  "alphaChannelExact": true,
+  "maxBlackCompositeChannelError": 0,
+  "hiddenRgbPixelDifferences": 4562,
+  "correction": "Next fixture checks exact alpha/opaque pixels and visible premultiplied colours. Production codec body is unchanged; no native premultiply/rotation policy is added.",
+  "AndroidBitmapParityProven": false,
+  "MainChanged": false,
+  "HTTP": false,
+  "HWND": false
+}

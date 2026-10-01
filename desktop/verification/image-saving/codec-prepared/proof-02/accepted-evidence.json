@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "caseCount": 15,
+  "kotlinAssertions": 40,
+  "independentPillowAssertions": 24,
+  "actualMain03ManifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+  "orderedRuntimeCpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+  "runtimeCpCount": 92,
+  "runtimeBinaryPinsPrePostVerified": true,
+  "candidateJarSha256Bytes": "068ad101603fd8cdb71e4ee75986ab84a503507eeec761811439c63a7ae3bd48",
+  "candidateClassCount": 10,
+  "classFqnIntersection": [],
+  "packageMethodAudits": [
+    {
+      "package": "com.bilipai.desktop.ui",
+      "candidateMethods": 1,
+      "actualMethods": 166,
+      "intersection": []
+    },
+    {
+      "package": "com.android.purebilibili.feature.dynamic.components",
+      "candidateMethods": 4,
+      "actualMethods": 168,
+      "intersection": []
+    }
+  ],
+  "declaredMainOverrides": [],
+  "compiledSources": [
+    {
+      "path": "proof-02/sources/DesktopOriginalStaticGalleryFormat.kt",
+      "sha256Bytes": "4aad65c3264e4f2f7b8acefb9df8f5cfb3e840d0090926ab1ec7ad94ce2e0ce3"
+    },
+    {
+      "path": "proof-02/sources/DesktopDynamicStaticImageCodec.kt",
+      "sha256Bytes": "347897e987f4a5dac782e9e6c420079c90d93fdec1179395ce4cfb7af4bf5b0d"
+    },
+    {
+      "path": "proof-02/sources/StaticGalleryCodecFixture.kt",
+      "sha256Bytes": "06cb8f3a20f923be79ccca77c039d7e17acc24f22d6d5504e61eab6c972c821a"
+    }
+  ],
+  "PNGJPEGSkiaNativeExecuted": true,
+  "WindowsExifOriginsOneThroughEightObserved": true,
+  "originalAndroidBitmapParityProven": false,
+  "sameAssetsOwnerOrStoreIntegrated": false,
+  "codecStageOnly": true,
+  "HTTP": false,
+  "HWND": false,
+  "MainChanged": false,
+  "sourceRegistryChanged": false,
+  "sharedGradle": false
+}

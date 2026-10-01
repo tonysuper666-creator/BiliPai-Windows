@@ -1,0 +1,114 @@
+{
+  "passed": true,
+  "assertions": 36,
+  "cases": 4,
+  "caseResults": [
+    {
+      "name": "first-failure",
+      "result": false,
+      "requests": 3,
+      "committedItems": [
+        2,
+        3
+      ],
+      "scratchDrained": true
+    },
+    {
+      "name": "middle-failure",
+      "result": false,
+      "requests": 3,
+      "committedItems": [
+        1,
+        3
+      ],
+      "scratchDrained": true
+    },
+    {
+      "name": "cancel-first",
+      "cancellationPropagated": true,
+      "requests": 1,
+      "committedItems": 0,
+      "noLaterRequests": true,
+      "scratchDrained": true
+    },
+    {
+      "name": "cancel-middle",
+      "cancellationPropagated": true,
+      "requests": 2,
+      "committedItems": 1,
+      "noLaterRequests": true,
+      "scratchDrained": true
+    }
+  ],
+  "actualClassSources": [
+    {
+      "className": "com.bilipai.desktop.data.DesktopSessionStore",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-media-main-integration/main-product-snapshot-03/main-kotlin.jar"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopRepository",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-media-main-integration/main-product-snapshot-03/main-kotlin.jar"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopDynamicCardOperations",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-media-main-integration/main-product-snapshot-03/main-kotlin.jar"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicSaveTarget",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-media-main-integration/main-product-snapshot-03/main-kotlin.jar"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicMotionPhotoFiles",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-media-main-integration/main-product-snapshot-03/main-kotlin.jar"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicMotionPhotoExif",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-media-main-integration/main-product-snapshot-03/main-kotlin.jar"
+    }
+  ],
+  "actualMain03StoreRepoOpsFiles": true,
+  "candidateAssetsOverrideDeclared": true,
+  "SaveTargetOverride": false,
+  "actualLoopbackHTTP": true,
+  "HTTPRequests": 9,
+  "actualReceiverCookiesAbsent": true,
+  "outsideSocket": false,
+  "realChooserOpened": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "MainInstalledIntegration": false,
+  "actualMain03ManifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+  "orderedActual92CpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+  "actualRuntimeEntries": 92,
+  "candidateJarSha256Bytes": "7ad09d01a12e2a9c1c55d580b2194185dfe91ba566c2bebb6332635d02c9d1f8",
+  "candidateInstallSourceSha256Bytes": "578412a5ae769746512e6fdc86f2e819570f974597400ffecdebb74413036b41",
+  "declaredAssetsFamilyOnlyOverrideClassNames": [
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$Companion.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$3.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$4.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$5.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$exif$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$motionPhoto$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$motionPhoto$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$motionPhoto$3.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImage$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImages$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveLivePhotoVideo$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveMotionPhoto$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveMotionPhoto$2$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$special$$inlined$-addNetworkInterceptor$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$write$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt$selectDynamicSaveDirectory$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt$selectDynamicSaveTarget$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt.class"
+  ],
+  "rootParentPickerAdapterBodyUnchanged": true,
+  "StoreRepoOpsSaveTargetMotionFilesOverride": false,
+  "originalEvidence114Or135ReusedAsAcceptance": false,
+  "taskPrivateHome": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-batch-save-parity\\runs\\02\\task-home",
+  "allWritesWithinNewTaskLane": true
+}

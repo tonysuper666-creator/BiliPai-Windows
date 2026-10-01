@@ -1,0 +1,43 @@
+{
+  "sources": [
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/KnownFolders.h",
+      "sha256Bytes": "c0b5033fa5d65c2d27213ea6cbd2ad13a0cdb2091406dae366d2a4fafa8afcd4",
+      "fragments": [
+        {
+          "path": "sdk-fragments/KnownFolders.h-146-154.txt",
+          "startLine": 146,
+          "endLine": 154,
+          "sha256Bytes": "9c1049696a4f0822dc8b4023e2768bb0a3316d9be526e368a02ae393c510773d"
+        }
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ShlObj_core.h",
+      "sha256Bytes": "9eb3a933681921c03766dd57ca8b7ab54fcb9f28f1d432eb0e546039f61d943d",
+      "fragments": [
+        {
+          "path": "sdk-fragments/ShlObj_core.h-946-949.txt",
+          "startLine": 946,
+          "endLine": 949,
+          "sha256Bytes": "4b958825e78b614fb799844f55983178adc2e7539eee23fda55f9f5cb4a8b6ec"
+        },
+        {
+          "path": "sdk-fragments/ShlObj_core.h-1017-1023.txt",
+          "startLine": 1017,
+          "endLine": 1023,
+          "sha256Bytes": "528216f422947c4a40c82100b6c7dca1707d3e47d2cb65857d1fdd0569b272a0"
+        },
+        {
+          "path": "sdk-fragments/ShlObj_core.h-1043-1049.txt",
+          "startLine": 1043,
+          "endLine": 1049,
+          "sha256Bytes": "5d20a48926ab4ca6fc5ebcedbd296032493d15d53cbd4846ebb2e7e825ef4863"
+        }
+      ]
+    }
+  ],
+  "sourceOnly": true,
+  "nativeCallExecuted": false,
+  "contract": "FOLDERID_Pictures with KF_FLAG_DEFAULT (0), current redirected path; free returned PWSTR with CoTaskMemFree. Do not use KF_FLAG_DEFAULT_PATH or guess HOME/Pictures."
+}

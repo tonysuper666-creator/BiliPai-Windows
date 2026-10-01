@@ -1,0 +1,13 @@
+{
+  "command": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1\\bin\\java.exe",
+    "-Djava.io.tmpdir=C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-known-folder-save-parity\\task-native-temp",
+    "-Djna.tmpdir=C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-known-folder-save-parity\\task-native-temp",
+    "-cp",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-known-folder-save-parity\\known-folder-candidate.jar;C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\net.java.dev.jna\\jna\\5.17.0\\33d12735bef894440780fce64f9758d420c7bae2\\jna-5.17.0.jar;C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-stdlib\\2.4.10\\8943c84ddc6d5cc00a10dbc3736c397066eeaab5\\kotlin-stdlib-2.4.10.jar",
+    "com.bilipai.desktop.platform.KnownFolderFixtureKt",
+    "native"
+  ],
+  "exitCode": 0,
+  "candidateJarSha256": "8da66a9c31042a136c882b68d46d9a627b01b7e07a06bf9b4f11cf09f790bb2e"
+}

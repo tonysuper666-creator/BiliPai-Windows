@@ -1,0 +1,78 @@
+    var showLivePhotoMenu by remember(pagerState.currentPage) { mutableStateOf(false) }
+    var livePhotoPlayer by remember { mutableStateOf<Player?>(null) }
+
+    var pendingSaveAction by remember { mutableStateOf<(() -> Unit)?>(null) }
+    val storagePermission = com.android.purebilibili.core.util.rememberStoragePermissionState { granted ->
+        if (granted) {
+            val action = pendingSaveAction
+            pendingSaveAction = null
+            action?.invoke()
+        }
+    }
+
+    fun requestSaveCurrentImage(imageUrl: String) {
+        if (imageUrl.isEmpty() || isSaving) return
+        if (onImageLongPress != null) {
+            onImageLongPress(imageUrl)
+            return
+        }
+        if (storagePermission.isGranted) {
+            isSaving = true
+            scope.launch {
+                val success = saveImageToGallery(context, imageUrl)
+                isSaving = false
+                withContext(Dispatchers.Main) {
+                    handleImageSaveResult(success)
+                }
+            }
+        } else {
+            pendingSaveAction = { requestSaveCurrentImage(imageUrl) }
+            storagePermission.request()
+        }
+    }
+
+    fun requestSaveMotionPhoto(imageUrl: String, videoUrl: String) {
+        if (imageUrl.isEmpty() || videoUrl.isEmpty() || isSaving) return
+        if (storagePermission.isGranted) {
+            isSaving = true
+            scope.launch {
+                val success = saveMotionPhotoToGallery(context, imageUrl, videoUrl)
+                isSaving = false
+                withContext(Dispatchers.Main) {
+                    handleImageSaveResult(success, successMessage = "实况照片已保存到相册")
+                }
+            }
+        } else {
+            pendingSaveAction = { requestSaveMotionPhoto(imageUrl, videoUrl) }
+            storagePermission.request()
+        }
+    }
+
+    fun requestSaveLivePhotoVideo(videoUrl: String) {
+        if (videoUrl.isEmpty() || isSaving) return
+        if (storagePermission.isGranted) {
+            isSaving = true
+            scope.launch {
+                val success = saveLivePhotoVideoToGallery(context, videoUrl)
+                isSaving = false
+                withContext(Dispatchers.Main) {
+                    handleImageSaveResult(success, successMessage = "实况视频已保存到相册")
+                }
+            }
+        } else {
+            pendingSaveAction = { requestSaveLivePhotoVideo(videoUrl) }
+            storagePermission.request()
+        }
+    }
+
+    fun requestSaveAllImages() {
+        if (images.isEmpty() || isSaving) return
+        val urls = images.map(::normalizeImageUrl).filter(String::isNotEmpty)
+        if (storagePermission.isGranted) {
+            isSaving = true
+            scope.launch {
+                val success = urls.map { saveImageToGallery(context, it) }.all { it }
+                isSaving = false
+                withContext(Dispatchers.Main) { handleImageSaveResult(success) }
+            }
+        } else {

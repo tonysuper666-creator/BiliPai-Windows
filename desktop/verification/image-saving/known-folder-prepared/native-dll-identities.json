@@ -1,0 +1,10 @@
+[
+  {
+    "path": "C:\\WINDOWS\\System32\\shell32.dll",
+    "sha256Bytes": "3428199d45d73d1b89787fb21be30b738938a5f3001b3e16107a600e650e243b"
+  },
+  {
+    "path": "C:\\WINDOWS\\System32\\ole32.dll",
+    "sha256Bytes": "b8cfee39830dc68cf32bdb855c25e90389f711836ea997581883e53e84514e08"
+  }
+]

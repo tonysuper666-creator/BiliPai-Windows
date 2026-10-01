@@ -1,0 +1,32 @@
+[
+  {
+    "lane": "image-save-source-review",
+    "label": "root-source-review",
+    "manifest": "evidence-manifest.json",
+    "sha256Bytes": "a43c2ca3932bc72b91bde37a427cf0f4f4047b1660ca0e3b99ab0537a8de74ce"
+  },
+  {
+    "lane": "image-save-settings-main04-mounted-proof",
+    "label": "actual-settings-tree",
+    "manifest": "frozen-handoff.json",
+    "sha256Bytes": "58b46b3197b9fc3417aab36380f586fead74d9f061431c4215c31e8ee755bb49"
+  },
+  {
+    "lane": "comment-png-locations-main04-proof",
+    "label": "actual-comment-png-location",
+    "manifest": "evidence-manifest.json",
+    "sha256Bytes": "729cacf0b8d939db38b0801ab6f1880e9165126d131b9e1b6fd43646bf45b203"
+  },
+  {
+    "lane": "dynamic-static-save-main04-integration",
+    "label": "actual-static-assets-location",
+    "manifest": "evidence-manifest.json",
+    "sha256Bytes": "58b07a63823c44bb555393a5ea16d2126699947a58cd8fcb94909baf8b4f5813"
+  },
+  {
+    "lane": "source-reuse-measurement",
+    "label": "source-reuse-measurement",
+    "manifest": "evidence-manifest.json",
+    "sha256Bytes": "a4d5426ee1aedccf21634437dbbb4e0b98d611a77755addbb8090689425bc72a"
+  }
+]

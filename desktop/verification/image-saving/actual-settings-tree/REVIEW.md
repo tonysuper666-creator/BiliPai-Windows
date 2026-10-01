@@ -1,0 +1,25 @@
+# Actual Main04 mounted image-save settings proof
+
+The real Main04 SettingsTree, image-save row, original AppAlertDialog, preference facade, DesktopPluginStore and app/window lifetime passed two narrow flows in both MATERIAL3 and MIUIX. The successful run used only test classes plus the immutable Main04 three JARs and its exact 89 external dependencies. There were zero overlapping product classes, no product overrides and no shared Gradle invocation.
+
+The storage row opens the original dialog. Its real confirm button dismisses the popup before a synthetic chooser returns null; the saved URI and an unrelated setting remain unchanged. The actual search editor and result click reach the original storage category; clicking its actual image-save row reopens the original dialog. Its actual reset button removes only `image_save_tree_uri`. Both the settings scope and the same app/window lifetime remain active after popup close and navigation. This is not a popup/MID owner, and leaving a settings leaf is not claimed to cancel the global lifetime.
+
+Acceptance comprises 12 actual pointer Press/Release pairs and two actual original search-editor SetText actions, with eight PNG captures. Actual Main04 CodeSource is checked for the Tree, adapter, search controller, preferences, lifetime, global store and both extracted original UI functions. The single image-save preference authority uses that same explicit global PluginStore and its actual commit gate. Other namespaces retain their existing repository/search authorities; no second image-save store or plugin context was created.
+
+## Original search routing and the failed expectation
+
+`IMAGE_SAVE_PATH` is **not** in the original seven-element `isSceneSettingsSearchTarget` set. The original SettingsSearchScreen submits its `(target, focusId)` then invokes `onSearchResultClick`. Original `resolveSettingsSearchNavigation` has no direct image-path branch, so its final owning-category branch returns `BiliPaiNavKey.SettingsCategory(STORAGE_BACKUP)`. AppNavigation pushes that key. SettingsCategoryScreen supplies `SettingsNavDestination.Category(category)` to SettingsScreen. SettingsScreen has no focus-controller collector or pending target effect that opens this dialog: it initializes `showImageSavePathDialog=false`, and the row's `onImageSavePathAction` sets it true.
+
+Actual Main04 `dispatchDesktopSettingsSearchDestination` preserves this category route; it does not resolve the category's search target again into a detail page. The Main04 Tree's separate `Detail(IMAGE_SAVE_PATH)` branch exists, but this original search pointer does not enter it, and this proof does not claim it did.
+
+Run-03 diagnostics record precisely one result: `SettingsSearchResult(target=IMAGE_SAVE_PATH, title=图片保存位置, ... focusId=null)`. Its clicked text bounds are `(72,179)-(168,204)`, followed by the navigator stack `Root → Category(STORAGE_BACKUP) → Search → Category(STORAGE_BACKUP)`. It did not click DATA_BACKUP or a similarly matched scene row. The failed expectation that search should directly reach Detail is a fixture error, not a product defect. Run-04 follows the verified original route without changing product bytes. The initial commentary attributing the image target to the scene branch was incorrect; the final source review corrects that causal explanation.
+
+## Evidence and limits
+
+Run-01 failed before UI acceptance because the private Skiko cache lacked a native-readable ICU asset path. The crash log is preserved. Later runs extract only the exact Main04 runtime JAR's Skiko DLL/ICU into a shorter task-owned path and pin both entries. Runs-02/03 preserve the failed Detail expectation; run-03 additionally preserves its actual semantics and navigator diagnostic. None is overwritten by run-04.
+
+The first successful MIUIX storage-dialog PNG captures part of its enter animation at the bottom edge; its button pointer and cancellation passed. The later successful MIUIX search-category dialog PNG shows its complete actions. These captures are retained as taken; no settled-window or native HWND proof is claimed. The actual semantic/pointer and persisted-state assertions are the acceptance gates.
+
+The actual System chooser is replaced only by a synthetic null result. This proof does not mount the full DesktopShell, start Runtime or Mpv, invoke a real HWND/chooser, save in the user's Pictures directory, contact an account service, test avatar routing, or accept a packaged EXE. The separate Root source review covers Main's global-store/lifetime injection; it is not converted into full-Shell runtime acceptance here. No user directory files were created.
+
+The original source snippets and complete source identities in `original-routing-evidence.json` support the search conclusion. The successful runtime proof is `attempts/run-04/proof/result.json`; the exact compile/runtime identities are `attempts/run-04/compile-runtime-evidence.json`. Runtime JARs, extracted binaries and temporary backing files remain local evidence only and must not be installed or committed.

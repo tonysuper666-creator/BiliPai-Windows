@@ -1,0 +1,93 @@
+{
+  "schema": "frozen-actual-main04-comment-png-locations-proof-v1",
+  "frozen": true,
+  "acceptedEvidence": "proof-01/accepted-evidence.json",
+  "acceptedEvidenceSha256Bytes": "13a1cedf53063a5c2d588ddc5849564ba74c24e59b1572a4bc41bfdcc0b943a9",
+  "sourceReviewManifestSha256Bytes": "a43c2ca3932bc72b91bde37a427cf0f4f4047b1660ca0e3b99ab0537a8de74ce",
+  "caseCount": 3,
+  "kotlinAssertions": 28,
+  "productOverrides": [],
+  "artifactCount": 16,
+  "artifacts": [
+    {
+      "path": "CommentLocationsFixture.kt",
+      "sha256Bytes": "da6e453d867e48b1845a401a482a973a86aec8288eaca0a06518b8c09523cbab",
+      "byteCount": 8684
+    },
+    {
+      "path": "compile-proof.py",
+      "sha256Bytes": "75466b8e51763ec1e641b71615ebce268b0d42e3200bed2a66384ed6ff88079e",
+      "byteCount": 6109
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "fbf84dadd10346e21b01d16c0c9bb407cec798a6c5146e111ab65726977d32e6",
+      "byteCount": 4790
+    },
+    {
+      "path": "proof-01/accepted-evidence.json",
+      "sha256Bytes": "13a1cedf53063a5c2d588ddc5849564ba74c24e59b1572a4bc41bfdcc0b943a9",
+      "byteCount": 5388
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byteCount": 0
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sha256Bytes": "d1d89d2582825b19587f9f5606465e6bde79dafb2f3520dc3d3fdca8d2bf6210",
+      "byteCount": 23235
+    },
+    {
+      "path": "proof-01/fixture/custom/BiliPai_comment_cancel.png",
+      "sha256Bytes": "5cc35f35b39ad06bf96c83ad4b39dc462925c7c01e42050cd920a19a40d1fee2",
+      "byteCount": 3
+    },
+    {
+      "path": "proof-01/fixture/custom/BiliPai_comment_custom.png",
+      "sha256Bytes": "f6c3677b8c27a3185f4da7a90e80f920aad10268277ef6db4e5be6ae377d72e6",
+      "byteCount": 45925
+    },
+    {
+      "path": "proof-01/fixture/default-base/BiliPai/BiliPai_comment_fallback.png",
+      "sha256Bytes": "f6c3677b8c27a3185f4da7a90e80f920aad10268277ef6db4e5be6ae377d72e6",
+      "byteCount": 45925
+    },
+    {
+      "path": "proof-01/fixture/prefs/plugin-settings.json",
+      "sha256Bytes": "91733044243b4fc22287a7e6581b215f600a86e1ffc616574bd549c9a7673a35",
+      "byteCount": 231
+    },
+    {
+      "path": "proof-01/fixture/result.json",
+      "sha256Bytes": "45cdca6d8c316639d0617f490fdd8001c9b9ca20860a2fce1235ec1f86e32e3d",
+      "byteCount": 3611
+    },
+    {
+      "path": "proof-01/fixture-only.jar",
+      "sha256Bytes": "bff521939f0e9c505d89a3ec89276d3eea23ce9da3047a398e3bdd28e27c670c",
+      "byteCount": 33107
+    },
+    {
+      "path": "proof-01/runtime.args",
+      "sha256Bytes": "e80a40c44c46ba68792ad4da5bd62cdc6196297ffca167223a4bcbd9b177a4c3",
+      "byteCount": 23571
+    },
+    {
+      "path": "proof-01/runtime.log",
+      "sha256Bytes": "8f6dfe6ddc3e5eec195ddb54ebc9091b6e685e8d81b7df8cd45f6c0db07db551",
+      "byteCount": 3612
+    },
+    {
+      "path": "proof-01/sources/CommentLocationsFixture.kt",
+      "sha256Bytes": "da6e453d867e48b1845a401a482a973a86aec8288eaca0a06518b8c09523cbab",
+      "byteCount": 8684
+    },
+    {
+      "path": "proof-contract.json",
+      "sha256Bytes": "9e9721b1d854080dbbf9925f250fe8383d0aacb11ad9f169e89d8c98830b436d",
+      "byteCount": 3139
+    }
+  ]
+}

@@ -1,0 +1,262 @@
+{
+  "frozen": true,
+  "scope": "Actual Main04 mounted original image-save SettingsTree/row/dialog/global-prefs proof",
+  "artifacts": [
+    {
+      "path": "attempts/run-01/compile-runtime-evidence.json",
+      "bytes": 39777,
+      "sha256Bytes": "0a9de9837e94a725f350fef87feb00b1418d2fd5bdb62ddfb977a499db53f83b"
+    },
+    {
+      "path": "attempts/run-01/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "attempts/run-01/compiler.args",
+      "bytes": 23535,
+      "sha256Bytes": "3edcc33fbc65892a02fc2fcf860146836fa7a6c9d6e26696946c4ce0bfb205fa"
+    },
+    {
+      "path": "attempts/run-01/jvm-fatal.log",
+      "bytes": 102282,
+      "sha256Bytes": "b11f65ed5df9ad70692814a3dbef5b93e70f5eac05e3d6a042f034928305f150"
+    },
+    {
+      "path": "attempts/run-01/MountedSettingsFixture.kt",
+      "bytes": 10528,
+      "sha256Bytes": "2c6550428a588317bf6f50fbebaef80c0ec9d76ba2f289c0c5050a2fbf129180"
+    },
+    {
+      "path": "attempts/run-01/runtime.args",
+      "bytes": 24044,
+      "sha256Bytes": "d55ca460ae87e590170a2ff2c1b94c21af291335861928ebd3d360ed46c6e655"
+    },
+    {
+      "path": "attempts/run-01/runtime.log",
+      "bytes": 1554,
+      "sha256Bytes": "a00c9f2b0e3a21016c78981df70260d0dae95f16a21041482a205c2f0a952b96"
+    },
+    {
+      "path": "attempts/run-02/compile-runtime-evidence.json",
+      "bytes": 41362,
+      "sha256Bytes": "2f6c440b0aeefcc53b304ebb7d5725ca206de4517e789f808f374bee434e2383"
+    },
+    {
+      "path": "attempts/run-02/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "attempts/run-02/compiler.args",
+      "bytes": 23535,
+      "sha256Bytes": "4be9b4d2de39121ab89f75e9f48c3c44a1a392b1e9e9adff010b7c92e30b1c6c"
+    },
+    {
+      "path": "attempts/run-02/MountedSettingsFixture.kt",
+      "bytes": 10528,
+      "sha256Bytes": "2c6550428a588317bf6f50fbebaef80c0ec9d76ba2f289c0c5050a2fbf129180"
+    },
+    {
+      "path": "attempts/run-02/proof/material3-storage-after-null-chooser.png",
+      "bytes": 22746,
+      "sha256Bytes": "8e3460ca16032ccc9a9286eddbd284a2a6725f02b542f659226425d18116699a"
+    },
+    {
+      "path": "attempts/run-02/proof/material3-storage-original-dialog.png",
+      "bytes": 35558,
+      "sha256Bytes": "2d8dbe61d61cf385338e45ddc0f80d21f08a02c5ed8701c8d024d82178ac6bc9"
+    },
+    {
+      "path": "attempts/run-02/runtime.args",
+      "bytes": 24424,
+      "sha256Bytes": "bf76dc8da18a25c328d0d4c9d92910dea5f194bf902225c64cdc6a604b03114a"
+    },
+    {
+      "path": "attempts/run-02/runtime.log",
+      "bytes": 537,
+      "sha256Bytes": "ee76e36534796f9d73db13e4d293fe8d2d0ff69cac9b6983015bd616215caf55"
+    },
+    {
+      "path": "attempts/run-03/compile-runtime-evidence.json",
+      "bytes": 41362,
+      "sha256Bytes": "7931a51efe97db1dc1b1f97f154d21e5afac09bec837a06462c18f8ad2160f12"
+    },
+    {
+      "path": "attempts/run-03/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "attempts/run-03/compiler.args",
+      "bytes": 23535,
+      "sha256Bytes": "252d7e116561539626671b9c9d66977db9ec8fcac28947ba216834ca184d1262"
+    },
+    {
+      "path": "attempts/run-03/MountedSettingsFixture.kt",
+      "bytes": 11949,
+      "sha256Bytes": "1cbb123648b7ffa379bacf35ff4e3e3081db9182069b69f86b89062ceb691293"
+    },
+    {
+      "path": "attempts/run-03/proof/material3-failed.png",
+      "bytes": 22812,
+      "sha256Bytes": "a2407f1bf2fd85c24c50bd2a899748127517152456d1c43751a17f5937f085f8"
+    },
+    {
+      "path": "attempts/run-03/proof/material3-failure-diagnostics.json",
+      "bytes": 2771,
+      "sha256Bytes": "c6ce1e99d4377b0d7c702247109344e28d6dd1a2d8eba67c9fb57920b773c1de"
+    },
+    {
+      "path": "attempts/run-03/proof/material3-storage-after-null-chooser.png",
+      "bytes": 22746,
+      "sha256Bytes": "8e3460ca16032ccc9a9286eddbd284a2a6725f02b542f659226425d18116699a"
+    },
+    {
+      "path": "attempts/run-03/proof/material3-storage-original-dialog.png",
+      "bytes": 35558,
+      "sha256Bytes": "2d8dbe61d61cf385338e45ddc0f80d21f08a02c5ed8701c8d024d82178ac6bc9"
+    },
+    {
+      "path": "attempts/run-03/runtime.args",
+      "bytes": 24424,
+      "sha256Bytes": "5516484432756301f39613dc0ad5a1fc1a1a2884d98a326ed820ddccb6479dd3"
+    },
+    {
+      "path": "attempts/run-03/runtime.log",
+      "bytes": 916,
+      "sha256Bytes": "bb1a941c1ce7784267a78a86371ac03dbfbe29943f3bf4a0fa0663e150847e9a"
+    },
+    {
+      "path": "attempts/run-04/compile-runtime-evidence.json",
+      "bytes": 41362,
+      "sha256Bytes": "8e040a9094d078a35e06f7e89b6d9c6e180f89a464d9c1c81702ab96213b5e5f"
+    },
+    {
+      "path": "attempts/run-04/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "attempts/run-04/compiler.args",
+      "bytes": 23535,
+      "sha256Bytes": "c45d0728571dd8a0417dd8005830e43fda37574c18d5da24e73312822e8267bc"
+    },
+    {
+      "path": "attempts/run-04/MountedSettingsFixture.kt",
+      "bytes": 12547,
+      "sha256Bytes": "7f952493c03022133aaf51541e736b6e3d220627c00ac8db54a5aac99daba236"
+    },
+    {
+      "path": "attempts/run-04/proof/material3-search-category-after-reset.png",
+      "bytes": 22627,
+      "sha256Bytes": "cc17a15c59aaf5bb46a5e0833927fc7e8f61f2104443e981881a8660487ebc80"
+    },
+    {
+      "path": "attempts/run-04/proof/material3-search-category-original-dialog.png",
+      "bytes": 34659,
+      "sha256Bytes": "e73e68da3432f1c84e6cab1d165287d8dc85c7cc0cd520e923698bf706ea5264"
+    },
+    {
+      "path": "attempts/run-04/proof/material3-storage-after-null-chooser.png",
+      "bytes": 22746,
+      "sha256Bytes": "8e3460ca16032ccc9a9286eddbd284a2a6725f02b542f659226425d18116699a"
+    },
+    {
+      "path": "attempts/run-04/proof/material3-storage-original-dialog.png",
+      "bytes": 35558,
+      "sha256Bytes": "2d8dbe61d61cf385338e45ddc0f80d21f08a02c5ed8701c8d024d82178ac6bc9"
+    },
+    {
+      "path": "attempts/run-04/proof/miuix-search-category-after-reset.png",
+      "bytes": 26427,
+      "sha256Bytes": "e607fee3771de37d317bdd6634b651f4d3a21140a31ba42efd057dfdbabb51e5"
+    },
+    {
+      "path": "attempts/run-04/proof/miuix-search-category-original-dialog.png",
+      "bytes": 39072,
+      "sha256Bytes": "f36516999c495c134a372626a0ca262d9b728ad4cd3149c40da2f7c1d4bcb0f1"
+    },
+    {
+      "path": "attempts/run-04/proof/miuix-storage-after-null-chooser.png",
+      "bytes": 26625,
+      "sha256Bytes": "b574e21e6f79d42cd92c54496a78a65f7d2a36c576073d24c73457c22fafbdab"
+    },
+    {
+      "path": "attempts/run-04/proof/miuix-storage-original-dialog.png",
+      "bytes": 38344,
+      "sha256Bytes": "d63ae1b9fd2f59da33f3849363aea3df86aaf379537e5b48c38e3ef8adcc807a"
+    },
+    {
+      "path": "attempts/run-04/proof/result.json",
+      "bytes": 3114,
+      "sha256Bytes": "dad638613bb3774f6e0a68a6eb831e974821ba68d14ae43460d41d3a6b7be8d1"
+    },
+    {
+      "path": "attempts/run-04/runtime.args",
+      "bytes": 24424,
+      "sha256Bytes": "5d8c19e737bdb84126daf73979a34ad4cf0e548a8c5537555e06f8520db80d7d"
+    },
+    {
+      "path": "attempts/run-04/runtime.log",
+      "bytes": 1257,
+      "sha256Bytes": "63fdbd5fbd0a31f4801b1bdbba7a63e217650147266cf50070df43ba642cbae7"
+    },
+    {
+      "path": "compile-run.py",
+      "bytes": 5654,
+      "sha256Bytes": "06a2c8bfa0fd20b95d2a27506253c9ae5ba55a86b97050bc00aa6068a7e422d5"
+    },
+    {
+      "path": "freeze-proof.py",
+      "bytes": 6478,
+      "sha256Bytes": "abe07a8877fcfd787fce9f3a00182ad186e6771a3152fcb6ef24a8e1c67a43b6"
+    },
+    {
+      "path": "latest-success.json",
+      "bytes": 365,
+      "sha256Bytes": "9a55efb6e4f3cff41e640a099b364a43b6de10b756f99213eb67fa83e1fdf522"
+    },
+    {
+      "path": "metadata-correction.json",
+      "bytes": 842,
+      "sha256Bytes": "0240219f8a989b706a220799c825ca5f64f4c3dfe44e312fc164cd5c74e284cc"
+    },
+    {
+      "path": "MountedSettingsFixture.kt",
+      "bytes": 12547,
+      "sha256Bytes": "7f952493c03022133aaf51541e736b6e3d220627c00ac8db54a5aac99daba236"
+    },
+    {
+      "path": "original-routing-evidence.json",
+      "bytes": 22643,
+      "sha256Bytes": "27868bcbdf6e5deaa46a878c3d3be899b34d1777790ac40c8eaf406f1ecfbe1e"
+    },
+    {
+      "path": "REVIEW.md",
+      "bytes": 5073,
+      "sha256Bytes": "5681eed7fe448e784e85e881636de33a93123892aba8f9f57c0dec0607b10317"
+    },
+    {
+      "path": "excluded-runtime-artifacts.json",
+      "bytes": 7854,
+      "sha256Bytes": "e1dcea271d727e4586cc6cd0a9cb80b9fe8014838c7946fd81652b3591e55fd8"
+    }
+  ],
+  "rawArtifactCount": 48,
+  "excludedRuntimeArtifactCount": 25,
+  "productOverrides": 0,
+  "actualMainSnapshotManifestSha256": "7bc5ac8875dadf38510120db6619bd6e748e7f790a47afc11374e14114f25865",
+  "actualMainOrderedCpSha256": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2",
+  "runtimeCpCount": 92,
+  "successfulAttempt": "attempts/run-04",
+  "twoThemeFlows": 2,
+  "actualPointerPairs": 12,
+  "actualSearchEditorActions": 2,
+  "productCorrectionRequired": false,
+  "searchDirectDetailAccepted": false,
+  "actualSystemChooser": false,
+  "fullShellMounted": false,
+  "nativeWindow": false,
+  "packagedExecutableAccepted": false
+}

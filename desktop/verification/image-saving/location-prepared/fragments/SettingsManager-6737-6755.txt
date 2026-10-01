@@ -1,0 +1,19 @@
+    fun getImageSaveTreeUri(context: Context): Flow<String?> = context.settingsDataStore.data
+        .map { preferences ->
+            preferences[KEY_IMAGE_SAVE_TREE_URI]
+        }
+
+    suspend fun setImageSaveTreeUri(context: Context, uri: String?) {
+        editSettingsAndCommitPrefs(
+            context, "image_save_prefs",
+            editSettings = {
+                if (uri != null) this[KEY_IMAGE_SAVE_TREE_URI] = uri else remove(KEY_IMAGE_SAVE_TREE_URI)
+            },
+            editPrefs = { putString("tree_uri", uri) },
+        )
+    }
+
+    fun getImageSaveTreeUriSync(context: Context): String? {
+        return context.getSharedPreferences("image_save_prefs", Context.MODE_PRIVATE)
+            .getString("tree_uri", null)
+    }

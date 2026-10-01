@@ -1,0 +1,240 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsSearchScreen.kt",
+      "sha256Bytes": "9f2610be1536c93f215692fc2112be5a730c9a976d9a63c8e35eb60415d592f1",
+      "sha256Lf": "40e622d9e592311e4ac2eaf9cb5529443296946e9ae67aab03a318c8833ba2ed",
+      "sourceRegistryIdentityPresent": false,
+      "snippets": [
+        {
+          "firstLine": 100,
+          "lastLine": 119,
+          "text": "                                viewModel.recordSearchQuery(it)\n                            },\n                            onDelete = viewModel::deleteSearchHistory,\n                            onClear = viewModel::clearSearchHistory,\n                        )\n                    } else SettingsSearchResultsSection(\n                        results = searchResults,\n                        onResultClick = { result ->\n                            viewModel.recordSearchQuery(searchQuery)\n                            val category = resolveSettingsRootCategoryForSearchTarget(result.target)\n                            if (isSceneSettingsSearchTarget(result.target) && category != null) {\n                                onCategoryClick(category)\n                            } else {\n                                SettingsSearchFocusController.submit(result.target, result.focusId)\n                                onSearchResultClick(result)\n                            }\n                        },\n                    )\n                }\n            }"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicy.kt",
+      "sha256Bytes": "e5c7520eb149e9df3a07ac4b3cfe52a9b0ef778c1a7f1c7a2937834fa02e236d",
+      "sha256Lf": "1e68ae700ea22d3d5ed776701bb1378c4d79268fbb680d3250e7bc567e49f5ef",
+      "sourceRegistryIdentityPresent": true,
+      "snippets": [
+        {
+          "firstLine": 98,
+          "lastLine": 151,
+          "text": "): SettingsRootCategory? = when (target) {\n    SettingsSearchTarget.INTERFACE_THEME,\n    SettingsSearchTarget.APPEARANCE -> SettingsRootCategory.APPEARANCE_THEME\n\n    SettingsSearchTarget.PLAYBACK_QUALITY,\n    SettingsSearchTarget.PLAYBACK,\n    SettingsSearchTarget.FULLSCREEN_GESTURE,\n    SettingsSearchTarget.INTERACTION_COMMENT -> SettingsRootCategory.PLAYBACK_QUALITY\n\n    SettingsSearchTarget.HOME_FEED -> SettingsRootCategory.HOME_RECOMMENDATION\n\n    SettingsSearchTarget.ANIMATION,\n    SettingsSearchTarget.NAVIGATION,\n    SettingsSearchTarget.BOTTOM_BAR -> SettingsRootCategory.NAVIGATION_INTERACTION\n\n    SettingsSearchTarget.PRIVACY_PERMISSION,\n    SettingsSearchTarget.PERMISSION,\n    SettingsSearchTarget.BLOCKED_LIST,\n    SettingsSearchTarget.MESSAGE_NOTIFICATION -> SettingsRootCategory.PRIVACY_PERMISSION\n\n    SettingsSearchTarget.DATA_BACKUP,\n    SettingsSearchTarget.SETTINGS_SHARE,\n    SettingsSearchTarget.WEBDAV_BACKUP,\n    SettingsSearchTarget.DOWNLOAD_PATH,\n    SettingsSearchTarget.IMAGE_SAVE_PATH,\n    SettingsSearchTarget.CLEAR_CACHE -> SettingsRootCategory.STORAGE_BACKUP\n\n    SettingsSearchTarget.PLUGINS -> SettingsRootCategory.PLUGINS_EXTENSIONS\n\n    SettingsSearchTarget.DIAGNOSTICS,\n    SettingsSearchTarget.EXPORT_LOGS,\n    SettingsSearchTarget.ABOUT_SUPPORT,\n    SettingsSearchTarget.OPEN_SOURCE_LICENSES,\n    SettingsSearchTarget.OPEN_SOURCE_HOME,\n    SettingsSearchTarget.CHECK_UPDATE,\n    SettingsSearchTarget.VIEW_RELEASE_NOTES,\n    SettingsSearchTarget.REPLAY_ONBOARDING,\n    SettingsSearchTarget.DISCLAIMER,\n    SettingsSearchTarget.TELEGRAM,\n    SettingsSearchTarget.TWITTER,\n    SettingsSearchTarget.DONATE,\n    SettingsSearchTarget.TIPS,\n    SettingsSearchTarget.OPEN_LINKS -> SettingsRootCategory.SYSTEM_ABOUT\n}\n\ninternal fun isSceneSettingsSearchTarget(target: SettingsSearchTarget): Boolean = target in setOf(\n    SettingsSearchTarget.INTERFACE_THEME,\n    SettingsSearchTarget.PLAYBACK_QUALITY,\n    SettingsSearchTarget.HOME_FEED,\n    SettingsSearchTarget.NAVIGATION,\n    SettingsSearchTarget.PRIVACY_PERMISSION,\n    SettingsSearchTarget.DATA_BACKUP,\n    SettingsSearchTarget.DIAGNOSTICS,\n)"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchNavigationPolicy.kt",
+      "sha256Bytes": "e3f51126ec3a53bd000b7e31bc33656a462fa7b987f9457c6e94302a981cce64",
+      "sha256Lf": "159cd83dcd72a0833cae676893a84b9ed5ce97d1e59fd1905fa7d94320930acb",
+      "sourceRegistryIdentityPresent": true,
+      "snippets": [
+        {
+          "firstLine": 1,
+          "lastLine": 43,
+          "text": "package com.android.purebilibili.feature.settings\n\nimport com.android.purebilibili.navigation3.BiliPaiNavKey\n\ninternal fun resolveSettingsSearchNavigation(result: SettingsSearchResult): BiliPaiNavKey? {\n    resolveSettingsSceneDetailFocus(result.target)?.let { detailFocus ->\n        return when (detailFocus.target) {\n            SettingsSearchTarget.APPEARANCE -> BiliPaiNavKey.AppearanceSettings\n            SettingsSearchTarget.HOME_FEED -> BiliPaiNavKey.HomeSettings\n            SettingsSearchTarget.ANIMATION -> BiliPaiNavKey.AnimationSettings\n            SettingsSearchTarget.PLAYBACK -> BiliPaiNavKey.PlaybackSettings\n            SettingsSearchTarget.BOTTOM_BAR -> BiliPaiNavKey.BottomBarSettings\n            else -> null\n        }\n    }\n    if (isSceneSettingsSearchTarget(result.target)) {\n        return null\n    }\n    return when (result.target) {\n        SettingsSearchTarget.APPEARANCE -> BiliPaiNavKey.AppearanceSettings\n        SettingsSearchTarget.ANIMATION -> BiliPaiNavKey.AnimationSettings\n        SettingsSearchTarget.PLAYBACK -> BiliPaiNavKey.PlaybackSettings\n        SettingsSearchTarget.BOTTOM_BAR -> BiliPaiNavKey.BottomBarSettings\n        SettingsSearchTarget.PERMISSION -> BiliPaiNavKey.PermissionSettings\n        SettingsSearchTarget.MESSAGE_NOTIFICATION -> BiliPaiNavKey.MessageNotificationSettings\n        SettingsSearchTarget.PLUGINS -> BiliPaiNavKey.PluginsSettings()\n        SettingsSearchTarget.SETTINGS_SHARE -> BiliPaiNavKey.SettingsShare\n        SettingsSearchTarget.WEBDAV_BACKUP -> BiliPaiNavKey.WebDavBackup\n        SettingsSearchTarget.OPEN_SOURCE_LICENSES -> BiliPaiNavKey.OpenSourceLicenses\n        SettingsSearchTarget.TIPS -> BiliPaiNavKey.TipsSettings\n        // Leaf entries such as GitHub, update check and Telegram are actions hosted by their\n        // root category. They used to resolve to null, so tapping a valid search result did\n        // nothing. Open the owning category; the normal settings callbacks remain authoritative.\n        else -> resolveSettingsRootCategoryForSearchTarget(result.target)\n            ?.let { category -> BiliPaiNavKey.SettingsCategory(category) }\n    }\n}"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsCategoryScreen.kt",
+      "sha256Bytes": "6b7ca932cd3e2adeb371f55d1ea2142d8ad1c75e1d66ef278c1e752830aae7cd",
+      "sha256Lf": "436b3bf0391c0008887f039214da4d2a0ac1a51be11fdd5a78dc81219e568590",
+      "sourceRegistryIdentityPresent": false,
+      "snippets": [
+        {
+          "firstLine": 12,
+          "lastLine": 58,
+          "text": "fun SettingsCategoryScreen(\n    category: SettingsRootCategory,\n    viewModel: SettingsViewModel = viewModel(),\n    onBack: () -> Unit,\n    onOpenSourceLicensesClick: () -> Unit,\n    onAppearanceClick: () -> Unit = {},\n    onHomeClick: () -> Unit = {},\n    onAnimationClick: () -> Unit = {},\n    onPlaybackClick: () -> Unit = {},\n    onPermissionClick: () -> Unit = {},\n    onMessageNotificationClick: () -> Unit = {},\n    onPluginsClick: () -> Unit = {},\n    onSettingsShareClick: () -> Unit = {},\n    onWebDavBackupClick: () -> Unit = {},\n    onNavigateToBottomBarSettings: () -> Unit = {},\n    onTipsClick: () -> Unit = {},\n    onReplayOnboardingClick: () -> Unit = {},\n    onCategoryClick: (SettingsRootCategory) -> Unit = {},\n    onSearchOpen: () -> Unit = {},\n    mainHazeState: HazeState? = null,\n    forceSinglePaneContent: Boolean = false,\n) {\n    SettingsScreen(\n        viewModel = viewModel,\n        onBack = onBack,\n        onOpenSourceLicensesClick = onOpenSourceLicensesClick,\n        onAppearanceClick = onAppearanceClick,\n        onHomeClick = onHomeClick,\n        onAnimationClick = onAnimationClick,\n        onPlaybackClick = onPlaybackClick,\n        onPermissionClick = onPermissionClick,\n        onMessageNotificationClick = onMessageNotificationClick,\n        onPluginsClick = onPluginsClick,\n        onSettingsShareClick = onSettingsShareClick,\n        onWebDavBackupClick = onWebDavBackupClick,\n        onNavigateToBottomBarSettings = onNavigateToBottomBarSettings,\n        onTipsClick = onTipsClick,\n        onReplayOnboardingClick = onReplayOnboardingClick,\n        onCategoryClick = onCategoryClick,\n        onSearchOpen = onSearchOpen,\n        destination = SettingsNavDestination.Category(category),\n        mainHazeState = mainHazeState,\n        forceSinglePaneContent = forceSinglePaneContent,\n    )\n}"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt",
+      "sha256Bytes": "d7e25c958debb90efffd6bcd79f5b5cf3fb810e582e1eab89dad19f97f8eb924",
+      "sha256Lf": "300346d94ff55caf2a974c87602c9e067f8ed875a0cb90b68e41643999befaf1",
+      "sourceRegistryIdentityPresent": true,
+      "snippets": [
+        {
+          "firstLine": 187,
+          "lastLine": 197,
+          "text": "            selectedTargets = selectedCacheClearTargets\n        )\n    }\n    var versionClickCount by remember { mutableIntStateOf(0) }\n    var showEasterEggDialog by remember { mutableStateOf(false) }\n    var showPathDialog by remember { mutableStateOf(false) }\n    var showImageSavePathDialog by remember { mutableStateOf(false) }\n    // [新增] 打赏对话框\n    var showDonateDialog by remember { mutableStateOf(false) }\n    var showReleaseDisclaimerDialog by remember { mutableStateOf(false) }\n    var isCheckingUpdate by remember { mutableStateOf(false) }"
+        },
+        {
+          "firstLine": 293,
+          "lastLine": 315,
+          "text": "        contract = ActivityResultContracts.OpenDocumentTree()\n    ) { uri ->\n        if (uri == null) return@rememberLauncherForActivityResult\n\n        val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION\n        runCatching {\n            context.contentResolver.takePersistableUriPermission(uri, takeFlags)\n        }\n\n        scope.launch {\n            SettingsManager.setImageSaveTreeUri(context, uri.toString())\n        }\n        Toast.makeText(context, \"已设置图片保存目录\", Toast.LENGTH_SHORT).show()\n    }\n\n    // Callbacks\n    val onClearCacheAction = {\n        selectedCacheClearTargets = resolveDefaultCacheClearTargets()\n        showCacheDialog = true\n    }\n    val onDownloadPathAction = { showPathDialog = true }\n    val onImageSavePathAction = { showImageSavePathDialog = true }\n    "
+        },
+        {
+          "firstLine": 578,
+          "lastLine": 631,
+          "text": "                }) { AppText(\"恢复默认\") }\n            }\n        )\n    }\n    if (showImageSavePathDialog) {\n        com.android.purebilibili.core.ui.AppAlertDialog(\n            onDismissRequest = { showImageSavePathDialog = false },\n            title = { AppText(\"图片保存位置\", color = MaterialTheme.colorScheme.onSurface) },\n            text = {\n                Column {\n                    AppText(\n                        \"默认保存到系统相册的 BiliPai 文件夹。\",\n                        style = MaterialTheme.typography.bodySmall,\n                        color = MaterialTheme.colorScheme.onSurfaceVariant\n                    )\n                    Spacer(modifier = Modifier.height(8.dp))\n                    AppText(\n                        \"可通过系统文件夹授权选择动态图片、头像和评论图片的保存目录。\",\n                        style = MaterialTheme.typography.bodySmall,\n                        color = com.android.purebilibili.core.theme.iOSOrange\n                    )\n                    if (!imageSaveTreeUri.isNullOrBlank()) {\n                        Spacer(modifier = Modifier.height(8.dp))\n                        AppText(\n                            \"当前图片目录：已选择\",\n                            style = MaterialTheme.typography.bodySmall,\n                            color = MaterialTheme.colorScheme.onSurfaceVariant\n                        )\n                    }\n                }\n            },\n            confirmButton = {\n                com.android.purebilibili.core.ui.AppDialogAction(onClick = {\n                    showImageSavePathDialog = false\n                    imageSaveFolderPicker.launch(null)\n                }) { AppText(\"选择图片目录\") }\n            },\n            dismissButton = {\n                com.android.purebilibili.core.ui.AppDialogAction(onClick = {\n                    scope.launch {\n                        SettingsManager.setImageSaveTreeUri(context, null)\n                    }\n                    showImageSavePathDialog = false\n                    Toast.makeText(context, \"已恢复默认图片保存位置\", Toast.LENGTH_SHORT).show()\n                }) { AppText(\"恢复默认\") }\n            }\n        )\n    }\n    \n    if (showEasterEggDialog) {\n        com.android.purebilibili.core.ui.AppAlertDialog(\n            onDismissRequest = { showEasterEggDialog = false; versionClickCount = 0 },\n            title = { AppText(\"你发现了彩蛋！\", fontWeight = FontWeight.Bold) },\n            text = { AppText(\"感谢你使用 BiliPai！这是一个用爱发电的开源项目。\") },"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256Bytes": "65833d213c0bd55ad0141bbd16ca9c06ac72c18181653cb134280e81e7c53b22",
+      "sha256Lf": "715c42cfa7030c5627faafe995b17f05957b89f3d04481834b683f1be66c2df8",
+      "sourceRegistryIdentityPresent": true,
+      "snippets": [
+        {
+          "firstLine": 3148,
+          "lastLine": 3195,
+          "text": "                            SettingsTabletEntry {\n                                SettingsCategoryScreen(\n                                    category = categoryKey.category,\n                                    viewModel = settingsViewModel,\n                                    onBack = { performSystemBackAction() },\n                                    onOpenSourceLicensesClick = { pushNavigation3Key(BiliPaiNavKey.OpenSourceLicenses) },\n                                    onAppearanceClick = { pushNavigation3Key(BiliPaiNavKey.AppearanceSettings) },\n                                    onHomeClick = { pushNavigation3Key(BiliPaiNavKey.HomeSettings) },\n                                    onAnimationClick = { pushNavigation3Key(BiliPaiNavKey.AnimationSettings) },\n                                    onPlaybackClick = { pushNavigation3Key(BiliPaiNavKey.PlaybackSettings) },\n                                    onPermissionClick = { pushNavigation3Key(BiliPaiNavKey.PermissionSettings) },\n                                    onMessageNotificationClick = { pushNavigation3Key(BiliPaiNavKey.MessageNotificationSettings) },\n                                    onPluginsClick = { pushNavigation3Key(BiliPaiNavKey.PluginsSettings()) },\n                                    onSettingsShareClick = { pushNavigation3Key(BiliPaiNavKey.SettingsShare) },\n                                    onWebDavBackupClick = { pushNavigation3Key(BiliPaiNavKey.WebDavBackup) },\n                                    onNavigateToBottomBarSettings = { pushNavigation3Key(BiliPaiNavKey.BottomBarSettings) },\n                                    onTipsClick = { pushNavigation3Key(BiliPaiNavKey.TipsSettings) },\n                                    onReplayOnboardingClick = { pushNavigation3Route(ScreenRoutes.Onboarding.route) },\n                                    onCategoryClick = { category ->\n                                        pushNavigation3Key(resolveSettingsCategoryNavKey(category))\n                                    },\n                                    onSearchOpen = { pushNavigation3Key(BiliPaiNavKey.SettingsSearch) },\n                                    mainHazeState = mainHazeState,\n                                    forceSinglePaneContent = true,\n                                )\n                            }\n                        }\n                        BiliPaiNavEntryContentRole.SETTINGS_SEARCH ->\n                            SettingsTabletEntry {\n                                SettingsSearchScreen(\n                                    viewModel = settingsViewModel,\n                                    onBack = { performSystemBackAction() },\n                                    onCategoryClick = { category ->\n                                        pushNavigation3Key(resolveSettingsCategoryNavKey(category))\n                                    },\n                                    onSearchResultClick = { result ->\n                                        resolveSettingsSearchNavigation(result)?.let { navKey ->\n                                            pushNavigation3Key(navKey)\n                                        }\n                                    },\n                                    mainHazeState = mainHazeState,\n                                )\n                            }\n                        BiliPaiNavEntryContentRole.OPEN_SOURCE_LICENSES ->\n                            SettingsTabletEntry {\n                                com.android.purebilibili.feature.settings.OpenSourceLicensesScreen(\n                                    onBack = { performSystemBackAction() }\n                                )"
+        }
+      ]
+    }
+  ],
+  "actualMain04HistoricalSearchDiagnostic": {
+    "stage": "open-search-result",
+    "navigation": "DesktopSettingsNavigationState(stack=[Root, Category(category=STORAGE_BACKUP), Search(entryToken=1), Category(category=STORAGE_BACKUP)])",
+    "query": "图片保存位置",
+    "results": "[SettingsSearchResult(target=IMAGE_SAVE_PATH, title=图片保存位置, subtitle=选择动态图片、头像和评论图片保存目录, section=数据与存储, focusId=null)]",
+    "semantics": [
+      {
+        "text": "",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(0.0, 0.0, 820.0, 980.0)"
+      },
+      {
+        "text": "",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(0.0, 0.0, 820.0, 980.0)"
+      },
+      {
+        "text": "",
+        "editable": null,
+        "clickable": true,
+        "bounds": "Rect.fromLTRB(12.0, 4.0, 70.0, 44.0)"
+      },
+      {
+        "text": "返回",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(27.0, 14.0, 55.0, 34.0)"
+      },
+      {
+        "text": "",
+        "editable": null,
+        "clickable": true,
+        "bounds": "Rect.fromLTRB(728.0, 4.0, 808.0, 44.0)"
+      },
+      {
+        "text": "搜索设置",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(740.0, 14.0, 796.0, 34.0)"
+      },
+      {
+        "text": "",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(0.0, 48.0, 820.0, 980.0)"
+      },
+      {
+        "text": "存储与备份",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(36.0, 76.0, 106.0, 96.0)"
+      },
+      {
+        "text": "存储与备份",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(34.0, 132.0, 104.0, 152.0)"
+      },
+      {
+        "text": "",
+        "editable": null,
+        "clickable": true,
+        "bounds": "Rect.fromLTRB(16.0, 162.0, 804.0, 234.0)"
+      },
+      {
+        "text": "",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(32.0, 178.0, 72.0, 218.0)"
+      },
+      {
+        "text": "设置分享",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(88.0, 176.0, 152.0, 201.0)"
+      },
+      {
+        "text": "导出并导入可分享设置",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(88.0, 201.0, 218.0, 221.0)"
+      },
+      {
+        "text": "",
+        "editable": null,
+        "clickable": true,
+        "bounds": "Rect.fromLTRB(16.0, 234.0, 804.0, 306.0)"
+      },
+      {
+        "text": "",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(32.0, 250.0, 72.0, 290.0)"
+      },
+      {
+        "text": "WebDAV 云备份",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(88.0, 248.0, 203.0, 273.0)"
+      },
+      {
+        "text": "备份与恢复设置和插件",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(88.0, 273.0, 218.0, 293.0)"
+      },
+      {
+        "text": "",
+        "editable": null,
+        "clickable": true,
+        "bounds": "Rect.fromLTRB(16.0, 306.0, 804.0, 378.0)"
+      },
+      {
+        "text": "",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(32.0, 322.0, 72.0, 362.0)"
+      },
+      {
+        "text": "图片保存位置",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(88.0, 320.0, 184.0, 345.0)"
+      },
+      {
+        "text": "已选择目录",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(88.0, 345.0, 153.0, 365.0)"
+      },
+      {
+        "text": "全局下载目录和原版缓存管理尚未完整移植。",
+        "editable": null,
+        "clickable": false,
+        "bounds": "Rect.fromLTRB(16.0, 390.0, 336.0, 415.0)"
+      }
+    ]
+  },
+  "productCorrectionRequired": false,
+  "correctedFixtureExpectation": "original search result -> STORAGE_BACKUP category -> actual row -> original dialog",
+  "initialSceneCausalExplanationCorrect": false,
+  "finalSceneMembershipConclusion": "IMAGE_SAVE_PATH is not a scene target",
+  "rawOriginalSettingsScreenHasFocusControllerConsumer": false,
+  "searchDirectDetailAccepted": false
+}

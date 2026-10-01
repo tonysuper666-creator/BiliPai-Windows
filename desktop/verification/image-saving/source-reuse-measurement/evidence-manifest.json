@@ -1,0 +1,51 @@
+{
+  "schema": "frozen-source-reuse-measurement-main04-v1",
+  "frozen": true,
+  "readOnlyMeasurement": true,
+  "measurement": "measurement.json",
+  "measurementSha256Bytes": "dbfcf9d7c6f7f0717fa7226570b47dfecebd5f712ef5839c73d42a6864279af5",
+  "snapshotManifestSha256Bytes": "7bc5ac8875dadf38510120db6619bd6e748e7f790a47afc11374e14114f25865",
+  "artifactCount": 8,
+  "artifacts": [
+    {
+      "path": "counted-main-source-inventory.json",
+      "sha256Bytes": "e71d79749211e23ca290f37443eef614d9db60a3fbbbf3fae8d1c6e1f493a14b",
+      "byteCount": 462353
+    },
+    {
+      "path": "inputs/build-main04.gradle.kts",
+      "sha256Bytes": "fa5dcec796d9ca01bf153861c34c4c580a0c1fd37691322882c4f84f7f4055f0",
+      "byteCount": 75626
+    },
+    {
+      "path": "inputs/main-source-roots.json",
+      "sha256Bytes": "7d6b6ab4a63fdd113bb80971b295c1f5563d09aaf31b46fafcd082aa0fe537cb",
+      "byteCount": 7132
+    },
+    {
+      "path": "inputs/upstream-sources-main04.json",
+      "sha256Bytes": "3252d9ef11a0cb36a98f0c44b64b799597465785d4954b60da514acb6b860c1d",
+      "byteCount": 231022
+    },
+    {
+      "path": "measure-main04.py",
+      "sha256Bytes": "4e7be0be3c3c6283a028dcc5a8a7f5e0bf97e2e08ee17190c1f2d73ce9a02afb",
+      "byteCount": 12679
+    },
+    {
+      "path": "measurement.json",
+      "sha256Bytes": "dbfcf9d7c6f7f0717fa7226570b47dfecebd5f712ef5839c73d42a6864279af5",
+      "byteCount": 6136
+    },
+    {
+      "path": "original-main-source-inventory.json",
+      "sha256Bytes": "d1e10107681819794af1ab219005c22ea1d423bd0c2eaabff11ade37048f9b6a",
+      "byteCount": 832403
+    },
+    {
+      "path": "reviewed-main04-source.zip",
+      "sha256Bytes": "83e0477886f8be37ee1dd953052c4de0846a3473a008fdec6c1316e935662ebd",
+      "byteCount": 2093691
+    }
+  ]
+}

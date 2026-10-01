@@ -1,0 +1,181 @@
+{
+  "actualProductClassIdentities": [
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicImageAssets",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopDynamicImageAssets.class",
+      "actualClassBytesSha256Bytes": "64e6c42f5b7307629a6a4550c55782982ad24c27955240a54718b9c375b1ce58",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopImageSaveLocations",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopImageSaveLocations.class",
+      "actualClassBytesSha256Bytes": "f6b326691cfc9981ac08e3f6e06bfe39b2ff1e5db37275df289a1b50f1158c87",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopImageSaveLifetime",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopImageSaveLifetime.class",
+      "actualClassBytesSha256Bytes": "b53e1273d5de90b911bea46bf64b4e5d0039a7780c1e4890dee26f0977d30af0",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.settings.DesktopImageSaveLocationPreferences",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/settings/DesktopImageSaveLocationPreferences.class",
+      "actualClassBytesSha256Bytes": "aa53b38ca61d5afef0cba4dc2d82ed536391ec1cf32122a9a50fe1baa01c5321",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.plugins.DesktopPluginStore",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/plugins/DesktopPluginStore.class",
+      "actualClassBytesSha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopSessionStore",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/data/DesktopSessionStore.class",
+      "actualClassBytesSha256Bytes": "2acab352838fef4a25b0b20242385af72eac9c4a2c90b9b80461ae2b16ce9e9c",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopRepository",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/data/DesktopRepository.class",
+      "actualClassBytesSha256Bytes": "9246ada03ac958257d869820bcb2316423db90b9c0fc9e7b60198a95ecaaeb92",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopDynamicCardOperations",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/data/DesktopDynamicCardOperations.class",
+      "actualClassBytesSha256Bytes": "e5e78e32f2fdbae5141a2fbb3f16de1d659b7feb2a8e7359fd7910a936751688",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicSaveTarget",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopDynamicSaveTarget.class",
+      "actualClassBytesSha256Bytes": "bdbce0678845ae6d9b4ecd4c32a9cffb059bab69c49beed60aad0d5325af8eaf",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicMotionPhotoFiles",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.class",
+      "actualClassBytesSha256Bytes": "5fe9128a509cb6becc74065bbd2f4659c50c71c5c52f9dffd609ab2c39a5ae1c",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicMotionPhotoExif",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopDynamicMotionPhotoExif.class",
+      "actualClassBytesSha256Bytes": "36d0d3d69ca0248c3ef9a67cc99160d0701dcaac4c2f1af859294981072f32b7",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicStaticImageCodecKt",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopDynamicStaticImageCodecKt.class",
+      "actualClassBytesSha256Bytes": "7d281a9453668fa001f0ebe9b6ea42cd8c2fdd97a1444b88f3fd3547a7ba0cfd",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.android.purebilibili.feature.dynamic.components.DesktopOriginalStaticGalleryFormatKt",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/android/purebilibili/feature/dynamic/components/DesktopOriginalStaticGalleryFormatKt.class",
+      "actualClassBytesSha256Bytes": "1cee83cf2914b2a476456f10278e83e52aa6de68d24f88b0c643f52af2a63834",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    }
+  ],
+  "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2",
+  "fixtureJarSha256Bytes": "21dcc805a924207e0420ca1aa44609f4fae3d4594ae04f9b456f8c4b6af14f15",
+  "fixtureClassIdentities": [
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/StageGate.class",
+      "classBytesSha256Bytes": "be1ffbab723255a97dd34e4688457418c48bfab749dee4b92592e037f1bbd8cc"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt.class",
+      "classBytesSha256Bytes": "fa6b00e47ce8c8e68bda0d3d699a274b2d39b3c14821120685ffad0707480f87"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1.class",
+      "classBytesSha256Bytes": "f6cacdcec26abf375190cf66d0c70d9e3af0afa96ff5baac7dcb5ee12c3c70e4"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$preferences$1.class",
+      "classBytesSha256Bytes": "a24dd77f88385d8d2ddf12ce0ec9367b36004fa28f01135b0cfa469465e8367a"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$locations$1.class",
+      "classBytesSha256Bytes": "af4271e6dd5a5a66aeba66a2116eb433396d7dd54a5b7e5e972a0e368f6cbcf5"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$locations$2.class",
+      "classBytesSha256Bytes": "a26fcf76e3b98a8053fc51c157f19ceacdc2ad87a51760de4069595d8cb7c8c4"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$invokeSuspend$$inlined$-addInterceptor$1.class",
+      "classBytesSha256Bytes": "c5ab0861141dd6747bf69fe7d5ebd2df1579c8f8195104f3bae308a567c1caa9"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$pending$1.class",
+      "classBytesSha256Bytes": "33be2db62bad36161d238dddc644436e7042fb5d4a6de06f56c6bef8a51fb5f1"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$10$saving$1.class",
+      "classBytesSha256Bytes": "190f2d89797fab901ce60ed1c6e4ba7b56e66cf63952d937988747bb48e46b5f"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$10$1.class",
+      "classBytesSha256Bytes": "73e38b07661547fe0ec7eabec54880a24ac25625c4f844a1632fccfea8f29a96"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$11.class",
+      "classBytesSha256Bytes": "485bf90b9e7bb0daeaafb620c97fb2ec3bcd0fda4275717f05f2310207d78161"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$13.class",
+      "classBytesSha256Bytes": "34d233f8240eb9086936e314c547a0276984d9a8b9350b78f946b3a65de0852d"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$binding$2.class",
+      "classBytesSha256Bytes": "bf06deb8b31fa7ab8fd0f26b4a4e7d51de308cf1ed42318ea973355079530144"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$binding$3.class",
+      "classBytesSha256Bytes": "537113934efc3cda62044828d581e34833b787c853e5975b4f09ccb0f225f1d5"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$custom$1.class",
+      "classBytesSha256Bytes": "d54f11cb4d5e27aab776d869737a274ca5765ec8622b2b00c5b14832bcb34e2d"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$finalFailure$pending$1.class",
+      "classBytesSha256Bytes": "e23ccdba95a698f4c77a7e5ae6d7122b93e22557f28bb04b62ca21493744baac"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$finalFailure$pending$2.class",
+      "classBytesSha256Bytes": "165e8363890b5512f04fec75eab93b77b734c2403de4411538ee5ef89c4089d3"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$finalFailure$2$saving$1.class",
+      "classBytesSha256Bytes": "3e5718bb38beab29902f98cab6ab022f9e59b89e11ecb1c89dcb58c6e25f2f8c"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$finalFailure$2$1.class",
+      "classBytesSha256Bytes": "e199365c470080e8791804fb558d66db1343c56c8bfa6303fdf0e988bb20d4b4"
+    },
+    {
+      "classResource": "com/bilipai/desktop/ui/main04proof/IntegrationFixtureKt$main$1$finalFailure$1.class",
+      "classBytesSha256Bytes": "0e6fa0376747d7422ed87bc946c8a337226549bed21555c8422cbcb7f8911d1f"
+    }
+  ],
+  "productClassIntersection": [],
+  "existingMainProductOverrides": []
+}

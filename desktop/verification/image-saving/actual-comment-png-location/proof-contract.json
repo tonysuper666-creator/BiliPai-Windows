@@ -1,0 +1,59 @@
+{
+  "schema": "actual-main04-comment-png-locations-focused-proof-v1",
+  "passed": true,
+  "actualMainManifest": "desktop/.local/image-save-main-integration/main-product-snapshot-04/manifest.json",
+  "actualMainManifestSha256Bytes": "7bc5ac8875dadf38510120db6619bd6e748e7f790a47afc11374e14114f25865",
+  "orderedRuntimeCpSha256Bytes": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2",
+  "actualRuntimeCpCount": 92,
+  "actualExternalCpCount": 89,
+  "productSourceReviewManifest": "desktop/.local/image-save-source-review/evidence-manifest.json",
+  "productSourceReviewManifestSha256Bytes": "a43c2ca3932bc72b91bde37a427cf0f4f4047b1660ca0e3b99ab0537a8de74ce",
+  "fixtureEntry": "com.bilipai.desktop.ui.commentlocationsproof.CommentLocationsFixtureKt",
+  "declarationOverrides": [],
+  "actualCodeSourcesAndClassBytesVerified": 9,
+  "fixtureAssertions": 28,
+  "cases": [
+    {
+      "name": "custom-directory-success",
+      "observed": "Actual global preference sync and Flow select custom file URI; actual Locations and original PNG renderer/writer produce independently decoded 1080px PNG; default callback never runs."
+    },
+    {
+      "name": "custom-false-default-success",
+      "observed": "Explicit existing write callback returns false for custom attempt; actual Locations invokes default attempt once and actual PNG writer succeeds. Preference remains custom; no stage remains."
+    },
+    {
+      "name": "cancel-waiting-final-store-gate",
+      "observed": "Actual original PNG has completed in private scratch. Reflection obtains existing real SessionStore monitor only to schedule its final commit wait. Only the saving Job is canceled; actual owner and application lifetime stay live. After release the original filename sentinel is unchanged, collision target is absent, no default fallback occurs and scratch is deleted."
+    }
+  ],
+  "independentPillowChecks": 2,
+  "originalGlobalPreferenceKey": "image_save_tree_uri",
+  "actualStoreImplementation": true,
+  "actualWriterImplementation": true,
+  "actualLocationsImplementation": true,
+  "taskSchedulingSeams": [
+    "Default-directory resolver callback returns a task-only existing directory/BiliPai.",
+    "Write callback intentionally returns custom false in case 2; default invokes actual writer.",
+    "Task page lock and actual guest Store captured-owner gate compose the callback; the Root Community Composable is not mounted.",
+    "Reflection accesses only existing SessionStore monitor for deterministic waiting; no product method is replaced."
+  ],
+  "boundaries": {
+    "CommunityOriginalButtonClicked": false,
+    "RootComposeMounted": false,
+    "accountCredentialsUsed": false,
+    "actualKnownFolderCalled": false,
+    "actualDirectoryChooser": false,
+    "HTTP": false,
+    "HWND": false,
+    "EXE": false,
+    "originalAndroidBitmapExecuted": false,
+    "QRMatrixRepeated": false,
+    "MainChanged": false,
+    "sharedGradle": false,
+    "sourceRegistryChanged": false,
+    "userPicturesOrCustomDirectoriesWritten": false
+  },
+  "runHistory": [
+    "proof-01 compile and fresh JVM run both succeeded; no repair or rerun was needed."
+  ]
+}

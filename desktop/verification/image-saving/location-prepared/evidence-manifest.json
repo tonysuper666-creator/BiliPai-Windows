@@ -1,0 +1,198 @@
+{
+  "schema": "task-only-source-review-freeze-v1",
+  "frozen": true,
+  "artifactCount": 36,
+  "artifacts": [
+    {
+      "path": "compile-01/base-methods.txt",
+      "sizeBytes": 330519,
+      "sha256Bytes": "c27b99b3b860030df24a64988603b4a6abab49e4fec7e7609f84737c595d8103"
+    },
+    {
+      "path": "compile-01/candidate-methods.txt",
+      "sizeBytes": 663,
+      "sha256Bytes": "f6cb886a964ff1c6fc0c74c64e19b5d48bcb5fc947286cece1eb7338d182624b"
+    },
+    {
+      "path": "compile-01/candidate-preferences-policy.jar",
+      "sizeBytes": 15069,
+      "sha256Bytes": "3dae9db40e9539eb22a336b30d31c600742e233814fc3c858b7d659417364d6c"
+    },
+    {
+      "path": "compile-01/compile-evidence.json",
+      "sizeBytes": 1222,
+      "sha256Bytes": "2c01b2c2e8869bf47c9d6d75994ade4f75cfe4df33568fa5694f8930ede753c6"
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "sizeBytes": 22949,
+      "sha256Bytes": "20a735150fb2df178b5dd02edf49ec07bfcb04c398b42a1fb029111e7b7f8a9c"
+    },
+    {
+      "path": "compile-01/sources/DesktopImageSaveLocationPreferences.kt",
+      "sizeBytes": 2144,
+      "sha256Bytes": "83df4f8424f22c8ee00d81f3de4a79dc658206c1bf5aa65b683f3ed9a372d370"
+    },
+    {
+      "path": "compile-01/sources/DesktopOriginalImageSaveLocationPolicy.kt",
+      "sizeBytes": 704,
+      "sha256Bytes": "4a7892023f8c89913f3fe11b5d4ba7ec2bd8283438d710474f64d5a9361a41e2"
+    },
+    {
+      "path": "compile-preferences.py",
+      "sizeBytes": 5128,
+      "sha256Bytes": "64c111c6f60fed0adf9ece4edf09dd7cbc8af388cf24f90b2115eef75ee547e8"
+    },
+    {
+      "path": "fragments/DynamicSaveImage-149-184.txt",
+      "sizeBytes": 1458,
+      "sha256Bytes": "7b53e06b3082882ed8bd26651a27afc1afc24d90f0da1d203bddf5142110b0aa"
+    },
+    {
+      "path": "fragments/ImagePreviewDialog-2034-2194.txt",
+      "sizeBytes": 7162,
+      "sha256Bytes": "4649db739546ec30b69f7367358e3f1eb3ccdfcf825c6a9615f7eedaf364d06d"
+    },
+    {
+      "path": "fragments/ImagePreviewDialog-438-515.txt",
+      "sizeBytes": 3000,
+      "sha256Bytes": "2774549557a574e319529a1d5a285ca5d0345fa5a9357e328571e2a7a9c926b8"
+    },
+    {
+      "path": "fragments/ImageSaveLocationPolicy-1-93.txt",
+      "sizeBytes": 3144,
+      "sha256Bytes": "320d756b9808f6be10ca5f54697a26f05739f95cfbe2e7c554ff078fba864e3f"
+    },
+    {
+      "path": "fragments/ReplyCommentImageSaver-183-225.txt",
+      "sizeBytes": 1434,
+      "sha256Bytes": "44fab688a4a46f1d2f8212c4fb457586a275ebed1d1fb1666d6a230e06a5e938"
+    },
+    {
+      "path": "fragments/SettingsManager-6681-6683.txt",
+      "sizeBytes": 256,
+      "sha256Bytes": "74c8fda064d25464bbd17fb442164c097b68394bb97c71343da7c01e27a20cf5"
+    },
+    {
+      "path": "fragments/SettingsManager-6737-6755.txt",
+      "sizeBytes": 748,
+      "sha256Bytes": "0534187e48505e08171ea982c333809b9f69398f280201a5c7228b5b72343e38"
+    },
+    {
+      "path": "fragments/SettingsScreen-292-306.txt",
+      "sizeBytes": 631,
+      "sha256Bytes": "6e7e33fb3dedc1b9fd6bc0579d63bfd136b9177dfbb5836a2f5777e40802cbcc"
+    },
+    {
+      "path": "fragments/SettingsScreen-582-624.txt",
+      "sizeBytes": 2160,
+      "sha256Bytes": "8e1d97d678e8dddad370d0f0b160de93b5e8fc689db2cd206ba3a56901620ed5"
+    },
+    {
+      "path": "freeze-contract.py",
+      "sizeBytes": 20924,
+      "sha256Bytes": "5147663df406897e31fb32ee3c13dab465cae6655611c429855eb709f211cc39"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImageSaveLocationPolicy.kt",
+      "sizeBytes": 704,
+      "sha256Bytes": "4a7892023f8c89913f3fe11b5d4ba7ec2bd8283438d710474f64d5a9361a41e2"
+    },
+    {
+      "path": "original/DynamicSaveImage.kt",
+      "sizeBytes": 7094,
+      "sha256Bytes": "856eded0a6b95c88be311dd8a80d1652e4a029c6bd65671319705ff86706799a"
+    },
+    {
+      "path": "original/ImagePreviewDialog.kt",
+      "sizeBytes": 128708,
+      "sha256Bytes": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0"
+    },
+    {
+      "path": "original/ImageSaveLocationPolicy.kt",
+      "sizeBytes": 3144,
+      "sha256Bytes": "320d756b9808f6be10ca5f54697a26f05739f95cfbe2e7c554ff078fba864e3f"
+    },
+    {
+      "path": "original/ReplyCommentImageSaver.kt",
+      "sizeBytes": 7708,
+      "sha256Bytes": "2c7ab6898c5bfe9b334ba2b71393fe69c0dbe77050b964e41a3892245119f19d"
+    },
+    {
+      "path": "original/SettingsManager.kt",
+      "sizeBytes": 393960,
+      "sha256Bytes": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010"
+    },
+    {
+      "path": "original/SettingsScreen.kt",
+      "sizeBytes": 59521,
+      "sha256Bytes": "300346d94ff55caf2a974c87602c9e067f8ed875a0cb90b68e41643999befaf1"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSaveLocationPreferences.kt",
+      "sizeBytes": 2144,
+      "sha256Bytes": "83df4f8424f22c8ee00d81f3de4a79dc658206c1bf5aa65b683f3ed9a372d370"
+    },
+    {
+      "path": "root-installation-recipe.txt",
+      "sizeBytes": 1974,
+      "sha256Bytes": "bedd5d6e93365096be177686335c1e62040fe463c81500ec40b6724966f9e19b"
+    },
+    {
+      "path": "sdk-fragments/KnownFolders.h-146-154.txt",
+      "sizeBytes": 555,
+      "sha256Bytes": "9c1049696a4f0822dc8b4023e2768bb0a3316d9be526e368a02ae393c510773d"
+    },
+    {
+      "path": "sdk-fragments/ShlObj_core.h-1017-1023.txt",
+      "sizeBytes": 408,
+      "sha256Bytes": "528216f422947c4a40c82100b6c7dca1707d3e47d2cb65857d1fdd0569b272a0"
+    },
+    {
+      "path": "sdk-fragments/ShlObj_core.h-1043-1049.txt",
+      "sizeBytes": 417,
+      "sha256Bytes": "5d20a48926ab4ca6fc5ebcedbd296032493d15d53cbd4846ebb2e7e825ef4863"
+    },
+    {
+      "path": "sdk-fragments/ShlObj_core.h-946-949.txt",
+      "sizeBytes": 78,
+      "sha256Bytes": "4b958825e78b614fb799844f55983178adc2e7539eee23fda55f9f5cb4a8b6ec"
+    },
+    {
+      "path": "source-contract-review.json",
+      "sizeBytes": 3599,
+      "sha256Bytes": "e46056970b904d75ad7df16c686b8339d48fc3e386f7ac2641b92635a82c3d64"
+    },
+    {
+      "path": "source-inventory.json",
+      "sizeBytes": 4346,
+      "sha256Bytes": "0b89371d6b7bad1852aaa16b2a5f05733561d61d2d742de3bbbde0a6267ad24d"
+    },
+    {
+      "path": "static-save-location-contract.txt",
+      "sizeBytes": 8989,
+      "sha256Bytes": "af382616d3d5abafeff230d113c718ecfad4b7a75fff90b195286be01804fa87"
+    },
+    {
+      "path": "windows-sdk-source-evidence.json",
+      "sizeBytes": 1627,
+      "sha256Bytes": "d77202ea26fe3d41a6df18a3d997126b6ebd08602e79442f54a2c61e171839a4"
+    }
+  ],
+  "scope": "Original static-image save / persistent directory source contract plus independently compiled same-Store one-key facade. No codec/picker/KnownFolder integration.",
+  "compileEvidence": "compile-01/compile-evidence.json",
+  "sourceContractReview": "source-contract-review.json",
+  "originalTag": "v0.2.3-alpha.9",
+  "originalCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "MainChanged": false,
+  "oldFreezeChanged": false,
+  "sharedGradle": false,
+  "sourceRegistryChanged": false,
+  "HTTP": false,
+  "HWND": false
+}

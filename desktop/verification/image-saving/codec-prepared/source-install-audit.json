@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "productionProducer": "prepared/desktop/tools/extract-upstream-dynamic-static-image-codec.py",
+  "productionProducerSha256Bytes": "b0af5d6a415981fd783c4acb5c92099e2e35d3eea4adbb48084a32137893de16",
+  "productionEmittedSelectedFiles": 1,
+  "productionByteEqualToCompiledPure": true,
+  "platformByteEqualToCompiledSource": true,
+  "originalTag": "v0.2.3-alpha.9",
+  "originalCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "originalSourcePath": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+  "originalSourceSha256Lf": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+  "selectedTokenFragmentAudit": "source-extraction-audit.json",
+  "productionPurePath": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalStaticGalleryFormat.kt",
+  "productionPureSha256Bytes": "4aad65c3264e4f2f7b8acefb9df8f5cfb3e840d0090926ab1ec7ad94ce2e0ce3",
+  "platformSourceSha256Bytes": "347897e987f4a5dac782e9e6c420079c90d93fdec1179395ce4cfb7af4bf5b0d",
+  "priorProof01ProductionAndFixtureBytesUnchanged": true,
+  "proof01HiddenRgbAssertionFailureRetained": true,
+  "declaredAdapters": [
+    "Selected predicates/local format/naming assignments -> unique internal function seams and return statements",
+    "Android Coil Bitmap decode/compress -> explicit Windows Skia stage encoder",
+    "Required caller source/decode budgets + checkpoint, not another owner or store"
+  ],
+  "actualRuntimeNativeLibraryPins": [
+    {
+      "path": "proof-02/private-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/icudtl.dat",
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "sourceJarPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.skiko\\skiko-awt-runtime-windows-x64\\0.150.1\\f709996c593fdd677168a054d09f7dcd91b6b51e\\skiko-awt-runtime-windows-x64-0.150.1.jar",
+      "sourceJarSha256Bytes": "22a5e52c9fb4278f998785c5029d96f007c8eb8944f6eb0d3f4b06fb3775edcf",
+      "originalJarEntry": "icudtl.dat",
+      "exactEntryBytes": true
+    },
+    {
+      "path": "proof-02/private-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/skiko-windows-x64.dll",
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "sourceJarPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.skiko\\skiko-awt-runtime-windows-x64\\0.150.1\\f709996c593fdd677168a054d09f7dcd91b6b51e\\skiko-awt-runtime-windows-x64-0.150.1.jar",
+      "sourceJarSha256Bytes": "22a5e52c9fb4278f998785c5029d96f007c8eb8944f6eb0d3f4b06fb3775edcf",
+      "originalJarEntry": "skiko-windows-x64.dll",
+      "exactEntryBytes": true
+    }
+  ],
+  "classFqnIntersection": [],
+  "packageMethodAudits": [
+    {
+      "package": "com.bilipai.desktop.ui",
+      "candidateMethods": 1,
+      "actualMethods": 166,
+      "intersection": []
+    },
+    {
+      "package": "com.android.purebilibili.feature.dynamic.components",
+      "candidateMethods": 4,
+      "actualMethods": 168,
+      "intersection": []
+    }
+  ],
+  "noMainOverrides": true,
+  "noAddedDependencies": true,
+  "MainChanged": false,
+  "sourceRegistryChanged": false,
+  "sharedGradle": false,
+  "HTTP": false,
+  "HWND": false
+}

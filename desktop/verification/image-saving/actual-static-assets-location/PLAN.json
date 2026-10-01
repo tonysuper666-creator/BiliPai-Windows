@@ -1,0 +1,38 @@
+{
+  "status": "completed actual immutable Main04 fixture-only integration: seven cases, 54 runtime and 15 independent readback assertions",
+  "scope": "Five new static-save integration contracts plus requested Motion Photo fallback and Locations Boolean-result contract; no old135 rerun",
+  "productOverrides": [],
+  "actualMainRequired": [
+    "DesktopDynamicImageAssets",
+    "DesktopDynamicStaticImageCodecKt",
+    "DesktopImageSaveLocations",
+    "DesktopImageSaveLocationPreferences",
+    "DesktopPluginStore",
+    "DesktopSessionStore",
+    "DesktopRepository",
+    "DesktopDynamicCardOperations",
+    "DesktopDynamicSaveTarget"
+  ],
+  "reuseReadOnly": {
+    "loopbackAndActualOwner": "desktop/.local/dynamic-batch-save-parity/BatchFixture.kt",
+    "realStoreMonitorAndEofSchedulingGate": "desktop/.local/dynamic-motion-photo-download-owner-parity/DownloadFixture.kt",
+    "realMediaGenerationAndPillowReadback": "desktop/.local/dynamic-detail-reply-parity/detail-container-next/static-save-codec-next/compile-focused-proof.py",
+    "preferenceActionApi": "desktop/.local/settings-image-save-path-parity/SettingsActionFixture.kt"
+  },
+  "cases": [
+    "actual stored custom URI directs successful static PNG/JPEG and raw GIF output into custom task directory",
+    "ordinary custom output/commit failure after completed codec stage falls back to default task directory by reopening the same owned downloaded input; one HTTP GET",
+    "batch successful item, middle decode failure, successful final item attempts all three and returns false",
+    "real cancellation while custom final commit is blocked on actual SessionStore monitor propagates immediately, creates no default fallback or later batch request, and drains owned input/stage scratch",
+    "fixture-only jar has zero product class overlap; all product codeSources equal immutable actual Main04",
+    "actual Motion Photo custom final file failure falls back using two original owned input files and only two HTTP requests; JPEG, exact MP4 tail and original XMP offset independently readable",
+    "actual Locations custom write callback returning normal false attempts default and returns the later true result"
+  ],
+  "freshInputMeaning": "Fresh file.inputStream over one owned download source; not a second HTTP request",
+  "paths": "All source, logs, media, settings, private homes, native caches and output only under this new lane",
+  "defaultDirectory": "Inject only the existing Result<Path> path-resolution seam with a task-owned default directory; do not query/write user Pictures",
+  "MainWrites": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "outsideSocket": false
+}

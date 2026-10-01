@@ -1,0 +1,70 @@
+SOURCE-ONLY WINDOWS KNOWN-FOLDER DEFAULT IMAGE DIRECTORY HANDOFF
+
+Production target (NEW, not installed):
+desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt
+Prepared payload is the identically named task prepared file.
+
+Exact Kotlin call:
+  DesktopWindowsImageSaveDirectory.resolveDefault(): Result<java.nio.file.Path>
+The object and its platform helpers are internal. The simple method requires no
+constructor, store, chooser, cache, coroutine scope or additional dependency.
+It returns current Windows FOLDERID_Pictures.resolve("BiliPai"); it does not
+normalize away OS redirection, create directories, check writability or save bytes.
+It is a synchronous Shell query which may be slow for redirected network folders.
+Root should invoke it in its already owned IO task, then recheck coroutine/epoch/
+page ownership before accepting the result. It does not own or retire that task.
+
+ROOT CONNECTION, NOT AN INSTALLED CONSUMER:
+Use only after the authoritative original save-location decision selects the
+default destination. Keep the single existing global settings store and the
+single existing chooser. A stored Windows custom-directory URI, Android content
+URI compatibility, chooser cancellation and custom-directory failure policy are
+separate boundaries owned by the caller; this default resolver never deletes or
+changes a saved value and never treats chooser cancellation as a default save.
+When this Result is failure, use the existing explicit chooser/error behavior.
+Do not fall back to USERPROFILE/Pictures or PicturesLibrary. If Root later needs
+to create BiliPai, it must perform that write under the existing session commit
+and path/reparse guards; this proof did not create it or establish write access.
+
+Same-store bridge reference, do not duplicate:
+desktop/.local/dynamic-detail-reply-parity/detail-container-next/static-save-location-next
+evidence-manifest.json SHA256:
+34a233ab8d023a65e1e1f4851dc192f66f2f8728fb4fbc865fe332fd55780cbf
+Prepared DesktopImageSaveLocationPreferences ctor:
+  (store: DesktopPluginStore, withOwnedSettingsCommit: ((() -> Unit) -> Boolean))
+Flow/sync getter and suspend nullable setter use original image_save_tree_uri only.
+That bridge remains separately frozen; this lane has not edited or recompiled it.
+Original resolveDefaultImageMediaStoreRelativePath() remains Pictures/BiliPai.
+This Windows path mapping is a platform adapter, not Android MediaStore support.
+
+PROVEN:
+Task-only Kotlin 2.4.0/JVM21 compilation. Runtime is actual Main03's existing
+JNA 5.17.0 and Kotlin stdlib 2.4.10; no dependency added. Full immutable 92-entry
+Main03 CP verified before/after, and candidate classes overlap product classes 0.
+12 fake-ABI cases: exact little-endian GUID, flags0/current NULL token, Unicode
+redirected-looking path, HRESULT errors, invalid/null output, cleanup on failure,
+COM balance and caller-owned apartment preservation. These are fake boundary
+tests, not proof that a real machine was redirected.
+4 actual Windows11 amd64 Shell32/Ole32 calls: fresh/repeated COM query, prior MTA
+S_FALSE, prior STA RPC_E_CHANGED_MODE. Each real query S_OK and returned allocation
+released once; caller-owned COM reference preserved. Actual result:
+C:\Users\TONYS\Pictures\BiliPai
+No HWND, Robot, account request, file save or user-directory creation.
+JNA's own temporary extraction is confined to this task's task-native-temp.
+
+PENDING / DO NOT CLAIM:
+No Main integration, persistent save-location UI, chooser interaction, default
+folder creation/write permission, encoder, batch-save, MediaStore or Photos app
+integration. Real unavailable-Pictures/OneDrive/network-redirection machines and
+32-bit Windows were not tested; unavailable/invalid query is a Result failure.
+Root may integrate this pure seam without claiming those consumers are complete.
+
+Historical fixture correction:
+Attempt00 stopped before compile/native calls because the script assumed runtime
+stdlib2.4.0; Main03 exports2.4.10. Original script/log remain. Corrected runner
+selects and pins the actual sole runtime artifact; compiler remains2.4.0.
+
+No Main/source-registry/Gradle/Shell files are part of the install payload. Root
+alone may add the new platform file; existing JNA core declaration already exists.
+Candidate JAR and JNA extracted DLL are evidence-only and must not be installed
+or committed. Raw source/report/docs/JSON/log proof can be archived separately.

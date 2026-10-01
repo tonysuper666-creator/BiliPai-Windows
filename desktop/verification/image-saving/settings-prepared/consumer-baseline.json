@@ -1,0 +1,9 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+  "baseSha256BytesAtAudit": "ac176bad668afb31864d4fcdb527a8e1946a89629f5ca502ccb927402331cfd2",
+  "baseLfSha256": "ac176bad668afb31864d4fcdb527a8e1946a89629f5ca502ccb927402331cfd2",
+  "desiredLfSha256": "8b3a3c3c4799799574b8f7a745b1eb90a7a2fba3b57a1f61366e7112b78eb94b",
+  "patchSha256Bytes": "b51684f8d16330db7848e944db2eb1e4f0f2224855f32156ce3454fd0e738ac5",
+  "fullFileReplacementProvided": false,
+  "requiresRootShellManualHook": true
+}

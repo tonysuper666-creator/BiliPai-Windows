@@ -1,0 +1,58 @@
+[
+  {
+    "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\KnownFolders.h",
+    "fullFileSha256Bytes": "c0b5033fa5d65c2d27213ea6cbd2ad13a0cdb2091406dae366d2a4fafa8afcd4",
+    "startLine": 152,
+    "endLine": 153,
+    "declaration": "// {33E28130-4E1E-4676-835A-98395C3BC3BB}\nDEFINE_KNOWN_FOLDER(FOLDERID_Pictures,            0x33E28130, 0x4E1E, 0x4676, 0x83, 0x5A, 0x98, 0x39, 0x5C, 0x3B, 0xC3, 0xBB);"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ShlObj_core.h",
+    "fullFileSha256Bytes": "9eb3a933681921c03766dd57ca8b7ab54fcb9f28f1d432eb0e546039f61d943d",
+    "startLine": 944,
+    "endLine": 948,
+    "declaration": "// flags for Known Folder APIs\n\ntypedef enum\n{\n    KF_FLAG_DEFAULT         = 0x00000000,"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ShlObj_core.h",
+    "fullFileSha256Bytes": "9eb3a933681921c03766dd57ca8b7ab54fcb9f28f1d432eb0e546039f61d943d",
+    "startLine": 1008,
+    "endLine": 1021,
+    "declaration": "\n    // Get file system based IDList if available. If the flag is not specified the Known Folder API\n    // will try to return aliased IDList by default. Example for FOLDERID_Documents -\n    // Aliased - [desktop]\\[user]\\[Documents] - exact location is determined by shell namespace layout and might change\n    // Non aliased - [desktop]\\[computer]\\[disk_c]\\[users]\\[user]\\[Documents] - location is determined by folder location in the file system\n    KF_FLAG_NO_ALIAS        = 0x00001000,\n\n    // Initialize the folder with desktop.ini settings\n    // If folder can not be initialized then function will return failure and no folder path will be returned\n    // If folder is located on the network the function may take long time to execute\n    KF_FLAG_INIT            = 0x00000800,\n\n    // Get the default path, will also verify folder existence unless KF_FLAG_DONT_VERIFY is also specified\n    KF_FLAG_DEFAULT_PATH    = 0x00000400,"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ShlObj_core.h",
+    "fullFileSha256Bytes": "9eb3a933681921c03766dd57ca8b7ab54fcb9f28f1d432eb0e546039f61d943d",
+    "startLine": 1046,
+    "endLine": 1049,
+    "declaration": "STDAPI SHGetKnownFolderPath(_In_ REFKNOWNFOLDERID rfid,\n                            _In_ DWORD /* KNOWN_FOLDER_FLAG */ dwFlags,\n                            _In_opt_ HANDLE hToken,\n                            _Outptr_ PWSTR *ppszPath); // free *ppszPath with CoTaskMemFree"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\combaseapi.h",
+    "fullFileSha256Bytes": "4b33bdf8cad7d07a0bd2945b4b96436b21021c46eee900881d2531616ba4df5f",
+    "startLine": 408,
+    "endLine": 411,
+    "declaration": "WINOLEAPI_(void)\nCoUninitialize(\n    void\n    );"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\combaseapi.h",
+    "fullFileSha256Bytes": "4b33bdf8cad7d07a0bd2945b4b96436b21021c46eee900881d2531616ba4df5f",
+    "startLine": 433,
+    "endLine": 437,
+    "declaration": "_Check_return_ WINOLEAPI\nCoInitializeEx(\n    _In_opt_ LPVOID pvReserved,\n    _In_ DWORD dwCoInit\n    );"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\combaseapi.h",
+    "fullFileSha256Bytes": "4b33bdf8cad7d07a0bd2945b4b96436b21021c46eee900881d2531616ba4df5f",
+    "startLine": 1348,
+    "endLine": 1351,
+    "declaration": "WINOLEAPI_(void)\nCoTaskMemFree(\n    _Frees_ptr_opt_ LPVOID pv\n    );"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\guiddef.h",
+    "fullFileSha256Bytes": "0c08463fbc5a23a8862e57699e2f30dd14cd3db4a40903e4fca9392a57942dae",
+    "startLine": 22,
+    "endLine": 27,
+    "declaration": "typedef struct _GUID {\n    unsigned long  Data1;\n    unsigned short Data2;\n    unsigned short Data3;\n    unsigned char  Data4[ 8 ];\n} GUID;"
+  }
+]

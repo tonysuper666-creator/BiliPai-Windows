@@ -1,0 +1,39 @@
+{
+  "installPayload": [
+    {
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt",
+      "targetStatus": "new",
+      "sha256Bytes": "0ad0fcbd85e20264a827e7be28273eb9fc756a5cf2de8a8deb19449a6dda8fe9",
+      "origin": "Windows platform adapter using official SDK ABI"
+    }
+  ],
+  "existingProductReferencesReadOnly": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/WindowsMediaSession.kt",
+      "sha256BytesAtInventory": "9cacb096304b467a90e6651e7ac14b1598d347b4957c2c35b6a4c7449e7027a9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256BytesAtInventory": "5ed7475e399b768f1090e3f4a22d15f26c45c6debdb336422a0bfb774f02c868"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256BytesAtInventory": "3df5ab891a05892654b38b451c959270fd7d10fb9d8c3462dc2c74061b6b3531"
+    }
+  ],
+  "existingKnownFolderImplementationFound": false,
+  "existingJnaCore": {
+    "version": "5.17.0",
+    "sha256Bytes": "b3a9408e7c51e08ef0e3bfcc08f443f6ec0f6191ba8cd7c18d53d2b22e5bdbc0"
+  },
+  "sameStoreBridgeReference": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\static-save-location-next\\evidence-manifest.json",
+    "sha256Bytes": "34a233ab8d023a65e1e1f4851dc192f66f2f8728fb4fbc865fe332fd55780cbf",
+    "frozenArtifactsIndependentlyVerified": 36,
+    "ownedHere": false
+  },
+  "sourceRegistryDelta": "No original identity addition by this platform file. The separately frozen original image-location policy/SettingsManager identities remain owned by the static bridge producer.",
+  "dependenciesAdded": [],
+  "mainConsumerPatch": null
+}

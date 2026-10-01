@@ -1,0 +1,43 @@
+    if (showImageSavePathDialog) {
+        com.android.purebilibili.core.ui.AppAlertDialog(
+            onDismissRequest = { showImageSavePathDialog = false },
+            title = { AppText("图片保存位置", color = MaterialTheme.colorScheme.onSurface) },
+            text = {
+                Column {
+                    AppText(
+                        "默认保存到系统相册的 BiliPai 文件夹。",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    AppText(
+                        "可通过系统文件夹授权选择动态图片、头像和评论图片的保存目录。",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = com.android.purebilibili.core.theme.iOSOrange
+                    )
+                    if (!imageSaveTreeUri.isNullOrBlank()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        AppText(
+                            "当前图片目录：已选择",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                com.android.purebilibili.core.ui.AppDialogAction(onClick = {
+                    showImageSavePathDialog = false
+                    imageSaveFolderPicker.launch(null)
+                }) { AppText("选择图片目录") }
+            },
+            dismissButton = {
+                com.android.purebilibili.core.ui.AppDialogAction(onClick = {
+                    scope.launch {
+                        SettingsManager.setImageSaveTreeUri(context, null)
+                    }
+                    showImageSavePathDialog = false
+                    Toast.makeText(context, "已恢复默认图片保存位置", Toast.LENGTH_SHORT).show()
+                }) { AppText("恢复默认") }
+            }
+        )

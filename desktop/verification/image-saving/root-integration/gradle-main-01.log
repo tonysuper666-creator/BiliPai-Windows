@@ -1,0 +1,13 @@
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+The specified initialization script 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\desktop\.local\dynamic-media-main-integration\record-runtime.init.gradle' does not exist.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 632ms

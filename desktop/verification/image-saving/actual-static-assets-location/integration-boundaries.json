@@ -1,0 +1,22 @@
+{
+  "actualMain04IntegratedRuntime": true,
+  "fixtureOnlyJar": true,
+  "productOverrides": [],
+  "ownedDownloadedSourcesAndImageMotionStagesDrained": true,
+  "customFailureSentinelTargetsRetainedUnchanged": true,
+  "staticFallbackHTTPRequests": 1,
+  "motionFallbackHTTPRequests": 2,
+  "freshInputMeaning": "Each destination attempt reopens the same downloaded owned file; no second download and no reused exhausted InputStream.",
+  "motionPreferencesScope": "Only composed Motion Photo image destination uses remembered/default image location; this fixture does not alter or exercise standalone MP4 Save As.",
+  "standaloneVideoDestinationChangedByFixture": false,
+  "defaultDirectorySeam": "Actual product Locations constructor resolver supplied only a task-owned default-base/BiliPai Path result.",
+  "stageSchedulingSeam": "Fixture stillOwned callback delegates actual Ops ownership and briefly gates only after a complete real encoded stage is observed.",
+  "finalFailureInjection": "Actual SessionStore monitor blocks final commit; custom already-selected filename is occupied by fixture sentinel without moving directory or corrupting stage.",
+  "cancellationInjection": "Cancel actual save Job while blocked on actual SessionStore final admission; no default fallback or later batch HTTP item.",
+  "sharedGradle": false,
+  "MainWrites": false,
+  "HWND": false,
+  "old135MatrixRerun": false,
+  "outsideSocket": false,
+  "AndroidBitmapParityProven": false
+}

@@ -6,13 +6,15 @@
 
 来源以 `upstream-sources.json` 的 SHA-256 为准：文本规范 LF，原 PNG 等二进制按原始字节核验。构建从原始文件复制纯 Kotlin 源，或生成选定原算法；Windows 负责网络会话、文件路径、libmpv、FFmpeg 和桌面窗口等平台部分。`tools/source-parity-report.py` 会逐一核验来源摘要，并检查全部生成 Retrofit 接口是否与上游逐字一致，还会列出每个上游 feature 目录尚未采用的 Policy。此报告是来源审计，不是完成百分比。
 
+Main04 的保守文件采用覆盖率为 38.53%：固定 alpha.9 的 1,534 份 Kotlin/Java 生产源码中，389 份整文件直接复制、202 份提取部分原码，共 591 份；31 份平台重写或仅参考条目另列，210 个资源也另计。实际编译源文件的复制/生成目录占 69.93% 物理行，但其中含适配与支持代码，不能当作逐行原样复用率；逐段原码行数比例尚未建立。来源与统计口径见 `verification/image-saving/source-reuse-measurement` 及 Root 的 `root-integration/root-runtime-review.json`，这些比例均不是功能完成率。
+
 | 范围 | 原源码锚点 | 当前 Windows 状态 | 尚需对齐与验证 |
 | --- | --- | --- | --- |
 | 网络与数据模型 | `core/network/ApiClient.kt`, `data/model/response/*` | 全部 Retrofit 接口和响应模型纳入构建，实际使用原 WBI/播放请求策略；原应用 HTTP 代理选择、启动初始化和媒体直连已接实际客户端 | 请求到行为的完整对应；客户端会话、重试与平台能力验收；真实代理 TLS 与打包首次请求验收 |
 | 推荐、热门、分区与列表 | `feature/home`, `feature/list` | 原推荐来源/分页、分区/排行/必看/每周模式与筛选已接；实际列表状态保留，原负反馈与插件过滤已整合并离线测试 | 原首页四键/列数与封面比例已接；完整ElegantVideoCard、单列/Story/缩放/其余布局设置、刷新总线、真人账号推荐与服务端负反馈验收 |
 | 搜索 | `feature/search`, 原 `SearchType` | 九类搜索、热搜/建议、原历史/隐私/筛选策略和结果路由已实现并离线测试；无痕读取唯一实际全局隐私文件，恢复前拒绝旧代际写入；默认词开关控制占位与空输入提交，推荐词开关控制发现个性化并刷新，输入联想保留原独立语义；原四种搜索 UID 类型按同一全局黑名单过滤 | 真人账号结果与完整窗口交互验收 |
 | 动态 | `feature/dynamic`, `DynamicRepository` | 原增量刷新/分页/栏目、共享缓存与屏蔽存储、完整原版卡片及编辑器已采用；原详情布局和楼中楼容器接同一回复会话。实际挂载详情验证路由、发送、删除、旧请求取消；同值评论确认不会再被请求更早的详情覆盖，其他新详情字段正常更新 | 真人账号写操作、续页同值计数窗口、液态玻璃、完整 Shell 与新 EXE 回归 |
-| 动态图片与评论导出 | `ImagePreviewDialog.kt`, `GalleryVisualMediaContracts.kt`, `ReplyCommentImageSaver.kt` | 原选图顺序/去重/数量规则及实况照片 JPEG/XMP 封装已接；匿名流式下载、实际会话提交与取消保护、EXIF、评论 PNG 完整二维码在实际 Main03 的 24 组隔离用例通过。源码及原 XMP 三项重复属性的明确修复见 `verification/dynamic-media` | 持久保存目录、普通图片原 PNG/JPEG 编码、真实窗口选择器、实况照片原生播放/变换、Windows Photos 识别、系统分享及打包运行 |
+| 动态图片与评论导出 | `ImagePreviewDialog.kt`, `GalleryVisualMediaContracts.kt`, `ReplyCommentImageSaver.kt`, 原图片目录设置 | 原选图规则、实况照片 JPEG/XMP、匿名下载/会话提交、EXIF 与评论完整二维码在 Main03 隔离验证通过；Main04 接入同一原持久目录键、原设置行/双按钮弹窗、Windows Pictures 默认回退、GIF/WebP 原字节和 PNG/JPEG95 编码、逐项批量保存，记录见 `verification/image-saving` | 头像预览/保存、动态 bitmap 图片导出入口、视频默认 Movies 目录、真实窗口选择器、Android 解码逐像素等价、实况照片原生播放/变换、Windows Photos 识别、系统分享及打包运行 |
 | 私信与通知 | `feature/message`, `MessageSendPayloadFactory.kt` | 回复/@/赞/系统/会话历史；发送/图片/撤回/已读已接并单测 | 富内容跳转、账号验证与未知消息类型展示 |
 | UP 空间与合集 | `feature/space`, `SpaceApi` | 原聚合主页/头图、服务端一级与投稿二级栏目；投稿筛选/四种排序/搜索/网格、收藏子页、专栏/图文、充电/舰队、投币/赞过/音频/追番/课程及真实合集ID已接；续播CID、原队列与主页SID点击通过离线验证 | 原粉丝专用网页的桌面内置承载、签名编辑/关注分组/特别关注及完整菜单、动态搜索和全部窗口/账号验收 |
 | 历史、收藏、稍后再看、点赞 | `feature/list`, `feature/watchlater` | 云端原业务类型列表、收藏夹管理；本地续播迁移测试通过；原历史刷新总线与详情页抑制策略接入实际心跳及列表 | PGC/直播/文章/课程与合集路由及文章阅读历史上报已接，历史/隐私相关 31 项定向测试通过；删除/批量/播放队列与账号验收 |

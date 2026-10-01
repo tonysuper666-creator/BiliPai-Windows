@@ -30,6 +30,9 @@ internal fun DesktopSettingsTree(
     backupContent: @Composable (target: SettingsSearchTarget, onDismiss: () -> Unit) -> Unit,
     blockedListContent: @Composable () -> Unit,
     systemContent: @Composable () -> Unit,
+    imageSavePathContent: @Composable (openInitially: Boolean) -> Unit = {
+        AppText("图片保存位置设置仍在移植中。", Modifier.padding(12.dp))
+    },
 ) {
     val navigation by navigator.state.collectAsState()
     val page = navigation.current
@@ -89,7 +92,8 @@ internal fun DesktopSettingsTree(
                                         SettingsStorageBackupCategoryEntrySection(
                                             onSettingsShareClick = { navigator.openDetail(SettingsSearchTarget.SETTINGS_SHARE, null) },
                                             onWebDavBackupClick = { navigator.openDetail(SettingsSearchTarget.WEBDAV_BACKUP, null) })
-                                        AppText("全局下载目录、图片目录和原版缓存管理尚未完整移植。", Modifier.padding(vertical = 12.dp))
+                                        imageSavePathContent(false)
+                                        AppText("全局下载目录和原版缓存管理尚未完整移植。", Modifier.padding(vertical = 12.dp))
                                     }
                                     SettingsRootCategory.SYSTEM_ABOUT -> systemContent()
                                     else -> AppText("该分类的原版设置和消费行为仍在移植中。", Modifier.padding(16.dp))
@@ -114,6 +118,7 @@ internal fun DesktopSettingsTree(
                                     SettingsSearchTarget.PERMISSION -> AppText("Windows 权限状态与检查尚未接入，当前不能确认权限是否可用。", Modifier.padding(12.dp))
                                     SettingsSearchTarget.MESSAGE_NOTIFICATION -> AppText("原版消息通知调度和 Windows 通知权限尚未接入。", Modifier.padding(12.dp))
                                     SettingsSearchTarget.BLOCKED_LIST -> blockedListContent()
+                                    SettingsSearchTarget.IMAGE_SAVE_PATH -> imageSavePathContent(true)
                                     else -> AppText("该原版设置页面仍在移植中。", Modifier.padding(12.dp))
                                 }
                             }

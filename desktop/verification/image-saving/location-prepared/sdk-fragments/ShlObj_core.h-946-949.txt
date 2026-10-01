@@ -1,0 +1,4 @@
+946: typedef enum
+947: {
+948:     KF_FLAG_DEFAULT         = 0x00000000,
+949: 

@@ -1,0 +1,38 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "sha256BytesAtAudit": "a597bde02f187c2ef0236cc29f09c222f28f1b54535b44b45a0e9e371dc61141"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+    "sha256BytesAtAudit": "ac176bad668afb31864d4fcdb527a8e1946a89629f5ca502ccb927402331cfd2"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsNavigator.kt",
+    "sha256BytesAtAudit": "befd7c8f43a4d531b3519e26947b0f6b7d85eaf303cc022a5f9436072f114b93"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+    "sha256BytesAtAudit": "dc71e802b410b1ed1affdd1e98b15c743a079db96c945fa66eafb4c9260ba8f9"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+    "sha256BytesAtAudit": "4ba31d8de6566acfc372ab4bcc3c6a3e7b36089f374305f858d77799e56e7827"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+    "sha256BytesAtAudit": "3df5ab891a05892654b38b451c959270fd7d10fb9d8c3462dc2c74061b6b3531"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+    "sha256BytesAtAudit": "5ed7475e399b768f1090e3f4a22d15f26c45c6debdb336422a0bfb774f02c868"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceOverviewScreens.kt",
+    "sha256BytesAtAudit": "e4ea71b8d97eb9a855051adde64fa749e9f0759ea92c167b2a276c3c02679241"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+    "sha256BytesAtAudit": "cc28816657c9417c6cd163472458929d473f0b945b8b409439728fe3a2a97809"
+  }
+]

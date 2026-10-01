@@ -1,0 +1,525 @@
+{
+  "schema": "task-only-prepared-codec-freeze-v1",
+  "frozen": true,
+  "artifactCount": 101,
+  "artifacts": [
+    {
+      "path": "StaticGalleryCodecFixture.kt",
+      "sizeBytes": 4393,
+      "sha256Bytes": "06cb8f3a20f923be79ccca77c039d7e17acc24f22d6d5504e61eab6c972c821a"
+    },
+    {
+      "path": "codec-contract-and-installation.txt",
+      "sizeBytes": 6227,
+      "sha256Bytes": "5f8aa71ef9e3a43ee76ef36d649974d738baa519a7a1ec3b46b38062f02724a0"
+    },
+    {
+      "path": "compile-focused-proof.py",
+      "sizeBytes": 9666,
+      "sha256Bytes": "d6fe1ff944569fa496923a7f65fdfa84c9cefe7fd9e36193d6bcc3a62622f926"
+    },
+    {
+      "path": "freeze-codec.py",
+      "sizeBytes": 11805,
+      "sha256Bytes": "133c55cbfa5027036ed1528acb2852632bf18bfc4c6164116cf86988ca2a4d29"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalStaticGalleryFormat.kt",
+      "sizeBytes": 1841,
+      "sha256Bytes": "4aad65c3264e4f2f7b8acefb9df8f5cfb3e840d0090926ab1ec7ad94ce2e0ce3"
+    },
+    {
+      "path": "original/saveImageToGallery.kt",
+      "sizeBytes": 7162,
+      "sha256Bytes": "4649db739546ec30b69f7367358e3f1eb3ccdfcf825c6a9615f7eedaf364d06d"
+    },
+    {
+      "path": "prepare-codec.py",
+      "sizeBytes": 5218,
+      "sha256Bytes": "b0af5d6a415981fd783c4acb5c92099e2e35d3eea4adbb48084a32137893de16"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicStaticImageCodec.kt",
+      "sizeBytes": 4626,
+      "sha256Bytes": "347897e987f4a5dac782e9e6c420079c90d93fdec1179395ce4cfb7af4bf5b0d"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-static-image-codec.py",
+      "sizeBytes": 5218,
+      "sha256Bytes": "b0af5d6a415981fd783c4acb5c92099e2e35d3eea4adbb48084a32137893de16"
+    },
+    {
+      "path": "producer-production-proof/com/android/purebilibili/feature/dynamic/components/DesktopOriginalStaticGalleryFormat.kt",
+      "sizeBytes": 1841,
+      "sha256Bytes": "4aad65c3264e4f2f7b8acefb9df8f5cfb3e840d0090926ab1ec7ad94ce2e0ce3"
+    },
+    {
+      "path": "proof-01/DesktopDynamicStaticImageCodecKt-actual-methods.txt",
+      "sizeBytes": 1251435,
+      "sha256Bytes": "a67ba33d630e1d22f92ea5af2f13b06844a7f1f3a096f222fb1f3638ce02824e"
+    },
+    {
+      "path": "proof-01/DesktopDynamicStaticImageCodecKt-candidate-methods.txt",
+      "sizeBytes": 613,
+      "sha256Bytes": "d79c38b29a9d25d5219ce4fd1b608e0c329ced1028b2f2c76fe10c229d6e5482"
+    },
+    {
+      "path": "proof-01/DesktopOriginalStaticGalleryFormatKt-actual-methods.txt",
+      "sizeBytes": 330782,
+      "sha256Bytes": "03ae3709ac4c7a8e9fe9d45e7712799af9d283da8904f28930607688d1839f9c"
+    },
+    {
+      "path": "proof-01/DesktopOriginalStaticGalleryFormatKt-candidate-methods.txt",
+      "sizeBytes": 745,
+      "sha256Bytes": "2f74be32b2a0540440ee0e41a8aaf67ec3f9b4edfae5bf975ca06de3825df465"
+    },
+    {
+      "path": "proof-01/candidate-codec-fixture.jar",
+      "sizeBytes": 27076,
+      "sha256Bytes": "068ad101603fd8cdb71e4ee75986ab84a503507eeec761811439c63a7ae3bd48"
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sizeBytes": 23800,
+      "sha256Bytes": "e25630caac1aca6d910bda29717e0fc0e64794dd8213edea0b7a1d0281bd419d"
+    },
+    {
+      "path": "proof-01/failure-receipt.json",
+      "sizeBytes": 767,
+      "sha256Bytes": "c68ac46ebdea18875caaf57818c8b3e6f4b9e2744885c8321de1f2a5d18fc445"
+    },
+    {
+      "path": "proof-01/fixture/inputs/alpha.png",
+      "sizeBytes": 495,
+      "sha256Bytes": "abcfaf1c7fefb87cacd71f877c4e904925ca51478f88223ccb6b38729582a29e"
+    },
+    {
+      "path": "proof-01/fixture/inputs/animated.gif",
+      "sizeBytes": 222,
+      "sha256Bytes": "e7a12d5b94fe30a04e34f89efb2e8915ab238fb437fb4758be3d8db33425bf03"
+    },
+    {
+      "path": "proof-01/fixture/inputs/animated.webp",
+      "sizeBytes": 188,
+      "sha256Bytes": "f1be19a38372ace3d1bd75c548d31e2db711ba09cbcca7f6bd22f782cc036819"
+    },
+    {
+      "path": "proof-01/fixture/inputs/origin-1.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "79ee289eefb72860bfe48e64bd8f3f2f46c388ba5402e3e9d24a364dae66c2a0"
+    },
+    {
+      "path": "proof-01/fixture/inputs/origin-2.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "657da2802ce4575f785694fe2c6c7eb59a654e92cce3c3b9d7ed076f66c02ddc"
+    },
+    {
+      "path": "proof-01/fixture/inputs/origin-3.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "716e53baa7dacd0a60289a69c93418448fad341d5daa872dacc02847a2468f8f"
+    },
+    {
+      "path": "proof-01/fixture/inputs/origin-4.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "6c678a67b226fec8e07fb8c306ae3ab366e7a828d8978ea24a53c3bb725ba55c"
+    },
+    {
+      "path": "proof-01/fixture/inputs/origin-5.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "b0537cd4a736afda6c4a56d06eb862ba67511ae62cfd85e9a23716e77fd608d4"
+    },
+    {
+      "path": "proof-01/fixture/inputs/origin-6.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "41ae3bb52b772677936dea31db3a12a97d5e1242857f397142908c39049a32d6"
+    },
+    {
+      "path": "proof-01/fixture/inputs/origin-7.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "826fbb6aba610824388be6d2edb8f0abb6485c3f893f428cad2e56a9223f0257"
+    },
+    {
+      "path": "proof-01/fixture/inputs/origin-8.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "5df92b689380b209c82a7e76f5388e9f2a3a45c9c6f513052fb12e355a26331f"
+    },
+    {
+      "path": "proof-01/fixture/inputs/rgb.png",
+      "sizeBytes": 233,
+      "sha256Bytes": "9277efd5a33842924ec55985db8f741bd051f7ea7bfb01c5b3b39820228a17f3"
+    },
+    {
+      "path": "proof-01/fixture/kotlin-result.json",
+      "sizeBytes": 466,
+      "sha256Bytes": "c86c80df4e711a2e014e0ad1dea51bfd5bf7fa0ab1170d6e62935641aad5b716"
+    },
+    {
+      "path": "proof-01/fixture/outputs/alpha.png",
+      "sizeBytes": 9435,
+      "sha256Bytes": "11d7779a0050b34639664bc47377220ac63b66fdc40eddb93c846907c78646ca"
+    },
+    {
+      "path": "proof-01/fixture/outputs/budget-rejected.png",
+      "sizeBytes": 16,
+      "sha256Bytes": "0fb921ba2a3af7fee3a9ac0fb57744e42f3b1a8ac31eab7290deedf61aabd1df"
+    },
+    {
+      "path": "proof-01/fixture/outputs/canceled-stage.png",
+      "sizeBytes": 16,
+      "sha256Bytes": "0fb921ba2a3af7fee3a9ac0fb57744e42f3b1a8ac31eab7290deedf61aabd1df"
+    },
+    {
+      "path": "proof-01/fixture/outputs/jpeg95.jpg",
+      "sizeBytes": 828,
+      "sha256Bytes": "67a8a44df33c1d254e5edf23cf5d34ef5f25438ad9078f2922d55e43e5123d80"
+    },
+    {
+      "path": "proof-01/fixture/outputs/origin-1.jpg",
+      "sizeBytes": 828,
+      "sha256Bytes": "67a8a44df33c1d254e5edf23cf5d34ef5f25438ad9078f2922d55e43e5123d80"
+    },
+    {
+      "path": "proof-01/fixture/outputs/origin-2.jpg",
+      "sizeBytes": 829,
+      "sha256Bytes": "3f590283d10ca723471c5f688eb582a47d888d340cdc15123b80aa2a3789ca7b"
+    },
+    {
+      "path": "proof-01/fixture/outputs/origin-3.jpg",
+      "sizeBytes": 827,
+      "sha256Bytes": "022c196e0887107414b8a3a86a3374422ae4d566e8ee71bf745d3ab9bc659ba1"
+    },
+    {
+      "path": "proof-01/fixture/outputs/origin-4.jpg",
+      "sizeBytes": 827,
+      "sha256Bytes": "804ae19dfffe5cc23c3d6fbef38031e3a1eb0f54fc6eb43359cd6ea91ce9e445"
+    },
+    {
+      "path": "proof-01/fixture/outputs/origin-5.jpg",
+      "sizeBytes": 844,
+      "sha256Bytes": "e337097c51d846599abd79df933842f65ad61c1b015c3c198a55b93f20ff4e7d"
+    },
+    {
+      "path": "proof-01/fixture/outputs/origin-6.jpg",
+      "sizeBytes": 843,
+      "sha256Bytes": "007b7b26195d356182204111ce5d2a2fa432c247b6def89b0a4c7d5df0766424"
+    },
+    {
+      "path": "proof-01/fixture/outputs/origin-7.jpg",
+      "sizeBytes": 844,
+      "sha256Bytes": "b2b5060bd0d4774cf67283bef28e453f16056400854efb4805312e9e84bd59da"
+    },
+    {
+      "path": "proof-01/fixture/outputs/origin-8.jpg",
+      "sizeBytes": 842,
+      "sha256Bytes": "76169914e4a64db0e58ed4843e273bfdb974d0f178705f9b6f29bf7dd72df698"
+    },
+    {
+      "path": "proof-01/fixture/outputs/raw.gif",
+      "sizeBytes": 222,
+      "sha256Bytes": "e7a12d5b94fe30a04e34f89efb2e8915ab238fb437fb4758be3d8db33425bf03"
+    },
+    {
+      "path": "proof-01/fixture/outputs/raw.webp",
+      "sizeBytes": 188,
+      "sha256Bytes": "f1be19a38372ace3d1bd75c548d31e2db711ba09cbcca7f6bd22f782cc036819"
+    },
+    {
+      "path": "proof-01/fixture/pillow-ref95-investigation.jpg",
+      "sizeBytes": 767,
+      "sha256Bytes": "5acfaff93a28907499f9cf0f8c42da56d43f383eb83b94b47fbd260b29ee9804"
+    },
+    {
+      "path": "proof-01/private-home/.skiko/.skiko.lock",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-01/private-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/icudtl.dat",
+      "sizeBytes": 10468208,
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92"
+    },
+    {
+      "path": "proof-01/private-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/skiko-windows-x64.dll",
+      "sizeBytes": 14109696,
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38"
+    },
+    {
+      "path": "proof-01/runtime.args",
+      "sizeBytes": 23549,
+      "sha256Bytes": "335971c8c30cf87fc07cea005ff90dd68529ec1ec0702a31ce0ab567943417ad"
+    },
+    {
+      "path": "proof-01/runtime.log",
+      "sizeBytes": 875,
+      "sha256Bytes": "f24c93618df70a7e8f4dc1763151be705afbd3a7e933234b6b81b57b877fcabf"
+    },
+    {
+      "path": "proof-01/sources/DesktopDynamicStaticImageCodec.kt",
+      "sizeBytes": 4626,
+      "sha256Bytes": "347897e987f4a5dac782e9e6c420079c90d93fdec1179395ce4cfb7af4bf5b0d"
+    },
+    {
+      "path": "proof-01/sources/DesktopOriginalStaticGalleryFormat.kt",
+      "sizeBytes": 1841,
+      "sha256Bytes": "4aad65c3264e4f2f7b8acefb9df8f5cfb3e840d0090926ab1ec7ad94ce2e0ce3"
+    },
+    {
+      "path": "proof-01/sources/StaticGalleryCodecFixture.kt",
+      "sizeBytes": 4393,
+      "sha256Bytes": "06cb8f3a20f923be79ccca77c039d7e17acc24f22d6d5504e61eab6c972c821a"
+    },
+    {
+      "path": "proof-02/DesktopDynamicStaticImageCodecKt-actual-methods.txt",
+      "sizeBytes": 1251435,
+      "sha256Bytes": "a67ba33d630e1d22f92ea5af2f13b06844a7f1f3a096f222fb1f3638ce02824e"
+    },
+    {
+      "path": "proof-02/DesktopDynamicStaticImageCodecKt-candidate-methods.txt",
+      "sizeBytes": 613,
+      "sha256Bytes": "d79c38b29a9d25d5219ce4fd1b608e0c329ced1028b2f2c76fe10c229d6e5482"
+    },
+    {
+      "path": "proof-02/DesktopOriginalStaticGalleryFormatKt-actual-methods.txt",
+      "sizeBytes": 330782,
+      "sha256Bytes": "03ae3709ac4c7a8e9fe9d45e7712799af9d283da8904f28930607688d1839f9c"
+    },
+    {
+      "path": "proof-02/DesktopOriginalStaticGalleryFormatKt-candidate-methods.txt",
+      "sizeBytes": 745,
+      "sha256Bytes": "2f74be32b2a0540440ee0e41a8aaf67ec3f9b4edfae5bf975ca06de3825df465"
+    },
+    {
+      "path": "proof-02/accepted-evidence.json",
+      "sizeBytes": 1757,
+      "sha256Bytes": "15565d8085e6fc0eb2dcfdc5acac01acfe07ffed7a706c9d4f7e0ea32dbaa29e"
+    },
+    {
+      "path": "proof-02/candidate-codec-fixture.jar",
+      "sizeBytes": 27076,
+      "sha256Bytes": "068ad101603fd8cdb71e4ee75986ab84a503507eeec761811439c63a7ae3bd48"
+    },
+    {
+      "path": "proof-02/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-02/compiler.args",
+      "sizeBytes": 23800,
+      "sha256Bytes": "1184c6875e7d7136cb8833343ae7d24123112021d712e2bcd536ca23d76f2cc4"
+    },
+    {
+      "path": "proof-02/fixture/inputs/alpha.png",
+      "sizeBytes": 495,
+      "sha256Bytes": "abcfaf1c7fefb87cacd71f877c4e904925ca51478f88223ccb6b38729582a29e"
+    },
+    {
+      "path": "proof-02/fixture/inputs/animated.gif",
+      "sizeBytes": 222,
+      "sha256Bytes": "e7a12d5b94fe30a04e34f89efb2e8915ab238fb437fb4758be3d8db33425bf03"
+    },
+    {
+      "path": "proof-02/fixture/inputs/animated.webp",
+      "sizeBytes": 188,
+      "sha256Bytes": "f1be19a38372ace3d1bd75c548d31e2db711ba09cbcca7f6bd22f782cc036819"
+    },
+    {
+      "path": "proof-02/fixture/inputs/origin-1.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "79ee289eefb72860bfe48e64bd8f3f2f46c388ba5402e3e9d24a364dae66c2a0"
+    },
+    {
+      "path": "proof-02/fixture/inputs/origin-2.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "657da2802ce4575f785694fe2c6c7eb59a654e92cce3c3b9d7ed076f66c02ddc"
+    },
+    {
+      "path": "proof-02/fixture/inputs/origin-3.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "716e53baa7dacd0a60289a69c93418448fad341d5daa872dacc02847a2468f8f"
+    },
+    {
+      "path": "proof-02/fixture/inputs/origin-4.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "6c678a67b226fec8e07fb8c306ae3ab366e7a828d8978ea24a53c3bb725ba55c"
+    },
+    {
+      "path": "proof-02/fixture/inputs/origin-5.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "b0537cd4a736afda6c4a56d06eb862ba67511ae62cfd85e9a23716e77fd608d4"
+    },
+    {
+      "path": "proof-02/fixture/inputs/origin-6.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "41ae3bb52b772677936dea31db3a12a97d5e1242857f397142908c39049a32d6"
+    },
+    {
+      "path": "proof-02/fixture/inputs/origin-7.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "826fbb6aba610824388be6d2edb8f0abb6485c3f893f428cad2e56a9223f0257"
+    },
+    {
+      "path": "proof-02/fixture/inputs/origin-8.jpg",
+      "sizeBytes": 917,
+      "sha256Bytes": "5df92b689380b209c82a7e76f5388e9f2a3a45c9c6f513052fb12e355a26331f"
+    },
+    {
+      "path": "proof-02/fixture/inputs/rgb.png",
+      "sizeBytes": 233,
+      "sha256Bytes": "9277efd5a33842924ec55985db8f741bd051f7ea7bfb01c5b3b39820228a17f3"
+    },
+    {
+      "path": "proof-02/fixture/kotlin-result.json",
+      "sizeBytes": 466,
+      "sha256Bytes": "c86c80df4e711a2e014e0ad1dea51bfd5bf7fa0ab1170d6e62935641aad5b716"
+    },
+    {
+      "path": "proof-02/fixture/outputs/alpha.png",
+      "sizeBytes": 9435,
+      "sha256Bytes": "11d7779a0050b34639664bc47377220ac63b66fdc40eddb93c846907c78646ca"
+    },
+    {
+      "path": "proof-02/fixture/outputs/budget-rejected.png",
+      "sizeBytes": 16,
+      "sha256Bytes": "0fb921ba2a3af7fee3a9ac0fb57744e42f3b1a8ac31eab7290deedf61aabd1df"
+    },
+    {
+      "path": "proof-02/fixture/outputs/canceled-stage.png",
+      "sizeBytes": 16,
+      "sha256Bytes": "0fb921ba2a3af7fee3a9ac0fb57744e42f3b1a8ac31eab7290deedf61aabd1df"
+    },
+    {
+      "path": "proof-02/fixture/outputs/jpeg95.jpg",
+      "sizeBytes": 828,
+      "sha256Bytes": "67a8a44df33c1d254e5edf23cf5d34ef5f25438ad9078f2922d55e43e5123d80"
+    },
+    {
+      "path": "proof-02/fixture/outputs/origin-1.jpg",
+      "sizeBytes": 828,
+      "sha256Bytes": "67a8a44df33c1d254e5edf23cf5d34ef5f25438ad9078f2922d55e43e5123d80"
+    },
+    {
+      "path": "proof-02/fixture/outputs/origin-2.jpg",
+      "sizeBytes": 829,
+      "sha256Bytes": "3f590283d10ca723471c5f688eb582a47d888d340cdc15123b80aa2a3789ca7b"
+    },
+    {
+      "path": "proof-02/fixture/outputs/origin-3.jpg",
+      "sizeBytes": 827,
+      "sha256Bytes": "022c196e0887107414b8a3a86a3374422ae4d566e8ee71bf745d3ab9bc659ba1"
+    },
+    {
+      "path": "proof-02/fixture/outputs/origin-4.jpg",
+      "sizeBytes": 827,
+      "sha256Bytes": "804ae19dfffe5cc23c3d6fbef38031e3a1eb0f54fc6eb43359cd6ea91ce9e445"
+    },
+    {
+      "path": "proof-02/fixture/outputs/origin-5.jpg",
+      "sizeBytes": 844,
+      "sha256Bytes": "e337097c51d846599abd79df933842f65ad61c1b015c3c198a55b93f20ff4e7d"
+    },
+    {
+      "path": "proof-02/fixture/outputs/origin-6.jpg",
+      "sizeBytes": 843,
+      "sha256Bytes": "007b7b26195d356182204111ce5d2a2fa432c247b6def89b0a4c7d5df0766424"
+    },
+    {
+      "path": "proof-02/fixture/outputs/origin-7.jpg",
+      "sizeBytes": 844,
+      "sha256Bytes": "b2b5060bd0d4774cf67283bef28e453f16056400854efb4805312e9e84bd59da"
+    },
+    {
+      "path": "proof-02/fixture/outputs/origin-8.jpg",
+      "sizeBytes": 842,
+      "sha256Bytes": "76169914e4a64db0e58ed4843e273bfdb974d0f178705f9b6f29bf7dd72df698"
+    },
+    {
+      "path": "proof-02/fixture/outputs/raw.gif",
+      "sizeBytes": 222,
+      "sha256Bytes": "e7a12d5b94fe30a04e34f89efb2e8915ab238fb437fb4758be3d8db33425bf03"
+    },
+    {
+      "path": "proof-02/fixture/outputs/raw.webp",
+      "sizeBytes": 188,
+      "sha256Bytes": "f1be19a38372ace3d1bd75c548d31e2db711ba09cbcca7f6bd22f782cc036819"
+    },
+    {
+      "path": "proof-02/fixture/pillow-reference95.jpg",
+      "sizeBytes": 767,
+      "sha256Bytes": "5acfaff93a28907499f9cf0f8c42da56d43f383eb83b94b47fbd260b29ee9804"
+    },
+    {
+      "path": "proof-02/independent-pillow-result.json",
+      "sizeBytes": 4458,
+      "sha256Bytes": "4401fb66ac5f5f7ce6ca223e0674603842093b07079ba480275b68124f2df29e"
+    },
+    {
+      "path": "proof-02/private-home/.skiko/.skiko.lock",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-02/private-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/icudtl.dat",
+      "sizeBytes": 10468208,
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92"
+    },
+    {
+      "path": "proof-02/private-home/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/skiko-windows-x64.dll",
+      "sizeBytes": 14109696,
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38"
+    },
+    {
+      "path": "proof-02/runtime.args",
+      "sizeBytes": 23549,
+      "sha256Bytes": "345c48bfa2e330f7599b1fbb3df2cefb920ddafb5285ae214f1624a31ebc17a6"
+    },
+    {
+      "path": "proof-02/runtime.log",
+      "sizeBytes": 875,
+      "sha256Bytes": "d9288d6d9398ebedea8b36e0e954691654b06dda74420409c2b3ad153ea43073"
+    },
+    {
+      "path": "proof-02/sources/DesktopDynamicStaticImageCodec.kt",
+      "sizeBytes": 4626,
+      "sha256Bytes": "347897e987f4a5dac782e9e6c420079c90d93fdec1179395ce4cfb7af4bf5b0d"
+    },
+    {
+      "path": "proof-02/sources/DesktopOriginalStaticGalleryFormat.kt",
+      "sizeBytes": 1841,
+      "sha256Bytes": "4aad65c3264e4f2f7b8acefb9df8f5cfb3e840d0090926ab1ec7ad94ce2e0ce3"
+    },
+    {
+      "path": "proof-02/sources/StaticGalleryCodecFixture.kt",
+      "sizeBytes": 4393,
+      "sha256Bytes": "06cb8f3a20f923be79ccca77c039d7e17acc24f22d6d5504e61eab6c972c821a"
+    },
+    {
+      "path": "source-extraction-audit.json",
+      "sizeBytes": 1812,
+      "sha256Bytes": "151a376512a0237ac4891855f763c23ab04ca893d9ece14a18e5635f3688af9d"
+    },
+    {
+      "path": "source-install-audit.json",
+      "sizeBytes": 3525,
+      "sha256Bytes": "c2363e0a07cbcf5d5becf720b6256c6047d51589808cbfd3f65c5c01f4246d0a"
+    }
+  ],
+  "acceptedEvidence": "proof-02/accepted-evidence.json",
+  "acceptedEvidenceSha256Bytes": "15565d8085e6fc0eb2dcfdc5acac01acfe07ffed7a706c9d4f7e0ea32dbaa29e",
+  "sourceInstallAudit": "source-install-audit.json",
+  "sourceInstallAuditSha256Bytes": "c2363e0a07cbcf5d5becf720b6256c6047d51589808cbfd3f65c5c01f4246d0a",
+  "kotlinAssertions": 40,
+  "independentAssertions": 24,
+  "caseCount": 15,
+  "MainChanged": false,
+  "sourceRegistryChanged": false,
+  "sharedGradle": false,
+  "HTTP": false,
+  "HWND": false,
+  "scope": "Stateless prepared stage codec plus original format fragments; destination preference/Assets final commit/Android bitmap parity not integrated."
+}

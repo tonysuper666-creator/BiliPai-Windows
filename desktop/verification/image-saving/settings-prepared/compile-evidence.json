@@ -1,0 +1,31 @@
+{
+  "mainManifestSha256": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+  "runtimeCpSha256": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+  "candidateJarSha256": "5442e37742d77979e4d0d04906d2065730ce01207bc257f668cc90de37c81488",
+  "compiledSourceCount": 5,
+  "classFqnOverlap": [],
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-image-save-path-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalImageSavePathDialog.kt",
+      "sha256Bytes": "8414ad947b93fa75dd0955cf924b926757becd6abbcc27564eb345ff9467ded0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-image-save-path-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\SettingsImageSavePathEntry.kt",
+      "sha256Bytes": "fcde15035333fafef368309dd54a97af92e55f4ee1de9f06ebca706e6faa16df"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-image-save-path-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopImageSavePathSettings.kt",
+      "sha256Bytes": "df5344e0105c316480ae4830fd1471e779a89335400216331d74277747e3f68a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-detail-reply-parity\\detail-container-next\\static-save-location-next\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopImageSaveLocationPreferences.kt",
+      "sha256Bytes": "83df4f8424f22c8ee00d81f3de4a79dc658206c1bf5aa65b683f3ed9a372d370"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-image-save-path-parity\\SettingsActionFixture.kt",
+      "sha256Bytes": "71201623e5d9f9a443113a30170f4dd4f43dde20800f975a23c58b235e526824"
+    }
+  ],
+  "actualMainAcceptance": false,
+  "dependenciesAdded": false
+}

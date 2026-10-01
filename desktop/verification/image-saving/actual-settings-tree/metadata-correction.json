@@ -1,0 +1,12 @@
+{
+  "failedExpectation": "search click directly reaches IMAGE_SAVE_PATH Detail/dialog",
+  "run01": "Private Skiko ICU native-readable resource-path initialization failure before UI acceptance.",
+  "run02": "Detail wait failed after storage row/null chooser passed; no stage dump in this earlier attempt.",
+  "run03": "Actual one IMAGE_SAVE_PATH result followed owning category; timeout expectation was incorrect. Semantics/navigation retained.",
+  "run04": "Same Main04 product bytes; original verified category/row path passed in both styles.",
+  "originalSourceChange": false,
+  "productSourceChange": false,
+  "changedFixtureExpectationOnly": true,
+  "imperfectInitialMiuixCapture": "First successful storage dialog PNG captures enter animation near lower edge; later dialog complete.",
+  "nativeWindowOrSettledNativeCaptureClaim": false
+}

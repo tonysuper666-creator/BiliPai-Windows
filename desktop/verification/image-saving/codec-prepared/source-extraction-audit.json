@@ -1,0 +1,48 @@
+{
+  "originalTag": "v0.2.3-alpha.9",
+  "originalCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+  "originalSha256Lf": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+  "fragments": [
+    {
+      "fragment": "classifiers",
+      "originalSha256Lf": "b0e7a3577e0d12ec2988fe682fdbce8bc45ce0c709929a118e5aab6fbe423efb",
+      "tokenBodyPreserved": true
+    },
+    {
+      "fragment": "rawExtension",
+      "originalSha256Lf": "7cd978c6bda39ac1136eca59a189dfc4be06e135dfac88a825005aa1b60625d4",
+      "tokenBodyPreserved": true
+    },
+    {
+      "fragment": "rawMime",
+      "originalSha256Lf": "3c9e7bde45bdbaa5405a2188c1896b28970afca20e5aaa579de585402eefb11b",
+      "tokenBodyPreserved": true
+    },
+    {
+      "fragment": "staticExtension",
+      "originalSha256Lf": "dad29c067e08525566a3b9fca70cf6b75b1a6ac37d88c72644316f12bcb33c71",
+      "tokenBodyPreserved": true
+    },
+    {
+      "fragment": "staticMime",
+      "originalSha256Lf": "7878cc1642d9cdd3c89c856f5c18d45add23355afe933b193102af8c048d87d5",
+      "tokenBodyPreserved": true
+    },
+    {
+      "fragment": "fileName",
+      "originalSha256Lf": "3fffb2d2fcf72d7324fbbcafc908a23bc2cd7b2c6d15b4cdc37b0cf63d80be1b",
+      "tokenBodyPreserved": true
+    }
+  ],
+  "declaredAdapters": [
+    "Split original local assignments into four uniquely named internal stateless functions",
+    "Indentation only for selected bodies",
+    "Added function-level return statements",
+    "Original raw-branch predicate reused directly"
+  ],
+  "originalAndroidCoilBitmapEncodingBodyRetainedAsReferenceOnly": true,
+  "WindowsSkiaEncodingIsExplicitPlatformAdapter": true,
+  "MainChanged": false,
+  "sourceRegistryChanged": false
+}

@@ -1,0 +1,11 @@
+Compiled from "DesktopOriginalImageSaveLocationPolicy.kt"
+public final class com.android.purebilibili.feature.dynamic.components.DesktopOriginalImageSaveLocationPolicyKt {
+  public static final boolean shouldUseImageSaveTreeUri(java.lang.String);
+    descriptor: (Ljava/lang/String;)Z
+
+  public static final com.android.purebilibili.feature.dynamic.components.ImageSaveDestination resolveImageSaveDestination(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lcom/android/purebilibili/feature/dynamic/components/ImageSaveDestination;
+
+  public static final java.lang.String resolveDefaultImageMediaStoreRelativePath();
+    descriptor: ()Ljava/lang/String;
+}

@@ -1,0 +1,153 @@
+{
+  "schema": "source-only-platform-native-function-proof-v1",
+  "frozen": true,
+  "artifactCount": 22,
+  "artifacts": [
+    {
+      "path": "KnownFolderFixture.kt",
+      "sizeBytes": 8615,
+      "sha256Bytes": "2b2ec91fbadfd94b68eda1761fa71450d8fb8bdb09cc099d45ae0ef534e2a5c7"
+    },
+    {
+      "path": "ROOT-INTEGRATION.txt",
+      "sizeBytes": 4426,
+      "sha256Bytes": "0cce094b67ff3125cda4c6f7b9de805acc77f154f9578da593f96b81ec30a926"
+    },
+    {
+      "path": "attempt-00-classpath-selection.log",
+      "sizeBytes": 465,
+      "sha256Bytes": "22333c762c9cd61aefa82efebc7467bf16fa4843f31cdbdaeac605a521a33e47"
+    },
+    {
+      "path": "attempt-00-classpath-selection.py",
+      "sizeBytes": 5916,
+      "sha256Bytes": "1fe551db4308df82ae1c3bb95f996cc1d407bf2b235c9591d1d607cf54b5816b"
+    },
+    {
+      "path": "compile-01.args",
+      "sizeBytes": 1107,
+      "sha256Bytes": "fb1b2496fb28f27c6999be1c5383462413d2335171d67c42c9ae42a8b264e588"
+    },
+    {
+      "path": "compile-01.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-and-prove.py",
+      "sizeBytes": 5910,
+      "sha256Bytes": "dc82a6402ddb5310c373ba5f0b84f18390b7d8dc79364b9363e5c98030dfc796"
+    },
+    {
+      "path": "compile-evidence.json",
+      "sizeBytes": 4301,
+      "sha256Bytes": "487660bdb41b8e0f0745e65388c637d6ac982a260a69ab2121af6bcf92798721"
+    },
+    {
+      "path": "dependency-identities.json",
+      "sizeBytes": 707,
+      "sha256Bytes": "9a5fcaba9917eb0275f3296f0fea324ea461dd300fb9eac3956d226e48e7afec"
+    },
+    {
+      "path": "fake-01-process.json",
+      "sizeBytes": 1390,
+      "sha256Bytes": "ec0d2afe4b388569aef0193661101203088f6f376cae990ff9a12e1a23d9b85a"
+    },
+    {
+      "path": "fake-01.log",
+      "sizeBytes": 788,
+      "sha256Bytes": "f8cbe878921b51ca3457be5926c1a5c54ae5082769d75fc39609113284937181"
+    },
+    {
+      "path": "fake-proof.json",
+      "sizeBytes": 864,
+      "sha256Bytes": "ca14bb34efa62d52ad961bbd2274173c2a35a6f44f04a0c4526881df4ae21353"
+    },
+    {
+      "path": "freeze.py",
+      "sizeBytes": 4453,
+      "sha256Bytes": "17bdb6b3ec8525f7a8f9bfee3edd7d78e696124e6be7c9c7e81a493bd79edfb0"
+    },
+    {
+      "path": "native-01-process.json",
+      "sizeBytes": 1392,
+      "sha256Bytes": "ad3b2b9a99c12ddf4b608a54c48e70e5a923d984ff390f71c4c251b25b299fb5"
+    },
+    {
+      "path": "native-01.log",
+      "sizeBytes": 1047,
+      "sha256Bytes": "e2bec9c8bd18d1311ba488f14368e98f3f6df3be25151f124a200e900aede0ea"
+    },
+    {
+      "path": "native-dll-identities.json",
+      "sizeBytes": 291,
+      "sha256Bytes": "b0c3fa03391d337c0cbb053bf4e1c6806da4fa862fc542ce31ca3fa56ad7ab71"
+    },
+    {
+      "path": "native-proof.json",
+      "sizeBytes": 1363,
+      "sha256Bytes": "5c50af579287d4b8de8e8eb748dfe28091c90fc4ac2c6b6ebda77f7004197240"
+    },
+    {
+      "path": "official-source-notes.json",
+      "sizeBytes": 3122,
+      "sha256Bytes": "74e364e847255a75ad4fbde573c16addd08006e93d3beaa97024e3f94029015c"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt",
+      "sizeBytes": 5828,
+      "sha256Bytes": "0ad0fcbd85e20264a827e7be28273eb9fc756a5cf2de8a8deb19449a6dda8fe9"
+    },
+    {
+      "path": "source-inventory.json",
+      "sizeBytes": 1986,
+      "sha256Bytes": "e4000b06824a2f22a5c32470295d245bbe13d6eece5e79b721774bb4b2fcd327"
+    },
+    {
+      "path": "task-native-temp/jna9954565643392076288.dll.x",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-sdk-evidence.json",
+      "sizeBytes": 4003,
+      "sha256Bytes": "090bceed43436df6d4ca1ab43e51614a445b1ff5b1e09dc336db6cb94e2a864d"
+    }
+  ],
+  "evidenceOnlyBinaryCount": 2,
+  "evidenceOnlyBinaries": [
+    {
+      "path": "known-folder-candidate.jar",
+      "sizeBytes": 22981,
+      "sha256Bytes": "8da66a9c31042a136c882b68d46d9a627b01b7e07a06bf9b4f11cf09f790bb2e",
+      "reason": "task compilation/JNA extraction only; do not install or commit"
+    },
+    {
+      "path": "task-native-temp/jna9954565643392076288.dll",
+      "sizeBytes": 273408,
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "reason": "task compilation/JNA extraction only; do not install or commit"
+    }
+  ],
+  "passed": {
+    "taskOnlyCompile": true,
+    "fakeAbiCases": 12,
+    "actualOsReadOnlyCases": 4,
+    "main03ImmutableClasspathEntriesVerified": 92,
+    "productClassOverlap": 0
+  },
+  "acceptanceScope": "candidate Windows KnownFolder function only; source-only payload; no Main/default-save/persistent UI integration",
+  "mainIntegrated": false,
+  "userDirectoryFilesWritten": false,
+  "hwnd": false,
+  "pending": [
+    "default unavailable chooser consumer",
+    "save-location UI",
+    "safe default folder creation",
+    "encoder",
+    "batch save",
+    "Android MediaStore/Photos",
+    "real redirected machine",
+    "32-bit Windows"
+  ]
+}

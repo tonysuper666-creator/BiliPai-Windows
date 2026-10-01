@@ -1,0 +1,113 @@
+{
+  "originalTag": "v0.2.3-alpha.9",
+  "originalCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "sha256Lf": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+      "originalCopy": "original/ImagePreviewDialog.kt",
+      "fragments": [
+        {
+          "startLine": 2034,
+          "endLine": 2194,
+          "path": "fragments/ImagePreviewDialog-2034-2194.txt",
+          "sha256Lf": "4649db739546ec30b69f7367358e3f1eb3ccdfcf825c6a9615f7eedaf364d06d"
+        },
+        {
+          "startLine": 438,
+          "endLine": 515,
+          "path": "fragments/ImagePreviewDialog-438-515.txt",
+          "sha256Lf": "2774549557a574e319529a1d5a285ca5d0345fa5a9357e328571e2a7a9c926b8"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImageSaveLocationPolicy.kt",
+      "sha256Lf": "320d756b9808f6be10ca5f54697a26f05739f95cfbe2e7c554ff078fba864e3f",
+      "originalCopy": "original/ImageSaveLocationPolicy.kt",
+      "fragments": [
+        {
+          "startLine": 1,
+          "endLine": 93,
+          "path": "fragments/ImageSaveLocationPolicy-1-93.txt",
+          "sha256Lf": "320d756b9808f6be10ca5f54697a26f05739f95cfbe2e7c554ff078fba864e3f"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Lf": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010",
+      "originalCopy": "original/SettingsManager.kt",
+      "fragments": [
+        {
+          "startLine": 6681,
+          "endLine": 6683,
+          "path": "fragments/SettingsManager-6681-6683.txt",
+          "sha256Lf": "74c8fda064d25464bbd17fb442164c097b68394bb97c71343da7c01e27a20cf5"
+        },
+        {
+          "startLine": 6737,
+          "endLine": 6755,
+          "path": "fragments/SettingsManager-6737-6755.txt",
+          "sha256Lf": "0534187e48505e08171ea982c333809b9f69398f280201a5c7228b5b72343e38"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt",
+      "sha256Lf": "300346d94ff55caf2a974c87602c9e067f8ed875a0cb90b68e41643999befaf1",
+      "originalCopy": "original/SettingsScreen.kt",
+      "fragments": [
+        {
+          "startLine": 292,
+          "endLine": 306,
+          "path": "fragments/SettingsScreen-292-306.txt",
+          "sha256Lf": "6e7e33fb3dedc1b9fd6bc0579d63bfd136b9177dfbb5836a2f5777e40802cbcc"
+        },
+        {
+          "startLine": 582,
+          "endLine": 624,
+          "path": "fragments/SettingsScreen-582-624.txt",
+          "sha256Lf": "8e1d97d678e8dddad370d0f0b160de93b5e8fc689db2cd206ba3a56901620ed5"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSaveImage.kt",
+      "sha256Lf": "856eded0a6b95c88be311dd8a80d1652e4a029c6bd65671319705ff86706799a",
+      "originalCopy": "original/DynamicSaveImage.kt",
+      "fragments": [
+        {
+          "startLine": 149,
+          "endLine": 184,
+          "path": "fragments/DynamicSaveImage-149-184.txt",
+          "sha256Lf": "7b53e06b3082882ed8bd26651a27afc1afc24d90f0da1d203bddf5142110b0aa"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyCommentImageSaver.kt",
+      "sha256Lf": "2c7ab6898c5bfe9b334ba2b71393fe69c0dbe77050b964e41a3892245119f19d",
+      "originalCopy": "original/ReplyCommentImageSaver.kt",
+      "fragments": [
+        {
+          "startLine": 183,
+          "endLine": 225,
+          "path": "fragments/ReplyCommentImageSaver-183-225.txt",
+          "sha256Lf": "44fab688a4a46f1d2f8212c4fb457586a275ebed1d1fb1666d6a230e06a5e938"
+        }
+      ]
+    }
+  ],
+  "selectedPurePolicy": {
+    "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImageSaveLocationPolicy.kt",
+    "sha256Bytes": "4a7892023f8c89913f3fe11b5d4ba7ec2bd8283438d710474f64d5a9361a41e2",
+    "sourceByteEqual": true,
+    "originalAndroidContentUriRuleUnchanged": true,
+    "WindowsFileUriNotMisclassifiedAsSAF": true
+  },
+  "MainChanged": false,
+  "sourceRegistryChanged": false,
+  "HTTP": false,
+  "HWND": false
+}

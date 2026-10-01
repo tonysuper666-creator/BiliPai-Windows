@@ -1,0 +1,7 @@
+1043:                             _In_opt_ HANDLE hToken,
+1044:                             _In_ PCWSTR pszPath);
+1045: 
+1046: STDAPI SHGetKnownFolderPath(_In_ REFKNOWNFOLDERID rfid,
+1047:                             _In_ DWORD /* KNOWN_FOLDER_FLAG */ dwFlags,
+1048:                             _In_opt_ HANDLE hToken,
+1049:                             _Outptr_ PWSTR *ppszPath); // free *ppszPath with CoTaskMemFree

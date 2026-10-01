@@ -1,0 +1,16 @@
+{
+  "actualMain03ManifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+  "orderedActual92CpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+  "mainAssetsSha256Bytes": "5ed7475e399b768f1090e3f4a22d15f26c45c6debdb336422a0bfb774f02c868",
+  "upstreamRef": "v0.2.3-alpha.9",
+  "upstreamPath": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+  "upstreamBlobSha256Bytes": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0",
+  "upstreamSaveAllLine": 511,
+  "contract": "Each normalized URL is attempted sequentially; ordinary item failures contribute false while later items still run; cancellation propagates immediately.",
+  "permittedDelta": "Only existing saveImages loop aggregation and per-item exception handling",
+  "candidateSha256Bytes": "578412a5ae769746512e6fdc86f2e819570f974597400ffecdebb74413036b41",
+  "rootParentPickerAdapterBodyUnchanged": true,
+  "allWritesWithinNewTaskLane": true,
+  "MainOrOtherLaneOrGradleWrites": false,
+  "originalEvidence114Or135ReusedAsAcceptance": false
+}

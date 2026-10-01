@@ -1,0 +1,2103 @@
+{
+  "frozen": true,
+  "status": "actual immutable Main04 narrow integration accepted",
+  "assertions": 54,
+  "cases": 7,
+  "independentReadbackAssertions": 15,
+  "actualLoopbackHTTPRequests": 11,
+  "actualMain04Manifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\image-save-main-integration\\main-product-snapshot-04/manifest.json",
+  "actualMain04ManifestSha256Bytes": "7bc5ac8875dadf38510120db6619bd6e748e7f790a47afc11374e14114f25865",
+  "orderedActual92Cp": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\image-save-main-integration\\main-product-snapshot-04/ordered-runtime-cp.json",
+  "orderedActual92CpSha256Bytes": "7a3141310fa355d8618c5bc2be90f36a2c13c8ed36f2d981bf4a14c2232165e2",
+  "actualMainKotlinJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2",
+  "fixtureJarSha256Bytes": "21dcc805a924207e0420ca1aa44609f4fae3d4594ae04f9b456f8c4b6af14f15",
+  "fixtureOnly": true,
+  "productClassIntersection": [],
+  "existingMainProductOverrides": [],
+  "actualProductClassIdentities": [
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicImageAssets",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopDynamicImageAssets.class",
+      "actualClassBytesSha256Bytes": "64e6c42f5b7307629a6a4550c55782982ad24c27955240a54718b9c375b1ce58",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopImageSaveLocations",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopImageSaveLocations.class",
+      "actualClassBytesSha256Bytes": "f6b326691cfc9981ac08e3f6e06bfe39b2ff1e5db37275df289a1b50f1158c87",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopImageSaveLifetime",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopImageSaveLifetime.class",
+      "actualClassBytesSha256Bytes": "b53e1273d5de90b911bea46bf64b4e5d0039a7780c1e4890dee26f0977d30af0",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.settings.DesktopImageSaveLocationPreferences",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/settings/DesktopImageSaveLocationPreferences.class",
+      "actualClassBytesSha256Bytes": "aa53b38ca61d5afef0cba4dc2d82ed536391ec1cf32122a9a50fe1baa01c5321",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.plugins.DesktopPluginStore",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/plugins/DesktopPluginStore.class",
+      "actualClassBytesSha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopSessionStore",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/data/DesktopSessionStore.class",
+      "actualClassBytesSha256Bytes": "2acab352838fef4a25b0b20242385af72eac9c4a2c90b9b80461ae2b16ce9e9c",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopRepository",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/data/DesktopRepository.class",
+      "actualClassBytesSha256Bytes": "9246ada03ac958257d869820bcb2316423db90b9c0fc9e7b60198a95ecaaeb92",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopDynamicCardOperations",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/data/DesktopDynamicCardOperations.class",
+      "actualClassBytesSha256Bytes": "e5e78e32f2fdbae5141a2fbb3f16de1d659b7feb2a8e7359fd7910a936751688",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicSaveTarget",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopDynamicSaveTarget.class",
+      "actualClassBytesSha256Bytes": "bdbce0678845ae6d9b4ecd4c32a9cffb059bab69c49beed60aad0d5325af8eaf",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicMotionPhotoFiles",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.class",
+      "actualClassBytesSha256Bytes": "5fe9128a509cb6becc74065bbd2f4659c50c71c5c52f9dffd609ab2c39a5ae1c",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicMotionPhotoExif",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopDynamicMotionPhotoExif.class",
+      "actualClassBytesSha256Bytes": "36d0d3d69ca0248c3ef9a67cc99160d0701dcaac4c2f1af859294981072f32b7",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicStaticImageCodecKt",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/bilipai/desktop/ui/DesktopDynamicStaticImageCodecKt.class",
+      "actualClassBytesSha256Bytes": "7d281a9453668fa001f0ebe9b6ea42cd8c2fdd97a1444b88f3fd3547a7ba0cfd",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    },
+    {
+      "className": "com.android.purebilibili.feature.dynamic.components.DesktopOriginalStaticGalleryFormatKt",
+      "source": "file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/image-save-main-integration/main-product-snapshot-04/main-kotlin.jar",
+      "classResource": "com/android/purebilibili/feature/dynamic/components/DesktopOriginalStaticGalleryFormatKt.class",
+      "actualClassBytesSha256Bytes": "1cee83cf2914b2a476456f10278e83e52aa6de68d24f88b0c643f52af2a63834",
+      "actualMainJarSha256Bytes": "3a0822402784d58b66f539b827e07436a26e674c441c3cdaaafb4513c3c4bfe2"
+    }
+  ],
+  "acceptedEvidence": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\runs\\02\\accepted-evidence.json",
+  "acceptedEvidenceSha256Bytes": "d86aa97b79a05d15e1be47c4d763908bc6e4ee7979b09cb84c1e584021e65eff",
+  "formalRaw": [
+    {
+      "path": "IntegrationFixture.kt",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\IntegrationFixture.kt",
+      "sha256Bytes": "03a9976d3c7a4ded5f81a2c6b8a98ad76ab99382f3974488bfe9d8267ec4ee96",
+      "bytes": 18515,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "PLAN.json",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\PLAN.json",
+      "sha256Bytes": "73b6943c218c3d4a93941d0b3d762dbd88f4a215d2ffe39b6fbc6529921d2b80",
+      "bytes": 2652,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "attempt-history.json",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\attempt-history.json",
+      "sha256Bytes": "07747e76cdcf9d7420f5a00355d134fc5592630a2d9a54d8c30f81562b03f4f8",
+      "bytes": 813,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "freeze.py",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\freeze.py",
+      "sha256Bytes": "1d926a3b8b3e911164c1e43d0f0365314e8d62f27f65a1d598787d40a37027af",
+      "bytes": 9592,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "integration-boundaries.json",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\integration-boundaries.json",
+      "sha256Bytes": "d5fd9b88115224fee02ec3673ecb07d5f0e25c55e7f3610ceb9dd6282715b991",
+      "bytes": 1463,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runner.py",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runner.py",
+      "sha256Bytes": "dbcfb99ba155ccf97e536a3b7a35a8008f0908b362974375c073b2451eda0b62",
+      "bytes": 10378,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/01/compile-failure.json",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\01\\compile-failure.json",
+      "sha256Bytes": "113961d0cad43f43b2c7b02b389237a83b3ce274c7becea9644ce4465040490e",
+      "bytes": 152,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/01/compile.log",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\01\\compile.log",
+      "sha256Bytes": "ece62963d72751ddd2e5ec2fcfae14d72ae9766055250dad61d6adf6633303d1",
+      "bytes": 718,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/accepted-evidence.json",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\accepted-evidence.json",
+      "sha256Bytes": "d86aa97b79a05d15e1be47c4d763908bc6e4ee7979b09cb84c1e584021e65eff",
+      "bytes": 6581,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/actual-product-class-identities.json",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\actual-product-class-identities.json",
+      "sha256Bytes": "9dfb2b3746305b657e5e18c640203958f59996c6c2158b8c1db5debf30234ab3",
+      "bytes": 12216,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/compile-evidence.json",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\compile-evidence.json",
+      "sha256Bytes": "19e9290f61a3fdeee4282b4f5d4a9030e6436c8b8b39e227f153810b5ea9636c",
+      "bytes": 36017,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/compile.log",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/compiler.args",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\compiler.args",
+      "sha256Bytes": "af091424dce816f307ff75c9a01113bbe15aafc74154940947c16a9e62f23bfa",
+      "bytes": 23245,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/frozen-sources/IntegrationFixture.kt",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\frozen-sources\\IntegrationFixture.kt",
+      "sha256Bytes": "03a9976d3c7a4ded5f81a2c6b8a98ad76ab99382f3974488bfe9d8267ec4ee96",
+      "bytes": 18515,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/independent-readback.json",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\independent-readback.json",
+      "sha256Bytes": "4020883b2ad59c796eaceb526fc86bfc7cb8ccd11905c916c41d045f737c26e1",
+      "bytes": 1845,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/batch-middle-decode-failure/BiliPai_1790819431476.png",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\batch-middle-decode-failure\\BiliPai_1790819431476.png",
+      "sha256Bytes": "11d7779a0050b34639664bc47377220ac63b66fdc40eddb93c846907c78646ca",
+      "bytes": 9435,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/batch-middle-decode-failure/BiliPai_1790819431521.gif",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\batch-middle-decode-failure\\BiliPai_1790819431521.gif",
+      "sha256Bytes": "e7a12d5b94fe30a04e34f89efb2e8915ab238fb437fb4758be3d8db33425bf03",
+      "bytes": 222,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure-first-complete-stage.png",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\custom-final-failure-first-complete-stage.png",
+      "sha256Bytes": "11d7779a0050b34639664bc47377220ac63b66fdc40eddb93c846907c78646ca",
+      "bytes": 9435,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/custom-success/BiliPai_1790819431072.png",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\custom-success\\BiliPai_1790819431072.png",
+      "sha256Bytes": "11d7779a0050b34639664bc47377220ac63b66fdc40eddb93c846907c78646ca",
+      "bytes": 9435,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/custom-success/BiliPai_1790819431343.jpg",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\custom-success\\BiliPai_1790819431343.jpg",
+      "sha256Bytes": "67a8a44df33c1d254e5edf23cf5d34ef5f25438ad9078f2922d55e43e5123d80",
+      "bytes": 828,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/custom-success/BiliPai_1790819431366.gif",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\custom-success\\BiliPai_1790819431366.gif",
+      "sha256Bytes": "e7a12d5b94fe30a04e34f89efb2e8915ab238fb437fb4758be3d8db33425bf03",
+      "bytes": 222,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/custom-success/BiliPai_1790819431384.webp",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\custom-success\\BiliPai_1790819431384.webp",
+      "sha256Bytes": "f1be19a38372ace3d1bd75c548d31e2db711ba09cbcca7f6bd22f782cc036819",
+      "bytes": 188,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/default-base/BiliPai/BiliPai_1790819431410.png",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\default-base\\BiliPai\\BiliPai_1790819431410.png",
+      "sha256Bytes": "11d7779a0050b34639664bc47377220ac63b66fdc40eddb93c846907c78646ca",
+      "bytes": 9435,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/default-base/BiliPai/BiliPai_Live_1790819431728.jpg",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\default-base\\BiliPai\\BiliPai_Live_1790819431728.jpg",
+      "sha256Bytes": "82fa3588c8b416da506e065d197fdf576e16da248fd86dd30fb53f8d5459e1ab",
+      "bytes": 1062973,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/inputs/alpha.png",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\inputs\\alpha.png",
+      "sha256Bytes": "abcfaf1c7fefb87cacd71f877c4e904925ca51478f88223ccb6b38729582a29e",
+      "bytes": 495,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/inputs/animated.gif",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\inputs\\animated.gif",
+      "sha256Bytes": "e7a12d5b94fe30a04e34f89efb2e8915ab238fb437fb4758be3d8db33425bf03",
+      "bytes": 222,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/inputs/animated.webp",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\inputs\\animated.webp",
+      "sha256Bytes": "f1be19a38372ace3d1bd75c548d31e2db711ba09cbcca7f6bd22f782cc036819",
+      "bytes": 188,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/inputs/decode-failure.png",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\inputs\\decode-failure.png",
+      "sha256Bytes": "26966e908d34bd1731854387babf167e5eb16e68ae3962306afb155921780b97",
+      "bytes": 36,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": true
+    },
+    {
+      "path": "runs/02/proof/inputs/motion.mp4",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\inputs\\motion.mp4",
+      "sha256Bytes": "4aebf236a1c56fc00d2d129c83c96b4f51c7dceb80784f1acd29809d1af08c7f",
+      "bytes": 1055711,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/inputs/rgb.png",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\inputs\\rgb.png",
+      "sha256Bytes": "9277efd5a33842924ec55985db8f741bd051f7ea7bfb01c5b3b39820228a17f3",
+      "bytes": 233,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure-first-complete-stage.bin",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\motion-custom-final-failure-first-complete-stage.bin",
+      "sha256Bytes": "2203ff8e1de03fa03a7110baea9b89b85ee3105ef5634f452fb456fb4eec87a7",
+      "bytes": 1062973,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/reference-quality95.jpg",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\reference-quality95.jpg",
+      "sha256Bytes": "5acfaff93a28907499f9cf0f8c42da56d43f383eb83b94b47fbd260b29ee9804",
+      "bytes": 767,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/proof/result.json",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\proof\\result.json",
+      "sha256Bytes": "d1f52f79f605d290325a4bbdb5df5cbcd937e575de5e76872a60a3d34d2e19fd",
+      "bytes": 4933,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/run.args",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\run.args",
+      "sha256Bytes": "e82993751bf80b921a38798a6d1113dc99f53f08229b8e74598c7f70cf476eb4",
+      "bytes": 23560,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/run.log",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\run.log",
+      "sha256Bytes": "77b44b4a317e8a5acbdac0ae2a43e882086e8ffd96f1b9b1095e1457984b78d8",
+      "bytes": 532,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    },
+    {
+      "path": "runs/02/runtime-process.json",
+      "rawPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-static-save-main04-integration\\formal-raw\\runs\\02\\runtime-process.json",
+      "sha256Bytes": "c2d430cf9ff9c1bb298497e768c98cb597b5767350553478a34eaf8d021345ac",
+      "bytes": 208,
+      "scope": "formal raw evidence",
+      "malformedFixtureInput": false
+    }
+  ],
+  "runtimeReferencesOnly": [
+    {
+      "path": "runs/01/compiler.args",
+      "sha256Bytes": "1653d0d405da9d2d00bff9795162a60ed6ec2f98aa1890709db2bc06b0042229",
+      "bytes": 23245,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/fixture-only.jar",
+      "sha256Bytes": "21dcc805a924207e0420ca1aa44609f4fae3d4594ae04f9b456f8c4b6af14f15",
+      "bytes": 58643,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/01/frozen-sources/IntegrationFixture.kt",
+      "sha256Bytes": "fcba84dbf9dfbbecc8b8b49e45b7d98a37e4ccdef8a55e45dc99901dc77f28f8",
+      "bytes": 18511,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431406.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431407.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431408.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431409.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431410.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431411.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431412.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431413.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431414.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431415.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431416.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431417.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431418.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431419.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431420.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431421.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431422.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431423.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431424.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431425.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431426.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431427.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431428.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431429.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431430.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431431.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431432.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431433.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431434.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431435.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/custom-final-failure/BiliPai_1790819431436.png",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/global-settings/plugin-settings.json",
+      "sha256Bytes": "690a6c894b5c4fd0f9304410a1bb7cd3aa720c2ea2fbd14195c5a25e49b566c8",
+      "bytes": 245,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431724.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431725.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431726.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431727.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431728.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431729.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431730.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431731.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431732.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431733.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431734.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431735.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431736.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431737.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431738.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431739.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431740.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431741.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431742.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431743.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431744.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431745.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431746.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431747.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431748.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431749.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431750.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431751.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431752.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431753.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431754.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431755.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431756.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431757.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431758.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431759.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431760.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431761.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431762.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431763.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431764.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431765.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431766.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431767.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431768.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431769.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431770.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431771.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431772.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431773.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431774.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431775.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431776.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431777.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431778.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431779.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431780.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431781.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431782.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431783.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431784.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431785.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431786.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431787.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431788.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431789.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431790.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431791.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431792.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431793.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431794.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431795.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431796.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431797.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431798.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431799.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431800.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431801.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431802.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431803.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431804.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431805.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431806.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431807.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431808.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431809.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431810.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431811.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431812.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431813.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431814.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431815.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431816.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431817.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431818.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431819.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431820.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431821.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431822.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431823.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431824.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431825.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431826.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431827.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431828.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431829.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431830.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431831.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431832.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431833.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431834.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431835.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431836.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431837.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431838.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431839.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431840.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431841.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431842.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431843.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431844.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431845.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431846.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431847.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431848.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431849.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431850.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431851.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431852.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431853.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431854.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431855.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431856.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431857.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431858.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431859.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431860.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431861.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431862.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431863.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431864.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431865.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431866.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431867.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431868.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431869.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431870.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431871.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431872.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431873.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431874.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431875.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431876.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431877.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431878.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431879.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431880.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431881.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431882.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431883.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431884.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431885.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431886.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431887.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431888.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431889.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431890.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431891.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431892.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431893.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431894.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431895.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431896.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431897.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431898.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431899.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431900.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431901.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431902.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431903.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431904.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431905.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431906.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431907.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431908.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431909.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431910.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431911.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431912.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431913.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431914.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431915.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431916.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431917.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431918.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431919.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431920.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431921.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431922.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431923.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431924.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431925.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431926.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431927.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431928.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431929.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431930.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431931.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431932.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431933.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431934.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431935.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431936.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431937.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431938.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431939.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431940.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431941.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431942.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431943.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431944.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431945.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431946.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431947.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431948.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431949.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431950.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431951.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431952.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431953.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431954.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431955.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431956.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431957.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431958.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431959.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431960.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431961.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431962.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431963.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/motion-custom-final-failure/BiliPai_Live_1790819431964.jpg",
+      "sha256Bytes": "c99eef381a3a2369990d684c69fddb488150aee55688df8f2b103cd214a55885",
+      "bytes": 35,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/proof/default-base/BiliPai/declared-boolean-contract.png",
+      "sha256Bytes": "0b0562deb5188946f429a4309bf24161e185cb6afb9aaac150e64fa683ecd182",
+      "bytes": 27,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/task-home/.skiko/.skiko.lock",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/task-home/temp/jna-80007053/jna14200203307017391827.dll",
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "bytes": 273408,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    },
+    {
+      "path": "runs/02/task-home/temp/jna-80007053/jna14200203307017391827.dll.x",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "scope": "evidenceOnly runtime artifact; excluded from formal raw"
+    }
+  ],
+  "formalRawExcludes": [
+    "JAR",
+    "DLL",
+    "native caches",
+    "dat/lock/x",
+    "compiler/task homes",
+    "stores",
+    "collision sentinel runtime state",
+    "Boolean callback artificial output"
+  ],
+  "ownedSourcesAndStagesDrained": true,
+  "customSentinelTargetsRetainedUnchanged": true,
+  "motionImageFallbackUsesTwoOriginalHTTPInputs": true,
+  "standaloneMP4SaveAsUntouchedAndNotExercised": true,
+  "MainWrites": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "old135MatrixRerun": false,
+  "outsideSocket": false
+}

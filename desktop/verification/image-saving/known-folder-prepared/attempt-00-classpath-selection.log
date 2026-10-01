@@ -1,0 +1,6 @@
+The first invocation stopped before compilation/native calls at dependency selection.
+AssertionError: assert len(jna) == len(stdlib) == 1
+Cause: compiler helper has Kotlin 2.4.0, while actual Main03 runtime stdlib is 2.4.10.
+The corrected runner selects the sole actual runtime kotlin-stdlib entry by artifact,
+then verifies its recorded hash. No fallback runtime or product class override.
+Original runner bytes are preserved in attempt-00-classpath-selection.py.

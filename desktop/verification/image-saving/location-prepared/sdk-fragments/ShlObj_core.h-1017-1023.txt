@@ -1,0 +1,7 @@
+1017:     // If folder is located on the network the function may take long time to execute
+1018:     KF_FLAG_INIT            = 0x00000800,
+1019: 
+1020:     // Get the default path, will also verify folder existence unless KF_FLAG_DONT_VERIFY is also specified
+1021:     KF_FLAG_DEFAULT_PATH    = 0x00000400,
+1022: 
+1023:     // Get the not-parent-relative default path. Only valid with KF_FLAG_DEFAULT_PATH

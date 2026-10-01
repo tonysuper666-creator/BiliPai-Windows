@@ -1,0 +1,219 @@
+{
+  "passed": true,
+  "assertions": 24,
+  "checks": [
+    {
+      "label": "PNG container",
+      "passed": true,
+      "details": null
+    },
+    {
+      "label": "decoded PNG alpha channel exact",
+      "passed": true,
+      "details": null
+    },
+    {
+      "label": "decoded PNG opaque pixels exact",
+      "passed": true,
+      "details": null
+    },
+    {
+      "label": "decoded PNG visible premultiplied colour preserved",
+      "passed": true,
+      "details": {
+        "maxBlackCompositeChannelError": 0,
+        "hiddenRgbExact": false,
+        "nativePremultipliedConversionObserved": true
+      }
+    },
+    {
+      "label": "remaining static JPEG container",
+      "passed": true,
+      "details": null
+    },
+    {
+      "label": "JPEG quantization independently matches Pillow quality95",
+      "passed": true,
+      "details": null
+    },
+    {
+      "label": "EXIF origin1 output dimensions",
+      "passed": true,
+      "details": {
+        "expected": [
+          96,
+          64
+        ],
+        "actual": [
+          96,
+          64
+        ]
+      }
+    },
+    {
+      "label": "EXIF origin1 output pixels match independent transpose",
+      "passed": true,
+      "details": {
+        "meanAbsoluteChannelError": 1.2406684027777777
+      }
+    },
+    {
+      "label": "EXIF origin2 output dimensions",
+      "passed": true,
+      "details": {
+        "expected": [
+          96,
+          64
+        ],
+        "actual": [
+          96,
+          64
+        ]
+      }
+    },
+    {
+      "label": "EXIF origin2 output pixels match independent transpose",
+      "passed": true,
+      "details": {
+        "meanAbsoluteChannelError": 1.2237413194444444
+      }
+    },
+    {
+      "label": "EXIF origin3 output dimensions",
+      "passed": true,
+      "details": {
+        "expected": [
+          96,
+          64
+        ],
+        "actual": [
+          96,
+          64
+        ]
+      }
+    },
+    {
+      "label": "EXIF origin3 output pixels match independent transpose",
+      "passed": true,
+      "details": {
+        "meanAbsoluteChannelError": 1.2237413194444444
+      }
+    },
+    {
+      "label": "EXIF origin4 output dimensions",
+      "passed": true,
+      "details": {
+        "expected": [
+          96,
+          64
+        ],
+        "actual": [
+          96,
+          64
+        ]
+      }
+    },
+    {
+      "label": "EXIF origin4 output pixels match independent transpose",
+      "passed": true,
+      "details": {
+        "meanAbsoluteChannelError": 1.2406684027777777
+      }
+    },
+    {
+      "label": "EXIF origin5 output dimensions",
+      "passed": true,
+      "details": {
+        "expected": [
+          64,
+          96
+        ],
+        "actual": [
+          64,
+          96
+        ]
+      }
+    },
+    {
+      "label": "EXIF origin5 output pixels match independent transpose",
+      "passed": true,
+      "details": {
+        "meanAbsoluteChannelError": 1.2322048611111112
+      }
+    },
+    {
+      "label": "EXIF origin6 output dimensions",
+      "passed": true,
+      "details": {
+        "expected": [
+          64,
+          96
+        ],
+        "actual": [
+          64,
+          96
+        ]
+      }
+    },
+    {
+      "label": "EXIF origin6 output pixels match independent transpose",
+      "passed": true,
+      "details": {
+        "meanAbsoluteChannelError": 1.2322048611111112
+      }
+    },
+    {
+      "label": "EXIF origin7 output dimensions",
+      "passed": true,
+      "details": {
+        "expected": [
+          64,
+          96
+        ],
+        "actual": [
+          64,
+          96
+        ]
+      }
+    },
+    {
+      "label": "EXIF origin7 output pixels match independent transpose",
+      "passed": true,
+      "details": {
+        "meanAbsoluteChannelError": 1.2322048611111112
+      }
+    },
+    {
+      "label": "EXIF origin8 output dimensions",
+      "passed": true,
+      "details": {
+        "expected": [
+          64,
+          96
+        ],
+        "actual": [
+          64,
+          96
+        ]
+      }
+    },
+    {
+      "label": "EXIF origin8 output pixels match independent transpose",
+      "passed": true,
+      "details": {
+        "meanAbsoluteChannelError": 1.2322048611111112
+      }
+    },
+    {
+      "label": "raw GIF independently byte-equal",
+      "passed": true,
+      "details": null
+    },
+    {
+      "label": "raw WebP independently byte-equal",
+      "passed": true,
+      "details": null
+    }
+  ],
+  "AndroidBitmapExecuted": false
+}

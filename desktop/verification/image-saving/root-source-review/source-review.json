@@ -1,0 +1,159 @@
+{
+  "verdict": "No remaining blocker found in this narrow corrected source review.",
+  "sourceCount": 7,
+  "sourceRows": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImageSaveLocations.kt",
+      "sha256Bytes": "88efa261d483c257b329244fa2b50f99e07642c40b174c21c036a8b97d3b6105",
+      "sha256Lf": "88efa261d483c257b329244fa2b50f99e07642c40b174c21c036a8b97d3b6105",
+      "lineCount": 123,
+      "reviewedCopy": "reviewed-source/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImageSaveLocations.kt"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "96895bf38d22efcdbf23dd89bf6ba8e23af987858f4b677bf4a0f8d2c16327e4",
+      "sha256Lf": "96895bf38d22efcdbf23dd89bf6ba8e23af987858f4b677bf4a0f8d2c16327e4",
+      "lineCount": 299,
+      "reviewedCopy": "reviewed-source/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "3e3f79e26f3155c234ec4b77d152c471c03fcc4cfbac944944e5e6718e9ef1e9",
+      "sha256Lf": "3e3f79e26f3155c234ec4b77d152c471c03fcc4cfbac944944e5e6718e9ef1e9",
+      "lineCount": 1396,
+      "reviewedCopy": "reviewed-source/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "sha256Bytes": "bb1cab398a914bf7b2a9703c1c64c94298e372edebfb69a246ab23b371ee62f1",
+      "sha256Lf": "bb1cab398a914bf7b2a9703c1c64c94298e372edebfb69a246ab23b371ee62f1",
+      "lineCount": 219,
+      "reviewedCopy": "reviewed-source/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Bytes": "e639074224211beffbd758dce0315dc28f8e46927abc67df33187ba52d8dc088",
+      "sha256Lf": "e639074224211beffbd758dce0315dc28f8e46927abc67df33187ba52d8dc088",
+      "lineCount": 288,
+      "reviewedCopy": "reviewed-source/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSaveLocationPreferences.kt",
+      "sha256Bytes": "83df4f8424f22c8ee00d81f3de4a79dc658206c1bf5aa65b683f3ed9a372d370",
+      "sha256Lf": "83df4f8424f22c8ee00d81f3de4a79dc658206c1bf5aa65b683f3ed9a372d370",
+      "lineCount": 46,
+      "reviewedCopy": "reviewed-source/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSaveLocationPreferences.kt"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSavePathSettings.kt",
+      "sha256Bytes": "df5344e0105c316480ae4830fd1471e779a89335400216331d74277747e3f68a",
+      "sha256Lf": "df5344e0105c316480ae4830fd1471e779a89335400216331d74277747e3f68a",
+      "lineCount": 90,
+      "reviewedCopy": "reviewed-source/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSavePathSettings.kt"
+    }
+  ],
+  "reviewScope": "Main Locations/Assets + actual Root global preferences/settings/card/comment wiring. Source only; no tests, Gradle, HTTP, chooser, HWND, EXE or accounts operated.",
+  "rootReportedActualMain04CompilationPassed": true,
+  "reviewerVerifiedCompilation": false,
+  "reviewerExecutedRuntime": false,
+  "resolvedIssuesHistory": [
+    {
+      "originalLocationsSha256Lf": "b34772c18b91e8fe89d641222c64a636f46da9d758ee630a0620a2e0519fdfae",
+      "line": 97,
+      "issue": "attempt():Boolean block body had a bare write call without return.",
+      "repair": "return write(...); source verified before any reviewer fixture."
+    },
+    {
+      "originalLocationsSha256Lf": "b34772c18b91e8fe89d641222c64a636f46da9d758ee630a0620a2e0519fdfae",
+      "line": 103,
+      "issue": "Custom attempt false returned directly and skipped original default fallback.",
+      "repair": "Only return true when custom attempt true; false continues to default. Cancellation still rethrows."
+    }
+  ],
+  "originalIdentity": {
+    "tag": "v0.2.3-alpha.9",
+    "commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+    "imagePreviewPath": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+    "imagePreviewSha256Lf": "8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0"
+  },
+  "originalAnchors": [
+    {
+      "lines": "2038-2043,2067-2077,2142-2145",
+      "contract": "URL substring GIF priority/WebP raw bytes; PNG decoded PNG; remaining decoded JPEG95. Name BiliPai_<milliseconds>.<extension>."
+    },
+    {
+      "lines": "2079-2086,2108,2147-2159,2177",
+      "contract": "Custom failure -> default; raw fallback opens a fresh tempFile input, bitmap fallback recompresses bitmap."
+    },
+    {
+      "lines": "505-513",
+      "contract": "urls.map saves every ordinary item before all aggregation; Desktop cancellation must propagate rather than trigger fallback or later requests."
+    },
+    {
+      "lines": "2414,2417-2426,2441-2446,2472-2489,2497-2501",
+      "contract": "Motion Photo BiliPai_Live_<milliseconds>.jpg; custom combined stream first, fresh JPEG/video input fallback; Android DCIM/BiliPai -> Pictures/BiliPai -> DCIM -> Pictures -> no relative path."
+    },
+    {
+      "lines": "2564-2623,2581-2588,2603-2605",
+      "contract": "Standalone MP4 BiliPai_Live_<milliseconds>.mp4, video/mp4, Movies/BiliPai,64KiB stream; no image_save_tree_uri read/custom directory route."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "lines": "6683,6737-6755",
+      "contract": "Original nullable string image_save_tree_uri; null removes primary key. Windows sync+flow use same global settings backing."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt",
+      "lines": "292-306,610-621",
+      "contract": "Cancel/null leaves preference untouched; close dialog -> chooser launch; asynchronous reset-to-null -> dismiss."
+    }
+  ],
+  "staticPureNames": [
+    "desktopOriginalStaticGalleryKeepBytes",
+    "desktopOriginalStaticGalleryExtension",
+    "desktopOriginalStaticGalleryMimeType",
+    "desktopOriginalStaticGalleryFileName"
+  ],
+  "findings": [
+    {
+      "anchor": "DesktopDynamicImageAssets.kt90-104,143-160; DesktopImageSaveLocations.kt99-118",
+      "result": "One anonymous downloaded source; every custom/default attempt reopens/encodes it and creates its own destination stage. No second HTTP download for ordinary write fallback; source/stage finally cleanup retained."
+    },
+    {
+      "anchor": "DesktopDynamicImageAssets.kt112-135; original accepted DesktopDynamicMotionPhotoFiles.kt51,76,83-94",
+      "result": "Only one image+video download pair; each destination attempt reopens both sources. Motion final context.ensureActive remains inside gate; scratch/source finally cleanup retained."
+    },
+    {
+      "anchor": "DesktopDynamicImageAssets.kt75-88; DesktopImageSaveLocations.kt104-118",
+      "result": "Ordinary failure continues batch and aggregates false; custom Boolean false/ordinary exception falls back; CancellationException immediately propagates and never falls back."
+    },
+    {
+      "anchor": "DesktopSessionStore.kt46-49 -> DesktopDynamicImageAssets.kt53-58 -> DesktopImageSaveLifetime.kt25-28 (same Locations file) -> MotionPhotoFiles.kt84",
+      "result": "SessionStore monitor -> Assets lock -> app lifetime gate -> Motion file gate. close lifetime marks closed under app gate then releases it; Root beforeStoreFreeze closes lifetime before subsequent shutdown calls. No app-gate-held Assets.close inversion."
+    },
+    {
+      "anchor": "DesktopShell.kt225-232,249-253,895,1136-1142; prefs.kt26-44",
+      "result": "One pluginStore-key global lifetime/preferences/locations, same original settings key. No MID/sessionEpoch/popup key in global preference authority. Real Root scope/window chooser supplied; popup close does not retire chooser request; app close/restore retire lifetime."
+    },
+    {
+      "anchor": "DesktopOriginalDynamicCardHost.kt59,68-72; CommunityDynamicScreens.kt92,123-139",
+      "result": "Both dynamic Assets and comment PNG use the same Root Local locations instance. Comment commit order is SessionStore -> export owner lock -> app gate; actual writer invokes final owned/cancellation check inside commit before move."
+    }
+  ],
+  "explicitlyPending": [
+    "MP4 default Movies/Videos mapping (explicit SaveAs retained)",
+    "Space avatar preview/save entry",
+    "Windows Photos/MediaStore indexing equivalence",
+    "Real chooser acceptance",
+    "HWND/shell/receiver behaviour",
+    "Desktop EXE acceptance",
+    "Android Bitmap/ICC full equivalence"
+  ],
+  "boundary": "Root-reported Main04 compile PASS is attributed, not this reviewer proof. The current mutable source pins identify reviewed bytes; actual immutable compiled/runtime verification is separate Root evidence.",
+  "MainEdited": false,
+  "oldFrozenEdited": false,
+  "sharedGradle": false,
+  "testsExecuted": false,
+  "HTTP": false,
+  "HWND": false
+}

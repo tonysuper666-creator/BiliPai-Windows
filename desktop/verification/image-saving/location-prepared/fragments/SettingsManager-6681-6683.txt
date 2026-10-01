@@ -1,0 +1,3 @@
+    private val KEY_DOWNLOAD_PATH = stringPreferencesKey("download_path")
+    private val KEY_DOWNLOAD_EXPORT_TREE_URI = stringPreferencesKey("download_export_tree_uri")
+    private val KEY_IMAGE_SAVE_TREE_URI = stringPreferencesKey("image_save_tree_uri")

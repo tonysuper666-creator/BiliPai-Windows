@@ -1,0 +1,14 @@
+Compiled from "DesktopOriginalStaticGalleryFormat.kt"
+public final class com.android.purebilibili.feature.dynamic.components.DesktopOriginalStaticGalleryFormatKt {
+  public static final boolean desktopOriginalStaticGalleryKeepBytes(java.lang.String);
+    descriptor: (Ljava/lang/String;)Z
+
+  public static final java.lang.String desktopOriginalStaticGalleryExtension(java.lang.String);
+    descriptor: (Ljava/lang/String;)Ljava/lang/String;
+
+  public static final java.lang.String desktopOriginalStaticGalleryMimeType(java.lang.String);
+    descriptor: (Ljava/lang/String;)Ljava/lang/String;
+
+  public static final java.lang.String desktopOriginalStaticGalleryFileName(java.lang.String);
+    descriptor: (Ljava/lang/String;)Ljava/lang/String;
+}

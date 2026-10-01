@@ -1,0 +1,21 @@
+{
+  "compile01": {
+    "accepted": false,
+    "fixtureOnly": true,
+    "reason": "Fixture JPEG byte constants needed parentheses before toByte; no product source changed.",
+    "logSha256Bytes": "ece62963d72751ddd2e5ec2fcfae14d72ae9766055250dad61d6adf6633303d1"
+  },
+  "compile02": {
+    "accepted": true,
+    "fixtureOnly": true,
+    "logSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "run02": {
+    "accepted": true,
+    "runtimeAssertions": 54,
+    "cases": 7,
+    "independentReadbackAssertions": 15,
+    "runLogSha256Bytes": "77b44b4a317e8a5acbdac0ae2a43e882086e8ffd96f1b9b1095e1457984b78d8",
+    "nativeLoaderNotice": "SkLoadICU emitted missing icudtl.dat notices in private task-home; executed PNG/JPEG/motion outputs passed independent Pillow/XML readback."
+  }
+}

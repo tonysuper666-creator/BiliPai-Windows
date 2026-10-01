@@ -1,0 +1,15 @@
+504: 
+505:     fun requestSaveAllImages() {
+506:         if (images.isEmpty() || isSaving) return
+507:         val urls = images.map(::normalizeImageUrl).filter(String::isNotEmpty)
+508:         if (storagePermission.isGranted) {
+509:             isSaving = true
+510:             scope.launch {
+511:                 val success = urls.map { saveImageToGallery(context, it) }.all { it }
+512:                 isSaving = false
+513:                 withContext(Dispatchers.Main) { handleImageSaveResult(success) }
+514:             }
+515:         } else {
+516:             pendingSaveAction = { requestSaveAllImages() }
+517:             storagePermission.request()
+518:         }

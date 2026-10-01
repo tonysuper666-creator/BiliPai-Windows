@@ -36,3 +36,5 @@ desktop/verification/dynamic-follow/** -text
 desktop/verification/dynamic-detail-reply/** -text
 desktop/verification/dynamic-detail-container/** -text
 desktop/verification/dynamic-media/** -text
+
+desktop/verification/image-saving/** -text

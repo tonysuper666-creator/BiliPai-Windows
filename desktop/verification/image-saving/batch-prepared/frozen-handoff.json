@@ -1,0 +1,170 @@
+{
+  "frozen": true,
+  "status": "task-only candidate accepted for four requested batch contracts",
+  "base": "immutable actual Main03 / 92 entries",
+  "actualMain03ManifestSha256Bytes": "f9d91763db17acaa59753f5dccad4feb88512c8ad2984062520ed867943df6a6",
+  "orderedActual92CpSha256Bytes": "3abb7e2fecccb5bd0693e6b0868d002b576fc8f689d734d86bd5737fe1c39cac",
+  "installSource": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+  "permittedDelta": "Only saveImages attempt-all ordinary-failure aggregation; CancellationException immediately propagates.",
+  "acceptedAssertions": 36,
+  "acceptedCases": 4,
+  "actualLoopbackRequests": 9,
+  "declaredAssetsFamilyOnlyOverrideClassNames": [
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$Companion.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$3.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$4.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$downloadTo$5.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$exif$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$motionPhoto$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$motionPhoto$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$motionPhoto$3.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImage$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveImages$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveLivePhotoVideo$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveMotionPhoto$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$saveMotionPhoto$2$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$special$$inlined$-addNetworkInterceptor$1.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets$write$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssets.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt$selectDynamicSaveDirectory$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt$selectDynamicSaveTarget$2.class",
+    "com/bilipai/desktop/ui/DesktopDynamicImageAssetsKt.class"
+  ],
+  "rootParentPickerAdapterBodyUnchanged": true,
+  "StoreRepoOpsSaveTargetMotionFilesOverride": false,
+  "MainInstalledIntegration": false,
+  "staticCodecIntegrated": false,
+  "allWritesWithinNewTaskLane": true,
+  "MainOtherLaneGradleHWNDUserDirectoryWrites": false,
+  "old114Or135RerunOrAcceptance": false,
+  "files": [
+    {
+      "path": "BatchFixture.kt",
+      "sha256Bytes": "c236e1cfc8500cdddfebb859b9b844750e413637d00a57927cebf907e7cf20ca",
+      "bytes": 10728
+    },
+    {
+      "path": "attempt-history.json",
+      "sha256Bytes": "68768a7ebb021b072bb25d4cffb87cdbb4e4818e18e40f8faa2c2455799cdcbe",
+      "bytes": 788
+    },
+    {
+      "path": "candidate.diff",
+      "sha256Bytes": "6e3ffc4c9d796b202ba3096ea962c259890f36346fec2cba71a66f9de93f031c",
+      "bytes": 1254
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "56f9d6cbb6506b24f55fd59dec46905db76ff0b157b3053481843d67ef142211",
+      "bytes": 4025
+    },
+    {
+      "path": "original/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "5ed7475e399b768f1090e3f4a22d15f26c45c6debdb336422a0bfb774f02c868",
+      "bytes": 12486
+    },
+    {
+      "path": "original/alpha9-save-all-contract.txt",
+      "sha256Bytes": "f8bd6c5d292f366b33931da488e19840b0ec6a8b20f85e175e69985f085c88cf",
+      "bytes": 674
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "578412a5ae769746512e6fdc86f2e819570f974597400ffecdebb74413036b41",
+      "bytes": 12817
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "996808d30aa78fa03b86b93311a57afddcb137267cd6c463d4ea61f63a6e8d90",
+      "bytes": 11363
+    },
+    {
+      "path": "runs/02/accepted-evidence.json",
+      "sha256Bytes": "31d2499bcd38743ca0bf5e4eeccdee4a1ae67a297ecb49df76dac6cf517001c4",
+      "bytes": 5436
+    },
+    {
+      "path": "runs/02/candidate-and-fixture.jar",
+      "sha256Bytes": "7ad09d01a12e2a9c1c55d580b2194185dfe91ba566c2bebb6332635d02c9d1f8",
+      "bytes": 81722
+    },
+    {
+      "path": "runs/02/compile-evidence.json",
+      "sha256Bytes": "613bfc63ab5beb61f1804187fd320e91501338582de2c8d47e1339b3dd40b000",
+      "bytes": 38303
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "ce6e0592a425bcb2ede6c535234d15bffb963ea829df8cd2e3e75cfbf368321d",
+      "bytes": 671
+    },
+    {
+      "path": "runs/02/compiler.args",
+      "sha256Bytes": "6e7236e2dc5db6e145bdc363bd299a2fc400c071a408ca80c7d78d14c476cc01",
+      "bytes": 23383
+    },
+    {
+      "path": "runs/02/frozen-sources/BatchFixture.kt",
+      "sha256Bytes": "c236e1cfc8500cdddfebb859b9b844750e413637d00a57927cebf907e7cf20ca",
+      "bytes": 10728
+    },
+    {
+      "path": "runs/02/frozen-sources/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "c7fa814fc7d1a9b604d198f739843ce66b47c0cb875513ead77ad7a4e789edf4",
+      "bytes": 12807
+    },
+    {
+      "path": "runs/02/proof/cancel-middle/BiliPai-1790817353845-1.png",
+      "sha256Bytes": "feb1e4409d009e0ec502eaabe321f86b5197a881e9b765252ec8a75d6957596d",
+      "bytes": 131072
+    },
+    {
+      "path": "runs/02/proof/first-failure/BiliPai-1790817353501-2.png",
+      "sha256Bytes": "feb1e4409d009e0ec502eaabe321f86b5197a881e9b765252ec8a75d6957596d",
+      "bytes": 131072
+    },
+    {
+      "path": "runs/02/proof/first-failure/BiliPai-1790817353501-3.png",
+      "sha256Bytes": "feb1e4409d009e0ec502eaabe321f86b5197a881e9b765252ec8a75d6957596d",
+      "bytes": 131072
+    },
+    {
+      "path": "runs/02/proof/middle-failure/BiliPai-1790817353624-1.png",
+      "sha256Bytes": "feb1e4409d009e0ec502eaabe321f86b5197a881e9b765252ec8a75d6957596d",
+      "bytes": 131072
+    },
+    {
+      "path": "runs/02/proof/middle-failure/BiliPai-1790817353624-3.png",
+      "sha256Bytes": "feb1e4409d009e0ec502eaabe321f86b5197a881e9b765252ec8a75d6957596d",
+      "bytes": 131072
+    },
+    {
+      "path": "runs/02/proof/result.json",
+      "sha256Bytes": "18368a4b1e56837bf8376a286bb00474a445714cf2a7a989b52edf8e284cede2",
+      "bytes": 2395
+    },
+    {
+      "path": "runs/02/run.args",
+      "sha256Bytes": "b7722e67b56270893f82df9878a2280b2c62b24014ce16395ddb1e2e9b90ac8c",
+      "bytes": 23687
+    },
+    {
+      "path": "runs/02/run.log",
+      "sha256Bytes": "d1dbee8b75d6146fe5a2c4b55bb1459085bac0e66b620e600b1af74f19eac52a",
+      "bytes": 114
+    },
+    {
+      "path": "runs/02/src/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "c7fa814fc7d1a9b604d198f739843ce66b47c0cb875513ead77ad7a4e789edf4",
+      "bytes": 12807
+    },
+    {
+      "path": "source-contract.json",
+      "sha256Bytes": "fbc3fb60710e2615398fed58b3f7791c4735d3523fa7975b6322a3a1ed00536f",
+      "bytes": 1124
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "sourceCount": 2,
+  "sources": [
+    {
+      "path": "compile-01/sources/DesktopOriginalImageSaveLocationPolicy.kt",
+      "sha256Bytes": "4a7892023f8c89913f3fe11b5d4ba7ec2bd8283438d710474f64d5a9361a41e2"
+    },
+    {
+      "path": "compile-01/sources/DesktopImageSaveLocationPreferences.kt",
+      "sha256Bytes": "83df4f8424f22c8ee00d81f3de4a79dc658206c1bf5aa65b683f3ed9a372d370"
+    }
+  ],
+  "candidateJarSha256Bytes": "3dae9db40e9539eb22a336b30d31c600742e233814fc3c858b7d659417364d6c",
+  "actualMainSnapshotSha256Bytes": "f164846bb1ebe5545c727824bfa6fe853a5fca92bfd1bcfddf59abb53c943d17",
+  "runtimeCpCount": 89,
+  "runtimeBinaryPinsPrePostVerified": true,
+  "candidateClassCount": 8,
+  "classFqnIntersection": [],
+  "pureLocationMethodCount": 3,
+  "baseSamePackageMethodCount": 167,
+  "methodSignatureIntersection": [],
+  "preferenceFacadeUsesExistingStore": true,
+  "originalPureContentUriAlgorithmUnchanged": true,
+  "RootSettingsOwnerGateRequired": true,
+  "WindowsDirectoryPickerOrKnownFolderConsumerIntegrated": false,
+  "PNGJPEGTranscoderIntegrated": false,
+  "runtimePreferencesFixtureExecuted": false,
+  "MainInstalled": false,
+  "HTTP": false,
+  "HWND": false,
+  "SharedGradle": false
+}

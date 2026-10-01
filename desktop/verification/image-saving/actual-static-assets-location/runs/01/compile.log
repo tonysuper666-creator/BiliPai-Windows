@@ -1,0 +1,6 @@
+runs\01\frozen-sources\IntegrationFixture.kt:189:23: error: operator '==' cannot be applied to 'Byte' and 'Int'.
+                prove(bytes[0] == -1.toByte() && bytes[1] == -40.toByte() && bytes.takeLast(video.size).toByteArray().contentEquals(video), "$name actual Files JPEG and exact MP4 tail")
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+runs\01\frozen-sources\IntegrationFixture.kt:189:50: error: operator '==' cannot be applied to 'Byte' and 'Int'.
+                prove(bytes[0] == -1.toByte() && bytes[1] == -40.toByte() && bytes.takeLast(video.size).toByteArray().contentEquals(video), "$name actual Files JPEG and exact MP4 tail")
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^

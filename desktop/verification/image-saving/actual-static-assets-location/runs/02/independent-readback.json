@@ -1,0 +1,86 @@
+{
+  "passed": true,
+  "assertions": 15,
+  "checks": [
+    {
+      "passed": true,
+      "label": "png actual complete PNG dimensions",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "png alpha channel exact",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "png visible premultiplied color preserved",
+      "details": {
+        "maxError": 0
+      }
+    },
+    {
+      "passed": true,
+      "label": "remaining input actual JPEG dimensions",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "actual JPEG independently quality95 quantization",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "gif exact original raw bytes",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "gif retains three real animation frames",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "webp exact original raw bytes",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "webp retains three real animation frames",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "fallback-png actual complete PNG dimensions",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "fallback-png alpha channel exact",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "fallback-png visible premultiplied color preserved",
+      "details": {
+        "maxError": 0
+      }
+    },
+    {
+      "passed": true,
+      "label": "motion fallback exact MP4 tail",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "motion fallback valid original XMP video offset",
+      "details": null
+    },
+    {
+      "passed": true,
+      "label": "motion fallback actual JPEG readable",
+      "details": null
+    }
+  ],
+  "AndroidBitmapExecuted": false
+}

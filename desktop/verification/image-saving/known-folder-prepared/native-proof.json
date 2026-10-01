@@ -1,0 +1,51 @@
+{
+  "actualNative": true,
+  "os": "Windows 11",
+  "architecture": "amd64",
+  "pointerSize": 8,
+  "wcharSize": 2,
+  "resolvedDefault": "C:\\Users\\TONYS\\Pictures\\BiliPai",
+  "folderFlags": 0,
+  "nullToken": true,
+  "directoryOrFileWrites": 0,
+  "cases": [
+    {
+      "case": "fresh calling thread",
+      "initializeHresult": 0,
+      "shellHresult": 0,
+      "freeCalls": 1,
+      "ownedComUninitializeCalls": 1,
+      "guidBytes": "3081e2331e4e7646835a98395c3bc3bb",
+      "passed": true
+    },
+    {
+      "case": "repeated call balances fresh COM reference",
+      "initializeHresult": 0,
+      "shellHresult": 0,
+      "freeCalls": 1,
+      "ownedComUninitializeCalls": 1,
+      "guidBytes": "3081e2331e4e7646835a98395c3bc3bb",
+      "passed": true
+    },
+    {
+      "case": "already MTA S_FALSE reference balanced",
+      "initializeHresult": 1,
+      "shellHresult": 0,
+      "freeCalls": 1,
+      "ownedComUninitializeCalls": 1,
+      "guidBytes": "3081e2331e4e7646835a98395c3bc3bb",
+      "passed": true
+    },
+    {
+      "case": "already STA different apartment preserved",
+      "initializeHresult": -2147417850,
+      "shellHresult": 0,
+      "freeCalls": 1,
+      "ownedComUninitializeCalls": 0,
+      "guidBytes": "3081e2331e4e7646835a98395c3bc3bb",
+      "passed": true
+    }
+  ],
+  "mainIntegrated": false,
+  "persistentUiIntegrated": false
+}

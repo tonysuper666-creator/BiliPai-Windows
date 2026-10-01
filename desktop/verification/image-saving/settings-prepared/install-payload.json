@@ -1,0 +1,25 @@
+{
+  "sourceOnlyTargets": [
+    {
+      "prepared": "prepared/desktop/tools/extract-image-save-settings-ui.py",
+      "target": "desktop/tools/extract-image-save-settings-ui.py",
+      "status": "new",
+      "sha256Bytes": "17658d519f5460c4c47ceb4907007cfe489277520465ea6e9f2ed6fcd3359734"
+    },
+    {
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSavePathSettings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSavePathSettings.kt",
+      "status": "new",
+      "sha256Bytes": "df5344e0105c316480ae4830fd1471e779a89335400216331d74277747e3f68a"
+    }
+  ],
+  "existingOriginalIdentitiesMerged": 2,
+  "newOriginalIdentities": 0,
+  "resourcesAdded": [],
+  "sharedPreferenceProducer": "static-save-location-next/evidence-manifest.json 34a233ab8d023a65e1e1f4851dc192f66f2f8728fb4fbc865fe332fd55780cbf",
+  "generatedCount": 2,
+  "consumerPatch": "consumer.patch",
+  "shellPatch": "manual snippet ROOT-INTEGRATION.txt only",
+  "producerDuplicatesMainFqn": false,
+  "actualMainIntegrated": false
+}

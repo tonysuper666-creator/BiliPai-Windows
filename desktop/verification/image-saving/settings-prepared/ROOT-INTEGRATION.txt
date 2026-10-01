@@ -1,0 +1,118 @@
+SOURCE-ONLY IMAGE SAVE SETTINGS WINDOW SEAM
+
+CURRENT MAIN READ-ONLY FINDINGS
+DesktopSettingsSearchPolicy already has the original IMAGE_SAVE_PATH entry,
+destination copy, root Storage category and semantic photo icon. Search clicks
+correctly dispatch DesktopSettingsNavigator.openDetail(IMAGE_SAVE_PATH, focus).
+DesktopSettingsTree has no IMAGE_SAVE_PATH Detail case, so it shows the generic
+not-ported label. STORAGE_BACKUP only has the original backup/WebDAV rows; there
+is no image location row, actual preference facade or location chooser action.
+DesktopAppReady holds one Root-supplied global pluginStore and pluginRuntime.context.
+Do not replace it with account library, another DesktopPluginStore or per-MID settings.
+
+MINIMUM PRODUCTION PAYLOAD
+1) prepared/desktop/tools/extract-image-save-settings-ui.py -> desktop/tools/
+   extract-image-save-settings-ui.py. generate(repo, output) emits two new original
+   selected UI functions. Both original identities SettingsSections.kt and
+   SettingsScreen.kt already exist; merge their feature tags, add no duplicate identity.
+   No new resource; existing DesktopSettingsVectors owns photo XML/semantic icons.
+2) prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/
+   DesktopImageSavePathSettings.kt -> identically named Main source target (new).
+3) Reuse static36's EXACT original-key DesktopImageSaveLocationPreferences bridge;
+   it is a separate producer and is not copied/redefined in this payload.
+Generated files are produced by the tool, never installed as another manual FQN.
+Root alone handles Gradle/sourceSets/registry. No full Shell/tree replacement.
+
+EXACT PUBLIC KOTLIN CALL (internal to desktop module)
+DesktopImageSavePathSettings(
+  preferences: DesktopImageSaveLocationPreferences,
+  settingsScope: CoroutineScope,
+  chooseDirectory: suspend () -> Path?,
+  stillOwned: () -> Boolean,
+  onFailure: (Throwable) -> Unit,
+  onMessage: (String) -> Unit = {},
+  openInitially: Boolean = false,
+  onDialogDismissed: () -> Unit = {},
+)
+The row observes original saved Flow, using sync getter as initial value. Popup
+uses original AppAlertDialog + original two AppDialogActions. Only Android album/
+SAF-grant explanatory copy is changed to Windows system Pictures/folder selection.
+Title, saved indication, colors, spacing, buttons and original callback order remain.
+Success feedback is emitted after the real setter returns, so write failure cannot
+show a false success. Original Android toast side effect is a Root feedback callback.
+
+TREE TAIL SEAM (consumer.patch contains only these local hunks)
+Add optional imageSavePathContent: @Composable (openInitially: Boolean) -> Unit.
+STORAGE_BACKUP mounts imageSavePathContent(false) beside the existing selected
+backup rows. Detail IMAGE_SAVE_PATH mounts imageSavePathContent(true), so a search
+hit immediately opens the original dialog. Existing fields and all navigation stay.
+Example Root content passes the exact global preferences instance and scope; optional
+onDialogDismissed may pop the leaf, but must not retire the picker settings intent.
+
+GLOBAL PREFERENCE / SETTINGS INTENT LIFETIME
+  val imageLocation = remember(pluginStore) {
+    DesktopImageSaveLocationPreferences(pluginStore, withOwnedSettingsCommit)
+  }
+Use the existing actual application/settings-window commit gate. A single in-memory
+settings intent may retire under its lock on actual settings-window close or restore.
+The popup's shown flag, leaf page disposal, dynamic card token, account MID and
+repository sessionEpoch are NOT the preference owner. Original confirm first closes
+the popup and then launches a picker; a popup-local rememberCoroutineScope would
+cancel valid selection. Pass Root's existing settings/application scope and the
+actual existing chooser parent hostWindow. Recheck the intent before/after suspend
+picker and inside preferences' supplied commit gate. Store.writesFrozen remains
+the authoritative restore barrier, not a cached Boolean replacement.
+Account changes do not create a second location setting or erase the global value.
+Null chooser result does not write. Reset calls original nullable setter with null,
+removing only settings/image_save_tree_uri. This adapter neither falls back after
+chooser cancellation nor grants Android persistable permission. Windows selected
+absolute Path is serialized as a file URI; unsupported saved Android content URI
+is retained until user explicitly chooses/reset, and its consumer boundary stays
+Root's original custom-failure/default policy.
+
+EXISTING ONE CHOOSER
+Root can supply selectDynamicSaveDirectory(hostWindow), already the one existing
+JFileChooser.DIRECTORIES_ONLY function. Its current caption is "保存全部图片";
+if desired, add a compatible title tail parameter at that existing function and
+pass "选择图片保存目录" for settings. Do not add a second chooser implementation.
+This candidate never executes the chooser, requests account data or writes Pictures.
+
+ACTUAL SAVE CONSUMER SEAMS (Root must connect in same complete slice)
+- DesktopOriginalDynamicCardHost.kt: Assets construction lines65–71 uses selectTarget
+  and selectDirectory callbacks; existing platform.saveImage/saveImages callbacks
+  are lines130–131. Inject same global sync location resolver here, preserving card/
+  repository owner and final commit. It also owns current live/motion image save
+  choices; retain existing EXIF/staging guards instead of replacing them.
+- CommunityDynamicScreens.kt: detail DesktopDynamicCommentPlatform saveImage
+  callback lines126–139 currently prompts for a PNG path. Use the same directory
+  target resolver, retain exact exportOwner/page lock and writeDesktopReplyCommentImage.
+  Location is global; the actual individual save remains guarded by current page/epoch.
+- Original DynamicSaveImage, generic ImagePreviewDialog and ReplyCommentImageSaver
+  consume SettingsManager.getImageSaveTreeUriSync and custom-directory helpers.
+  This settings producer does not replace their original format/output algorithms.
+  Existing Root codec101 and batch candidate are independently frozen; combine at
+  the existing Assets stage/commit rather than a parallel save/client/item/cache owner.
+
+ORIGINAL AVATAR SCOPE STILL PENDING
+Alpha9 SpaceScreen852–860 opens avatar ImagePreviewDialog(images=listOf(face));
+843 is TOP PHOTO, not avatar. That original preview's default save uses image
+location. Main DesktopSpaceOverviewScreens44 avatar merely onUser(user.mid), and
+fallback DesktopSpaceScreens84 is AsyncImage without save. Current banner preview
+does not expose save. No avatar preview/save consumer was installed by this lane.
+The original dialog text's avatar scope is intended scope, not proof of that feature.
+Other article/video/comment preview hosts must be inventoried when their complete
+original previews mount; this slice does not claim every image save is wired.
+
+PROOF SCOPE
+5 source candidate independently compiled against immutable Main03 f9/92 with
+actual product internal friend module. UI producer + adapter + original frozen
+bridge + fixture; product class FQN overlap0, no dependencies added. Five action
+cases use actual Main03 DesktopPluginStore in task temp disk and a synthetic chooser:
+selection/Flow/shared re-open, cancel retains, late after intent close rejects,
+reset removes key only, existing frozen store blocks writes. They prove the actual
+setter/lifetime seam; no pointer/UI composition, HWND or real chooser accepted.
+Main files, registry, Gradle, old freezes and user/account data were not changed.
+
+Independent read-only review confirmed original dialog/restore order and global
+scope constraints. This payload can be installed now; Root needs actual Main UI/
+chooser + Assets combination acceptance to credit the complete user-facing slice.

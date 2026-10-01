@@ -1,0 +1,30 @@
+--- actual-Main03-Assets
++++ batch-candidate-Assets
+@@ -67,12 +67,22 @@
+         val parent = selectDirectory() ?: return@withLock false
+         checkpoint()
+         val stamp = System.currentTimeMillis()
++        var allSaved = true
+         for ((index, raw) in rawUrls.withIndex()) {
+-            val url = normalizeImageUrl(raw)
+-            val target = parent.resolve("BiliPai-$stamp-${index + 1}.${extension(resolveImageShareMimeType(url))}")
+-            write(url, DesktopDynamicSaveTarget(target, false), MAX_IMAGE_BYTES)
+-        }
+-        true
++            checkpoint()
++            val saved = try {
++                val url = normalizeImageUrl(raw)
++                val target = parent.resolve("BiliPai-$stamp-${index + 1}.${extension(resolveImageShareMimeType(url))}")
++                write(url, DesktopDynamicSaveTarget(target, false), MAX_IMAGE_BYTES)
++            } catch (cancelled: CancellationException) {
++                throw cancelled
++            } catch (_: Exception) {
++                checkpoint()
++                false
++            }
++            if (!saved) allSaved = false
++        }
++        allSaved
+     }
+     suspend fun saveLivePhotoVideo(rawUrl: String): Boolean = saveMutex.withLock {
+         checkpoint()

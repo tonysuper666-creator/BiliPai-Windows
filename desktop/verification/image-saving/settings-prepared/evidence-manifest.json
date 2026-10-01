@@ -1,0 +1,137 @@
+{
+  "schema": "image-save-settings-source-only-candidate-v1",
+  "frozen": true,
+  "artifactCount": 19,
+  "artifacts": [
+    {
+      "path": "ROOT-INTEGRATION.txt",
+      "sizeBytes": 7786,
+      "sha256Bytes": "1c268fc032fe09ae82f0a0fd9316195b4b5909d7af34bf900566754dd695971a"
+    },
+    {
+      "path": "SettingsActionFixture.kt",
+      "sizeBytes": 3427,
+      "sha256Bytes": "71201623e5d9f9a443113a30170f4dd4f43dde20800f975a23c58b235e526824"
+    },
+    {
+      "path": "action-01.log",
+      "sizeBytes": 854,
+      "sha256Bytes": "497d4321029b924a6cad0900a95376e789d8e2b0cead9dc98f9c1eab83a57ad1"
+    },
+    {
+      "path": "action-process.json",
+      "sizeBytes": 24749,
+      "sha256Bytes": "9d7b1413d07438f424e58f102950d89635e31e43101725939e72d62189342a85"
+    },
+    {
+      "path": "action-proof.json",
+      "sizeBytes": 907,
+      "sha256Bytes": "a40f309c93d1918e72b5667c54066f5043bbdb8df5dd9d8fae1a4754ab6944ca"
+    },
+    {
+      "path": "compile-01.args",
+      "sizeBytes": 24493,
+      "sha256Bytes": "009fcf8568a7061482e659f800b0d48593869cc5ffe7563b1e9a438104ba1d92"
+    },
+    {
+      "path": "compile-01.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-and-prove.py",
+      "sizeBytes": 3759,
+      "sha256Bytes": "fbbc24efbae731b3913278d337b32234937640e1e10942a6617616b530f00efd"
+    },
+    {
+      "path": "compile-evidence.json",
+      "sizeBytes": 2204,
+      "sha256Bytes": "3332c9266bd504e5ab4ab6966392f312b3f564f6c3adaeafcc73447ea8e5ae02"
+    },
+    {
+      "path": "consumer-baseline.json",
+      "sizeBytes": 534,
+      "sha256Bytes": "7571de1368cbd8da63f71197fc5a8eb39f00d5914c57feacf844662100e94b89"
+    },
+    {
+      "path": "consumer.patch",
+      "sizeBytes": 2154,
+      "sha256Bytes": "b51684f8d16330db7848e944db2eb1e4f0f2224855f32156ce3454fd0e738ac5"
+    },
+    {
+      "path": "current-consumer-read-only-pins.json",
+      "sizeBytes": 1726,
+      "sha256Bytes": "e84825f4b2855e4899e8292e8fe2142c4461ef5413e95342e1fbcca6004ff3aa"
+    },
+    {
+      "path": "freeze.py",
+      "sizeBytes": 6451,
+      "sha256Bytes": "505c31597167ef934277027f587c1a39ba353015570db087d365129cb5a081f4"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/DesktopOriginalImageSavePathDialog.kt",
+      "sizeBytes": 2470,
+      "sha256Bytes": "8414ad947b93fa75dd0955cf924b926757becd6abbcc27564eb345ff9467ded0"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsImageSavePathEntry.kt",
+      "sizeBytes": 1588,
+      "sha256Bytes": "fcde15035333fafef368309dd54a97af92e55f4ee1de9f06ebca706e6faa16df"
+    },
+    {
+      "path": "install-payload.json",
+      "sizeBytes": 1077,
+      "sha256Bytes": "c3176d95e417e62d08f3af234ef30951c3d281c5733f8cd9354e088383f5bf8e"
+    },
+    {
+      "path": "original-source-inventory.json",
+      "sizeBytes": 957,
+      "sha256Bytes": "3301a1cb96fc571f0c1c38f67746cf24bcafa26ba098c7064b3998645bcc9a84"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSavePathSettings.kt",
+      "sizeBytes": 3891,
+      "sha256Bytes": "df5344e0105c316480ae4830fd1471e779a89335400216331d74277747e3f68a"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-image-save-settings-ui.py",
+      "sizeBytes": 5615,
+      "sha256Bytes": "17658d519f5460c4c47ceb4907007cfe489277520465ea6e9f2ed6fcd3359734"
+    }
+  ],
+  "evidenceOnlyRuntimeCount": 2,
+  "evidenceOnlyRuntimeArtifacts": [
+    {
+      "path": "settings-image-path-candidate.jar",
+      "sizeBytes": 61006,
+      "sha256Bytes": "5442e37742d77979e4d0d04906d2065730ce01207bc257f668cc90de37c81488",
+      "reason": "task compiled classes/store only, do not install or commit"
+    },
+    {
+      "path": "task-store/plugin-settings.json",
+      "sizeBytes": 59,
+      "sha256Bytes": "caddcbcc5dafdfe18b362149609646bb6770ed4e19f3ca235ef2eaf819a89849",
+      "reason": "task compiled classes/store only, do not install or commit"
+    }
+  ],
+  "proof": {
+    "main03Immutable92CpVerifiedBeforeAfter": true,
+    "sourceCompileCount": 5,
+    "productFqnOverlap": 0,
+    "actualProductStoreActionCases": 5,
+    "realChooser": false,
+    "uiPointerOrComposition": false,
+    "actualMainIntegrated": false
+  },
+  "pending": [
+    "actual Main install/consumer combine",
+    "UI pointer and real chooser",
+    "global preference/default/custom target consumer integration",
+    "Windows avatar preview/save",
+    "all original storage settings"
+  ],
+  "mainEdited": false,
+  "sharedGradle": false,
+  "accountRequests": false,
+  "userDirectoryFilesWritten": false
+}
