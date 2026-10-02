@@ -1,0 +1,719 @@
+{
+  "schema": 1,
+  "frozen": true,
+  "productionInstalled": false,
+  "files": [
+    {
+      "path": "FIELD-CONSUMER-AUDIT.json",
+      "sha256Bytes": "a4aece4f8e2ef32895ec8ad6fa8c6a05e22237b9344e9446898470c9b54be9f9",
+      "sizeBytes": 3447
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256Bytes": "0ce6332da3a6e612b91a58cf59f2ec9cfecd45cadc6b88bf393c57003e6b27ff",
+      "sizeBytes": 8786
+    },
+    {
+      "path": "NavigationFullFixture.kt",
+      "sha256Bytes": "e397f7a7976498a5ebe1e5aae9675a3a152d00dcc0ecd3539e8fcd0a02d561fd",
+      "sizeBytes": 13357
+    },
+    {
+      "path": "NavigationJUnitRunner.java",
+      "sha256Bytes": "43f273dc7cb29495308006b71c034c7d355a303ba6ec63e87601032e3d80a190",
+      "sizeBytes": 1927
+    },
+    {
+      "path": "NavigationUiFixture.kt",
+      "sha256Bytes": "29a87b8e1b6c19dc16a46319ebf0424d6bf08f854129bce7e11830b29fd7bf7d",
+      "sizeBytes": 13072
+    },
+    {
+      "path": "compile-run.py",
+      "sha256Bytes": "72b263f82e7afc7c3d8b34d19067423551c07145072a551e8c1a27b00e37eff9",
+      "sizeBytes": 4135
+    },
+    {
+      "path": "compile-tests.py",
+      "sha256Bytes": "f1f52e7d4dd9e6b2af49e28abaa4b897cec76fc4116c62a395f1ffff5042750c",
+      "sizeBytes": 3730
+    },
+    {
+      "path": "consumer-evidence.json",
+      "sha256Bytes": "513708ebfddef592a1e753bcebf94d8bfe7a41683b6134ea6274afdf894d4e1a",
+      "sizeBytes": 11670
+    },
+    {
+      "path": "consumer-patches.json",
+      "sha256Bytes": "bb37c5f391efc53c94022c2cfa2e1a0a378b818376d5646eb21ea227c72ad751",
+      "sizeBytes": 1562
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/DesktopOriginalFullNavigationSettings.kt",
+      "sha256Bytes": "c26e7005c2ce24b94f67bb53a6fd135c8d73b164901c80bafc669f916367bc8b",
+      "sizeBytes": 30631
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/animation/AppEntrance.kt",
+      "sha256Bytes": "421d44dafd2d4c78b049a5ae1c64eac950ac124ad4a753dc4db66f67ed2760aa",
+      "sizeBytes": 6663
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/motion/AppEntranceMotion.kt",
+      "sha256Bytes": "9e44fd2b3a29b519efbc06b270fa6ed9407d7e52efb9b4070f6ea58b51a6faed",
+      "sizeBytes": 4693
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/search/DesktopOriginalSearchTabOrderPolicy.kt",
+      "sha256Bytes": "f5bcbc9489d38f762ce7dba8902702b57e9246683a4c7d3869ee17dcab3166ea",
+      "sizeBytes": 796
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/DesktopNavigationIconPreviewPolicy.kt",
+      "sha256Bytes": "9cdff76b9a3688ce874851859ab4ad6c633c9f2260c9a26c33241bd7978d0c75",
+      "sizeBytes": 6262
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/DesktopNavigationMaterialSymbols.kt",
+      "sha256Bytes": "9d2122fecd66aea800eb377a92b7e583c60ab5e13e324b3b5310a343f8e9f47b",
+      "sizeBytes": 313
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/DesktopOriginalAnimationSettingsContent.kt",
+      "sha256Bytes": "e1d887f8e6a2bbf9c2b5949b0fbcdb59ec2d03544d4fa9c93d402d3e29fbf06e",
+      "sizeBytes": 33362
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/DesktopOriginalBottomBarSettingsContent.kt",
+      "sha256Bytes": "2fc996b5571af763dda576ffa81f8398dceb577f71a460b6e09079a7c77f6b0a",
+      "sizeBytes": 63191
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsComponents.kt",
+      "sha256Bytes": "bacc963c9fa5a159d65d9a9b93e09c639f7416ac695da8db3e45015abe6c79e3",
+      "sizeBytes": 1320
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsEntranceMotionPolicy.kt",
+      "sha256Bytes": "3681b59c3cb5b952dd6c5c8c449ffa9fd1e0fc669c972dbabe84c89f399c74c9",
+      "sizeBytes": 592
+    },
+    {
+      "path": "generated/com/bilipai/desktop/settings/DesktopNavigationSettingsVectors.kt",
+      "sha256Bytes": "2be81f75754f794e27a32fc6ff367b4ee1b38bf96655d7796d1c0f7642263d08",
+      "sizeBytes": 41315
+    },
+    {
+      "path": "patches/CommunitySearchScreens.patch",
+      "sha256Bytes": "95718652bd50ff81e0643702b58f32e1014ae7ab4ff5039990232344603a6cb4",
+      "sizeBytes": 2495
+    },
+    {
+      "path": "patches/DesktopAppearanceTheme.patch",
+      "sha256Bytes": "85762451aea44e263fd699f36789577ebd2fa5f6562738cca2c60d142cacd86b",
+      "sizeBytes": 836
+    },
+    {
+      "path": "patches/DesktopNavigationInteractionSettings.patch",
+      "sha256Bytes": "4aa0604bec6c68d20d92b13465e60c57d0a79919196e13e0c6e414587be13052",
+      "sizeBytes": 7271
+    },
+    {
+      "path": "patches/DesktopNavigationInteractionSettingsTest.patch",
+      "sha256Bytes": "b12340beefe75ce79efbbdd71a5d98292c1fc2f42ca52397776fc5d22e833f60",
+      "sizeBytes": 1965
+    },
+    {
+      "path": "patches/DesktopThemePrefs.patch",
+      "sha256Bytes": "b20c2a8f76ec03f780329f92cfc579177dcf57bd52272f22a43ef961b5662837",
+      "sizeBytes": 2251
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+      "sha256Bytes": "ba275ec0b20c57463f8523e19c4301ee364301de2927608fd8fde7995c6fee55",
+      "sizeBytes": 8135
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "sha256Bytes": "0064869e7091937e263917d5b611e36c81f4c7ef107aa8fab86a557b3453e0b6",
+      "sizeBytes": 14266
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationPreferences.kt",
+      "sha256Bytes": "53bcc85b37dafcf545bee2d9d9440a083e193915ed733b07b82622c7da384485",
+      "sizeBytes": 1991
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettings.kt",
+      "sha256Bytes": "3a3aac14b90e134a32dd75554c03b7cc5bc5e98aed1b8f59af55b8c71590f467",
+      "sizeBytes": 1150
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSystemReduceMotion.kt",
+      "sha256Bytes": "ecd674a7b935cc799f2cac00803624541506831e6571ee9064b6957a8470657d",
+      "sizeBytes": 308
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "sha256Bytes": "54f3f5375daccb10d2a3826e84ad75b9a04b5da8fae035de00f3110fc812da3f",
+      "sizeBytes": 30610
+    },
+    {
+      "path": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationSettingsTest.kt",
+      "sha256Bytes": "35543c935f8e50c14e2ce11e48fd720d296430a852e8ab734a60fdea7158d15b",
+      "sizeBytes": 14207
+    },
+    {
+      "path": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt",
+      "sha256Bytes": "bda834f6a35160765093809cf34d427c334919c4f699897b208eb77fa9faaed3",
+      "sizeBytes": 6993
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-full-navigation.py",
+      "sha256Bytes": "53d46335fa453e7acb80dc6f44566c21aaff87ec3861b1fdc02edf1b7ffa1661",
+      "sizeBytes": 20006
+    },
+    {
+      "path": "producer-proof.json",
+      "sha256Bytes": "426e2d80ec11164d04a8532b787adaebfa4f12e3580c8d05d3c40b3be87e8e08",
+      "sizeBytes": 2322
+    },
+    {
+      "path": "producer-resource-inventory.json",
+      "sha256Bytes": "da8fc7dc5a0094b0fc976b079106a949f6f47b92d7ce3d7721b1b4639d67c5da",
+      "sizeBytes": 10124
+    },
+    {
+      "path": "producer-source-inventory.json",
+      "sha256Bytes": "beaeb69c2736f53a93d7f701bf44853e8e9247c534c2b584d22c8bfbfac2b280",
+      "sizeBytes": 2856
+    },
+    {
+      "path": "registry-delta.json",
+      "sha256Bytes": "4a2b1057c0d4845996371eff741b6aca4774e099d56d904551c94823abec00de",
+      "sizeBytes": 3753
+    },
+    {
+      "path": "resource-inventory.json",
+      "sha256Bytes": "da8fc7dc5a0094b0fc976b079106a949f6f47b92d7ce3d7721b1b4639d67c5da",
+      "sizeBytes": 10124
+    },
+    {
+      "path": "resource-registry-delta.json",
+      "sha256Bytes": "8df29281b61d9d0e2e0ff94597f2b6ae1a5548dc9060c0f29330c5d1b0894666",
+      "sizeBytes": 12676
+    },
+    {
+      "path": "runs/09/NavigationFullFixture.log",
+      "sha256Bytes": "16aed98218766f1d6fd79a74f3590b7da2e8973f7562ade993c41b159d4e5923",
+      "sizeBytes": 51
+    },
+    {
+      "path": "runs/09/NavigationUiFixture.log",
+      "sha256Bytes": "75599f1868da81485478689237230948e7c3850ed87bee3b1c42237f4f752cf1",
+      "sizeBytes": 18011
+    },
+    {
+      "path": "runs/09/classes.jar",
+      "sha256Bytes": "8d27da2473598f42db338c681e9f400f1ff0d77ff3a1c2cfffdf386dc121bbba",
+      "sizeBytes": 425175
+    },
+    {
+      "path": "runs/09/compile.log",
+      "sha256Bytes": "a346e47dbff58dca999c98d45448db01c274923285abc41cb1ba6ddda2f63186",
+      "sizeBytes": 474
+    },
+    {
+      "path": "runs/09/disk/global/plugin-settings.json",
+      "sha256Bytes": "983e81b4dafdae0d5621e0c036d8b2d82bc8e3e39e39807a95a318458728239d",
+      "sizeBytes": 108
+    },
+    {
+      "path": "runs/09/disk/result.json",
+      "sha256Bytes": "d9c9d3bdd7803b07180be65fb91462e2f4a833921adfe3cba101b634eecd3dde",
+      "sizeBytes": 672
+    },
+    {
+      "path": "runs/09/disk/settings-disk.json",
+      "sha256Bytes": "4d4079027b335c3c1b0a2ffc2b3087f6af28e12923f5c605a36faa80fe1ca507",
+      "sizeBytes": 730
+    },
+    {
+      "path": "runs/09/ui/material3/global/plugin-settings.json",
+      "sha256Bytes": "78608f1402ae376de5117ac31b44c7cbe48ff7f204b0fd241f83f97fc0d98e42",
+      "sizeBytes": 86
+    },
+    {
+      "path": "runs/18/NavigationFullFixture.log",
+      "sha256Bytes": "10c663f5024957dbfe7d95147ce54b349908ddc14387b6a11d4c72c46a4957b5",
+      "sizeBytes": 52
+    },
+    {
+      "path": "runs/18/NavigationUiFixture.log",
+      "sha256Bytes": "6ea3906224245f94f8f1def2ce49eb2ac1564f610242054f1af5cc840732050e",
+      "sizeBytes": 1617
+    },
+    {
+      "path": "runs/18/classes.jar",
+      "sha256Bytes": "8b2bb68e8ad4c8561bc6e93cd2696667a193f08d322defe63e37ec712b1711cb",
+      "sizeBytes": 836066
+    },
+    {
+      "path": "runs/18/compile.log",
+      "sha256Bytes": "791690bda1c2c395a2a5eb5a64a6f57cee772cc907db4ea8eeb51a13e1f45c17",
+      "sizeBytes": 474
+    },
+    {
+      "path": "runs/18/disk/global/plugin-settings.json",
+      "sha256Bytes": "983e81b4dafdae0d5621e0c036d8b2d82bc8e3e39e39807a95a318458728239d",
+      "sizeBytes": 108
+    },
+    {
+      "path": "runs/18/disk/result.json",
+      "sha256Bytes": "49ce0173db08d28536b346b29f65f99fc75a6d821c14beffd1e27d237c6a006e",
+      "sizeBytes": 1049
+    },
+    {
+      "path": "runs/18/disk/settings-disk.json",
+      "sha256Bytes": "4d4079027b335c3c1b0a2ffc2b3087f6af28e12923f5c605a36faa80fe1ca507",
+      "sizeBytes": 730
+    },
+    {
+      "path": "runs/18/ui/material3/bottom-display.png",
+      "sha256Bytes": "85d6d8582efbcc62d334d5d8a62c1dc50d7906fe89fcbdd716cd38925862b8e2",
+      "sizeBytes": 44103
+    },
+    {
+      "path": "runs/18/ui/material3/bottom-drag-sorted.png",
+      "sha256Bytes": "4b08f2b1cffb5cd8eec7d3f9aad0fc94eb013540e45e38c0c450b1c533df5492",
+      "sizeBytes": 45843
+    },
+    {
+      "path": "runs/18/ui/material3/failed-pointers.json",
+      "sha256Bytes": "1e1b5bc9faaf69b66102306a4b4833419d377fc448b8118bb3903bba3d474bd3",
+      "sizeBytes": 6463
+    },
+    {
+      "path": "runs/18/ui/material3/failed-scroll.png",
+      "sha256Bytes": "b8c41e6966e841760dec01695688738b6bd8573ff21b50db42869bb2e966db44",
+      "sizeBytes": 55046
+    },
+    {
+      "path": "runs/18/ui/material3/failed-scroll.semantics.txt",
+      "sha256Bytes": "9d48788ab8236eda6faee56d6d8bf48be32e64a1ebaff633f317def9c956e589",
+      "sizeBytes": 59730
+    },
+    {
+      "path": "runs/18/ui/material3/global/plugin-settings.json",
+      "sha256Bytes": "00aad2e7a2e83d5806b60a40c1b41e1c93758a0770b585f970f94407100b492c",
+      "sizeBytes": 1051
+    },
+    {
+      "path": "runs/18/ui/material3/label-saved.png",
+      "sha256Bytes": "0480bded44a47694efab126a5051a36b9755fd8d143b90e85e63c42afa288eb8",
+      "sizeBytes": 50187
+    },
+    {
+      "path": "runs/18/ui/material3/top-sorted.png",
+      "sha256Bytes": "e3c939fdc27a4f13017e0cbaa65d9a2ab06001d9b53204df06c3809044414c5e",
+      "sizeBytes": 41071
+    },
+    {
+      "path": "runs/19/NavigationFullFixture.log",
+      "sha256Bytes": "10c663f5024957dbfe7d95147ce54b349908ddc14387b6a11d4c72c46a4957b5",
+      "sizeBytes": 52
+    },
+    {
+      "path": "runs/19/NavigationUiFixture.log",
+      "sha256Bytes": "6ea3906224245f94f8f1def2ce49eb2ac1564f610242054f1af5cc840732050e",
+      "sizeBytes": 1617
+    },
+    {
+      "path": "runs/19/classes.jar",
+      "sha256Bytes": "cb91b1703274e24b397709d9a25a9d045f44ec38d2d890b36666532f1ab9fc57",
+      "sizeBytes": 836294
+    },
+    {
+      "path": "runs/19/compile.log",
+      "sha256Bytes": "f9245d1f7e912f1ea19b7b87010caaeee1c7454200f18f91885592b3cfb6e6f9",
+      "sizeBytes": 474
+    },
+    {
+      "path": "runs/19/disk/global/plugin-settings.json",
+      "sha256Bytes": "983e81b4dafdae0d5621e0c036d8b2d82bc8e3e39e39807a95a318458728239d",
+      "sizeBytes": 108
+    },
+    {
+      "path": "runs/19/disk/result.json",
+      "sha256Bytes": "49ce0173db08d28536b346b29f65f99fc75a6d821c14beffd1e27d237c6a006e",
+      "sizeBytes": 1049
+    },
+    {
+      "path": "runs/19/disk/settings-disk.json",
+      "sha256Bytes": "4d4079027b335c3c1b0a2ffc2b3087f6af28e12923f5c605a36faa80fe1ca507",
+      "sizeBytes": 730
+    },
+    {
+      "path": "runs/19/ui/material3/bottom-display.png",
+      "sha256Bytes": "85d6d8582efbcc62d334d5d8a62c1dc50d7906fe89fcbdd716cd38925862b8e2",
+      "sizeBytes": 44103
+    },
+    {
+      "path": "runs/19/ui/material3/bottom-drag-sorted.png",
+      "sha256Bytes": "4b08f2b1cffb5cd8eec7d3f9aad0fc94eb013540e45e38c0c450b1c533df5492",
+      "sizeBytes": 45843
+    },
+    {
+      "path": "runs/19/ui/material3/failed-pointers.json",
+      "sha256Bytes": "6490bbc167683202960381f15cb7be0c0bd9555a504791514b0698c9a462faa9",
+      "sizeBytes": 6704
+    },
+    {
+      "path": "runs/19/ui/material3/failed-scroll.png",
+      "sha256Bytes": "f4e9ef34955e4b1503c46425ba07ff97c2a42c241414723b621707466c53df26",
+      "sizeBytes": 60088
+    },
+    {
+      "path": "runs/19/ui/material3/failed-scroll.semantics.txt",
+      "sha256Bytes": "65a64c774113aab171309eef0039fe68e5eea8250db1afdd9608ca5609b956ed",
+      "sizeBytes": 47678
+    },
+    {
+      "path": "runs/19/ui/material3/global/plugin-settings.json",
+      "sha256Bytes": "00aad2e7a2e83d5806b60a40c1b41e1c93758a0770b585f970f94407100b492c",
+      "sizeBytes": 1051
+    },
+    {
+      "path": "runs/19/ui/material3/label-saved.png",
+      "sha256Bytes": "0480bded44a47694efab126a5051a36b9755fd8d143b90e85e63c42afa288eb8",
+      "sizeBytes": 50187
+    },
+    {
+      "path": "runs/19/ui/material3/top-sorted.png",
+      "sha256Bytes": "e3c939fdc27a4f13017e0cbaa65d9a2ab06001d9b53204df06c3809044414c5e",
+      "sizeBytes": 41071
+    },
+    {
+      "path": "runs/20/NavigationFullFixture.log",
+      "sha256Bytes": "10c663f5024957dbfe7d95147ce54b349908ddc14387b6a11d4c72c46a4957b5",
+      "sizeBytes": 52
+    },
+    {
+      "path": "runs/20/NavigationUiFixture.log",
+      "sha256Bytes": "e57af08f71c4d79584c70c0121a727b4a5344f4e49dc9e3c2ee90b23a639268b",
+      "sizeBytes": 144
+    },
+    {
+      "path": "runs/20/classes.jar",
+      "sha256Bytes": "aea75c7903fcb740398474ddfdf71d00ab132adb1a450aadc5203584c50a0ba2",
+      "sizeBytes": 836401
+    },
+    {
+      "path": "runs/20/compile.log",
+      "sha256Bytes": "e85b8b54b1340a6bcaea76c073e89cf962d7d6f4d1e33ca87c74a50deaefa2bb",
+      "sizeBytes": 474
+    },
+    {
+      "path": "runs/20/compiler.args",
+      "sha256Bytes": "ca3e9df496064a86e54fea7beb32c4ec8dad065f1f1640126d4aa69262a85a3f",
+      "sizeBytes": 29225
+    },
+    {
+      "path": "runs/20/disk/failed/plugin-settings.json/owned",
+      "sha256Bytes": "496aca80e4d8f29fb8e8cd816c3afb48d3f103970b3a2ee1600c08ca67326dee",
+      "sizeBytes": 5
+    },
+    {
+      "path": "runs/20/disk/global/plugin-settings.json",
+      "sha256Bytes": "983e81b4dafdae0d5621e0c036d8b2d82bc8e3e39e39807a95a318458728239d",
+      "sizeBytes": 108
+    },
+    {
+      "path": "runs/20/disk/result.json",
+      "sha256Bytes": "49ce0173db08d28536b346b29f65f99fc75a6d821c14beffd1e27d237c6a006e",
+      "sizeBytes": 1049
+    },
+    {
+      "path": "runs/20/disk/settings-disk.json",
+      "sha256Bytes": "c8f36af312f389b8a3bd4104477e93bbfb139927199c8fa3809a263011568a17",
+      "sizeBytes": 730
+    },
+    {
+      "path": "runs/20/inputs/AppEntrance.kt",
+      "sha256Bytes": "421d44dafd2d4c78b049a5ae1c64eac950ac124ad4a753dc4db66f67ed2760aa",
+      "sizeBytes": 6663
+    },
+    {
+      "path": "runs/20/inputs/AppEntranceMotion.kt",
+      "sha256Bytes": "9e44fd2b3a29b519efbc06b270fa6ed9407d7e52efb9b4070f6ea58b51a6faed",
+      "sizeBytes": 4693
+    },
+    {
+      "path": "runs/20/inputs/CommunitySearchScreens.kt",
+      "sha256Bytes": "54f3f5375daccb10d2a3826e84ad75b9a04b5da8fae035de00f3110fc812da3f",
+      "sizeBytes": 30610
+    },
+    {
+      "path": "runs/20/inputs/DesktopAppearanceTheme.kt",
+      "sha256Bytes": "ba275ec0b20c57463f8523e19c4301ee364301de2927608fd8fde7995c6fee55",
+      "sizeBytes": 8135
+    },
+    {
+      "path": "runs/20/inputs/DesktopFullNavigationPreferences.kt",
+      "sha256Bytes": "53bcc85b37dafcf545bee2d9d9440a083e193915ed733b07b82622c7da384485",
+      "sizeBytes": 1991
+    },
+    {
+      "path": "runs/20/inputs/DesktopNavigationIconPreviewPolicy.kt",
+      "sha256Bytes": "9cdff76b9a3688ce874851859ab4ad6c633c9f2260c9a26c33241bd7978d0c75",
+      "sizeBytes": 6262
+    },
+    {
+      "path": "runs/20/inputs/DesktopNavigationInteractionSettings.kt",
+      "sha256Bytes": "3a3aac14b90e134a32dd75554c03b7cc5bc5e98aed1b8f59af55b8c71590f467",
+      "sizeBytes": 1150
+    },
+    {
+      "path": "runs/20/inputs/DesktopNavigationMaterialSymbols.kt",
+      "sha256Bytes": "9d2122fecd66aea800eb377a92b7e583c60ab5e13e324b3b5310a343f8e9f47b",
+      "sizeBytes": 313
+    },
+    {
+      "path": "runs/20/inputs/DesktopNavigationSettingsVectors.kt",
+      "sha256Bytes": "2be81f75754f794e27a32fc6ff367b4ee1b38bf96655d7796d1c0f7642263d08",
+      "sizeBytes": 41315
+    },
+    {
+      "path": "runs/20/inputs/DesktopOriginalAnimationSettingsContent.kt",
+      "sha256Bytes": "e1d887f8e6a2bbf9c2b5949b0fbcdb59ec2d03544d4fa9c93d402d3e29fbf06e",
+      "sizeBytes": 33362
+    },
+    {
+      "path": "runs/20/inputs/DesktopOriginalBottomBarSettingsContent.kt",
+      "sha256Bytes": "2fc996b5571af763dda576ffa81f8398dceb577f71a460b6e09079a7c77f6b0a",
+      "sizeBytes": 63191
+    },
+    {
+      "path": "runs/20/inputs/DesktopOriginalFullNavigationSettings.kt",
+      "sha256Bytes": "c26e7005c2ce24b94f67bb53a6fd135c8d73b164901c80bafc669f916367bc8b",
+      "sizeBytes": 30631
+    },
+    {
+      "path": "runs/20/inputs/DesktopOriginalSearchTabOrderPolicy.kt",
+      "sha256Bytes": "f5bcbc9489d38f762ce7dba8902702b57e9246683a4c7d3869ee17dcab3166ea",
+      "sizeBytes": 796
+    },
+    {
+      "path": "runs/20/inputs/DesktopSystemReduceMotion.kt",
+      "sha256Bytes": "ecd674a7b935cc799f2cac00803624541506831e6571ee9064b6957a8470657d",
+      "sizeBytes": 308
+    },
+    {
+      "path": "runs/20/inputs/DesktopThemePrefs.kt",
+      "sha256Bytes": "0064869e7091937e263917d5b611e36c81f4c7ef107aa8fab86a557b3453e0b6",
+      "sizeBytes": 14266
+    },
+    {
+      "path": "runs/20/inputs/NavigationFullFixture.kt",
+      "sha256Bytes": "e397f7a7976498a5ebe1e5aae9675a3a152d00dcc0ecd3539e8fcd0a02d561fd",
+      "sizeBytes": 13357
+    },
+    {
+      "path": "runs/20/inputs/NavigationUiFixture.kt",
+      "sha256Bytes": "29a87b8e1b6c19dc16a46319ebf0424d6bf08f854129bce7e11830b29fd7bf7d",
+      "sizeBytes": 13072
+    },
+    {
+      "path": "runs/20/inputs/SettingsComponents.kt",
+      "sha256Bytes": "bacc963c9fa5a159d65d9a9b93e09c639f7416ac695da8db3e45015abe6c79e3",
+      "sizeBytes": 1320
+    },
+    {
+      "path": "runs/20/inputs/SettingsEntranceMotionPolicy.kt",
+      "sha256Bytes": "3681b59c3cb5b952dd6c5c8c449ffa9fd1e0fc669c972dbabe84c89f399c74c9",
+      "sizeBytes": 592
+    },
+    {
+      "path": "runs/20/result.json",
+      "sha256Bytes": "253c289092c72676c9b0f5ae7ac81b29c48aefcb240b991e1a9bb828d83f28b6",
+      "sizeBytes": 10695
+    },
+    {
+      "path": "runs/20/ui/material3/animation-speed.png",
+      "sha256Bytes": "8942b9cfe5fbdccd64972efcce176fc4accb1093727fc616450d0ddfb86cb3b1",
+      "sizeBytes": 61470
+    },
+    {
+      "path": "runs/20/ui/material3/animation-visual-effects.png",
+      "sha256Bytes": "08a0c1517c0ba8e6bba02e5d35db7c5907c8dbd4d7613461b7d1662cfc0417f4",
+      "sizeBytes": 54896
+    },
+    {
+      "path": "runs/20/ui/material3/bottom-display.png",
+      "sha256Bytes": "85d6d8582efbcc62d334d5d8a62c1dc50d7906fe89fcbdd716cd38925862b8e2",
+      "sizeBytes": 44103
+    },
+    {
+      "path": "runs/20/ui/material3/bottom-drag-sorted.png",
+      "sha256Bytes": "4b08f2b1cffb5cd8eec7d3f9aad0fc94eb013540e45e38c0c450b1c533df5492",
+      "sizeBytes": 45843
+    },
+    {
+      "path": "runs/20/ui/material3/global/plugin-settings.json",
+      "sha256Bytes": "e23805df235a30c4fa936eedba792a2485d29bd88485d4a6a7593c25705187e6",
+      "sizeBytes": 1440
+    },
+    {
+      "path": "runs/20/ui/material3/label-saved.png",
+      "sha256Bytes": "0480bded44a47694efab126a5051a36b9755fd8d143b90e85e63c42afa288eb8",
+      "sizeBytes": 50187
+    },
+    {
+      "path": "runs/20/ui/material3/pointers.json",
+      "sha256Bytes": "047ad716485f09408d649209920d10f379051854a72e6819fe42c26b0498e60e",
+      "sizeBytes": 1432
+    },
+    {
+      "path": "runs/20/ui/material3/semantics.txt",
+      "sha256Bytes": "5de9c12ffdbfa29ae4fc5dbc7547b2a99d503859c379b857b5119d855a6209a2",
+      "sizeBytes": 59705
+    },
+    {
+      "path": "runs/20/ui/material3/settings-disk.json",
+      "sha256Bytes": "cfecd8b8851a0f0e9abfa6e9b3851b04364ecf2bd93276d5f99c3ebde4be1c2c",
+      "sizeBytes": 1082
+    },
+    {
+      "path": "runs/20/ui/material3/top-sorted.png",
+      "sha256Bytes": "e3c939fdc27a4f13017e0cbaa65d9a2ab06001d9b53204df06c3809044414c5e",
+      "sizeBytes": 41071
+    },
+    {
+      "path": "runs/20/ui/miuix/animation-speed.png",
+      "sha256Bytes": "4bd42a1d17006ab5f1e87a78df51f22dd271e917d4014cc9e35da905d96410af",
+      "sizeBytes": 55054
+    },
+    {
+      "path": "runs/20/ui/miuix/animation-visual-effects.png",
+      "sha256Bytes": "b6cf474016eee1e36cb2d1a6808c758df909e15b2d50da9dd307b9599841610c",
+      "sizeBytes": 49345
+    },
+    {
+      "path": "runs/20/ui/miuix/bottom-display.png",
+      "sha256Bytes": "56811ee0d5926f3d359c9f35ea0358084ba898642879597812a8fd396da52f95",
+      "sizeBytes": 42072
+    },
+    {
+      "path": "runs/20/ui/miuix/bottom-drag-sorted.png",
+      "sha256Bytes": "4da74a69b9746e6b8028a2d6f37f5b86715585c86313722338a9ac2fb7cc8587",
+      "sizeBytes": 40310
+    },
+    {
+      "path": "runs/20/ui/miuix/global/plugin-settings.json",
+      "sha256Bytes": "dcc29da1081a1efe5377efaec4efef7ee81f5de16adf8a7614d4d4a07f3fdf19",
+      "sizeBytes": 1436
+    },
+    {
+      "path": "runs/20/ui/miuix/label-saved.png",
+      "sha256Bytes": "d9a9d70bd1a4b362d140697731099f77c9d8fe464cb9536f87b6d33a70aacd8e",
+      "sizeBytes": 41603
+    },
+    {
+      "path": "runs/20/ui/miuix/pointers.json",
+      "sha256Bytes": "e0427b97bb76307676051850e71b83335aeb858d3e7caac2a363e7daea056cad",
+      "sizeBytes": 1435
+    },
+    {
+      "path": "runs/20/ui/miuix/semantics.txt",
+      "sha256Bytes": "41ef54466a8d71391d466a4ebc5a858c030407da7fe198a3314b136424628ae3",
+      "sizeBytes": 54247
+    },
+    {
+      "path": "runs/20/ui/miuix/settings-disk.json",
+      "sha256Bytes": "9761009b3ac35acb2d1568d26ab131f8541bbcdede9a96aee6ca71be45b80068",
+      "sizeBytes": 1078
+    },
+    {
+      "path": "runs/20/ui/miuix/top-sorted.png",
+      "sha256Bytes": "dc815c95df017eb3ba6e7f1a92e6f538c890900a849b10021ae0d6acf5e30292",
+      "sizeBytes": 37023
+    },
+    {
+      "path": "runs/20/ui/result.json",
+      "sha256Bytes": "cde3fe5259d6f2a7afb84acf74c089979ecdd713b100f52ed54f806066094d26",
+      "sizeBytes": 333
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "beaeb69c2736f53a93d7f701bf44853e8e9247c534c2b584d22c8bfbfac2b280",
+      "sizeBytes": 2856
+    },
+    {
+      "path": "test-patch.json",
+      "sha256Bytes": "b9c707c5b995a4115eb877fedddebdf5efc9aeb4f4b8e7dd04ae4925d776e0cd",
+      "sizeBytes": 399
+    },
+    {
+      "path": "test-runs/02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "test-runs/02/compiler.args",
+      "sha256Bytes": "64f367acf26cc00329dc8082f7b8e74a85326860ccd0008c58cc6dffca30425d",
+      "sizeBytes": 27969
+    },
+    {
+      "path": "test-runs/02/execute.log",
+      "sha256Bytes": "a01e1d300ad99673021437b4bd70e8b4d42b4842e019638ca2fa73eae20a2b28",
+      "sizeBytes": 480
+    },
+    {
+      "path": "test-runs/02/inputs/DesktopFullNavigationSettingsTest.kt",
+      "sha256Bytes": "35543c935f8e50c14e2ce11e48fd720d296430a852e8ab734a60fdea7158d15b",
+      "sizeBytes": 14207
+    },
+    {
+      "path": "test-runs/02/inputs/DesktopNavigationInteractionSettingsTest.kt",
+      "sha256Bytes": "bda834f6a35160765093809cf34d427c334919c4f699897b208eb77fa9faaed3",
+      "sizeBytes": 6993
+    },
+    {
+      "path": "test-runs/02/inputs/DesktopOriginalNavigationInteractionSettings.kt",
+      "sha256Bytes": "bc560e2b5de1c24715a4700dd2d462f578789ffba74500f3198f196b7ea3acdb",
+      "sizeBytes": 4075
+    },
+    {
+      "path": "test-runs/02/inputs/NavigationJUnitRunner.java",
+      "sha256Bytes": "1ba6e78a62630527b9adac7c83e8d4b4886bfc688196ae3b6ed50127ef409d0c",
+      "sizeBytes": 1953
+    },
+    {
+      "path": "test-runs/02/junit-result.json",
+      "sha256Bytes": "2e068f1b5e01e7e9f4fc09ef3cbea3d3f725c0e88ed05603b5b1caa265e7349a",
+      "sizeBytes": 2754
+    },
+    {
+      "path": "test-runs/02/proof.json",
+      "sha256Bytes": "d61d0caac9f1bdb12941606a36e2316e0117333e4e8e5e634595e3f41d880de2",
+      "sizeBytes": 4617
+    },
+    {
+      "path": "test-runs/02/runner/NavigationJUnitRunner$1.class",
+      "sha256Bytes": "f726eb6e0636db85812af5e9f71555545d041a3a70985d44465b30f6b6352cdd",
+      "sizeBytes": 2110
+    },
+    {
+      "path": "test-runs/02/runner/NavigationJUnitRunner.class",
+      "sha256Bytes": "2ee0b536e569af9f177f2c2d619cf9d2f1cd364886deacb681157e6cc882c860",
+      "sizeBytes": 3535
+    },
+    {
+      "path": "test-runs/02/tests.jar",
+      "sha256Bytes": "7de17feeef32073975c54f49149a183b13a9d8482102353a33fb7e77fb3cc696",
+      "sizeBytes": 167905
+    }
+  ],
+  "externalProductCpReference": "desktop/.local/stable-product-snapshot-83/ordered-runtime-cp.json",
+  "externalProductCpSha256Bytes": "f82828347f7cfad86cd101dfb13d44677ba88f780b21a9e21df8c06a97d4828b"
+}

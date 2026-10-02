@@ -1,0 +1,6 @@
+work\BiliPai-v023\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopReadyOriginalRootMount.kt:230:13: error: no parameter with name 'rootPublished' found.
+            rootPublished = { gate -> handle.retainer.current()?.entry?.gate === gate }) }
+            ^^^^^^^^^^^^^
+work\BiliPai-v023\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopReadyOriginalRootMount.kt:230:31: error: cannot infer type for value parameter 'gate'. Specify it explicitly.
+            rootPublished = { gate -> handle.retainer.current()?.entry?.gate === gate }) }
+                              ^^^^

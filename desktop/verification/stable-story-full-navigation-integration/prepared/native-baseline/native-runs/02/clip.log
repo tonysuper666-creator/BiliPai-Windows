@@ -1,0 +1,4 @@
+[vost#0:0 @ 0000008000615780] Unknown encoder 'libx264'
+[vost#0:0 @ 0000008000615780] Error selecting an encoder
+Error opening output file C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-native-baseline-delta\native-runs\02\runtime\fixture-clip.mp4.
+Error opening output files: Encoder not found

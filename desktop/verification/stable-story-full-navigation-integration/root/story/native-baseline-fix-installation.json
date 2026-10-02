@@ -1,0 +1,27 @@
+{
+  "frozenManifestSha256Bytes": "368c0703c8d6572a61e44286ffb36b445999511017f5850f92c10d62025d6bbd",
+  "verifiedRawArtifacts": 69,
+  "exactHunksApplied": 3,
+  "existingSourceFamilies": 2,
+  "preparedNativeEvidence": "native-runs/04/result.json",
+  "preparedActualNativeChecks": 11,
+  "nativeBaselineReplacementFixPending": false,
+  "ordinaryVideoSuccessAccepted": false,
+  "storyVisualAccepted": false,
+  "rawPayloadAdoptionAccepted": false,
+  "accountNetworkAccepted": false,
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+      "beforeSha256Bytes": "544fc2ef992be53a4a8e69054cce3f9ed9196ceb4994c7ff67f346e8ff41e8fe",
+      "afterSha256Bytes": "c7740b47fc03c0f331ae1b2376db52d0827f8a53da7f2726036c8c1f4be66066",
+      "afterSha256LF": "c7740b47fc03c0f331ae1b2376db52d0827f8a53da7f2726036c8c1f4be66066"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "beforeSha256Bytes": "41831b286186eb1b6c5548dfc8f871412362d5568ceac220b834c0fe08461107",
+      "afterSha256Bytes": "38f0ec1559f812406854f1d856e2358afa9a41d22b15f496f577547e63978a1e",
+      "afterSha256LF": "38f0ec1559f812406854f1d856e2358afa9a41d22b15f496f577547e63978a1e"
+    }
+  ]
+}

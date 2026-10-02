@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "frozen": true,
+  "productionInstalled": false,
+  "candidateHeadAtFreeze": "d9d0f8eae60c8cb98bb3bc59b05ece1fc975b1f8",
+  "parentIndependentStoryEdits": true,
+  "freezeManifest": "freeze-manifest.json",
+  "freezeManifestSha256Bytes": "f2aa174ad4ff33e0b71e61f12f897da7afe1687dbb49ede5d2ec4ee933e2eaf5",
+  "integrationContract": "INTEGRATION.md",
+  "integrationContractSha256Bytes": "0ce6332da3a6e612b91a58cf59f2ec9cfecd45cadc6b88bf393c57003e6b27ff",
+  "ownedFiles": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+      "preparedSha256Bytes": "ba275ec0b20c57463f8523e19c4301ee364301de2927608fd8fde7995c6fee55",
+      "operation": "replace-owned-exact-base",
+      "baseSha256Bytes": "1f592f448b4c66286a2e3627f53357850445e3709c9267f162f4c2ee16a3a12e",
+      "baseLFNormalizedSha256": "72f03809222535683440280ab7255599765e8dd916ba8d51896658a0c5109c17"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "preparedSha256Bytes": "0064869e7091937e263917d5b611e36c81f4c7ef107aa8fab86a557b3453e0b6",
+      "operation": "replace-owned-exact-base",
+      "baseSha256Bytes": "49bf473b17a2e11fcee5ffd1cbed1df4dfcf036ce77f66f010a1df0c7aa3d945",
+      "baseLFNormalizedSha256": "49bf473b17a2e11fcee5ffd1cbed1df4dfcf036ce77f66f010a1df0c7aa3d945"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationPreferences.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationPreferences.kt",
+      "preparedSha256Bytes": "53bcc85b37dafcf545bee2d9d9440a083e193915ed733b07b82622c7da384485",
+      "operation": "add-unique"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettings.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettings.kt",
+      "preparedSha256Bytes": "3a3aac14b90e134a32dd75554c03b7cc5bc5e98aed1b8f59af55b8c71590f467",
+      "operation": "replace-owned-exact-base",
+      "baseSha256Bytes": "6bf5c9946631c676253ae590c563fe02cc79c27055c809b343edf382315e3fe7",
+      "baseLFNormalizedSha256": "6bf5c9946631c676253ae590c563fe02cc79c27055c809b343edf382315e3fe7"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSystemReduceMotion.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSystemReduceMotion.kt",
+      "preparedSha256Bytes": "ecd674a7b935cc799f2cac00803624541506831e6571ee9064b6957a8470657d",
+      "operation": "add-unique"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "preparedSha256Bytes": "54f3f5375daccb10d2a3826e84ad75b9a04b5da8fae035de00f3110fc812da3f",
+      "operation": "replace-owned-exact-base",
+      "baseSha256Bytes": "16afa11bf6e82cfd27f9d6f5e1339abebc8e19673d526c7faf8342ece8263543",
+      "baseLFNormalizedSha256": "6399fa16f34a109f031fc555e4eb569b4c4859b632f668e0de2202b363e781b3"
+    },
+    {
+      "target": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationSettingsTest.kt",
+      "prepared": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationSettingsTest.kt",
+      "preparedSha256Bytes": "35543c935f8e50c14e2ce11e48fd720d296430a852e8ab734a60fdea7158d15b",
+      "operation": "add-unique"
+    },
+    {
+      "target": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt",
+      "prepared": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt",
+      "preparedSha256Bytes": "bda834f6a35160765093809cf34d427c334919c4f699897b208eb77fa9faaed3",
+      "operation": "replace-owned-exact-base",
+      "baseSha256Bytes": "54ed266b73c889da5a969007e7f88c08ecade303d74ce129f9c9f4aa53c92634",
+      "baseLFNormalizedSha256": "54ed266b73c889da5a969007e7f88c08ecade303d74ce129f9c9f4aa53c92634"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-full-navigation.py",
+      "prepared": "prepared/desktop/tools/extract-upstream-full-navigation.py",
+      "preparedSha256Bytes": "53d46335fa453e7acb80dc6f44566c21aaff87ec3861b1fdc02edf1b7ffa1661",
+      "operation": "add-unique"
+    }
+  ],
+  "generatedSourceByteReference": "producer-proof.json",
+  "sourceIdentityUnion": "source-inventory.json",
+  "sourceIdentityClassification": "registry-delta.json",
+  "resourceIdentityUnion": "resource-inventory.json",
+  "resourceIdentityClassification": "resource-registry-delta.json",
+  "latestRegistryCountAtFreeze": 1175,
+  "registryReplacementForbidden": true,
+  "newSourceIdentityCount": 5,
+  "newResourceIdentityCount": 30,
+  "productionGeneratorCommand": "python desktop/tools/extract-upstream-full-navigation.py --repo . --output build/generated/full-navigation-settings --policy-only",
+  "unchangedHooks": [
+    "DesktopShell",
+    "DesktopSettingsTree",
+    "DesktopSettingsNavigator",
+    "RootStack",
+    "Story",
+    "PluginStore",
+    "first-slice extraction task"
+  ],
+  "verified": {
+    "standaloneCompile": true,
+    "junitReference": "test-runs/02/junit-result.json",
+    "junitMethods": 20,
+    "newJUnitMethods": 14,
+    "earlierUpdatedJUnitMethods": 6,
+    "junitFailures": 0,
+    "junitSkipped": 0,
+    "uiReference": "runs/20/ui/result.json",
+    "styles": [
+      "MATERIAL3 light",
+      "MIUIX light"
+    ],
+    "pointerOperationsPerStyle": 26,
+    "nativeHwnd": false,
+    "wholeRootEffects": false,
+    "accountNetwork": false
+  },
+  "remaining": [
+    "original Android liquid-glass advanced management/profile SAF/share UI",
+    "Windows vibration provider",
+    "5 exact Android Miuix glyphs",
+    "actual integrated Root/native effect verification"
+  ]
+}

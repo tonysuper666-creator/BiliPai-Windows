@@ -1,0 +1,18 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "name": "Initial exact captured Binding reaches native ACK and first frame",
+      "passed": true
+    },
+    {
+      "name": "Original Session token advances before exact native stop/capture",
+      "passed": false
+    }
+  ],
+  "actual83EntriesUnchanged": true,
+  "loadedBytesVerified": true,
+  "ordinaryDetailSuccessAccepted": false,
+  "realHTTPAccepted": false,
+  "fixtureProductSourceWrites": 0
+}

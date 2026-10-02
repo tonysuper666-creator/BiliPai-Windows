@@ -1,0 +1,26 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt
+@@ -62,6 +62,14 @@
+     val state = remember(memory, stateKey) { memory?.screen(stateKey) { CommunitySearchState(initialQuery) } ?: CommunitySearchState(initialQuery) }
+     var draft by state::draft; var submitted by state::submitted; var type by state::type; var filters by state::filters
+     val preferences = community.searchPreferences
++    val navigationContext = com.bilipai.desktop.settings.LocalDesktopHomeCardPreferences.current?.context
++    val savedTabOrder by remember(navigationContext) {
++        navigationContext?.let(com.android.purebilibili.core.store.DesktopOriginalFullNavigationSettings::getSearchFilterTabOrder)
++            ?: kotlinx.coroutines.flow.flowOf(emptyList<String>())
++    }.collectAsState(emptyList())
++    val orderedSearchTabs = remember(savedTabOrder) {
++        com.android.purebilibili.feature.search.resolveSearchFilterTabs(savedTabOrder)
++    }
+     val history by remember(preferences, account?.mid) { preferences.history(account?.mid) }.collectAsState()
+     val privacy by preferences.privacyMode.collectAsState()
+     val suggestionsEnabled by preferences.suggestionsEnabled.collectAsState()
+@@ -145,7 +153,7 @@
+         suggestionsError?.let { Text(it.message ?: "搜索建议加载失败", Modifier.padding(horizontal = 20.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error) }
+         state.historyError?.let { Text(it.message ?: "搜索历史保存失败", Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.error) }
+         Row(Modifier.padding(horizontal = 20.dp).horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+-            SearchType.entries.forEach { candidate -> FilterChip(selected = type == candidate, onClick = { type = candidate }, label = { Text(candidate.displayName) }) }
++            orderedSearchTabs.forEach { candidate -> FilterChip(selected = type == candidate, onClick = { type = candidate }, label = { Text(candidate.displayName) }) }
+         }
+         if (submitted.isNotBlank()) CommunitySearchFilters(type, filters, { filters = it }, state.filterExpanded, { state.filterExpanded = it })
+         if (submitted.isBlank()) Column(Modifier.fillMaxSize().verticalScroll(state.landingScroll).padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {

@@ -1,0 +1,77 @@
+{
+  "screen": {
+    "originalPath": "app/src/main/java/com/android/purebilibili/feature/story/StoryScreen.kt",
+    "sha256LF": "bd85559d3998515508d93378f1476950eda1973cde86b2c8591b1d525396c471",
+    "edits": [
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext\n",
+        "after": ""
+      },
+      {
+        "before": "import androidx.lifecycle.viewmodel.compose.viewModel\n",
+        "after": ""
+      },
+      {
+        "before": "import androidx.media3.common.util.UnstableApi\n",
+        "after": ""
+      },
+      {
+        "before": "@UnstableApi\n",
+        "after": ""
+      },
+      {
+        "before": "fun StoryScreen(",
+        "after": "internal fun StoryScreen("
+      },
+      {
+        "before": "viewModel: StoryViewModel = viewModel(),",
+        "after": "viewModel: StoryViewModel,"
+      },
+      {
+        "before": "playerViewModel: VideoPlaybackViewModel = viewModel(),",
+        "after": "playerViewModel: VideoPlaybackViewModel,"
+      },
+      {
+        "before": "engagementViewModel: VideoEngagementViewModel = viewModel(),",
+        "after": "engagementViewModel: VideoEngagementViewModel,"
+      },
+      {
+        "before": "onVideoClick: (String, Long, String) -> Unit = { _, _, _ -> },",
+        "after": "onVideoClick: (String, Long, String) -> Unit,"
+      },
+      {
+        "before": "onUserClick: (Long) -> Unit = {},",
+        "after": "onUserClick: (Long) -> Unit,"
+      },
+      {
+        "before": "onSearchClick: () -> Unit = {},",
+        "after": "onSearchClick: () -> Unit,"
+      },
+      {
+        "before": "onRotateToLandscape: () -> Unit = {}",
+        "after": "onRotateToLandscape: () -> Unit"
+      },
+      {
+        "before": "    val context = LocalContext.current",
+        "after": "    val platform = com.bilipai.desktop.ui.LocalDesktopOriginalPortraitPlatform.current\n    val context = platform.section.settingsContext"
+      },
+      {
+        "before": "com.android.purebilibili.core.store.SettingsManager",
+        "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings"
+      },
+      {
+        "before": "engagementViewModel.initWithContext(context)",
+        "after": "engagementViewModel.initWithContext(context.pluginContext)"
+      },
+      {
+        "before": "viewModel = playerViewModel,",
+        "after": "viewModel = com.bilipai.desktop.ui.LocalDesktopOriginalStoryPlaybackView.current,"
+      }
+    ]
+  },
+  "vm": {
+    "originalPath": "app/src/main/java/com/android/purebilibili/feature/story/StoryViewModel.kt",
+    "sha256LF": "d16fd532890ca4b229dca79b0deb00aac7b8acd2a68d2316b0e507fb75fc4bef",
+    "selected": "complete class StoryViewModel; existing sole StoryUiState reused"
+  }
+}

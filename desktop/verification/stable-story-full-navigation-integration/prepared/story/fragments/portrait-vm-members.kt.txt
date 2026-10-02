@@ -1,0 +1,107 @@
+
+    /** Windows Pager starts the SAME original session before capturing its raw
+     * Binding. Cancellation never creates another load job/native producer. */
+    internal fun beginDesktopPortraitLoad(request: PlaybackRequest): Long {
+        environment.assertCurrent()
+        if (currentBvid.isNotBlank() && (currentBvid != request.bvid ||
+                request.cid > 0L && currentCid != request.cid)) {
+            flushPlaybackHeartbeatSnapshot(reason = "switch_video")
+            recordCreatorWatchProgressSnapshot()
+            saveCurrentPosition()
+        }
+        cancelDesktopPendingPlayback()
+        heartbeatJob?.cancel()
+        pluginCheckJob?.cancel()
+        hasUserStartedPlayback = false
+        clearInteractiveChoiceRuntime()
+        var token: Long? = null
+        check(environment.commit {
+            token = playbackSessionStore.beginLoadRequest(request).requestToken
+            _uiState.value = VideoPlaybackUiState.Loading.Initial
+        }) { "Portrait session admission retired" }
+        return checkNotNull(token)
+    }
+
+    /** Consume actual Pager metadata AFTER that exact source was accepted. The
+     * original Session/UI/subject/Mini/post-load/playlist sequence is preserved;
+     * native preparation and raw detail/playURL fetching are deliberately absent.
+     * [admit] is the captured Binding Store -> entry gate, never native-held. */
+    internal fun adoptDesktopPortraitLoad(
+        requestToken: Long,
+        result: com.android.purebilibili.feature.video.usecase.VideoLoadResult.Success,
+        isAcceptedCurrent: () -> Boolean,
+        admit: ((() -> Unit) -> Boolean),
+    ): Boolean {
+        environment.assertCurrent()
+        val allVideoUrls = buildPlaybackVideoUrlCandidates(result.playUrl, result.quality, result.cachedDashVideos)
+        val allAudioUrls = buildPlaybackAudioUrlCandidates(result.audioUrl, result.cachedDashAudios)
+        val candidateSources = com.android.purebilibili.feature.plugin.buildPlaybackCdnCandidates(allVideoUrls, allAudioUrls).map { it.source }
+        val lineDiagnostics = buildCdnLineDiagnostics(urls = allVideoUrls, healthByHost = emptyMap(), sources = candidateSources)
+        val readyState = VideoPlaybackUiState.Success(
+            info = result.info,
+            playUrl = result.playUrl,
+            audioUrl = result.audioUrl,
+            related = result.related,
+            currentQuality = result.quality,
+            playbackQualityMode = resolveInitialPlaybackQualityMode(),
+            adaptiveDashSource = result.adaptiveDashSource,
+            qualityIds = result.qualityIds,
+            qualityLabels = result.qualityLabels,
+            switchableQualityIds = result.switchableQualityIds,
+            cachedDashVideos = result.cachedDashVideos,
+            cachedDashAudios = result.cachedDashAudios,
+            cachedDash = result.cachedDash,
+            requestedAudioQuality = result.requestedAudioQuality,
+            selectedAudioQuality = result.selectedAudioQuality,
+            availableAudioQualities = result.availableAudioQualities,
+            audioFallbackReason = result.audioFallbackReason,
+            emoteMap = result.emoteMap,
+            isLoggedIn = result.isLoggedIn,
+            isVip = result.isVip,
+            isFollowing = result.isFollowing,
+            isFavorited = result.isFavorited,
+            isLiked = result.isLiked,
+            coinCount = result.coinCount,
+            //  CDN 线路
+            currentCdnIndex = 0,
+            allVideoUrls = allVideoUrls,
+
+            allAudioUrls = allAudioUrls,
+            cdnCandidateSources = candidateSources,
+            cdnLineDiagnostics = lineDiagnostics,
+
+            // [New] Codec/Audio info
+            videoCodecId = result.videoCodecId,
+            audioCodecId = result.audioCodecId,
+            // [New] AI Audio
+            aiAudio = result.aiAudio,
+            currentAudioLang = result.curAudioLang,
+            videoDurationMs = result.duration
+        )
+
+        var applied = false
+        if (!admit {
+                if (isAcceptedCurrent() && shouldApplyVideoLoadResult(currentLoadRequestToken,
+                        requestToken, result.info.bvid, currentBvid)) {
+                    currentCid = result.info.cid
+                    _uiState.value = readyState
+                    publishSubjectSnapshot(readyState)
+                    applied = true
+                }
+            } || !applied) return false
+        // Original non-blocking operations stay outside the short admission.
+        // Their original requestToken/subject guards reject a subsequent swipe.
+        if (!isAcceptedCurrent()) return false
+        environment.mini.syncCurrentVideoInfo(readyState)
+        scheduleDeferredPostLoadWork(result.info.bvid, result.info.cid, result.info.aid,
+            result.info.owner.mid, result.isLoggedIn, requestToken)
+        val videoNoteEnabled = appContext?.let {
+            com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.getVideoNoteEnabledSync(it)
+        } ?: true
+        if (shouldLoadVideoNote(videoNoteEnabled, result.info.aid))
+            loadVideoNote(loadedBvid = result.info.bvid, loadedAid = result.info.aid)
+        updatePlaylist(result.info, result.related)
+        environment.analytics.logVideoPlay(result.info.bvid, result.info.title, result.info.owner.name)
+        return true
+    }
+

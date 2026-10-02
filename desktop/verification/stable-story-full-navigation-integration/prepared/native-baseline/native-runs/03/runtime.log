@@ -1,0 +1,16 @@
+PASS Initial exact captured Binding reaches native ACK and first frame
+FAIL Original Session token advances before exact native stop/capture
+java.lang.IllegalStateException: Original Session token advances before exact native stop/capture
+	at com.bilipai.desktop.rootmediafixture.RootMediaFixture.checkThat(RootMediaFixture.kt:140)
+	at com.bilipai.desktop.rootmediafixture.RootMediaFixture.exercise(RootMediaFixture.kt:235)
+	at com.bilipai.desktop.rootmediafixture.RootMediaFixture.access$exercise(RootMediaFixture.kt:120)
+	at com.bilipai.desktop.rootmediafixture.RootMediaFixture$exercise$1.invokeSuspend(RootMediaFixture.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.internal.ScopeCoroutine.afterResume(Scopes.kt:35)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:829)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)

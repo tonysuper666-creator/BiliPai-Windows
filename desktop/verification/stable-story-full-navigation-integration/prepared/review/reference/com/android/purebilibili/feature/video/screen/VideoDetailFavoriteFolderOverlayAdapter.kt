@@ -1,0 +1,33 @@
+package com.android.purebilibili.feature.video.screen
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.android.purebilibili.feature.video.ui.components.FavoriteFolderSheet
+import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel
+
+@Composable
+internal fun VideoDetailFavoriteFolderOverlayAdapter(
+    visible: Boolean,
+    viewModel: VideoPlaybackViewModel,
+    admitAction: ((() -> Unit) -> Boolean) = { action -> action(); true },
+) {
+    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current
+    if (!visible) return
+
+    val folders by viewModel.favoriteFolders.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isFavoriteFoldersLoading.collectAsStateWithLifecycle()
+    val selectedFolderIds by viewModel.favoriteSelectedFolderIds.collectAsStateWithLifecycle()
+    val isSaving by viewModel.isSavingFavoriteFolders.collectAsStateWithLifecycle()
+
+    FavoriteFolderSheet(
+        folders = folders,
+        isLoading = isLoading,
+        selectedFolderIds = selectedFolderIds,
+        isSaving = isSaving,
+        onFolderToggle = { id -> admitAction { viewModel.toggleFavoriteFolderSelection(id) }; Unit },
+        onSaveClick = { admitAction { viewModel.saveFavoriteFolderSelection() }; Unit },
+        onDismissRequest = { admitAction { viewModel.dismissFavoriteFolderDialog() }; Unit },
+        onCreateFolder = { title, intro, privacy -> admitAction { viewModel.createFavoriteFolder(title, intro, privacy) }; Unit },
+    )
+}

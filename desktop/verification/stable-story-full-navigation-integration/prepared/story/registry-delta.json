@@ -1,0 +1,22 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryScreen.kt",
+    "sha256": "bd85559d3998515508d93378f1476950eda1973cde86b2c8591b1d525396c471",
+    "features": [
+      "story-topic",
+      "story-pager-root"
+    ],
+    "mode": "policy-extract",
+    "existing": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryViewModel.kt",
+    "sha256": "d16fd532890ca4b229dca79b0deb00aac7b8acd2a68d2316b0e507fb75fc4bef",
+    "features": [
+      "story-topic",
+      "story-pager-root"
+    ],
+    "mode": "policy-extract",
+    "existing": true
+  }
+]

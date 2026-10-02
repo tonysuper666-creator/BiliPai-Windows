@@ -1,0 +1,33 @@
+{
+    "settings": {
+        "theme_selection_v1": "MIUIX",
+        "theme_mode_v2": 1,
+        "dark_theme_style_v1": 0,
+        "listen_video_bottom_tab_migration_complete": true,
+        "bottom_bar_label_mode": 0,
+        "home_top_right_action": 1,
+        "top_tab_order": "FOLLOW,RECOMMEND,POPULAR,LIVE,GAME,ANIME,PARTITION,KNOWLEDGE,TECH,SUBSCRIPTIONS",
+        "top_tab_visible_tabs": "RECOMMEND,FOLLOW,POPULAR,LIVE,GAME",
+        "search_filter_tab_order": "media_bangumi,video,media_ft,live_room,live_user,bili_user,article,topic,photo",
+        "bottom_bar_item_labels": "DYNAMIC=%E6%88%91%E7%9A%84%E5%8A%A8%E6%80%81",
+        "tablet_use_sidebar": true,
+        "sidebar_account_switcher_enabled": false,
+        "bottom_bar_order": "DYNAMIC,HISTORY,HOME,LISTEN_VIDEO,PROFILE",
+        "bottom_bar_visible_tabs": "HOME,DYNAMIC,HISTORY,LISTEN_VIDEO,PROFILE",
+        "ui_entrance_animation_enabled": false,
+        "card_animation_enabled": true,
+        "predictive_back_enabled": true,
+        "predictive_back_animation_style": "scale",
+        "video_shared_transition_speed": 2,
+        "skeleton_breathing_enabled": false,
+        "progressive_top_blur_enabled": false,
+        "header_blur_enabled": true,
+        "home_header_blur_mode": 0,
+        "progressive_top_fade_enabled": false,
+        "blur_intensity": "APPLE_DOCK"
+    },
+    "theme_cache": {
+        "theme_mode": 1,
+        "dark_theme_style": 0
+    }
+}

@@ -1,0 +1,11 @@
+{
+  "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationSettingsTest.kt",
+  "beforeSha256Bytes": "35543c935f8e50c14e2ce11e48fd720d296430a852e8ab734a60fdea7158d15b",
+  "afterSha256Bytes": "45a9bad41b72abbe8e9872ee70b173b891bf315c1a073201d15ea2bd5c528ae6",
+  "afterSha256LF": "45a9bad41b72abbe8e9872ee70b173b891bf315c1a073201d15ea2bd5c528ae6",
+  "blankLinesWithSpacesNormalized": 14,
+  "nonBlankLinesByteIdentical": true,
+  "testLogicChanged": false,
+  "testExecutionPredatesBlankLineNormalization": true,
+  "repeatTestNeededForThisFormattingOnlyChange": false
+}

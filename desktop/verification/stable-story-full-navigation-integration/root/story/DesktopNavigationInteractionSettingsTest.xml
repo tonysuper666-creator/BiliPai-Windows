@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.settings.DesktopNavigationInteractionSettingsTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-02T08:11:40.089Z" hostname="TONYSUPER666" time="0.066">
+  <properties/>
+  <testcase name="existingAppearanceAndPluginsAdmissionAlreadyUsesTheirDetailConsumers()" classname="com.bilipai.desktop.settings.DesktopNavigationInteractionSettingsTest" time="0.007"/>
+  <testcase name="restoreFenceRejectsOldSetterAndFreshGenerationReadsRestoredSettings()" classname="com.bilipai.desktop.settings.DesktopNavigationInteractionSettingsTest" time="0.012"/>
+  <testcase name="cancelledCallerDoesNotWriteAndExpandedFocusRetainsOriginalIndexes()" classname="com.bilipai.desktop.settings.DesktopNavigationInteractionSettingsTest" time="0.003"/>
+  <testcase name="exactSettersUpdateActualHomeReaderAndColdDiskWithoutDiscardingOtherKeys()" classname="com.bilipai.desktop.settings.DesktopNavigationInteractionSettingsTest" time="0.027"/>
+  <testcase name="upstreamIndividualDefaultsRemainDifferentFromAggregateWhereSpecified()" classname="com.bilipai.desktop.settings.DesktopNavigationInteractionSettingsTest" time="0.006"/>
+  <testcase name="failedAtomicReplacementDoesNotPublishState()" classname="com.bilipai.desktop.settings.DesktopNavigationInteractionSettingsTest" time="0.009"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

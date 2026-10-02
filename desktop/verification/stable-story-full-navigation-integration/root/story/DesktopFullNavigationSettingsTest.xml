@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-10-02T08:11:39.590Z" hostname="TONYSUPER666" time="0.497">
+  <properties/>
+  <testcase name="progressiveAndHeaderExclusionReachSharedThemeConfig()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.266"/>
+  <testcase name="topLayoutOrderVisibleTabsAndActionsReachRealHomeReader()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.035"/>
+  <testcase name="replacementFailureDoesNotPublishChanges()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.019"/>
+  <testcase name="navigationAnimationStyleAndProgressReachRealHostModel()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.022"/>
+  <testcase name="bottomOrderVisibilityAndLabelsReachRealHomeReader()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.015"/>
+  <testcase name="oldRestoreGenerationCannotOverwriteFreshDisk()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.029"/>
+  <testcase name="labelsPersistUsingOriginalEncoding()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.009"/>
+  <testcase name="realHolderAndNavDisplayFlagsUseExactOriginalKeys()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.014"/>
+  <testcase name="customTransitionDurationUsesOriginalNormalization()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.01"/>
+  <testcase name="twoFacadeConcurrentColorsReachRootNavigation()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.015"/>
+  <testcase name="individualDefaultsRetainOriginalAggregateDifferences()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.009"/>
+  <testcase name="twoFacadeConcurrentLabelEditsPreserveOtherKeys()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.016"/>
+  <testcase name="searchTabOrderUsesOriginalUnknownAndDuplicatePolicy()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.012"/>
+  <testcase name="skeletonUsesExistingGlobalAuthority()" classname="com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest" time="0.01"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,27 @@
+{
+  "scope": "Story89 reviewed exact delta; apply AFTER unchanged Story89",
+  "requiresFrozenStoryManifestSha256": "60a8bd713b5138ee126c962dc02db07713cdd1e42d6d6eb6d1d0c6fa2b18013f",
+  "copyWhitelist": [],
+  "exactHunks": "exact-hunks.json",
+  "hunkCount": 5,
+  "productionTargets": [
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "beforeSha256LF": "8cfe1f02f60f229edcddc39aa633bde2298e6ba315452be006e7f070df6c4399",
+      "afterSha256LF": "fe3efa7bd65b0dc682db49afffbf758fe07cb2302ac49c411dd40488099fd4e6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalStoryRoot.kt",
+      "beforeSha256LF": "1af3f2d32b400d663857e1541b0d96d4b80edfd96cf04b13d5024dd686a1c375",
+      "afterSha256LF": "60fa0de5eee07db7e42cda260699ec82d306c7eba4db0274ff8145710f3f890f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-detail-holder.py",
+      "beforeSha256LF": "3545cf9da80900e701c0a49259e5413462c7fdebf6a75ebfb55608269c229be8",
+      "afterSha256LF": "630e90b43a736a1e0333fc7e33ecbfc59a377c12516ef8a096991448180904d3"
+    }
+  ],
+  "registryChanges": 0,
+  "gradleChanges": 0,
+  "generatedOrBinaryInstallForbidden": true
+}

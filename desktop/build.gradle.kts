@@ -384,6 +384,23 @@ val extractUpstreamNavigationInteraction by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/navigation-interaction"))
 }
 
+val extractUpstreamFullNavigation by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamNavigationInteraction)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-full-navigation.py",
+        "--repo", repositoryRoot.absolutePath, "--policy-only",
+        "--output", layout.buildDirectory.dir("generated/full-navigation-settings").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-full-navigation.py", "tools/extract-upstream-navigation-interaction.py",
+        "tools/extract-upstream-media.py", "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files((sources + originalResources).filter {
+        "desktop-full-navigation-settings" in ((it["features"] as? List<*>) ?: emptyList<Any>())
+    }.map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/full-navigation-settings"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/full-navigation-settings")) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamFullNavigation) }
+
 val extractUpstreamSettingsStorageEntries by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsEntries)
     workingDir(projectDir)

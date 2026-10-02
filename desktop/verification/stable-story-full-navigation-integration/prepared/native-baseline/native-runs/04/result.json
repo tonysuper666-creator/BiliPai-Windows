@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Initial exact captured Binding reaches native ACK and first frame",
+      "passed": true
+    },
+    {
+      "name": "Original Session token and requested CID advance before stop/capture",
+      "passed": true
+    },
+    {
+      "name": "Same-player stop synchronously advances version BEFORE capture",
+      "passed": true
+    },
+    {
+      "name": "FIFO actual Stop then replacement Load reaches ACK without self rejection",
+      "passed": true
+    },
+    {
+      "name": "Caller cancelled before clear cannot stop the accepted native source",
+      "passed": true
+    },
+    {
+      "name": "Replaced real Session token before clear cannot stop another source",
+      "passed": true
+    },
+    {
+      "name": "Captured baseline does not retag over a later native publication",
+      "passed": true
+    },
+    {
+      "name": "Cancelled original caller remains rejected after baseline repair",
+      "passed": true
+    },
+    {
+      "name": "One actual Assembly/Section/MPV/Canvas remains",
+      "passed": true
+    },
+    {
+      "name": "No original VideoDetail Success was seeded or asserted",
+      "passed": true
+    },
+    {
+      "name": "Root shutdown drains actual assembly and native session",
+      "passed": true
+    }
+  ],
+  "actual83EntriesUnchanged": true,
+  "loadedBytesVerified": true,
+  "ordinaryDetailSuccessAccepted": false,
+  "realHTTPAccepted": false,
+  "fixtureProductSourceWrites": 0
+}

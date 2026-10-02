@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "copyWhitelist": [
+    {
+      "source": "prepared/manual/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitResolvedPayload.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitResolvedPayload.kt",
+      "sha256Bytes": "e0ddfde57d31cc04d76dbe33c298f93aca54c756c6a75886330bfe128480c734",
+      "sha256LF": "e0ddfde57d31cc04d76dbe33c298f93aca54c756c6a75886330bfe128480c734"
+    },
+    {
+      "source": "prepared/manual/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalStoryRoot.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalStoryRoot.kt",
+      "sha256Bytes": "1af3f2d32b400d663857e1541b0d96d4b80edfd96cf04b13d5024dd686a1c375",
+      "sha256LF": "1af3f2d32b400d663857e1541b0d96d4b80edfd96cf04b13d5024dd686a1c375"
+    }
+  ],
+  "exactHunks": "install-hunks.json",
+  "familyPins": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "beforeSha256LF": "15505043ce253f6d85f20ccba83dbc61dd96c86ad4b314cbf390e1f17d50abf3",
+      "afterSha256LF": "1e4146d221e10c37d74b79c728fbeaca8a78eb758241504e11fbe9ad528494a0",
+      "exactForwardInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+      "beforeSha256LF": "d3ad8c653c91cd984b42c42d007570e2f3c6012fcc5a8d6be7f7d5b6bef6dfd6",
+      "afterSha256LF": "544fc2ef992be53a4a8e69054cce3f9ed9196ceb4994c7ff67f346e8ff41e8fe",
+      "exactForwardInverse": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "beforeSha256LF": "0cd8c25e57186937478524318f99b2698ed25aef6b0ba1ef0a0dea60c29f2396",
+      "afterSha256LF": "8cfe1f02f60f229edcddc39aa633bde2298e6ba315452be006e7f070df6c4399",
+      "exactForwardInverse": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "beforeSha256LF": "209ee1379c97715e55519ed0d0a4af831b1e5254b9559f009d51d2153049b4ae",
+      "afterSha256LF": "41831b286186eb1b6c5548dfc8f871412362d5568ceac220b834c0fe08461107",
+      "exactForwardInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderRoute.kt",
+      "beforeSha256LF": "1ba569342bb32d622b2a84dd3a0f04d205ff4c3c0fd069935162cd19c8be2940",
+      "afterSha256LF": "3ff595ca0aee2431d6d5fa69a7bada48e1cf45238c8e2e1a964ef17ba2602931",
+      "exactForwardInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowPlatforms.kt",
+      "beforeSha256LF": "80cb73807e6884ebad3efaf9cf58635eac867ded2493da44afaca3797336a053",
+      "afterSha256LF": "78c97d04a1ea10b545f1f468787f621c351c67ffcf1c552373465e3c32c23a09",
+      "exactForwardInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "beforeSha256LF": "c5d982f9442dace7e93fac4792b248d65dcd3f3d6c3e5051e9fae3401e4b2381",
+      "afterSha256LF": "a2ecff336850f8e449b1cd0a1aa67b866a3c64034f8e94e98c13bab9f4f4d9c8",
+      "exactForwardInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "beforeSha256LF": "50f1c8090e910fa96e74c4185ee109d215e687acbbf7ef08ee014be4cf2fe30f",
+      "afterSha256LF": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "exactForwardInverse": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-story-topic.py",
+      "beforeSha256LF": "b60e59b299aa6401cce6f1c33dbd1500f264931525a893599672f8002584c849",
+      "afterSha256LF": "36c33944f1ec46703ba587a31cf75f65bbd5dfdb5eddcc5747c6d2153af69695",
+      "exactForwardInverse": true
+    }
+  ],
+  "registryDelta": "registry-delta.json",
+  "registryOperation": "union features; preserve existing modes; add one StoryScreen policy-extract row",
+  "expectedNewIdentityCount": 1,
+  "gradleChanges": 0,
+  "generatedCopiesAllowed": false,
+  "jarCopiesAllowed": false,
+  "originalSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryScreen.kt",
+      "gitCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "bd85559d3998515508d93378f1476950eda1973cde86b2c8591b1d525396c471",
+      "blobSha1": "966390c42d920dd1f9799eda6c94d13450211506"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryViewModel.kt",
+      "gitCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d16fd532890ca4b229dca79b0deb00aac7b8acd2a68d2316b0e507fb75fc4bef",
+      "blobSha1": "2c081f1a59639b3eba54c4259a5632bc23abf2ae"
+    }
+  ],
+  "actualCompileSnapshot": 83,
+  "compileResult": "runs/05/result.json",
+  "dtoSessionProof": "payload-proof/02/result.json",
+  "sourceReplay": "source-producer-proof.json",
+  "nativeAckAcceptance": false,
+  "rootRuntimeAcceptance": false,
+  "networkAcceptance": false
+}

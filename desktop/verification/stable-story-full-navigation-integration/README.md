@@ -1,0 +1,13 @@
+# Original Story and full navigation settings integration
+
+The complete original Story screen and feed view model now use the retained original video owner, native carrier and interaction domains. Raw page results enter the same original Session and playback view model after their actual source is accepted. Captured route/source admission protects the shared dialogs, Mini metadata, playlist and analytics. The existing image sharing local remains in RootStack.
+
+Story replacement first stops the previous accepted native source under the actual caller/Session token admission and then captures the next request's native baseline. A prepared real DesktopApp/Root/Binding/Session/MPV fixture passed 11 checks, including cancellation and replaced-token rejection before Stop, native replacement ACK/first frame, stale-baseline rejection and shutdown. It uses local media and does not establish ordinary Bilibili playback, raw payload adoption or Story visual acceptance.
+
+Full original bottom/top navigation editors, labels, colors, search tab ordering and Windows-applicable animation controls use the same global preference owner. Six existing theme fields reach AppThemeConfig. The unique generation task emits seven policy/binding files with `--policy-only`; four unchanged direct sources compile through the existing preparation task. Original XML vectors are converted by the same declared parser. No dependency or second preference store is added.
+
+The combined current product passed a normal standalone `gradle -p desktop classes test` run with zero product overrides. Both exact navigation test classes passed all 20 methods, with zero failures/errors/skips. The Windows sharing component was freshly rebuilt and its reviewed hash verified. This is the combined 1,180-source/243-resource checkout, not a relabelled historical snapshot83.
+
+The delivered desktop EXE still contains the earlier revision. Ordinary-account playback, full Story gestures/dialogs, whole Root/native animation effects, original advanced liquid-glass management, vibration hardware and five exact Android Miuix glyphs remain outside this acceptance. v0.2.4 and mature automatic upstream publication are not completed.
+
+`artifact-index.json` pins preserved preparation, including failed attempts, and actual integrated records. Compiled JARs/classes/module metadata are explicitly excluded in `integration-summary.json`; no runtime/native binary or immutable classpath is copied. Historical installation pending flags are retained as historical records; later fix/build receipts establish the final source and test results.

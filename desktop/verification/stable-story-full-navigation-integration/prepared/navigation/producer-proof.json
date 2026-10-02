@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "producerSha256Bytes": "53d46335fa453e7acb80dc6f44566c21aaff87ec3861b1fdc02edf1b7ffa1661",
+  "generated": {
+    "com/android/purebilibili/core/store/DesktopOriginalFullNavigationSettings.kt": "c26e7005c2ce24b94f67bb53a6fd135c8d73b164901c80bafc669f916367bc8b",
+    "com/android/purebilibili/core/ui/animation/AppEntrance.kt": "421d44dafd2d4c78b049a5ae1c64eac950ac124ad4a753dc4db66f67ed2760aa",
+    "com/android/purebilibili/core/ui/motion/AppEntranceMotion.kt": "9e44fd2b3a29b519efbc06b270fa6ed9407d7e52efb9b4070f6ea58b51a6faed",
+    "com/android/purebilibili/feature/search/DesktopOriginalSearchTabOrderPolicy.kt": "f5bcbc9489d38f762ce7dba8902702b57e9246683a4c7d3869ee17dcab3166ea",
+    "com/android/purebilibili/feature/settings/DesktopNavigationIconPreviewPolicy.kt": "9cdff76b9a3688ce874851859ab4ad6c633c9f2260c9a26c33241bd7978d0c75",
+    "com/android/purebilibili/feature/settings/DesktopNavigationMaterialSymbols.kt": "9d2122fecd66aea800eb377a92b7e583c60ab5e13e324b3b5310a343f8e9f47b",
+    "com/android/purebilibili/feature/settings/DesktopOriginalAnimationSettingsContent.kt": "e1d887f8e6a2bbf9c2b5949b0fbcdb59ec2d03544d4fa9c93d402d3e29fbf06e",
+    "com/android/purebilibili/feature/settings/DesktopOriginalBottomBarSettingsContent.kt": "2fc996b5571af763dda576ffa81f8398dceb577f71a460b6e09079a7c77f6b0a",
+    "com/android/purebilibili/feature/settings/SettingsComponents.kt": "bacc963c9fa5a159d65d9a9b93e09c639f7416ac695da8db3e45015abe6c79e3",
+    "com/android/purebilibili/feature/settings/SettingsEntranceMotionPolicy.kt": "3681b59c3cb5b952dd6c5c8c449ffa9fd1e0fc669c972dbabe84c89f399c74c9",
+    "com/bilipai/desktop/settings/DesktopNavigationSettingsVectors.kt": "2be81f75754f794e27a32fc6ff367b4ee1b38bf96655d7796d1c0f7642263d08"
+  },
+  "defaultCount": 11,
+  "policyOnlyCount": 7,
+  "directSourceBodiesExcludedByPolicyOnly": [
+    "com/android/purebilibili/core/ui/animation/AppEntrance.kt",
+    "com/android/purebilibili/core/ui/motion/AppEntranceMotion.kt",
+    "com/android/purebilibili/feature/settings/SettingsComponents.kt",
+    "com/android/purebilibili/feature/settings/SettingsEntranceMotionPolicy.kt"
+  ],
+  "registryBaseSha256Bytes": "5c3c23a4760594bab3487f8df8c28bca5a52b534f5d5dee3535ae87ac052d418",
+  "registrySources": 1174,
+  "sourceDeltaNew": 5
+}

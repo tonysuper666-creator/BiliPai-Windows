@@ -1,0 +1,1161 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt
+@@ -115,6 +115,12 @@
+ }
+ 
+ internal fun buildDesktopAppThemeConfig(settings: DesktopThemeSettings) = AppThemeConfig(
++    blurIntensity = settings.blurIntensity,
++    headerBlurEnabled = settings.headerBlurEnabled,
++    bottomBarBlurEnabled = settings.bottomBarBlurEnabled,
++    progressiveTopBlurEnabled = settings.progressiveTopBlurEnabled,
++    progressiveTopFadeEnabled = settings.progressiveTopFadeEnabled,
++    liquidGlassEnabled = settings.liquidGlassEnabled,
+     hapticFeedbackEnabled = settings.hapticFeedbackEnabled,
+     globalTextTapCopyEnabled = settings.globalTextTapCopyEnabled,
+     uiEntranceAnimationEnabled = settings.uiEntranceAnimationEnabled,
+--- desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt
+@@ -1,5 +1,8 @@
+ package com.bilipai.desktop.appearance
+ 
++import com.android.purebilibili.core.ui.blur.BlurIntensity
++import com.android.purebilibili.core.store.HomeHeaderBlurMode
++import com.android.purebilibili.core.store.resolveHomeHeaderBlurModePreference
+ import com.android.purebilibili.core.store.ThemeModeRoleOverrides
+ import com.android.purebilibili.core.store.ThemeRoleOverrides
+ import com.android.purebilibili.core.store.parseThemeSelectionString
+@@ -42,6 +45,12 @@
+     val globalTextTapCopyEnabled: Boolean = false,
+     val uiEntranceAnimationEnabled: Boolean = true,
+     val runtimeVisualGuardEnabled: Boolean = true,
++    val blurIntensity: BlurIntensity = BlurIntensity.THIN,
++    val headerBlurEnabled: Boolean = true,
++    val bottomBarBlurEnabled: Boolean = false,
++    val progressiveTopBlurEnabled: Boolean = false,
++    val progressiveTopFadeEnabled: Boolean = true,
++    val liquidGlassEnabled: Boolean = false,
+ )
+ 
+ class DesktopThemePrefs(
+@@ -179,6 +188,12 @@
+         globalTextTapCopyEnabled = values.boolean("global_text_tap_copy_enabled") ?: false,
+         uiEntranceAnimationEnabled = values.boolean("ui_entrance_animation_enabled") ?: true,
+         runtimeVisualGuardEnabled = values.boolean("runtime_visual_guard_enabled") ?: true,
++        blurIntensity = runCatching { BlurIntensity.valueOf(values.string("blur_intensity") ?: BlurIntensity.THIN.name) }.getOrDefault(BlurIntensity.THIN),
++        headerBlurEnabled = resolveHomeHeaderBlurModePreference(values.int("home_header_blur_mode"), values.boolean("header_blur_enabled")) != HomeHeaderBlurMode.ALWAYS_OFF,
++        bottomBarBlurEnabled = values.boolean("bottom_bar_blur_enabled") ?: false,
++        progressiveTopBlurEnabled = values.boolean("progressive_top_blur_enabled") ?: false,
++        progressiveTopFadeEnabled = values.boolean("progressive_top_fade_enabled") ?: true,
++        liquidGlassEnabled = values.boolean("android_native_liquid_glass_enabled") ?: false,
+     )
+ }
+ private fun JsonObject.int(key: String) = (get(key) as? JsonPrimitive)?.takeUnless { it.isString }?.intOrNull
+--- desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationPreferences.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationPreferences.kt
+@@ -0,0 +1,31 @@
++package com.bilipai.desktop.settings
++
++import com.bilipai.desktop.plugins.*
++import kotlinx.coroutines.*
++import kotlinx.coroutines.flow.StateFlow
++import kotlinx.serialization.json.*
++
++internal fun fullNavigationBooleanKey(name:String)=DesktopPreferenceKey(name){(it as? JsonPrimitive)?.booleanOrNull}
++internal fun fullNavigationIntKey(name:String)=DesktopPreferenceKey(name){(it as? JsonPrimitive)?.intOrNull}
++internal fun fullNavigationStringKey(name:String)=DesktopPreferenceKey(name){(it as? JsonPrimitive)?.contentOrNull}
++
++/** Datastore-shaped platform binding only: no preference/default/cache/account authority.
++ * Original compound label/color edits execute inside the existing shared backing transaction. */
++internal class DesktopFullNavigationEditor(private val snapshot:DesktopPreferenceSnapshot) {
++    val changes=linkedMapOf<String,JsonElement?>()
++    operator fun <T> get(key:DesktopPreferenceKey<T>):T?=
++        if(changes.containsKey(key.name)) changes[key.name]?.let(key.decode) else snapshot[key]
++    operator fun set(key:DesktopPreferenceKey<Boolean>,value:Boolean){changes[key.name]=JsonPrimitive(value)}
++    operator fun set(key:DesktopPreferenceKey<Int>,value:Int){changes[key.name]=JsonPrimitive(value)}
++    operator fun set(key:DesktopPreferenceKey<String>,value:String){changes[key.name]=JsonPrimitive(value)}
++    fun <T> remove(key:DesktopPreferenceKey<T>){changes[key.name]=null}
++}
++internal class DesktopFullNavigationDataStore(private val context:DesktopPluginContext) {
++    val data:StateFlow<DesktopPreferenceSnapshot> get()=context.store.snapshot("settings")
++    suspend fun edit(block:(DesktopFullNavigationEditor)->Unit)=withContext(Dispatchers.IO){
++        ensureActive()
++        context.store.requireObjectNamespace("settings")
++        context.store.updateFromSnapshot("settings"){snapshot->DesktopFullNavigationEditor(snapshot).apply(block).changes}
++    }
++}
++internal val DesktopPluginContext.fullNavigationDataStore get()=DesktopFullNavigationDataStore(this)
+--- desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettings.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettings.kt
+@@ -1,88 +1,21 @@
+ package com.bilipai.desktop.settings
++import androidx.compose.runtime.Composable
++import com.android.purebilibili.feature.settings.*
+ 
+-import androidx.compose.foundation.layout.*
+-import androidx.compose.foundation.lazy.LazyColumn
+-import androidx.compose.foundation.lazy.rememberLazyListState
+-import androidx.compose.runtime.*
+-import androidx.compose.ui.Modifier
+-import androidx.compose.ui.unit.dp
+-import com.android.purebilibili.core.store.DesktopOriginalNavigationInteractionSettings
+-import com.android.purebilibili.core.ui.components.*
+-import com.android.purebilibili.feature.settings.*
+-import kotlinx.coroutines.CancellationException
+-import kotlinx.coroutines.launch
+-import kotlinx.coroutines.sync.Mutex
+-import kotlinx.coroutines.sync.withLock
+-
+-/** Selected original fields; the existing Root global context is the sole preference authority.
+- * No account store, lifecycle scope, defaults model or settings cache is created here. */
++/** Entire original navigation editor and applicable animation controls use Root's global context.
++ * Tree remains the sole category/detail owner; each original finite LazyColumn owns detail scroll. */
+ @Composable
+-internal fun DesktopNavigationInteractionSettings(target: SettingsSearchTarget, onFailure: (Throwable) -> Unit) {
+-    require(target == SettingsSearchTarget.BOTTOM_BAR || target == SettingsSearchTarget.ANIMATION)
+-    val context = checkNotNull(LocalDesktopHomeCardPreferences.current) {
+-        "Navigation settings require Root's global preference context"
+-    }.context
+-    val scope = rememberCoroutineScope()
+-    val writer = remember(context) { Mutex() }
+-    val latestFailure by rememberUpdatedState(onFailure)
+-    val listState = rememberLazyListState()
+-    val request by SettingsSearchFocusController.request.collectAsState()
+-    val unsupportedFocus = request?.takeIf { it.target == target &&
+-        desktopNavigationInteractionFocusIndex(target, it.focusId) == null }
+-    LaunchedEffect(request?.token, target) {
+-        val focus = request ?: return@LaunchedEffect
+-        if (focus.target != target) return@LaunchedEffect
+-        val index = desktopNavigationInteractionFocusIndex(target, focus.focusId) ?: return@LaunchedEffect
+-        listState.animateScrollToItem(index)
+-        SettingsSearchFocusController.clear(focus.token)
+-    }
+-    fun save(action: suspend () -> Unit) {
+-        scope.launch {
+-            try { writer.withLock { action() } }
+-            catch (cancelled: CancellationException) { throw cancelled }
+-            catch (failure: Exception) { latestFailure(failure) }
+-        }
+-    }
+-    // Keep each exact upstream read default. The icon getter defaults false while the
+-    // aggregate HomeSettings reader defaults true: that existing upstream difference is retained.
+-    val floating by DesktopOriginalNavigationInteractionSettings.getBottomBarFloating(context).collectAsState(true)
+-    val crossScale by DesktopOriginalNavigationInteractionSettings.getNavigationIconCrossScaleEnabled(context).collectAsState(false)
+-    val dockSearch by DesktopOriginalNavigationInteractionSettings.getBottomBarSearchEnabled(context).collectAsState(false)
+-    val merge by DesktopOriginalNavigationInteractionSettings.getLinkedDockMergeOnScrollEnabled(context).collectAsState(true)
+-    val scopedSearch by DesktopOriginalNavigationInteractionSettings.getListScopedSearchEnabled(context).collectAsState(false)
+-    val entrance by DesktopOriginalNavigationInteractionSettings.getCardAnimationEnabled(context).collectAsState(false)
+-    val transition by DesktopOriginalNavigationInteractionSettings.getCardTransitionEnabled(context).collectAsState(true)
+-    LazyColumn(Modifier.fillMaxSize(), state = listState, contentPadding = PaddingValues(16.dp),
+-        verticalArrangement = Arrangement.spacedBy(16.dp)) {
+-        if (target == SettingsSearchTarget.BOTTOM_BAR) {
+-            item { AppText("当前已接入导航行为；导航项目排序、顶部标签和侧边栏编辑仍待接入。") }
+-            item { AppPreferenceSectionTitle("导航行为") }
+-            item {
+-                DesktopOriginalNavigationBehaviorFields(floating, crossScale, dockSearch, merge, scopedSearch,
+-                    { value -> save { DesktopOriginalNavigationInteractionSettings.setBottomBarFloating(context, value) } },
+-                    { value -> save { DesktopOriginalNavigationInteractionSettings.setNavigationIconCrossScaleEnabled(context, value) } },
+-                    { value -> save { DesktopOriginalNavigationInteractionSettings.setBottomBarSearchEnabled(context, value) } },
+-                    { value -> save { DesktopOriginalNavigationInteractionSettings.setLinkedDockMergeOnScrollEnabled(context, value) } },
+-                    { value -> save { DesktopOriginalNavigationInteractionSettings.setListScopedSearchEnabled(context, value) } })
+-            }
+-        } else {
+-            item { AppPreferenceSectionTitle("卡片动画") }
+-            item {
+-                DesktopOriginalCardMotionFields(entrance, transition,
+-                    { value -> save { DesktopOriginalNavigationInteractionSettings.setCardAnimationEnabled(context, value) } },
+-                    { value -> save { DesktopOriginalNavigationInteractionSettings.setCardTransitionEnabled(context, value) } })
+-            }
+-            item { AppText("当前已接入卡片动画；其它原版动效、触觉反馈和 Android 系统手势设置仍待平台适配。") }
+-        }
+-        unsupportedFocus?.let { item { AppText("搜索命中的具体设置尚未接入；此页保留已可用的原版控件。") } }
++internal fun DesktopNavigationInteractionSettings(target:SettingsSearchTarget,onFailure:(Throwable)->Unit) {
++    when(target) {
++        SettingsSearchTarget.BOTTOM_BAR -> DesktopOriginalBottomBarSettingsContent(onFailure=onFailure)
++        SettingsSearchTarget.ANIMATION -> DesktopOriginalAnimationSettingsContent(onFailure=onFailure)
++        else -> error("Unsupported navigation detail")
+     }
+ }
+ 
+-/** Admit only existing sections; never consume a focus token for a missing original control. */
+-internal fun desktopNavigationInteractionFocusIndex(target: SettingsSearchTarget, focusId: String): Int? = when (target) {
+-    SettingsSearchTarget.BOTTOM_BAR -> if (focusId in setOf(SettingsSearchFocusIds.BOTTOM_BAR_START, SettingsSearchFocusIds.BOTTOM_BAR_BEHAVIOR))
+-        resolveBottomBarSettingsScrollIndex(focusId) else null
+-    SettingsSearchTarget.ANIMATION -> if (focusId == SettingsSearchFocusIds.ANIMATION_START)
+-        resolveAnimationSettingsScrollIndex(focusId) else null
++/** Expanded original sections now genuinely exist, so their original focus tokens can be consumed. */
++internal fun desktopNavigationInteractionFocusIndex(target:SettingsSearchTarget,focusId:String):Int?=when(target) {
++    SettingsSearchTarget.BOTTOM_BAR -> resolveBottomBarSettingsScrollIndex(focusId)
++    SettingsSearchTarget.ANIMATION -> resolveAnimationSettingsScrollIndex(focusId)
+     else -> null
+ }
+--- desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSystemReduceMotion.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSystemReduceMotion.kt
+@@ -0,0 +1,6 @@
++package com.android.purebilibili.core.ui.motion
++
++import androidx.compose.runtime.Composable
++/** Share the real Root Windows SPI_GETCLIENTAREAANIMATION binding; no second OS observer contract. */
++@Composable
++fun rememberSystemReduceMotion():Boolean=com.bilipai.desktop.ui.rememberDesktopDynamicReduceMotion()
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt
+@@ -62,6 +62,14 @@
+     val state = remember(memory, stateKey) { memory?.screen(stateKey) { CommunitySearchState(initialQuery) } ?: CommunitySearchState(initialQuery) }
+     var draft by state::draft; var submitted by state::submitted; var type by state::type; var filters by state::filters
+     val preferences = community.searchPreferences
++    val navigationContext = com.bilipai.desktop.settings.LocalDesktopHomeCardPreferences.current?.context
++    val savedTabOrder by remember(navigationContext) {
++        navigationContext?.let(com.android.purebilibili.core.store.DesktopOriginalFullNavigationSettings::getSearchFilterTabOrder)
++            ?: kotlinx.coroutines.flow.flowOf(emptyList<String>())
++    }.collectAsState(emptyList())
++    val orderedSearchTabs = remember(savedTabOrder) {
++        com.android.purebilibili.feature.search.resolveSearchFilterTabs(savedTabOrder)
++    }
+     val history by remember(preferences, account?.mid) { preferences.history(account?.mid) }.collectAsState()
+     val privacy by preferences.privacyMode.collectAsState()
+     val suggestionsEnabled by preferences.suggestionsEnabled.collectAsState()
+@@ -145,7 +153,7 @@
+         suggestionsError?.let { Text(it.message ?: "搜索建议加载失败", Modifier.padding(horizontal = 20.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error) }
+         state.historyError?.let { Text(it.message ?: "搜索历史保存失败", Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.error) }
+         Row(Modifier.padding(horizontal = 20.dp).horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+-            SearchType.entries.forEach { candidate -> FilterChip(selected = type == candidate, onClick = { type = candidate }, label = { Text(candidate.displayName) }) }
++            orderedSearchTabs.forEach { candidate -> FilterChip(selected = type == candidate, onClick = { type = candidate }, label = { Text(candidate.displayName) }) }
+         }
+         if (submitted.isNotBlank()) CommunitySearchFilters(type, filters, { filters = it }, state.filterExpanded, { state.filterExpanded = it })
+         if (submitted.isBlank()) Column(Modifier.fillMaxSize().verticalScroll(state.landingScroll).padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+--- desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationSettingsTest.kt
++++ desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationSettingsTest.kt
+@@ -0,0 +1,214 @@
++package com.bilipai.desktop.settings
++import com.android.purebilibili.core.store.*
++import com.android.purebilibili.feature.search.*
++import com.android.purebilibili.data.model.response.SearchType
++import com.bilipai.desktop.plugins.*
++import com.bilipai.desktop.ui.DesktopOriginalHomePreferences
++import com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes.BottomBarVisibilityMode
++import com.bilipai.desktop.appearance.*
++import com.android.purebilibili.core.ui.blur.BlurIntensity
++import com.android.purebilibili.core.ui.transition.*
++import kotlinx.coroutines.*
++import kotlinx.coroutines.flow.first
++import java.nio.file.*
++import kotlinx.serialization.json.*
++
++import org.junit.jupiter.api.Test
++import org.junit.jupiter.api.io.TempDir
++import kotlin.coroutines.CoroutineContext
++import java.util.UUID
++/** Actual original settings bodies + shared backing/Home/theme consumers. No account/network/window fixture. */
++class DesktopFullNavigationSettingsTest {
++    @TempDir lateinit var temporary:Path
++    private fun verify(value:Boolean,message:String){check(value){message}}
++    private class Fixture(output:Path,coroutineContext:CoroutineContext) {
++        val output=output.also(Files::createDirectories)
++        val root=output.resolve("global")
++        val store=DesktopPluginStore(root)
++        val context=DesktopPluginContext(store)
++        val observerJob=SupervisorJob()
++        val observer=CoroutineScope(coroutineContext+observerJob)
++        lateinit var home:DesktopOriginalHomePreferences
++        suspend fun await(condition:()->Boolean){withTimeout(4000){while(!condition())delay(5)}}
++    }
++    private suspend fun withFixture(body:suspend Fixture.()->Unit) {
++        val fixture=Fixture(temporary.resolve(UUID.randomUUID().toString()),currentCoroutineContext())
++        fixture.home=DesktopOriginalHomePreferences.create(fixture.store,fixture.observer,false){false}
++        try { fixture.body() } finally { fixture.observerJob.cancelAndJoin() }
++    }
++
++    @Test fun individualDefaultsRetainOriginalAggregateDifferences():Unit=runBlocking {
++        withFixture {
++            verify(DesktopOriginalFullNavigationSettings.getBottomBarOrder(context).first()==listOf("HOME","DYNAMIC","HISTORY","LISTEN_VIDEO","PROFILE"),"Original bottom default")
++            verify(DesktopOriginalFullNavigationSettings.getTopTabVisibleTabs(context).first().size==5,"Original top default")
++            verify(DesktopOriginalFullNavigationSettings.getBottomBarLabelMode(context).first()==0,"Bottom label default")
++            verify(DesktopOriginalFullNavigationSettings.getTopTabLabelMode(context).first()==2,"Top label read default")
++            verify(!DesktopOriginalFullNavigationSettings.getTabletUseSidebar(context,false).first() && DesktopOriginalFullNavigationSettings.getTabletUseSidebar(context,true).first(),"Actual viewport default supplied, not persisted")
++        
++        }
++    }
++
++    @Test fun bottomOrderVisibilityAndLabelsReachRealHomeReader():Unit=runBlocking {
++        withFixture {
++            DesktopOriginalFullNavigationSettings.setBottomBarOrder(context,listOf("PROFILE","HOME","DYNAMIC","LISTEN_VIDEO","HISTORY"))
++            DesktopOriginalFullNavigationSettings.setBottomBarVisibleTabs(context,setOf("PROFILE","HOME","DYNAMIC"))
++            DesktopOriginalFullNavigationSettings.setBottomBarLabelMode(context,1)
++            DesktopOriginalFullNavigationSettings.setBottomBarVisibilityMode(context,BottomBarVisibilityMode.SCROLL_HIDE)
++            await{home.navigation.value.orderedVisibleTabIds==listOf("PROFILE","HOME","DYNAMIC") && home.homeSettings.value.bottomBarLabelMode==1}
++            verify(home.navigation.value.bottomBarVisibilityMode==BottomBarVisibilityMode.SCROLL_HIDE,"Visibility consumer")
++        
++        }
++    }
++
++    @Test fun topLayoutOrderVisibleTabsAndActionsReachRealHomeReader():Unit=runBlocking {
++        withFixture {
++            DesktopOriginalFullNavigationSettings.setTopTabOrder(context,listOf("LIVE","RECOMMEND","POPULAR","FOLLOW","GAME"))
++            DesktopOriginalFullNavigationSettings.setTopTabVisibleTabs(context,setOf("LIVE","POPULAR"))
++            DesktopOriginalFullNavigationSettings.setHideTopTabs(context,true)
++            DesktopOriginalFullNavigationSettings.setTopTabLabelMode(context,0)
++            DesktopOriginalFullNavigationSettings.setHomeTopLayoutOrder(context,HomeTopLayoutOrder.TABS_THEN_SEARCH)
++            DesktopOriginalFullNavigationSettings.setHomeTopRightAction(context,HomeTopRightAction.INBOX)
++            DesktopOriginalFullNavigationSettings.setHomeHeaderCollapseMode(context,HomeHeaderCollapseMode.OFF)
++            await{home.topTabs.value.orderIds.filter{it in home.topTabs.value.visibleIds}==listOf("LIVE","POPULAR") && home.homeSettings.value.hideTopTabs && home.homeSettings.value.topTabLabelMode==0}
++            verify(home.homeSettings.value.homeTopLayoutOrder==HomeTopLayoutOrder.TABS_THEN_SEARCH && home.homeSettings.value.homeTopRightAction==HomeTopRightAction.INBOX,"Actual Home actions/layout values")
++            verify(!home.homeSettings.value.isHeaderCollapseEnabled,"Legacy collapse key follows canonical setter")
++        
++        }
++    }
++
++    @Test fun twoFacadeConcurrentLabelEditsPreserveOtherKeys():Unit=runBlocking {
++        withFixture {
++            store.update("settings",mapOf("foreign" to JsonPrimitive("keep")))
++            val other=DesktopPluginContext(DesktopPluginStore(root))
++            coroutineScope {
++                launch(Dispatchers.IO){DesktopOriginalFullNavigationSettings.setBottomBarItemLabel(context,"home","  我 的  首 页  ")}
++                launch(Dispatchers.IO){DesktopOriginalFullNavigationSettings.setBottomBarItemLabel(other,"watch_later","稍后,=+看")}
++            }
++            await{home.navigation.value.bottomBarItemLabels.size==2}
++            verify(home.navigation.value.bottomBarItemLabels["HOME"]=="我 的 首 页","Original whitespace normalization")
++            verify(home.navigation.value.bottomBarItemLabels["WATCHLATER"]=="稍后,=+看","Exact UTF8 delimiter roundtrip")
++            verify(store.preferences("settings")["foreign"]?.jsonPrimitive?.content=="keep","Unrelated setting retained")
++            DesktopOriginalFullNavigationSettings.setBottomBarItemLabel(other,"home","")
++            await{home.navigation.value.bottomBarItemLabels==mapOf("WATCHLATER" to "稍后,=+看")}
++        
++        }
++    }
++
++    @Test fun twoFacadeConcurrentColorsReachRootNavigation():Unit=runBlocking {
++        withFixture {
++            val other=DesktopPluginContext(DesktopPluginStore(root))
++            coroutineScope {
++                launch(Dispatchers.IO){DesktopOriginalFullNavigationSettings.setBottomBarItemColor(context,"home",3)}
++                launch(Dispatchers.IO){DesktopOriginalFullNavigationSettings.setBottomBarItemColor(other,"dynamic",4)}
++            }
++            DesktopOriginalFullNavigationSettings.setTabletUseSidebar(context,true)
++            DesktopOriginalFullNavigationSettings.setSidebarAccountSwitcherEnabled(context,false)
++            await{home.navigation.value.bottomBarItemColors["HOME"]==3 && home.navigation.value.bottomBarItemColors["DYNAMIC"]==4 && home.navigation.value.tabletUseSidebar && !home.navigation.value.sidebarAccountSwitcherEnabled}
++        
++        }
++    }
++
++    @Test fun searchTabOrderUsesOriginalUnknownAndDuplicatePolicy():Unit=runBlocking {
++        withFixture {
++            DesktopOriginalFullNavigationSettings.setSearchFilterTabOrder(context,listOf("article","unknown","video","article"))
++            val tabs=resolveSearchFilterTabs(DesktopOriginalFullNavigationSettings.getSearchFilterTabOrder(context).first())
++            verify(tabs.take(2)==listOf(SearchType.ARTICLE,SearchType.VIDEO) && tabs.size==SearchType.entries.size,"Exact original search ordering policy")
++        
++        }
++    }
++
++    @Test fun labelsPersistUsingOriginalEncoding():Unit=runBlocking {
++        withFixture {
++            DesktopOriginalFullNavigationSettings.setBottomBarItemLabel(context,"WATCHLATER","稍后,=+看")
++
++            val disk=Json.parseToJsonElement(Files.readString(root.resolve("plugin-settings.json"))).jsonObject["settings"]!!.jsonObject
++            verify(disk["bottom_bar_item_labels"]!!.jsonPrimitive.content.contains("WATCHLATER="),"Original encoded label value")
++            Files.writeString(output.resolve("settings-disk.json"),disk.toString())
++        
++        }
++    }
++
++    @Test fun navigationAnimationStyleAndProgressReachRealHostModel():Unit=runBlocking {
++        withFixture {
++            DesktopOriginalFullNavigationSettings.setPredictiveBackEnabled(context,true)
++            DesktopOriginalFullNavigationSettings.setPredictiveBackAnimationStyle(context,"scale")
++            DesktopOriginalFullNavigationSettings.setPredictiveBackExitDirection(context,"always_left")
++            DesktopOriginalFullNavigationSettings.setMiuixPredictiveBackMaxProgressPercent(context,120)
++            DesktopOriginalFullNavigationSettings.setMiuixTransitionBlurEnabled(context,false)
++            DesktopOriginalFullNavigationSettings.setVideoSharedReturnGestureFollowEnabled(context,false)
++            await{home.navigation.value.predictiveBackAnimationStyle=="scale" && !home.navigation.value.miuixTransitionBlurEnabled && !home.navigation.value.videoSharedReturnGestureFollowEnabled}
++            verify(home.navigation.value.predictiveBackExitDirection=="always_left" && home.navigation.value.miuixPredictiveBackMaxProgressPercent==100,"Original host values and clamp")
++        
++        }
++    }
++
++    @Test fun customTransitionDurationUsesOriginalNormalization():Unit=runBlocking {
++        withFixture {
++            DesktopOriginalFullNavigationSettings.setVideoSharedTransitionSpeed(context,VideoSharedTransitionSpeed.CUSTOM)
++            DesktopOriginalFullNavigationSettings.setVideoSharedTransitionCustomDurationMillis(context,Int.MAX_VALUE)
++            await{home.homeSettings.value.videoSharedTransitionSpeed==VideoSharedTransitionSpeed.CUSTOM && home.homeSettings.value.videoSharedTransitionCustomDurationMillis==VIDEO_SHARED_TRANSITION_CUSTOM_MAX_MILLIS}
++        
++        }
++    }
++
++    @Test fun realHolderAndNavDisplayFlagsUseExactOriginalKeys():Unit=runBlocking {
++        withFixture {
++            DesktopOriginalFullNavigationSettings.setLiveSurfaceCardTransitionEnabled(context,true)
++            DesktopOriginalFullNavigationSettings.setRelatedVideoTransitionEnabled(context,false)
++            DesktopOriginalFullNavigationSettings.setFullScreenSwipeBackEnabled(context,true)
++            verify(DesktopOriginalFullNavigationSettings.getLiveSurfaceCardTransitionEnabled(context).first(),"Real player holder key")
++            verify(!DesktopOriginalFullNavigationSettings.getRelatedVideoTransitionEnabled(context).first(),"Real related source policy key")
++            verify(DesktopOriginalFullNavigationSettings.getFullScreenSwipeBackEnabled(context).first(),"Real NavDisplay key")
++        
++        }
++    }
++
++    @Test fun progressiveAndHeaderExclusionReachSharedThemeConfig():Unit=runBlocking {
++        withFixture {
++            val prefs=DesktopThemePrefs(store)
++            DesktopOriginalFullNavigationSettings.setProgressiveTopBlurEnabled(context,true)
++            var config=buildDesktopAppThemeConfig(prefs.initialSettings())
++            verify(config.progressiveTopBlurEnabled && !config.headerBlurEnabled,"Progressive enables and header disables")
++            DesktopOriginalFullNavigationSettings.setHeaderBlurEnabled(context,true)
++            DesktopOriginalFullNavigationSettings.setProgressiveTopFadeEnabled(context,false)
++            DesktopOriginalFullNavigationSettings.setBottomBarBlurEnabled(context,true)
++            DesktopOriginalFullNavigationSettings.setBlurIntensity(context,BlurIntensity.APPLE_DOCK)
++            config=buildDesktopAppThemeConfig(prefs.initialSettings())
++            verify(!config.progressiveTopBlurEnabled && config.headerBlurEnabled && !config.progressiveTopFadeEnabled && config.bottomBarBlurEnabled && config.blurIntensity==BlurIntensity.APPLE_DOCK,"Original exclusive setter and live config projection")
++        
++        }
++    }
++
++    @Test fun skeletonUsesExistingGlobalAuthority():Unit=runBlocking {
++        withFixture {
++            SkeletonSettingsStore.setBreathingEnabled(context,false)
++            verify(!SkeletonSettingsStore.breathingEnabled(DesktopPluginContext(DesktopPluginStore(root))).first(),"Existing original skeleton same global backing")
++        
++        }
++    }
++
++    @Test fun replacementFailureDoesNotPublishChanges():Unit=runBlocking {
++        withFixture {
++            val failedRoot=output.resolve("failed");val failed=DesktopPluginStore(failedRoot);val c=DesktopPluginContext(failed)
++            Files.createDirectories(failedRoot.resolve("plugin-settings.json"));Files.writeString(failedRoot.resolve("plugin-settings.json/owned"),"block")
++            val before=failed.snapshot("settings").value
++            verify(runCatching{DesktopOriginalFullNavigationSettings.setBottomBarItemLabel(c,"HOME","never")}.isFailure,"Expected real disk replacement failure")
++            verify(failed.snapshot("settings").value===before,"No state publication after failed disk replacement")
++        
++        }
++    }
++
++    @Test fun oldRestoreGenerationCannotOverwriteFreshDisk():Unit=runBlocking {
++        withFixture {
++            store.freezeWrites()
++            verify(runCatching{DesktopOriginalFullNavigationSettings.setBottomBarItemLabel(context,"HOME","stale")}.isFailure,"Old backing rejects")
++            val disk=Json.parseToJsonElement(Files.readString(root.resolve("plugin-settings.json"))).jsonObject
++            Files.writeString(root.resolve("plugin-settings.json"),JsonObject(disk.toMutableMap().apply{put("settings",buildJsonObject{put("bottom_bar_label_mode",2)})}).toString())
++            val fresh=DesktopPluginContext(DesktopPluginStore(root))
++            verify(DesktopOriginalFullNavigationSettings.getBottomBarLabelMode(fresh).first()==2,"New restored generation")
++            DesktopOriginalFullNavigationSettings.setBottomBarItemLabel(fresh,"HOME","new")
++            verify(!Files.readString(root.resolve("plugin-settings.json")).contains("stale"),"Retired writer cannot overwrite restored document")
++        
++        }
++    }
++}
+--- desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt
++++ desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt
+@@ -91,14 +91,16 @@
+         assertFalse(Json.parseToJsonElement(Files.readString(root.resolve("plugin-settings.json"))).jsonObject["settings"]!!.jsonObject["card_transition_enabled"]!!.jsonPrimitive.boolean)
+     }
+ 
+-    @Test fun cancelledCallerDoesNotWriteAndUnavailableFocusIsNotAcknowledged(): Unit = runBlocking {
++    @Test fun cancelledCallerDoesNotWriteAndExpandedFocusRetainsOriginalIndexes(): Unit = runBlocking {
+         val root = Files.createTempDirectory("bp-nav-")
+         val context = DesktopPluginContext(DesktopPluginStore(root))
+         val job = launch(start = CoroutineStart.LAZY) { Original.setCardAnimationEnabled(context, true) }
+         job.cancelAndJoin()
+         assertFalse(Files.exists(root.resolve("plugin-settings.json")))
+         assertEquals(1, desktopNavigationInteractionFocusIndex(SettingsSearchTarget.BOTTOM_BAR, SettingsSearchFocusIds.BOTTOM_BAR_BEHAVIOR))
+-        assertNull(desktopNavigationInteractionFocusIndex(SettingsSearchTarget.BOTTOM_BAR, SettingsSearchFocusIds.BOTTOM_BAR_TOP_TABS))
++        assertEquals(5, desktopNavigationInteractionFocusIndex(SettingsSearchTarget.BOTTOM_BAR, SettingsSearchFocusIds.BOTTOM_BAR_TOP_TABS))
++        assertEquals(4, desktopNavigationInteractionFocusIndex(SettingsSearchTarget.ANIMATION, SettingsSearchFocusIds.ANIMATION_VISUAL_EFFECTS))
++        assertNull(desktopNavigationInteractionFocusIndex(SettingsSearchTarget.PLAYBACK, SettingsSearchFocusIds.BOTTOM_BAR_TOP_TABS))
+         SettingsSearchFocusController.submit(SettingsSearchTarget.BOTTOM_BAR, SettingsSearchFocusIds.BOTTOM_BAR_TOP_TABS)
+         val token = SettingsSearchFocusController.request.value!!.token
+         assertEquals(token, SettingsSearchFocusController.request.value!!.token)
+--- desktop/tools/extract-upstream-full-navigation.py
++++ desktop/tools/extract-upstream-full-navigation.py
+@@ -0,0 +1,194 @@
++from pathlib import Path
++import importlib.util,sys,re,json,hashlib,textwrap,argparse
++sys.dont_write_bytecode=True
++args_parser=argparse.ArgumentParser(description="Original full BottomBar and applicable Animation controls; Windows preference/icon/lifecycle bindings only.")
++args_parser.add_argument('--repo',type=Path,default=Path(__file__).resolve().parents[2])
++args_parser.add_argument('--output',type=Path,required=True)
++args_parser.add_argument('--inventory',type=Path)
++args_parser.add_argument('--resource-inventory',type=Path)
++args_parser.add_argument('--policy-only',action='store_true',help='Exclude exact direct source bodies already emitted by prepareUpstreamSources.')
++args=args_parser.parse_args()
++REPO=args.repo.resolve()
++MAIN=REPO
++out=args.output.resolve()
++def load(name,path):
++    spec=importlib.util.spec_from_file_location(name,path); mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);return mod
++def wide(path):
++    value=str(path.absolute())
++    return Path(value if value.startswith('\\\\?\\') else '\\\\?\\'+value)
++def write(path,value):
++    wide(path.parent).mkdir(parents=True,exist_ok=True);wide(path).write_text(value,encoding='utf-8',newline='\n')
++parser=load('full_parser',MAIN/'desktop/tools/sync-upstream.py')
++media=load('full_method',MAIN/'desktop/tools/extract-upstream-media.py')
++def source(path):return (REPO/path).read_text(encoding='utf-8').replace('\r\n','\n')
++prefix='app/src/main/java/com/android/purebilibili/'
++bottomPath=prefix+'feature/settings/screen/BottomBarSettingsScreen.kt'
++managerPath=prefix+'core/store/SettingsManager.kt'
++navPath=prefix+'core/store/navigation/NavigationSettingsStore.kt'
++iconPath=prefix+'feature/settings/screen/SettingsNavigationIconPreviewPolicy.kt'
++searchPath=prefix+'feature/search/SearchScreen.kt'
++bottom,manager,nav,icons,search=[source(p) for p in [bottomPath,managerPath,navPath,iconPath,searchPath]]
++animationPath=prefix+'feature/settings/screen/AnimationSettingsScreen.kt'
++animation=source(animationPath)
++content=media.function(bottom,'BottomBarSettingsContent',parser)
++names=sorted(set(re.findall(r'SettingsManager\s*\.\s*((?:get|set|clear)\w+)\(',content)))
++def adaptTypes(body):
++    for old,new in [('BottomBarVisibilityMode','com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes.BottomBarVisibilityMode'),('TopTabLabelMode','com.bilipai.desktop.ui.DesktopOriginalHomeSettingConstants.TopTabLabelMode')]:
++        body=body.replace('SettingsManager.'+old,new)
++    return re.sub(r'\bSettingsManager\b','DesktopOriginalFullNavigationSettings',body)
++# Preserve entire original content/preview/editor, omit only Android outer Scaffold.
++body=bottom[bottom.index('/**\n *  底栏项目配置'):bottom.index('/**\n *  导航设置页面')]
++body+='\n@Composable\n'+content+'\n'+bottom[bottom.index('/**\n * 底栏预览组件'):]
++body=body.replace('fun BottomBarSettingsContent(', 'internal fun DesktopOriginalBottomBarSettingsContent(')
++body=body.replace('modifier: Modifier = Modifier\n)', 'modifier: Modifier = Modifier,\n    onFailure:(Throwable)->Unit,\n)')
++body=body.replace('val context = LocalContext.current','val context = checkNotNull(com.bilipai.desktop.settings.LocalDesktopHomeCardPreferences.current).context')
++body=body.replace('val scope = rememberCoroutineScope()','val latestFailure by rememberUpdatedState(onFailure)\n    val scope = rememberCoroutineScope { kotlinx.coroutines.CoroutineExceptionHandler { _, error -> latestFailure(error) } }')
++body=body.replace('.collectAsStateWithLifecycle(','.collectAsState(').replace('initialValue =','initial =')
++body=body.replace('SettingsManager.getTabletUseSidebar(context)','SettingsManager.getTabletUseSidebar(context, isLargeScreenCapable)')
++body=adaptTypes(body)
++imports=bottom[:bottom.index('/**\n *  底栏项目配置')]
++imports='\n'.join(line for line in imports.splitlines() if not any(s in line for s in ['LocalContext','stringResource','SettingsPageScaffold','collectAsStateWithLifecycle','core.store.SettingsManager']))+'\n'
++imports=imports.replace('import com.android.purebilibili.R\n','')+'import com.android.purebilibili.core.store.DesktopOriginalFullNavigationSettings\n'
++body=re.sub(r'(?:com\.android\.purebilibili\.)?R\.drawable\.(\w+)',lambda m:'"'+m.group(1)+'"',body)
++body=body.replace('com.android.purebilibili.feature.settings.rememberMaterialSymbol(', 'rememberDesktopNavigationMaterialSymbol(')
++write(out/'com/android/purebilibili/feature/settings/DesktopOriginalBottomBarSettingsContent.kt', imports+body)
++iconBody=icons.replace('import androidx.compose.ui.res.vectorResource','import com.android.purebilibili.feature.settings.rememberMaterialSymbol')
++iconBody=iconBody.replace('ImageVector.vectorResource(', 'rememberMaterialSymbol(')
++iconBody=iconBody.replace('import com.android.purebilibili.R\n','').replace('): Int = when','): String = when')
++iconBody=re.sub(r'R\.drawable\.(\w+)',lambda m:'"'+m.group(1)+'"',iconBody)
++# The pinned Windows Miuix publication lacks these newer Android extended glyphs.
++# Retain original role/material-symbol selection; fallback only these concrete missing glyphs.
++for name,symbol in [('FavoritesFill','ms_collections_bookmark_fill_24'),('RecordingTape','ms_live_tv_24'),('WorldClock','ms_watch_later_24'),('FolderFill','ms_extension_fill_24'),('MindMap','ms_smart_toy_24')]:
++    iconBody=re.sub(r'MiuixIcons\.(?:Medium\.)?'+name+r'\b','rememberMaterialSymbol("'+symbol+'")',iconBody)
++iconBody=iconBody.replace('import com.android.purebilibili.feature.settings.rememberMaterialSymbol','').replace('rememberMaterialSymbol(', 'rememberDesktopNavigationMaterialSymbol(')
++write(out/'com/android/purebilibili/feature/settings/DesktopNavigationIconPreviewPolicy.kt',iconBody)
++vectorTool=load('full_vectors',MAIN/'desktop/tools/extract-upstream-settings-search.py')
++needed=sorted(set(re.findall(r'R\.drawable\.(\w+)',bottom+icons)))
++vectorTool.symbol_names=lambda repo:needed
++vectorBody=vectorTool.vectors(REPO).replace('DesktopSettingsSymbols','DesktopNavigationSettingsSymbols').replace('DesktopSettingsVectors','DesktopNavigationSettingsVectors')
++write(out/'com/bilipai/desktop/settings/DesktopNavigationSettingsVectors.kt',vectorBody)
++write(out/'com/android/purebilibili/feature/settings/DesktopNavigationMaterialSymbols.kt','''package com.android.purebilibili.feature.settings
++import androidx.compose.runtime.Composable
++import androidx.compose.ui.graphics.vector.ImageVector
++@Composable
++internal fun rememberDesktopNavigationMaterialSymbol(name:String):ImageVector=com.bilipai.desktop.settings.DesktopNavigationSettingsVectors.vector(name)
++''')
++if args.resource_inventory: write(args.resource_inventory,json.dumps([dict(path='app/src/main/res/drawable/'+n+'.xml',sha256=hashlib.sha256(source('app/src/main/res/drawable/'+n+'.xml').encode()).hexdigest(),features=['desktop-full-navigation-settings']) for n in needed],indent=2)+'\n')
++# Original search order policy is shared by editor and actual search consumer.
++tokens=parser.kotlin_tokens(search)
++start=search.index('internal val defaultSearchFilterTabOrder')
++end=search.index('internal fun resolveSearchDefaultPlaceholder',start)
++write(out/'com/android/purebilibili/feature/search/DesktopOriginalSearchTabOrderPolicy.kt','package com.android.purebilibili.feature.search\nimport com.android.purebilibili.data.model.response.SearchType\n'+search[start:end])
++# Existing exact getters/setters, same settings namespace and shared backing atomic edit.
++def method(source,name):
++    try:return media.function(source,name,parser)
++    except ValueError:
++        match=re.search(r'^[ \t]*(?:(?:internal|private|suspend) )*fun '+name+r'\([^\n]+\)[^\n=]*=[\s\S]*?(?=\n[ \t]*\n)',source,re.M)
++        assert match,name
++        return textwrap.dedent(match.group())
++animationMethods=['getUiEntranceAnimationEnabled','setUiEntranceAnimationEnabled','getGlobalTextTapCopyEnabled','setGlobalTextTapCopyEnabled',
++    'getCardAnimationEnabled','setCardAnimationEnabled','getCardTransitionEnabled','setCardTransitionEnabled',
++    'getRelatedVideoTransitionEnabled','setRelatedVideoTransitionEnabled','getLiveSurfaceCardTransitionEnabled','setLiveSurfaceCardTransitionEnabled',
++    'getVideoTransitionRealtimeBlurEnabled','setVideoTransitionRealtimeBlurEnabled','getFullScreenSwipeBackEnabled','setFullScreenSwipeBackEnabled',
++    'setPredictiveBackEnabled','setPredictiveBackAnimationStyle','setPredictiveBackExitDirection','setMiuixTransitionBlurEnabled',
++    'setMiuixPredictiveBackMaxProgressPercent','setVideoSharedReturnGestureFollowEnabled','setVideoSharedTransitionSpeed','setVideoSharedTransitionCustomDurationMillis',
++    'getHeaderBlurEnabled','setHeaderBlurEnabled','getProgressiveTopBlurEnabled','setProgressiveTopBlurEnabled',
++    'getProgressiveTopFadeEnabled','setProgressiveTopFadeEnabled','getBottomBarBlurEnabled','setBottomBarBlurEnabled','getBlurIntensity','setBlurIntensity']
++names=sorted(set(names+animationMethods))
++methods=[method(manager,name) for name in names]
++methods += [media.function(manager,name,parser) for name in ['parseBottomBarItemColors','normalizeBottomBarColorItemId']]
++navNames=sorted(set(re.findall(r'NavigationSettingsStore\.(\w+)\(', '\n'.join(methods))))
++navMethods=[media.function(nav,name,parser) for name in navNames]
++navMethods += [method(nav,'normalizeBottomBarLabelItemId'),method(nav,'normalizeBottomBarCustomLabel')]
++# parseBottomBarItemLabels is already an original shared consumer declaration in product.
++methods=[m.replace('NavigationSettingsStore.','DesktopOriginalFullNavigationStore.') for m in methods]
++methods=[m.replace('fun getTabletUseSidebar(context: Context)', 'fun getTabletUseSidebar(context: Context, isLargeScreenCapable: Boolean)').replace('defaultTabletUseSidebar(isLargeScreenOrFoldableConfiguration(context))','defaultTabletUseSidebar(isLargeScreenCapable)') for m in methods]
++methodBody='\n\n'.join(methods)
++keys=sorted(set(re.findall(r'\bKEY_[A-Z_]+\b',methodBody)))
++keyDecl=[]
++for key in keys:
++    match=re.search(r'private val '+key+r'\s*=\s*(?:boolean|int|string)PreferencesKey\("[^"]+"\)',manager)
++    assert match,key;keyDecl.append(match.group())
++defaults=[]
++for name in sorted(set(re.findall(r'\bDEFAULT_[A-Z_]+\b',methodBody))):
++    match=re.search(r'(?:private )?const val '+name+r'\s*=\s*[^\n]+',manager);assert match,name;defaults.append(match.group())
++navBody='\n\n'.join(navMethods)
++navKeys=sorted(set(re.findall(r'\b(?:key[A-Z]\w*|bottomBarItemLabelsPreferencesKey|miuixPredictiveBackMaxProgressPercentPreferencesKey)\b',navBody)))
++navDecl=[]
++for key in navKeys:
++    match=re.search(r'(?:(?:internal|private) )?val '+key+r'\s*=\s*(?:boolean|int|string)PreferencesKey\("[^"]+"\)',nav);assert match,key;navDecl.append(match.group().replace('internal val','private val'))
++bindings='''package com.android.purebilibili.core.store
++import com.bilipai.desktop.plugins.DesktopPluginContext as Context
++import com.bilipai.desktop.settings.fullNavigationBooleanKey as booleanPreferencesKey
++import com.bilipai.desktop.settings.fullNavigationIntKey as intPreferencesKey
++import com.bilipai.desktop.settings.fullNavigationStringKey as stringPreferencesKey
++import com.bilipai.desktop.settings.fullNavigationDataStore as settingsDataStore
++import com.android.purebilibili.core.store.navigation.parseBottomBarItemLabels
++import com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes.BottomBarVisibilityMode
++import com.bilipai.desktop.ui.DesktopOriginalHomeSettingConstants.TopTabLabelMode
++import com.android.purebilibili.core.ui.blur.BlurIntensity
++import com.android.purebilibili.core.ui.transition.*
++import kotlinx.coroutines.flow.*
++'''
++methodBody=methodBody.replace('SettingsManager.','DesktopOriginalFullNavigationSettings.')
++sidebarDefault=re.search(r'^internal fun defaultTabletUseSidebar\([^\n]+',manager,re.M);assert sidebarDefault
++methodBody += '\n\n'+sidebarDefault.group()+'\n'
++methodBody += '\nfun getAppNavigationSettings(context:Context):Flow<AppNavigationSettings> = context.settingsDataStore.data.map { com.bilipai.desktop.ui.decodeDesktopOriginalHomeNavigation(it,false) }\n'
++maxTop=re.search(r'const val MAX_TOP_TABS\s*=\s*[^\n]+',manager);assert maxTop
++maxTopValue=maxTop.group().split('=',1)[1].strip()
++write(out/'com/android/purebilibili/core/store/DesktopOriginalFullNavigationSettings.kt',bindings+'internal object DesktopOriginalFullNavigationSettings {\n    const val MAX_TOP_TABS='+maxTopValue+'\n'+textwrap.indent('\n'.join(keyDecl+defaults)+'\n'+methodBody,'    ')+'\n}\n\nprivate object DesktopOriginalFullNavigationStore {\n'+textwrap.indent('\n'.join(navDecl)+'\n'+navBody,'    ')+'\n}\n')
++fullAnimation=media.function(animation,'AnimationSettingsContent',parser)
++fullAnimation=fullAnimation[:fullAnimation.index('    val importSession = pendingLiquidGlassImport')]+'}\n'
++fullAnimation=fullAnimation.replace('fun AnimationSettingsContent(', 'internal fun DesktopOriginalAnimationSettingsContent(')
++fullAnimation=fullAnimation.replace('state: SettingsUiState,\n    viewModel: SettingsViewModel','onFailure:(Throwable)->Unit')
++fullAnimation=fullAnimation.replace('val context = LocalContext.current','val context = checkNotNull(com.bilipai.desktop.settings.LocalDesktopHomeCardPreferences.current).context\n    val settingsSnapshot by context.store.snapshot("settings").collectAsState()\n    val state = com.bilipai.desktop.ui.decodeDesktopOriginalHomeSettings(settingsSnapshot)')
++begin=fullAnimation.index('    val liquidGlassShareService');end=fullAnimation.index('    val listState',begin)
++fullAnimation=fullAnimation[:begin]+fullAnimation[end:]
++begin=fullAnimation.index('    val isLiquidGlassAvailable');end=fullAnimation.index('    val uiEntranceAnimationEnabled',begin)
++fullAnimation=fullAnimation[:begin]+fullAnimation[end:]
++begin=fullAnimation.index('    val previewBottomBarItems');end=fullAnimation.index('    val videoTransitionRealtimeBlurEnabled',begin)
++fullAnimation=fullAnimation[:begin]+fullAnimation[end:]
++def removeBlock(body,marker):
++    begin=body.index(marker);tokens=parser.kotlin_tokens(body[begin:]);opening=next(i for i,t in enumerate(tokens) if t[0]=='{');depth=1;ending=opening
++    while depth:ending+=1;depth+=(tokens[ending][0]=='{')-(tokens[ending][0]=='}')
++    return body[:begin]+body[begin+tokens[ending][2]:]
++# Android SAF/content-URI/share-intent preview/import closure is not falsely represented by ZIP backup.
++fullAnimation=removeBlock(fullAnimation,'if (isLiquidGlassAvailable && state.androidNativeLiquidGlassEnabled)')
++# Desktop has no vibration hardware provider. Do not ship a live switch claiming one.
++def exact_call(body,marker,name,parser):
++    point=body.index(marker);start=body.rfind(name+'(',0,point);assert start>=0
++    tokens=parser.kotlin_tokens(body[start:]);opening=next(i for i,t in enumerate(tokens) if t[0]=='(')
++    depth=1;ending=opening
++    while depth:
++        ending+=1;depth+=(tokens[ending][0]=='(')-(tokens[ending][0]==')')
++    return body[start:start+tokens[ending][2]]
++haptic=exact_call(fullAnimation,'title = "触感反馈"','AppSwitchPreference',parser)
++fullAnimation=fullAnimation.replace(haptic,'AppText("Windows 当前没有振动反馈设备绑定。")')
++fullAnimation=fullAnimation.replace('val scope = rememberCoroutineScope()','val latestFailure by rememberUpdatedState(onFailure)\n    val scope = rememberCoroutineScope { kotlinx.coroutines.CoroutineExceptionHandler { _, error -> latestFailure(error) } }')
++fullAnimation=fullAnimation.replace('.collectAsStateWithLifecycle(','.collectAsState(').replace('initialValue =','initial =')
++for prop in ['headerBlurEnabled','progressiveTopBlurEnabled','progressiveTopFadeEnabled','bottomBarBlurEnabled','blurIntensity']:
++    fullAnimation=fullAnimation.replace('state.'+prop,prop)
++extra='\n'.join('    val '+prop+' by DesktopOriginalFullNavigationSettings.'+getter+'(context).collectAsState(initial='+value+')' for prop,getter,value in [
++    ('headerBlurEnabled','getHeaderBlurEnabled','true'),('progressiveTopBlurEnabled','getProgressiveTopBlurEnabled','false'),('progressiveTopFadeEnabled','getProgressiveTopFadeEnabled','true'),('bottomBarBlurEnabled','getBottomBarBlurEnabled','false'),('blurIntensity','getBlurIntensity','BlurIntensity.THIN')])+'\n'
++fullAnimation=fullAnimation.replace('    val scope =',extra+'    val scope =',1)
++for old,new in [('toggleCardAnimation','setCardAnimationEnabled'),('toggleCardTransition','setCardTransitionEnabled'),('toggleLiveSurfaceCardTransition','setLiveSurfaceCardTransitionEnabled'),('toggleVideoTransitionRealtimeBlur','setVideoTransitionRealtimeBlurEnabled'),('toggleHeaderBlur','setHeaderBlurEnabled'),('toggleProgressiveTopBlur','setProgressiveTopBlurEnabled'),('toggleProgressiveTopFade','setProgressiveTopFadeEnabled'),('toggleBottomBarBlur','setBottomBarBlurEnabled'),('setBlurIntensity','setBlurIntensity'),('setVideoSharedTransitionCustomDurationMillis','setVideoSharedTransitionCustomDurationMillis')]:
++    fullAnimation=re.sub(r'viewModel\.'+old+r'\(([^()]*)\)',lambda m:'scope.launch { DesktopOriginalFullNavigationSettings.'+new+'(context, '+m.group(1)+') }',fullAnimation)
++fullAnimation=fullAnimation.replace('viewModel::setVideoSharedTransitionSpeed','{ value -> scope.launch { DesktopOriginalFullNavigationSettings.setVideoSharedTransitionSpeed(context,value) } }')
++fullAnimation=re.sub(r'\bSettingsManager\b','DesktopOriginalFullNavigationSettings',fullAnimation)
++fullAnimation=fullAnimation.replace('val skeletonBreathingEnabled = com.android.purebilibili.core.ui.skeleton.rememberSkeletonBreathingEnabled()', 'val skeletonBreathingEnabled by com.android.purebilibili.core.store.SkeletonSettingsStore.breathingEnabled(context).collectAsState(initial = true)')
++fullAnimation=re.sub(r'(?:com\.android\.purebilibili\.)?R\.drawable\.(\w+)',lambda m:'"'+m.group(1)+'"',fullAnimation)
++fullAnimation=fullAnimation.replace('com.android.purebilibili.feature.settings.rememberMaterialSymbol(', 'rememberDesktopNavigationMaterialSymbol(')
++# Platform budget/local provider remains authoritative; the original switch copy's API-33 qualifier is Android-only.
++fullAnimation=fullAnimation.replace('顶栏模糊随滚动渐变（需 Android 13+）','顶栏模糊随滚动渐变')
++animationImports=animation[:animation.index('@Composable')]
++animationImports='\n'.join(line for line in animationImports.splitlines() if line.startswith(('package ','import ')) and not any(s in line for s in ['import android.','androidx.activity','LocalContext','stringResource','lifecycle','purebilibili.R','core.store.SettingsManager','feature.settings.share','SettingsPageScaffold','shouldAllowHomeChromeLiquidGlass','LiquidGlassSettingsStore']))+'\n'
++animationImports += 'import com.android.purebilibili.core.store.DesktopOriginalFullNavigationSettings\n'
++write(out/'com/android/purebilibili/feature/settings/DesktopOriginalAnimationSettingsContent.kt',animationImports+'@Composable\n'+fullAnimation)
++for path in ([] if args.policy_only else [prefix+'feature/settings/ui/SettingsComponents.kt',prefix+'feature/settings/SettingsEntranceMotionPolicy.kt']):
++    write(out/('com/android/purebilibili/feature/settings/'+Path(path).name),source(path))
++entrancePath=prefix+'core/ui/animation/AppEntrance.kt'
++motionPath='design-system/src/main/java/com/android/purebilibili/core/ui/motion/AppEntranceMotion.kt'
++if not args.policy_only:
++    write(out/'com/android/purebilibili/core/ui/animation/AppEntrance.kt',source(entrancePath))
++    write(out/'com/android/purebilibili/core/ui/motion/AppEntranceMotion.kt',source(motionPath))
++if args.inventory: write(args.inventory,json.dumps([dict(path=p,sha256=hashlib.sha256(source(p).encode()).hexdigest(),mode='policy-extract' if p not in [entrancePath,motionPath,prefix+'feature/settings/ui/SettingsComponents.kt',prefix+'feature/settings/SettingsEntranceMotionPolicy.kt'] else 'direct',features=['desktop-full-navigation-settings']) for p in [bottomPath,managerPath,navPath,iconPath,searchPath,animationPath,entrancePath,motionPath,prefix+'feature/settings/ui/SettingsComponents.kt',prefix+'feature/settings/SettingsEntranceMotionPolicy.kt']],ensure_ascii=False,indent=2)+'\n')
+--- desktop/upstream-sources.json
++++ desktop/upstream-sources.json
+@@ -1786,7 +1786,8 @@
+         "stable-video-tablet-original",
+         "stable-video-root-effects",
+         "stable-video-owner-download-binding",
+-        "desktop-navigation-interaction-settings"
++        "desktop-navigation-interaction-settings",
++        "desktop-full-navigation-settings"
+       ],
+       "mode": "policy-extract"
+     },
+@@ -3700,7 +3701,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+       "mode": "policy-extract",
+       "features": [
+-        "settings-privacy-section-parity"
++        "settings-privacy-section-parity",
++        "desktop-full-navigation-settings"
+       ],
+       "sha256": "526fd05cd8c2daa946f6240b3922aae788d6376b058e7f83b1ce2b5b96eee6be"
+     },
+@@ -7104,7 +7106,8 @@
+       "mode": "policy-extract",
+       "features": [
+         "home-page",
+-        "stable-navigation3-host"
++        "stable-navigation3-host",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -9878,7 +9881,8 @@
+       "mode": "policy-extract",
+       "sha256": "0b16042c8d9013b44388e300a40939f4957b7733d44f6c94baac49be9b9963c9",
+       "features": [
+-        "desktop-navigation-interaction-settings"
++        "desktop-navigation-interaction-settings",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -9886,7 +9890,8 @@
+       "mode": "policy-extract",
+       "sha256": "a517fd0d059c1b54803ab8638aa2729e9dfb4f72163bb0e20dc1091889f22ff1",
+       "features": [
+-        "desktop-navigation-interaction-settings"
++        "desktop-navigation-interaction-settings",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -9897,6 +9902,46 @@
+         "story-pager-root"
+       ],
+       "mode": "policy-extract"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsNavigationIconPreviewPolicy.kt",
++      "sha256": "7e1ad9445b9339f2b447bcc087f2f0468f8bb27f3b3326a57efa78569443ba22",
++      "mode": "policy-extract",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/core/ui/animation/AppEntrance.kt",
++      "sha256": "421d44dafd2d4c78b049a5ae1c64eac950ac124ad4a753dc4db66f67ed2760aa",
++      "mode": "direct",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/AppEntranceMotion.kt",
++      "sha256": "9e44fd2b3a29b519efbc06b270fa6ed9407d7e52efb9b4070f6ea58b51a6faed",
++      "mode": "direct",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsComponents.kt",
++      "sha256": "bacc963c9fa5a159d65d9a9b93e09c639f7416ac695da8db3e45015abe6c79e3",
++      "mode": "direct",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsEntranceMotionPolicy.kt",
++      "sha256": "3681b59c3cb5b952dd6c5c8c449ffa9fd1e0fc669c972dbabe84c89f399c74c9",
++      "mode": "direct",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
+     }
+   ],
+   "featureCoverage": {
+@@ -10280,7 +10325,8 @@
+       "path": "app/src/main/res/drawable/ms_collections_bookmark_24.xml",
+       "sha256": "c4e94e3741882f5b3ab46fe2456560f0f96dc5e494c857d2e58dffd442fa9a79",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -10371,7 +10417,8 @@
+       "path": "app/src/main/res/drawable/ms_extension_24.xml",
+       "sha256": "bc0fec4d13b0f4e71c3ac6209c5f323932f8f6011d8eb181980b7cc0511670bb",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -10483,7 +10530,8 @@
+       "path": "app/src/main/res/drawable/ms_grid_view_24.xml",
+       "sha256": "668aecefe58f30533e9917cb49e13cfc27c1bdac4648452d3140d9a33bd94acf",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -10519,7 +10567,8 @@
+       "sha256": "810cd1d657367d5f33c56bde96d6b3cb0e714528b8d60fb548a96cd4a63d257e",
+       "features": [
+         "settings-search-symbols",
+-        "stable-linked-dock-search"
++        "stable-linked-dock-search",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -10533,7 +10582,8 @@
+       "path": "app/src/main/res/drawable/ms_home_24.xml",
+       "sha256": "01fc3a366b960200f8eca85177b2fec7f057beef24fa9fa5d73a14f9a65db418",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -10568,7 +10618,8 @@
+       "path": "app/src/main/res/drawable/ms_keyboard_arrow_up_24.xml",
+       "sha256": "b0a011df19ee81eab7e1d822fb2a3d7b9b446bae8fccc83f2fd5450b12d850b8",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -10610,7 +10661,8 @@
+       "path": "app/src/main/res/drawable/ms_lightbulb_24.xml",
+       "sha256": "2041393ca823f5c8ca45fad5d46bbe483c18ed5ee3678ae832f0f6ddd0edf774",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -10624,7 +10676,8 @@
+       "path": "app/src/main/res/drawable/ms_live_tv_24.xml",
+       "sha256": "5c5c9e681a23d2e27649b1d3c0f0ccc61b77c606f1b4b66e1afc0b238991c4a4",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -10638,7 +10691,8 @@
+       "path": "app/src/main/res/drawable/ms_mail_24.xml",
+       "sha256": "ca7ba4f816bf1fe70b5e6b2a66696355524a2dbfcca0d3090c93842effc367d9",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -10785,7 +10839,8 @@
+       "path": "app/src/main/res/drawable/ms_person_24.xml",
+       "sha256": "ab409acf8825d92c92928e06d2d84c003f9e227033594443d0ba5700fe2fe072",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -10855,7 +10910,8 @@
+       "path": "app/src/main/res/drawable/ms_refresh_24.xml",
+       "sha256": "983a75fe91322a8bd3cae0050c293242d651d43c67ae9ab12691d9b069625b7f",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -10912,7 +10968,8 @@
+       "sha256": "0528ba9f4532752c28eeb3b98cf46d2d57b3784d06725f2cdddca85802649b62",
+       "features": [
+         "settings-search-symbols",
+-        "stable-linked-dock-search"
++        "stable-linked-dock-search",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -11010,7 +11067,8 @@
+       "path": "app/src/main/res/drawable/ms_smart_toy_24.xml",
+       "sha256": "9efcc30e1d1a1cdc6643f26cf9c4d505ede8e31cb9235e78d3e252119190773c",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -11262,14 +11320,16 @@
+       "path": "app/src/main/res/drawable/ms_visibility_24.xml",
+       "sha256": "8fd525718044a61166c10e21ad72a5382d33935bcd11a337ff2284eacb54a950",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+       "path": "app/src/main/res/drawable/ms_visibility_off_24.xml",
+       "sha256": "24c67489b46f0bae2062ef24e0334ae3252f5d45fadff1ecfaedec43777730b7",
+       "features": [
+-        "settings-search-symbols"
++        "settings-search-symbols",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -11431,7 +11491,8 @@
+       "path": "app/src/main/res/drawable/ms_home_fill_24.xml",
+       "sha256": "ff47b2ad7e17e889e842081c3bd5ed08c39e73b2460f0098f9beefef0f4863ae",
+       "features": [
+-        "stable-linked-dock-search"
++        "stable-linked-dock-search",
++        "desktop-full-navigation-settings"
+       ]
+     },
+     {
+@@ -11446,6 +11507,216 @@
+       "sha256": "46092e9f8c4c4febe63f3059d3ddc82b6d1bea5dd6818a8b86c322cd982aa9d2",
+       "features": [
+         "stable-linked-dock-search"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_check_24.xml",
++      "sha256": "b38c518aa15e88cb9f2eda91aa5617427530ae9359a1b2c8ab96f7d16bffabe7",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_collections_bookmark_fill_24.xml",
++      "sha256": "b08fd14b5e48c7441864e952ef3b4009e18f9dda173f8044583e452be45c8f6c",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_extension_fill_24.xml",
++      "sha256": "49ca35b8448bdf78eb9bd9e1db4811e6097aecec302ab93ec70d7f696fb6a42f",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_grid_view_fill_24.xml",
++      "sha256": "13dd63dc01b8019a0a0bdb69c6540e423ea109a46309690e8fe1d8a69f2ef8bb",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_history_24.xml",
++      "sha256": "810cd1d657367d5f33c56bde96d6b3cb0e714528b8d60fb548a96cd4a63d257e",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_keyboard_arrow_down_24.xml",
++      "sha256": "25c502082d201a6223f4ab6418918218a864e73f75d1d734984e648c55eccba3",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_label_24.xml",
++      "sha256": "40e3b09f17d0430b3a90e5551431847ea1926faae971fe65ac7c7e283b6f1fa0",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_library_music_24.xml",
++      "sha256": "ba43159f8160bb4a5ed7c6c49b0bb10bbb241eee3de9da5a63ab8e2dba6cfc22",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_library_music_fill_24.xml",
++      "sha256": "52d9a45ac38bb4f36b2c3ab081a87d1f8fa40e908624e9a8e84a5d26e4ef0dbd",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_lightbulb_fill_24.xml",
++      "sha256": "86e521f9c906d013f72d66222de64b0415fdb9c423ac58716d66764f57521a2d",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_list_alt_24.xml",
++      "sha256": "85d7e7e581330e7b58f8e3cdcbc5af883d214e9d1a30b5eb5ac1a408d03f0cd0",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_live_tv_fill_24.xml",
++      "sha256": "2a0ddda2fd9af3a71dbe25aa77fb7249c5c5a89186bd6489adab6b954e88ac96",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_notifications_fill_24.xml",
++      "sha256": "ecc9688eccff161b4e4864b250a129a5e4e29a763643eb061bdd498e04532dda",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_notifications_none_24.xml",
++      "sha256": "9915e9e282df7d59758c70c32bde9dc9cfee8401abfcf3311b508ac63ca5e8de",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_person_fill_24.xml",
++      "sha256": "6297e8e95ef3db68321cb30753dbab8a8b4d246d9bf3b8c6bf4cad0cda4fbdcd",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_play_circle_fill_24.xml",
++      "sha256": "d8df816d5d460e78476238678bdc1e9e600f5cd6895ab2461da7dd2cf1b785a7",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_play_circle_outline_24.xml",
++      "sha256": "6803783c63171ff7e4b67f0cff428e5eb8cbbbe16c0bd46e0e57939116673132",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_reorder_24.xml",
++      "sha256": "878c6105c79aa779d5f0dbb81397b09b9e9bef00eedd792d9920ac40f5c5f3bb",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_settings_24.xml",
++      "sha256": "7f350bff4766520d4011185658a0c05e517aa2729e7b8113b8b28d2a8a5d45fb",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_settings_fill_24.xml",
++      "sha256": "1e6b7b812c935fef6651a00767a3b9a4777c3359bb2e90a8f35734229f4a52a3",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_smart_toy_fill_24.xml",
++      "sha256": "65d1785b370cc08a9b2151fdcc4bb8cca99c6a3f54915d037cdb03891c7cf6ce",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_sports_esports_24.xml",
++      "sha256": "ee5581780b5f4514db6957feb51ba3f79b71fe8f9ab070c9bf1cadea00b4f0d0",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_sports_esports_fill_24.xml",
++      "sha256": "ee062d5553f2ccf988a1540b3f43d103e24cedacc2c30f019dcbe271ed36df3f",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_swap_horiz_24.xml",
++      "sha256": "1f07c145dc40e901ae12557005471f7c3bcae8196e0e123ab53dc8ab863d25b9",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_trending_up_24.xml",
++      "sha256": "2635519f2d8557df9dd6766ff503bfeaafe535f80815a5d6ae3975e74fc63db0",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_trending_up_fill_24.xml",
++      "sha256": "2635519f2d8557df9dd6766ff503bfeaafe535f80815a5d6ae3975e74fc63db0",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_troubleshoot_24.xml",
++      "sha256": "83a174d301e268ff1a6c7c334c40917e4defbf67286aabaa657c28b181ae7be4",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_view_sidebar_24.xml",
++      "sha256": "6072a994e015a7c95264ded23022c247e6387e56b2686bf7d873a6b5877bd316",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_watch_later_24.xml",
++      "sha256": "5caf3de2719ef8a9ba922dca0a9dfbb0ab03c0507224f2d4ff41b595d1fb5e4c",
++      "features": [
++        "desktop-full-navigation-settings"
++      ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_watch_later_fill_24.xml",
++      "sha256": "c6dcfb6368956d486beb08e7a5ac4e94c56110e0f3d926814a71b6686fa5a6ee",
++      "features": [
++        "desktop-full-navigation-settings"
+       ]
+     }
+   ],
+--- desktop/build.gradle.kts
++++ desktop/build.gradle.kts
+@@ -383,6 +383,23 @@
+         .map { File(repositoryRoot, it["path"].toString()) })
+     outputs.dir(layout.buildDirectory.dir("generated/navigation-interaction"))
+ }
++
++val extractUpstreamFullNavigation by tasks.registering(Exec::class) {
++    dependsOn(prepareUpstreamSources, extractUpstreamNavigationInteraction)
++    workingDir(projectDir)
++    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-full-navigation.py",
++        "--repo", repositoryRoot.absolutePath, "--policy-only",
++        "--output", layout.buildDirectory.dir("generated/full-navigation-settings").get().asFile.absolutePath)
++    inputs.files("tools/extract-upstream-full-navigation.py", "tools/extract-upstream-navigation-interaction.py",
++        "tools/extract-upstream-media.py", "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
++    inputs.file(sourceManifest)
++    inputs.files((sources + originalResources).filter {
++        "desktop-full-navigation-settings" in ((it["features"] as? List<*>) ?: emptyList<Any>())
++    }.map { File(repositoryRoot, it["path"].toString()) })
++    outputs.dir(layout.buildDirectory.dir("generated/full-navigation-settings"))
++}
++kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/full-navigation-settings")) }
++tasks.named("compileKotlin") { dependsOn(extractUpstreamFullNavigation) }
+ 
+ val extractUpstreamSettingsStorageEntries by tasks.registering(Exec::class) {
+     dependsOn(prepareUpstreamSources, extractUpstreamSettingsEntries)

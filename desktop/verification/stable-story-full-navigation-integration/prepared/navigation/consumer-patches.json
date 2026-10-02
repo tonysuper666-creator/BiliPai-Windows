@@ -1,0 +1,26 @@
+[
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettings.kt",
+    "baseSha256Bytes": "6bf5c9946631c676253ae590c563fe02cc79c27055c809b343edf382315e3fe7",
+    "baseLFNormalizedSha256": "6bf5c9946631c676253ae590c563fe02cc79c27055c809b343edf382315e3fe7",
+    "preparedSha256Bytes": "3a3aac14b90e134a32dd75554c03b7cc5bc5e98aed1b8f59af55b8c71590f467"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+    "baseSha256Bytes": "16afa11bf6e82cfd27f9d6f5e1339abebc8e19673d526c7faf8342ece8263543",
+    "baseLFNormalizedSha256": "6399fa16f34a109f031fc555e4eb569b4c4859b632f668e0de2202b363e781b3",
+    "preparedSha256Bytes": "54f3f5375daccb10d2a3826e84ad75b9a04b5da8fae035de00f3110fc812da3f"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+    "baseSha256Bytes": "49bf473b17a2e11fcee5ffd1cbed1df4dfcf036ce77f66f010a1df0c7aa3d945",
+    "baseLFNormalizedSha256": "49bf473b17a2e11fcee5ffd1cbed1df4dfcf036ce77f66f010a1df0c7aa3d945",
+    "preparedSha256Bytes": "0064869e7091937e263917d5b611e36c81f4c7ef107aa8fab86a557b3453e0b6"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+    "baseSha256Bytes": "1f592f448b4c66286a2e3627f53357850445e3709c9267f162f4c2ee16a3a12e",
+    "baseLFNormalizedSha256": "72f03809222535683440280ab7255599765e8dd916ba8d51896658a0c5109c17",
+    "preparedSha256Bytes": "ba275ec0b20c57463f8523e19c4301ee364301de2927608fd8fde7995c6fee55"
+  }
+]

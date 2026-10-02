@@ -1,0 +1,3 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-review-delta\reference\com\android\purebilibili\feature\video\screen\VideoDetailFavoriteFolderOverlayAdapter.kt:31:26: error: argument type mismatch: actual type is '(String, String) -> Unit', but '(String, String, Boolean) -> Unit' was expected.
+        onCreateFolder = { title, privacy -> admitAction { viewModel.createFavoriteFolder(title, privacy) }; Unit },
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

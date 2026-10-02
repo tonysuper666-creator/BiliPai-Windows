@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+  "originalFileSha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+  "originalSelectionSha256LF": "c7939aeee0e45deb75f333b55ab4b84c7983a523975cf8676dfb7a51c84aabb1",
+  "actualCanonicalSelectionSha256LF": "c7939aeee0e45deb75f333b55ab4b84c7983a523975cf8676dfb7a51c84aabb1",
+  "sameOriginalConstructorFields": true,
+  "expressionMappings": [
+    [
+      "cdnSelection.playUrl",
+      "result.playUrl"
+    ],
+    [
+      "cdnSelection.audioUrl",
+      "result.audioUrl"
+    ],
+    [
+      "cdnSelection.adaptiveDashSource",
+      "result.adaptiveDashSource"
+    ],
+    [
+      "cdnSelection.allVideoUrls",
+      "allVideoUrls"
+    ],
+    [
+      "cdnSelection.allAudioUrls",
+      "allAudioUrls"
+    ],
+    [
+      "cdnSelection.candidateSources",
+      "candidateSources"
+    ],
+    [
+      "cdnSelection.lineDiagnostics",
+      "lineDiagnostics"
+    ]
+  ],
+  "newHelperCommentsRemoved": true,
+  "successSeeded": false
+}

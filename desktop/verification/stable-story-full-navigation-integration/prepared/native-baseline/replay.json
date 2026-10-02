@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "changedOutputs": [
+    "com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt"
+  ],
+  "otherOutputsByteEqual": true,
+  "generatedPagerOnlyRemovedPostcaptureStop": true
+}

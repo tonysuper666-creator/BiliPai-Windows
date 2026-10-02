@@ -66,6 +66,9 @@ internal class DesktopOriginalRootPageBindings(
 ) {
     if (!routes.owns() || !environment.isCurrent()) return
     val root = routes.root
+    val storyFeeds = LocalDesktopOriginalVideoRootPlatforms.current?.storyFeeds
+    val retainedStoryKeys = routes.stack.filterIsInstance<BiliPaiNavKey.Story>().toSet()
+    SideEffect { storyFeeds?.reconcile(retainedStoryKeys) }
     check(pages.window.context === root.environment.pluginContext)
     if (!pages.profile.environment.owns()) return
     val homeSettings by root.environment.settings.homeSettings.collectAsState()

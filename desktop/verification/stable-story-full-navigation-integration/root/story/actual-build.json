@@ -1,0 +1,43 @@
+{
+  "command": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\wrapper\\dists\\gradle-9.5.0-bin\\bvnork1r7n8i6kp5cnkibsc9q\\gradle-9.5.0\\bin\\gradle.bat",
+    "-p",
+    "desktop",
+    "classes",
+    "test",
+    "--tests",
+    "com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest",
+    "--tests",
+    "com.bilipai.desktop.settings.DesktopNavigationInteractionSettingsTest",
+    "--console=plain"
+  ],
+  "exitCode": 0,
+  "actualProductOverrides": 0,
+  "sourceCount": 1180,
+  "testCompileOnly": false,
+  "testExecutionClaimed": true,
+  "rootRuntimeAccepted": false,
+  "networkAccepted": false,
+  "nativeReplacementFixtureIsSeparate": true,
+  "logSha256Bytes": "4e01e218fb7025ef5238810d208b94fcd43762b5004167de0984ad108bf6df1a",
+  "freshNativeProducerPassed": true,
+  "integratedJUnit": [
+    {
+      "name": "DesktopFullNavigationSettingsTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xmlSha256Bytes": "fbf65b97b710b3573d3588f28692d6d6e0248af8b35644e5d4e1276e8794fb05"
+    },
+    {
+      "name": "DesktopNavigationInteractionSettingsTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xmlSha256Bytes": "5c9b818c19c5659025c571bbb52a14b200e5ce57d1d5450c6af4decc922d368f"
+    }
+  ],
+  "integratedJUnitTotal": 20
+}

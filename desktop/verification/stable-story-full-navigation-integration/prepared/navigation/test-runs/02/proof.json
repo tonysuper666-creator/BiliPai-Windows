@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "immutableProductReference": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-83\\manifest.json",
+  "immutableProductSha256Bytes": "72934edb925c7793294bf504388dfbd1f849fe14d8ea00dd4f333befdabd4157",
+  "overlayReference": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\runs\\20\\classes.jar",
+  "overlaySha256Bytes": "aea75c7903fcb740398474ddfdf71d00ab132adb1a450aadc5203584c50a0ba2",
+  "testSources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\prepared\\desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopFullNavigationSettingsTest.kt",
+      "sha256Bytes": "35543c935f8e50c14e2ce11e48fd720d296430a852e8ab734a60fdea7158d15b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\prepared\\desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopNavigationInteractionSettingsTest.kt",
+      "sha256Bytes": "bda834f6a35160765093809cf34d427c334919c4f699897b208eb77fa9faaed3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-interaction-parity\\producer-probe\\com\\android\\purebilibili\\core\\store\\DesktopOriginalNavigationInteractionSettings.kt",
+      "sha256Bytes": "bc560e2b5de1c24715a4700dd2d462f578789ffba74500f3198f196b7ea3acdb"
+    }
+  ],
+  "testDependencies": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.junit.jupiter\\junit-jupiter-api\\5.10.1\\eb90c7d8bfaae8fdc97b225733fcb595ddd72843\\junit-jupiter-api-5.10.1.jar",
+      "sha256Bytes": "60d5c398c32dc7039b99282514ad6064061d8417cf959a1f6bd2038cc907c913"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.junit.jupiter\\junit-jupiter-engine\\5.10.1\\6c9ff773f9aa842b91d1f2fe4658973252ce2428\\junit-jupiter-engine-5.10.1.jar",
+      "sha256Bytes": "02930dfe495f93fe70b26550ace3a28f7e1b900c84426c2e4626ce020c7282d6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-launcher\\1.10.1\\ce85bf5e38bee0989ded9bd468dd4ff78dc0cfa8\\junit-platform-launcher-1.10.1.jar",
+      "sha256Bytes": "ded414c504e88d02270331071969084e1b2fd9bcf8443f35d44da2c6e3301bc2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-engine\\1.10.1\\f32ae4af74fde68414b8a3d2b7cf1fb43824a83a\\junit-platform-engine-1.10.1.jar",
+      "sha256Bytes": "baa48e470d6dee7369a0a8820c51da89c1463279eda6e13a304d11f45922c760"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-commons\\1.10.1\\2bfcd4a4e38b10c671b6916d7e543c20afe25579\\junit-platform-commons-1.10.1.jar",
+      "sha256Bytes": "7d9855ee3f3f71f015eb1479559bf923783243c24fbfbd8b29bed8e8099b5672"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.opentest4j\\opentest4j\\1.3.0\\152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e\\opentest4j-1.3.0.jar",
+      "sha256Bytes": "48e2df636cab6563ced64dcdff8abb2355627cb236ef0bf37598682ddf742f1b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.apiguardian\\apiguardian-api\\1.1.2\\a231e0d844d2721b0fa1b238006d15c6ded6842a\\apiguardian-api-1.1.2.jar",
+      "sha256Bytes": "b509448ac506d607319f182537f0b35d71007582ec741832a1f111e5b5b70b38"
+    }
+  ],
+  "scope": "14 focused original setters/store/Home/theme methods plus earlier 6; product actual83 with declared prospective overlays"
+}

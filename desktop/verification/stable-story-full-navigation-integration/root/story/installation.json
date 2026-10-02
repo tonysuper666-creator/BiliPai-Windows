@@ -1,0 +1,109 @@
+{
+  "baseCommit": "d9d0f8eae60c8cb98bb3bc59b05ece1fc975b1f8",
+  "frozenManifests": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-pager-root-parity",
+      "manifestSha256Bytes": "60a8bd713b5138ee126c962dc02db07713cdd1e42d6d6eb6d1d0c6fa2b18013f",
+      "verifiedArtifactCount": 89
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-review-delta",
+      "manifestSha256Bytes": "af1d0cf86d8f3a68e9e346d9809dd78152eaa7f4fdda2bd8c92840fe61832df7",
+      "verifiedArtifactCount": 63
+    }
+  ],
+  "storyHunkCount": 24,
+  "reviewHunkCount": 5,
+  "manualNewFilesCopied": 2,
+  "generatedOrBinaryCopied": false,
+  "imageRootStackHunkPreserved": true,
+  "sourceCountBefore": 1174,
+  "sourceCountAfter": 1175,
+  "newOriginalIdentities": [
+    "app/src/main/java/com/android/purebilibili/feature/story/StoryScreen.kt"
+  ],
+  "nativeBaselineReplacementFixPending": true,
+  "compileAccepted": false,
+  "rootRuntimeAccepted": false,
+  "networkAccepted": false,
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "beforeSha256Bytes": "15505043ce253f6d85f20ccba83dbc61dd96c86ad4b314cbf390e1f17d50abf3",
+      "afterSha256Bytes": "1e4146d221e10c37d74b79c728fbeaca8a78eb758241504e11fbe9ad528494a0",
+      "afterSha256LF": "1e4146d221e10c37d74b79c728fbeaca8a78eb758241504e11fbe9ad528494a0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+      "beforeSha256Bytes": "d3ad8c653c91cd984b42c42d007570e2f3c6012fcc5a8d6be7f7d5b6bef6dfd6",
+      "afterSha256Bytes": "544fc2ef992be53a4a8e69054cce3f9ed9196ceb4994c7ff67f346e8ff41e8fe",
+      "afterSha256LF": "544fc2ef992be53a4a8e69054cce3f9ed9196ceb4994c7ff67f346e8ff41e8fe"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "beforeSha256Bytes": "0cd8c25e57186937478524318f99b2698ed25aef6b0ba1ef0a0dea60c29f2396",
+      "afterSha256Bytes": "fe3efa7bd65b0dc682db49afffbf758fe07cb2302ac49c411dd40488099fd4e6",
+      "afterSha256LF": "fe3efa7bd65b0dc682db49afffbf758fe07cb2302ac49c411dd40488099fd4e6"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "beforeSha256Bytes": "209ee1379c97715e55519ed0d0a4af831b1e5254b9559f009d51d2153049b4ae",
+      "afterSha256Bytes": "41831b286186eb1b6c5548dfc8f871412362d5568ceac220b834c0fe08461107",
+      "afterSha256LF": "41831b286186eb1b6c5548dfc8f871412362d5568ceac220b834c0fe08461107"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderRoute.kt",
+      "beforeSha256Bytes": "1ba569342bb32d622b2a84dd3a0f04d205ff4c3c0fd069935162cd19c8be2940",
+      "afterSha256Bytes": "3ff595ca0aee2431d6d5fa69a7bada48e1cf45238c8e2e1a964ef17ba2602931",
+      "afterSha256LF": "3ff595ca0aee2431d6d5fa69a7bada48e1cf45238c8e2e1a964ef17ba2602931"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowPlatforms.kt",
+      "beforeSha256Bytes": "80cb73807e6884ebad3efaf9cf58635eac867ded2493da44afaca3797336a053",
+      "afterSha256Bytes": "78c97d04a1ea10b545f1f468787f621c351c67ffcf1c552373465e3c32c23a09",
+      "afterSha256LF": "78c97d04a1ea10b545f1f468787f621c351c67ffcf1c552373465e3c32c23a09"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "beforeSha256Bytes": "33b5f9b17a78b3c97612bfd1c29c3f523d1d794be900606d1a5843ac6d1dbab3",
+      "afterSha256Bytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2",
+      "afterSha256LF": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "beforeSha256Bytes": "50f1c8090e910fa96e74c4185ee109d215e687acbbf7ef08ee014be4cf2fe30f",
+      "afterSha256Bytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "afterSha256LF": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-story-topic.py",
+      "beforeSha256Bytes": "3863ed861e45ba61df006703c18af0d1e82c3976b50fdbd3496c0375fd216cf1",
+      "afterSha256Bytes": "0d661a783101bfaaa8597e6c3ab7f2d6a44293365740a0b62b2102e676b77a75",
+      "afterSha256LF": "36c33944f1ec46703ba587a31cf75f65bbd5dfdb5eddcc5747c6d2153af69695"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitResolvedPayload.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "e0ddfde57d31cc04d76dbe33c298f93aca54c756c6a75886330bfe128480c734",
+      "afterSha256LF": "e0ddfde57d31cc04d76dbe33c298f93aca54c756c6a75886330bfe128480c734"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalStoryRoot.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "60fa0de5eee07db7e42cda260699ec82d306c7eba4db0274ff8145710f3f890f",
+      "afterSha256LF": "60fa0de5eee07db7e42cda260699ec82d306c7eba4db0274ff8145710f3f890f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-detail-holder.py",
+      "beforeSha256Bytes": "3545cf9da80900e701c0a49259e5413462c7fdebf6a75ebfb55608269c229be8",
+      "afterSha256Bytes": "630e90b43a736a1e0333fc7e33ecbfc59a377c12516ef8a096991448180904d3",
+      "afterSha256LF": "630e90b43a736a1e0333fc7e33ecbfc59a377c12516ef8a096991448180904d3"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "5c3c23a4760594bab3487f8df8c28bca5a52b534f5d5dee3535ae87ac052d418",
+      "afterSha256Bytes": "0942ee48ce8420ee64d24ad0f1be47eeb0b198a2139dfc41d345e3157cde067c",
+      "afterSha256LF": "e3f7d362cddb77b584c5a3ffda65fa37bc470b476c62f8dcfc8d2ebf1fd0a984"
+    }
+  ]
+}

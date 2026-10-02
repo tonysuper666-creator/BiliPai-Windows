@@ -1,0 +1,625 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt
+@@ -101,6 +101,7 @@
+      * all retain that exact immutable receipt/request Job. Completed jobs cannot be reused.
+      */
+     suspend fun capturePlaybackRequest(): DesktopOriginalVideoRepositoryBinding
++    suspend fun capturePageRequest(bvid: String, aid: Long, cid: Long): DesktopOriginalVideoRepositoryBinding
+     fun currentMediaId(player: DesktopOriginalMpvSectionControl): String?
+     fun clearPlaybackForReplacement(player: DesktopOriginalMpvSectionControl)
+     fun releasePagerLease(player: DesktopOriginalMpvSectionControl)
+@@ -108,7 +109,9 @@
+     fun acquireDanmakuPlayer(player: DesktopOriginalMpvSectionControl): AutoCloseable
+     fun recoverSurface(player: DesktopOriginalMpvSectionControl)
+     fun prepareSource(request: DesktopOriginalVideoRepositoryBinding, info: ViewInfo,
+-        playData: PlayUrlData, videoUrl: String, audioUrl: String?, mediaId: String): PlaybackSource
++        playData: PlayUrlData, videoUrl: String, audioUrl: String?, mediaId: String,
++        selection: com.android.purebilibili.feature.video.ui.pager.PortraitPlaybackStreamUrls,
++        recommendations: List<RelatedVideo>): PlaybackSource
+     /** The only final native admission. Must stamp request.receipt and enqueue to
+      * the existing source actor under SAME Store->entry gate. Never join under locks.
+      */
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt
+@@ -76,12 +76,23 @@
+      * Each real Job removes its own records. Native ACK retains its fixed capture
+      * independently, using isCancelled so ordinary successful completion is valid.
+      */
+-    private class Capture(val job: Job, val nativeBaseline: Long) {
++    private class Capture(val job: Job, val nativeBaseline: Long, val requestToken: Long) {
+         var prepared: Prepared? = null
+     }
+     private class Prepared(val original: PlaybackSource, val request: PlaybackRequest,
+-        val preparation: DesktopOriginalMediaCachePreparation)
++        val preparation: DesktopOriginalMediaCachePreparation,
++        val payload: com.android.purebilibili.feature.video.usecase.VideoLoadResult.Success)
+     private val captures = IdentityHashMap<DesktopOriginalVideoRepositoryBinding, Capture>()
++
++    override suspend fun capturePageRequest(bvid: String, aid: Long, cid: Long): DesktopOriginalVideoRepositoryBinding {
++        currentCoroutineContext().ensureActive(); assertOwned()
++        val expectedToken = assembly.playback.beginDesktopPortraitLoad(PlaybackRequest.create(bvid, aid, cid))
++        val captured = capturePlaybackRequest()
++        if (assembly.captureLoadState().currentLoadRequestToken != expectedToken ||
++                synchronized(captures) { captures[captured]?.requestToken } != expectedToken)
++            throw CancellationException("Portrait page replaced during request capture")
++        return captured
++    }
+ 
+     override suspend fun capturePlaybackRequest(): DesktopOriginalVideoRepositoryBinding {
+         currentCoroutineContext().ensureActive(); assertOwned()
+@@ -91,7 +102,7 @@
+         var baseline: Long? = null
+         if (!request.admitCurrentMutation { assertOwned(); baseline = assembly.native.player.currentSourceVersion })
+             throw CancellationException("Portrait native baseline admission retired")
+-        val captured = Capture(job, checkNotNull(baseline))
++        val captured = Capture(job, checkNotNull(baseline), assembly.captureLoadState().currentLoadRequestToken)
+         synchronized(captures) { check(captures.put(request, captured) == null) }
+         job.invokeOnCompletion {
+             val previous = synchronized(captures) { if (captures[request] === captured) captures.remove(request) else null }
+@@ -180,7 +191,8 @@
+     }
+ 
+     override fun prepareSource(request: DesktopOriginalVideoRepositoryBinding, info: ViewInfo,
+-        playData: PlayUrlData, videoUrl: String, audioUrl: String?, mediaId: String): PlaybackSource {
++        playData: PlayUrlData, videoUrl: String, audioUrl: String?, mediaId: String,
++        selection: PortraitPlaybackStreamUrls, recommendations: List<RelatedVideo>): PlaybackSource {
+         val capture = captured(request)
+         require(info.bvid.isNotBlank() && info.aid > 0L && info.cid > 0L)
+         require(mediaId == resolvePortraitMediaId(info.bvid, info.cid))
+@@ -194,7 +206,9 @@
+             audioAlternatives = playData.dash?.let { collectAudioStreamCandidates(it).flatMap { candidate ->
+                 listOf(candidate.track.getValidUrl()) + candidate.track.backupUrl.orEmpty() } }.orEmpty().distinct(),
+             cachedDashData = playData.dash, authorizationReceipt = request.receipt)
+-        val prepared = Prepared(source, PlaybackRequest.create(info.bvid, info.aid, info.cid), preparation)
++        val payload = desktopOriginalPortraitResolvedPayload(info, playData, source, selection, recommendations,
++            request.protocol.isPlaybackLoggedIn(), request.protocol.isPlaybackVip())
++        val prepared = Prepared(source, PlaybackRequest.create(info.bvid, info.aid, info.cid), preparation, payload)
+         synchronized(captures) {
+             if (captures[request] !== capture || capture.prepared != null) {
+                 (preparation as? DesktopOriginalMediaCachePreparation.Cached)?.discardUnaccepted()
+@@ -213,7 +227,10 @@
+         val prepared = synchronized(captures) { capture.prepared }
+             ?: error("Portrait must publish its own captured preparation")
+         require(prepared.original === source && source.authorizationReceipt == request.receipt)
+-        if (!stillCurrentLoad()) {
++        val sameSession = { assembly.captureLoadState().let {
++            it.currentLoadRequestToken == capture.requestToken && it.currentBvid == prepared.request.bvid
++        } }
++        if (!stillCurrentLoad() || !sameSession()) {
+             (prepared.preparation as? DesktopOriginalMediaCachePreparation.Cached)?.discardUnaccepted()
+             return false
+         }
+@@ -222,9 +239,11 @@
+         try {
+             val accepted = assembly.native.publish(prepared.request,
+                 prepared.preparation.source.copy(startPaused = !playWhenReady),
+-                capture.nativeBaseline, capture.job) { !capture.job.isCancelled && owns() && stillCurrentLoad() }
++                capture.nativeBaseline, capture.job) { !capture.job.isCancelled && owns() && stillCurrentLoad() && sameSession() }
+             cached?.accepted(accepted)
+-            return true
++            return assembly.playback.adoptDesktopPortraitLoad(capture.requestToken, prepared.payload,
++                { !capture.job.isCancelled && owns() && stillCurrentLoad() && assembly.native.isCurrent(accepted) },
++                request::admitCurrentMutation)
+         } catch (failure: Throwable) { cached?.failed(); throw failure }
+     }
+ 
+--- desktop/tools/extract-upstream-video-full-owner.py
++++ desktop/tools/extract-upstream-video-full-owner.py
+@@ -197,6 +197,15 @@
+  body=body.replace('            TodayWatchFeedbackStore.saveSnapshot(context.pluginContext, snapshot)','            environment.todayWatchFeedback.saveSnapshot(snapshot)',1)
+  return body
+ 
++
++def story_portrait_adoption_delta(path,body):
++ if path=='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':
++  before='    override fun close() {\n'
++  after='\n    /** Windows Pager starts the SAME original session before capturing its raw\n     * Binding. Cancellation never creates another load job/native producer. */\n    internal fun beginDesktopPortraitLoad(request: PlaybackRequest): Long {\n        environment.assertCurrent()\n        if (currentBvid.isNotBlank() && (currentBvid != request.bvid ||\n                request.cid > 0L && currentCid != request.cid)) {\n            flushPlaybackHeartbeatSnapshot(reason = "switch_video")\n            recordCreatorWatchProgressSnapshot()\n            saveCurrentPosition()\n        }\n        cancelDesktopPendingPlayback()\n        heartbeatJob?.cancel()\n        pluginCheckJob?.cancel()\n        hasUserStartedPlayback = false\n        clearInteractiveChoiceRuntime()\n        var token: Long? = null\n        check(environment.commit {\n            token = playbackSessionStore.beginLoadRequest(request).requestToken\n            _uiState.value = VideoPlaybackUiState.Loading.Initial\n        }) { "Portrait session admission retired" }\n        return checkNotNull(token)\n    }\n\n    /** Consume actual Pager metadata AFTER that exact source was accepted. The\n     * original Session/UI/subject/Mini/post-load/playlist sequence is preserved;\n     * native preparation and raw detail/playURL fetching are deliberately absent.\n     * [admit] is the captured Binding Store -> entry gate, never native-held. */\n    internal fun adoptDesktopPortraitLoad(\n        requestToken: Long,\n        result: com.android.purebilibili.feature.video.usecase.VideoLoadResult.Success,\n        isAcceptedCurrent: () -> Boolean,\n        admit: ((() -> Unit) -> Boolean),\n    ): Boolean {\n        environment.assertCurrent()\n        val allVideoUrls = buildPlaybackVideoUrlCandidates(result.playUrl, result.quality, result.cachedDashVideos)\n        val allAudioUrls = buildPlaybackAudioUrlCandidates(result.audioUrl, result.cachedDashAudios)\n        val candidateSources = com.android.purebilibili.feature.plugin.buildPlaybackCdnCandidates(allVideoUrls, allAudioUrls).map { it.source }\n        val lineDiagnostics = buildCdnLineDiagnostics(urls = allVideoUrls, healthByHost = emptyMap(), sources = candidateSources)\n        val readyState = VideoPlaybackUiState.Success(\n            info = result.info,\n            playUrl = result.playUrl,\n            audioUrl = result.audioUrl,\n            related = result.related,\n            currentQuality = result.quality,\n            playbackQualityMode = resolveInitialPlaybackQualityMode(),\n            adaptiveDashSource = result.adaptiveDashSource,\n            qualityIds = result.qualityIds,\n            qualityLabels = result.qualityLabels,\n            switchableQualityIds = result.switchableQualityIds,\n            cachedDashVideos = result.cachedDashVideos,\n            cachedDashAudios = result.cachedDashAudios,\n            cachedDash = result.cachedDash,\n            requestedAudioQuality = result.requestedAudioQuality,\n            selectedAudioQuality = result.selectedAudioQuality,\n            availableAudioQualities = result.availableAudioQualities,\n            audioFallbackReason = result.audioFallbackReason,\n            emoteMap = result.emoteMap,\n            isLoggedIn = result.isLoggedIn,\n            isVip = result.isVip,\n            isFollowing = result.isFollowing,\n            isFavorited = result.isFavorited,\n            isLiked = result.isLiked,\n            coinCount = result.coinCount,\n            currentCdnIndex = 0,\n            allVideoUrls = allVideoUrls,\n\n            allAudioUrls = allAudioUrls,\n            cdnCandidateSources = candidateSources,\n            cdnLineDiagnostics = lineDiagnostics,\n\n            videoCodecId = result.videoCodecId,\n            audioCodecId = result.audioCodecId,\n            aiAudio = result.aiAudio,\n            currentAudioLang = result.curAudioLang,\n            videoDurationMs = result.duration\n        )\n\n        var applied = false\n        if (!admit {\n                if (isAcceptedCurrent() && shouldApplyVideoLoadResult(currentLoadRequestToken,\n                        requestToken, result.info.bvid, currentBvid)) {\n                    currentCid = result.info.cid\n                    _uiState.value = readyState\n                    publishSubjectSnapshot(readyState)\n                    applied = true\n                }\n            } || !applied) return false\n        // Only synchronous in-memory/enqueue effects enter this captured gate.\n        // Mini enqueues a typed Root event; Playlist enqueues LAZY IO; analytics\n        // enqueues on the existing writer. No file/native wait happens here.\n        fun publishCurrent(action: () -> Unit): Boolean {\n            var accepted = false\n            return admit {\n                if (isAcceptedCurrent() && shouldApplyVideoLoadResult(currentLoadRequestToken,\n                        requestToken, result.info.bvid, currentBvid)) {\n                    action(); accepted = true\n                }\n            } && accepted\n        }\n        if (!publishCurrent { environment.mini.syncCurrentVideoInfo(readyState) }) return false\n        scheduleDeferredPostLoadWork(result.info.bvid, result.info.cid, result.info.aid,\n            result.info.owner.mid, result.isLoggedIn, requestToken)\n        val videoNoteEnabled = appContext?.let {\n            com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.getVideoNoteEnabledSync(it)\n        } ?: true\n        if (shouldLoadVideoNote(videoNoteEnabled, result.info.aid))\n            loadVideoNote(loadedBvid = result.info.bvid, loadedAid = result.info.aid)\n        if (!publishCurrent { updatePlaylist(result.info, result.related) }) return false\n        if (!publishCurrent {\n                environment.analytics.logVideoPlay(result.info.bvid, result.info.title, result.info.owner.name)\n            }) return false\n        return true\n    }\n\n    override fun close() {\n'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++ return body
++
+ def generate(repo,output,standalone=False):
+  outputs=[]
+  for recipe in RECIPES:
+@@ -216,6 +225,7 @@
+   body=pending_playback_delta(recipe['output'],body)
+   body=captured_original_download_task_delta(recipe['output'],body)
+   body=captured_audio_download_delta(recipe['output'],body)
++  body=story_portrait_adoption_delta(recipe['output'],body)
+   emitted=standalone or recipe['mode']!='direct'
+   if emitted:
+    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
+--- desktop/tools/extract-upstream-video-fullscreen-pager.py
++++ desktop/tools/extract-upstream-video-fullscreen-pager.py
+@@ -61,6 +61,31 @@
+   text=text.replace(before,after,1)
+  return text
+ 
++
++def story_portrait_adoption_delta(path,body):
++ if path=='com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt':
++  before='        platform.clearPlaybackForReplacement(exoPlayer)\n'
++  after=''
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='                val playbackRequest = platform.capturePlaybackRequest()'
++  after='                val playbackRequest = platform.capturePageRequest(bvid, aid, requestedCid)\n                platform.clearPlaybackForReplacement(exoPlayer)'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='                            mediaId = mediaId,'
++  after='                            mediaId = mediaId, selection = streamUrls,\n                            recommendations = recommendationItems.toList(),'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='        bvid = bvid\n    )\n\n    LaunchedEffect(favoriteSaveEvent'
++  after='        bvid = bvid\n    ) && currentSuccess?.info?.bvid == bvid &&\n        currentSuccess.info.cid == currentPlayingCid && engagementState.subject?.let {\n            it.bvid == bvid && it.aid == activeAid && it.cid == currentPlayingCid\n        } == true\n\n    LaunchedEffect(favoriteSaveEvent'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='            onCommentClick = { showCommentSheet = true },'
++  after='            onCommentClick = { if (canHandlePortraitInteraction) showCommentSheet = true },'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++ return body
++
+ def generate(repo,output,standalone=False):
+  global parser
+  repo=Path(repo);output=Path(output);parser=module('original_fullscreen_tokens',repo/'desktop/tools/sync-upstream.py');lex=module('original_fullscreen_balanced',repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py');rows=[]
+@@ -77,6 +102,7 @@
+    needle='platform.publishSource(playbackRequest, finalSource, requestGeneration) {'
+    assert text.count(needle)==1
+    text=text.replace(needle,'platform.publishSource(playbackRequest, finalSource, requestGeneration, latestPortraitPlaybackAllowed) {',1)
++  text=story_portrait_adoption_delta(spec['output'],text)
+   generated=standalone or spec['mode']!='direct';rows.append(dict(path=spec['output'],origin=spec['origin'],mode=spec['mode'],sha256LF=digest(text),generated=generated))
+   if generated:
+    p=wide(output/spec['output']);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8',newline='\n')
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderRoute.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderRoute.kt
+@@ -20,6 +20,7 @@
+     val music: DesktopOriginalMusicUiPlatform
+     val content: DesktopOriginalVideoContentBindings
+     val portrait: DesktopOriginalPortraitPlatform
++    val storyFeeds: DesktopOriginalStoryFeedOwners
+     val subtitleMode: DesktopOriginalSubtitleModeBinding
+     @Composable fun InitialNativeSurface(modifier: Modifier)
+     /** Await the SAME MPV session's actual decoder-list initialization outside
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowPlatforms.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowPlatforms.kt
+@@ -25,6 +25,7 @@
+     private val retireCaptureProtection: () -> Unit,
+ ) : DesktopOriginalVideoRootWindowPlatforms, AutoCloseable {
+     private val closed = AtomicBoolean()
++    override val storyFeeds = DesktopOriginalStoryFeedOwners(assembly, portrait)
+     init {
+         require(holder.section === nativeSection && fullscreen.section === nativeSection && portrait.section === nativeSection)
+         require(holder.settingsContext === nativeSection.settingsContext)
+@@ -41,6 +42,7 @@
+     override fun close() {
+         check(EventQueue.isDispatchThread())
+         if (!closed.compareAndSet(false, true)) return
++        storyFeeds.close()
+         subtitleMode.close()
+         windows.close()
+         displays.close()
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt
+@@ -66,6 +66,9 @@
+ ) {
+     if (!routes.owns() || !environment.isCurrent()) return
+     val root = routes.root
++    val storyFeeds = LocalDesktopOriginalVideoRootPlatforms.current?.storyFeeds
++    val retainedStoryKeys = routes.stack.filterIsInstance<BiliPaiNavKey.Story>().toSet()
++    SideEffect { storyFeeds?.reconcile(retainedStoryKeys) }
+     check(pages.window.context === root.environment.pluginContext)
+     if (!pages.profile.environment.owns()) return
+     val homeSettings by root.environment.settings.homeSettings.collectAsState()
+--- desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -1788,23 +1788,13 @@
+                                     ::closeMusic, ::openUser, ::openVideo, startPositionSeconds = musicStartPosition)
+                                 else Text(playerError ?: "请从个人空间的音频栏目打开歌曲")
+                             }
+-                            section == DesktopSection.STORY -> DesktopStoryScreen(storyTopic, storySeed,
+-                                isActive = active && !activatingUpdate,
+-                                playback = storyHost.snapshot(playing, native, playerError),
+-                                onPlaybackRequest = { storyHost.request(it, active && !activatingUpdate) },
+-                                onReleasePlayback = { storyHost.release(it) }, onBack = { commands.back() },
+-                                onUser = ::openUser, onSearch = { navigate(DesktopSection.SEARCH) },
+-                                onRetryPlayback = { storyHost.retry(it, active && !activatingUpdate) },
+-                                nativeInput = player?.let { nativePlayer -> DesktopStoryNativeInputBinding(nativePlayer.surface,
+-                                    sourceVersion = { nativePlayer.currentSourceVersion },
+-                                    owns = { owner -> active && !activatingUpdate && storyHost.owns(owner) },
+-                                    onPlayerKey = { action, version ->
+-                                        nativePlayer.ownsSourceVersion(version) && playback.currentCastSource(version) != null && performPlayerKey(action)
+-                                    }) },
+-                                playerContent = { owner, _, modifier -> Box(modifier) {
+-                                    if (player != null && storyOwner == owner && storyHost.owns(owner)) playerContent(player)
+-                                    else if (player == null) Text(playerError ?: "播放器未能初始化")
+-                                } })
++                            entryKey is BiliPaiNavKey.Story ->
++                                DesktopOriginalStoryPhysicalLeaf(entryKey, ordinaryVideo, commands, active && !activatingUpdate,
++                                    pendingOwner = {
++                                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
++                                            ordinaryVideoResourceError?.let { Text(it) } ?: CircularProgressIndicator()
++                                        }
++                                    })
+                             section == DesktopSection.TOPIC -> DesktopTopicDetailScreen(topicId, storyTopic, community,
+                                 CommunityNavigation(::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword,
+                                     onDynamicRoute=::openDynamicRoute),
+--- desktop/tools/extract-upstream-story-topic.py
++++ desktop/tools/extract-upstream-story-topic.py
+@@ -6,7 +6,7 @@
+ DIRECT = [BASE + "feature/story/StoryFeedPolicy.kt", BASE + "feature/search/TopicDetailVisualPolicy.kt",
+           BASE + "navigation/PortraitStoryNavigationPolicy.kt"]
+ ADAPTED = [BASE + "data/repository/TopicRepository.kt", BASE + "feature/video/ui/pager/PortraitPagerSwitchPolicy.kt"]
+-EXTRACT = [BASE + "feature/story/StoryViewModel.kt", BASE + "feature/search/TopicDetailViewModel.kt",
++EXTRACT = [BASE + "feature/story/StoryViewModel.kt", BASE + "feature/story/StoryScreen.kt", BASE + "feature/search/TopicDetailViewModel.kt",
+            BASE + "feature/dynamic/components/DynamicRichTextPolicy.kt"]
+ 
+ def module(repo, name, path):
+@@ -28,6 +28,90 @@
+         source = helpers.substitute(source, "                            VideoRepository.isVerticalVideo(\n                                bvid = candidate.bvid,\n                                aid = candidate.aid,\n                            )", "                            isVerticalVideo(candidate.bvid, candidate.aid)")
+     return source
+ 
++
++def adapt_story_root_vm(source):
++ body=source[source.index("class StoryViewModel("):]
++ before='class StoryViewModel(application: Application) : AndroidViewModel(application) {'
++ after='internal class StoryViewModel(private val environment: com.bilipai.desktop.ui.DesktopOriginalStoryEnvironment) {\n    private val viewModelScope get() = environment.scope\n    private val VideoRepository get() = environment.requests\n    private fun <T> MutableStateFlow(initial:T): MutableStateFlow<T> =\n        com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(initial, environment::commit)'
++ assert body.count(before)==1
++ body=body.replace(before,after)
++ before='val result = VideoRepository.getHomeVideos('
++ after='environment.assertCurrent()\n            val result = VideoRepository.getHomeVideos('
++ assert body.count(before)==2
++ body=body.replace(before,after)
++ before='            result.onSuccess'
++ after='            environment.assertCurrent()\n            result.onSuccess'
++ assert body.count(before)==2
++ body=body.replace(before,after)
++ return body
++
++def adapt_story_root_screen(source):
++ before='import androidx.compose.ui.platform.LocalContext\n'
++ after=''
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='import androidx.lifecycle.viewmodel.compose.viewModel\n'
++ after=''
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='import androidx.media3.common.util.UnstableApi\n'
++ after=''
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='@UnstableApi\n'
++ after=''
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='fun StoryScreen('
++ after='internal fun StoryScreen('
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='viewModel: StoryViewModel = viewModel(),'
++ after='viewModel: StoryViewModel,'
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='playerViewModel: VideoPlaybackViewModel = viewModel(),'
++ after='playerViewModel: VideoPlaybackViewModel,'
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='engagementViewModel: VideoEngagementViewModel = viewModel(),'
++ after='engagementViewModel: VideoEngagementViewModel,'
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='onVideoClick: (String, Long, String) -> Unit = { _, _, _ -> },'
++ after='onVideoClick: (String, Long, String) -> Unit,'
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='onUserClick: (Long) -> Unit = {},'
++ after='onUserClick: (Long) -> Unit,'
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='onSearchClick: () -> Unit = {},'
++ after='onSearchClick: () -> Unit,'
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='onRotateToLandscape: () -> Unit = {}'
++ after='onRotateToLandscape: () -> Unit'
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='    val context = LocalContext.current'
++ after='    val platform = com.bilipai.desktop.ui.LocalDesktopOriginalPortraitPlatform.current\n    val context = platform.section.settingsContext'
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='com.android.purebilibili.core.store.SettingsManager'
++ after='com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings'
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='engagementViewModel.initWithContext(context)'
++ after='engagementViewModel.initWithContext(context.pluginContext)'
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ before='viewModel = playerViewModel,'
++ after='viewModel = com.bilipai.desktop.ui.LocalDesktopOriginalStoryPlaybackView.current,'
++ assert source.count(before)==1
++ source=source.replace(before,after)
++ return source
++
+ def generate(repo, output, standalone=False):
+     helpers = host(repo); media = helpers.media_extractor(repo); parser = media.parser_for(repo)
+     output.mkdir(parents=True, exist_ok=True); result = []
+@@ -39,8 +123,11 @@
+     for path in EXTRACT:
+         source = read(repo, path)
+         if path.endswith("StoryViewModel.kt"):
+-            body = "package com.android.purebilibili.feature.story\nimport com.android.purebilibili.data.model.response.StoryItem\n\n" + media.data_class(source, "StoryUiState", parser)
++            body = "package com.android.purebilibili.feature.story\nimport com.android.purebilibili.data.model.response.StoryItem\nimport android.util.Log as Logger\nimport kotlinx.coroutines.flow.*\nimport kotlinx.coroutines.launch\n\n" + media.data_class(source, "StoryUiState", parser) + "\n\n" + adapt_story_root_vm(source)
+             name = "StoryUiState.kt"
++        elif path.endswith("StoryScreen.kt"):
++            body = adapt_story_root_screen(source)
++            name = "StoryScreen.kt"
+         elif path.endswith("TopicDetailViewModel.kt"):
+             body = "package com.android.purebilibili.feature.search\nimport com.android.purebilibili.data.model.response.*\n\n" + media.data_class(source, "TopicDetailUiState", parser) + "\n\n" + media.function(source, "mergeDynamicItems", parser).replace("private fun", "internal fun", 1)
+             name = "TopicDetailStatePolicy.kt"
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitResolvedPayload.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitResolvedPayload.kt
+@@ -0,0 +1,38 @@
++package com.bilipai.desktop.ui
++
++import com.android.purebilibili.data.model.response.*
++import com.android.purebilibili.feature.video.ui.pager.*
++import com.android.purebilibili.feature.video.usecase.*
++
++/** Metadata from the actual resolved Pager response/selection. The selected URLs
++ * are the SAME Source published to MPV; no success, codec, credential or CID is
++ * inferred from a seed. First-load interaction defaults match original
++ * shouldFetchInteractionStatusOnVideoLoad=false and deferred status refresh.
++ */
++internal fun desktopOriginalPortraitResolvedPayload(info: ViewInfo, data: PlayUrlData,
++    source: com.bilipai.desktop.data.PlaybackSource, selected: PortraitPlaybackStreamUrls,
++    recommendations: List<RelatedVideo>, loggedIn: Boolean, vip: Boolean): VideoLoadResult.Success {
++    require(info.bvid.isNotBlank() && info.aid > 0 && info.cid > 0)
++    require(source.videoUrl.isNotBlank() && source.authorizationReceipt != null)
++    val audio = selected.audioSelection
++    val videos = data.dash?.video.orEmpty()
++    val video = videos.firstOrNull { it.getValidUrl() == selected.videoUrl || selected.videoUrl in it.backupUrl.orEmpty() }
++    val qualities = resolvePortraitAvailableQualityIds(data.acceptQuality, videos.map { it.id }.distinct())
++    return VideoLoadResult.Success(
++        info=info, playUrl=source.videoUrl, audioUrl=source.audioUrl, related=recommendations,
++        quality=video?.id ?: data.quality, resolvedTargetQuality=video?.id ?: data.quality,
++        qualityIds=qualities, qualityLabels=resolvePortraitQualityMenuLabels(qualities),
++        switchableQualityIds=videos.map { it.id }.distinct(), cachedDashVideos=videos,
++        cachedDashAudios=data.dash?.let { com.android.purebilibili.feature.video.playback.audio.collectAudioStreamCandidates(it).map { candidate -> candidate.track } }.orEmpty(),
++        cachedDash=data.dash, requestedAudioQuality=audio?.requestedPreferenceId ?: -1,
++        selectedAudioQuality=audio?.selectedPreferenceId ?: -1,
++        availableAudioQualities=audio?.availableOptions.orEmpty(), audioFallbackReason=audio?.fallbackReason,
++        emoteMap=emptyMap(), isLoggedIn=loggedIn, isVip=vip, isFollowing=false,
++        isFavorited=false, isLiked=false, coinCount=0,
++        duration=resolveVideoLoadDurationMs(data.timelength,info),
++        videoCodecId=video?.codecid ?: data.videoCodecid,
++        audioCodecId=audio?.selected?.track?.codecid ?: 0,
++        aiAudio=data.aiAudio, curAudioLang=data.curLanguage,
++        adaptiveDashSource=null // Pager published a legacy selected video/audio pair, not adaptive MPD.
++    )
++}
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalStoryRoot.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalStoryRoot.kt
+@@ -0,0 +1,125 @@
++package com.bilipai.desktop.ui
++
++import androidx.compose.runtime.*
++import androidx.compose.foundation.layout.*
++import androidx.compose.ui.Modifier
++import com.android.purebilibili.feature.story.*
++import com.android.purebilibili.feature.video.ui.components.CoinDialog
++import com.android.purebilibili.feature.video.screen.*
++import com.android.purebilibili.navigation3.BiliPaiNavKey
++import kotlinx.coroutines.*
++
++internal class DesktopOriginalStoryEnvironment(
++    val scope: CoroutineScope,
++    val requests: DesktopOriginalPortraitRequests,
++    private val isCurrent: () -> Boolean,
++    private val admission: ((() -> Unit) -> Boolean),
++) {
++    fun assertCurrent() { scope.coroutineContext[Job]!!.ensureActive(); if (!isCurrent()) throw CancellationException("Story entry retired") }
++    fun commit(action: () -> Unit): Boolean = isCurrent() && admission { assertCurrent(); action() }
++}
++
++internal val LocalDesktopOriginalStoryPlaybackView = staticCompositionLocalOf<DesktopOriginalPortraitPlaybackOwner> {
++    error("Story requires the same original video owner view")
++}
++
++/** Retain ONLY original Story feed VMs in the existing Assembly scope. There is
++ * no list DTO/cache/client/player or additional video VM here. The Root publishes
++ * its real stack keys via reconcile(), including covered retained entries.
++ */
++internal class DesktopOriginalStoryFeedOwners(
++    private val assembly: DesktopOriginalVideoOwnerAssembly,
++    private val platform: DesktopOriginalPortraitPlatform,
++) : AutoCloseable {
++    private class Entry(val scope: CoroutineScope, val vm: StoryViewModel)
++    private val entries = linkedMapOf<BiliPaiNavKey.Story, Entry>()
++    private var closed = false
++    @Synchronized fun get(key: BiliPaiNavKey.Story): StoryViewModel {
++        check(!closed && assembly.owns())
++        return entries.getOrPut(key) {
++            val job = SupervisorJob(assembly.environment.scope.coroutineContext[Job])
++            val scope = CoroutineScope(assembly.environment.scope.coroutineContext + job)
++            val environment = DesktopOriginalStoryEnvironment(scope, platform.requests,
++                { !closed && assembly.owns() && job.isActive }, assembly.environment::commit)
++            Entry(scope, StoryViewModel(environment))
++        }.vm
++    }
++    @Synchronized fun reconcile(retained: Set<BiliPaiNavKey.Story>) {
++        val gone = entries.keys.filter { it !in retained }
++        gone.forEach { entries.remove(it)?.scope?.cancel() }
++    }
++    @Synchronized fun find(key: BiliPaiNavKey.Story): StoryViewModel? = entries[key]?.vm
++    @Synchronized override fun close() { closed = true; entries.values.forEach { it.scope.cancel() }; entries.clear() }
++}
++
++/** Same actual Section/carrier and all original interaction domains. The outer
++ * portal includes dialogs, so no main-tree content hides behind the native HWND.
++ */
++@Composable internal fun DesktopOriginalStoryPhysicalLeaf(
++    key: BiliPaiNavKey.Story,
++    shell: DesktopOriginalVideoShellOwner,
++    commands: DesktopOriginalRootRouteCommands,
++    active: Boolean,
++    pendingOwner: @Composable () -> Unit,
++) {
++    val ready by shell.slot.factoryReady.collectAsState()
++    LaunchedEffect(shell, ready, key) { if (ready) shell.slot.requireAssembly() }
++    val owner by shell.slot.assemblies.collectAsState()
++    val platforms = LocalDesktopOriginalVideoRootPlatforms.current
++    val assembly = owner?.takeIf { it.owns() }
++    if (assembly == null || platforms == null) { pendingOwner(); return }
++    val routes = commands as DesktopOriginalRootRouteAssembly
++    fun currentRoute() = active && routes.owns() && routes.currentKey == key &&
++        shell.slot.currentAssembly() === assembly && assembly.owns()
++    val feeds = platforms.storyFeeds
++    val feed = remember(feeds, key, active) { if (active) feeds.get(key) else feeds.find(key) } ?: return
++    var initialized by remember(assembly, platforms) { mutableStateOf(false) }
++    LaunchedEffect(assembly, platforms) {
++        platforms.awaitNativeInitialization(); if (!assembly.owns()) throw CancellationException("Story initial surface retired")
++        initialized = true
++    }
++    CompositionLocalProvider(LocalDesktopOriginalVideoNativeCarrierActive provides active) {
++        if (!initialized) { platforms.InitialNativeSurface(Modifier.fillMaxSize()); return@CompositionLocalProvider }
++        CompositionLocalProvider(
++            LocalDesktopOriginalPortraitPlatform provides platforms.portrait,
++            LocalDesktopOriginalVideoHolderPlatform provides platforms.holder,
++            LocalDesktopOriginalPlayerSettingsContext provides platforms.holder.settingsContext,
++            LocalDesktopCommentBindings provides platforms.holder.commentsPlatform,
++            LocalDesktopOriginalStoryPlaybackView provides remember(assembly) { DesktopOriginalVideoConsumedViews(assembly) },
++        ) {
++            platforms.portrait.section.RenderPlayerForeground {
++                Box(Modifier.fillMaxSize()) {
++                    StoryScreen(seedBvid=key.seedBvid, seedCid=key.seedCid, seedCover=key.seedCover,
++                        seedTitle=key.seedTitle, sourceRoute=key.sourceRoute,
++                        viewModel=feed, playerViewModel=assembly.playback, engagementViewModel=assembly.domains.engagement,
++                        isActive=active, onBack={ if(active) commands.back() },
++                        onVideoClick={ bvid,cid,cover -> if(active) commands.video(BiliPaiNavKey.VideoDetail(bvid,cid,cover,sourceRoute=key.sourceRoute ?: "story")) },
++                        onUserClick={ mid -> if(active) commands.push(BiliPaiNavKey.Space(mid)) },
++                        onSearchClick={ if(active) commands.push(BiliPaiNavKey.Search()) },
++                        onRotateToLandscape={ if(active) platforms.holder.window.presentation.requestOrientation(
++                            DesktopOriginalVideoOrientationRequest.SCREEN_ORIENTATION_SENSOR_LANDSCAPE, null) })
++                    val engagement by assembly.domains.engagement.uiState.collectAsState()
++                    val favoriteVisible by assembly.playback.favoriteFolderDialogVisible.collectAsState()
++                    val dialogSource = assembly.native.current()
++                    fun admitDialog(action: () -> Unit): Boolean {
++                        val expected = dialogSource ?: return false
++                        var applied = false
++                        return assembly.environment.commit {
++                            if (currentRoute() && assembly.native.isCurrent(expected)) {
++                                action(); applied = true
++                            }
++                        } && applied
++                    }
++                    if (currentRoute() && dialogSource != null) {
++                        CoinDialog(visible=engagement.coinDialogVisible, currentCoinCount=engagement.coinCount,
++                            userBalance=engagement.userCoinBalance,
++                            onDismiss={ admitDialog { assembly.domains.engagement.setCoinDialogVisible(false) } },
++                            onConfirm={ count,alsoLike -> admitDialog { assembly.domains.engagement.doCoin(count,alsoLike) }; Unit })
++                        VideoDetailFavoriteFolderOverlayAdapter(favoriteVisible, assembly.playback, ::admitDialog)
++                        VideoDetailFollowGroupDialog(assembly.playback, ::admitDialog)
++                    }
++                }
++            }
++        }
++    }
++}
+--- desktop/tools/extract-upstream-video-detail-holder.py
++++ desktop/tools/extract-upstream-video-detail-holder.py
+@@ -18,6 +18,56 @@
+     text=text.replace(before,after,1)
+     return text
+ 
++
++def story_dialog_admission_delta(path,text):
++ if path == 'com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt':
++  before='    viewModel: VideoPlaybackViewModel,\n'
++  after='    viewModel: VideoPlaybackViewModel,\n    admitAction: ((() -> Unit) -> Boolean) = { action -> action(); true },\n'
++  assert text.count(before)==1
++  text=text.replace(before,after)
++  before='onFolderToggle = viewModel::toggleFavoriteFolderSelection'
++  after='onFolderToggle = { id -> admitAction { viewModel.toggleFavoriteFolderSelection(id) }; Unit }'
++  assert text.count(before)==1
++  text=text.replace(before,after)
++  before='onSaveClick = viewModel::saveFavoriteFolderSelection'
++  after='onSaveClick = { admitAction { viewModel.saveFavoriteFolderSelection() }; Unit }'
++  assert text.count(before)==1
++  text=text.replace(before,after)
++  before='onDismissRequest = viewModel::dismissFavoriteFolderDialog'
++  after='onDismissRequest = { admitAction { viewModel.dismissFavoriteFolderDialog() }; Unit }'
++  assert text.count(before)==1
++  text=text.replace(before,after)
++  before='onCreateFolder = viewModel::createFavoriteFolder'
++  after='onCreateFolder = { title, intro, privacy -> admitAction { viewModel.createFavoriteFolder(title, intro, privacy) }; Unit }'
++  assert text.count(before)==1
++  text=text.replace(before,after)
++ if path == 'com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt':
++  before='    viewModel: VideoPlaybackViewModel\n) {\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current\n    val followGroupDialogVisible'
++  after='    viewModel: VideoPlaybackViewModel,\n    admitAction: ((() -> Unit) -> Boolean) = { action -> action(); true },\n) {\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current\n    val followGroupDialogVisible'
++  assert text.count(before)==1
++  text=text.replace(before,after)
++  before='if (!isSavingFollowGroups) viewModel.dismissFollowGroupDialog()'
++  after='if (!isSavingFollowGroups) admitAction { viewModel.dismissFollowGroupDialog() }'
++  assert text.count(before)==1
++  text=text.replace(before,after)
++  before='.clickable { viewModel.toggleFollowGroupSelection(tag.tagid) }'
++  after='.clickable { admitAction { viewModel.toggleFollowGroupSelection(tag.tagid) } }'
++  assert text.count(before)==1
++  text=text.replace(before,after)
++  before='onCheckedChange = { viewModel.toggleFollowGroupSelection(tag.tagid) }'
++  after='onCheckedChange = { admitAction { viewModel.toggleFollowGroupSelection(tag.tagid) } }'
++  assert text.count(before)==1
++  text=text.replace(before,after)
++  before='onClick = { viewModel.saveFollowGroupSelection() }'
++  after='onClick = { admitAction { viewModel.saveFollowGroupSelection() } }'
++  assert text.count(before)==1
++  text=text.replace(before,after)
++  before='onClick = { viewModel.dismissFollowGroupDialog() }'
++  after='onClick = { admitAction { viewModel.dismissFollowGroupDialog() } }'
++  assert text.count(before)==1
++  text=text.replace(before,after)
++ return text
++
+ def generate(repo, output, standalone=False):
+     repo,output=Path(repo),Path(output);written=[]
+     for s in SPECS:
+@@ -27,6 +77,7 @@
+         text=''.join(raw[o[1]:o[2]]if o[0]=='copy'else o[1]for o in s['operations'])
+         if _sha(text)!=s['outputSHA256LF']:raise ValueError('Generated body mismatch: '+s['output'])
+         text=holder_subtitle_registration_delta(s['output'],text)
++        text=story_dialog_admission_delta(s['output'],text)
+         target=_wide(output/s['output']);target.parent.mkdir(parents=True,exist_ok=True)
+         target.write_bytes(text.encode('utf8'));written.append(target)
+     return written
+--- desktop/upstream-sources.json
++++ desktop/upstream-sources.json
+@@ -3367,7 +3367,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryViewModel.kt",
+       "mode": "policy-extract",
+       "features": [
+-        "story-topic"
++        "story-topic",
++        "story-pager-root"
+       ],
+       "sha256": "d16fd532890ca4b229dca79b0deb00aac7b8acd2a68d2316b0e507fb75fc4bef"
+     },
+@@ -9887,6 +9888,15 @@
+       "features": [
+         "desktop-navigation-interaction-settings"
+       ]
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryScreen.kt",
++      "sha256": "bd85559d3998515508d93378f1476950eda1973cde86b2c8591b1d525396c471",
++      "features": [
++        "story-topic",
++        "story-pager-root"
++      ],
++      "mode": "policy-extract"
+     }
+   ],
+   "featureCoverage": {

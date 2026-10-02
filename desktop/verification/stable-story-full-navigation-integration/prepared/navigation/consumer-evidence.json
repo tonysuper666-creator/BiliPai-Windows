@@ -1,0 +1,290 @@
+{
+  "scope": "read current compiled Candidate consumer source plus explicit prospective delta; source tracing is not whole Root rendering acceptance",
+  "consumers": [
+    {
+      "group": "root route/detail scroll",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "sha256Bytes": "4d25d4266e512943227c23740bdbd4843742be71b7f05fa1fa8602dc6a6563f1",
+      "matches": [
+        {
+          "marker": "SettingsSearchTarget.BOTTOM_BAR",
+          "line": 61,
+          "text": "SettingsSearchTarget.BOTTOM_BAR, SettingsSearchTarget.ANIMATION)"
+        },
+        {
+          "marker": "SettingsSearchTarget.BOTTOM_BAR",
+          "line": 100,
+          "text": "onBottomBarClick = { navigator.openDetail(SettingsSearchTarget.BOTTOM_BAR,"
+        },
+        {
+          "marker": "SettingsSearchTarget.BOTTOM_BAR",
+          "line": 119,
+          "text": "SettingsSearchTarget.BOTTOM_BAR -> DesktopNavigationInteractionSettings(SettingsSearchTarget.BOTTOM_BAR, onFailure)"
+        },
+        {
+          "marker": "SettingsSearchTarget.ANIMATION",
+          "line": 61,
+          "text": "SettingsSearchTarget.BOTTOM_BAR, SettingsSearchTarget.ANIMATION)"
+        },
+        {
+          "marker": "SettingsSearchTarget.ANIMATION",
+          "line": 102,
+          "text": "onAnimationClick = { navigator.openDetail(SettingsSearchTarget.ANIMATION,"
+        },
+        {
+          "marker": "SettingsSearchTarget.ANIMATION",
+          "line": 120,
+          "text": "SettingsSearchTarget.ANIMATION -> DesktopNavigationInteractionSettings(SettingsSearchTarget.ANIMATION, onFailure)"
+        },
+        {
+          "marker": "nestedPageOwnsScroll",
+          "line": 59,
+          "text": "val nestedPageOwnsScroll = page is DesktopSettingsPage.Detail &&"
+        },
+        {
+          "marker": "nestedPageOwnsScroll",
+          "line": 63,
+          "text": ".then(if (nestedPageOwnsScroll) Modifier else Modifier.verticalScroll(rememberScrollState()))"
+        }
+      ]
+    },
+    {
+      "group": "Root same global context",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "matches": [
+        {
+          "marker": "LocalDesktopHomeCardPreferences provides",
+          "line": 1320,
+          "text": "LocalDesktopHomeCardPreferences provides homeCardPreferences) {"
+        }
+      ]
+    },
+    {
+      "group": "Root order/labels/colors/sidebar",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+      "sha256Bytes": "e75770f242357dc78bfef01095c1f587a01766f69b25c517a5b842f9fa3b6564",
+      "matches": [
+        {
+          "marker": "sidebarAccountSwitcherEnabled",
+          "line": 145,
+          "text": "onAccountSwitchClick=if(navigation.sidebarAccountSwitcherEnabled)binding.accountSwitcher else null)"
+        },
+        {
+          "marker": "bottomBarItemLabels",
+          "line": 141,
+          "text": "visibleItems=visibleItems,itemColorIndices=navigation.bottomBarItemColors,itemLabels=navigation.bottomBarItemLabels,"
+        },
+        {
+          "marker": "bottomBarItemLabels",
+          "line": 166,
+          "text": "navigation.bottomBarItemLabels,binding.dynamicUnreadCount(),home.isBottomBarFloating,"
+        },
+        {
+          "marker": "isBottomBarBlurEnabled",
+          "line": 111,
+          "text": "val haze=if(home.isBottomBarBlurEnabled)pages.window.globalHaze()else null"
+        },
+        {
+          "marker": "isBottomBarBlurEnabled",
+          "line": 112,
+          "text": "val backdrop=if(home.androidNativeLiquidGlassEnabled||home.isBottomBarBlurEnabled)rememberChromeBackdropSource()else null"
+        },
+        {
+          "marker": "isBottomBarBlurEnabled",
+          "line": 191,
+          "text": "glassEnabled=home.androidNativeLiquidGlassEnabled,blurEnabled=home.isBottomBarBlurEnabled,"
+        }
+      ]
+    },
+    {
+      "group": "Root navigation animation consumer",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNavigationHost.kt",
+      "sha256Bytes": "7b819357c4127a5b96685afe36e6cae9e87c169e05a48755033bbf6b054c5156",
+      "matches": [
+        {
+          "marker": "predictiveBackAnimationStyle =",
+          "line": 74,
+          "text": "predictiveBackAnimationStyle = if (navigationSettings.predictiveBackEnabled) BiliPaiPredictiveBackAnimationStyle.fromStorageValue("
+        },
+        {
+          "marker": "miuixPredictiveBackMaxProgressPercent =",
+          "line": 81,
+          "text": "miuixPredictiveBackMaxProgressPercent = navigationSettings.miuixPredictiveBackMaxProgressPercent,"
+        },
+        {
+          "marker": "videoSharedReturnGestureFollowEnabled =",
+          "line": 82,
+          "text": "videoSharedReturnGestureFollowEnabled = navigationSettings.videoSharedReturnGestureFollowEnabled,"
+        }
+      ]
+    },
+    {
+      "group": "ordinary card animation consumer",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDiscoveryVideoCard.kt",
+      "sha256Bytes": "fd552f72365a6f6daddb55f797bc0e592a07fab77d5c088524f38abb75b7f24a",
+      "matches": [
+        {
+          "marker": "animationEnabled=settings.cardAnimationEnabled",
+          "line": 28,
+          "text": "animationEnabled=settings.cardAnimationEnabled,transitionEnabled=false,"
+        }
+      ]
+    },
+    {
+      "group": "Search actual consumer patch",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "sha256Bytes": "16afa11bf6e82cfd27f9d6f5e1339abebc8e19673d526c7faf8342ece8263543",
+      "matches": [
+        {
+          "marker": "SearchType.entries.forEach",
+          "line": 148,
+          "text": "SearchType.entries.forEach { candidate -> FilterChip(selected = type == candidate, onClick = { type = candidate }, label = { Text(candidate.displayName) }) }"
+        }
+      ]
+    },
+    {
+      "group": "AppThemeConfig original missing projection",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+      "sha256Bytes": "1f592f448b4c66286a2e3627f53357850445e3709c9267f162f4c2ee16a3a12e",
+      "matches": [
+        {
+          "marker": "internal fun buildDesktopAppThemeConfig",
+          "line": 117,
+          "text": "internal fun buildDesktopAppThemeConfig(settings: DesktopThemeSettings) = AppThemeConfig("
+        }
+      ]
+    },
+    {
+      "group": "Home aggregate one authority",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomePreferences.kt",
+      "sha256Bytes": "4d5989e97318c7264753d076ea2d2fe0ade8be92df6d2029142642782cc0bd64",
+      "matches": [
+        {
+          "marker": "settings",
+          "line": 18,
+          "text": "private val settings=store.snapshot(\"settings\")"
+        },
+        {
+          "marker": "settings",
+          "line": 19,
+          "text": "private fun <T> state(read:(DesktopPreferenceSnapshot)->T)=settings.map(read)"
+        },
+        {
+          "marker": "settings",
+          "line": 20,
+          "text": ".distinctUntilChanged().stateIn(scope,SharingStarted.Eagerly,read(settings.value))"
+        },
+        {
+          "marker": "settings",
+          "line": 36,
+          "text": "store.update(\"settings\",mapOf(\"easter_egg_enabled\" to JsonPrimitive(enabled)))"
+        },
+        {
+          "marker": "settings",
+          "line": 43,
+          "text": "private suspend fun write(key:String,value:JsonElement)=withContext(Dispatchers.IO){store.update(\"settings\",mapOf(key to value))}"
+        },
+        {
+          "marker": "settings",
+          "line": 50,
+          "text": "for(name in listOf(\"settings\",\"data_saver\",\"easter_egg\"))store.requireObjectNamespace(name)"
+        },
+        {
+          "marker": "settings",
+          "line": 51,
+          "text": "store.updateFromSnapshot(\"settings\") { values ->"
+        },
+        {
+          "marker": "homeSettings",
+          "line": 21,
+          "text": "override val homeSettings=state(::decodeDesktopOriginalHomeSettings)"
+        },
+        {
+          "marker": "navigation",
+          "line": 23,
+          "text": "override val navigation=state{decodeDesktopOriginalHomeNavigation(it,defaultTabletUseSidebar)}"
+        }
+      ]
+    },
+    {
+      "group": "original generated current consumer",
+      "path": "desktop/build/generated/original-navigation3-host/com/android/purebilibili/navigation3/BiliPaiNavDisplayHost.kt",
+      "sha256Bytes": "b90abab4de6ca48ff55dc793bfbf5a12c5cb4bc11f7728da28941643dc10ee4a",
+      "matches": [
+        {
+          "marker": "fullScreenSwipeBackEnabled",
+          "line": 621,
+          "text": "val fullScreenSwipeBackEnabled by"
+        },
+        {
+          "marker": "fullScreenSwipeBackEnabled",
+          "line": 625,
+          "text": "val swipeBackDirection = if (fullScreenSwipeBackEnabled) {"
+        },
+        {
+          "marker": "swipeBackDirection =",
+          "line": 625,
+          "text": "val swipeBackDirection = if (fullScreenSwipeBackEnabled) {"
+        },
+        {
+          "marker": "swipeBackDirection =",
+          "line": 683,
+          "text": "swipeBackDirection = swipeBackDirection,"
+        }
+      ]
+    },
+    {
+      "group": "original generated current consumer",
+      "path": "desktop/build/generated/original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+      "sha256Bytes": "533907232119a5a43504625fd7259c8d8263b6d14a6a4e997b74a4379f4d1933",
+      "matches": [
+        {
+          "marker": "liveSurfaceCardTransitionEnabled",
+          "line": 388,
+          "text": "val liveSurfaceCardTransitionEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLiveSurfaceCardTransitionEnabled(context)"
+        },
+        {
+          "marker": "liveSurfaceCardTransitionEnabled",
+          "line": 394,
+          "text": "liveSurfaceCardTransitionEnabled,"
+        },
+        {
+          "marker": "liveSurfaceCardTransitionEnabled",
+          "line": 398,
+          "text": "liveSurfaceCardTransitionEnabled = liveSurfaceCardTransitionEnabled,"
+        },
+        {
+          "marker": "liveSurfaceCardTransitionEnabled",
+          "line": 404,
+          "text": "liveSurfaceCardTransitionEnabled,"
+        },
+        {
+          "marker": "liveSurfaceCardTransitionEnabled",
+          "line": 410,
+          "text": "liveSurfaceCardTransitionEnabled = liveSurfaceCardTransitionEnabled,"
+        },
+        {
+          "marker": "liveSurfaceCardTransitionEnabled",
+          "line": 1881,
+          "text": "liveSurfaceCardTransitionEnabled = liveSurfaceCardTransitionEnabled,"
+        },
+        {
+          "marker": "liveSurfaceCardTransitionEnabled",
+          "line": 1902,
+          "text": ".onOwnershipChanged(returnCoverOwnership, liveSurfaceCardTransitionEnabled)"
+        },
+        {
+          "marker": "liveSurfaceCardTransitionEnabled",
+          "line": 3637,
+          "text": "liveSurfaceCardTransitionEnabled = liveSurfaceCardTransitionEnabled,"
+        },
+        {
+          "marker": "liveSurfaceCardTransitionEnabled",
+          "line": 3710,
+          "text": "liveSurfaceCardTransitionEnabled = liveSurfaceCardTransitionEnabled,"
+        }
+      ]
+    }
+  ]
+}

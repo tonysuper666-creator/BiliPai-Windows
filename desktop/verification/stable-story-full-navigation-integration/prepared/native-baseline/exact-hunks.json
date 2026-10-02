@@ -1,0 +1,26 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+    "name": "capture-baseline-after-actual-stop",
+    "before": "        val expectedToken = assembly.playback.beginDesktopPortraitLoad(PlaybackRequest.create(bvid, aid, cid))\n        val captured = capturePlaybackRequest()",
+    "after": "        val expectedToken = assembly.playback.beginDesktopPortraitLoad(PlaybackRequest.create(bvid, aid, cid))\n        // Preserve original progress flush before stopping; capture only AFTER\n        // the real synchronous version retirement / same-actor Stop enqueue.\n        clearCapturedPagePlayback(expectedToken, checkNotNull(currentCoroutineContext()[Job]))\n        val captured = capturePlaybackRequest()",
+    "beforeSha256LF": "ab5b0a24af06a7f0e5c8e995034dcaea8a16f140ff465389b045bd18dc45a6a0",
+    "afterSha256LF": "8d86b470cbdcea4cd71b47ab40299224ce8854c381e04e0a62fd3e364fb2ebef"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+    "name": "guard-stop-before-source-read",
+    "before": "    override suspend fun capturePlaybackRequest(): DesktopOriginalVideoRepositoryBinding {",
+    "after": "    /** Same caller/token final admission BEFORE reading/stopping the current\n     * accepted source. A cancelled or replaced A request cannot stop B. No actor\n     * wait, HTTP or IO occurs under this existing Store -> entry -> native gate. */\n    internal fun clearCapturedPagePlayback(expectedToken: Long, callerJob: Job) {\n        var applied = false\n        if (!assembly.environment.commit {\n            assertOwned()\n            if (callerJob.isCancelled || assembly.captureLoadState().currentLoadRequestToken != expectedToken)\n                throw CancellationException(\"Portrait stop request/caller replaced\")\n            clearPlaybackForReplacement(assembly.section)\n            applied = true\n        } || !applied) throw CancellationException(\"Portrait stop entry retired\")\n    }\n\n    override suspend fun capturePlaybackRequest(): DesktopOriginalVideoRepositoryBinding {",
+    "beforeSha256LF": "5ec758c80776cd4fdd99558cbf149ce787de53a1b31d174d91e743b7b676a02e",
+    "afterSha256LF": "fda9f3556953dad4101502cf6ca1d384cf2fedec8155d6e5f9f7b0c85cf7ce8b"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+    "name": "no-postcapture-second-stop",
+    "before": "'                val playbackRequest = platform.capturePageRequest(bvid, aid, requestedCid)\\n                platform.clearPlaybackForReplacement(exoPlayer)'",
+    "after": "'                val playbackRequest = platform.capturePageRequest(bvid, aid, requestedCid)'",
+    "beforeSha256LF": "df5bf04f7a3ca0a2b3e8382cd1241552878995c351239e87f42e82e229a2b6cd",
+    "afterSha256LF": "be2e05acbad5e763a0a0d9f4db473777b39865a57b4205589001f1fbc200c57d"
+  }
+]

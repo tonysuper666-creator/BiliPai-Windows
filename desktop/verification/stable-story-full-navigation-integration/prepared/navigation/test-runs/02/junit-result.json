@@ -1,0 +1,109 @@
+{
+  "found": 20,
+  "methods": [
+    {
+      "name": "progressiveAndHeaderExclusionReachSharedThemeConfig()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "topLayoutOrderVisibleTabsAndActionsReachRealHomeReader()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "replacementFailureDoesNotPublishChanges()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "navigationAnimationStyleAndProgressReachRealHostModel()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "bottomOrderVisibilityAndLabelsReachRealHomeReader()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "oldRestoreGenerationCannotOverwriteFreshDisk()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "labelsPersistUsingOriginalEncoding()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "realHolderAndNavDisplayFlagsUseExactOriginalKeys()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "customTransitionDurationUsesOriginalNormalization()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "twoFacadeConcurrentColorsReachRootNavigation()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "individualDefaultsRetainOriginalAggregateDifferences()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "twoFacadeConcurrentLabelEditsPreserveOtherKeys()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "searchTabOrderUsesOriginalUnknownAndDuplicatePolicy()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "skeletonUsesExistingGlobalAuthority()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "existingAppearanceAndPluginsAdmissionAlreadyUsesTheirDetailConsumers()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "restoreFenceRejectsOldSetterAndFreshGenerationReadsRestoredSettings()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "cancelledCallerDoesNotWriteAndExpandedFocusRetainsOriginalIndexes()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "exactSettersUpdateActualHomeReaderAndColdDiskWithoutDiscardingOtherKeys()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "upstreamIndividualDefaultsRemainDifferentFromAggregateWhereSpecified()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    },
+    {
+      "name": "failedAtomicReplacementDoesNotPublishState()",
+      "error": "",
+      "status": "SUCCESSFUL"
+    }
+  ],
+  "passed": true,
+  "failed": 0,
+  "succeeded": 20,
+  "skipped": 0
+}

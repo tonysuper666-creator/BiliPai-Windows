@@ -1,0 +1,15 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt
+@@ -115,6 +115,12 @@
+ }
+ 
+ internal fun buildDesktopAppThemeConfig(settings: DesktopThemeSettings) = AppThemeConfig(
++    blurIntensity = settings.blurIntensity,
++    headerBlurEnabled = settings.headerBlurEnabled,
++    bottomBarBlurEnabled = settings.bottomBarBlurEnabled,
++    progressiveTopBlurEnabled = settings.progressiveTopBlurEnabled,
++    progressiveTopFadeEnabled = settings.progressiveTopFadeEnabled,
++    liquidGlassEnabled = settings.liquidGlassEnabled,
+     hapticFeedbackEnabled = settings.hapticFeedbackEnabled,
+     globalTextTapCopyEnabled = settings.globalTextTapCopyEnabled,
+     uiEntranceAnimationEnabled = settings.uiEntranceAnimationEnabled,

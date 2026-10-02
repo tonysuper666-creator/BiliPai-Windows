@@ -1,0 +1,6 @@
+{
+  "target": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt",
+  "baseSha256Bytes": "54ed266b73c889da5a969007e7f88c08ecade303d74ce129f9c9f4aa53c92634",
+  "baseLFNormalizedSha256": "54ed266b73c889da5a969007e7f88c08ecade303d74ce129f9c9f4aa53c92634",
+  "preparedSha256Bytes": "bda834f6a35160765093809cf34d427c334919c4f699897b208eb77fa9faaed3"
+}

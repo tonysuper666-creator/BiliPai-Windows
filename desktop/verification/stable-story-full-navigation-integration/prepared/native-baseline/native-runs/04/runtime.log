@@ -1,0 +1,12 @@
+PASS Initial exact captured Binding reaches native ACK and first frame
+CAPTURE_SECOND token=4 previous=2 bvid=BV1yy411c7mD requestedCid=202 resolvedCid=0
+PASS Original Session token and requested CID advance before stop/capture
+PASS Same-player stop synchronously advances version BEFORE capture
+PASS FIFO actual Stop then replacement Load reaches ACK without self rejection
+PASS Caller cancelled before clear cannot stop the accepted native source
+PASS Replaced real Session token before clear cannot stop another source
+PASS Captured baseline does not retag over a later native publication
+PASS Cancelled original caller remains rejected after baseline repair
+PASS One actual Assembly/Section/MPV/Canvas remains
+PASS No original VideoDetail Success was seeded or asserted
+PASS Root shutdown drains actual assembly and native session

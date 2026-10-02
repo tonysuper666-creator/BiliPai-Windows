@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "producers": [
+    {
+      "producer": "desktop/tools/extract-upstream-video-full-owner.py",
+      "changed": [
+        "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"
+      ],
+      "otherOutputsByteUnchanged": true
+    },
+    {
+      "producer": "desktop/tools/extract-upstream-video-detail-holder.py",
+      "changed": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+        "com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt"
+      ],
+      "otherOutputsByteUnchanged": true
+    }
+  ],
+  "originalDialogInverse": true
+}

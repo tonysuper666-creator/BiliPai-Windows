@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "snapshot": 83,
+  "entries": 101,
+  "sourceCount": 13,
+  "explicitProspectiveSources": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-pager-root-parity\\prepared\\existing\\desktop\\build\\generated\\original-video-fullscreen-pager\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\PortraitVideoPager.kt",
+      "sha256": "e5ff4c5d9795eb6cc2ec696a47c75817c19e3eb92008129631b1344e91cf256b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-pager-root-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalPortraitPlatform.kt",
+      "sha256": "1e4146d221e10c37d74b79c728fbeaca8a78eb758241504e11fbe9ad528494a0"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-pager-root-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalPortraitPlatformBinding.kt",
+      "sha256": "544fc2ef992be53a4a8e69054cce3f9ed9196ceb4994c7ff67f346e8ff41e8fe"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-pager-root-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootStack.kt",
+      "sha256": "a2ecff336850f8e449b1cd0a1aa67b866a3c64034f8e94e98c13bab9f4f4d9c8"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-pager-root-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoHolderRoute.kt",
+      "sha256": "3ff595ca0aee2431d6d5fa69a7bada48e1cf45238c8e2e1a964ef17ba2602931"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-pager-root-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoRootWindowPlatforms.kt",
+      "sha256": "78c97d04a1ea10b545f1f468787f621c351c67ffcf1c552373465e3c32c23a09"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-pager-root-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\story\\StoryScreen.kt",
+      "sha256": "6c4146917d94953dd4134a5f84814a1ced75a3ac20c7258e32394376436913de"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-pager-root-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\story\\StoryViewModel.kt",
+      "sha256": "4691f56c814e819f79bad8f6d2bcc13bd6da3fe9332580a1ada6d05da3801ba8"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-pager-root-parity\\prepared\\manual\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalPortraitResolvedPayload.kt",
+      "sha256": "e0ddfde57d31cc04d76dbe33c298f93aca54c756c6a75886330bfe128480c734"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-review-delta\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalStoryRoot.kt",
+      "sha256": "60fa0de5eee07db7e42cda260699ec82d306c7eba4db0274ff8145710f3f890f"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-review-delta\\reference\\com\\android\\purebilibili\\feature\\video\\screen\\VideoDetailFavoriteFolderOverlayAdapter.kt",
+      "sha256": "d03398b7d19289cc3ebf57132e506fe15d35c12b69c5d0f914b14dba6f52e8b3"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-review-delta\\reference\\com\\android\\purebilibili\\feature\\video\\screen\\VideoDetailOverlayHost.kt",
+      "sha256": "f259b477b31925ace9e61935f65af786747df112b3483034d99cddc307d863de"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-review-delta\\reference\\desktop\\build\\generated\\original-video-full-owner\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt",
+      "sha256": "8d192d42ed6b18c42c4d1e84a35561f550a435694c8ffd155cfcd4f0316225b2"
+    }
+  ],
+  "productionWrites": 0,
+  "fullRootAcceptance": false
+}

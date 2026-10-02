@@ -1,0 +1,37 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt
+@@ -1,5 +1,8 @@
+ package com.bilipai.desktop.appearance
+ 
++import com.android.purebilibili.core.ui.blur.BlurIntensity
++import com.android.purebilibili.core.store.HomeHeaderBlurMode
++import com.android.purebilibili.core.store.resolveHomeHeaderBlurModePreference
+ import com.android.purebilibili.core.store.ThemeModeRoleOverrides
+ import com.android.purebilibili.core.store.ThemeRoleOverrides
+ import com.android.purebilibili.core.store.parseThemeSelectionString
+@@ -42,6 +45,12 @@
+     val globalTextTapCopyEnabled: Boolean = false,
+     val uiEntranceAnimationEnabled: Boolean = true,
+     val runtimeVisualGuardEnabled: Boolean = true,
++    val blurIntensity: BlurIntensity = BlurIntensity.THIN,
++    val headerBlurEnabled: Boolean = true,
++    val bottomBarBlurEnabled: Boolean = false,
++    val progressiveTopBlurEnabled: Boolean = false,
++    val progressiveTopFadeEnabled: Boolean = true,
++    val liquidGlassEnabled: Boolean = false,
+ )
+ 
+ class DesktopThemePrefs(
+@@ -179,6 +188,12 @@
+         globalTextTapCopyEnabled = values.boolean("global_text_tap_copy_enabled") ?: false,
+         uiEntranceAnimationEnabled = values.boolean("ui_entrance_animation_enabled") ?: true,
+         runtimeVisualGuardEnabled = values.boolean("runtime_visual_guard_enabled") ?: true,
++        blurIntensity = runCatching { BlurIntensity.valueOf(values.string("blur_intensity") ?: BlurIntensity.THIN.name) }.getOrDefault(BlurIntensity.THIN),
++        headerBlurEnabled = resolveHomeHeaderBlurModePreference(values.int("home_header_blur_mode"), values.boolean("header_blur_enabled")) != HomeHeaderBlurMode.ALWAYS_OFF,
++        bottomBarBlurEnabled = values.boolean("bottom_bar_blur_enabled") ?: false,
++        progressiveTopBlurEnabled = values.boolean("progressive_top_blur_enabled") ?: false,
++        progressiveTopFadeEnabled = values.boolean("progressive_top_fade_enabled") ?: true,
++        liquidGlassEnabled = values.boolean("android_native_liquid_glass_enabled") ?: false,
+     )
+ }
+ private fun JsonObject.int(key: String) = (get(key) as? JsonPrimitive)?.takeUnless { it.isString }?.intOrNull

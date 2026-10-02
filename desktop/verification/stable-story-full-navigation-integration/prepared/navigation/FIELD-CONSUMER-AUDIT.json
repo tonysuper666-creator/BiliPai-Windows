@@ -1,0 +1,91 @@
+{
+  "productionInstalled": false,
+  "prepared": true,
+  "groups": [
+    {
+      "group": "bottom and sidebar editor",
+      "original": "BottomBarSettingsContent/BottomBarPreview/BottomBarTabItem",
+      "source": "app/src/main/java/com/android/purebilibili/feature/settings/screen/BottomBarSettingsScreen.kt",
+      "controls": [
+        "order",
+        "visible membership",
+        "display mode",
+        "label mode",
+        "per-item label",
+        "per-item color",
+        "reset",
+        "sidebar",
+        "sidebar account switch",
+        "5 dock behavior switches"
+      ],
+      "actualConsumer": "DesktopOriginalRootChrome / FrostedSideBar / DesktopOriginalFrostedAudioNavigation",
+      "evidence": "actual Home/navigation observer + 2 styles original pointer/longpress; not whole Root appearance"
+    },
+    {
+      "group": "top navigation",
+      "original": "BottomBarSettingsContent",
+      "controls": [
+        "top tab order/membership",
+        "hide top tabs",
+        "top label mode",
+        "top-right action",
+        "top layout order",
+        "header collapse mode"
+      ],
+      "actualConsumer": "original HomeScreen/HomeTopSection through DesktopOriginalHomePreferences",
+      "evidence": "actual Home/topTabs observer, original up/down and right-action pointers; not full Root route action"
+    },
+    {
+      "group": "search filters",
+      "original": "resolveSearchFilterTabs/defaultSearchFilterTabOrder",
+      "source": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "controls": [
+        "search tab order"
+      ],
+      "actualConsumer": "prepared CommunitySearchScreens orderedSearchTabs",
+      "evidence": "actual compiled consumer + original ordering policy/disk + original editor pointer; no remote response"
+    },
+    {
+      "group": "motion",
+      "original": "AnimationSettingsContent",
+      "controls": [
+        "interface entrance",
+        "tap to copy",
+        "card entrance",
+        "card transition",
+        "related transition",
+        "live surface transition",
+        "return gesture follow",
+        "transition realtime blur",
+        "global navigation style",
+        "predictive progress clamp",
+        "return blur",
+        "scale exit direction",
+        "full-screen swipe",
+        "speed/custom duration"
+      ],
+      "actualConsumer": "RootNavigationHost / original BiliPaiNavDisplayHost / original VideoDetailScreenStateHolder / Home card",
+      "evidence": "compiled actual field readers, exact setters/disk + style/speed pointers; native effects not verified"
+    },
+    {
+      "group": "visual",
+      "original": "AnimationSettingsContent/BlurIntensitySelector",
+      "controls": [
+        "skeleton breathing",
+        "header blur",
+        "progressive top blur",
+        "progressive fade",
+        "bottom blur",
+        "blur intensity"
+      ],
+      "actualConsumer": "existing SkeletonSettingsStore + prepared same AppThemeConfig projection + original Root haze/chrome consumers",
+      "evidence": "real same-store observer + pointer + theme config values; GPU rendering not tested"
+    }
+  ],
+  "remaining": [
+    "Android liquid-glass advanced panel/profile share/import/export",
+    "Windows haptic hardware",
+    "five Android-only Miuix preview glyphs",
+    "whole Root/native effect validation"
+  ]
+}

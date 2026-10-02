@@ -1,0 +1,131 @@
+{
+  "baseCommit": "d9d0f8eae60c8cb98bb3bc59b05ece1fc975b1f8",
+  "preparedHandoffSha256Bytes": "10b9c892b0578a8985a4a4b5d40d8ee98af7efe0713bb09481ffe91064e1fa2f",
+  "preparedManifestSha256Bytes": "f2aa174ad4ff33e0b71e61f12f897da7afe1687dbb49ede5d2ec4ee933e2eaf5",
+  "verifiedPreparedRawCount": 142,
+  "countsBefore": {
+    "sources": 1175,
+    "resources": 213
+  },
+  "countsAfter": {
+    "sources": 1180,
+    "resources": 243
+  },
+  "newIdentities": {
+    "sources": [
+      "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsNavigationIconPreviewPolicy.kt",
+      "app/src/main/java/com/android/purebilibili/core/ui/animation/AppEntrance.kt",
+      "design-system/src/main/java/com/android/purebilibili/core/ui/motion/AppEntranceMotion.kt",
+      "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsComponents.kt",
+      "app/src/main/java/com/android/purebilibili/feature/settings/SettingsEntranceMotionPolicy.kt"
+    ],
+    "resources": [
+      "app/src/main/res/drawable/ms_check_24.xml",
+      "app/src/main/res/drawable/ms_collections_bookmark_fill_24.xml",
+      "app/src/main/res/drawable/ms_extension_fill_24.xml",
+      "app/src/main/res/drawable/ms_grid_view_fill_24.xml",
+      "app/src/main/res/drawable/ms_history_24.xml",
+      "app/src/main/res/drawable/ms_keyboard_arrow_down_24.xml",
+      "app/src/main/res/drawable/ms_label_24.xml",
+      "app/src/main/res/drawable/ms_library_music_24.xml",
+      "app/src/main/res/drawable/ms_library_music_fill_24.xml",
+      "app/src/main/res/drawable/ms_lightbulb_fill_24.xml",
+      "app/src/main/res/drawable/ms_list_alt_24.xml",
+      "app/src/main/res/drawable/ms_live_tv_fill_24.xml",
+      "app/src/main/res/drawable/ms_notifications_fill_24.xml",
+      "app/src/main/res/drawable/ms_notifications_none_24.xml",
+      "app/src/main/res/drawable/ms_person_fill_24.xml",
+      "app/src/main/res/drawable/ms_play_circle_fill_24.xml",
+      "app/src/main/res/drawable/ms_play_circle_outline_24.xml",
+      "app/src/main/res/drawable/ms_reorder_24.xml",
+      "app/src/main/res/drawable/ms_settings_24.xml",
+      "app/src/main/res/drawable/ms_settings_fill_24.xml",
+      "app/src/main/res/drawable/ms_smart_toy_fill_24.xml",
+      "app/src/main/res/drawable/ms_sports_esports_24.xml",
+      "app/src/main/res/drawable/ms_sports_esports_fill_24.xml",
+      "app/src/main/res/drawable/ms_swap_horiz_24.xml",
+      "app/src/main/res/drawable/ms_trending_up_24.xml",
+      "app/src/main/res/drawable/ms_trending_up_fill_24.xml",
+      "app/src/main/res/drawable/ms_troubleshoot_24.xml",
+      "app/src/main/res/drawable/ms_view_sidebar_24.xml",
+      "app/src/main/res/drawable/ms_watch_later_24.xml",
+      "app/src/main/res/drawable/ms_watch_later_fill_24.xml"
+    ]
+  },
+  "storyRegistryIdentityPreserved": true,
+  "producerPolicyOnly": true,
+  "newGenerationTaskCount": 1,
+  "generatedOrBinaryCopied": false,
+  "compileAccepted": false,
+  "rootNativeEffectsAccepted": false,
+  "desktopPackageUpdated": false,
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+      "beforeSha256Bytes": "1f592f448b4c66286a2e3627f53357850445e3709c9267f162f4c2ee16a3a12e",
+      "afterSha256Bytes": "ba275ec0b20c57463f8523e19c4301ee364301de2927608fd8fde7995c6fee55",
+      "afterSha256LF": "ba275ec0b20c57463f8523e19c4301ee364301de2927608fd8fde7995c6fee55"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "beforeSha256Bytes": "49bf473b17a2e11fcee5ffd1cbed1df4dfcf036ce77f66f010a1df0c7aa3d945",
+      "afterSha256Bytes": "0064869e7091937e263917d5b611e36c81f4c7ef107aa8fab86a557b3453e0b6",
+      "afterSha256LF": "0064869e7091937e263917d5b611e36c81f4c7ef107aa8fab86a557b3453e0b6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationPreferences.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "53bcc85b37dafcf545bee2d9d9440a083e193915ed733b07b82622c7da384485",
+      "afterSha256LF": "53bcc85b37dafcf545bee2d9d9440a083e193915ed733b07b82622c7da384485"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettings.kt",
+      "beforeSha256Bytes": "6bf5c9946631c676253ae590c563fe02cc79c27055c809b343edf382315e3fe7",
+      "afterSha256Bytes": "3a3aac14b90e134a32dd75554c03b7cc5bc5e98aed1b8f59af55b8c71590f467",
+      "afterSha256LF": "3a3aac14b90e134a32dd75554c03b7cc5bc5e98aed1b8f59af55b8c71590f467"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSystemReduceMotion.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "ecd674a7b935cc799f2cac00803624541506831e6571ee9064b6957a8470657d",
+      "afterSha256LF": "ecd674a7b935cc799f2cac00803624541506831e6571ee9064b6957a8470657d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "beforeSha256Bytes": "16afa11bf6e82cfd27f9d6f5e1339abebc8e19673d526c7faf8342ece8263543",
+      "afterSha256Bytes": "54f3f5375daccb10d2a3826e84ad75b9a04b5da8fae035de00f3110fc812da3f",
+      "afterSha256LF": "54f3f5375daccb10d2a3826e84ad75b9a04b5da8fae035de00f3110fc812da3f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationSettingsTest.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "35543c935f8e50c14e2ce11e48fd720d296430a852e8ab734a60fdea7158d15b",
+      "afterSha256LF": "35543c935f8e50c14e2ce11e48fd720d296430a852e8ab734a60fdea7158d15b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt",
+      "beforeSha256Bytes": "54ed266b73c889da5a969007e7f88c08ecade303d74ce129f9c9f4aa53c92634",
+      "afterSha256Bytes": "bda834f6a35160765093809cf34d427c334919c4f699897b208eb77fa9faaed3",
+      "afterSha256LF": "bda834f6a35160765093809cf34d427c334919c4f699897b208eb77fa9faaed3"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-full-navigation.py",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "53d46335fa453e7acb80dc6f44566c21aaff87ec3861b1fdc02edf1b7ffa1661",
+      "afterSha256LF": "53d46335fa453e7acb80dc6f44566c21aaff87ec3861b1fdc02edf1b7ffa1661"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "0942ee48ce8420ee64d24ad0f1be47eeb0b198a2139dfc41d345e3157cde067c",
+      "afterSha256Bytes": "2efc0d6eadd22619715d529ef256ff0b08fb8dfa8011f5657cb90d4220b0ca37",
+      "afterSha256LF": "8f073781e01100478f077b92c643ea46eb0df036dd885f8fc935fcee4a621867"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256Bytes": "df844315b90a916fb045200dd6f4570cea4d82d9c73d2ec749747d9f3fef35f4",
+      "afterSha256Bytes": "1363ac221cbbaea71530941e05f5b2c5f20f5c96efcf3b3285b57c5ce6f3f692",
+      "afterSha256LF": "d50876feabc04517fed7056817a0ffc20b0ad87dbe969fb1eef88ad74a51723f"
+    }
+  ],
+  "rootAdditionalGeneratorDependency": "tools/extract-upstream-settings-search.py (actual XML vector parser imported by producer)"
+}

@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "actualSnapshot": 83,
+  "entries": 101,
+  "explicitProspectiveProductionInput": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-story-pager-root-parity\\prepared\\manual\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalPortraitResolvedPayload.kt",
+    "sha256": "1f678003b495781169e0d8045871d151ea01bd07ffcf78af2ae3d221450fc364"
+  },
+  "snapshotPinsUnchanged": true,
+  "networkRequests": 0,
+  "windows": 0,
+  "seededVmSuccess": 0,
+  "nativeAckTested": false,
+  "rootAcceptance": false
+}

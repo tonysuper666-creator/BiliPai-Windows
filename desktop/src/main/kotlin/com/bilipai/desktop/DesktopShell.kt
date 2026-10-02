@@ -1788,23 +1788,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     ::closeMusic, ::openUser, ::openVideo, startPositionSeconds = musicStartPosition)
                                 else Text(playerError ?: "请从个人空间的音频栏目打开歌曲")
                             }
-                            section == DesktopSection.STORY -> DesktopStoryScreen(storyTopic, storySeed,
-                                isActive = active && !activatingUpdate,
-                                playback = storyHost.snapshot(playing, native, playerError),
-                                onPlaybackRequest = { storyHost.request(it, active && !activatingUpdate) },
-                                onReleasePlayback = { storyHost.release(it) }, onBack = { commands.back() },
-                                onUser = ::openUser, onSearch = { navigate(DesktopSection.SEARCH) },
-                                onRetryPlayback = { storyHost.retry(it, active && !activatingUpdate) },
-                                nativeInput = player?.let { nativePlayer -> DesktopStoryNativeInputBinding(nativePlayer.surface,
-                                    sourceVersion = { nativePlayer.currentSourceVersion },
-                                    owns = { owner -> active && !activatingUpdate && storyHost.owns(owner) },
-                                    onPlayerKey = { action, version ->
-                                        nativePlayer.ownsSourceVersion(version) && playback.currentCastSource(version) != null && performPlayerKey(action)
-                                    }) },
-                                playerContent = { owner, _, modifier -> Box(modifier) {
-                                    if (player != null && storyOwner == owner && storyHost.owns(owner)) playerContent(player)
-                                    else if (player == null) Text(playerError ?: "播放器未能初始化")
-                                } })
+                            entryKey is BiliPaiNavKey.Story ->
+                                DesktopOriginalStoryPhysicalLeaf(entryKey, ordinaryVideo, commands, active && !activatingUpdate,
+                                    pendingOwner = {
+                                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                            ordinaryVideoResourceError?.let { Text(it) } ?: CircularProgressIndicator()
+                                        }
+                                    })
                             section == DesktopSection.TOPIC -> DesktopTopicDetailScreen(topicId, storyTopic, community,
                                 CommunityNavigation(::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword,
                                     onDynamicRoute=::openDynamicRoute),

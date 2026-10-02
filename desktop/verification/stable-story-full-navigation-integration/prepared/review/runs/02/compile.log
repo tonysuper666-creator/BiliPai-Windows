@@ -1,0 +1,33 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-pager-root-parity\prepared\existing\desktop\build\generated\original-video-fullscreen-pager\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:1806:45: warning: the corresponding parameter in the supertype 'Listener' is named 'isPlaying'. This may cause problems when calling this function with named arguments.
+            override fun onIsPlayingChanged(isPlaying_: Boolean) {
+                                            ^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-pager-root-parity\prepared\existing\desktop\build\generated\original-video-fullscreen-pager\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:1819:54: warning: the corresponding parameter in the supertype 'Listener' is named 'parameters'. This may cause problems when calling this function with named arguments.
+            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
+                                                     ^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-pager-root-parity\prepared\existing\desktop\build\generated\original-video-fullscreen-pager\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:3001:9: warning: expression is unused.
+        Unit
+        ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-pager-root-parity\prepared\existing\desktop\build\generated\original-video-fullscreen-pager\com\android\purebilibili\feature\video\ui\pager\PortraitVideoPager.kt:3128:39: warning: unnecessary safe call on a non-null receiver of type 'VideoPlaybackUiState.Success'.
+                        currentSuccess?.coinCount ?: 0,
+                                      ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-pager-root-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:183:25: warning: 'when' is exhaustive so 'else' is redundant here.
+                        else -> error("Unreachable typed Live branch")
+                        ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-review-delta\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOriginalStoryRoot.kt:117:127: warning: expression is unused.
+                            onConfirm={ count,alsoLike -> admitDialog { assembly.domains.engagement.doCoin(count,alsoLike) }; Unit })
+                                                                                                                              ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-review-delta\reference\com\android\purebilibili\feature\video\screen\VideoDetailFavoriteFolderOverlayAdapter.kt:28:95: warning: expression is unused.
+        onFolderToggle = { id -> admitAction { viewModel.toggleFavoriteFolderSelection(id) }; Unit },
+                                                                                              ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-review-delta\reference\com\android\purebilibili\feature\video\screen\VideoDetailFavoriteFolderOverlayAdapter.kt:29:82: warning: expression is unused.
+        onSaveClick = { admitAction { viewModel.saveFavoriteFolderSelection() }; Unit },
+                                                                                 ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-review-delta\reference\com\android\purebilibili\feature\video\screen\VideoDetailFavoriteFolderOverlayAdapter.kt:30:87: warning: expression is unused.
+        onDismissRequest = { admitAction { viewModel.dismissFavoriteFolderDialog() }; Unit },
+                                                                                      ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-review-delta\reference\com\android\purebilibili\feature\video\screen\VideoDetailFavoriteFolderOverlayAdapter.kt:31:124: warning: expression is unused.
+        onCreateFolder = { title, intro, privacy -> admitAction { viewModel.createFavoriteFolder(title, intro, privacy) }; Unit },
+                                                                                                                           ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-story-review-delta\reference\desktop\build\generated\original-video-full-owner\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1758:36: warning: condition is always 'true'.
+                hasGlobalContext = globalContext != null
+                                   ^^^^^^^^^^^^^^^^^^^^^

@@ -1,0 +1,130 @@
+{
+  "passed": true,
+  "snapshotManifestSha256Bytes": "72934edb925c7793294bf504388dfbd1f849fe14d8ea00dd4f333befdabd4157",
+  "runtimeCpReference": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-83\\ordered-runtime-cp.json",
+  "runtimeCpSha256Bytes": "f82828347f7cfad86cd101dfb13d44677ba88f780b21a9e21df8c06a97d4828b",
+  "sources": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalFullNavigationSettings.kt",
+      "sha256Bytes": "c26e7005c2ce24b94f67bb53a6fd135c8d73b164901c80bafc669f916367bc8b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\generated\\com\\android\\purebilibili\\core\\ui\\animation\\AppEntrance.kt",
+      "sha256Bytes": "421d44dafd2d4c78b049a5ae1c64eac950ac124ad4a753dc4db66f67ed2760aa"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\generated\\com\\android\\purebilibili\\core\\ui\\motion\\AppEntranceMotion.kt",
+      "sha256Bytes": "9e44fd2b3a29b519efbc06b270fa6ed9407d7e52efb9b4070f6ea58b51a6faed"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\generated\\com\\android\\purebilibili\\feature\\search\\DesktopOriginalSearchTabOrderPolicy.kt",
+      "sha256Bytes": "f5bcbc9489d38f762ce7dba8902702b57e9246683a4c7d3869ee17dcab3166ea"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\DesktopNavigationIconPreviewPolicy.kt",
+      "sha256Bytes": "9cdff76b9a3688ce874851859ab4ad6c633c9f2260c9a26c33241bd7978d0c75"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\DesktopNavigationMaterialSymbols.kt",
+      "sha256Bytes": "9d2122fecd66aea800eb377a92b7e583c60ab5e13e324b3b5310a343f8e9f47b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalAnimationSettingsContent.kt",
+      "sha256Bytes": "e1d887f8e6a2bbf9c2b5949b0fbcdb59ec2d03544d4fa9c93d402d3e29fbf06e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalBottomBarSettingsContent.kt",
+      "sha256Bytes": "2fc996b5571af763dda576ffa81f8398dceb577f71a460b6e09079a7c77f6b0a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\SettingsComponents.kt",
+      "sha256Bytes": "bacc963c9fa5a159d65d9a9b93e09c639f7416ac695da8db3e45015abe6c79e3"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\SettingsEntranceMotionPolicy.kt",
+      "sha256Bytes": "3681b59c3cb5b952dd6c5c8c449ffa9fd1e0fc669c972dbabe84c89f399c74c9"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\generated\\com\\bilipai\\desktop\\settings\\DesktopNavigationSettingsVectors.kt",
+      "sha256Bytes": "2be81f75754f794e27a32fc6ff367b4ee1b38bf96655d7796d1c0f7642263d08"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\appearance\\DesktopAppearanceTheme.kt",
+      "sha256Bytes": "ba275ec0b20c57463f8523e19c4301ee364301de2927608fd8fde7995c6fee55"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\appearance\\DesktopThemePrefs.kt",
+      "sha256Bytes": "0064869e7091937e263917d5b611e36c81f4c7ef107aa8fab86a557b3453e0b6"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopFullNavigationPreferences.kt",
+      "sha256Bytes": "53bcc85b37dafcf545bee2d9d9440a083e193915ed733b07b82622c7da384485"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopNavigationInteractionSettings.kt",
+      "sha256Bytes": "3a3aac14b90e134a32dd75554c03b7cc5bc5e98aed1b8f59af55b8c71590f467"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopSystemReduceMotion.kt",
+      "sha256Bytes": "ecd674a7b935cc799f2cac00803624541506831e6571ee9064b6957a8470657d"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\CommunitySearchScreens.kt",
+      "sha256Bytes": "54f3f5375daccb10d2a3826e84ad75b9a04b5da8fae035de00f3110fc812da3f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\NavigationFullFixture.kt",
+      "sha256Bytes": "e397f7a7976498a5ebe1e5aae9675a3a152d00dcc0ecd3539e8fcd0a02d561fd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-full-parity\\NavigationUiFixture.kt",
+      "sha256Bytes": "29a87b8e1b6c19dc16a46319ebf0424d6bf08f854129bce7e11830b29fd7bf7d"
+    }
+  ],
+  "declaredProductOverrides": [
+    "com/bilipai/desktop/appearance/DesktopAppearancePalette.class",
+    "com/bilipai/desktop/appearance/DesktopAppearanceThemeKt.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefs$Companion.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefs$ensureMigrated$2.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefs$save$3.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefs$setDarkThemeStyle$2.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefs$setThemeMode$2.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefs$setThemeModeOwned$2.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefs$special$$inlined$map$1$1.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefs$special$$inlined$map$1$2$1.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefs$special$$inlined$map$1$2.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefs$special$$inlined$map$1.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefs.class",
+    "com/bilipai/desktop/appearance/DesktopThemePrefsKt.class",
+    "com/bilipai/desktop/appearance/DesktopThemeSettings.class",
+    "com/bilipai/desktop/ui/CommunitySearchRow.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$2$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$3$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$4$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$5.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$6$10.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$6$2$1$1$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$6$2$2$1$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$6$9$1$4$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$6$9$1$5$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$6$9$1$6$1$1$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$6$9$1$7$1$3$1$1$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunitySearch$saveHistory$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunityUserSpace$2$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunityUserSpace$3$1$1$1$2$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunityUserSpace$3$12$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunityUserSpace$3$4$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunityUserSpace$3$7$1$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$CommunityUserSpace$3$8$1.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt$WhenMappings.class",
+    "com/bilipai/desktop/ui/CommunitySearchScreensKt.class",
+    "com/bilipai/desktop/ui/CommunitySearchState.class",
+    "com/bilipai/desktop/ui/ComposableSingletons$CommunitySearchScreensKt.class"
+  ],
+  "fixtureExecutables": [
+    "NavigationFullFixture.kt",
+    "NavigationUiFixture.kt"
+  ],
+  "scope": "actual83 immutable product with explicit prospective owned overlays; no entire Root/native/HWND/network proof"
+}

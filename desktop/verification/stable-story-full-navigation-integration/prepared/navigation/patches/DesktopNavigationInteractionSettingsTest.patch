@@ -1,0 +1,21 @@
+--- desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt
++++ desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt
+@@ -91,14 +91,16 @@
+         assertFalse(Json.parseToJsonElement(Files.readString(root.resolve("plugin-settings.json"))).jsonObject["settings"]!!.jsonObject["card_transition_enabled"]!!.jsonPrimitive.boolean)
+     }
+ 
+-    @Test fun cancelledCallerDoesNotWriteAndUnavailableFocusIsNotAcknowledged(): Unit = runBlocking {
++    @Test fun cancelledCallerDoesNotWriteAndExpandedFocusRetainsOriginalIndexes(): Unit = runBlocking {
+         val root = Files.createTempDirectory("bp-nav-")
+         val context = DesktopPluginContext(DesktopPluginStore(root))
+         val job = launch(start = CoroutineStart.LAZY) { Original.setCardAnimationEnabled(context, true) }
+         job.cancelAndJoin()
+         assertFalse(Files.exists(root.resolve("plugin-settings.json")))
+         assertEquals(1, desktopNavigationInteractionFocusIndex(SettingsSearchTarget.BOTTOM_BAR, SettingsSearchFocusIds.BOTTOM_BAR_BEHAVIOR))
+-        assertNull(desktopNavigationInteractionFocusIndex(SettingsSearchTarget.BOTTOM_BAR, SettingsSearchFocusIds.BOTTOM_BAR_TOP_TABS))
++        assertEquals(5, desktopNavigationInteractionFocusIndex(SettingsSearchTarget.BOTTOM_BAR, SettingsSearchFocusIds.BOTTOM_BAR_TOP_TABS))
++        assertEquals(4, desktopNavigationInteractionFocusIndex(SettingsSearchTarget.ANIMATION, SettingsSearchFocusIds.ANIMATION_VISUAL_EFFECTS))
++        assertNull(desktopNavigationInteractionFocusIndex(SettingsSearchTarget.PLAYBACK, SettingsSearchFocusIds.BOTTOM_BAR_TOP_TABS))
+         SettingsSearchFocusController.submit(SettingsSearchTarget.BOTTOM_BAR, SettingsSearchFocusIds.BOTTOM_BAR_TOP_TABS)
+         val token = SettingsSearchFocusController.request.value!!.token
+         assertEquals(token, SettingsSearchFocusController.request.value!!.token)
