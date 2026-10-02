@@ -1,0 +1,10 @@
+{
+  "base": "cd8317d54fff02c2d920e295397aef502333f69b",
+  "path": "desktop/tools/extract-upstream-bangumi-player.py",
+  "before": "  body=body.replace(before,before+'                    cachedPlayData = playData,\\n')\n",
+  "after": "  body=body.replace(before,before+'                    cachedPlayData = playData,\\n')\n  before='    override fun close() {\\n        flushBangumiPlaybackHeartbeat()\\n'\n  assert body.count(before)==1\n  body=body.replace(before,'    override fun close() {\\n        if (environment.ownsPlaybackSource()) flushBangumiPlaybackHeartbeat()\\n')\n  before='        exoPlayer?.removeListener(playbackEndListener)\\n'\n  assert body.count(before)==1\n  body=body.replace(before,'        environment.player.removeListener(playbackEndListener)\\n')\n  before='        val added = environment.addDownloadTask(task)\\n'\n  assert body.count(before)==1\n  body=body.replace(before,'        val added = try { environment.addDownloadTask(task) } catch (cancelled: kotlinx.coroutines.CancellationException) {\\n            throw cancelled\\n        } catch (failure: Exception) {\\n            environment.launch { _toastEvent.send(failure.message ?: \"当前集暂时无法下载\") }\\n            return\\n        }\\n')\n",
+  "beforeCount": 1,
+  "baseSha256LF": "ae7891552d3c37b4371cbb52c0982fa319173b1c0e9589d8fd861407d7ee1675",
+  "preparedSha256LF": "efa41de7de3e45921304a7ba2d27094016b256d501d9b6465899a467459e2a3e",
+  "onlyAddedBoundary": "Retirement closes the borrowed PGC callback registration even when native/source admission is gone; no MPV release. Periodic/paused/ended heartbeat business remains original; final retirement heartbeat still pending."
+}

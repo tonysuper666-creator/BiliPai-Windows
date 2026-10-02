@@ -1,0 +1,453 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt",
+  "originalSha256LF": "287d6919dd09e53428a6b01b81b9ff588629441831134a59732ab80c75e3289a",
+  "output": "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerScreen.kt",
+  "adaptedSha256LF": "ee878e01ecddf550ef5a07fac735d12f4250902d7a77c8cf99ae3c5fa8229c9d",
+  "edits": [
+    {
+      "startLine": 3,
+      "endLineExclusive": 11,
+      "before": "import android.app.Activity\nimport android.content.Context\nimport android.content.ContextWrapper\nimport android.content.pm.ActivityInfo\nimport android.content.res.Configuration\nimport android.widget.Toast\nimport android.annotation.SuppressLint\nimport com.android.purebilibili.core.player.HiResCompatibleRenderersFactory\n",
+      "after": "",
+      "beforeSha256LF": "03a8b3c4cefe61646cc06c45d667f148c25a08da354dd1080aa50f62687c24f9"
+    },
+    {
+      "startLine": 13,
+      "endLineExclusive": 14,
+      "before": "import com.android.purebilibili.core.util.applyPlayerRequestedOrientation\n",
+      "after": "",
+      "beforeSha256LF": "ed705b2b22194929968ab64a59bf360a3f3434896b5ce511a68a4d3b33272e9c"
+    },
+    {
+      "startLine": 29,
+      "endLineExclusive": 32,
+      "before": "import androidx.compose.ui.platform.LocalConfiguration\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.platform.LocalView\n",
+      "after": "",
+      "beforeSha256LF": "510532d7feb28310af0680dd9e00543a2707bf51347c9fde295df4caf5c285f3"
+    },
+    {
+      "startLine": 33,
+      "endLineExclusive": 37,
+      "before": "import androidx.core.view.WindowCompat\nimport androidx.core.view.WindowInsetsCompat\nimport androidx.lifecycle.viewmodel.compose.viewModel\nimport androidx.media3.exoplayer.ExoPlayer\n",
+      "after": "",
+      "beforeSha256LF": "e2ec3abd279bd6b36ed2afd6a81364d798f07c4507c045a9b894333863fb477a"
+    },
+    {
+      "startLine": 41,
+      "endLineExclusive": 45,
+      "before": "import com.android.purebilibili.core.ui.setWindowNavigationBarColor\nimport com.android.purebilibili.core.ui.setWindowStatusBarColor\nimport com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager\nimport com.android.purebilibili.feature.video.player.MiniPlayerManager\n",
+      "after": "",
+      "beforeSha256LF": "c86e963e2b6ed887053239b7c86728db426205e69a67e579dc9686f63bd0d42f"
+    },
+    {
+      "startLine": 46,
+      "endLineExclusive": 47,
+      "before": "import com.android.purebilibili.feature.video.handoff.PlaybackHandoffRegistry\n",
+      "after": "",
+      "beforeSha256LF": "495933def98469a23ea3316edbd461254317ba6874d452891039a86b3c3fa6a9"
+    },
+    {
+      "startLine": 84,
+      "endLineExclusive": 84,
+      "before": "",
+      "after": "import com.bilipai.desktop.ui.*\nimport com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player\nimport com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration\nimport android.util.Log\n",
+      "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "startLine": 92,
+      "endLineExclusive": 93,
+      "before": "@SuppressLint(\"UnsafeOptInUsageError\")\n",
+      "after": "",
+      "beforeSha256LF": "f128259be797b26aaa0b3f89a7a8581b72cc38dd0e55231a81b8e1db67beb411"
+    },
+    {
+      "startLine": 94,
+      "endLineExclusive": 95,
+      "before": "fun BangumiPlayerScreen(\n",
+      "after": "internal fun BangumiPlayerScreen(\n",
+      "beforeSha256LF": "f46ed9e803537fff984dbbf5ba20a777244fc0845130dbdc5617f85cdd28a2e8"
+    },
+    {
+      "startLine": 104,
+      "endLineExclusive": 106,
+      "before": "    viewModel: BangumiPlayerViewModel = viewModel(),\n    commentViewModel: VideoCommentViewModel = viewModel()\n",
+      "after": "    viewModel: BangumiPlayerViewModel,\n    commentViewModel: VideoCommentViewModel\n",
+      "beforeSha256LF": "e191a3a89fe70d012e9a86c0b220af4fe3cb0b4a3e6d07cc5b3365240eed316e"
+    },
+    {
+      "startLine": 107,
+      "endLineExclusive": 109,
+      "before": "    val context = LocalContext.current\n    val view = LocalView.current\n",
+      "after": "    val platform = LocalDesktopOriginalBangumiPlayerScreenPlatform.current\n    val context = platform.section.settingsContext\n    val nativeFullscreen by platform.fullscreen.collectAsStateWithLifecycle()\n",
+      "beforeSha256LF": "7547e385609b6f03dfb514d507d5ae6f614699a21de0964e59832e694d7f34a1"
+    },
+    {
+      "startLine": 131,
+      "endLineExclusive": 132,
+      "before": "    val sponsorBlockEnabled by com.android.purebilibili.core.store.SettingsManager\n",
+      "after": "    val sponsorBlockEnabled by com.android.purebilibili.core.store.DesktopOriginalBangumiPlayerUiSettings\n",
+      "beforeSha256LF": "62c612ea1bc0be05f8a4a48d88005acd42dd3945f858dcefaa6c7b5804702c79"
+    },
+    {
+      "startLine": 134,
+      "endLineExclusive": 135,
+      "before": "    val autoSkipOpEd by com.android.purebilibili.core.store.SettingsManager\n",
+      "after": "    val autoSkipOpEd by com.android.purebilibili.core.store.DesktopOriginalBangumiPlayerUiSettings\n",
+      "beforeSha256LF": "67ebc8bf47b4fa4bb0c49df3b4a3cf07941a192996cbc04451349cb73a1cec8e"
+    },
+    {
+      "startLine": 138,
+      "endLineExclusive": 139,
+      "before": "    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE\n",
+      "after": "    val isLandscape = platform.window.presentation.isLandscape\n",
+      "beforeSha256LF": "5b2d2a27880bb3ba00a14dcb5872004d757ee9a793268affefd0b45bbaeddf67"
+    },
+    {
+      "startLine": 143,
+      "endLineExclusive": 144,
+      "before": "    val hostActivity = remember(context) { context.findActivity() }\n",
+      "after": "    val hostPresentation = platform.window.presentation\n",
+      "beforeSha256LF": "f9d320986a662bd26e25d1d16f60a1e2a08270a3998dd899b837610ba8f2495c"
+    },
+    {
+      "startLine": 147,
+      "endLineExclusive": 148,
+      "before": "    val usesInWindowFullscreen = playerWindowOrientationPolicy.usesInWindowFullscreen\n",
+      "after": "    val usesInWindowFullscreen = true // Existing Windows fullscreen presentation; no display rotation is fabricated.\n",
+      "beforeSha256LF": "8abbc0f47cbd43e5eed87ccdea2464f974da251b3382a271b927456edde6979e"
+    },
+    {
+      "startLine": 163,
+      "endLineExclusive": 164,
+      "before": "    val isFullscreen = playerPresentation.isFullscreen\n",
+      "after": "    val isFullscreen = nativeFullscreen\n",
+      "beforeSha256LF": "808b82c5fed5ce8ece5656d1b64ba476ba7687706b50207754dcb2e85a011cff"
+    },
+    {
+      "startLine": 173,
+      "endLineExclusive": 216,
+      "before": "    // 创建 ExoPlayer\n    val exoPlayer = remember {\n        ExoPlayer.Builder(context)\n            .setRenderersFactory(\n                HiResCompatibleRenderersFactory(context)\n                    .setExtensionRendererMode(\n                        androidx.media3.exoplayer.DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON\n                    )\n            )\n            .build()\n            .apply {\n                playWhenReady = true\n            }\n    }\n    val miniPlayerManager = remember(context) {\n        MiniPlayerManager.getInstance(context.applicationContext)\n    }\n\n    DisposableEffect(miniPlayerManager, viewModel) {\n        val nextBangumiCallback: (PlaylistItem) -> Unit = { item ->\n            val season = item.seasonId\n            val ep = item.epId\n            if (season != null && ep != null && season > 0L && ep > 0L) {\n                viewModel.loadBangumiPlay(season, ep, isCourse = isCourse)\n            }\n        }\n        val previousBangumiCallback: (PlaylistItem) -> Unit = { item ->\n            val season = item.seasonId\n            val ep = item.epId\n            if (season != null && ep != null && season > 0L && ep > 0L) {\n                viewModel.loadBangumiPlay(season, ep, isCourse = isCourse)\n            }\n        }\n        miniPlayerManager.onPlayNextBangumiCallback = nextBangumiCallback\n        miniPlayerManager.onPlayPreviousBangumiCallback = previousBangumiCallback\n        onDispose {\n            if (miniPlayerManager.onPlayNextBangumiCallback === nextBangumiCallback) {\n                miniPlayerManager.onPlayNextBangumiCallback = null\n            }\n            if (miniPlayerManager.onPlayPreviousBangumiCallback === previousBangumiCallback) {\n                miniPlayerManager.onPlayPreviousBangumiCallback = null\n            }\n        }\n",
+      "after": "    // Borrow the installed native owner; no Media3 builder/player lifetime here.\n    val exoPlayer = platform.player\n    LaunchedEffect(platform, viewModel, isCourse) {\n        platform.ensureMiniCallbacks(viewModel, isCourse)\n",
+      "beforeSha256LF": "c4d1330dddf988bae0387dd8521366c45a5cd4f2dcbd19f56f9b45db3872e456"
+    },
+    {
+      "startLine": 234,
+      "endLineExclusive": 238,
+      "before": "        val errorListener = object : androidx.media3.common.Player.Listener {\n            override fun onPlayerError(error: androidx.media3.common.PlaybackException) {\n                updatePlaybackDebug(\"player error ${error.errorCodeName}\")\n                android.util.Log.e(\"BangumiPlayer\", \"❌ 播放错误: ${error.errorCodeName} - ${error.message}\", error)\n",
+      "after": "        val errorListener = object : Player.Listener {\n            override fun onPlayerError(error: DesktopOriginalNativePlaybackError) {\n                updatePlaybackDebug(\"player error ${error.failure?.kind?.name ?: \"UNKNOWN\"}\")\n                Log.e(\"BangumiPlayer\", \"❌ 播放错误: ${error.failure?.kind?.name ?: \"UNKNOWN\"} - ${error.message}\")\n",
+      "beforeSha256LF": "15ed61031ce81b893539104dadd4f0f4e49126f6ecd6eae72c205185795d373a"
+    },
+    {
+      "startLine": 239,
+      "endLineExclusive": 242,
+      "before": "                val isDrmError = error.errorCodeName == \"ERROR_CODE_DRM_SCHEME_UNSUPPORTED\" ||\n                    error.errorCodeName == \"ERROR_CODE_DRM_CONTENT_ERROR\" ||\n                    error.errorCodeName == \"ERROR_CODE_DRM_SYSTEM_UNSUPPORTED\"\n",
+      "after": "                val isDrmError = platform.isActualDrmFailure(error)\n",
+      "beforeSha256LF": "d1523c15c1f99f9c1a76493862bca5830ad50a93b982ac541b3223c11d9173e2"
+    },
+    {
+      "startLine": 247,
+      "endLineExclusive": 254,
+      "before": "            override fun onPlayerErrorChanged(error: androidx.media3.common.PlaybackException?) {\n                if (error != null) {\n                    updatePlaybackDebug(\"player error changed ${error.errorCodeName}\")\n                    android.util.Log.w(\"BangumiPlayer\", \"⚠️ 播放器错误变化: ${error.errorCodeName}\")\n                }\n            }\n\n",
+      "after": "",
+      "beforeSha256LF": "6c077c534189fdbdbe3acb8950c14c63fde54552ef5f04e90d0e87a65f6e4755"
+    },
+    {
+      "startLine": 256,
+      "endLineExclusive": 260,
+      "before": "                    androidx.media3.common.Player.STATE_IDLE -> \"IDLE\"\n                    androidx.media3.common.Player.STATE_BUFFERING -> \"BUFFERING\"\n                    androidx.media3.common.Player.STATE_READY -> \"READY\"\n                    androidx.media3.common.Player.STATE_ENDED -> \"ENDED\"\n",
+      "after": "                    Player.STATE_IDLE -> \"IDLE\"\n                    Player.STATE_BUFFERING -> \"BUFFERING\"\n                    Player.STATE_READY -> \"READY\"\n                    Player.STATE_ENDED -> \"ENDED\"\n",
+      "beforeSha256LF": "0cedc46588d04bce047c2eff051725fcaeb34ce347f2f4c51fdd57607ed6a49e"
+    },
+    {
+      "startLine": 263,
+      "endLineExclusive": 264,
+      "before": "                android.util.Log.d(\"BangumiPlayer\", \"🎬 播放状态变化: $stateName, isPlaying=${exoPlayer.isPlaying}\")\n",
+      "after": "                Log.d(\"BangumiPlayer\", \"🎬 播放状态变化: $stateName, isPlaying=${exoPlayer.isPlaying}\")\n",
+      "beforeSha256LF": "8cf62cc832713d2556b8559daab32a5a7ba558c0d13b18c83d65c9509a8f9a86"
+    },
+    {
+      "startLine": 268,
+      "endLineExclusive": 269,
+      "before": "                android.util.Log.d(\"BangumiPlayer\", \"▶️ 播放状态: isPlaying=$isPlaying\")\n",
+      "after": "                Log.d(\"BangumiPlayer\", \"▶️ 播放状态: isPlaying=$isPlaying\")\n",
+      "beforeSha256LF": "fd6ce36b38d187c9c8695fc08ed3f26535e978238bdd5b41eda0172738609799"
+    },
+    {
+      "startLine": 276,
+      "endLineExclusive": 277,
+      "before": "                android.util.Log.d(\"BangumiPlayer\", \"🎬 首帧已渲染\")\n",
+      "after": "                Log.d(\"BangumiPlayer\", \"🎬 首帧已渲染\")\n",
+      "beforeSha256LF": "7f2db90b9953f91b4073045bf0f62ca181632a83079432964dd2b45a642022f0"
+    },
+    {
+      "startLine": 300,
+      "endLineExclusive": 301,
+      "before": "            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()\n",
+      "after": "            platform.showFeedback(message)\n",
+      "beforeSha256LF": "073ba4efe4fd62bd7e4a0cb79699dd94b3ae3961adcef256ba9a5bbe837c5174"
+    },
+    {
+      "startLine": 333,
+      "endLineExclusive": 334,
+      "before": "    val danmakuManager = rememberDanmakuManager(\"bangumi:$seasonId:$currentEpisodeIdForDebug\")\n",
+      "after": "    val danmakuManager = platform.section.danmaku\n",
+      "beforeSha256LF": "5ef567dd608010fd3239e1f39316472ae24af262853d53fbf51be29137c206f7"
+    },
+    {
+      "startLine": 340,
+      "endLineExclusive": 343,
+      "before": "    val danmakuSettings by com.android.purebilibili.core.store.SettingsManager\n        .getDanmakuSettings(context, activeDanmakuScope)\n        .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.DanmakuSettings())\n",
+      "after": "    val danmakuSettings by platform.section.danmakuPreferences\n        .getDanmakuSettings(activeDanmakuScope)\n        .collectAsStateWithLifecycle(initialValue = platform.section.danmakuPreferences.currentSettings(activeDanmakuScope))\n",
+      "beforeSha256LF": "f3e7e03300f778aa89827d4d1338be634b008ce050ebdfdd4474c77950310f6b"
+    },
+    {
+      "startLine": 372,
+      "endLineExclusive": 375,
+      "before": "    val defaultCommentSortMode by com.android.purebilibili.core.store.SettingsManager\n        .getCommentDefaultSortMode(context)\n        .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.SettingsManager.getCommentDefaultSortModeSync(context),\n",
+      "after": "    val defaultCommentSortMode by com.android.purebilibili.core.store.DesktopOriginalReplySettings\n        .getCommentDefaultSortMode(context.pluginContext)\n        .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentDefaultSortModeSync(context.pluginContext),\n",
+      "beforeSha256LF": "15839c2e58afaea670e3fc87ea26a0b37c39ae74b57bef233958a2eadeade0cc"
+    },
+    {
+      "startLine": 400,
+      "endLineExclusive": 401,
+      "before": "        android.util.Log.d(\"BangumiPlayer\", \"🎯 Parent Danmaku LaunchedEffect: cid=$currentCid, aid=$currentAid, enabled=$danmakuEnabled\")\n",
+      "after": "        Log.d(\"BangumiPlayer\", \"🎯 Parent Danmaku LaunchedEffect: cid=$currentCid, aid=$currentAid, enabled=$danmakuEnabled\")\n",
+      "beforeSha256LF": "1cc990376af98f6d9ee062f3878e0b98f52e00fcfa22a52b5ea013d75b616a37"
+    },
+    {
+      "startLine": 415,
+      "endLineExclusive": 416,
+      "before": "            android.util.Log.d(\"BangumiPlayer\", \"🎯 Loading danmaku for cid=$currentCid, aid=$currentAid, duration=${durationMs}ms (after $retries retries)\")\n",
+      "after": "            Log.d(\"BangumiPlayer\", \"🎯 Loading danmaku for cid=$currentCid, aid=$currentAid, duration=${durationMs}ms (after $retries retries)\")\n",
+      "beforeSha256LF": "d600abc6e69124428f24956b10a98b766d7bd5a9809273ef4608546d5fae0b32"
+    },
+    {
+      "startLine": 427,
+      "endLineExclusive": 431,
+      "before": "    // 绑定 Player\n    DisposableEffect(exoPlayer) {\n        danmakuManager.attachPlayer(exoPlayer)\n        onDispose { danmakuManager.detachPlayer(exoPlayer) }\n",
+      "after": "    // Same Overlay player attachment and Store-position handoff; close only views.\n    DisposableEffect(platform, exoPlayer) {\n        val lease = platform.acquireDanmakuPlayer(exoPlayer)\n        onDispose { lease.close() }\n    }\n    DisposableEffect(platform, seasonId, currentEpisodeIdForDebug) {\n        val lease = platform.acquirePlaybackHandoff(seasonId, currentEpisodeIdForDebug) { exoPlayer.currentPosition }\n        onDispose { lease.close() }\n    }\n    DisposableEffect(platform, isFullscreen) {\n        val lease = platform.acquirePresentation(isFullscreen)\n        onDispose { lease.close() }\n",
+      "beforeSha256LF": "463e5ee40f72bcee77b3beec4e7240b671e67b1f101149d21dc3e623f1f7f099"
+    },
+    {
+      "startLine": 433,
+      "endLineExclusive": 471,
+      "before": "    DisposableEffect(exoPlayer, seasonId, currentEpisodeIdForDebug) {\n        PlaybackHandoffRegistry.publishBangumi(\n            seasonId = seasonId,\n            epId = currentEpisodeIdForDebug,\n            positionProvider = { exoPlayer.currentPosition }\n        )\n        onDispose {\n            PlaybackHandoffRegistry.clearBangumi(seasonId, currentEpisodeIdForDebug)\n        }\n    }\n    \n    // 清理播放器 +  屏幕常亮管理\n    DisposableEffect(Unit) {\n        val window = context.findActivity()?.window\n        \n        //  [修复] 进入番剧播放页时保持屏幕常亮，防止自动熄屏\n        window?.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)\n        \n        onDispose {\n            exoPlayer.release()\n            //  恢复默认方向，避免离开播放器后卡在横屏\n            context.findActivity()?.applyPlayerRequestedOrientation(\n                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED,\n                displayContext = displayContext,\n            )\n            \n            //  [修复] 离开番剧播放页时取消屏幕常亮\n            window?.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)\n            \n            //  [修复] 恢复系统亮度控制，解除亮度锁定\n            window?.let { w ->\n                val params = w.attributes\n                params.screenBrightness = -1f  // -1f 表示跟随系统亮度\n                w.attributes = params\n            }\n        }\n    }\n    \n",
+      "after": "",
+      "beforeSha256LF": "092aa6f61e34d64ad4d2bf68627950b955f35810a1906e6dc742dd407b11cd07"
+    },
+    {
+      "startLine": 480,
+      "endLineExclusive": 480,
+      "before": "",
+      "after": "            platform.requestFullscreen(!isFullscreen)\n",
+      "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "startLine": 482,
+      "endLineExclusive": 483,
+      "before": "        val activity = context.findActivity() ?: return\n",
+      "after": "",
+      "beforeSha256LF": "be1c10e74dc0f0e68a503cf464e64a8a3a7d859cc442a6d333ea1f923cf49284"
+    },
+    {
+      "startLine": 484,
+      "endLineExclusive": 488,
+      "before": "        activity.applyPlayerRequestedOrientation(\n            requestedOrientation = target,\n            displayContext = displayContext,\n        )\n",
+      "after": "        hostPresentation.requestOrientation(target, displayContext)\n",
+      "beforeSha256LF": "16dc092714cf0e4bf92785109cb6fa4377f70582c4fcff955ea7badeeaa30e9b"
+    },
+    {
+      "startLine": 493,
+      "endLineExclusive": 494,
+      "before": "    LaunchedEffect(hostActivity, displayContext.foldableDisplayRole, usesInWindowFullscreen) {\n",
+      "after": "    LaunchedEffect(hostPresentation, displayContext.foldableDisplayRole, usesInWindowFullscreen) {\n",
+      "beforeSha256LF": "cf6072accc60834743cc785466a64ad4c91bde622a18f69cfdf98c0c26730852"
+    },
+    {
+      "startLine": 499,
+      "endLineExclusive": 503,
+      "before": "            hostActivity?.applyPlayerRequestedOrientation(\n                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED,\n                displayContext = displayContext,\n            )\n",
+      "after": "            hostPresentation.requestOrientation(-1, displayContext)\n",
+      "beforeSha256LF": "7d33d1b91464aed743be71951ef3eca872b3bd67857298c44fb7cfcde070ed49"
+    },
+    {
+      "startLine": 527,
+      "endLineExclusive": 529,
+      "before": "    DisposableEffect(context, displayContext, isFullscreen, isPlayerScreenLocked, isTablet) {\n        val activity = context.findActivity()\n",
+      "after": "    DisposableEffect(platform, isFullscreen, isPlayerScreenLocked, isTablet) {\n",
+      "beforeSha256LF": "605320205f385abac99353d3aed1aba858c02460e254f1f93b43276440acef98"
+    },
+    {
+      "startLine": 530,
+      "endLineExclusive": 548,
+      "before": "        val previousRequestedOrientation = activity?.requestedOrientation\n        if (shouldLockOrientation) {\n            activity?.applyPlayerRequestedOrientation(\n                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED,\n                displayContext = displayContext,\n            )\n        }\n        onDispose {\n            if (\n                activity?.requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LOCKED &&\n                previousRequestedOrientation != null\n            ) {\n                activity.applyPlayerRequestedOrientation(\n                    requestedOrientation = previousRequestedOrientation,\n                    displayContext = displayContext,\n                )\n            }\n        }\n",
+      "after": "        val lease = platform.section.setScreenshotAndOrientationLock(shouldLockOrientation)\n        onDispose { lease.close() }\n",
+      "beforeSha256LF": "ddad54eef4cd9d63a386abf84c77c945fe9422917fd4350ae290b9e7c139b8af"
+    },
+    {
+      "startLine": 549,
+      "endLineExclusive": 560,
+      "before": "    \n    // 自动检测设备方向变化；播放器锁定时不再响应传感器。\n    DisposableEffect(\n        context,\n        displayContext,\n        isTablet,\n        usesInWindowFullscreen,\n        isPlayerScreenLocked,\n    ) {\n        if (isPlayerScreenLocked) return@DisposableEffect onDispose {}\n        val activity = context.findActivity()\n",
+      "after": "\n    // A real rotation sensor is optional. Windows has no Android accelerometer;\n    // monitor aspect is never converted to physical rotation samples.\n    DisposableEffect(platform, displayContext, isTablet, usesInWindowFullscreen, isPlayerScreenLocked) {\n        val sensor = hostPresentation.rotationSensor\n        var lastOrientation = -1\n",
+      "beforeSha256LF": "082fb402f7c67a73a73a5207ed75acbc6559c81ab54b569b7d8aae89f852a85e"
+    },
+    {
+      "startLine": 561,
+      "endLineExclusive": 591,
+      "before": "        val orientationEventListener = object : android.view.OrientationEventListener(context) {\n            private var lastOrientation = -1\n            \n            override fun onOrientationChanged(orientation: Int) {\n                if (orientation == ORIENTATION_UNKNOWN) return\n                \n                val newOrientation = when (orientation) {\n                    in 315..360, in 0..45 -> 0   // Portrait\n                    in 46..134 -> 270           // Landscape (reverse)\n                    in 135..224 -> 180          // Portrait (upside down)\n                    in 225..314 -> 90           // Landscape\n                    else -> lastOrientation\n                }\n                \n                if (newOrientation != lastOrientation && lastOrientation != -1) {\n                    val isDeviceLandscape = newOrientation == 90 || newOrientation == 270\n                    // 横屏时 180° 是翻转到另一侧的中点，不能当成竖屏，否则会先识别再转回去。\n                    val isUprightPortrait = newOrientation == 0\n                    \n                    activity?.let { act ->\n                        val now = android.os.SystemClock.elapsedRealtime()\n                        if (latestIsLandscape && isUprightPortrait) {\n                            if (now - lastPortraitAppliedAtMs >= 700L) {\n                                lastPortraitAppliedAtMs = now\n                                userRequestedFullscreen = false\n                                act.applyPlayerRequestedOrientation(\n                                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,\n                                    displayContext = displayContext,\n                                )\n                            }\n",
+      "after": "        val lease = if (!isPlayerScreenLocked && !isTablet && !usesInWindowFullscreen && sensor != null)\n            sensor.observeDegrees { orientation ->\n                if (orientation >= 0) {\n                    val newOrientation = when (orientation) {\n                        in 315..360, in 0..45 -> 0\n                        in 46..134 -> 270\n                        in 135..224 -> 180\n                        in 225..314 -> 90\n                        else -> lastOrientation\n                    }\n                    if (newOrientation != lastOrientation && lastOrientation != -1) {\n                        val isDeviceLandscape = newOrientation == 90 || newOrientation == 270\n                        val isUprightPortrait = newOrientation == 0\n                        val now = platform.elapsedRealtimeMillis()\n                        if (latestIsLandscape && isUprightPortrait && now - lastPortraitAppliedAtMs >= 700L) {\n                            lastPortraitAppliedAtMs = now\n                            userRequestedFullscreen = false\n                            hostPresentation.requestOrientation(1, displayContext)\n",
+      "beforeSha256LF": "0122b0eba73f55658245db646407cd8b5d54c2fe4608b03628535dc5b8e6c96e"
+    },
+    {
+      "startLine": 592,
+      "endLineExclusive": 596,
+      "before": "                            act.applyPlayerRequestedOrientation(\n                                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE,\n                                displayContext = displayContext,\n                            )\n",
+      "after": "                            hostPresentation.requestOrientation(6, displayContext)\n",
+      "beforeSha256LF": "e12f2b82da026056c06bcb2870be6c76538db31ce67031261b1ca1e49e463602"
+    },
+    {
+      "startLine": 598,
+      "endLineExclusive": 598,
+      "before": "",
+      "after": "                    lastOrientation = newOrientation\n",
+      "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "startLine": 599,
+      "endLineExclusive": 614,
+      "before": "                lastOrientation = newOrientation\n            }\n        }\n        \n        if (\n            !isTablet &&\n            !usesInWindowFullscreen &&\n            orientationEventListener.canDetectOrientation()\n        ) {\n            orientationEventListener.enable()\n        }\n        \n        onDispose {\n            orientationEventListener.disable()\n        }\n",
+      "after": "            } else null\n        onDispose { lease?.close() }\n",
+      "beforeSha256LF": "c34d471aaa9e0087f99303466a4efc9593c20cda577f7ae0e04fea80cabe5e7c"
+    },
+    {
+      "startLine": 627,
+      "endLineExclusive": 647,
+      "before": "    // 沉浸式状态栏控制\n    if (!view.isInEditMode) {\n        SideEffect {\n            val window = (view.context.findActivity())?.window ?: return@SideEffect\n            val insetsController = WindowCompat.getInsetsController(window, view)\n            \n            if (isFullscreen) {\n                insetsController.hide(WindowInsetsCompat.Type.systemBars())\n                insetsController.systemBarsBehavior = \n                    androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE\n                setWindowStatusBarColor(window, Color.Black.toArgb())\n                setWindowNavigationBarColor(window, Color.Black.toArgb())\n            } else {\n                insetsController.show(WindowInsetsCompat.Type.systemBars())\n                setWindowStatusBarColor(window, Color.Transparent.toArgb())\n                setWindowNavigationBarColor(window, Color.Transparent.toArgb())\n            }\n        }\n    }\n    \n",
+      "after": "    // Same Window registration is supplied by acquirePresentation; Android\n    // status/navigation bars have no fabricated Windows counterpart.\n\n",
+      "beforeSha256LF": "fe7d405c664b0388ac7fe2ae680241818e7e40deeee7ad92e098d810449d65e4"
+    },
+    {
+      "startLine": 650,
+      "endLineExclusive": 651,
+      "before": "            .background(if (isFullscreen) Color.Black else AppSurfaceTokens.groupedListContainer())\n",
+      "after": "            .background(Color.Transparent)\n",
+      "beforeSha256LF": "58c64f53266d35752ae21d39b24df8d0d02664d397cdbf8e796207753d250684"
+    },
+    {
+      "startLine": 675,
+      "endLineExclusive": 676,
+      "before": "                                Toast.makeText(context, \"该剧集不支持弹幕\", Toast.LENGTH_SHORT).show()\n",
+      "after": "                                platform.showFeedback(\"该剧集不支持弹幕\")\n",
+      "beforeSha256LF": "ad6b682e1e91c86b09be7a145de80f756025b40e0e74f1de782adc0a75bcbd1b"
+    },
+    {
+      "startLine": 678,
+      "endLineExclusive": 681,
+      "before": "                                    com.android.purebilibili.core.store.SettingsManager.setDanmakuEnabled(\n                                        context,\n                                        !danmakuEnabled,\n",
+      "after": "                                    platform.section.danmakuPreferences.setDanmakuEnabled(!danmakuEnabled,\n",
+      "beforeSha256LF": "bce26f662bddb6e145dd1db95b00d0712d7056c7084caaacbfdf6ca201a1bc76"
+    },
+    {
+      "startLine": 746,
+      "endLineExclusive": 747,
+      "before": "                                com.android.purebilibili.core.store.SettingsManager.setDanmakuOpacity(context, it, activeDanmakuScope)\n",
+      "after": "                                platform.section.danmakuPreferences.setDanmakuOpacity(it, activeDanmakuScope)\n",
+      "beforeSha256LF": "c41b4c61378289731184a1d9867a5731bef62015cb358978d227d34e920bc25c"
+    },
+    {
+      "startLine": 751,
+      "endLineExclusive": 752,
+      "before": "                                com.android.purebilibili.core.store.SettingsManager.setDanmakuFontScale(context, it, activeDanmakuScope)\n",
+      "after": "                                platform.section.danmakuPreferences.setDanmakuFontScale(it, activeDanmakuScope)\n",
+      "beforeSha256LF": "aacc1b1c6836cf5a2805d2abd27f0ab4d4bcecabf7037db7a76703477eec7d1d"
+    },
+    {
+      "startLine": 756,
+      "endLineExclusive": 757,
+      "before": "                                com.android.purebilibili.core.store.SettingsManager.setDanmakuSpeed(context, it, activeDanmakuScope)\n",
+      "after": "                                platform.section.danmakuPreferences.setDanmakuSpeed(it, activeDanmakuScope)\n",
+      "beforeSha256LF": "7634346dbbbf4fd3a56555a779463322ce1c4626f99774d3e26f789284d2eaf1"
+    },
+    {
+      "startLine": 761,
+      "endLineExclusive": 762,
+      "before": "                                com.android.purebilibili.core.store.SettingsManager.setDanmakuArea(context, it, activeDanmakuScope)\n",
+      "after": "                                platform.section.danmakuPreferences.setDanmakuArea(it, activeDanmakuScope)\n",
+      "beforeSha256LF": "ff109482e02a6ec7c79d511c5d1b7d4b45149e6339b3160c203c3b096173c568"
+    },
+    {
+      "startLine": 766,
+      "endLineExclusive": 767,
+      "before": "                                com.android.purebilibili.core.store.SettingsManager.setDanmakuMergeDuplicates(context, it, activeDanmakuScope)\n",
+      "after": "                                platform.section.danmakuPreferences.setDanmakuMergeDuplicates(it, activeDanmakuScope)\n",
+      "beforeSha256LF": "ff128f7890bd2c86520f4c6b36f706cd99dc7c2eec79a5b3fd1982c56fb0cc15"
+    },
+    {
+      "startLine": 771,
+      "endLineExclusive": 772,
+      "before": "                                com.android.purebilibili.core.store.SettingsManager.setDanmakuDuplicateMergeWindowMs(context, it, activeDanmakuScope)\n",
+      "after": "                                platform.section.danmakuPreferences.setDanmakuDuplicateMergeWindowMs(it, activeDanmakuScope)\n",
+      "beforeSha256LF": "fbe1c632358b5c8a61357eb6c8a2ec991bd3afebe336a76c5bb8440fa6896b22"
+    },
+    {
+      "startLine": 776,
+      "endLineExclusive": 777,
+      "before": "                                com.android.purebilibili.core.store.SettingsManager.setDanmakuDuplicateMergeCountThreshold(context, it, activeDanmakuScope)\n",
+      "after": "                                platform.section.danmakuPreferences.setDanmakuDuplicateMergeCountThreshold(it, activeDanmakuScope)\n",
+      "beforeSha256LF": "581f12a1166c4e511b6935687e93e62401c06c5d3ebf49e65ce2abba365f07bd"
+    },
+    {
+      "startLine": 785,
+      "endLineExclusive": 786,
+      "before": "                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()\n",
+      "after": "                            platform.showFeedback(message)\n",
+      "beforeSha256LF": "db78ce12e1c58da1d17f33a5f370764d0d447442e1358a86f84b93211caac8f0"
+    },
+    {
+      "startLine": 810,
+      "endLineExclusive": 811,
+      "before": "        val portraitPlayerCollapseMode by com.android.purebilibili.core.store.SettingsManager\n",
+      "after": "        val portraitPlayerCollapseMode by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings\n",
+      "beforeSha256LF": "bbbdfed34fe571a52a16b724454c8bfc5b5d555b6424e60d53e51bb391c57805"
+    },
+    {
+      "startLine": 813,
+      "endLineExclusive": 814,
+      "before": "        val pauseOnPlayerCollapseEnabled by com.android.purebilibili.core.store.SettingsManager\n",
+      "after": "        val pauseOnPlayerCollapseEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings\n",
+      "beforeSha256LF": "0d7af9d7c92a7655ae3e29e1fd10d116c0508e0397969ba0845f30d6f9248753"
+    },
+    {
+      "startLine": 935,
+      "endLineExclusive": 936,
+      "before": "                            isCompleted = exoPlayer?.playbackState == androidx.media3.common.Player.STATE_ENDED,\n",
+      "after": "                            isCompleted = exoPlayer?.playbackState == Player.STATE_ENDED,\n",
+      "beforeSha256LF": "9cd08f4e8c54145a14437469b7c9afb4ceabed02269f826d6fb396d7a5e02232"
+    },
+    {
+      "startLine": 996,
+      "endLineExclusive": 1009,
+      "before": "                                    runCatching {\n                                        context.startActivity(\n                                            android.content.Intent.createChooser(\n                                                android.content.Intent(android.content.Intent.ACTION_SEND).apply {\n                                                    type = \"text/plain\"\n                                                    putExtra(android.content.Intent.EXTRA_TEXT, shareText)\n                                                },\n                                                \"分享课程\"\n                                            )\n                                        )\n                                    }.onFailure {\n                                        Toast.makeText(context, \"暂时无法打开分享面板\", Toast.LENGTH_SHORT).show()\n                                    }\n",
+      "after": "                                    platform.share.shareText(\"分享课程\", shareText)\n",
+      "beforeSha256LF": "2494286f1255663d537b103184ec432da3f17c0ade0be7d11055a42ffccef7c6"
+    },
+    {
+      "startLine": 1027,
+      "endLineExclusive": 1039,
+      "before": "}\n\n/**\n * 辅助函数：从 Context 获取 Activity\n */\nprivate fun Context.findActivity(): Activity? {\n    var context = this\n    while (context is ContextWrapper) {\n        if (context is Activity) return context\n        context = context.baseContext\n    }\n    return null\n",
+      "after": "",
+      "beforeSha256LF": "6aae3aa09ba155f4092833c89a0088cf9538506c88d720886f5022ed5f73e37c"
+    }
+  ],
+  "fullOriginalBody": true,
+  "actualRootConsumer": false,
+  "platformBoundaries": [
+    "Borrow required same player/VM/comments; no Android player construction or release",
+    "Fullscreen/user intent goes existing Window; no invented physical rotation",
+    "Root-retained Mini callback installation survives covered navigation",
+    "Danmaku/handoff/presentation use captured same-owner view handles",
+    "Actual native failures preserve DRM retry only on explicit native evidence",
+    "Canonical existing settings preference owners; original collapse/comment/settings logic preserved"
+  ]
+}

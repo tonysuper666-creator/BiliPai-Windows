@@ -1,0 +1,15 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalPath": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+  "originalSha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+  "selectedNames": [
+    "KEY_SPONSOR_BLOCK_ENABLED",
+    "KEY_AUTO_SKIP_OP_ED",
+    "KEY_SPONSOR_BLOCK_AUTO_SKIP",
+    "getSponsorBlockEnabled",
+    "getAutoSkipOpEd",
+    "getSponsorBlockAutoSkip"
+  ],
+  "exactOriginalBody": "    private val KEY_SPONSOR_BLOCK_ENABLED = booleanPreferencesKey(\"sponsor_block_enabled\")\n\n    private val KEY_AUTO_SKIP_OP_ED = booleanPreferencesKey(\"exp_auto_skip_op_ed\")\n\n    private val KEY_SPONSOR_BLOCK_AUTO_SKIP = booleanPreferencesKey(\"sponsor_block_auto_skip\")\n\n    fun getSponsorBlockEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data\n        .map { preferences -> preferences[KEY_SPONSOR_BLOCK_ENABLED] ?: false }  // 默认关闭\n\n    fun getAutoSkipOpEd(context: Context): Flow<Boolean> = context.settingsDataStore.data\n        .map { preferences -> preferences[KEY_AUTO_SKIP_OP_ED] ?: false }\n\n    fun getSponsorBlockAutoSkip(context: Context): Flow<Boolean> = context.settingsDataStore.data\n        .map { preferences -> preferences[KEY_SPONSOR_BLOCK_AUTO_SKIP] ?: true }  // 默认自动跳过\n",
+  "sha256LF": "ecc7e20aabbcc82e35434a27a8f0c109785ac920b6b713f6ed598e9f76d87de5"
+}

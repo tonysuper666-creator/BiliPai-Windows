@@ -1,0 +1,19 @@
+{
+  "base": "cd8317d54fff02c2d920e295397aef502333f69b",
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiNativePresenter.kt",
+  "baseSha256LF": "d783742df9fde979b2918bfe371178c92cb7c01c66b84abf0909435fbbbdf589",
+  "preparedSha256LF": "157645dbfac1e42c2aaad119b9747eef3a8b6696013df1fcd4987cc91f0ba124",
+  "hunks": [
+    {
+      "before": "    override fun onSharedPlaybackReplaced() {\n        if (retired.compareAndSet(false, true)) scope.cancel(\"Original shared playback taken over\")\n    }\n",
+      "after": "    private var retirementCapture: (() -> Unit)? = null\n    private var episodeRetirementCapture: ((BangumiDetail, BangumiEpisode) -> Unit)? = null\n    fun installRetirementCapture(onRetirement: () -> Unit, beforeEpisode: (BangumiDetail, BangumiEpisode) -> Unit) {\n        assertCurrent()\n        check(retirementCapture == null && episodeRetirementCapture == null)\n        retirementCapture = onRetirement\n        episodeRetirementCapture = beforeEpisode\n    }\n    override fun onSharedPlaybackReplaced() {\n        if (retired.compareAndSet(false, true)) {\n            try { retirementCapture?.invoke() }\n            finally { scope.cancel(\"Original shared playback taken over\") }\n        }\n    }\n",
+      "count": 1
+    },
+    {
+      "before": "        portrait.captureBangumiPageRequest(this, detail, episode)\n",
+      "after": "        episodeRetirementCapture?.invoke(detail, episode)\n        portrait.captureBangumiPageRequest(this, detail, episode)\n",
+      "count": 1
+    }
+  ],
+  "reason": "Capture actual old accepted/native position before source replacement outside gates; queue final original type4 primary operation on existing Root scope, never old canceled PGC scope/latest-cookie retag"
+}

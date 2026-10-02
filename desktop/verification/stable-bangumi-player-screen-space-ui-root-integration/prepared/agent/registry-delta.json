@@ -1,0 +1,261 @@
+{
+  "base": "cd8317d54fff02c2d920e295397aef502333f69b",
+  "path": "desktop/upstream-sources.json",
+  "baseSha256LF": "09ab06e46f76fc016d3d27d27dbb8d7514fbe72b77a274e5c278b3754fe0c722",
+  "sourceDelta": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerContent.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerContent.kt",
+        "sha256": "c0cfbb4c871ae3abfb9b0bf784f05db05b2564760f4fa3b235740e76c1d2c74d",
+        "features": [
+          "original-bangumi-player-ui"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerOverlayHost.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerOverlayHost.kt",
+        "sha256": "b07032c56edf4c39a34f9e16a1a55764f8082d3bb2909eb3e68e34b7651e79c4",
+        "features": [
+          "original-bangumi-player-ui"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiCollapsedPlayerBar.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiCollapsedPlayerBar.kt",
+        "sha256": "559f125ae24846591e45a77dcda3fdbdd330a96e2b4408cc87dcc6608bc51043",
+        "features": [
+          "original-bangumi-player-ui"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerComponents.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerComponents.kt",
+        "sha256": "ffee251ee24bcaf09870c4e787254fea544d02daac6b257fabe8ade9471f6ebb",
+        "features": [
+          "original-bangumi-player-ui"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt",
+        "sha256": "287d6919dd09e53428a6b01b81b9ff588629441831134a59732ab80c75e3289a",
+        "features": [
+          "original-bangumi-player-ui"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+      "operation": "feature-union",
+      "before": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+        "sha256": "7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285",
+        "mode": "extracted",
+        "features": [
+          "home-bangumi-page",
+          "independent-bangumi-pages"
+        ]
+      },
+      "after": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+        "sha256": "7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285",
+        "mode": "extracted",
+        "features": [
+          "home-bangumi-page",
+          "independent-bangumi-pages",
+          "original-bangumi-player-ui"
+        ]
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "operation": "feature-union",
+      "before": {
+        "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+        "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+        "features": [
+          "appearance-parity",
+          "discovery",
+          "dynamic-detail-reply",
+          "home-full-card",
+          "home-page",
+          "home-protocol-platform-reference",
+          "live-sub-navigation",
+          "original-video-detail-holder-full",
+          "settings-dynamic-full-card-parity",
+          "settings-dynamic-tabs-parity",
+          "settings-home-card-parity",
+          "settings-home-dynamic-parity",
+          "settings-image-save-path-parity",
+          "settings-local-diagnostics-parity",
+          "settings-privacy-section-parity",
+          "stable-collection-sheet",
+          "stable-danmaku-list-menu",
+          "stable-danmaku-settings-panel",
+          "stable-download-list-original",
+          "stable-favorites",
+          "stable-frosted-audio-renderer",
+          "stable-linked-dock-search",
+          "stable-music-player-original",
+          "stable-navigation3-host",
+          "stable-original-video-full-owner",
+          "stable-profile-windows-platform",
+          "stable-shared-liquid-tabs",
+          "stable-video-content-full",
+          "stable-video-detail-full-units",
+          "stable-video-fullscreen-pager",
+          "stable-video-metadata",
+          "stable-video-original-comments",
+          "stable-video-player-full-controls",
+          "stable-video-player-section-full",
+          "stable-video-tablet-original",
+          "stable-video-root-effects",
+          "stable-video-owner-download-binding",
+          "desktop-navigation-interaction-settings",
+          "desktop-full-navigation-settings",
+          "desktop-storage-cache-settings-owner-parity",
+          "desktop-full-original-search-root-parity"
+        ],
+        "mode": "policy-extract"
+      },
+      "after": {
+        "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+        "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+        "features": [
+          "appearance-parity",
+          "discovery",
+          "dynamic-detail-reply",
+          "home-full-card",
+          "home-page",
+          "home-protocol-platform-reference",
+          "live-sub-navigation",
+          "original-video-detail-holder-full",
+          "settings-dynamic-full-card-parity",
+          "settings-dynamic-tabs-parity",
+          "settings-home-card-parity",
+          "settings-home-dynamic-parity",
+          "settings-image-save-path-parity",
+          "settings-local-diagnostics-parity",
+          "settings-privacy-section-parity",
+          "stable-collection-sheet",
+          "stable-danmaku-list-menu",
+          "stable-danmaku-settings-panel",
+          "stable-download-list-original",
+          "stable-favorites",
+          "stable-frosted-audio-renderer",
+          "stable-linked-dock-search",
+          "stable-music-player-original",
+          "stable-navigation3-host",
+          "stable-original-video-full-owner",
+          "stable-profile-windows-platform",
+          "stable-shared-liquid-tabs",
+          "stable-video-content-full",
+          "stable-video-detail-full-units",
+          "stable-video-fullscreen-pager",
+          "stable-video-metadata",
+          "stable-video-original-comments",
+          "stable-video-player-full-controls",
+          "stable-video-player-section-full",
+          "stable-video-tablet-original",
+          "stable-video-root-effects",
+          "stable-video-owner-download-binding",
+          "desktop-navigation-interaction-settings",
+          "desktop-full-navigation-settings",
+          "desktop-storage-cache-settings-owner-parity",
+          "desktop-full-original-search-root-parity",
+          "original-bangumi-player-ui"
+        ],
+        "mode": "policy-extract"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "operation": "feature-union",
+      "before": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+        "sha256": "eb7b82d766d32fd9be380c491b87c5bd7705fe12f61ef73773067f55de1b9468",
+        "features": [
+          "plugins"
+        ],
+        "mode": "extracted"
+      },
+      "after": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+        "sha256": "eb7b82d766d32fd9be380c491b87c5bd7705fe12f61ef73773067f55de1b9468",
+        "features": [
+          "plugins",
+          "original-bangumi-player-ui"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "operation": "feature-union",
+      "before": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+        "mode": "extracted",
+        "features": [
+          "source-parity",
+          "media",
+          "downloads",
+          "stable-video-vote-parity",
+          "playback",
+          "comments",
+          "stable-danmaku-list-menu",
+          "stable-danmaku-settings-panel",
+          "stable-web-mask-parity",
+          "stable-video-owner-danmaku-send"
+        ],
+        "sha256": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5"
+      },
+      "after": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+        "mode": "extracted",
+        "features": [
+          "source-parity",
+          "media",
+          "downloads",
+          "stable-video-vote-parity",
+          "playback",
+          "comments",
+          "stable-danmaku-list-menu",
+          "stable-danmaku-settings-panel",
+          "stable-web-mask-parity",
+          "stable-video-owner-danmaku-send",
+          "original-bangumi-player-ui"
+        ],
+        "sha256": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5"
+      }
+    }
+  ],
+  "sourcesBefore": 1229,
+  "sourcesAfter": 1234,
+  "newOriginalIdentities": 5,
+  "existingFeatureUnions": 4,
+  "resourcesBefore": 244,
+  "resourcesAfter": 244,
+  "resourceDelta": [],
+  "newDependencies": [],
+  "wholeExistingFileOverwriteForbidden": true,
+  "fullFunctionalPlayerAccepted": false
+}

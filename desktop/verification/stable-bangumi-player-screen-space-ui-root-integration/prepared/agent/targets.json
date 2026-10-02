@@ -1,0 +1,57 @@
+{
+  "candidateBase": "cd8317d54fff02c2d920e295397aef502333f69b",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "existingTextFamilies": 7,
+  "textFragments": 10,
+  "targets": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "baseSha256LF": "37e8f13a66643d9a056689bb76cedbbcde66346360bd935bd8bad13c94ae868a",
+      "preparedSha256LF": "f237a085614f78acc5929715cf6c046c738c66987458a6aecc81132fea1702f4",
+      "fragments": 2,
+      "wholeFileCopyAllowed": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseSha256LF": "c607d480c1f1e07ceb2c250625c56a9a69c2ca6a1c2778b75b145c4af04a2890",
+      "preparedSha256LF": "d7e4f01f5c269bbac504bbdd7b947b5232e7977ced29bd6e39f561e146b20c0a",
+      "fragments": 1,
+      "wholeFileCopyAllowed": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiNativePresenter.kt",
+      "baseSha256LF": "d783742df9fde979b2918bfe371178c92cb7c01c66b84abf0909435fbbbdf589",
+      "preparedSha256LF": "157645dbfac1e42c2aaad119b9747eef3a8b6696013df1fcd4987cc91f0ba124",
+      "fragments": 2,
+      "wholeFileCopyAllowed": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderRoute.kt",
+      "baseSha256LF": "3ff595ca0aee2431d6d5fa69a7bada48e1cf45238c8e2e1a964ef17ba2602931",
+      "preparedSha256LF": "cf3d15a74ed35c4c5c3ff3efca5596284f1f624a98e517515f779319c698810f",
+      "fragments": 1,
+      "wholeFileCopyAllowed": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "baseSha256LF": "3f4d58d2d6f85a82595c0c5f3214860e34f185ad721409db4edc670bcb89574c",
+      "preparedSha256LF": "f9f6d90bedea4e54cff446cf889d9da9842b6875d586eaa49781ba696fff9370",
+      "fragments": 1,
+      "wholeFileCopyAllowed": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowPlatforms.kt",
+      "baseSha256LF": "78c97d04a1ea10b545f1f468787f621c351c67ffcf1c552373465e3c32c23a09",
+      "preparedSha256LF": "55acdd6bf9f52dc937d7be487f9988591cf6e9d7814b13b6833783e486c5f952",
+      "fragments": 2,
+      "wholeFileCopyAllowed": false
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bangumi-player.py",
+      "baseSha256LF": "ae7891552d3c37b4371cbb52c0982fa319173b1c0e9589d8fd861407d7ee1675",
+      "preparedSha256LF": "efa41de7de3e45921304a7ba2d27094016b256d501d9b6465899a467459e2a3e",
+      "fragments": 1,
+      "wholeFileCopyAllowed": false
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+  "originalSha256LF": "eb7b82d766d32fd9be380c491b87c5bd7705fe12f61ef73773067f55de1b9468",
+  "startAnchor": "    fun findSegmentAtPosition(",
+  "endAnchor": "\n    }",
+  "exactBodySha256LF": "a85d32332a56c905450f8f390a438277b4dcd847f1a54da087335248214e0113",
+  "adaptedBodySha256LF": "4022b83c55c9806fe0ae2d43e8d9b7eb5cd4739e61304255154a7c616ab33b2b",
+  "output": "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiSponsorPolicy.kt"
+}

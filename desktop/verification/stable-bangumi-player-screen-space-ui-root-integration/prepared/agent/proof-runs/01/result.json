@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "snapshot": 89,
+  "entries": 105,
+  "pinsBeforeAfter": true,
+  "prospectiveJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\runs\\11\\prospective.jar",
+    "sha256Bytes": "f37b08f0c6e4d97be50e6c61ad899409aaec914baadaa866f279ff8e5c841c68"
+  },
+  "fixtureSha256Bytes": "35d89f6a2fe2467d644b2f127926cb88242298a37680e4d52f83a6e341d2007f",
+  "scope": "Complete original Player policies/PUGV/final reporter failure, epoch, privacy and cancellation cases plus actual original Store/native-owner admissions on unmounted MPV; no network-success/native transport ACK/frame",
+  "productionWrites": 0,
+  "fullScreenPrepared": true,
+  "rootRuntimeAccepted": false,
+  "httpRuntimeAccepted": false,
+  "nativeRuntimeAccepted": false,
+  "accountRuntimeAccepted": false,
+  "normalProductCompile": false
+}

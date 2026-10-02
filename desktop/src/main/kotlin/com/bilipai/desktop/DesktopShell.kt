@@ -1561,7 +1561,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     { title, text, owned -> requestDesktopTextShare(services.textShare,
                                         spacePages.entry(entryKey).environment.scope, title, text,
                                         { owned() && active && messageRoutes.currentKey == entryKey && !isClosing() }, services.feedback) },
-                                    desktopDetailRenderEffectsSupported(), active) }
+                                    desktopDetailRenderEffectsSupported(), active, personalLists.preferences) }
+                            entryKey is BiliPaiNavKey.BangumiPlayer ->
+                                DesktopOriginalBangumiPlayerPhysicalLeaf(entryKey, ordinaryVideo, messageRoutes, active,
+                                    ::openVideoHonorLink, pendingOwner = {
+                                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                            ordinaryVideoResourceError?.let { Text(it) } ?: CircularProgressIndicator()
+                                        }
+                                    })
                             entryKey is BiliPaiNavKey.Bangumi || entryKey is BiliPaiNavKey.BangumiDetail || entryKey is BiliPaiNavKey.BangumiReview ->
                                 DesktopDetailWindow { DesktopOriginalBangumiPagesRootHost(entryKey, messageRoutes, repository, ordinaryVideoResources, active,
                                     replaceSeason = { current, season -> messageRoutes.replaceBangumiDetail(current, season) }) }

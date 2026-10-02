@@ -1,0 +1,20 @@
+{
+  "priorStageRejected": true,
+  "reason": "Two whitespace-only original API blank lines; full registry sorting caused unnecessary diff.",
+  "changes": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiRawDanmakuView.kt",
+      "normalBuildSha256Bytes": "87b6308e8fe5ff9d574b6d6b94bfbf6edb7a06622dd55f38eb12802e44b2841c",
+      "finalSourceSha256Bytes": "f31c03ea5e163bcbbb7f372ab5354d50fd809630bc3db60c28feefa3c959152c"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "normalBuildSha256Bytes": "3480e67149a41655121627fd21a7babde16a14673c4bdcbfc4d53ad717a4cd25",
+      "finalSourceSha256Bytes": "c446137c58cca0906bbe9474932e5640d002bb4b08a916d9811834e042b4280f"
+    }
+  ],
+  "registryIdentitiesFeaturesModesUnchanged": true,
+  "rawDanmakuOnlyTwoBlankLinesTrimmed": true,
+  "normalGeneratedOutputsUnchanged": true,
+  "normalCompiledKotlinBehaviorUnchanged": true
+}

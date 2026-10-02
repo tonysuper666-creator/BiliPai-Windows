@@ -81,6 +81,7 @@ internal class DesktopOriginalSpacePageEntry(val environment:DesktopOriginalSpac
     shareText:(String,String,()->Boolean)->Unit,
     supportsRenderEffects:Boolean,
     active:Boolean,
+    backToTopPreferences:DesktopFavoritePreferences,
 ) {
     val routes=pages.routes
     val entry=pages.entry(key)
@@ -96,7 +97,24 @@ internal class DesktopOriginalSpacePageEntry(val environment:DesktopOriginalSpac
     }
     if(!environment.owns()||!session.matches(pages.repository,environment.epoch))return
     val articleLink=LocalDesktopOriginalMessageLinkNavigation.current
-    CompositionLocalProvider(LocalDesktopOriginalSpacePlatform provides platform) {
+    val window=androidx.compose.ui.platform.LocalWindowInfo.current.containerSize
+    val density=androidx.compose.ui.platform.LocalDensity.current
+    val viewport=with(density) { DesktopFavoriteViewport(window.width.toDp().value.toInt(),window.height.toDp().value.toInt()) }
+    val backToTop=DesktopBackToTopBindings(backToTopPreferences.backToTopEnabled,backToTopPreferences.initialBackToTopEnabled(),
+        backToTopPreferences.backToTopOffset,backToTopPreferences.initialBackToTopOffset(),
+        { x,y ->
+            val caller=currentCoroutineContext()
+            fun checkWrite() { caller.ensureActive();environment.requireVisibleAction() }
+            val store=home.pluginContext.store
+            store.updateOriginalFromSnapshot("settings",::checkWrite,
+                { environment.preferenceWritePermit(store) }) {
+                Unit to mapOf("back_to_top_button_offset_x_dp" to kotlinx.serialization.json.JsonPrimitive(x),
+                    "back_to_top_button_offset_y_dp" to kotlinx.serialization.json.JsonPrimitive(y))
+            }
+        },
+        { x,y -> environment.requireVisibleAction();backToTopPreferences.updateBackToTopOffset(x,y) },viewport)
+    CompositionLocalProvider(LocalDesktopOriginalSpacePlatform provides platform,
+        LocalDesktopBackToTopBindings provides backToTop) {
         when(key) {
             is BiliPaiNavKey.Space->SpaceScreen(key.mid,key.targetBvid,
                 onBack={navigate {routes.back()}},

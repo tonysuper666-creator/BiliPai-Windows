@@ -1,0 +1,36 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:68:40: error: unresolved reference 'DesktopLog'.
+import com.bilipai.desktop.diagnostics.DesktopLog as Log
+                                       ^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:180:38: error: unresolved reference 'DesktopOriginalMpvOverlayControl'.
+        val errorListener = object : DesktopOriginalMpvOverlayControl.Listener {
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:183:17: error: unresolved reference 'Log'.
+                Log.e("BangumiPlayer", "? ²¥·Å´íÎó: ${error.failure?.kind?.name ?: "UNKNOWN"} - ${error.message}")
+                ^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:200:17: error: unresolved reference 'Log'.
+                Log.d("BangumiPlayer", "? ²¥·Å×´Ì¬±ä»¯: $stateName, isPlaying=${exoPlayer.isPlaying}")
+                ^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:205:17: error: unresolved reference 'Log'.
+                Log.d("BangumiPlayer", "?? ²¥·Å×´Ì¬: isPlaying=$isPlaying")
+                ^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:213:17: error: unresolved reference 'Log'.
+                Log.d("BangumiPlayer", "? Ê×Ö¡ÒÑäÖÈ¾")
+                ^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:216:31: error: argument type mismatch: actual type is '<anonymous>', but 'DesktopOriginalMpvOverlayControl.Listener' was expected.
+        exoPlayer.addListener(errorListener)
+                              ^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:217:46: error: argument type mismatch: actual type is '<anonymous>', but 'DesktopOriginalMpvOverlayControl.Listener' was expected.
+        onDispose { exoPlayer.removeListener(errorListener) }
+                                             ^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:337:9: error: unresolved reference 'Log'.
+        Log.d("BangumiPlayer", "? Parent Danmaku LaunchedEffect: cid=$currentCid, aid=$currentAid, enabled=$danmakuEnabled")
+        ^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:352:13: error: unresolved reference 'Log'.
+            Log.d("BangumiPlayer", "? Loading danmaku for cid=$currentCid, aid=$currentAid, duration=${durationMs}ms (after $retries retries)")
+            ^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:380:22: error: unresolved reference 'resolveBangumiToggleOrientationTarget'.
+        val target = resolveBangumiToggleOrientationTarget(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:391:45: error: argument type mismatch: actual type is 'Any', but 'Int' was expected.
+        hostPresentation.requestOrientation(target, displayContext)
+                                            ^^^^^^

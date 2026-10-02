@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "snapshot": 88,
+  "orderedCpEntries": 105,
+  "sourceCount": 4,
+  "explicitProspectiveSources": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\generated\\com\\android\\purebilibili\\feature\\bangumi\\ui\\player\\DesktopOriginalBangumiCollapsedPlayerBar.kt",
+      "sha256Bytes": "54bab92afc3575fb29f28e269bbbdcdf4824cbd730b4695b2d625721af4f1ef0"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\generated\\com\\android\\purebilibili\\feature\\bangumi\\ui\\player\\DesktopOriginalBangumiPlayerContent.kt",
+      "sha256Bytes": "6661c5832ad6b2f705df7b1a9b8cf528cb1f482a61b9a9067a6831fef111dae3"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\generated\\com\\android\\purebilibili\\feature\\bangumi\\ui\\player\\DesktopOriginalBangumiPlayerOverlayHost.kt",
+      "sha256Bytes": "d9589706a1765b9dd01bce3f2ec10dff985227b7e2131b2f17aad5757d00f38b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiPlayerScreenPlatform.kt",
+      "sha256Bytes": "83a5b3015e00131f1cb16e8683e0d745a3c1d409fc34595dcb1cf068f83edf5c"
+    }
+  ],
+  "declaredProspectiveBridgeJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\runs\\06\\prospective.jar",
+    "sha256Bytes": "3ce70e41e9bca553abdcb5aa09bd18a7483641d827487430cb64e954edc7b012",
+    "intentionalExistingSourceOverlayFamilies": 7,
+    "actualIntersectionClasses": 362
+  },
+  "productionWrites": 0,
+  "fullPlayerScreenPrepared": false,
+  "normalProductCompile": false,
+  "actualRootConsumer": false,
+  "nativeAccepted": false,
+  "accountAccepted": false
+}

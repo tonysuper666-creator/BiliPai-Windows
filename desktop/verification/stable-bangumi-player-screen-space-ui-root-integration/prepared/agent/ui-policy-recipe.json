@@ -1,0 +1,17 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+  "originalSha256LF": "7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285",
+  "output": "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerUiPolicy.kt",
+  "exactOriginalBody": "internal fun resolveBangumiPlayerTopControlsPaddingTopDp(\n    isFullscreen: Boolean,\n    statusBarsInsetDp: Float\n): Float {\n    return 8f\n}\n\ninternal fun resolveBangumiDanmakuTopInsetDp(\n    isFullscreen: Boolean,\n    statusBarsInsetDp: Float\n): Float {\n    return if (isFullscreen) 0f else 52f\n}\n\ninternal fun resolveBangumiPortraitPlayerContainerTopPaddingDp(\n    statusBarsInsetDp: Float\n): Float {\n    return statusBarsInsetDp.takeIf { it.isFinite() }?.coerceAtLeast(0f) ?: 0f\n}\n\ninternal fun resolveBangumiToggleOrientationTarget(\n    isFullscreen: Boolean,\n    isTablet: Boolean,\n    usesInWindowFullscreen: Boolean,\n): Int? {\n    if (isTablet || usesInWindowFullscreen) return null\n    return if (isFullscreen) {\n        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT\n    } else {\n        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE\n    }\n}\n\n",
+  "exactBodySha256LF": "6461c33b39dd7b6428ccaba73d81c72dbb8a475e10ad87b6855d571f1be50512",
+  "adaptedBodySha256LF": "c745e040322c137d5df8532154c9d78b45dc38348242aaab3807b86c4778cebd",
+  "selectedNames": [
+    "resolveBangumiPlayerTopControlsPaddingTopDp",
+    "resolveBangumiDanmakuTopInsetDp",
+    "resolveBangumiPortraitPlayerContainerTopPaddingDp",
+    "resolveBangumiToggleOrientationTarget"
+  ],
+  "platformBoundary": "ActivityInfo constants 1/6 retained as original Windows presentation intents",
+  "actualRootConsumer": false
+}

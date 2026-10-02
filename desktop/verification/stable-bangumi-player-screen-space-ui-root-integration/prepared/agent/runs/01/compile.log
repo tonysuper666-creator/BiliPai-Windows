@@ -1,0 +1,39 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerContent.kt:79:5: error: 'public' function exposes its 'internal' parameter type 'VideoCommentViewModel'.
+    commentViewModel: VideoCommentViewModel,
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:7:49: error: unresolved reference 'BangumiOverlayUnsupportedAction'.
+import com.android.purebilibili.feature.bangumi.BangumiOverlayUnsupportedAction
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:9:49: error: unresolved reference 'resolveBangumiOverlayQualityLabel'.
+import com.android.purebilibili.feature.bangumi.resolveBangumiOverlayQualityLabel
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:10:49: error: unresolved reference 'resolveBangumiOverlayShareTitle'.
+import com.android.purebilibili.feature.bangumi.resolveBangumiOverlayShareTitle
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:11:49: error: unresolved reference 'resolveBangumiOverlaySwitchableQualityIds'.
+import com.android.purebilibili.feature.bangumi.resolveBangumiOverlaySwitchableQualityIds
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:12:49: error: unresolved reference 'resolveBangumiUnsupportedOverlayActionMessage'.
+import com.android.purebilibili.feature.bangumi.resolveBangumiUnsupportedOverlayActionMessage
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:13:49: error: unresolved reference 'shouldShowBangumiOverlayDislikeAction'.
+import com.android.purebilibili.feature.bangumi.shouldShowBangumiOverlayDislikeAction
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:98:31: error: unresolved reference 'resolveBangumiOverlayQualityLabel'.
+    val currentQualityLabel = resolveBangumiOverlayQualityLabel(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:103:32: error: unresolved reference 'resolveBangumiOverlaySwitchableQualityIds'.
+    val switchableQualityIds = resolveBangumiOverlaySwitchableQualityIds(acceptQuality)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:168:25: error: unresolved reference 'resolveBangumiOverlayShareTitle'.
+                title = resolveBangumiOverlayShareTitle(title = title, subtitle = subtitle),
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:173:29: error: unresolved reference 'shouldShowBangumiOverlayDislikeAction'.
+        showDislikeAction = shouldShowBangumiOverlayDislikeAction(),
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:204:17: error: unresolved reference 'resolveBangumiUnsupportedOverlayActionMessage'.
+                resolveBangumiUnsupportedOverlayActionMessage(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerOverlayHost.kt:205:21: error: unresolved reference 'BangumiOverlayUnsupportedAction'.
+                    BangumiOverlayUnsupportedAction.DISLIKE
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

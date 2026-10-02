@@ -1,0 +1,221 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerComponents.kt",
+  "originalSha256LF": "ffee251ee24bcaf09870c4e787254fea544d02daac6b257fabe8ade9471f6ebb",
+  "output": "com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerComponents.kt",
+  "adaptedSha256LF": "6756a6f91eb154a4937b3b952e53700aaa56681ea00823d3a6ef2daa8624e837",
+  "edits": [
+    {
+      "startLine": 6,
+      "endLineExclusive": 11,
+      "before": "import android.app.Activity\nimport android.content.Context\nimport android.media.AudioManager\nimport android.view.Surface\nimport android.view.View\n",
+      "after": "",
+      "beforeSha256LF": "0daf9bc37c465f6f8b39a799f81a5a8b929c7212d63ecfbf1306d86a4d29e0e7"
+    },
+    {
+      "startLine": 37,
+      "endLineExclusive": 38,
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "import androidx.compose.ui.layout.onSizeChanged\nimport com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform\n",
+      "beforeSha256LF": "fd13cbbd3ea84e40b123fd2e828296b35eed3c9af7a2db75c13bf809aa450ae8"
+    },
+    {
+      "startLine": 42,
+      "endLineExclusive": 43,
+      "before": "import androidx.compose.ui.viewinterop.AndroidView\n",
+      "after": "",
+      "beforeSha256LF": "b3f9ce55dfc70ebecfe84b9bdfd6940d2a531a4e35b133524a14e0337132630d"
+    },
+    {
+      "startLine": 47,
+      "endLineExclusive": 53,
+      "before": "import androidx.media3.common.Format\nimport androidx.media3.common.Player\nimport androidx.media3.common.VideoSize\nimport androidx.media3.exoplayer.ExoPlayer\nimport androidx.media3.exoplayer.analytics.AnalyticsListener\nimport androidx.media3.ui.PlayerView\n",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl as ExoPlayer\n",
+      "beforeSha256LF": "2947c3c6310187bebb8d249fa493a68a6d8f3f2e6c3b4945f8ebba086ca7cf01"
+    },
+    {
+      "startLine": 58,
+      "endLineExclusive": 60,
+      "before": "import com.android.purebilibili.feature.anime4k.gl.Anime4KGLSurfaceView\nimport com.android.purebilibili.feature.anime4k.isAnime4KGles3Available\n",
+      "after": "",
+      "beforeSha256LF": "b1be8f49d485918f022c2c6cf8d1d4c755bb490440d30f9c301257ea1344b5a0"
+    },
+    {
+      "startLine": 62,
+      "endLineExclusive": 64,
+      "before": "import com.android.purebilibili.feature.video.danmaku.DanmakuManager\nimport com.android.purebilibili.danmaku.engine.DanmakuRenderView\n",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalSectionDanmakuPort as DanmakuManager\n",
+      "beforeSha256LF": "f21b2657b7aff81fee2388e7db60e6d23a01a3b8f5fe85413615175b23181cb4"
+    },
+    {
+      "startLine": 78,
+      "endLineExclusive": 79,
+      "before": "import com.android.purebilibili.feature.video.ui.section.VideoOutputRouter\n",
+      "after": "",
+      "beforeSha256LF": "18294c8d95bc99765434fd42e4fe99cefddcba1bd4e6cda7d4047ca73ff353ba"
+    },
+    {
+      "startLine": 81,
+      "endLineExclusive": 82,
+      "before": "import com.android.purebilibili.feature.video.util.captureAndSaveVideoScreenshot\n",
+      "after": "",
+      "beforeSha256LF": "64ec98db4e7a744d08913bc7974677d1e8977a2e88396414675cf04250e785a6"
+    },
+    {
+      "startLine": 87,
+      "endLineExclusive": 88,
+      "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+      "after": "import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings as SettingsManager\n",
+      "beforeSha256LF": "1f7ff1995a8995a8f9258b49a8d6c3ae13f41db160cca55c54f7c2f88b266615"
+    },
+    {
+      "startLine": 101,
+      "endLineExclusive": 102,
+      "before": "@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n",
+      "after": "",
+      "beforeSha256LF": "63281c9d520164e13bf1cfee899fdf80bc6e314c6b3454913dad88125c2ff55f"
+    },
+    {
+      "startLine": 103,
+      "endLineExclusive": 104,
+      "before": "fun BangumiPlayerView(\n",
+      "after": "internal fun BangumiPlayerView(\n",
+      "beforeSha256LF": "781d3876f76722dcbadc4713bab6e66333ddd9d44a0f4ec3010e3e365e534db1"
+    },
+    {
+      "startLine": 166,
+      "endLineExclusive": 167,
+      "before": "    val context = LocalContext.current\n",
+      "after": "    val platform = LocalDesktopOriginalVideoSectionPlatform.current\n    val context = platform.settingsContext\n",
+      "beforeSha256LF": "715b68d4fba014a66fa05bb8a6856ebb6a75ca67d8d27adfebdf91776edb890d"
+    },
+    {
+      "startLine": 180,
+      "endLineExclusive": 182,
+      "before": "    val audioManager = remember { context.getSystemService(Context.AUDIO_SERVICE) as AudioManager }\n    val maxVolume = remember { audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) }\n",
+      "after": "    val audioManager = platform.volume\n    val maxVolume = audioManager.maximumStep()\n",
+      "beforeSha256LF": "378bae885aba636b48014413b3d7712dce8592ecb897a8bb7003deb0e0484b84"
+    },
+    {
+      "startLine": 194,
+      "endLineExclusive": 195,
+      "before": "    var playerViewRef by remember { mutableStateOf<PlayerView?>(null) }\n",
+      "after": "    val playerViewRef = platform.viewport\n",
+      "beforeSha256LF": "4f063b9367b931b0983b4b26c9cda2b83c9d1cd995c51b91b4812bfe81cd09f0"
+    },
+    {
+      "startLine": 199,
+      "endLineExclusive": 276,
+      "before": "    val registeredPlugins by PluginManager.pluginsFlow.collectAsStateWithLifecycle()\n    val anime4kPluginInfo = registeredPlugins.firstOrNull { it.plugin.id == Anime4KPlugin.PLUGIN_ID }\n    val anime4kPlugin = anime4kPluginInfo?.plugin as? Anime4KPlugin\n    val anime4kConfig = if (anime4kPlugin == null) {\n        Anime4KConfig()\n    } else {\n        anime4kPlugin.configState.collectAsStateWithLifecycle().value\n    }\n    val anime4kGlesAvailable = remember(context) { isAnime4KGles3Available(context) }\n    var anime4kPipelineFailed by remember(exoPlayer) { mutableStateOf(false) }\n    var anime4kInputSurface by remember(exoPlayer) { mutableStateOf<Surface?>(null) }\n    var anime4kDisplayedFirstFrame by remember(currentVideoUrl, exoPlayer) { mutableStateOf(false) }\n    var anime4kSurfaceViewRef by remember(exoPlayer) { mutableStateOf<Anime4KGLSurfaceView?>(null) }\n    var videoEnhancementSessionOverride by remember(currentVideoUrl, exoPlayer) {\n        mutableStateOf<Boolean?>(null)\n    }\n    val videoEnhancementSessionRequested = videoEnhancementSessionOverride\n        ?: resolveInitialVideoEnhancementEnabled(\n            pluginEnabled = anime4kPluginInfo?.enabled == true,\n            config = anime4kConfig\n        )\n    val videoEnhancementEnabled = anime4kPluginInfo?.enabled == true &&\n        videoEnhancementSessionRequested\n    LaunchedEffect(anime4kConfig.algorithm) {\n        anime4kPipelineFailed = false\n    }\n    var videoInputFormat by remember(exoPlayer) { mutableStateOf<Format?>(null) }\n    var videoSizeState by remember(exoPlayer) {\n        mutableStateOf(exoPlayer.videoSize.let { it.width to it.height })\n    }\n    val anime4kOutputDecision = remember(\n        videoEnhancementEnabled,\n        anime4kGlesAvailable,\n        anime4kPipelineFailed,\n        videoInputFormat,\n        lifecycleState\n    ) {\n        resolveAnime4KOutputDecision(\n            pluginEnabled = videoEnhancementEnabled,\n            glAvailable = anime4kGlesAvailable && !anime4kPipelineFailed,\n            colorTransfer = videoInputFormat?.colorInfo?.colorTransfer ?: 0,\n            sampleMimeType = videoInputFormat?.sampleMimeType,\n            isInPipMode = false,\n            isAudioOnly = false,\n            hostLifecycleStarted = hostLifecycleStarted\n        )\n    }\n    val shouldUseAnime4kPipeline = anime4kOutputDecision.shouldUsePipeline\n    val shouldRenderAnime4kPipeline = shouldUseAnime4kPipeline &&\n        videoSizeState.first > 0 &&\n        videoSizeState.second > 0\n    val anime4kBypassReason = anime4kOutputDecision.bypassReason\n    val anime4kSurfaceReady = shouldRenderAnime4kPipeline && anime4kInputSurface != null\n    val anime4kFrameVisible = anime4kSurfaceReady && anime4kDisplayedFirstFrame\n    val videoOutputRouter = remember(exoPlayer) { VideoOutputRouter(exoPlayer) }\n\n    DisposableEffect(exoPlayer) {\n        val analyticsListener = object : AnalyticsListener {\n            override fun onVideoInputFormatChanged(\n                eventTime: AnalyticsListener.EventTime,\n                format: Format,\n                decoderReuseEvaluation: androidx.media3.exoplayer.DecoderReuseEvaluation?\n            ) {\n                videoInputFormat = format\n            }\n        }\n        val playerListener = object : Player.Listener {\n            override fun onVideoSizeChanged(videoSize: VideoSize) {\n                videoSizeState = videoSize.width to videoSize.height\n            }\n        }\n        exoPlayer.addAnalyticsListener(analyticsListener)\n        exoPlayer.addListener(playerListener)\n        onDispose {\n            exoPlayer.removeAnalyticsListener(analyticsListener)\n            exoPlayer.removeListener(playerListener)\n        }\n",
+      "after": "    // Same existing native enhancement owner; its capability/error/frame readback\n    // replaces only the Android GLES surface/router boundary.\n    val anime4kConfig by platform.enhancementConfig.collectAsStateWithLifecycle()\n    val enhancementState by platform.enhancementState.collectAsStateWithLifecycle()\n    val nativeReadback by exoPlayer.state.collectAsStateWithLifecycle()\n    val videoSizeState = exoPlayer.videoSize.let { it.width to it.height }\n    val anime4kGlesAvailable = enhancementState.available\n    val videoEnhancementEnabled = enhancementState.requested\n    val anime4kBypassReason = enhancementState.bypassReason\n    LaunchedEffect(hostLifecycleStarted) { platform.setViewportActive(hostLifecycleStarted) }\n    DisposableEffect(platform) {\n        val lease = platform.acquireViewportLease()\n        onDispose { lease.close() }\n",
+      "beforeSha256LF": "d87e5d4ee2eb06b90a397c95b67a77cd25d98308e8a92d9da82b309ea07ed466"
+    },
+    {
+      "startLine": 278,
+      "endLineExclusive": 305,
+      "before": "    DisposableEffect(videoOutputRouter) {\n        onDispose { videoOutputRouter.release() }\n    }\n\n    LaunchedEffect(hostLifecycleStarted, shouldRenderAnime4kPipeline, anime4kSurfaceViewRef) {\n        val surfaceView = anime4kSurfaceViewRef ?: return@LaunchedEffect\n        if (shouldRenderAnime4kPipeline && hostLifecycleStarted) {\n            surfaceView.onResume()\n        } else {\n            surfaceView.onPause()\n        }\n    }\n\n    LaunchedEffect(\n        playerViewRef,\n        anime4kInputSurface,\n        shouldRenderAnime4kPipeline,\n        hostLifecycleStarted\n    ) {\n        videoOutputRouter.update(\n            playerView = playerViewRef,\n            inputSurface = anime4kInputSurface,\n            shouldBindDirectPlayerView = hostLifecycleStarted,\n            shouldUseAnime4K = shouldRenderAnime4kPipeline\n        )\n    }\n    \n",
+      "after": "",
+      "beforeSha256LF": "892971024decedca1a3a2746eaddb06dc706f36bb689fc7d31bd34f943a5960b"
+    },
+    {
+      "startLine": 319,
+      "endLineExclusive": 325,
+      "before": "    var currentBrightness by remember {\n        mutableFloatStateOf(\n            try {\n                android.provider.Settings.System.getInt(context.contentResolver, android.provider.Settings.System.SCREEN_BRIGHTNESS) / 255f\n            } catch (e: Exception) { 0.5f }\n        )\n",
+      "after": "    var currentBrightness by remember(platform) {\n        mutableFloatStateOf(platform.readViewportBrightness())\n",
+      "beforeSha256LF": "17f0be928ac219fffcbf0a787db5a97b98f7e1ad0aeb3b4cb00cfd9c34703729"
+    },
+    {
+      "startLine": 326,
+      "endLineExclusive": 327,
+      "before": "    \n",
+      "after": "\n",
+      "beforeSha256LF": "63ad8e85349fe11819885976ef96cbe3f6f65c288b290713acadbdf9a9280388"
+    },
+    {
+      "startLine": 348,
+      "endLineExclusive": 349,
+      "before": "            .background(Color.Black)\n",
+      "after": "            .background(Color.Transparent)\n",
+      "beforeSha256LF": "11b3f79bfa292ba951bd86952ddf6ac4b8b339b9aa64775107b9edbd5fc04d6e"
+    },
+    {
+      "startLine": 411,
+      "endLineExclusive": 412,
+      "before": "                                        startVolumeStep = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)\n",
+      "after": "                                        startVolumeStep = audioManager.currentStep()\n",
+      "beforeSha256LF": "d3fca66d7aa423f817ee5d42630bb2af3215e7c496e90770305c86d20eb02188"
+    },
+    {
+      "startLine": 428,
+      "endLineExclusive": 433,
+      "before": "                                    (context as? Activity)?.window?.let { window ->\n                                        val params = window.attributes\n                                        params.screenBrightness = gestureValue\n                                        window.attributes = params\n                                    }\n",
+      "after": "                                    platform.setViewportBrightness(gestureValue, requestSystemBrightness = false)\n",
+      "beforeSha256LF": "6ac8334c6319bf338d22be373cc553e52d5f495ce1694ff3e170e4af81760659"
+    },
+    {
+      "startLine": 443,
+      "endLineExclusive": 448,
+      "before": "                                    audioManager.setStreamVolume(\n                                        AudioManager.STREAM_MUSIC,\n                                        newVolumeStep,\n                                        0\n                                    )\n",
+      "after": "                                    audioManager.setStep(newVolumeStep)\n",
+      "beforeSha256LF": "54775f7ab385a6409c7f3d4663893df93d58d2a9c1c47172e2184779cb3c72b8"
+    },
+    {
+      "startLine": 488,
+      "endLineExclusive": 599,
+      "before": "            // 视频输出统一交给路由，避免 PlayerView 与 Anime4K 同时争抢 Surface。\n            AndroidView(\n                factory = { ctx ->\n                    android.util.Log.w(\"BangumiPlayer\", \"🎬 PlayerView FACTORY: creating new view, player=${exoPlayer.hashCode()}, isFullscreen=$isFullscreen\")\n                    PlayerView(ctx).apply {\n                        playerViewRef = this\n                        // 普通直出必须显式绑定 player，否则未启用 Anime4K 时无视频输出\n                        //（只有音频）。Anime4K 启用后由 VideoOutputRouter 主动解除本绑定并接管 surface。\n                        player = exoPlayer\n                        useController = false\n                        keepScreenOn = true\n                        resizeMode = currentAspectRatio.playerResizeMode\n                        setShowBuffering(PlayerView.SHOW_BUFFERING_NEVER)\n                        setBackgroundColor(android.graphics.Color.BLACK)\n                    }\n                },\n                update = { view ->\n                    playerViewRef = view\n                    view.resizeMode = currentAspectRatio.playerResizeMode\n                    view.visibility = if (anime4kFrameVisible) View.INVISIBLE else View.VISIBLE\n                    // MediaSource/Player 变化后确保直出绑定仍与播放器同步；\n                    // Anime4K 接管期间不抢回绑定，避免与路由争抢 Surface。\n                    if (view.player !== exoPlayer && !shouldRenderAnime4kPipeline) {\n                        view.player = exoPlayer\n                    }\n                },\n                modifier = with(density) {\n                    Modifier.requiredSize(\n                        width = playerFrameViewport.width.toDp(),\n                        height = playerFrameViewport.height.toDp()\n                    )\n                }\n            )\n\n            if (shouldRenderAnime4kPipeline) {\n                AndroidView(\n                    factory = { ctx ->\n                        Anime4KGLSurfaceView(ctx, initialConfig = anime4kConfig).apply {\n                            anime4kSurfaceViewRef = this\n                            onInputSurfaceChanged = { surface ->\n                                anime4kInputSurface = surface\n                                if (surface == null) anime4kDisplayedFirstFrame = false\n                            }\n                            onFirstFrameRendered = {\n                                anime4kDisplayedFirstFrame = true\n                            }\n                            onPipelineError = { error ->\n                                Logger.e(\"BangumiPlayer\", \"Anime4K 管线不可用，已回退原始视频输出\", error)\n                                anime4kPipelineFailed = true\n                                anime4kInputSurface = null\n                            }\n                            updateConfig(anime4kConfig)\n                            updateInputSize(videoSizeState.first, videoSizeState.second)\n                            updateDisplayScaleMode(currentAspectRatio.toAnime4KDisplayScaleMode())\n                            visibility = View.VISIBLE\n                        }\n                    },\n                    update = { surfaceView ->\n                        anime4kSurfaceViewRef = surfaceView\n                        surfaceView.onInputSurfaceChanged = { surface ->\n                            anime4kInputSurface = surface\n                            if (surface == null) anime4kDisplayedFirstFrame = false\n                        }\n                        surfaceView.onFirstFrameRendered = {\n                            anime4kDisplayedFirstFrame = true\n                        }\n                        surfaceView.onPipelineError = { error ->\n                            Logger.e(\"BangumiPlayer\", \"Anime4K 管线不可用，已回退原始视频输出\", error)\n                            anime4kPipelineFailed = true\n                            anime4kInputSurface = null\n                        }\n                        surfaceView.updateConfig(anime4kConfig)\n                        surfaceView.updateInputSize(videoSizeState.first, videoSizeState.second)\n                        surfaceView.updateDisplayScaleMode(currentAspectRatio.toAnime4KDisplayScaleMode())\n                        surfaceView.visibility = View.VISIBLE\n                    },\n                    modifier = with(density) {\n                        Modifier.requiredSize(\n                            width = playerFrameViewport.width.toDp(),\n                            height = playerFrameViewport.height.toDp()\n                        )\n                    }\n                )\n            }\n        }\n        \n        // 弹幕层 - 使用 DanmakuRenderEngine\n        if (danmakuEnabled) {\n            AndroidView(\n                factory = { ctx ->\n                    DanmakuRenderView(ctx).apply {\n                        setBackgroundColor(android.graphics.Color.TRANSPARENT)\n                        android.util.Log.w(\"BangumiPlayer\", \"🎯 DanmakuView factory: creating new view\")\n                        danmakuManager.attachView(this)\n                    }\n                },\n                update = { view ->\n                    if (view.width > 0 && view.height > 0) {\n                        val sizeTag = \"${view.width}x${view.height}\"\n                        if (view.tag != sizeTag) {\n                            view.tag = sizeTag\n                            android.util.Log.d(\"BangumiPlayer\", \" DanmakuView update: size=${view.width}x${view.height}\")\n                            danmakuManager.attachView(view)\n                        }\n                    }\n                },\n                onRelease = { view -> danmakuManager.detachView(view) },\n                modifier = Modifier\n                    .fillMaxSize()\n                    .padding(top = danmakuTopInset)\n                    .clipToBounds()\n",
+      "after": "            // Original geometry and resize choice drive the sole native HWND viewport.\n            platform.NativeViewport(\n                modifier = with(density) { Modifier.requiredSize(\n                    width = playerFrameViewport.width.toDp(),\n                    height = playerFrameViewport.height.toDp()) },\n                layout = playerFrameViewport, resizeMode = currentAspectRatio.playerResizeMode,\n                revealAlpha = 1f, revealScale = 1f, freeScale = 1f, panX = 0f, panY = 0f,\n                flipHorizontal = false, flipVertical = false,\n                visible = hostLifecycleStarted, keepAwake = hostLifecycleStarted,\n",
+      "beforeSha256LF": "00b123e81aac0ac717776d3172362577c6124b4ee6a4214b7018be8ad4f3e564"
+    },
+    {
+      "startLine": 601,
+      "endLineExclusive": 602,
+      "before": "        \n",
+      "after": "\n        if (danmakuEnabled) {\n            val density = LocalDensity.current.density\n            var size by remember(platform) { mutableStateOf(androidx.compose.ui.unit.IntSize.Zero) }\n            val viewport = com.android.purebilibili.feature.video.danmaku.resolveDanmakuViewport(\n                size.width, size.height, density, platform.danmakuReferencePixels)\n            val modifier = Modifier.fillMaxSize().padding(top = danmakuTopInset)\n                .clipToBounds().onSizeChanged { size = it }\n            if (viewport != null) platform.NativeDanmakuSurface(viewport, modifier)\n            else Box(modifier)\n        }\n\n",
+      "beforeSha256LF": "9431ee0bca2250b77634725a843e7cfcd088154f19350f1c79ae3de065a4050b"
+    },
+    {
+      "startLine": 681,
+      "endLineExclusive": 686,
+      "before": "                val playerView = playerViewRef\n                if (playerView == null) {\n                    onShowMessage(\"截图失败，请稍后重试\")\n                    return@BangumiPlayerOverlayHost\n                }\n",
+      "after": "",
+      "beforeSha256LF": "70d82b72a9bd8e5791bd057527e812ac11428dc239a24150cec05800f0657baa"
+    },
+    {
+      "startLine": 687,
+      "endLineExclusive": 690,
+      "before": "                    val success = captureAndSaveVideoScreenshot(\n                        context = context,\n                        playerView = playerView,\n",
+      "after": "                    val success = platform.captureAndSaveScreenshot(\n",
+      "beforeSha256LF": "280f7b5d7d467f2e5543057f083cca0176804762e30c89ff9b2442f452ede317"
+    },
+    {
+      "startLine": 692,
+      "endLineExclusive": 693,
+      "before": "                        videoTitle = subtitle.ifBlank { title.ifBlank { \"bangumi\" } }\n",
+      "after": "                        title = subtitle.ifBlank { title.ifBlank { \"bangumi\" } }\n",
+      "beforeSha256LF": "255cb3169e81814c351c1e946cd14f8de791674bee9f4995749233a1ec3821e1"
+    },
+    {
+      "startLine": 694,
+      "endLineExclusive": 695,
+      "before": "                    onShowMessage(if (success) \"截图已保存到相册\" else \"截图失败，请稍后重试\")\n",
+      "after": "                    onShowMessage(if (success) \"截图已保存（PNG）\" else \"截图失败，请稍后重试\")\n",
+      "beforeSha256LF": "fd84c27b326e0619b271005f45d9bab47c0bab8a6728b7d009ef4a9904fe4391"
+    },
+    {
+      "startLine": 704,
+      "endLineExclusive": 723,
+      "before": "            onAnime4kToggle = { enabled ->\n                anime4kPipelineFailed = false\n                videoEnhancementSessionOverride = enabled\n                scope.launch {\n                    if (enabled && anime4kPluginInfo?.enabled != true) {\n                        PluginManager.setEnabled(Anime4KPlugin.PLUGIN_ID, true)\n                    }\n                    Anime4KPlugin.getInstance()?.rememberCurrentVideoEnabled(enabled)\n                }\n            },\n            onVideoEnhancementAlgorithmChange = { algorithm ->\n                anime4kPlugin?.setAlgorithm(algorithm)\n            },\n            onAnime4kPresetChange = { preset ->\n                anime4kPlugin?.setPreset(preset)\n            },\n            onFsrSharpnessChange = { sharpness ->\n                anime4kPlugin?.setFsrSharpness(sharpness)\n            },\n",
+      "after": "            onAnime4kToggle = { enabled -> platform.setCurrentVideoEnhancementEnabled(enabled) },\n            onVideoEnhancementAlgorithmChange = platform.enhancementActions::setAlgorithm,\n            onAnime4kPresetChange = platform.enhancementActions::setPreset,\n            onFsrSharpnessChange = platform.enhancementActions::setFsrSharpness,\n",
+      "beforeSha256LF": "7e8b3e040c4e45c8f01c8c6f7e75c08314133d248bff2944c2051f6bd45b09af"
+    }
+  ],
+  "fullOriginalBody": true,
+  "actualRootConsumer": false,
+  "platformBoundaries": [
+    "One same Section volume and viewport brightness; original gesture formulas unchanged",
+    "Android PlayerView/GLES surfaces/listeners replaced by actual same native enhancement state/viewport",
+    "DanmakuRenderView maps same native Overlay without another parser/transport",
+    "Screenshot maps same frame/Locations writer; Windows PNG wording",
+    "Android player creation/release absent"
+  ]
+}
