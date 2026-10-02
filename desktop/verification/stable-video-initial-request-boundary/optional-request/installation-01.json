@@ -1,0 +1,11 @@
+{
+  "status": "Installed exact optional-request delta; runtime acceptance pending",
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootTransport.kt",
+  "handoffSHA256": "c64183644c7841f9a3d69fee44ff9691816c1d2cf3cf0b82926e04491b02f185",
+  "beforeSHA256Bytes": "2b35ee2f419e731a2fd66bf0d3a91850141ddb5373b0f608c848fccc0b5815a4",
+  "beforeSHA256LF": "2b35ee2f419e731a2fd66bf0d3a91850141ddb5373b0f608c848fccc0b5815a4",
+  "afterSHA256Bytes": "88e75afb8a4474c6e1e6902930a27c279398a4db16f21d8853e5aa516cdd7099",
+  "hunks": 2,
+  "reverseRestoresBaseline": true,
+  "productionOverrides": 0
+}

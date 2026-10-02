@@ -103,3 +103,6 @@ desktop/verification/stable-original-audio-lyrics-integration/** -text
 desktop/verification/stable-original-external-playlist-integration/** -text
 desktop/verification/stable-native-video-window-capture-integration/** -text
 desktop/verification/stable-full-video-root-joint-integration/** -text
+
+desktop/verification/stable-video-initial-request-boundary/** -text
+desktop/resources/common/notices/pinyin4j-2.5.0/** -text

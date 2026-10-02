@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exactInverse": true,
+  "originalRequestAndTokenRemainCaptured": true,
+  "preparedSourceAndTrackStillRequireCapturedSubject": true,
+  "publicationStillChecksResolvedCIDTokenTwice": true,
+  "sameNativeSameCacheSameCallerJob": true,
+  "actual82Failure": "Real original background settings launch captured no request and eager media construction threw before the effect ran",
+  "boundaries": "Static necessary delta only; Root builds a fresh immutable product and fixture-alone guest attempt must run again. Real VM Error network label is not independently classified."
+}

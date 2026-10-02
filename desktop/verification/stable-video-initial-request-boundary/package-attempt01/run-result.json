@@ -1,0 +1,28 @@
+{
+  "startedAtUtc": "2026-10-02T05:04:30.5148171Z",
+  "codeHead": "8a918904e108d63beb0892171d441885322c217f",
+  "javaHome": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1",
+  "gradleUserHome": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home",
+  "pythonExecutable": "C:/Users/TONYS/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe",
+  "nativeShareVcRoot": "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.44.35207",
+  "switches": [
+    "-SkipTests",
+    "-NativeSmoke",
+    "-NativeMuxSmoke",
+    "-UpdaterSmoke"
+  ],
+  "releaseGate": false,
+  "installer": false,
+  "deployment": false,
+  "publish": false,
+  "removedProcessOnlyOverrides": [
+    "BILIPAI_MPV_PATH",
+    "JAVA_TOOL_OPTIONS",
+    "_JAVA_OPTIONS",
+    "JDK_JAVA_OPTIONS"
+  ],
+  "buildScriptPassed": false,
+  "finishedAtUtc": "2026-10-02T05:05:29.0213897Z",
+  "failure": "Packaged native download mux test failed (1).",
+  "scriptStackTrace": "at <ScriptBlock>, C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\tools\\build.ps1: line 92\r\nat <ScriptBlock>, C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-portable-package-actual82\\run-package-attempt01.ps1: line 33"
+}

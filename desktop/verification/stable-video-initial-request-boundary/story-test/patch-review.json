@@ -1,0 +1,11 @@
+{
+  "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopStoryInitialFailureTest.kt",
+  "beforeSha256Bytes": "2bec8d118b726713f07bcb77dc7d9838773c486f6fed71781014ece7ecc38bcc",
+  "afterSha256Bytes": "a3d10b723328a59019ed582fb4409f9e9a7ad95cf8a7287043b7f766eeef4137",
+  "onlyChanges": "legacy test adapter and coverage KDoc",
+  "testBodiesAndAssertionsBytePreserved": true,
+  "behaviorTests": 8,
+  "assertionCallCount": 68,
+  "productionSourceEdits": false,
+  "noticeFilesPreservedFromAttempt01": true
+}

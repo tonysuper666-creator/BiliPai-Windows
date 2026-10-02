@@ -1,0 +1,17 @@
+{
+  "startedAtUtc": "2026-10-02T05:15:14.9485578Z",
+  "codeHead": "8a918904e108d63beb0892171d441885322c217f",
+  "gradle": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\wrapper\\dists\\gradle-9.5.0-bin\\bvnork1r7n8i6kp5cnkibsc9q\\gradle-9.5.0\\bin\\gradle.bat",
+  "javaHome": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1",
+  "tests": [
+    "com.bilipai.desktop.ui.DesktopStoryInitialFailureTest",
+    "com.bilipai.desktop.ui.DesktopStoryInitialFailureUiTest"
+  ],
+  "productionEditsByThisLane": false,
+  "repackaged": false,
+  "committed": false,
+  "compileTestKotlinExitCode": 0,
+  "targetedTestsExitCode": 0,
+  "passed": true,
+  "finishedAtUtc": "2026-10-02T05:15:49.3212894Z"
+}

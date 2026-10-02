@@ -1,0 +1,10 @@
+pinyin4j 2.5.0 (com.belerweb:pinyin4j:2.5.0)
+Upstream source: https://github.com/belerweb/pinyin4j
+Pinned Maven artifact/source/POM SHA-256 values are in provenance.json.
+
+Official POM declares BSD. The same official sources archive's PinyinHelper.java
+header declares GNU GPL version 2 or (at your option) any later version. These
+are conflicting declarations; this bundle preserves both verbatim and does not
+represent the distribution as BSD-only. GPL-2.0.txt is the complete official GNU
+GPL version 2 text. The complete matching source archive is included unchanged.
+The Windows bridge reuses the repository's original PinyinUtils.kt unmodified.

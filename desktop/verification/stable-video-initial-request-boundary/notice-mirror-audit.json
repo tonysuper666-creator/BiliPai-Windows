@@ -1,0 +1,42 @@
+{
+  "status": "six generated mirrors match existing approved canonical notices",
+  "newRuntimeDependencies": 0,
+  "files": [
+    {
+      "mirror": "desktop/resources/common/notices/pinyin4j-2.5.0/GPL-2.0.txt",
+      "canonical": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/GPL-2.0.txt",
+      "bytes": 17984,
+      "sha256Bytes": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+    },
+    {
+      "mirror": "desktop/resources/common/notices/pinyin4j-2.5.0/NOTICE.txt",
+      "canonical": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/NOTICE.txt",
+      "bytes": 661,
+      "sha256Bytes": "b0541bc3dfe0517c8e49a1aff053d8f65debb88d56fb5cadc5a205dedb189d0c"
+    },
+    {
+      "mirror": "desktop/resources/common/notices/pinyin4j-2.5.0/pinyin4j-2.5.0-sources.jar",
+      "canonical": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/pinyin4j-2.5.0-sources.jar",
+      "bytes": 231455,
+      "sha256Bytes": "b249cc93415b0c349fc4d0cdef2697ebd36df29246a5b87d68a9327e0153fdf6"
+    },
+    {
+      "mirror": "desktop/resources/common/notices/pinyin4j-2.5.0/pinyin4j-2.5.0.pom",
+      "canonical": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/pinyin4j-2.5.0.pom",
+      "bytes": 5624,
+      "sha256Bytes": "7860cfad3bac667d51e53c28d3b6ee058893cd626a8ecb6e49c0d6b6f4b5c5f6"
+    },
+    {
+      "mirror": "desktop/resources/common/notices/pinyin4j-2.5.0/PinyinHelper-source-header.txt",
+      "canonical": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/PinyinHelper-source-header.txt",
+      "bytes": 745,
+      "sha256Bytes": "e7a48477e3cd92e4ec6ecdd8285c9a7379c00f123c1f9fe9a313753828952bad"
+    },
+    {
+      "mirror": "desktop/resources/common/notices/pinyin4j-2.5.0/provenance.json",
+      "canonical": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/provenance.json",
+      "bytes": 2123,
+      "sha256Bytes": "ca14fa4e091afcf1c8458925ec94013539c5b7dfb5aae5e5c30e1a5575b3dfef"
+    }
+  ]
+}

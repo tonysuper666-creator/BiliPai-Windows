@@ -1,0 +1,62 @@
+{
+  "sourcePath": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt",
+  "summary": "verification-summary.json",
+  "passed": true,
+  "files": [
+    {
+      "path": "after-DesktopStoryInitialFailureTest.kt",
+      "bytes": 14212,
+      "sha256Bytes": "a3d10b723328a59019ed582fb4409f9e9a7ad95cf8a7287043b7f766eeef4137"
+    },
+    {
+      "path": "before-DesktopStoryInitialFailureTest.kt",
+      "bytes": 13522,
+      "sha256Bytes": "2bec8d118b726713f07bcb77dc7d9838773c486f6fed71781014ece7ecc38bcc"
+    },
+    {
+      "path": "compileTestKotlin.log",
+      "bytes": 15817,
+      "sha256Bytes": "99fca43661441670a7ed104214c1d00a7f727799d699b130755dd831c141585d"
+    },
+    {
+      "path": "junit/TEST-com.bilipai.desktop.ui.DesktopStoryInitialFailureTest.xml",
+      "bytes": 1796,
+      "sha256Bytes": "e23cc9b767450ffbcccd5c1ffa8e97d261d5f7fb77da8e0c6534197257478f2d"
+    },
+    {
+      "path": "junit/TEST-com.bilipai.desktop.ui.DesktopStoryInitialFailureUiTest.xml",
+      "bytes": 535,
+      "sha256Bytes": "4028c19573d9fd751034bdebda6f29a9dac15c78213fb2baae31d6fc602f25b8"
+    },
+    {
+      "path": "patch-review.json",
+      "bytes": 636,
+      "sha256Bytes": "c3aed1b3c1b4c171b9c6ee319bf7c39fe501ed000b6ae637bc2f14e533584793"
+    },
+    {
+      "path": "run-result.json",
+      "bytes": 840,
+      "sha256Bytes": "a62038fb215e74d6f456651825c1f27ea55360dc8f8447ddca908ffc201b5294"
+    },
+    {
+      "path": "run-targeted-tests.ps1",
+      "bytes": 3075,
+      "sha256Bytes": "a889c459bf8edf00c6ab58ee13a4f8bfad86eea501677af0aa2b30a614d1da6e"
+    },
+    {
+      "path": "story-targeted-tests.log",
+      "bytes": 9837,
+      "sha256Bytes": "644e7ce26e53d7fd940b41cfb07064c075c7c311f0be1c3dcc6a94370f8777d2"
+    },
+    {
+      "path": "test-wiring.patch",
+      "bytes": 2320,
+      "sha256Bytes": "3db21c762fb8ae0abf50c0b17d9d8e5ba651bcd1e17cd26af79fb0da7e9a2558"
+    },
+    {
+      "path": "verification-summary.json",
+      "bytes": 1989,
+      "sha256Bytes": "5014cbdf06f5b940c45b30be8debc6175c47e63bd620d98de50e3a3ab7302919"
+    }
+  ]
+}

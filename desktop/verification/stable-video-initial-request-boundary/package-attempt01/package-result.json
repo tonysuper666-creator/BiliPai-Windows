@@ -1,0 +1,82 @@
+{
+  "codeHead": "8a918904e108d63beb0892171d441885322c217f",
+  "windowsVersion": {
+    "version": "0.2.415.1",
+    "upstreamTag": "v0.2.3",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "windowsReleaseRepository": "tonysuper666-creator/BiliPai-Windows",
+    "channel": "prerelease",
+    "executable": "BiliPai Windows.exe"
+  },
+  "upstreamVersionText": "v0.2.3\n3d5d19a2f994daccd0e2f8b5f522b6d82f43d589\n",
+  "createDistributablePassed": true,
+  "createDistributableDurationSeconds": 36,
+  "executable": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\compose\\binaries\\main\\app\\BiliPai Windows\\BiliPai Windows.exe",
+    "bytes": 532992,
+    "sha256Bytes": "959729207e4db17fa22c29d520228a7e6e22a07c97ab2e0786011dbd48cb4d17"
+  },
+  "productJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\compose\\binaries\\main\\app\\BiliPai Windows\\app\\bilipai-windows-0.1.0-b7cecd2ed09ee3c64d0df2ff104e2b.jar",
+    "bytes": 47396528,
+    "sha256Bytes": "65ae9382b2f98f5b820c41bbf8312d954ec7809a0ee9696c523afe2f0adf46fb"
+  },
+  "productJarClassCount": 16089,
+  "appImageFiles": 1122,
+  "appImageManifest": "package-image-file-manifest.json",
+  "appImageManifestSha256Bytes": "b1b6f816e05ae6764dffce11681997c5c3ccde9bda134d9c3446d2d747e06611",
+  "packagedNativeCriticalFiles": [
+    {
+      "path": "libmpv-2.dll",
+      "bytes": 120342528,
+      "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4"
+    },
+    {
+      "path": "ffmpeg.exe",
+      "bytes": 113981440,
+      "sha256Bytes": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea"
+    },
+    {
+      "path": "ffprobe.exe",
+      "bytes": 113775616,
+      "sha256Bytes": "67176fa62f89f94c3bcd379fd05677a25651569a2eb8880ec2194e62c82be412"
+    },
+    {
+      "path": "bilipai-diagnostic-share.dll",
+      "bytes": 241152,
+      "sha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06"
+    }
+  ],
+  "packagedRuntimePresent": true,
+  "stageFailure": "nativeMuxSmoke prerequisites: compileTestKotlin",
+  "errorDiagnostics": [
+    "e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt:210:72 Argument type mismatch: actual type is 'DesktopPlaybackController', but 'DesktopUnifiedPlaybackFacade' was expected.",
+    "> Task :compileTestKotlin FAILED"
+  ],
+  "obsoleteFixture": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt:210:72",
+  "obsoleteFixtureExpected": "DesktopUnifiedPlaybackFacade",
+  "obsoleteFixtureActual": "DesktopPlaybackController",
+  "nativeMuxSmokeRan": false,
+  "nativePlayerSmokeRan": false,
+  "updaterSmokeRan": false,
+  "portableZipProduced": false,
+  "generatedNativeMuxDirectories": [
+    {
+      "directory": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\reports\\native-mux-c2190e2d198a470d8f229c579ea85323",
+      "reportExists": false
+    }
+  ],
+  "sourceBeforeRecordSha256Bytes": "edde1ee7c23ea2f74637350686351c2a76e6c7b29770245e1d2fc162c9bdb183",
+  "sourceAfterRecordSha256Bytes": "c323fabd53f67da3d78a4c3e4dda472a0cd4caa3da1611163ad4b14602345de0",
+  "sourceChangeAuditSha256Bytes": "88afaa8bc383afbe01e08966000ffd0222249810ef1b72eec4e7514fe9586343",
+  "trackedNoticesReviewSha256Bytes": "0000b77b042b9daee8ab4d509c48e679c43cf3f7e2b7dd8467d66c3d3cae2899",
+  "diagnosticNativeDllUnchanged": true,
+  "noProductionSourceChanges": true,
+  "trackedNoticesRequireRootReview": true,
+  "buildScriptPassed": false,
+  "allSmokePassed": false,
+  "deployed": false,
+  "published": false,
+  "msiCreated": false,
+  "releaseGatePassed": false
+}

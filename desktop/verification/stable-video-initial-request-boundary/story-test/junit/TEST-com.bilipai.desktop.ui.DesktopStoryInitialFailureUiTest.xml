@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopStoryInitialFailureUiTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-02T05:15:46.936Z" hostname="TONYSUPER666" time="2.045">
+  <properties/>
+  <testcase name="owned playback error retry dispatches to held source and never fetches more feed()" classname="com.bilipai.desktop.ui.DesktopStoryInitialFailureUiTest" time="2.045"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

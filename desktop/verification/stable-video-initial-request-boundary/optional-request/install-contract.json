@@ -1,0 +1,9 @@
+{
+  "copyWhitelist": [],
+  "exactHunks": "exact-hunks.json",
+  "hunks": 2,
+  "baseline": "Actual82 installed RootTransport. Frozen313 remains unchanged.",
+  "beforeWholeSHA256LF": "2b35ee2f419e731a2fd66bf0d3a91850141ddb5373b0f608c848fccc0b5815a4",
+  "afterWholeSHA256LF": "88e75afb8a4474c6e1e6902930a27c279398a4db16f21d8853e5aa516cdd7099",
+  "preserves": "No default subject/request/token. Optional only before media operations. Same captured API/receipt/caller. Source/track preparation and publication fail closed without actual request."
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootTransport.kt",
+    "before": "        val request = checkNotNull(state.currentRequest) { \"Original request is required for a media operation\" }\n        val token = state.currentLoadRequestToken",
+    "after": "        // Original settings/background invocations may precede the first load.\n        // Keep their captured Binding; require a subject only for media publication.\n        val capturedRequest = state.currentRequest\n        val token = state.currentLoadRequestToken",
+    "count": 1,
+    "beforeAnchorSHA256LF": "e8a4544cebda365adfa348500a801f5a052be3577aaa0eba010a5ce604a2cb7e",
+    "afterAnchorSHA256LF": "4e19c063f5c55e8fc9d2901b4df0dde0e2537ae6629fdd631759a2c6723e779b",
+    "baselineWholeSHA256LF": "2b35ee2f419e731a2fd66bf0d3a91850141ddb5373b0f608c848fccc0b5815a4",
+    "afterWholeSHA256LF": "2105d2d1f7fa7e56aaa22f9fea9e5c6256d628d83b41ca15fa7a00aab354ef43"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootTransport.kt",
+    "before": "                raw.binding.assertCurrent()\n                val resolved = captureDesktopOriginalResolvedMediaRequest(assembly.captureLoadState(), request, token)",
+    "after": "                raw.binding.assertCurrent()\n                val request = checkNotNull(capturedRequest) { \"Original request is required for a media operation\" }\n                val resolved = captureDesktopOriginalResolvedMediaRequest(assembly.captureLoadState(), request, token)",
+    "count": 1,
+    "beforeAnchorSHA256LF": "2dc90a0046a2f36baf79a927dbe1377c69dd710671b13473a59df5c1dfd0e172",
+    "afterAnchorSHA256LF": "4e76658cd4a46151335a58ff02849112d3e2a433a44cfcc0928a975f7d6feae3",
+    "baselineWholeSHA256LF": "2105d2d1f7fa7e56aaa22f9fea9e5c6256d628d83b41ca15fa7a00aab354ef43",
+    "afterWholeSHA256LF": "88e75afb8a4474c6e1e6902930a27c279398a4db16f21d8853e5aa516cdd7099"
+  }
+]

@@ -1,0 +1,165 @@
+{
+  "status": "compiled source boundary fix and legacy Story tests verified; full media pending",
+  "artifacts": [
+    {
+      "path": "optional-request/frozen-handoff.json",
+      "bytes": 1382,
+      "sha256Bytes": "c64183644c7841f9a3d69fee44ff9691816c1d2cf3cf0b82926e04491b02f185"
+    },
+    {
+      "path": "optional-request/exact-hunks.json",
+      "bytes": 1968,
+      "sha256Bytes": "f8a4ed6bc954ae799dcbe391c9f37d15ac54bd679eaf3fadd6e25868e1089be1"
+    },
+    {
+      "path": "optional-request/install-contract.json",
+      "bytes": 543,
+      "sha256Bytes": "5a61def6a3b612b58e604d3e1d303a04521780a9e223ed28d6b9303bb6a0d08e"
+    },
+    {
+      "path": "optional-request/prepare.py",
+      "bytes": 4644,
+      "sha256Bytes": "9ce132c7558bbb1811fafaaaa4c67daa11f0c3be0e578551ec21081fb895cc79"
+    },
+    {
+      "path": "optional-request/prepared/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootTransport.kt",
+      "bytes": 10190,
+      "sha256Bytes": "88e75afb8a4474c6e1e6902930a27c279398a4db16f21d8853e5aa516cdd7099"
+    },
+    {
+      "path": "optional-request/README.md",
+      "bytes": 803,
+      "sha256Bytes": "3941eac0346b1d191a143c1c5ca8aecaf0db43f5f644130440ee515af0785e8c"
+    },
+    {
+      "path": "optional-request/source-check.json",
+      "bytes": 591,
+      "sha256Bytes": "57c379a4863fef43b664749c8b3f78c7b938aa2e2d7e1310eeeb56d6cb7c13cf"
+    },
+    {
+      "path": "optional-request/installation-01.json",
+      "bytes": 628,
+      "sha256Bytes": "8290a07f3ce0c77780e198fa218318e05b22ae0fef3ad387e341519d5c256103"
+    },
+    {
+      "path": "optional-request/install_actual.py",
+      "bytes": 2608,
+      "sha256Bytes": "219f2e6c7532353d45e4db3961cdf141da248572fee7aa7f9e2720e272f9497b"
+    },
+    {
+      "path": "optional-request/build_actual83.py",
+      "bytes": 1780,
+      "sha256Bytes": "a354c297f0cdcef2f15dbe01d967e909af3444b606927368e40ed518e8e38e88"
+    },
+    {
+      "path": "optional-request/build-83.json",
+      "bytes": 1120,
+      "sha256Bytes": "62871f21675f0c65d734feecb33d7c178ff693a507e7e84fe77df265b731779e"
+    },
+    {
+      "path": "story-test/frozen-receipt.json",
+      "bytes": 2140,
+      "sha256Bytes": "1d8563356f51fe80b52766ca07b43283d4512665ad1cb78eb2adc889e55549d7"
+    },
+    {
+      "path": "story-test/after-DesktopStoryInitialFailureTest.kt",
+      "bytes": 14212,
+      "sha256Bytes": "a3d10b723328a59019ed582fb4409f9e9a7ad95cf8a7287043b7f766eeef4137"
+    },
+    {
+      "path": "story-test/before-DesktopStoryInitialFailureTest.kt",
+      "bytes": 13522,
+      "sha256Bytes": "2bec8d118b726713f07bcb77dc7d9838773c486f6fed71781014ece7ecc38bcc"
+    },
+    {
+      "path": "story-test/compileTestKotlin.log",
+      "bytes": 15817,
+      "sha256Bytes": "99fca43661441670a7ed104214c1d00a7f727799d699b130755dd831c141585d"
+    },
+    {
+      "path": "story-test/junit/TEST-com.bilipai.desktop.ui.DesktopStoryInitialFailureTest.xml",
+      "bytes": 1796,
+      "sha256Bytes": "e23cc9b767450ffbcccd5c1ffa8e97d261d5f7fb77da8e0c6534197257478f2d"
+    },
+    {
+      "path": "story-test/junit/TEST-com.bilipai.desktop.ui.DesktopStoryInitialFailureUiTest.xml",
+      "bytes": 535,
+      "sha256Bytes": "4028c19573d9fd751034bdebda6f29a9dac15c78213fb2baae31d6fc602f25b8"
+    },
+    {
+      "path": "story-test/patch-review.json",
+      "bytes": 636,
+      "sha256Bytes": "c3aed1b3c1b4c171b9c6ee319bf7c39fe501ed000b6ae637bc2f14e533584793"
+    },
+    {
+      "path": "story-test/run-result.json",
+      "bytes": 840,
+      "sha256Bytes": "a62038fb215e74d6f456651825c1f27ea55360dc8f8447ddca908ffc201b5294"
+    },
+    {
+      "path": "story-test/run-targeted-tests.ps1",
+      "bytes": 3075,
+      "sha256Bytes": "a889c459bf8edf00c6ab58ee13a4f8bfad86eea501677af0aa2b30a614d1da6e"
+    },
+    {
+      "path": "story-test/story-targeted-tests.log",
+      "bytes": 9837,
+      "sha256Bytes": "644e7ce26e53d7fd940b41cfb07064c075c7c311f0be1c3dcc6a94370f8777d2"
+    },
+    {
+      "path": "story-test/test-wiring.patch",
+      "bytes": 2320,
+      "sha256Bytes": "3db21c762fb8ae0abf50c0b17d9d8e5ba651bcd1e17cd26af79fb0da7e9a2558"
+    },
+    {
+      "path": "story-test/verification-summary.json",
+      "bytes": 1989,
+      "sha256Bytes": "5014cbdf06f5b940c45b30be8debc6175c47e63bd620d98de50e3a3ab7302919"
+    },
+    {
+      "path": "actual83/manifest.json",
+      "bytes": 167282,
+      "sha256Bytes": "72934edb925c7793294bf504388dfbd1f849fe14d8ea00dd4f333befdabd4157"
+    },
+    {
+      "path": "actual83/ordered-runtime-cp.json",
+      "bytes": 38191,
+      "sha256Bytes": "f82828347f7cfad86cd101dfb13d44677ba88f780b21a9e21df8c06a97d4828b"
+    },
+    {
+      "path": "actual83/classes.log",
+      "bytes": 21747,
+      "sha256Bytes": "52a8633ec3ad77b8144a4fa19ee4fa842180745eb8a83c9bd5e2148f845574b9"
+    },
+    {
+      "path": "package-attempt01/package-result.json",
+      "bytes": 3916,
+      "sha256Bytes": "badfceff6db1def93761bae12fa172296b93be5123a4fb36443c7fb87959793f"
+    },
+    {
+      "path": "package-attempt01/run-result.json",
+      "bytes": 1491,
+      "sha256Bytes": "9f7a72c2c3ba14cfefa9bc4d6a40e6a383b25c37b3e5210bdeca67765361a27e"
+    },
+    {
+      "path": "package-attempt01/package.log",
+      "bytes": 20818,
+      "sha256Bytes": "1ed71664955bda9339658bf8726b862148e3aa4f4afa7fea5b0827b170e27e47"
+    },
+    {
+      "path": "notice-mirror-audit.json",
+      "bytes": 1935,
+      "sha256Bytes": "8e2d4c78ee35ef00bf075874a3f79c158e136b83d6299cdb06ad9929f0bf6f75"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1555,
+      "sha256Bytes": "d87252abfddf8150a0fedc0d0dca9c7803ae5b9c362e9cd983b3f14c60e1fd50"
+    }
+  ],
+  "binaryProductOverrides": 0,
+  "wholeClassesPassed": true,
+  "legacyStoryTestsPassed": 9,
+  "actualFullMediaPassed": false,
+  "desktopDeployed": false
+}

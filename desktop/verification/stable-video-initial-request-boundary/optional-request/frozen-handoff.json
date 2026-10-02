@@ -1,0 +1,40 @@
+{
+  "status": "source-only necessary optional-request boundary delta",
+  "copyWhitelist": [],
+  "exactHunks": "exact-hunks.json",
+  "beforeWholeSHA256LF": "2b35ee2f419e731a2fd66bf0d3a91850141ddb5373b0f608c848fccc0b5815a4",
+  "afterWholeSHA256LF": "88e75afb8a4474c6e1e6902930a27c279398a4db16f21d8853e5aa516cdd7099",
+  "artifacts": [
+    {
+      "path": "exact-hunks.json",
+      "bytes": 1968,
+      "sha256Bytes": "f8a4ed6bc954ae799dcbe391c9f37d15ac54bd679eaf3fadd6e25868e1089be1"
+    },
+    {
+      "path": "install-contract.json",
+      "bytes": 543,
+      "sha256Bytes": "5a61def6a3b612b58e604d3e1d303a04521780a9e223ed28d6b9303bb6a0d08e"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 4644,
+      "sha256Bytes": "9ce132c7558bbb1811fafaaaa4c67daa11f0c3be0e578551ec21081fb895cc79"
+    },
+    {
+      "path": "prepared/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootTransport.kt",
+      "bytes": 10190,
+      "sha256Bytes": "88e75afb8a4474c6e1e6902930a27c279398a4db16f21d8853e5aa516cdd7099"
+    },
+    {
+      "path": "README.md",
+      "bytes": 803,
+      "sha256Bytes": "3941eac0346b1d191a143c1c5ca8aecaf0db43f5f644130440ee515af0785e8c"
+    },
+    {
+      "path": "source-check.json",
+      "bytes": 591,
+      "sha256Bytes": "57c379a4863fef43b664749c8b3f78c7b938aa2e2d7e1310eeeb56d6cb7c13cf"
+    }
+  ],
+  "actualProductAcceptance": false
+}

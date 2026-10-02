@@ -1,0 +1,32 @@
+diff --git a/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt b/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt
+index 2eaf754fb..db84e5831 100644
+--- a/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt
++++ b/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt
+@@ -12,7 +12,10 @@ import java.util.concurrent.atomic.AtomicLong
+ import javax.swing.SwingUtilities
+ import kotlin.test.*
+ 
+-/** Actual Controller + Host with synthetic transport; no native surface, account, or network. */
++/**
++ * Legacy Controller + generic Host with synthetic transport; no native surface, account, or network.
++ * Production UnifiedFacade/Root wiring is covered by the real Root acceptance checks.
++ */
+ class DesktopStoryInitialFailureTest {
+     @Test fun `metadata failure remains visible and retry uses the held owner and same page`(): Unit = runBlocking {
+         Fixture().use { f ->
+@@ -207,7 +210,14 @@ class DesktopStoryInitialFailureTest {
+                 { admitted -> synchronized(scope) {
+                     if (scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != true) false else { admitted(); true }
+                 } }))
+-        val host = DesktopStoryPlaybackHost(ControllerStoryQueuePlayer(controller), { epoch.get() })
++        private val storyPlayer = object : DesktopStoryQueuePlayer {
++            override fun ownsQueue(owner: Any) = controller.ownsQueue(owner)
++            override fun openQueue(cards: List<VideoCard>, index: Int, owner: Any) = controller.openQueue(cards, index, owner)
++            override fun updateQueueForOwner(owner: Any, cards: List<VideoCard>, index: Int) = controller.updateQueueForOwner(owner, cards, index)
++            override fun stopQueueForOwner(owner: Any) = controller.stopQueueForOwner(owner)
++            override fun retryQueueForOwner(owner: Any) = controller.retryQueueForOwner(owner)
++        }
++        val host = DesktopStoryPlaybackHost(storyPlayer, { epoch.get() })
+         fun details(bvid: String) = VideoDetails(bvid, 51, bvid, "", "", "", 0, 0,
+             listOf(VideoPart(7, "P1", 120), VideoPart(9, "P2", 120)))
+         fun card(bvid: String, cid: Long = 7) = VideoCard(bvid, bvid, "", "", 0, 120, preferredCid = cid)

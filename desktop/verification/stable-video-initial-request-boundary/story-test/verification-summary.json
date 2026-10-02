@@ -1,0 +1,51 @@
+{
+  "status": "passed",
+  "codeHead": "8a918904e108d63beb0892171d441885322c217f",
+  "compileTestKotlinExitCode": 0,
+  "targetedTestsExitCode": 0,
+  "compileDurationLine": "BUILD SUCCESSFUL in 23s",
+  "testDurationLine": "BUILD SUCCESSFUL in 10s",
+  "junitSuites": [
+    {
+      "path": "junit/TEST-com.bilipai.desktop.ui.DesktopStoryInitialFailureTest.xml",
+      "name": "com.bilipai.desktop.ui.DesktopStoryInitialFailureTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": "0.513",
+      "sha256Bytes": "e23cc9b767450ffbcccd5c1ffa8e97d261d5f7fb77da8e0c6534197257478f2d"
+    },
+    {
+      "path": "junit/TEST-com.bilipai.desktop.ui.DesktopStoryInitialFailureUiTest.xml",
+      "name": "com.bilipai.desktop.ui.DesktopStoryInitialFailureUiTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": "2.045",
+      "sha256Bytes": "4028c19573d9fd751034bdebda6f29a9dac15c78213fb2baae31d6fc602f25b8"
+    }
+  ],
+  "totalTests": 9,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "changedTest": {
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopStoryInitialFailureTest.kt",
+    "beforeSha256Bytes": "2bec8d118b726713f07bcb77dc7d9838773c486f6fed71781014ece7ecc38bcc",
+    "afterSha256Bytes": "a3d10b723328a59019ed582fb4409f9e9a7ad95cf8a7287043b7f766eeef4137",
+    "onlyChanges": "legacy test adapter and coverage KDoc",
+    "testBodiesAndAssertionsBytePreserved": true,
+    "behaviorTests": 8,
+    "assertionCallCount": 68,
+    "productionSourceEdits": false,
+    "noticeFilesPreservedFromAttempt01": true
+  },
+  "noProductionOverloadAdded": true,
+  "noUnifiedFacadeFaked": true,
+  "rootMediaFactoryTouchedByThisLane": false,
+  "noticeFilesLeftAsRecordedByPackageAttempt01": true,
+  "repackaged": false,
+  "committed": false
+}

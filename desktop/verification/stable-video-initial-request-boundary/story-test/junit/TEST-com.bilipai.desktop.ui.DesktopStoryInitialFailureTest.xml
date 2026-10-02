@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopStoryInitialFailureTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-02T05:15:46.421Z" hostname="TONYSUPER666" time="0.513">
+  <properties/>
+  <testcase name="metadata failure remains visible and retry uses the held owner and same page()" classname="com.bilipai.desktop.ui.DesktopStoryInitialFailureTest" time="0.44"/>
+  <testcase name="failed lease cannot retry mutate or stop a foreign native takeover()" classname="com.bilipai.desktop.ui.DesktopStoryInitialFailureTest" time="0.016"/>
+  <testcase name="metadata failure can select next page without retiring the route()" classname="com.bilipai.desktop.ui.DesktopStoryInitialFailureTest" time="0.008"/>
+  <testcase name="duplicate retry during pending metadata submits once and canceled retry cannot reacquire()" classname="com.bilipai.desktop.ui.DesktopStoryInitialFailureTest" time="0.006"/>
+  <testcase name="changed epoch released inactive and equal reference tokens cannot bypass retry ownership()" classname="com.bilipai.desktop.ui.DesktopStoryInitialFailureTest" time="0.003"/>
+  <testcase name="stream failure retries cached details while preserving selected CID and queue token()" classname="com.bilipai.desktop.ui.DesktopStoryInitialFailureTest" time="0.007"/>
+  <testcase name="late uncooperative failed retry cannot replace the next pages success()" classname="com.bilipai.desktop.ui.DesktopStoryInitialFailureTest" time="0.009"/>
+  <testcase name="stream failure can select next page without reusing failed details or retiring owner()" classname="com.bilipai.desktop.ui.DesktopStoryInitialFailureTest" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
